@@ -64,7 +64,7 @@ class Component extends React.Component {
             const { id_token } = googleUser.getAuthResponse();
             this.handleGoogleToken(id_token);
           },
-          onfailure: error => console.log('login fail', error),
+          onfailure: error => global.log('login fail', error),
         });
       });
     } catch (e) {
@@ -79,7 +79,6 @@ class Component extends React.Component {
     this.handleLoginResponse(response);
   };
   handleGoogleToken = async token => {
-    console.log(token);
     const response = await googleLogin(token);
     this.handleLoginResponse(response);
   };
@@ -91,14 +90,6 @@ class Component extends React.Component {
       const user = jwtDecode(jwt).context.user;
       await props.effects.setUser(user);
       await props.effects.setToken(jwt);
-
-      if (user.roles.includes('ADMIN')) {
-        if (props.match.path === '/') {
-          props.history.push('/users');
-        }
-      } else {
-        props.history.push('/no-access');
-      }
     } else {
       console.warn('response error');
     }
@@ -107,7 +98,7 @@ class Component extends React.Component {
   render() {
     return (
       <div className={`Login ${css(styles.container)}`}>
-        <h1 className={`${css(styles.title)}`}>Portal</h1>
+        <h1 className={`${css(styles.title)}`}>Hello Portal</h1>
         <div className={`${css(styles.googleSignin)}`} id="googleSignin" />
         <FacebookLogin onLogin={this.onFacebookLogin} />
       </div>
