@@ -1,22 +1,34 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { injectState } from 'freactal';
 import './App.css';
+import { provideLoggedInUser } from 'stateProviders';
 
-const logo = require('./logo.svg');
+import Login from 'components/Login';
+import { logoutAll } from 'services/login';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
+const enhance = compose(
+  provideLoggedInUser,
+  injectState
+);
+
+const wait = seconds => new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+
+const render = ({ state, effects }) => {
+  return <div className="App">
+    {!state.loggedInUser && <Login />}
+    {state.loggedInUser && (
+      <div>
+        <pre>{JSON.stringify(state.loggedInUser, null, '  ')}</pre>
+        <button
+          onClick={() => Promise.race([
+            logoutAll(),
+            wait(2)
+          ]).then(() => effects.setUser(null))}
+        >LOGOUT</button>
       </div>
-    );
-  }
+    )}
+  </div>
 }
 
-export default App;
+export default enhance(render);

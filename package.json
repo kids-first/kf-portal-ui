@@ -3,14 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.0",
+    "debug": "^3.1.0",
+    "freactal": "^1.1.1",
+    "glamor": "^2.20.40",
+    "jwt-decode": "^2.2.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-scripts-ts": "2.8.0"
+    "react-scripts-ts": "2.8.0",
+    "recompose": "^0.26.0"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "start": "NODE_PATH=src react-scripts-ts start",
+    "build": "NODE_PATH=src react-scripts-ts build",
+    "test": "NODE_PATH=src react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
