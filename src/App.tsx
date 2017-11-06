@@ -19,6 +19,7 @@ const render = ({ state, effects }) => {
     {!state.loggedInUser && <Login />}
     {state.loggedInUser && (
       <div>
+        <pre>Welcome {state.loggedInUser.first_name} {state.loggedInUser.last_name}</pre>
         <pre>{JSON.stringify(state.loggedInUser, null, '  ')}</pre>
         <button
           onClick={() => Promise.race([
