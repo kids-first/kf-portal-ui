@@ -9,8 +9,6 @@ import EditProfileForm from 'components/forms/EditProfileForm';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import UserProfile from 'components/UserProfile';
 
-import { logoutAll } from 'services/login';
-
 const enhance = compose(
   provideLoggedInUser,
   injectState,

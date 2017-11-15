@@ -7,6 +7,7 @@ import jwtDecode from 'jwt-decode';
 import { googleLogin, facebookLogin } from 'services/login';
 import FacebookLogin from 'components/FacebookLogin';
 import { getProfile, createProfile } from 'services/profiles';
+import { apiRoot } from 'common/injectGlobals';
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_APP_ID;
 
@@ -44,7 +45,9 @@ class Component extends React.Component {
     effects: PropTypes.object,
     state: PropTypes.object,
   };
-
+  state = {
+    securityError: false,
+  };
   componentDidMount() {
     try {
       gapi.load('auth2', () => {
@@ -80,8 +83,15 @@ class Component extends React.Component {
     this.handleLoginResponse(response);
   };
   handleGoogleToken = async token => {
-    const response = await googleLogin(token);
-    this.handleLoginResponse(response);
+    const response = await googleLogin(token).catch(error => {
+      if (error.message === 'Network Error') {
+        this.handleSecurityError();
+      }
+    });
+
+    if (response) {
+      this.handleLoginResponse(response);
+    }
   };
   handleLoginResponse = async response => {
     const props = this.props as any;
@@ -99,13 +109,30 @@ class Component extends React.Component {
       console.warn('response error');
     }
   };
+  handleSecurityError() {
+    this.setState({
+      securityError: true,
+    });
+  }
 
   render() {
     return (
       <div className={`Login ${css(styles.container)}`}>
         <h1 className={`${css(styles.title)}`}>Hello Portal</h1>
-        <div className={`${css(styles.googleSignin)}`} id="googleSignin" />
-        <FacebookLogin onLogin={this.onFacebookLogin} />
+        {this.state.securityError ? (
+          <div style={{ maxWidth: 600 }}>
+            Connection to ego failed, you may need to visit{' '}
+            <a target="_blank" href={apiRoot}>
+              {apiRoot}
+            </a>{' '}
+            in a new tab and accept the warning
+          </div>
+        ) : (
+          [
+            <div key="google" className={`${css(styles.googleSignin)}`} id="googleSignin" />,
+            <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
+          ]
+        )}
       </div>
     );
   }
