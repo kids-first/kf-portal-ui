@@ -79,8 +79,15 @@ class Component extends React.Component {
     this.handleFacebookToken(response.authResponse.accessToken);
   };
   handleFacebookToken = async token => {
-    const response = await facebookLogin(token);
-    this.handleLoginResponse(response);
+    const response = await facebookLogin(token).catch(error => {
+      if (error.message === 'Network Error') {
+        this.handleSecurityError();
+      }
+    });
+
+    if (response) {
+      this.handleLoginResponse(response);
+    }
   };
   handleGoogleToken = async token => {
     const response = await googleLogin(token).catch(error => {
