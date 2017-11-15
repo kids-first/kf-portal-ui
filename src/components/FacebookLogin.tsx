@@ -9,6 +9,7 @@ export default class extends React.Component<any, any> {
       if (response.authResponse) {
         this.props.onLogin(response);
       } else {
+        global.FB.XFBML.parse();
         global.FB.Event.subscribe('auth.login', this.props.onLogin);
       }
     });
