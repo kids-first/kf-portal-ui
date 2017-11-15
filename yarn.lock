@@ -1901,6 +1901,14 @@ form-data@~2.3.1:
     combined-stream "^1.0.5"
     mime-types "^2.1.12"
 
+formik@false0.10.4:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/formik/-/formik-0.10.4.tgz#39747caa57b0f72f127b44b87e8a36f75f19926f"
+  dependencies:
+    lodash.isequal "4.5.0"
+    prop-types "^15.5.10"
+    warning "^3.0.0"
+
 forwarded@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"
@@ -3188,6 +3196,10 @@ lodash.camelcase@^4.3.0:
 lodash.defaults@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
+
+lodash.isequal@4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -5462,6 +5474,10 @@ urijs@^1.16.1:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.0.tgz#d8aa284d0e7469703a6988ad045c4cbfdf08ada0"
 
+url-join@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/url-join/-/url-join-2.0.2.tgz#c072756967ad24b8b59e5741551caac78f50b8b7"
+
 url-loader@0.5.9:
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-0.5.9.tgz#cc8fea82c7b906e7777019250869e569e995c295"
@@ -5560,6 +5576,12 @@ walker@~1.0.5:
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
   dependencies:
     makeerror "1.0.x"
+
+warning@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  dependencies:
+    loose-envify "^1.0.0"
 
 watch@~0.10.0:
   version "0.10.0"

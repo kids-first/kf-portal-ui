@@ -6,6 +6,7 @@ import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 import { googleLogin, facebookLogin } from 'services/login';
 import FacebookLogin from 'components/FacebookLogin';
+import { getProfile, createProfile } from 'services/profiles';
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_APP_ID;
 
@@ -87,8 +88,12 @@ class Component extends React.Component {
 
     if (response.status === 200) {
       const jwt = response.data;
-      const user = jwtDecode(jwt).context.user;
-      await props.effects.setUser(user);
+      const data = jwtDecode(jwt);
+      const user = data.context.user;
+      const egoId = data.sub;
+      const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
+
+      await props.effects.setUser(profile);
       await props.effects.setToken(jwt);
     } else {
       console.warn('response error');
