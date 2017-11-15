@@ -88,9 +88,9 @@ class Component extends React.Component {
 
     if (response.status === 200) {
       const jwt = response.data;
-      const user = jwtDecode(jwt).context.user;
-      // TODO: use id instead of email?
-      const egoId = user.email;
+      const data = jwtDecode(jwt);
+      const user = data.context.user;
+      const egoId = data.sub;
       const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
 
       await props.effects.setUser(profile);
