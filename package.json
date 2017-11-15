@@ -13,7 +13,7 @@
     "react-dom": "^16.0.0",
     "react-scripts-ts": "2.8.0",
     "recompose": "^0.26.0",
-    "url-join": "false2.0.2"
+    "url-join": "^2.0.2"
   },
   "scripts": {
     "start": "NODE_PATH=src react-scripts-ts start",
