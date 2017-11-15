@@ -7,7 +7,7 @@ export const googleLogin = token =>
   ajax.get('/oauth/google/token', {
     headers: { id_token: token },
     params: {
-      client_id: process.env.REACT_APP_EGO_APP_ID
+      client_id: process.env.REACT_APP_EGO_APP_ID,
     },
   });
 
@@ -25,17 +25,15 @@ export const facebookLogin = token =>
   ajax.get('/oauth/facebook/token', {
     headers: { id_token: token },
     params: {
-      client_id: process.env.REACT_APP_EGO_APP_ID
+      client_id: process.env.REACT_APP_EGO_APP_ID,
     },
   });
 
 export const facebookLogout = () => {
   return new Promise((resolve, reject) => {
-    global.FB.getLoginStatus((response) => {
+    global.FB.getLoginStatus(response => {
       if (response.authResponse) {
-        global.FB.logout(response => {
-          resolve(response)
-        });
+        global.FB.logout(r => resolve(r));
       } else {
         resolve();
       }
@@ -43,7 +41,4 @@ export const facebookLogout = () => {
   });
 };
 
-export const logoutAll = () => Promise.all([
-  googleLogout(),
-  facebookLogout(),
-])
+export const logoutAll = () => Promise.all([googleLogout(), facebookLogout()]);
