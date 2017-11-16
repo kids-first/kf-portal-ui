@@ -75,3 +75,21 @@ export const updateProfile = async ({ user }) => {
 
   return record;
 };
+
+export const deleteProfile = async ({ user }) => {
+  const { data: { data: { userRemove: { recordId } } } } = await ajax.post(
+    urlJoin(process.env.REACT_APP_PROFILE_API, 'graphql'),
+    {
+      variables: { _id: user._id },
+      query: `
+        mutation($_id: MongoID!) {
+          userRemove(_id: $_id) {
+            recordId
+          }
+        }
+      `,
+    },
+  );
+
+  return recordId;
+};
