@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 
 import { logoutAll } from 'services/login';
 import { injectState } from 'freactal';
+import { deleteProfile } from 'services/profiles';
 
 const wait = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
@@ -21,6 +22,16 @@ const UserProfile = ({ state, effects, setEditing }) => {
         LOGOUT
       </button>
       <button onClick={() => setEditing(true)}>EDIT</button>
+      <button
+        onClick={async () => {
+          await deleteProfile({ user: state.loggedInUser });
+          await logoutAll();
+          await effects.setUser(null);
+          await effects.setToken('');
+        }}
+      >
+        DELETE ACCOUNT
+      </button>
     </div>
   );
 };
