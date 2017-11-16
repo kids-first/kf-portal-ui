@@ -9,7 +9,7 @@ export const getToken = () => token;
 
 export const setToken = t => {
   token = t;
-  ajax.defaults.headers.common.Authorization = t;
+  ajax.defaults.headers.common.authorization = `Bearer ${t}`;
 };
 
 export default ajax;

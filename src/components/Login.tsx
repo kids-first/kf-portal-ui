@@ -108,10 +108,9 @@ class Component extends React.Component {
       const data = jwtDecode(jwt);
       const user = data.context.user;
       const egoId = data.sub;
-      const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
-
-      await props.effects.setUser(profile);
       await props.effects.setToken(jwt);
+      const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
+      await props.effects.setUser(profile);
     } else {
       console.warn('response error');
     }
