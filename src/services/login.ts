@@ -5,7 +5,7 @@ gapi.load('auth2');
 
 export const googleLogin = token =>
   ajax.get('/oauth/google/token', {
-    headers: { token: token },
+    headers: { token },
     params: {
       client_id: process.env.REACT_APP_EGO_APP_ID,
     },
@@ -23,7 +23,7 @@ export const googleLogout = () => {
 
 export const facebookLogin = token =>
   ajax.get('/oauth/facebook/token', {
-    headers: { token: token },
+    headers: { token },
     params: {
       client_id: process.env.REACT_APP_EGO_APP_ID,
     },
