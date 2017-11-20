@@ -4,5 +4,6 @@ declare namespace NodeJS {
     log: Function;
     FB: any;
     fbAsyncInit: Function;
+    location: any;
   }
 }

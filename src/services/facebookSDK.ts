@@ -1,7 +1,9 @@
+import { facebookAppId } from 'common/injectGlobals';
+
 export default new Promise((resolve, reject) => {
   global.fbAsyncInit = function() {
     global.FB.init({
-      appId: process.env.REACT_APP_FACEBOOK_APP_ID,
+      appId: facebookAppId,
       autoLogAppEvents: true,
       xfbml: true,
       version: 'v2.10',

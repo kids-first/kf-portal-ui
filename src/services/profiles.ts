@@ -1,5 +1,6 @@
 import ajax from 'services/ajax';
 import urlJoin from 'url-join';
+import { personaApiRoot } from 'common/injectGlobals';
 
 const DEFAULT_FIELDS = `
   first_name
@@ -12,11 +13,9 @@ const DEFAULT_FIELDS = `
 `;
 
 export const getProfile = async ({ egoId }) => {
-  const { data: { data: { users } } } = await ajax.post(
-    urlJoin(process.env.REACT_APP_PROFILE_API, 'graphql'),
-    {
-      variables: { egoId },
-      query: `
+  const { data: { data: { users } } } = await ajax.post(urlJoin(personaApiRoot, 'graphql'), {
+    variables: { egoId },
+    query: `
         query($egoId: String) {
           users(filter:{ego_id: $egoId}) {
             count
@@ -26,8 +25,7 @@ export const getProfile = async ({ egoId }) => {
           }
         }
       `,
-    },
-  );
+  });
 
   if (users.count > 1) {
     console.warn(`egoId should only match 1 profile but ${egoId} matched ${users.mount} profiles`);
@@ -38,7 +36,7 @@ export const getProfile = async ({ egoId }) => {
 
 export const createProfile = async ({ egoId, last_name, first_name }) => {
   const { data: { data: { userCreate: { record } } } } = await ajax.post(
-    urlJoin(process.env.REACT_APP_PROFILE_API, 'graphql'),
+    urlJoin(personaApiRoot, 'graphql'),
     {
       variables: { egoId, lastName: last_name, firstName: first_name },
       query: `
@@ -58,7 +56,7 @@ export const createProfile = async ({ egoId, last_name, first_name }) => {
 
 export const updateProfile = async ({ user }) => {
   const { data: { data: { userUpdate: { record } } } } = await ajax.post(
-    urlJoin(process.env.REACT_APP_PROFILE_API, 'graphql'),
+    urlJoin(personaApiRoot, 'graphql'),
     {
       variables: { record: user },
       query: `
@@ -78,7 +76,7 @@ export const updateProfile = async ({ user }) => {
 
 export const deleteProfile = async ({ user }) => {
   const { data: { data: { userRemove: { recordId } } } } = await ajax.post(
-    urlJoin(process.env.REACT_APP_PROFILE_API, 'graphql'),
+    urlJoin(personaApiRoot, 'graphql'),
     {
       variables: { _id: user._id },
       query: `

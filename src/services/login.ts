@@ -1,13 +1,16 @@
+import urlJoin from 'url-join';
+
 import ajax from 'services/ajax';
+import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 
 const gapi = global.gapi;
 gapi.load('auth2');
 
 export const googleLogin = token =>
-  ajax.get('/oauth/google/token', {
+  ajax.get(urlJoin(egoApiRoot, 'oauth/google/token'), {
     headers: { token },
     params: {
-      client_id: process.env.REACT_APP_EGO_APP_ID,
+      client_id: egoAppId,
     },
   });
 
@@ -22,10 +25,10 @@ export const googleLogout = () => {
 };
 
 export const facebookLogin = token =>
-  ajax.get('/oauth/facebook/token', {
+  ajax.get(urlJoin(egoApiRoot, '/oauth/facebook/token'), {
     headers: { token },
     params: {
-      client_id: process.env.REACT_APP_EGO_APP_ID,
+      client_id: egoAppId,
     },
   });
 

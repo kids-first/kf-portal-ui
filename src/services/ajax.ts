@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { apiRoot } from 'common/injectGlobals';
 
 let token;
 
-const ajax = axios.create({ baseURL: apiRoot });
+const ajax = axios.create();
 
 export const getToken = () => token;
 
