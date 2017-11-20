@@ -7,9 +7,7 @@ import jwtDecode from 'jwt-decode';
 import { googleLogin, facebookLogin } from 'services/login';
 import FacebookLogin from 'components/FacebookLogin';
 import { getProfile, createProfile } from 'services/profiles';
-import { apiRoot } from 'common/injectGlobals';
-
-const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_APP_ID;
+import { googleAppId, egoApiRoot } from 'common/injectGlobals';
 
 const styles = {
   container: {
@@ -56,7 +54,7 @@ class Component extends React.Component {
          * client.
          */
         gapi.auth2.init({
-          client_id: GOOGLE_CLIENT_ID,
+          client_id: googleAppId,
         });
         gapi.signin2.render('googleSignin', {
           scope: 'profile email',
@@ -128,8 +126,8 @@ class Component extends React.Component {
         {this.state.securityError ? (
           <div style={{ maxWidth: 600 }}>
             Connection to ego failed, you may need to visit{' '}
-            <a target="_blank" href={apiRoot}>
-              {apiRoot}
+            <a target="_blank" href={egoApiRoot}>
+              {egoApiRoot}
             </a>{' '}
             in a new tab and accept the warning
           </div>
