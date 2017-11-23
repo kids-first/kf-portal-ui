@@ -5,9 +5,12 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 import { googleLogin, facebookLogin } from 'services/login';
-import FacebookLogin from 'components/FacebookLogin';
+import FacebookLogin from 'components/loginButtons/FacebookLogin';
+import RedirectLogin from 'components/loginButtons/RedirectLogin';
+
 import { getProfile, createProfile } from 'services/profiles';
 import { googleAppId, egoApiRoot } from 'common/injectGlobals';
+import { allRedirectUris } from '../common/injectGlobals';
 
 const styles = {
   container: {
@@ -38,7 +41,7 @@ const gapi = global.gapi;
 
 const enhance = compose(injectState);
 
-class Component extends React.Component {
+class Component extends React.Component<any, any> {
   static propTypes = {
     effects: PropTypes.object,
     state: PropTypes.object,
@@ -99,19 +102,21 @@ class Component extends React.Component {
     }
   };
   handleLoginResponse = async response => {
-    const props = this.props as any;
-
     if (response.status === 200) {
       const jwt = response.data;
-      const data = jwtDecode(jwt);
-      const user = data.context.user;
-      const egoId = data.sub;
-      await props.effects.setToken(jwt);
-      const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
-      await props.effects.setUser(profile);
+      this.handleJWT(jwt);
     } else {
       console.warn('response error');
     }
+  };
+  handleJWT = async jwt => {
+    const props = this.props;
+    const data = jwtDecode(jwt);
+    const user = data.context.user;
+    const egoId = data.sub;
+    await props.effects.setToken(jwt);
+    const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
+    await props.effects.setUser(profile);
   };
   handleSecurityError() {
     this.setState({
@@ -120,6 +125,9 @@ class Component extends React.Component {
   }
 
   render() {
+    const renderSocialLoginButtons =
+      this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
+
     return (
       <div className={`Login ${css(styles.container)}`}>
         <h1 className={`${css(styles.title)}`}>Hello Portal</h1>
@@ -131,11 +139,13 @@ class Component extends React.Component {
             </a>{' '}
             in a new tab and accept the warning
           </div>
-        ) : (
+        ) : renderSocialLoginButtons ? (
           [
             <div key="google" className={`${css(styles.googleSignin)}`} id="googleSignin" />,
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
           ]
+        ) : (
+          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
         )}
       </div>
     );
