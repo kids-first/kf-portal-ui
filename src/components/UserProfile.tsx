@@ -13,7 +13,7 @@ const UserProfile = ({ state, effects, setEditing }) => {
   return (
     <div>
       <pre>
-        Welcome {state.loggedInUser.first_name} {state.loggedInUser.last_name}
+        Welcome {state.loggedInUser.firstName} {state.loggedInUser.lastName}
       </pre>
       <pre>{JSON.stringify(state.loggedInUser, null, '  ')}</pre>
       <button

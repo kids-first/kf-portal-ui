@@ -3,9 +3,9 @@ import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
 
 const DEFAULT_FIELDS = `
-  first_name
-  last_name
-  ego_id
+  firstName
+  lastName
+  egoId
   bio
   roles
   city
@@ -17,7 +17,7 @@ export const getProfile = async ({ egoId }) => {
     variables: { egoId },
     query: `
         query($egoId: String) {
-          users(filter:{ego_id: $egoId}) {
+          users(filter:{egoId: $egoId}) {
             count
             items {
               ${DEFAULT_FIELDS}
@@ -34,14 +34,14 @@ export const getProfile = async ({ egoId }) => {
   return users.items[0];
 };
 
-export const createProfile = async ({ egoId, last_name, first_name }) => {
+export const createProfile = async ({ egoId, lastName, firstName }) => {
   const { data: { data: { userCreate: { record } } } } = await ajax.post(
     urlJoin(personaApiRoot, 'graphql'),
     {
-      variables: { egoId, lastName: last_name, firstName: first_name },
+      variables: { egoId, lastName, firstName },
       query: `
         mutation($egoId: String, $firstName: String, $lastName: String) {
-          userCreate(record:{ego_id: $egoId, first_name: $firstName, last_name: $lastName}) {
+          userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName}) {
             record {
               ${DEFAULT_FIELDS}
             }
