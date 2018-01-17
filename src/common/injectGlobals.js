@@ -2,19 +2,19 @@ import 'index.css';
 import queryString from 'querystring';
 
 localStorage.setItem('debug', process.env.REACT_APP_DEBUG || ''); // manually set because CRA doesn't allow arbitrary env variable names.
-const debug = require('debug') as Function;
+const debug = require('debug');
 global.log = debug('app');
 
 const qs = queryString.parse(global.location.search.replace(/^\?/, ''));
 
-const egoApiOverride = qs.EGO_API as string;
+const egoApiOverride = qs.EGO_API;
 if (egoApiOverride) {
   global.log('warning: using ego api override');
 }
 
 export const egoApiRoot: string = egoApiOverride || process.env.REACT_APP_EGO_API || '';
 
-const personaApiOverride = qs.PERSONA_API as string;
+const personaApiOverride = qs.PERSONA_API;
 if (personaApiOverride) {
   global.log('warning: using persona api override');
 }

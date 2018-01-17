@@ -5,7 +5,7 @@
   "dependencies": {
     "axios": "^0.17.0",
     "debug": "^3.1.0",
-    "formik": "false0.10.4",
+    "formik": "^0.10.5",
     "freactal": "^1.1.1",
     "glamor": "^2.20.40",
     "jwt-decode": "^2.2.0",
@@ -13,21 +13,18 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts-ts": "2.8.0",
+    "react-scripts": "1.1.0",
     "recompose": "^0.26.0",
     "url-join": "^2.0.2"
   },
   "scripts": {
-    "start": "NODE_PATH=src react-scripts-ts start",
-    "build": "NODE_PATH=src react-scripts-ts build",
-    "test": "NODE_PATH=src react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "start": "NODE_PATH=src react-scripts start",
+    "build": "NODE_PATH=src react-scripts build",
+    "test": "NODE_PATH=src react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.5",
-    "@types/node": "^8.0.47",
-    "@types/react": "^16.0.20",
-    "@types/react-dom": "^16.0.2"
+    "prettier": "^1.10.2"
   },
   "prettier": {
     "printWidth": 100,

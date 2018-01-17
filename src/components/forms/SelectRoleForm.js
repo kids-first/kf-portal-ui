@@ -13,7 +13,7 @@ const enhance = compose(
       return { roles: (loggedInUser.roles && loggedInUser.roles[0]) || '' };
     },
     validate: (values, props) => {
-      let errors = {} as any;
+      let errors = {};
       if (!values.roles) {
         errors.roles = 'Must select a role';
       } else if (!ROLES.includes(values.roles)) {
