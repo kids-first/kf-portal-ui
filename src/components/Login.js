@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { css } from 'glamor';
 import { compose } from 'recompose';
@@ -29,8 +30,8 @@ const styles = {
     width: 20,
   },
   googleSignin: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 0,
+    marginBottom: 0,
   },
   title: {
     fontWeight: 400,
@@ -39,7 +40,7 @@ const styles = {
 
 const gapi = global.gapi;
 
-const enhance = compose(injectState);
+const enhance = compose(injectState, withRouter);
 
 class Component extends React.Component<any, any> {
   static propTypes = {
@@ -115,8 +116,16 @@ class Component extends React.Component<any, any> {
     const user = data.context.user;
     const egoId = data.sub;
     await props.effects.setToken(jwt);
-    const profile = (await getProfile({ egoId })) || (await createProfile({ ...user, egoId }));
-    await props.effects.setUser(profile);
+    const existingProfile = await getProfile({ egoId });
+    const newProfile = !existingProfile ? await createProfile({ ...user, egoId }) : {};
+    await props.effects.setUser({
+      ...(existingProfile || newProfile),
+      email: user.email,
+    });
+
+    if (Object.keys(newProfile).length > 0) {
+      this.props.history.push('/select-role');
+    }
   };
   handleSecurityError() {
     this.setState({
@@ -130,7 +139,6 @@ class Component extends React.Component<any, any> {
 
     return (
       <div className={`Login ${css(styles.container)}`}>
-        <h1 className={`${css(styles.title)}`}>Hello Portal</h1>
         {this.state.securityError ? (
           <div style={{ maxWidth: 600 }}>
             Connection to ego failed, you may need to visit{' '}
