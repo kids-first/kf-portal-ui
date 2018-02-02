@@ -10,6 +10,7 @@ const DEFAULT_FIELDS = `
   roles
   city
   _id
+  acceptedTerms
 `;
 
 export const getProfile = async ({ egoId }) => {

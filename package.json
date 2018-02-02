@@ -10,6 +10,7 @@
     "downshift": "^1.27.1",
     "emotion": "^9.0.0",
     "filesize": "^3.6.0",
+    "emotion-theming": "^9.0.0",
     "formik": "^0.10.5",
     "freactal": "^1.1.1",
     "glamor": "^2.20.40",

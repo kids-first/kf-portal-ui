@@ -1,22 +1,37 @@
 import React from 'react';
 import { injectState } from 'freactal';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import { withFormik, Field } from 'formik';
+import styled, { css } from 'react-emotion';
+import { withTheme } from 'emotion-theming';
 import { withRouter } from 'react-router-dom';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
 
+import researcherIconPath from 'theme/images/icon-researcher.svg';
+import patientIconPath from 'theme/images/icon-patient.svg';
+import clinicianIconPath from 'theme/images/icon-clinician.svg';
+
+const iconPaths = {
+  researcher: researcherIconPath,
+  patient: patientIconPath,
+  clinician: clinicianIconPath,
+};
+
+const StyledLabel = styled('label')`
+  font-weight: 900;
+  width: 140px;
+`;
+
 const enhance = compose(
   withRouter,
+  withTheme,
   injectState,
-  withState(
-    'redirectPath',
-    'setRedirectPath',
-    ({ state: { loggedInUser } }) => `/user/${loggedInUser.egoId}`,
-  ),
   withFormik({
-    mapPropsToValues: ({ state: { loggedInUser } }) => {
+    mapPropsToValues: ({
+      state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
+    }) => {
       return {
         firstName: loggedInUser.firstName || '',
         lastName: loggedInUser.lastName || '',
@@ -26,9 +41,10 @@ const enhance = compose(
     },
     validate: (values, props) => {
       let errors = {};
+      console.log(values.roles);
       if (!values.roles) {
         errors.roles = 'Must select a role';
-      } else if (!ROLES.includes(values.roles)) {
+      } else if (!ROLES.map(r => r.type).includes(values.roles.toLowerCase())) {
         errors.roles = 'Invalid role';
       }
       if (!values.firstName || values.firstName.length === 0) {
@@ -37,19 +53,14 @@ const enhance = compose(
       if (!values.lastName || values.lastName.length === 0) {
         errors.lastName = 'Last name is required';
       }
+      const { onValidateFinish } = props;
+      onValidateFinish && onValidateFinish(errors);
       return errors;
     },
     handleSubmit: async (
       values: any,
       {
-        props: {
-          state: { loggedInUser },
-          redirectPath,
-          effects: { setUser },
-          onFinish,
-          history,
-          ...restProps
-        },
+        props: { state: { loggedInUser }, effects: { setUser }, onFinish, history, ...restProps },
         setSubmitting,
         setErrors,
       }: any,
@@ -68,9 +79,6 @@ const enhance = compose(
           if (onFinish) {
             onFinish();
           }
-          if (redirectPath !== '') {
-            history.push(redirectPath);
-          }
         },
         errors => setSubmitting(false),
       );
@@ -79,10 +87,12 @@ const enhance = compose(
 );
 
 const SelectRoleForm = ({
+  theme,
   onFinish,
   errors,
   touched,
   handleSubmit,
+  setFieldValue,
   submitForm,
   validate,
   isSubmitting,
@@ -93,54 +103,110 @@ const SelectRoleForm = ({
 }) => {
   return (
     <div>
-      <h2>Select your role</h2>
-      <span>Percent Filled: {percentageFilled}</span>
-      <form onSubmit={handleSubmit}>
-        <label>
-          First name:
-          <Field name="firstName" placeholder="First Name" />
-        </label>
-        <br />
-        {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
-        <label>
-          Last name:
-          <Field name="lastName" placeholder="Last Name" />
-        </label>
-        <br />
-        {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
-        <label>
-          Email:
-          <Field type="email" name="email" placeholder="Email" disabled="true" />
-        </label>
-        <br />
-        <label>
-          Roles:
-          <Field component="select" name="roles">
-            <option value="" disabled={true}>
-              Please select a role
-            </option>
-            {ROLES.map(role => (
-              <option value={role} key={role}>
-                {role}
-              </option>
-            ))}
-          </Field>
-        </label>
-        <br />
-        {touched.roles && errors.roles && <div>{errors.roles}</div>}
-
-        <button type="submit" disabled={isSubmitting}>
-          Save my Kids First account and fill in my user profile
-        </button>
-        <br />
-        <button
-          onClick={() => {
-            setRedirectPath('/files', submitForm);
-          }}
-          disabled={isSubmitting}
+      {console.log(values)}
+      <form
+        onSubmit={handleSubmit}
+        className={css`
+          ${theme.column} justify-content: space-around;
+        `}
+      >
+        <div className={theme.row}>
+          <StyledLabel>First name:</StyledLabel>
+          <div className={theme.column}>
+            <Field
+              className={theme.input}
+              name="firstName"
+              placeholder="First Name"
+              value={values.firstName}
+              onBlur={submitForm}
+            />
+            {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
+          </div>
+        </div>
+        <div
+          className={css`
+            ${theme.row} margin-top: 10px;
+          `}
         >
-          Save my Kids First account and browse files
-        </button>
+          <StyledLabel>Last name:</StyledLabel>
+          <div className={theme.column}>
+            <Field
+              className={theme.input}
+              name="lastName"
+              placeholder="Last Name"
+              value={values.lastName}
+              onBlur={submitForm}
+            />
+            {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
+          </div>
+        </div>
+
+        <div
+          className={css`
+            ${theme.row} margin-top: 10px;
+          `}
+        >
+          <StyledLabel>Email:</StyledLabel>
+          <div className={theme.column}>
+            <Field
+              className={theme.input}
+              type="email"
+              name="email"
+              value={values.email}
+              placeholder="Email"
+              disabled="true"
+            />
+          </div>
+        </div>
+
+        <div className={theme.row}>
+          <StyledLabel>Roles:</StyledLabel>
+          <div className={theme.column}>
+            {ROLES.map(({ type, description }) => (
+              <div
+                key={type}
+                className={css`
+                  ${theme.row} border-radius: 10px;
+                  background-color: #e5f7fd;
+                  border: solid 1px ${theme.active};
+                  width: 525px;
+                  padding: 10px;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-top: 10px;
+                `}
+              >
+                <Field
+                  type="radio"
+                  value={`${type[0].toUpperCase()}${type.substr(1)}`}
+                  checked={values.roles.toLowerCase() === type}
+                  name="roles"
+                  onBlur={submitForm}
+                />
+                <img src={iconPaths[type]} alt={type} style={{ width: '60px' }} />
+                <div
+                  className={css`
+                    padding-left: 10px;
+                  `}
+                >
+                  <label
+                    className={css`
+                      color: ${theme.secondary};
+                      font-weight: bold;
+                      font-family: 'Open Sans';
+                      display: block;
+                      text-transform: capitalize;
+                    `}
+                  >
+                    {type}
+                  </label>
+                  {description}
+                </div>
+              </div>
+            ))}
+          </div>
+          {touched.roles && errors.roles && <div>{errors.roles}</div>}
+        </div>
       </form>
     </div>
   );
