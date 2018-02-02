@@ -4,7 +4,7 @@ import ajax from 'services/ajax';
 import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 
 const gapi = global.gapi;
-gapi.load('auth2');
+//gapi.load('auth2');
 
 export const googleLogin = token =>
   ajax.get(urlJoin(egoApiRoot, 'oauth/google/token'), {
