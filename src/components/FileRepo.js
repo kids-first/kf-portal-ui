@@ -21,8 +21,8 @@ const FileRepo = ({ state, effects }) => {
       </pre>
       {!state.loggedInUser && <div>Seeing files as annon</div>}
       <Arranger
-        index="models"
-        projectId="testing4"
+        index="file"
+        projectId="jan31"
         render={props => {
           return (
             <div style={{ display: 'flex' }}>
