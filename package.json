@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@arranger/components": "0.0.1",
+    "@arranger/components": "0.0.2",
     "axios": "^0.17.0",
     "debug": "^3.1.0",
     "formik": "^0.10.5",
