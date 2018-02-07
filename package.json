@@ -5,7 +5,9 @@
   "dependencies": {
     "@arranger/components": "0.0.3",
     "axios": "^0.17.0",
+    "babel-plugin-emotion": "^9.0.0",
     "debug": "^3.1.0",
+    "emotion": "^9.0.0",
     "formik": "^0.10.5",
     "freactal": "^1.1.1",
     "glamor": "^2.20.40",
@@ -13,6 +15,7 @@
     "popback": "^0.0.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-emotion": "^9.0.0",
     "react-icons": "^2.2.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0",
@@ -20,14 +23,15 @@
     "url-join": "^2.0.2"
   },
   "scripts": {
-    "start": "NODE_PATH=src react-scripts start",
-    "build": "NODE_PATH=src react-scripts build",
-    "test": "NODE_PATH=src react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "NODE_PATH=src react-app-rewired start",
+    "build": "NODE_PATH=src react-app-rewired build",
+    "test": "NODE_PATH=src react-app-rewired test --env=jsdom",
+    "eject": "react-app-rewired eject"
   },
   "devDependencies": {
     "babel-polyfill": "^6.26.0",
-    "prettier": "^1.10.2"
+    "prettier": "^1.10.2",
+    "react-app-rewired": "^1.4.1"
   },
   "prettier": {
     "printWidth": 100,
