@@ -1,8 +1,9 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { compose, withState, withProps } from 'recompose';
+import Spinner from 'react-spinkit';
 
 import Button from '../uikit/Button';
+import LoadingOnClick from './LoadingOnClick';
 
 import cavaticaLogo from '../assets/logo-cavatica.svg';
 import downloadIcon from '../assets/icon-download-white.svg';
@@ -20,17 +21,29 @@ const styles = {
   `,
 };
 
-const DownloadIcon = ({ className }) => (
-  <img
-    alt=""
-    src={downloadIcon}
-    css={`
-      width: 10px;
-      margin-right: 9px;
-      ${className};
-    `}
-  />
-);
+const DownloadIcon = ({ className, loading }) =>
+  loading ? (
+    <Spinner
+      fadeIn="none"
+      name="circle"
+      color="#fff"
+      style={{
+        width: 15,
+        height: 15,
+        marginRight: 9,
+      }}
+    />
+  ) : (
+    <img
+      alt=""
+      src={downloadIcon}
+      css={`
+        width: 10px;
+        margin-right: 9px;
+        ${className};
+      `}
+    />
+  );
 
 const Divider = styled('div')`
   height: 1px;
@@ -46,24 +59,11 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 
-const LoadingOnClick = compose(
-  withState('loading', 'setLoading', false),
-  withProps(({ onClick, setLoading }) => ({
-    onClick: async (...args) => {
-      setLoading(true);
-      const result = await onClick(...args);
-      setLoading(false);
-      return result;
-    },
-  })),
-)(({ render, ...props }) => render(props));
-
-export default ({ projectId, index, style, streamData, ...props }) => (
+export default ({ projectId, index, style, streamData, sqon, ...props }) => (
   <div
     css={`
       ${styles.container} ${style};
     `}
-    {...props}
   >
     <Heading
       css={`
@@ -97,18 +97,29 @@ export default ({ projectId, index, style, streamData, ...props }) => (
         margin-bottom: 13px;
       `}
     >
-      <Button
-        css={`
-          flex-grow: 1;
-          margin-right: 8px;
-          width: 100%;
-        `}
+      <LoadingOnClick
         onClick={() =>
-          saveTSV({ columns: [{ accessor: 'file_id', show: true, Header: 'File ID' }], streamData })
+          saveTSV({
+            sqon,
+            columns: [{ accessor: 'file_id', show: true, Header: 'File ID' }],
+            streamData,
+          })
         }
-      >
-        <DownloadIcon />MANIFEST
-      </Button>
+        render={({ loading, onClick }) => (
+          <Button
+            css={`
+              flex-grow: 1;
+              margin-right: 8px;
+              width: 100%;
+            `}
+            onClick={onClick}
+          >
+            <DownloadIcon loading={loading} />
+            MANIFEST
+          </Button>
+        )}
+      />
+
       <div
         css={`
           flex-grow: 1;
@@ -124,14 +135,27 @@ export default ({ projectId, index, style, streamData, ...props }) => (
         margin-bottom: 13px;
       `}
     >
-      <Button
-        css={`
-          flex-grow: 1;
-          margin-right: 8px;
-        `}
-      >
-        <DownloadIcon />CLINICAL DATA
-      </Button>
+      <LoadingOnClick
+        onClick={() =>
+          saveTSV({
+            sqon,
+            columns: [{ accessor: 'file_id', show: true, Header: 'File ID' }],
+            streamData,
+          })
+        }
+        render={({ loading, onClick }) => (
+          <Button
+            css={`
+              flex-grow: 1;
+              margin-right: 8px;
+            `}
+            onClick={onClick}
+          >
+            <DownloadIcon loading={loading} />
+            CLINICAL DATA
+          </Button>
+        )}
+      />
       <Button
         css={`
           flex-grow: 1;
@@ -147,65 +171,79 @@ export default ({ projectId, index, style, streamData, ...props }) => (
         return (
           <LoadingOnClick
             onClick={selectedOption => {
+              const columns = [
+                'file_id',
+                'file_name',
+                // 'cases.dataset.id',
+                'data_category',
+                'data_type',
+                {
+                  Header: 'Case ID',
+                  field: 'cases.case_id',
+                  listAccessor: 'cases.hits.edges',
+                  query: 'cases { hits(first: 99) { edges { node { case_id } } } }',
+                  type: 'list',
+                },
+                {
+                  Header: 'Sample ID',
+                  field: 'cases.samples.sample_id',
+                  listAccessor: 'cases.hits.edges',
+                  query:
+                    'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_id } } } } } } } }',
+                  type: 'list',
+                },
+                {
+                  Header: 'Sample Type',
+                  field: 'cases.samples.sample_type',
+                  listAccessor: 'cases.hits.edges',
+                  query:
+                    'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_type } } } } } } } }',
+                  type: 'list',
+                },
+              ]
+                .map(
+                  field =>
+                    typeof field === 'string'
+                      ? state.columns.find(column => column.field === field)
+                      : field,
+                )
+                .filter(Boolean)
+                .map(o => ({ ...o, show: true }));
               if (selectedOption === 'Files as unique rows') {
-                const fields = [
-                  'file_id',
-                  'file_name',
-                  'data_category',
-                  'data_type',
-                  // 'cases.dataset.id',
-                  {
-                    Header: 'cases.case_id',
-                    field: 'cases.case_id',
-                    listAccessor: 'cases.hits.edges',
-                    query: 'cases { hits(first: 99) { edges { node { case_id } } } }',
-                    type: 'list',
-                  },
-                  {
-                    Header: 'cases.samples.sample_id',
-                    field: 'cases.samples.sample_id',
-                    listAccessor: 'cases.hits.edges',
-                    query:
-                      'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_id } } } } } } } }',
-                    type: 'list',
-                  },
-                  {
-                    Header: 'cases.samples.sample_id',
-                    field: 'cases.samples.sample_id',
-                    listAccessor: 'cases.hits.edges',
-                    query:
-                      'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_type } } } } } } } }',
-                    type: 'list',
-                  },
-                ];
-
                 return saveTSV({
-                  columns: fields
-                    .map(
-                      field =>
-                        typeof field === 'string'
-                          ? state.columns.find(column => column.field === field)
-                          : field,
-                    )
-                    .filter(Boolean)
-                    .map(o => ({ ...o, show: true })),
+                  sqon,
+                  columns,
                   streamData,
                 });
               } else if (selectedOption === 'Samples as unique rows') {
-                console.log(2);
+                const order = [
+                  'cases.samples.sample_id',
+                  'cases.samples.sample_type',
+                  'cases.case_id',
+                  'data_category',
+                  'data_type',
+                  'file_id',
+                  'file_name',
+                  // 'cases.dataset.id',
+                ];
+
+                return saveTSV({
+                  sqon,
+                  columns: columns.sort((a, b) => {
+                    return order.indexOf(a.field) - order.indexOf(b.field);
+                  }),
+                  streamData,
+                  uniqueBy: 'cases.hits.edges[].node.samples.hits.edges[].node.sample_id',
+                });
               }
             }}
             render={({ onClick, loading }) => (
               <PillInputWithButton
-                options={['Files as unique rows', 'Samples as unique rows']}
+                options={['Samples as unique rows', 'Files as unique rows']}
                 onClick={onClick}
               >
-                {loading ? 'loading' : ''}
-                <DownloadIcon
-                  css={`
-                    margin-right: 7px;
-                  `}
-                />SAMPLE SHEET
+                <DownloadIcon loading={loading} />
+                SAMPLE SHEET
               </PillInputWithButton>
             )}
           />

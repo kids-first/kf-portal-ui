@@ -30,9 +30,9 @@ const stats = [
       />
     ),
     query: `
-      query {
+      query($sqon: JSON) {
         file {
-          hits {
+          hits(filters: $sqon) {
             total
           }
         }
@@ -55,9 +55,9 @@ const stats = [
     ),
     // TODO: update query
     query: `
-      query {
+      query($sqon: JSON) {
         file {
-          hits {
+          hits(filters: $sqon) {
             total
           }
         }
@@ -80,9 +80,9 @@ const stats = [
     ),
     // TODO: update query
     query: `
-      query {
+      query($sqon: JSON) {
         file {
-          hits {
+          hits(filters: $sqon) {
             total
           }
         }
@@ -104,9 +104,9 @@ const stats = [
       />
     ),
     query: `
-      query {
+      query($sqon: JSON) {
         file {
-          aggregations {
+          aggregations(filters: $sqon) {
             file_size {
               stats {
                 sum
@@ -173,7 +173,7 @@ const FileRepo = ({ state, effects }) => {
                   }}
                 >
                   <CurrentSQON {...props} />
-                  <Stats projectId={props.projectId} index={props.index} stats={stats} />
+                  <Stats {...props} projectId={props.projectId} index={props.index} stats={stats} />
                   <Table
                     {...props}
                     widths={{ access: 80 }}
@@ -212,10 +212,9 @@ const FileRepo = ({ state, effects }) => {
                   />
                 </div>
                 <FileRepoSidebar
+                  {...props}
                   style={{ flex: 'none' }}
-                  streamData={props.streamData(props.index)}
-                  projectId={props.projectId}
-                  index={props.index}
+                  streamData={props.streamData(props.index, props.projectId)}
                 />
               </div>
             </div>

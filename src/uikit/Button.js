@@ -7,6 +7,10 @@ const Button = styled('button')`
   color: #fff;
   text-align: left;
   padding-left: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  outline: none;
 `;
 
 export default Button;
