@@ -51,10 +51,12 @@ const FileRepo = ({ state, effects }) => {
         index="file"
         projectId="jan31"
         render={props => {
-          const selectionSQON = props.selection.length
+          const selectionSQON = props.selectedTableRows.length
             ? replaceSQON({
                 op: 'and',
-                content: [{ op: 'in', content: { field: 'file_id', value: props.selection } }],
+                content: [
+                  { op: 'in', content: { field: 'file_id', value: props.selectedTableRows } },
+                ],
               })
             : props.sqon;
 
