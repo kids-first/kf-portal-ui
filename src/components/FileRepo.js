@@ -12,6 +12,8 @@ import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import Stats from './Stats';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
+import { LightButton } from '../uikit/Button';
+import InfoIcon from '../icons/InfoIcon';
 
 const enhance = compose(injectState);
 
@@ -60,7 +62,36 @@ const FileRepo = ({ state, effects }) => {
             <div>
               <DetectNewVersion {...props} />
               <div style={{ display: 'flex' }}>
-                <Aggregations {...props} />
+                <div
+                  css={`
+                    flex: none;
+                    background-color: #f4f5f8;
+                    box-shadow: 0 0 4.9px 0.2px #a0a0a3;
+                    border: solid 1px #c6c7cc;
+                    & > * {
+                      margin-left: -1px;
+                    }
+                  `}
+                >
+                  <div
+                    css={`
+                      display: flex;
+                      padding: 15px 7px 15px 12px;
+                    `}
+                  >
+                    <div
+                      css={`
+                        flex-grow: 1;
+                        font-size: 18px;
+                        color: #2b388f;
+                      `}
+                    >
+                      Filters <InfoIcon />
+                    </div>
+                    <LightButton>ALL FILTERS</LightButton>
+                  </div>
+                  <Aggregations {...props} />
+                </div>
                 <div
                   style={{
                     position: 'relative',
