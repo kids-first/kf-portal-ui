@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { get } from 'lodash';
-import filesize from 'filesize';
 
 import Arranger, {
   Aggregations,
@@ -13,116 +11,9 @@ import Arranger, {
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import Stats from './Stats';
+import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 const enhance = compose(injectState);
-
-const stats = [
-  {
-    icon: (
-      <img
-        src={require('../assets/icon-files.svg')}
-        alt=""
-        css={`
-          width: 16px;
-          height: 20px;
-          margin-right: 10px;
-        `}
-      />
-    ),
-    query: `
-      query($sqon: JSON) {
-        file {
-          hits(filters: $sqon) {
-            total
-          }
-        }
-      }
-    `,
-    accessor: 'file.hits.total',
-    label: 'Files',
-  },
-  {
-    icon: (
-      <img
-        src={require('../assets/icon-files.svg')}
-        alt=""
-        css={`
-          width: 16px;
-          height: 20px;
-          margin-right: 10px;
-        `}
-      />
-    ),
-    // TODO: update query
-    query: `
-      query($sqon: JSON) {
-        file {
-          hits(filters: $sqon) {
-            total
-          }
-        }
-      }
-    `,
-    accessor: 'file.hits.total',
-    label: 'Participants',
-  },
-  {
-    icon: (
-      <img
-        src={require('../assets/icon-files.svg')}
-        alt=""
-        css={`
-          width: 16px;
-          height: 20px;
-          margin-right: 10px;
-        `}
-      />
-    ),
-    // TODO: update query
-    query: `
-      query($sqon: JSON) {
-        file {
-          hits(filters: $sqon) {
-            total
-          }
-        }
-      }
-    `,
-    accessor: 'file.hits.total',
-    label: 'Families',
-  },
-  {
-    icon: (
-      <img
-        src={require('../assets/icon-database.svg')}
-        alt=""
-        css={`
-          width: 18px;
-          height: 22px;
-          margin-right: 10px;
-        `}
-      />
-    ),
-    query: `
-      query($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            file_size {
-              stats {
-                sum
-              }
-            }
-          }
-        }
-      }
-    `,
-    accessor: d =>
-      filesize(get(d, 'file.aggregations.file_size.stats.sum') || 0, {
-        base: 10,
-      }).toUpperCase(),
-    label: 'Size',
-  },
-];
 
 const FileRepo = ({ state, effects }) => {
   return (
@@ -158,6 +49,13 @@ const FileRepo = ({ state, effects }) => {
         index="file"
         projectId="jan31"
         render={props => {
+          const selectionSQON = props.selection.length
+            ? replaceSQON({
+                op: 'and',
+                content: [{ op: 'in', content: { field: 'file_id', value: props.selection } }],
+              })
+            : props.sqon;
+
           return (
             <div>
               <DetectNewVersion {...props} />
@@ -173,7 +71,7 @@ const FileRepo = ({ state, effects }) => {
                   }}
                 >
                   <CurrentSQON {...props} />
-                  <Stats {...props} projectId={props.projectId} index={props.index} stats={stats} />
+                  <Stats {...props} sqon={selectionSQON} />
                   <Table
                     {...props}
                     widths={{ access: 80 }}
@@ -213,6 +111,7 @@ const FileRepo = ({ state, effects }) => {
                 </div>
                 <FileRepoSidebar
                   {...props}
+                  sqon={selectionSQON}
                   style={{ flex: 'none' }}
                   streamData={props.streamData(props.index, props.projectId)}
                 />

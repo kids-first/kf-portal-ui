@@ -1,6 +1,116 @@
 import React from 'react';
 import Query from '@arranger/components/dist/Query';
 import { get } from 'lodash';
+import filesize from 'filesize';
+
+const stats = [
+  {
+    icon: (
+      <img
+        src={require('../assets/icon-files.svg')}
+        alt=""
+        css={`
+          width: 16px;
+          height: 20px;
+          margin-right: 10px;
+        `}
+      />
+    ),
+    query: `
+      query($sqon: JSON) {
+        file {
+          hits(filters: $sqon) {
+            total
+          }
+        }
+      }
+    `,
+    accessor: 'file.hits.total',
+    label: 'Files',
+  },
+  // {
+  //   icon: (
+  //     <img
+  //       src={require('../assets/icon-files.svg')}
+  //       alt=""
+  //       css={`
+  //         width: 16px;
+  //         height: 20px;
+  //         margin-right: 10px;
+  //       `}
+  //     />
+  //   ),
+  //   // TODO: update query, there will be a case index.
+  //   query: `
+  //     query($sqon: JSON) {
+  //       file {
+  //         hits(filters: $sqon) {
+  //           total
+  //         }
+  //       }
+  //     }
+  //   `,
+  //   accessor: 'file.hits.total',
+  //   label: 'Participants',
+  // },
+  // {
+  //   icon: (
+  //     <img
+  //       src={require('../assets/icon-files.svg')}
+  //       alt=""
+  //       css={`
+  //         width: 16px;
+  //         height: 20px;
+  //         margin-right: 10px;
+  //       `}
+  //     />
+  //   ),
+  //   // TODO: update query
+  //   query: `
+  //     query($sqon: JSON) {
+  //       file {
+  //         hits(filters: $sqon) {
+  //           total
+  //         }
+  //       }
+  //     }
+  //   `,
+  //   accessor: 'file.hits.total',
+  //   label: 'Families',
+  // },
+  {
+    icon: (
+      <img
+        src={require('../assets/icon-database.svg')}
+        alt=""
+        css={`
+          width: 18px;
+          height: 22px;
+          margin-right: 10px;
+        `}
+      />
+    ),
+    query: `
+      query($sqon: JSON) {
+        file {
+          aggregations(filters: $sqon) {
+            file_size {
+              stats {
+                sum
+              }
+            }
+          }
+        }
+      }
+    `,
+    accessor: d =>
+      filesize(get(d, 'file.aggregations.file_size.stats.sum') || 0, {
+        base: 10,
+      }).toUpperCase(),
+    label: 'Size',
+  },
+];
+
 const Line = () => {
   return (
     <div
@@ -57,7 +167,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', ...props }) =
   );
 };
 
-export default ({ stats = [], ...props }) => (
+export default props => (
   <div
     css={`
       border: solid 1px #e0e1e6;
