@@ -109,7 +109,7 @@ const FileRepo = ({ state, effects }) => {
   return (
     <Arranger
       index="file"
-      projectId={process.env.PROJECT_ID}
+      projectId={process.env.REACT_APP_PROJECT_ID}
       render={props => {
         const selectionSQON = props.selectedTableRows.length
           ? replaceSQON({
