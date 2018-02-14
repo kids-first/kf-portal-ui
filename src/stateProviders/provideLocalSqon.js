@@ -2,13 +2,13 @@ import { provideState } from 'freactal';
 
 export default provideState({
   initialState: props => ({
-    sqon: null,
+    advancedFacetSqon: null,
   }),
   effects: {
-    setSqon: (effects, sqon) => state => {
+    setAdvancedFacetSqon: (effects, sqon) => state => {
       return {
         ...state,
-        sqon: sqon,
+        advancedFacetSqon: sqon,
       };
     },
   },

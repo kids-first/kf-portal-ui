@@ -56,7 +56,13 @@ const STYLE = {
 
 const enhance = compose(injectState);
 
-const AdvancedFacetViewModal = ({ closeModal = () => {}, onSqonSubmit = () => {}, ...props }) => (
+const AdvancedFacetViewModal = ({
+  effects,
+  state: { advancedFacetSqon },
+  closeModal = () => {},
+  onSqonSubmit = () => {},
+  ...props
+}) => (
   <div style={STYLE.ADVANCED_FACET_OVERLAY} onClick={() => closeModal()}>
     <div style={STYLE.ADVANCED_FACET_CONTAINER} onClick={e => e.stopPropagation()}>
       <div style={STYLE.ADVANCED_FACET_TITLE}>All filters</div>
@@ -68,17 +74,25 @@ const AdvancedFacetViewModal = ({ closeModal = () => {}, onSqonSubmit = () => {}
         }}
       >
         <div style={{ position: 'relative', flex: 1 }}>
-          <LiveAdvancedFacetView {...props} />
+          <LiveAdvancedFacetView
+            {...{
+              ...props,
+              sqon: advancedFacetSqon || props.sqon,
+              onSqonChange: ({ sqon }) => {
+                effects.setAdvancedFacetSqon(sqon);
+              },
+            }}
+          />
         </div>
       </div>
       <div style={STYLE.ADVANCED_FACET_FOOTER}>
         <div className="cancel" onClick={e => closeModal()}>
           Cancel
         </div>
-        {/* <div>Fancy Stats</div> */}
         <div>
           <div
             onClick={e => {
+              onSqonSubmit({ advancedFacetSqon });
               closeModal();
             }}
             className="submitButton"
@@ -91,5 +105,5 @@ const AdvancedFacetViewModal = ({ closeModal = () => {}, onSqonSubmit = () => {}
   </div>
 );
 
-// export default provideLocalSqon(enhance(AdvancedFacetViewModal));
-export default AdvancedFacetViewModal;
+export default provideLocalSqon(enhance(AdvancedFacetViewModal));
+// export default AdvancedFacetViewModal;

@@ -126,7 +126,6 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
                     ],
                   })
                 : url.sqon;
-
               return (
                 <div>
                   <DetectNewVersion {...props} />
@@ -160,13 +159,15 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
                     <AdvancedFacetViewModal
                       sqon={selectionSQON}
                       {...{
-                        PROJECT_ID: 'testing1',
-                        ES_INDEX: 'testing1',
-                        API_HOST: 'http://localhost:5050',
-                        ES_HOST: 'http://localhost:9200',
-                        onSqonChange: ({ sqon }) => console.log(sqon),
-                        onSqonSubmit: ({ sqon }) => console.log(sqon),
-                        closeModal: effects.hideModal,
+                        PROJECT_ID: process.env.REACT_APP_PROJECT_ID,
+                        ES_INDEX: process.env.REACT_APP_INDEX,
+                        API_HOST: process.env.REACT_APP_API,
+                        ES_HOST: process.env.REACT_APP_ES_HOST,
+                        closeModal: hideModal,
+                        onSqonSubmit: ({ sqon }) => {
+                          console.log(props.setSQON.toString());
+                          props.setSQON(sqon);
+                        },
                       }}
                     />
                   )}
