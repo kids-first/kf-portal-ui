@@ -10,7 +10,6 @@ import {
   CurrentSQON,
   Table,
   DetectNewVersion,
-  AdvancedFacetView,
 } from '@arranger/components/dist/Arranger';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
@@ -18,8 +17,8 @@ import Stats from './Stats';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
-
-const LiveAdvancedFacetView = AdvancedFacetView;
+import AdvancedFacetViewModal from './AdvancedFacetViewModal/index.js';
+import { provideModalState } from 'stateProviders';
 
 const enhance = compose(injectState);
 
@@ -157,7 +156,20 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
                       streamData={props.streamData(props.index, props.projectId)}
                     />
                   </div>
-                  <LiveAdvancedFacetView />
+                  {state.modalState.isShown && (
+                    <AdvancedFacetViewModal
+                      sqon={selectionSQON}
+                      {...{
+                        PROJECT_ID: 'testing1',
+                        ES_INDEX: 'testing1',
+                        API_HOST: 'http://localhost:5050',
+                        ES_HOST: 'http://localhost:9200',
+                        onSqonChange: ({ sqon }) => console.log(sqon),
+                        onSqonSubmit: ({ sqon }) => console.log(sqon),
+                        closeModal: effects.hideModal,
+                      }}
+                    />
+                  )}
                 </div>
               );
             }}
@@ -168,4 +180,4 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
   );
 };
 
-export default enhance(FileRepo);
+export default provideModalState(enhance(FileRepo));
