@@ -10,6 +10,7 @@ import {
   CurrentSQON,
   Table,
   DetectNewVersion,
+  AdvancedFacetView,
 } from '@arranger/components/dist/Arranger';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
@@ -17,6 +18,8 @@ import Stats from './Stats';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
+
+const LiveAdvancedFacetView = AdvancedFacetView;
 
 const enhance = compose(injectState);
 
@@ -39,7 +42,7 @@ const arrangerStyles = css`
   }
 `;
 
-const AggregationsWrapper = props => {
+const AggregationsWrapper = ({ showAdvancedFacetView = () => {}, ...props }) => {
   return (
     <div
       css={`
@@ -67,7 +70,7 @@ const AggregationsWrapper = props => {
         >
           Filters <InfoIcon />
         </div>
-        <LightButton>ALL FILTERS</LightButton>
+        <LightButton onClick={() => showAdvancedFacetView()}>ALL FILTERS</LightButton>
       </div>
       <Aggregations {...props} />
     </div>
@@ -107,7 +110,7 @@ const customTableTypes = {
   },
 };
 
-const FileRepo = ({ state, effects, ...props }) => {
+const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }) => {
   return (
     <SQONURL
       render={url => {
@@ -129,7 +132,11 @@ const FileRepo = ({ state, effects, ...props }) => {
                 <div>
                   <DetectNewVersion {...props} />
                   <div css={arrangerStyles}>
-                    <AggregationsWrapper {...props} {...url} />
+                    <AggregationsWrapper
+                      {...props}
+                      {...url}
+                      showAdvancedFacetView={() => showAdvancedFacetView()}
+                    />
 
                     <div
                       style={{
@@ -150,6 +157,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                       streamData={props.streamData(props.index, props.projectId)}
                     />
                   </div>
+                  <LiveAdvancedFacetView />
                 </div>
               );
             }}
