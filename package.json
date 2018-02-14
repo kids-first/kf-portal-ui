@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@arranger/components": "0.0.3",
+    "@arranger/components": "0.0.8",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
     "debug": "^3.1.0",
+    "downshift": "^1.27.1",
     "emotion": "^9.0.0",
+    "filesize": "^3.6.0",
     "formik": "^0.10.5",
     "freactal": "^1.1.1",
     "glamor": "^2.20.40",
@@ -19,6 +21,7 @@
     "react-icons": "^2.2.7",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0",
+    "react-spinkit": "^3.0.0",
     "recompose": "^0.26.0",
     "url-join": "^2.0.2"
   },
