@@ -4,3 +4,8 @@ html, body {
   font-family: sans-serif;
   height: 100%;
 }
+
+.App {
+  overflow: auto;
+  height: 100vh;
+}

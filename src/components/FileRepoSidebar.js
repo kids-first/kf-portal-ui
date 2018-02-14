@@ -14,6 +14,7 @@ import InfoIcon from '../icons/InfoIcon';
 
 const styles = {
   container: css`
+    flex: none;
     width: 310px;
     background-color: #f4f5f8;
     box-shadow: 0 0 4.9px 0.2px #a0a0a3;
