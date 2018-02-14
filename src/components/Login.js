@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { css } from 'glamor';
+import { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
@@ -14,28 +14,19 @@ import { googleAppId, egoApiRoot } from 'common/injectGlobals';
 import { allRedirectUris } from '../common/injectGlobals';
 
 const styles = {
-  container: {
-    backgroundColor: '#fff',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-  },
-  logo: {
-    marginLeft: 80,
-  },
-  loginIcon: {
-    width: 20,
-  },
-  googleSignin: {
-    marginTop: 0,
-    marginBottom: 0,
-  },
-  title: {
-    fontWeight: 400,
-  },
+  container: css`
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  `,
+  googleSignin: css`
+    margin-top: 0;
+    margin-bottom: 10px;
+  `,
 };
 
 const gapi = global.gapi;
@@ -138,7 +129,7 @@ class Component extends React.Component<any, any> {
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
 
     return (
-      <div className={`Login ${css(styles.container)}`}>
+      <div className={styles.container}>
         {this.state.securityError ? (
           <div style={{ maxWidth: 600 }}>
             Connection to ego failed, you may need to visit{' '}
@@ -149,7 +140,7 @@ class Component extends React.Component<any, any> {
           </div>
         ) : renderSocialLoginButtons ? (
           [
-            <div key="google" className={`${css(styles.googleSignin)}`} id="googleSignin" />,
+            <div key="google" className={styles.googleSignin} id="googleSignin" />,
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
           ]
         ) : (
