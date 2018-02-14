@@ -49,7 +49,7 @@ const FileRepo = ({ state, effects }) => {
       {!state.loggedInUser && <div>Seeing files as annon</div>}
       <Arranger
         index="file"
-        projectId="jan31"
+        projectId={process.env.REACT_APP_PROJECT_ID}
         render={props => {
           const selectionSQON = props.selectedTableRows.length
             ? replaceSQON({
