@@ -6,8 +6,8 @@ import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
 const LiveAdvancedFacetView = AdvancedFacetView;
 
-const STYLE = {
-  ADVANCED_FACET_OVERLAY: {
+const style = {
+  advancedFacetsOverlay: {
     position: 'absolute',
     left: 0,
     right: 0,
@@ -19,7 +19,7 @@ const STYLE = {
     alignItems: 'center',
     zIndex: 1000,
   },
-  ADVANCED_FACET_CONTAINER: {
+  advacnedFacetsContainer: {
     width: 1000,
     height: 720,
     position: 'relative',
@@ -29,11 +29,11 @@ const STYLE = {
     flexDirection: 'column',
     overflow: 'hidden',
   },
-  ADVANCED_FACET_WRAPPER: {
+  advancedFacetsWrapper: {
     padding: 20,
     paddingBottom: 0,
   },
-  ADVANCED_FACET_TITLE: {
+  advancedFacetsTitle: {
     marginLeft: 20,
     marginTop: 20,
     borderBottom: 'solid 1px #d4d6dd',
@@ -43,7 +43,7 @@ const STYLE = {
     textAlign: 'left',
     color: '#2b388f',
   },
-  ADVANCED_FACET_FOOTER: {
+  advancedFacetsFooter: {
     backgroundColor: '#edeef1',
     boxShadow: '0 0 2.9px 0.1px #a0a0a3',
     display: 'flex',
@@ -63,12 +63,12 @@ const AdvancedFacetViewModal = ({
   onSqonSubmit = () => {},
   ...props
 }) => (
-  <div style={STYLE.ADVANCED_FACET_OVERLAY} onClick={() => closeModal()}>
-    <div style={STYLE.ADVANCED_FACET_CONTAINER} onClick={e => e.stopPropagation()}>
-      <div style={STYLE.ADVANCED_FACET_TITLE}>All filters</div>
+  <div style={style.advancedFacetsOverlay} onClick={() => closeModal()}>
+    <div style={style.advacnedFacetsContainer} onClick={e => e.stopPropagation()}>
+      <div style={style.advancedFacetsTitle}>All filters</div>
       <div
         style={{
-          ...STYLE.ADVANCED_FACET_WRAPPER,
+          ...style.advancedFacetsWrapper,
           flex: 1,
           display: 'flex',
         }}
@@ -85,7 +85,7 @@ const AdvancedFacetViewModal = ({
           />
         </div>
       </div>
-      <div style={STYLE.ADVANCED_FACET_FOOTER}>
+      <div style={style.advancedFacetsFooter}>
         <div className="cancel" onClick={e => closeModal()}>
           Cancel
         </div>
