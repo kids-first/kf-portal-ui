@@ -26,7 +26,7 @@ const LandingContent = () => (
   </div>
 );
 
-const Page = Component => (
+const Page = ({ Component, ...props }) => (
   <div
     className={css`
       background-image: url(${scienceBgPath});
@@ -38,15 +38,15 @@ const Page = Component => (
     `}
   >
     <Header />
-    <Component />
+    <Component {...props} />
   </div>
 );
 
-const forceSelectRole = (Component, loggedInUser) => {
+const forceSelectRole = ({ loggedInUser, ...props }) => {
   if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   }
-  return Page(Component);
+  return <Page {...props} />;
 };
 
 const render = ({ editing, setEditing, state, effects }) => {
@@ -56,22 +56,28 @@ const render = ({ editing, setEditing, state, effects }) => {
       <ThemeProvider theme={theme}>
         <div className="App">
           <Switch>
-            <Route path="/auth-redirect" exact={true} component={AuthRedirect} />
-            <Route path="/redirected" exact={true} component={() => null} />
+            <Route path="/auth-redirect" exact component={AuthRedirect} />
+            <Route path="/redirected" exact component={() => null} />
             <Route
-              path="/files"
-              exact={true}
-              render={() => forceSelectRole(FileRepo, loggedInUser)}
+              path="/search/:index"
+              exact
+              render={props =>
+                forceSelectRole({
+                  Component: FileRepo,
+                  loggedInUser,
+                  index: props.match.params.index,
+                  ...props,
+                })
+              }
             />
             <Route
               path="/user/:egoId"
-              exact={true}
-              render={() => forceSelectRole(UserProfile, loggedInUser)}
+              exact
+              render={props => forceSelectRole({ Component: UserProfile, loggedInUser, ...props })}
             />
-            <Route path="/test" exact={true} component={SelectRoleForm} />
             <Route
               path="/select-role"
-              exact={true}
+              exact
               render={() => {
                 if (loggedInUser) {
                   return <SelectRoleForm />;
@@ -79,8 +85,14 @@ const render = ({ editing, setEditing, state, effects }) => {
                 return <Redirect to="/" />;
               }}
             />
-            <Route path="/join" exact={true} render={() => Page(Join)} />
-            <Route exact path="/" render={() => forceSelectRole(LandingContent, loggedInUser)} />
+            <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
+            <Route
+              exact
+              path="/"
+              render={props =>
+                forceSelectRole({ Component: LandingContent, loggedInUser, ...props })
+              }
+            />
           </Switch>
         </div>
       </ThemeProvider>

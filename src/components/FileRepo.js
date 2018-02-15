@@ -105,10 +105,10 @@ const customTableTypes = {
   },
 };
 
-const FileRepo = ({ state, effects }) => {
+const FileRepo = ({ state, effects, ...props }) => {
   return (
     <Arranger
-      index="file"
+      {...props}
       projectId={process.env.REACT_APP_PROJECT_ID}
       render={props => {
         const selectionSQON = props.selectedTableRows.length
