@@ -54,6 +54,16 @@ const style = {
     zIndex: 1,
     padding: 20,
   },
+  submitButton: {
+    borderRadius: 20,
+    backgroundColor: '#009bb8',
+    padding: '10px 20px',
+    color: 'white',
+    cursor: 'pointer',
+  },
+  cancel: {
+    color: '#009bb8',
+  },
 };
 
 const enhance = compose(provideLocalSqon, injectState);
@@ -82,11 +92,12 @@ const AdvancedFacetViewModal = ({
         </div>
       </div>
       <div style={style.advancedFacetsFooter}>
-        <div className="cancel" onClick={e => closeModal()}>
+        <div style={style.cancel} className="cancel" onClick={e => closeModal()}>
           Cancel
         </div>
         <div>
           <div
+            style={style.submitButton}
             onClick={e => {
               onSqonSubmit({ sqon: localSqon });
               closeModal();
