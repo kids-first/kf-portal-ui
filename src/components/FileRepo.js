@@ -20,7 +20,7 @@ import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModal from './AdvancedFacetViewModal/index.js';
 import { provideModalState } from 'stateProviders';
 
-const enhance = compose(injectState);
+const enhance = compose(provideModalState, injectState);
 
 const arrangerStyles = css`
   display: flex;
@@ -179,4 +179,4 @@ const FileRepo = ({ state, effects, ...props }) => {
   );
 };
 
-export default provideModalState(enhance(FileRepo));
+export default enhance(FileRepo);
