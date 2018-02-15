@@ -71,6 +71,13 @@ const components = {
     &:link {
       text-decoration: none;
     }
+    &:disabled {
+      color: grey;
+    }
+    &:disabled:hover {
+      color: grey;
+      background-color: transparent;
+    }
   `,
   card: css`
     border-radius: 10px;
