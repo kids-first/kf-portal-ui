@@ -92,7 +92,7 @@ const AdvancedFacetViewModal = ({
         <div>
           <div
             onClick={e => {
-              onSqonSubmit({ advancedFacetSqon });
+              onSqonSubmit({ sqon: advancedFacetSqon });
               closeModal();
             }}
             className="submitButton"

@@ -135,7 +135,6 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
                       {...url}
                       showAdvancedFacetView={() => showAdvancedFacetView()}
                     />
-
                     <div
                       style={{
                         position: 'relative',
@@ -165,7 +164,6 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
                         ES_HOST: process.env.REACT_APP_ES_HOST,
                         closeModal: hideModal,
                         onSqonSubmit: ({ sqon }) => {
-                          console.log(props.setSQON.toString());
                           props.setSQON(sqon);
                         },
                       }}
