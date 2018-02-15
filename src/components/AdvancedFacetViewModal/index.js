@@ -30,6 +30,8 @@ const style = {
     overflow: 'hidden',
   },
   advancedFacetsWrapper: {
+    flex: 1,
+    display: 'flex',
     padding: 20,
     paddingBottom: 0,
   },
@@ -66,13 +68,7 @@ const AdvancedFacetViewModal = ({
   <div style={style.advancedFacetsOverlay} onClick={() => closeModal()}>
     <div style={style.advacnedFacetsContainer} onClick={e => e.stopPropagation()}>
       <div style={style.advancedFacetsTitle}>All filters</div>
-      <div
-        style={{
-          ...style.advancedFacetsWrapper,
-          flex: 1,
-          display: 'flex',
-        }}
-      >
+      <div style={style.advancedFacetsWrapper}>
         <div style={{ position: 'relative', flex: 1 }}>
           <LiveAdvancedFacetView
             {...{
