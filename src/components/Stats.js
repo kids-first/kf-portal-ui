@@ -174,6 +174,7 @@ export default props => (
       display: flex;
       padding: 14px 0;
       align-items: center;
+      background: #fff;
     `}
   >
     {stats.map((stat, i) => [
