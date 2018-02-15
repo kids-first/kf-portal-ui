@@ -7,6 +7,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
 import LogoutButton from 'components/LogoutButton';
+import ToSearchPage from 'components/links/ToSearchPage';
 
 import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
 import HouseIcon from 'react-icons/lib/fa/home';
@@ -85,9 +86,9 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
             </li>
             {loggedInUser && (
               <li>
-                <Link to="/files">
+                <ToSearchPage index="file">
                   <DatabaseIcon /> File Repository
-                </Link>
+                </ToSearchPage>
               </li>
             )}
           </ul>
