@@ -162,7 +162,7 @@ const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }
                         ES_INDEX: process.env.REACT_APP_INDEX,
                         API_HOST: process.env.REACT_APP_API,
                         ES_HOST: process.env.REACT_APP_ES_HOST,
-                        closeModal: hideModal,
+                        closeModal: effects.hideModal,
                         onSqonSubmit: ({ sqon }) => {
                           props.setSQON(sqon);
                         },
