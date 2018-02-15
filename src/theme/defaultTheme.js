@@ -68,6 +68,9 @@ const components = {
       background-color: ${colors.tertiary};
       color: #ffffff;
     }
+    &:link {
+      text-decoration: none;
+    }
   `,
   card: css`
     border-radius: 10px;

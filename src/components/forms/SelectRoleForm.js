@@ -41,7 +41,6 @@ const enhance = compose(
     },
     validate: (values, props) => {
       let errors = {};
-      console.log(values.roles);
       if (!values.roles) {
         errors.roles = 'Must select a role';
       } else if (!ROLES.map(r => r.type).includes(values.roles.toLowerCase())) {
@@ -103,7 +102,6 @@ const SelectRoleForm = ({
 }) => {
   return (
     <div>
-      {console.log(values)}
       <form
         onSubmit={handleSubmit}
         className={css`

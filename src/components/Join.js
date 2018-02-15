@@ -10,8 +10,10 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 import { get } from 'lodash';
 import Wizard from 'uikit/Wizard';
 import Login from 'components/Login';
+import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
+import ToSearchPage from 'components/links/ToSearchPage';
 
 const Consent = compose(injectState, withTheme)(
   ({ state: { loggedInUser }, effects: { setUser }, theme }) => (
@@ -150,12 +152,6 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
           {
             title: 'Consent',
             Component: <Consent />,
-            renderNext: ({ nextStep, nextDisabled }) => (
-              <button onClick={() => history.push('/files')} disabled={nextDisabled}>
-                Done
-              </button>
-            ),
-            displayButtons: true,
             renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <ButtonsDiv>
                 <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
@@ -166,14 +162,10 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                   <button className={theme.wizardButton} onClick={() => history.push('/')}>
                     Cancel
                   </button>
-                  <button
-                    className={theme.wizardButton}
-                    onClick={() => history.push('/files')}
-                    disabled={nextDisabled}
-                  >
+                  <ToSearchPage className={theme.wizardButton} index="file">
                     Finish
                     <RightIcon />
-                  </button>
+                  </ToSearchPage>
                 </div>
               </ButtonsDiv>
             ),

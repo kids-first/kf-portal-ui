@@ -90,11 +90,10 @@ export default compose(
   }: {
     steps: Array<{
       title: string,
+      canGoBack: boolean,
       Component?: any,
       render?: Function,
-      canGoBack: boolean,
-      renderNext?: Function,
-      displayButtons: boolean,
+      renderButtons?: Function,
     }>,
     state: string,
     index: number,
@@ -105,7 +104,6 @@ export default compose(
     setIndex: Function,
     nextDisabled: boolean,
     setNextDisabled: Function,
-    displayButtons: boolean,
   }) => (
     <div>
       <div
