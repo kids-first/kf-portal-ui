@@ -73,7 +73,7 @@ const AdvancedFacetViewModal = ({
           <LiveAdvancedFacetView
             {...{
               ...props,
-              sqon: localSqon || props.sqon,
+              sqon: localSqon,
               onSqonChange: ({ sqon }) => {
                 effects.setAdvancedFacetSqon(sqon);
               },
