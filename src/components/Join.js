@@ -136,15 +136,11 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                   justify-content: flex-end;
                 `}
               >
-                <div>
-                  <button className={theme.wizardButton} onClick={() => history.push('/')}>
-                    Cancel
-                  </button>
-                  <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
-                    Next
-                    <RightIcon />
-                  </button>
-                </div>
+                <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
+                <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
+                  Next
+                  <RightIcon />
+                </button>
               </ButtonsDiv>
             ),
             canGoBack: true,
