@@ -58,7 +58,7 @@ const enhance = compose(injectState);
 
 const AdvancedFacetViewModal = ({
   effects,
-  state: { advancedFacetSqon },
+  state: { localSqon },
   closeModal = () => {},
   onSqonSubmit = () => {},
   ...props
@@ -77,7 +77,7 @@ const AdvancedFacetViewModal = ({
           <LiveAdvancedFacetView
             {...{
               ...props,
-              sqon: advancedFacetSqon || props.sqon,
+              sqon: localSqon || props.sqon,
               onSqonChange: ({ sqon }) => {
                 effects.setAdvancedFacetSqon(sqon);
               },
@@ -92,7 +92,7 @@ const AdvancedFacetViewModal = ({
         <div>
           <div
             onClick={e => {
-              onSqonSubmit({ sqon: advancedFacetSqon });
+              onSqonSubmit({ sqon: localSqon });
               closeModal();
             }}
             className="submitButton"
