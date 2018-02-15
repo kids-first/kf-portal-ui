@@ -1,7 +1,7 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { compose, withState } from 'recompose';
 import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
@@ -10,31 +10,52 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 import { get } from 'lodash';
 import Wizard from 'uikit/Wizard';
 import Login from 'components/Login';
+import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
+import ToSearchPage from 'components/links/ToSearchPage';
 
-const Consent = compose(injectState, withTheme)(
-  ({ state: { loggedInUser }, effects: { setUser }, theme }) => (
-    <div
-      className={css`
-        ${theme.column} justify-content: space-between;
-        align-items: center;
-      `}
-    >
-      <h3
+const Consent = compose(
+  injectState,
+  withTheme,
+  withState('touched', 'setTouched', false),
+  withState('accepted', 'setAccepted', ({ state: { loggedInUser }, disableNextStep }) => {
+    const accepted = get(loggedInUser, 'acceptedTerms', false);
+    disableNextStep(!accepted);
+    return accepted;
+  }),
+)(
+  ({
+    state: { loggedInUser },
+    effects: { setUser },
+    theme,
+    disableNextStep,
+    accepted,
+    setAccepted,
+    touched,
+    setTouched,
+  }) => {
+    return (
+      <div
         className={css`
-          ${theme.h3} width: 90%;
+          ${theme.column} justify-content: space-between;
+          align-items: center;
         `}
       >
-        Read and consent to our terms and conditions
-      </h3>
-      <textarea
-        className={css`
-          min-height: 250px;
-          width: 90%;
-          resize: none;
-        `}
-        value="Lollipop halvah cotton candy marshmallow gingerbread jelly beans topping. Fruitcake
+        <h3
+          className={css`
+            ${theme.h3} width: 90%;
+          `}
+        >
+          Read and consent to our terms and conditions
+        </h3>
+        <textarea
+          className={css`
+            min-height: 250px;
+            width: 90%;
+            resize: none;
+          `}
+          value="Lollipop halvah cotton candy marshmallow gingerbread jelly beans topping. Fruitcake
             sugar plum tiramisu pie. Sugar plum sweet roll cake chocolate bar lollipop jelly
             beans. Jelly jelly beans icing macaroon tart jujubes lemon drops marzipan. Liquorice
             carrot cake bonbon pie chocolate. Gingerbread oat cake tootsie roll icing. Chocolate
@@ -44,37 +65,51 @@ const Consent = compose(injectState, withTheme)(
             brownie chocolate bar tart. Oat cake apple pie soufflé topping. Toffee dessert
             chocolate cotton candy carrot cake topping fruitcake gummi bears. Chocolate cake
             brownie pie cake caramels."
-        readOnly
-      />
-      <div
-        className={css`
-          border-radius: 10px;
-          background-color: #e5f7fd;
-          border: solid 1px ${theme.active};
-          width: 90%;
-          margin-top: 10px;
-          padding: 5px;
-        `}
-      >
-        <input
-          type="checkbox"
-          checked={get(loggedInUser, 'acceptedTerms', false)}
-          onChange={event => {
-            const { email, percentageFilled, ...rest } = loggedInUser;
-            updateProfile({
-              user: {
-                ...rest,
-                acceptedTerms: event.target.checked,
-              },
-            }).then(async profile => {
-              await setUser({ ...profile, email });
-            });
-          }}
+          readOnly
         />
-        I have read and agreed to the Kids First Data Research Portal Term and Conditions
+        <div
+          className={css`
+            border-radius: 10px;
+            background-color: #e5f7fd;
+            border: solid 1px ${theme.active};
+            width: 90%;
+            margin-top: 10px;
+            padding: 5px;
+          `}
+        >
+          <input
+            type="checkbox"
+            checked={accepted}
+            onChange={event => {
+              const { email, percentageFilled, ...rest } = loggedInUser;
+              setAccepted(event.target.checked);
+              disableNextStep(!event.target.checked);
+              setTouched(true);
+              updateProfile({
+                user: {
+                  ...rest,
+                  acceptedTerms: event.target.checked,
+                },
+              }).then(async profile => {
+                await setUser({ ...profile, email });
+              });
+            }}
+          />
+          I have read and agreed to the Kids First Data Research Portal Term and Conditions
+        </div>
+        {touched &&
+          !accepted && (
+            <div
+              className={css`
+                color: red;
+              `}
+            >
+              You must accept terms to continue
+            </div>
+          )}
       </div>
-    </div>
-  ),
+    );
+  },
 );
 
 const ButtonsDiv = styled('div')`
@@ -134,28 +169,18 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                   justify-content: flex-end;
                 `}
               >
-                <div>
-                  <button className={theme.wizardButton} onClick={() => history.push('/')}>
-                    Cancel
-                  </button>
-                  <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
-                    Next
-                    <RightIcon />
-                  </button>
-                </div>
+                <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
+                <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
+                  Next
+                  <RightIcon />
+                </button>
               </ButtonsDiv>
             ),
             canGoBack: true,
           },
           {
             title: 'Consent',
-            Component: <Consent />,
-            renderNext: ({ nextStep, nextDisabled }) => (
-              <button onClick={() => history.push('/files')} disabled={nextDisabled}>
-                Done
-              </button>
-            ),
-            displayButtons: true,
+            render: ({ disableNextStep }) => <Consent disableNextStep={disableNextStep} />,
             renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <ButtonsDiv>
                 <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
@@ -168,7 +193,7 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                   </button>
                   <button
                     className={theme.wizardButton}
-                    onClick={() => history.push('/files')}
+                    onClick={() => history.push('/search/file')}
                     disabled={nextDisabled}
                   >
                     Finish

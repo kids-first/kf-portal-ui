@@ -7,14 +7,13 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 
-import SelectRoleForm from 'components/forms/SelectRoleForm';
 import UserProfile from 'components/UserProfile';
 import FileRepo from 'components/FileRepo';
+import Join from 'components/Join';
 import AuthRedirect from 'components/AuthRedirect';
 import Header from 'components/Header';
 import theme from 'theme/defaultTheme';
 
-import Join from 'pageContents/Join';
 import scienceBgPath from 'theme/images/background-science.jpg';
 
 const enhance = compose(injectState);
@@ -74,16 +73,6 @@ const render = ({ editing, setEditing, state, effects }) => {
               path="/user/:egoId"
               exact
               render={props => forceSelectRole({ Component: UserProfile, loggedInUser, ...props })}
-            />
-            <Route
-              path="/select-role"
-              exact
-              render={() => {
-                if (loggedInUser) {
-                  return <SelectRoleForm />;
-                }
-                return <Redirect to="/" />;
-              }}
             />
             <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
             <Route

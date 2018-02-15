@@ -68,6 +68,16 @@ const components = {
       background-color: ${colors.tertiary};
       color: #ffffff;
     }
+    &:link {
+      text-decoration: none;
+    }
+    &:disabled {
+      color: grey;
+    }
+    &:disabled:hover {
+      color: grey;
+      background-color: transparent;
+    }
   `,
   card: css`
     border-radius: 10px;
