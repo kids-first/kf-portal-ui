@@ -109,7 +109,7 @@ const customTableTypes = {
   },
 };
 
-const FileRepo = ({ state, effects, showAdvancedFacetView = () => {}, ...props }) => {
+const FileRepo = ({ state, effects, ...props }) => {
   return (
     <SQONURL
       render={url => {
