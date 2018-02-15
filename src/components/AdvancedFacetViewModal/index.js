@@ -21,7 +21,7 @@ const style = {
   },
   advacnedFacetsContainer: {
     width: 1000,
-    height: 720,
+    height: 800,
     position: 'relative',
     background: 'white',
     borderRadius: 5,
