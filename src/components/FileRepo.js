@@ -156,12 +156,11 @@ const FileRepo = ({ state, effects, ...props }) => {
                   </div>
                   {state.modalState.isShown && (
                     <AdvancedFacetViewModal
-                      sqon={props.sqon}
                       {...{
-                        PROJECT_ID: process.env.REACT_APP_PROJECT_ID,
-                        ES_INDEX: process.env.REACT_APP_INDEX,
+                        ...props,
+                        PROJECT_ID: props.projectId,
+                        ES_INDEX: props.index,
                         API_HOST: process.env.REACT_APP_API,
-                        ES_HOST: process.env.REACT_APP_ES_HOST,
                         closeModal: effects.hideModal,
                         onSqonSubmit: ({ sqon }) => {
                           props.setSQON(sqon);
