@@ -56,7 +56,7 @@ const style = {
   },
 };
 
-const enhance = compose(injectState);
+const enhance = compose(provideLocalSqon, injectState);
 
 const AdvancedFacetViewModal = ({
   effects,
@@ -101,5 +101,5 @@ const AdvancedFacetViewModal = ({
   </div>
 );
 
-export default provideLocalSqon(enhance(AdvancedFacetViewModal));
+export default enhance(AdvancedFacetViewModal);
 // export default AdvancedFacetViewModal;
