@@ -41,7 +41,7 @@ const arrangerStyles = css`
   }
 `;
 
-const AggregationsWrapper = ({ showAdvancedFacetView = () => {}, ...props }) => {
+const AggregationsWrapper = injectState(({ state, effects, ...props }) => {
   return (
     <div
       css={`
@@ -69,12 +69,12 @@ const AggregationsWrapper = ({ showAdvancedFacetView = () => {}, ...props }) => 
         >
           Filters <InfoIcon />
         </div>
-        <LightButton onClick={() => showAdvancedFacetView()}>ALL FILTERS</LightButton>
+        <LightButton onClick={() => effects.showModal()}>ALL FILTERS</LightButton>
       </div>
       <Aggregations {...props} />
     </div>
   );
-};
+});
 
 const customTableTypes = {
   access: ({ value }) => {
