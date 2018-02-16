@@ -10,7 +10,6 @@ export default provideState({
   }),
   effects: {
     setUser: (effects, user) => state => {
-      console.log(user);
       return {
         ...state,
         loggedInUser: user,

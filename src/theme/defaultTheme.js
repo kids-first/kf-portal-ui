@@ -72,11 +72,11 @@ const components = {
       text-decoration: none;
     }
     &:disabled {
-      color: grey;
+      color: ${colors.greyScale7};
     }
     &:disabled:hover {
-      color: grey;
       background-color: transparent;
+      color: ${colors.greyScale7};
     }
   `,
   card: css`

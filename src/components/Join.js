@@ -13,7 +13,6 @@ import Login from 'components/Login';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
-import ToSearchPage from 'components/links/ToSearchPage';
 
 const Consent = compose(
   injectState,
@@ -102,6 +101,7 @@ const Consent = compose(
             <div
               className={css`
                 color: red;
+                width: 90%;
               `}
             >
               You must accept terms to continue
@@ -160,6 +160,7 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                 </p>
                 <SelectRoleForm
                   onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
+                  onValidChange={isValid => disableNextStep(!isValid)}
                 />
               </div>
             ),
@@ -187,10 +188,8 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                   <LeftIcon />
                   Back
                 </button>
-                <div>
-                  <button className={theme.wizardButton} onClick={() => history.push('/')}>
-                    Cancel
-                  </button>
+                <div className={theme.row}>
+                  <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
                   <button
                     className={theme.wizardButton}
                     onClick={() => history.push('/search/file')}
