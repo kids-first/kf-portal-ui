@@ -1,10 +1,9 @@
 import React from 'react';
 import { injectState } from 'freactal';
-import { compose } from 'recompose';
+import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
 import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import { withRouter } from 'react-router-dom';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
@@ -25,20 +24,24 @@ const StyledLabel = styled('label')`
 `;
 
 const enhance = compose(
-  withRouter,
   withTheme,
   injectState,
   withFormik({
     mapPropsToValues: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
-    }) => {
-      return {
-        firstName: loggedInUser.firstName || '',
-        lastName: loggedInUser.lastName || '',
-        email: loggedInUser.email || '',
-        roles: (loggedInUser.roles && loggedInUser.roles[0]) || '',
-      };
-    },
+    }) => ({
+      firstName: loggedInUser.firstName || '',
+      lastName: loggedInUser.lastName || '',
+      email: loggedInUser.email || '',
+      roles: (loggedInUser.roles && loggedInUser.roles[0]) || '',
+    }),
+    isInitialValid: ({
+      state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
+    }) =>
+      loggedInUser.firstName &&
+      loggedInUser.lastName &&
+      loggedInUser.email &&
+      loggedInUser.roles.length,
     validate: (values, props) => {
       let errors = {};
       if (!values.roles) {
@@ -59,7 +62,7 @@ const enhance = compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser }, onFinish, history, ...restProps },
+        props: { state: { loggedInUser }, effects: { setUser }, onFinish, ...restProps },
         setSubmitting,
         setErrors,
       }: any,
@@ -83,6 +86,7 @@ const enhance = compose(
       );
     },
   }),
+  withPropsOnChange(['isValid'], ({ isValid, onValidChange }) => onValidChange(isValid)),
 );
 
 const SelectRoleForm = ({
@@ -97,8 +101,6 @@ const SelectRoleForm = ({
   isSubmitting,
   values,
   state: { percentageFilled },
-  history,
-  setRedirectPath,
 }) => {
   return (
     <div>
