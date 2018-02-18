@@ -6,6 +6,7 @@ import { provideLoggedInUser } from 'stateProviders';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
+import { Dashboard as ArrangerDashboard } from '@arranger/components';
 
 import UserProfile from 'components/UserProfile';
 import FileRepo from 'components/FileRepo';
@@ -55,6 +56,11 @@ const render = ({ editing, setEditing, state, effects }) => {
       <ThemeProvider theme={theme}>
         <div className="App">
           <Switch>
+            <Route
+              // TODO: we need a user role specific for this
+              path="/admin"
+              render={({ match }) => <ArrangerDashboard basename={match.url} />}
+            />
             <Route path="/auth-redirect" exact component={AuthRedirect} />
             <Route path="/redirected" exact component={() => null} />
             <Route
