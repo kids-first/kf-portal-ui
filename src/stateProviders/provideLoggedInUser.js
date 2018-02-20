@@ -1,4 +1,4 @@
-import { provideState } from 'freactal';
+import { provideState, mergeIntoState } from 'freactal';
 import { isArray, get } from 'lodash';
 
 import { setToken } from 'services/ajax';

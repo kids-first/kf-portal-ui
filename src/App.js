@@ -61,13 +61,8 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
   return <Page {...props} />;
 };
 
-const render = ({
-  editing,
-  setEditing,
-  state,
-  effects,
-  appElement = document.getElementById('root'),
-}) => {
+
+const render = ({ editing, setEditing, state, effects }) => {
   const { loggedInUser, modalState } = state;
   return (
     <Router>
@@ -126,7 +121,8 @@ const render = ({
             />
           </Switch>
           <Modal
-            isOpen={!!modalState.component}
+
+            isOpen={modalState.isShown}
             style={{
               overlay: {
                 position: 'fixed',
@@ -149,7 +145,8 @@ const render = ({
                 overflow: 'visible',
               },
             }}
-            appElement={appElement}
+
+            appElement={document.getElementById('root')}
           >
             {modalState.component}
           </Modal>

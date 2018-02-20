@@ -1,6 +1,7 @@
 import ajax from 'services/ajax';
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
+import { get } from 'lodash';
 
 const DEFAULT_FIELDS = `
   _id
