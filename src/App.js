@@ -16,6 +16,7 @@ import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
 import AuthRedirect from 'components/AuthRedirect';
+import ShortUrlRedirect from 'components/ShortUrlRedirect';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import theme from 'theme/defaultTheme';
@@ -131,6 +132,7 @@ const render = ({ editing, setEditing, state, effects }) => {
             />
             <Route path="/auth-redirect" exact component={AuthRedirect} />
             <Route path="/redirected" exact component={() => null} />
+            <Route path="/s/:shortUrl" exact component={ShortUrlRedirect} />
             <Route
               path="/search/:index"
               exact
