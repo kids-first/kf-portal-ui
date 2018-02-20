@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
+import SQONURL from 'components/SQONURL';
 
 import Arranger, {
   Aggregations,
@@ -107,45 +108,51 @@ const customTableTypes = {
 
 const FileRepo = ({ state, effects, ...props }) => {
   return (
-    <Arranger
-      {...props}
-      projectId={process.env.REACT_APP_PROJECT_ID}
-      render={props => {
-        const selectionSQON = props.selectedTableRows.length
-          ? replaceSQON({
-              op: 'and',
-              content: [
-                { op: 'in', content: { field: 'file_id', value: props.selectedTableRows } },
-              ],
-            })
-          : props.sqon;
-
+    <SQONURL
+      render={url => {
         return (
-          <div>
-            <DetectNewVersion {...props} />
-            <div css={arrangerStyles}>
-              <AggregationsWrapper {...props} />
+          <Arranger
+            {...props}
+            projectId={process.env.REACT_APP_PROJECT_ID}
+            render={props => {
+              const selectionSQON = props.selectedTableRows.length
+                ? replaceSQON({
+                    op: 'and',
+                    content: [
+                      { op: 'in', content: { field: 'file_id', value: props.selectedTableRows } },
+                    ],
+                  })
+                : url.sqon;
 
-              <div
-                style={{
-                  position: 'relative',
-                  flexGrow: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  padding: 30,
-                }}
-              >
-                <CurrentSQON {...props} />
-                <Stats {...props} sqon={selectionSQON} />
-                <Table {...props} customTypes={customTableTypes} />
-              </div>
-              <FileRepoSidebar
-                {...props}
-                sqon={selectionSQON}
-                streamData={props.streamData(props.index, props.projectId)}
-              />
-            </div>
-          </div>
+              return (
+                <div>
+                  <DetectNewVersion {...props} />
+                  <div css={arrangerStyles}>
+                    <AggregationsWrapper {...props} {...url} />
+
+                    <div
+                      style={{
+                        position: 'relative',
+                        flexGrow: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: 30,
+                      }}
+                    >
+                      <CurrentSQON {...props} {...url} />
+                      <Stats {...props} sqon={selectionSQON} />
+                      <Table {...props} customTypes={customTableTypes} {...url} />
+                    </div>
+                    <FileRepoSidebar
+                      {...props}
+                      sqon={selectionSQON}
+                      streamData={props.streamData(props.index, props.projectId)}
+                    />
+                  </div>
+                </div>
+              );
+            }}
+          />
         );
       }}
     />
