@@ -178,7 +178,7 @@ const SelectRoleForm = ({
               >
                 <Field
                   type="radio"
-                  value={`${type[0].toUpperCase()}${type.substr(1)}`}
+                  value={type}
                   checked={values.roles.toLowerCase() === type}
                   name="roles"
                   onBlur={submitForm}

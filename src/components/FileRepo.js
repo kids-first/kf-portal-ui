@@ -18,9 +18,8 @@ import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModal from './AdvancedFacetViewModal/index.js';
-import { provideModalState } from 'stateProviders';
 
-const enhance = compose(provideModalState, injectState);
+const enhance = compose(injectState);
 
 const arrangerStyles = css`
   display: flex;
