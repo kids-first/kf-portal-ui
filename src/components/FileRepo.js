@@ -4,6 +4,8 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import SQONURL from 'components/SQONURL';
 import downloadIcon from '../assets/icon-download-grey.svg';
+import Share from 'components/Share';
+
 import {
   Arranger,
   Aggregations,
@@ -38,6 +40,10 @@ const arrangerStyles = css`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
+  }
+
+  div.sqon-view {
+    flex-grow: 1;
   }
 `;
 
@@ -166,7 +172,14 @@ const FileRepo = ({ state, effects, ...props }) => {
                         padding: 30,
                       }}
                     >
-                      <CurrentSQON {...props} {...url} />
+                      <div
+                        css={`
+                          display: flex;
+                        `}
+                      >
+                        <CurrentSQON {...props} {...url} />
+                        {url.sqon && Object.keys(url.sqon).length > 0 && <Share />}
+                      </div>
                       <FileRepoStats {...props} sqon={selectionSQON} />
                       <Table
                         {...props}
