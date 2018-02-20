@@ -158,9 +158,6 @@ const FileRepo = ({ state, effects, ...props }) => {
                     <AdvancedFacetViewModal
                       {...{
                         ...props,
-                        PROJECT_ID: props.projectId,
-                        ES_INDEX: props.index,
-                        API_HOST: process.env.REACT_APP_API,
                         closeModal: effects.hideModal,
                         onSqonSubmit: ({ sqon }) => {
                           props.setSQON(sqon);
