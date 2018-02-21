@@ -6,7 +6,7 @@
     "@arranger/components": "^0.1.13",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
-    "balanced-match": "^1.0.0",
+    "date-fns": "^1.29.0",
     "debug": "^3.1.0",
     "downshift": "^1.29.1",
     "emotion": "^9.0.0",

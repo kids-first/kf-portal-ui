@@ -11,6 +11,7 @@ import PillInputWithButton from '../uikit/PillInputWithButton';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import InfoIcon from '../icons/InfoIcon';
+import { downloadBiospecimen, findColumnsByField } from '../services/downloadData';
 
 const styles = {
   container: css`
@@ -22,15 +23,6 @@ const styles = {
     padding: 30px 5px 30px 15px;
   `,
 };
-
-function findColumnsByField(fields, columns) {
-  return fields
-    .map(
-      field => (typeof field === 'string' ? columns.find(column => column.field === field) : field),
-    )
-    .filter(Boolean)
-    .map(c => ({ ...c, show: true }));
-}
 
 const DownloadIcon = ({ className, loading }) =>
   loading ? (
@@ -108,9 +100,14 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
               <LoadingOnClick
                 onClick={() =>
                   saveTSV({
-                    sqon,
-                    columns: findColumnsByField(['file_id'], state.columns),
-                    streamData,
+                    files: [
+                      {
+                        fileName: 'hello1.txt',
+                        sqon,
+                        columns: findColumnsByField(['file_id'], state.columns),
+                        index,
+                      },
+                    ],
                   })
                 }
                 render={({ loading, onClick }) => (
@@ -155,15 +152,21 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
                 <DownloadIcon />
                 CLINICAL DATA
               </Button>
-              <Button
-                css={`
-                  flex-grow: 1;
-                  padding-left: 15px;
-                `}
-                disabled
-              >
-                <DownloadIcon />BIOSPECIMEN
-              </Button>
+              <LoadingOnClick
+                onClick={downloadBiospecimen({ sqon, columns: state.columns })}
+                render={({ onClick, loading }) => (
+                  <Button
+                    css={`
+                      flex-grow: 1;
+                      padding-left: 15px;
+                    `}
+                    onClick={onClick}
+                    loading={loading}
+                  >
+                    <DownloadIcon />BIOSPECIMEN
+                  </Button>
+                )}
+              />
             </div>
 
             <LoadingOnClick
@@ -204,9 +207,14 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
 
                 if (selectedOption === 'Files as unique rows') {
                   return saveTSV({
-                    sqon,
-                    columns,
-                    streamData,
+                    files: [
+                      {
+                        fileName: 'hello2.txt',
+                        sqon,
+                        columns,
+                        index,
+                      },
+                    ],
                   });
                 } else if (selectedOption === 'Samples as unique rows') {
                   const order = [
@@ -221,12 +229,17 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
                   ];
 
                   return saveTSV({
-                    sqon,
-                    columns: columns.sort((a, b) => {
-                      return order.indexOf(a.field) - order.indexOf(b.field);
-                    }),
-                    streamData,
-                    uniqueBy: 'cases.hits.edges[].node.samples.hits.edges[].node.sample_id',
+                    files: [
+                      {
+                        fileName: 'hello3.txt',
+                        sqon,
+                        columns: columns.sort((a, b) => {
+                          return order.indexOf(a.field) - order.indexOf(b.field);
+                        }),
+                        uniqueBy: 'cases.hits.edges[].node.samples.hits.edges[].node.sample_id',
+                        index: 'file',
+                      },
+                    ],
                   });
                 }
               }}

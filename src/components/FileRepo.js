@@ -163,11 +163,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                       <Stats {...props} sqon={selectionSQON} />
                       <Table {...props} customTypes={customTableTypes} {...url} />
                     </div>
-                    <FileRepoSidebar
-                      {...props}
-                      sqon={selectionSQON}
-                      streamData={props.streamData(props.index, props.projectId)}
-                    />
+                    <FileRepoSidebar {...props} sqon={selectionSQON} />
                   </div>
                 </div>
               );
