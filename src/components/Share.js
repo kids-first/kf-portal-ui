@@ -16,12 +16,18 @@ export default class extends React.Component {
       body: JSON.stringify({
         userid: 'dev',
         content: window.location.href,
+        'og:title': 'Kids First File Repo',
+        'og:description': 'lorem ipsum',
+        'og:image':
+          'https://d3b.center/wp-content/uploads/2018/01/Kids-First-Hero-image-01-2-2000x500.png',
+        'twitter:label1': 'Test Label',
+        'twitter:data1': 'test data',
       }),
     })
       .then(r => r.json())
       .then(data => {
         this.setState({
-          link: `${window.location.origin}/s/${data.body.shortUrl}`,
+          link: `${process.env.REACT_APP_ARRANGER_API}/s/${data.body.shortUrl}`,
         });
       });
   };
