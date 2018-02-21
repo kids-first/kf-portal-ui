@@ -8,10 +8,15 @@ import LoadingOnClick from './LoadingOnClick';
 import cavaticaLogo from '../assets/logomark-cavatica.svg';
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
-import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import InfoIcon from '../icons/InfoIcon';
-import { downloadBiospecimen, findColumnsByField } from '../services/downloadData';
+import {
+  downloadBiospecimen,
+  fileManifestParticipantsOnly,
+  fileManifestParticipantsAndFamily,
+  clinicalDataParticipants,
+  clinicalDataFamily,
+} from '../services/downloadData';
 
 const styles = {
   container: css`
@@ -98,42 +103,24 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
               `}
             >
               <LoadingOnClick
-                onClick={() =>
-                  saveTSV({
-                    files: [
-                      {
-                        fileName: 'hello1.txt',
-                        sqon,
-                        columns: findColumnsByField(['file_id'], state.columns),
-                        index,
-                      },
-                    ],
-                  })
-                }
-                render={({ loading, onClick }) => (
-                  <Button
-                    css={`
-                      flex-grow: 1;
-                      margin-right: 8px;
-                      width: 100%;
-                      padding-left: 15px;
-                    `}
+                onClick={selectedOption => {
+                  if (selectedOption === 'Participant only') {
+                    return fileManifestParticipantsOnly({ sqon, columns: state.columns })();
+                  } else if (selectedOption === 'Participant and family') {
+                    return fileManifestParticipantsAndFamily({ sqon, columns: state.columns })();
+                  }
+                }}
+                render={({ onClick, loading }) => (
+                  <PillInputWithButton
+                    options={['Participant only', 'Participant and family']}
                     onClick={onClick}
                   >
                     <DownloadIcon loading={loading} />
-                    MANIFEST
-                  </Button>
+                    DOWNLOAD
+                  </PillInputWithButton>
                 )}
               />
-
-              <div
-                css={`
-                  flex-grow: 1;
-                  width: 100%;
-                `}
-              />
             </div>
-            <Divider />
             <Heading>Reports</Heading>
             <div
               css={`
@@ -141,116 +128,38 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
                 margin-bottom: 13px;
               `}
             >
-              <Button
-                css={`
-                  flex-grow: 1;
-                  margin-right: 8px;
-                  padding-left: 15px;
-                `}
-                disabled
-              >
-                <DownloadIcon />
-                CLINICAL DATA
-              </Button>
               <LoadingOnClick
-                onClick={downloadBiospecimen({ sqon, columns: state.columns })}
+                onClick={selectedOption => {
+                  if (selectedOption === 'Clinical (Participant)') {
+                    return clinicalDataParticipants({ sqon, columns: state.columns })();
+                  } else if (selectedOption === 'Clinical (Family)') {
+                    return clinicalDataFamily({ sqon, columns: state.columns })();
+                  }
+                }}
                 render={({ onClick, loading }) => (
-                  <Button
-                    css={`
-                      flex-grow: 1;
-                      padding-left: 15px;
-                    `}
+                  <PillInputWithButton
+                    options={['Clinical (Participant)', 'Clinical (Family)']}
                     onClick={onClick}
-                    loading={loading}
                   >
-                    <DownloadIcon />BIOSPECIMEN
-                  </Button>
+                    <DownloadIcon loading={loading} />
+                    DOWNLOAD
+                  </PillInputWithButton>
                 )}
               />
             </div>
-
             <LoadingOnClick
-              onClick={selectedOption => {
-                const columns = findColumnsByField(
-                  [
-                    'file_id',
-                    'file_name',
-                    // 'cases.dataset.id',
-                    'data_category',
-                    'data_type',
-                    {
-                      Header: 'Case ID',
-                      field: 'cases.case_id',
-                      listAccessor: 'cases.hits.edges',
-                      query: 'cases { hits(first: 99) { edges { node { case_id } } } }',
-                      type: 'list',
-                    },
-                    {
-                      Header: 'Sample ID',
-                      field: 'cases.samples.sample_id',
-                      listAccessor: 'cases.hits.edges',
-                      query:
-                        'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_id } } } } } } } }',
-                      type: 'list',
-                    },
-                    {
-                      Header: 'Sample Type',
-                      field: 'cases.samples.sample_type',
-                      listAccessor: 'cases.hits.edges',
-                      query:
-                        'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_type } } } } } } } }',
-                      type: 'list',
-                    },
-                  ],
-                  state.columns,
-                );
-
-                if (selectedOption === 'Files as unique rows') {
-                  return saveTSV({
-                    files: [
-                      {
-                        fileName: 'hello2.txt',
-                        sqon,
-                        columns,
-                        index,
-                      },
-                    ],
-                  });
-                } else if (selectedOption === 'Samples as unique rows') {
-                  const order = [
-                    'cases.samples.sample_id',
-                    'cases.samples.sample_type',
-                    'cases.case_id',
-                    'data_category',
-                    'data_type',
-                    'file_id',
-                    'file_name',
-                    // 'cases.dataset.id',
-                  ];
-
-                  return saveTSV({
-                    files: [
-                      {
-                        fileName: 'hello3.txt',
-                        sqon,
-                        columns: columns.sort((a, b) => {
-                          return order.indexOf(a.field) - order.indexOf(b.field);
-                        }),
-                        uniqueBy: 'cases.hits.edges[].node.samples.hits.edges[].node.sample_id',
-                        index: 'file',
-                      },
-                    ],
-                  });
-                }
-              }}
+              onClick={downloadBiospecimen({ sqon, columns: state.columns })}
               render={({ onClick, loading }) => (
-                <PillInputWithButton
-                  options={['Samples as unique rows', 'Files as unique rows']}
+                <Button
+                  css={`
+                    flex-grow: 1;
+                    padding-left: 15px;
+                  `}
                   onClick={onClick}
+                  loading={loading}
                 >
-                  <DownloadIcon loading={loading} />
-                  SAMPLE SHEET
-                </PillInputWithButton>
+                  <DownloadIcon />BIOSPECIMEN
+                </Button>
               )}
             />
           </div>
