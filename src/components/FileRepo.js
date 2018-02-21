@@ -133,7 +133,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                     <AggregationsWrapper
                       {...props}
                       {...url}
-                      showAdvancedFacetView={() => showAdvancedFacetView()}
+                      showAdvancedFacetView={() => effects.showModal()}
                     />
                     <div
                       style={{
