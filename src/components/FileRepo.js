@@ -4,7 +4,8 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import SQONURL from 'components/SQONURL';
 
-import Arranger, {
+import {
+  Arranger,
   Aggregations,
   CurrentSQON,
   Table,
