@@ -30,7 +30,7 @@ const Page = ({ Component, ...props }) => (
     className={css`
       background-image: url(${scienceBgPath});
       background-repeat: repeat;
-      height: 100%;
+      min-height: 100%;
       width: 100%;
       display: flex;
       flex-direction: column;
