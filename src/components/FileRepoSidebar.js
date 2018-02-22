@@ -90,12 +90,12 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
       If you have not selected any files, all files in your query will be included in the actions.
     </div>
     <Heading>Download</Heading>
-    <ColumnsState
-      projectId={projectId}
-      graphqlField={graphqlField}
-      render={({ state }) => {
-        return (
-          <div>
+    <div>
+      <ColumnsState
+        projectId={projectId}
+        graphqlField={graphqlField}
+        render={({ state }) => {
+          return (
             <div
               css={`
                 display: flex;
@@ -121,52 +121,61 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
                 )}
               />
             </div>
-            <Heading>Reports</Heading>
-            <div
-              css={`
-                display: flex;
-                margin-bottom: 13px;
-              `}
-            >
+          );
+        }}
+      />
+      <ColumnsState
+        projectId={projectId}
+        index="participant"
+        render={({ state }) => {
+          return (
+            <div>
+              <Heading>Reports</Heading>
+              <div
+                css={`
+                  display: flex;
+                  margin-bottom: 13px;
+                `}
+              >
+                <LoadingOnClick
+                  onClick={selectedOption => {
+                    if (selectedOption === 'Clinical (Participant)') {
+                      return clinicalDataParticipants({ sqon, columns: state.columns })();
+                    } else if (selectedOption === 'Clinical (Family)') {
+                      return clinicalDataFamily({ sqon, columns: state.columns })();
+                    }
+                  }}
+                  render={({ onClick, loading }) => (
+                    <PillInputWithButton
+                      options={['Clinical (Participant)', 'Clinical (Family)']}
+                      onClick={onClick}
+                    >
+                      <DownloadIcon loading={loading} />
+                      DOWNLOAD
+                    </PillInputWithButton>
+                  )}
+                />
+              </div>
               <LoadingOnClick
-                onClick={selectedOption => {
-                  if (selectedOption === 'Clinical (Participant)') {
-                    return clinicalDataParticipants({ sqon, columns: state.columns })();
-                  } else if (selectedOption === 'Clinical (Family)') {
-                    return clinicalDataFamily({ sqon, columns: state.columns })();
-                  }
-                }}
+                onClick={downloadBiospecimen({ sqon, columns: state.columns })}
                 render={({ onClick, loading }) => (
-                  <PillInputWithButton
-                    options={['Clinical (Participant)', 'Clinical (Family)']}
+                  <Button
+                    css={`
+                      flex-grow: 1;
+                      padding-left: 15px;
+                    `}
                     onClick={onClick}
+                    loading={loading}
                   >
-                    <DownloadIcon loading={loading} />
-                    DOWNLOAD
-                  </PillInputWithButton>
+                    <DownloadIcon />BIOSPECIMEN
+                  </Button>
                 )}
               />
             </div>
-            <LoadingOnClick
-              onClick={downloadBiospecimen({ sqon, columns: state.columns })}
-              render={({ onClick, loading }) => (
-                <Button
-                  css={`
-                    flex-grow: 1;
-                    padding-left: 15px;
-                  `}
-                  onClick={onClick}
-                  loading={loading}
-                >
-                  <DownloadIcon />BIOSPECIMEN
-                </Button>
-              )}
-            />
-          </div>
-        );
-      }}
-    />
-
+          );
+        }}
+      />
+    </div>
     <Divider />
     <Heading>Data Analysis</Heading>
     <button

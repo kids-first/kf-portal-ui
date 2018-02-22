@@ -146,39 +146,108 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
 
 export const downloadBiospecimen = ({ sqon, columns }) => () => {
   return saveTSV({
+    fileName: format(new Date(), '[participants_biospecimen_]YYYYMMDD[.tar.gz]'),
     files: [
       {
-        fileName: format(new Date(), '[cases_biospecimen_]YYYYMMDD[.tar.gz]'),
+        fileName: 'sample.tsv',
         sqon,
-        index: 'file',
+        index: 'participant',
+        uniqueBy: 'samples.hits.edges[].node.kf_id',
         columns: findColumnsByField(
           [
-            'file_id',
-            'file_name',
-            // 'cases.dataset.id',
-            'data_category',
-            'data_type',
+            'kf_id',
+            'samples.kf_id',
+            'samples.age_at_event_days',
+            'samples.anatomical_site',
+            'samples.composition',
+            'samples.external_id',
+            'samples.tissue_type',
+            'samples.tumor_descriptor',
+            'samples.uuid',
+          ],
+          columns,
+        ),
+      },
+      {
+        fileName: 'aliquot.tsv',
+        sqon,
+        index: 'participant',
+        uniqueBy: 'samples.hits.edges[].node.aliquots.kf_id',
+        columns: findColumnsByField(
+          [
             {
-              Header: 'Case ID',
-              field: 'cases.case_id',
-              listAccessor: 'cases.hits.edges',
-              query: 'cases { hits(first: 99) { edges { node { case_id } } } }',
+              Header: 'samples.aliquots.kf_id',
+              field: 'samples.aliquots.kf_id',
+              listAccessor: 'samples.hits.edges',
+              query: 'samples { hits(first: 99) { edges { node { aliquots { kf_id } } } } }',
+              type: 'list',
+            },
+            'kf_id',
+            {
+              Header: 'samples.kf_id',
+              field: 'samples.kf_id',
+              listAccessor: 'samples.hits.edges',
+              query: 'samples { hits(first: 99) { edges { node { aliquots { kf_id } } } } }',
               type: 'list',
             },
             {
-              Header: 'Sample ID',
-              field: 'cases.samples.sample_id',
-              listAccessor: 'cases.hits.edges',
-              query:
-                'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_id } } } } } } } }',
+              Header: 'samples.aliquots.kf_id',
+              field: 'samples.aliquots.kf_id',
+              listAccessor: 'samples.hits.edges',
+              query: 'samples { hits(first: 99) { edges { node { aliquots { kf_id } } } } }',
               type: 'list',
             },
             {
-              Header: 'Sample Type',
-              field: 'cases.samples.sample_type',
-              listAccessor: 'cases.hits.edges',
+              Header: 'samples.aliquots.analyte_type',
+              field: 'samples.aliquots.analyte_type',
+              listAccessor: 'samples.hits.edges',
+              query: 'samples { hits(first: 99) { edges { node { aliquots { analyte_type } } } } }',
+              type: 'list',
+            },
+            {
+              Header: 'samples.aliquots.concentration',
+              field: 'samples.aliquots.concentration',
+              listAccessor: 'samples.hits.edges',
               query:
-                'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_type } } } } } } } }',
+                'samples { hits(first: 99) { edges { node { aliquots { concentration } } } } }',
+              type: 'list',
+            },
+            {
+              Header: 'samples.aliquots.shipment_date',
+              field: 'samples.aliquots.shipment_date',
+              listAccessor: 'samples.hits.edges',
+              query:
+                'samples { hits(first: 99) { edges { node { aliquots { shipment_date } } } } }',
+              type: 'list',
+            },
+            {
+              Header: 'samples.aliquots.shipment_destination',
+              field: 'samples.aliquots.shipment_destination',
+              listAccessor: 'samples.hits.edges',
+              query:
+                'samples { hits(first: 99) { edges { node { aliquots { shipment_destination } } } } }',
+              type: 'list',
+            },
+            {
+              Header: 'samples.aliquots.shipment_origin',
+              field: 'samples.aliquots.shipment_origin',
+              listAccessor: 'samples.hits.edges',
+              query:
+                'samples { hits(first: 99) { edges { node { aliquots { shipment_origin } } } } }',
+              type: 'list',
+            },
+            {
+              Header: 'samples.aliquots.uuid',
+              field: 'samples.aliquots.uuid',
+              listAccessor: 'samples.hits.edges',
+              query: 'samples { hits(first: 99) { edges { node { aliquots { uuid } } } } }',
+              type: 'list',
+            },
+            {
+              Header: 'samples.aliquots.volume',
+              field: 'samples.aliquots.volume',
+              listAccessor: 'samples.hits.edges',
+              query: 'samples { hits(first: 99) { edges { node { aliquots { volume } } } } }',
               type: 'list',
             },
           ],
