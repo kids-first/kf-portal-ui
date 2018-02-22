@@ -158,9 +158,10 @@ const FileRepo = ({ state, effects, ...props }) => {
                     <AdvancedFacetViewModal
                       {...{
                         ...props,
+                        ...url,
                         closeModal: effects.hideModal,
                         onSqonSubmit: ({ sqon }) => {
-                          props.setSQON(sqon);
+                          url.setSQON(sqon);
                         },
                       }}
                     />
