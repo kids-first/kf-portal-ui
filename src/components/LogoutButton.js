@@ -9,14 +9,15 @@ const wait = seconds => new Promise(resolve => setTimeout(resolve, seconds * 100
 
 const enhance = compose(withRouter, injectState, withTheme);
 
-export const uiLogout = ({ history, setUser }) =>
+export const uiLogout = ({ history, setUser, setToken }) =>
   Promise.race([logoutAll(), wait(2)]).then(() => {
     setUser(null);
+    setToken(null);
     history.push('/');
   });
 
-const Logout = ({ history, effects: { setUser }, theme }) => (
-  <button className={theme.button} onClick={() => uiLogout({ history, setUser })}>
+const Logout = ({ history, effects: { setToken, setUser }, theme }) => (
+  <button className={theme.button} onClick={() => uiLogout({ history, setToken, setUser })}>
     Logout
   </button>
 );

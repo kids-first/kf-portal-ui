@@ -33,6 +33,23 @@ const gapi = global.gapi;
 
 const enhance = compose(injectState, withRouter);
 
+export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
+  const data = jwtDecode(jwt);
+  const user = data.context.user;
+  const egoId = data.sub;
+  await setToken(jwt);
+  const existingProfile = await getProfile({ egoId });
+  const newProfile = !existingProfile ? await createProfile({ ...user, egoId }) : {};
+  const loggedInUser = {
+    ...(existingProfile || newProfile),
+    email: user.email,
+  };
+  await setUser(loggedInUser);
+  if (onFinish) {
+    onFinish(loggedInUser);
+  }
+};
+
 class Component extends React.Component<any, any> {
   static propTypes = {
     effects: PropTypes.object,
@@ -96,28 +113,14 @@ class Component extends React.Component<any, any> {
   handleLoginResponse = async response => {
     if (response.status === 200) {
       const jwt = response.data;
-      this.handleJWT(jwt);
+      const props = this.props;
+      const { onFinish, effects: { setToken, setUser } } = props;
+      handleJWT({ jwt, onFinish, setToken, setUser });
     } else {
       console.warn('response error');
     }
   };
-  handleJWT = async jwt => {
-    const props = this.props;
-    const { onFinish } = props;
-    const data = jwtDecode(jwt);
-    const user = data.context.user;
-    const egoId = data.sub;
-    await props.effects.setToken(jwt);
-    const existingProfile = await getProfile({ egoId });
-    const newProfile = !existingProfile ? await createProfile({ ...user, egoId }) : {};
-    await props.effects.setUser({
-      ...(existingProfile || newProfile),
-      email: user.email,
-    });
-    if (onFinish) {
-      onFinish();
-    }
-  };
+
   handleSecurityError() {
     this.setState({
       securityError: true,

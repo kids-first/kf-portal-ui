@@ -143,7 +143,16 @@ const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
                   Don’t worry, the information you provide Kids First will not be shared with any of
                   these providers.
                 </p>
-                <Login shouldNotRedirect={true} onFinish={nextStep} />
+                <Login
+                  shouldNotRedirect={true}
+                  onFinish={user => {
+                    if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
+                      nextStep();
+                    } else {
+                      history.push('search/file');
+                    }
+                  }}
+                />
               </div>
             ),
             renderButtons: () => <div />,
