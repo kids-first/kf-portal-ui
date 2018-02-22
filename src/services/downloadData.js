@@ -11,7 +11,7 @@ function findColumnsByField(fields, columns) {
 }
 
 export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
-  // update data
+  // TODO: update data
   return saveTSV({
     fileName: format(new Date(), '[kidsfirst-manifest-participant_]YYYY-MM-DD'),
     files: [
@@ -32,7 +32,7 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
 };
 
 export const fileManifestParticipantsAndFamily = ({ sqon, columns }) => () => {
-  // update data
+  // TODO: update data
   return saveTSV({
     fileName: format(new Date(), '[kidsfirst-manifest-participant-and-family_]YYYY-MM-DD'),
     files: [
@@ -53,7 +53,7 @@ export const fileManifestParticipantsAndFamily = ({ sqon, columns }) => () => {
 };
 
 export const clinicalDataParticipants = ({ sqon, columns }) => () => {
-  // update data
+  // TODO: update data
   return saveTSV({
     files: [
       {
@@ -99,7 +99,7 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
 };
 
 export const clinicalDataFamily = ({ sqon, columns }) => () => {
-  // update data
+  // TODO: update data
   return saveTSV({
     files: [
       {
