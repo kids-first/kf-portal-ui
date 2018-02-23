@@ -4,6 +4,7 @@ import { isArray, get } from 'lodash';
 import { setToken } from 'services/ajax';
 import { getAllFieldNamesPromise } from 'services/profiles';
 import { googleAppId } from 'common/injectGlobals';
+import { SERVICES } from 'common/constants';
 import { handleJWT } from 'components/Login';
 
 export default provideState({
@@ -11,10 +12,13 @@ export default provideState({
     loggedInUser: null,
     loggedInUserToken: '',
     percentageFilled: 0,
+    integrationTokens: {},
   }),
   effects: {
     initialize: effects => state => {
       const { setToken, setUser } = effects;
+
+      // Get EGO JWT from local storage
       const jwt = localStorage.getItem('EGO_JWT');
       if (jwt) {
         try {
@@ -28,6 +32,14 @@ export default provideState({
           global.log(e);
         }
         handleJWT({ jwt, setToken, setUser });
+
+        // Get all integration keys from local storage
+        // for (const service in SERVICES) {
+        //   const storedToken = localStorage.getItem(`integration_${service}`);
+        //   if (storedToken) {
+        //     state.integrationTokens[service] = storedToken;
+        //   }
+        // }
       }
       return state;
     },
@@ -51,5 +63,24 @@ export default provideState({
       }
       return { ...state, loggedInUserToken: token };
     },
+    setIntegrationToken: (effects, service, token) => state => {
+      if (SERVICES.hasOwnProperty(service)) {
+        const tokenKey = `integration_${service}`;
+        if (token) {
+          localStorage.setItem(tokenKey, token);
+          state.integrationTokens[service] = token;
+        } else {
+          localStorage.removeItem(tokenKey);
+          delete state.integrationTokens[service];
+        }
+      }
+      return state;
+    },
+    clearIntegrationTokens: (effects) => state => {
+      for (const service in SERVICES) {
+        localStorage.removeItem(`integration_${service}`);
+      }
+      state.integrationTokens = {};
+    }
   },
 });
