@@ -33,12 +33,12 @@ export default provideState({
         handleJWT({ jwt, setToken, setUser });
 
         // Get all integration keys from local storage
-        // for (const service in SERVICES) {
-        //   const storedToken = localStorage.getItem(`integration_${service}`);
-        //   if (storedToken) {
-        //     state.integrationTokens[service] = storedToken;
-        //   }
-        // }
+        for (const service in SERVICES) {
+          const storedToken = localStorage.getItem(`integration_${service}`);
+          if (storedToken) {
+            state.integrationTokens[service] = storedToken;
+          }
+        }
       }
       return state;
     },
