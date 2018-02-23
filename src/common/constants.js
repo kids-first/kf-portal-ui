@@ -32,3 +32,8 @@ export const ROLES = [
   //icon: 'tbd',
   //},
 ];
+
+export const SERVICES = {
+  cavatica: 'cavatica',
+  gen3: 'gen3',
+};
