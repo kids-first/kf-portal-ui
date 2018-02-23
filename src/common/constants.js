@@ -16,3 +16,8 @@ export const ROLES = [
       'I’m interested in finding treatments that are more targeted to my patients’ needs based on their genetic characteristics.',
   },
 ];
+
+export const SERVICES = {
+  cavatica: 'cavatica',
+  gen3: 'gen3',
+};
