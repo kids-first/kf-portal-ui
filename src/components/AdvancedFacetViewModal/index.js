@@ -10,49 +10,65 @@ const LiveAdvancedFacetView = AdvancedFacetView;
 
 const enhance = compose(provideLocalSqon, injectState);
 
-const AdvancedFacetViewModal = ({
-  effects,
-  state: { localSqon },
-  closeModal = () => {},
-  onSqonSubmit = () => {},
-  ...props
-}) => (
-  <div className="advancedFacetsOverlay" onClick={() => closeModal()}>
-    <div className="advacnedFacetsContainer" onClick={e => e.stopPropagation()}>
-      <div className="advancedFacetsTitle">All filters</div>
-      <div className="advancedFacetsWrapper">
-        <div style={{ position: 'relative', flex: 1 }}>
-          <LiveAdvancedFacetView
-            {...{
-              ...props,
-              sqon: localSqon,
-              onSqonChange: ({ sqon }) => {
-                effects.setAdvancedFacetSqon(sqon);
-              },
-            }}
-          />
-        </div>
-      </div>
-      <div className="advancedFacetsFooter">
-        <div className="cancel" className="cancel" onClick={e => closeModal()}>
-          Cancel
-        </div>
-        <div>
-          <div
-            className="submitButton"
-            onClick={e => {
-              onSqonSubmit({ sqon: localSqon });
-              closeModal();
-            }}
-            className="submitButton"
-          >
-            View Results
+class AdvancedFacetViewModal extends React.Component {
+  onOverlayClick = e => {
+    const { closeModal = () => {} } = this.props;
+    if (e.target === this.overLay) {
+      closeModal();
+    }
+  };
+
+  render() {
+    const {
+      effects,
+      state: { localSqon },
+      closeModal = () => {},
+      onSqonSubmit = () => {},
+      ...props
+    } = this.props;
+    return (
+      <div
+        className="advancedFacetsOverlay"
+        ref={el => (this.overLay = el)}
+        onClick={this.onOverlayClick}
+      >
+        <div className="advacnedFacetsContainer">
+          <div className="advancedFacetsTitle">All filters</div>
+          <div className="advancedFacetsWrapper">
+            <div style={{ position: 'relative', flex: 1 }}>
+              <LiveAdvancedFacetView
+                {...{
+                  ...props,
+                  sqon: localSqon,
+                  onSqonChange: ({ sqon }) => {
+                    effects.setAdvancedFacetSqon(sqon);
+                  },
+                }}
+              />
+            </div>
+          </div>
+          <div className="advancedFacetsFooter">
+            <div className="cancel" className="cancel" onClick={e => closeModal()}>
+              Cancel
+            </div>
+            <div>
+              <div
+                className="submitButton"
+                onClick={e => {
+                  onSqonSubmit({ sqon: localSqon });
+                  closeModal();
+                }}
+                className="submitButton"
+              >
+                View Results
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-);
+    );
+  }
+}
 
 export default enhance(AdvancedFacetViewModal);
 // export default AdvancedFacetViewModal;
