@@ -17,7 +17,6 @@ export const ROLES = [
   },
 ];
 
-export const SERVICES = {
-  cavatica: 'cavatica',
-  gen3: 'gen3',
-};
+export const GEN3 = 'gen3';
+export const CAVATICA = 'cavatica';
+export const SERVICES = [GEN3, CAVATICA];

@@ -59,9 +59,10 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
  *  to state once returned.
  */
 export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
-  for (const service in SERVICES) {
-    getSecret({ service }).then(token => setIntegrationToken(service, token));
-  }
+  SERVICES.forEach(service =>
+    getSecret({ service })
+      .then(token => setIntegrationToken(service, token))
+  );
 }
 
 class Component extends React.Component<any, any> {

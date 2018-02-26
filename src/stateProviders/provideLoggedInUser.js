@@ -33,12 +33,12 @@ export default provideState({
         handleJWT({ jwt, setToken, setUser });
 
         // Get all integration keys from local storage
-        for (const service in SERVICES) {
+        SERVICES.forEach(service => {
           const storedToken = localStorage.getItem(`integration_${service}`);
           if (storedToken) {
             state.integrationTokens[service] = storedToken;
           }
-        }
+        });
       }
       return state;
     },
@@ -61,7 +61,7 @@ export default provideState({
       return { ...state, loggedInUserToken: token };
     },
     setIntegrationToken: (effects, service, token) => state => {
-      if (SERVICES.hasOwnProperty(service)) {
+      if (SERVICES.includes(service)) {
         const tokenKey = `integration_${service}`;
         if (token) {
           localStorage.setItem(tokenKey, token);
@@ -74,9 +74,9 @@ export default provideState({
       return state;
     },
     clearIntegrationTokens: (effects) => state => {
-      for (const service in SERVICES) {
-        localStorage.removeItem(`integration_${service}`);
-      }
+      SERVICES.forEach(service =>
+        localStorage.removeItem(`integration_${service}`)
+      );
       state.integrationTokens = {};
     }
   },
