@@ -6,8 +6,6 @@ import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
 import './style.css';
 
-const LiveAdvancedFacetView = AdvancedFacetView;
-
 const enhance = compose(provideLocalSqon, injectState);
 
 class AdvancedFacetViewModal extends React.Component {
@@ -36,7 +34,7 @@ class AdvancedFacetViewModal extends React.Component {
           <div className="advancedFacetsTitle">All filters</div>
           <div className="advancedFacetsWrapper">
             <div style={{ position: 'relative', flex: 1 }}>
-              <LiveAdvancedFacetView
+              <AdvancedFacetView
                 {...{
                   ...props,
                   sqon: localSqon,
