@@ -23,6 +23,7 @@ const StyledLabel = styled('label')`
   text-align: left;
   color: #343434;
   font-weight: 900;
+  border-bottom: none;
 `;
 
 export default compose(
@@ -30,7 +31,7 @@ export default compose(
   injectState,
   withState('location', 'setLocation', ({ state: { loggedInUser } }) => {
     const places = [loggedInUser.city, loggedInUser.state, loggedInUser.country];
-    return places.join(', ');
+    return places.filter(Boolean).join(', ');
   }),
   withFormik({
     mapPropsToValues: ({
@@ -169,9 +170,9 @@ export default compose(
               defaultValue={values.roles}
               css={theme.hollowSelect}
             >
-              {ROLES.map(({ type }) => (
+              {ROLES.map(({ type, displayName }) => (
                 <option value={type} key={type}>
-                  {type}
+                  {displayName}
                 </option>
               ))}
             </Field>

@@ -162,7 +162,7 @@ const SelectRoleForm = ({
         <div className={theme.row}>
           <StyledLabel>Roles:</StyledLabel>
           <div className={theme.column}>
-            {ROLES.map(({ type, description }) => (
+            {ROLES.map(({ type, description, displayName }) => (
               <div
                 key={type}
                 className={css`
@@ -198,7 +198,7 @@ const SelectRoleForm = ({
                       text-transform: capitalize;
                     `}
                   >
-                    {type}
+                    {displayName}
                   </label>
                   {description}
                 </div>
