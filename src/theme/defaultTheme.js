@@ -274,6 +274,7 @@ const components = {
         font-weight: 500;
         padding: 0 10px;
         border-bottom: 3px solid transparent;
+        margin-right: 1em;
       }
 
       a:hover,

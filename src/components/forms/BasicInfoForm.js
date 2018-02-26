@@ -23,6 +23,7 @@ const StyledLabel = styled('label') `
   text-align: left;
   color: #343434;
   font-weight: 900;
+  border-bottom: none;
 `;
 
 export default compose(
@@ -30,8 +31,7 @@ export default compose(
   injectState,
   withState('location', 'setLocation', ({ state: { loggedInUser } }) => {
     const places = [loggedInUser.city, loggedInUser.state, loggedInUser.country];
-
-    return places.join(', ');
+    return places.filter(Boolean).join(', ');
   }),
   withFormik({
     mapPropsToValues: ({
@@ -170,9 +170,9 @@ export default compose(
                 defaultValue={values.roles}
                 css={theme.hollowSelect}
               >
-                {ROLES.map(({ type }) => (
+                {ROLES.map(({ type, displayName }) => (
                   <option value={type} key={type}>
-                    {type}
+                    {displayName}
                   </option>
                 ))}
               </Field>
@@ -216,22 +216,45 @@ export default compose(
                 <StyledLabel>Job Title/Role:</StyledLabel>
                 <Field
                   className={theme.input}
-                  name="jobTitle"
-                  placeholder="Job Title/Role"
-                  value={values.jobTitle}
+                  name="firstName"
+                  placeholder="First Name"
+                  value={values.firstName}
                 />
-              </div>,
-              <div css={theme.column} key="institution">
-                <StyledLabel>Institution:</StyledLabel>
+                {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
+              </div>
+              <div css={theme.column}>
+                <StyledLabel>Last Name:</StyledLabel>
                 <Field
                   className={theme.input}
-                  name="institution"
-                  placeholder="Institution"
-                  value={values.institution}
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={values.lastName}
                 />
-              </div>,
-            ]}
-            <div>
+                {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
+              </div>
+            {
+                values.roles === 'researcher' && [
+                  <div css={theme.column} key="jobTitle">
+                    <StyledLabel>Job Title/Role:</StyledLabel>
+                    <Field
+                      className={theme.input}
+                      name="jobTitle"
+                      placeholder="Job Title/Role"
+                      value={values.jobTitle}
+                    />
+                  </div>,
+                  <div css={theme.column} key="institution">
+                    <StyledLabel>Institution:</StyledLabel>
+                    <Field
+                      className={theme.input}
+                      name="institution"
+                      placeholder="Institution"
+                      value={values.institution}
+                    />
+                  </div>,
+                ]
+              }
+              < div >
               <StyledLabel>Location:</StyledLabel>
               <PlacesAutocomplete
                 inputProps={{

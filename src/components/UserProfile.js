@@ -247,7 +247,7 @@ export default compose(
                   padding-left: 5px;
                 `}
               >
-                {profile.roles}
+                {(ROLES.find(({ type }) => type === get(profile, 'roles[0]')) || {}).displayName}
               </span>
             </div>
             <h4
@@ -273,7 +273,9 @@ export default compose(
               </span>
               <span>{profile.jobTitle}</span>
               <span>{profile.institution}</span>
-              <span>{[profile.city, profile.state, profile.country].join(', ')}</span>
+              <span>
+                {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
+              </span>
               <span
                 css={`
                   margin-top: 5px;
@@ -506,6 +508,7 @@ export default compose(
                 </div>
                 {editingResearchInterests && (
                   <Autocomplete
+                    inputProps={{ className: theme.input }}
                     getItemValue={item => item.label}
                     items={xor(['lung', 'heart', 'blood'], interests).map(item => ({
                       label: item,
