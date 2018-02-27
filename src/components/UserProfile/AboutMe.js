@@ -283,9 +283,15 @@ export default compose(
                 </div>
                 {editingResearchInterests && (
                   <Autocomplete
-                    inputProps={{ className: theme.input }}
+                    inputProps={{
+                      className: theme.input,
+                      placeholder: '🔍Search for interests',
+                    }}
                     getItemValue={item => item.label}
-                    items={xor(['lung', 'heart', 'blood'], interests).map(item => ({
+                    items={xor(
+                      ['lung', 'heart', 'blood', 'stomach', 'tongue', 'skin'],
+                      interests,
+                    ).map(item => ({
                       label: item,
                     }))}
                     renderItem={(item, isHighlighted) => (
@@ -323,40 +329,86 @@ export default compose(
                       <ClickToAdd
                         onClick={() => setEditingResearchInterests(!editingResearchInterests)}
                       >
-                        click to add
-                    </ClickToAdd>
-                    )
-                  }
-                  saveOnKeyDown={false}
-                  renderButtons={() => <div />}
-                  renderNonEditing={v => <ExternalLink href={v}>{v}</ExternalLink>}
+                        {i}
+                    </div>
+                    ))}
+                </div>
+              {editingResearchInterests && (
+                <Autocomplete
+                  inputProps={{ className: theme.input }}
+                  getItemValue={item => item.label}
+                  items={xor(['lung', 'heart', 'blood'], interests).map(item => ({
+                    label: item,
+                  }))}
+                  renderItem={(item, isHighlighted) => (
+                    <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                      {item.label}
+                    </div>
+                  )}
+                  value={interestAutocomplete}
+                  onChange={e => setInterestAutocomplete(e.target.value)}
+                  onSelect={val => {
+                    setInterests([...new Set([...interests, val])]);
+                    setInterestAutocomplete('');
+                  }}
+                  menuStyle={{
+                    backgroundcolor: '#fff',
+                    border: `1px solid ${theme.greyScale4}`,
+                    width: '100%',
+                    fontFamily: 'montserrat',
+                    fontSize: '14px',
+                  }}
                 />
-              </StyledSection>
-              <StyledSection>
-                <H3>Google Scholar ID: </H3>
-                <EditableLabel
-                  isEditing={editingResearchInterests}
-                  disabled={true}
-                  required={false}
-                  name="googleScholarId"
-                  value={googleScholarId}
-                  onChange={e => setGoogleScholarId(e.target.value)}
-                  placeholderComponent={
-                    canEdit && (
-                      <ClickToAdd
-                        onClick={() => setEditingResearchInterests(!editingResearchInterests)}
-                      >
-                        click to add
-                    </ClickToAdd>
-                    )
-                  }
-                  saveOnKeyDown={false}
-                  renderButtons={() => <div />}
-                />
-              </StyledSection>
+              )}
             </div>
+            <StyledSection>
+              <H3>Website URL:</H3>
+              <EditableLabel
+                isEditing={editingResearchInterests}
+                disabled={true}
+                required={false}
+                name="website"
+                value={website}
+                onChange={e => setWebsite(e.target.value)}
+                placeholderComponent={
+                  canEdit && (
+                    <ClickToAdd
+                      onClick={() => setEditingResearchInterests(!editingResearchInterests)}
+                    >
+                      click to add
+                    </ClickToAdd>
+                  )
+                }
+                saveOnKeyDown={false}
+                renderButtons={() => <div />}
+                renderNonEditing={v => <ExternalLink href={v}>{v}</ExternalLink>}
+              />
+            </StyledSection>
+            <StyledSection>
+              <H3>Google Scholar ID: </H3>
+              <EditableLabel
+                isEditing={editingResearchInterests}
+                disabled={true}
+                required={false}
+                name="googleScholarId"
+                value={googleScholarId}
+                onChange={e => setGoogleScholarId(e.target.value)}
+                placeholderComponent={
+                  canEdit && (
+                    <ClickToAdd
+                      onClick={() => setEditingResearchInterests(!editingResearchInterests)}
+                    >
+                      click to add
+                    </ClickToAdd>
+                  )
+                }
+                saveOnKeyDown={false}
+                renderButtons={() => <div />}
+              />
+            </StyledSection>
+          </div>
           </div>
         </Container>
-      </div>
+      </div >
     ),
 );

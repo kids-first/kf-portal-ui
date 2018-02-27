@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { compose, withHandlers, withState } from 'recompose';
+import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { updateProfile } from 'services/profiles';
 import { H4 } from './';
 
 export const H2 = styled('h2') `
