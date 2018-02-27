@@ -285,6 +285,43 @@ const components = {
       }
     }
   `,
+  verticalNav: css`
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family: Montserrat;
+    font-size: 14px;
+    line-height: 2.86;
+    letter-spacing: 0.2px;
+    text-align: left;
+
+    li {
+      a {
+        display: block;
+        font-family: Montserrat;
+        font-size: 14px;
+        line-height: 1.86;
+        letter-spacing: 0.2px;
+        text-align: left;
+        color: ${colors.active};
+        font-weight: 500;
+        padding: 0 10px;
+        border-left: 3px solid transparent;
+        margin-right: 1em;
+        margin-top: 1em;
+      }
+
+      a:hover,
+      a.active {
+        color: ${colors.highlight};
+        font-weight: 500;
+        border-left: 3px solid ${colors.highlight};
+      }
+    }
+  `,
   select: css`
     width: 200px;
     padding: 6px 12px;

@@ -8,7 +8,6 @@ import {
   withPropsOnChange,
   branch,
   renderComponent,
-  withHandlers,
 } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
@@ -16,7 +15,7 @@ import styled from 'react-emotion';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 
 import { withTheme } from 'emotion-theming';
-import { updateProfile } from 'services/profiles';
+
 import { ROLES } from 'common/constants';
 import { getProfile } from 'services/profiles';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
@@ -37,7 +36,7 @@ const roleToBanner = {
   clinician: 'tbd',
 };
 
-export const Container = styled('div')`
+export const Container = styled('div') `
   justify-content: space-around;
   align-items: center;
   height: 100%;
@@ -50,15 +49,15 @@ export const EditButton = compose(withTheme)(({ theme, ...props }) => (
   </button>
 ));
 
-export const H2 = styled('h2')`
+export const H2 = styled('h2') `
   ${props => props.theme.profileH2};
 `;
 
-export const H3 = styled('h3')`
+export const H3 = styled('h3') `
   ${props => props.theme.profileH3};
 `;
 
-export const H4 = styled('h4')`
+export const H4 = styled('h4') `
   font-family: 'Open Sans';
   font-size: 13px;
   font-style: italic;
@@ -98,23 +97,11 @@ export default compose(
     }),
   ),
   withRouter,
-  withHandlers({
-    submit: ({ profile, effects: { setUser } }) => async values => {
-      await updateProfile({
-        user: {
-          ...profile,
-          ...values,
-        },
-      }).then(async updatedProfile => {
-        await setUser(updatedProfile);
-      });
-    },
-  }),
   branch(
     ({ profile }) => !profile || profile.length === 0,
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
-)(({ state, effects: { setModal }, profile, theme, canEdit, mode, setMode, submit }) => (
+)(({ state, effects: { setModal }, profile, theme, canEdit, mode, setMode }) => (
   <div
     className={css`
       display: flex;
@@ -160,7 +147,7 @@ export default compose(
             {get(
               ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {}),
               get(profile.roles, 0),
-              () => {},
+              () => { },
             )({ height: '19px', fill: '#fff' })}
             <span
               className={css`
@@ -261,7 +248,7 @@ export default compose(
         </ul>
       </Container>
     </div>
-    {mode === 'aboutMe' && <AboutMe profile={profile} canEdit={canEdit} submit={submit} />}
-    {mode === 'settings' && <Settings profile={profile} submit={submit} />}
-  </div>
+    {mode === 'aboutMe' && <AboutMe profile={profile} canEdit={canEdit} />}
+    {mode === 'settings' && <Settings profile={profile} />}
+  </div >
 ));
