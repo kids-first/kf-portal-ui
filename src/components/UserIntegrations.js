@@ -47,9 +47,6 @@ const styles = css`
     .right {
       text-align: right;
     }
-    .connectButton {
-      
-    }
     .connectedButton {
       color:black;
       background:none;
