@@ -4,6 +4,7 @@ import { compose, withState, lifecycle, withPropsOnChange } from 'recompose';
 import { injectState } from 'freactal';
 import { withFormik } from 'formik';
 import { mapValues, get } from 'lodash';
+import { css } from 'emotion';
 
 import { getProfile } from 'services/profiles';
 import { logoutAll } from 'services/login';
@@ -13,6 +14,25 @@ import { updateProfile } from 'services/profiles';
 import { ROLES } from 'common/constants';
 import LogoutButton from 'components/LogoutButton';
 
+import UserIntegrations from 'components/UserIntegrations';
+
+const styles = {
+  section: css`
+    padding-top: 20px;
+    display: flex;
+  `,
+  sectionLabel: css`
+    color: #2b388f;
+    font-weight: normal;
+    font-size: 18px;
+    flex: 1;
+  `,
+  sectionContent: css`
+    flex:5;
+  `
+
+};
+
 const uneditableFields = ['egoId', 'email', '_id'];
 const requiredFields = ['lastName', 'firstName'];
 const enhance = compose(
@@ -21,7 +41,7 @@ const enhance = compose(
   withState('isEditingAll', 'setEditingAll', false),
   withState('profile', 'setProfile', {}),
   lifecycle({
-    async componentDidMount(): void {
+    async componentDidMount() {
       const { state: { loggedInUser }, match: { params: { egoId } }, setProfile } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
@@ -66,7 +86,7 @@ const enhance = compose(
         props: { state: { loggedInUser }, effects: { setUser }, onFinish, setEditingAll },
         setSubmitting,
         setErrors,
-      }: any,
+      },
     ) => {
       const { email, ...rest } = values;
       updateProfile({
@@ -156,6 +176,7 @@ const UserProfile = ({
               await logoutAll();
               await effects.setUser(null);
               await effects.setToken('');
+              effects.clearIntegrationTokens();
               history.push('/');
             }}
           >
@@ -163,7 +184,13 @@ const UserProfile = ({
           </button>
         </div>
       )}
-    </div>
+      {canEdit &&
+        <div css={styles.section} >
+          <span css={styles.sectionLabel} >Integrations</span>
+          <div css={styles.sectionContent}><UserIntegrations /></div>
+        </div>
+      }
+    </div >
   );
 };
 
