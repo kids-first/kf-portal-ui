@@ -9,7 +9,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import Modal from 'react-modal';
 
-import UserProfile from 'components/UserProfile';
+import UserProfile from 'components/UserProfile/index';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import AuthRedirect from 'components/AuthRedirect';
