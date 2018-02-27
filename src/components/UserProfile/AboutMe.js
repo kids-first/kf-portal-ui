@@ -283,9 +283,15 @@ export default compose(
               </div>
               {editingResearchInterests && (
                 <Autocomplete
-                  inputProps={{ className: theme.input }}
+                  inputProps={{
+                    className: theme.input,
+                    placeholder: '🔍Search for interests',
+                  }}
                   getItemValue={item => item.label}
-                  items={xor(['lung', 'heart', 'blood'], interests).map(item => ({
+                  items={xor(
+                    ['lung', 'heart', 'blood', 'stomach', 'tongue', 'skin'],
+                    interests,
+                  ).map(item => ({
                     label: item,
                   }))}
                   renderItem={(item, isHighlighted) => (

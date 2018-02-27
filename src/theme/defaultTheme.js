@@ -224,7 +224,7 @@ const components = {
     margin: 10px 0;
   `,
   input: css`
-    width: 374px;
+    width: 90%;
     min-width: 0;
     padding: 6px 12px;
     font-size: 14px;
