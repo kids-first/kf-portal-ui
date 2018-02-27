@@ -74,7 +74,7 @@ export default provideState({
           delete state.integrationTokens[service];
         }
       }
-      return state;
+      return { ...state, integrationTokens: { ...state.integrationTokens } };
     },
     clearIntegrationTokens: (effects) => state => {
       SERVICES.forEach(service =>
