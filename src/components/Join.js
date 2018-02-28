@@ -13,6 +13,7 @@ import Login from 'components/Login';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
+import ToSearchPage from 'components/links/ToSearchPage';
 
 const Consent = compose(
   injectState,
@@ -121,100 +122,116 @@ const ButtonsDiv = styled('div')`
   padding-top: 20px;
 `;
 
-const JoinContent = compose(withRouter, withTheme)(({ history, theme }) => (
-  <div
-    className={css`
-      width: 80%;
-      margin: 0px auto;
-    `}
-  >
-    <h2 className={theme.h2}>Join Kids First</h2>
-    <div className={theme.card}>
-      <Wizard
-        steps={[
-          {
-            title: 'Connect',
-            render: ({ nextStep }) => (
-              <div>
-                <h3 className={theme.h3}>
-                  Select a way to connect to the Kids First Data Resource Portal
-                </h3>
-                <p>
-                  Don’t worry, the information you provide Kids First will not be shared with any of
-                  these providers.
-                </p>
-                <Login
-                  shouldNotRedirect={true}
-                  onFinish={user => {
-                    if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
-                      nextStep();
-                    } else {
-                      history.push('search/file');
-                    }
-                  }}
-                />
-              </div>
-            ),
-            renderButtons: () => <div />,
-            canGoBack: false,
-          },
-          {
-            title: 'Basic Info',
-            render: ({ nextStep, disableNextStep }) => (
-              <div>
-                <h3 className={theme.h3}>A bit about you</h3>
-                <p>
-                  Please provide a bit about yourself to help us provide you with a personalized
-                  experience.
-                </p>
-                <SelectRoleForm
-                  onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
-                  onValidChange={isValid => disableNextStep(!isValid)}
-                />
-              </div>
-            ),
-            renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
-              <ButtonsDiv
-                className={css`
-                  justify-content: flex-end;
-                `}
-              >
-                <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
-                <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
-                  Next
-                  <RightIcon />
-                </button>
-              </ButtonsDiv>
-            ),
-            canGoBack: true,
-          },
-          {
-            title: 'Consent',
-            render: ({ disableNextStep }) => <Consent disableNextStep={disableNextStep} />,
-            renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
-              <ButtonsDiv>
-                <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
-                  <LeftIcon />
-                  Back
-                </button>
-                <div className={theme.row}>
+const JoinContent = compose(injectState, withRouter, withTheme)(
+  ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme }) => (
+    <div
+      className={css`
+        width: 80%;
+        margin: 5% auto 0 auto;
+      `}
+    >
+      <div className={theme.card}>
+        <h2 className={theme.h2}>Join Kids First</h2>
+        <Wizard
+          steps={[
+            {
+              title: 'Connect',
+              render: ({ nextStep }) => (
+                <div>
+                  <h3 className={theme.h3}>
+                    Select a way to connect to the Kids First Data Resource Portal
+                  </h3>
+                  <p>
+                    Don’t worry, the information you provide Kids First will not be shared with any
+                    of these providers.
+                  </p>
+                  <Login
+                    shouldNotRedirect={true}
+                    onFinish={user => {
+                      if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
+                        nextStep();
+                      } else {
+                        history.push('search/file');
+                      }
+                    }}
+                  />
+                </div>
+              ),
+              renderButtons: () => <div />,
+              canGoBack: false,
+            },
+            {
+              title: 'Basic Info',
+              render: ({ nextStep, disableNextStep }) => (
+                <div>
+                  <h3 className={theme.h3}>A bit about you</h3>
+                  <p>
+                    Please provide a bit about yourself to help us provide you with a personalized
+                    experience.
+                  </p>
+                  <SelectRoleForm
+                    onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
+                    onValidChange={isValid => disableNextStep(!isValid)}
+                  />
+                </div>
+              ),
+              renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
+                <ButtonsDiv
+                  className={css`
+                    justify-content: flex-end;
+                  `}
+                >
                   <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
-                  <button
-                    className={theme.wizardButton}
-                    onClick={() => history.push('/search/file')}
-                    disabled={nextDisabled}
-                  >
-                    Finish
+                  <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
+                    Next
                     <RightIcon />
                   </button>
-                </div>
-              </ButtonsDiv>
-            ),
-            canGoBack: false,
-          },
-        ]}
-      />
+                </ButtonsDiv>
+              ),
+              canGoBack: true,
+            },
+            {
+              title: 'Consent',
+              render: ({ disableNextStep }) => <Consent disableNextStep={disableNextStep} />,
+              renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
+                <ButtonsDiv>
+                  <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
+                    <LeftIcon />
+                    Back
+                  </button>
+                  <div className={theme.row}>
+                    <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
+                    <button
+                      className={theme.wizardButton}
+                      onClick={() => {
+                        setToast({
+                          id: Date.now(),
+                          action: 'success',
+                          component: (
+                            <div>
+                              Fill out your profile, or skip and{' '}
+                              <ToSearchPage index="file" onClick={() => closeToast()}>
+                                browse data
+                              </ToSearchPage>
+                            </div>
+                          ),
+                        });
+                        history.push(`/user/${loggedInUser.egoId}`);
+                      }}
+                      disabled={nextDisabled}
+                    >
+                      Finish
+                      <RightIcon />
+                    </button>
+                  </div>
+                </ButtonsDiv>
+              ),
+              canGoBack: false,
+            },
+          ]}
+        />
+      </div>
     </div>
-  </div>
-));
+  ),
+);
 export default JoinContent;
