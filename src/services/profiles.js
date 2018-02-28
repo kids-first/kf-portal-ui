@@ -21,7 +21,6 @@ const DEFAULT_FIELDS = `
   website
   googleScholarId
   interests
-  inactive
 `;
 
 export const getProfile = async ({ egoId }) => {
