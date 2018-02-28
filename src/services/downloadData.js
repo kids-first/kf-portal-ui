@@ -58,7 +58,36 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
 
 export const fileManifestParticipantsAndFamily = ({ sqon, columns }) => null; // TODO: implement
 
-export const clinicalDataParticipants = ({ sqon, columns }) => null; // TODO: implement
+export const clinicalDataParticipants = ({ sqon, columns }) => () => {
+  return saveTSV({
+    files: [
+      {
+        fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
+        sqon,
+        index: 'participant',
+        uniqueBy: 'diagnoses.hits.edges[].node.diagnosis',
+        columns: findColumnsByField(
+          [
+            'kf_id',
+            'study.name',
+            // TODO: father_id
+            // TODO: mother_id
+            'race',
+            'ethnicity',
+            'gender',
+            'phenotype.hpo.hpo_ids',
+            'phenotype.hpo.negative_hpo_ids',
+            'diagnoses.age_at_event_days',
+            'diagnoses.diagnosis',
+            'diagnoses.diagnosis_category',
+            'diagnoses.tumor_location',
+          ],
+          columns,
+        ),
+      },
+    ],
+  });
+};
 
 export const clinicalDataFamily = ({ sqon, columns }) => null; // TODO: implement
 
