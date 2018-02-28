@@ -102,23 +102,24 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
                 margin-bottom: 13px;
               `}
             >
-              <LoadingOnClick
-                onClick={selectedOption => {
-                  if (selectedOption === 'Participant only') {
-                    return fileManifestParticipantsOnly({ sqon, columns: state.columns })();
-                  } else if (selectedOption === 'Participant and family') {
-                    return fileManifestParticipantsAndFamily({ sqon, columns: state.columns })();
-                  }
+              <PillInputWithButton
+                options={{
+                  'Participant only': fileManifestParticipantsOnly({
+                    sqon,
+                    columns: state.columns,
+                  }),
+                  'Participant and family': fileManifestParticipantsAndFamily({
+                    sqon,
+                    columns: state.columns,
+                  }),
                 }}
-                render={({ onClick, loading }) => (
-                  <PillInputWithButton
-                    options={['Participant only', 'Participant and family']}
-                    onClick={onClick}
-                  >
-                    <DownloadIcon loading={loading} />
-                    DOWNLOAD
-                  </PillInputWithButton>
-                )}
+                render={({ loading }) => {
+                  return (
+                    <React.Fragment>
+                      <DownloadIcon loading={loading} />DOWNLOAD
+                    </React.Fragment>
+                  );
+                }}
               />
             </div>
           );
@@ -137,33 +138,33 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
                   margin-bottom: 13px;
                 `}
               >
-                <LoadingOnClick
-                  onClick={selectedOption => {
-                    if (selectedOption === 'Clinical (Participant)') {
-                      return clinicalDataParticipants({ sqon, columns: state.columns })();
-                    } else if (selectedOption === 'Clinical (Family)') {
-                      return clinicalDataFamily({ sqon, columns: state.columns })();
-                    }
+                <PillInputWithButton
+                  options={{
+                    'Clinical (Participant)': clinicalDataParticipants({
+                      sqon,
+                      columns: state.columns,
+                    }),
+                    'Clinical (Family)': clinicalDataFamily({ sqon, columns: state.columns }),
                   }}
-                  render={({ onClick, loading }) => (
-                    <PillInputWithButton
-                      options={['Clinical (Participant)', 'Clinical (Family)']}
-                      onClick={onClick}
-                    >
-                      <DownloadIcon loading={loading} />
-                      DOWNLOAD
-                    </PillInputWithButton>
-                  )}
+                  render={({ loading }) => {
+                    return (
+                      <React.Fragment>
+                        <DownloadIcon loading={loading} />
+                        DOWNLOAD
+                      </React.Fragment>
+                    );
+                  }}
                 />
               </div>
               <LoadingOnClick
                 onClick={downloadBiospecimen({ sqon, columns: state.columns })}
-                render={({ onClick, loading }) => (
+                render={({ onClick, loading, disabled }) => (
                   <Button
                     css={`
                       flex-grow: 1;
                       padding-left: 15px;
                     `}
+                    disabled={disabled || loading}
                     onClick={onClick}
                     loading={loading}
                   >
