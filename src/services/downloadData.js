@@ -1,8 +1,6 @@
 import { format } from 'date-fns';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
 
-// TODO: update fields for kids first mapping when available.
-
 function findColumnsByField(fields, columns) {
   const columnConfigs = fields.map(
     field => (typeof field === 'string' ? columns.find(column => column.field === field) : field),
@@ -28,7 +26,7 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
         fileName: format(new Date(), '[kidsfirst-manifest_]YYYY-MM-DD[.tsv]'),
         sqon,
         index: 'file',
-        columns: findColumnsByField(['file_id'], columns),
+        columns: findColumnsByField(['kf_id'], columns),
       },
       {
         fileName: format(new Date(), '[kidsfirst-manifest_metadata_]YYYY-MM-DD[.tsv]'),
@@ -36,18 +34,18 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
         index: 'file',
         columns: findColumnsByField(
           [
-            'file_id',
+            'kf_id',
             'file_name',
             'data_type',
-            'data_format',
-            'experimental_strategy',
-            'cases.case_id',
+            'file_format',
+            'sequencing_experiments.experiment_strategy',
+            'participants.kf_id',
             {
-              Header: 'Sample ID',
-              field: 'cases.samples.sample_id',
-              listAccessor: 'cases.hits.edges',
+              Header: 'sample.kf_id',
+              field: 'participants.samples.kf_id',
+              listAccessor: 'participants.hits.edges',
               query:
-                'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_id } } } } } } } }',
+                'participants { hits(first: 5) { total, edges { node { samples { hits(first: 99) { edges { node { kf_id } } } } } } } }',
               type: 'list',
             },
           ],
