@@ -30,6 +30,7 @@
     "react-spinkit": "^3.0.0",
     "react-svg-donut-chart": "^1.0.0",
     "recompose": "^0.26.0",
+    "scriptjs": "^2.5.8",
     "url-join": "^2.0.2"
   },
   "scripts": {
