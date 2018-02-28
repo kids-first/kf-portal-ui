@@ -2,22 +2,25 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import './App.css';
-import { provideLoggedInUser } from 'stateProviders';
+import { provideLoggedInUser, provideModalState } from 'stateProviders';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
+import Modal from 'react-modal';
 
 import UserProfile from 'components/UserProfile';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import AuthRedirect from 'components/AuthRedirect';
+import JoinHeader from 'components/JoinHeader';
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import theme from 'theme/defaultTheme';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 
-const enhance = compose(injectState);
+const enhance = compose(provideLoggedInUser, provideModalState, injectState);
 
 const LandingContent = () => (
   <div>
@@ -28,17 +31,26 @@ const LandingContent = () => (
 
 const Page = ({ Component, ...props }) => (
   <div
-    className={css`
-      background-image: url(${scienceBgPath});
-      background-repeat: repeat;
-      min-height: 100%;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
+    css={`
+      position: relative;
+      min-height: 100vh;
+      min-width: 1024;
     `}
   >
-    <Header />
-    <Component {...props} />
+    <div
+      className={css`
+        background-image: url(${scienceBgPath});
+        background-repeat: repeat;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 120px;
+      `}
+    >
+      <Header />
+      <Component {...props} />
+    </div>
+    <Footer />
   </div>
 );
 
@@ -49,8 +61,14 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
   return <Page {...props} />;
 };
 
-const render = ({ editing, setEditing, state, effects }) => {
-  const { loggedInUser } = state;
+const render = ({
+  editing,
+  setEditing,
+  state,
+  effects,
+  appElement = document.getElementById('root'),
+}) => {
+  const { loggedInUser, modalState } = state;
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -80,7 +98,25 @@ const render = ({ editing, setEditing, state, effects }) => {
               exact
               render={props => forceSelectRole({ Component: UserProfile, loggedInUser, ...props })}
             />
-            <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
+            <Route
+              path="/join"
+              exact
+              render={props => (
+                <div
+                  className={css`
+                    background-image: url(${scienceBgPath});
+                    background-repeat: repeat;
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                  `}
+                >
+                  <JoinHeader />
+                  <Join />
+                </div>
+              )}
+            />
             <Route
               exact
               path="/"
@@ -89,10 +125,38 @@ const render = ({ editing, setEditing, state, effects }) => {
               }
             />
           </Switch>
+          <Modal
+            isOpen={!!modalState.component}
+            style={{
+              overlay: {
+                position: 'fixed',
+                top: '0px',
+                left: '0px',
+                right: '0px',
+                bottom: '0px',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'block',
+                zIndex: '111',
+              },
+              content: {
+                position: 'initial',
+                border: '1px solid rgb(204, 204, 204)',
+                background: 'rgb(255, 255, 255)',
+                borderRadius: '4px',
+                margin: '30px auto',
+                width: '55%',
+                boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 15px',
+                overflow: 'visible',
+              },
+            }}
+            appElement={appElement}
+          >
+            {modalState.component}
+          </Modal>
         </div>
       </ThemeProvider>
     </Router>
   );
 };
 
-export default provideLoggedInUser(enhance(render));
+export default enhance(render);

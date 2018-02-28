@@ -1,10 +1,11 @@
 import { provideState } from 'freactal';
-import { setToken } from 'services/ajax';
+import { isArray, get } from 'lodash';
 
+import { setToken } from 'services/ajax';
+import { getAllFieldNamesPromise } from 'services/profiles';
 import { googleAppId } from 'common/injectGlobals';
 import { handleJWT } from 'components/Login';
 
-const NUM_FIELDS = 8; //todo calc this in persona
 export default provideState({
   initialState: () => ({
     loggedInUser: null,
@@ -30,15 +31,17 @@ export default provideState({
       }
       return state;
     },
-    setUser: (effects, user) => state => {
-      return {
-        ...state,
-        loggedInUser: user,
-        percentageFilled: user
-          ? `${Object.values(user).filter(v => v && v.length).length / NUM_FIELDS * 100}%`
-          : 0,
-      };
-    },
+    setUser: (effects, user) =>
+      getAllFieldNamesPromise()
+        .then(({ data }) => get(data, 'data.__type.fields', []).length)
+        .then(totalFields => state => {
+          const filledFields = Object.values(user || {}).filter(v => v || (isArray(v) && v.length));
+          return {
+            ...state,
+            loggedInUser: user,
+            percentageFilled: filledFields.length / totalFields,
+          };
+        }),
     setToken: (effects, token) => state => {
       setToken(token);
       if (token) {

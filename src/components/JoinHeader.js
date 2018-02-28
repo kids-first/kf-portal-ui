@@ -50,7 +50,7 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
   return (
     <div
       className={css`
-        background: #fff;
+        background-image: linear-gradient(to bottom, #fff 50%, transparent);
       `}
     >
       <div
@@ -64,8 +64,7 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
         className={css`
           display: flex;
           justify-content: space-between;
-          padding: 10px;
-          align-items: center;
+          padding: 40px 40px 0 40px;
         `}
       >
         <div className={theme.row}>
@@ -74,8 +73,8 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
               src={logoPath}
               alt="Kids First Logo"
               className={css`
-                width: 177px;
-                height: 65px;
+                width: 244px;
+                height: 100px;
               `}
             />
           </Link>
@@ -93,14 +92,6 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
               </li>
             )}
           </ul>
-        </div>
-        <div>
-          <input
-            className={theme.input}
-            type="text"
-            name="quicksearch"
-            placeholder="&#x1F50D; Quicksearch"
-          />
         </div>
         <ul
           className={css`

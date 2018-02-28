@@ -24,6 +24,7 @@ export const personaApiRoot: string = personaApiOverride || process.env.REACT_AP
 export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 export const egoAppId = process.env.REACT_APP_EGO_APP_ID;
+export const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 
 export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
 

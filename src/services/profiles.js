@@ -3,14 +3,24 @@ import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
 
 const DEFAULT_FIELDS = `
+  _id
+  title
   firstName
   lastName
   egoId
-  bio
   roles
-  city
-  _id
   acceptedTerms
+  email
+  story
+  bio
+  jobTitle
+  institution
+  city
+  state
+  country
+  website
+  googleScholarId
+  interests
 `;
 
 export const getProfile = async ({ egoId }) => {
@@ -35,14 +45,14 @@ export const getProfile = async ({ egoId }) => {
   return users.items[0];
 };
 
-export const createProfile = async ({ egoId, lastName, firstName }) => {
+export const createProfile = async ({ egoId, lastName, firstName, email }) => {
   const { data: { data: { userCreate: { record } } } } = await ajax.post(
     urlJoin(personaApiRoot, 'graphql'),
     {
-      variables: { egoId, lastName, firstName },
+      variables: { egoId, lastName, firstName, email },
       query: `
-        mutation($egoId: String, $firstName: String, $lastName: String) {
-          userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName}) {
+        mutation($egoId: String, $firstName: String, $lastName: String, $email: String) {
+          userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email}) {
             record {
               ${DEFAULT_FIELDS}
             }
@@ -91,4 +101,20 @@ export const deleteProfile = async ({ user }) => {
   );
 
   return recordId;
+};
+
+export const getAllFieldNamesPromise = () => {
+  return ajax.post(urlJoin(personaApiRoot, 'graphql'), {
+    query: `
+      query {
+      __type(name: "UserModel") {
+        fields {
+          name
+          type {
+            name
+          }
+        }
+      }
+    }`,
+  });
 };

@@ -2,10 +2,14 @@
 // TODO: move this to arranger/components
 import React from 'react';
 import { compose, withState, withHandlers, defaultProps, withPropsOnChange } from 'recompose';
+import { trim } from 'lodash';
+
+import { withTheme } from 'emotion-theming';
 
 import PencilIcon from 'react-icons/lib/fa/pencil';
 
 export default compose(
+  withTheme,
   withState('editing', 'setIsEditing', ({ isEditing }) => isEditing || false),
   withState('originalValue', 'setOriginalValue', ({ value }) => value),
   withState('inputValue', 'setInputValue', ({ value }) => value || ''),
@@ -13,6 +17,10 @@ export default compose(
     handleSave: value => console.log(value),
   }),
   withPropsOnChange(['isEditing'], ({ setIsEditing, isEditing }) => setIsEditing(isEditing)),
+  withPropsOnChange(['value'], ({ setInputValue, value, setOriginalValue }) => {
+    setOriginalValue(value);
+    setInputValue(value);
+  }),
   withHandlers({
     handleCancel: ({ originalValue, setIsEditing, setInputValue }) => () => {
       setIsEditing(false);
@@ -37,48 +45,86 @@ export default compose(
   }),
 )(
   ({
+    theme,
     key,
     name,
     editing,
     required = false,
     toggleEditingAndSave,
+    type = 'input',
     inputValue,
     setInputValue,
     setIsEditing,
     handleCancel,
-    displayButtons,
-    onChange = () => {},
+    onChange = e => {},
     options = [],
     disabled = false,
+    renderButtons,
+    renderNonEditing,
+    placeholderComponent,
+    saveOnKeyDown = true,
   }) => (
     <div key={key}>
       {editing ? (
         <div style={{ justifyContent: 'space-between', alignItems: 'center' }}>
-          {options.length === 0 && (
-            <input
-              style={{
-                width: '300px',
-                borderRadius: '4px',
-                transition: 'all 0.2s ease',
-              }}
-              value={inputValue}
-              onChange={e => {
-                setInputValue(e.target.value);
-                onChange(e);
-              }}
-              onKeyDown={e => {
-                if (e.key === 'Enter') {
-                  toggleEditingAndSave(e);
-                } else if (e.key === 'Escape') {
-                  handleCancel();
-                }
-              }}
-              type="text"
-              autoFocus
-              onFocus={e => e.target.select()}
-              name={name}
-            />
-          )}
+          {options.length === 0 &&
+            (type === 'input' ? (
+              <input
+                css={`
+                  ${theme.input};
+                  width: 85%;
+                `}
+                value={inputValue}
+                onChange={e => {
+                  setInputValue(e.target.value);
+                  onChange(e);
+                }}
+                onKeyDown={e => {
+                  if (saveOnKeyDown) {
+                    if (e.key === 'Enter') {
+                      toggleEditingAndSave(e);
+                    } else if (e.key === 'Escape') {
+                      handleCancel();
+                    }
+                  }
+                }}
+                type="text"
+                autoFocus
+                onFocus={e => e.target.select()}
+                name={name}
+              />
+            ) : (
+              <textarea
+                css={`
+                  width: 100%;
+                  min-height: 144px;
+                  border-radius: 10px;
+                  transition: all 0.2s ease;
+                  resize: none;
+                  border: solid 1px #cacbcf;
+                  font-family: montserrat;
+                  font-size: 14px;
+                `}
+                value={inputValue}
+                onChange={e => {
+                  setInputValue(e.target.value);
+                  onChange(e);
+                }}
+                onKeyDown={e => {
+                  if (saveOnKeyDown) {
+                    if (e.key === 'Enter') {
+                      toggleEditingAndSave(e);
+                    } else if (e.key === 'Escape') {
+                      handleCancel();
+                    }
+                  }
+                }}
+                type="text"
+                autoFocus
+                onFocus={e => e.target.select()}
+                name={name}
+              />
+            ))}
           {options.length > 0 && (
             <select
               component="select"
@@ -98,7 +144,7 @@ export default compose(
               ))}
             </select>
           )}
-          {displayButtons && (
+          {!renderButtons && (
             <span>
               <button
                 onClick={e => toggleEditingAndSave(e)}
@@ -109,6 +155,12 @@ export default compose(
               <button onClick={handleCancel}>Cancel</button>
             </span>
           )}
+          {renderButtons &&
+            renderButtons({
+              handleSave: e => toggleEditingAndSave(e),
+              handleCancel,
+              saveDisabled: required && inputValue.length === 0,
+            })}
         </div>
       ) : (
         <div
@@ -117,7 +169,15 @@ export default compose(
             cursor: 'text',
           }}
         >
-          <span>{inputValue}</span>
+          <span
+            css={`
+              white-space: pre-line;
+            `}
+          >
+            {trim(inputValue)
+              ? renderNonEditing ? renderNonEditing(trim(inputValue)) : trim(inputValue)
+              : placeholderComponent}
+          </span>
           {!disabled && <PencilIcon style={{ paddingLeft: '10px' }} />}
         </div>
       )}
