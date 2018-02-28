@@ -120,7 +120,7 @@ const render = ({ editing, setEditing, state, effects }) => {
             />
           </Switch>
           <Modal
-            isOpen={modalState.isShown}
+            isOpen={!!modalState.component}
             style={{
               overlay: {
                 position: 'fixed',

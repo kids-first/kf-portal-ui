@@ -3,8 +3,6 @@ import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { H4 } from './';
-
 export const H2 = styled('h2')`
   font-family: Montserrat;
   font-size: 18px;
@@ -40,10 +38,21 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
     >
       <SettingsSection>
         <H2>Account Settings</H2>
-        <div css={theme.column}>
+        <div
+          css={`
+            ${theme.column};
+            width: 70%;
+          `}
+        >
           Email Address:
-          <input disabled value={profile.email} css={theme.input} />
-          connected with placeholder
+          <input
+            disabled
+            value={profile.email}
+            css={`
+              ${theme.input};
+              width: 100%;
+            `}
+          />
         </div>
       </SettingsSection>
 
@@ -51,7 +60,8 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
         <H2>Integrations</H2>
         <div
           css={`
-            ${theme.column} width: 80%;
+            ${theme.column};
+            width: 80%;
           `}
         >
           <table
@@ -90,25 +100,6 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
               </tr>
             </tbody>
           </table>
-        </div>
-      </SettingsSection>
-
-      <SettingsSection>
-        <div
-          css={`
-            width: 200px;
-            padding-right: 10px;
-          `}
-        >
-          <H2>Primary goals</H2>
-          <H4>Help us prioritize your needs for using the Data Portal. Check all that apply.</H4>
-        </div>
-        <div
-          css={`
-            width: 80%;
-          `}
-        >
-          to do checkboxes
         </div>
       </SettingsSection>
     </div>
