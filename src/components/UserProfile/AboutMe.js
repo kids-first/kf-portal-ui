@@ -71,7 +71,6 @@ export default compose(
   withRouter,
 )(
   ({
-    effects: { setModal },
     profile,
     theme,
     canEdit,
@@ -80,7 +79,6 @@ export default compose(
     setEditingBackgroundInfo,
     editingResearchInterests,
     setEditingResearchInterests,
-    renderEditingButtons,
     bioTextarea,
     setBioTextarea,
     storyTextarea,
