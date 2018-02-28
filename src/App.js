@@ -97,7 +97,7 @@ const render = ({
             <Route path="/" exact render={props => <Page Component={LoginPage} {...props} />} />
           </Switch>
           <Modal
-            isOpen={!!modalState.component}
+            isOpen={!!modalState.content}
             style={{
               overlay: {
                 position: 'fixed',
@@ -121,8 +121,11 @@ const render = ({
               },
             }}
             appElement={appElement}
+            {...{
+              title: modalState.title,
+            }}
           >
-            {modalState.component}
+            {modalState.content}
           </Modal>
           <Toast {...toast}>{toast.component}</Toast>
         </div>

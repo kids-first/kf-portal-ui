@@ -202,7 +202,11 @@ export default compose(
                 margin-top: 5px;
               `}
             >
-              <EditButton onClick={() => setModal(<BasicInfoForm />)} />
+              <EditButton
+                onClick={() =>
+                  setModal({ content: <BasicInfoForm />, title: 'Edit Basic Information' })
+                }
+              />
             </span>
           </div>
         </div>
