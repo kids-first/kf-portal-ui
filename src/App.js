@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
-import Modal from 'react-modal';
+import Modal from './components/Modal';
 
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
