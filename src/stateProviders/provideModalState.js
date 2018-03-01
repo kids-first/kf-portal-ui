@@ -4,17 +4,15 @@ export default provideState({
   initialState: props => ({
     modalState: {
       isShown: false,
-      content: null,
-      title: null,
+      component: null,
     },
   }),
   effects: {
-    setModal: (effects, { content, title }) => state => ({
+    setModal: (effects, component) => state => ({
       ...state,
       modalState: {
-        content,
-        isShown: !!content,
-        title: title || null,
+        component,
+        isShown: !!component,
       },
     }),
     showModal: effects => state => {

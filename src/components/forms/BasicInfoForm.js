@@ -136,6 +136,14 @@ export default compose(
     setLocation,
   }) => (
     <div>
+      <h2
+        css={`
+          ${theme.profileH2} ${theme.row} justify-content: space-between;
+        `}
+      >
+        Edit Basic Information
+        <CloseIcon onClick={() => setModal(null)} />
+      </h2>
       <div css={theme.row}>
         <div
           css={`
