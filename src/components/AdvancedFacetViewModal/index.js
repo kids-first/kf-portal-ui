@@ -43,7 +43,7 @@ class AdvancedFacetViewModalContent extends React.Component {
         <ModalFooter
           {...{
             unsetModal: closeModal,
-            handleSubmit: onSqonSubmit,
+            handleSubmit: e => onSqonSubmit({ sqon: localSqon }),
             submitText: 'View Results',
           }}
         />
