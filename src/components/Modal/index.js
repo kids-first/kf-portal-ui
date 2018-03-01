@@ -34,6 +34,10 @@ export const ModalFooter = enhance(
         padding: 1em;
         margin-top: 1em;
         justify-content: space-between;
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
       `}
     >
       <button css={theme.wizardButton} onClick={() => unsetModal()}>
@@ -46,7 +50,15 @@ export const ModalFooter = enhance(
   ),
 );
 
-const ModalView = ({ theme, content, title, setModal, unsetModal, ...props }) => (
+const ModalView = ({
+  isFooterShown = true,
+  theme,
+  content,
+  title,
+  setModal,
+  unsetModal,
+  ...props
+}) => (
   <Modal
     style={{
       overlay: {
@@ -60,7 +72,7 @@ const ModalView = ({ theme, content, title, setModal, unsetModal, ...props }) =>
         zIndex: '111',
       },
       content: {
-        position: 'initial',
+        position: 'relative',
         border: '1px solid rgb(204, 204, 204)',
         background: 'rgb(255, 255, 255)',
         borderRadius: '4px',
@@ -68,6 +80,11 @@ const ModalView = ({ theme, content, title, setModal, unsetModal, ...props }) =>
         width: '55%',
         boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 15px',
         overflow: 'visible',
+        ...(isFooterShown
+          ? {
+              paddingBottom: 75,
+            }
+          : {}),
       },
     }}
     {...props}

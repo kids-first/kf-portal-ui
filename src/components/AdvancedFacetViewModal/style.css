@@ -1,7 +1,8 @@
 .advancedFacetsWrapper {
   flex: 1;
   display: flex;
-  height: 800px;
+  min-height: 700px;
+  max-height: 800px;
 }
 .advancedFacetsTitle {
   margin-left: 20px;
@@ -12,15 +13,6 @@
   font-family: Montserrat;
   text-align: left;
   color: #2b388f;
-}
-.advancedFacetsFooter {
-  background-color: #edeef1;
-  box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1;
-  padding: 20px;
 }
 .submitButton {
   border-radius: 20px;

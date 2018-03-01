@@ -141,7 +141,7 @@ export default compose(
     setLocation,
   }) => (
     <div>
-      <div css={theme.row}>
+      <div style={{ marginBottom: 20 }} css={theme.row}>
         <div
           css={`
             padding-right: 30px;
