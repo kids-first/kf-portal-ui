@@ -3,14 +3,16 @@ import { provideState } from 'freactal';
 export default provideState({
   initialState: props => ({
     modalState: {
+      title: null,
       isShown: false,
       component: null,
     },
   }),
   effects: {
-    setModal: (effects, component) => state => ({
+    setModal: (effects, title, component) => state => ({
       ...state,
       modalState: {
+        title,
         component,
         isShown: !!component,
       },
