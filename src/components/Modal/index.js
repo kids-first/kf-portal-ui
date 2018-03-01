@@ -12,31 +12,41 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
       ${theme.profileH2} ${theme.row} justify-content: space-between;
     `}
   >
-    {title}
+    <span>{title}</span>
     <CloseIcon onClick={() => unsetModal()} />
   </h2>
 );
 
-const ModalFooter = ({ theme, setModal, unsetModal, ...props }) => (
-  <div
-    css={`
-      ${theme.row} background-color: #edeef1;
-      border-radius: 5px;
-      padding: 1em;
-      margin-top: 1em;
-      justify-content: space-between;
-    `}
-  >
-    <button css={theme.wizardButton} onClick={() => unsetModal()}>
-      Cancel
-    </button>
-    <button css={theme.actionButton} onClick={props.handleSubmit}>
-      Save
-    </button>
-  </div>
+export const ModalFooter = enhance(
+  ({
+    theme,
+    setModal,
+    unsetModal,
+    submitText = 'Save',
+    cancelText = 'Cancel',
+    handleSubmit,
+    ...props
+  }) => (
+    <div
+      css={`
+        ${theme.row} background-color: #edeef1;
+        border-radius: 5px;
+        padding: 1em;
+        margin-top: 1em;
+        justify-content: space-between;
+      `}
+    >
+      <button css={theme.wizardButton} onClick={() => unsetModal()}>
+        Cancel
+      </button>
+      <button css={theme.actionButton} onClick={handleSubmit}>
+        Save
+      </button>
+    </div>
+  ),
 );
 
-const ModalView = ({ theme, children, title, setModal, unsetModal, ...props }) => (
+const ModalView = ({ theme, content, title, setModal, unsetModal, ...props }) => (
   <Modal
     style={{
       overlay: {
@@ -62,9 +72,8 @@ const ModalView = ({ theme, children, title, setModal, unsetModal, ...props }) =
     }}
     {...props}
   >
-    <ModalHeader {...{ theme, title, unsetModal, ...props }} />
-    {children}
-    <ModalFooter {...{ theme, setModal, unsetModal, ...props }} />
+    {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
+    {content}
   </Modal>
 );
 

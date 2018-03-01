@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
-import Modal from './components/Modal';
+import Modal from './components/Modal/index.js';
 
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
@@ -102,11 +102,10 @@ const render = ({
               unsetModal: effects.unsetModal,
               setModal: effects.setModal,
               title: modalState.title,
+              content: modalState.component,
               appElement,
             }}
-          >
-            {modalState.component}
-          </Modal>
+          />
           <Toast {...toast}>{toast.component}</Toast>
         </div>
       </ThemeProvider>

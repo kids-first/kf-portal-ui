@@ -16,6 +16,7 @@ import { googleMapsKey } from 'common/injectGlobals';
 import { updateProfile } from 'services/profiles';
 import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
+import { ModalFooter } from '../Modal/index.js';
 
 const StyledLabel = styled('label')`
   font-family: Montserrat;
@@ -292,22 +293,7 @@ export default compose(
           </div>
         </form>
       </div>
-      <div
-        css={`
-          ${theme.row} background-color: #edeef1;
-          border-radius: 5px;
-          padding: 1em;
-          margin-top: 1em;
-          justify-content: space-between;
-        `}
-      >
-        <button css={theme.wizardButton} onClick={() => unsetModal()}>
-          Cancel
-        </button>
-        <button css={theme.actionButton} onClick={handleSubmit}>
-          Save
-        </button>
-      </div>
+      <ModalFooter {...{ unsetModal, handleSubmit }} />
     </div>
   ),
 );
