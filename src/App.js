@@ -27,18 +27,19 @@ const Page = ({ Component, ...props }) => (
   <div
     css={`
       position: relative;
-      height: 100vh;
+      min-height: 100vh;
       min-width: 1024;
+      background-image: url(${scienceBgPath});
     `}
   >
     <div
       className={css`
-        background-image: url(${scienceBgPath});
         background-repeat: repeat;
         height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
+        padding-bottom: 120px;
       `}
     >
       <Header />

@@ -5,6 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState, shouldUpdate, mapProps } from 'recompose';
 import CloseIcon from 'react-icons/lib/md/close';
+import { withTheme } from 'emotion-theming';
 
 /*----------------------------------------------------------------------------*/
 
@@ -32,38 +33,17 @@ const styles = {
   active: {
     transform: 'translateY(0)',
   },
-  info: {
-    color: '#5C5151',
-    backgroundColor: '#EDF8FB',
-    border: '1px solid #B4CCD4',
-  },
-  success: {
-    color: '#3c763d',
-    backgroundColor: '#dff0d8',
-    border: '1px solid #d6e9c6',
-  },
-  error: {
-    color: '#773c63',
-    backgroundColor: '#f0d8dd',
-    border: '1px solid #e9c6c6',
-  },
-  warning: {
-    color: '#8a6d3b',
-    backgroundColor: '#fcf8e3',
-    border: '1px solid #faebcc',
-  },
   toast: {
     position: 'relative',
     padding: '1.5rem',
-    width: '40rem',
-    borderRadius: '10px',
     pointerEvents: 'all',
-    boxShadow: '0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)',
   },
   closeIcon: {
     position: 'absolute',
     top: '5px',
     right: '5px',
+    width: '15px',
+    height: '15px',
     cursor: 'pointer',
     ':hover': {
       color: 'red',
@@ -71,7 +51,7 @@ const styles = {
   },
 };
 
-const Toast = ({ style, visible, action, close, closed, children, className }) => (
+const Toast = ({ style, theme, visible, action, close, closed, children, className }) => (
   <div style={styles.wrapper} className={className}>
     <div
       style={{
@@ -81,7 +61,7 @@ const Toast = ({ style, visible, action, close, closed, children, className }) =
       }}
       className="test-notification"
     >
-      <div style={{ ...styles.toast, ...(styles[action] || styles.success) }}>
+      <div style={{ ...styles.toast }} css={theme[action] || theme.success}>
         <CloseIcon style={styles.closeIcon} onClick={close} />
         {children}
       </div>
@@ -103,6 +83,7 @@ let timeoutId;
 let pageload = false;
 
 const enhance = compose(
+  withTheme,
   withState('visible', 'setState', false),
   shouldUpdate((props, nextProps) => {
     // Do not render on the first prop update, such as store rehydration

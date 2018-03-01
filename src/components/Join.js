@@ -205,7 +205,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       className={theme.wizardButton}
                       onClick={() => {
                         setToast({
-                          id: Date.now(),
+                          id: `${Date.now()}`,
                           action: 'success',
                           component: (
                             <div>
