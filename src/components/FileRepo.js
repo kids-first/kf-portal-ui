@@ -17,7 +17,7 @@ import Stats from './Stats';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
-import AdvancedFacetViewModal from './AdvancedFacetViewModal/index.js';
+import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
 
 const enhance = compose(injectState);
 
@@ -40,7 +40,7 @@ const arrangerStyles = css`
   }
 `;
 
-const AggregationsWrapper = injectState(({ state, effects, ...props }) => {
+const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) => {
   return (
     <div
       css={`
@@ -68,7 +68,24 @@ const AggregationsWrapper = injectState(({ state, effects, ...props }) => {
         >
           Filters <InfoIcon />
         </div>
-        <LightButton onClick={() => effects.showModal()}>ALL FILTERS</LightButton>
+        <LightButton
+          onClick={() =>
+            effects.setModal({
+              title: 'All Filters',
+              component: (
+                <AdvancedFacetViewModalContent
+                  {...{
+                    ...props,
+                    closeModal: effects.unsetModal,
+                    onSqonSubmit: ({ sqon }) => setSQON(sqon),
+                  }}
+                />
+              ),
+            })
+          }
+        >
+          ALL FILTERS
+        </LightButton>
       </div>
       <Aggregations {...props} />
     </div>
@@ -129,11 +146,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                 <div>
                   <DetectNewVersion {...props} />
                   <div css={arrangerStyles}>
-                    <AggregationsWrapper
-                      {...props}
-                      {...url}
-                      showAdvancedFacetView={() => effects.showModal()}
-                    />
+                    <AggregationsWrapper {...props} {...url} />
                     <div
                       style={{
                         position: 'relative',
@@ -153,18 +166,6 @@ const FileRepo = ({ state, effects, ...props }) => {
                       streamData={props.streamData(props.index, props.projectId)}
                     />
                   </div>
-                  {state.modalState.isShown && (
-                    <AdvancedFacetViewModal
-                      {...{
-                        ...props,
-                        ...url,
-                        closeModal: effects.hideModal,
-                        onSqonSubmit: ({ sqon }) => {
-                          url.setSQON(sqon);
-                        },
-                      }}
-                    />
-                  )}
                 </div>
               );
             }}

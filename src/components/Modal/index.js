@@ -37,10 +37,10 @@ export const ModalFooter = enhance(
       `}
     >
       <button css={theme.wizardButton} onClick={() => unsetModal()}>
-        Cancel
+        {cancelText}
       </button>
       <button css={theme.actionButton} onClick={handleSubmit}>
-        Save
+        {submitText}
       </button>
     </div>
   ),
