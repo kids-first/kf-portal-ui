@@ -6,7 +6,37 @@ import { compose, withState } from 'recompose';
 
 const enhance = compose(withTheme);
 
-const ModalView = ({ theme, children, title, setModal, ...props }) => (
+const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
+  <h2
+    css={`
+      ${theme.profileH2} ${theme.row} justify-content: space-between;
+    `}
+  >
+    {title}
+    <CloseIcon onClick={() => unsetModal()} />
+  </h2>
+);
+
+const ModalFooter = ({ theme, setModal, unsetModal, ...props }) => (
+  <div
+    css={`
+      ${theme.row} background-color: #edeef1;
+      border-radius: 5px;
+      padding: 1em;
+      margin-top: 1em;
+      justify-content: space-between;
+    `}
+  >
+    <button css={theme.wizardButton} onClick={() => unsetModal()}>
+      Cancel
+    </button>
+    <button css={theme.actionButton} onClick={props.handleSubmit}>
+      Save
+    </button>
+  </div>
+);
+
+const ModalView = ({ theme, children, title, setModal, unsetModal, ...props }) => (
   <Modal
     style={{
       overlay: {
@@ -32,15 +62,9 @@ const ModalView = ({ theme, children, title, setModal, ...props }) => (
     }}
     {...props}
   >
-    <h2
-      css={`
-        ${theme.profileH2} ${theme.row} justify-content: space-between;
-      `}
-    >
-      {title}
-      <CloseIcon onClick={() => setModal(null)} />
-    </h2>
+    <ModalHeader {...{ theme, title, unsetModal, ...props }} />
     {children}
+    <ModalFooter {...{ theme, setModal, unsetModal, ...props }} />
   </Modal>
 );
 

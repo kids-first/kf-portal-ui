@@ -9,7 +9,7 @@ export default provideState({
     },
   }),
   effects: {
-    setModal: (effects, title, component) => state => ({
+    setModal: (effects, { title, component }) => state => ({
       ...state,
       modalState: {
         title,
@@ -17,6 +17,16 @@ export default provideState({
         isShown: !!component,
       },
     }),
+    unsetModal: effects => state => {
+      return {
+        ...state,
+        modalState: {
+          title: null,
+          isShown: false,
+          component: null,
+        },
+      };
+    },
     showModal: effects => state => {
       return {
         ...state,

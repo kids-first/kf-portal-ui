@@ -98,7 +98,12 @@ const render = ({
           </Switch>
           <Modal
             isOpen={!!modalState.component}
-            {...{ setModal: effects.setModal, title: modalState.title, appElement }}
+            {...{
+              unsetModal: effects.unsetModal,
+              setModal: effects.setModal,
+              title: modalState.title,
+              appElement,
+            }}
           >
             {modalState.component}
           </Modal>

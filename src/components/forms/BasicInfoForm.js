@@ -100,7 +100,11 @@ export default compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser, setModal }, ...restProps },
+        props: {
+          state: { loggedInUser },
+          effects: { setUser, setModal, unsetModal },
+          ...restProps
+        },
         setSubmitting,
         setErrors,
       }: any,
@@ -115,7 +119,7 @@ export default compose(
       }).then(
         async profile => {
           await setUser({ ...profile, email });
-          setModal(null);
+          unsetModal();
         },
         errors => setSubmitting(false),
       );
@@ -131,7 +135,7 @@ export default compose(
     handleSubmit,
     handleChange,
     state: { loggedInUser },
-    effects: { setModal },
+    effects: { setModal, unsetModal },
     location,
     setLocation,
   }) => (
@@ -297,7 +301,7 @@ export default compose(
           justify-content: space-between;
         `}
       >
-        <button css={theme.wizardButton} onClick={() => setModal(null)}>
+        <button css={theme.wizardButton} onClick={() => unsetModal()}>
           Cancel
         </button>
         <button css={theme.actionButton} onClick={handleSubmit}>
