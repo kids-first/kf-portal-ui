@@ -8,6 +8,7 @@ import {
   withPropsOnChange,
   branch,
   renderComponent,
+  withHandlers,
 } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
@@ -16,6 +17,7 @@ import PencilIcon from 'react-icons/lib/fa/pencil';
 
 import { withTheme } from 'emotion-theming';
 
+import { updateProfile } from 'services/profiles';
 import { ROLES } from 'common/constants';
 import { getProfile } from 'services/profiles';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
@@ -97,11 +99,23 @@ export default compose(
     }),
   ),
   withRouter,
+  withHandlers({
+    submit: ({ profile, effects: { setUser } }) => async values => {
+      await updateProfile({
+        user: {
+          ...profile,
+          ...values,
+        },
+      }).then(async updatedProfile => {
+        await setUser(updatedProfile);
+      });
+    },
+  }),
   branch(
     ({ profile }) => !profile || profile.length === 0,
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
-)(({ state, effects: { setModal }, profile, theme, canEdit, mode, setMode }) => (
+)(({ state, effects: { setModal }, profile, theme, canEdit, mode, setMode, submit }) => (
   <div
     className={css`
       display: flex;
@@ -248,7 +262,7 @@ export default compose(
         </ul>
       </Container>
     </div>
-    {mode === 'aboutMe' && <AboutMe profile={profile} canEdit={canEdit} />}
-    {mode === 'settings' && <Settings profile={profile} />}
+    {mode === 'aboutMe' && <AboutMe profile={profile} canEdit={canEdit} submit={submit} />}
+    {mode === 'settings' && <Settings profile={profile} submit={submit} />}
   </div>
 ));

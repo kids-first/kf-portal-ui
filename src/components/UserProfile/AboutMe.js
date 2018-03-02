@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { xor } from 'lodash';
 import { css } from 'react-emotion';
-import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
+import { compose, withState, withPropsOnChange } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import SaveIcon from 'react-icons/lib/md/save';
@@ -9,7 +9,6 @@ import Autocomplete from 'react-autocomplete';
 import styled from 'react-emotion';
 
 import { withTheme } from 'emotion-theming';
-import { updateProfile } from 'services/profiles';
 import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
 import { Container, EditButton, H2, H3, H4 } from './';
@@ -70,30 +69,16 @@ export default compose(
     },
   ),
   withRouter,
-  withHandlers({
-    submit: ({ profile, effects: { setUser } }) => async values => {
-      await updateProfile({
-        user: {
-          ...profile,
-          ...values,
-        },
-      }).then(async updatedProfile => {
-        await setUser(updatedProfile);
-      });
-    },
-  }),
 )(
   ({
-    effects: { setModal },
     profile,
     theme,
     canEdit,
+    submit,
     isEditingBackgroundInfo,
     setEditingBackgroundInfo,
     editingResearchInterests,
     setEditingResearchInterests,
-    submit,
-    renderEditingButtons,
     bioTextarea,
     setBioTextarea,
     storyTextarea,
@@ -357,6 +342,11 @@ export default compose(
                   )
                 }
                 saveOnKeyDown={false}
+                renderNonEditing={v => (
+                  <ExternalLink href={`https://scholar.google.fr/citations?user=${v}`}>
+                    {v}
+                  </ExternalLink>
+                )}
                 renderButtons={() => <div />}
               />
             </StyledSection>

@@ -46,7 +46,7 @@ class AdvancedFacetViewModal extends React.Component {
             </div>
           </div>
           <div className="advancedFacetsFooter">
-            <div className="cancel" className="cancel" onClick={e => closeModal()}>
+            <div className="cancel" onClick={e => closeModal()}>
               Cancel
             </div>
             <div>
@@ -56,7 +56,6 @@ class AdvancedFacetViewModal extends React.Component {
                   onSqonSubmit({ sqon: localSqon });
                   closeModal();
                 }}
-                className="submitButton"
               >
                 View Results
               </div>
