@@ -6,28 +6,55 @@ const colors = {
   primaryHover: '#404c9a', //purple
   tertiary: '#009bb8', //teal-blue
   highlight: '#e83a9c', //pink
+  hover: '#c03299', //also pink
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
 
+  greyScale8: '#d4d6dd',
   greyScale7: 'rgb(107,98,98)',
   greyScale6: 'rgb(245,245,245)',
   greyScale5: 'rgb(222,222,222)',
   greyScale4: 'rgb(200, 200, 200)',
   greyScale3: 'rgb(144,144,144)', // not enough contrast on white background
   greyScale2: 'rgb(61,61,61)',
-  greyScale1: 'rgb(36,36,36)',
+  greyScale1: 'rgb(52, 52, 52)', //#343434
+  greyScale0: 'rgb(36,36,36)',
 };
 
 const components = {
+  linkAsButton: css`
+    font-family: Montserrat;
+    font-size: 12px;
+    line-height: 2.17;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: #ffffff;
+    display: block;
+    padding: 6px 16px;
+    margin: 0px 4px;
+    text-decoration: none;
+    border: solid 2px transparent;
+    background-color: ${colors.primary};
+    color: #fff;
+    letter-spacing: 0.2px;
+    border-radius: 19px;
+    border: solid 2px transparent;
+
+    &:hover {
+      border-radius: 19px;
+      background-color: #404c9a;
+      border: solid 2px #dcdde3;
+      color: #ffffff;
+    }
+  `,
   button: css`
     outline: none;
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     background-color: ${colors.primary};
-    color: white;
+    color: #fff;
     padding: 6px 16px;
     font-family: montserrat;
     font-size: 14px;
@@ -37,14 +64,17 @@ const components = {
     border-radius: 19px;
     border: solid 2px transparent;
 
+    a:hover,
     &:hover {
       background-color: ${colors.primaryHover};
       border: solid 2px #dcdde3;
       color: #ffffff;
     }
 
+    a,
     &:link {
-      color: #ffffff;
+      color: #ffffff !important;
+      text-decoration: none;
     }
   `,
   pill: css`
@@ -183,9 +213,9 @@ const components = {
   card: css`
     border-radius: 10px;
     background-color: #ffffff;
-    box-shadow: 0 0 4.9px 0.1px ${colors.greyScale5};
-    border: solid 1px ${colors.greyScale4};
-    padding: 20px 10px;
+    padding: 20px 30px;
+    box-shadow: 0 0 4.9px 0.1px #bbbbbb;
+    border: solid 1px #e0e1e6;
   `,
   profileH3: css`
     font-family: Montserrat;
@@ -209,8 +239,13 @@ const components = {
   `,
   h2: css`
     text-align: center;
-    font-family: 'Open Sans';
     color: ${colors.secondary};
+    font-family: Montserrat;
+    font-size: 30px;
+    line-height: 0.87;
+    letter-spacing: 0.4px;
+    color: #2b388f;
+    font-weight: 500;
   `,
   h3: css`
     font-family: 'Open Sans';
@@ -248,6 +283,21 @@ const components = {
   row: css`
     display: flex;
     flex-direction: row;
+  `,
+  navLink: css`
+    display: block;
+    color: #90278e;
+    padding: 6px 16px;
+    margin: 0px 4px;
+    text-decoration: none;
+    border: solid 2px transparent;
+
+    &:hover {
+      border-radius: 19px;
+      background-color: #404c9a;
+      border: solid 2px #dcdde3;
+      color: #ffffff;
+    }
   `,
   secondaryNav: css`
     list-style-type: none;
@@ -370,6 +420,54 @@ const components = {
     font-family: montserrat;
     font-size: 14px;
   `,
+  section: css`
+    font-family: 'Open Sans';
+    font-size: 14px;
+    line-height: 2.57;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: ${colors.greyScale1};
+
+    a {
+      color: ${colors.primary};
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: ${colors.highlight};
+      font-weight: 500;
+      text-decoration: none;
+    }
+  `,
+  //toasts
+  success: css`
+    font-family: OpenSans;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.85;
+    text-align: left;
+
+    color: ${colors.greyScale1};
+    border-radius: 5px;
+    background-color: #d9eaed;
+    box-shadow: 0 0 5.8px 0.2px #9b9b9d;
+    border: solid 2px ${colors.tertiary};
+    width: 469px;
+
+    a {
+      color: ${colors.primary};
+      text-decoration: underline;
+    }
+    a:hover {
+      color: ${colors.hover};
+      text-decoration: underline;
+    }
+  `,
+  //no styles for these yet
+  error: css``,
+  warning: css``,
+  info: css``,
 };
 
 export default {

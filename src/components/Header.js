@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { css } from 'react-emotion';
+import styled, { css } from 'react-emotion';
 
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
@@ -25,27 +25,13 @@ const navBar = css`
   font-size: 14px;
   line-height: 1.86;
   letter-spacing: 0.2px;
-
-  li {
-    a {
-      display: block;
-      color: #90278e;
-      padding: 6px 16px;
-      margin: 0px 4px;
-      text-decoration: none;
-      border: solid 2px transparent;
-    }
-
-    a:hover {
-      border-radius: 19px;
-      background-color: #404c9a;
-      border: solid 2px #dcdde3;
-      color: #ffffff;
-    }
-  }
 `;
 
-const Header = ({ state: { loggedInUser }, theme, history }) => {
+const NavLink = styled(Link)`
+  ${props => props.theme.navLink};
+`;
+
+const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) => {
   const hasRoleSelected = !loggedInUser || (loggedInUser.roles && loggedInUser.roles[0]);
   return (
     <div
@@ -79,15 +65,15 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
               `}
             />
           </Link>
-          <ul className={navBar}>
+          <ul css={navBar}>
             <li>
-              <Link to="/">
+              <NavLink to="/">
                 <HouseIcon /> Dashboard
-              </Link>
+              </NavLink>
             </li>
             {loggedInUser && (
               <li>
-                <ToSearchPage index="file">
+                <ToSearchPage index="file" css={theme.navLink}>
                   <DatabaseIcon /> File Repository
                 </ToSearchPage>
               </li>
@@ -111,14 +97,20 @@ const Header = ({ state: { loggedInUser }, theme, history }) => {
           {loggedInUser &&
             hasRoleSelected && (
               <li>
-                <Link to={`/user/${loggedInUser.egoId}`}>User Profile</Link>
+                <NavLink to={`/user/${loggedInUser.egoId}`}>User Profile</NavLink>
               </li>
             )}
           {!loggedInUser && (
             <li>
-              <button className={theme.button} onClick={() => history.push('/join')}>
-                Sign-Up/Login
-              </button>
+              {path === '/' ? (
+                <Link css={theme.linkAsButton} to="/join">
+                  JOIN NOW
+                </Link>
+              ) : (
+                <Link css={theme.linkAsButton} to="/">
+                  LOGIN
+                </Link>
+              )}
             </li>
           )}
           {loggedInUser && (
