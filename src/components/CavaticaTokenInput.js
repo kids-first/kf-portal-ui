@@ -3,6 +3,9 @@ import { compose, withState } from 'recompose';
 
 import Button from 'uikit/Button';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
+import { setSecret } from 'services/secrets';
+import { CAVATICA } from 'common/constants';
+// import cavatica from 'services/cavatica';
 
 import { css } from 'emotion';
 import { injectState } from 'freactal';
@@ -109,7 +112,22 @@ const styles = css`
 const enhance = compose(
   injectState,
   withState('cavaticaKey', 'setCavaticaKey', ''),
+  withState('invalidToken', 'setInvalidToken', false),
 );
+
+const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
+
+  const valid = true;//await cavatica.validateToken(token);
+  if (valid) {
+    setSecret({ service: CAVATICA, secret: token });
+    setIntegrationToken(CAVATICA, token);
+    onSuccess();
+  } else {
+    onFail();
+  }
+
+}
+
 
 const CavaticaTokenInput = ({
   state,
@@ -121,6 +139,8 @@ const CavaticaTokenInput = ({
   setGen3Key,
   editingCavitca,
   setEditingCavatica,
+  invalidValue,
+  setInvalidToken,
   ...props
 }) => {
   return (
@@ -154,18 +174,16 @@ const CavaticaTokenInput = ({
             </div>
             <div>
               <span className="tokenTitle">Cavatica Authentication Token:</span>
-              <form action={() => props.onComplete(cavaticaKey)}>
-                <input
-                  className="tokenInput"
-                  id="cavaticaKey"
-                  type="text"
-                  value={cavaticaKey}
-                  name="cavatica"
-                  placeholder="Cavatica Key"
+              <input
+                className="tokenInput"
+                id="cavaticaKey"
+                type="text"
+                value={cavaticaKey}
+                name="cavatica"
+                placeholder="Cavatica Key"
 
-                  onChange={e => setCavaticaKey(e.target.value)}
-                />
-              </form>
+                onChange={e => setCavaticaKey(e.target.value)}
+              />
             </div>
           </div>
           <div className="modalFooter">
@@ -173,7 +191,14 @@ const CavaticaTokenInput = ({
               <span className="modalCancel clickable" onClick={props.onCancel}>Cancel</span>
             </div>
             <div css={css`text-align: right;`}>
-              <span ><Button onClick={() => props.onComplete(cavaticaKey)} >
+              <span ><Button id="cavaticaSubmitToken" onClick={() => {
+                submitCavaticaToken({
+                  token: cavaticaKey,
+                  setIntegrationToken: effects.setIntegrationToken,
+                  onSuccess: props.onComplete,
+                  onFail: () => setInvalidToken(true)
+                });
+              }} >
                 Connect
               </Button></span>
             </div>

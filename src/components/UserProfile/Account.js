@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
 import { H4 } from './';
+import UserIntegrations from './UserIntegrations';
 
 export const H2 = styled('h2') `
   font-family: Montserrat;
@@ -49,48 +50,7 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
 
       <SettingsSection>
         <H2>Integrations</H2>
-        <div
-          css={`
-            ${theme.column} width: 80%;
-          `}
-        >
-          <table
-            css={`
-              border-collapse: collapse;
-            `}
-          >
-            <thead
-              css={`
-                background-color: #edeef1;
-                border: solid 1px #e0e1e6;
-              `}
-            >
-              <tr>
-                <Td>Service</Td>
-                <Td>Purpose</Td>
-                <Td>Integrate</Td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <Td>Gen3 logo</Td>
-                <Td>
-                  <h3>Download Controlled Data</h3>
-                  Access and download controlled data by connecting your Kids First account to Gen3.
-                </Td>
-                <Td>Connect</Td>
-              </tr>
-              <tr>
-                <Td>Cavatica logo</Td>
-                <Td>
-                  <h3>Analyze Data</h3>
-                  Analyze data quickly by connecting your Kids First account to <a>Cavatica</a>.
-                </Td>
-                <Td>Connect</Td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <UserIntegrations />
       </SettingsSection>
 
       <SettingsSection>
