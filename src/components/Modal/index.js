@@ -1,10 +1,12 @@
 import React from 'react';
 import Modal from 'react-modal';
+import { injectState } from 'freactal';
 import CloseIcon from 'react-icons/lib/md/close';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
+import { getAppElement } from '../../services/globalDomNodes.js';
 
-const enhance = compose(withTheme);
+const enhance = compose(withTheme, injectState);
 
 const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
   <h2
@@ -87,7 +89,10 @@ const ModalView = ({
           : {}),
       },
     }}
-    {...props}
+    {...{
+      appElement: getAppElement(),
+      ...props,
+    }}
   >
     {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
     <div

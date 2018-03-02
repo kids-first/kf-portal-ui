@@ -56,13 +56,7 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
   return <Page {...props} />;
 };
 
-const render = ({
-  editing,
-  setEditing,
-  state,
-  effects,
-  appElement = document.getElementById('root'),
-}) => {
+const render = ({ editing, setEditing, state, effects }) => {
   const { loggedInUser, modalState, toast } = state;
   return (
     <Router>
@@ -103,7 +97,6 @@ const render = ({
               setModal: effects.setModal,
               title: modalState.title,
               content: modalState.component,
-              appElement,
             }}
           />
           <Toast {...toast}>{toast.component}</Toast>
