@@ -141,7 +141,14 @@ export default compose(
     setLocation,
   }) => (
     <div>
-      <div style={{ marginBottom: 20 }} css={theme.row}>
+      <div
+        css={`
+          ${theme.row};
+          margin-bottom: 20px;
+          z-index: 1;
+          position: relative;
+        `}
+      >
         <div
           css={`
             padding-right: 30px;

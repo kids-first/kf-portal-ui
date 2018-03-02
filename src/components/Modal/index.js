@@ -90,7 +90,13 @@ const ModalView = ({
     {...props}
   >
     {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
-    {content}
+    <div
+      css={`
+        z-index: 111;
+      `}
+    >
+      {content}
+    </div>
   </Modal>
 );
 
