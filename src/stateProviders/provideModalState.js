@@ -27,23 +27,5 @@ export default provideState({
         },
       };
     },
-    showModal: effects => state => {
-      return {
-        ...state,
-        modalState: {
-          ...state.modalState,
-          isShown: true,
-        },
-      };
-    },
-    hideModal: effects => state => {
-      return {
-        ...state,
-        modalState: {
-          ...state.modalState,
-          isShown: false,
-        },
-      };
-    },
   },
 });
