@@ -4,33 +4,12 @@
   min-height: 700px;
   max-height: 800px;
 }
-.advancedFacetsTitle {
-  margin-left: 20px;
-  margin-top: 20px;
-  border-bottom: solid 1px #d4d6dd;
-  padding-bottom: 10px;
-  margin-right: 20px;
-  font-family: Montserrat;
-  text-align: left;
-  color: #2b388f;
-}
-.submitButton {
-  border-radius: 20px;
-  background-color: #009bb8;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-}
-.cancel {
-  color: #009bb8;
-}
 .advancedFacetViewWrapper {
   padding: 0px;
 }
 .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
   border-bottom: none;
 }
-
 .advancedFacetViewWrapper .facetViewNode .aggregation-card .bucket .bucket-item {
   box-sizing: border-box;
 }
