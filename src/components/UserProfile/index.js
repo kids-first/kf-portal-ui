@@ -77,7 +77,6 @@ const submitBasicInfoForm = async (
     setErrors,
   }: any,
 ) => {
-  console.log('SUBMITTING!!!');
   const { email, ...rest } = loggedInUser;
   updateProfile({
     user: {
