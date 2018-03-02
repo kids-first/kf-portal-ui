@@ -128,7 +128,6 @@ export default compose(
         background-color: #1094d5;
         height: 330px;
         align-items: center;
-        padding: 0;
         display: flex;
         justify-content: center;
       `}

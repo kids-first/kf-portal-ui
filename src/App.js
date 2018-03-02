@@ -2,32 +2,26 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import './App.css';
-import { provideLoggedInUser, provideModalState } from 'stateProviders';
+import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import Modal from 'react-modal';
 
+import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
+import LoginPage from 'components/LoginPage';
 import AuthRedirect from 'components/AuthRedirect';
-import JoinHeader from 'components/JoinHeader';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import theme from 'theme/defaultTheme';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 
-const enhance = compose(provideLoggedInUser, provideModalState, injectState);
-
-const LandingContent = () => (
-  <div>
-    <h1 style={{ display: 'flex', justifyContent: 'center' }}>Kids First Data Portal</h1>
-    Pretty picture here 👶🌳🎈
-  </div>
-);
+const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
 
 const Page = ({ Component, ...props }) => (
   <div
@@ -35,12 +29,13 @@ const Page = ({ Component, ...props }) => (
       position: relative;
       min-height: 100vh;
       min-width: 1024;
+      background-image: url(${scienceBgPath});
     `}
   >
     <div
       className={css`
-        background-image: url(${scienceBgPath});
         background-repeat: repeat;
+        height: 100%;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -68,7 +63,7 @@ const render = ({
   effects,
   appElement = document.getElementById('root'),
 }) => {
-  const { loggedInUser, modalState } = state;
+  const { loggedInUser, modalState, toast } = state;
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -98,32 +93,8 @@ const render = ({
               exact
               render={props => forceSelectRole({ Component: UserProfile, loggedInUser, ...props })}
             />
-            <Route
-              path="/join"
-              exact
-              render={props => (
-                <div
-                  className={css`
-                    background-image: url(${scienceBgPath});
-                    background-repeat: repeat;
-                    height: 100%;
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                  `}
-                >
-                  <JoinHeader />
-                  <Join />
-                </div>
-              )}
-            />
-            <Route
-              exact
-              path="/"
-              render={props =>
-                forceSelectRole({ Component: LandingContent, loggedInUser, ...props })
-              }
-            />
+            <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
+            <Route path="/" exact render={props => <Page Component={LoginPage} {...props} />} />
           </Switch>
           <Modal
             isOpen={!!modalState.component}
@@ -153,6 +124,7 @@ const render = ({
           >
             {modalState.component}
           </Modal>
+          <Toast {...toast}>{toast.component}</Toast>
         </div>
       </ThemeProvider>
     </Router>
