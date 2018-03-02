@@ -11,7 +11,7 @@ import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
 import { setSecret, getSecret, deleteSecret } from 'services/secrets';
-import CavaticaInput from 'components/CavaticaTokenInput';
+import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
 import gen3Logo from 'assets/logo-gen3.png';
 import cavaticaLogo from 'assets/logo-cavatica.png';
 import { CAVATICA, GEN3 } from 'common/constants';
