@@ -50,10 +50,10 @@ const Consent = compose(
           Read and consent to our terms and conditions
         </h3>
         <textarea
-          className={css`
+          css={`
+            ${theme.textarea};
             min-height: 250px;
             width: 90%;
-            resize: none;
           `}
           value="Lollipop halvah cotton candy marshmallow gingerbread jelly beans topping. Fruitcake
             sugar plum tiramisu pie. Sugar plum sweet roll cake chocolate bar lollipop jelly
@@ -74,7 +74,7 @@ const Consent = compose(
             border: solid 1px ${theme.active};
             width: 90%;
             margin-top: 10px;
-            padding: 5px;
+            padding: 10px 25px;
           `}
         >
           <input
@@ -126,7 +126,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
   ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme }) => (
     <div
       className={css`
-        width: 80%;
+        width: 849px;
         margin: 5% auto 0 auto;
       `}
     >
@@ -158,15 +158,16 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                 </div>
               ),
               renderButtons: () => <div />,
-              canGoBack: false,
+              canGoBack: true,
             },
             {
               title: 'Basic Info',
               render: ({ nextStep, disableNextStep }) => (
                 <div>
-                  <h3 className={theme.h3}>A bit about you</h3>
+                  <h3 className={theme.h3}>Tell us about yourself</h3>
                   <p>
-                    Please provide a bit about yourself to help us provide you with a personalized
+                    {' '}
+                    Please provide information about yourself to help us personalize your
                     experience.
                   </p>
                   <SelectRoleForm
@@ -176,16 +177,28 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                 </div>
               ),
               renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
-                <ButtonsDiv
-                  className={css`
-                    justify-content: flex-end;
-                  `}
-                >
-                  <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
-                  <button className={theme.wizardButton} onClick={nextStep} disabled={nextDisabled}>
-                    Next
-                    <RightIcon />
-                  </button>
+                <ButtonsDiv>
+                  <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
+                    <LeftIcon />
+                    Back
+                  </DeleteButton>
+                  <div className={theme.row}>
+                    <DeleteButton
+                      css={`
+                        ${theme.wizardButton} font-weight: 300;
+                      `}
+                    >
+                      Cancel
+                    </DeleteButton>
+                    <button
+                      className={theme.actionButton}
+                      onClick={nextStep}
+                      disabled={nextDisabled}
+                    >
+                      Save
+                      <RightIcon />
+                    </button>
+                  </div>
                 </ButtonsDiv>
               ),
               canGoBack: true,
@@ -202,7 +215,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                   <div className={theme.row}>
                     <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
                     <button
-                      className={theme.wizardButton}
+                      className={theme.actionButton}
                       onClick={() => {
                         setToast({
                           id: `${Date.now()}`,
@@ -220,7 +233,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       }}
                       disabled={nextDisabled}
                     >
-                      Finish
+                      FINISH
                       <RightIcon />
                     </button>
                   </div>

@@ -9,7 +9,6 @@ import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete'
 import scriptjs from 'scriptjs';
 
 import styled, { css } from 'react-emotion';
-import CloseIcon from 'react-icons/lib/md/close';
 
 import { ROLES } from 'common/constants';
 import { googleMapsKey } from 'common/injectGlobals';
@@ -185,14 +184,21 @@ export default compose(
           >
             <StyledLabel>I am a</StyledLabel>
             {get(
-              ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {}),
+              ROLES.reduce(
+                (acc, { type, icon, color }) => ({
+                  ...acc,
+                  [type]: icon({
+                    height: '18px',
+                    className: css`
+                      margin: 5px 5px 5px 5px;
+                    `,
+                    fill: color,
+                  }),
+                }),
+                {},
+              ),
               values.roles,
-            )({
-              height: '14px',
-              className: css`
-                margin: 5px 5px 0 5px;
-              `,
-            })}
+            )}
             <Field
               component="select"
               name="roles"
@@ -223,7 +229,10 @@ export default compose(
           <div css={theme.column}>
             <StyledLabel>First Name:</StyledLabel>
             <Field
-              className={theme.input}
+              css={`
+                ${theme.input};
+                width: 90%;
+              `}
               name="firstName"
               placeholder="First Name"
               value={values.firstName}
@@ -233,7 +242,10 @@ export default compose(
           <div css={theme.column}>
             <StyledLabel>Last Name:</StyledLabel>
             <Field
-              className={theme.input}
+              css={`
+                ${theme.input};
+                width: 90%;
+              `}
               name="lastName"
               placeholder="Last Name"
               value={values.lastName}
@@ -244,7 +256,10 @@ export default compose(
             <div css={theme.column} key="jobTitle">
               <StyledLabel>Job Title/Role:</StyledLabel>
               <Field
-                className={theme.input}
+                css={`
+                  ${theme.input};
+                  width: 90%;
+                `}
                 name="jobTitle"
                 placeholder="Job Title/Role"
                 value={values.jobTitle}
@@ -268,7 +283,10 @@ export default compose(
                 onChange: setLocation,
               }}
               classNames={{
-                input: theme.input,
+                input: css`
+                  ${theme.input};
+                  width: 90%;
+                `,
                 autocompleteContainer: css`
                   position: absolute;
                   top: 100%;
