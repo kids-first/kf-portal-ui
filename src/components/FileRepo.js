@@ -78,7 +78,6 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
                     ...props,
                     closeModal: effects.unsetModal,
                     onSqonSubmit: ({ sqon }) => {
-                      console.log('sqon: ', sqon);
                       setSQON(sqon);
                       effects.unsetModal();
                     },
