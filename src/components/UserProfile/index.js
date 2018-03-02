@@ -69,30 +69,6 @@ export const H4 = styled('h4')`
   font-weight: normal;
 `;
 
-const submitBasicInfoForm = async (
-  values: any,
-  {
-    props: { state: { loggedInUser }, effects: { setUser, setModal, unsetModal }, ...restProps },
-    setSubmitting,
-    setErrors,
-  }: any,
-) => {
-  const { email, ...rest } = loggedInUser;
-  updateProfile({
-    user: {
-      ...rest,
-      ...values,
-      roles: [values.roles],
-    },
-  }).then(
-    async profile => {
-      await setUser({ ...profile, email });
-      unsetModal();
-    },
-    errors => setSubmitting(false),
-  );
-};
-
 export default compose(
   injectState,
   withState('profile', 'setProfile', {}),
