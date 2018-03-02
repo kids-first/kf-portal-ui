@@ -22,6 +22,7 @@ import { ROLES } from 'common/constants';
 import { getProfile } from 'services/profiles';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 
+import { enhanceWithModalState } from '../Modal';
 import researcherBanner from 'assets/user-banner-researcher.jpg';
 import patientBanner from 'assets/user-banner-patient.jpg';
 
@@ -129,7 +130,6 @@ export default compose(
         background-color: #1094d5;
         height: 330px;
         align-items: center;
-        padding: 0;
         display: flex;
         justify-content: center;
       `}
@@ -204,7 +204,14 @@ export default compose(
                 margin-top: 5px;
               `}
             >
-              <EditButton onClick={() => setModal(<BasicInfoForm />)} />
+              <EditButton
+                onClick={() =>
+                  setModal({
+                    title: 'Edit Basic Information',
+                    component: <BasicInfoForm />,
+                  })
+                }
+              />
             </span>
           </div>
         </div>

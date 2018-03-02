@@ -1,72 +1,12 @@
-.advancedFacetsOverlay {
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.advacnedFacetsContainer {
-  width: 1000px;
-  height: 800px;
-  position: relative;
-  background: white;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.advacnedFacetsContainer .advancedFacetsWrapper {
-  flex: 1;
-  display: flex;
-  padding: 20px;
-  padding-bottom: 0px;
-}
-.advacnedFacetsContainer .advancedFacetsTitle {
-  margin-left: 20px;
-  margin-top: 20px;
-  border-bottom: solid 1px #d4d6dd;
-  padding-bottom: 10px;
-  margin-right: 20px;
-  font-family: Montserrat;
-  text-align: left;
-  color: #2b388f;
-}
-.advacnedFacetsContainer .advancedFacetsFooter {
-  background-color: #edeef1;
-  box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1;
-  padding: 20px;
-}
-.advacnedFacetsContainer .submitButton {
-  border-radius: 20px;
-  background-color: #009bb8;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-}
-.advacnedFacetsContainer .cancel {
-  color: #009bb8;
-}
-.advacnedFacetsContainer .advancedFacetViewWrapper {
+.advancedFacetViewWrapper {
   padding: 0px;
 }
-.advacnedFacetsContainer .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
+.advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
   border-bottom: none;
 }
-
-.advacnedFacetsContainer
-  .advancedFacetViewWrapper
-  .facetViewNode
-  .aggregation-card
-  .bucket
-  .bucket-item {
+.advancedFacetViewWrapper .facetViewNode .aggregation-card .bucket .bucket-item {
   box-sizing: border-box;
+}
+.dropDownHeader {
+  z-index: 100;
 }
