@@ -22,43 +22,42 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
 export const ModalFooter = enhance(
   ({
     theme,
-    setModal,
-    unsetModal,
+    effects: { setModal, unsetModal },
     submitText = 'Save',
     cancelText = 'Cancel',
     handleSubmit,
     ...props
-  }) => (
-    <div
-      css={`
-        ${theme.row} background-color: #edeef1;
-        border-radius: 5px;
-        padding: 1em;
-        margin-top: 1em;
-        justify-content: space-between;
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-      `}
-    >
-      <button css={theme.wizardButton} onClick={() => unsetModal()}>
-        {cancelText}
-      </button>
-      <button css={theme.actionButton} onClick={handleSubmit}>
-        {submitText}
-      </button>
-    </div>
-  ),
+  }) => {
+    return (
+      <div
+        css={`
+          ${theme.row} background-color: #edeef1;
+          border-radius: 5px;
+          padding: 1em;
+          margin-top: 1em;
+          justify-content: space-between;
+          position: absolute;
+          left: 0px;
+          right: 0px;
+          bottom: 0px;
+        `}
+      >
+        <button css={theme.wizardButton} onClick={() => unsetModal()}>
+          {cancelText}
+        </button>
+        <button css={theme.actionButton} onClick={handleSubmit}>
+          {submitText}
+        </button>
+      </div>
+    );
+  },
 );
 
 const ModalView = ({
   isFooterShown = true,
   theme,
-  content,
-  title,
-  setModal,
-  unsetModal,
+  effects: { setModal, unsetModal },
+  state: { modalState: { component, title } },
   ...props
 }) => (
   <Modal
@@ -91,6 +90,7 @@ const ModalView = ({
     }}
     {...{
       appElement: getAppElement(),
+      isOpen: !!component,
       ...props,
     }}
   >
@@ -100,7 +100,7 @@ const ModalView = ({
         z-index: 111;
       `}
     >
-      {content}
+      {component}
     </div>
   </Modal>
 );

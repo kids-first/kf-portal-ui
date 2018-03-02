@@ -90,15 +90,7 @@ const render = ({ editing, setEditing, state, effects }) => {
             <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
             <Route path="/" exact render={props => <Page Component={LoginPage} {...props} />} />
           </Switch>
-          <Modal
-            isOpen={!!modalState.component}
-            {...{
-              unsetModal: effects.unsetModal,
-              setModal: effects.setModal,
-              title: modalState.title,
-              content: modalState.component,
-            }}
-          />
+          <Modal isOpen={!!modalState.component} />
           <Toast {...toast}>{toast.component}</Toast>
         </div>
       </ThemeProvider>
