@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import CloseIcon from 'react-icons/lib/md/close';
 import { withTheme } from 'emotion-theming';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 
 const enhance = compose(withTheme);
 
