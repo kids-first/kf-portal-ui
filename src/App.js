@@ -124,7 +124,7 @@ const render = ({
           >
             {modalState.component}
           </Modal>
-          <Toast {...toast}>{Object.keys(toast).length && toast.component}</Toast>
+          <Toast {...toast}>{toast.component}</Toast>
         </div>
       </ThemeProvider>
     </Router>
