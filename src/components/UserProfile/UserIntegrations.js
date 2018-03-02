@@ -165,12 +165,8 @@ const UserIntegrations = ({
       {
         editingCavatica &&
         <CavaticaInput
-          onComplete={(token) => {
-            setEditingCavatica(false);
-            setSecret({ service: CAVATICA, secret: token });
-            effects.setIntegrationToken(CAVATICA, token);
-          }}
-          onCancel={() => { setEditingCavatica(false) }}
+          onComplete={() => setEditingCavatica(false)}
+          onCancel={() => setEditingCavatica(false)}
         />
 
       }
