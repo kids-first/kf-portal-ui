@@ -14,6 +14,7 @@ import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
 import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
+import { ModalFooter } from '../Modal/index.js';
 
 const StyledLabel = styled('label') `
   font-family: Montserrat;
@@ -75,7 +76,11 @@ export default compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser, setModal }, ...restProps },
+        props: {
+          state: { loggedInUser },
+          effects: { setUser, setModal, unsetModal },
+          ...restProps
+        },
         setSubmitting,
         setErrors,
       }: any,
@@ -90,7 +95,7 @@ export default compose(
       }).then(
         async profile => {
           await setUser({ ...profile, email });
-          setModal(null);
+          unsetModal();
         },
         errors => setSubmitting(false),
       );
@@ -106,20 +111,19 @@ export default compose(
     handleSubmit,
     handleChange,
     state: { loggedInUser },
-    effects: { setModal },
+    effects: { setModal, unsetModal },
     location,
     setLocation,
   }) => (
       <div>
-        <h2
+        <div
           css={`
-          ${theme.profileH2} ${theme.row} justify-content: space-between;
+          ${theme.row};
+          margin-bottom: 20px;
+          z-index: 1;
+          position: relative;
         `}
         >
-          Edit Basic Information
-        <CloseIcon onClick={() => setModal(null)} />
-        </h2>
-        <div css={theme.row}>
           <div
             css={`
             padding-right: 30px;
@@ -291,25 +295,10 @@ export default compose(
                     .catch(error => console.error(error));
                 }}
               />
-            </div>
-          </form>
+          </div>
+        </form>
         </div>
-        <div
-          css={`
-          ${theme.row} background-color: #edeef1;
-          border-radius: 5px;
-          padding: 1em;
-          margin-top: 1em;
-          justify-content: space-between;
-        `}
-        >
-          <button css={theme.wizardButton} onClick={() => setModal(null)}>
-            Cancel
-        </button>
-          <button css={theme.actionButton} onClick={handleSubmit}>
-            Save
-        </button>
-        </div>
+        <ModalFooter {...{ unsetModal, handleSubmit }} />
       </div>
     ),
 );

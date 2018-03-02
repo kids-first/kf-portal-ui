@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
-import Modal from 'react-modal';
+import Modal from './components/Modal/index.js';
 
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
@@ -56,13 +56,7 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
   return <Page {...props} />;
 };
 
-const render = ({
-  editing,
-  setEditing,
-  state,
-  effects,
-  appElement = document.getElementById('root'),
-}) => {
+const render = ({ editing, setEditing, state, effects }) => {
   const { loggedInUser, modalState, toast } = state;
   return (
     <Router>
@@ -96,36 +90,7 @@ const render = ({
             <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
             <Route path="/" exact render={props => <Page Component={LoginPage} {...props} />} />
           </Switch>
-          <Modal
-
-            isOpen={modalState.isShown}
-            style={{
-              overlay: {
-                position: 'fixed',
-                top: '0px',
-                left: '0px',
-                right: '0px',
-                bottom: '0px',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                display: 'block',
-                zIndex: '111',
-              },
-              content: {
-                position: 'initial',
-                border: '1px solid rgb(204, 204, 204)',
-                background: 'rgb(255, 255, 255)',
-                borderRadius: '4px',
-                margin: '30px auto',
-                width: '55%',
-                boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 15px',
-                overflow: 'visible',
-              },
-            }}
-
-            appElement={document.getElementById('root')}
-          >
-            {modalState.component}
-          </Modal>
+          <Modal />
           <Toast {...toast}>{toast.component}</Toast>
         </div>
       </ThemeProvider>
