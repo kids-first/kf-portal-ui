@@ -4,7 +4,6 @@ export default provideState({
   initialState: props => ({
     modalState: {
       title: null,
-      isShown: false,
       component: null,
     },
   }),
@@ -14,7 +13,6 @@ export default provideState({
       modalState: {
         title,
         component,
-        isShown: !!component,
       },
     }),
     unsetModal: effects => state => {
@@ -22,7 +20,6 @@ export default provideState({
         ...state,
         modalState: {
           title: null,
-          isShown: false,
           component: null,
         },
       };
