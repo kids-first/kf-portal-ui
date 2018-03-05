@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import UserIntegrations from 'components/UserProfile/UserIntegrations'
 
 import { H4 } from './';
 import UserIntegrations from './UserIntegrations';
@@ -51,25 +52,6 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       <SettingsSection>
         <H2>Integrations</H2>
         <UserIntegrations />
-      </SettingsSection>
-
-      <SettingsSection>
-        <div
-          css={`
-            width: 200px;
-            padding-right: 10px;
-          `}
-        >
-          <H2>Primary goals</H2>
-          <H4>Help us prioritize your needs for using the Data Portal. Check all that apply.</H4>
-        </div>
-        <div
-          css={`
-            width: 80%;
-          `}
-        >
-          to do checkboxes
-        </div>
       </SettingsSection>
     </div >
   ),
