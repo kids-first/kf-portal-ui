@@ -12,7 +12,8 @@ import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { getProfile, createProfile } from 'services/profiles';
 import { getSecret } from 'services/secrets';
 import { googleAppId, egoApiRoot, allRedirectUris } from 'common/injectGlobals';
-import { SERVICES } from 'common/constants';
+import { SERVICES, CAVATICA } from 'common/constants';
+import { getUser as getCavaticaUser } from 'services/cavatica';
 
 const styles = {
   container: css`
@@ -60,10 +61,17 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
  *  to state once returned.
  */
 export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
-  SERVICES.forEach(service =>
-    getSecret({ service })
-      .then(token => setIntegrationToken(service, token))
-  );
+
+  getCavaticaUser()
+    .then(
+      userData => {
+        setIntegrationToken(CAVATICA, userData)
+      })
+    .catch(response => {
+      // Could not retrieve cavatica user info, nothing to do.
+    });
+
+  // TODO: Get Gen3 integration
 }
 
 class Component extends React.Component<any, any> {

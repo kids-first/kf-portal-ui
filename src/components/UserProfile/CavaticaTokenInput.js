@@ -3,9 +3,9 @@ import { compose, withState } from 'recompose';
 
 import Button from 'uikit/Button';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
-import { setSecret } from 'services/secrets';
+import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
-// import cavatica from 'services/cavatica';
+import { getUser as getCavaticaUser } from 'services/cavatica';
 
 import { css } from 'emotion';
 import { injectState } from 'freactal';
@@ -117,15 +117,16 @@ const enhance = compose(
 
 const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
 
-  const valid = true;//await cavatica.validateToken(token);
-  if (valid) {
-    setSecret({ service: CAVATICA, secret: token });
-    setIntegrationToken(CAVATICA, token);
-    onSuccess();
-  } else {
-    onFail();
-  }
-
+  await setSecret({ service: CAVATICA, secret: token });
+  await getCavaticaUser(token)
+    .then(userData => {
+      setIntegrationToken(CAVATICA, userData);
+      onSuccess();
+    })
+    .catch(response => {
+      deleteSecret(CAVATICA);
+      onFail();
+    });
 }
 
 

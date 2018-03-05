@@ -15,6 +15,7 @@ import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
 import gen3Logo from 'assets/logo-gen3.png';
 import cavaticaLogo from 'assets/logo-cavatica.png';
 import { CAVATICA, GEN3 } from 'common/constants';
+import { getUser } from 'services/cavatica';
 
 const styles = css`
     td {
@@ -92,6 +93,10 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
   )
 };
 
+const testMethod = () => {
+  console.log(getUser());
+}
+
 const UserIntegrations = ({
   state: { integrationTokens },
   effects,
@@ -134,7 +139,7 @@ const UserIntegrations = ({
                 {
                   integrationTokens[GEN3]
                     ? gen3Status(integrationTokens[GEN3])
-                    : <Button><span>Connect</span><RightIcon className="right" /></Button>
+                    : <Button onClick={() => testMethod()}><span>Connect</span><RightIcon className="right" /></Button>
                 }
               </div>
             </td>
