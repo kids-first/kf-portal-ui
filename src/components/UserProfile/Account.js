@@ -2,9 +2,7 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import UserIntegrations from 'components/UserProfile/UserIntegrations'
 
-import { H4 } from './';
 import UserIntegrations from './UserIntegrations';
 
 export const H2 = styled('h2') `
