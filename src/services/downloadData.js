@@ -45,7 +45,7 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
               field: 'participants.samples.kf_id',
               listAccessor: 'participants.hits.edges',
               query:
-                'participants { hits(first: 5) { total, edges { node { samples { hits(first: 99) { edges { node { kf_id } } } } } } } }',
+                'participants { hits { total, edges { node { samples { hits { edges { node { kf_id } } } } } } } }',
               type: 'list',
             },
           ],
