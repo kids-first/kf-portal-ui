@@ -124,7 +124,8 @@ const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFa
       onSuccess();
     })
     .catch(response => {
-      deleteSecret(CAVATICA);
+      setIntegrationToken(CAVATICA, null);
+      deleteSecret({ service: CAVATICA });
       onFail();
     });
 }
