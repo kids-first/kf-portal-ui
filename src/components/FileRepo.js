@@ -90,7 +90,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
           ALL FILTERS
         </LightButton>
       </div>
-      <Aggregations {...props} />
+      <Aggregations {...{ ...props, setSQON }} />
     </div>
   );
 });
