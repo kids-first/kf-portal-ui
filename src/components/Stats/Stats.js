@@ -59,7 +59,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', ...props }) =
   );
 };
 
-export default ({ stats, ...props }) => (
+export default ({ stats, className, ...props }) => (
   <div
     css={`
       border: solid 1px #e0e1e6;
@@ -67,6 +67,7 @@ export default ({ stats, ...props }) => (
       padding: 14px 0;
       align-items: center;
       background: #fff;
+      ${className};
     `}
   >
     {stats.map((stat, i) => [
