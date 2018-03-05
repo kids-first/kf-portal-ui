@@ -6,11 +6,13 @@ import { withFormik, Field } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
+import scriptjs from 'scriptjs';
 
 import styled, { css } from 'react-emotion';
 import CloseIcon from 'react-icons/lib/md/close';
 
 import { ROLES } from 'common/constants';
+import { googleMapsKey } from 'common/injectGlobals';
 import { updateProfile } from 'services/profiles';
 import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
@@ -26,6 +28,29 @@ const StyledLabel = styled('label') `
   font-weight: 900;
   border-bottom: none;
 `;
+
+class WrappedPlacesAutocomplete extends React.Component {
+  //https://github.com/kenny-hibino/react-places-autocomplete/pull/107
+  state = {
+    loaded: false,
+  };
+
+  componentDidMount() {
+    scriptjs(
+      `https://maps.googleapis.com/maps/api/js?key=${googleMapsKey}&libraries=places`,
+      () => {
+        this.setState({
+          loaded: true,
+        });
+      },
+    );
+  }
+
+  render() {
+    if (!this.state.loaded) return null;
+    return <PlacesAutocomplete {...this.props} />;
+  }
+}
 
 export default compose(
   withTheme,
@@ -220,47 +245,24 @@ export default compose(
                 <StyledLabel>Job Title/Role:</StyledLabel>
                 <Field
                   className={theme.input}
-                  name="firstName"
-                  placeholder="First Name"
-                  value={values.firstName}
+                  name="jobTitle"
+                  placeholder="Job Title/Role"
+                  value={values.jobTitle}
                 />
-                {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
-              </div>
-              <div css={theme.column}>
-                <StyledLabel>Last Name:</StyledLabel>
+              </div>,
+              <div css={theme.column} key="institution">
+                <StyledLabel>Institution:</StyledLabel>
                 <Field
                   className={theme.input}
-                  name="lastName"
-                  placeholder="Last Name"
-                  value={values.lastName}
+                  name="institution"
+                  placeholder="Institution"
+                  value={values.institution}
                 />
-                {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
-              </div>
-            {
-                values.roles === 'researcher' && [
-                  <div css={theme.column} key="jobTitle">
-                    <StyledLabel>Job Title/Role:</StyledLabel>
-                    <Field
-                      className={theme.input}
-                      name="jobTitle"
-                      placeholder="Job Title/Role"
-                      value={values.jobTitle}
-                    />
-                  </div>,
-                  <div css={theme.column} key="institution">
-                    <StyledLabel>Institution:</StyledLabel>
-                    <Field
-                      className={theme.input}
-                      name="institution"
-                      placeholder="Institution"
-                      value={values.institution}
-                    />
-                  </div>,
-                ]
-              }
-              < div >
+              </div>,
+            ]}
+            <div>
               <StyledLabel>Location:</StyledLabel>
-              <PlacesAutocomplete
+              <WrappedPlacesAutocomplete
                 inputProps={{
                   value: location,
                   onChange: setLocation,
@@ -295,8 +297,8 @@ export default compose(
                     .catch(error => console.error(error));
                 }}
               />
-          </div>
-        </form>
+            </div>
+          </form>
         </div>
         <ModalFooter {...{ unsetModal, handleSubmit }} />
       </div>

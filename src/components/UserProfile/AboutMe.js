@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { xor } from 'lodash';
 import { css } from 'react-emotion';
-import { compose, withState, withHandlers, withPropsOnChange } from 'recompose';
+import { compose, withState, withPropsOnChange } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import SaveIcon from 'react-icons/lib/md/save';
@@ -9,7 +9,6 @@ import Autocomplete from 'react-autocomplete';
 import styled from 'react-emotion';
 
 import { withTheme } from 'emotion-theming';
-import { updateProfile } from 'services/profiles';
 import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
 import { Container, EditButton, H2, H3, H4 } from './';
@@ -70,30 +69,16 @@ export default compose(
     },
   ),
   withRouter,
-  withHandlers({
-    submit: ({ profile, effects: { setUser } }) => async values => {
-      await updateProfile({
-        user: {
-          ...profile,
-          ...values,
-        },
-      }).then(async updatedProfile => {
-        await setUser(updatedProfile);
-      });
-    },
-  }),
 )(
   ({
-    effects: { setModal },
     profile,
     theme,
     canEdit,
+    submit,
     isEditingBackgroundInfo,
     setEditingBackgroundInfo,
     editingResearchInterests,
     setEditingResearchInterests,
-    submit,
-    renderEditingButtons,
     bioTextarea,
     setBioTextarea,
     storyTextarea,
@@ -329,86 +314,45 @@ export default compose(
                       <ClickToAdd
                         onClick={() => setEditingResearchInterests(!editingResearchInterests)}
                       >
-                        {i}
-                    </div>
-                    ))}
-                </div>
-              {editingResearchInterests && (
-                <Autocomplete
-                  inputProps={{ className: theme.input }}
-                  getItemValue={item => item.label}
-                  items={xor(['lung', 'heart', 'blood'], interests).map(item => ({
-                    label: item,
-                  }))}
-                  renderItem={(item, isHighlighted) => (
-                    <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                      {item.label}
-                    </div>
-                  )}
-                  value={interestAutocomplete}
-                  onChange={e => setInterestAutocomplete(e.target.value)}
-                  onSelect={val => {
-                    setInterests([...new Set([...interests, val])]);
-                    setInterestAutocomplete('');
-                  }}
-                  menuStyle={{
-                    backgroundcolor: '#fff',
-                    border: `1px solid ${theme.greyScale4}`,
-                    width: '100%',
-                    fontFamily: 'montserrat',
-                    fontSize: '14px',
-                  }}
+                        click to add
+                    </ClickToAdd>
+                    )
+                  }
+                  saveOnKeyDown={false}
+                  renderButtons={() => <div />}
+                  renderNonEditing={v => <ExternalLink href={v}>{v}</ExternalLink>}
                 />
-              )}
+              </StyledSection>
+              <StyledSection>
+                <H3>Google Scholar ID: </H3>
+                <EditableLabel
+                  isEditing={editingResearchInterests}
+                  disabled={true}
+                  required={false}
+                  name="googleScholarId"
+                  value={googleScholarId}
+                  onChange={e => setGoogleScholarId(e.target.value)}
+                  placeholderComponent={
+                    canEdit && (
+                      <ClickToAdd
+                        onClick={() => setEditingResearchInterests(!editingResearchInterests)}
+                      >
+                        click to add
+                    </ClickToAdd>
+                    )
+                  }
+                  saveOnKeyDown={false}
+                  renderNonEditing={v => (
+                    <ExternalLink href={`https://scholar.google.fr/citations?user=${v}`}>
+                      {v}
+                    </ExternalLink>
+                  )}
+                  renderButtons={() => <div />}
+                />
+              </StyledSection>
             </div>
-            <StyledSection>
-              <H3>Website URL:</H3>
-              <EditableLabel
-                isEditing={editingResearchInterests}
-                disabled={true}
-                required={false}
-                name="website"
-                value={website}
-                onChange={e => setWebsite(e.target.value)}
-                placeholderComponent={
-                  canEdit && (
-                    <ClickToAdd
-                      onClick={() => setEditingResearchInterests(!editingResearchInterests)}
-                    >
-                      click to add
-                    </ClickToAdd>
-                  )
-                }
-                saveOnKeyDown={false}
-                renderButtons={() => <div />}
-                renderNonEditing={v => <ExternalLink href={v}>{v}</ExternalLink>}
-              />
-            </StyledSection>
-            <StyledSection>
-              <H3>Google Scholar ID: </H3>
-              <EditableLabel
-                isEditing={editingResearchInterests}
-                disabled={true}
-                required={false}
-                name="googleScholarId"
-                value={googleScholarId}
-                onChange={e => setGoogleScholarId(e.target.value)}
-                placeholderComponent={
-                  canEdit && (
-                    <ClickToAdd
-                      onClick={() => setEditingResearchInterests(!editingResearchInterests)}
-                    >
-                      click to add
-                    </ClickToAdd>
-                  )
-                }
-                saveOnKeyDown={false}
-                renderButtons={() => <div />}
-              />
-            </StyledSection>
-          </div>
           </div>
         </Container>
-      </div >
+      </div>
     ),
 );

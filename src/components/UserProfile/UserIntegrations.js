@@ -101,8 +101,6 @@ const UserIntegrations = ({
   state: { integrationTokens },
   effects,
   theme,
-  editingCavatica,
-  setEditingCavatica,
   ...props
 }) => {
   return (
@@ -157,15 +155,21 @@ const UserIntegrations = ({
                     ? cavaticaStatus({
                       theme,
                       cavaticaKey: integrationTokens[CAVATICA],
-                      onEdit: () => setEditingCavatica(true),
+                      onEdit: () => effects.setModal({
+                        title: 'How to Connect to Cavatica',
+                        component: <CavaticaInput
+                          onComplete={effects.unsetModal}
+                          onCancel={effects.unsetModal}
+                        />,
+                      }),
                       onRemove: () => { deleteSecret({ service: CAVATICA }); effects.setIntegrationToken(CAVATICA, null); }
                     })
                     : <Button onClick={() =>
                       effects.setModal({
                         title: 'How to Connect to Cavatica',
                         component: <CavaticaInput
-                          onComplete={() => setEditingCavatica(false)}
-                          onCancel={() => setEditingCavatica(false)}
+                          onComplete={effects.unsetModal}
+                          onCancel={effects.unsetModal}
                         />,
                       })
                     }><span>Connect<RightIcon /> </span></Button>
