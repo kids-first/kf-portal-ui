@@ -18,7 +18,7 @@ import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 
-const StyledLabel = styled('label')`
+const StyledLabel = styled('label') `
   font-family: Montserrat;
   font-size: 14px;
   line-height: 2;
@@ -140,167 +140,167 @@ export default compose(
     location,
     setLocation,
   }) => (
-    <div>
-      <div
-        css={`
+      <div>
+        <div
+          css={`
           ${theme.row};
           margin-bottom: 20px;
           z-index: 1;
           position: relative;
         `}
-      >
-        <div
-          css={`
+        >
+          <div
+            css={`
             padding-right: 30px;
             border-right: 1px solid #cacbcf;
           `}
-        >
-          <Gravtar
-            email={values.email || ''}
-            size={143}
-            css={`
+          >
+            <Gravtar
+              email={values.email || ''}
+              size={143}
+              css={`
               border-radius: 50%;
               padding: 5px;
               background-color: #fff;
               border: 1px solid #cacbcf;
               margin-bottom: 5px;
             `}
-          />
-          <ExternalLink href="https://en.gravatar.com/site/login" css={theme.hollowButton}>
-            change gravatar
+            />
+            <ExternalLink href="https://en.gravatar.com/site/login" css={theme.hollowButton}>
+              change gravatar
           </ExternalLink>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          css={`
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            css={`
             ${theme.column} justify-content: space-around;
             padding-left: 30px;
             width: 100%;
           `}
-        >
-          <div
-            css={`
+          >
+            <div
+              css={`
               ${theme.row} align-self: flex-end;
             `}
-          >
-            <StyledLabel>I am a</StyledLabel>
-            {get(
-              ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {}),
-              values.roles,
-            )({
-              height: '14px',
-              className: css`
+            >
+              <StyledLabel>I am a</StyledLabel>
+              {get(
+                ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {}),
+                values.roles,
+              )({
+                height: '14px',
+                className: css`
                 margin: 5px 5px 0 5px;
               `,
-            })}
-            <Field
-              component="select"
-              name="roles"
-              defaultValue={values.roles}
-              css={theme.hollowSelect}
-            >
-              {ROLES.map(({ type, displayName }) => (
-                <option value={type} key={type}>
-                  {displayName}
-                </option>
-              ))}
-            </Field>
-          </div>
-          <div css={theme.column}>
-            <StyledLabel>Title :</StyledLabel>
-            <Field
-              component="select"
-              name="title"
-              defaultValue="-- select an option --"
-              css={theme.select}
-            >
-              <option value="mr">Mr.</option>
-              <option value="ms">Ms.</option>
-              <option value="mrs">Mrs.</option>
-              <option value="dr">Dr.</option>
-            </Field>
-          </div>
-          <div css={theme.column}>
-            <StyledLabel>First Name:</StyledLabel>
-            <Field
-              className={theme.input}
-              name="firstName"
-              placeholder="First Name"
-              value={values.firstName}
-            />
-            {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
-          </div>
-          <div css={theme.column}>
-            <StyledLabel>Last Name:</StyledLabel>
-            <Field
-              className={theme.input}
-              name="lastName"
-              placeholder="Last Name"
-              value={values.lastName}
-            />
-            {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
-          </div>
-          {values.roles === 'researcher' && [
-            <div css={theme.column} key="jobTitle">
-              <StyledLabel>Job Title/Role:</StyledLabel>
+              })}
+              <Field
+                component="select"
+                name="roles"
+                defaultValue={values.roles}
+                css={theme.hollowSelect}
+              >
+                {ROLES.map(({ type, displayName }) => (
+                  <option value={type} key={type}>
+                    {displayName}
+                  </option>
+                ))}
+              </Field>
+            </div>
+            <div css={theme.column}>
+              <StyledLabel>Title :</StyledLabel>
+              <Field
+                component="select"
+                name="title"
+                defaultValue="-- select an option --"
+                css={theme.select}
+              >
+                <option value="mr">Mr.</option>
+                <option value="ms">Ms.</option>
+                <option value="mrs">Mrs.</option>
+                <option value="dr">Dr.</option>
+              </Field>
+            </div>
+            <div css={theme.column}>
+              <StyledLabel>First Name:</StyledLabel>
               <Field
                 className={theme.input}
-                name="jobTitle"
-                placeholder="Job Title/Role"
-                value={values.jobTitle}
+                name="firstName"
+                placeholder="First Name"
+                value={values.firstName}
               />
-            </div>,
-            <div css={theme.column} key="institution">
-              <StyledLabel>Institution:</StyledLabel>
+              {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
+            </div>
+            <div css={theme.column}>
+              <StyledLabel>Last Name:</StyledLabel>
               <Field
                 className={theme.input}
-                name="institution"
-                placeholder="Institution"
-                value={values.institution}
+                name="lastName"
+                placeholder="Last Name"
+                value={values.lastName}
               />
-            </div>,
-          ]}
-          <div>
-            <StyledLabel>Location:</StyledLabel>
-            <WrappedPlacesAutocomplete
-              inputProps={{
-                value: location,
-                onChange: setLocation,
-              }}
-              classNames={{
-                input: theme.input,
-                autocompleteContainer: css`
+              {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
+            </div>
+            {values.roles === 'researcher' && [
+              <div css={theme.column} key="jobTitle">
+                <StyledLabel>Job Title/Role:</StyledLabel>
+                <Field
+                  className={theme.input}
+                  name="jobTitle"
+                  placeholder="Job Title/Role"
+                  value={values.jobTitle}
+                />
+              </div>,
+              <div css={theme.column} key="institution">
+                <StyledLabel>Institution:</StyledLabel>
+                <Field
+                  className={theme.input}
+                  name="institution"
+                  placeholder="Institution"
+                  value={values.institution}
+                />
+              </div>,
+            ]}
+            <div>
+              <StyledLabel>Location:</StyledLabel>
+              <WrappedPlacesAutocomplete
+                inputProps={{
+                  value: location,
+                  onChange: setLocation,
+                }}
+                classNames={{
+                  input: theme.input,
+                  autocompleteContainer: css`
                   position: absolute;
                   top: 100%;
                   backgroundcolor: white;
                   border: 1px solid ${theme.greyScale4};
                   width: 100%;
                 `,
-              }}
-              onSelect={(address, placeID) => {
-                setLocation(address);
-                geocodeByPlaceId(placeID)
-                  .then(results => {
-                    const country = results[0].address_components.find(c =>
-                      c.types.includes('country'),
-                    ).long_name;
-                    const administrative_area_level_1 = results[0].address_components.find(c =>
-                      c.types.includes('administrative_area_level_1'),
-                    ).long_name;
-                    const locality = results[0].address_components.find(c =>
-                      c.types.includes('locality'),
-                    ).long_name;
-                    setFieldValue('country', country);
-                    setFieldValue('state', administrative_area_level_1);
-                    setFieldValue('city', locality);
-                  })
-                  .catch(error => console.error(error));
-              }}
-            />
-          </div>
-        </form>
+                }}
+                onSelect={(address, placeID) => {
+                  setLocation(address);
+                  geocodeByPlaceId(placeID)
+                    .then(results => {
+                      const country = results[0].address_components.find(c =>
+                        c.types.includes('country'),
+                      ).long_name;
+                      const administrative_area_level_1 = results[0].address_components.find(c =>
+                        c.types.includes('administrative_area_level_1'),
+                      ).long_name;
+                      const locality = results[0].address_components.find(c =>
+                        c.types.includes('locality'),
+                      ).long_name;
+                      setFieldValue('country', country);
+                      setFieldValue('state', administrative_area_level_1);
+                      setFieldValue('city', locality);
+                    })
+                    .catch(error => console.error(error));
+                }}
+              />
+            </div>
+          </form>
+        </div>
+        <ModalFooter {...{ unsetModal, handleSubmit }} />
       </div>
-      <ModalFooter {...{ unsetModal, handleSubmit }} />
-    </div>
-  ),
+    ),
 );
