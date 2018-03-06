@@ -6,6 +6,7 @@ import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { ModalFooter } from 'components/Modal/index.js';
+import ExternalLink from 'uikit/ExternalLink';
 
 import { css } from 'emotion';
 import styled from 'react-emotion';
@@ -64,7 +65,13 @@ const enhance = compose(
 
 const errorTextId = 'cavaticaTokenErrorMsg';
 
-const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
+const submitCavaticaToken = async ({
+  token,
+  setIntegrationToken,
+  setInvalidToken,
+  onSuccess,
+  onFail,
+}) => {
   await setSecret({ service: CAVATICA, secret: token });
   getCavaticaUser(token)
     .then(userData => {
@@ -72,8 +79,6 @@ const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFa
       onSuccess();
     })
     .catch(response => {
-      document.getElementById(errorTextId).textContent =
-        'The provided Cavatica Token is invalid. Update and try again.';
       setIntegrationToken(CAVATICA, null);
       deleteSecret({ service: CAVATICA });
       onFail();
@@ -90,10 +95,11 @@ const CavaticaTokenInput = ({
   setGen3Key,
   editingCavitca,
   setEditingCavatica,
-  invalidValue,
+  invalidToken,
   setInvalidToken,
   ...props
 }) => {
+  console.log(!cavaticaKey.length);
   return (
     <div css={styles}>
       <div>
@@ -104,13 +110,9 @@ const CavaticaTokenInput = ({
           <div className="stepText">
             <span>
               If you don't have one, please{' '}
-              <a
-                href="https://pgc-accounts.sbgenomics.com/auth/register/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
+              <ExternalLink href="https://pgc-accounts.sbgenomics.com/auth/register/">
                 register for a Cavatica Account <RightArrows />
-              </a>{' '}
+              </ExternalLink>{' '}
             </span>
           </div>
         </div>
@@ -121,13 +123,9 @@ const CavaticaTokenInput = ({
           <div className="stepText">
             <span>
               You will need to retrieve your authentication token from the Cavatica{' '}
-              <a
-                href="https://cavatica.sbgenomics.com/developer#token"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
+              <ExternalLink href="https://cavatica.sbgenomics.com/developer#token">
                 Developer Dashboard
-              </a>. From the Dashboard, click on the "Auth Token" tab.
+              </ExternalLink>. From the Dashboard, click on the "Auth Token" tab.
             </span>
           </div>
           <div>
@@ -159,10 +157,12 @@ const CavaticaTokenInput = ({
             placeholder="Cavatica Key"
             onChange={e => {
               setCavaticaKey(e.target.value);
-              document.getElementById(errorTextId).innerText = '';
+              setInvalidToken(false);
             }}
           />
-          <FormErrorMessage id="cavaticaTokenErrorMsg" />
+          <FormErrorMessage id="cavaticaTokenErrorMsg">
+            {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ''}
+          </FormErrorMessage>
         </div>
       </div>
       <ModalFooter
@@ -176,6 +176,7 @@ const CavaticaTokenInput = ({
             });
           },
           submitText: 'Connect',
+          submitDisabled: invalidToken || !cavaticaKey.length,
         }}
       />
     </div>
