@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 
 import UserIntegrations from './UserIntegrations';
 
-export const H2 = styled('h2') `
+export const H2 = styled('h2')`
   font-family: Montserrat;
   font-size: 18px;
   font-weight: 300;
@@ -16,14 +16,14 @@ export const H2 = styled('h2') `
   width: 200px;
 `;
 
-const SettingsSection = styled('section') `
+const SettingsSection = styled('section')`
   ${props => props.theme.row} justify-content: stretch;
   width: 100%;
   border-bottom: 2px solid #d4d6dd;
   padding: 30px 0;
 `;
 
-const Td = styled('td') `
+const Td = styled('td')`
   font-family: Montserrat;
   font-size: 14px;
   line-height: 1.43;
