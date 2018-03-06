@@ -108,9 +108,19 @@ const CavaticaTokenInput = ({
           <div className="stepText">
             <span>
               If you don't have one, please{' '}
+<<<<<<< HEAD
               <ExternalLink href="https://pgc-accounts.sbgenomics.com/auth/register/">
                 register for a Cavatica Account <RightArrows />
               </ExternalLink>{' '}
+=======
+              <a
+                href="https://pgc-accounts.sbgenomics.com/auth/register/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                register for a Cavatica Account <RightArrows />
+              </a>{' '}
+>>>>>>> Fix Cavatica Modal Layout, plus typo
             </span>
           </div>
         </div>
