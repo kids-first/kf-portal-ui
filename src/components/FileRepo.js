@@ -137,6 +137,8 @@ const FileRepo = ({ state, effects, ...props }) => {
             {...props}
             projectId={process.env.REACT_APP_PROJECT_ID}
             render={props => {
+              console.log('wat', props);
+
               const selectionSQON = props.selectedTableRows.length
                 ? replaceSQON({
                     op: 'and',
