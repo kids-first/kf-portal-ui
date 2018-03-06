@@ -20,8 +20,9 @@ const NumberBullet = styled.span`
   margin: 20px;
   padding: 10px;
   height: 14px;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TokenTitle = styled.span`
@@ -37,6 +38,15 @@ const styles = css`
     padding: 3px;
     font-size: 16px;
     border-radius: 10px;
+  }
+
+  .stepRow {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .stepText {
+    padding-top: 20px;
   }
 `;
 
@@ -77,22 +87,28 @@ const CavaticaTokenInput = ({
   return (
     <div css={styles}>
       <div>
-        <div>
-          <NumberBullet>1</NumberBullet>
-          <span>
-            If you don't have one, please{' '}
-            <a
-              href="https://pgc-accounts.sbgenomics.com/auth/register/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              register for a Cavatica Account <RightArrows />
-            </a>{' '}
-          </span>
+        <div className="stepRow">
+          <div>
+            <NumberBullet>1</NumberBullet>
+          </div>
+          <div className="stepText">
+            <span>
+              If you don't have one, please{' '}
+              <a
+                href="https://pgc-accounts.sbgenomics.com/auth/register/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                register for a Cavatica Account <RightArrows />
+              </a>{' '}
+            </span>
+          </div>
         </div>
-        <div css="display: flex;">
-          <div css="flex: 1">
+        <div className="stepRow">
+          <div>
             <NumberBullet>2</NumberBullet>
+          </div>
+          <div className="stepText">
             <span>
               You will need to retrieve your authentication token from the Cavatica{' '}
               <a
@@ -104,19 +120,23 @@ const CavaticaTokenInput = ({
               </a>. From the Dashboard, click on the "Auth Token" tab.
             </span>
           </div>
-          <div css="flex: 1;">
+          <div>
             <img
-              css="width: 400px;"
+              css="width: 300px;"
               src={step2Screenshot}
               alt="Screenshot of Cavatica's Developer Den"
             />
           </div>
         </div>
-        <div>
-          <NumberBullet>3</NumberBullet>
-          <span>
-            Click on "Generate Token", copy and paste it into the field below and click Connect.
-          </span>
+        <div className="stepRow">
+          <div>
+            <NumberBullet>3</NumberBullet>
+          </div>
+          <div className="stepText">
+            <span>
+              Click on "Generate Token", copy and paste it into the field below and click Connect.
+            </span>
+          </div>
         </div>
         <div>
           <TokenTitle>Cavatica Authentication Token:</TokenTitle>
