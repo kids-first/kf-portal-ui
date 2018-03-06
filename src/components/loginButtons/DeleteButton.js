@@ -9,7 +9,7 @@ export default compose(injectState, withRouter)(
   ({
     history,
     state: { loggedInUser },
-    effects: { setToken, setUser },
+    effects: { setToken, setUser, clearIntegrationTokens },
     className,
     children,
     ...props
@@ -18,7 +18,7 @@ export default compose(injectState, withRouter)(
       className={className}
       onClick={async () => {
         await deleteProfile({ user: loggedInUser });
-        uiLogout({ history, setUser, setToken });
+        uiLogout({ history, setUser, setToken, clearIntegrationTokens });
       }}
       {...props}
     >
