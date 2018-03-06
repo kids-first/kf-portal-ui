@@ -79,6 +79,7 @@ const render = ({ editing, setEditing, state, effects }) => {
                   Component: FileRepo,
                   loggedInUser,
                   index: props.match.params.index,
+                  graphqlField: props.match.params.graphqlField,
                   ...props,
                 })
               }
