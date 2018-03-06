@@ -32,6 +32,12 @@ const TokenTitle = styled.span`
   font-weight: bold;
 `;
 
+const FormErrorMessage = styled.div`
+  color: ${props => props.theme.primary};
+  padding: 10px;
+  padding-left: 20px;
+`;
+
 const styles = css`
   .tokenInput {
     margin: 20px;
@@ -56,14 +62,18 @@ const enhance = compose(
   withState('invalidToken', 'setInvalidToken', false),
 );
 
+const errorTextId = 'cavaticaTokenErrorMsg';
+
 const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
   await setSecret({ service: CAVATICA, secret: token });
-  await getCavaticaUser(token)
+  getCavaticaUser(token)
     .then(userData => {
       setIntegrationToken(CAVATICA, userData);
       onSuccess();
     })
     .catch(response => {
+      document.getElementById(errorTextId).textContent =
+        'The provided Cavatica Token is invalid. Update and try again.';
       setIntegrationToken(CAVATICA, null);
       deleteSecret({ service: CAVATICA });
       onFail();
@@ -138,7 +148,7 @@ const CavaticaTokenInput = ({
             </span>
           </div>
         </div>
-        <div>
+        <div css="display:flex; flex-direction:column;">
           <TokenTitle>Cavatica Authentication Token:</TokenTitle>
           <input
             className="tokenInput"
@@ -147,8 +157,12 @@ const CavaticaTokenInput = ({
             value={cavaticaKey}
             name="cavatica"
             placeholder="Cavatica Key"
-            onChange={e => setCavaticaKey(e.target.value)}
+            onChange={e => {
+              setCavaticaKey(e.target.value);
+              document.getElementById(errorTextId).innerText = '';
+            }}
           />
+          <FormErrorMessage id="cavaticaTokenErrorMsg" />
         </div>
       </div>
       <ModalFooter
