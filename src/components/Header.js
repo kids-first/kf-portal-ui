@@ -6,39 +6,47 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import LogoutButton from 'components/LogoutButton';
 import ToSearchPage from 'components/links/ToSearchPage';
 
 import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
 
-const navBar = css`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-family: montserrat;
-  font-size: 14px;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-`;
+import Gravtar from 'uikit/Gravatar';
+import Dropdown from 'uikit/Dropdown';
+import { uiLogout } from 'components/LogoutButton';
 
 const NavLink = styled(Link)`
   ${props => props.theme.navLink};
 `;
 
-const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) => {
+const DropdownLink = styled(Link)`
+  color: ${({ theme }) => theme.primary};
+  text-decoration: none;
+  &:hover {
+    color: ${({ theme }) => theme.highlight};
+  }
+`;
+
+const Header = ({
+  state: { loggedInUser },
+  effects: { setUser, setToken, clearIntegrationTokens },
+  theme,
+  history,
+  match: { path },
+}) => {
   const canSeeProtectedRoutes =
-    !loggedInUser ||
-    (loggedInUser.roles && loggedInUser.roles[0] && loggedInUser.acceptedTerms && path !== '/join');
+    loggedInUser &&
+    (loggedInUser.roles &&
+      loggedInUser.roles[0] &&
+      loggedInUser.acceptedTerms &&
+      path !== '/join' &&
+      path !== '/');
   return (
     <div
       className={css`
         background: #fff;
+        box-shadow: 0 0 4.9px 0.1px #bbbbbb;
       `}
     >
       <div
@@ -67,41 +75,32 @@ const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) =>
               `}
             />
           </Link>
-          <ul css={navBar}>
-            {canSeeProtectedRoutes && [
+          {canSeeProtectedRoutes && (
+            <ul
+              css={`
+                ${theme.navBar};
+                margin-left: 40px;
+              `}
+            >
               <li>
                 <NavLink to="/">
                   <HouseIcon /> Dashboard
                 </NavLink>
-              </li>,
+              </li>
               <li>
                 <ToSearchPage index="file" css={theme.navLink}>
                   <DatabaseIcon /> File Repository
                 </ToSearchPage>
-              </li>,
-            ]}
-          </ul>
-        </div>
-        <div>
-          <input
-            className={theme.input}
-            type="text"
-            name="quicksearch"
-            placeholder="&#x1F50D; Quicksearch"
-          />
+              </li>
+            </ul>
+          )}
         </div>
         <ul
           className={css`
-            ${navBar};
+            ${theme.navBar};
             justify-content: flex-end;
           `}
         >
-          {loggedInUser &&
-            canSeeProtectedRoutes && (
-              <li>
-                <NavLink to={`/user/${loggedInUser.egoId}`}>User Profile</NavLink>
-              </li>
-            )}
           {!loggedInUser && (
             <li>
               {path === '/' ? (
@@ -115,11 +114,63 @@ const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) =>
               )}
             </li>
           )}
-          {loggedInUser && (
-            <li>
-              <LogoutButton />
-            </li>
-          )}
+
+          {loggedInUser &&
+            canSeeProtectedRoutes && (
+              <Dropdown
+                items={[
+                  <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
+                    My Profile
+                  </DropdownLink>,
+                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>
+                    Settings & Privacy
+                  </DropdownLink>,
+                  <div
+                    css={`
+                      border-top: 1px solid ${theme.greyScale4};
+                    `}
+                  >
+                    <a
+                      onClick={() =>
+                        uiLogout({ history, setToken, setUser, clearIntegrationTokens })
+                      }
+                      css={`
+                        color: ${theme.primary};
+                        text-decoration: none;
+                      `}
+                    >
+                      Logout
+                    </a>
+                  </div>,
+                ]}
+                css={`
+                  border: 0;
+                  color: ${theme.primary};
+
+                  font-family: Montserrat;
+                  font-size: 14px;
+                  font-weight: 500;
+                  line-height: 1.86;
+                  letter-spacing: 0.2px;
+
+                  line-height: 1.86;
+                  letter-spacing: 0.2px;
+                `}
+              >
+                <Gravtar
+                  email={loggedInUser.email || ''}
+                  size={39}
+                  css={`
+                    border-radius: 50%;
+                    padding: 2px;
+                    background-color: #fff;
+                    border: 1px solid #cacbcf;
+                    margin: 5px;
+                  `}
+                />
+                {loggedInUser.firstName}
+              </Dropdown>
+            )}
         </ul>
       </div>
     </div>
