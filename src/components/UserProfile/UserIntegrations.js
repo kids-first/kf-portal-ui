@@ -12,7 +12,7 @@ import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
 import { deleteSecret } from 'services/secrets';
-import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
+import CavaticaInput from 'components/cavatica/CavaticaTokenInput';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';

@@ -73,7 +73,7 @@ const submitCavaticaToken = async ({
   await setSecret({ service: CAVATICA, secret: token });
   getCavaticaUser(token)
     .then(userData => {
-      setIntegrationToken(CAVATICA, userData);
+      setIntegrationToken(CAVATICA, JSON.stringify(userData.data));
       onSuccess();
     })
     .catch(response => {
@@ -97,7 +97,6 @@ const CavaticaTokenInput = ({
   setInvalidToken,
   ...props
 }) => {
-  console.log(!cavaticaKey.length);
   return (
     <div css={styles}>
       <div>
