@@ -214,12 +214,10 @@ export default compose(
           </div>
           <div css={theme.column}>
             <StyledLabel>Title :</StyledLabel>
-            <Field
-              component="select"
-              name="title"
-              defaultValue="-- select an option --"
-              css={theme.select}
-            >
+            <Field component="select" name="title" css={theme.select}>
+              <option value="" selected disabled hidden>
+                -- select an option --
+              </option>
               <option value="mr">Mr.</option>
               <option value="ms">Ms.</option>
               <option value="mrs">Mrs.</option>
@@ -252,7 +250,7 @@ export default compose(
             />
             {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
           </div>
-          {values.roles === 'researcher' && [
+          {values.roles === 'research' && [
             <div css={theme.column} key="jobTitle">
               <StyledLabel>Job Title/Role:</StyledLabel>
               <Field
@@ -268,7 +266,10 @@ export default compose(
             <div css={theme.column} key="institution">
               <StyledLabel>Institution:</StyledLabel>
               <Field
-                className={theme.input}
+                css={`
+                  ${theme.input};
+                  width: 90%;
+                `}
                 name="institution"
                 placeholder="Institution"
                 value={values.institution}
