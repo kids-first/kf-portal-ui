@@ -4,8 +4,8 @@ import Spinner from 'react-spinkit';
 
 import Button from '../uikit/Button';
 import LoadingOnClick from './LoadingOnClick';
+import CavaticaProjects from 'components/cavatica/CavaticaProjects.js';
 
-import cavaticaLogo from '../assets/logomark-cavatica.svg';
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
@@ -247,27 +247,6 @@ export default ({ projectId, index, style, streamData, sqon, ...props }) => (
 
     <Divider />
     <Heading>Data Analysis</Heading>
-    <button
-      css={`
-        border-radius: 19px;
-        background-color: #ffffff;
-        border: solid 1px #cacbcf;
-        font-size: 11px;
-        letter-spacing: 0.2px;
-        color: #008199;
-        padding: 5px 18px 5px 5px;
-        display: flex;
-        align-items: center;
-      `}
-    >
-      <img
-        alt=""
-        src={cavaticaLogo}
-        css={`
-          width: 28px;
-          margin-right: 7px;
-        `}
-      />Export files to Cavatica
-    </button>
+    <CavaticaProjects />
   </div>
 );
