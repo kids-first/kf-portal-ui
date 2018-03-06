@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState, lifecycle } from 'recompose';
+import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
@@ -10,7 +10,7 @@ import PencilIcon from 'react-icons/lib/fa/pencil';
 import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
-import { setSecret, getSecret, deleteSecret } from 'services/secrets';
+import { deleteSecret } from 'services/secrets';
 import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
