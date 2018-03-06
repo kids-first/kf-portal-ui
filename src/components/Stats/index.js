@@ -19,67 +19,69 @@ export const FileRepoStats = withProps(() => ({
         />
       ),
       query: `
-      query($sqon: JSON) {
-        file {
-          hits(filters: $sqon) {
-            total
+        query($sqon: JSON) {
+          file {
+            hits(filters: $sqon) {
+              total
+            }
           }
         }
-      }
-    `,
+      `,
       accessor: 'file.hits.total',
       label: 'Files',
     },
-    // {
-    //   icon: (
-    //     <img
-    //       src={require('../../assets/icon-files.svg')}
-    //       alt=""
-    //       css={`
-    //         width: 16px;
-    //         height: 20px;
-    //         margin-right: 10px;
-    //       `}
-    //     />
-    //   ),
-    //   // TODO: update query, there will be a case index.
-    //   query: `
-    //     query($sqon: JSON) {
-    //       file {
-    //         hits(filters: $sqon) {
-    //           total
-    //         }
-    //       }
-    //     }
-    //   `,
-    //   accessor: 'file.hits.total',
-    //   label: 'Participants',
-    // },
-    // {
-    //   icon: (
-    //     <img
-    //       src={require('../../assets/icon-files.svg')}
-    //       alt=""
-    //       css={`
-    //         width: 16px;
-    //         height: 20px;
-    //         margin-right: 10px;
-    //       `}
-    //     />
-    //   ),
-    //   // TODO: update query
-    //   query: `
-    //     query($sqon: JSON) {
-    //       file {
-    //         hits(filters: $sqon) {
-    //           total
-    //         }
-    //       }
-    //     }
-    //   `,
-    //   accessor: 'file.hits.total',
-    //   label: 'Families',
-    // },
+    {
+      icon: (
+        <img
+          src={require('../../assets/icon-files.svg')}
+          alt=""
+          css={`
+            width: 16px;
+            height: 20px;
+            margin-right: 10px;
+          `}
+        />
+      ),
+      query: `
+        query($sqon: JSON) {
+          participant {
+            hits(filters: $sqon) {
+              total
+            }
+          }
+        }
+      `,
+      accessor: 'participant.hits.total',
+      label: 'Participants',
+    },
+    {
+      icon: (
+        <img
+          src={require('../../assets/icon-files.svg')}
+          alt=""
+          css={`
+            width: 16px;
+            height: 20px;
+            margin-right: 10px;
+          `}
+        />
+      ),
+      query: `
+        query($sqon: JSON) {
+          participant {
+            aggregations(filters: $sqon) {
+              family__family_id {
+                buckets{
+                  key
+                }
+              }
+            }
+          }
+        }
+      `,
+      accessor: 'participant.aggregations.family__family_id.buckets.length',
+      label: 'Families',
+    },
     {
       icon: (
         <img
@@ -93,18 +95,18 @@ export const FileRepoStats = withProps(() => ({
         />
       ),
       query: `
-      query($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            file_size {
-              stats {
-                sum
+        query($sqon: JSON) {
+          file {
+            aggregations(filters: $sqon) {
+              file_size {
+                stats {
+                  sum
+                }
               }
             }
           }
         }
-      }
-    `,
+      `,
       accessor: d =>
         filesize(get(d, 'file.aggregations.file_size.stats.sum') || 0, {
           base: 10,
