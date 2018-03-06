@@ -15,6 +15,7 @@ import { allRedirectUris } from '../common/injectGlobals';
 import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 
+
 const styles = {
   container: css`
     background-color: #fff;
@@ -170,8 +171,8 @@ class Component extends React.Component<any, any> {
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
           ]
         ) : (
-          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
-        )}
+              <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
+            )}
       </div>
     );
   }
