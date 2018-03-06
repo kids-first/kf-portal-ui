@@ -18,6 +18,14 @@ import { CAVATICA, GEN3 } from 'common/constants';
 import { getUser } from 'services/cavatica';
 
 const styles = css`
+  table {
+    border-collapse: collapse;
+  }
+  td,
+  th {
+    padding: 12px;
+    font-weight: normal;
+  }
   td {
     background: white;
   }
@@ -74,13 +82,9 @@ const gen3Status = ({ gen3Key }) => {
 
 const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
   return (
-    <div
-      css={css`
-        flex-direction: column;
-      `}
-    >
+    <div css="flex-direction: column;">
       <div
-        css={css`
+        css={`
           color: ${theme.active};
           padding: 10px;
         `}
@@ -88,11 +92,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         <CheckIcon size={20} />
         <span> Connected</span>
       </div>
-      <div
-        css={css`
-          display: flex;
-        `}
-      >
+      <div css="display: flex;">
         <Button onClick={onEdit} className="connectedButton">
           <PencilIcon />Edit
         </Button>
@@ -112,19 +112,15 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
   return (
     <div css={styles}>
       <table
-        css={css`
-          border-collapse: collapse;
-
+        css={`
           td,
           th {
             border: 1px solid ${theme.greyScale5};
-            padding: 12px;
-            font-weight: normal;
           }
         `}
       >
         <thead
-          css={css`
+          css={`
             background: ${theme.greyScale6};
             color: ${theme.secondary};
             text-align: left;

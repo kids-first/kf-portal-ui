@@ -89,16 +89,8 @@ const CavaticaTokenInput = ({
             </a>{' '}
           </span>
         </div>
-        <div
-          css={css`
-            display: flex;
-          `}
-        >
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
+        <div css="display: flex;">
+          <div css="flex: 1">
             <span className="numberBullet">2</span>
             <span>
               You will need to retrieve your authentication token from the Cavatica{' '}
@@ -111,15 +103,9 @@ const CavaticaTokenInput = ({
               </a>. From the Dashboard, click on the "Auth Token" tab.
             </span>
           </div>
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
+          <div css="flex: 1;">
             <img
-              css={css`
-                width: 400px;
-              `}
+              css="width: 400px;"
               src={step2Screenshot}
               alt="Screenshot of Cavatica's Developer Den"
             />
