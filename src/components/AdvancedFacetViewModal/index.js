@@ -5,7 +5,6 @@ import { compose } from 'recompose';
 import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
-import { css } from 'react-emotion';
 import './style.css';
 
 const enhance = compose(provideLocalSqon, injectState);
