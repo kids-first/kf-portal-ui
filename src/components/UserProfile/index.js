@@ -21,7 +21,6 @@ import { ROLES } from 'common/constants';
 import { getProfile } from 'services/profiles';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 
-import { enhanceWithModalState } from '../Modal';
 import researcherBanner from 'assets/user-banner-researcher.jpg';
 import patientBanner from 'assets/user-banner-patient.jpg';
 

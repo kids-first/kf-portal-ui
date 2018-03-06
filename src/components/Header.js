@@ -32,7 +32,9 @@ const NavLink = styled(Link)`
 `;
 
 const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) => {
-  const hasRoleSelected = !loggedInUser || (loggedInUser.roles && loggedInUser.roles[0]);
+  const canSeeProtectedRoutes =
+    !loggedInUser ||
+    (loggedInUser.roles && loggedInUser.roles[0] && loggedInUser.acceptedTerms && path !== '/join');
   return (
     <div
       className={css`
@@ -66,18 +68,18 @@ const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) =>
             />
           </Link>
           <ul css={navBar}>
-            <li>
-              <NavLink to="/">
-                <HouseIcon /> Dashboard
-              </NavLink>
-            </li>
-            {loggedInUser && (
+            {canSeeProtectedRoutes && [
+              <li>
+                <NavLink to="/">
+                  <HouseIcon /> Dashboard
+                </NavLink>
+              </li>,
               <li>
                 <ToSearchPage index="file" css={theme.navLink}>
                   <DatabaseIcon /> File Repository
                 </ToSearchPage>
-              </li>
-            )}
+              </li>,
+            ]}
           </ul>
         </div>
         <div>
@@ -95,7 +97,7 @@ const Header = ({ state: { loggedInUser }, theme, history, match: { path } }) =>
           `}
         >
           {loggedInUser &&
-            hasRoleSelected && (
+            canSeeProtectedRoutes && (
               <li>
                 <NavLink to={`/user/${loggedInUser.egoId}`}>User Profile</NavLink>
               </li>

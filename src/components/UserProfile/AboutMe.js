@@ -132,7 +132,9 @@ export default compose(
           <StyledSection>
             <H3>My bio</H3>
             {canEdit && (
-              <H4>Tell people about your work background and your research specialties.</H4>
+              <H4>
+                Share information about your professional background and your research interests.
+              </H4>
             )}
             <EditableLabel
               type="textarea"
@@ -155,7 +157,7 @@ export default compose(
           </StyledSection>
           <StyledSection>
             <H3>My story</H3>
-            {canEdit && <H4>Tell people about your story and what brings you to this network.</H4>}
+            {canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
             <EditableLabel
               type="textarea"
               isEditing={isEditingBackgroundInfo}
