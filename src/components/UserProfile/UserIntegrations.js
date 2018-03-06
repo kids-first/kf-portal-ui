@@ -140,7 +140,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             <td>
               <span className="integrationHeader">Download Controlled Data</span>
               <p>
-                Access and download controlled data by connecting your Kdis First account to{' '}
+                Access and download controlled data by connecting your Kids First account to{' '}
                 <a href="https://gen3.kids-first.io/" rel="noopener noreferrer" target="_blank">
                   Gen3
                 </a>.
@@ -151,10 +151,10 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                 {integrationTokens[GEN3] ? (
                   gen3Status(integrationTokens[GEN3])
                 ) : (
-                  <Button onClick={() => testMethod()}>
+                  <button css={theme.actionButton} onClick={() => testMethod()}>
                     <span>Connect</span>
                     <RightIcon className="right" />
-                  </Button>
+                  </button>
                 )}
               </div>
             </td>
@@ -194,7 +194,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                  <Button
+                  <button
+                    css={theme.actionButton}
                     onClick={() =>
                       effects.setModal({
                         title: 'How to Connect to Cavatica',
@@ -208,9 +209,9 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     }
                   >
                     <span>
-                      Connect<RightIcon />{' '}
+                      Connect<RightIcon />
                     </span>
-                  </Button>
+                  </button>
                 )}
               </div>
             </td>
