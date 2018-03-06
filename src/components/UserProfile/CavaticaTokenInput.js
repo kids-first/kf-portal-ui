@@ -8,29 +8,30 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { ModalFooter } from 'components/Modal/index.js';
 
 import { css } from 'emotion';
+import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
 
+const NumberBullet = styled.span`
+  color: white;
+  background: ${props => props.theme.active};
+  width: 14px;
+  border-radius: 50%;
+  margin: 20px;
+  padding: 10px;
+  height: 14px;
+  display: inline-block;
+  text-align: center;
+`;
+
+const TokenTitle = styled.span`
+  padding: 20px;
+  color: ${props => props.theme.secondary};
+  font-size: 18px;
+  font-weight: bold;
+`;
+
 const styles = css`
-  span.numberBullet {
-    color: white;
-    background: #00afed;
-    width: 14px;
-    border-radius: 50%;
-    margin: 20px;
-    padding: 10px;
-    height: 14px;
-    display: inline-block;
-    text-align: center;
-  }
-
-  .tokenTitle {
-    padding: 20px;
-    color: #2b388f;
-    font-size: 18px;
-    font-weight: bold;
-  }
-
   .tokenInput {
     margin: 20px;
     padding: 3px;
@@ -77,7 +78,7 @@ const CavaticaTokenInput = ({
     <div css={styles}>
       <div>
         <div>
-          <span className="numberBullet">1</span>
+          <NumberBullet>1</NumberBullet>
           <span>
             If you don't have one, please{' '}
             <a
@@ -91,7 +92,7 @@ const CavaticaTokenInput = ({
         </div>
         <div css="display: flex;">
           <div css="flex: 1">
-            <span className="numberBullet">2</span>
+            <NumberBullet>2</NumberBullet>
             <span>
               You will need to retrieve your authentication token from the Cavatica{' '}
               <a
@@ -112,13 +113,13 @@ const CavaticaTokenInput = ({
           </div>
         </div>
         <div>
-          <span className="numberBullet">3</span>
+          <NumberBullet>3</NumberBullet>
           <span>
             Click on "Generate Token", copy and paste it into the field below and click Connect.
           </span>
         </div>
         <div>
-          <span className="tokenTitle">Cavatica Authentication Token:</span>
+          <TokenTitle>Cavatica Authentication Token:</TokenTitle>
           <input
             className="tokenInput"
             id="cavaticaKey"
