@@ -70,8 +70,46 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
           [
             'kf_id',
             'study.name',
-            // TODO: father_id
-            // TODO: mother_id
+            {
+              Header: 'Father ID',
+              field: 'family.family_members.kf_id',
+              jsonPath:
+                '$.family.family_members.hits.edges[?(@.node.relationship=="father")].node.kf_id',
+              query: `
+                family {
+                  family_members{
+                    hits {
+                      edges {
+                        node {
+                          relationship
+                          kf_id
+                        }
+                      }
+                    }
+                  }
+                }
+              `,
+            },
+            {
+              Header: 'Mother ID',
+              field: 'family.family_members.kf_id',
+              jsonPath:
+                '$.family.family_members.hits.edges[?(@.node.relationship=="mother")].node.kf_id',
+              query: `
+                family {
+                  family_members{
+                    hits {
+                      edges {
+                        node {
+                          relationship
+                          kf_id
+                        }
+                      }
+                    }
+                  }
+                }
+              `,
+            },
             'race',
             'ethnicity',
             'gender',
