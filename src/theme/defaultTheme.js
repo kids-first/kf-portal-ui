@@ -79,6 +79,7 @@ const components = {
       background-color: ${colors.primaryHover};
       border: solid 2px #dcdde3;
       color: #ffffff;
+      cursor: pointer;
     }
 
     a,
@@ -175,6 +176,7 @@ const components = {
     &:hover {
       background-color: ${colors.tertiaryHover};
       color: #ffffff;
+      cursor: pointer;
     }
     &:link {
       text-decoration: none;
