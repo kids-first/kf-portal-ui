@@ -12,8 +12,7 @@ import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { getProfile, createProfile } from 'services/profiles';
 import { googleAppId, egoApiRoot } from 'common/injectGlobals';
 import { allRedirectUris } from '../common/injectGlobals';
-import { getSecret } from 'services/secrets';
-import { SERVICES, CAVATICA } from 'common/constants';
+import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 
 const styles = {

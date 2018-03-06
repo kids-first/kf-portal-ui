@@ -23,13 +23,6 @@ const SettingsSection = styled('section')`
   padding: 30px 0;
 `;
 
-const Td = styled('td')`
-  font-family: Montserrat;
-  font-size: 14px;
-  line-height: 1.43;
-  border: solid 1px #e0e1e6;
-  padding: 1em;
-`;
 export default compose(withTheme, withState('mode', 'setMode', 'account'))(
   ({ profile, theme, submit, mode, setMode }) => (
     <div
