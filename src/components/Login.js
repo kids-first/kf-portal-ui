@@ -16,7 +16,6 @@ import { getSecret } from 'services/secrets';
 import { SERVICES, CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 
-
 const styles = {
   container: css`
     background-color: #fff;
@@ -55,7 +54,6 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
   }
 };
 
-
 /**
  * fetchIntegrationTokens
  * For all SERVICES listed in common/constants, call the key-store to retrieve any keys stored
@@ -64,18 +62,16 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
  *  to state once returned.
  */
 export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
-
   getCavaticaUser()
-    .then(
-      userData => {
-        setIntegrationToken(CAVATICA, userData)
-      })
+    .then(userData => {
+      setIntegrationToken(CAVATICA, userData);
+    })
     .catch(response => {
       // Could not retrieve cavatica user info, nothing to do.
     });
 
   // TODO: Get Gen3 Secret here
-}
+};
 
 class Component extends React.Component<any, any> {
   static propTypes = {
@@ -175,8 +171,8 @@ class Component extends React.Component<any, any> {
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
           ]
         ) : (
-              <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
-            )}
+          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
+        )}
       </div>
     );
   }

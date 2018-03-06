@@ -12,8 +12,7 @@ import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
 
 const styles = css`
-
-  span.numberBullet{
+  span.numberBullet {
     color: white;
     background: #00afed;
     width: 14px;
@@ -26,7 +25,7 @@ const styles = css`
   }
 
   .tokenTitle {
-    padding:20px;
+    padding: 20px;
     color: #2b388f;
     font-size: 18px;
     font-weight: bold;
@@ -47,7 +46,6 @@ const enhance = compose(
 );
 
 const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
-
   await setSecret({ service: CAVATICA, secret: token });
   await getCavaticaUser(token)
     .then(userData => {
@@ -59,8 +57,7 @@ const submitCavaticaToken = async ({ token, setIntegrationToken, onSuccess, onFa
       deleteSecret({ service: CAVATICA });
       onFail();
     });
-}
-
+};
 
 const CavaticaTokenInput = ({
   state,
@@ -81,23 +78,58 @@ const CavaticaTokenInput = ({
       <div>
         <div>
           <span className="numberBullet">1</span>
-          <span>If you don't have one, please <a href="https://pgc-accounts.sbgenomics.com/auth/register/" rel="noopener noreferrer" target="_blank">register for a Cavatica Account <RightArrows /></a> </span>
+          <span>
+            If you don't have one, please{' '}
+            <a
+              href="https://pgc-accounts.sbgenomics.com/auth/register/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              register for a Cavatica Account <RightArrows />
+            </a>{' '}
+          </span>
         </div>
-        <div css={css`display:flex;`}>
-          <div css={css`flex:1`}>
+        <div
+          css={css`
+            display: flex;
+          `}
+        >
+          <div
+            css={css`
+              flex: 1;
+            `}
+          >
             <span className="numberBullet">2</span>
-            <span>You will need to retrieve your authentication token from the Cavatica <a href="https://cavatica.sbgenomics.com/developer#token" rel="noopener noreferrer" target="_blank">Developer Dashboard</a>. From the Dashboard, click on the "Auth Token" tab.</span>
+            <span>
+              You will need to retrieve your authentication token from the Cavatica{' '}
+              <a
+                href="https://cavatica.sbgenomics.com/developer#token"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Developer Dashboard
+              </a>. From the Dashboard, click on the "Auth Token" tab.
+            </span>
           </div>
-          <div css={css`flex:1`}>
+          <div
+            css={css`
+              flex: 1;
+            `}
+          >
             <img
-              css={css`width:400px;`}
+              css={css`
+                width: 400px;
+              `}
               src={step2Screenshot}
-              alt="Screenshot of Cavatica's Developer Den" />
+              alt="Screenshot of Cavatica's Developer Den"
+            />
           </div>
         </div>
         <div>
           <span className="numberBullet">3</span>
-          <span>Click on "Generate Token", copy and paste it into the field below and click Connect.</span>
+          <span>
+            Click on "Generate Token", copy and paste it into the field below and click Connect.
+          </span>
         </div>
         <div>
           <span className="tokenTitle">Cavatica Authentication Token:</span>
@@ -108,7 +140,6 @@ const CavaticaTokenInput = ({
             value={cavaticaKey}
             name="cavatica"
             placeholder="Cavatica Key"
-
             onChange={e => setCavaticaKey(e.target.value)}
           />
         </div>
@@ -120,14 +151,14 @@ const CavaticaTokenInput = ({
               token: cavaticaKey,
               setIntegrationToken: effects.setIntegrationToken,
               onSuccess: props.onComplete,
-              onFail: () => setInvalidToken(true)
-            })
+              onFail: () => setInvalidToken(true),
+            });
           },
-          submitText: 'Connect'
+          submitText: 'Connect',
         }}
       />
     </div>
   );
-}
+};
 
 export default enhance(CavaticaTokenInput);
