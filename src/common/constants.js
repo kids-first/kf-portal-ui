@@ -1,34 +1,30 @@
-import ClinicianIcon from 'icons/ClinicianIcon';
-import PatientIcon from 'icons/PatientIcon';
-import ResearcherIcon from 'icons/ResearcherIcon';
+import CommunityIcon from 'icons/CommunityIcon';
+import ResearchIcon from 'icons/ResearchIcon';
+import HealthIcon from 'icons/HealthIcon';
 
 export const ROLES = [
   {
-    type: 'researcher',
-    displayName: 'researcher',
+    type: 'research',
+    displayName: 'Research',
     description:
-      'I’m interested in performing complex data analysis, cross-disease research, sharing findings and collaborating in real time.',
-    icon: ResearcherIcon,
+      'I’m interested in complex data analysis, cross-disease research, sharing my findings and collaborating in real time with other Kids First researchers.',
+    icon: ResearchIcon,
+    color: '#00afed',
   },
   {
-    type: 'patient',
-    displayName: 'Patient/Caregiver',
+    type: 'community',
+    displayName: 'Community',
     description:
-      'I’m interested in real-time data summaries, available treatments and browsing investigators who are researching a particular disease.',
-    icon: PatientIcon,
+      'I’m interested in learning more about the available treatments for a specific disease type and connecting with researchers who are experts in that disease area.',
+    icon: CommunityIcon,
+    color: '#e83a9c',
   },
   {
-    type: 'clinician',
-    displayName: 'Clinician',
+    type: 'health',
+    displayName: 'Health',
     description:
-      'I’m interested in finding treatments that are more targeted to my patients’ needs based on their genetic characteristics.',
-    icon: ClinicianIcon,
+      'I’m interested in finding treatments that can be adapted to target my patients’ needs based on their genetic characteristics.',
+    icon: HealthIcon,
+    color: '#009bb8',
   },
-  //{
-  //type: 'advocacygroup',
-  //displayName: 'Advocacy Group',
-  //description:
-  //'tbd',
-  //icon: 'tbd',
-  //},
 ];

@@ -9,6 +9,7 @@ import Login from 'components/Login';
 const LoginPage = compose(withRouter, withTheme)(({ history, theme }) => (
   <div
     css={`
+      width: 849px;
       margin: 5% auto 0 auto;
     `}
   >

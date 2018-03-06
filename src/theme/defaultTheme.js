@@ -7,6 +7,7 @@ const colors = {
   tertiary: '#009bb8', //teal-blue
   highlight: '#e83a9c', //pink
   hover: '#c03299', //also pink
+  tertiaryHover: '#19a9c4', //lighter teal-blue
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
@@ -15,7 +16,7 @@ const colors = {
   greyScale7: 'rgb(107,98,98)',
   greyScale6: 'rgb(245,245,245)',
   greyScale5: 'rgb(222,222,222)',
-  greyScale4: 'rgb(200, 200, 200)',
+  greyScale4: 'rgb(212, 214, 221)', // #d4d6dd
   greyScale3: 'rgb(144,144,144)', // not enough contrast on white background
   greyScale2: 'rgb(61,61,61)',
   greyScale1: 'rgb(52, 52, 52)', //#343434
@@ -23,6 +24,14 @@ const colors = {
 };
 
 const components = {
+  normalText: css`
+    font-family: 'Open Sans';
+    font-size: 12px;
+    line-height: 1.67;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: ${colors.greyScale0};
+  `,
   linkAsButton: css`
     font-family: Montserrat;
     font-size: 12px;
@@ -63,6 +72,7 @@ const components = {
     margin: 0px 4px;
     border-radius: 19px;
     border: solid 2px transparent;
+    cursor: pointer;
 
     a:hover,
     &:hover {
@@ -163,21 +173,20 @@ const components = {
     background-color: ${colors.tertiary};
 
     &:hover {
-      background-color: ${colors.highlight};
+      background-color: ${colors.tertiaryHover};
       color: #ffffff;
     }
     &:link {
       text-decoration: none;
     }
-    &:disabled {
-      color: ${colors.greyScale7};
-    }
+    &:disabled,
     &:disabled:hover {
-      background-color: transparent;
       color: ${colors.greyScale7};
+      background-color: ${colors.greyScale4};
     }
   `,
   wizardButton: css`
+    cursor: pointer;
     outline: none;
     border: 0;
     background: none;
@@ -188,7 +197,7 @@ const components = {
     padding: 6px 16px;
     font-family: montserrat;
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 500;
     line-height: 1.86;
     letter-spacing: 0.2px;
     margin: 0px 4px;
@@ -213,9 +222,10 @@ const components = {
   card: css`
     border-radius: 10px;
     background-color: #ffffff;
-    padding: 20px 30px;
+    padding: 30px;
     box-shadow: 0 0 4.9px 0.1px #bbbbbb;
     border: solid 1px #e0e1e6;
+    color: ${colors.greyScale1};
   `,
   profileH3: css`
     font-family: Montserrat;
@@ -248,7 +258,11 @@ const components = {
     font-weight: 500;
   `,
   h3: css`
-    font-family: 'Open Sans';
+    font-family: Montserrat;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.44;
+    letter-spacing: 0.3px;
     color: ${colors.secondary};
   `,
   h4: css`
@@ -259,7 +273,7 @@ const components = {
     margin: 10px 0;
   `,
   input: css`
-    width: 90%;
+    width: 100%;
     min-width: 0;
     padding: 6px 12px;
     font-size: 14px;
@@ -271,10 +285,22 @@ const components = {
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 
     &:disabled {
-        background-color: ${colors.greyScale3};
-        color: ${colors.greyScale4};
+        background-color: #edeef1;
+        color: #8f9196;
     }
   },
+  `,
+  textarea: css`
+    resize: none;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: solid 1px #cacbcf;
+    padding: 25px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    line-height: 1.86;
+    letter-spacing: 0.2px;
+    color: ${colors.greyScale0};
   `,
   column: css`
     display: flex;

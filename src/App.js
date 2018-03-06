@@ -23,13 +23,13 @@ import scienceBgPath from 'theme/images/background-science.jpg';
 
 const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
 
-const Page = ({ Component, ...props }) => (
+const Page = ({ Component, backgroundImageUrl, ...props }) => (
   <div
     css={`
       position: relative;
       min-height: 100vh;
       min-width: 1024;
-      background-image: url(${scienceBgPath});
+      background-image: url(${backgroundImageUrl});
     `}
   >
     <div
@@ -40,6 +40,7 @@ const Page = ({ Component, ...props }) => (
         display: flex;
         flex-direction: column;
         padding-bottom: 120px;
+        background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
       `}
     >
       <Header />
@@ -57,7 +58,7 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
 };
 
 const render = ({ editing, setEditing, state, effects }) => {
-  const { loggedInUser, modalState, toast } = state;
+  const { loggedInUser, toast } = state;
   return (
     <Router>
       <ThemeProvider theme={theme}>
@@ -85,10 +86,29 @@ const render = ({ editing, setEditing, state, effects }) => {
             <Route
               path="/user/:egoId"
               exact
-              render={props => forceSelectRole({ Component: UserProfile, loggedInUser, ...props })}
+              render={props =>
+                forceSelectRole({
+                  Component: UserProfile,
+                  backgroundImageUrl: scienceBgPath,
+                  loggedInUser,
+                  ...props,
+                })
+              }
             />
-            <Route path="/join" exact render={props => <Page Component={Join} {...props} />} />
-            <Route path="/" exact render={props => <Page Component={LoginPage} {...props} />} />
+            <Route
+              path="/join"
+              exact
+              render={props => (
+                <Page Component={Join} backgroundImageUrl={scienceBgPath} {...props} />
+              )}
+            />
+            <Route
+              path="/"
+              exact
+              render={props => (
+                <Page Component={LoginPage} backgroundImageUrl={scienceBgPath} {...props} />
+              )}
+            />
           </Switch>
           <Modal />
           <Toast {...toast}>{toast.component}</Toast>

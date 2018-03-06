@@ -6,12 +6,19 @@ import { compose } from 'recompose';
 import { uiLogout } from 'components/LogoutButton';
 
 export default compose(injectState, withRouter)(
-  ({ history, state: { loggedInUser }, effects: { setUser }, className, children, ...props }) => (
+  ({
+    history,
+    state: { loggedInUser },
+    effects: { setToken, setUser },
+    className,
+    children,
+    ...props
+  }) => (
     <button
       className={className}
       onClick={async () => {
         await deleteProfile({ user: loggedInUser });
-        uiLogout({ history, setUser });
+        uiLogout({ history, setUser, setToken });
       }}
       {...props}
     >

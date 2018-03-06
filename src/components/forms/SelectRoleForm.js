@@ -8,19 +8,16 @@ import { withTheme } from 'emotion-theming';
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
 
-import researcherIconPath from 'theme/images/icon-researcher.svg';
-import patientIconPath from 'theme/images/icon-patient.svg';
-import clinicianIconPath from 'theme/images/icon-clinician.svg';
-
-const iconPaths = {
-  researcher: researcherIconPath,
-  patient: patientIconPath,
-  clinician: clinicianIconPath,
-};
-
 const StyledLabel = styled('label')`
-  font-weight: 900;
-  width: 140px;
+  width: 215px;
+  padding-right: 3px;
+  text-decoration: none;
+  border: none;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 2;
+  color: ${props => props.theme.greyScale1};
 `;
 
 const enhance = compose(
@@ -111,10 +108,13 @@ const SelectRoleForm = ({
         `}
       >
         <div className={theme.row}>
-          <StyledLabel>First name:</StyledLabel>
+          <StyledLabel>My first name is:</StyledLabel>
           <div className={theme.column}>
             <Field
-              className={theme.input}
+              css={`
+                ${theme.input};
+                width: 374px;
+              `}
               name="firstName"
               placeholder="First Name"
               value={values.firstName}
@@ -128,10 +128,13 @@ const SelectRoleForm = ({
             ${theme.row} margin-top: 10px;
           `}
         >
-          <StyledLabel>Last name:</StyledLabel>
+          <StyledLabel>My last name is:</StyledLabel>
           <div className={theme.column}>
             <Field
-              className={theme.input}
+              css={`
+                ${theme.input};
+                width: 374px;
+              `}
               name="lastName"
               placeholder="Last Name"
               value={values.lastName}
@@ -146,10 +149,13 @@ const SelectRoleForm = ({
             ${theme.row} margin-top: 10px;
           `}
         >
-          <StyledLabel>Email:</StyledLabel>
+          <StyledLabel>My email address is:</StyledLabel>
           <div className={theme.column}>
             <Field
-              className={theme.input}
+              css={`
+                ${theme.input};
+                width: 374px;
+              `}
               type="email"
               name="email"
               value={values.email}
@@ -160,21 +166,23 @@ const SelectRoleForm = ({
         </div>
 
         <div className={theme.row}>
-          <StyledLabel>Roles:</StyledLabel>
+          <StyledLabel>Best describes my needs:</StyledLabel>
           <div className={theme.column}>
-            {ROLES.map(({ type, description, displayName }) => (
+            {ROLES.map(({ type, description, displayName, icon, color }) => (
               <div
                 key={type}
                 className={css`
                   ${theme.row} border-radius: 10px;
-                  background-color: #e5f7fd;
-                  border: solid 1px ${theme.active};
-                  width: 525px;
-                  padding: 10px;
+                  background-color: ${values.roles === type ? '#e5f7fd' : '#fff'};
+                  border: solid 1px ${values.roles === type ? theme.active : theme.greyScale4};
+                  width: 560px;
+                  padding: 5px;
                   justify-content: space-between;
                   align-items: center;
                   margin-top: 10px;
+                  ${theme.normalText};
                 `}
+                onClick={() => setFieldValue('roles', type)}
               >
                 <Field
                   type="radio"
@@ -183,19 +191,18 @@ const SelectRoleForm = ({
                   name="roles"
                   onBlur={submitForm}
                 />
-                <img src={iconPaths[type]} alt={type} style={{ width: '60px' }} />
-                <div
-                  className={css`
-                    padding-left: 10px;
-                  `}
-                >
+                {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
+                <div>
                   <label
                     className={css`
                       color: ${theme.secondary};
-                      font-weight: bold;
-                      font-family: 'Open Sans';
+                      font-weight: 600;
                       display: block;
                       text-transform: capitalize;
+                      border: none;
+                      font-family: Montserrat;
+                      font-size: 15px;
+                      line-height: 1.33;
                     `}
                   >
                     {displayName}
