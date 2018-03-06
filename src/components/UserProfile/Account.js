@@ -16,7 +16,7 @@ export const H2 = styled('h2')`
   width: 200px;
 `;
 
-const SettingsSection = styled('section') `
+const SettingsSection = styled('section')`
   ${props => props.theme.row} justify-content: stretch;
   width: 100%;
   border-bottom: 2px solid #d4d6dd;

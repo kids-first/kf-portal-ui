@@ -42,24 +42,24 @@ const DownloadIcon = ({ className, loading }) =>
       }}
     />
   ) : (
-      <img
-        alt=""
-        src={downloadIcon}
-        css={`
+    <img
+      alt=""
+      src={downloadIcon}
+      css={`
         width: 10px;
         margin-right: 9px;
         ${className};
       `}
-      />
-    );
+    />
+  );
 
-const Divider = styled('div') `
+const Divider = styled('div')`
   height: 1px;
   background-color: #d4d6dd;
   margin: 20px 10px 20px 0;
 `;
 
-const Heading = styled('div') `
+const Heading = styled('div')`
   font-size: 14px;
   letter-spacing: 0.3px;
   color: #2b388f;
