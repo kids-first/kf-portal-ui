@@ -28,3 +28,7 @@ export const ROLES = [
     color: '#009bb8',
   },
 ];
+
+export const GEN3 = 'gen3';
+export const CAVATICA = 'cavatica';
+export const SERVICES = [GEN3, CAVATICA];
