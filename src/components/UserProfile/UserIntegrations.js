@@ -5,6 +5,7 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 
 import Button from 'uikit/Button';
+import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import XIcon from 'react-icons/lib/fa/close';
@@ -141,9 +142,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
               <span className="integrationHeader">Download Controlled Data</span>
               <p>
                 Access and download controlled data by connecting your Kids First account to{' '}
-                <a href="https://gen3.kids-first.io/" rel="noopener noreferrer" target="_blank">
-                  Gen3
-                </a>.
+                <ExternalLink href="https://gen3.kids-first.io/">Gen3</ExternalLink>.
               </p>
             </td>
             <td>
@@ -167,9 +166,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
               <span className="integrationHeader">Analyze Data</span>
               <p>
                 Analyze data quickly by connecting your Kids First account to{' '}
-                <a href="http://cavatica.org/" rel="noopener noreferrer" target="_blank">
-                  Cavatica
-                </a>.
+                <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
               </p>
             </td>
             <td>
