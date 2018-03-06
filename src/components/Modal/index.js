@@ -15,7 +15,7 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
     `}
   >
     <span>{title}</span>
-    <CloseIcon onClick={() => unsetModal()} />
+    <CloseIcon css="cursor:pointer;" onClick={() => unsetModal()} />
   </h2>
 );
 
