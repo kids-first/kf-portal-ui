@@ -77,6 +77,8 @@ const submitCavaticaToken = async ({
       onSuccess();
     })
     .catch(response => {
+      document.getElementById(errorTextId).textContent =
+        'The provided Cavatica Token is invalid. Update and try again.';
       setIntegrationToken(CAVATICA, null);
       deleteSecret({ service: CAVATICA });
       onFail();
