@@ -12,6 +12,8 @@ import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { getProfile, createProfile } from 'services/profiles';
 import { googleAppId, egoApiRoot } from 'common/injectGlobals';
 import { allRedirectUris } from '../common/injectGlobals';
+import { CAVATICA } from 'common/constants';
+import { getUser as getCavaticaUser } from 'services/cavatica';
 
 const styles = {
   container: css`
@@ -49,6 +51,25 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
   if (onFinish) {
     onFinish(loggedInUser);
   }
+};
+
+/**
+ * fetchIntegrationTokens
+ * For all SERVICES listed in common/constants, call the key-store to retrieve any keys stored
+ *  for the user.
+ * Each call to key-store is resolved separately and asynchronously. Their value will be added
+ *  to state once returned.
+ */
+export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
+  getCavaticaUser()
+    .then(userData => {
+      setIntegrationToken(CAVATICA, userData);
+    })
+    .catch(response => {
+      // Could not retrieve cavatica user info, nothing to do.
+    });
+
+  // TODO: Get Gen3 Secret here
 };
 
 class Component extends React.Component<any, any> {
@@ -115,8 +136,9 @@ class Component extends React.Component<any, any> {
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
-      const { onFinish, effects: { setToken, setUser } } = props;
-      handleJWT({ jwt, onFinish, setToken, setUser });
+      const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
+      await handleJWT({ jwt, onFinish, setToken, setUser });
+      fetchIntegrationTokens({ setIntegrationToken });
     } else {
       console.warn('response error');
     }

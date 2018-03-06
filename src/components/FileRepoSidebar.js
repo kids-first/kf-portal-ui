@@ -5,7 +5,7 @@ import Spinner from 'react-spinkit';
 import Button from '../uikit/Button';
 import LoadingOnClick from './LoadingOnClick';
 
-import cavaticaLogo from '../assets/logo-cavatica.svg';
+import cavaticaLogo from '../assets/logomark-cavatica.svg';
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';

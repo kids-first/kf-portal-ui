@@ -15,7 +15,7 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
     `}
   >
     <span>{title}</span>
-    <CloseIcon onClick={() => unsetModal()} />
+    <CloseIcon css="cursor:pointer;" onClick={() => unsetModal()} />
   </h2>
 );
 
@@ -26,6 +26,7 @@ export const ModalFooter = enhance(
     submitText = 'Save',
     cancelText = 'Cancel',
     handleSubmit,
+    submitDisabled = false,
     ...props
   }) => {
     return (
@@ -45,7 +46,7 @@ export const ModalFooter = enhance(
         <button css={theme.wizardButton} onClick={() => unsetModal()}>
           {cancelText}
         </button>
-        <button css={theme.actionButton} onClick={handleSubmit}>
+        <button css={theme.actionButton} disabled={submitDisabled} onClick={handleSubmit}>
           {submitText}
         </button>
       </div>

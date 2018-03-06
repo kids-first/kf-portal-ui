@@ -19,6 +19,7 @@ const ClickToAdd = styled('span')`
   font-family: Montserrat;
   text-decoration: underline;
   &:hover {
+    cursor: pointer;
     color: ${props => props.theme.highlight};
     font-size: 12px;
     font-family: Montserrat;

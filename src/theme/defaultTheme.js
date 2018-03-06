@@ -79,6 +79,7 @@ const components = {
       background-color: ${colors.primaryHover};
       border: solid 2px #dcdde3;
       color: #ffffff;
+      cursor: pointer;
     }
 
     a,
@@ -153,6 +154,7 @@ const components = {
     &:disabled:hover {
       background-color: transparent;
       color: ${colors.greyScale7};
+      cursor: default;
     }
   `,
   actionButton: css`
@@ -175,12 +177,14 @@ const components = {
     &:hover {
       background-color: ${colors.tertiaryHover};
       color: #ffffff;
+      cursor: pointer;
     }
     &:link {
       text-decoration: none;
     }
     &:disabled,
     &:disabled:hover {
+      cursor: default;
       color: ${colors.greyScale7};
       background-color: ${colors.greyScale4};
     }
@@ -215,6 +219,7 @@ const components = {
       color: ${colors.greyScale7};
     }
     &:disabled:hover {
+      cursor: default;
       background-color: transparent;
       color: ${colors.greyScale7};
     }
@@ -355,6 +360,7 @@ const components = {
 
       a:hover,
       a.active {
+        cursor: pointer;
         color: ${colors.highlight};
         font-weight: 500;
         border-bottom: 3px solid ${colors.highlight};
@@ -392,6 +398,7 @@ const components = {
 
       a:hover,
       a.active {
+        cursor: pointer;
         color: ${colors.highlight};
         font-weight: 500;
         border-left: 3px solid ${colors.highlight};
