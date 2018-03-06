@@ -5,7 +5,7 @@ import Spinner from 'react-spinkit';
 import Button from '../uikit/Button';
 import LoadingOnClick from './LoadingOnClick';
 
-import cavaticaLogo from '../assets/logo-cavatica.svg';
+import cavaticaLogo from '../assets/logomark-cavatica.svg';
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
@@ -27,7 +27,7 @@ function findColumnsByField(fields, columns) {
   return fields
     .map(
       field => (typeof field === 'string' ? columns.find(column => column.field === field) : field),
-    )
+  )
     .filter(Boolean)
     .map(c => ({ ...c, show: true }));
 }
@@ -45,24 +45,24 @@ const DownloadIcon = ({ className, loading }) =>
       }}
     />
   ) : (
-    <img
-      alt=""
-      src={downloadIcon}
-      css={`
+      <img
+        alt=""
+        src={downloadIcon}
+        css={`
         width: 10px;
         margin-right: 9px;
         ${className};
       `}
-    />
-  );
+      />
+    );
 
-const Divider = styled('div')`
+const Divider = styled('div') `
   height: 1px;
   background-color: #d4d6dd;
   margin: 20px 10px 20px 0;
 `;
 
-const Heading = styled('div')`
+const Heading = styled('div') `
   font-size: 14px;
   letter-spacing: 0.3px;
   color: #2b388f;
