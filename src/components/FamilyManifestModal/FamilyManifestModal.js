@@ -159,6 +159,7 @@ const FamilyManifestModal = ({
   projectId,
   values,
   submitForm,
+  isSubmitting,
 }) => {
   const loading = !dataTypesAggregation || !familyMemberIdAggregation;
   return (
@@ -220,7 +221,10 @@ const FamilyManifestModal = ({
           />
         ))
       )}
-      <ModalFooter submitText="DOWNLOAD MANIFEST" handleSubmit={loading ? undefined : submitForm} />
+      <ModalFooter
+        submitText="DOWNLOAD MANIFEST"
+        handleSubmit={isSubmitting ? undefined : submitForm}
+      />
     </div>
   );
 };
