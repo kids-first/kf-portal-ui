@@ -5,6 +5,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
 import { CAVATICA } from 'common/constants';
+import { cavaticaWebRoot } from 'common/injectGlobals';
 import CavaticaProjects from './CavaticaProjects';
 import CavaticaConnectButton from './CavaticaConnectButton';
 import ExternalLink from 'uikit/ExternalLink';
@@ -17,7 +18,7 @@ const CavaticaSidebar = ({ state, theme, ...props }) => {
     <div>
       {state.integrationTokens[CAVATICA] ? <CavaticaProjects /> : <CavaticaConnectButton />}
       <div css="padding:10px;">
-        <ExternalLink href="http://cavatica.org/">
+        <ExternalLink href={cavaticaWebRoot}>
           Go to Cavatica{' '}
           <DoubleArrowRight fill={theme.primary} width="10px" css="margin-left:4px;" />
         </ExternalLink>

@@ -11,6 +11,7 @@ import PencilIcon from 'react-icons/lib/fa/pencil';
 import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
+import { cavaticaWebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
 import CavaticaInput from 'components/cavatica/CavaticaTokenInput';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
@@ -166,7 +167,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
               <span className="integrationHeader">Analyze Data</span>
               <p>
                 Analyze data quickly by connecting your Kids First account to{' '}
-                <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
+                <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
               </p>
             </td>
             <td>
