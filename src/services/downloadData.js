@@ -43,7 +43,7 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
             {
               Header: 'sample.kf_id',
               field: 'participants.samples.kf_id',
-              listAccessor: 'participants.hits.edges',
+              jsonPath: '$.participants.hits.edges..node.samples.hits.edges..node.kf_id',
               query:
                 'participants { hits { total, edges { node { samples { hits { edges { node { kf_id } } } } } } } }',
               type: 'list',
