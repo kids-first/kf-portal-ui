@@ -142,7 +142,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                     Select a way to connect to the Kids First Data Resource Portal
                   </h3>
                   <p>
-                    Don’t worry, the information you provide Kids First will not be shared with any
+                    Your information will be kept confidential and secure and is not shared with any
                     of these providers.
                   </p>
                   <Login
@@ -166,7 +166,6 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                 <div>
                   <h3 className={theme.h3}>Tell us about yourself</h3>
                   <p>
-                    {' '}
                     Please provide information about yourself to help us personalize your
                     experience.
                   </p>

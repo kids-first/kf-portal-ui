@@ -318,10 +318,13 @@ const components = {
   navLink: css`
     display: block;
     color: #90278e;
-    padding: 6px 16px;
+    padding: 6px 10px;
     margin: 0px 4px;
     text-decoration: none;
     border: solid 2px transparent;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 500;
 
     &:hover {
       border-radius: 19px;
@@ -329,6 +332,25 @@ const components = {
       border: solid 2px #dcdde3;
       color: #ffffff;
     }
+  `,
+  navBar: css`
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: montserrat;
+    font-size: 14px;
+    line-height: 1.86;
+    letter-spacing: 0.2px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.86;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: #90278e;
   `,
   secondaryNav: css`
     list-style-type: none;
@@ -356,6 +378,7 @@ const components = {
         padding: 0 10px;
         border-bottom: 3px solid transparent;
         margin-right: 1em;
+        text-decoration: none;
       }
 
       a:hover,
@@ -364,6 +387,7 @@ const components = {
         color: ${colors.highlight};
         font-weight: 500;
         border-bottom: 3px solid ${colors.highlight};
+        text-decoration: none;
       }
     }
   `,

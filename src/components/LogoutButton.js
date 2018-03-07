@@ -17,9 +17,17 @@ export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens })
     history.push('/');
   });
 
-const Logout = ({ history, effects: { setToken, setUser, clearIntegrationTokens }, theme }) => (
+const Logout = ({
+  history,
+  effects: { setToken, setUser, clearIntegrationTokens },
+  theme,
+  className,
+}) => (
   <button
-    className={theme.button}
+    css={`
+      ${theme.button};
+      ${className};
+    `}
     onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens })}
   >
     Logout
