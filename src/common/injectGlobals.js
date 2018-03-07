@@ -22,6 +22,7 @@ if (personaApiOverride) {
 export const personaApiRoot: string = personaApiOverride || process.env.REACT_APP_PERSONA_API || '';
 export const secretStorageApiRoot: string = process.env.REACT_APP_SECRETS_API;
 export const cavaticaApiRoot: string = process.env.REACT_APP_CAVATICA_API;
+export const gen3ApiRoot: string = process.env.REACT_APP_GEN3_API;
 
 export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
