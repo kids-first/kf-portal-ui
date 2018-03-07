@@ -67,7 +67,7 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 
-export default ({ projectId, index, style, streamData, sqon, graphqlField, ...props }) => (
+export default ({ projectId, style, sqon, ...props }) => (
   <div
     css={`
       ${styles.container} ${style};
@@ -93,7 +93,7 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
     <div>
       <ColumnsState
         projectId={projectId}
-        graphqlField={graphqlField}
+        graphqlField="file"
         render={({ state }) => {
           return (
             <div
@@ -127,7 +127,7 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
       />
       <ColumnsState
         projectId={projectId}
-        index="participant"
+        graphqlField="participant"
         render={({ state }) => {
           return (
             <div>
