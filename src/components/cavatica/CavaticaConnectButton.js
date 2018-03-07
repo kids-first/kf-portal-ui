@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 
-import { css } from 'emotion';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
 
-import { CAVATICA } from 'common/constants';
 import CavaticaInput from './CavaticaTokenInput';
 
 import cavaticaLogo from 'assets/logomark-cavatica.svg';

@@ -63,8 +63,6 @@ const enhance = compose(
   withState('invalidToken', 'setInvalidToken', false),
 );
 
-const errorTextId = 'cavaticaTokenErrorMsg';
-
 const submitCavaticaToken = async ({
   token,
   setIntegrationToken,
