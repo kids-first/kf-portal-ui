@@ -6,7 +6,6 @@ import { css } from 'emotion';
 import styled from 'react-emotion';
 import { injectState } from 'freactal';
 
-import { CAVATICA } from 'common/constants';
 import { getProjects as getCavaticaProjects } from 'services/cavatica';
 
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
