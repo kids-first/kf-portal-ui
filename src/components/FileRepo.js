@@ -13,8 +13,8 @@ import {
 } from '@arranger/components/dist/Arranger';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
-import Stats from './Stats';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
+import { FileRepoStats } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
@@ -160,14 +160,10 @@ const FileRepo = ({ state, effects, ...props }) => {
                       }}
                     >
                       <CurrentSQON {...props} {...url} />
-                      <Stats {...props} sqon={selectionSQON} />
+                      <FileRepoStats {...props} sqon={selectionSQON} />
                       <Table {...props} customTypes={customTableTypes} {...url} />
                     </div>
-                    <FileRepoSidebar
-                      {...props}
-                      sqon={selectionSQON}
-                      streamData={props.streamData(props.index, props.projectId)}
-                    />
+                    <FileRepoSidebar {...props} sqon={selectionSQON} />
                   </div>
                 </div>
               );

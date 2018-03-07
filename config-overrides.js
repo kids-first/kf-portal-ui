@@ -10,7 +10,6 @@ function rewireEmotion(config, env) {
   config.module.rules[1].oneOf[1].include = [
     config.module.rules[1].oneOf[1].include,
     resolveApp('node_modules/graphql-fields'),
-    resolveApp('node_modules/streamsaver'),
   ];
 
   return injectBabelPlugin('emotion', config);

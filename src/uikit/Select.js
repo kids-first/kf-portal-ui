@@ -11,7 +11,6 @@ function Select({ items, className, align = 'right', ...rest }) {
           css={`
             position: relative;
             white-space: nowrap;
-            z-index: 100;
             border-radius: 10px;
             background-color: #ffffff;
             border: solid 1px #cacbcf;
