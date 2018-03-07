@@ -70,7 +70,7 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 
-export default ({ projectId, index, style, streamData, sqon, ...props }) => (
+export default ({ projectId, index, style, streamData, sqon, graphqlField, ...props }) => (
   <div
     css={`
       ${styles.container} ${style};
@@ -95,7 +95,7 @@ export default ({ projectId, index, style, streamData, sqon, ...props }) => (
     <Heading>Download</Heading>
     <ColumnsState
       projectId={projectId}
-      index={index}
+      graphqlField={graphqlField}
       render={({ state }) => {
         return (
           <div>
