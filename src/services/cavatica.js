@@ -84,7 +84,7 @@ export const getProjects = async () => {
 export const createProject = async ({ name, billing_group, description = '' }) => {
   const { data } = await ajax.post(cavaticaApiRoot, {
     path: '/projects',
-    method: 'GET',
+    method: 'POST',
     body: { name, billing_group, description },
   });
   return data;
@@ -97,3 +97,55 @@ export const getFiles = async () => {
   });
   return data;
 };
+
+/**
+ * ids - array of Gen3 Ids as strings
+ * returns an array of objects representing the Cavatica file equivalents
+ *  these objects have the form:
+ *    {
+ *      "href": "https://api-kids-first-vayu.sbgenomics.com/v2/files/5a98298e20947e0f33468143",
+ *      "id": "5a98298e20947e0f33468143",
+ *      "name": "HG00235.mapped.SOLID.bfast.GBR.exome.20110411.bam.bas"
+ *    }
+ *
+ */
+export const convertGen3FileIds = async ({ ids }) => {
+  const { data: { items } } = await ajax.post(cavaticaApiRoot, {
+    path: '/action/files/resolve_origin_ids',
+    method: 'POST',
+    body: {
+      type: 'dataset',
+      dataset: 'sevenbridges/kids-first',
+      items: ids.map(id => {
+        return {
+          id,
+        };
+      }),
+      // [
+      //   { id: 'ffe81227-2d0f-4cb0-be03-f6fa0f93de71' },
+      //   { id: 'ff697878-84cd-4ad4-b7da-b1958e9d3c98' },
+      // ],
+    },
+  });
+  return items;
+};
+
+/**
+ * Requires Cavatica File IDs as returned from convertGen3FileIds
+ *
+ * project is the project id, not name (ie. userId/projectName)
+ * ids is an array of strings of the ids to copy
+ */
+export const copyFiles = async ({ project, ids }) => {
+  const { data: { items } } = await ajax.post(cavaticaApiRoot, {
+    path: '/action/files/copy',
+    method: 'POST',
+    body: {
+      project: project,
+      file_ids: ids,
+    },
+  });
+  return items;
+};
+
+//jonqa01/public-housing
