@@ -87,28 +87,28 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
               field: 'family.family_members.diagnoses.age_at_event_days',
               listAccessor: 'family.family_members.hits.edges',
               query:
-                'family { family_members { hits(first: 5) { edges { node { diagnoses { hits { edges { node { age_at_event_days } } } } } } } } }',
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { age_at_event_days } } } } } } } } }',
               type: 'list',
             },
             {
               field: 'family.family_members.diagnoses.diagnosis',
               listAccessor: 'family.family_members.hits.edges',
               query:
-                'family { family_members { hits(first: 5) { edges { node { diagnoses { hits { edges { node { diagnosis } } } } } } } } }',
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis } } } } } } } } }',
               type: 'list',
             },
             {
               field: 'family.family_members.diagnoses.diagnosis_category',
               listAccessor: 'family.family_members.hits.edges',
               query:
-                'family { family_members { hits(first: 5) { edges { node { diagnoses { hits { edges { node { diagnosis_category } } } } } } } } }',
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis_category } } } } } } } } }',
               type: 'list',
             },
             {
               field: 'family.family_members.diagnoses.tumor_location',
               listAccessor: 'family.family_members.hits.edges',
               query:
-                'family { family_members { hits(first: 5) { edges { node { diagnoses { hits { edges { node { tumor_location } } } } } } } } }',
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { tumor_location } } } } } } } } }',
               type: 'list',
             },
           ],
