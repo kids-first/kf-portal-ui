@@ -21,21 +21,12 @@ import { ROLES } from 'common/constants';
 import { getProfile } from 'services/profiles';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 
-import researcherBanner from 'assets/user-banner-researcher.jpg';
-import patientBanner from 'assets/user-banner-patient.jpg';
-
 import CompleteOMeter from 'components/CompleteOMeter';
 
 import Gravtar from 'uikit/Gravatar';
 
 import AboutMe from './AboutMe';
 import Settings from './Settings';
-
-const roleToBanner = {
-  researcher: researcherBanner,
-  patient: patientBanner,
-  clinician: 'tbd',
-};
 
 export const Container = styled('div')`
   justify-content: space-around;
@@ -124,7 +115,12 @@ export default compose(
   >
     <div
       className={css`
-        background: url(${roleToBanner[profile.roles]}) no-repeat;
+        background: url(${get(
+            ROLES.reduce((acc, { type, banner }) => ({ ...acc, [type]: banner }), {}),
+            get(profile.roles, 0),
+            '',
+          )})
+          no-repeat;
         background-color: #1094d5;
         height: 330px;
         align-items: center;

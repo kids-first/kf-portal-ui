@@ -22,6 +22,7 @@ export default class extends React.Component<any, any> {
       <div
         {..._.omit(this.props, 'onLogin')}
         className="fb-login-button"
+        style={{ height: '40px' }}
         data-max-rows="1"
         data-size="large"
         data-button-type="login_with"
