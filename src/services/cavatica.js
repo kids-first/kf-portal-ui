@@ -24,10 +24,11 @@ import { cavaticaApiRoot } from 'common/injectGlobals';
     }
   */
 export const getUser = async () => {
-  return await ajax.post(cavaticaApiRoot, {
+  const { data } = await ajax.post(cavaticaApiRoot, {
     path: '/user',
     method: 'GET',
   });
+  return data;
 };
 
 /**
@@ -39,7 +40,7 @@ Should return array of billing groups with the form:
   }
 */
 export const getBillingGroups = async () => {
-  const { items } = await ajax.post(cavaticaApiRoot, {
+  const { data: { items } } = await ajax.post(cavaticaApiRoot, {
     path: '/billing/groups',
     method: 'GET',
   });
@@ -55,10 +56,11 @@ export const getBillingGroups = async () => {
     }
  */
 export const getProjects = async () => {
-  return await ajax.post(cavaticaApiRoot, {
+  const { data: { items } } = await ajax.post(cavaticaApiRoot, {
     path: '/projects',
     method: 'GET',
   });
+  return items;
 };
 
 /**
@@ -80,16 +82,18 @@ export const getProjects = async () => {
  * 
  */
 export const createProject = async ({ name, billing_group, description = '' }) => {
-  return await ajax.post(cavaticaApiRoot, {
+  const { data } = await ajax.post(cavaticaApiRoot, {
     path: '/projects',
     method: 'GET',
     body: { name, billing_group, description },
   });
+  return data;
 };
 
 export const getFiles = async () => {
-  return await ajax.post(cavaticaApiRoot, {
+  const { data } = await ajax.post(cavaticaApiRoot, {
     path: '/files',
     method: 'GET',
   });
+  return data;
 };

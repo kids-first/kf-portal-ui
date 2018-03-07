@@ -12,6 +12,8 @@ const colors = {
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
 
+  optionSelected: '#E5F6FD', //light blue
+
   greyScale8: '#d4d6dd',
   greyScale7: 'rgb(107,98,98)',
   greyScale6: 'rgb(245,245,245)',

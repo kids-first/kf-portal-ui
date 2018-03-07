@@ -185,8 +185,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                           />
                         ),
                       }),
-                    onRemove: () => {
-                      deleteSecret({ service: CAVATICA });
+                    onRemove: async () => {
+                      await deleteSecret({ service: CAVATICA });
                       effects.setIntegrationToken(CAVATICA, null);
                     },
                   })
