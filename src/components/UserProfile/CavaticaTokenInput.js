@@ -63,11 +63,6 @@ const enhance = compose(
   withState('invalidToken', 'setInvalidToken', false),
 );
 
-<<<<<<< HEAD
-=======
-const errorTextId = 'cavaticaTokenErrorMsg';
-
->>>>>>> Disable submit button as ModalFooter property
 const submitCavaticaToken = async ({
   token,
   setIntegrationToken,
@@ -113,25 +108,9 @@ const CavaticaTokenInput = ({
           <div className="stepText">
             <span>
               If you don't have one, please{' '}
-<<<<<<< HEAD
-<<<<<<< HEAD
               <ExternalLink href="https://pgc-accounts.sbgenomics.com/auth/register/">
                 register for a Cavatica Account <RightArrows />
               </ExternalLink>{' '}
-=======
-              <a
-                href="https://pgc-accounts.sbgenomics.com/auth/register/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                register for a Cavatica Account <RightArrows />
-              </a>{' '}
->>>>>>> Fix Cavatica Modal Layout, plus typo
-=======
-              <ExternalLink href="https://pgc-accounts.sbgenomics.com/auth/register/">
-                register for a Cavatica Account <RightArrows />
-              </ExternalLink>{' '}
->>>>>>> Disable submit button as ModalFooter property
             </span>
           </div>
         </div>
