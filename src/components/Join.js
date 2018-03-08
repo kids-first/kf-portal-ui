@@ -126,8 +126,8 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
   ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme }) => (
     <div
       className={css`
-        width: 849px;
-        margin: 5% auto 0 auto;
+        width: 830px;
+        margin: auto;
       `}
     >
       <div className={theme.card}>
@@ -232,6 +232,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                           history.push(`/user/${loggedInUser.egoId}`);
                         }
                       }}
+                      disabled={nextDisabled}
                     >
                       Save
                       <RightIcon />
