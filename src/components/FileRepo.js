@@ -4,7 +4,8 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import SQONURL from 'components/SQONURL';
 import downloadIcon from '../assets/icon-download-grey.svg';
-import Share from 'components/Share';
+import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 
 import {
   Arranger,
@@ -16,7 +17,7 @@ import {
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import { FileRepoStats } from './Stats';
+import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
@@ -178,7 +179,19 @@ const FileRepo = ({ state, effects, ...props }) => {
                         `}
                       >
                         <CurrentSQON {...props} {...url} />
-                        {url.sqon && Object.keys(url.sqon).length > 0 && <Share />}
+                        {url.sqon &&
+                          Object.keys(url.sqon).length > 0 && (
+                            <FileRepoStatsQuery
+                              {...props}
+                              {...url}
+                              render={data => (
+                                <div>
+                                  <ShareQuery stats={data} />
+                                  <SaveQuery stats={data} />
+                                </div>
+                              )}
+                            />
+                          )}
                       </div>
                       <FileRepoStats {...props} sqon={selectionSQON} />
                       <Table
