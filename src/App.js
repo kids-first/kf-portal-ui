@@ -156,9 +156,7 @@ const render = ({ editing, setEditing, state, effects }) => {
             <Route
               path="/join"
               exact
-              render={props => (
-                <Page Component={Join} backgroundImageUrl={scienceBgPath} {...props} />
-              )}
+              render={props => <SideImagePage Component={Join} sideImage={joinImage} {...props} />}
             />
             <Route
               path="/"
