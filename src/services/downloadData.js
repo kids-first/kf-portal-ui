@@ -85,28 +85,32 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
             'family.family_members.phenotype.hpo.negative_hpo_ids',
             {
               field: 'family.family_members.diagnoses.age_at_event_days',
-              listAccessor: 'family.family_members.hits.edges',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.age_at_event_days',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { age_at_event_days } } } } } } } } }',
               type: 'list',
             },
             {
               field: 'family.family_members.diagnoses.diagnosis',
-              listAccessor: 'family.family_members.hits.edges',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.diagnosis',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis } } } } } } } } }',
               type: 'list',
             },
             {
               field: 'family.family_members.diagnoses.diagnosis_category',
-              listAccessor: 'family.family_members.hits.edges',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.diagnosis_category',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis_category } } } } } } } } }',
               type: 'list',
             },
             {
               field: 'family.family_members.diagnoses.tumor_location',
-              listAccessor: 'family.family_members.hits.edges',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.tumor_location',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { tumor_location } } } } } } } } }',
               type: 'list',
