@@ -99,10 +99,10 @@ const enhance = compose(
               op: 'in',
               content: { field: 'data_type', value: [dataType.key] },
             },
-            // {
-            //   op: 'in',
-            //   content: { field: 'participant.kf_id', value: familyMemberIds },
-            // },
+            {
+              op: 'in',
+              content: { field: 'participants.kf_id', value: familyMemberIds },
+            },
           ],
         },
       };
@@ -137,7 +137,7 @@ const enhance = compose(
                 },
                 {
                   op: 'in',
-                  content: { field: 'participant.kf_id', value: familyMemberIds },
+                  content: { field: 'participants.kf_id', value: familyMemberIds },
                 },
               ],
             },
