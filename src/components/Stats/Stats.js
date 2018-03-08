@@ -15,7 +15,7 @@ const Line = () => {
 };
 
 const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragment, ...props }) => {
-  const getValue = typeof accessor === 'function' ? accessor : data => get(data, accessor);
+  const getValue = typeof accessor() === 'function' ? accessor : data => get(data, accessor());
 
   return (
     <div
@@ -39,10 +39,10 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
           debounceTime={100}
           name={`${index}StatQuery`}
           {...props}
-          query={query(fragment)}
+          query={query(fragment())}
           variables={{ sqon }}
           index={index}
-          render={data => (data ? (getValue(data, accessor) || 0).toLocaleString() : 'loading')}
+          render={data => (data ? (getValue(data, accessor()) || 0).toLocaleString() : 'loading')}
         />
       </div>
       <div
