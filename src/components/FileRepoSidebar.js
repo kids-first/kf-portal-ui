@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
 import Spinner from 'react-spinkit';
+import { injectState } from 'freactal';
 
 import Button from '../uikit/Button';
 import LoadingOnClick from './LoadingOnClick';
@@ -13,10 +14,10 @@ import InfoIcon from '../icons/InfoIcon';
 import {
   downloadBiospecimen,
   fileManifestParticipantsOnly,
-  fileManifestParticipantsAndFamily,
   clinicalDataParticipants,
   clinicalDataFamily,
 } from '../services/downloadData';
+import FamilyManifestModal from './FamilyManifestModal';
 
 const styles = {
   container: css`
@@ -67,7 +68,7 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 
-export default ({ projectId, style, sqon, ...props }) => (
+const FileRepoSidebar = ({ projectId, index, style, sqon, effects, ...props }) => (
   <div
     css={`
       ${styles.container} ${style};
@@ -108,10 +109,20 @@ export default ({ projectId, style, sqon, ...props }) => (
                     sqon,
                     columns: state.columns,
                   }),
-                  'Participant and family': fileManifestParticipantsAndFamily({
-                    sqon,
-                    columns: state.columns,
-                  }),
+
+                  'Participant and family': () => {
+                    return effects.setModal({
+                      title: 'Download Manifest (Participant and Family)',
+                      component: (
+                        <FamilyManifestModal
+                          sqon={sqon}
+                          index={index}
+                          projectId={projectId}
+                          columns={state.columns}
+                        />
+                      ),
+                    });
+                  },
                 }}
                 render={({ loading }) => {
                   return (
@@ -202,3 +213,5 @@ export default ({ projectId, style, sqon, ...props }) => (
     </button>
   </div>
 );
+
+export default injectState(FileRepoSidebar);

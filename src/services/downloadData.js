@@ -59,7 +59,7 @@ export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
   });
 };
 
-export const fileManifestParticipantsAndFamily = ({ sqon, columns }) => null; // TODO: implement
+export const fileManifestParticipantsAndFamily = fileManifestParticipantsOnly;
 
 export const clinicalDataParticipants = ({ sqon, columns }) => () => {
   return saveTSV({
