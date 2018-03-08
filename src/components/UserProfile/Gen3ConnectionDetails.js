@@ -62,13 +62,15 @@ const Gen3ConnectionDetails = ({
           <tr>
             <span> You can download data from these studies:</span>
           </tr>
-          {userDetails.project_access
-            ? Object.keys(userDetails.project_access).map(projectName => (
-                <tr>
-                  <span class="header">{projectName}</span>
-                </tr>
-              ))
-            : null}
+          {userDetails.project_access ? (
+            Object.keys(userDetails.project_access).map(projectName => (
+              <tr>
+                <span class="header">{projectName}</span>
+              </tr>
+            ))
+          ) : (
+            <tr />
+          )}
         </table>
       </div>
     </div>
