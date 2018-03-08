@@ -17,6 +17,8 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 import { CAVATICA, GEN3 } from 'common/constants';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import ExternalLink from 'uikit/ExternalLink';
+import cavaticaLogo from 'assets/logomark-cavatica.svg';
+import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 
 const SettingsButton = ({ egoId, theme, ...props }) => (
   <Link
@@ -84,19 +86,51 @@ const StyledH3 = styled('h3')`
 
 const StyledH4 = styled('h4')`
   font-family: Montserrat;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
   line-height: 1;
   letter-spacing: 0.3px;
   text-align: left;
   color: ${({ theme }) => theme.primaryHover};
-  margin: 0;
+  margin: 0 0 5px 0;
 `;
 
 const SpacedSpan = styled('span')`
   padding-top: 8px;
 `;
 
+const IntegrationsDiv = styled.div`
+  ${({ theme }) => theme.row};
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const IntegrationsCircleDiv = styled.div`
+  width: 82px;
+  height: 82px;
+  border-radius: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  border: solid 1px ${({ theme }) => theme.greyScale5};
+`;
+
+const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => (
+  <div>
+    {connected ? (
+      <div
+        css={`
+          color: ${theme.active};
+        `}
+      >
+        <CheckIcon size={20} />
+        Connected to <ExternalLink href={url}>{name}</ExternalLink>.
+      </div>
+    ) : (
+      unconnectedMsg
+    )}
+  </div>
+);
 export default compose(
   injectState,
   withRouter,
@@ -234,47 +268,77 @@ export default compose(
         css={`
           border-radius: 30px;
           background-color: #f4f5f8;
-          border: solid 1px #e0e1e6;
-          padding: 10px 50px;
+          border: solid 1px ${theme.greyScale5};
+          padding: 10px 10px;
           ${theme.row};
           align-items: center;
-          justify-content: space-between;
+          justify-content: space-around;
         `}
       >
-        <div
-          css={`
-            ${theme.column};
-            width: 285px;
-          `}
-        >
-          <StyledH4>Download Controlled Data</StyledH4>
-          gen3 placeholder
-        </div>
-        <div
-          css={`
-            ${theme.cloumn};
-            width: 285px;
-          `}
-        >
-          <StyledH4>Analyze Data</StyledH4>
-          {integrationTokens[CAVATICA] ? (
-            <div
+        <IntegrationsDiv>
+          <IntegrationsCircleDiv>
+            <img
               css={`
-                color: ${theme.active};
-                padding: 10px;
+                width: 42px;
               `}
-            >
-              <CheckIcon size={20} />
-              <span> Connected</span> to{' '}
-              <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
-            </div>
-          ) : (
-            <div>
-              Analyze data quickly by connecting your Kids First account to{' '}
-              <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
-            </div>
-          )}
-        </div>
+              src={downloadControlledAccess}
+              alt="Download controlled access icon"
+            />
+          </IntegrationsCircleDiv>
+          <div
+            css={`
+              ${theme.column};
+              padding: 10px;
+            `}
+          >
+            <StyledH4>Download Controlled Data</StyledH4>
+            <IntegrationsStatus
+              connected={integrationTokens[GEN3]}
+              theme={theme}
+              name="Gen3"
+              url="https://gen3.kids-first.io/"
+              unconnectedMsg={
+                <div>
+                  Connect to <ExternalLink href="https://gen3.kids-first.io/">Gen3</ExternalLink> to
+                  download controlled data
+                </div>
+              }
+            />
+          </div>
+        </IntegrationsDiv>
+
+        <IntegrationsDiv>
+          <IntegrationsCircleDiv>
+            <img
+              css={`
+                width: 42px;
+              `}
+              src={cavaticaLogo}
+              alt="Cavatica Logo"
+            />
+          </IntegrationsCircleDiv>
+          <div
+            css={`
+              ${theme.cloumn};
+              padding: 10px;
+            `}
+          >
+            <StyledH4>Analyze Data</StyledH4>
+
+            <IntegrationsStatus
+              connected={integrationTokens[CAVATICA]}
+              theme={theme}
+              name="Cavatica"
+              url="http://cavatica.org/"
+              unconnectedMsg={
+                <div>
+                  Analyze data quickly by connecting your Kids First account to{' '}
+                  <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
+                </div>
+              }
+            />
+          </div>
+        </IntegrationsDiv>
         <div>
           <Link
             to={{
