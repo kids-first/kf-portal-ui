@@ -1,5 +1,14 @@
+import { setGen3Token } from 'services/ajax';
 import ajax from 'services/ajax';
 import { gen3ApiRoot } from 'common/injectGlobals';
+
+// Default config options
+const defaultOptions = {
+  baseURL: gen3ApiRoot,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -23,11 +32,10 @@ import { gen3ApiRoot } from 'common/injectGlobals';
       "zip_code": ""
     }
   */
-export const getUser = async () => {
-  return await ajax.post(gen3ApiRoot, {
-    path: '/user',
-    method: 'GET',
-  });
+export const getUser = async (credentials) => {
+  let accessToken = await getAccessToken(credentials);
+  await setGen3Token(accessToken.data.access_token);
+  return await ajax.get(gen3ApiRoot + "user/user");
 };
 
 /**
@@ -38,6 +46,15 @@ Should return array of billing groups with the form:
       "name": "Pilot Funds"
   }
 */
+
+export const getAccessToken = async (credentials) => {
+  let config = {
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  };
+  return await ajax.post(gen3ApiRoot + "user/credentials/cdis/access_token", credentials, config);
+}
 export const getBillingGroups = async () => {
   const { items } = await ajax.post(gen3ApiRoot, {
     path: '/billing/groups',

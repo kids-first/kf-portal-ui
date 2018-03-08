@@ -51,11 +51,12 @@ const enhance = compose(
 );
 
 const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
-
+  //token = JSON.stringify(token);
+  token = token.replace(/\s+/g, '');
   await setSecret({ service: GEN3, secret: token });
   await getGen3User(token)
     .then(userData => {
-      setIntegrationToken(GEN3, userData);
+      setIntegrationToken(GEN3, token);
       onSuccess();
     })
     .catch(response => {
