@@ -194,7 +194,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       onClick={nextStep}
                       disabled={nextDisabled}
                     >
-                      Save
+                      Next
                       <RightIcon />
                     </button>
                   </div>
@@ -216,23 +216,24 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                     <button
                       className={theme.actionButton}
                       onClick={() => {
-                        setToast({
-                          id: `${Date.now()}`,
-                          action: 'success',
-                          component: (
-                            <div>
-                              Fill out your profile, or skip and{' '}
-                              <ToSearchPage index="file" onClick={() => closeToast()}>
-                                browse data
-                              </ToSearchPage>
-                            </div>
-                          ),
-                        });
-                        history.push(`/user/${loggedInUser.egoId}`);
+                        if (!nextDisabled) {
+                          setToast({
+                            id: `${Date.now()}`,
+                            action: 'success',
+                            component: (
+                              <div>
+                                Fill out your profile, or skip and{' '}
+                                <ToSearchPage index="file" onClick={() => closeToast()}>
+                                  browse data
+                                </ToSearchPage>
+                              </div>
+                            ),
+                          });
+                          history.push(`/user/${loggedInUser.egoId}`);
+                        }
                       }}
-                      disabled={nextDisabled}
                     >
-                      FINISH
+                      Save
                       <RightIcon />
                     </button>
                   </div>

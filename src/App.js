@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import './App.css';
 import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Link, BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
@@ -20,6 +20,9 @@ import Footer from 'components/Footer';
 import theme from 'theme/defaultTheme';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
+import loginImage from 'assets/smiling-boy-login.jpg';
+import joinImage from 'assets/smiling-girl-join-wizard.jpg';
+import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
 
 const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
 
@@ -47,6 +50,59 @@ const Page = ({ Component, backgroundImageUrl, ...props }) => (
       <Component {...props} />
     </div>
     <Footer />
+  </div>
+);
+
+const SideImagePage = ({ Component, sideImage, ...props }) => (
+  <div
+    css={`
+      position: relative;
+      height: 100vh;
+      overflow-y: hidden;
+      min-width: 1024;
+      background-image: url(${scienceBgPath});
+    `}
+  >
+    <div
+      css={`
+        width: 100%;
+        height: 5px;
+        background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
+      `}
+    />
+    <Link to="/">
+      <img
+        src={logoPath}
+        alt="Kids First Logo"
+        className={css`
+          width: 177px;
+          height: 65px;
+          position: absolute;
+          margin: 20px;
+        `}
+      />
+    </Link>
+    <div
+      className={css`
+        background-repeat: repeat;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
+      `}
+    >
+      <div
+        css={`
+          background-image: url(${sideImage});
+          background-repeat: no-repeat;
+          width: 573px;
+          height: 100%;
+          box-shadow: 0 0 6px 0.1px #bbbbbb;
+        `}
+      />
+      <Component {...props} />
+    </div>
   </div>
 );
 
@@ -107,7 +163,7 @@ const render = ({ editing, setEditing, state, effects }) => {
               path="/"
               exact
               render={props => (
-                <Page Component={LoginPage} backgroundImageUrl={scienceBgPath} {...props} />
+                <SideImagePage Component={LoginPage} sideImage={loginImage} {...props} />
               )}
             />
           </Switch>
