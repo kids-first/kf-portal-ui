@@ -1,20 +1,15 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 
-import Button from 'uikit/Button';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { GEN3 } from 'common/constants';
-import { getUser as getGen3User } from 'services/gen3';
 import { ModalFooter } from 'components/Modal/index.js';
 
 import { css } from 'emotion';
 import { injectState } from 'freactal';
-import XIcon from 'react-icons/lib/fa/close';
-import RightArrows from 'react-icons/lib/fa/angle-double-right';
+import { getUser as getGen3User } from 'services/gen3';
 
-const modalWidth = 1000;
-const closeButtonWidth = 30;
 const styles = css`
   span.numberBullet {
     color: white;
@@ -43,12 +38,11 @@ const enhance = compose(
 );
 
 const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
-  //token = JSON.stringify(token);
-  token = token.replace(/\s+/g, '');
-  await setSecret({ service: GEN3, secret: token });
-  await getGen3User(token)
+  const apiKey = token.replace(/\s+/g, '');
+  await setSecret({ service: GEN3, secret: apiKey });
+  getGen3User(apiKey)
     .then(userData => {
-      setIntegrationToken(GEN3, token);
+      setIntegrationToken(GEN3, apiKey);
       onSuccess();
     })
     .catch(response => {

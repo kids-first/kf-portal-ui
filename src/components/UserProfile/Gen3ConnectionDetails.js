@@ -1,18 +1,13 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
-import Button from 'uikit/Button';
 import { GEN3 } from 'common/constants';
 import { getUser as getGen3User } from 'services/gen3';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import PencilIcon from 'react-icons/lib/fa/pencil';
-import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
-const modalWidth = 1000;
-const closeButtonWidth = 30;
 const styles = css`
   table {
     border-collapse: collapse;
@@ -30,7 +25,6 @@ const enhance = compose(
   lifecycle({
     async componentDidMount() {
       const { setUserDetails } = this.props;
-      console.log(this);
       let userDetails = await getUserInfo({
         integrationToken: this.props.state.integrationTokens[GEN3],
       });

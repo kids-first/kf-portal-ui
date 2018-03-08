@@ -19,7 +19,6 @@ import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails'
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { getUser } from 'services/cavatica';
 
 const styles = css`
   table {
@@ -125,12 +124,6 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
       </div>
     </div>
   );
-};
-
-const isCookieAvailable = retryCounter => {
-  console.log(decodeURIComponent(document.cookie));
-  let output = retryCounter > 50 ? true : false;
-  return output;
 };
 
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {

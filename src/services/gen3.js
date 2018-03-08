@@ -2,18 +2,6 @@ import { setGen3Token } from 'services/ajax';
 import ajax from 'services/ajax';
 import { gen3ApiRoot } from 'common/injectGlobals';
 
-// Default config options
-const defaultOptions = {
-  baseURL: gen3ApiRoot,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-};
-
-// All these services call out to a proxy service
-//  The body of the request contains all details for the request that should be sent to the cavatica API
-//  Documentation on the cavatica API: http://docs.cavatica.org/docs/the-api
-
 /** getUser()
   Return object structure:
     {
@@ -37,81 +25,30 @@ const defaultOptions = {
     }
 
   */
-export const getUser = async (credentials) => {
+export const getUser = async credentials => {
   let accessToken = await getAccessToken(credentials);
   await setGen3Token(accessToken.data.access_token);
-  return await ajax.get(gen3ApiRoot + "user/user");
+  return await ajax.get(gen3ApiRoot + 'user/user');
 };
 
 /**
-Should return array of billing groups with the form:
+Should return access token in response payload
   {
-      "id": "864ca119-0298-4e0b-83e2-36861d3a5ace",
-      "href": "https://cavatica-api.sbgenomics.com/v2/billing/groups/864ca119-0298-4e0b-83e2-36861d3a5ace",
-      "name": "Pilot Funds"
+  "access_token": "eyJhb6IkpXVCIsImtpZCI6ImtleS0wMSJ9.eyJjb250ZXh0Ijp7InVzZXIiOnsiaXNfYWRtaW4iOmZhbHNlLCJuYW1lIjoiUkFIVUxWRVJNQSIsInByb2plY3RzIjp7InBoczAwMTEzOCI6WyJyZWFkLXN0b3JhZ2UiXSwibWFyY2gtZGVtbyI6WyJyZWFkLXN0b3JhZ2UiXSwicGhzMDAxMjI4IjpbInJlYWQtc3RvcmFnZSJdfX19LCJqdGkiOiI5YTcxMzJlYi05YWJkLTQyOWQtYWJiNi1hZWEzNTQ4YTFkNzUiLCJhdWQiOlsiZGF0YSIsInVzZXIiLCJmZW5jZSIsIm9wZW5pZCJdLCJleHAiOjE1MjA1Mzg4NjQsImlzcyI6Imh0dHBzOi8vZ2VuM3FhLmtpZHMtZmlyc3QuaW8vdXNlciIsImlhdCI6MTUyMDUzNTI2NCwicHVyIjoiYWNjZXNzIiwic3ViIjoiNTgifQ.jYR_Ppm3wJ1nCgzegyb3UPQbAOFPmcXfGyUkneywcQE4B7BWJAh_N48BTmOY8-jMAF8HpberTd86IkOquYQki3T2LzXf4BgxhApUjeIke_MLD5SjkhY0gUVCbgbTPPRZDWV2ynBNivmOoHoVV15rS-Xp3b-hULTfsNERE8tmuNnAjEsb5iLahxsA3HVKRHCNyTAsWEW9nn82vmAd4F5p3y1zIvn5Ks0bb0Foigy3mN-d6T49iTzVb6BAmyxra8rGx8-Vo7LgRaNMZ6iYVzuDH1H8r3PM58PF4hFOn65IkZ4oro1YRZXIto9G9XvVjFlhw"
   }
 */
 
-export const getAccessToken = async (credentials) => {
+export const getAccessToken = async credentials => {
   let config = {
-    "headers": {
-      "Content-Type": "application/json"
-    }
-  };
-  return await ajax.post(gen3ApiRoot + "user/credentials/cdis/access_token", credentials, config);
-}
-export const getBillingGroups = async () => {
-  const { items } = await ajax.post(gen3ApiRoot, {
-    path: '/billing/groups',
-    method: 'GET',
-  });
-  return items;
-};
-
-/**
- * Return array of projects, each of the form:
-    {
-        "href": "https://cavatica-api.sbgenomics.com/v2/projects/username01/test-project",
-        "id": "username01/test-project",
-        "name": "test project"
-    }
- */
-export const getProjects = async () => {
-  return await ajax.post(gen3ApiRoot, {
-    path: '/projects',
-    method: 'GET',
-  });
-};
-
-/**
- * Returns details of created project, or error:
-  {
-    "href": "https://cavatica-api.sbgenomics.com/v2/projects/username01/test-project",
-    "id": "username01/test-project",
-    "name": "test project",
-    "type": "v2",
-    "description": "test description",
-    "tags": [],
-    "settings": {
-        "locked": false,
-        "controlled": false,
-        "use_interruptible_instances": false
+    headers: {
+      'Content-Type': 'application/json',
     },
-    "billing_group": "864ca119-0298-4e0b-83e2-36861d3a5ace"
-  }
- * 
- */
-export const createProject = async ({ name, billing_group, description = '' }) => {
-  return await ajax.post(gen3ApiRoot, {
-    path: '/projects',
-    method: 'GET',
-    body: { name, billing_group, description },
-  });
+  };
+  return await ajax.post(gen3ApiRoot + 'user/credentials/cdis/access_token', credentials, config);
 };
 
-export const getFiles = async () => {
-  return await ajax.post(gen3ApiRoot, {
-    path: '/files',
-    method: 'GET',
-  });
+export const getSignedURL = async (credentials, fileUUID) => {
+  let accessToken = await getAccessToken(credentials);
+  await setGen3Token(accessToken.data.access_token);
+  await ajax.get(gen3ApiRoot + 'user/data/download/' + fileUUID);
 };
