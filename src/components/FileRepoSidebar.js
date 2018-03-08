@@ -185,7 +185,7 @@ const FileRepoSidebar = ({ projectId, index, style, sqon, effects, ...props }) =
     </div>
     <Divider />
     <Heading>Data Analysis</Heading>
-    <CavaticaSidebar />
+    <CavaticaSidebar {...props} />
   </div>
 );
 

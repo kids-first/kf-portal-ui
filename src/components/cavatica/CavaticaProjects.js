@@ -3,12 +3,12 @@ import { compose, lifecycle, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 
-import { withQuery } from '@arranger/components';
-
 import { getProjects as getCavaticaProjects } from 'services/cavatica';
 
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import PlusIcon from 'icons/PlusCircleIcon';
+
+const getGen3UUIDs = arrangerIds => [];
 
 const enhance = compose(
   withTheme,
@@ -80,6 +80,7 @@ const CavaticaProjects = ({
   setSelectedProject,
   addingProject,
   setAddingProject,
+  getGen3Ids,
   ...props
 }) => {
   return (
@@ -137,8 +138,10 @@ const CavaticaProjects = ({
           <NiceWhiteButton
             css="width:100%;"
             disabled={!selectedProject}
-            onClick={() => {
-              alert(selectedProject);
+            onClick={async () => {
+              // Convert arragner IDs to UUIDs
+              const uuids = await getGen3UUIDs(props.selectedTableRows);
+              alert(`${selectedProject} : ${props.selectedTableRows}`);
             }}
           >
             <div className="verticalCenter">
