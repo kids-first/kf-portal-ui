@@ -24,14 +24,15 @@ import scienceBgPath from 'theme/images/background-science.jpg';
 
 const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
 
-const Page = ({ Component, backgroundImageUrl, ...props }) => (
+const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
   <div
     css={`
       position: relative;
-      height: 100vh;
+      min-height: 100vh;
       overflow-y: hidden;
       min-width: 1024;
       background-image: url(${backgroundImageUrl});
+      ${containerStyle};
     `}
   >
     <div
@@ -104,6 +105,9 @@ const render = ({ editing, setEditing, state, effects }) => {
               render={props =>
                 forceSelectRole({
                   Component: UserDashboard,
+                  containerStyle: css`
+                    height: 100vh;
+                  `,
                   loggedInUser,
                   ...props,
                 })

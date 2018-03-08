@@ -13,6 +13,10 @@ import { withTheme } from 'emotion-theming';
 import { ROLES } from 'common/constants';
 
 import Gravtar from 'uikit/Gravatar';
+import RightIcon from 'react-icons/lib/fa/angle-right';
+import { CAVATICA, GEN3 } from 'common/constants';
+import CheckIcon from 'react-icons/lib/fa/check-circle';
+import ExternalLink from 'uikit/ExternalLink';
 
 const SettingsButton = ({ egoId, theme, ...props }) => (
   <Link
@@ -58,6 +62,37 @@ const EditButton = ({ egoId, theme, ...props }) => (
   </Link>
 );
 
+const StyledH2 = styled('h2')`
+  font-family: Montserrat;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  color: ${({ theme }) => theme.primaryHover};
+  margin: 0px;
+`;
+
+const StyledH3 = styled('h3')`
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: ${({ theme }) => theme.primaryHover};
+  margin: 0;
+`;
+
+const StyledH4 = styled('h4')`
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: ${({ theme }) => theme.primaryHover};
+  margin: 0;
+`;
+
 const SpacedSpan = styled('span')`
   padding-top: 8px;
 `;
@@ -67,7 +102,7 @@ export default compose(
   withRouter,
   withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ state: { loggedInUser, percentageFilled }, theme }) => (
+)(({ state: { loggedInUser, integrationTokens, percentageFilled }, theme }) => (
   <div
     css={`
       ${theme.row};
@@ -188,19 +223,69 @@ export default compose(
     </div>
     <div
       css={`
+        ${theme.column};
+        flex-grow: 1;
         padding: 40px;
       `}
     >
+      <StyledH2>Welcome back, {loggedInUser.firstName}!</StyledH2>
+      <StyledH3>Saved queries go here</StyledH3>
       <div
         css={`
-          font-family: Montserrat;
-          font-size: 20px;
-          font-weight: 400;
-          letter-spacing: 0.4px;
-          color: #404c9a;
+          border-radius: 30px;
+          background-color: #f4f5f8;
+          border: solid 1px #e0e1e6;
+          padding: 10px 50px;
+          ${theme.row};
+          align-items: center;
+          justify-content: space-between;
         `}
       >
-        Welcome back, {loggedInUser.firstName}!
+        <div
+          css={`
+            ${theme.column};
+            width: 285px;
+          `}
+        >
+          <StyledH4>Download Controlled Data</StyledH4>
+          gen3 placeholder
+        </div>
+        <div
+          css={`
+            ${theme.cloumn};
+            width: 285px;
+          `}
+        >
+          <StyledH4>Analyze Data</StyledH4>
+          {integrationTokens[CAVATICA] ? (
+            <div
+              css={`
+                color: ${theme.active};
+                padding: 10px;
+              `}
+            >
+              <CheckIcon size={20} />
+              <span> Connected</span> to{' '}
+              <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
+            </div>
+          ) : (
+            <div>
+              Analyze data quickly by connecting your Kids First account to{' '}
+              <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
+            </div>
+          )}
+        </div>
+        <div>
+          <Link
+            to={{
+              pathname: `/user/${loggedInUser.egoId}`,
+              hash: '#settings',
+            }}
+            css={theme.actionButton}
+          >
+            Settings <RightIcon />
+          </Link>
+        </div>
       </div>
     </div>
   </div>
