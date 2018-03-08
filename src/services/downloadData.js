@@ -1,3 +1,4 @@
+import { startCase } from 'lodash';
 import { format } from 'date-fns';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
 
@@ -15,7 +16,9 @@ function findColumnsByField(fields, columns) {
     );
   }
 
-  return columnConfigs.filter(Boolean).map(c => ({ ...c, show: true }));
+  return columnConfigs
+    .filter(Boolean)
+    .map(c => ({ ...c, show: true, Header: c.Header || startCase(c.field.replace(/\./g, ' ')) }));
 }
 
 export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
@@ -60,7 +63,65 @@ export const fileManifestParticipantsAndFamily = ({ sqon, columns }) => null; //
 
 export const clinicalDataParticipants = ({ sqon, columns }) => null; // TODO: implement
 
-export const clinicalDataFamily = ({ sqon, columns }) => null; // TODO: implement
+export const clinicalDataFamily = ({ sqon, columns }) => () => {
+  return saveTSV({
+    files: [
+      {
+        fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
+        sqon,
+        index: 'participant',
+        uniqueBy: 'family.family_members.hits.edges[].node.kf_id',
+        columns: findColumnsByField(
+          [
+            'diagnoses.diagnosis',
+            'family.family_members.kf_id',
+            'family.family_id',
+            'family.family_members.relationship',
+            'kf_id',
+            'family.family_members.gender',
+            'family.family_members.ethnicity',
+            'family.family_members.race',
+            'family.family_members.phenotype.hpo.hpo_ids',
+            'family.family_members.phenotype.hpo.negative_hpo_ids',
+            {
+              field: 'family.family_members.diagnoses.age_at_event_days',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.age_at_event_days',
+              query:
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { age_at_event_days } } } } } } } } }',
+              type: 'list',
+            },
+            {
+              field: 'family.family_members.diagnoses.diagnosis',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.diagnosis',
+              query:
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis } } } } } } } } }',
+              type: 'list',
+            },
+            {
+              field: 'family.family_members.diagnoses.diagnosis_category',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.diagnosis_category',
+              query:
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis_category } } } } } } } } }',
+              type: 'list',
+            },
+            {
+              field: 'family.family_members.diagnoses.tumor_location',
+              jsonPath:
+                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.tumor_location',
+              query:
+                'family { family_members { hits { edges { node { diagnoses { hits { edges { node { tumor_location } } } } } } } } }',
+              type: 'list',
+            },
+          ],
+          columns,
+        ),
+      },
+    ],
+  });
+};
 
 export const downloadBiospecimen = ({ sqon, columns }) => () => {
   return saveTSV({
