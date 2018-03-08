@@ -12,6 +12,7 @@ import { withTheme } from 'emotion-theming';
 import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
 import { Container, EditButton, H2, H3, H4 } from './';
+import DeleteButton from 'components/loginButtons/DeleteButton';
 
 const ClickToAdd = styled('span')`
   color: ${props => props.theme.primary};
@@ -179,6 +180,11 @@ export default compose(
               renderButtons={() => <div />}
             />
           </StyledSection>
+          {localStorage.getItem('SHOW_DELETE_ACCOUNT') && (
+            <div>
+              <DeleteButton>Delete my account</DeleteButton>
+            </div>
+          )}
           {isEditingBackgroundInfo && (
             <div
               css={`
