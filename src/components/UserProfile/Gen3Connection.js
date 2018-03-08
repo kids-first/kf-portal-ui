@@ -35,13 +35,6 @@ const styles = css`
     font-size: 18px;
     font-weight: bold;
   }
-
-  .tokenInput {
-    margin: 20px;
-    padding: 3px;
-    font-size: 16px;
-    border-radius: 10px;
-  }
 `;
 
 const enhance = compose(
@@ -82,14 +75,10 @@ const Gen3Connection = ({
   return (
     <div css={styles}>
       <div>
-        <div>
-          <span className="numberBullet">1</span>
-          <span>If you don't have one, please <a href="https://pgc-accounts.sbgenomics.com/auth/register/" rel="noopener noreferrer" target="_blank">register for a Gen3 Account <RightArrows /></a> </span>
-        </div>
         <div css={css`display:flex;`}>
           <div css={css`flex:1`}>
-            <span className="numberBullet">2</span>
-            <span>You will need to retrieve your authentication token from the Gen3 <a href="https://gen3.sbgenomics.com/developer#token" rel="noopener noreferrer" target="_blank">Developer Dashboard</a>. From the Dashboard, click on the "Auth Token" tab.</span>
+            <span className="numberBullet">1</span>
+            <span>You will need to retrieve your authentication token from the <a href="https://gen3qa.kids-first.io" rel="noopener noreferrer" target="_blank">Kids First DCC Portal</a>. After Login, click on the "Profile" tab.</span>
           </div>
           <div css={css`flex:1`}>
             <img
@@ -99,15 +88,14 @@ const Gen3Connection = ({
           </div>
         </div>
         <div>
-          <span className="numberBullet">3</span>
-          <span>Click on "Generate Token", copy and paste it into the field below and click Connect.</span>
+          <span className="numberBullet">2</span>
+          <span>Click on "Create API Key", copy and paste it into the field below and click Connect.</span>
         </div>
         <div>
           <span className="tokenTitle">Gen3 Authentication Token:</span>
-          <input
-            className="tokenInput"
+          <textarea
+            className="css-19latnh"
             id="gen3Key"
-            type="text"
             value={gen3Key}
             name="gen3"
             placeholder="Gen3 Key"

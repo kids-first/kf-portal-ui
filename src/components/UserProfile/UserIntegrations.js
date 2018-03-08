@@ -14,6 +14,7 @@ import CheckIcon from 'react-icons/lib/fa/check-circle';
 import { deleteSecret } from 'services/secrets';
 import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
+import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
@@ -74,10 +75,26 @@ const enhance = compose(
   withState('editingCavatica', 'setEditingCavatica', false),
 );
 
-const gen3Status = ({ gen3Key }) => {
+const gen3Status = ({ theme, gen3Key, onEdit, onRemove }) => {
   return (
-    <div>
-      <span>Connected: {gen3Key} </span>
+    <div css="flex-direction: column;">
+      <div
+        css={`
+          color: ${theme.active};
+          padding: 10px;
+        `}
+      >
+        <CheckIcon size={20} />
+        <span> Connected</span>
+      </div>
+      <div css="display: flex;">
+        <Button onClick={onEdit} className="connectedButton">
+          <PencilIcon />Edit
+        </Button>
+        <Button onClick={onRemove} className="connectedButton">
+          <XIcon />Remove
+        </Button>
+      </div>
     </div>
   );
 };
@@ -156,9 +173,9 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     gen3Key: integrationTokens[GEN3],
                     onEdit: () =>
                       effects.setModal({
-                        title: 'How to Connect to Gen3',
+                        title: 'Gen3 Connection Details',
                         component: (
-                          <Gen3Connection
+                          <Gen3ConnectionDetails
                             onComplete={effects.unsetModal}
                             onCancel={effects.unsetModal}
                           />
@@ -222,25 +239,25 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                  <button
-                    css={theme.actionButton}
-                    onClick={() =>
-                      effects.setModal({
-                        title: 'How to Connect to Cavatica',
-                        component: (
-                          <CavaticaInput
-                            onComplete={effects.unsetModal}
-                            onCancel={effects.unsetModal}
-                          />
-                        ),
-                      })
-                    }
-                  >
-                    <span>
-                      Connect<RightIcon />
-                    </span>
-                  </button>
-                )}
+                    <button
+                      css={theme.actionButton}
+                      onClick={() =>
+                        effects.setModal({
+                          title: 'How to Connect to Cavatica',
+                          component: (
+                            <CavaticaInput
+                              onComplete={effects.unsetModal}
+                              onCancel={effects.unsetModal}
+                            />
+                          ),
+                        })
+                      }
+                    >
+                      <span>
+                        Connect<RightIcon />
+                      </span>
+                    </button>
+                  )}
               </div>
             </td>
           </tr>

@@ -74,6 +74,12 @@ export default provideState({
       }
       return { ...state, integrationTokens: { ...state.integrationTokens } };
     },
+    getIntegrationToken: (effects, service) => state => {
+      if (SERVICES.includes(service)) {
+        const tokenKey = `integration_${service}`;
+        return tokenKey ? localStorage.getItem(tokenKey) : null;
+      }
+    },
     clearIntegrationTokens: (effects) => state => {
       SERVICES.forEach(service =>
         localStorage.removeItem(`integration_${service}`)

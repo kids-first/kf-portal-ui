@@ -17,20 +17,25 @@ const defaultOptions = {
 /** getUser()
   Return object structure:
     {
-      "href": "https://cavatica-api.sbgenomics.com/v2/users/jondev01",
-      "username": "jondev01",
-      "email": "jondev01@yopmail.com",
-      "first_name": "Jon",
-      "last_name": "Dev",
-      "tags": [],
-      "affiliation": "Developer",
-      "phone": "",
-      "address": "",
-      "city": "",
-      "state": "",
-      "country": "United States",
-      "zip_code": ""
+      "certificates_uploaded": [], 
+      "email": null, 
+      "message": "", 
+      "project_access": {
+        "march-demo": [
+          "read-storage"
+        ], 
+        "phs001138": [
+          "read-storage"
+        ], 
+        "phs001228": [
+          "read-storage"
+        ]
+      }, 
+      "resources_granted": [], 
+      "user_id": 58, 
+      "username": "RAHULVERMA"
     }
+
   */
 export const getUser = async (credentials) => {
   let accessToken = await getAccessToken(credentials);
