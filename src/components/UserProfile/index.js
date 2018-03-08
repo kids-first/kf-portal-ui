@@ -10,7 +10,7 @@ import {
   renderComponent,
   withHandlers,
 } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import PencilIcon from 'react-icons/lib/fa/pencil';
@@ -62,8 +62,8 @@ export const H4 = styled('h4')`
 
 export default compose(
   injectState,
+  withRouter,
   withState('profile', 'setProfile', {}),
-  withState('mode', 'setMode', 'aboutMe'),
   withTheme,
   lifecycle({
     async componentDidMount(): void {
@@ -88,7 +88,6 @@ export default compose(
           : setProfile(await getProfile({ egoId })),
     }),
   ),
-  withRouter,
   withHandlers({
     submit: ({ profile, effects: { setUser } }) => async values => {
       await updateProfile({
@@ -105,7 +104,7 @@ export default compose(
     ({ profile }) => !profile || profile.length === 0,
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
-)(({ state, effects: { setModal }, profile, theme, canEdit, mode, setMode, submit }) => (
+)(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash } }) => (
   <div
     className={css`
       display: flex;
@@ -246,24 +245,26 @@ export default compose(
       <Container>
         <ul className={theme.secondaryNav}>
           <li>
-            <a className={mode === 'aboutMe' ? 'active' : ''} onClick={() => setMode('aboutMe')}>
+            <Link
+              to="#aboutMe"
+              className={hash === '#aboutMe' || hash !== '#settings' ? 'active' : ''}
+            >
               About Me
-            </a>
+            </Link>
           </li>
           {canEdit && (
             <li>
-              <a
-                className={mode === 'settings' ? 'active' : ''}
-                onClick={() => setMode('settings')}
-              >
+              <Link to="#settings" className={hash === '#settings' ? 'active' : ''}>
                 Settings & Privacy
-              </a>
+              </Link>
             </li>
           )}
         </ul>
       </Container>
     </div>
-    {mode === 'aboutMe' && <AboutMe profile={profile} canEdit={canEdit} submit={submit} />}
-    {mode === 'settings' && <Settings profile={profile} submit={submit} />}
+    {(hash === '#aboutMe' || hash !== '#settings') && (
+      <AboutMe profile={profile} canEdit={canEdit} submit={submit} />
+    )}
+    {hash === '#settings' && <Settings profile={profile} submit={submit} />}
   </div>
 ));

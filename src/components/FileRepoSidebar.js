@@ -8,9 +8,15 @@ import CavaticaSidebar from 'components/cavatica/CavaticaSidebar.js';
 
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
-import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import InfoIcon from '../icons/InfoIcon';
+import {
+  downloadBiospecimen,
+  fileManifestParticipantsOnly,
+  fileManifestParticipantsAndFamily,
+  clinicalDataParticipants,
+  clinicalDataFamily,
+} from '../services/downloadData';
 
 const styles = {
   container: css`
@@ -22,15 +28,6 @@ const styles = {
     padding: 30px 5px 30px 15px;
   `,
 };
-
-function findColumnsByField(fields, columns) {
-  return fields
-    .map(
-      field => (typeof field === 'string' ? columns.find(column => column.field === field) : field),
-    )
-    .filter(Boolean)
-    .map(c => ({ ...c, show: true }));
-}
 
 const DownloadIcon = ({ className, loading }) =>
   loading ? (
@@ -70,7 +67,7 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 
-export default ({ projectId, index, style, streamData, sqon, graphqlField, ...props }) => (
+export default ({ projectId, style, sqon, ...props }) => (
   <div
     css={`
       ${styles.container} ${style};
@@ -93,158 +90,92 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
       If you have not selected any files, all files in your query will be included in the actions.
     </div>
     <Heading>Download</Heading>
-    <ColumnsState
-      projectId={projectId}
-      graphqlField={graphqlField}
-      render={({ state }) => {
-        return (
-          <div>
+    <div>
+      <ColumnsState
+        projectId={projectId}
+        graphqlField="file"
+        render={({ state }) => {
+          return (
             <div
               css={`
                 display: flex;
                 margin-bottom: 13px;
               `}
             >
-              <LoadingOnClick
-                onClick={() =>
-                  saveTSV({
+              <PillInputWithButton
+                options={{
+                  'Participant only': fileManifestParticipantsOnly({
                     sqon,
-                    columns: findColumnsByField(['file_id'], state.columns),
-                    streamData,
-                  })
-                }
-                render={({ loading, onClick }) => (
+                    columns: state.columns,
+                  }),
+                  'Participant and family': fileManifestParticipantsAndFamily({
+                    sqon,
+                    columns: state.columns,
+                  }),
+                }}
+                render={({ loading }) => {
+                  return (
+                    <React.Fragment>
+                      <DownloadIcon loading={loading} />DOWNLOAD
+                    </React.Fragment>
+                  );
+                }}
+              />
+            </div>
+          );
+        }}
+      />
+      <ColumnsState
+        projectId={projectId}
+        graphqlField="participant"
+        render={({ state }) => {
+          return (
+            <div>
+              <Heading>Reports</Heading>
+              <div
+                css={`
+                  display: flex;
+                  margin-bottom: 13px;
+                `}
+              >
+                <PillInputWithButton
+                  options={{
+                    'Clinical (Participant)': clinicalDataParticipants({
+                      sqon,
+                      columns: state.columns,
+                    }),
+                    'Clinical (Family)': clinicalDataFamily({ sqon, columns: state.columns }),
+                  }}
+                  render={({ loading }) => {
+                    return (
+                      <React.Fragment>
+                        <DownloadIcon loading={loading} />
+                        DOWNLOAD
+                      </React.Fragment>
+                    );
+                  }}
+                />
+              </div>
+              <LoadingOnClick
+                onClick={downloadBiospecimen({ sqon, columns: state.columns })}
+                render={({ onClick, loading, disabled }) => (
                   <Button
                     css={`
                       flex-grow: 1;
-                      margin-right: 8px;
-                      width: 100%;
                       padding-left: 15px;
                     `}
+                    disabled={disabled}
                     onClick={onClick}
                   >
-                    <DownloadIcon loading={loading} />
-                    MANIFEST
+                    <DownloadIcon loading={loading} />BIOSPECIMEN
                   </Button>
                 )}
               />
-
-              <div
-                css={`
-                  flex-grow: 1;
-                  width: 100%;
-                `}
-              />
             </div>
-            <Divider />
-            <Heading>Reports</Heading>
-            <div
-              css={`
-                display: flex;
-                margin-bottom: 13px;
-              `}
-            >
-              <Button
-                css={`
-                  flex-grow: 1;
-                  margin-right: 8px;
-                  padding-left: 15px;
-                `}
-                disabled
-              >
-                <DownloadIcon />
-                CLINICAL DATA
-              </Button>
-              <Button
-                css={`
-                  flex-grow: 1;
-                  padding-left: 15px;
-                `}
-                disabled
-              >
-                <DownloadIcon />BIOSPECIMEN
-              </Button>
-            </div>
-
-            <LoadingOnClick
-              onClick={selectedOption => {
-                const columns = findColumnsByField(
-                  [
-                    'file_id',
-                    'file_name',
-                    // 'cases.dataset.id',
-                    'data_category',
-                    'data_type',
-                    {
-                      Header: 'Case ID',
-                      field: 'cases.case_id',
-                      listAccessor: 'cases.hits.edges',
-                      query: 'cases { hits(first: 99) { edges { node { case_id } } } }',
-                      type: 'list',
-                    },
-                    {
-                      Header: 'Sample ID',
-                      field: 'cases.samples.sample_id',
-                      listAccessor: 'cases.hits.edges',
-                      query:
-                        'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_id } } } } } } } }',
-                      type: 'list',
-                    },
-                    {
-                      Header: 'Sample Type',
-                      field: 'cases.samples.sample_type',
-                      listAccessor: 'cases.hits.edges',
-                      query:
-                        'cases { hits(first: 99) { total, edges { node { samples { hits(first: 99) { edges { node { sample_type } } } } } } } }',
-                      type: 'list',
-                    },
-                  ],
-                  state.columns,
-                );
-
-                if (selectedOption === 'Files as unique rows') {
-                  return saveTSV({
-                    sqon,
-                    columns,
-                    streamData,
-                  });
-                } else if (selectedOption === 'Samples as unique rows') {
-                  const order = [
-                    'cases.samples.sample_id',
-                    'cases.samples.sample_type',
-                    'cases.case_id',
-                    'data_category',
-                    'data_type',
-                    'file_id',
-                    'file_name',
-                    // 'cases.dataset.id',
-                  ];
-
-                  return saveTSV({
-                    sqon,
-                    columns: columns.sort((a, b) => {
-                      return order.indexOf(a.field) - order.indexOf(b.field);
-                    }),
-                    streamData,
-                    uniqueBy: 'cases.hits.edges[].node.samples.hits.edges[].node.sample_id',
-                  });
-                }
-              }}
-              render={({ onClick, loading }) => (
-                <PillInputWithButton
-                  options={['Samples as unique rows', 'Files as unique rows']}
-                  onClick={onClick}
-                >
-                  <DownloadIcon loading={loading} />
-                  SAMPLE SHEET
-                </PillInputWithButton>
-              )}
-            />
-          </div>
-        );
-      }}
-    />
-
+          );
+        }}
+      />
+    </div>
     <Divider />
     <Heading>Data Analysis</Heading>
     <CavaticaSidebar {...props} />
