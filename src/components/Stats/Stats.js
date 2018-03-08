@@ -15,7 +15,7 @@ const Line = () => {
 };
 
 const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragment, ...props }) => {
-  const getValue = typeof accessor() === 'function' ? accessor : data => get(data, accessor());
+  const getValue = typeof accessor() === 'function' ? accessor() : data => get(data, accessor());
 
   return (
     <div

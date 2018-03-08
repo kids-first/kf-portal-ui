@@ -16,7 +16,7 @@ import {
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import { FileRepoStats } from './Stats';
+import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
@@ -173,6 +173,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                           display: flex;
                         `}
                       >
+                        <FileRepoStatsQuery {...url} render={data => JSON.stringify(data)} />
                         <CurrentSQON {...props} {...url} />
                         {url.sqon && Object.keys(url.sqon).length > 0 && <Share />}
                       </div>
