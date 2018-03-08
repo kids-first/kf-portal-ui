@@ -44,14 +44,18 @@ export const FileRepoStats = withProps(() => ({
       ),
       query: `
         query($sqon: JSON) {
-          participant {
-            hits(filters: $sqon) {
-              total
+          file {
+            aggregations(filters: $sqon) {
+              participants__kf_id {
+                buckets{
+                  key
+                }
+              }
             }
           }
         }
       `,
-      accessor: 'participant.hits.total',
+      accessor: 'file.aggregations.participants__kf_id.buckets.length',
       label: 'Participants',
     },
     {
@@ -68,9 +72,9 @@ export const FileRepoStats = withProps(() => ({
       ),
       query: `
         query($sqon: JSON) {
-          participant {
+          file {
             aggregations(filters: $sqon) {
-              family__family_id {
+              participants__family__family_id {
                 buckets{
                   key
                 }
@@ -79,7 +83,7 @@ export const FileRepoStats = withProps(() => ({
           }
         }
       `,
-      accessor: 'participant.aggregations.family__family_id.buckets.length',
+      accessor: 'file.aggregations.participants__family__family_id.buckets.length',
       label: 'Families',
     },
     {
