@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
-
-import { css } from 'emotion';
 import styled from 'react-emotion';
-import { injectState } from 'freactal';
+
+import { withQuery } from '@arranger/components';
 
 import { getProjects as getCavaticaProjects } from 'services/cavatica';
 
@@ -12,10 +11,10 @@ import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import PlusIcon from 'icons/PlusCircleIcon';
 
 const enhance = compose(
-  injectState,
   withTheme,
   withState('projectSearchValue', 'setProjectSearchValue', ''),
   withState('projectList', 'setProjectList', []),
+  withState('selectedProject', 'setSelectedProject', null),
   lifecycle({
     async componentDidMount() {
       const { setProjectList } = this.props;
@@ -23,10 +22,6 @@ const enhance = compose(
       getCavaticaProjects().then(projects => {
         setProjectList(projects);
       });
-
-      // loggedInUser && egoId === loggedInUser.egoId
-      //   ? setProfile(loggedInUser)
-      //   : setProfile(await getProfile({ egoId }));
     },
   }),
 );
@@ -46,6 +41,10 @@ const ProjectSelector = styled.select`
     background-color: ${props => props.theme.optionSelected};
     color: yellow;
   }
+  option:hover {
+    background-color: ${props => props.theme.optionSelected};
+    color: black !important;
+  }
 `;
 
 const NiceWhiteButton = styled.button`
@@ -62,115 +61,100 @@ const NiceWhiteButton = styled.button`
   justify-content: center;
   text-transform: uppercase;
   font-weight: bold;
+  cursor: pointer;
 
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-const styles = css`
-  border-radius: 10px;
-  background-color: #ffffff;
-  border: solid 1px #cacbcf;
-
-  input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-    outline: none;
-  }
-
-  .header {
-    display: flex;
-    padding: 5px;
-    border-bottom: solid 1px #cacbcf;
-    justify-content: space-between;
-  }
-
-  .body {
-    border-bottom: solid 1px #cacbcf;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .projectSearchInput {
-    border-radius: 10px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-    padding: 5px;
-    font-size: 1em;
-    margin: 10px;
-    margin-bottom: 0px;
-  }
-
-  .footer {
-    padding: 10px;
+  :disabled {
+    cursor: default;
+    color: ${props => props.theme.greyScale2}
+    background-color: ${props => props.theme.greyScale5}
   }
 `;
 
 const CavaticaProjects = ({
-  state,
   theme,
   projectSearchValue,
   setProjectSearchValue,
   projectList,
   setProjectList,
+  selectedProject,
+  setSelectedProject,
+  addingProject,
+  setAddingProject,
   ...props
 }) => {
   return (
-    <div css={styles} className="wrapper">
-      <div className="header">
-        <div css="margin-top:2px;">
-          <span>Select your project:</span>
+    <div css={props.styles}>
+      <div className="wrapper">
+        <div className="header">
+          <div css="margin-top:3px;">
+            <span>Select your project:</span>
+          </div>
+          <div css="margin-left:9px;">
+            <button
+              className="niceWhiteButton"
+              onClick={() => {
+                if (typeof props.onAddProject === 'function') props.onAddProject();
+              }}
+            >
+              <div className="verticalCenter">
+                <PlusIcon
+                  fill={theme.tertiary}
+                  width="14px"
+                  height="14px"
+                  css="margin-right: 7px;"
+                />
+              </div>
+              <div>New Project</div>
+            </button>
+          </div>
         </div>
-        <div css="margin-left:9px;">
-          <NiceWhiteButton>
-            <div>
-              <PlusIcon fill={theme.tertiary} width="14px" css="margin-right: 7px;" />
+        <div className="body">
+          <input
+            className="textInput"
+            id="cavaticaProjectSearch"
+            type="text"
+            value={projectSearchValue}
+            name="cavaticaProjectSearch"
+            placeholder="Search projects"
+            onChange={e => {
+              setProjectSearchValue(e.target.value);
+            }}
+          />
+          <ProjectSelector
+            size="6"
+            onChange={e => {
+              setSelectedProject(e.target.value);
+            }}
+          >
+            {projectList.map(project => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))}
+          </ProjectSelector>
+        </div>
+        <div className="footer">
+          <NiceWhiteButton
+            css="width:100%;"
+            disabled={!selectedProject}
+            onClick={() => {
+              alert(selectedProject);
+            }}
+          >
+            <div className="verticalCenter">
+              <img
+                alt=""
+                src={cavaticaLogo}
+                css={`
+                  width: 28px;
+                  height: 28px;
+                  margin-right: 7px;
+                `}
+              />
             </div>
-            <div>New Project</div>
+            <div>Copy files to Cavatica project</div>
           </NiceWhiteButton>
         </div>
-      </div>
-      <div className="body">
-        <input
-          className="projectSearchInput"
-          id="cavaticaProjectSearch"
-          type="text"
-          value={projectSearchValue}
-          name="cavaticaProjectSearch"
-          placeholder="Search projects"
-          onChange={e => {
-            setProjectSearchValue(e.target.value);
-          }}
-        />
-        <ProjectSelector size="6">
-          {projectList.map(project => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
-        </ProjectSelector>
-      </div>
-      <div className="footer">
-        <NiceWhiteButton
-          css="width:100%;"
-          onClick={() => {
-            alert('UPLOADED?!');
-          }}
-        >
-          <div>
-            <img
-              alt=""
-              src={cavaticaLogo}
-              css={`
-                width: 28px;
-                margin-right: 7px;
-              `}
-            />
-          </div>
-          <div>Copy files to Cavatica project</div>
-        </NiceWhiteButton>
       </div>
     </div>
   );
