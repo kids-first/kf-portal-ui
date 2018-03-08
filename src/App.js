@@ -75,8 +75,7 @@ const SideImagePage = ({ Component, sideImage, ...props }) => (
         src={logoPath}
         alt="Kids First Logo"
         className={css`
-          width: 177px;
-          height: 65px;
+          width: 230px;
           position: absolute;
           margin: 20px;
         `}
@@ -94,8 +93,10 @@ const SideImagePage = ({ Component, sideImage, ...props }) => (
     >
       <div
         css={`
+          background: #fff;
           background-image: url(${sideImage});
           background-repeat: no-repeat;
+          background-position: bottom;
           width: 573px;
           height: 100%;
           box-shadow: 0 0 6px 0.1px #bbbbbb;
