@@ -247,6 +247,6 @@ export default ({ projectId, index, style, streamData, sqon, graphqlField, ...pr
 
     <Divider />
     <Heading>Data Analysis</Heading>
-    <CavaticaSidebar />
+    <CavaticaSidebar {...props} />
   </div>
 );
