@@ -11,6 +11,7 @@ import Modal from './components/Modal/index.js';
 
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
+import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
@@ -26,13 +27,15 @@ import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
 
 const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
 
-const Page = ({ Component, backgroundImageUrl, ...props }) => (
+const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
   <div
     css={`
       position: relative;
       min-height: 100vh;
+      overflow-y: hidden;
       min-width: 1024;
       background-image: url(${backgroundImageUrl});
+      ${containerStyle};
     `}
   >
     <div
@@ -148,6 +151,20 @@ const render = ({ editing, setEditing, state, effects }) => {
                 forceSelectRole({
                   Component: UserProfile,
                   backgroundImageUrl: scienceBgPath,
+                  loggedInUser,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path="/dashboard"
+              exact
+              render={props =>
+                forceSelectRole({
+                  Component: UserDashboard,
+                  containerStyle: css`
+                    height: 100vh;
+                  `,
                   loggedInUser,
                   ...props,
                 })

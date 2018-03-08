@@ -15,7 +15,7 @@ const colors = {
   greyScale8: '#d4d6dd',
   greyScale7: 'rgb(107,98,98)',
   greyScale6: 'rgb(245,245,245)',
-  greyScale5: 'rgb(222,222,222)',
+  greyScale5: '#e0e1e6',
   greyScale4: 'rgb(212, 214, 221)', // #d4d6dd
   greyScale3: 'rgb(144,144,144)', // not enough contrast on white background
   greyScale2: 'rgb(61,61,61)',

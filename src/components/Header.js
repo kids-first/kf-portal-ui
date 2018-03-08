@@ -83,7 +83,7 @@ const Header = ({
               `}
             >
               <li>
-                <NavLink to="/">
+                <NavLink to="/dashboard">
                   <HouseIcon /> Dashboard
                 </NavLink>
               </li>
