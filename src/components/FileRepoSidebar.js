@@ -164,11 +164,10 @@ export default ({ projectId, style, sqon, ...props }) => (
                       flex-grow: 1;
                       padding-left: 15px;
                     `}
-                    disabled={disabled || loading}
+                    disabled={disabled}
                     onClick={onClick}
-                    loading={loading}
                   >
-                    <DownloadIcon />BIOSPECIMEN
+                    <DownloadIcon loading={loading} />BIOSPECIMEN
                   </Button>
                 )}
               />
