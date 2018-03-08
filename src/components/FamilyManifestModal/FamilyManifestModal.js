@@ -222,7 +222,23 @@ const FamilyManifestModal = ({
         ))
       )}
       <ModalFooter
-        submitText="DOWNLOAD MANIFEST"
+        submitText={
+          <div>
+            {isSubmitting ? (
+              <Spinner
+                fadeIn="none"
+                name="circle"
+                color="#fff"
+                style={{
+                  width: 15,
+                  height: 15,
+                }}
+              />
+            ) : (
+              'DOWNLOAD MANIFEST'
+            )}
+          </div>
+        }
         handleSubmit={isSubmitting ? undefined : submitForm}
       />
     </div>
