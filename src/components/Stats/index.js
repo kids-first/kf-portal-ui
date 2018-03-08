@@ -4,6 +4,35 @@ import filesize from 'filesize';
 import { get } from 'lodash';
 import Stats from './Stats';
 
+const participantsStat = {
+  icon: (
+    <img
+      src={require('../../assets/icon-files.svg')}
+      alt=""
+      css={`
+        width: 16px;
+        height: 20px;
+        margin-right: 10px;
+      `}
+    />
+  ),
+  query: `
+    query($sqon: JSON) {
+      file {
+        aggregations(filters: $sqon) {
+          participants__kf_id {
+            buckets{
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  accessor: 'file.aggregations.participants__kf_id.buckets.length',
+  label: 'Participants',
+};
+
 export const FileRepoStats = withProps(() => ({
   stats: [
     {
@@ -30,34 +59,7 @@ export const FileRepoStats = withProps(() => ({
       accessor: 'file.hits.total',
       label: 'Files',
     },
-    {
-      icon: (
-        <img
-          src={require('../../assets/icon-files.svg')}
-          alt=""
-          css={`
-            width: 16px;
-            height: 20px;
-            margin-right: 10px;
-          `}
-        />
-      ),
-      query: `
-        query($sqon: JSON) {
-          file {
-            aggregations(filters: $sqon) {
-              participants__kf_id {
-                buckets{
-                  key
-                }
-              }
-            }
-          }
-        }
-      `,
-      accessor: 'file.aggregations.participants__kf_id.buckets.length',
-      label: 'Participants',
-    },
+    participantsStat,
     {
       icon: (
         <img
@@ -122,30 +124,7 @@ export const FileRepoStats = withProps(() => ({
 
 export const FamilyManifestStats = withProps(() => ({
   stats: [
-    {
-      icon: (
-        <img
-          src={require('../../assets/icon-files.svg')}
-          alt=""
-          css={`
-            width: 16px;
-            height: 20px;
-            margin-right: 10px;
-          `}
-        />
-      ),
-      query: `
-        query($sqon: JSON) {
-          participant {
-            hits(filters: $sqon) {
-              total
-            }
-          }
-        }
-      `,
-      accessor: 'participant.hits.total',
-      label: 'Participants',
-    },
+    participantsStat,
     {
       icon: (
         <img
