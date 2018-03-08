@@ -14,7 +14,7 @@ const Line = () => {
   );
 };
 
-const Stat = ({ sqon, index, icon = '', accessor = '', label = '', ...props }) => {
+const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, ...props }) => {
   const getValue = typeof accessor === 'function' ? accessor : data => get(data, accessor);
 
   return (
@@ -39,6 +39,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', ...props }) =
           debounceTime={100}
           name={`${index}StatQuery`}
           {...props}
+          query={query()}
           variables={{ sqon }}
           index={index}
           render={data => (data ? (getValue(data, accessor) || 0).toLocaleString() : 'loading')}
