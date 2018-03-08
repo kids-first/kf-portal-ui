@@ -8,6 +8,7 @@ import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import PencilIcon from 'react-icons/lib/fa/pencil';
+import ViewIcon from 'react-icons/lib/fa/eye';
 import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
@@ -75,7 +76,7 @@ const enhance = compose(
   withState('editingCavatica', 'setEditingCavatica', false),
 );
 
-const gen3Status = ({ theme, gen3Key, onEdit, onRemove }) => {
+const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
   return (
     <div css="flex-direction: column;">
       <div
@@ -88,6 +89,9 @@ const gen3Status = ({ theme, gen3Key, onEdit, onRemove }) => {
         <span> Connected</span>
       </div>
       <div css="display: flex;">
+        <Button onClick={onView} className="connectedButton">
+          <ViewIcon />View
+        </Button>
         <Button onClick={onEdit} className="connectedButton">
           <PencilIcon />Edit
         </Button>
@@ -123,7 +127,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
   );
 };
 
-const isCookieAvailable = (retryCounter) => {
+const isCookieAvailable = retryCounter => {
   console.log(decodeURIComponent(document.cookie));
   let output = retryCounter > 50 ? true : false;
   return output;
@@ -171,11 +175,21 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                   gen3Status({
                     theme,
                     gen3Key: integrationTokens[GEN3],
-                    onEdit: () =>
+                    onView: () =>
                       effects.setModal({
                         title: 'Gen3 Connection Details',
                         component: (
                           <Gen3ConnectionDetails
+                            onComplete={effects.unsetModal}
+                            onCancel={effects.unsetModal}
+                          />
+                        ),
+                      }),
+                    onEdit: () =>
+                      effects.setModal({
+                        title: 'Edit Connection Details',
+                        component: (
+                          <Gen3Connection
                             onComplete={effects.unsetModal}
                             onCancel={effects.unsetModal}
                           />
@@ -187,22 +201,23 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                    <Button
-                      onClick={() =>
-                        effects.setModal({
-                          title: 'How to Connect to Gen3',
-                          component: (
-                            <Gen3Connection
-                              onComplete={effects.unsetModal}
-                              onCancel={effects.unsetModal}
-                            />
-                          ),
-                        })
-                      }
-                    ><span>Connect</span>
-                      <RightIcon className="right" />
-                    </Button>
-                  )}
+                  <Button
+                    onClick={() =>
+                      effects.setModal({
+                        title: 'How to Connect to Gen3',
+                        component: (
+                          <Gen3Connection
+                            onComplete={effects.unsetModal}
+                            onCancel={effects.unsetModal}
+                          />
+                        ),
+                      })
+                    }
+                  >
+                    <span>Connect</span>
+                    <RightIcon className="right" />
+                  </Button>
+                )}
               </div>
             </td>
           </tr>
@@ -239,25 +254,25 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                    <button
-                      css={theme.actionButton}
-                      onClick={() =>
-                        effects.setModal({
-                          title: 'How to Connect to Cavatica',
-                          component: (
-                            <CavaticaInput
-                              onComplete={effects.unsetModal}
-                              onCancel={effects.unsetModal}
-                            />
-                          ),
-                        })
-                      }
-                    >
-                      <span>
-                        Connect<RightIcon />
-                      </span>
-                    </button>
-                  )}
+                  <button
+                    css={theme.actionButton}
+                    onClick={() =>
+                      effects.setModal({
+                        title: 'How to Connect to Cavatica',
+                        component: (
+                          <CavaticaInput
+                            onComplete={effects.unsetModal}
+                            onCancel={effects.unsetModal}
+                          />
+                        ),
+                      })
+                    }
+                  >
+                    <span>
+                      Connect<RightIcon />
+                    </span>
+                  </button>
+                )}
               </div>
             </td>
           </tr>
