@@ -233,7 +233,7 @@ export default compose(
         css={`
           text-decoration: underline;
         `}
-      >{`${loggedInUser.title} ${loggedInUser.firstName} ${loggedInUser.lastName}`}</SpacedSpan>
+      >{`${loggedInUser.firstName} ${loggedInUser.lastName}`}</SpacedSpan>
       <SpacedSpan>{loggedInUser.jobTitle}</SpacedSpan>
       <SpacedSpan>{loggedInUser.institution}</SpacedSpan>
       <SpacedSpan>{[loggedInUser.city, loggedInUser.state].filter(Boolean).join(', ')}</SpacedSpan>
@@ -289,6 +289,7 @@ export default compose(
             css={`
               ${theme.column};
               padding: 10px;
+              max-width: 260px;
             `}
           >
             <StyledH4>Download Controlled Data</StyledH4>
@@ -321,6 +322,7 @@ export default compose(
             css={`
               ${theme.cloumn};
               padding: 10px;
+              max-width: 260px;
             `}
           >
             <StyledH4>Analyze Data</StyledH4>
