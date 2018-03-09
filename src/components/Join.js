@@ -177,7 +177,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
                         nextStep();
                       } else {
-                        history.push('search/file');
+                        history.push('/search/file');
                       }
                     }}
                   />

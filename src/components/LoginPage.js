@@ -38,7 +38,7 @@ const LoginPage = compose(withRouter, withTheme)(({ history, theme }) => (
           if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
             history.push('/join');
           } else {
-            history.push('search/file');
+            history.push('/search/file');
           }
         }}
       />
