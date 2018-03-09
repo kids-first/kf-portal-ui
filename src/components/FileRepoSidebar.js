@@ -5,8 +5,8 @@ import { injectState } from 'freactal';
 
 import Button from '../uikit/Button';
 import LoadingOnClick from './LoadingOnClick';
+import CavaticaExportWidget from 'components/cavatica/CavaticaExportWidget.js';
 
-import cavaticaLogo from '../assets/logomark-cavatica.svg';
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
@@ -70,14 +70,13 @@ const Divider = styled('div')`
 `;
 
 const Heading = styled('div')`
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 0.3px;
   color: #2b388f;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
   font-weight: 500;
 `;
-
-const FileRepoSidebar = ({ state, effects, projectId, index, style, sqon, ...props }) => {
+const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, ...props }) => {
   gen3Key = state.integrationTokens[GEN3];
   return (
     <div
@@ -85,24 +84,22 @@ const FileRepoSidebar = ({ state, effects, projectId, index, style, sqon, ...pro
         ${styles.container} ${style};
       `}
     >
-      <Heading
-        css={`
-          font-size: 18px;
-          margin-bottom: 15px;
-        `}
-      >
+      <Heading>
         File Action <InfoIcon />
       </Heading>
       <div
         css={`
           font-size: 14px;
-          margin-bottom: 30px;
         `}
       >
         If you have not selected any files, all files in your query will be included in the actions.
       </div>
+      <Divider />
       <Heading>Download</Heading>
       <div>
+        <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>
+          File Manifests
+        </Heading>
         <ColumnsState
           projectId={projectId}
           graphqlField="file"
@@ -189,7 +186,9 @@ const FileRepoSidebar = ({ state, effects, projectId, index, style, sqon, ...pro
           render={({ state }) => {
             return (
               <div>
-                <Heading>Reports</Heading>
+                <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>
+                  Reports
+                </Heading>
                 <div
                   css={`
                     display: flex;
@@ -236,29 +235,9 @@ const FileRepoSidebar = ({ state, effects, projectId, index, style, sqon, ...pro
       </div>
       <Divider />
       <Heading>Data Analysis</Heading>
-      <button
-        css={`
-          border-radius: 19px;
-          background-color: #ffffff;
-          border: solid 1px #cacbcf;
-          font-size: 11px;
-          letter-spacing: 0.2px;
-          color: #008199;
-          padding: 5px 18px 5px 5px;
-          display: flex;
-          align-items: center;
-        `}
-      >
-        <img
-          alt=""
-          src={cavaticaLogo}
-          css={`
-            width: 28px;
-            margin-right: 7px;
-          `}
-        />Export files to Cavatica
-      </button>
+      <CavaticaExportWidget {...props} />
     </div>
   );
 };
+
 export default injectState(FileRepoSidebar);

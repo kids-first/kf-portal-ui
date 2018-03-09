@@ -41,7 +41,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', ...props }) =
           {...props}
           variables={{ sqon }}
           index={index}
-          render={data => (data ? (getValue(data, accessor) || '').toLocaleString() : 'loading')}
+          render={data => (data ? (getValue(data, accessor) || 0).toLocaleString() : 'loading')}
         />
       </div>
       <div

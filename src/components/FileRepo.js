@@ -18,6 +18,7 @@ import { FileRepoStats } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 const enhance = compose(injectState);
 
@@ -97,33 +98,32 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
 
 const customTableTypes = {
   access: ({ value }) => {
-    switch (value) {
-      case 'controlled':
-        return (
-          <img
-            src={require('../assets/icon-controlled-access.svg')}
-            alt=""
-            css={`
-              width: 11px;
-              margin: auto;
-              display: block;
-            `}
-          />
-        );
-      case 'open':
-        return (
-          <img
-            src={require('../assets/icon-open-access.svg')}
-            alt=""
-            css={`
-              width: 10px;
-              margin: auto;
-              display: block;
-            `}
-          />
-        );
-      default:
-        return 'unknown';
+    if (typeof value !== 'boolean') {
+      return 'unknown';
+    } else if (value) {
+      return (
+        <img
+          src={require('../assets/icon-controlled-access.svg')}
+          alt=""
+          css={`
+            width: 11px;
+            margin: auto;
+            display: block;
+          `}
+        />
+      );
+    } else {
+      return (
+        <img
+          src={require('../assets/icon-open-access.svg')}
+          alt=""
+          css={`
+            width: 10px;
+            margin: auto;
+            display: block;
+          `}
+        />
+      );
     }
   },
 };
@@ -135,7 +135,7 @@ const FileRepo = ({ state, effects, ...props }) => {
         return (
           <Arranger
             {...props}
-            projectId={process.env.REACT_APP_PROJECT_ID}
+            projectId={arrangerProjectId}
             render={props => {
               const selectionSQON = props.selectedTableRows.length
                 ? replaceSQON({
