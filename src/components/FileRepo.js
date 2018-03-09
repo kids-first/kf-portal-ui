@@ -18,7 +18,8 @@ import { FileRepoStats } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
-import { arrangerProjectId } from 'common/injectGlobals';
+import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
+import urlJoin from 'url-join';
 
 const enhance = compose(injectState);
 
@@ -135,6 +136,7 @@ const FileRepo = ({ state, effects, ...props }) => {
         return (
           <Arranger
             {...props}
+            socketConnectionString={urlJoin(window.location.origin, arrangerApiRoot)}
             projectId={arrangerProjectId}
             render={props => {
               const selectionSQON = props.selectedTableRows.length
