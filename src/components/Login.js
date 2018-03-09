@@ -12,8 +12,10 @@ import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { getProfile, createProfile } from 'services/profiles';
 import { googleAppId, egoApiRoot } from 'common/injectGlobals';
 import { allRedirectUris } from '../common/injectGlobals';
-import { CAVATICA } from 'common/constants';
+import { GEN3, CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
+import { getSecret } from 'services/secrets';
+
 
 const styles = {
   container: css`
@@ -69,7 +71,15 @@ export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
       // Could not retrieve cavatica user info, nothing to do.
     });
 
-  // TODO: Get Gen3 Secret here
+  // Get Gen3 Secret here
+  getSecret(GEN3)
+    .then(data => {
+      setIntegrationToken(GEN3, data);
+    })
+    .catch(res => {
+      console.error("Error getting Gen3 API Key");
+      console.error(res);
+    });
 };
 
 class Component extends React.Component<any, any> {
@@ -170,8 +180,8 @@ class Component extends React.Component<any, any> {
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
           ]
         ) : (
-          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
-        )}
+              <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
+            )}
       </div>
     );
   }

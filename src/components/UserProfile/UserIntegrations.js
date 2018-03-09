@@ -8,15 +8,17 @@ import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import PencilIcon from 'react-icons/lib/fa/pencil';
+import ViewIcon from 'react-icons/lib/fa/eye';
 import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
 import { deleteSecret } from 'services/secrets';
 import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
+import Gen3Connection from 'components/UserProfile/Gen3Connection';
+import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { getUser } from 'services/cavatica';
 
 const styles = css`
   table {
@@ -73,10 +75,29 @@ const enhance = compose(
   withState('editingCavatica', 'setEditingCavatica', false),
 );
 
-const gen3Status = ({ gen3Key }) => {
+const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
   return (
-    <div>
-      <span>Connected: {gen3Key} </span>
+    <div css="flex-direction: column;">
+      <div
+        css={`
+          color: ${theme.active};
+          padding: 10px;
+        `}
+      >
+        <CheckIcon size={20} />
+        <span> Connected</span>
+      </div>
+      <div css="display: flex;">
+        <Button onClick={onView} className="connectedButton">
+          <ViewIcon />View
+        </Button>
+        <Button onClick={onEdit} className="connectedButton">
+          <PencilIcon />Edit
+        </Button>
+        <Button onClick={onRemove} className="connectedButton">
+          <XIcon />Remove
+        </Button>
+      </div>
     </div>
   );
 };
@@ -103,10 +124,6 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
       </div>
     </div>
   );
-};
-
-const testMethod = () => {
-  console.log(getUser());
 };
 
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
@@ -148,12 +165,51 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             <td>
               <div className="integrationCell">
                 {integrationTokens[GEN3] ? (
-                  gen3Status(integrationTokens[GEN3])
+                  gen3Status({
+                    theme,
+                    gen3Key: integrationTokens[GEN3],
+                    onView: () =>
+                      effects.setModal({
+                        title: 'Gen3 Connection Details',
+                        component: (
+                          <Gen3ConnectionDetails
+                            onComplete={effects.unsetModal}
+                            onCancel={effects.unsetModal}
+                          />
+                        ),
+                      }),
+                    onEdit: () =>
+                      effects.setModal({
+                        title: 'Edit Connection Details',
+                        component: (
+                          <Gen3Connection
+                            onComplete={effects.unsetModal}
+                            onCancel={effects.unsetModal}
+                          />
+                        ),
+                      }),
+                    onRemove: () => {
+                      deleteSecret({ service: GEN3 });
+                      effects.setIntegrationToken(GEN3, null);
+                    },
+                  })
                 ) : (
-                  <button css={theme.actionButton} onClick={() => testMethod()}>
+                  <Button
+                    onClick={() =>
+                      effects.setModal({
+                        title: 'How to Connect to Gen3',
+                        component: (
+                          <Gen3Connection
+                            onComplete={effects.unsetModal}
+                            onCancel={effects.unsetModal}
+                          />
+                        ),
+                      })
+                    }
+                  >
                     <span>Connect</span>
                     <RightIcon className="right" />
-                  </button>
+                  </Button>
                 )}
               </div>
             </td>
