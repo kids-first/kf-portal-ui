@@ -46,7 +46,7 @@ const downloadFile = async (arrangerIds, gen3Key) => {
   let files = await getGen3UUIDs(arrangerIds);
   console.log(files);
   let fileUUID = files && files.length > 0 ? files[0] : '';
-  return async () => downloadFileFromGen3(gen3Key, fileUUID);
+  return downloadFileFromGen3(gen3Key, fileUUID);
 };
 const DownloadIcon = ({ className, loading }) =>
   loading ? (
@@ -174,6 +174,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                       downloadFile(props.selectedTableRows, gen3Key)
                         .then(url => {
                           let a = document.createElement('a');
+                          console.log(url);
                           a.href = url;
                           a.download = url.split('/').slice(-1);
                           a.click();
