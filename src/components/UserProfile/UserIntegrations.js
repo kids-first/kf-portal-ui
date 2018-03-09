@@ -16,8 +16,6 @@ import { cavaticaWebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
 
 import CavaticaInput from 'components/cavatica/CavaticaTokenInput';
-
-import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 
