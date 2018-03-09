@@ -175,16 +175,28 @@ const CavaticaProjects = ({
                         display: flex;
                       `}
                     >
-                      <div>check</div>
                       <div
                         css={`
                           display: flex;
                           flex-direction: column;
                         `}
                       >
-                        <div>Success!</div>
+                        <div
+                          css={`
+                            font-size: 16px;
+                          `}
+                        >
+                          Success!
+                        </div>
                         <div>Files were copied to your Cavatica project:</div>
-                        <div>{projectList.filter(item => item.id === selectedProject)[0].name}</div>
+                        <div
+                          css={`
+                            color: ${theme.secondary};
+                            margin-bottom: 20px;
+                          `}
+                        >
+                          {projectList.filter(item => item.id === selectedProject)[0].name}
+                        </div>
                         <ExternalLink
                           css={`
                             font-size: 14px;
