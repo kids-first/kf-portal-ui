@@ -24,10 +24,16 @@ import { cavaticaApiRoot } from 'common/injectGlobals';
     }
   */
 export const getUser = async () => {
-  const { data } = await ajax.post(cavaticaApiRoot, {
-    path: '/user',
-    method: 'GET',
-  });
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/user',
+      method: 'GET',
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
   return data;
 };
 
@@ -40,10 +46,16 @@ Should return array of billing groups with the form:
   }
 */
 export const getBillingGroups = async () => {
-  const { data: { items } } = await ajax.post(cavaticaApiRoot, {
-    path: '/billing/groups',
-    method: 'GET',
-  });
+  let items;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/billing/groups',
+      method: 'GET',
+    });
+    items = response.data.items;
+  } catch (error) {
+    console.warn(error);
+  }
   return items;
 };
 
@@ -137,7 +149,7 @@ export const convertGen3FileIds = async ({ ids }) => {
  * ids is an array of strings of the ids to copy
  */
 export const copyFiles = async ({ project, ids }) => {
-  const { data: { items } } = await ajax.post(cavaticaApiRoot, {
+  const response = await ajax.post(cavaticaApiRoot, {
     path: '/action/files/copy',
     method: 'POST',
     body: {
@@ -145,7 +157,8 @@ export const copyFiles = async ({ project, ids }) => {
       file_ids: ids,
     },
   });
-  return items;
+  const { data } = response;
+  return data;
 };
 
 //jonqa01/public-housing

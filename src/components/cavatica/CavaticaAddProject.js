@@ -60,6 +60,7 @@ const CavaticaAddProject = ({ state, theme, projectName, setProjectName, ...prop
             className="textInput"
             type="text"
             placeholder="Project Name"
+            value={projectName}
             onChange={e => setProjectName(e.target.value)}
           />
         </div>

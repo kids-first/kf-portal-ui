@@ -3,12 +3,20 @@ import { compose, lifecycle, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 
-import { getProjects as getCavaticaProjects } from 'services/cavatica';
+import {
+  getProjects as getCavaticaProjects,
+  convertGen3FileIds,
+  copyFiles as copyCavaticaFiles,
+} from 'services/cavatica';
+import { getFilesById } from 'services/arranger';
 
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import PlusIcon from 'icons/PlusCircleIcon';
 
-const getGen3UUIDs = arrangerIds => [];
+const getGen3UUIDs = async arrangerIds => {
+  const fileData = await getFilesById({ ids: arrangerIds, fields: ['uuid'] });
+  return fileData.map(file => file.node.uuid);
+};
 
 const enhance = compose(
   withTheme,
@@ -137,11 +145,23 @@ const CavaticaProjects = ({
         <div className="footer">
           <NiceWhiteButton
             css="width:100%;"
-            disabled={!selectedProject}
+            disabled={!selectedProject || props.selectedTableRows.length == 0}
             onClick={async () => {
-              // Convert arragner IDs to UUIDs
+              // Convert arranger IDs to Gen3 UUIDs
               const uuids = await getGen3UUIDs(props.selectedTableRows);
-              alert(`${selectedProject} : ${props.selectedTableRows}`);
+              // alert(`Gen3 UUIDs: ${uuids}`);
+
+              // Convert Gen3 UUIDs to CavaticaIds
+              const conversionResponse = await convertGen3FileIds({ ids: uuids });
+              const cavaticaIds = conversionResponse.map(item => item.id);
+              // alert(`Cavatica IDs: ${cavaticaIds}`);
+
+              // Copy Files
+              const copyResponse = await copyCavaticaFiles({
+                project: selectedProject,
+                ids: cavaticaIds,
+              });
+              alert(`Copy Response: ${JSON.stringify(copyResponse)}`);
             }}
           >
             <div className="verticalCenter">
