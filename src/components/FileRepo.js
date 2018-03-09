@@ -97,33 +97,32 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
 
 const customTableTypes = {
   access: ({ value }) => {
-    switch (value) {
-      case 'controlled':
-        return (
-          <img
-            src={require('../assets/icon-controlled-access.svg')}
-            alt=""
-            css={`
-              width: 11px;
-              margin: auto;
-              display: block;
-            `}
-          />
-        );
-      case 'open':
-        return (
-          <img
-            src={require('../assets/icon-open-access.svg')}
-            alt=""
-            css={`
-              width: 10px;
-              margin: auto;
-              display: block;
-            `}
-          />
-        );
-      default:
-        return 'unknown';
+    if (typeof value !== 'boolean') {
+      return 'unknown';
+    } else if (value) {
+      return (
+        <img
+          src={require('../assets/icon-controlled-access.svg')}
+          alt=""
+          css={`
+            width: 11px;
+            margin: auto;
+            display: block;
+          `}
+        />
+      );
+    } else {
+      return (
+        <img
+          src={require('../assets/icon-open-access.svg')}
+          alt=""
+          css={`
+            width: 10px;
+            margin: auto;
+            display: block;
+          `}
+        />
+      );
     }
   },
 };
