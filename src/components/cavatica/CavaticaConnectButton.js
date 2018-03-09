@@ -30,7 +30,7 @@ const CavaticaConnectButton = ({ state, effects, ...props }) => {
             width: 28px;
             margin-right: 7px;
           `}
-        />Export files to Cavatica
+        />Copy files to Cavatica project
       </button>
     </div>
   );

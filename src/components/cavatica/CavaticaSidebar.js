@@ -126,7 +126,12 @@ const CavaticaSidebar = ({ state, theme, addingProject, setAddingProject, ...pro
     <div>
       {content}
       <div css="padding:10px;">
-        <ExternalLink href={cavaticaWebRoot}>
+        <ExternalLink
+          css={`
+            font-size: 14px;
+          `}
+          href={cavaticaWebRoot}
+        >
           Go to Cavatica{' '}
           <DoubleArrowRight fill={theme.primary} width="10px" css="margin-left:4px;" />
         </ExternalLink>
