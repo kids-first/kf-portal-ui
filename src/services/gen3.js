@@ -51,5 +51,5 @@ export const downloadFileFromGen3 = async (credentials, fileUUID) => {
   let accessToken = await getAccessToken(credentials);
   await setGen3Token(accessToken.data.access_token);
   let signedUrl = await ajax.get(gen3ApiRoot + 'user/data/download/' + fileUUID);
-  window.open(signedUrl.data.url);
+  return signedUrl.data.url;
 };

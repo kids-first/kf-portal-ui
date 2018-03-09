@@ -13,6 +13,7 @@ import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
 import InfoIcon from '../icons/InfoIcon';
 import { GEN3 } from 'common/constants';
+import { getFilesById } from 'services/arranger';
 
 import {
   downloadBiospecimen,
@@ -23,6 +24,7 @@ import {
 import FamilyManifestModal from './FamilyManifestModal';
 
 let gen3Key = '';
+let setToast = '';
 
 const styles = {
   container: css`
@@ -35,9 +37,16 @@ const styles = {
   `,
 };
 
-const downloadFile = (arrangerId, gen3Key) => {
-  // let files = await getGen3UUIDs(arrangerId)
-  // let fileUUID =files && files.length > 0 ? files[]
+const getGen3UUIDs = async arrangerIds => {
+  const fileData = await getFilesById({ ids: arrangerIds, fields: ['uuid'] });
+  return fileData.map(file => file.node.uuid);
+};
+
+const downloadFile = async (arrangerIds, gen3Key) => {
+  let files = await getGen3UUIDs(arrangerIds);
+  console.log(files);
+  let fileUUID = files && files.length > 0 ? files[0] : '';
+  return async () => downloadFileFromGen3(gen3Key, fileUUID);
 };
 const DownloadIcon = ({ className, loading }) =>
   loading ? (
@@ -76,8 +85,9 @@ const Heading = styled('div')`
   margin-bottom: 15px;
   font-weight: 500;
 `;
-const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, ...props }) => {
+const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme, ...props }) => {
   gen3Key = state.integrationTokens[GEN3];
+  setToast = effects.setToast;
   return (
     <div
       css={`
@@ -150,7 +160,9 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, ...pro
           render={({ state }) => {
             return (
               <div>
-                <Heading>Download Selected File</Heading>
+                <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>
+                  Selected File
+                </Heading>
                 <div
                   css={`
                     display: flex;
@@ -158,7 +170,57 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, ...pro
                   `}
                 >
                   <LoadingOnClick
-                    onClick={() => downloadFileFromGen3(gen3Key, '')}
+                    onClick={async () => {
+                      downloadFile(props.selectedTableRows, gen3Key)
+                        .then(url => {
+                          let a = document.createElement('a');
+                          a.href = url;
+                          a.download = url.split('/').slice(-1);
+                          a.click();
+                        })
+                        .catch(err => {
+                          console.log(err);
+                          setToast({
+                            id: `${Date.now()}`,
+                            action: 'success',
+                            component: (
+                              <div
+                                css={`
+                                  display: flex;
+                                `}
+                              >
+                                <div
+                                  css={`
+                                    display: flex;
+                                    flex-direction: column;
+                                  `}
+                                >
+                                  <div
+                                    css={`
+                                      font-size: 16px;
+                                    `}
+                                  >
+                                    Failed!
+                                  </div>
+                                  <div>Unable to download file</div>
+                                  <div
+                                    css={`
+                                      color: 'red';
+                                      margin-bottom: 20px;
+                                      padding: 20px;
+                                    `}
+                                  >
+                                    <span>
+                                      Your Account doesn't have required permission to download this
+                                      file.
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            ),
+                          });
+                        });
+                    }}
                     render={({ onClick, loading, disabled }) => {
                       return (
                         <Button
