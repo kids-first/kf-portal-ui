@@ -49,7 +49,7 @@ export default injectState(
       // TODO: user / token stuff
       let { Files, Participants, Families, Size } = this.props.stats;
       // TODO: use ajax service?
-      fetch(urlJoin(shortUrlApi, 'dev', 'shorten'), {
+      fetch(urlJoin(shortUrlApi, 'shorten'), {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
