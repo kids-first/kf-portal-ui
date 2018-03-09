@@ -20,46 +20,49 @@ function findColumnsByField(fields, columns) {
     .filter(Boolean)
     .map(c => ({ ...c, show: true, Header: c.Header || startCase(c.field.replace(/\./g, ' ')) }));
 }
+function getManifestDownload(type) {
+  return ({ sqon, columns }) => () => {
+    return saveTSV({
+      fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD`),
+      files: [
+        {
+          fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD[.tsv]`),
+          sqon,
+          index: 'file',
+          columns: findColumnsByField(['kf_id', 'uuid'], columns),
+        },
+        {
+          fileName: format(new Date(), `[kidsfirst-${type}-metadata_]YYYY-MM-DD[.tsv]`),
+          sqon,
+          index: 'file',
+          columns: findColumnsByField(
+            [
+              'kf_id',
+              'uuid',
+              'file_name',
+              'data_type',
+              'file_format',
+              'sequencing_experiments.experiment_strategy',
+              'participants.kf_id',
+              {
+                Header: 'sample.kf_id',
+                field: 'participants.samples.kf_id',
+                jsonPath: '$.participants.hits.edges..node.samples.hits.edges..node.kf_id',
+                query:
+                  'participants { hits { total, edges { node { samples { hits { edges { node { kf_id } } } } } } } }',
+                type: 'list',
+              },
+            ],
+            columns,
+          ),
+        },
+      ],
+    });
+  };
+}
+export const fileManifestParticipantsOnly = getManifestDownload('participant');
 
-export const fileManifestParticipantsOnly = ({ sqon, columns }) => () => {
-  return saveTSV({
-    fileName: format(new Date(), '[kidsfirst-manifest-participant_]YYYY-MM-DD'),
-    files: [
-      {
-        fileName: format(new Date(), '[kidsfirst-manifest_]YYYY-MM-DD[.tsv]'),
-        sqon,
-        index: 'file',
-        columns: findColumnsByField(['kf_id'], columns),
-      },
-      {
-        fileName: format(new Date(), '[kidsfirst-manifest_metadata_]YYYY-MM-DD[.tsv]'),
-        sqon,
-        index: 'file',
-        columns: findColumnsByField(
-          [
-            'kf_id',
-            'file_name',
-            'data_type',
-            'file_format',
-            'sequencing_experiments.experiment_strategy',
-            'participants.kf_id',
-            {
-              Header: 'sample.kf_id',
-              field: 'participants.samples.kf_id',
-              jsonPath: '$.participants.hits.edges..node.samples.hits.edges..node.kf_id',
-              query:
-                'participants { hits { total, edges { node { samples { hits { edges { node { kf_id } } } } } } } }',
-              type: 'list',
-            },
-          ],
-          columns,
-        ),
-      },
-    ],
-  });
-};
-
-export const fileManifestParticipantsAndFamily = fileManifestParticipantsOnly;
+export const fileManifestParticipantsAndFamily = getManifestDownload('participant-family');
 
 export const clinicalDataParticipants = ({ sqon, columns }) => () => {
   return saveTSV({
