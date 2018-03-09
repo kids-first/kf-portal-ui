@@ -9,10 +9,26 @@ import Login from 'components/Login';
 const LoginPage = compose(withRouter, withTheme)(({ history, theme }) => (
   <div
     css={`
-      width: 849px;
-      margin: 5% auto 0 auto;
+      width: 630px;
+      margin: auto;
     `}
   >
+    <h1
+      css={`
+        background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed),
+          linear-gradient(#2b388f, #2b388f);
+        font-family: Montserrat;
+        font-size: 36px;
+        line-height: 0.72;
+        letter-spacing: 0.5px;
+        text-align: center;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      `}
+    >
+      Kids First Data Resource Portal
+    </h1>
     <div css={theme.card}>
       <h2 css={theme.h2}>Log in</h2>
 

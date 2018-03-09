@@ -7,12 +7,13 @@ import { get } from 'lodash';
 
 import { ROLES } from 'common/constants';
 
-const CompleteOMeter = compose(withTheme)(({ theme, role, percentage }) => (
+const CompleteOMeter = compose(withTheme)(({ theme, role, percentage, className }) => (
   <div
     css={`
       width: 310px;
       ${theme.column};
       align-items: center;
+      ${className};
     `}
   >
     <div
