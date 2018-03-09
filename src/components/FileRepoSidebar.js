@@ -61,10 +61,10 @@ const Divider = styled('div')`
 `;
 
 const Heading = styled('div')`
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 0.3px;
   color: #2b388f;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
   font-weight: 500;
 `;
 
@@ -74,24 +74,20 @@ const FileRepoSidebar = ({ projectId, index, style, sqon, effects, ...props }) =
       ${styles.container} ${style};
     `}
   >
-    <Heading
-      css={`
-        font-size: 18px;
-        margin-bottom: 15px;
-      `}
-    >
+    <Heading>
       File Action <InfoIcon />
     </Heading>
     <div
       css={`
         font-size: 14px;
-        margin-bottom: 30px;
       `}
     >
       If you have not selected any files, all files in your query will be included in the actions.
     </div>
+    <Divider />
     <Heading>Download</Heading>
     <div>
+      <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>File Manifests</Heading>
       <ColumnsState
         projectId={projectId}
         graphqlField="file"
@@ -142,7 +138,7 @@ const FileRepoSidebar = ({ projectId, index, style, sqon, effects, ...props }) =
         render={({ state }) => {
           return (
             <div>
-              <Heading>Reports</Heading>
+              <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>Reports</Heading>
               <div
                 css={`
                   display: flex;
