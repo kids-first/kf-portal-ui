@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 import SQONURL from 'components/SQONURL';
-
+import downloadIcon from '../assets/icon-download-grey.svg';
 import {
   Arranger,
   Aggregations,
@@ -164,7 +164,24 @@ const FileRepo = ({ state, effects, ...props }) => {
                     >
                       <CurrentSQON {...props} {...url} />
                       <FileRepoStats {...props} sqon={selectionSQON} />
-                      <Table {...props} customTypes={customTableTypes} {...url} />
+                      <Table
+                        {...props}
+                        customTypes={customTableTypes}
+                        {...url}
+                        columnDropdownText="Columns"
+                        exportTSVText={
+                          <React.Fragment>
+                            <img
+                              alt=""
+                              src={downloadIcon}
+                              css={`
+                                width: 10px;
+                                margin-right: 9px;
+                              `}
+                            />Export TSV
+                          </React.Fragment>
+                        }
+                      />
                     </div>
                     <FileRepoSidebar {...props} sqon={selectionSQON} />
                   </div>
