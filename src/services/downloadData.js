@@ -2,6 +2,26 @@ import { startCase } from 'lodash';
 import { format } from 'date-fns';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
 
+function hackCrossIndex(value, key) {
+  if (!key && process.env.NODE_ENV !== 'production') {
+    console.warn('This code should removed when cross index searching is implemented');
+  }
+  if (typeof value === 'object' && value) {
+    return Object.entries(value).reduce((acc, [key, value]) => {
+      acc[key] = hackCrossIndex(value, key);
+      return acc;
+    }, value.constructor());
+  } else if (key === 'field') {
+    if (value.indexOf('participants') === 0) {
+      return value.replace(/participants\./, '');
+    } else {
+      return `files.${value}`;
+    }
+  } else {
+    return value;
+  }
+}
+
 function findColumnsByField(fields, columns) {
   const columnConfigs = fields.map(
     field => (typeof field === 'string' ? columns.find(column => column.field === field) : field),
@@ -69,7 +89,7 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
     files: [
       {
         fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
-        sqon,
+        sqon: hackCrossIndex(sqon),
         index: 'participant',
         uniqueBy: 'diagnoses.hits.edges[].node.diagnosis',
         columns: findColumnsByField(
@@ -138,7 +158,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
     files: [
       {
         fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
-        sqon,
+        sqon: hackCrossIndex(sqon),
         index: 'participant',
         uniqueBy: 'family.family_members.hits.edges[].node.kf_id',
         columns: findColumnsByField(
@@ -199,7 +219,7 @@ export const downloadBiospecimen = ({ sqon, columns }) => () => {
     files: [
       {
         fileName: 'sample.tsv',
-        sqon,
+        sqon: hackCrossIndex(sqon),
         index: 'participant',
         uniqueBy: 'samples.hits.edges[].node.kf_id',
         columns: findColumnsByField(
@@ -219,7 +239,7 @@ export const downloadBiospecimen = ({ sqon, columns }) => () => {
       },
       {
         fileName: 'aliquot.tsv',
-        sqon,
+        sqon: hackCrossIndex(sqon),
         index: 'participant',
         uniqueBy: 'samples.hits.edges[].node.aliquots.kf_id',
         columns: findColumnsByField(
