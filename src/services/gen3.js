@@ -47,8 +47,9 @@ export const getAccessToken = async credentials => {
   return await ajax.post(gen3ApiRoot + 'user/credentials/cdis/access_token', credentials, config);
 };
 
-export const getSignedURL = async (credentials, fileUUID) => {
+export const downloadFileFromGen3 = async (credentials, fileUUID) => {
   let accessToken = await getAccessToken(credentials);
   await setGen3Token(accessToken.data.access_token);
-  await ajax.get(gen3ApiRoot + 'user/data/download/' + fileUUID);
+  let signedUrl = await ajax.get(gen3ApiRoot + 'user/data/download/' + fileUUID);
+  window.open(signedUrl.data.url);
 };
