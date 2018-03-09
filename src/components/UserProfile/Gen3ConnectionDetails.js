@@ -34,7 +34,6 @@ const enhance = compose(
 );
 
 const getUserInfo = async ({ integrationToken }) => {
-  //let gen3ApiKey = await getIntegrationToken(GEN3);
   return await getGen3User(integrationToken);
 };
 
