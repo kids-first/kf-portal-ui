@@ -35,6 +35,10 @@ const styles = {
   `,
 };
 
+const downloadFile = (arrangerId, gen3Key) => {
+  // let files = await getGen3UUIDs(arrangerId)
+  // let fileUUID =files && files.length > 0 ? files[]
+};
 const DownloadIcon = ({ className, loading }) =>
   loading ? (
     <Spinner
@@ -73,77 +77,77 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 
-const FileRepoSidebar = ({ state, effects, projectId, index, style, sqon, effects, ...props }) => (
-gen3Key = state.integrationTokens[GEN3];
-return (
-  <div
-    css={`
-      ${styles.container} ${style};
-    `}
-  >
-    <Heading
-      css={`
-        font-size: 18px;
-        margin-bottom: 15px;
-      `}
-    >
-      File Action <InfoIcon />
-    </Heading>
+const FileRepoSidebar = ({ state, effects, projectId, index, style, sqon, ...props }) => {
+  gen3Key = state.integrationTokens[GEN3];
+  return (
     <div
       css={`
-        font-size: 14px;
-        margin-bottom: 30px;
+        ${styles.container} ${style};
       `}
     >
-      If you have not selected any files, all files in your query will be included in the actions.
-    </div>
-    <Heading>Download</Heading>
-    <div>
-      <ColumnsState
-        projectId={projectId}
-        graphqlField="file"
-        render={({ state }) => {
-          return (
-            <div
-              css={`
-                display: flex;
-                margin-bottom: 13px;
-              `}
-            >
-              <PillInputWithButton
-                options={{
-                  'Participant only': fileManifestParticipantsOnly({
-                    sqon,
-                    columns: state.columns,
-                  }),
+      <Heading
+        css={`
+          font-size: 18px;
+          margin-bottom: 15px;
+        `}
+      >
+        File Action <InfoIcon />
+      </Heading>
+      <div
+        css={`
+          font-size: 14px;
+          margin-bottom: 30px;
+        `}
+      >
+        If you have not selected any files, all files in your query will be included in the actions.
+      </div>
+      <Heading>Download</Heading>
+      <div>
+        <ColumnsState
+          projectId={projectId}
+          graphqlField="file"
+          render={({ state }) => {
+            return (
+              <div
+                css={`
+                  display: flex;
+                  margin-bottom: 13px;
+                `}
+              >
+                <PillInputWithButton
+                  options={{
+                    'Participant only': fileManifestParticipantsOnly({
+                      sqon,
+                      columns: state.columns,
+                    }),
 
-                  'Participant and family': () => {
-                    return effects.setModal({
-                      title: 'Download Manifest (Participant and Family)',
-                      component: (
-                        <FamilyManifestModal
-                          sqon={sqon}
-                          index={index}
-                          projectId={projectId}
-                          columns={state.columns}
-                        />
-                      ),
-                    });
-                  },
-                }}
-                render={({ loading }) => {
-                  return (
-                    <React.Fragment>
-                      <DownloadIcon loading={loading} />DOWNLOAD
-                    </React.Fragment>
-                  );
-                }}
-              />
-            </div>
-          );
-        }}
-      />
-      <ColumnsState
+                    'Participant and family': () => {
+                      return effects.setModal({
+                        title: 'Download Manifest (Participant and Family)',
+                        component: (
+                          <FamilyManifestModal
+                            sqon={sqon}
+                            index={index}
+                            projectId={projectId}
+                            columns={state.columns}
+                          />
+                        ),
+                      });
+                    },
+                  }}
+                  render={({ loading }) => {
+                    return (
+                      <React.Fragment>
+                        <DownloadIcon loading={loading} />DOWNLOAD
+                      </React.Fragment>
+                    );
+                  }}
+                />
+              </div>
+            );
+          }}
+        />
+        <ColumnsState
           projectId={projectId}
           graphqlField="file"
           render={({ state }) => {
@@ -179,82 +183,82 @@ return (
             );
           }}
         />
-      <ColumnsState
-        projectId={projectId}
-        graphqlField="participant"
-        render={({ state }) => {
-          return (
-            <div>
-              <Heading>Reports</Heading>
-              <div
-                css={`
-                  display: flex;
-                  margin-bottom: 13px;
-                `}
-              >
-                <PillInputWithButton
-                  options={{
-                    'Clinical (Participant)': clinicalDataParticipants({
-                      sqon,
-                      columns: state.columns,
-                    }),
-                    'Clinical (Family)': clinicalDataFamily({ sqon, columns: state.columns }),
-                  }}
-                  render={({ loading }) => {
-                    return (
-                      <React.Fragment>
-                        <DownloadIcon loading={loading} />
-                        DOWNLOAD
-                      </React.Fragment>
-                    );
-                  }}
+        <ColumnsState
+          projectId={projectId}
+          graphqlField="participant"
+          render={({ state }) => {
+            return (
+              <div>
+                <Heading>Reports</Heading>
+                <div
+                  css={`
+                    display: flex;
+                    margin-bottom: 13px;
+                  `}
+                >
+                  <PillInputWithButton
+                    options={{
+                      'Clinical (Participant)': clinicalDataParticipants({
+                        sqon,
+                        columns: state.columns,
+                      }),
+                      'Clinical (Family)': clinicalDataFamily({ sqon, columns: state.columns }),
+                    }}
+                    render={({ loading }) => {
+                      return (
+                        <React.Fragment>
+                          <DownloadIcon loading={loading} />
+                          DOWNLOAD
+                        </React.Fragment>
+                      );
+                    }}
+                  />
+                </div>
+                <LoadingOnClick
+                  onClick={downloadBiospecimen({ sqon, columns: state.columns })}
+                  render={({ onClick, loading, disabled }) => (
+                    <Button
+                      css={`
+                        flex-grow: 1;
+                        padding-left: 15px;
+                      `}
+                      disabled={disabled}
+                      onClick={onClick}
+                    >
+                      <DownloadIcon loading={loading} />BIOSPECIMEN
+                    </Button>
+                  )}
                 />
               </div>
-              <LoadingOnClick
-                onClick={downloadBiospecimen({ sqon, columns: state.columns })}
-                render={({ onClick, loading, disabled }) => (
-                  <Button
-                    css={`
-                      flex-grow: 1;
-                      padding-left: 15px;
-                    `}
-                    disabled={disabled}
-                    onClick={onClick}
-                  >
-                    <DownloadIcon loading={loading} />BIOSPECIMEN
-                  </Button>
-                )}
-              />
-            </div>
-          );
-        }}
-      />
-    </div>
-    <Divider />
-    <Heading>Data Analysis</Heading>
-    <button
-      css={`
-        border-radius: 19px;
-        background-color: #ffffff;
-        border: solid 1px #cacbcf;
-        font-size: 11px;
-        letter-spacing: 0.2px;
-        color: #008199;
-        padding: 5px 18px 5px 5px;
-        display: flex;
-        align-items: center;
-      `}
-    >
-      <img
-        alt=""
-        src={cavaticaLogo}
+            );
+          }}
+        />
+      </div>
+      <Divider />
+      <Heading>Data Analysis</Heading>
+      <button
         css={`
-          width: 28px;
-          margin-right: 7px;
+          border-radius: 19px;
+          background-color: #ffffff;
+          border: solid 1px #cacbcf;
+          font-size: 11px;
+          letter-spacing: 0.2px;
+          color: #008199;
+          padding: 5px 18px 5px 5px;
+          display: flex;
+          align-items: center;
         `}
-      />Export files to Cavatica
-    </button>
-  </div>
-);
+      >
+        <img
+          alt=""
+          src={cavaticaLogo}
+          css={`
+            width: 28px;
+            margin-right: 7px;
+          `}
+        />Export files to Cavatica
+      </button>
+    </div>
+  );
 };
 export default injectState(FileRepoSidebar);
