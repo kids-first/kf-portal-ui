@@ -4,7 +4,7 @@ import Spinner from 'react-spinkit';
 
 import Button from '../uikit/Button';
 import LoadingOnClick from './LoadingOnClick';
-import CavaticaSidebar from 'components/cavatica/CavaticaSidebar.js';
+import CavaticaExportWidget from 'components/cavatica/CavaticaExportWidget.js';
 
 import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
@@ -178,6 +178,6 @@ export default ({ projectId, style, sqon, ...props }) => (
     </div>
     <Divider />
     <Heading>Data Analysis</Heading>
-    <CavaticaSidebar {...props} />
+    <CavaticaExportWidget {...props} />
   </div>
 );
