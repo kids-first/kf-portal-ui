@@ -1,16 +1,17 @@
 import React from 'react';
 import { injectState } from 'freactal';
+import urlJoin from 'url-join';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import Tooltip from 'uikit/Tooltip';
+import { arrangerApiAbsolutePath, shortUrlApi } from 'common/injectGlobals';
 
 export default injectState(
   class extends React.Component {
     state = { link: null, copied: false, queryName: '' };
 
     share = () => {
-      console.log(this.props.state); // TODO: user / token stuff
       let { Files, Participants, Families, Size } = this.props.stats;
-      fetch('https://13gqusdt40.execute-api.us-east-1.amazonaws.com/Dev/shorten', {
+      fetch(urlJoin(shortUrlApi, 'shorten'), {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -33,7 +34,7 @@ export default injectState(
         .then(r => r.json())
         .then(data => {
           this.setState({
-            link: `${process.env.REACT_APP_ARRANGER_API}/s/${data.body.shortUrl}`,
+            link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
           });
         });
     };
