@@ -121,7 +121,7 @@ export default compose(
           )})
           no-repeat;
         background-color: #1094d5;
-        height: 330px;
+        min-height: 330px;
         align-items: center;
         display: flex;
         justify-content: center;
