@@ -92,7 +92,7 @@ const styles = theme => css`
   }
 `;
 
-const CavaticaSidebar = ({ state, theme, addingProject, setAddingProject, ...props }) => {
+const CavaticaExportWidget = ({ state, theme, addingProject, setAddingProject, ...props }) => {
   let content = <CavaticaConnectButton styles={styles(theme)} />;
   if (state.integrationTokens[CAVATICA]) {
     if (addingProject) {
@@ -140,4 +140,4 @@ const CavaticaSidebar = ({ state, theme, addingProject, setAddingProject, ...pro
   );
 };
 
-export default enhance(CavaticaSidebar);
+export default enhance(CavaticaExportWidget);
