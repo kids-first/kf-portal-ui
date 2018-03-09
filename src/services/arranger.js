@@ -9,10 +9,14 @@ export const api = ({ endpoint = '', body, headers }) =>
       ...headers,
     },
     body: JSON.stringify(body),
-  }).then(r => {
-    console.log('arranger response: ' + r);
-    return r.json();
-  });
+  })
+    .then(r => {
+      console.log('arranger response: ' + r);
+      return r.json();
+    })
+    .catch(error => {
+      console.warn(error);
+    });
 
 const graphql = options => {
   return api({
@@ -30,8 +34,14 @@ export const getFilesById = async ({ ids, fields }) => {
     content: [{ op: 'in', content: { field: '_id', value: ids } }],
   };
   const body = { query, variables: { sqon } };
-  const response = await graphql({ body });
-  const { data: { file: { hits: { edges } } } } = response;
+
+  let edges;
+  try {
+    const response = await graphql({ body });
+    edges = response.data.file.hits.edges;
+  } catch (error) {
+    console.warn(error);
+  }
   return edges;
 };
 
