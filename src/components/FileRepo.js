@@ -164,7 +164,12 @@ const FileRepo = ({ state, effects, ...props }) => {
                     >
                       <CurrentSQON {...props} {...url} />
                       <FileRepoStats {...props} sqon={selectionSQON} />
-                      <Table {...props} customTypes={customTableTypes} {...url} />
+                      <Table
+                        {...props}
+                        customTypes={customTableTypes}
+                        {...url}
+                        columnDropdownText="Columns"
+                      />
                     </div>
                     <FileRepoSidebar {...props} sqon={selectionSQON} />
                   </div>
