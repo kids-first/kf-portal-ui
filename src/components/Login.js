@@ -65,7 +65,7 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
 export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
   getCavaticaUser()
     .then(userData => {
-      setIntegrationToken(CAVATICA, userData);
+      setIntegrationToken(CAVATICA, JSON.stringify(userData));
     })
     .catch(response => {
       // Could not retrieve cavatica user info, nothing to do.

@@ -24,10 +24,17 @@ import { cavaticaApiRoot } from 'common/injectGlobals';
     }
   */
 export const getUser = async () => {
-  return await ajax.post(cavaticaApiRoot, {
-    path: '/user',
-    method: 'GET',
-  });
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/user',
+      method: 'GET',
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
 };
 
 /**
@@ -39,10 +46,16 @@ Should return array of billing groups with the form:
   }
 */
 export const getBillingGroups = async () => {
-  const { items } = await ajax.post(cavaticaApiRoot, {
-    path: '/billing/groups',
-    method: 'GET',
-  });
+  let items;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/billing/groups',
+      method: 'GET',
+    });
+    items = response.data.items;
+  } catch (error) {
+    console.warn(error);
+  }
   return items;
 };
 
@@ -55,10 +68,17 @@ export const getBillingGroups = async () => {
     }
  */
 export const getProjects = async () => {
-  return await ajax.post(cavaticaApiRoot, {
-    path: '/projects',
-    method: 'GET',
-  });
+  let items;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/projects',
+      method: 'GET',
+    });
+    items = response.data.items;
+  } catch (error) {
+    console.warn(error);
+  }
+  return items;
 };
 
 /**
@@ -80,16 +100,94 @@ export const getProjects = async () => {
  * 
  */
 export const createProject = async ({ name, billing_group, description = '' }) => {
-  return await ajax.post(cavaticaApiRoot, {
-    path: '/projects',
-    method: 'GET',
-    body: { name, billing_group, description },
-  });
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/projects',
+      method: 'POST',
+      body: { name, billing_group, description },
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
 };
 
 export const getFiles = async () => {
-  return await ajax.post(cavaticaApiRoot, {
-    path: '/files',
-    method: 'GET',
-  });
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/files',
+      method: 'GET',
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
 };
+
+/**
+ * ids - array of Gen3 Ids as strings
+ * returns an array of objects representing the Cavatica file equivalents
+ *  these objects have the form:
+ *    {
+ *      "href": "https://api-kids-first-vayu.sbgenomics.com/v2/files/5a98298e20947e0f33468143",
+ *      "id": "5a98298e20947e0f33468143",
+ *      "name": "HG00235.mapped.SOLID.bfast.GBR.exome.20110411.bam.bas"
+ *    }
+ *
+ */
+export const convertGen3FileIds = async ({ ids }) => {
+  let items;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/action/files/resolve_origin_ids',
+      method: 'POST',
+      body: {
+        type: 'dataset',
+        dataset: 'sevenbridges/kids-first',
+        items: ids.map(id => {
+          return {
+            id,
+          };
+        }),
+        // [
+        //   { id: 'ffe81227-2d0f-4cb0-be03-f6fa0f93de71' },
+        //   { id: 'ff697878-84cd-4ad4-b7da-b1958e9d3c98' },
+        // ],
+      },
+    });
+    items = response.data.items;
+  } catch (error) {
+    console.warn(error);
+  }
+  return items;
+};
+
+/**
+ * Requires Cavatica File IDs as returned from convertGen3FileIds
+ *
+ * project is the project id, not name (ie. userId/projectName)
+ * ids is an array of strings of the ids to copy
+ */
+export const copyFiles = async ({ project, ids }) => {
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/action/files/copy',
+      method: 'POST',
+      body: {
+        project: project,
+        file_ids: ids,
+      },
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
+};
+
+//jonqa01/public-housing

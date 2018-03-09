@@ -12,10 +12,13 @@ import ViewIcon from 'react-icons/lib/fa/eye';
 import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
+import { cavaticaWebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
-import CavaticaInput from 'components/UserProfile/CavaticaTokenInput';
+
+import CavaticaInput from 'components/cavatica/CavaticaTokenInput';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
+
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
@@ -222,7 +225,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
               <span className="integrationHeader">Analyze Data</span>
               <p>
                 Analyze data quickly by connecting your Kids First account to{' '}
-                <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
+                <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
               </p>
             </td>
             <td>
@@ -241,8 +244,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                           />
                         ),
                       }),
-                    onRemove: () => {
-                      deleteSecret({ service: CAVATICA });
+                    onRemove: async () => {
+                      await deleteSecret({ service: CAVATICA });
                       effects.setIntegrationToken(CAVATICA, null);
                     },
                   })

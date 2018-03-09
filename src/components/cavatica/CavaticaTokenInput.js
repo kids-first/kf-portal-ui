@@ -7,6 +7,7 @@ import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { ModalFooter } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
+import { cavaticaWebRoot } from 'common/injectGlobals';
 
 import { css } from 'emotion';
 import styled from 'react-emotion';
@@ -73,7 +74,7 @@ const submitCavaticaToken = async ({
   await setSecret({ service: CAVATICA, secret: token });
   getCavaticaUser(token)
     .then(userData => {
-      setIntegrationToken(CAVATICA, userData);
+      setIntegrationToken(CAVATICA, JSON.stringify(userData));
       onSuccess();
     })
     .catch(response => {
@@ -97,7 +98,6 @@ const CavaticaTokenInput = ({
   setInvalidToken,
   ...props
 }) => {
-  console.log(!cavaticaKey.length);
   return (
     <div css={styles}>
       <div>
@@ -108,7 +108,7 @@ const CavaticaTokenInput = ({
           <div className="stepText">
             <span>
               If you don't have one, please{' '}
-              <ExternalLink href="https://pgc-accounts.sbgenomics.com/auth/register/">
+              <ExternalLink href={cavaticaWebRoot}>
                 register for a Cavatica Account <RightArrows />
               </ExternalLink>{' '}
             </span>
@@ -121,7 +121,7 @@ const CavaticaTokenInput = ({
           <div className="stepText">
             <span>
               You will need to retrieve your authentication token from the Cavatica{' '}
-              <ExternalLink href="https://cavatica.sbgenomics.com/developer#token">
+              <ExternalLink href={`${cavaticaWebRoot}/developer#token`}>
                 Developer Dashboard
               </ExternalLink>. From the Dashboard, click on the "Auth Token" tab.
             </span>
