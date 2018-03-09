@@ -4,6 +4,9 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import SQONURL from 'components/SQONURL';
 import downloadIcon from '../assets/icon-download-grey.svg';
+import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
+
 import {
   Arranger,
   Aggregations,
@@ -14,7 +17,7 @@ import {
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import { FileRepoStats } from './Stats';
+import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
@@ -38,6 +41,10 @@ const arrangerStyles = css`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
+  }
+
+  div.sqon-view {
+    flex-grow: 1;
   }
 `;
 
@@ -162,7 +169,26 @@ const FileRepo = ({ state, effects, ...props }) => {
                         padding: 30,
                       }}
                     >
-                      <CurrentSQON {...props} {...url} />
+                      <div
+                        css={`
+                          display: flex;
+                        `}
+                      >
+                        <CurrentSQON {...props} {...url} />
+                        {url.sqon &&
+                          Object.keys(url.sqon).length > 0 && (
+                            <FileRepoStatsQuery
+                              {...props}
+                              {...url}
+                              render={data => (
+                                <div>
+                                  <ShareQuery stats={data} />
+                                  <SaveQuery stats={data} />
+                                </div>
+                              )}
+                            />
+                          )}
+                      </div>
                       <FileRepoStats {...props} sqon={selectionSQON} />
                       <Table
                         {...props}
