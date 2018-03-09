@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
+import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 
@@ -12,6 +13,8 @@ import { getFilesById } from 'services/arranger';
 
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import PlusIcon from 'icons/PlusCircleIcon';
+import ExternalLink from 'uikit/ExternalLink';
+import DoubleArrowRight from 'icons/DoubleChevronRightIcon';
 
 const getGen3UUIDs = async arrangerIds => {
   const fileData = await getFilesById({ ids: arrangerIds, fields: ['uuid'] });
@@ -19,6 +22,7 @@ const getGen3UUIDs = async arrangerIds => {
 };
 
 const enhance = compose(
+  injectState,
   withTheme,
   withState('projectSearchValue', 'setProjectSearchValue', ''),
   withState('projectList', 'setProjectList', []),
@@ -79,6 +83,7 @@ const NiceWhiteButton = styled.button`
 `;
 
 const CavaticaProjects = ({
+  effects: { setToast, closeToast },
   theme,
   projectSearchValue,
   setProjectSearchValue,
@@ -145,7 +150,7 @@ const CavaticaProjects = ({
         <div className="footer">
           <NiceWhiteButton
             css="width:100%;"
-            disabled={!selectedProject || props.selectedTableRows.length == 0}
+            disabled={!selectedProject || props.selectedTableRows.length === 0}
             onClick={async () => {
               // Convert arranger IDs to Gen3 UUIDs
               const uuids = await getGen3UUIDs(props.selectedTableRows);
@@ -157,11 +162,48 @@ const CavaticaProjects = ({
               // alert(`Cavatica IDs: ${cavaticaIds}`);
 
               // Copy Files
-              const copyResponse = await copyCavaticaFiles({
+              copyCavaticaFiles({
                 project: selectedProject,
                 ids: cavaticaIds,
+              }).then(r => {
+                setToast({
+                  id: `${Date.now()}`,
+                  action: 'success',
+                  component: (
+                    <div
+                      css={`
+                        display: flex;
+                      `}
+                    >
+                      <div>check</div>
+                      <div
+                        css={`
+                          display: flex;
+                          flex-direction: column;
+                        `}
+                      >
+                        <div>Success!</div>
+                        <div>Files were copied to your Cavatica project:</div>
+                        <div>{projectList.filter(item => item.id === selectedProject)[0].name}</div>
+                        <ExternalLink
+                          css={`
+                            font-size: 14px;
+                          `}
+                          href={`https://kids-first-vayu.sbgenomics.com/u/${selectedProject}`}
+                        >
+                          Open project in Cavatica
+                          <DoubleArrowRight
+                            fill={theme.primary}
+                            width="10px"
+                            css="margin-left:4px;"
+                          />
+                        </ExternalLink>
+                      </div>
+                    </div>
+                  ),
+                });
+                // alert(`Copy Response: ${JSON.stringify(r)}`);
               });
-              alert(`Copy Response: ${JSON.stringify(copyResponse)}`);
             }}
           >
             <div className="verticalCenter">
