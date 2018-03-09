@@ -18,6 +18,7 @@ import { FileRepoStats } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 const enhance = compose(injectState);
 
@@ -134,7 +135,7 @@ const FileRepo = ({ state, effects, ...props }) => {
         return (
           <Arranger
             {...props}
-            projectId={process.env.REACT_APP_PROJECT_ID}
+            projectId={arrangerProjectId}
             render={props => {
               const selectionSQON = props.selectedTableRows.length
                 ? replaceSQON({
