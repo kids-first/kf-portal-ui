@@ -1,14 +1,11 @@
 import * as React from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
-import { css } from 'emotion';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
 
 import { createProject, getBillingGroups } from 'services/cavatica';
 
-import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import DoubleArrowLeft from 'icons/DoubleChevronLeftIcon';
 
 const enhance = compose(injectState, withTheme, withState('projectName', 'setProjectName', ''));
