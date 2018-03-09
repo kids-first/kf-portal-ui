@@ -136,7 +136,10 @@ const FileRepo = ({ state, effects, ...props }) => {
         return (
           <Arranger
             {...props}
-            socketConnectionString={urlJoin(window.location.origin, arrangerApiRoot)}
+            socketConnectionString={window.location.origin}
+            socketOptions={{
+              path: '/api/socket.io',
+            }}
             projectId={arrangerProjectId}
             render={props => {
               const selectionSQON = props.selectedTableRows.length
