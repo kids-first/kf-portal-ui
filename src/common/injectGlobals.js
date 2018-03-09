@@ -19,6 +19,7 @@ if (personaApiOverride) {
   global.log('warning: using persona api override');
 }
 
+export const arrangerApiRoot = process.env.REACT_APP_ARRANGER_API;
 export const arrangerProjectId = process.env.REACT_APP_PROJECT_ID;
 
 export const personaApiRoot: string = personaApiOverride || process.env.REACT_APP_PERSONA_API || '';
