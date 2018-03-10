@@ -43,7 +43,7 @@ let ItemRow = ({ xcss = '', ...props }) => (
 
 export default injectState(
   class extends React.Component {
-    state = { link: null, copied: false };
+    state = { link: null, copied: false, error: null };
 
     share = () => {
       // TODO: user / token stuff
@@ -74,6 +74,9 @@ export default injectState(
           this.setState({
             link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
           });
+        })
+        .catch(error => {
+          this.setState({ error: true });
         });
     };
 
@@ -106,16 +109,20 @@ export default injectState(
                         justify-content: center;
                       `}
                     >
-                      <Spinner
-                        fadeIn="none"
-                        name="circle"
-                        color="purple"
-                        style={{
-                          width: 15,
-                          height: 15,
-                          marginRight: 9,
-                        }}
-                      />
+                      {this.state.error ? (
+                        'Sorry something went wrong.'
+                      ) : (
+                        <Spinner
+                          fadeIn="none"
+                          name="circle"
+                          color="purple"
+                          style={{
+                            width: 15,
+                            height: 15,
+                            marginRight: 9,
+                          }}
+                        />
+                      )}
                     </ItemRow>
                   ) : (
                     <React.Fragment>

@@ -55,9 +55,19 @@ export default injectState(
           `}
         >
           <div
-            id="share"
+            id="save"
             className="sqon-bubble sqon-clear"
-            onClick={() => this.setState({ open: true })}
+            onClick={() =>
+              this.setState({ open: true }, () => {
+                // so hacky, but couldn't get any reasonable approach to work
+                let id = setInterval(() => {
+                  if (this.input) {
+                    this.input.focus();
+                    clearInterval(id);
+                  }
+                });
+              })
+            }
           >
             <Tooltip
               position="bottom"
@@ -111,6 +121,9 @@ export default injectState(
                       `}
                       type="text"
                       value={this.state.queryName}
+                      ref={input => {
+                        this.input = input;
+                      }}
                       onChange={e => this.setState({ queryName: e.target.value })}
                     />
                   </div>
