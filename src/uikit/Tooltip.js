@@ -1,12 +1,9 @@
 import 'react-tippy/dist/tippy.css';
 import React from 'react';
-import { compose } from 'recompose';
 import { injectGlobal } from 'emotion';
 import { Tooltip } from 'react-tippy';
-import { ThemeProvider } from 'emotion-theming';
-import theme from '../theme/defaultTheme';
-import { injectState } from 'freactal';
-import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
+import theme from 'theme/defaultTheme';
+import ContextProvider from 'components/ContextProvider';
 
 injectGlobal`
   .tippy-tooltip {
@@ -22,13 +19,6 @@ injectGlobal`
   }
 `;
 
-const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
-
 export default props => (
-  <Tooltip
-    {...props}
-    html={React.createElement(
-      enhance(() => <ThemeProvider theme={theme}>{props.html}</ThemeProvider>),
-    )}
-  />
+  <Tooltip {...props} html={<ContextProvider>{props.html}</ContextProvider>} />
 );

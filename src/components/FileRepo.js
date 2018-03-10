@@ -186,8 +186,8 @@ const FileRepo = ({ state, effects, ...props }) => {
                               {...url}
                               render={data => (
                                 <div>
-                                  <ShareQuery stats={data} />
-                                  <SaveQuery stats={data} />
+                                  <ShareQuery stats={data} {...url} />
+                                  <SaveQuery stats={data} {...url} />
                                 </div>
                               )}
                             />

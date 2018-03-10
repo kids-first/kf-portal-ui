@@ -14,6 +14,7 @@ import { getFilesById } from 'services/arranger';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import PlusIcon from 'icons/PlusCircleIcon';
 import ExternalLink from 'uikit/ExternalLink';
+import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import DoubleArrowRight from 'icons/DoubleChevronRightIcon';
 
 const getGen3UUIDs = async arrangerIds => {
@@ -56,29 +57,6 @@ const ProjectSelector = styled.select`
   option:hover {
     background-color: ${props => props.theme.optionSelected};
     color: black !important;
-  }
-`;
-
-const NiceWhiteButton = styled.button`
-  border-radius: 19px;
-  background-color: #ffffff;
-  border: solid 1px #cacbcf;
-  font-size: 11px;
-  letter-spacing: 0.2px;
-  color: ${props => props.theme.tertiary};
-  padding: 5px 18px 5px 5px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  cursor: pointer;
-
-  :disabled {
-    cursor: default;
-    color: ${props => props.theme.greyScale2}
-    background-color: ${props => props.theme.greyScale5}
   }
 `;
 

@@ -2,10 +2,8 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import './App.css';
-import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
-import { Link, BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
-import { ThemeProvider } from 'emotion-theming';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import Modal from './components/Modal/index.js';
 
@@ -18,14 +16,12 @@ import LoginPage from 'components/LoginPage';
 import AuthRedirect from 'components/AuthRedirect';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import theme from 'theme/defaultTheme';
+import ContextProvider from 'components/ContextProvider';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 import loginImage from 'assets/smiling-boy-login.jpg';
 import joinImage from 'assets/smiling-girl-join-wizard.jpg';
 import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
-
-const enhance = compose(provideLoggedInUser, provideModalState, provideToast, injectState);
 
 const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
   <div
@@ -117,86 +113,86 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
   return <Page {...props} />;
 };
 
-const render = ({ editing, setEditing, state, effects }) => {
+const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
   const { loggedInUser, toast } = state;
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <Switch>
-            <Route
-              // TODO: we need a user role specific for this
-              path="/admin"
-              render={({ match }) => (
-                <ArrangerDashboard
-                  socketConnectionString={window.location.origin}
-                  socketOptions={{
-                    path: '/api/socket.io',
-                  }}
-                  basename={match.url}
-                />
-              )}
+    <div className="App">
+      <Switch>
+        <Route
+          // TODO: we need a user role specific for this
+          path="/admin"
+          render={({ match }) => (
+            <ArrangerDashboard
+              socketConnectionString={window.location.origin}
+              socketOptions={{
+                path: '/api/socket.io',
+              }}
+              basename={match.url}
             />
-            <Route path="/auth-redirect" exact component={AuthRedirect} />
-            <Route path="/redirected" exact component={() => null} />
-            <Route
-              path="/search/:index"
-              exact
-              render={props =>
-                forceSelectRole({
-                  Component: FileRepo,
-                  loggedInUser,
-                  index: props.match.params.index,
-                  graphqlField: props.match.params.index,
-                  ...props,
-                })
-              }
-            />
-            <Route
-              path="/user/:egoId"
-              exact
-              render={props =>
-                forceSelectRole({
-                  Component: UserProfile,
-                  backgroundImageUrl: scienceBgPath,
-                  loggedInUser,
-                  ...props,
-                })
-              }
-            />
-            <Route
-              path="/dashboard"
-              exact
-              render={props =>
-                forceSelectRole({
-                  Component: UserDashboard,
-                  containerStyle: css`
-                    height: 100vh;
-                  `,
-                  loggedInUser,
-                  ...props,
-                })
-              }
-            />
-            <Route
-              path="/join"
-              exact
-              render={props => <SideImagePage Component={Join} sideImage={joinImage} {...props} />}
-            />
-            <Route
-              path="/"
-              exact
-              render={props => (
-                <SideImagePage Component={LoginPage} sideImage={loginImage} {...props} />
-              )}
-            />
-          </Switch>
-          <Modal />
-          <Toast {...toast}>{toast.component}</Toast>
-        </div>
-      </ThemeProvider>
-    </Router>
+          )}
+        />
+        <Route path="/auth-redirect" exact component={AuthRedirect} />
+        <Route path="/redirected" exact component={() => null} />
+        <Route
+          path="/search/:index"
+          exact
+          render={props =>
+            forceSelectRole({
+              Component: FileRepo,
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
+        />
+        <Route
+          path="/user/:egoId"
+          exact
+          render={props =>
+            forceSelectRole({
+              Component: UserProfile,
+              backgroundImageUrl: scienceBgPath,
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
+        <Route
+          path="/dashboard"
+          exact
+          render={props =>
+            forceSelectRole({
+              Component: UserDashboard,
+              containerStyle: css`
+                height: 100vh;
+              `,
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
+        <Route
+          path="/join"
+          exact
+          render={props => <SideImagePage Component={Join} sideImage={joinImage} {...props} />}
+        />
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <SideImagePage Component={LoginPage} sideImage={loginImage} {...props} />
+          )}
+        />
+      </Switch>
+      <Modal />
+      <Toast {...toast}>{toast.component}</Toast>
+    </div>
   );
-};
+});
 
-export default enhance(render);
+export default () => (
+  <ContextProvider>
+    <App />
+  </ContextProvider>
+);
