@@ -3,11 +3,14 @@ import { injectState } from 'freactal';
 import urlJoin from 'url-join';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import Tooltip from 'uikit/Tooltip';
+import Heading from 'uikit/Heading';
+import theme from 'theme/defaultTheme';
+import { ModalFooter } from 'components/Modal';
 import { arrangerApiAbsolutePath, shortUrlApi } from 'common/injectGlobals';
 
 export default injectState(
   class extends React.Component {
-    state = { link: null, copied: false, queryName: '' };
+    state = { link: null, queryName: '', open: false };
 
     share = () => {
       let { Files, Participants, Families, Size } = this.props.stats;
@@ -51,27 +54,67 @@ export default injectState(
             border: 1px solid #d6d6d6;
           `}
         >
-          <div id="share" className="sqon-bubble sqon-clear">
+          <div
+            id="share"
+            className="sqon-bubble sqon-clear"
+            onClick={() => this.setState({ open: true })}
+          >
             <Tooltip
               position="bottom"
-              trigger="click"
+              onRequestClose={() => this.setState({ open: false })}
               interactive
+              open={this.state.open}
               html={
                 <span>
-                  <div>Save Query</div>
-                  <div>Save the current configuration of filters</div>
-                  <div>Enter a name for your saved query:</div>
-                  <div>
+                  <Heading
+                    css={`
+                      border-bottom: 1px solid ${theme.greyScale4};
+                      padding: 7px;
+                    `}
+                  >
+                    Save Query
+                  </Heading>
+                  <div
+                    css={`
+                      padding: 0 9px;
+                      font-style: italic;
+                      color: ${theme.greyScale2};
+                    `}
+                  >
+                    Save the current configuration of filters
+                  </div>
+                  <div
+                    css={`
+                      font-weight: bold;
+                      margin-top: 10px;
+                      padding: 0 9px;
+                      color: ${theme.greyScale2};
+                    `}
+                  >
+                    Enter a name for your saved query:
+                  </div>
+                  <div
+                    css={`
+                      margin-bottom: 85px;
+                    `}
+                  >
                     <input
+                      css={`
+                        border-radius: 10px;
+                        background-color: #ffffff;
+                        border: solid 1px #cacbcf;
+                        padding: 5px;
+                        font-size: 1em;
+                        margin: 10px;
+                        margin-bottom: 0px;
+                        width: calc(100% - 30px);
+                      `}
                       type="text"
                       value={this.state.queryName}
                       onChange={e => this.setState({ queryName: e.target.value })}
                     />
                   </div>
-                  <div>
-                    <div>Cancel</div>
-                    <div onClick={this.share}>OK</div>
-                  </div>
+                  <ModalFooter handleCancelClick={() => this.setState({ open: false })} />
                 </span>
               }
             >
