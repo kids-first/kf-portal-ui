@@ -2,109 +2,28 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import './App.css';
-import { Link, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
-import Modal from './components/Modal/index.js';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
+
+import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
 import AuthRedirect from 'components/AuthRedirect';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+import SideImagePage from 'components/SideImagePage';
+import Page from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
-import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
+import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
-
-const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
-  <div
-    css={`
-      position: relative;
-      height: 100vh;
-      min-width: 1024px;
-      background-image: url(${backgroundImageUrl});
-      ${containerStyle};
-    `}
-  >
-    <div
-      className={css`
-        background-repeat: repeat;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
-      `}
-    >
-      <Header />
-      <Component {...props} />
-      <Footer />
-    </div>
-  </div>
-);
-
-const SideImagePage = ({ Component, sideImage, ...props }) => (
-  <div
-    css={`
-      position: relative;
-      height: 100vh;
-      overflow-y: hidden;
-      min-width: 1024;
-      background-image: url(${scienceBgPath});
-    `}
-  >
-    <div
-      css={`
-        width: 100%;
-        height: 5px;
-        background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
-      `}
-    />
-    <Link to="/">
-      <img
-        src={logoPath}
-        alt="Kids First Logo"
-        className={css`
-          width: 230px;
-          position: absolute;
-          margin: 20px;
-        `}
-      />
-    </Link>
-    <div
-      className={css`
-        background-repeat: repeat;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
-      `}
-    >
-      <div
-        css={`
-          background: #fff;
-          background-image: url(${sideImage});
-          background-repeat: no-repeat;
-          background-position: bottom;
-          width: 573px;
-          height: 100%;
-          box-shadow: 0 0 6px 0.1px #bbbbbb;
-        `}
-      />
-
-      <Component {...props} />
-    </div>
-  </div>
-);
 
 const forceSelectRole = ({ loggedInUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -169,13 +88,27 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
         <Route
           path="/join"
           exact
-          render={props => <SideImagePage Component={Join} sideImage={joinImage} {...props} />}
+          render={props => (
+            <SideImagePage
+              backgroundImage={scienceBgPath}
+              logo={logo}
+              Component={Join}
+              sideImage={joinImage}
+              {...props}
+            />
+          )}
         />
         <Route
           path="/"
           exact
           render={props => (
-            <SideImagePage Component={LoginPage} sideImage={loginImage} {...props} />
+            <SideImagePage
+              logo={logo}
+              backgroundImage={scienceBgPath}
+              Component={LoginPage}
+              sideImage={loginImage}
+              {...props}
+            />
           )}
         />
       </Switch>
