@@ -26,6 +26,7 @@ export const ModalFooter = enhance(
     submitText = 'Save',
     cancelText = 'Cancel',
     handleSubmit,
+    handleCancelClick = unsetModal,
     submitDisabled = false,
     ...props
   }) => {
@@ -43,7 +44,7 @@ export const ModalFooter = enhance(
           bottom: 0px;
         `}
       >
-        <button css={theme.wizardButton} onClick={() => unsetModal()}>
+        <button css={theme.wizardButton} onClick={() => handleCancelClick()}>
           {cancelText}
         </button>
         <button css={theme.actionButton} disabled={submitDisabled} onClick={handleSubmit}>
