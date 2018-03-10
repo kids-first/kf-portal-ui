@@ -18,8 +18,7 @@ import { FileRepoStats } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
-import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
-import urlJoin from 'url-join';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 const enhance = compose(injectState);
 
