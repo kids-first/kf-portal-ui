@@ -10,7 +10,8 @@ import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
 import Tooltip from 'uikit/Tooltip';
-import { arrangerApiAbsolutePath, shortUrlApi } from 'common/injectGlobals';
+import { arrangerApiAbsolutePath } from 'common/injectGlobals';
+import shortenApi from './shortenApi';
 
 let Bubble = p => (
   <span
@@ -46,30 +47,8 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      // TODO: user / token stuff
-      let { Files, Participants, Families, Size } = this.props.stats;
-      // TODO: use ajax service?
-      fetch(urlJoin(shortUrlApi, 'shorten'), {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          userid: 'dev',
-          alias: 'TODO: create generic alias from SQON gdc setname style',
-          content: {
-            ...this.props.stats,
-            longUrl: window.location.href,
-            'og:title': 'Kids First File Repository',
-            'og:description': `${Files} Files, ${Participants} Participants, ${Families} Families, ${Size} Size`,
-            'og:image':
-              'https://d3b.center/wp-content/uploads/2018/01/Kids-First-Hero-image-01-2-2000x500.png',
-            'twitter:label1': 'Test Label',
-            'twitter:data1': 'test data',
-          },
-        }),
-      })
-        .then(r => r.json())
+      let { stats, sqon } = this.props;
+      shortenApi({ stats, sqon })
         .then(data => {
           this.setState({
             link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
