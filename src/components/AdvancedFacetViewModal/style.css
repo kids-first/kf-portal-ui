@@ -10,3 +10,7 @@
 .dropDownHeader {
   z-index: 100;
 }
+
+.dropDownButton {
+  background-color: #fff;
+}
