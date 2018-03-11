@@ -23,7 +23,6 @@ export default injectState(
         loading: false,
         queryName: sqonToName({ filters: this.props.sqon }),
         open: false,
-        noClose: false,
       };
     }
 
@@ -78,7 +77,7 @@ export default injectState(
             <Tooltip
               position="bottom"
               onRequestClose={() => {
-                if (!this.state.noClose) this.setState({ open: false });
+                this.setState({ open: false, link: null });
               }}
               interactive
               open={this.state.open}
@@ -106,7 +105,9 @@ export default injectState(
                           text-align: center;
                         `}
                         style={{
-                          ...(state.saved ? { transform: 'translateX(0%)' } : {}),
+                          ...(state.saved && this.state.link
+                            ? { transform: 'translateX(0%)' }
+                            : {}),
                         }}
                       >
                         <div
