@@ -20,5 +20,5 @@ injectGlobal`
 `;
 
 export default props => (
-  <Tooltip {...props} html={<ContextProvider>{props.html}</ContextProvider>} />
+  <Tooltip {...props} useContext html={<ContextProvider>{props.html}</ContextProvider>} />
 );
