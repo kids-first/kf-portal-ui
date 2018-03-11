@@ -12,8 +12,9 @@ const styles = css`
   table {
     border-collapse: collapse;
   }
-  span.header {
+  span.title {
     font-weight: bold;
+    padding: 15px;
   }
 `;
 
@@ -47,31 +48,33 @@ const Gen3ConnectionDetails = ({
 }) => {
   return (
     <div css={styles}>
-      <div
-        css={`
-          color: ${theme.active};
-          padding: 10px;
-        `}
-      >
-        <CheckIcon size={20} />
-        <span> Connected account: {userDetails.username}</span>
-      </div>
-      <div>
-        <table>
-          <tr>
-            <span> You can download data from these studies:</span>
-          </tr>
+      <table>
+        <tr>
+          <div
+            css={`
+              color: ${theme.active};
+              padding: 10px;
+            `}
+          >
+            <CheckIcon size={20} />
+            <span> Connected account: {userDetails.username}</span>
+          </div>
+        </tr>
+        <tr>
+          <span class="title"> You can download data from these studies:</span>
+        </tr>
+        <ul>
           {userDetails.project_access ? (
             Object.keys(userDetails.project_access).map(projectName => (
-              <tr>
-                <span class="header">{projectName}</span>
-              </tr>
+              <li>
+                <span>{projectName}</span>
+              </li>
             ))
           ) : (
             <tr />
           )}
-        </table>
-      </div>
+        </ul>
+      </table>
     </div>
   );
 };
