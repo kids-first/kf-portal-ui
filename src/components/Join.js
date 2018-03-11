@@ -49,24 +49,50 @@ const Consent = compose(
         >
           Read and consent to our terms and conditions
         </h3>
-        <textarea
+        <div
           css={`
-            ${theme.textarea};
-            min-height: 250px;
+            height: 250px;
             width: 90%;
+            overflow-y: scroll;
+            ${theme.textarea};
           `}
-          value="Lollipop halvah cotton candy marshmallow gingerbread jelly beans topping. Fruitcake
-            sugar plum tiramisu pie. Sugar plum sweet roll cake chocolate bar lollipop jelly
-            beans. Jelly jelly beans icing macaroon tart jujubes lemon drops marzipan. Liquorice
-            carrot cake bonbon pie chocolate. Gingerbread oat cake tootsie roll icing. Chocolate
-            muffin danish croissant. Carrot cake bonbon bonbon lemon drops caramels danish
-            tootsie roll. Biscuit jelly beans sugar plum. Sweet danish oat cake carrot cake
-            chocolate bar marshmallow croissant. Ice cream chocolate gummies fruitcake. Marzipan
-            brownie chocolate bar tart. Oat cake apple pie soufflé topping. Toffee dessert
-            chocolate cotton candy carrot cake topping fruitcake gummi bears. Chocolate cake
-            brownie pie cake caramels."
-          readOnly
-        />
+        >
+          <b>Draft for Demo Purposes</b>
+          <p>
+            As a user of the Kids First DRC Portal you agree to the Terms of Service and agree to
+            make no attempt to identify or contact individual participants from whom these data were
+            collected. Where applicable, you agree to comply with the NIH Code of Conduct for
+            Genomic Controlled Access Data Use including, but not limited to:
+          </p>
+          <ol>
+            <li>
+              Use of requested datasets solely in connection with the research project described in
+              an approved Data Access Request for each dataset;
+            </li>
+            <li>
+              You will not distribute these data to any entity or individual beyond those specified
+              in an approved Data Access Request;
+            </li>
+            <li>
+              You will adhere to computer security practices that ensure that only authorized
+              individuals can gain access to data files;
+            </li>
+            <li>
+              You will not submit for publication or any other form of public dissemination analyses
+              or other reports on work using or referencing NIH datasets prior to an existing
+              embargo release date listed for the dataset (or dataset version) on dbGaP;
+            </li>
+            <li>
+              You acknowledge the Intellectual Property Policies as specified in a dataset’s
+              associated Data Use Certification; and,
+            </li>
+            <li>
+              You will report any inadvertent data release in accordance with the terms in the Data
+              Use Certification, breach of data security, or other data management incidents
+              contrary to the terms of data access.
+            </li>
+          </ol>
+        </div>
         <div
           className={css`
             border-radius: 10px;
@@ -151,7 +177,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
                         nextStep();
                       } else {
-                        history.push('search/file');
+                        history.push('/search/file');
                       }
                     }}
                   />

@@ -3,6 +3,9 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 import SQONURL from 'components/SQONURL';
+import downloadIcon from '../assets/icon-download-grey.svg';
+import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 
 import {
   Arranger,
@@ -14,7 +17,7 @@ import {
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import { FileRepoStats } from './Stats';
+import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
@@ -38,6 +41,10 @@ const arrangerStyles = css`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
+  }
+
+  div.sqon-view {
+    flex-grow: 1;
   }
 `;
 
@@ -135,6 +142,10 @@ const FileRepo = ({ state, effects, ...props }) => {
         return (
           <Arranger
             {...props}
+            socketConnectionString={window.location.origin}
+            socketOptions={{
+              path: '/api/socket.io',
+            }}
             projectId={arrangerProjectId}
             render={props => {
               const selectionSQON = props.selectedTableRows.length
@@ -159,9 +170,45 @@ const FileRepo = ({ state, effects, ...props }) => {
                         padding: 30,
                       }}
                     >
-                      <CurrentSQON {...props} {...url} />
+                      <div
+                        css={`
+                          display: flex;
+                        `}
+                      >
+                        <CurrentSQON {...props} {...url} />
+                        {url.sqon &&
+                          Object.keys(url.sqon).length > 0 && (
+                            <FileRepoStatsQuery
+                              {...props}
+                              {...url}
+                              render={data => (
+                                <div>
+                                  <ShareQuery stats={data} {...url} />
+                                  <SaveQuery stats={data} {...url} />
+                                </div>
+                              )}
+                            />
+                          )}
+                      </div>
                       <FileRepoStats {...props} sqon={selectionSQON} />
-                      <Table {...props} customTypes={customTableTypes} {...url} />
+                      <Table
+                        {...props}
+                        customTypes={customTableTypes}
+                        {...url}
+                        columnDropdownText="Columns"
+                        exportTSVText={
+                          <React.Fragment>
+                            <img
+                              alt=""
+                              src={downloadIcon}
+                              css={`
+                                width: 10px;
+                                margin-right: 9px;
+                              `}
+                            />Export TSV
+                          </React.Fragment>
+                        }
+                      />
                     </div>
                     <FileRepoSidebar {...props} sqon={selectionSQON} />
                   </div>

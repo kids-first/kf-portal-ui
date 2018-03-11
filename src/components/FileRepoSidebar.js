@@ -3,7 +3,8 @@ import styled, { css } from 'react-emotion';
 import Spinner from 'react-spinkit';
 import { injectState } from 'freactal';
 
-import Button from '../uikit/Button';
+import Button from 'uikit/Button';
+import Heading from 'uikit/Heading';
 import LoadingOnClick from './LoadingOnClick';
 import CavaticaExportWidget from 'components/cavatica/CavaticaExportWidget.js';
 
@@ -75,13 +76,6 @@ const Divider = styled('div')`
   margin: 20px 10px 20px 0;
 `;
 
-const Heading = styled('div')`
-  font-size: 18px;
-  letter-spacing: 0.3px;
-  color: #2b388f;
-  margin-bottom: 15px;
-  font-weight: 500;
-`;
 const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme, ...props }) => {
   let gen3Key = state.integrationTokens[GEN3];
   let setToast = effects.setToast;
