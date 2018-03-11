@@ -12,7 +12,6 @@ import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
-import InfoIcon from '../icons/InfoIcon';
 import { GEN3 } from 'common/constants';
 import { getFilesById } from 'services/arranger';
 
@@ -43,7 +42,7 @@ const getGen3UUIDs = async arrangerIds => {
 const downloadFile = async (arrangerIds, gen3Key) => {
   let files = await getGen3UUIDs(arrangerIds);
   let fileUUID = files && files.length > 0 ? files[0] : null;
-  if (!fileUUID) throw 'Error retrieving File ID for the selected Row.';
+  if (!fileUUID) throw new Error('Error retrieving File ID for the selected Row.');
   return downloadFileFromGen3(gen3Key, fileUUID);
 };
 const DownloadIcon = ({ className, loading }) =>
@@ -85,9 +84,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
         ${styles.container} ${style};
       `}
     >
-      <Heading>
-        File Action <InfoIcon />
-      </Heading>
+      <Heading>Actions</Heading>
       <div
         css={`
           font-size: 14px;

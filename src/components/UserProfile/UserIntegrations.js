@@ -88,7 +88,7 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         `}
       >
         <CheckIcon size={20} />
-        <span> Connected</span>
+        <span>Connected</span>
       </div>
       <div css="display: flex;">
         <Button onClick={onView} className="connectedButton">
@@ -161,7 +161,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             <td>
               <span className="integrationHeader">Download Controlled Data</span>
               <p>
-                Access and download controlled data by connecting your Kids First account to{' '}
+                Access controlled data by connecting your NIH Login and dbGaP authorized access to
+                the Kids First Data Catalog powered by{' '}
                 <ExternalLink href="https://gen3.kids-first.io/">Gen3</ExternalLink>.
               </p>
             </td>
@@ -197,7 +198,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                  <Button
+                  <button
+                    css={theme.actionButton}
                     onClick={() =>
                       effects.setModal({
                         title: 'How to Connect to Gen3',
@@ -211,8 +213,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     }
                   >
                     <span>Connect</span>
-                    <RightIcon className="right" />
-                  </Button>
+                    <RightIcon />
+                  </button>
                 )}
               </div>
             </td>
@@ -264,9 +266,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                       })
                     }
                   >
-                    <span>
-                      Connect<RightIcon />
-                    </span>
+                    <span>Connect</span>
+                    <RightIcon />
                   </button>
                 )}
               </div>

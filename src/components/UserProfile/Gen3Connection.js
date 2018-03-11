@@ -28,6 +28,13 @@ const styles = css`
     color: #2b388f;
     font-size: 18px;
     font-weight: bold;
+    vertical-align: middle;
+  }
+
+  .tokenInput {
+    width: 400px;
+    height: 200px;
+    vertical-align: middle;
   }
 `;
 
@@ -81,7 +88,7 @@ const Gen3Connection = ({
             <span>
               You will need to retrieve your authentication token from the{' '}
               <a href="https://gen3qa.kids-first.io" rel="noopener noreferrer" target="_blank">
-                Kids First DCC Portal
+                Kids First Data Catalog
               </a>. After Login, click on the "Profile" tab.
             </span>
           </div>
@@ -108,7 +115,7 @@ const Gen3Connection = ({
         <div>
           <span className="tokenTitle">Gen3 Authentication Token:</span>
           <textarea
-            className="css-19latnh"
+            className="tokenInput"
             id="gen3Key"
             value={gen3Key}
             name="gen3"
