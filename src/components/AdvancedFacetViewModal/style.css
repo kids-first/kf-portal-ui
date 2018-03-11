@@ -7,6 +7,3 @@
 .advancedFacetViewWrapper .facetViewNode .aggregation-card .bucket .bucket-item {
   box-sizing: border-box;
 }
-.dropDownHeader {
-  z-index: 100;
-}
