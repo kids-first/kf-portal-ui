@@ -202,7 +202,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                                     `}
                                   >
                                     <span>
-                                      Your Account does not have required permission to download
+                                      Your account does not have the required permission to download
                                       this file.
                                     </span>
                                   </div>
