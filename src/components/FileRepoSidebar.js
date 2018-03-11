@@ -23,9 +23,6 @@ import {
 } from '../services/downloadData';
 import FamilyManifestModal from './FamilyManifestModal';
 
-let gen3Key = '';
-let setToast = '';
-
 const styles = {
   container: css`
     flex: none;
@@ -44,8 +41,8 @@ const getGen3UUIDs = async arrangerIds => {
 
 const downloadFile = async (arrangerIds, gen3Key) => {
   let files = await getGen3UUIDs(arrangerIds);
-  console.log(files);
-  let fileUUID = files && files.length > 0 ? files[0] : '';
+  let fileUUID = files && files.length > 0 ? files[0] : null;
+  if (!fileUUID) throw 'Error retrieving File ID for the selected Row.';
   return downloadFileFromGen3(gen3Key, fileUUID);
 };
 const DownloadIcon = ({ className, loading }) =>
@@ -86,8 +83,8 @@ const Heading = styled('div')`
   font-weight: 500;
 `;
 const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme, ...props }) => {
-  gen3Key = state.integrationTokens[GEN3];
-  setToast = effects.setToast;
+  let gen3Key = state.integrationTokens[GEN3];
+  let setToast = effects.setToast;
   return (
     <div
       css={`
@@ -170,7 +167,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                   `}
                 >
                   <LoadingOnClick
-                    onClick={async () => {
+                    onClick={() => {
                       downloadFile(props.selectedTableRows, gen3Key)
                         .then(url => {
                           let a = document.createElement('a');
@@ -180,7 +177,6 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                           a.click();
                         })
                         .catch(err => {
-                          console.log(err);
                           setToast({
                             id: `${Date.now()}`,
                             action: 'success',
@@ -212,8 +208,8 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                                     `}
                                   >
                                     <span>
-                                      Your Account doesn't have required permission to download this
-                                      file.
+                                      Your Account does not have required permission to download
+                                      this file.
                                     </span>
                                   </div>
                                 </div>
