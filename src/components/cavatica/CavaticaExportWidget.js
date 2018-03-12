@@ -6,12 +6,9 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 
 import { CAVATICA } from 'common/constants';
-import { cavaticaWebRoot } from 'common/injectGlobals';
 import CavaticaProjects from './CavaticaProjects';
 import CavaticaConnectButton from './CavaticaConnectButton';
 import CavaticaAddProject from './CavaticaAddProject';
-import ExternalLink from 'uikit/ExternalLink';
-import DoubleArrowRight from 'icons/DoubleChevronRightIcon';
 
 const enhance = compose(
   injectState,
@@ -125,17 +122,6 @@ const CavaticaExportWidget = ({ state, theme, addingProject, setAddingProject, .
   return (
     <div>
       {content}
-      <div css="padding:10px;">
-        <ExternalLink
-          css={`
-            font-size: 14px;
-          `}
-          href={cavaticaWebRoot}
-        >
-          Go to Cavatica{' '}
-          <DoubleArrowRight fill={theme.primary} width="10px" css="margin-left:4px;" />
-        </ExternalLink>
-      </div>
     </div>
   );
 };
