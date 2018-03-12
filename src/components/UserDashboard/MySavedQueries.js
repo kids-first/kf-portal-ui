@@ -69,9 +69,14 @@ const MySavedQueries = ({ loggedInUser }) => (
                 margin-left: auto;
                 align-items: end;
                 display: flex;
+                line-height: 27px;
               `}
             >
-              <span>
+              <span
+                css={`
+                margin-top: -2px;
+              `}
+              >
                 <SaveIcon />
               </span>
               <span
