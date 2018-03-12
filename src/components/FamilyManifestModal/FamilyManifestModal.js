@@ -85,11 +85,11 @@ const enhance = compose(
 
       fileManifestParticipantsAndFamily({
         sqon: {
-          op: 'OR',
+          op: 'or',
           content: [
             sqon,
             {
-              op: 'AND',
+              op: 'and',
               content: [
                 {
                   op: 'in',
@@ -198,7 +198,7 @@ const FamilyManifestModal = ({
             return {
               ...acc,
               [`sqon${i}`]: {
-                op: 'AND',
+                op: 'and',
                 content: [
                   {
                     op: 'in',

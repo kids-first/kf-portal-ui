@@ -14,11 +14,11 @@ const queryStringWrapper = fields => `
 const participantsStat = {
   icon: (
     <img
-      src={require('../../assets/icon-files.svg')}
+      src={require('../../assets/icon-participants.svg')}
       alt=""
       css={`
-        width: 16px;
-        height: 20px;
+        width: 21px;
+        height: 26px;
         margin-right: 10px;
       `}
     />
@@ -36,6 +36,34 @@ const participantsStat = {
   `,
   accessor: (fieldName = 'file') => `${fieldName}.aggregations.participants__kf_id.buckets.length`,
   label: 'Participants',
+};
+
+const familyStat = {
+  icon: (
+    <img
+      src={require('../../assets/icon-families-grey.svg')}
+      alt=""
+      css={`
+        width: 26px;
+        height: 23px;
+        margin-right: 10px;
+      `}
+    />
+  ),
+  fragment: (fieldName = 'file') => `
+    ${fieldName}: file {
+      aggregations(filters: $sqon) {
+        participants__family__family_id {
+          buckets {
+            doc_count
+          }
+        }
+      }
+    }
+  `,
+  accessor: (fieldName = 'file') => d =>
+    get(d, `${fieldName}.aggregations.participants__family__family_id.buckets.length`) || 0,
+  label: 'Families',
 };
 
 export const withFileRepoStats = withProps(() => ({
@@ -65,33 +93,7 @@ export const withFileRepoStats = withProps(() => ({
       label: 'Files',
     },
     participantsStat,
-    {
-      icon: (
-        <img
-          src={require('../../assets/icon-files.svg')}
-          alt=""
-          css={`
-            width: 16px;
-            height: 20px;
-            margin-right: 10px;
-          `}
-        />
-      ),
-      fragment: (fieldName = 'file') => `
-        ${fieldName}: file {
-          aggregations(filters: $sqon) {
-            participants__family__family_id {
-              buckets{
-                key
-              }
-            }
-          }
-        }
-      `,
-      accessor: (fieldName = 'file') =>
-        `${fieldName}.aggregations.participants__family__family_id.buckets.length`,
-      label: 'Families',
-    },
+    familyStat,
     {
       icon: (
         <img
@@ -158,41 +160,15 @@ export const FamilyManifestStats = withProps(() => ({
   query: fragment => queryStringWrapper(fragment),
   stats: [
     participantsStat,
+    familyStat,
     {
       icon: (
         <img
-          src={require('../../assets/icon-database.svg')}
+          src={require('../../assets/icon-family-members.svg')}
           alt=""
           css={`
-            width: 18px;
-            height: 22px;
-            margin-right: 10px;
-          `}
-        />
-      ),
-      fragment: (fieldName = 'file') => `
-        ${fieldName}: file {
-          aggregations(filters: $sqon) {
-            participants__family__family_id {
-              buckets {
-                doc_count
-              }
-            }
-          }
-        }
-      `,
-      accessor: (fieldName = 'file') => d =>
-        get(d, `${fieldName}.aggregations.participants__family__family_id.buckets.length`) || 0,
-      label: 'Families',
-    },
-    {
-      icon: (
-        <img
-          src={require('../../assets/icon-database.svg')}
-          alt=""
-          css={`
-            width: 18px;
-            height: 22px;
+            width: 36px;
+            height: 29px;
             margin-right: 10px;
           `}
         />
