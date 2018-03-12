@@ -161,28 +161,6 @@ export const FamilyManifestStats = withProps(() => ({
     {
       icon: (
         <img
-          src={require('../../assets/icon-files.svg')}
-          alt=""
-          css={`
-            width: 16px;
-            height: 20px;
-            margin-right: 10px;
-          `}
-        />
-      ),
-      fragment: (fieldName = 'participant') => `
-        ${fieldName}: participant {
-          hits(filters: $sqon) {
-            total
-          }
-        }
-      `,
-      accessor: (fieldName = 'participant') => `${fieldName}.hits.total`,
-      label: 'Participants',
-    },
-    {
-      icon: (
-        <img
           src={require('../../assets/icon-database.svg')}
           alt=""
           css={`
