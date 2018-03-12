@@ -19,8 +19,8 @@ import Footer from 'components/Footer';
 import ContextProvider from 'components/ContextProvider';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
-import loginImage from 'assets/smiling-boy-login.jpg';
-import joinImage from 'assets/smiling-girl-join-wizard.jpg';
+import loginImage from 'assets/smiling-girl.jpg';
+import joinImage from 'assets/smiling-boy.jpg';
 import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
 
 const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
