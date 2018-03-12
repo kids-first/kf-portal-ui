@@ -65,9 +65,9 @@ function getManifestDownload(type) {
               'sequencing_experiments.experiment_strategy',
               'participants.kf_id',
               {
-                Header: 'sample.kf_id',
+                Header: 'Sample ID',
                 field: 'participants.samples.kf_id',
-                jsonPath: '$.participants.hits.edges..node.samples.hits.edges..node.kf_id',
+                jsonPath: '$.participants.hits.edges[*].node.samples.hits.edges[*].node.kf_id',
                 query:
                   'participants { hits { total, edges { node { samples { hits { edges { node { kf_id } } } } } } } }',
                 type: 'list',
@@ -176,7 +176,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
             {
               field: 'family.family_members.diagnoses.age_at_event_days',
               jsonPath:
-                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.age_at_event_days',
+                '$.family.family_members.hits.edges[*].node.diagnoses.hits.edges[*].node.age_at_event_days',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { age_at_event_days } } } } } } } } }',
               type: 'list',
@@ -184,7 +184,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
             {
               field: 'family.family_members.diagnoses.diagnosis',
               jsonPath:
-                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.diagnosis',
+                '$.family.family_members.hits.edges[*].node.diagnoses.hits.edges[*].node.diagnosis',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis } } } } } } } } }',
               type: 'list',
@@ -192,7 +192,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
             {
               field: 'family.family_members.diagnoses.diagnosis_category',
               jsonPath:
-                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.diagnosis_category',
+                '$.family.family_members.hits.edges[*].node.diagnoses.hits.edges[*].node.diagnosis_category',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { diagnosis_category } } } } } } } } }',
               type: 'list',
@@ -200,7 +200,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
             {
               field: 'family.family_members.diagnoses.tumor_location',
               jsonPath:
-                '$.family.family_members.hits.edges..node.diagnoses.hits.edges..node.tumor_location',
+                '$.family.family_members.hits.edges[*].node.diagnoses.hits.edges[*].node.tumor_location',
               query:
                 'family { family_members { hits { edges { node { diagnoses { hits { edges { node { tumor_location } } } } } } } } }',
               type: 'list',
