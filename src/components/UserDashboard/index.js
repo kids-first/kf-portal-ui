@@ -2,7 +2,9 @@ import * as React from 'react';
 import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
+import { get } from 'lodash';
 import { withTheme } from 'emotion-theming';
+import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
 import Notifications from './Notifications';
 import Integrations from './Integrations';
@@ -14,41 +16,53 @@ export default compose(
   withRouter,
   withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ state: { loggedInUser, integrationTokens, percentageFilled }, theme }) => (
-  <div
-    css={`
-      ${theme.row};
-      height: calc(100% - 170px);
-    `}
-  >
-    <ProfileInfoBar theme={theme} percentageFilled={percentageFilled} loggedInUser={loggedInUser} />
+)(({ state: { loggedInUser, integrationTokens, percentageFilled }, theme }) => {
+  const profileColors = ROLES.reduce(
+    (prev, curr) => (curr.type == loggedInUser.roles[0] ? curr.profileColors : prev),
+    ROLES[0].profileColors,
+  );
+
+  return (
     <div
       css={`
-        ${theme.column};
-        flex-grow: 1;
-        padding: 40px;
+        ${theme.row};
+        height: calc(100% - 170px);
       `}
     >
-      <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>
+      <ProfileInfoBar
+        theme={theme}
+        percentageFilled={percentageFilled}
+        loggedInUser={loggedInUser}
+        profileColors={profileColors}
+      />
       <div
         css={`
-          display: flex;
+          ${theme.column};
+          flex-grow: 1;
+          padding: 40px;
         `}
       >
-        <MySavedQueries loggedInUser={loggedInUser} theme={theme} />
-        <Notifications />
-      </div>
-      <div
-        css={`
-          margin-top: auto;
-        `}
-      >
-        <Integrations
-          integrationTokens={integrationTokens}
-          theme={theme}
-          loggedInUser={loggedInUser}
-        />
+        <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>
+        <div
+          css={`
+            display: flex;
+          `}
+        >
+          <MySavedQueries loggedInUser={loggedInUser} theme={theme} profileColors={profileColors} />
+          <Notifications />
+        </div>
+        <div
+          css={`
+            margin-top: auto;
+          `}
+        >
+          <Integrations
+            integrationTokens={integrationTokens}
+            theme={theme}
+            loggedInUser={loggedInUser}
+          />
+        </div>
       </div>
     </div>
-  </div>
-));
+  );
+});

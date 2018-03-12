@@ -13,6 +13,12 @@ export const ROLES = [
     icon: ResearchIcon,
     banner: ResearchBanner,
     color: '#00afed',
+    profileColors: {
+      gradientDark: '#266db1',
+      gradientMid: '#1186b0',
+      gradientLight: '#1297d7',
+      pillBkg: '#00afed',
+    },
   },
   {
     type: 'community',
@@ -22,6 +28,12 @@ export const ROLES = [
     icon: CommunityIcon,
     banner: CommunityBanner,
     color: '#e83a9c',
+    profileColors: {
+      gradientDark: '#8f347f',
+      gradientMid: '#a9408b',
+      gradientLight: '#cd5162',
+      pillBkg: '#e83a9c',
+    },
   },
   {
     type: 'health',
@@ -31,6 +43,12 @@ export const ROLES = [
     icon: HealthIcon,
     banner: 'tbd',
     color: '#009bb8',
+    profileColors: {
+      gradientDark: '#0a5d6c',
+      gradientMid: '#198895',
+      gradientLight: '#1ca39e',
+      pillBkg: '#009bb8',
+    },
   },
 ];
 

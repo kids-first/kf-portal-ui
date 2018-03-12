@@ -24,6 +24,7 @@ const MySavedQueries = compose(
     state: { queries, loadingQueries, deletingIds },
     effects: { getQueries, deleteQuery },
     theme,
+    profileColors,
   }) =>
     loadingQueries ? (
       <div
@@ -63,7 +64,12 @@ const MySavedQueries = compose(
             width: calc(100% + 22px);
             margin-left: -11px;
             height: 6px;
-            background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed);
+            background-image: linear-gradient(
+              to right,
+              ${profileColors.gradientDark},
+              ${profileColors.gradientMid} 51%,
+              ${profileColors.gradientLight}
+            );
           `}
         />
         <div
