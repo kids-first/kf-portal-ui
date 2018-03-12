@@ -35,7 +35,7 @@ export default compose(
           display: flex;
         `}
       >
-        <MySavedQueries loggedInUser={loggedInUser} />
+        <MySavedQueries loggedInUser={loggedInUser} theme={theme} />
         <Notifications />
       </div>
       <div
