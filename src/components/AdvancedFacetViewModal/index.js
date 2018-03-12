@@ -40,7 +40,7 @@ class AdvancedFacetViewModalContent extends React.Component {
               {...{
                 ...props,
                 sqon: localSqon,
-                fieldTypesToExclude: ['id', 'text', 'date'],
+                fieldTypesToExclude: ['id', 'text', 'date', 'boolean'],
                 onSqonChange: ({ sqon }) => {
                   effects.setAdvancedFacetSqon(sqon);
                 },
