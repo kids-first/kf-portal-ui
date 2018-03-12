@@ -47,8 +47,8 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      let { stats, sqon } = this.props;
-      shortenApi({ stats, sqon })
+      let { stats, sqon, state: { loggedInUser } } = this.props;
+      shortenApi({ stats, sqon, loggedInUser })
         .then(data => {
           this.setState({
             link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
@@ -75,6 +75,10 @@ export default injectState(
             <Tooltip
               position="bottom"
               trigger="click"
+              onRequestClose={() =>
+                // after fadeout transition finishes, clear copy state
+                setTimeout(() => this.setState({ copied: false }), 1000)
+              }
               interactive
               html={
                 <div

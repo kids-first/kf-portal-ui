@@ -2,19 +2,18 @@ import urlJoin from 'url-join';
 import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
 
-export default ({ stats, queryName, sqon }) => {
-  // TODO: user / token stuff
+export default ({ stats, queryName, sqon, loggedInUser }) => {
   let { Files, Participants, Families, Size } = stats;
-  // TODO: use ajax service?
-
   let alias = queryName || sqonToName({ filters: sqon });
+
+  // TODO: use ajax service?
   return fetch(urlJoin(shortUrlApi, 'shorten'), {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
     },
     body: JSON.stringify({
-      userid: 'dev',
+      userid: (loggedInUser || {}).egoId || 'anonymous',
       alias,
       content: {
         ...stats,
