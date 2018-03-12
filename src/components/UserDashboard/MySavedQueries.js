@@ -74,8 +74,8 @@ const MySavedQueries = ({ loggedInUser }) => (
             >
               <span
                 css={`
-                margin-top: -2px;
-              `}
+                  margin-top: -2px;
+                `}
               >
                 <SaveIcon />
               </span>
