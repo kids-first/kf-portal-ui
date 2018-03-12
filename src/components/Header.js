@@ -155,6 +155,7 @@ const Header = ({
 
                   line-height: 1.86;
                   letter-spacing: 0.2px;
+                  padding-right: 10px;
                 `}
               >
                 <Gravtar
