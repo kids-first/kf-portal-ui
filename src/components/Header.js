@@ -122,9 +122,7 @@ const Header = ({
                   <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
                     My Profile
                   </DropdownLink>,
-                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>
-                    Settings & Privacy
-                  </DropdownLink>,
+                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
                   <div
                     css={`
                       border-top: 1px solid ${theme.greyScale4};
