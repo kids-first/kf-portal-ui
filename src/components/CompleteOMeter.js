@@ -46,7 +46,7 @@ const CompleteOMeter = compose(withTheme)(({ theme, role, percentage, className 
             line-height: 0.75;
           `}
         >
-          {Math.ceil(percentage * 100)}%
+          {(percentage * 100).toFixed(0)}%
         </span>
         <span
           css={`

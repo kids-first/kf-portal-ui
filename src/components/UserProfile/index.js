@@ -255,7 +255,7 @@ export default compose(
           {canEdit && (
             <li>
               <Link to="#settings" className={hash === '#settings' ? 'active' : ''}>
-                Settings & Privacy
+                Settings
               </Link>
             </li>
           )}

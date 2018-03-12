@@ -37,11 +37,6 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
                 Account & Integrations
               </a>
             </li>
-            <li>
-              <a className={mode === 'privacy' ? 'active' : ''} onClick={() => setMode('privacy')}>
-                Privacy
-              </a>
-            </li>
           </ul>
         </div>
         {mode === 'account' && <Account profile={profile} submit={submit} />}

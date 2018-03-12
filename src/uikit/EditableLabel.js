@@ -49,6 +49,7 @@ export default compose(
     key,
     name,
     editing,
+    autoFocus,
     required = false,
     toggleEditingAndSave,
     type = 'input',
@@ -63,6 +64,7 @@ export default compose(
     renderNonEditing,
     placeholderComponent,
     saveOnKeyDown = true,
+    ...props
   }) => (
     <div key={key}>
       {editing ? (
@@ -89,12 +91,13 @@ export default compose(
                   }
                 }}
                 type="text"
-                autoFocus
                 onFocus={e => e.target.select()}
                 name={name}
+                autoFocus={autoFocus}
               />
             ) : (
               <textarea
+                autoFocus={autoFocus}
                 css={`
                   width: 100%;
                   min-height: 144px;
@@ -120,7 +123,6 @@ export default compose(
                   }
                 }}
                 type="text"
-                autoFocus
                 onFocus={e => e.target.select()}
                 name={name}
               />
