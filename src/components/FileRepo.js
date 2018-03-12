@@ -152,7 +152,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                 ? replaceSQON({
                     op: 'and',
                     content: [
-                      { op: 'in', content: { field: 'file_id', value: props.selectedTableRows } },
+                      { op: 'in', content: { field: 'kf_id', value: props.selectedTableRows } },
                     ],
                   })
                 : url.sqon;
