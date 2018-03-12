@@ -11,6 +11,7 @@ import { FamilyManifestStats } from '../Stats';
 import { ModalFooter } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import DataTypeOption from './DataTypeOption';
+import Query from '@arranger/components/dist/Query';
 
 const enhance = compose(
   injectState,
@@ -67,47 +68,6 @@ const enhance = compose(
       ).map(b => b.key),
     };
   }),
-  withQuery(({ projectId, dataTypes, familyMemberIds }) => ({
-    projectId,
-    key: 'familyFileSizeStats',
-    query: `
-      query dataTypes(${dataTypes.map((dataType, i) => `$sqon${i}: JSON`).join(', ')}) {
-        file {
-          ${dataTypes
-            .map(
-              (dataType, i) => `
-              ${dataType.key.replace(/[^\da-z]/gi, '')}: aggregations(filters: $sqon${i}) {
-                file_size {
-                  stats {
-                    sum
-                  }
-                }
-              }
-            `,
-            )
-            .join('\n')}
-        }
-      }
-    `,
-    variables: dataTypes.reduce((acc, dataType, i) => {
-      return {
-        ...acc,
-        [`sqon${i}`]: {
-          op: 'AND',
-          content: [
-            {
-              op: 'in',
-              content: { field: 'data_type', value: [dataType.key] },
-            },
-            {
-              op: 'in',
-              content: { field: 'participants.kf_id', value: familyMemberIds },
-            },
-          ],
-        },
-      };
-    }, {}),
-  })),
   withFormik({
     mapPropsToValues: ({ dataTypes }) =>
       (dataTypes || []).reduce((acc, bucket) => ({ ...acc, [bucket.key]: false }), {}),
@@ -151,8 +111,8 @@ const enhance = compose(
 
 const FamilyManifestModal = ({
   dataTypesAggregation,
+  familyMemberIds,
   familyMemberIdAggregation,
-  familyFileSizeStats,
   dataTypes,
   sqon,
   index,
@@ -162,6 +122,19 @@ const FamilyManifestModal = ({
   isSubmitting,
 }) => {
   const loading = !dataTypesAggregation || !familyMemberIdAggregation;
+  const spinner = (
+    <Spinner
+      fadeIn="none"
+      name="circle"
+      color="#a9adc0"
+      style={{
+        width: 30,
+        height: 30,
+        margin: 'auto',
+        marginBottom: 20,
+      }}
+    />
+  );
   return (
     <div>
       <div
@@ -198,28 +171,63 @@ const FamilyManifestModal = ({
         Select the data types you would like to download for the family members:
       </div>
       {loading ? (
-        <Spinner
-          fadeIn="none"
-          name="circle"
-          color="#fff"
-          style={{
-            width: 15,
-            height: 15,
-            marginRight: 9,
+        spinner
+      ) : (
+        <Query
+          projectId={projectId}
+          query={`
+            query dataTypes(${dataTypes.map((dataType, i) => `$sqon${i}: JSON`).join(', ')}) {
+              file {
+                ${dataTypes
+                  .map(
+                    (dataType, i) => `
+                    ${dataType.key.replace(/[^\da-z]/gi, '')}: aggregations(filters: $sqon${i}) {
+                      file_size {
+                        stats {
+                          sum
+                        }
+                      }
+                    }
+                  `,
+                  )
+                  .join('\n')}
+              }
+            }
+          `}
+          variables={dataTypes.reduce((acc, dataType, i) => {
+            return {
+              ...acc,
+              [`sqon${i}`]: {
+                op: 'AND',
+                content: [
+                  {
+                    op: 'in',
+                    content: { field: 'data_type', value: [dataType.key] },
+                  },
+                  {
+                    op: 'in',
+                    content: { field: 'participants.kf_id', value: familyMemberIds },
+                  },
+                ],
+              },
+            };
+          }, {})}
+          render={familyFileSizeStats => {
+            return !familyFileSizeStats
+              ? spinner
+              : (dataTypes || []).map(bucket => (
+                  <DataTypeOption
+                    key={bucket.key}
+                    bucket={bucket}
+                    values={values}
+                    fileSize={get(
+                      familyFileSizeStats,
+                      `file.${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
+                    )}
+                  />
+                ));
           }}
         />
-      ) : (
-        (dataTypes || []).map(bucket => (
-          <DataTypeOption
-            key={bucket.key}
-            bucket={bucket}
-            values={values}
-            fileSize={get(
-              familyFileSizeStats,
-              `file.${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
-            )}
-          />
-        ))
       )}
       <ModalFooter
         submitText={
