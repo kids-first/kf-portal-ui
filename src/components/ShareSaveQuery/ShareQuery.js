@@ -75,7 +75,10 @@ export default injectState(
             <Tooltip
               position="bottom"
               trigger="click"
-              onRequestClose={() => this.setState({ copied: false })}
+              onRequestClose={() =>
+                // after fadeout transition finishes, clear copy state
+                setTimeout(() => this.setState({ copied: false }), 1000)
+              }
               interactive
               html={
                 <div
