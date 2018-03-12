@@ -315,7 +315,7 @@ export default compose(
                   }}
                   getItemValue={item => item.label}
                   items={xor(
-                    ['Heart Defects', 'Leukemia Lymphomas', 'Spina Bifida'],
+                    ['Heart Defects', 'Leukemia', 'Lymphomas', 'Spina Bifida'],
                     interests,
                   ).map(item => ({
                     label: item,
