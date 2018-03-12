@@ -196,6 +196,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                         customTypes={customTableTypes}
                         {...url}
                         columnDropdownText="Columns"
+                        fieldTypesForFilter={['text', 'keyword', 'id']}
                         exportTSVText={
                           <React.Fragment>
                             <img
