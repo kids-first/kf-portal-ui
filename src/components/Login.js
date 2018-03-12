@@ -73,7 +73,7 @@ export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
   // Get Gen3 Secret here
   getSecret({ service: GEN3 })
     .then(data => {
-      setIntegrationToken(GEN3, data);
+      setIntegrationToken(GEN3, JSON.stringify(data));
     })
     .catch(res => {
       console.error('Error getting Gen3 API Key');
