@@ -63,7 +63,7 @@ const styles = css`
   }
 
   .logoImg {
-    width: 125px;
+    width: 150px;
   }
 
   span.integrationHeader {
