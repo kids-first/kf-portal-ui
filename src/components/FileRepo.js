@@ -135,6 +135,7 @@ const customTableTypes = {
   },
 };
 
+// TODO: Fix file selection affecting stats post demo, Issue:  #183
 const FileRepo = ({ state, effects, ...props }) => {
   return (
     <SQONURL
@@ -150,11 +151,11 @@ const FileRepo = ({ state, effects, ...props }) => {
             render={props => {
               const selectionSQON = props.selectedTableRows.length
                 ? replaceSQON({
-                    op: 'and',
-                    content: [
-                      { op: 'in', content: { field: 'file_id', value: props.selectedTableRows } },
-                    ],
-                  })
+                  op: 'and',
+                  content: [
+                    { op: 'in', content: { field: 'file_id', value: props.selectedTableRows } },
+                  ],
+                })
                 : url.sqon;
               return (
                 <div>
@@ -190,7 +191,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                             />
                           )}
                       </div>
-                      <FileRepoStats {...props} sqon={selectionSQON} />
+                      <FileRepoStats {...props} sqon={url.sqon} />
                       <Table
                         {...props}
                         customTypes={customTableTypes}
