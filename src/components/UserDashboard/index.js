@@ -29,7 +29,7 @@ export default compose(
         padding: 40px;
       `}
     >
-      <StyledH2>Welcome back, {loggedInUser.firstName}!</StyledH2>
+      <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>
       <div
         css={`
           display: flex;
