@@ -1,6 +1,7 @@
 import React from 'react';
 import Query from '@arranger/components/dist/Query';
 import { get } from 'lodash';
+import Spinner from 'react-spinkit';
 
 const Line = () => {
   return (
@@ -42,7 +43,22 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
           query={query(fragment())}
           variables={{ sqon }}
           index={index}
-          render={data => (data ? (getValue(data, accessor()) || 0).toLocaleString() : 'loading')}
+          render={data =>
+            data ? (
+              (getValue(data, accessor()) || 0).toLocaleString()
+            ) : (
+              <Spinner
+                fadeIn="none"
+                name="circle"
+                color="#a9adc0"
+                style={{
+                  width: 15,
+                  height: 15,
+                  marginRight: 9,
+                }}
+              />
+            )
+          }
         />
       </div>
       <div
