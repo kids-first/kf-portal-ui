@@ -2,7 +2,10 @@ import ajax from 'services/ajax';
 import { secretStorageApiRoot } from 'common/injectGlobals';
 
 export const getSecret = async ({ service }) => {
-  const { data } = await ajax.get(secretStorageApiRoot, { params: { service } });
+  console.log(service);
+  const { data } = await ajax.get(secretStorageApiRoot, {
+    params: { service },
+  });
   return data;
 };
 
