@@ -49,7 +49,7 @@ export default injectState(
 
     render() {
       return (
-        !!this.state.loggedInUser && (
+        !!this.props.state.loggedInUser && (
           <div
             css={`
               display: flex;
