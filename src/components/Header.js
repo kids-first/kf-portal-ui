@@ -123,7 +123,7 @@ const Header = ({
                     My Profile
                   </DropdownLink>,
                   <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>
-                    Settings & Privacy
+                    Settings
                   </DropdownLink>,
                   <div
                     css={`
