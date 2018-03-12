@@ -252,6 +252,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                         columns: state.columns,
                       }),
                       'Clinical (Family)': clinicalDataFamily({ sqon, columns: state.columns }),
+                      Biospecimen: downloadBiospecimen({ sqon, columns: state.columns }),
                     }}
                     render={({ loading }) => {
                       return (
@@ -263,21 +264,6 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                     }}
                   />
                 </div>
-                <LoadingOnClick
-                  onClick={downloadBiospecimen({ sqon, columns: state.columns })}
-                  render={({ onClick, loading, disabled }) => (
-                    <Button
-                      css={`
-                        flex-grow: 1;
-                        padding-left: 15px;
-                      `}
-                      disabled={disabled}
-                      onClick={onClick}
-                    >
-                      <DownloadIcon loading={loading} />BIOSPECIMEN
-                    </Button>
-                  )}
-                />
               </div>
             );
           }}
