@@ -41,6 +41,7 @@ const SaveButton = compose(withTheme)(({ theme, ...props }) => (
 export default compose(
   injectState,
   withState('isEditingBackgroundInfo', 'setEditingBackgroundInfo', false),
+  withState('focusedTextArea', 'setFocusedTextArea', 'myBio'),
   withState('editingResearchInterests', 'setEditingResearchInterests', false),
   withTheme,
   withState('bioTextarea', 'setBioTextarea', ({ profile }) => profile.bio || ''),
@@ -79,6 +80,8 @@ export default compose(
     submit,
     isEditingBackgroundInfo,
     setEditingBackgroundInfo,
+    setFocusedTextArea,
+    focusedTextArea,
     editingResearchInterests,
     setEditingResearchInterests,
     bioTextarea,
@@ -139,6 +142,7 @@ export default compose(
               </H4>
             )}
             <EditableLabel
+              autoFocus={focusedTextArea !== 'myStory'}
               type="textarea"
               isEditing={isEditingBackgroundInfo}
               disabled={true}
@@ -148,7 +152,12 @@ export default compose(
               onChange={e => setBioTextarea(e.target.value)}
               placeholderComponent={
                 canEdit && (
-                  <ClickToAdd onClick={() => setEditingBackgroundInfo(!isEditingBackgroundInfo)}>
+                  <ClickToAdd
+                    onClick={() => {
+                      setEditingBackgroundInfo(!isEditingBackgroundInfo);
+                      setFocusedTextArea('myBio');
+                    }}
+                  >
                     click to add
                   </ClickToAdd>
                 )
@@ -161,6 +170,7 @@ export default compose(
             <H3>My story</H3>
             {canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
             <EditableLabel
+              autoFocus={focusedTextArea === 'myStory'}
               type="textarea"
               isEditing={isEditingBackgroundInfo}
               disabled={true}
@@ -171,7 +181,12 @@ export default compose(
               displayButtons={true}
               placeholderComponent={
                 canEdit && (
-                  <ClickToAdd onClick={() => setEditingBackgroundInfo(!isEditingBackgroundInfo)}>
+                  <ClickToAdd
+                    onClick={() => {
+                      setEditingBackgroundInfo(!isEditingBackgroundInfo);
+                      setFocusedTextArea('myStory');
+                    }}
+                  >
                     click to add
                   </ClickToAdd>
                 )
@@ -231,19 +246,35 @@ export default compose(
             {canEdit &&
               (!editingResearchInterests ? (
                 <EditButton
-                  onClick={() => setEditingResearchInterests(!editingResearchInterests)}
-                />
-              ) : (
-                <SaveButton
-                  onClick={async () => {
-                    await submit({
-                      website,
-                      googleScholarId,
-                      interests,
-                    });
-                    setEditingResearchInterests(false);
+                  onClick={() => {
+                    setEditingResearchInterests(!editingResearchInterests);
+                    setFocusedTextArea('interests');
                   }}
                 />
+              ) : (
+                [
+                  <button
+                    onClick={() => {
+                      setWebsite('');
+                      setGoogleScholarId('');
+                      setInterests([]);
+                      setEditingResearchInterests(false);
+                    }}
+                    css={theme.hollowButton}
+                  >
+                    Cancel
+                  </button>,
+                  <SaveButton
+                    onClick={async () => {
+                      await submit({
+                        website,
+                        googleScholarId,
+                        interests,
+                      });
+                      setEditingResearchInterests(false);
+                    }}
+                  />,
+                ]
               ))}
           </H2>
           <div>
@@ -278,6 +309,7 @@ export default compose(
               {editingResearchInterests && (
                 <Autocomplete
                   inputProps={{
+                    autoFocus: focusedTextArea === 'interests',
                     className: theme.input,
                     placeholder: '🔍Search for interests',
                   }}
@@ -312,6 +344,7 @@ export default compose(
             <StyledSection>
               <H3>Website URL:</H3>
               <EditableLabel
+                autoFocus={focusedTextArea === 'website'}
                 isEditing={editingResearchInterests}
                 disabled={true}
                 required={false}
@@ -321,7 +354,10 @@ export default compose(
                 placeholderComponent={
                   canEdit && (
                     <ClickToAdd
-                      onClick={() => setEditingResearchInterests(!editingResearchInterests)}
+                      onClick={() => {
+                        setEditingResearchInterests(!editingResearchInterests);
+                        setFocusedTextArea('website');
+                      }}
                     >
                       click to add
                     </ClickToAdd>
@@ -335,6 +371,7 @@ export default compose(
             <StyledSection>
               <H3>Google Scholar ID: </H3>
               <EditableLabel
+                autoFocus={focusedTextArea === 'googleScholarId'}
                 isEditing={editingResearchInterests}
                 disabled={true}
                 required={false}
@@ -344,7 +381,10 @@ export default compose(
                 placeholderComponent={
                   canEdit && (
                     <ClickToAdd
-                      onClick={() => setEditingResearchInterests(!editingResearchInterests)}
+                      onClick={() => {
+                        setEditingResearchInterests(!editingResearchInterests);
+                        setFocusedTextArea('googleScholarId');
+                      }}
                     >
                       click to add
                     </ClickToAdd>
