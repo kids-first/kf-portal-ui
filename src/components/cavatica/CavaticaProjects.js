@@ -118,11 +118,13 @@ const CavaticaProjects = ({
               setSelectedProject(e.target.value);
             }}
           >
-            {projectList.map(project => (
-              <option key={project.id} value={project.id}>
-                {project.name}
-              </option>
-            ))}
+            {projectList &&
+              projectList.map &&
+              projectList.map(project => (
+                <option key={project.id} value={project.id}>
+                  {project.name}
+                </option>
+              ))}
           </ProjectSelector>
         </div>
         <div className="footer">

@@ -11,6 +11,7 @@ import PencilIcon from 'react-icons/lib/fa/pencil';
 import ViewIcon from 'react-icons/lib/fa/eye';
 import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
+import Spinner from 'react-spinkit';
 
 import { cavaticaWebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
@@ -18,10 +19,23 @@ import { deleteSecret } from 'services/secrets';
 import CavaticaInput from 'components/cavatica/CavaticaTokenInput';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
+import LoadingOnClick from 'components/LoadingOnClick';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
+
+const loadingSpinner = (
+  <Spinner
+    fadeIn="none"
+    name="circle"
+    color="black"
+    style={{
+      width: 11,
+      height: 11,
+    }}
+  />
+);
 
 const styles = css`
   table {
@@ -29,7 +43,7 @@ const styles = css`
   }
   td,
   th {
-    padding: 12px;
+    padding: 10px;
     font-weight: normal;
   }
   td {
@@ -49,7 +63,7 @@ const styles = css`
   }
 
   .logoImg {
-    width: 150px;
+    width: 125px;
   }
 
   span.integrationHeader {
@@ -57,7 +71,6 @@ const styles = css`
   }
   div.integrationCell {
     display: flex;
-    width: 100%;
   }
   div.integrationCell button {
     text-transform: uppercase;
@@ -121,9 +134,15 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         <Button onClick={onEdit} className="connectedButton">
           <PencilIcon />Edit
         </Button>
-        <Button onClick={onRemove} className="connectedButton">
-          <XIcon />Remove
-        </Button>
+        <LoadingOnClick
+          onClick={onRemove}
+          render={({ onClick, loading }) => (
+            <Button onClick={onClick} className="connectedButton">
+              {loading ? loadingSpinner : <XIcon />}
+              <span>Remove</span>
+            </Button>
+          )}
+        />
       </div>
     </div>
   );
@@ -266,8 +285,9 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                       })
                     }
                   >
-                    <span>Connect</span>
-                    <RightIcon />
+                    <span>
+                      Connect<RightIcon />
+                    </span>
                   </button>
                 )}
               </div>

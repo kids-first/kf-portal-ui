@@ -72,16 +72,16 @@ const submitCavaticaToken = async ({
   onFail,
 }) => {
   await setSecret({ service: CAVATICA, secret: token });
-  getCavaticaUser(token)
-    .then(userData => {
-      setIntegrationToken(CAVATICA, JSON.stringify(userData));
-      onSuccess();
-    })
-    .catch(response => {
-      setIntegrationToken(CAVATICA, null);
-      deleteSecret({ service: CAVATICA });
-      onFail();
-    });
+  const userData = await getCavaticaUser(token);
+
+  if (userData) {
+    setIntegrationToken(CAVATICA, JSON.stringify(userData));
+    onSuccess();
+  } else {
+    setIntegrationToken(CAVATICA, null);
+    deleteSecret({ service: CAVATICA });
+    onFail();
+  }
 };
 
 const CavaticaTokenInput = ({
@@ -165,8 +165,8 @@ const CavaticaTokenInput = ({
       </div>
       <ModalFooter
         {...{
-          handleSubmit: () => {
-            submitCavaticaToken({
+          handleSubmit: async () => {
+            await submitCavaticaToken({
               token: cavaticaKey,
               setIntegrationToken: effects.setIntegrationToken,
               onSuccess: props.onComplete,

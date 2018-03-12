@@ -5,8 +5,24 @@ import CloseIcon from 'react-icons/lib/md/close';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { getAppElement } from '../../services/globalDomNodes.js';
+import LoadingOnClick from 'components/LoadingOnClick';
+import Spinner from 'react-spinkit';
 
 const enhance = compose(withTheme, injectState);
+
+const defaultLoadingContent = (
+  <Spinner
+    fadeIn="none"
+    name="circle"
+    color="#fff"
+    style={{
+      width: 15,
+      height: 15,
+      marginRight: 9,
+      display: 'inline-block',
+    }}
+  />
+);
 
 const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
   <h2
@@ -25,6 +41,7 @@ export const ModalFooter = enhance(
     effects: { setModal, unsetModal },
     submitText = 'Save',
     cancelText = 'Cancel',
+    submitLoadingContent = defaultLoadingContent,
     handleSubmit,
     handleCancelClick = unsetModal,
     submitDisabled = false,
@@ -47,9 +64,20 @@ export const ModalFooter = enhance(
         <button css={theme.wizardButton} onClick={() => handleCancelClick()}>
           {cancelText}
         </button>
-        <button css={theme.actionButton} disabled={submitDisabled} onClick={handleSubmit}>
-          {submitText}
-        </button>
+        <LoadingOnClick
+          onClick={handleSubmit}
+          submitDisabled={submitDisabled}
+          readyContent={submitText}
+          loadingContent={submitLoadingContent}
+          render={({ onClick, loading, readyContent, loadingContent, submitDisabled }) => (
+            <button css={theme.actionButton} disabled={submitDisabled} onClick={onClick}>
+              <span>
+                {loading && loadingContent}
+                {readyContent}
+              </span>
+            </button>
+          )}
+        />
       </div>
     );
   },
