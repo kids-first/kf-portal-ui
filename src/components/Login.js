@@ -16,7 +16,6 @@ import { GEN3, CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 
-
 const styles = {
   container: css`
     background-color: #fff;
@@ -72,12 +71,12 @@ export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
     });
 
   // Get Gen3 Secret here
-  getSecret(GEN3)
+  getSecret({ service: GEN3 })
     .then(data => {
       setIntegrationToken(GEN3, data);
     })
     .catch(res => {
-      console.error("Error getting Gen3 API Key");
+      console.error('Error getting Gen3 API Key');
       console.error(res);
     });
 };
@@ -180,8 +179,8 @@ class Component extends React.Component<any, any> {
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
           ]
         ) : (
-              <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
-            )}
+          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
+        )}
       </div>
     );
   }
