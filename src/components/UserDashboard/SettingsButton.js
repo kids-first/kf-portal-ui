@@ -20,7 +20,7 @@ const SettingsButton = ({ egoId, theme, ...props }) => (
         padding-right: 5px;
       `}
     />{' '}
-    Settings & Privacy
+    Settings
   </Link>
 );
 
