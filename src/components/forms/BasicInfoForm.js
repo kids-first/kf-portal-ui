@@ -182,7 +182,7 @@ export default compose(
               ${theme.row} align-self: flex-end;
             `}
           >
-            <StyledLabel>I am a</StyledLabel>
+            <StyledLabel>Role</StyledLabel>
             {get(
               ROLES.reduce(
                 (acc, { type, icon, color }) => ({

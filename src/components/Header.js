@@ -123,7 +123,7 @@ const Header = ({
                     My Profile
                   </DropdownLink>,
                   <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>
-                    Settings & Privacy
+                    Settings
                   </DropdownLink>,
                   <div
                     css={`
@@ -155,6 +155,7 @@ const Header = ({
 
                   line-height: 1.86;
                   letter-spacing: 0.2px;
+                  padding-right: 10px;
                 `}
               >
                 <Gravtar
