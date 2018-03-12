@@ -3,11 +3,10 @@ import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
 
 export default ({ stats, queryName, sqon, loggedInUser }) => {
-  // TODO: user / token stuff
   let { Files, Participants, Families, Size } = stats;
-  // TODO: use ajax service?
-
   let alias = queryName || sqonToName({ filters: sqon });
+
+  // TODO: use ajax service?
   return fetch(urlJoin(shortUrlApi, 'shorten'), {
     method: 'POST',
     headers: {

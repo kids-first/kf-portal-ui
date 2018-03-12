@@ -75,6 +75,7 @@ export default injectState(
             <Tooltip
               position="bottom"
               trigger="click"
+              onRequestClose={() => this.setState({ copied: false })}
               interactive
               html={
                 <div
