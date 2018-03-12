@@ -2,7 +2,7 @@ import urlJoin from 'url-join';
 import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
 
-export default ({ stats, queryName, sqon }) => {
+export default ({ stats, queryName, sqon, loggedInUser }) => {
   // TODO: user / token stuff
   let { Files, Participants, Families, Size } = stats;
   // TODO: use ajax service?
@@ -14,7 +14,7 @@ export default ({ stats, queryName, sqon }) => {
       'Content-type': 'application/json',
     },
     body: JSON.stringify({
-      userid: 'dev',
+      userid: (loggedInUser || {}).egoId || 'anonymous',
       alias,
       content: {
         ...stats,
