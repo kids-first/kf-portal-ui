@@ -84,25 +84,27 @@ const enhance = compose(
         .map(([key]) => key);
 
       fileManifestParticipantsAndFamily({
-        sqon: {
-          op: 'or',
-          content: [
-            sqon,
-            {
-              op: 'and',
+        sqon: sqon
+          ? {
+              op: 'or',
               content: [
+                sqon,
                 {
-                  op: 'in',
-                  content: { field: 'data_type', value: selectedDataTypes },
-                },
-                {
-                  op: 'in',
-                  content: { field: 'participants.kf_id', value: familyMemberIds },
+                  op: 'and',
+                  content: [
+                    {
+                      op: 'in',
+                      content: { field: 'data_type', value: selectedDataTypes },
+                    },
+                    {
+                      op: 'in',
+                      content: { field: 'participants.kf_id', value: familyMemberIds },
+                    },
+                  ],
                 },
               ],
-            },
-          ],
-        },
+            }
+          : sqon,
         columns: columns,
       })().then(async profile => unsetModal(), errors => setSubmitting(false));
     },
