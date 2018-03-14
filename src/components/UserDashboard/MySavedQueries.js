@@ -205,9 +205,9 @@ const MySavedQueries = compose(
                       }
                     `}
                   >
-                    <span>{q.content.Files.toLocaleString()}</span> Files |{' '}
-                    <span>{q.content.Participants.toLocaleString()}</span> Participants |{' '}
-                    <span>{q.content.Families.toLocaleString()}</span> Families |{' '}
+                    <span>{(q.content.Files || 0).toLocaleString()}</span> Files |{' '}
+                    <span>{(q.content.Participants || 0).toLocaleString()}</span> Participants |{' '}
+                    <span>{(q.content.Families || 0).toLocaleString()}</span> Families |{' '}
                     <span>{q.content.Size}</span>
                   </div>
                   <div
