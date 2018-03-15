@@ -73,6 +73,7 @@ export default compose(
   withTheme,
   withState('index', 'setIndex', 0),
   withState('nextDisabled', 'setNextDisabled', false),
+  withState('customStepMessage', 'setCustomStepMessage', null),
   withHandlers({
     nextStep: ({ index, setIndex, steps }) => event =>
       setIndex(index + 1 >= steps.length ? index : index + 1),
@@ -93,6 +94,8 @@ export default compose(
     nextDisabled,
     setNextDisabled,
     theme,
+    customStepMessage,
+    setCustomStepMessage,
   }: {
     steps: Array<{
       title: string,
@@ -110,6 +113,8 @@ export default compose(
     setIndex: Function,
     nextDisabled: boolean,
     setNextDisabled: Function,
+    customStepMessage: string,
+    setCustomStepMessage: Function,
   }) => (
     <div>
       <div
@@ -122,10 +127,18 @@ export default compose(
         <WizardProgress setIndex={setIndex} index={index} steps={steps} />
       </div>
       {currentStep.render
-        ? currentStep.render({ nextStep, prevStep, disableNextStep: setNextDisabled })
+        ? currentStep.render({
+            nextStep,
+            prevStep,
+            disableNextStep: setNextDisabled,
+            customStepMessage,
+            setCustomStepMessage,
+          })
         : currentStep.Component}
       {currentStep.renderButtons &&
         currentStep.renderButtons({
+          customStepMessage,
+          setCustomStepMessage,
           nextStep,
           prevStep,
           nextDisabled,
