@@ -18,7 +18,6 @@ import ToSearchPage from 'components/links/ToSearchPage';
 const Consent = compose(
   injectState,
   withTheme,
-  withState('touched', 'setTouched', false),
   withState('accepted', 'setAccepted', ({ state: { loggedInUser }, disableNextStep }) => {
     const accepted = get(loggedInUser, 'acceptedTerms', false);
     disableNextStep(!accepted);
@@ -32,8 +31,6 @@ const Consent = compose(
     disableNextStep,
     accepted,
     setAccepted,
-    touched,
-    setTouched,
     customStepMessage,
     setCustomStepMessage = () => {},
   }) => {
@@ -115,7 +112,6 @@ const Consent = compose(
               }
               setAccepted(event.target.checked);
               disableNextStep(!event.target.checked);
-              setTouched(true);
               updateProfile({
                 user: {
                   ...rest,
