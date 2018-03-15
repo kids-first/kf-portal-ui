@@ -34,6 +34,8 @@ const Consent = compose(
     setAccepted,
     touched,
     setTouched,
+    customStepMessage,
+    setCustomStepMessage = () => {},
   }) => {
     return (
       <div
@@ -108,6 +110,9 @@ const Consent = compose(
             checked={accepted}
             onChange={event => {
               const { email, percentageFilled, ...rest } = loggedInUser;
+              if (event.target.checked) {
+                setCustomStepMessage(null);
+              }
               setAccepted(event.target.checked);
               disableNextStep(!event.target.checked);
               setTouched(true);
@@ -123,17 +128,16 @@ const Consent = compose(
           />
           I have read and agreed to the Kids First Data Research Portal Term and Conditions
         </div>
-        {touched &&
-          !accepted && (
-            <div
-              className={css`
-                color: red;
-                width: 90%;
-              `}
-            >
-              You must accept terms to continue
-            </div>
-          )}
+        {customStepMessage && (
+          <div
+            className={css`
+              color: red;
+              width: 90%;
+            `}
+          >
+            {customStepMessage}
+          </div>
+        )}
       </div>
     );
   },
@@ -230,8 +234,23 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
             },
             {
               title: 'Consent',
-              render: ({ disableNextStep }) => <Consent disableNextStep={disableNextStep} />,
-              renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
+              render: ({ disableNextStep, customStepMessage, setCustomStepMessage }) => (
+                <Consent
+                  {...{
+                    disableNextStep,
+                    customStepMessage,
+                    setCustomStepMessage,
+                  }}
+                />
+              ),
+              renderButtons: ({
+                nextStep,
+                prevStep,
+                nextDisabled,
+                prevDisabled,
+                customStepMessage,
+                setCustomStepMessage,
+              }) => (
                 <ButtonsDiv>
                   <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
                     <LeftIcon />
@@ -256,9 +275,10 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                             ),
                           });
                           history.push(`/user/${loggedInUser.egoId}`);
+                        } else {
+                          setCustomStepMessage('You must accept terms to continue');
                         }
                       }}
-                      disabled={nextDisabled}
                     >
                       Save
                       <RightIcon />
