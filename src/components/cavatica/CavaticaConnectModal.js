@@ -7,7 +7,6 @@ import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
-
 import { cavaticaWebRoot } from 'common/injectGlobals';
 
 import { css } from 'emotion';
