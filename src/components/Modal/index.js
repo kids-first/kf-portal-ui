@@ -25,14 +25,26 @@ const defaultLoadingContent = (
 );
 
 const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
-  <h2
+  <div
     css={`
-      ${theme.profileH2} ${theme.row} justify-content: space-between;
+      ${theme.row} justify-content: space-between;
+      border-bottom: 1px solid #d4d6dd;
+      margin-bottom: 1.5em;
     `}
   >
-    <span>{title}</span>
-    <CloseIcon css="cursor:pointer;" onClick={() => unsetModal()} />
-  </h2>
+    <h2
+      css={`
+        ${theme.modalHeader};
+      `}
+    >
+      <span>{title}</span>
+    </h2>
+    <CloseIcon
+      css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
+      fill="black"
+      onClick={() => unsetModal()}
+    />
+  </div>
 );
 
 export const ModalFooter = enhance(
