@@ -249,7 +249,7 @@ const components = {
     justify-content: space-between;
     padding-bottom: 10px;
   `,
-  modalTitle: css`
+  modalHeader: css`
     color: ${colors.secondary};
     font-size: 20px;
     font-weight: 300;
@@ -259,13 +259,6 @@ const components = {
     margin-bottom: 0.8em;
     display: flex;
     justify-content: space-between;
-  `,
-  modalHeader: css`
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.87;
-    letter-spacing: 0.2px;
-    color: ${colors.greyScale1};
   `,
   h2: css`
     text-align: center;

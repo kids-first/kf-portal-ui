@@ -33,7 +33,13 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
       margin-bottom: 1.5em;
     `}
   >
-    <span css={theme.modalTitle}>{title}</span>
+    <h2
+      css={`
+        ${theme.modalHeader};
+      `}
+    >
+      <span>{title}</span>
+    </h2>
     <CloseIcon
       css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
       fill="black"
