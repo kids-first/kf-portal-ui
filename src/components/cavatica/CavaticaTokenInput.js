@@ -7,12 +7,25 @@ import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { ModalFooter } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
+import ErrorIcon from 'icons/ErrorIcon';
 import { cavaticaWebRoot } from 'common/injectGlobals';
 
 import { css } from 'emotion';
 import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
+
+const ModalWarning = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  background-color: #f9dee1;
+  border-radius: 7px;
+  border-style: solid;
+  border-color: #e45562;
+  border-width: 1px;
+  padding: 10px;
+`;
 
 const NumberBullet = styled.span`
   color: white;
@@ -28,24 +41,28 @@ const NumberBullet = styled.span`
 `;
 
 const TokenTitle = styled.span`
-  padding: 20px;
   color: ${props => props.theme.secondary};
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 10px;
 `;
 
 const FormErrorMessage = styled.div`
-  color: ${props => props.theme.primary};
+  color: #e45562;
   padding: 10px;
   padding-left: 20px;
+  height: 1.6em;
+`;
+
+const TokenInput = styled.input`
+  padding: 6px;
+  font-size: 16px;
+  border-radius: 10px;
 `;
 
 const styles = css`
-  .tokenInput {
-    margin: 20px;
-    padding: 3px;
-    font-size: 16px;
-    border-radius: 10px;
+  div {
+    line-height: 1.6em;
   }
 
   .stepRow {
@@ -101,6 +118,21 @@ const CavaticaTokenInput = ({
   return (
     <div css={styles}>
       <div>
+        {props.withWarning && (
+          <ModalWarning>
+            <div
+              css={`
+                padding-right: 10px;
+              `}
+            >
+              <ErrorIcon width={30} height={30} fill={`#e45562`} />
+            </div>
+            <div classNAme="warningMessage">
+              You have not connected to your Cavatica account. Please follow the instructions below
+              to connect and start copying files.
+            </div>
+          </ModalWarning>
+        )}
         <div className="stepRow">
           <div>
             <NumberBullet>1</NumberBullet>
@@ -140,14 +172,14 @@ const CavaticaTokenInput = ({
           </div>
           <div className="stepText">
             <span>
-              Click on "Generate Token", copy and paste it into the field below and click Connect.
+              Click on "<strong>Generate Token</strong>", copy and paste it into the field below and
+              click Connect.
             </span>
           </div>
         </div>
-        <div css="display:flex; flex-direction:column;">
+        <div css="display:flex; flex-direction:column; margin-left:74px;">
           <TokenTitle>Cavatica Authentication Token:</TokenTitle>
-          <input
-            className="tokenInput"
+          <TokenInput
             id="cavaticaKey"
             type="text"
             value={cavaticaKey}
@@ -159,7 +191,7 @@ const CavaticaTokenInput = ({
             }}
           />
           <FormErrorMessage id="cavaticaTokenErrorMsg">
-            {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ''}
+            {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ' '}
           </FormErrorMessage>
         </div>
       </div>
