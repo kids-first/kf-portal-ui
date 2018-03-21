@@ -6,6 +6,7 @@ import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import Modal from './components/Modal/index.js';
+import Spinner from 'react-spinkit';
 
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
@@ -22,6 +23,7 @@ import scienceBgPath from 'theme/images/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
+import { requireLogin } from './common/injectGlobals';
 
 const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
   <div
@@ -107,10 +109,31 @@ const SideImagePage = ({ Component, sideImage, ...props }) => (
 );
 
 const forceSelectRole = ({ loggedInUser, ...props }) => {
-  if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
+  if (!loggedInUser && requireLogin) {
+    return (
+      <div
+        css={`
+          height: 100%;
+          display: flex;
+        `}
+      >
+        <Spinner
+          fadeIn="none"
+          name="circle"
+          color="#a9adc0"
+          style={{
+            width: 60,
+            height: 60,
+            margin: 'auto',
+          }}
+        />
+      </div>
+    );
+  } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
+  } else {
+    return <Page {...props} />;
   }
-  return <Page {...props} />;
 };
 
 const App = compose(injectState)(({ editing, setEditing, state, effects }) => {

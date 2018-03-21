@@ -48,3 +48,5 @@ export const allRedirectUris = (process.env.REACT_APP_LOGIN_REDIRECT_NOT_REQUIRE
   .split(',')
   .concat(defaultRedirectUri)
   .filter(Boolean);
+
+export const requireLogin = process.env.REACT_APP_REQUIRE_LOGIN === 'true';

@@ -1,6 +1,6 @@
 import { provideState } from 'freactal';
 import { isArray, get } from 'lodash';
-
+import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
 import { getAllFieldNamesPromise } from 'services/profiles';
 import { googleAppId } from 'common/injectGlobals';
@@ -19,6 +19,8 @@ export default provideState({
       const { setToken, setUser } = effects;
       const jwt = localStorage.getItem('EGO_JWT');
       if (jwt) {
+        addHeaders({ authorization: `Bearer ${jwt}` });
+
         try {
           const gapi = global.gapi;
           gapi.load('auth2', () => {
@@ -56,8 +58,10 @@ export default provideState({
       setToken(token);
       if (token) {
         localStorage.setItem('EGO_JWT', token);
+        addHeaders({ authorization: `Bearer ${token}` });
       } else {
         localStorage.removeItem('EGO_JWT');
+        addHeaders({ authorization: '' });
       }
       return { ...state, loggedInUserToken: token };
     },
@@ -80,11 +84,9 @@ export default provideState({
         return tokenKey ? localStorage.getItem(tokenKey) : null;
       }
     },
-    clearIntegrationTokens: (effects) => state => {
-      SERVICES.forEach(service =>
-        localStorage.removeItem(`integration_${service}`)
-      );
+    clearIntegrationTokens: effects => state => {
+      SERVICES.forEach(service => localStorage.removeItem(`integration_${service}`));
       state.integrationTokens = {};
-    }
+    },
   },
 });
