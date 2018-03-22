@@ -131,14 +131,16 @@ export const FileRepoStats = withFileRepoStats(Stats);
 export const FileRepoStatsQuery = withFileRepoStats(props => {
   return (
     <Query
+      renderError
       debounceTime={100}
       name={`CombinedFileStatsQuery`}
       variables={{ sqon: props.sqon }}
       {...props}
-      render={data =>
+      render={({ loading, data }) =>
         props.render(
-          data
-            ? props.stats.reduce((acc, val) => {
+          loading
+            ? 'loading'
+            : props.stats.reduce((acc, val) => {
                 const getValue =
                   typeof val.accessor(val.label) === 'function'
                     ? val.accessor(val.label)
@@ -147,8 +149,7 @@ export const FileRepoStatsQuery = withFileRepoStats(props => {
                   ...acc,
                   [val.label]: getValue(data, val.accessor(val.label)),
                 };
-              }, {})
-            : 'loading',
+              }, {}),
         )
       }
       query={queryStringWrapper(props.stats.map((stat, i) => stat.fragment(stat.label)))}

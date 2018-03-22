@@ -38,16 +38,15 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
         `}
       >
         <Query
+          renderError
           debounceTime={100}
           name={`${index}StatQuery`}
           {...props}
           query={query(fragment())}
           variables={{ sqon }}
           index={index}
-          render={data =>
-            data ? (
-              (getValue(data, accessor()) || 0).toLocaleString()
-            ) : (
+          render={({ data, loading }) =>
+            loading ? (
               <Spinner
                 fadeIn="none"
                 name="circle"
@@ -58,6 +57,8 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
                   marginRight: 9,
                 }}
               />
+            ) : (
+              (getValue(data, accessor()) || 0).toLocaleString()
             )
           }
         />
