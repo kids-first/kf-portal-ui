@@ -170,13 +170,15 @@ const FileRepo = ({ state, effects, ...props }) => {
                   <DetectNewVersion {...props} />
                   <div css={arrangerStyles}>
                     <AggregationsWrapper {...props} {...url} />
-                    <div style={{ flexGrow: 1, width: 580, overflowY: 'auto' }}>
+                    <div style={{ flexGrow: 1, width: 580 }}>
                       <div
                         css={`
                           padding: 30px;
                           display: flex;
                           flex-direction: column;
                           position: relative;
+                          height: 100%;
+                          box-sizing: border-box;
                         `}
                       >
                         <div
