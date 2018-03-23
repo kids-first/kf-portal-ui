@@ -161,55 +161,56 @@ const FileRepo = ({ state, effects, ...props }) => {
                   <DetectNewVersion {...props} />
                   <div css={arrangerStyles}>
                     <AggregationsWrapper {...props} {...url} />
-                    <div
-                      style={{
-                        position: 'relative',
-                        flexGrow: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        padding: 30,
-                      }}
-                    >
+                    <div style={{ flexGrow: 1, width: 580 }}>
                       <div
                         css={`
+                          padding: 30px;
                           display: flex;
+                          flex-direction: column;
+                          position: relative;
                         `}
                       >
-                        <CurrentSQON {...props} {...url} />
-                        {url.sqon &&
-                          Object.keys(url.sqon).length > 0 && (
-                            <FileRepoStatsQuery
-                              {...props}
-                              {...url}
-                              render={data => (
-                                <div>
-                                  <ShareQuery stats={data} {...url} />
-                                  <SaveQuery stats={data} {...url} />
-                                </div>
-                              )}
-                            />
-                          )}
+                        <div
+                          css={`
+                            display: flex;
+                          `}
+                        >
+                          <CurrentSQON {...props} {...url} />
+                          {url.sqon &&
+                            Object.keys(url.sqon).length > 0 && (
+                              <FileRepoStatsQuery
+                                {...props}
+                                {...url}
+                                render={data => (
+                                  <div>
+                                    <ShareQuery stats={data} {...url} />
+                                    <SaveQuery stats={data} {...url} />
+                                  </div>
+                                )}
+                              />
+                            )}
+                        </div>
+                        <FileRepoStats {...props} sqon={selectionSQON} />
+                        <Table
+                          {...props}
+                          customTypes={customTableTypes}
+                          {...url}
+                          columnDropdownText="Columns"
+                          fieldTypesForFilter={['text', 'keyword', 'id']}
+                          exportTSVText={
+                            <React.Fragment>
+                              <img
+                                alt=""
+                                src={downloadIcon}
+                                css={`
+                                  width: 10px;
+                                  margin-right: 9px;
+                                `}
+                              />Export TSV
+                            </React.Fragment>
+                          }
+                        />
                       </div>
-                      <FileRepoStats {...props} sqon={selectionSQON} />
-                      <Table
-                        {...props}
-                        customTypes={customTableTypes}
-                        {...url}
-                        columnDropdownText="Columns"
-                        fieldTypesForFilter={['text', 'keyword', 'id']}
-                        exportTSVText={
-                          <React.Fragment>
-                            <img
-                              alt=""
-                              src={downloadIcon}
-                              css={`
-                                width: 10px;
-                                margin-right: 9px;
-                              `}
-                            />Export TSV
-                          </React.Fragment>
-                        }
-                      />
                     </div>
                     <FileRepoSidebar {...props} sqon={selectionSQON} />
                   </div>
