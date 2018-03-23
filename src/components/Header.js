@@ -48,6 +48,7 @@ const Header = ({
         background: #fff;
         box-shadow: 0 0 4.9px 0.1px #bbbbbb;
         flex: none;
+        z-index: 1;
       `}
     >
       <div
