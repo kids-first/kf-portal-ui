@@ -15,6 +15,8 @@
     "filesize": "^3.6.0",
     "formik": "^0.10.5",
     "freactal": "^1.1.1",
+    "i18next": "^10.6.0",
+    "i18next-xhr-backend": "^1.5.1",
     "jwt-decode": "^2.2.0",
     "md5": "^2.2.1",
     "popback": "^0.0.3",
@@ -25,6 +27,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.3.0",
     "react-emotion": "^9.0.0",
+    "react-i18next": "^7.5.1",
     "react-icons": "^2.2.7",
     "react-measure": "^2.0.2",
     "react-modal": "^3.3.1",
@@ -44,12 +47,15 @@
     "start": "NODE_PATH=src react-app-rewired start",
     "build": "NODE_PATH=src react-app-rewired build",
     "test": "NODE_PATH=src react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "translations": "i18next-scanner --output ./public 'src/**/*.js'"
   },
   "devDependencies": {
     "babel-polyfill": "^6.26.0",
+    "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
-    "react-app-rewired": "^1.4.1"
+    "react-app-rewired": "^1.4.1",
+    "vinyl-fs": "^3.0.2"
   },
   "prettier": {
     "printWidth": 100,

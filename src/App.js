@@ -6,7 +6,7 @@ import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import Modal from './components/Modal/index.js';
-
+import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
@@ -193,8 +193,8 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
   );
 });
 
-export default () => (
+export default translate('translations')(() => (
   <ContextProvider>
     <App />
   </ContextProvider>
-);
+));
