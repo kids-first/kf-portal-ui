@@ -29,7 +29,6 @@ const enhance = compose(injectState);
 const arrangerStyles = css`
   display: flex;
   height: 100%;
-  padding-bottom: 84px;
   box-sizing: border-box;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,

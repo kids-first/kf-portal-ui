@@ -46,8 +46,8 @@ const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
     >
       <Header />
       <Component {...props} />
+      <Footer />
     </div>
-    <Footer />
   </div>
 );
 

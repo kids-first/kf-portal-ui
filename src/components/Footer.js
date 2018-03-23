@@ -26,13 +26,11 @@ const Footer = () => (
       display: flex;
       justify-content: center;
       align-items: center;
-      position: absolute;
-      bottom: 0;
-      left: 0;
       width: 100%;
       z-index: 100;
       display: flex;
       flex-direction: column;
+      flex: none;
     `}
   >
     <div>

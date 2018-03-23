@@ -107,9 +107,7 @@ export default compose(
 )(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash } }) => (
   <div
     className={css`
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+      flex: 1;
     `}
   >
     <div

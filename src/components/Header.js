@@ -47,6 +47,7 @@ const Header = ({
       className={css`
         background: #fff;
         box-shadow: 0 0 4.9px 0.1px #bbbbbb;
+        flex: none;
       `}
     >
       <div
@@ -122,9 +123,7 @@ const Header = ({
                   <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
                     My Profile
                   </DropdownLink>,
-                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>
-                    Settings
-                  </DropdownLink>,
+                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
                   <div
                     css={`
                       border-top: 1px solid ${theme.greyScale4};
