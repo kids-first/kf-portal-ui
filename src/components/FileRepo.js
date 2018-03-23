@@ -27,6 +27,9 @@ const enhance = compose(injectState);
 
 const arrangerStyles = css`
   display: flex;
+  height: 100%;
+  padding-bottom: 84px;
+  box-sizing: border-box;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
@@ -52,7 +55,8 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
   return (
     <div
       css={`
-        flex: none;
+        height: 100%;
+        overflow-y: auto;
         background-color: #f4f5f8;
         box-shadow: 0 0 4.9px 0.2px #a0a0a3;
         border: solid 1px #c6c7cc;
@@ -157,11 +161,16 @@ const FileRepo = ({ state, effects, ...props }) => {
                   })
                 : url.sqon;
               return (
-                <div>
+                <div
+                  css={`
+                    height: 1px;
+                    flex: 1;
+                  `}
+                >
                   <DetectNewVersion {...props} />
                   <div css={arrangerStyles}>
                     <AggregationsWrapper {...props} {...url} />
-                    <div style={{ flexGrow: 1, width: 580 }}>
+                    <div style={{ flexGrow: 1, width: 580, overflowY: 'auto' }}>
                       <div
                         css={`
                           padding: 30px;

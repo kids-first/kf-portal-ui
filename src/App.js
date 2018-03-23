@@ -28,9 +28,8 @@ const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
   <div
     css={`
       position: relative;
-      min-height: 100vh;
-      overflow-y: hidden;
-      min-width: 1024;
+      height: 100vh;
+      min-width: 1024px;
       background-image: url(${backgroundImageUrl});
       ${containerStyle};
     `}
@@ -42,7 +41,6 @@ const Page = ({ Component, backgroundImageUrl, containerStyle, ...props }) => (
         width: 100%;
         display: flex;
         flex-direction: column;
-        padding-bottom: 120px;
         background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
       `}
     >

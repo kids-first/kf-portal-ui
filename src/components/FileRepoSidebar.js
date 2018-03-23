@@ -25,6 +25,7 @@ import FamilyManifestModal from './FamilyManifestModal';
 
 const styles = {
   container: css`
+    overflow-y: auto;
     flex: none;
     width: 310px;
     background-color: #f4f5f8;
