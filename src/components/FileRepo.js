@@ -61,6 +61,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
         background-color: #f4f5f8;
         box-shadow: 0 0 4.9px 0.2px #a0a0a3;
         border: solid 1px #c6c7cc;
+        flex: none;
         & > * {
           margin-left: -1px;
         }
