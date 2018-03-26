@@ -10,8 +10,9 @@ const DataTypeOption = ({ bucket, values, fileSize, familyMembers }) => {
         padding: 17px 24px 17px 18px;
         margin-bottom: 8px;
         border-radius: 10px;
-        background-color: #e5f7fd;
-        border: solid 1px #00afed;
+        ${values[bucket.key]
+          ? `background-color: #e5f7fd; border: solid 1px #00afed;`
+          : `background-color: #ffffff; border: solid 1px #cacbcf;`};
       `}
     >
       <div
