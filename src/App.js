@@ -157,7 +157,6 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               Component: UserProfile,
-              backgroundImageUrl: scienceBgPath,
               loggedInUser,
               ...props,
             })
