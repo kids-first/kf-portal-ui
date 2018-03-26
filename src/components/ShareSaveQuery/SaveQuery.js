@@ -48,6 +48,7 @@ export default injectState(
     };
 
     render() {
+      const { className = '' } = this.props;
       return (
         !!this.props.state.loggedInUser && (
           <div
@@ -58,6 +59,7 @@ export default injectState(
               padding: 10px;
               background-color: aliceblue;
               border: 1px solid #d6d6d6;
+              ${className};
             `}
           >
             <div

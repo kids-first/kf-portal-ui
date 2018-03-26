@@ -196,9 +196,26 @@ const FileRepo = ({ state, effects, ...props }) => {
                                 {...props}
                                 {...url}
                                 render={data => (
-                                  <div>
-                                    <ShareQuery stats={data} {...url} />
-                                    <SaveQuery stats={data} {...url} />
+                                  <div
+                                    css={`
+                                      display: flex;
+                                      flex-direction: column;
+                                    `}
+                                  >
+                                    <ShareQuery
+                                      stats={data}
+                                      {...url}
+                                      css={`
+                                        flex: 1;
+                                      `}
+                                    />
+                                    <SaveQuery
+                                      stats={data}
+                                      {...url}
+                                      css={`
+                                        flex: 1;
+                                      `}
+                                    />
                                   </div>
                                 )}
                               />
