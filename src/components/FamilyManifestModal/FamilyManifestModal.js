@@ -61,8 +61,14 @@ const enhance = compose(
     `,
     variables: {
       sqon: {
-        op: 'in',
-        content: { field: 'participants.kf_id', value: familyMemberIds },
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: { field: 'participants.kf_id', value: familyMemberIds },
+          },
+          ...(sqon ? [{ op: 'not', content: [sqon] }] : []),
+        ],
       },
     },
   })),
@@ -181,20 +187,27 @@ const FamilyManifestModal = ({
           renderError
           projectId={projectId}
           query={`
-            query dataTypes(${dataTypes.map((dataType, i) => `$sqon${i}: JSON`).join(', ')}) {
+            query dataTypes(${dataTypes
+              .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
+              .join(', ')}) {
               file {
                 ${dataTypes
                   .map(
                     (dataType, i) => `
                     ${dataType.key.replace(/[^\da-z]/gi, '')}: aggregations(filters: $sqon${i}) {
-                      participants__family__family_members__kf_id {
-                        buckets {
-                          doc_count
-                        }
-                      }
                       file_size {
                         stats {
                           sum
+                        }
+                      }
+                    }
+                    ${dataType.key.replace(
+                      /[^\da-z]/gi,
+                      '',
+                    )}family: aggregations(filters: $sqon${i}family) {
+                      participants__family__family_members__kf_id {
+                        buckets {
+                          doc_count
                         }
                       }
                     }
@@ -205,20 +218,23 @@ const FamilyManifestModal = ({
             }
           `}
           variables={dataTypes.reduce((acc, dataType, i) => {
+            const dataTypeFilters = [
+              {
+                op: 'in',
+                content: { field: 'data_type', value: [dataType.key] },
+              },
+              {
+                op: 'in',
+                content: { field: 'participants.kf_id', value: familyMemberIds },
+              },
+            ];
+
             return {
               ...acc,
+              [`sqon${i}family`]: { op: 'and', content: dataTypeFilters },
               [`sqon${i}`]: {
                 op: 'and',
-                content: [
-                  {
-                    op: 'in',
-                    content: { field: 'data_type', value: [dataType.key] },
-                  },
-                  {
-                    op: 'in',
-                    content: { field: 'participants.kf_id', value: familyMemberIds },
-                  },
-                ],
+                content: [...dataTypeFilters, ...(sqon ? [{ op: 'not', content: [sqon] }] : [])],
               },
             };
           }, {})}
@@ -226,7 +242,7 @@ const FamilyManifestModal = ({
             return loading
               ? spinner
               : (dataTypes || []).map(bucket => {
-                  const aggs = get(data, `file.${bucket.key.replace(/[^\da-z]/gi, '')}`);
+                  const aggs = get(data, `file`);
                   return (
                     <DataTypeOption
                       key={bucket.key}
@@ -234,9 +250,15 @@ const FamilyManifestModal = ({
                       values={values}
                       familyMembers={get(
                         aggs,
-                        'participants__family__family_members__kf_id.buckets.length',
+                        `${bucket.key.replace(
+                          /[^\da-z]/gi,
+                          '',
+                        )}family.participants__family__family_members__kf_id.buckets.length`,
                       )}
-                      fileSize={get(aggs, 'file_size.stats.sum')}
+                      fileSize={get(
+                        aggs,
+                        `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
+                      )}
                     />
                   );
                 });
