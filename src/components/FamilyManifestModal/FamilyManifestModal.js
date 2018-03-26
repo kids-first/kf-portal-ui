@@ -7,7 +7,7 @@ import Spinner from 'react-spinkit';
 
 import { withQuery } from '@arranger/components';
 
-import { FamilyManifestStats } from '../Stats';
+import { FileRepoStats } from '../Stats';
 import { ModalFooter } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import DataTypeOption from './DataTypeOption';
@@ -153,7 +153,7 @@ const FamilyManifestModal = ({
       >
         File Summary:
       </div>
-      <FamilyManifestStats
+      <FileRepoStats
         sqon={sqon}
         index={index}
         projectId={projectId}
@@ -187,6 +187,11 @@ const FamilyManifestModal = ({
                   .map(
                     (dataType, i) => `
                     ${dataType.key.replace(/[^\da-z]/gi, '')}: aggregations(filters: $sqon${i}) {
+                      participants__family__family_members__kf_id {
+                        buckets {
+                          doc_count
+                        }
+                      }
                       file_size {
                         stats {
                           sum
@@ -220,17 +225,21 @@ const FamilyManifestModal = ({
           render={({ data, loading }) => {
             return loading
               ? spinner
-              : (dataTypes || []).map(bucket => (
-                  <DataTypeOption
-                    key={bucket.key}
-                    bucket={bucket}
-                    values={values}
-                    fileSize={get(
-                      data,
-                      `file.${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
-                    )}
-                  />
-                ));
+              : (dataTypes || []).map(bucket => {
+                  const aggs = get(data, `file.${bucket.key.replace(/[^\da-z]/gi, '')}`);
+                  return (
+                    <DataTypeOption
+                      key={bucket.key}
+                      bucket={bucket}
+                      values={values}
+                      familyMembers={get(
+                        aggs,
+                        'participants__family__family_members__kf_id.buckets.length',
+                      )}
+                      fileSize={get(aggs, 'file_size.stats.sum')}
+                    />
+                  );
+                });
           }}
         />
       )}

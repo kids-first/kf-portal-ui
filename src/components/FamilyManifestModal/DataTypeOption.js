@@ -2,7 +2,7 @@ import React from 'react';
 import { Field } from 'formik';
 import filesize from 'filesize';
 
-const DataTypeOption = ({ bucket, values, fileSize }) => {
+const DataTypeOption = ({ bucket, values, fileSize, familyMembers }) => {
   return (
     <label
       css={`
@@ -58,6 +58,26 @@ const DataTypeOption = ({ bucket, values, fileSize }) => {
           `}
         >
           {filesize(fileSize || 0, { base: 10 }).toUpperCase()}
+        </span>
+        <div
+          css={`
+            width: 2px;
+            height: 15px;
+            background: currentColor;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 5px 0 18px;
+          `}
+        />
+        <span
+          css={`
+            vertical-align: middle;
+            display: inline-block;
+            text-align: right;
+            min-width: 170px;
+          `}
+        >
+          {familyMembers} Family Members
         </span>
       </div>
     </label>
