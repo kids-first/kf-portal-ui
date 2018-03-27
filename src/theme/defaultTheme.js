@@ -175,6 +175,7 @@ const components = {
     margin: 0px 4px;
     border-radius: 19px;
     background-color: ${colors.tertiary};
+    white-space: nowrap;
 
     &:hover {
       background-color: ${colors.tertiaryHover};
