@@ -27,6 +27,7 @@ import Gravtar from 'uikit/Gravatar';
 
 import AboutMe from './AboutMe';
 import Settings from './Settings';
+import CompletionWrapper from './CompletionWrapper';
 
 export const Container = styled('div')`
   justify-content: space-around;
@@ -213,7 +214,15 @@ export default compose(
             align-items: center;
           `}
         >
-          <CompleteOMeter percentage={state.percentageFilled} role={get(profile.roles, 0)} />
+          <CompletionWrapper
+            completed={state.percentageFilled}
+            css={`
+              width: 130px;
+            `}
+          >
+            <CompleteOMeter percentage={state.percentageFilled} />
+          </CompletionWrapper>
+
           <div
             css={`
               font-family: 'Open Sans';
@@ -221,10 +230,11 @@ export default compose(
               font-style: italic;
               line-height: 1.69;
               color: #ffffff;
+              padding-top: 21px;
             `}
           >
-            Complete your profile for a more personalized experience and to help encourage
-            collaboration!
+            Complete your profile for a more personalized<br />
+            experience and to help encourage collaboration!
           </div>
         </div>
       </Container>
