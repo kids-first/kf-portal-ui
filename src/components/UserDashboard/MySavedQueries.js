@@ -70,8 +70,11 @@ const MySavedQueries = compose(
           css={`
             display: flex;
             flex-grow: 1;
-            padding: 10px 20px;
-            margin-bottom: 20px;
+            padding: 10px 20px 30px;
+            ${queries.length > 0 &&
+              `
+              border-bottom: 2px dotted #a9adc0;
+            `};
           `}
         >
           <StyledH3
@@ -115,19 +118,7 @@ const MySavedQueries = compose(
             </span>
           </div>
         </div>
-        {queries.length > 0 ? (
-          <div
-            css={`
-              display: block;
-              width: 100%;
-              height: 1px;
-              background-image: linear-gradient(to right, #a9adc0 10%, rgba(255, 255, 255, 0) 0%);
-              background-position: top;
-              background-size: 5px 1px;
-              background-repeat: repeat-x;
-            `}
-          />
-        ) : null}
+
         <div
           css={`
             overflow: auto;
