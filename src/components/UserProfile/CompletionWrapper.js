@@ -1,19 +1,11 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { injectState } from 'freactal/lib/inject';
 import { VictoryPie } from 'victory-pie';
 
-const enhance = compose(withTheme, injectState);
+const enhance = compose(withTheme);
 
-const CompletionWrapper = ({
-  completed,
-  theme,
-  state: { loggedInUser },
-  children,
-  className,
-  innerCircleSize = '80%',
-}) => {
+const CompletionWrapper = ({ completed, theme, children, className, innerCircleSize = '80%' }) => {
   return (
     <div
       css={`
