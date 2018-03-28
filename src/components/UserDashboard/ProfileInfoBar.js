@@ -1,6 +1,6 @@
 import React from 'react';
 import Gravtar from 'uikit/Gravatar';
-
+import { Link } from 'react-router-dom';
 import EditButton from './EditButton';
 
 import SettingsButton from './SettingsButton';
@@ -57,7 +57,8 @@ export default ({ theme, percentageFilled, loggedInUser }) => (
       </div>
     </RoleIconButton>
     <div>
-      <div
+      <Link
+        to={`/user/${loggedInUser.egoId}#aboutMe`}
         css={`
           text-decoration: underline;
           text-align: center;
@@ -71,7 +72,7 @@ export default ({ theme, percentageFilled, loggedInUser }) => (
       >
         {loggedInUser.title.replace(/^./, m => m.toUpperCase())}. {loggedInUser.firstName}{' '}
         {loggedInUser.lastName}
-      </div>
+      </Link>
       {[
         loggedInUser.jobTitle && (
           <span

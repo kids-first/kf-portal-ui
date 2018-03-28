@@ -2,13 +2,14 @@ import React from 'react';
 import Spinner from 'react-spinkit';
 import { Link } from 'react-router-dom';
 import { distanceInWords } from 'date-fns';
-import SaveIcon from 'react-icons/lib/fa/floppy-o';
+
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { StyledH3 } from './styles';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
+import SaveIcon from '../../icons/SaveIcon';
 
 const MySavedQueries = compose(
   provideSavedQueries,
@@ -84,27 +85,34 @@ const MySavedQueries = compose(
           <div
             css={`
               margin-left: auto;
-              align-items: end;
+              align-items: center;
               display: flex;
-              line-height: 27px;
+              align-items: baseline;
             `}
           >
-            <span
+            <SaveIcon
               css={`
-                margin-top: -2px;
+                width: 16px;
+                color: #a9adc0;
               `}
-            >
-              <SaveIcon />
-            </span>
+            />
             <span
               css={`
-                padding: 0 5px;
+                font-size: 20px;
+                padding: 0 6px 0 9px;
                 font-size: 22px;
               `}
             >
               {queries.length}
             </span>
-            <span>Queries</span>
+            <span
+              css={`
+                font-size: 14px;
+                color: #a9adc0;
+              `}
+            >
+              Queries
+            </span>
           </div>
         </div>
         {queries.length > 0 ? (
