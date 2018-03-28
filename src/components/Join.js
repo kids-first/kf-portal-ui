@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
 import { compose, withState } from 'recompose';
@@ -139,7 +139,7 @@ const Consent = compose(
   },
 );
 
-const ButtonsDiv = styled('div')`
+export const ButtonsDiv = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -188,7 +188,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
             },
             {
               title: 'Basic Info',
-              render: ({ nextStep, disableNextStep }) => (
+              render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
                 <div>
                   <h3 className={theme.h3}>Tell us about yourself</h3>
                   <p>
@@ -198,89 +198,70 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                   <SelectRoleForm
                     onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
                     onValidChange={isValid => disableNextStep(!isValid)}
+                    {...{ nextStep, nextDisabled, prevDisabled }}
                   />
                 </div>
-              ),
-              renderButtons: ({ nextStep, prevStep, nextDisabled, prevDisabled }) => (
-                <ButtonsDiv>
-                  <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
-                    <LeftIcon />
-                    Back
-                  </DeleteButton>
-                  <div className={theme.row}>
-                    <DeleteButton
-                      css={`
-                        ${theme.wizardButton} font-weight: 300;
-                      `}
-                    >
-                      Cancel
-                    </DeleteButton>
-                    <button
-                      className={theme.actionButton}
-                      onClick={nextStep}
-                      disabled={nextDisabled}
-                    >
-                      Next
-                      <RightIcon />
-                    </button>
-                  </div>
-                </ButtonsDiv>
               ),
               canGoBack: true,
             },
             {
               title: 'Consent',
-              render: ({ disableNextStep, customStepMessage, setCustomStepMessage }) => (
-                <Consent
-                  {...{
-                    disableNextStep,
-                    customStepMessage,
-                    setCustomStepMessage,
-                  }}
-                />
-              ),
-              renderButtons: ({
+              render: ({
+                disableNextStep,
+                customStepMessage,
+                setCustomStepMessage,
                 nextStep,
                 prevStep,
                 nextDisabled,
                 prevDisabled,
-                customStepMessage,
-                setCustomStepMessage,
               }) => (
-                <ButtonsDiv>
-                  <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
-                    <LeftIcon />
-                    Back
-                  </button>
-                  <div className={theme.row}>
-                    <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
+                <Fragment>
+                  <Consent
+                    {...{
+                      disableNextStep,
+                      customStepMessage,
+                      setCustomStepMessage,
+                    }}
+                  />
+                  <ButtonsDiv>
                     <button
-                      className={theme.actionButton}
-                      onClick={() => {
-                        if (!nextDisabled) {
-                          setToast({
-                            id: `${Date.now()}`,
-                            action: 'success',
-                            component: (
-                              <div>
-                                Fill out your profile, or skip and{' '}
-                                <ToSearchPage index="file" onClick={() => closeToast()}>
-                                  browse data
-                                </ToSearchPage>
-                              </div>
-                            ),
-                          });
-                          history.push(`/user/${loggedInUser.egoId}`);
-                        } else {
-                          setCustomStepMessage('You must accept terms to continue');
-                        }
-                      }}
+                      className={theme.wizardButton}
+                      onClick={prevStep}
+                      disabled={prevDisabled}
                     >
-                      Save
-                      <RightIcon />
+                      <LeftIcon />
+                      Back
                     </button>
-                  </div>
-                </ButtonsDiv>
+                    <div className={theme.row}>
+                      <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
+                      <button
+                        className={theme.actionButton}
+                        onClick={() => {
+                          if (!nextDisabled) {
+                            setToast({
+                              id: `${Date.now()}`,
+                              action: 'success',
+                              component: (
+                                <div>
+                                  Fill out your profile, or skip and{' '}
+                                  <ToSearchPage index="file" onClick={() => closeToast()}>
+                                    browse data
+                                  </ToSearchPage>
+                                </div>
+                              ),
+                            });
+                            history.push(`/user/${loggedInUser.egoId}`);
+                          } else {
+                            setCustomStepMessage('You must accept terms to continue');
+                          }
+                        }}
+                      >
+                        Save
+                        <RightIcon />
+                      </button>
+                    </div>
+                  </ButtonsDiv>
+                </Fragment>
               ),
               canGoBack: false,
             },
