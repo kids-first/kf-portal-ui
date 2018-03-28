@@ -40,6 +40,7 @@ export const IntegrationsDiv = styled.div`
 export const IntegrationsCircleDiv = styled.div`
   width: 82px;
   height: 82px;
+  flex: none;
   border-radius: 100%;
   background: #fff;
   display: flex;
