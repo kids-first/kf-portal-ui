@@ -1,13 +1,11 @@
 import React from 'react';
-import { get } from 'lodash';
-import { ROLES } from 'common/constants';
 import Gravtar from 'uikit/Gravatar';
 
-import { SpacedSpan } from './styles';
 import EditButton from './EditButton';
 
 import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
+import RoleIconButton from '../RoleIconButton';
 
 export default ({ theme, percentageFilled, loggedInUser }) => (
   <div
@@ -18,13 +16,13 @@ export default ({ theme, percentageFilled, loggedInUser }) => (
         linear-gradient(to bottom, #1d78b9, #009bb8 52%, #02b0ed);
       box-shadow: 0 0 4.8px 0.2px #a0a0a3;
       padding-top: 40px;
-      justify-content: flex-start;
       align-content: space-around;
       align-items: center;
       color: #fff;
       font-family: Montserrat;
       font-size: 14px;
       flex: none;
+      text-align: center;
     `}
   >
     <CompletionWrapper completed={percentageFilled} innerCircleSize="83.18%">
@@ -40,63 +38,64 @@ export default ({ theme, percentageFilled, loggedInUser }) => (
       />
     </CompletionWrapper>
 
-    <div
+    <RoleIconButton
       css={`
-        padding-top: 20px;
+        margin-top: 20px;
+        margin-bottom: 43px;
+        width: 290px;
       `}
     >
-      {get(
-        ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {}),
-        get(loggedInUser.roles, 0),
-        () => {},
-      )({ height: '45px', fill: '#fff' })}
-      <div
-        css={`
-          ${theme.pill};
-          display: flex;
-          justify-content: space-around;
-          text-transform: capitalize;
-          width: 250px;
-          height: 24px;
-          margin-top: -45px;
-          padding-left: 45px;
-        `}
-      >
-        <div
+      <div>
+        <span
           css={`
             font-weight: 500;
           `}
         >
-          {loggedInUser.roles}
-        </div>
-        <div>
+          {(percentageFilled * 100).toFixed(0)}%
+        </span>{' '}
+        Complete
+      </div>
+    </RoleIconButton>
+    <div>
+      <div
+        css={`
+          text-decoration: underline;
+          text-align: center;
+          color: #ffffff;
+          font-size: 28px;
+          font-weight: 500;
+          line-height: 1.11;
+          letter-spacing: 0.4px;
+          margin-bottom: 24px;
+        `}
+      >
+        {loggedInUser.title.replace(/^./, m => m.toUpperCase())}. {loggedInUser.firstName}{' '}
+        {loggedInUser.lastName}
+      </div>
+      {[
+        loggedInUser.jobTitle && (
           <span
             css={`
-              font-weight: 500;
+              font-size: 18px;
             `}
           >
-            {(percentageFilled * 100).toFixed(0)}%
-          </span>{' '}
-          Complete
-        </div>
+            {loggedInUser.jobTitle}
+          </span>
+        ),
+        loggedInUser.institution,
+        [loggedInUser.city, loggedInUser.state].filter(Boolean).join(', '),
+        loggedInUser.country,
+      ]
+        .filter(Boolean)
+        .map((str, i) => <div key={`${str}${i}`}>{str}</div>)}
+      <div
+        css={`
+          margin: 40px 0 58px;
+          text-decoration: underline;
+        `}
+      >
+        {loggedInUser.email}
       </div>
-    </div>
-    <SpacedSpan
-      css={`
-        text-decoration: underline;
-      `}
-    >{`${loggedInUser.firstName} ${loggedInUser.lastName}`}</SpacedSpan>
-    <SpacedSpan>{loggedInUser.jobTitle}</SpacedSpan>
-    <SpacedSpan>{loggedInUser.institution}</SpacedSpan>
-    <SpacedSpan>{[loggedInUser.city, loggedInUser.state].filter(Boolean).join(', ')}</SpacedSpan>
-    <SpacedSpan>{loggedInUser.country}</SpacedSpan>
-    <div
-      css={`
-        margin: 50px 0;
-        text-decoration: underline;
-      `}
-    >
-      {loggedInUser.email}
     </div>
     <div
       css={`

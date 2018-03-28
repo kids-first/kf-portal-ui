@@ -11,10 +11,6 @@ export const StyledH3 = styled('h3')`
   margin: 0;
 `;
 
-export const SpacedSpan = styled('span')`
-  padding-top: 8px;
-`;
-
 export const StyledH2 = styled('h2')`
   font-family: Montserrat;
   font-size: 28px;
