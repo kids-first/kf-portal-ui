@@ -6,7 +6,7 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 
 import Login from 'components/Login';
 
-const LoginPage = compose(withRouter, withTheme)(({ history, theme }) => (
+const LoginPage = compose(withRouter, withTheme)(({ history, location, theme }) => (
   <div
     css={`
       width: 630px;
@@ -37,7 +37,7 @@ const LoginPage = compose(withRouter, withTheme)(({ history, theme }) => (
         onFinish={user => {
           if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
             history.push('/join');
-          } else {
+          } else if (['/', '/join'].includes(location.pathname)) {
             history.push('/dashboard');
           }
         }}
