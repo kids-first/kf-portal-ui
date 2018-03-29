@@ -6,7 +6,6 @@ import { Link, Route, Switch, Redirect } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import Modal from './components/Modal/index.js';
-import Spinner from 'react-spinkit';
 
 import Toast from 'uikit/Toast';
 import UserProfile from 'components/UserProfile';
@@ -103,6 +102,7 @@ const SideImagePage = ({ Component, sideImage, ...props }) => (
           box-shadow: 0 0 6px 0.1px #bbbbbb;
         `}
       />
+
       <Component {...props} />
     </div>
   </div>
@@ -110,25 +110,7 @@ const SideImagePage = ({ Component, sideImage, ...props }) => (
 
 const forceSelectRole = ({ loggedInUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
-    return (
-      <div
-        css={`
-          height: 100%;
-          display: flex;
-        `}
-      >
-        <Spinner
-          fadeIn="none"
-          name="circle"
-          color="#a9adc0"
-          style={{
-            width: 60,
-            height: 60,
-            margin: 'auto',
-          }}
-        />
-      </div>
-    );
+    return <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />;
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   } else {
