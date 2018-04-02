@@ -20,6 +20,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
 
   return (
     <div
+      className={`stat`}
       css={`
         display: flex;
         flex-grow: 1;
@@ -78,6 +79,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
 
 export default ({ stats, className, ...props }) => (
   <div
+    className={`statContainer`}
     css={`
       border: solid 1px #e0e1e6;
       display: flex;

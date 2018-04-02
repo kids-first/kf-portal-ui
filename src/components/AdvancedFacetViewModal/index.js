@@ -28,6 +28,7 @@ class AdvancedFacetViewModalContent extends React.Component {
     return (
       <React.Fragment>
         <div
+          className={`afvModalContent`}
           css={`
             flex: 1;
             display: flex;
