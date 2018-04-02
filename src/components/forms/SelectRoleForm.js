@@ -4,9 +4,13 @@ import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
 import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import LeftIcon from 'react-icons/lib/fa/angle-left';
+import RightIcon from 'react-icons/lib/fa/angle-right';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
+import { ButtonsDiv } from '../Join';
+import DeleteButton from 'components/loginButtons/DeleteButton';
 
 const StyledLabel = styled('label')`
   width: 215px;
@@ -20,7 +24,7 @@ const StyledLabel = styled('label')`
   color: ${props => props.theme.greyScale1};
 `;
 
-const enhance = compose(
+export const enhance = compose(
   withTheme,
   injectState,
   withFormik({
@@ -86,7 +90,7 @@ const enhance = compose(
   withPropsOnChange(['isValid'], ({ isValid, onValidChange }) => onValidChange(isValid)),
 );
 
-const SelectRoleForm = ({
+export const SelectRoleForm = ({
   theme,
   onFinish,
   errors,
@@ -98,6 +102,9 @@ const SelectRoleForm = ({
   isSubmitting,
   values,
   state: { percentageFilled },
+  nextStep,
+  nextDisabled,
+  prevDisabled,
 }) => {
   return (
     <div>
@@ -189,7 +196,6 @@ const SelectRoleForm = ({
                   value={type}
                   checked={values.roles.toLowerCase() === type}
                   name="roles"
-                  onBlur={submitForm}
                 />
                 {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
                 <div>
@@ -215,6 +221,33 @@ const SelectRoleForm = ({
           {touched.roles && errors.roles && <div>{errors.roles}</div>}
         </div>
       </form>
+
+      <ButtonsDiv>
+        <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
+          <LeftIcon />
+          Back
+        </DeleteButton>
+        <div className={theme.row}>
+          <DeleteButton
+            css={`
+              ${theme.wizardButton} font-weight: 300;
+            `}
+          >
+            Cancel
+          </DeleteButton>
+          <button
+            className={theme.actionButton}
+            onClick={() => {
+              submitForm();
+              nextStep();
+            }}
+            disabled={nextDisabled}
+          >
+            Next
+            <RightIcon />
+          </button>
+        </div>
+      </ButtonsDiv>
     </div>
   );
 };

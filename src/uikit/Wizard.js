@@ -128,22 +128,15 @@ export default compose(
       </div>
       {currentStep.render
         ? currentStep.render({
-            nextStep,
-            prevStep,
             disableNextStep: setNextDisabled,
             customStepMessage,
             setCustomStepMessage,
+            nextStep,
+            prevStep,
+            nextDisabled,
+            prevDisabled: index - 1 < 0 || !steps[index - 1].canGoBack,
           })
         : currentStep.Component}
-      {currentStep.renderButtons &&
-        currentStep.renderButtons({
-          customStepMessage,
-          setCustomStepMessage,
-          nextStep,
-          prevStep,
-          nextDisabled,
-          prevDisabled: index - 1 < 0 || !steps[index - 1].canGoBack,
-        })}
     </div>
   ),
 );
