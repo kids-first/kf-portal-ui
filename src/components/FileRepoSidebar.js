@@ -25,12 +25,15 @@ import FamilyManifestModal from './FamilyManifestModal';
 
 const styles = {
   container: css`
-    flex: none;
-    width: 310px;
+    overflow-y: auto;
     background-color: #f4f5f8;
     box-shadow: 0 0 4.9px 0.2px #a0a0a3;
     border: solid 1px #c6c7cc;
     padding: 30px 5px 30px 15px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    width: 310px;
+    min-width: 265px;
   `,
 };
 

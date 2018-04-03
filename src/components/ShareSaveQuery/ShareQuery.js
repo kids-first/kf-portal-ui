@@ -60,6 +60,7 @@ export default injectState(
     };
 
     render() {
+      const { className = '' } = this.props;
       return (
         <div
           css={`
@@ -69,6 +70,7 @@ export default injectState(
             padding: 10px;
             background-color: aliceblue;
             border: 1px solid #d6d6d6;
+            ${className};
           `}
         >
           <div id="share" className="sqon-bubble sqon-clear" onClick={this.share}>

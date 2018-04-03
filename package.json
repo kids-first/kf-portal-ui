@@ -26,6 +26,7 @@
     "react-dom": "^16.3.0",
     "react-emotion": "^9.0.0",
     "react-icons": "^2.2.7",
+    "react-measure": "^2.0.2",
     "react-modal": "^3.3.1",
     "react-places-autocomplete": "^6.1.2",
     "react-portal-tooltip": "^2.3.0",
