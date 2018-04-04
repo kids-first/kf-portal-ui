@@ -5,27 +5,15 @@ import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { ModalFooter } from 'components/Modal/index.js';
+import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
-import ErrorIcon from 'icons/ErrorIcon';
+
 import { cavaticaWebRoot } from 'common/injectGlobals';
 
 import { css } from 'emotion';
 import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
-
-const ModalWarning = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: left;
-  background-color: #f9dee1;
-  border-radius: 7px;
-  border-style: solid;
-  border-color: #e45562;
-  border-width: 1px;
-  padding: 10px;
-`;
 
 const NumberBullet = styled.span`
   color: white;
@@ -47,6 +35,14 @@ const TokenTitle = styled.span`
   margin-bottom: 10px;
 `;
 
+const TokenInput = styled.input`
+  padding: 6px;
+  font-size: 16px;
+  border-radius: 10px;
+  width: 35em;
+  max-width: 90%;
+`;
+
 const FormErrorMessage = styled.div`
   color: #e45562;
   padding: 10px;
@@ -54,14 +50,8 @@ const FormErrorMessage = styled.div`
   height: 1.6em;
 `;
 
-const TokenInput = styled.input`
-  padding: 6px;
-  font-size: 16px;
-  border-radius: 10px;
-`;
-
 const styles = css`
-  div {
+  div.stepText {
     line-height: 1.6em;
   }
 
@@ -101,7 +91,7 @@ const submitCavaticaToken = async ({
   }
 };
 
-const CavaticaTokenInput = ({
+const CavaticaConnectModal = ({
   state,
   effects,
   theme,
@@ -120,17 +110,8 @@ const CavaticaTokenInput = ({
       <div>
         {props.withWarning && (
           <ModalWarning>
-            <div
-              css={`
-                padding-right: 10px;
-              `}
-            >
-              <ErrorIcon width={30} height={30} fill={`#e45562`} />
-            </div>
-            <div classNAme="warningMessage">
-              You have not connected to your Cavatica account. Please follow the instructions below
-              to connect and start copying files.
-            </div>
+            You have not connected to your Cavatica account. Please follow the instructions below to
+            connect and start copying files.
           </ModalWarning>
         )}
         <div className="stepRow">
@@ -213,4 +194,4 @@ const CavaticaTokenInput = ({
   );
 };
 
-export default enhance(CavaticaTokenInput);
+export default enhance(CavaticaConnectModal);

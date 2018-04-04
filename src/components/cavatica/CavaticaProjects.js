@@ -1,26 +1,15 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import { injectState } from 'freactal';
+import { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 
-import {
-  getProjects as getCavaticaProjects,
-  convertGen3FileIds,
-  copyFiles as copyCavaticaFiles,
-} from 'services/cavatica';
-import { getFilesById } from 'services/arranger';
+import { getProjects as getCavaticaProjects } from 'services/cavatica';
 
-import cavaticaLogo from 'assets/logomark-cavatica.svg';
-import PlusIcon from 'icons/PlusCircleIcon';
-import ExternalLink from 'uikit/ExternalLink';
-import NiceWhiteButton from 'uikit/NiceWhiteButton';
-import DoubleArrowRight from 'icons/DoubleChevronRightIcon';
+import CavaticaAddProject from './CavaticaAddProject';
 
-const getGen3UUIDs = async arrangerIds => {
-  const fileData = await getFilesById({ ids: arrangerIds, fields: ['uuid'] });
-  return fileData.map(file => file.node.uuid);
-};
+import CheckIcon from 'icons/CircleCheckIcon';
 
 const enhance = compose(
   injectState,
@@ -38,25 +27,67 @@ const enhance = compose(
     },
   }),
 );
+const styles = theme => css`
+  border: solid 1px ${theme.greyScale5};
 
-const ProjectSelector = styled.select`
+  .header,
+  .footer {
+    background-color: ${theme.greyScale10};
+    color: ${theme.greyScale9};
+  }
+
+  .header {
+    display: flex;
+    padding: 5px;
+    justify-content: space-between;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  input {
+    ${theme.textarea};
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: solid 1px #cacbcf;
+    padding: 5px;
+  }
+`;
+
+const ProjectSelector = styled.div`
   border: none;
   overflow-y: auto;
   overflow-x: none;
+  cursor: default;
 
-  option {
-    font-size: 1.4em;
-    padding: 3px;
-    padding-left: 15px;
+  height: 9em;
+
+  div.projectOption {
+    ${props => props.theme.row};
+    padding: 8px;
+    border-bottom: solid 1px ${props => props.theme.greyScale5};
+    font-size: 14px;
     color: ${props => props.theme.primary};
   }
-  option:checked {
+
+  div.projectOption:hover,
+  div.selected {
     background-color: ${props => props.theme.optionSelected};
-    color: yellow;
+    color: black;
   }
-  option:hover {
-    background-color: ${props => props.theme.optionSelected};
-    color: black !important;
+
+  div.checkSymbol {
+    width: 20px;
+    padding-top: 2px;
+    margin-bottom: -2px;
   }
 `;
 
@@ -75,32 +106,19 @@ const CavaticaProjects = ({
   ...props
 }) => {
   return (
-    <div css={props.styles}>
-      <div className="wrapper">
-        <div className="header">
-          <div css="margin-top:3px;">
-            <span>Select your project:</span>
-          </div>
-          <div css="margin-left:9px;">
-            <button
-              className="niceWhiteButton"
-              onClick={() => {
-                if (typeof props.onAddProject === 'function') props.onAddProject();
-              }}
-            >
-              <div className="verticalCenter">
-                <PlusIcon
-                  fill={theme.tertiary}
-                  width="14px"
-                  height="14px"
-                  css="margin-right: 7px;"
-                />
-              </div>
-              <div>New Project</div>
-            </button>
-          </div>
-        </div>
-        <div className="body">
+    <div css={styles(theme)}>
+      <div className="header">
+        <span
+          css={`
+            letter-spacing: 0.2px;
+            font-size: 11px;
+            line-height: 2.55;
+            text-transform: uppercase;
+          `}
+        >
+          Cavatica Projects:
+        </span>
+        {
           <input
             className="textInput"
             id="cavaticaProjectSearch"
@@ -112,106 +130,46 @@ const CavaticaProjects = ({
               setProjectSearchValue(e.target.value);
             }}
           />
-          <ProjectSelector
-            size="6"
-            onChange={e => {
-              setSelectedProject(e.target.value);
-            }}
-          >
-            {projectList &&
-              projectList.map &&
-              projectList.map(project => (
-                <option key={project.id} value={project.id}>
-                  {project.name}
-                </option>
-              ))}
-          </ProjectSelector>
-        </div>
-        <div className="footer">
-          <NiceWhiteButton
-            css="width:100%;"
-            disabled={!selectedProject || props.selectedTableRows.length === 0}
-            onClick={async () => {
-              // Convert arranger IDs to Gen3 UUIDs
-              const uuids = await getGen3UUIDs(props.selectedTableRows);
-              // alert(`Gen3 UUIDs: ${uuids}`);
-
-              // Convert Gen3 UUIDs to CavaticaIds
-              const conversionResponse = await convertGen3FileIds({ ids: uuids });
-              const cavaticaIds = conversionResponse.map(item => item.id);
-              // alert(`Cavatica IDs: ${cavaticaIds}`);
-
-              // Copy Files
-              copyCavaticaFiles({
-                project: selectedProject,
-                ids: cavaticaIds,
-              }).then(r => {
-                setToast({
-                  id: `${Date.now()}`,
-                  action: 'success',
-                  component: (
-                    <div
-                      css={`
-                        display: flex;
-                      `}
-                    >
-                      <div
-                        css={`
-                          display: flex;
-                          flex-direction: column;
-                        `}
-                      >
-                        <div
-                          css={`
-                            font-size: 16px;
-                          `}
-                        >
-                          Success!
-                        </div>
-                        <div>Files were copied to your Cavatica project:</div>
-                        <div
-                          css={`
-                            color: ${theme.secondary};
-                            margin-bottom: 20px;
-                          `}
-                        >
-                          {projectList.filter(item => item.id === selectedProject)[0].name}
-                        </div>
-                        <ExternalLink
-                          css={`
-                            font-size: 14px;
-                          `}
-                          href={`https://kids-first-vayu.sbgenomics.com/u/${selectedProject}`}
-                        >
-                          Open project in Cavatica
-                          <DoubleArrowRight
-                            fill={theme.primary}
-                            width="10px"
-                            css="margin-left:4px;"
-                          />
-                        </ExternalLink>
-                      </div>
+        }
+      </div>
+      <div className="body">
+        <ProjectSelector onChange={e => {}}>
+          {projectList &&
+            projectList.map &&
+            projectList
+              .filter(project => {
+                if (project.id === selectedProject) return true;
+                return projectSearchValue !== '' ? project.name.includes(projectSearchValue) : true;
+              })
+              .map(project => {
+                const selected = selectedProject === project.id;
+                return (
+                  <div
+                    key={project.id}
+                    className={`projectOption ${selected ? 'selected' : ''}`}
+                    onClick={() => {
+                      setSelectedProject(project.id);
+                      props.onSelectProject(project);
+                    }}
+                  >
+                    <div className="checkSymbol">
+                      {selected && <CheckIcon width={14} height={14} fill={theme.active} />}
                     </div>
-                  ),
-                });
-                // alert(`Copy Response: ${JSON.stringify(r)}`);
-              });
-            }}
-          >
-            <div className="verticalCenter">
-              <img
-                alt=""
-                src={cavaticaLogo}
-                css={`
-                  width: 28px;
-                  height: 28px;
-                  margin-right: 7px;
-                `}
-              />
-            </div>
-            <div>Copy files to Cavatica project</div>
-          </NiceWhiteButton>
-        </div>
+                    <div>{project.name}</div>
+                  </div>
+                );
+              })}
+        </ProjectSelector>
+      </div>
+      <div className="footer">
+        <CavaticaAddProject
+          onSuccess={() => {
+            getCavaticaProjects().then(projects => {
+              setProjectList(projects);
+            });
+          }}
+          {...props}
+        />
       </div>
     </div>
   );

@@ -61,7 +61,7 @@ const Gen3ConnectionDetails = ({
           </div>
         </tr>
         <tr>
-          <span class="title"> You can download data from these studies:</span>
+          <span className="title"> You can download data from these studies:</span>
         </tr>
         <ul>
           {userDetails.project_access ? (
