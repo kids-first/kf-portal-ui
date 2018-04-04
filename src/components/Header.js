@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import styled, { css } from 'react-emotion';
-
+import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -86,12 +86,12 @@ const Header = ({
             >
               <li>
                 <NavLink to="/dashboard">
-                  <HouseIcon /> Dashboard
+                  <HouseIcon /> <Trans>Dashboard</Trans>
                 </NavLink>
               </li>
               <li>
                 <ToSearchPage index="file" css={theme.navLink}>
-                  <DatabaseIcon /> File Repository
+                  <DatabaseIcon /> <Trans>File Repository</Trans>
                 </ToSearchPage>
               </li>
             </ul>
@@ -107,11 +107,11 @@ const Header = ({
             <li>
               {path === '/' ? (
                 <Link css={theme.linkAsButton} to="/join">
-                  JOIN NOW
+                  <Trans>JOIN NOW</Trans>
                 </Link>
               ) : (
                 <Link css={theme.linkAsButton} to="/">
-                  LOGIN
+                  <Trans>LOGIN</Trans>
                 </Link>
               )}
             </li>
@@ -122,7 +122,7 @@ const Header = ({
               <Dropdown
                 items={[
                   <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
-                    My Profile
+                    <Trans>My Profile</Trans>
                   </DropdownLink>,
                   <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
                   <div
@@ -139,7 +139,7 @@ const Header = ({
                         text-decoration: none;
                       `}
                     >
-                      Logout
+                      <Trans>Logout</Trans>
                     </a>
                   </div>,
                 ]}
