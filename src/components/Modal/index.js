@@ -6,6 +6,7 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { getAppElement } from '../../services/globalDomNodes.js';
 import LoadingOnClick from 'components/LoadingOnClick';
+import ErrorIcon from 'icons/ErrorIcon';
 import Spinner from 'react-spinkit';
 
 const enhance = compose(withTheme, injectState);
@@ -32,13 +33,7 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
       margin-bottom: 1.5em;
     `}
   >
-    <h2
-      css={`
-        ${theme.modalHeader};
-      `}
-    >
-      <span>{title}</span>
-    </h2>
+    <span css={theme.modalTitle}>{title}</span>
     <CloseIcon
       css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
       fill="black"
@@ -46,6 +41,41 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
     />
   </div>
 );
+
+export const ModalWarning = enhance(({ theme, content, ...props }) => {
+  return (
+    <div
+      css={`
+        display: flex;
+        flex-direction: row;
+        align-items: left;
+        background-color: #f9dee1;
+        border-radius: 7px;
+        border-style: solid;
+        border-color: #e45562;
+        border-width: 1px;
+        padding: 10px;
+        margin-bottom: 1em;
+      `}
+    >
+      <div
+        css={`
+          padding-right: 10px;
+        `}
+      >
+        <ErrorIcon width={30} height={30} fill={`#e45562`} />
+      </div>
+      <div
+        css={`
+          padding-top: 2px;
+          line-height: 1.6em;
+        `}
+      >
+        {props.children}
+      </div>
+    </div>
+  );
+});
 
 export const ModalFooter = enhance(
   ({
