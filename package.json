@@ -37,11 +37,11 @@
     "react-scripts": "1.1.0",
     "react-share": "^2.0.0",
     "react-spinkit": "^3.0.0",
-    "react-svg-donut-chart": "^1.0.0",
     "react-tippy": "^1.2.2",
     "recompose": "^0.26.0",
     "scriptjs": "^2.5.8",
-    "url-join": "^2.0.2"
+    "url-join": "^2.0.2",
+    "victory-pie": "^14.0.1"
   },
   "scripts": {
     "start": "NODE_PATH=src react-app-rewired start",
