@@ -40,7 +40,7 @@ const enhance = compose(
       const studies = {};
       const names = {};
       const files = await getFilesById({
-        ids: this.props.selectedTableRows,
+        ids: this.props.filesSelected,
         fields: ['participants{hits{edges{node{study{external_id, name}}}}}', 'uuid'],
       });
       if (files && files.forEach) {
@@ -169,6 +169,8 @@ const CavaticaFileSummary = ({
   ...props
 }) => {
   const showUnauth = !!(state.unauthorizedFiles && state.unauthorizedFiles.length > 0);
+  const showAuth =
+    state.authorizedFiles !== null && (state.authorizedFiles.length > 0 || showUnauth);
   return (
     <div>
       <span css={theme.modalHeader}>File Summary:</span>
@@ -187,7 +189,7 @@ const CavaticaFileSummary = ({
               }}
             />
           )}
-          {state.authorizedFiles !== null && (
+          {showAuth && (
             <div className="summary">
               <div className="left block">
                 <div className="summaryLabel">

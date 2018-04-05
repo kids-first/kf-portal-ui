@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState } from 'recompose';
+import { compose, lifecycle, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
@@ -14,7 +14,7 @@ import CavaticaProjects from './CavaticaProjects';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 
 import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
-import { getFilesById } from 'services/arranger';
+import { getFilesById, getFilesByQuery } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
 
 const enhance = compose(
@@ -24,6 +24,21 @@ const enhance = compose(
   withRouter,
   withState('addingProject', 'setAddingProject', false),
   withState('selectedProjectData', 'setSelectedProjectData', null),
+  withState('filesSelected', 'setFilesSelected', []),
+  lifecycle({
+    async componentDidMount() {
+      const { selectedTableRows, setFilesSelected, sqon } = this.props;
+      let ids = selectedTableRows;
+      if (!ids || ids.length === 0) {
+        const response = await getFilesByQuery({
+          sqon,
+          fields: ['id'],
+        });
+        ids = response.map(file => file.node.id);
+      }
+      setFilesSelected(ids);
+    },
+  }),
 );
 
 const getGen3UUIDs = async arrangerIds => {
@@ -120,6 +135,7 @@ const CavaticaCopyModal = ({
   effects: { unsetModal, setToast, closeToast },
   theme,
   addingProject,
+  filesSelected,
   setAddingProject,
   selectedProjectData,
   selectedTableRows,
@@ -128,7 +144,7 @@ const CavaticaCopyModal = ({
 }) => {
   const unauthFilesWarning = state.unauthorizedFiles && state.unauthorizedFiles > 0;
   const gen3Connected = true && state.integrationTokens[GEN3];
-  const filesSelected = selectedTableRows && selectedTableRows.length > 0;
+  const isFilesSelected = filesSelected && filesSelected.length > 0;
   const showWarning = unauthFilesWarning || !gen3Connected;
   return (
     <div css={styles(theme)}>
@@ -158,11 +174,10 @@ const CavaticaCopyModal = ({
           )}
         </ModalWarning>
       )}
-      {!filesSelected && <ModalWarning>No files selected.</ModalWarning>}
       {gen3Connected &&
-        filesSelected && (
+        isFilesSelected && (
           <div className="content">
-            <CavaticaFileSummary {...props} />
+            <CavaticaFileSummary filesSelected={filesSelected} {...props} />
           </div>
         )}
       <div className="content">
@@ -183,7 +198,7 @@ const CavaticaCopyModal = ({
             try {
               const uuids = gen3Connected
                 ? state.authorizedFiles
-                : await getGen3UUIDs(selectedTableRows);
+                : await getGen3UUIDs(filesSelected);
               await copyToProject({
                 selectedProject: selectedProjectData.id,
                 selectedFiles: uuids,
@@ -204,7 +219,7 @@ const CavaticaCopyModal = ({
             !(
               selectedProjectData &&
               ((state.authorizedFiles && state.authorizedFiles.length > 0) ||
-                (!gen3Connected && filesSelected))
+                (!gen3Connected && isFilesSelected))
             ),
           submitText: gen3Connected
             ? `Copy ${state.authorizedFiles ? state.authorizedFiles.length : 0} files`.toUpperCase()
