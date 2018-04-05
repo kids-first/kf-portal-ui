@@ -28,6 +28,7 @@ import Gravtar from 'uikit/Gravatar';
 import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
+import RoleIconButton from '../RoleIconButton';
 
 export const Container = styled('div')`
   justify-content: space-around;
@@ -143,30 +144,8 @@ export default compose(
             padding: 0 15px;
           `}
         >
-          <div
-            className={css`
-              ${theme.pill} margin-bottom: 5px;
-              padding: 6px 10px 4px 10px;
-              display: flex;
-            `}
-          >
-            {get(
-              ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {}),
-              get(profile.roles, 0),
-              () => {},
-            )({ height: '19px', fill: '#fff' })}
-            <span
-              className={css`
-                font-family: Montserrat;
-                font-size: 12px;
-                font-weight: 300;
-                letter-spacing: 0.2px;
-                padding-left: 5px;
-              `}
-            >
-              {(ROLES.find(({ type }) => type === get(profile, 'roles[0]')) || {}).displayName}
-            </span>
-          </div>
+          <RoleIconButton />
+
           <h4
             className={css`
               ${theme.h4};

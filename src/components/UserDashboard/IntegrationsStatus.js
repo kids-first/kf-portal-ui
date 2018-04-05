@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckIcon from 'react-icons/lib/fa/check-circle';
+import CheckIcon from '../../icons/CheckCircleIcon';
 import ExternalLink from 'uikit/ExternalLink';
 
 const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => (
@@ -8,10 +8,28 @@ const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => 
       <div
         css={`
           color: ${theme.active};
+          display: flex;
+          align-items: center;
         `}
       >
-        <CheckIcon size={20} />
-        Connected to <ExternalLink href={url}>{name}</ExternalLink>.
+        <CheckIcon
+          css={`
+            width: 26px;
+            margin-right: 7px;
+          `}
+        />
+        <span>
+          Connected to{' '}
+          <ExternalLink
+            href={url}
+            hasExternalIcon={false}
+            css={`
+              color: #a42c90;
+            `}
+          >
+            {name}
+          </ExternalLink>.
+        </span>
       </div>
     ) : (
       unconnectedMsg

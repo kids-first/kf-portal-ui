@@ -90,19 +90,6 @@ const components = {
       text-decoration: none;
     }
   `,
-  pill: css`
-    border-radius: 16px;
-    background-color: ${colors.active};
-    border: solid 1px rgba(255, 255, 255, 0.39);
-    color: white;
-    padding: 4px 10px;
-    font-family: Montserrat;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
-    text-align: left;
-  `,
   listPill: css`
     border-radius: 12px;
     background-color: #404c9a;

@@ -45,8 +45,17 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           url="https://gen3.kids-first.io/"
           unconnectedMsg={
             <div>
-              Connect to <ExternalLink href="https://gen3.kids-first.io/">Gen3</ExternalLink> to
-              download controlled data
+              Connect to{' '}
+              <ExternalLink
+                href="https://gen3.kids-first.io/"
+                hasExternalIcon={false}
+                css={`
+                  color: #a42c90;
+                `}
+              >
+                Gen3
+              </ExternalLink>{' '}
+              to download controlled data
             </div>
           }
         />
@@ -80,7 +89,15 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           unconnectedMsg={
             <div>
               Analyze data quickly by connecting your Kids First account to{' '}
-              <ExternalLink href="http://cavatica.org/">Cavatica</ExternalLink>.
+              <ExternalLink
+                href="http://cavatica.org/"
+                hasExternalIcon={false}
+                css={`
+                  color: #a42c90;
+                `}
+              >
+                Cavatica
+              </ExternalLink>.
             </div>
           }
         />
