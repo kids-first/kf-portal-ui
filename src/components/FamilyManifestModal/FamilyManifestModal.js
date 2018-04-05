@@ -7,7 +7,7 @@ import Spinner from 'react-spinkit';
 
 import { withQuery } from '@arranger/components';
 
-import { FamilyManifestStats } from '../Stats';
+import { FileRepoStats } from '../Stats';
 import { ModalFooter } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import DataTypeOption from './DataTypeOption';
@@ -61,8 +61,14 @@ const enhance = compose(
     `,
     variables: {
       sqon: {
-        op: 'in',
-        content: { field: 'participants.kf_id', value: familyMemberIds },
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: { field: 'participants.kf_id', value: familyMemberIds },
+          },
+          ...(sqon ? [{ op: 'not', content: [sqon] }] : []),
+        ],
       },
     },
   })),
@@ -153,7 +159,7 @@ const FamilyManifestModal = ({
       >
         File Summary:
       </div>
-      <FamilyManifestStats
+      <FileRepoStats
         sqon={sqon}
         index={index}
         projectId={projectId}
@@ -181,7 +187,9 @@ const FamilyManifestModal = ({
           renderError
           projectId={projectId}
           query={`
-            query dataTypes(${dataTypes.map((dataType, i) => `$sqon${i}: JSON`).join(', ')}) {
+            query dataTypes(${dataTypes
+              .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
+              .join(', ')}) {
               file {
                 ${dataTypes
                   .map(
@@ -193,6 +201,16 @@ const FamilyManifestModal = ({
                         }
                       }
                     }
+                    ${dataType.key.replace(
+                      /[^\da-z]/gi,
+                      '',
+                    )}family: aggregations(filters: $sqon${i}family) {
+                      participants__family__family_members__kf_id {
+                        buckets {
+                          doc_count
+                        }
+                      }
+                    }
                   `,
                   )
                   .join('\n')}
@@ -200,37 +218,50 @@ const FamilyManifestModal = ({
             }
           `}
           variables={dataTypes.reduce((acc, dataType, i) => {
+            const dataTypeFilters = [
+              {
+                op: 'in',
+                content: { field: 'data_type', value: [dataType.key] },
+              },
+              {
+                op: 'in',
+                content: { field: 'participants.kf_id', value: familyMemberIds },
+              },
+            ];
+
             return {
               ...acc,
+              [`sqon${i}family`]: { op: 'and', content: dataTypeFilters },
               [`sqon${i}`]: {
                 op: 'and',
-                content: [
-                  {
-                    op: 'in',
-                    content: { field: 'data_type', value: [dataType.key] },
-                  },
-                  {
-                    op: 'in',
-                    content: { field: 'participants.kf_id', value: familyMemberIds },
-                  },
-                ],
+                content: [...dataTypeFilters, ...(sqon ? [{ op: 'not', content: [sqon] }] : [])],
               },
             };
           }, {})}
           render={({ data, loading }) => {
             return loading
               ? spinner
-              : (dataTypes || []).map(bucket => (
-                  <DataTypeOption
-                    key={bucket.key}
-                    bucket={bucket}
-                    values={values}
-                    fileSize={get(
-                      data,
-                      `file.${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
-                    )}
-                  />
-                ));
+              : (dataTypes || []).map(bucket => {
+                  const aggs = get(data, `file`);
+                  return (
+                    <DataTypeOption
+                      key={bucket.key}
+                      bucket={bucket}
+                      values={values}
+                      familyMembers={get(
+                        aggs,
+                        `${bucket.key.replace(
+                          /[^\da-z]/gi,
+                          '',
+                        )}family.participants__family__family_members__kf_id.buckets.length`,
+                      )}
+                      fileSize={get(
+                        aggs,
+                        `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
+                      )}
+                    />
+                  );
+                });
           }}
         />
       )}
