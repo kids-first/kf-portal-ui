@@ -37,26 +37,37 @@ const enhance = compose(
 
       // Get count of each study amongst files
       const counts = {};
+      const studies = {};
       const names = {};
-      const files = await getFiles(this.props.selectedTableRows);
-      files.forEach(file => {
-        const study = file.node.participants.hits.edges[0].node.study.external_id;
-        names[study] = file.node.participants.hits.edges[0].node.study.name;
-        counts[study] = counts[study] ? counts[study] + 1 : 1;
+      const files = await getFilesById({
+        ids: this.props.selectedTableRows,
+        fields: ['participants{hits{edges{node{study{external_id, name}}}}}', 'uuid'],
       });
+      if (files && files.forEach) {
+        files.forEach(file => {
+          const study = file.node.participants.hits.edges[0].node.study.external_id;
+          names[study] = file.node.participants.hits.edges[0].node.study.name;
+          counts[study] = counts[study] ? counts[study] + 1 : 1;
+          if (!studies[study]) {
+            studies[study] = [];
+          }
+          studies[study].push(file.node.uuid);
+        });
+      }
 
       // Sort file authorizations
-      let authorized = 0;
-      let unauthorized = 0;
+      let authorized = [];
+      let unauthorized = [];
       const studyData = { authorized: [], unauthorized: [], names };
-      for (const key in counts) {
+      for (const key in studies) {
+        const count = studies[key].length;
         const isAuth = approvedStudies.includes(key);
         if (isAuth) {
-          authorized += counts[key];
-          if (counts[key] > 0) studyData.authorized.push({ id: key, count: counts[key] });
+          authorized.push(...studies[key]);
+          if (count > 0) studyData.authorized.push({ id: key, count });
         } else {
-          unauthorized += counts[key];
-          if (counts[key] > 0) studyData.unauthorized.push({ id: key, count: counts[key] });
+          unauthorized.push(...studies[key]);
+          if (count > 0) studyData.unauthorized.push({ id: key, count });
         }
       }
 
@@ -70,14 +81,6 @@ const enhance = compose(
 
 const getUserInfo = async ({ integrationToken }) => {
   return await getGen3User(integrationToken);
-};
-
-const getFiles = async arrangerIds => {
-  return await getFilesById({
-    ids: arrangerIds,
-    fields: ['participants{hits{edges{node{study{external_id, name}}}}}', 'uuid'],
-  });
-  // return fileData.map(file => file.node.participants.hits.edges[0].node.study.external_id);
 };
 
 const styles = theme => css`
@@ -165,7 +168,7 @@ const CavaticaFileSummary = ({
   fileStudyData,
   ...props
 }) => {
-  const showUnauth = !!(state.unauthorizedFiles && state.unauthorizedFiles > 0);
+  const showUnauth = !!(state.unauthorizedFiles && state.unauthorizedFiles.length > 0);
   return (
     <div>
       <span css={theme.modalHeader}>File Summary:</span>
@@ -192,7 +195,7 @@ const CavaticaFileSummary = ({
                 </div>
                 <div className="summaryValue">
                   <CheckIcon className="icon" width={18} height={18} fill={theme.active} />
-                  <span className="number">{state.authorizedFiles}</span>
+                  <span className="number">{state.authorizedFiles.length}</span>
                   <span className="text">Files</span>
                 </div>
               </div>
@@ -209,7 +212,7 @@ const CavaticaFileSummary = ({
                       height={18}
                       fill={theme.errorDark}
                     />
-                    <span className="number">{state.unauthorizedFiles}</span>
+                    <span className="number">{state.unauthorizedFiles.length}</span>
                     <span className="text">Files</span>
                   </div>
                 </div>

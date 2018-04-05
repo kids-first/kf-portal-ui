@@ -14,16 +14,7 @@ import CavaticaProjects from './CavaticaProjects';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 
 import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
-import { getFilesById } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
-
-const getGen3UUIDs = async arrangerIds => {
-  const fileData = await getFilesById({
-    ids: arrangerIds,
-    fields: ['uuid', 'participants{hits{edges{node{study{external_id}}}}}'],
-  });
-  return fileData.map(file => file.node.uuid);
-};
 
 const enhance = compose(
   provideGen3FileAuthorizations,
@@ -34,12 +25,9 @@ const enhance = compose(
   withState('selectedProjectData', 'setSelectedProjectData', null),
 );
 
-const copyToProject = async ({ selectedTableRows, selectedProject }) => {
-  // Convert arranger IDs to Gen3 UUIDs
-  const uuids = await getGen3UUIDs(selectedTableRows);
-
+const copyToProject = async ({ selectedFiles, selectedProject }) => {
   // Convert Gen3 UUIDs to CavaticaIds
-  const conversionResponse = await convertGen3FileIds({ ids: uuids });
+  const conversionResponse = await convertGen3FileIds({ ids: selectedFiles });
   const cavaticaIds = conversionResponse.map(item => item.id);
 
   // Copy Files
@@ -185,7 +173,7 @@ const CavaticaCopyModal = ({
             try {
               await copyToProject({
                 selectedProject: selectedProjectData.id,
-                selectedTableRows: props.selectedTableRows,
+                selectedFiles: state.authorizedFiles,
               });
               setToast({
                 id: `${Date.now()}`,
@@ -198,10 +186,15 @@ const CavaticaCopyModal = ({
             }
           },
           submitDisabled:
-            !selectedProjectData ||
-            !(state.authorizedFiles > 0 || (!gen3Connected && filesSelected)),
+            //Disabled is inverse of enabled
+            //Enabled if project selected AND (we have authorized files OR no gen3 connection but files are selected)
+            !(
+              selectedProjectData &&
+              ((state.authorizedFiles && state.authorizedFiles.length > 0) ||
+                (!gen3Connected && filesSelected))
+            ),
           submitText: gen3Connected
-            ? `Copy ${state.authorizedFiles || 0} files`.toUpperCase()
+            ? `Copy ${state.authorizedFiles ? state.authorizedFiles.length : 0} files`.toUpperCase()
             : `Copy Authorized`.toUpperCase(),
         }}
       />
