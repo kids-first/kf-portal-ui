@@ -14,6 +14,7 @@ import CavaticaProjects from './CavaticaProjects';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 
 import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
+import { getFilesById } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
 
 const enhance = compose(
@@ -24,6 +25,14 @@ const enhance = compose(
   withState('addingProject', 'setAddingProject', false),
   withState('selectedProjectData', 'setSelectedProjectData', null),
 );
+
+const getGen3UUIDs = async arrangerIds => {
+  const fileData = await getFilesById({
+    ids: arrangerIds,
+    fields: ['uuid'],
+  });
+  return fileData.map(file => file.node.uuid);
+};
 
 const copyToProject = async ({ selectedFiles, selectedProject }) => {
   // Convert Gen3 UUIDs to CavaticaIds
@@ -113,12 +122,13 @@ const CavaticaCopyModal = ({
   addingProject,
   setAddingProject,
   selectedProjectData,
+  selectedTableRows,
   setSelectedProjectData,
   ...props
 }) => {
   const unauthFilesWarning = state.unauthorizedFiles && state.unauthorizedFiles > 0;
   const gen3Connected = true && state.integrationTokens[GEN3];
-  const filesSelected = props.selectedTableRows && props.selectedTableRows.length > 0;
+  const filesSelected = selectedTableRows && selectedTableRows.length > 0;
   const showWarning = unauthFilesWarning || !gen3Connected;
   return (
     <div css={styles(theme)}>
@@ -171,9 +181,12 @@ const CavaticaCopyModal = ({
         {...{
           handleSubmit: async () => {
             try {
+              const uuids = gen3Connected
+                ? state.authorizedFiles
+                : await getGen3UUIDs(selectedTableRows);
               await copyToProject({
                 selectedProject: selectedProjectData.id,
-                selectedFiles: state.authorizedFiles,
+                selectedFiles: uuids,
               });
               setToast({
                 id: `${Date.now()}`,

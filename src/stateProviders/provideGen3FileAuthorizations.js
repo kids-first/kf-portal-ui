@@ -2,8 +2,8 @@ import { provideState, update } from 'freactal';
 
 export default provideState({
   initialState: props => ({
-    authorizedFiles: null,
-    unauthorizedFiles: null,
+    authorizedFiles: [],
+    unauthorizedFiles: [],
     fileStudyData: {},
     fileAuthInitialized: false,
   }),
