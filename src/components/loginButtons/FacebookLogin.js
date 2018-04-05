@@ -1,10 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
+
 import facebookSDK from 'services/facebookSDK';
 
 export default class extends React.Component<any, any> {
   async componentDidMount() {
-    await facebookSDK;
+    if (!global.FB) {
+      await facebookSDK();
+    }
     global.FB.getLoginStatus(response => {
       if (response.authResponse) {
         this.props.onLogin(response);
