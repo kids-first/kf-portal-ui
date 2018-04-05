@@ -7,13 +7,18 @@ import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 
-export default ({ theme, percentageFilled, loggedInUser }) => (
+export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
   <div
     css={`
       ${theme.column};
       width: 411px;
-      background-image: linear-gradient(rgba(64, 76, 154, 0.25), rgba(64, 76, 154, 0.25)),
-        linear-gradient(to bottom, #1d78b9, #009bb8 52%, #02b0ed);
+      height: 100%;
+      background-image: linear-gradient(
+        to bottom,
+        ${profileColors.gradientDark} 33%,
+        ${profileColors.gradientMid} 66%,
+        ${profileColors.gradientLight}
+      );
       box-shadow: 0 0 4.8px 0.2px #a0a0a3;
       padding-top: 40px;
       align-content: space-around;
@@ -70,8 +75,8 @@ export default ({ theme, percentageFilled, loggedInUser }) => (
           margin-bottom: 24px;
         `}
       >
-        {loggedInUser.title.replace(/^./, m => m.toUpperCase())}. {loggedInUser.firstName}{' '}
-        {loggedInUser.lastName}
+        {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
+        {loggedInUser.firstName} {loggedInUser.lastName}
       </Link>
       {[
         loggedInUser.jobTitle && (
