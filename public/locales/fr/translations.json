@@ -2,12 +2,43 @@
   "Filters": "Filters",
   "All Filters": "All Filters",
   "Export TSV": "Export TSV",
+  "join": {
+    "terms": {
+      "instructions": "Read and consent to our terms and conditions",
+      "title": "Draft for Demo Purposes",
+      "userAgreement": "I have read and agreed to the Kids First Data Research Portal Term and Conditions"
+    },
+    "wizard": {
+      "socialSelect": "Select a way to connect to the Kids First Data Resource Portal",
+      "dataConfidentiality": "Your information will be kept confidential and secure and is not shared with any of these providers.",
+      "basicInfoHeader": "Tell us about yourself",
+      "basicInfoInstructions": "Please provide information about yourself to help us personalize your experience.",
+      "profileOrBrowse": "Fill out your profile, or skip and <1> browse data </1>"
+    }
+  },
+  "Join Kids First": "Join Kids First",
+  "Back": "Back",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
+  "Log in": "Log in",
+  "New to Kids First?": "New to Kids First?",
+  "Join now": "Join now",
+  "login": {
+    "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
+  },
   "Dashboard": "Dashboard",
   "File Repository": "File Repository",
-  "Join now": "Join now",
   "Login": "Login",
   "My Profile": "My Profile",
   "Logout": "Logout",
+  "Kids First Website": "Kids First Website",
+  "Contact Us": "Contact Us",
+  "Policies": "Policies",
+  "Accessibility": "Accessibility",
+  "FOIA": "FOIA",
+  "Data Release -": "Data Release -",
+  "dataReleaseVersion": "Unreleased",
   "Actions": "Actions",
   "fileRepoSidebar": {
     "noneSelected": "If you have not selected any files, all files in your query will be included in the actions.",
@@ -18,6 +49,5 @@
   "Failed!": "Failed!",
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
-  "Data Analysis": "Data Analysis",
-  "Cancel": "Cancel"
+  "Data Analysis": "Data Analysis"
 }

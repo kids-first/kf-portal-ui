@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
+import { Trans } from 'react-i18next';
 
 const wait = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
@@ -30,7 +31,7 @@ const Logout = ({
     `}
     onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens })}
   >
-    Logout
+    <Trans>Logout</Trans>
   </button>
 );
 

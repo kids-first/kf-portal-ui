@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, withState } from 'recompose';
 import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import { Trans } from 'react-i18next';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 
@@ -46,7 +47,9 @@ const Consent = compose(
             ${theme.h3} width: 90%;
           `}
         >
-          Read and consent to our terms and conditions
+          <Trans i18nKey="join.terms.instructions">
+            Read and consent to our terms and conditions
+          </Trans>
         </h3>
         <div
           css={`
@@ -56,7 +59,9 @@ const Consent = compose(
             ${theme.textarea};
           `}
         >
-          <b>Draft for Demo Purposes</b>
+          <b>
+            <Trans i18nKey="join.terms.title">Draft for Demo Purposes</Trans>
+          </b>
           <p>
             As a user of the Kids First DRC Portal you agree to the Terms of Service and agree to
             make no attempt to identify or contact individual participants from whom these data were
@@ -122,7 +127,9 @@ const Consent = compose(
               });
             }}
           />
-          I have read and agreed to the Kids First Data Research Portal Term and Conditions
+          <Trans i18nKey="join.terms.userAgreement">
+            I have read and agreed to the Kids First Data Research Portal Term and Conditions
+          </Trans>
         </div>
         {customStepMessage && (
           <div
@@ -157,7 +164,9 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
       `}
     >
       <div className={theme.card}>
-        <h2 className={theme.h2}>Join Kids First</h2>
+        <h2 className={theme.h2}>
+          <Trans>Join Kids First</Trans>
+        </h2>
         <Wizard
           steps={[
             {
@@ -165,11 +174,15 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
               render: ({ nextStep }) => (
                 <div>
                   <h3 className={theme.h3}>
-                    Select a way to connect to the Kids First Data Resource Portal
+                    <Trans i18nKey="join.wizard.socialSelect">
+                      Select a way to connect to the Kids First Data Resource Portal
+                    </Trans>
                   </h3>
                   <p>
-                    Your information will be kept confidential and secure and is not shared with any
-                    of these providers.
+                    <Trans i18nKey="join.wizard.dataConfidentiality">
+                      Your information will be kept confidential and secure and is not shared with
+                      any of these providers.
+                    </Trans>
                   </p>
                   <Login
                     shouldNotRedirect={true}
@@ -190,10 +203,14 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
               title: 'Basic Info',
               render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
                 <div>
-                  <h3 className={theme.h3}>Tell us about yourself</h3>
+                  <h3 className={theme.h3}>
+                    <Trans i18nKey="join.wizard.basicInfoHeader">Tell us about yourself</Trans>
+                  </h3>
                   <p>
-                    Please provide information about yourself to help us personalize your
-                    experience.
+                    <Trans i18nKey="join.wizard.basicInfoInstructions">
+                      Please provide information about yourself to help us personalize your
+                      experience.
+                    </Trans>
                   </p>
                   <SelectRoleForm
                     onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
@@ -230,10 +247,12 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       disabled={prevDisabled}
                     >
                       <LeftIcon />
-                      Back
+                      <Trans>Back</Trans>
                     </button>
                     <div className={theme.row}>
-                      <DeleteButton className={theme.wizardButton}>Cancel</DeleteButton>
+                      <DeleteButton className={theme.wizardButton}>
+                        <Trans>Cancel</Trans>
+                      </DeleteButton>
                       <button
                         className={theme.actionButton}
                         onClick={() => {
@@ -243,10 +262,18 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                               action: 'success',
                               component: (
                                 <div>
-                                  Fill out your profile, or skip and{' '}
-                                  <ToSearchPage index="file" onClick={() => closeToast()}>
-                                    browse data
-                                  </ToSearchPage>
+                                  <Trans i18nKey="join.wizard.profileOrBrowse">
+                                    Fill out your profile, or skip and
+                                    <ToSearchPage
+                                      index="file"
+                                      onClick={function() {
+                                        //using 'function' so that we don't break Trans parsing
+                                        closeToast();
+                                      }}
+                                    >
+                                      browse data
+                                    </ToSearchPage>
+                                  </Trans>
                                 </div>
                               ),
                             });
@@ -256,7 +283,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                           }
                         }}
                       >
-                        Save
+                        <Trans>Save</Trans>
                         <RightIcon />
                       </button>
                     </div>
