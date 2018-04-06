@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
 import SQONURL from 'components/SQONURL';
 import downloadIcon from '../assets/icon-download-grey.svg';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
@@ -25,7 +26,7 @@ import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
 import { arrangerProjectId } from 'common/injectGlobals';
 
-const enhance = compose(injectState);
+const enhance = compose(injectState, withTheme);
 
 const arrangerStyles = css`
   display: flex;
@@ -52,7 +53,7 @@ const arrangerStyles = css`
   }
 `;
 
-const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) => {
+const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props }) => {
   return (
     <div
       css={`
@@ -83,6 +84,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
           <Trans>Filters</Trans> <InfoIcon />
         </div>
         <LightButton
+          css={theme.uppercase}
           onClick={() =>
             effects.setModal({
               title: 'All Filters',
@@ -101,7 +103,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
             })
           }
         >
-          <Trans>ALL FILTERS</Trans>
+          <Trans css={theme.uppercase}>All Filters</Trans>
         </LightButton>
       </div>
       <Aggregations {...{ ...props, setSQON }} />

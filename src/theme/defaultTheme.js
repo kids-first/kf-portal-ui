@@ -34,6 +34,9 @@ const components = {
     text-align: left;
     color: ${colors.greyScale0};
   `,
+  uppercase: css`
+    text-transform: uppercase;
+  `,
   linkAsButton: css`
     font-family: Montserrat;
     font-size: 12px;
