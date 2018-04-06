@@ -31,6 +31,7 @@
   "File Repository": "File Repository",
   "Login": "Login",
   "My Profile": "My Profile",
+  "Settings": "Settings",
   "Logout": "Logout",
   "Kids First Website": "Kids First Website",
   "Contact Us": "Contact Us",
@@ -39,6 +40,20 @@
   "FOIA": "FOIA",
   "Data Release -": "Data Release -",
   "dataReleaseVersion": "Unreleased",
+  "Sorry something went wrong": {
+    "": "Sorry something went wrong."
+  },
+  "Copied!": "Copied!",
+  "copy short URL": "copy short URL",
+  "share on facebook": "share on facebook",
+  "share on twitter": "share on twitter",
+  "share on linkedin": "share on linkedin",
+  "share": "share",
+  "Query saved succesfully!": "Query saved succesfully!",
+  "View in My Saved Queries": "View in My Saved Queries",
+  "Save Query": "Save Query",
+  "Save the current configuration of filters": "Save the current configuration of filters",
+  "Enter a name for your saved query:": "Enter a name for your saved query:",
   "Actions": "Actions",
   "fileRepoSidebar": {
     "noneSelected": "If you have not selected any files, all files in your query will be included in the actions.",
