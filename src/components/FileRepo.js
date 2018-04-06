@@ -7,6 +7,7 @@ import downloadIcon from '../assets/icon-download-grey.svg';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import Measure from 'react-measure';
+import { Trans } from 'react-i18next';
 
 import {
   Arranger,
@@ -79,7 +80,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
             color: #2b388f;
           `}
         >
-          Filters <InfoIcon />
+          <Trans>Filters</Trans> <InfoIcon />
         </div>
         <LightButton
           onClick={() =>
@@ -100,7 +101,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
             })
           }
         >
-          ALL FILTERS
+          <Trans>ALL FILTERS</Trans>
         </LightButton>
       </div>
       <Aggregations {...{ ...props, setSQON }} />
@@ -250,7 +251,8 @@ const FileRepo = ({ state, effects, ...props }) => {
                                         width: 10px;
                                         margin-right: 9px;
                                       `}
-                                    />Export TSV
+                                    />
+                                    <Trans>Export TSV</Trans>
                                   </React.Fragment>
                                 }
                               />

@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import Spinner from 'react-spinkit';
 import { injectState } from 'freactal';
+import { Trans } from 'react-i18next';
 
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
@@ -87,14 +88,17 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
         ${styles.container} ${style};
       `}
     >
-      <Heading>Actions</Heading>
-      <div
+      <Heading>
+        <Trans>Actions</Trans>
+      </Heading>
+      <Trans
+        i18nkey="fileRepoSidebar.noneSelected"
         css={`
           font-size: 14px;
         `}
       >
         If you have not selected any files, all files in your query will be included in the actions.
-      </div>
+      </Trans>
       <Divider />
       <Heading>Download</Heading>
       <div>

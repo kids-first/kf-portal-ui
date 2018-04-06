@@ -1,10 +1,17 @@
 {
+  "Filters": "Filters",
+  "ALL FILTERS": "ALL FILTERS",
+  "Export TSV": "Export TSV",
   "Dashboard": "Dashboard",
   "File Repository": "File Repository",
   "JOIN NOW": "JOIN NOW",
   "LOGIN": "LOGIN",
   "My Profile": "My Profile",
   "Logout": "Logout",
-
+  "Actions": "Actions",
+  "If you have not selected any files, all files in your query will be included in the actions": {
+    "":
+      "Ifasdf you have not selected any files, all files in your query will be included in the actions."
+  },
   "Cancel": "Cancel"
 }
