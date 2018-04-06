@@ -131,7 +131,10 @@ const FamilyManifestModal = ({
   isSubmitting,
 }) => {
   const loading =
-    !dataTypesAggregation.data || dataTypesAggregation.loading || familyMemberIdAggregation.loading;
+    !dataTypes.length ||
+    !dataTypesAggregation.data ||
+    dataTypesAggregation.loading ||
+    familyMemberIdAggregation.loading;
   const spinner = (
     <Spinner
       fadeIn="none"
@@ -180,7 +183,7 @@ const FamilyManifestModal = ({
       >
         Select the data types you would like to download for the family members:
       </div>
-      {loading || !dataTypes.length ? (
+      {loading ? (
         spinner
       ) : (
         <Query
