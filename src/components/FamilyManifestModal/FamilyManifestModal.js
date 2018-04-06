@@ -180,7 +180,7 @@ const FamilyManifestModal = ({
       >
         Select the data types you would like to download for the family members:
       </div>
-      {loading ? (
+      {loading || !dataTypes.length ? (
         spinner
       ) : (
         <Query
