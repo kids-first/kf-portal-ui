@@ -189,6 +189,7 @@ const FamilyManifestModal = ({
         <Query
           renderError
           projectId={projectId}
+          name={`dataTypeQuery`}
           query={`
             query dataTypes(${dataTypes
               .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
