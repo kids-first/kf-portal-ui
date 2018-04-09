@@ -31,7 +31,6 @@
   "File Repository": "File Repository",
   "Login": "Login",
   "My Profile": "My Profile",
-  "Settings": "Settings",
   "Logout": "Logout",
   "Kids First Website": "Kids First Website",
   "Contact Us": "Contact Us",
@@ -64,5 +63,7 @@
   "Failed!": "Failed!",
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
-  "Data Analysis": "Data Analysis"
+  "Data Analysis": "Data Analysis",
+  "Generate KF-get ID": "Generate KF-get ID",
+  "Download Manifest": "Download Manifest"
 }
