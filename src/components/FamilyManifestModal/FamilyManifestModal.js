@@ -44,12 +44,12 @@ const enhance = compose(
     shouldFetch: !familyMemberIdAggregation.loading,
     renderError: true,
     projectId,
-    key: 'dataTypesAggregation',
+    key: 'familyMemberWithoutParticipantIdAggregation',
     query: `
       query dataTypes($sqon: JSON) {
         file {
           aggregations(filters: $sqon) {
-            data_type {
+            participants__family__family_members__kf_id {
               buckets {
                 doc_count
                 key
@@ -72,6 +72,52 @@ const enhance = compose(
       },
     },
   })),
+  withProps(({ familyMemberWithoutParticipantIdAggregation: { data } }) => ({
+    familyMemberWithoutParticipantIds: (
+      get(data, 'file.aggregations.participants__family__family_members__kf_id.buckets') || []
+    ).map(b => b.key),
+  })),
+  withProps(({ familyMemberIds, familyMemberWithoutParticipantIds }) => ({
+    finalFamilyMemberIds: familyMemberWithoutParticipantIds.length
+      ? familyMemberWithoutParticipantIds
+      : familyMemberIds,
+  })),
+  withQuery(
+    ({ sqon, projectId, finalFamilyMemberIds, familyMemberWithoutParticipantIdAggregation }) => ({
+      shouldFetch: !familyMemberWithoutParticipantIdAggregation.loading,
+      renderError: true,
+      projectId,
+      key: 'dataTypesAggregation',
+      query: `
+      query dataTypes($sqon: JSON) {
+        file {
+          aggregations(filters: $sqon) {
+            data_type {
+              buckets {
+                doc_count
+                key
+              }
+            }
+          }
+        }
+      }
+    `,
+      variables: {
+        sqon: {
+          op: 'and',
+          content: [
+            {
+              op: 'in',
+              content: {
+                field: 'participants.kf_id',
+                value: finalFamilyMemberIds,
+              },
+            },
+          ],
+        },
+      },
+    }),
+  ),
   withProps(({ dataTypesAggregation: { data } }) => ({
     dataTypes: get(data, 'file.aggregations.data_type.buckets') || [],
   })),
@@ -121,7 +167,9 @@ const enhance = compose(
 const FamilyManifestModal = ({
   dataTypesAggregation,
   familyMemberIds,
+  finalFamilyMemberIds,
   familyMemberIdAggregation,
+  familyMemberWithoutParticipantIdAggregation,
   dataTypes,
   sqon,
   index,
@@ -131,7 +179,11 @@ const FamilyManifestModal = ({
   isSubmitting,
 }) => {
   const loading =
-    !dataTypesAggregation.data || dataTypesAggregation.loading || familyMemberIdAggregation.loading;
+    !dataTypes.length ||
+    !dataTypesAggregation.data ||
+    dataTypesAggregation.loading ||
+    familyMemberIdAggregation.loading ||
+    familyMemberWithoutParticipantIdAggregation.loading;
   const spinner = (
     <Spinner
       fadeIn="none"
@@ -186,6 +238,7 @@ const FamilyManifestModal = ({
         <Query
           renderError
           projectId={projectId}
+          name={`dataTypeQuery`}
           query={`
             query dataTypes(${dataTypes
               .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
@@ -218,24 +271,21 @@ const FamilyManifestModal = ({
             }
           `}
           variables={dataTypes.reduce((acc, dataType, i) => {
-            const dataTypeFilters = [
+            const dataTypeFilters = ids => [
               {
                 op: 'in',
                 content: { field: 'data_type', value: [dataType.key] },
               },
               {
                 op: 'in',
-                content: { field: 'participants.kf_id', value: familyMemberIds },
+                content: { field: 'participants.kf_id', value: ids },
               },
             ];
 
             return {
               ...acc,
-              [`sqon${i}family`]: { op: 'and', content: dataTypeFilters },
-              [`sqon${i}`]: {
-                op: 'and',
-                content: [...dataTypeFilters, ...(sqon ? [{ op: 'not', content: [sqon] }] : [])],
-              },
+              [`sqon${i}family`]: { op: 'and', content: dataTypeFilters(familyMemberIds) },
+              [`sqon${i}`]: { op: 'and', content: dataTypeFilters(finalFamilyMemberIds) },
             };
           }, {})}
           render={({ data, loading }) => {
