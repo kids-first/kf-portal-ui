@@ -15,13 +15,11 @@ export default provideState({
     removeDeletingId: update((state, id) => ({
       deletingIds: state.deletingIds.filter(dId => dId !== id),
     })),
-    getQueries: (effects, egoId) =>
-      effects
-        .setLoading(true)
-        .then(() => fetch(urlJoin(shortUrlApi, 'user', egoId)))
-        .then(result => result.json())
-        .then(({ value }) => effects.setLoading(false).then(() => value))
-        .then(value => state => Object.assign({}, state, { queries: value })),
+    getQueries: (effects, egoId) => effects.setLoading(true),
+    // .then(() => fetch(urlJoin(shortUrlApi, 'user', egoId)))
+    // .then(result => result && result.json())
+    // .then(({ value }) => effects.setLoading(false).then(() => value))
+    // .then(value => state => Object.assign({}, state, { queries: value })),
     deleteQuery: (effects, queryId) =>
       effects
         .addDeletingId(queryId)

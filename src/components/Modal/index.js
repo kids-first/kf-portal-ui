@@ -6,6 +6,7 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { getAppElement } from '../../services/globalDomNodes.js';
 import LoadingOnClick from 'components/LoadingOnClick';
+import ErrorIcon from 'icons/ErrorIcon';
 import Spinner from 'react-spinkit';
 
 const enhance = compose(withTheme, injectState);
@@ -25,15 +26,56 @@ const defaultLoadingContent = (
 );
 
 const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
-  <h2
+  <div
     css={`
-      ${theme.profileH2} ${theme.row} justify-content: space-between;
+      ${theme.row} justify-content: space-between;
+      border-bottom: 1px solid #d4d6dd;
+      margin-bottom: 1.5em;
     `}
   >
-    <span>{title}</span>
-    <CloseIcon css="cursor:pointer;" onClick={() => unsetModal()} />
-  </h2>
+    <span css={theme.modalTitle}>{title}</span>
+    <CloseIcon
+      css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
+      fill="black"
+      onClick={() => unsetModal()}
+    />
+  </div>
 );
+
+export const ModalWarning = enhance(({ theme, content, ...props }) => {
+  return (
+    <div
+      css={`
+        display: flex;
+        flex-direction: row;
+        align-items: left;
+        background-color: #f9dee1;
+        border-radius: 7px;
+        border-style: solid;
+        border-color: #e45562;
+        border-width: 1px;
+        padding: 10px;
+        margin-bottom: 1em;
+      `}
+    >
+      <div
+        css={`
+          padding-right: 10px;
+        `}
+      >
+        <ErrorIcon width={30} height={30} fill={`#e45562`} />
+      </div>
+      <div
+        css={`
+          padding-top: 2px;
+          line-height: 1.6em;
+        `}
+      >
+        {props.children}
+      </div>
+    </div>
+  );
+});
 
 export const ModalFooter = enhance(
   ({
@@ -100,7 +142,7 @@ const ModalView = ({
         bottom: 0,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'block',
-        zIndex: '111',
+        zIndex: '1000',
       },
       content: {
         top: '50%',
@@ -133,7 +175,7 @@ const ModalView = ({
     {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
     <div
       css={`
-        z-index: 111;
+        z-index: 1000;
       `}
     >
       {component}
