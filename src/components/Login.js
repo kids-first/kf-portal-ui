@@ -5,6 +5,7 @@ import { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
+import { Trans } from 'react-i18next';
 import { googleLogin, facebookLogin } from 'services/login';
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
@@ -158,11 +159,13 @@ class Component extends React.Component<any, any> {
       <div className={styles.container}>
         {this.state.securityError ? (
           <div style={{ maxWidth: 600 }}>
-            Connection to ego failed, you may need to visit{' '}
-            <a target="_blank" href={egoApiRoot}>
-              {egoApiRoot}
-            </a>{' '}
-            in a new tab and accept the warning
+            <Trans i18nKey="login.connectionFailed">
+              Connection to ego failed, you may need to visit
+              <a target="_blank" href={egoApiRoot}>
+                {{ egoApiRoot }}
+              </a>
+              in a new tab and accept the warning
+            </Trans>
           </div>
         ) : renderSocialLoginButtons ? (
           [

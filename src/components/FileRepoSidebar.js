@@ -1,7 +1,10 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 import Spinner from 'react-spinkit';
 import { injectState } from 'freactal';
+import { Trans } from 'react-i18next';
 
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
@@ -22,6 +25,8 @@ import {
   clinicalDataFamily,
 } from '../services/downloadData';
 import FamilyManifestModal from './FamilyManifestModal';
+
+const enhance = compose(injectState, withTheme);
 
 const styles = {
   container: css`
@@ -87,16 +92,21 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
         ${styles.container} ${style};
       `}
     >
-      <Heading>Actions</Heading>
-      <div
+      <Heading>
+        <Trans>Actions</Trans>
+      </Heading>
+      <Trans
+        i18nKey="fileRepoSidebar.noneSelected"
         css={`
           font-size: 14px;
         `}
       >
         If you have not selected any files, all files in your query will be included in the actions.
-      </div>
+      </Trans>
       <Divider />
-      <Heading>Download</Heading>
+      <Heading>
+        <Trans>Download</Trans>
+      </Heading>
       <div>
         <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>
           File Manifests
@@ -136,7 +146,8 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                   render={({ loading }) => {
                     return (
                       <React.Fragment>
-                        <DownloadIcon loading={loading} />DOWNLOAD
+                        <DownloadIcon loading={loading} />
+                        <Trans css={theme.uppercase}>Download</Trans>
                       </React.Fragment>
                     );
                   }}
@@ -152,7 +163,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
             return (
               <div>
                 <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>
-                  Selected File
+                  <Trans>Selected File</Trans>
                 </Heading>
                 <div
                   css={`
@@ -191,9 +202,9 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                                       font-size: 16px;
                                     `}
                                   >
-                                    Failed!
+                                    <Trans>Failed!</Trans>
                                   </div>
-                                  <div>Unable to download file</div>
+                                  <Trans>Unable to download file</Trans>
                                   <div
                                     css={`
                                       color: 'red';
@@ -202,8 +213,10 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                                     `}
                                   >
                                     <span>
-                                      Your account does not have the required permission to download
-                                      this file.
+                                      <Trans i18nKey="fileRepoSidebar.missingDownloadPermissions">
+                                        Your account does not have the required permission to
+                                        download this file.
+                                      </Trans>
                                     </span>
                                   </div>
                                 </div>
@@ -223,7 +236,8 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                           onClick={onClick}
                           loading={loading}
                         >
-                          <DownloadIcon />DOWNLOAD
+                          <DownloadIcon />
+                          <Trans css={theme.uppercase}>Download</Trans>
                         </Button>
                       );
                     }}
@@ -240,7 +254,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
             return (
               <div>
                 <Heading style={{ color: '#343434', fontSize: 14, marginBottom: 5 }}>
-                  Reports
+                  <Trans>Reports</Trans>
                 </Heading>
                 <div
                   css={`
@@ -254,14 +268,17 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                         sqon,
                         columns: state.columns,
                       }),
-                      'Clinical (Family)': clinicalDataFamily({ sqon, columns: state.columns }),
+                      'Clinical (Family)': clinicalDataFamily({
+                        sqon,
+                        columns: state.columns,
+                      }),
                       Biospecimen: downloadBiospecimen({ sqon, columns: state.columns }),
                     }}
                     render={({ loading }) => {
                       return (
                         <React.Fragment>
                           <DownloadIcon loading={loading} />
-                          DOWNLOAD
+                          <Trans>Download</Trans>
                         </React.Fragment>
                       );
                     }}
@@ -273,10 +290,12 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
         />
       </div>
       <Divider />
-      <Heading>Data Analysis</Heading>
+      <Heading>
+        <Trans>Data Analysis</Trans>
+      </Heading>
       <CavaticaExportWidget {...props} />
     </div>
   );
 };
 
-export default injectState(FileRepoSidebar);
+export default enhance(FileRepoSidebar);
