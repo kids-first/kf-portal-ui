@@ -39,7 +39,7 @@ export default injectState(
         .then(data => {
           this.setState({
             loading: false,
-            link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
+            link: urlJoin(arrangerApiAbsolutePath, 's', data.id),
           });
         })
         .catch(error => {

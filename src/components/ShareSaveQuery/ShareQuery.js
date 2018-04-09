@@ -51,7 +51,7 @@ export default injectState(
       shortenApi({ stats, sqon, loggedInUser })
         .then(data => {
           this.setState({
-            link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
+            link: urlJoin(arrangerApiAbsolutePath, 's', data.id),
           });
         })
         .catch(error => {
@@ -97,66 +97,66 @@ export default injectState(
                       {this.state.error ? (
                         'Sorry something went wrong.'
                       ) : (
-                        <Spinner
-                          fadeIn="none"
-                          name="circle"
-                          color="purple"
-                          style={{
-                            width: 15,
-                            height: 15,
-                            marginRight: 9,
-                          }}
-                        />
-                      )}
+                          <Spinner
+                            fadeIn="none"
+                            name="circle"
+                            color="purple"
+                            style={{
+                              width: 15,
+                              height: 15,
+                              marginRight: 9,
+                            }}
+                          />
+                        )}
                     </ItemRow>
                   ) : (
-                    <React.Fragment>
-                      <ItemRow>
-                        <CopyToClipboard
-                          text={this.state.link}
-                          onCopy={() => this.setState({ copied: true })}
-                        >
-                          <span>
+                      <React.Fragment>
+                        <ItemRow>
+                          <CopyToClipboard
+                            text={this.state.link}
+                            onCopy={() => this.setState({ copied: true })}
+                          >
+                            <span>
+                              <Bubble>
+                                <ChainIcon />
+                              </Bubble>
+                              <span>{this.state.copied ? 'Copied!' : 'copy short URL'}</span>
+                            </span>
+                          </CopyToClipboard>
+                        </ItemRow>
+                        <ItemRow>
+                          <FacebookShareButton
+                            url={this.state.link}
+                            quote="Kids First File Repo Query"
+                          >
                             <Bubble>
-                              <ChainIcon />
-                            </Bubble>
-                            <span>{this.state.copied ? 'Copied!' : 'copy short URL'}</span>
-                          </span>
-                        </CopyToClipboard>
-                      </ItemRow>
-                      <ItemRow>
-                        <FacebookShareButton
-                          url={this.state.link}
-                          quote="Kids First File Repo Query"
-                        >
-                          <Bubble>
-                            <FBIcon />
-                          </Bubble>share on facebook
+                              <FBIcon />
+                            </Bubble>share on facebook
                         </FacebookShareButton>
-                      </ItemRow>
-                      <ItemRow>
-                        <Bubble>
-                          <TwitterIcon />
-                        </Bubble>
-                        <TwitterShareButton
-                          title="Kids First File Repo Query"
-                          url={this.state.link}
-                        >
-                          share on twitter
-                        </TwitterShareButton>
-                      </ItemRow>
-                      <ItemRow>
-                        <LinkedinShareButton
-                          title="Kids First File Repo Query"
-                          url={this.state.link}
-                        >
+                        </ItemRow>
+                        <ItemRow>
                           <Bubble>
-                            <LIIcon />
-                          </Bubble>share on linkedin
+                            <TwitterIcon />
+                          </Bubble>
+                          <TwitterShareButton
+                            title="Kids First File Repo Query"
+                            url={this.state.link}
+                          >
+                            share on twitter
+                        </TwitterShareButton>
+                        </ItemRow>
+                        <ItemRow>
+                          <LinkedinShareButton
+                            title="Kids First File Repo Query"
+                            url={this.state.link}
+                          >
+                            <Bubble>
+                              <LIIcon />
+                            </Bubble>share on linkedin
                         </LinkedinShareButton>
-                      </ItemRow>
-                    </React.Fragment>
-                  )}
+                        </ItemRow>
+                      </React.Fragment>
+                    )}
                 </div>
               }
             >
