@@ -9,7 +9,6 @@ import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
-import { DownloadIcon } from './icons';
 import LoadingOnClick from './LoadingOnClick';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 
