@@ -5,14 +5,14 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
-import { ColumnsState } from '@arranger/components/dist/DataTable';
-
-import { DownloadIcon, Spinner } from './icons';
-import { ModalFooter } from './Modal';
+import downloadIcon from '../assets/icon-download-white.svg';
+import IconWithLoading from '../icons/IconWithLoading';
+import CopyToClipboard from './CopyToClipboard';
+import { ModalFooter, ModalWarning } from './Modal';
 import { FileRepoStats } from './Stats';
 import LoadingOnClick from 'components/LoadingOnClick';
-import { fileManifestParticipantsOnly } from '../services/downloadData';
 import graphql from '../services/arranger';
+import Spinner from 'react-spinkit';
 
 const Button = compose(withTheme)(({ theme, children, ...props }) => (
   <button css={theme.actionButton} {...props}>
@@ -28,7 +28,7 @@ const Button = compose(withTheme)(({ theme, children, ...props }) => (
   </button>
 ));
 
-const SubHeader = ({ children, ...props }) => (
+export const SubHeader = ({ children, ...props }) => (
   <div
     className={css`
       margin-bottom: 9px;
@@ -44,39 +44,50 @@ const SubHeader = ({ children, ...props }) => (
 );
 
 const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', ''))(
-  ({ setId, setSetId, sqon = {}, state: { loggedInUser } }) => (
+  ({ setId, setSetId, sqon, setWarning, onManifestGenerated, state: { loggedInUser } }) => (
     <div>
       {setId ? (
-        <span>{setId}</span>
+        <CopyToClipboard value={setId} />
       ) : (
         <LoadingOnClick
           onClick={async () => {
-            const response = await graphql({
-              body: {
-                query: `
-                  mutation saveSet($graphqlField: String! $userId: String! $sqon: JSON! $path: String!) {
-                    saveSet(graphqlField: $graphqlField, userId: $userId, sqon: $sqon, path: $path) {
-                      setId
-                      userId
-                      sqon
-                      index
-                      ids
-                    }
+            const { data: { data, errors } } = await graphql({
+              query: `
+                mutation saveSet($index: String! $userId: String! $sqon: JSON! $path: String!) {
+                  saveSet(index: $index, userId: $userId, sqon: $sqon, path: $path) {
+                    setId
                   }
-                `,
-                variables: {
-                  sqon,
-                  graphqlField: 'file',
-                  userId: loggedInUser.egoId,
-                  path: 'kf_id',
-                },
+                }
+              `,
+              variables: {
+                sqon: sqon || {},
+                index: 'file_centric',
+                userId: loggedInUser.egoId,
+                path: 'kf_id',
               },
             });
-            console.log(response);
+            if (errors && errors.length) {
+              setWarning('Unable to generate KF-get ID, please try again later.');
+            } else {
+              setWarning('');
+              onManifestGenerated(data.saveSet);
+              setSetId(data.saveSet.setId);
+            }
           }}
           render={({ onClick, loading }) => (
-            <Button onClick={onClick}>
-              {loading && <Spinner />}
+            <Button {...{ onClick, disabled: loading }}>
+              {loading && (
+                <Spinner
+                  fadeIn="none"
+                  name="circle"
+                  color="#fff"
+                  style={{
+                    width: 15,
+                    height: 15,
+                    marginRight: 9,
+                  }}
+                />
+              )}
               <Trans>Generate KF-get ID</Trans>
             </Button>
           )}
@@ -86,10 +97,32 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
   ),
 );
 
-const enhance = compose();
+export const DownloadManifestModalFooter = ({
+  sqon,
+  projectId,
+  downloadLoading,
+  onDownloadClick,
+  setWarning,
+  onManifestGenerated = () => {},
+}) => (
+  <ModalFooter showSubmit={false}>
+    <GenerateManifestSet {...{ sqon, projectId, setWarning, onManifestGenerated }} />
+    <LoadingOnClick
+      onClick={onDownloadClick}
+      render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
+        <Button {...{ onClick, disabled: finalLoading }}>
+          <IconWithLoading {...{ loading: finalLoading, icon: downloadIcon }} />
+          <Trans>Download Manifest</Trans>
+        </Button>
+      )}
+    />
+  </ModalFooter>
+);
 
-const DownloadManifestModal = ({ sqon, index, projectId }) => (
+const enhance = compose(withState('warning', 'setWarning', ''));
+const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children }) => (
   <div>
+    {warning && <ModalWarning>{warning}</ModalWarning>}
     <SubHeader>File Summary:</SubHeader>
     <FileRepoStats
       sqon={sqon}
@@ -99,24 +132,7 @@ const DownloadManifestModal = ({ sqon, index, projectId }) => (
         margin-bottom: 29px;
       `}
     />
-    <ModalFooter showSubmit={false}>
-      <GenerateManifestSet {...{ sqon, projectId }} />
-      <ColumnsState
-        projectId={projectId}
-        graphqlField="file"
-        render={({ state: { columns } }) => (
-          <LoadingOnClick
-            onClick={fileManifestParticipantsOnly({ sqon, columns })}
-            render={({ onClick, loading }) => (
-              <Button {...{ onClick }}>
-                <DownloadIcon {...{ loading }} />
-                <Trans>Download Manifest</Trans>
-              </Button>
-            )}
-          />
-        )}
-      />
-    </ModalFooter>
+    {children({ setWarning })}
   </div>
 );
 

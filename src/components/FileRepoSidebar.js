@@ -5,9 +5,10 @@ import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 import { Trans } from 'react-i18next';
 
+import downloadIcon from '../assets/icon-download-white.svg';
+import IconWithLoading from '../icons/IconWithLoading';
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
-import { DownloadIcon } from './icons';
 import LoadingOnClick from './LoadingOnClick';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 
@@ -22,7 +23,7 @@ import {
   clinicalDataParticipants,
   clinicalDataFamily,
 } from '../services/downloadData';
-import DownloadManifestModal from './DownloadManifestModal';
+import ParticipantManifestModal from './ParticipantManifestModal';
 import FamilyManifestModal from './FamilyManifestModal';
 
 const enhance = compose(injectState, withTheme);
@@ -104,7 +105,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                       return effects.setModal({
                         title: 'Download Manifest',
                         component: (
-                          <DownloadManifestModal
+                          <ParticipantManifestModal
                             sqon={sqon}
                             index={index}
                             projectId={projectId}
@@ -130,7 +131,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                   render={({ loading }) => {
                     return (
                       <React.Fragment>
-                        <DownloadIcon loading={loading} />
+                        <IconWithLoading {...{ loading, icon: downloadIcon }} />
                         <Trans css={theme.uppercase}>Download</Trans>
                       </React.Fragment>
                     );
@@ -220,7 +221,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                           onClick={onClick}
                           loading={loading}
                         >
-                          <DownloadIcon />
+                          <IconWithLoading icon={downloadIcon} />
                           <Trans css={theme.uppercase}>Download</Trans>
                         </Button>
                       );
@@ -261,7 +262,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                     render={({ loading }) => {
                       return (
                         <React.Fragment>
-                          <DownloadIcon loading={loading} />
+                          <IconWithLoading {...{ loading, icon: downloadIcon }} />
                           <Trans>Download</Trans>
                         </React.Fragment>
                       );

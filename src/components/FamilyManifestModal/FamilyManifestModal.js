@@ -1,17 +1,46 @@
 import React from 'react';
 import { get } from 'lodash';
-import { compose, withProps } from 'recompose';
+import { compose, withProps, withState } from 'recompose';
 import { withFormik } from 'formik';
 import { injectState } from 'freactal/lib/inject';
 import Spinner from 'react-spinkit';
 
 import { withQuery } from '@arranger/components';
 
-import { FileRepoStats } from '../Stats';
-import { ModalFooter } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import DataTypeOption from './DataTypeOption';
+import DownloadManifestModal, {
+  DownloadManifestModalFooter,
+  SubHeader,
+} from '../DownloadManifestModal';
 import Query from '@arranger/components/dist/Query';
+
+const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
+  const selectedDataTypes = Object.entries(values)
+    .filter(([, val]) => val)
+    .map(([key]) => key);
+  return sqon
+    ? {
+        op: 'or',
+        content: [
+          sqon,
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'data_type', value: selectedDataTypes },
+              },
+              {
+                op: 'in',
+                content: { field: 'participants.kf_id', value: familyMemberIds },
+              },
+            ],
+          },
+        ],
+      }
+    : sqon;
+};
 
 const enhance = compose(
   injectState,
@@ -132,36 +161,13 @@ const enhance = compose(
         setErrors,
       },
     ) => {
-      const selectedDataTypes = Object.entries(values)
-        .filter(([, val]) => val)
-        .map(([key]) => key);
-
       fileManifestParticipantsAndFamily({
-        sqon: sqon
-          ? {
-              op: 'or',
-              content: [
-                sqon,
-                {
-                  op: 'and',
-                  content: [
-                    {
-                      op: 'in',
-                      content: { field: 'data_type', value: selectedDataTypes },
-                    },
-                    {
-                      op: 'in',
-                      content: { field: 'participants.kf_id', value: familyMemberIds },
-                    },
-                  ],
-                },
-              ],
-            }
-          : sqon,
+        sqon: sqonForDownload({ sqon, values, familyMemberIds }),
         columns: columns,
       })().then(async profile => unsetModal(), errors => setSubmitting(false));
     },
   }),
+  withState('isDisabled', 'setIsDisabled', false),
 );
 
 const FamilyManifestModal = ({
@@ -177,6 +183,8 @@ const FamilyManifestModal = ({
   values,
   submitForm,
   isSubmitting,
+  isDisabled,
+  setIsDisabled,
 }) => {
   const loading =
     !dataTypes.length ||
@@ -198,144 +206,112 @@ const FamilyManifestModal = ({
     />
   );
   return (
-    <div>
-      <div
-        css={`
-          margin-bottom: 9px;
-          font-size: 15px;
-          font-weight: 600;
-          line-height: 1.87;
-          letter-spacing: 0.2px;
-          color: #343434;
-        `}
-      >
-        File Summary:
-      </div>
-      <FileRepoStats
-        sqon={sqon}
-        index={index}
-        projectId={projectId}
-        css={`
-          margin-bottom: 29px;
-        `}
-      />
-      <div
-        css={`
-          margin-bottom: 16px;
-
-          font-size: 15px;
-          font-weight: 600;
-          line-height: 1.87;
-          letter-spacing: 0.2px;
-          color: #343434;
-        `}
-      >
-        Select the data types you would like to download for the family members:
-      </div>
-      {loading ? (
-        spinner
-      ) : (
-        <Query
-          renderError
-          projectId={projectId}
-          name={`dataTypeQuery`}
-          query={`
-            query dataTypes(${dataTypes
-              .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
-              .join(', ')}) {
-              file {
-                ${dataTypes
-                  .map(
-                    (dataType, i) => `
-                    ${dataType.key.replace(/[^\da-z]/gi, '')}: aggregations(filters: $sqon${i}) {
-                      file_size {
-                        stats {
-                          sum
-                        }
-                      }
-                    }
-                    ${dataType.key.replace(
-                      /[^\da-z]/gi,
-                      '',
-                    )}family: aggregations(filters: $sqon${i}family) {
-                      participants__family__family_members__kf_id {
-                        buckets {
-                          doc_count
-                        }
-                      }
-                    }
-                  `,
-                  )
-                  .join('\n')}
-              }
-            }
-          `}
-          variables={dataTypes.reduce((acc, dataType, i) => {
-            const dataTypeFilters = ids => [
-              {
-                op: 'in',
-                content: { field: 'data_type', value: [dataType.key] },
-              },
-              {
-                op: 'in',
-                content: { field: 'participants.kf_id', value: ids },
-              },
-            ];
-
-            return {
-              ...acc,
-              [`sqon${i}family`]: { op: 'and', content: dataTypeFilters(familyMemberIds) },
-              [`sqon${i}`]: { op: 'and', content: dataTypeFilters(finalFamilyMemberIds) },
-            };
-          }, {})}
-          render={({ data, loading }) => {
-            return loading
-              ? spinner
-              : (dataTypes || []).map(bucket => {
-                  const aggs = get(data, `file`);
-                  return (
-                    <DataTypeOption
-                      key={bucket.key}
-                      bucket={bucket}
-                      values={values}
-                      familyMembers={get(
-                        aggs,
-                        `${bucket.key.replace(
+    <DownloadManifestModal {...{ sqon, index, projectId }}>
+      {({ setWarning }) => (
+        <div>
+          <SubHeader>
+            Select the data types you would like to download for the family members:
+          </SubHeader>
+          {loading ? (
+            spinner
+          ) : (
+            <Query
+              renderError
+              projectId={projectId}
+              name={`dataTypeQuery`}
+              query={`
+                query dataTypes(${dataTypes
+                  .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
+                  .join(', ')}) {
+                  file {
+                    ${dataTypes
+                      .map(
+                        (dataType, i) => `
+                        ${dataType.key.replace(
                           /[^\da-z]/gi,
                           '',
-                        )}family.participants__family__family_members__kf_id.buckets.length`,
-                      )}
-                      fileSize={get(
-                        aggs,
-                        `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
-                      )}
-                    />
-                  );
-                });
-          }}
-        />
+                        )}: aggregations(filters: $sqon${i}) {
+                          file_size {
+                            stats {
+                              sum
+                            }
+                          }
+                        }
+                        ${dataType.key.replace(
+                          /[^\da-z]/gi,
+                          '',
+                        )}family: aggregations(filters: $sqon${i}family) {
+                          participants__family__family_members__kf_id {
+                            buckets {
+                              doc_count
+                            }
+                          }
+                        }
+                      `,
+                      )
+                      .join('\n')}
+                  }
+                }
+              `}
+              variables={dataTypes.reduce((acc, dataType, i) => {
+                const dataTypeFilters = ids => [
+                  {
+                    op: 'in',
+                    content: { field: 'data_type', value: [dataType.key] },
+                  },
+                  {
+                    op: 'in',
+                    content: { field: 'participants.kf_id', value: ids },
+                  },
+                ];
+
+                return {
+                  ...acc,
+                  [`sqon${i}family`]: { op: 'and', content: dataTypeFilters(familyMemberIds) },
+                  [`sqon${i}`]: { op: 'and', content: dataTypeFilters(finalFamilyMemberIds) },
+                };
+              }, {})}
+              render={({ data, loading }) => {
+                return loading
+                  ? spinner
+                  : (dataTypes || []).map(bucket => {
+                      const aggs = get(data, `file`);
+                      return (
+                        <DataTypeOption
+                          disabled={isDisabled}
+                          key={bucket.key}
+                          bucket={bucket}
+                          values={values}
+                          familyMembers={get(
+                            aggs,
+                            `${bucket.key.replace(
+                              /[^\da-z]/gi,
+                              '',
+                            )}family.participants__family__family_members__kf_id.buckets.length`,
+                          )}
+                          fileSize={get(
+                            aggs,
+                            `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
+                          )}
+                        />
+                      );
+                    });
+              }}
+            />
+          )}
+          <DownloadManifestModalFooter
+            {...{
+              sqon: sqonForDownload({ sqon, values, familyMemberIds }),
+              onManifestGenerated: () => setIsDisabled(true),
+              projectId,
+              setWarning,
+              onDownloadClick: submitForm,
+              downloadLoading: isSubmitting,
+            }}
+          />
+        </div>
       )}
-      <ModalFooter
-        submitText={
-          <div>
-            {isSubmitting ? (
-              <Spinner
-                fadeIn="none"
-                name="circle"
-                color="#fff"
-                style={{
-                  width: 15,
-                  height: 15,
-                }}
-              />
-            ) : (
-              'DOWNLOAD MANIFEST'
-            )}
-          </div>
-        }
-        handleSubmit={isSubmitting ? undefined : submitForm}
-      />
-    </div>
+    </DownloadManifestModal>
   );
 };
 
