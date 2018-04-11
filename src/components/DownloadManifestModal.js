@@ -53,15 +53,15 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
           onClick={async () => {
             const { data: { data, errors } } = await graphql({
               query: `
-                mutation saveSet($index: String! $userId: String! $sqon: JSON! $path: String!) {
-                  saveSet(index: $index, userId: $userId, sqon: $sqon, path: $path) {
+                mutation saveSet($type: String! $userId: String! $sqon: JSON! $path: String!) {
+                  saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path) {
                     setId
                   }
                 }
               `,
               variables: {
                 sqon: sqon || {},
-                index: 'file_centric',
+                type: 'file',
                 userId: loggedInUser.egoId,
                 path: 'kf_id',
               },
