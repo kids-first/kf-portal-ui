@@ -25,9 +25,11 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 
-const forceSelectRole = ({ loggedInUser, ...props }) => {
+const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
-    return <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />;
+    return isLoadingUser ? null : (
+      <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />
+    );
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   } else {
@@ -36,7 +38,7 @@ const forceSelectRole = ({ loggedInUser, ...props }) => {
 };
 
 const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
-  const { loggedInUser, toast } = state;
+  const { loggedInUser, toast, isLoadingUser } = state;
   return (
     <div className="App">
       <Switch>
@@ -52,6 +54,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           exact
           render={props =>
             forceSelectRole({
+              isLoadingUser,
               Component: FileRepo,
               loggedInUser,
               index: props.match.params.index,
@@ -65,6 +68,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           exact
           render={props =>
             forceSelectRole({
+              isLoadingUser,
               Component: UserProfile,
               loggedInUser,
               ...props,
@@ -76,6 +80,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           exact
           render={props =>
             forceSelectRole({
+              isLoadingUser,
               Component: UserDashboard,
               containerStyle: css`
                 height: 100vh;

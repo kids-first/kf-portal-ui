@@ -10,6 +10,7 @@ import { handleJWT } from 'components/Login';
 export default provideState({
   initialState: () => ({
     loggedInUser: null,
+    isLoadingUser: true,
     loggedInUserToken: '',
     percentageFilled: 0,
     integrationTokens: {},
@@ -41,7 +42,10 @@ export default provideState({
           }
         });
       }
-      return state;
+      return {
+        ...state,
+        isLoadingUser: !!jwt,
+      };
     },
     setUser: (effects, user) =>
       getAllFieldNamesPromise()
@@ -50,6 +54,7 @@ export default provideState({
           const filledFields = Object.values(user || {}).filter(v => v || (isArray(v) && v.length));
           return {
             ...state,
+            isLoadingUser: false,
             loggedInUser: user,
             percentageFilled: filledFields.length / totalFields,
           };
