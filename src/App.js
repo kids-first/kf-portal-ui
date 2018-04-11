@@ -111,6 +111,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
             />
           )}
         />
+        <Redirect from="*" to="/dashboard" />
       </Switch>
       <Modal />
       <Toast {...toast}>{toast.component}</Toast>
