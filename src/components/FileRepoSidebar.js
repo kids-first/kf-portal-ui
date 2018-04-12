@@ -2,16 +2,16 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import Spinner from 'react-spinkit';
 import { injectState } from 'freactal';
 import { Trans } from 'react-i18next';
 
+import downloadIcon from '../assets/icon-download-white.svg';
+import IconWithLoading from '../icons/IconWithLoading';
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
 import LoadingOnClick from './LoadingOnClick';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 
-import downloadIcon from '../assets/icon-download-white.svg';
 import PillInputWithButton from '../uikit/PillInputWithButton';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
@@ -20,10 +20,10 @@ import { getFilesById } from 'services/arranger';
 
 import {
   downloadBiospecimen,
-  fileManifestParticipantsOnly,
   clinicalDataParticipants,
   clinicalDataFamily,
 } from '../services/downloadData';
+import ParticipantManifestModal from './ParticipantManifestModal';
 import FamilyManifestModal from './FamilyManifestModal';
 
 const enhance = compose(injectState, withTheme);
@@ -53,29 +53,6 @@ const downloadFile = async (arrangerIds, gen3Key) => {
   if (!fileUUID) throw new Error('Error retrieving File ID for the selected Row.');
   return downloadFileFromGen3(gen3Key, fileUUID);
 };
-const DownloadIcon = ({ className, loading }) =>
-  loading ? (
-    <Spinner
-      fadeIn="none"
-      name="circle"
-      color="#fff"
-      style={{
-        width: 15,
-        height: 15,
-        marginRight: 9,
-      }}
-    />
-  ) : (
-    <img
-      alt=""
-      src={downloadIcon}
-      css={`
-        width: 10px;
-        margin-right: 9px;
-        ${className};
-      `}
-    />
-  );
 
 const Divider = styled('div')`
   height: 1px;
@@ -124,11 +101,19 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
               >
                 <PillInputWithButton
                   options={{
-                    'Participant only': fileManifestParticipantsOnly({
-                      sqon,
-                      columns: state.columns,
-                    }),
-
+                    'Participant only': () => {
+                      return effects.setModal({
+                        title: 'Download Manifest',
+                        component: (
+                          <ParticipantManifestModal
+                            sqon={sqon}
+                            index={index}
+                            projectId={projectId}
+                            columns={state.columns}
+                          />
+                        ),
+                      });
+                    },
                     'Participant and family': () => {
                       return effects.setModal({
                         title: 'Download Manifest (Participant and Family)',
@@ -146,7 +131,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                   render={({ loading }) => {
                     return (
                       <React.Fragment>
-                        <DownloadIcon loading={loading} />
+                        <IconWithLoading {...{ loading, icon: downloadIcon }} />
                         <Trans css={theme.uppercase}>Download</Trans>
                       </React.Fragment>
                     );
@@ -236,7 +221,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                           onClick={onClick}
                           loading={loading}
                         >
-                          <DownloadIcon />
+                          <IconWithLoading icon={downloadIcon} />
                           <Trans css={theme.uppercase}>Download</Trans>
                         </Button>
                       );
@@ -277,7 +262,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                     render={({ loading }) => {
                       return (
                         <React.Fragment>
-                          <DownloadIcon loading={loading} />
+                          <IconWithLoading {...{ loading, icon: downloadIcon }} />
                           <Trans>Download</Trans>
                         </React.Fragment>
                       );

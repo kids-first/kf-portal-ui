@@ -2,7 +2,7 @@ import React from 'react';
 import { Field } from 'formik';
 import filesize from 'filesize';
 
-const DataTypeOption = ({ bucket, values, fileSize, familyMembers }) => {
+const DataTypeOption = ({ bucket, values, fileSize, familyMembers, disabled }) => {
   return (
     <label
       css={`
@@ -23,7 +23,8 @@ const DataTypeOption = ({ bucket, values, fileSize, familyMembers }) => {
           color: #2b388f;
         `}
       >
-        <Field name={bucket.key} type="checkbox" value={values[bucket.key]} /> {bucket.key}
+        <Field disabled={disabled} name={bucket.key} type="checkbox" value={values[bucket.key]} />{' '}
+        {bucket.key}
       </div>
       <div
         css={`
