@@ -8,7 +8,7 @@ import { Trans } from 'react-i18next';
 import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
 import CopyToClipboard from './CopyToClipboard';
-import { ModalFooter, ModalWarning } from './Modal';
+import { ModalSubHeader, ModalFooter, ModalWarning } from './Modal';
 import { FileRepoStats } from './Stats';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
@@ -27,21 +27,6 @@ const Button = compose(withTheme)(({ theme, children, ...props }) => (
     </div>
   </button>
 ));
-
-export const SubHeader = ({ children, ...props }) => (
-  <div
-    className={css`
-      margin-bottom: 9px;
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.87;
-      letter-spacing: 0.2px;
-      color: #343434;
-    `}
-  >
-    {children}
-  </div>
-);
 
 const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', ''))(
   ({ setId, setSetId, sqon, setWarning, onManifestGenerated, state: { loggedInUser } }) => (
@@ -123,7 +108,7 @@ const enhance = compose(withState('warning', 'setWarning', ''));
 const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children }) => (
   <div>
     {warning && <ModalWarning>{warning}</ModalWarning>}
-    <SubHeader>File Summary:</SubHeader>
+    <ModalSubHeader>File Summary:</ModalSubHeader>
     <FileRepoStats
       sqon={sqon}
       index={index}

@@ -43,6 +43,18 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
   </div>
 );
 
+export const ModalSubHeader = withTheme(({ theme, children, ...props }) => (
+  <div
+    className={css`
+      ${theme.modalHeader};
+      margin-bottom: 9px;
+    `}
+    {...props}
+  >
+    {children}
+  </div>
+));
+
 export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
     <div

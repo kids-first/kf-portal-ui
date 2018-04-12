@@ -9,10 +9,8 @@ import { withQuery } from '@arranger/components';
 
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import DataTypeOption from './DataTypeOption';
-import DownloadManifestModal, {
-  DownloadManifestModalFooter,
-  SubHeader,
-} from '../DownloadManifestModal';
+import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
+import { ModalSubHeader } from '../Modal';
 import Query from '@arranger/components/dist/Query';
 
 const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
@@ -209,9 +207,9 @@ const FamilyManifestModal = ({
     <DownloadManifestModal {...{ sqon, index, projectId }}>
       {({ setWarning }) => (
         <div>
-          <SubHeader>
+          <ModalSubHeader>
             Select the data types you would like to download for the family members:
-          </SubHeader>
+          </ModalSubHeader>
           {loading ? (
             spinner
           ) : (
