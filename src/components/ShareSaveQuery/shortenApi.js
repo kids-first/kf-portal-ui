@@ -12,7 +12,7 @@ export default ({ stats, queryName, sqon, loggedInUser }) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${jwt}`
+      Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify({
       userid: (loggedInUser || {}).egoId || 'anonymous',

@@ -19,15 +19,17 @@ export default provideState({
       const jwt = localStorage.getItem('EGO_JWT');
       return effects
         .setLoading(true)
-        .then(() => fetch(urlJoin(shortUrlApi, 'user', egoId), {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${jwt}`
-          }
-        }))
+        .then(() =>
+          fetch(urlJoin(shortUrlApi, 'user', egoId), {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }),
+        )
         .then(result => result.json())
         .then(json => effects.setLoading(false).then(() => json))
-        .then(value => state => Object.assign({}, state, { queries: value }))
+        .then(value => state => Object.assign({}, state, { queries: value }));
     },
     deleteQuery: (effects, queryId) => {
       const jwt = localStorage.getItem('EGO_JWT');
@@ -37,15 +39,15 @@ export default provideState({
           fetch(urlJoin(shortUrlApi, queryId), {
             method: 'DELETE',
             headers: {
-              'Authorization': `Bearer ${jwt}`
+              Authorization: `Bearer ${jwt}`,
             },
           }),
-      )
+        )
         .then(r => effects.removeDeletingId(queryId))
         .then(r => state => ({
           ...state,
           queries: state.queries.filter(({ id }) => id !== queryId),
-        }))
+        }));
     },
   },
 });
