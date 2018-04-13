@@ -107,6 +107,7 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
       </div>
       <QuickSearch
         {...{ ...props, setSQON }}
+        className="aggregation-card"
         placeholder="Enter Identifiers"
         LoadingIcon={
           <Spinner fadeIn="none" name="circle" color="#a9adc0" style={{ width: 15, height: 15 }} />
