@@ -52,7 +52,7 @@ export default injectState(
       shortenApi({ stats, sqon, loggedInUser })
         .then(data => {
           this.setState({
-            link: urlJoin(arrangerApiAbsolutePath, 's', data.body.shortUrl),
+            link: urlJoin(arrangerApiAbsolutePath, 's', data.id),
           });
         })
         .catch(error => {

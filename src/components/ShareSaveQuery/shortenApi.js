@@ -6,11 +6,13 @@ export default ({ stats, queryName, sqon, loggedInUser }) => {
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });
 
+  const jwt = localStorage.getItem('EGO_JWT');
   // TODO: use ajax service?
   return fetch(urlJoin(shortUrlApi, 'shorten'), {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
     },
     body: JSON.stringify({
       userid: (loggedInUser || {}).egoId || 'anonymous',
