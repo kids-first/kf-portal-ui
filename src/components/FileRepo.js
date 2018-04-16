@@ -2,11 +2,13 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
 import SQONURL from 'components/SQONURL';
 import downloadIcon from '../assets/icon-download-grey.svg';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import Measure from 'react-measure';
+import { Trans } from 'react-i18next';
 
 import {
   Arranger,
@@ -24,7 +26,7 @@ import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
 import { arrangerProjectId } from 'common/injectGlobals';
 
-const enhance = compose(injectState);
+const enhance = compose(injectState, withTheme);
 
 const arrangerStyles = css`
   display: flex;
@@ -51,7 +53,7 @@ const arrangerStyles = css`
   }
 `;
 
-const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) => {
+const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props }) => {
   return (
     <div
       css={`
@@ -79,9 +81,10 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
             color: #2b388f;
           `}
         >
-          Filters <InfoIcon />
+          <Trans>Filters</Trans> <InfoIcon />
         </div>
         <LightButton
+          css={theme.uppercase}
           onClick={() =>
             effects.setModal({
               title: 'All Filters',
@@ -100,7 +103,7 @@ const AggregationsWrapper = injectState(({ state, effects, setSQON, ...props }) 
             })
           }
         >
-          ALL FILTERS
+          <Trans css={theme.uppercase}>All Filters</Trans>
         </LightButton>
       </div>
       <Aggregations {...{ ...props, setSQON }} />
@@ -250,7 +253,8 @@ const FileRepo = ({ state, effects, ...props }) => {
                                         width: 10px;
                                         margin-right: 9px;
                                       `}
-                                    />Export TSV
+                                    />
+                                    <Trans>Export TSV</Trans>
                                   </React.Fragment>
                                 }
                               />

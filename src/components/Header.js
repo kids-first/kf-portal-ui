@@ -106,12 +106,24 @@ const Header = ({
           {!loggedInUser && (
             <li>
               {path === '/' ? (
-                <Link css={theme.linkAsButton} to="/join">
-                  <Trans>JOIN NOW</Trans>
+                <Link
+                  css={`
+                    ${theme.linkAsButton};
+                    ${theme.uppercase};
+                  `}
+                  to="/join"
+                >
+                  <Trans>Join now</Trans>
                 </Link>
               ) : (
-                <Link css={theme.linkAsButton} to="/">
-                  <Trans>LOGIN</Trans>
+                <Link
+                  css={`
+                    ${theme.linkAsButton};
+                    ${theme.uppercase};
+                  `}
+                  to="/"
+                >
+                  <Trans>Login</Trans>
                 </Link>
               )}
             </li>

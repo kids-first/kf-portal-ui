@@ -5,16 +5,18 @@ import { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
+import { Trans } from 'react-i18next';
 import { googleLogin, facebookLogin } from 'services/login';
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
 
 import { getProfile, createProfile } from 'services/profiles';
-import { googleAppId, egoApiRoot } from 'common/injectGlobals';
+import { egoApiRoot } from 'common/injectGlobals';
 import { allRedirectUris } from '../common/injectGlobals';
 import { GEN3, CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
+import googleSDK from 'services/googleSDK';
 
 const styles = {
   container: css`
@@ -32,8 +34,6 @@ const styles = {
     margin-bottom: 10px;
   `,
 };
-
-const gapi = global.gapi;
 
 const enhance = compose(injectState, withRouter);
 
@@ -89,28 +89,20 @@ class Component extends React.Component<any, any> {
   state = {
     securityError: false,
   };
-  componentDidMount() {
+  async componentDidMount() {
     try {
-      gapi.load('auth2', () => {
-        /**
-         * Retrieve the singleton for the GoogleAuth library and set up the
-         * client.
-         */
-        gapi.auth2.init({
-          client_id: googleAppId,
-        });
-        gapi.signin2.render('googleSignin', {
-          scope: 'profile email',
-          width: 240,
-          height: 40,
-          longtitle: true,
-          theme: 'light',
-          onsuccess: googleUser => {
-            const { id_token } = googleUser.getAuthResponse();
-            this.handleGoogleToken(id_token);
-          },
-          onfailure: error => global.log('login fail', error),
-        });
+      await googleSDK();
+      global.gapi.signin2.render('googleSignin', {
+        scope: 'profile email',
+        width: 240,
+        height: 40,
+        longtitle: true,
+        theme: 'light',
+        onsuccess: googleUser => {
+          const { id_token } = googleUser.getAuthResponse();
+          this.handleGoogleToken(id_token);
+        },
+        onfailure: error => global.log('login fail', error),
       });
     } catch (e) {
       global.log(e);
@@ -167,11 +159,13 @@ class Component extends React.Component<any, any> {
       <div className={styles.container}>
         {this.state.securityError ? (
           <div style={{ maxWidth: 600 }}>
-            Connection to ego failed, you may need to visit{' '}
-            <a target="_blank" href={egoApiRoot}>
-              {egoApiRoot}
-            </a>{' '}
-            in a new tab and accept the warning
+            <Trans i18nKey="login.connectionFailed">
+              Connection to ego failed, you may need to visit
+              <a target="_blank" href={egoApiRoot}>
+                {{ egoApiRoot }}
+              </a>
+              in a new tab and accept the warning
+            </Trans>
           </div>
         ) : renderSocialLoginButtons ? (
           [

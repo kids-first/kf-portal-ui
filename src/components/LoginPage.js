@@ -3,6 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import RightIcon from 'react-icons/lib/fa/angle-right';
+import { Trans } from 'react-i18next';
 
 import Login from 'components/Login';
 
@@ -27,10 +28,12 @@ const LoginPage = compose(withRouter, withTheme)(({ history, location, theme }) 
         -webkit-text-fill-color: transparent;
       `}
     >
-      Kids First Data Resource Portal
+      <Trans>Kids First Data Resource Portal</Trans>
     </h1>
     <div css={theme.card}>
-      <h2 css={theme.h2}>Log in</h2>
+      <h2 css={theme.h2}>
+        <Trans>Log in</Trans>
+      </h2>
 
       <Login
         shouldNotRedirect={true}
@@ -51,9 +54,10 @@ const LoginPage = compose(withRouter, withTheme)(({ history, location, theme }) 
           padding: 10px 10px 0 10px;
         `}
       >
-        New to Kids First?{' '}
+        <Trans>New to Kids First?</Trans>{' '}
         <Link to="/join">
-          Join now<RightIcon />
+          <Trans>Join now</Trans>
+          <RightIcon />
         </Link>
       </div>
     </div>

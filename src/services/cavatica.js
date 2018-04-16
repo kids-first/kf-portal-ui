@@ -1,5 +1,6 @@
 import ajax from 'services/ajax';
 import { cavaticaApiRoot } from 'common/injectGlobals';
+import { chunk as makeChunks } from 'lodash';
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -137,31 +138,39 @@ export const getFiles = async () => {
  *      "id": "5a98298e20947e0f33468143",
  *      "name": "HG00235.mapped.SOLID.bfast.GBR.exome.20110411.bam.bas"
  *    }
- *
  */
 export const convertGen3FileIds = async ({ ids }) => {
-  let items;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/action/files/resolve_origin_ids',
-      method: 'POST',
-      body: {
-        type: 'dataset',
-        dataset: 'sevenbridges/kids-first',
-        items: ids.map(id => {
-          return {
-            id,
-          };
-        }),
-        // [
-        //   { id: 'ffe81227-2d0f-4cb0-be03-f6fa0f93de71' },
-        //   { id: 'ff697878-84cd-4ad4-b7da-b1958e9d3c98' },
-        // ],
-      },
-    });
-    items = response.data.items;
-  } catch (error) {
-    console.warn(error);
+  let items = [];
+
+  /* ABOUT THE CHUNKS:
+  * Cavatica has a limit of how many items it can take at one time, 
+  *  so we batch a list of ids into chunks of size 75
+  *  and then repeat the conversion call for each chunk
+  */
+  const chunks = makeChunks(ids, 75);
+  for (const chunk of chunks) {
+    try {
+      const response = await ajax.post(cavaticaApiRoot, {
+        path: '/action/files/resolve_origin_ids',
+        method: 'POST',
+        body: {
+          type: 'dataset',
+          dataset: 'sevenbridges/kids-first',
+          items: chunk.map(id => {
+            return {
+              id,
+            };
+          }),
+          // [
+          //   { id: 'ffe81227-2d0f-4cb0-be03-f6fa0f93de71' },
+          //   { id: 'ff697878-84cd-4ad4-b7da-b1958e9d3c98' },
+          // ],
+        },
+      });
+      items.push(...response.data.items);
+    } catch (error) {
+      console.warn(error);
+    }
   }
   return items;
 };
@@ -173,19 +182,25 @@ export const convertGen3FileIds = async ({ ids }) => {
  * ids is an array of strings of the ids to copy
  */
 export const copyFiles = async ({ project, ids }) => {
-  let data;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/action/files/copy',
-      method: 'POST',
-      body: {
-        project: project,
-        file_ids: ids,
-      },
-    });
-    data = response.data;
-  } catch (error) {
-    console.warn(error);
+  let data = [];
+
+  //Cavatica times out if copying too many files at a time,
+  // chunk it into groups of 75 to accomodate.
+  const chunks = makeChunks(ids, 75);
+  for (const chunk of chunks) {
+    try {
+      const response = await ajax.post(cavaticaApiRoot, {
+        path: '/action/files/copy',
+        method: 'POST',
+        body: {
+          project: project,
+          file_ids: chunk,
+        },
+      });
+      data.push(response.data);
+    } catch (error) {
+      console.warn(error);
+    }
   }
   return data;
 };

@@ -13,6 +13,7 @@ import { ModalFooter } from 'components/Modal';
 import { arrangerApiAbsolutePath } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
+import { Trans } from 'react-i18next';
 
 export default injectState(
   class extends React.Component {
@@ -123,7 +124,7 @@ export default injectState(
                                   font-weight: bold;
                                 `}
                               >
-                                Query saved succesfully!
+                                <Trans>Query saved succesfully!</Trans>
                               </div>
                               <div onClick={() => history.push('/dashboard')}>
                                 <NiceWhiteButton
@@ -132,7 +133,7 @@ export default injectState(
                                     padding: 10px 15px;
                                   `}
                                 >
-                                  View in My Saved Queries
+                                  <Trans>View in My Saved Queries</Trans>
                                 </NiceWhiteButton>
                               </div>
                             </div>
@@ -144,7 +145,7 @@ export default injectState(
                                 align-items: center;
                               `}
                             >
-                              Save Query
+                              <Trans>Save Query</Trans>
                               {this.state.loading && (
                                 <Spinner
                                   fadeIn="none"
@@ -166,7 +167,7 @@ export default injectState(
                                 color: ${theme.greyScale2};
                               `}
                             >
-                              Save the current configuration of filters
+                              <Trans>Save the current configuration of filters</Trans>
                             </div>
                             <div
                               css={`
@@ -176,7 +177,7 @@ export default injectState(
                                 color: ${theme.greyScale2};
                               `}
                             >
-                              Enter a name for your saved query:
+                              <Trans>Enter a name for your saved query:</Trans>
                             </div>
                             <div
                               css={`
@@ -211,7 +212,7 @@ export default injectState(
                       />
                     }
                   >
-                    <SaveIcon />&nbsp;save
+                    <SaveIcon />&nbsp;<Trans>Save</Trans>
                   </Tooltip>
                 )}
               </Route>

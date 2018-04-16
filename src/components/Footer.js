@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
+import { Trans } from 'react-i18next';
 
 const FooterLink = styled.a`
   font-family: 'Open Sans';
@@ -34,16 +35,33 @@ const Footer = () => (
     `}
   >
     <div>
-      <FooterLink>Kids First Website</FooterLink> | <FooterLink>Contact Us</FooterLink> |{' '}
-      <FooterLink>Policies</FooterLink> | <FooterLink>Accessibility</FooterLink> |{' '}
-      <FooterLink>FOIA</FooterLink>
+      <FooterLink>
+        <Trans>Kids First Website</Trans>
+      </FooterLink>{' '}
+      |{' '}
+      <FooterLink>
+        <Trans>Contact Us</Trans>
+      </FooterLink>{' '}
+      |{' '}
+      <FooterLink>
+        <Trans>Policies</Trans>
+      </FooterLink>{' '}
+      |{' '}
+      <FooterLink>
+        <Trans>Accessibility</Trans>
+      </FooterLink>{' '}
+      |{' '}
+      <FooterLink>
+        <Trans>FOIA</Trans>
+      </FooterLink>
     </div>
     <div
       css={`
         color: #74757d;
       `}
     >
-      Data Release - Unreleased
+      <Trans>Data Release - </Trans>
+      <Trans i18nKey="dataReleaseVersion">Unreleased</Trans>
     </div>
   </footer>
 );

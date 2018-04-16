@@ -12,6 +12,7 @@ import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 're
 import Tooltip from 'uikit/Tooltip';
 import { arrangerApiAbsolutePath } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
+import { Trans } from 'react-i18next';
 
 let Bubble = p => (
   <span
@@ -95,7 +96,7 @@ export default injectState(
                       `}
                     >
                       {this.state.error ? (
-                        'Sorry something went wrong.'
+                        <Trans>Sorry something went wrong.</Trans>
                       ) : (
                         <Spinner
                           fadeIn="none"
@@ -120,7 +121,13 @@ export default injectState(
                             <Bubble>
                               <ChainIcon />
                             </Bubble>
-                            <span>{this.state.copied ? 'Copied!' : 'copy short URL'}</span>
+                            <span>
+                              {this.state.copied ? (
+                                <Trans>Copied!</Trans>
+                              ) : (
+                                <Trans>copy short URL</Trans>
+                              )}
+                            </span>
                           </span>
                         </CopyToClipboard>
                       </ItemRow>
@@ -131,7 +138,8 @@ export default injectState(
                         >
                           <Bubble>
                             <FBIcon />
-                          </Bubble>share on facebook
+                          </Bubble>
+                          <Trans>share on facebook</Trans>
                         </FacebookShareButton>
                       </ItemRow>
                       <ItemRow>
@@ -142,7 +150,7 @@ export default injectState(
                           title="Kids First File Repo Query"
                           url={this.state.link}
                         >
-                          share on twitter
+                          <Trans>share on twitter</Trans>
                         </TwitterShareButton>
                       </ItemRow>
                       <ItemRow>
@@ -152,7 +160,8 @@ export default injectState(
                         >
                           <Bubble>
                             <LIIcon />
-                          </Bubble>share on linkedin
+                          </Bubble>
+                          <Trans>share on linkedin</Trans>
                         </LinkedinShareButton>
                       </ItemRow>
                     </React.Fragment>
@@ -160,7 +169,7 @@ export default injectState(
                 </div>
               }
             >
-              <ShareIcon />&nbsp;share
+              <ShareIcon />&nbsp;<Trans>share</Trans>
             </Tooltip>
           </div>
         </div>

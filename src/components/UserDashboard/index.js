@@ -2,7 +2,6 @@ import * as React from 'react';
 import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
-import { get } from 'lodash';
 import { withTheme } from 'emotion-theming';
 import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
@@ -18,7 +17,7 @@ export default compose(
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
 )(({ state: { loggedInUser, integrationTokens, percentageFilled }, theme }) => {
   const profileColors = ROLES.reduce(
-    (prev, curr) => (curr.type == loggedInUser.roles[0] ? curr.profileColors : prev),
+    (prev, curr) => (curr.type === loggedInUser.roles[0] ? curr.profileColors : prev),
     ROLES[0].profileColors,
   );
 

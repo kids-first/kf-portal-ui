@@ -16,7 +16,7 @@ import Spinner from 'react-spinkit';
 import { cavaticaWebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
 
-import CavaticaInput from 'components/cavatica/CavaticaTokenInput';
+import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import LoadingOnClick from 'components/LoadingOnClick';
@@ -259,7 +259,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                       effects.setModal({
                         title: 'How to Connect to Cavatica',
                         component: (
-                          <CavaticaInput
+                          <CavaticaConnectModal
                             onComplete={effects.unsetModal}
                             onCancel={effects.unsetModal}
                           />
@@ -277,7 +277,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                       effects.setModal({
                         title: 'How to Connect to Cavatica',
                         component: (
-                          <CavaticaInput
+                          <CavaticaConnectModal
                             onComplete={effects.unsetModal}
                             onCancel={effects.unsetModal}
                           />
