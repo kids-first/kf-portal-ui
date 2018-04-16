@@ -39,15 +39,20 @@ const enhance = compose(injectState, withRouter);
 
 export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
   const data = jwtDecode(jwt);
+  const currentTime = Date.now();
+  const tokenExpiry = new Date(data.exp * 1000).valueOf();
   const user = data.context.user;
   const egoId = data.sub;
   await setToken(jwt);
   const existingProfile = await getProfile({ egoId });
   const newProfile = !existingProfile ? await createProfile({ ...user, egoId }) : {};
-  const loggedInUser = {
-    ...(existingProfile || newProfile),
-    email: user.email,
-  };
+  const loggedInUser =
+    tokenExpiry > currentTime
+      ? {
+          ...(existingProfile || newProfile),
+          email: user.email,
+        }
+      : null;
   await setUser(loggedInUser);
   if (onFinish) {
     onFinish(loggedInUser);
