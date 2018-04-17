@@ -24,6 +24,7 @@ import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
+import initializeApi from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -39,6 +40,13 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
 
 const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
+
+  const api = initializeApi({
+    onUnauthorized: response => {
+      window.location.reload();
+    },
+  });
+
   return (
     <div className="App">
       <Switch>
@@ -55,7 +63,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: FileRepo,
+              Component: props => <FileRepo {...{ ...props, api }} />,
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
@@ -69,7 +77,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: UserProfile,
+              Component: props => <UserProfile {...{ ...props, api }} />,
               loggedInUser,
               ...props,
             })
@@ -81,7 +89,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: UserDashboard,
+              Component: props => <UserDashboard {...{ ...props, api }} />,
               containerStyle: css`
                 height: 100vh;
               `,
