@@ -9,6 +9,7 @@ import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import Measure from 'react-measure';
 import { Trans } from 'react-i18next';
+import Spinner from 'react-spinkit';
 
 import {
   Arranger,
@@ -16,6 +17,7 @@ import {
   CurrentSQON,
   Table,
   DetectNewVersion,
+  QuickSearch,
 } from '@arranger/components/dist/Arranger';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
@@ -23,7 +25,7 @@ import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
-import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
+import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
 import { arrangerProjectId } from 'common/injectGlobals';
 
 const enhance = compose(injectState, withTheme);
@@ -63,9 +65,6 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
         box-shadow: 0 0 4.9px 0.2px #a0a0a3;
         border: solid 1px #c6c7cc;
         flex: none;
-        & > * {
-          margin-left: -1px;
-        }
       `}
     >
       <div
@@ -105,6 +104,20 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
         >
           <Trans css={theme.uppercase}>All Filters</Trans>
         </LightButton>
+      </div>
+      <div className="aggregation-card">
+        <QuickSearch
+          {...{ ...props, setSQON }}
+          placeholder="Enter Identifiers"
+          LoadingIcon={
+            <Spinner
+              fadeIn="none"
+              name="circle"
+              color="#a9adc0"
+              style={{ width: 15, height: 15 }}
+            />
+          }
+        />
       </div>
       <Aggregations {...{ ...props, setSQON }} />
     </div>
