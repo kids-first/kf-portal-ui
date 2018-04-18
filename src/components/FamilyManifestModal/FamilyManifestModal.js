@@ -183,6 +183,7 @@ const FamilyManifestModal = ({
   isSubmitting,
   isDisabled,
   setIsDisabled,
+  api,
 }) => {
   const loading =
     !dataTypes.length ||
@@ -204,7 +205,7 @@ const FamilyManifestModal = ({
     />
   );
   return (
-    <DownloadManifestModal {...{ sqon, index, projectId }}>
+    <DownloadManifestModal {...{ sqon, index, projectId, api }}>
       {({ setWarning }) => (
         <div>
           <ModalSubHeader>
@@ -215,6 +216,7 @@ const FamilyManifestModal = ({
           ) : (
             <Query
               renderError
+              api={api}
               projectId={projectId}
               name={`dataTypeQuery`}
               query={`

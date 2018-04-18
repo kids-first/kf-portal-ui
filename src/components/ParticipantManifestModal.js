@@ -7,8 +7,15 @@ import { fileManifestParticipantsOnly } from '../services/downloadData';
 
 const enhance = compose(injectState);
 
-const ParticipantManifestModal = ({ sqon, index, projectId, columns, effects: { unsetModal } }) => (
-  <DownloadManifestModal {...{ sqon, index, projectId }}>
+const ParticipantManifestModal = ({
+  sqon,
+  index,
+  projectId,
+  columns,
+  api,
+  effects: { unsetModal },
+}) => (
+  <DownloadManifestModal {...{ sqon, index, projectId, api }}>
     {({ setWarning }) => (
       <DownloadManifestModalFooter
         {...{

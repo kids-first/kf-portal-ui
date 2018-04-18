@@ -105,11 +105,12 @@ export const DownloadManifestModalFooter = ({
 );
 
 const enhance = compose(withState('warning', 'setWarning', ''));
-const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children }) => (
+const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children, api }) => (
   <div>
     {warning && <ModalWarning>{warning}</ModalWarning>}
     <ModalSubHeader>File Summary:</ModalSubHeader>
     <FileRepoStats
+      api={api}
       sqon={sqon}
       index={index}
       projectId={projectId}

@@ -60,7 +60,17 @@ const Divider = styled('div')`
   margin: 20px 10px 20px 0;
 `;
 
-const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme, ...props }) => {
+const FileRepoSidebar = ({
+  state,
+  projectId,
+  index,
+  style,
+  sqon,
+  effects,
+  theme,
+  api,
+  ...props
+}) => {
   let gen3Key = state.integrationTokens[GEN3];
   let setToast = effects.setToast;
   return (
@@ -106,6 +116,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                         title: 'Download Manifest',
                         component: (
                           <ParticipantManifestModal
+                            api={api}
                             sqon={sqon}
                             index={index}
                             projectId={projectId}
@@ -119,6 +130,7 @@ const FileRepoSidebar = ({ state, projectId, index, style, sqon, effects, theme,
                         title: 'Download Manifest (Participant and Family)',
                         component: (
                           <FamilyManifestModal
+                            api={api}
                             sqon={sqon}
                             index={index}
                             projectId={projectId}
