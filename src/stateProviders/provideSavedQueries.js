@@ -15,33 +15,44 @@ export default provideState({
     removeDeletingId: update((state, id) => ({
       deletingIds: state.deletingIds.filter(dId => dId !== id),
     })),
-    getQueries: (effects, egoId) => {
+    getQueries: (effects, { egoId, api }) => {
       const jwt = localStorage.getItem('EGO_JWT');
       return effects
         .setLoading(true)
-        .then(() =>
-          fetch(urlJoin(shortUrlApi, 'user', egoId), {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }),
+        .then(
+          () =>
+            api
+              ? api({
+                  url: urlJoin(shortUrlApi, 'user', egoId),
+                  method: 'GET',
+                })
+              : fetch(urlJoin(shortUrlApi, 'user', egoId), {
+                  method: 'GET',
+                  headers: {
+                    Authorization: `Bearer ${jwt}`,
+                  },
+                }).then(result => result.json()),
         )
-        .then(result => result.json())
         .then(json => effects.setLoading(false).then(() => json))
         .then(value => state => ({ ...state, queries: value }));
     },
-    deleteQuery: (effects, queryId) => {
+    deleteQuery: (effects, { queryId, api }) => {
       const jwt = localStorage.getItem('EGO_JWT');
       return effects
         .addDeletingId(queryId)
-        .then(() =>
-          fetch(urlJoin(shortUrlApi, queryId), {
-            method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
-          }),
+        .then(
+          () =>
+            api
+              ? api({
+                  url: urlJoin(shortUrlApi, queryId),
+                  method: 'DELETE',
+                })
+              : fetch(urlJoin(shortUrlApi, queryId), {
+                  method: 'DELETE',
+                  headers: {
+                    Authorization: `Bearer ${jwt}`,
+                  },
+                }),
         )
         .then(r => effects.removeDeletingId(queryId))
         .then(r => state => ({

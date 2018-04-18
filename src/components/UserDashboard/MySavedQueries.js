@@ -16,13 +16,15 @@ const MySavedQueries = compose(
   injectState,
   lifecycle({
     componentDidMount() {
-      this.props.effects.getQueries(this.props.loggedInUser.egoId);
+      const { api } = this.props;
+      this.props.effects.getQueries({ egoId: this.props.loggedInUser.egoId, api });
     },
   }),
 )(
   ({
     state: { queries, loadingQueries, deletingIds },
     effects: { getQueries, deleteQuery },
+    api,
     theme,
     profileColors,
   }) =>
@@ -194,7 +196,7 @@ const MySavedQueries = compose(
                             color: ${theme.hover};
                           }
                         `}
-                        onClick={() => deleteQuery(q.id)}
+                        onClick={() => deleteQuery({ api, queryId: q.id })}
                       />
                     </div>
                   </div>
