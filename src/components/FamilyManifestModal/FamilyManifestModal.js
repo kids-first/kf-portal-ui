@@ -301,6 +301,7 @@ const FamilyManifestModal = ({
           )}
           <DownloadManifestModalFooter
             {...{
+              api,
               sqon: sqonForDownload({ sqon, values, familyMemberIds }),
               onManifestGenerated: () => setIsDisabled(true),
               projectId,

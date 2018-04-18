@@ -29,26 +29,29 @@ const Button = compose(withTheme)(({ theme, children, ...props }) => (
 ));
 
 const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', ''))(
-  ({ setId, setSetId, sqon, setWarning, onManifestGenerated, state: { loggedInUser } }) => (
+  ({ api, setId, setSetId, sqon, setWarning, onManifestGenerated, state: { loggedInUser } }) => (
     <div>
       {setId ? (
         <CopyToClipboard value={setId} />
       ) : (
         <LoadingOnClick
           onClick={async () => {
-            const { data: { data, errors } } = await graphql({
-              query: `
+            const { data, errors } = await graphql({
+              api,
+              body: {
+                query: `
                 mutation saveSet($type: String! $userId: String! $sqon: JSON! $path: String!) {
                   saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path) {
                     setId
                   }
                 }
-              `,
-              variables: {
-                sqon: sqon || {},
-                type: 'file',
-                userId: loggedInUser.egoId,
-                path: 'kf_id',
+                `,
+                variables: {
+                  sqon: sqon || {},
+                  type: 'file',
+                  userId: loggedInUser.egoId,
+                  path: 'kf_id',
+                },
               },
             });
             if (errors && errors.length) {
@@ -88,10 +91,11 @@ export const DownloadManifestModalFooter = ({
   downloadLoading,
   onDownloadClick,
   setWarning,
+  api,
   onManifestGenerated = () => {},
 }) => (
   <ModalFooter showSubmit={false}>
-    <GenerateManifestSet {...{ sqon, projectId, setWarning, onManifestGenerated }} />
+    <GenerateManifestSet {...{ sqon, projectId, setWarning, onManifestGenerated, api }} />
     <LoadingOnClick
       onClick={onDownloadClick}
       render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (

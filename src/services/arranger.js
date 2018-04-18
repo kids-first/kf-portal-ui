@@ -2,8 +2,10 @@ import ajax from 'services/ajax';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 
-const graphql = async body =>
-  await ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);
+const graphql = async ({ api, body }) =>
+  api
+    ? await api({ endpoint: `/${arrangerProjectId}/graphql`, body })
+    : await ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);
 
 const buildFileQuery = ({ fields, first = null }) => {
   const firstString = first === null ? '' : `, first:${first}`;
@@ -12,20 +14,20 @@ const buildFileQuery = ({ fields, first = null }) => {
   )}}}}}}`;
 };
 
-const getFileTotals = async ({ sqon }) => {
+const getFileTotals = async ({ sqon, api }) => {
   const body = {
     query: buildFileQuery({ fields: ['id'] }),
     variables: { sqon },
   };
   try {
-    const response = await graphql(body);
-    return response.data.data.file.hits.total;
+    const response = await graphql({ api, body });
+    return response.data.file.hits.total;
   } catch (error) {
     console.warn(error);
   }
 };
 
-export const getFilesById = async ({ ids, fields }) => {
+export const getFilesById = async ({ ids, fields, api }) => {
   const query = buildFileQuery({ fields, first: ids.length });
   const sqon = {
     op: 'and',
@@ -35,15 +37,15 @@ export const getFilesById = async ({ ids, fields }) => {
 
   let edges;
   try {
-    const response = await graphql(body);
-    edges = response.data.data.file.hits.edges;
+    const response = await graphql({ api, body });
+    edges = response.data.file.hits.edges;
   } catch (error) {
     console.warn(error);
   }
   return edges;
 };
 
-export const getFilesByQuery = async ({ sqon, fields }) => {
+export const getFilesByQuery = async ({ sqon, fields, api }) => {
   const first = await getFileTotals({ sqon });
 
   const query = buildFileQuery({ fields, first });
@@ -51,8 +53,8 @@ export const getFilesByQuery = async ({ sqon, fields }) => {
 
   let edges;
   try {
-    const response = await graphql(body);
-    edges = response.data.data.file.hits.edges;
+    const response = await graphql({ api, body });
+    edges = response.data.file.hits.edges;
   } catch (error) {
     console.warn(error);
   }

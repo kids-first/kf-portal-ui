@@ -19,6 +19,7 @@ const ParticipantManifestModal = ({
     {({ setWarning }) => (
       <DownloadManifestModalFooter
         {...{
+          api,
           sqon,
           projectId,
           setWarning,
