@@ -29,7 +29,7 @@ export default provideState({
         )
         .then(result => result.json())
         .then(json => effects.setLoading(false).then(() => json))
-        .then(value => state => Object.assign({}, state, { queries: value }));
+        .then(value => state => ({ ...state, queries: value }));
     },
     deleteQuery: (effects, queryId) => {
       const jwt = localStorage.getItem('EGO_JWT');
