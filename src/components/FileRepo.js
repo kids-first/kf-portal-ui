@@ -216,6 +216,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                                   >
                                     <ShareQuery
                                       stats={data}
+                                      api={props.api}
                                       {...url}
                                       css={`
                                         flex: 1;
@@ -223,6 +224,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                                     />
                                     <SaveQuery
                                       stats={data}
+                                      api={props.api}
                                       {...url}
                                       css={`
                                         flex: 1;

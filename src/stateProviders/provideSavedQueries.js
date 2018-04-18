@@ -15,32 +15,25 @@ export default provideState({
     removeDeletingId: update((state, id) => ({
       deletingIds: state.deletingIds.filter(dId => dId !== id),
     })),
-    getQueries: (effects, egoId) => {
-      const jwt = localStorage.getItem('EGO_JWT');
+    getQueries: (effects, { egoId, api }) => {
       return effects
         .setLoading(true)
         .then(() =>
-          fetch(urlJoin(shortUrlApi, 'user', egoId), {
+          api({
+            url: urlJoin(shortUrlApi, 'user', egoId),
             method: 'GET',
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
           }),
         )
-        .then(result => result.json())
         .then(json => effects.setLoading(false).then(() => json))
-        .then(value => state => Object.assign({}, state, { queries: value }));
+        .then(value => state => ({ ...state, queries: value }));
     },
-    deleteQuery: (effects, queryId) => {
-      const jwt = localStorage.getItem('EGO_JWT');
+    deleteQuery: (effects, { queryId, api }) => {
       return effects
         .addDeletingId(queryId)
         .then(() =>
-          fetch(urlJoin(shortUrlApi, queryId), {
+          api({
+            url: urlJoin(shortUrlApi, queryId),
             method: 'DELETE',
-            headers: {
-              Authorization: `Bearer ${jwt}`,
-            },
           }),
         )
         .then(r => effects.removeDeletingId(queryId))

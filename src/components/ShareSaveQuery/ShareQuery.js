@@ -48,8 +48,8 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      let { stats, sqon, state: { loggedInUser } } = this.props;
-      shortenApi({ stats, sqon, loggedInUser })
+      let { stats, sqon, api, state: { loggedInUser } } = this.props;
+      shortenApi({ stats, sqon, loggedInUser, api })
         .then(data => {
           this.setState({
             link: urlJoin(arrangerApiAbsolutePath, 's', data.id),

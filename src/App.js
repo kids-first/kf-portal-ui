@@ -24,8 +24,15 @@ import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
+import initializeApi from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
+  const api = initializeApi({
+    onUnauthorized: response => {
+      window.location.reload();
+    },
+  });
+
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
       <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />
@@ -33,7 +40,7 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   } else {
-    return <Page {...props} />;
+    return <Page {...{ ...props, api }} />;
   }
 };
 
@@ -45,7 +52,18 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
         <Route
           // TODO: we need a user role specific for this
           path="/admin"
-          render={({ match }) => <ArrangerDashboard basename={match.url} />}
+          render={props =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: ({ match, ...props }) => (
+                <ArrangerDashboard basename={match.url} {...props} />
+              ),
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
