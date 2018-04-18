@@ -8,6 +8,7 @@ import { injectState } from 'freactal';
 import { MatchBox } from '@arranger/components/dist/Arranger';
 import graphql from 'services/arranger';
 import { ModalFooter } from './Modal';
+import graphql from '../services/arranger';
 
 const UploadButton = withTheme(({ theme, ...props }) => (
   <button className={theme.actionButton} {...props} />
