@@ -27,6 +27,12 @@ import { requireLogin } from './common/injectGlobals';
 import initializeApi from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
+  const api = initializeApi({
+    onUnauthorized: response => {
+      window.location.reload();
+    },
+  });
+
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
       <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />
@@ -34,19 +40,12 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   } else {
-    return <Page {...props} />;
+    return <Page {...{ ...props, api }} />;
   }
 };
 
 const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
-
-  const api = initializeApi({
-    onUnauthorized: response => {
-      window.location.reload();
-    },
-  });
-
   return (
     <div className="App">
       <Switch>
@@ -63,7 +62,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: props => <FileRepo {...{ ...props, api }} />,
+              Component: FileRepo,
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
@@ -77,7 +76,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: props => <UserProfile {...{ ...props, api }} />,
+              Component: UserProfile,
               loggedInUser,
               ...props,
             })
@@ -89,7 +88,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: props => <UserDashboard {...{ ...props, api }} />,
+              Component: UserDashboard,
               containerStyle: css`
                 height: 100vh;
               `,

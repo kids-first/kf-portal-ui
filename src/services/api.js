@@ -7,7 +7,10 @@ const initializeApi = ({ onUnauthorized }) => ({ endpoint = '', body, headers })
 
   return ajax
     .post(url, body)
-    .then(response => response.data)
+    .then(response => {
+      console.log('response: ', response);
+      return response.data;
+    })
     .catch(({ response }) => {
       if (response.status === 401) {
         return onUnauthorized(response);
