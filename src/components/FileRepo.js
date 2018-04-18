@@ -138,7 +138,9 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
             onClick={() =>
               effects.setModal({
                 title: 'Upload a List of Identifiers',
-                component: <UploadIdsModal {...props} closeModal={effects.unsetModal} />,
+                component: (
+                  <UploadIdsModal {...{ ...props, setSQON }} closeModal={effects.unsetModal} />
+                ),
               })
             }
           >
