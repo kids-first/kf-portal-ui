@@ -52,7 +52,16 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
         <Route
           // TODO: we need a user role specific for this
           path="/admin"
-          render={({ match }) => <ArrangerDashboard basename={match.url} />}
+          render={props =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: ({ match }) => <ArrangerDashboard basename={match.url} />,
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
