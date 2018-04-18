@@ -55,7 +55,7 @@ const arrangerStyles = css`
   }
 `;
 
-const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, api, ...props }) => {
+const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props }) => {
   return (
     <div
       css={`
@@ -119,7 +119,7 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, api, ...p
           }
         />
       </div>
-      <Aggregations {...{ ...props, api, setSQON }} />
+      <Aggregations {...{ ...props, setSQON }} />
     </div>
   );
 });
@@ -156,7 +156,7 @@ const customTableTypes = {
   },
 };
 
-const FileRepo = ({ state, effects, api, ...props }) => {
+const FileRepo = ({ state, effects, ...props }) => {
   return (
     <SQONURL
       render={url => {
@@ -182,7 +182,7 @@ const FileRepo = ({ state, effects, api, ...props }) => {
                 >
                   <DetectNewVersion {...props} />
                   <div css={arrangerStyles}>
-                    <AggregationsWrapper {...{ ...props, api }} {...url} />
+                    <AggregationsWrapper {...props} {...url} />
                     <div style={{ flexGrow: 1, width: 580 }}>
                       <div
                         css={`
@@ -205,7 +205,7 @@ const FileRepo = ({ state, effects, api, ...props }) => {
                           {url.sqon &&
                             Object.keys(url.sqon).length > 0 && (
                               <FileRepoStatsQuery
-                                {...{ ...props, api }}
+                                {...props}
                                 {...url}
                                 render={data => (
                                   <div
@@ -234,7 +234,7 @@ const FileRepo = ({ state, effects, api, ...props }) => {
                             )}
                         </div>
                         <FileRepoStats
-                          {...{ ...props, api }}
+                          {...props}
                           sqon={selectionSQON}
                           css={`
                             flex: none;
