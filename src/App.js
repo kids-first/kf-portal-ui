@@ -55,7 +55,9 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: ({ match }) => <ArrangerDashboard basename={match.url} />,
+              Component: ({ match, ...props }) => (
+                <ArrangerDashboard basename={match.url} {...props} />
+              ),
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
