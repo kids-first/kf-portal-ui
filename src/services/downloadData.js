@@ -1,6 +1,10 @@
 import { startCase } from 'lodash';
 import { format } from 'date-fns';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
+import urlJoin from 'url-join';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
+
+const downloadUrl = urlJoin(arrangerApiRoot, `${arrangerProjectId}/download`);
 
 function hackCrossIndex(value, key) {
   if (!key && process.env.NODE_ENV !== 'production') {
@@ -43,6 +47,7 @@ function findColumnsByField(fields, columns) {
 function getManifestDownload(type) {
   return ({ sqon, columns }) => () => {
     return saveTSV({
+      url: downloadUrl,
       fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD`),
       files: [
         {
@@ -79,6 +84,7 @@ export const fileManifestParticipantsAndFamily = getManifestDownload('participan
 
 export const clinicalDataParticipants = ({ sqon, columns }) => () => {
   return saveTSV({
+    url: downloadUrl,
     files: [
       {
         fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
@@ -148,6 +154,7 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
 
 export const clinicalDataFamily = ({ sqon, columns }) => () => {
   return saveTSV({
+    url: downloadUrl,
     files: [
       {
         fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
@@ -180,6 +187,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
 
 export const downloadBiospecimen = ({ sqon, columns }) => () => {
   return saveTSV({
+    url: downloadUrl,
     fileName: format(new Date(), '[participants_biospecimen_]YYYYMMDD[.tar.gz]'),
     files: [
       {
