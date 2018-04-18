@@ -34,9 +34,9 @@ export default injectState(
     }
 
     save = () => {
-      let { stats, sqon, state: { loggedInUser } } = this.props;
+      let { stats, sqon, api, state: { loggedInUser } } = this.props;
       this.setState({ loading: true });
-      shortenApi({ stats, sqon, queryName: this.state.queryName, loggedInUser })
+      shortenApi({ stats, sqon, queryName: this.state.queryName, loggedInUser, api })
         .then(data => {
           this.setState({
             loading: false,
