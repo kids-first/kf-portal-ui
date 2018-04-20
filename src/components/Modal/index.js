@@ -185,8 +185,10 @@ const ModalView = ({
       max-width: 1000px;
       box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
       overflow: visible;
+      display: flex;
+      flex-direction: column;
       ${isFooterShown ? 'padding-bottom: 75px;' : ''};
-    `} ${classNames ? classNames.content : ''}`}
+    `} ${classNames ? classNames.modal : ''}`}
     {...{
       appElement: getAppElement(),
       isOpen: !!component,
@@ -197,6 +199,7 @@ const ModalView = ({
     <div
       css={`
         z-index: 1000;
+        flex: 1;
       `}
     >
       {component}

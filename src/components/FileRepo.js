@@ -87,6 +87,13 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
           onClick={() =>
             effects.setModal({
               title: 'All Filters',
+              classNames: {
+                modal: css`
+                  width: 80%;
+                  height: 90%;
+                  max-width: initial;
+                `,
+              },
               component: (
                 <AdvancedFacetViewModalContent
                   {...{
