@@ -155,43 +155,40 @@ const ModalView = ({
   isFooterShown = true,
   theme,
   effects: { setModal, unsetModal },
-  state: { modalState: { component, title } },
+  state: { modalState: { component, title, classNames } },
   ...props
 }) => (
   <Modal
-    style={{
-      overlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'block',
-        zIndex: '1000',
-      },
-      content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        position: 'relative',
-        border: '1px solid rgb(204, 204, 204)',
-        background: 'rgb(255, 255, 255)',
-        borderRadius: '4px',
-        transform: 'translate(-50%, -50%)',
-        width: '95%',
-        boxSizing: 'border-box',
-        maxWidth: 1000,
-        boxShadow: 'rgba(0, 0, 0, 0.5) 0px 5px 15px',
-        overflow: 'visible',
-        ...(isFooterShown
-          ? {
-              paddingBottom: 75,
-            }
-          : {}),
-      },
-    }}
+    overlayClassName={`${css`
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: block;
+      z-index: 1000;
+    `} ${classNames ? classNames.overlay : ''}`}
+    className={`${css`
+      top: 50%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
+      position: relative;
+      border: 1px solid rgb(204, 204, 204);
+      background: rgb(255, 255, 255);
+      border-radius: 4px;
+      transform: translate(-50%, -50%);
+      width: 95%;
+      box-sizing: border-box;
+      padding: 20px 20px;
+      max-width: 1000px;
+      box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      ${isFooterShown ? 'padding-bottom: 75px;' : ''};
+    `} ${classNames ? classNames.modal : ''}`}
     {...{
       appElement: getAppElement(),
       isOpen: !!component,
@@ -202,6 +199,7 @@ const ModalView = ({
     <div
       css={`
         z-index: 1000;
+        flex: 1;
       `}
     >
       {component}

@@ -5,14 +5,16 @@ export default provideState({
     modalState: {
       title: null,
       component: null,
+      classNames: null,
     },
   }),
   effects: {
-    setModal: (effects, { title, component }) => state => ({
+    setModal: (effects, { title, component, classNames }) => state => ({
       ...state,
       modalState: {
         title,
         component,
+        classNames,
       },
     }),
     unsetModal: effects => state => {
@@ -21,6 +23,7 @@ export default provideState({
         modalState: {
           title: null,
           component: null,
+          classNames: null,
         },
       };
     },
