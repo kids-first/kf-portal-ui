@@ -38,12 +38,12 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
       ) : (
         <LoadingOnClick
           onClick={async () => {
-            const { data: { data, errors } } = await saveSet({
+            const { data, errors } = await saveSet({
               sqon: sqon || {},
               type: 'file',
               userId: loggedInUser.egoId,
               path: 'kf_id',
-              api: graphql,
+              api: graphql(api),
             });
             if (errors && errors.length) {
               setWarning('Unable to generate KF-get ID, please try again later.');
