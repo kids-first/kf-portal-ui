@@ -2,7 +2,7 @@ import { provideState } from 'freactal';
 import { isArray, get } from 'lodash';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
-import { getAllFieldNamesPromise } from 'services/profiles';
+import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { googleAppId } from 'common/injectGlobals';
 import { SERVICES } from 'common/constants';
 import { handleJWT } from 'components/Login';
@@ -59,6 +59,15 @@ export default provideState({
             percentageFilled: filledFields.length / totalFields,
           };
         }),
+    addUserSet: (effects, set) => state => {
+      const { email, sets, ...rest } = state.loggedInUser;
+      updateProfile({
+        user: {
+          ...rest,
+          sets: [...(sets || []), set],
+        },
+      }).then(profile => effects.setUser({ ...profile, email }));
+    },
     setToken: (effects, token) => state => {
       setToken(token);
       if (token) {

@@ -15,7 +15,15 @@ const UploadButton = withTheme(({ theme, ...props }) => (
 
 const enhance = compose(withTheme, injectState);
 
-const UploadIdsModal = ({ api, theme, state: { loggedInUser }, setSQON, closeModal, ...props }) => (
+const UploadIdsModal = ({
+  api,
+  theme,
+  state: { loggedInUser },
+  effects: { addUserSet },
+  setSQON,
+  closeModal,
+  ...props
+}) => (
   <div>
     <MatchBox
       {...{ ...props, setSQON }}
@@ -48,11 +56,12 @@ const UploadIdsModal = ({ api, theme, state: { loggedInUser }, setSQON, closeMod
         <ModalFooter
           {...{
             handleSubmit: async () => {
-              await saveSet({
+              const { type, setId, size } = await saveSet({
                 userId: loggedInUser.egoId,
                 api: graphql(api),
                 dataPath: 'data.saveSet',
               });
+              addUserSet({ type, setId, size });
               closeModal();
             },
             submitText: 'Upload',

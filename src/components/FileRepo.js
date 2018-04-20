@@ -19,6 +19,7 @@ import {
   DetectNewVersion,
   QuickSearch,
 } from '@arranger/components/dist/Arranger';
+import { toggleSQON } from '@arranger/components/dist/SQONView/utils';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
@@ -28,6 +29,7 @@ import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
 import UploadIdsModal from './UploadIdsModal';
 import { arrangerProjectId } from 'common/injectGlobals';
+import Select from '../uikit/Select';
 
 const enhance = compose(injectState, withTheme);
 
@@ -134,7 +136,10 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
           `}
         >
           <LightButton
-            className={`theme.uppercase`}
+            className={css`
+              border-top-right-radius: 0px;
+              border-bottom-right-radius: 0px;
+            `}
             onClick={() =>
               effects.setModal({
                 title: 'Upload a List of Identifiers',
@@ -146,6 +151,46 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
           >
             <Trans css={theme.uppercase}>Upload Ids</Trans>
           </LightButton>
+          <Select
+            className={css`
+              border-top-left-radius: 0px;
+              border-bottom-left-radius: 0px;
+              border-left: none;
+              padding-left: 0;
+            `}
+            align="right"
+            items={state.loggedInUser.sets.map(x => x.setId)}
+            itemContainerClassName={css`
+              padding: 0px;
+            `}
+            itemClassName={css`
+              &:hover {
+                background-color: ${theme.optionSelected};
+              }
+            `}
+            onChange={(setId, { clearSelection }) => {
+              if (setId) {
+                setSQON(
+                  toggleSQON(
+                    {
+                      op: 'and',
+                      content: [
+                        {
+                          op: 'in',
+                          content: {
+                            field: 'kf_id',
+                            value: [`set_id:${setId}`],
+                          },
+                        },
+                      ],
+                    },
+                    props.sqon,
+                  ),
+                );
+              }
+              clearSelection();
+            }}
+          />
         </div>
       </div>
       <Aggregations {...{ ...props, setSQON }} />

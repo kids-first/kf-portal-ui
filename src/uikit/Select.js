@@ -3,7 +3,14 @@ import Downshift from 'downshift';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
-function Select({ items, className, align = 'right', ...rest }) {
+function Select({
+  items,
+  className,
+  itemClassName,
+  itemContainerClassName,
+  align = 'right',
+  ...rest
+}) {
   return (
     <Downshift {...rest}>
       {({ getItemProps, isOpen, toggleMenu, selectedItem }) => (
@@ -49,25 +56,30 @@ function Select({ items, className, align = 'right', ...rest }) {
           </div>
           {!isOpen ? null : (
             <div
-              style={{
-                position: 'absolute',
-                background: 'white',
-                minWidth: '100%',
-                zIndex: 1,
-                border: '1px solid rgba(0, 0, 0, 0.05)',
-                boxSizing: 'border-box',
-                cursor: 'pointer',
-                padding: 5,
-                right: align === 'right' ? 0 : 'auto',
-                left: align === 'right' ? 'auto' : 0,
-                top: '100%',
-              }}
+              css={`
+                position: absolute;
+                background: white;
+                min-width: 100%;
+                z-index: 1;
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                box-sizing: border-box;
+                cursor: pointer;
+                padding: 5px;
+                right: ${align === 'right' ? `0` : `auto`};
+                left: ${align === 'right' ? `auto` : `0`};
+                top: 100%;
+                ${itemContainerClassName};
+              `}
             >
               {items.map(item => (
                 <div
                   {...getItemProps({ item })}
                   key={item}
-                  style={{ cursor: 'pointer', padding: 5 }}
+                  css={`
+                    cursor: pointer;
+                    padding: 5px;
+                    ${itemClassName};
+                  `}
                 >
                   {item}
                 </div>
