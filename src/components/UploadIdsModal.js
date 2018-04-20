@@ -20,19 +20,26 @@ const UploadIdsModal = ({ theme, state: { loggedInUser }, setSQON, closeModal, .
     <MatchBox
       {...{ ...props, setSQON }}
       instructionText={
-        <Trans>
-          Type or copy-and-paste a list of comma delimited identifiers, or choose a file of
-          identifiers to upload
-        </Trans>
+        'Type or copy-and-paste a list of comma delimited identifiers, or choose a file of identifiers to upload'
       }
-      placeholderText={`e.g. File Id\ne.g. Case Id\ne.g. Sample Id`}
+      placeholderText={`e.g. File Id\ne.g. Sample Id\ne.g. Participant Id`}
+      entitySelectText={'Select the entity to upload'}
+      entitySelectPlaceholder={'Select an Entity'}
+      matchedTabTitle={'Matched'}
+      unmatchedTabTitle={'Unmatched'}
+      matchTableColumnHeaders={{
+        inputId: 'Input Id',
+        matchedEntity: 'Matched Entity',
+        entityId: 'Entity Id',
+      }}
+      browseButtonText={<Trans>Browse</Trans>}
       matchHeaderText={
         <span
           className={css`
             ${theme.modalTitle};
           `}
         >
-          <Trans>Matching Files in the Kids First Data Repository</Trans>
+          <Trans>Matching files in the Kids First Data Repository</Trans>
         </span>
       }
       ButtonComponent={UploadButton}

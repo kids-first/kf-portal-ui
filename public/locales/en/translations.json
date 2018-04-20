@@ -65,8 +65,8 @@
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
   "Data Analysis": "Data Analysis",
-  "Type or copy-and-paste a list of comma delimited identifiers, or choose a file of identifiers to upload": "Type or copy-and-paste a list of comma delimited identifiers, or choose a file of identifiers to upload",
-  "Matching Files in the Kids First Data Repository": "Matching Files in the Kids First Data Repository",
+  "Browse": "Browse",
+  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Generate KF-get ID": "Generate KF-get ID",
   "Download Manifest": "Download Manifest"
 }
