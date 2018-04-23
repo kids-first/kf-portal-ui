@@ -1,3 +1,4 @@
 
 [context.storybook]
   command = "build-storybook"
+  publish = "build-storybook/"
