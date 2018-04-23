@@ -239,6 +239,14 @@ const FileRepo = ({ state, effects, ...props }) => {
   return (
     <SQONURL
       render={url => {
+        window.sqonHistory.push({
+          time: new Date(),
+          sqon: url.sqon
+        });
+        window.UserSnap.on("beforeSend", function(obj) {
+          obj.sqonHistory = window.sqonHistory
+          obj.sqonHistory.portal_version = '0.0.0';
+        });
         return (
           <Arranger
             {...props}
