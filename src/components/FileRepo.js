@@ -243,11 +243,12 @@ const FileRepo = ({ state, effects, ...props }) => {
           time: new Date(),
           sqon: url.sqon
         });
-        console.log(window.sqonHistory)
         window.UserSnap.on("beforeSend", function(obj) {
           obj.addInfo = {
               sqonHistory: window.sqonHistory,
-              portal_version: '0.0.0',
+              portalVersion: '0.0.0',
+              dataVersion: document.querySelectorAll('.css-19rtqle')[0].innerText,
+              userRole: state.loggedInUser.roles,
               arrangerProjectId
           }
         });
