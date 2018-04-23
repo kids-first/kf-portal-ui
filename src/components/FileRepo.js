@@ -245,9 +245,11 @@ const FileRepo = ({ state, effects, ...props }) => {
         });
         console.log(window.sqonHistory)
         window.UserSnap.on("beforeSend", function(obj) {
-          obj.sqonHistory = window.sqonHistory;
-          obj.portal_version = '0.0.0';
-          console.log("UserSnap.beforeSend", obj);
+          obj.addInfo = {
+              sqonHistory: window.sqonHistory,
+              portal_version: '0.0.0',
+              arrangerProjectId
+          }
         });
         return (
           <Arranger
