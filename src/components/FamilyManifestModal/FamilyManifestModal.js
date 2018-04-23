@@ -283,9 +283,10 @@ const FamilyManifestModal = ({
                           '',
                         )}family.participants__family__family_members__kf_id.buckets`,
                       );
-                      const familyMembersCount =
-                        familyMemberBuckets &&
-                        familyMemberBuckets.reduce((sum, bucket) => sum + bucket.doc_count, 0);
+                      const familyMembersCount = (familyMemberBuckets || []).reduce(
+                        (sum, bucket) => sum + bucket.doc_count,
+                        0,
+                      );
                       return (
                         <DataTypeOption
                           disabled={isDisabled}
