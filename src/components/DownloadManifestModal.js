@@ -5,6 +5,8 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
+import saveSet from '@arranger/components/dist/utils/saveSet';
+
 import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
 import CopyToClipboard from './CopyToClipboard';
@@ -36,23 +38,12 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
       ) : (
         <LoadingOnClick
           onClick={async () => {
-            const { data, errors } = await graphql({
-              api,
-              body: {
-                query: `
-                mutation saveSet($type: String! $userId: String! $sqon: JSON! $path: String!) {
-                  saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path) {
-                    setId
-                  }
-                }
-                `,
-                variables: {
-                  sqon: sqon || {},
-                  type: 'file',
-                  userId: loggedInUser.egoId,
-                  path: 'kf_id',
-                },
-              },
+            const { data, errors } = await saveSet({
+              sqon: sqon || {},
+              type: 'file',
+              userId: loggedInUser.egoId,
+              path: 'kf_id',
+              api: graphql(api),
             });
             if (errors && errors.length) {
               setWarning('Unable to generate KF-get ID, please try again later.');

@@ -26,6 +26,7 @@ import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
+import UploadIdsModal from './UploadIdsModal';
 import { arrangerProjectId } from 'common/injectGlobals';
 
 const enhance = compose(injectState, withTheme);
@@ -125,6 +126,27 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
             />
           }
         />
+        <div
+          className={css`
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+          `}
+        >
+          <LightButton
+            className={`theme.uppercase`}
+            onClick={() =>
+              effects.setModal({
+                title: 'Upload a List of Identifiers',
+                component: (
+                  <UploadIdsModal {...{ ...props, setSQON }} closeModal={effects.unsetModal} />
+                ),
+              })
+            }
+          >
+            <Trans css={theme.uppercase}>Upload Ids</Trans>
+          </LightButton>
+        </div>
       </div>
       <Aggregations {...{ ...props, setSQON }} />
     </div>

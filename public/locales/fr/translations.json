@@ -1,6 +1,7 @@
 {
   "Filters": "Filters",
   "All Filters": "All Filters",
+  "Upload Ids": "Upload Ids",
   "Export TSV": "Export TSV",
   "join": {
     "terms": {
@@ -64,6 +65,8 @@
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
   "Data Analysis": "Data Analysis",
+  "Browse": "Browse",
+  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Generate KF-get ID": "Generate KF-get ID",
   "Download Manifest": "Download Manifest"
 }
