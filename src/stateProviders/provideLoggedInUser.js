@@ -3,9 +3,8 @@ import { isArray, get } from 'lodash';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
-import { googleAppId } from 'common/injectGlobals';
 import { SERVICES } from 'common/constants';
-import { handleJWT } from 'components/Login';
+import { handleJWT, validateJWT } from 'components/Login';
 
 export default provideState({
   initialState: () => ({
@@ -19,21 +18,8 @@ export default provideState({
     initialize: effects => state => {
       const { setToken, setUser } = effects;
       const jwt = localStorage.getItem('EGO_JWT');
-      if (jwt) {
-        addHeaders({ authorization: `Bearer ${jwt}` });
-
-        try {
-          const gapi = global.gapi;
-          gapi.load('auth2', () => {
-            gapi.auth2.init({
-              client_id: googleAppId,
-            });
-          });
-        } catch (e) {
-          global.log(e);
-        }
+      if (validateJWT({ jwt })) {
         handleJWT({ jwt, setToken, setUser });
-
         // Get all integration keys from local storage
         SERVICES.forEach(service => {
           const storedToken = localStorage.getItem(`integration_${service}`);
@@ -41,11 +27,10 @@ export default provideState({
             state.integrationTokens[service] = storedToken;
           }
         });
+        return { ...state, isLoadingUser: true };
       }
-      return {
-        ...state,
-        isLoadingUser: !!jwt,
-      };
+      localStorage.removeItem('EGO_JWT');
+      return { ...state, isLoadingUser: false };
     },
     setUser: (effects, user) =>
       getAllFieldNamesPromise()
