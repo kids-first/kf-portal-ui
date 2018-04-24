@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, difference } from 'lodash';
 import { compose, withProps, withState } from 'recompose';
 import { withFormik } from 'formik';
 import { injectState } from 'freactal/lib/inject';
@@ -96,9 +96,7 @@ const enhance = compose(
     );
     return {
       participantIds,
-      familyMembersWithoutParticipantIds: familyMemberIds.filter(
-        id => !participantIds.some(pId => id === pId),
-      ),
+      familyMembersWithoutParticipantIds: difference(familyMemberIds, participantIds),
     };
   }),
 
@@ -292,8 +290,9 @@ const FamilyManifestModal = ({
                           '',
                         )}family.participants__family__family_members__kf_id.buckets`,
                       );
-                      const familyMembersCount = (familyMemberBuckets || []).filter(
-                        ({ key }) => !participantIds.some(id => id === key),
+                      const familyMembersCount = difference(
+                        familyMemberBuckets || [],
+                        participantIds,
                       ).length;
                       return (
                         <DataTypeOption
