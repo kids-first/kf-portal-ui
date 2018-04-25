@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, difference } from 'lodash';
 import { compose, withProps, withState } from 'recompose';
 import { withFormik } from 'formik';
 import { injectState } from 'freactal/lib/inject';
@@ -42,14 +42,21 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
 
 const enhance = compose(
   injectState,
-  withQuery(({ sqon, projectId }) => ({
+
+  withQuery(({ sqon, projectId, familyMemberIdAggregation }) => ({
     renderError: true,
     projectId,
-    key: 'familyMemberIdAggregation',
+    key: 'participantAndFamilyMemberIdsAggregation',
     query: `
       query dataTypes($sqon: JSON) {
         file {
           aggregations(filters: $sqon) {
+            participants__kf_id {
+              buckets {
+                doc_count
+                key
+              }
+            }
             participants__family__family_members__kf_id {
               buckets {
                 doc_count
@@ -62,92 +69,67 @@ const enhance = compose(
     `,
     variables: { sqon },
   })),
-  withProps(({ familyMemberIdAggregation: { data } }) => ({
-    familyMemberIds: (
+  withProps(({ participantAndFamilyMemberIdsAggregation: { data } }) => {
+    const familyMemberIds = (
       get(data, 'file.aggregations.participants__family__family_members__kf_id.buckets') || []
-    ).map(b => b.key),
-  })),
-  withQuery(({ sqon, projectId, familyMemberIds, familyMemberIdAggregation }) => ({
-    shouldFetch: !familyMemberIdAggregation.loading,
-    renderError: true,
-    projectId,
-    key: 'familyMemberWithoutParticipantIdAggregation',
-    query: `
-      query dataTypes($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            participants__family__family_members__kf_id {
-              buckets {
-                doc_count
-                key
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: {
-      sqon: {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: { field: 'participants.kf_id', value: familyMemberIds },
-          },
-          ...(sqon ? [{ op: 'not', content: [sqon] }] : []),
-        ],
-      },
-    },
-  })),
-  withProps(({ familyMemberWithoutParticipantIdAggregation: { data } }) => ({
-    familyMemberWithoutParticipantIds: (
-      get(data, 'file.aggregations.participants__family__family_members__kf_id.buckets') || []
-    ).map(b => b.key),
-  })),
-  withProps(({ familyMemberIds, familyMemberWithoutParticipantIds }) => ({
-    finalFamilyMemberIds: familyMemberWithoutParticipantIds.length
-      ? familyMemberWithoutParticipantIds
-      : familyMemberIds,
-  })),
+    ).map(b => b.key);
+    const participantIds = (get(data, 'file.aggregations.participants__kf_id.buckets') || []).map(
+      b => b.key,
+    );
+    return {
+      familyMemberIds,
+      participantIds,
+      familyMembersWithoutParticipantIds: difference(familyMemberIds, participantIds),
+    };
+  }),
+
   withQuery(
-    ({ sqon, projectId, finalFamilyMemberIds, familyMemberWithoutParticipantIdAggregation }) => ({
-      shouldFetch: !familyMemberWithoutParticipantIdAggregation.loading,
-      renderError: true,
+    ({
+      sqon,
       projectId,
-      key: 'dataTypesAggregation',
-      query: `
-      query dataTypes($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            data_type {
-              buckets {
-                doc_count
-                key
+      participantAndFamilyMemberIdsAggregation,
+      familyMembersWithoutParticipantIds,
+    }) => {
+      return {
+        shouldFetch: !participantAndFamilyMemberIdsAggregation.loading,
+        renderError: true,
+        projectId,
+        key: 'dataTypesAggregation',
+        query: `
+          query dataTypes($sqon: JSON) {
+            file {
+              aggregations(filters: $sqon) {
+                data_type {
+                  buckets {
+                    doc_count
+                    key
+                  }
+                }
               }
             }
           }
-        }
-      }
-    `,
-      variables: {
-        sqon: {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'participants.kf_id',
-                value: finalFamilyMemberIds,
+        `,
+        variables: {
+          sqon: {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: {
+                  field: 'participants.kf_id',
+                  value: familyMembersWithoutParticipantIds,
+                },
               },
-            },
-          ],
+            ],
+          },
         },
-      },
-    }),
+      };
+    },
   ),
   withProps(({ dataTypesAggregation: { data } }) => ({
     dataTypes: get(data, 'file.aggregations.data_type.buckets') || [],
   })),
+
   withFormik({
     mapPropsToValues: ({ dataTypes }) =>
       dataTypes.reduce((acc, bucket) => ({ ...acc, [bucket.key]: false }), {}),
@@ -169,12 +151,16 @@ const enhance = compose(
 );
 
 const FamilyManifestModal = ({
+  //aggregations
+  participantAndFamilyMemberIdsAggregation,
   dataTypesAggregation,
+
+  // actual data
   familyMemberIds,
-  finalFamilyMemberIds,
-  familyMemberIdAggregation,
-  familyMemberWithoutParticipantIdAggregation,
+  familyMembersWithoutParticipantIds,
+  participantIds,
   dataTypes,
+
   sqon,
   index,
   projectId,
@@ -189,8 +175,8 @@ const FamilyManifestModal = ({
     !dataTypes.length ||
     !dataTypesAggregation.data ||
     dataTypesAggregation.loading ||
-    familyMemberIdAggregation.loading ||
-    familyMemberWithoutParticipantIdAggregation.loading;
+    participantAndFamilyMemberIdsAggregation.loading;
+
   const spinner = (
     <Spinner
       fadeIn="none"
@@ -220,9 +206,7 @@ const FamilyManifestModal = ({
               projectId={projectId}
               name={`dataTypeQuery`}
               query={`
-                query dataTypes(${dataTypes
-                  .map((dataType, i) => `$sqon${i}: JSON, $sqon${i}family: JSON`)
-                  .join(', ')}) {
+                query dataTypes(${dataTypes.map((dataType, i) => `$sqon${i}: JSON`).join(', ')}) {
                   file {
                     ${dataTypes
                       .map(
@@ -240,10 +224,10 @@ const FamilyManifestModal = ({
                         ${dataType.key.replace(
                           /[^\da-z]/gi,
                           '',
-                        )}family: aggregations(filters: $sqon${i}family) {
+                        )}family: aggregations(filters: $sqon${i}) {
                           participants__family__family_members__kf_id {
                             buckets {
-                              doc_count
+                              key
                             }
                           }
                         }
@@ -267,8 +251,10 @@ const FamilyManifestModal = ({
 
                 return {
                   ...acc,
-                  [`sqon${i}family`]: { op: 'and', content: dataTypeFilters(familyMemberIds) },
-                  [`sqon${i}`]: { op: 'and', content: dataTypeFilters(finalFamilyMemberIds) },
+                  [`sqon${i}`]: {
+                    op: 'and',
+                    content: dataTypeFilters(participantIds),
+                  },
                 };
               }, {})}
               render={({ data, loading }) => {
@@ -276,19 +262,24 @@ const FamilyManifestModal = ({
                   ? spinner
                   : (dataTypes || []).map(bucket => {
                       const aggs = get(data, `file`);
+                      const familyMemberBuckets = get(
+                        aggs,
+                        `${bucket.key.replace(
+                          /[^\da-z]/gi,
+                          '',
+                        )}family.participants__family__family_members__kf_id.buckets`,
+                      );
+                      const familyMembersCount = difference(
+                        (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
+                        participantIds,
+                      ).length;
                       return (
                         <DataTypeOption
                           disabled={isDisabled}
                           key={bucket.key}
                           bucket={bucket}
                           values={values}
-                          familyMembers={get(
-                            aggs,
-                            `${bucket.key.replace(
-                              /[^\da-z]/gi,
-                              '',
-                            )}family.participants__family__family_members__kf_id.buckets.length`,
-                          )}
+                          familyMembers={familyMembersCount}
                           fileSize={get(
                             aggs,
                             `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
