@@ -29,7 +29,7 @@ export default provideState({
         });
         return { ...state, isLoadingUser: true };
       }
-      localStorage.removeItem('EGO_JWT');
+      setToken(null);
       return { ...state, isLoadingUser: false };
     },
     setUser: (effects, user) =>
