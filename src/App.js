@@ -35,7 +35,7 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
 
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
-      <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />
+      <SideImagePage sideImage={loginImage} {...{ ...props, api }} Component={LoginPage} />
     );
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;

@@ -45,15 +45,15 @@ export const validateJWT = ({ jwt }) => {
   return tokenExpiry > currentTime && data;
 };
 
-export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
+export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
   if (!jwtData) return;
 
   await setToken(jwt);
   const user = jwtData.context.user;
   const egoId = jwtData.sub;
-  const existingProfile = await getProfile({ egoId });
-  const newProfile = !existingProfile ? await createProfile({ ...user, egoId }) : {};
+  const existingProfile = await getProfile(api)({ egoId });
+  const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
   const loggedInUser = {
     ...(existingProfile || newProfile),
     email: user.email,
@@ -142,11 +142,12 @@ class Component extends React.Component<any, any> {
     }
   };
   handleLoginResponse = async response => {
+    const { api } = this.props;
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
       const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
-      await handleJWT({ jwt, onFinish, setToken, setUser });
+      await handleJWT({ jwt, onFinish, setToken, setUser, api });
       fetchIntegrationTokens({ setIntegrationToken });
     } else {
       console.warn('response error');

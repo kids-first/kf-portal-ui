@@ -69,10 +69,10 @@ export default compose(
   withTheme,
   lifecycle({
     async componentDidMount(): void {
-      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile } = this.props;
+      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile, api } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
-        : setProfile(await getProfile({ egoId }));
+        : setProfile(await getProfile(api)({ egoId }));
     },
   }),
   withState('interests', 'setInterests', ({ profile }) => profile.interests || []),
@@ -83,11 +83,11 @@ export default compose(
   }),
   withPropsOnChange(
     ['match'],
-    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser } }) => ({
+    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser }, api }) => ({
       notUsed:
         loggedInUser && egoId === loggedInUser.egoId
           ? setProfile(loggedInUser)
-          : setProfile(await getProfile({ egoId })),
+          : setProfile(await getProfile(api)({ egoId })),
     }),
   ),
   withHandlers({

@@ -29,8 +29,8 @@ const DEFAULT_FIELDS = `
   }
 `;
 
-export const getProfile = async ({ egoId }) => {
-  const { data: { data: { users } } } = await ajax.post(urlJoin(personaApiRoot, 'graphql'), {
+export const getProfile = api => async ({ egoId }) => {
+  const body = {
     variables: { egoId },
     query: `
         query($egoId: String) {
@@ -42,7 +42,10 @@ export const getProfile = async ({ egoId }) => {
           }
         }
       `,
-  });
+  };
+  const { data: { users } } = api
+    ? await api({ url: urlJoin(personaApiRoot, 'graphql'), body })
+    : await ajax.post(urlJoin(personaApiRoot, 'graphql'), body).then(data => data.data);
 
   if (users.count > 1) {
     console.warn(`egoId should only match 1 profile but ${egoId} matched ${users.mount} profiles`);
@@ -51,22 +54,23 @@ export const getProfile = async ({ egoId }) => {
   return users.items[0];
 };
 
-export const createProfile = async ({ egoId, lastName, firstName, email }) => {
-  const { data: { data: { userCreate: { record } } } } = await ajax.post(
-    urlJoin(personaApiRoot, 'graphql'),
-    {
-      variables: { egoId, lastName, firstName, email },
-      query: `
-        mutation($egoId: String, $firstName: String, $lastName: String, $email: String) {
-          userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email}) {
-            record {
-              ${DEFAULT_FIELDS}
-            }
+export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
+  const body = {
+    variables: { egoId, lastName, firstName, email },
+    query: `
+      mutation($egoId: String, $firstName: String, $lastName: String, $email: String) {
+        userCreate(record:{egoId: $egoId, firstName: $firstName, lastName: $lastName, email: $email}) {
+          record {
+            ${DEFAULT_FIELDS}
           }
         }
-      `,
-    },
-  );
+      }
+    `,
+  };
+
+  const { data: { data: { userCreate: { record } } } } = api
+    ? await api({ url: urlJoin(personaApiRoot, 'graphql'), body })
+    : await ajax.post(urlJoin(personaApiRoot, 'graphql'), body);
 
   return record;
 };
