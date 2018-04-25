@@ -24,7 +24,7 @@ import {
   clinicalDataFamily,
 } from '../services/downloadData';
 import ParticipantManifestModal from './ParticipantManifestModal';
-import FamilyManifestModal from './FamilyManifestModal';
+import FamilyManifestModal, { enhanceWithFamilyModalData } from './FamilyManifestModal';
 
 const enhance = compose(injectState, withTheme);
 
@@ -102,54 +102,57 @@ const FileRepoSidebar = ({
           projectId={projectId}
           graphqlField="file"
           render={({ state }) => {
+            const Enhanced = enhanceWithFamilyModalData(familtManifestModalProps => {
+              return (
+                <div
+                  css={`
+                    display: flex;
+                    margin-bottom: 13px;
+                  `}
+                >
+                  <PillInputWithButton
+                    options={{
+                      'Participant only': () => {
+                        return effects.setModal({
+                          title: 'Download Manifest',
+                          component: (
+                            <ParticipantManifestModal
+                              api={api}
+                              sqon={sqon}
+                              index={index}
+                              projectId={projectId}
+                              columns={state.columns}
+                            />
+                          ),
+                        });
+                      },
+                      'Participant and family': () => {
+                        return effects.setModal({
+                          title: 'Download Manifest (Participant and Family)',
+                          component: <FamilyManifestModal {...familtManifestModalProps} />,
+                        });
+                      },
+                    }}
+                    render={({ loading }) => {
+                      return (
+                        <React.Fragment>
+                          <IconWithLoading {...{ loading, icon: downloadIcon }} />
+                          <Trans css={theme.uppercase}>Download</Trans>
+                        </React.Fragment>
+                      );
+                    }}
+                  />
+                </div>
+              );
+            });
             return (
-              <div
-                css={`
-                  display: flex;
-                  margin-bottom: 13px;
-                `}
-              >
-                <PillInputWithButton
-                  options={{
-                    'Participant only': () => {
-                      return effects.setModal({
-                        title: 'Download Manifest',
-                        component: (
-                          <ParticipantManifestModal
-                            api={api}
-                            sqon={sqon}
-                            index={index}
-                            projectId={projectId}
-                            columns={state.columns}
-                          />
-                        ),
-                      });
-                    },
-                    'Participant and family': () => {
-                      return effects.setModal({
-                        title: 'Download Manifest (Participant and Family)',
-                        component: (
-                          <FamilyManifestModal
-                            api={api}
-                            sqon={sqon}
-                            index={index}
-                            projectId={projectId}
-                            columns={state.columns}
-                          />
-                        ),
-                      });
-                    },
-                  }}
-                  render={({ loading }) => {
-                    return (
-                      <React.Fragment>
-                        <IconWithLoading {...{ loading, icon: downloadIcon }} />
-                        <Trans css={theme.uppercase}>Download</Trans>
-                      </React.Fragment>
-                    );
-                  }}
-                />
-              </div>
+              <Enhanced
+                api={api}
+                sqon={sqon}
+                index={index}
+                projectId={projectId}
+                columns={state.columns}
+              />
             );
           }}
         />
