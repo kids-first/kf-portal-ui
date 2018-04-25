@@ -10,7 +10,7 @@ import urlJoin from 'url-join';
 export default compose(injectState, withRouter)(
   ({
     history,
-    state: { loggedInUser },
+    state: { loggedInUser, loggedInUserToken, api },
     effects: { setToken, setUser, clearIntegrationTokens },
     className,
     children,
@@ -19,22 +19,25 @@ export default compose(injectState, withRouter)(
     <button
       className={className}
       onClick={async () => {
-        await deleteProfile({ user: loggedInUser });
+        await deleteProfile(api)({ user: loggedInUser });
 
-        let response = await fetch(urlJoin(shortUrlApi, 'user', loggedInUser.egoId)).then(r =>
-          r.json(),
-        );
-
-        response.value.forEach(async ({ id }) => {
-          await fetch(urlJoin(shortUrlApi, id), {
-            method: 'DELETE',
-            headers: {
-              'Content-type': 'application/json',
-            },
+        api({
+          url: urlJoin(shortUrlApi, 'user', loggedInUser.egoId),
+          method: 'GET',
+        })
+          .then(response =>
+            Promise.all(
+              response.map(({ id }) =>
+                api({
+                  url: urlJoin(shortUrlApi, id),
+                  method: 'DELETE',
+                }),
+              ),
+            ),
+          )
+          .then(() => {
+            uiLogout({ history, setUser, setToken, clearIntegrationTokens });
           });
-        });
-
-        uiLogout({ history, setUser, setToken, clearIntegrationTokens });
       }}
       {...props}
     >

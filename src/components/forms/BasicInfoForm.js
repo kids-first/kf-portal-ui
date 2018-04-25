@@ -103,6 +103,7 @@ export default compose(
         props: {
           state: { loggedInUser },
           effects: { setUser, setModal, unsetModal },
+          api,
           ...restProps
         },
         setSubmitting,
@@ -110,7 +111,7 @@ export default compose(
       }: any,
     ) => {
       const { email, ...rest } = loggedInUser;
-      updateProfile({
+      updateProfile(api)({
         user: {
           ...rest,
           ...values,

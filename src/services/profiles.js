@@ -75,46 +75,47 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
   return record;
 };
 
-export const updateProfile = async ({ user }) => {
-  const { data: { data: { userUpdate: { record } } } } = await ajax.post(
-    urlJoin(personaApiRoot, 'graphql'),
-    {
-      variables: { record: user },
-      query: `
-        mutation($record: UpdateByIdUserModelInput!) {
-          userUpdate(record: $record) {
-            record {
-              ${DEFAULT_FIELDS}
-            }
+export const updateProfile = api => async ({ user }) => {
+  console.log('api from updateProfile: ', api);
+  const body = {
+    variables: { record: user },
+    query: `
+      mutation($record: UpdateByIdUserModelInput!) {
+        userUpdate(record: $record) {
+          record {
+            ${DEFAULT_FIELDS}
           }
         }
-      `,
-    },
-  );
+      }
+    `,
+  };
+  const { data: { userUpdate: { record } } } = api
+    ? await api({ url: urlJoin(personaApiRoot, 'graphql'), body })
+    : await ajax.post(urlJoin(personaApiRoot, 'graphql'), body).then(data => data.data);
 
   return record;
 };
 
-export const deleteProfile = async ({ user }) => {
-  const { data: { data: { userRemove: { recordId } } } } = await ajax.post(
-    urlJoin(personaApiRoot, 'graphql'),
-    {
-      variables: { _id: user._id },
-      query: `
-        mutation($_id: MongoID!) {
-          userRemove(_id: $_id) {
-            recordId
-          }
+export const deleteProfile = api => async ({ user }) => {
+  const body = {
+    variables: { _id: user._id },
+    query: `
+      mutation($_id: MongoID!) {
+        userRemove(_id: $_id) {
+          recordId
         }
-      `,
-    },
-  );
+      }
+    `,
+  };
+  const { data: { userRemove: { recordId } } } = api
+    ? await api({ url: urlJoin(personaApiRoot, 'graphql'), body })
+    : await ajax.post(urlJoin(personaApiRoot, 'graphql'), body).then(data => data.data);
 
   return recordId;
 };
 
-export const getAllFieldNamesPromise = () => {
-  return ajax.post(urlJoin(personaApiRoot, 'graphql'), {
+export const getAllFieldNamesPromise = api => {
+  const body = {
     query: `
       query {
       __type(name: "UserModel") {
@@ -126,5 +127,8 @@ export const getAllFieldNamesPromise = () => {
         }
       }
     }`,
-  });
+  };
+  return api
+    ? api({ url: urlJoin(personaApiRoot, 'graphql'), body })
+    : ajax.post(urlJoin(personaApiRoot, 'graphql'), body).then(({ data }) => data);
 };

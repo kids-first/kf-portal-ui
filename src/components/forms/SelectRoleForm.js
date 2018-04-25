@@ -63,13 +63,13 @@ export const enhance = compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser }, onFinish, ...restProps },
+        props: { state: { loggedInUser }, effects: { setUser }, onFinish, api, ...restProps },
         setSubmitting,
         setErrors,
       }: any,
     ) => {
       const { email, ...rest } = loggedInUser;
-      updateProfile({
+      updateProfile(api)({
         user: {
           ...rest,
           firstName: values.firstName,

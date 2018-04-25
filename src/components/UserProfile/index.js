@@ -91,8 +91,8 @@ export default compose(
     }),
   ),
   withHandlers({
-    submit: ({ profile, effects: { setUser } }) => async values => {
-      await updateProfile({
+    submit: ({ profile, effects: { setUser }, api }) => async values => {
+      await updateProfile(api)({
         user: {
           ...profile,
           ...values,
@@ -106,7 +106,7 @@ export default compose(
     ({ profile }) => !profile || profile.length === 0,
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
-)(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash } }) => (
+)(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash }, api }) => (
   <div
     className={css`
       flex: 1;
@@ -176,12 +176,12 @@ export default compose(
               `}
             >
               <EditButton
-                onClick={() =>
+                onClick={() => {
                   setModal({
                     title: 'Edit Basic Information',
-                    component: <BasicInfoForm />,
-                  })
-                }
+                    component: <BasicInfoForm {...{ api }} />,
+                  });
+                }}
               />
             </span>
           </div>

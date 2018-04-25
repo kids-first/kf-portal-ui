@@ -32,9 +32,17 @@ export default provideState({
       setToken(null);
       return { ...state, isLoadingUser: false };
     },
+    setApi: (effects, api) => state => {
+      return {
+        ...state,
+        api,
+      };
+    },
     setUser: (effects, user) =>
       getAllFieldNamesPromise()
-        .then(({ data }) => get(data, 'data.__type.fields', []).length)
+        .then(({ data }) => {
+          return get(data, '__type.fields', []).length;
+        })
         .then(totalFields => state => {
           const filledFields = Object.values(user || {}).filter(v => v || (isArray(v) && v.length));
           return {
@@ -45,8 +53,8 @@ export default provideState({
           };
         }),
     addUserSet: (effects, set) => state => {
-      const { email, sets, ...rest } = state.loggedInUser;
-      updateProfile({
+      const { loggedInUser: { email, sets, ...rest }, api } = state;
+      updateProfile(api)({
         user: {
           ...rest,
           sets: [...(sets || []), set],
