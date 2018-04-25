@@ -8,8 +8,9 @@ import { provideLoggedInUser, provideModalState, provideToast } from 'stateProvi
 
 export default compose(provideLoggedInUser, provideModalState, provideToast, injectState)(
   ({ children }) => (
-    <Router>
+    <Router >
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </Router>
   ),
 );
+
