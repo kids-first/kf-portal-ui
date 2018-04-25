@@ -43,14 +43,20 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
 const enhance = compose(
   injectState,
 
-  withQuery(({ sqon, projectId }) => ({
+  withQuery(({ sqon, projectId, familyMemberIdAggregation }) => ({
     renderError: true,
     projectId,
-    key: 'familyMemberIdAggregation',
+    key: 'participantAndFamilyMemberIdsAggregation',
     query: `
       query dataTypes($sqon: JSON) {
         file {
           aggregations(filters: $sqon) {
+            participants__kf_id {
+              buckets {
+                doc_count
+                key
+              }
+            }
             participants__family__family_members__kf_id {
               buckets {
                 doc_count
@@ -63,38 +69,15 @@ const enhance = compose(
     `,
     variables: { sqon },
   })),
-  withProps(({ familyMemberIdAggregation: { data } }) => ({
-    familyMemberIds: (
+  withProps(({ participantAndFamilyMemberIdsAggregation: { data } }) => {
+    const familyMemberIds = (
       get(data, 'file.aggregations.participants__family__family_members__kf_id.buckets') || []
-    ).map(b => b.key),
-  })),
-
-  withQuery(({ sqon, projectId, familyMemberIds, familyMemberIdAggregation }) => ({
-    shouldFetch: !familyMemberIdAggregation.loading,
-    renderError: true,
-    projectId,
-    key: 'participantIdsAggregation',
-    query: `
-      query dataTypes($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            participants__kf_id {
-              buckets {
-                doc_count
-                key
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: { sqon },
-  })),
-  withProps(({ participantIdsAggregation: { data }, familyMemberIds }) => {
+    ).map(b => b.key);
     const participantIds = (get(data, 'file.aggregations.participants__kf_id.buckets') || []).map(
       b => b.key,
     );
     return {
+      familyMemberIds,
       participantIds,
       familyMembersWithoutParticipantIds: difference(familyMemberIds, participantIds),
     };
@@ -104,13 +87,11 @@ const enhance = compose(
     ({
       sqon,
       projectId,
-      familyMemberIds,
-      participantIdsAggregation,
+      participantAndFamilyMemberIdsAggregation,
       familyMembersWithoutParticipantIds,
-      participantIds,
     }) => {
       return {
-        shouldFetch: !participantIdsAggregation.loading,
+        shouldFetch: !participantAndFamilyMemberIdsAggregation.loading,
         renderError: true,
         projectId,
         key: 'dataTypesAggregation',
@@ -171,8 +152,7 @@ const enhance = compose(
 
 const FamilyManifestModal = ({
   //aggregations
-  familyMemberIdAggregation,
-  participantIdsAggregation,
+  participantAndFamilyMemberIdsAggregation,
   dataTypesAggregation,
 
   // actual data
@@ -195,8 +175,7 @@ const FamilyManifestModal = ({
     !dataTypes.length ||
     !dataTypesAggregation.data ||
     dataTypesAggregation.loading ||
-    familyMemberIdAggregation.loading ||
-    participantIdsAggregation.loading;
+    participantAndFamilyMemberIdsAggregation.loading;
 
   const spinner = (
     <Spinner
@@ -291,7 +270,7 @@ const FamilyManifestModal = ({
                         )}family.participants__family__family_members__kf_id.buckets`,
                       );
                       const familyMembersCount = difference(
-                        familyMemberBuckets || [],
+                        (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
                         participantIds,
                       ).length;
                       return (
