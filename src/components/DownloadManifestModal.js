@@ -31,16 +31,26 @@ const Button = compose(withTheme)(({ theme, children, ...props }) => (
 ));
 
 const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', ''))(
-  ({ api, setId, setSetId, sqon, setWarning, onManifestGenerated, state: { loggedInUser } }) => (
+  ({
+    api,
+    setId,
+    setSetId,
+    sqon,
+    setWarning,
+    onManifestGenerated,
+    state: { loggedInUser },
+    effects: { addUserSet },
+  }) => (
     <div>
       {setId ? (
         <CopyToClipboard value={setId} />
       ) : (
         <LoadingOnClick
           onClick={async () => {
+            const type = 'file';
             const { data, errors } = await saveSet({
+              type,
               sqon: sqon || {},
-              type: 'file',
               userId: loggedInUser.egoId,
               path: 'kf_id',
               api: graphql(api),
@@ -48,9 +58,11 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
             if (errors && errors.length) {
               setWarning('Unable to generate KF-get ID, please try again later.');
             } else {
+              const { setId, size } = data.saveSet;
               setWarning('');
+              setSetId(setId);
               onManifestGenerated(data.saveSet);
-              setSetId(data.saveSet.setId);
+              addUserSet({ type, setId, size });
             }
           }}
           render={({ onClick, loading }) => (

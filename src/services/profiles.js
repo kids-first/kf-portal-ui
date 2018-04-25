@@ -21,6 +21,12 @@ const DEFAULT_FIELDS = `
   website
   googleScholarId
   interests
+  sets {
+    name
+    size
+    type
+    setId
+  }
 `;
 
 export const getProfile = async ({ egoId }) => {
