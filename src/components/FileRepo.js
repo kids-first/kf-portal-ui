@@ -30,6 +30,7 @@ import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
 import UploadIdsModal from './UploadIdsModal';
 import { arrangerProjectId } from 'common/injectGlobals';
 import Select from '../uikit/Select';
+import translateSQONValue from 'common/translateSQONValue';
 
 const enhance = compose(injectState, withTheme);
 
@@ -185,6 +186,7 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
         <QuickSearch
           {...{ ...props, setSQON }}
           placeholder="Enter Identifiers"
+          translateSQONValue={translateSQONValue({ sets: state.loggedInUser.sets })}
           LoadingIcon={
             <Spinner
               fadeIn="none"
@@ -278,7 +280,13 @@ const FileRepo = ({ state, effects, ...props }) => {
                             display: flex;
                           `}
                         >
-                          <CurrentSQON {...props} {...url} />
+                          <CurrentSQON
+                            {...props}
+                            {...url}
+                            translateSQONValue={translateSQONValue({
+                              sets: state.loggedInUser.sets,
+                            })}
+                          />
                           {url.sqon &&
                             Object.keys(url.sqon).length > 0 && (
                               <FileRepoStatsQuery
