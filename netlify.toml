@@ -1,4 +1,0 @@
-
-[context.storybook]
-  command = "npm run build-storybook"
-  publish = "build-storybook"
