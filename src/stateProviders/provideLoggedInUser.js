@@ -5,7 +5,6 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
-import api from '../services/api';
 
 export default provideState({
   initialState: () => ({
@@ -47,7 +46,7 @@ export default provideState({
             percentageFilled: filledFields.length / totalFields,
           };
         }),
-    addUserSet: (effects, set) => state => {
+    addUserSet: (effects, { set, api }) => state => {
       const { loggedInUser: { email, sets, ...rest } } = state;
       updateProfile(api)({
         user: {

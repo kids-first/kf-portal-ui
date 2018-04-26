@@ -61,7 +61,7 @@ const UploadIdsModal = ({
                 api: graphql(api),
                 dataPath: 'data.saveSet',
               });
-              addUserSet({ type, setId, size });
+              addUserSet({ type, setId, size, api });
               closeModal();
             },
             submitText: 'Upload',
