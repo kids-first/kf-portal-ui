@@ -15,6 +15,7 @@ import DatabaseIcon from 'react-icons/lib/fa/database';
 import Gravtar from 'uikit/Gravatar';
 import Dropdown from 'uikit/Dropdown';
 import { uiLogout } from 'components/LogoutButton';
+import { withApi } from 'services/api';
 
 const NavLink = styled(Link)`
   ${props => props.theme.navLink};
@@ -34,6 +35,7 @@ const Header = ({
   theme,
   history,
   match: { path },
+  api,
 }) => {
   const canSeeProtectedRoutes =
     loggedInUser &&
@@ -144,7 +146,7 @@ const Header = ({
                   >
                     <a
                       onClick={() =>
-                        uiLogout({ history, setToken, setUser, clearIntegrationTokens })
+                        uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })
                       }
                       css={`
                         color: ${theme.primary};
@@ -190,4 +192,4 @@ const Header = ({
   );
 };
 
-export default compose(injectState, withTheme, withRouter)(Header);
+export default compose(injectState, withTheme, withRouter, withApi)(Header);

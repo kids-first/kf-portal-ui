@@ -5,20 +5,20 @@ import { ThemeProvider } from 'emotion-theming';
 import { BrowserRouter as Router } from 'react-router-dom';
 import theme from 'theme/defaultTheme';
 import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
-import { initializeApi, ApiContext, withApi } from 'services/api';
+import { initializeApi, ApiContext } from 'services/api';
 
 export default compose(provideLoggedInUser, provideModalState, provideToast, injectState)(
   ({ children, state, effects }) => (
-    <Router>
-      <ApiContext.Provider
-        value={initializeApi({
-          onUnauthorized: response => {
-            window.location.reload();
-          },
-        })}
-      >
+    <ApiContext.Provider
+      value={initializeApi({
+        onUnauthorized: response => {
+          window.location.reload();
+        },
+      })}
+    >
+      <Router>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </ApiContext.Provider>
-    </Router>
+      </Router>
+    </ApiContext.Provider>
   ),
 );
