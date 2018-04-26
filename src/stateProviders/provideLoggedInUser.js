@@ -39,7 +39,6 @@ export default provideState({
       return { ...state, isLoadingUser: false };
     },
     setUser: (effects, { api, ...user }) => {
-      console.log('user setting: ', user);
       return getAllFieldNamesPromise(api)
         .then(({ data }) => {
           return get(data, '__type.fields', []).length;

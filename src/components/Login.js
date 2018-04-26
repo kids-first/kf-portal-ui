@@ -59,7 +59,6 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
     ...(existingProfile || newProfile),
     email: user.email,
   };
-  console.log('loggedInUser to set: ', loggedInUser);
   await setUser({ ...loggedInUser, api });
   onFinish && onFinish(loggedInUser);
 };

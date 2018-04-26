@@ -27,7 +27,6 @@ import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
-  console.log('loggedInUser: ', loggedInUser);
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
       <SideImagePage sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
