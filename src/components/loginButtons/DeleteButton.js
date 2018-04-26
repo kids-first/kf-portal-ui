@@ -6,14 +6,16 @@ import { compose } from 'recompose';
 import { uiLogout } from 'components/LogoutButton';
 import { shortUrlApi } from 'common/injectGlobals';
 import urlJoin from 'url-join';
+import { withApi } from 'services/api';
 
-export default compose(injectState, withRouter)(
+export default compose(injectState, withRouter, withApi)(
   ({
     history,
-    state: { loggedInUser, loggedInUserToken, api },
+    state: { loggedInUser },
     effects: { setToken, setUser, clearIntegrationTokens },
     className,
     children,
+    api,
     ...props
   }) => (
     <button
