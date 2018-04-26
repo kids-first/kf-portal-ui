@@ -15,7 +15,17 @@ const Line = () => {
   );
 };
 
-const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragment, ...props }) => {
+const Stat = ({
+  sqon,
+  index,
+  icon = '',
+  accessor = '',
+  label = '',
+  query,
+  fragment,
+  variables = {},
+  ...props
+}) => {
   const getValue = typeof accessor() === 'function' ? accessor() : data => get(data, accessor());
 
   return (
@@ -43,7 +53,7 @@ const Stat = ({ sqon, index, icon = '', accessor = '', label = '', query, fragme
           name={`${index}StatQuery`}
           {...props}
           query={query(fragment())}
-          variables={{ sqon }}
+          variables={{ sqon, ...variables }}
           index={index}
           render={({ data, loading }) =>
             loading ? (
