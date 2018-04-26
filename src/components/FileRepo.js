@@ -239,19 +239,23 @@ const FileRepo = ({ state, effects, ...props }) => {
   return (
     <SQONURL
       render={url => {
-        window.sqonHistory.push({
-          time: new Date(),
-          sqon: url.sqon
-        });
-        window.UserSnap.on("beforeSend", function(obj) {
-          obj.addInfo = {
-              sqonHistory: window.sqonHistory,
-              portalVersion: '0.0.0',
-              dataVersion: document.querySelectorAll('.css-19rtqle')[0].innerText,
-              userRole: state.loggedInUser.roles,
-              arrangerProjectId
-          }
-        });
+
+        if(window.UserSnap){
+          window.sqonHistory.push({
+            time: new Date(),
+            sqon: url.sqon
+          });
+          window.UserSnap.on("beforeSend", function(obj) {
+            obj.addInfo = {
+                sqonHistory: window.sqonHistory,
+                portalVersion: '0.0.0',
+                dataVersion: document.querySelectorAll('.css-19rtqle')[0].innerText,
+                userRole: state.loggedInUser.roles,
+                arrangerProjectId
+            }
+          });
+        }
+        
         return (
           <Arranger
             {...props}
