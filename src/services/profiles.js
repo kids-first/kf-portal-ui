@@ -1,4 +1,3 @@
-import ajax from 'services/ajax';
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
 

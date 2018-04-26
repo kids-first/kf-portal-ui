@@ -4,10 +4,11 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { Trans } from 'react-i18next';
+import { withApi } from '../services/api';
 
 import Login from 'components/Login';
 
-const LoginPage = compose(withRouter, withTheme)(({ history, location, theme, api }) => (
+const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
   <div
     css={`
       width: 630px;
