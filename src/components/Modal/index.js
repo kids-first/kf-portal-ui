@@ -174,7 +174,7 @@ const ModalView = ({
       left: 50%;
       right: auto;
       bottom: auto;
-      position: relative;
+      position: absolute;
       border: 1px solid rgb(204, 204, 204);
       background: rgb(255, 255, 255);
       border-radius: 4px;
