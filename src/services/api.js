@@ -3,7 +3,7 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import ajax from './ajax';
 
-export const initializeApi = ({ onUnauthorized }) => async ({
+export const initializeApi = ({ onUnauthorized }) => ({
   method = 'post',
   endpoint = '',
   body,
