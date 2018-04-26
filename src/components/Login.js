@@ -17,6 +17,7 @@ import { GEN3, CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
+import { withApi } from 'services/api';
 
 const styles = {
   container: css`
@@ -35,7 +36,7 @@ const styles = {
   `,
 };
 
-const enhance = compose(injectState, withRouter);
+const enhance = compose(injectState, withRouter, withApi);
 
 export const validateJWT = ({ jwt }) => {
   if (!jwt) return false;
@@ -58,7 +59,8 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
     ...(existingProfile || newProfile),
     email: user.email,
   };
-  await setUser(loggedInUser);
+  console.log('loggedInUser to set: ', loggedInUser);
+  await setUser({ ...loggedInUser, api });
   onFinish && onFinish(loggedInUser);
 };
 
@@ -93,6 +95,7 @@ class Component extends React.Component<any, any> {
   static propTypes = {
     effects: PropTypes.object,
     state: PropTypes.object,
+    api: PropTypes.func,
   };
   state = {
     securityError: false,

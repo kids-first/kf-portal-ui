@@ -124,7 +124,7 @@ const Consent = compose(
                   acceptedTerms: event.target.checked,
                 },
               }).then(async profile => {
-                await setUser({ ...profile, email });
+                await setUser({ ...profile, email, api });
               });
             }}
           />

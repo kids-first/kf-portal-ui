@@ -5,6 +5,7 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
+import { initializeApi } from 'services/api';
 
 export default provideState({
   initialState: () => ({
@@ -18,8 +19,13 @@ export default provideState({
     initialize: effects => state => {
       const { setToken, setUser } = effects;
       const jwt = localStorage.getItem('EGO_JWT');
+      const api = initializeApi({
+        onUnauthorized: response => {
+          window.location.reload();
+        },
+      });
       if (validateJWT({ jwt })) {
-        handleJWT({ jwt, setToken, setUser });
+        handleJWT({ jwt, setToken, setUser, api });
         // Get all integration keys from local storage
         SERVICES.forEach(service => {
           const storedToken = localStorage.getItem(`integration_${service}`);
@@ -32,8 +38,9 @@ export default provideState({
       setToken(null);
       return { ...state, isLoadingUser: false };
     },
-    setUser: (effects, user) =>
-      getAllFieldNamesPromise()
+    setUser: (effects, { api, ...user }) => {
+      console.log('user setting: ', user);
+      return getAllFieldNamesPromise(api)
         .then(({ data }) => {
           return get(data, '__type.fields', []).length;
         })
@@ -45,15 +52,16 @@ export default provideState({
             loggedInUser: user,
             percentageFilled: filledFields.length / totalFields,
           };
-        }),
-    addUserSet: (effects, { set, api }) => state => {
+        });
+    },
+    addUserSet: (effects, { api, ...set }) => state => {
       const { loggedInUser: { email, sets, ...rest } } = state;
       updateProfile(api)({
         user: {
           ...rest,
           sets: [...(sets || []), set],
         },
-      }).then(profile => effects.setUser({ ...profile, email }));
+      }).then(profile => effects.setUser({ ...profile, email, api }));
     },
     setToken: (effects, token) => state => {
       setToken(token);

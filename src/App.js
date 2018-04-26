@@ -24,9 +24,10 @@ import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
-import { initializeApi, ApiContext, withApi } from 'services/api';
+import { withApi } from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
+  console.log('loggedInUser: ', loggedInUser);
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
       <SideImagePage sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
@@ -38,10 +39,10 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   }
 };
 
-const App = compose(injectState)(({ editing, setEditing, state }) => {
+const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
-  const AppWithApi = withApi(({ api }) => (
+  return (
     <div className="App">
       <Switch>
         <Route
@@ -140,18 +141,6 @@ const App = compose(injectState)(({ editing, setEditing, state }) => {
       <Modal />
       <Toast {...toast}>{toast.component}</Toast>
     </div>
-  ));
-
-  return (
-    <ApiContext.Provider
-      value={initializeApi({
-        onUnauthorized: response => {
-          window.location.reload();
-        },
-      })}
-    >
-      <AppWithApi />
-    </ApiContext.Provider>
   );
 });
 

@@ -98,7 +98,7 @@ export default compose(
           ...values,
         },
       }).then(async updatedProfile => {
-        await setUser(updatedProfile);
+        await setUser({ ...updatedProfile, api });
       });
     },
   }),

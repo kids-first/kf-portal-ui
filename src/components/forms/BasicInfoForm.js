@@ -16,6 +16,7 @@ import { updateProfile } from 'services/profiles';
 import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
+import { withApi } from 'services/api';
 
 const StyledLabel = styled('label')`
   font-family: Montserrat;
@@ -52,6 +53,7 @@ class WrappedPlacesAutocomplete extends React.Component {
 }
 
 export default compose(
+  withApi,
   withTheme,
   injectState,
   withState('location', 'setLocation', ({ state: { loggedInUser } }) => {
@@ -119,7 +121,7 @@ export default compose(
         },
       }).then(
         async profile => {
-          await setUser({ ...profile, email });
+          await setUser({ ...profile, email, api });
           unsetModal();
         },
         errors => setSubmitting(false),

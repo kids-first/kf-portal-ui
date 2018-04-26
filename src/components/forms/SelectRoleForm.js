@@ -78,7 +78,7 @@ export const enhance = compose(
         },
       }).then(
         async profile => {
-          await setUser({ ...profile, email });
+          await setUser({ ...profile, email, api });
           if (onFinish) {
             onFinish();
           }
