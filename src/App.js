@@ -24,7 +24,7 @@ import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
-import initializeApi from 'services/api';
+import { ApiContext } from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -38,115 +38,112 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   }
 };
 
-const App = compose(injectState)(({ editing, setEditing, state, effects: { setApi } }) => {
+const App = compose(injectState)(({ editing, setEditing, state }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
-  const api = initializeApi({
-    onUnauthorized: response => {
-      window.location.reload();
-    },
-  });
-  setApi(api);
-
   return (
-    <div className="App">
-      <Switch>
-        <Route
-          // TODO: we need a user role specific for this
-          path="/admin"
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: ({ match, ...props }) => (
-                <ArrangerDashboard basename={match.url} {...props} />
-              ),
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route path="/auth-redirect" exact component={AuthRedirect} />
-        <Route path="/redirected" exact component={() => null} />
-        <Route
-          path="/search/:index"
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: FileRepo,
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path="/user/:egoId"
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserProfile,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path="/dashboard"
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserDashboard,
-              containerStyle: css`
-                height: 100vh;
-              `,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path="/join"
-          exact
-          render={props => {
-            return (
-              <SideImagePage
-                backgroundImage={scienceBgPath}
-                logo={logo}
-                Component={Join}
-                sideImage={joinImage}
-                {...{ ...props, api }}
-              />
-            );
-          }}
-        />
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              sideImage={loginImage}
-              {...{ ...props, api }}
+    <ApiContext.Consumer>
+      {api => (
+        <div className="App">
+          <Switch>
+            <Route
+              // TODO: we need a user role specific for this
+              path="/admin"
+              render={props =>
+                forceSelectRole({
+                  api,
+                  isLoadingUser,
+                  Component: ({ match, ...props }) => (
+                    <ArrangerDashboard basename={match.url} {...props} />
+                  ),
+                  loggedInUser,
+                  index: props.match.params.index,
+                  graphqlField: props.match.params.index,
+                  ...props,
+                })
+              }
             />
-          )}
-        />
-        <Redirect from="*" to="/dashboard" />
-      </Switch>
-      <Modal />
-      <Toast {...toast}>{toast.component}</Toast>
-    </div>
+            <Route path="/auth-redirect" exact component={AuthRedirect} />
+            <Route path="/redirected" exact component={() => null} />
+            <Route
+              path="/search/:index"
+              exact
+              render={props =>
+                forceSelectRole({
+                  api,
+                  isLoadingUser,
+                  Component: FileRepo,
+                  loggedInUser,
+                  index: props.match.params.index,
+                  graphqlField: props.match.params.index,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path="/user/:egoId"
+              exact
+              render={props =>
+                forceSelectRole({
+                  api,
+                  isLoadingUser,
+                  Component: UserProfile,
+                  loggedInUser,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path="/dashboard"
+              exact
+              render={props =>
+                forceSelectRole({
+                  api,
+                  isLoadingUser,
+                  Component: UserDashboard,
+                  containerStyle: css`
+                    height: 100vh;
+                  `,
+                  loggedInUser,
+                  ...props,
+                })
+              }
+            />
+            <Route
+              path="/join"
+              exact
+              render={props => {
+                return (
+                  <SideImagePage
+                    backgroundImage={scienceBgPath}
+                    logo={logo}
+                    Component={Join}
+                    sideImage={joinImage}
+                    {...{ ...props, api }}
+                  />
+                );
+              }}
+            />
+            <Route
+              path="/"
+              exact
+              render={props => (
+                <SideImagePage
+                  logo={logo}
+                  backgroundImage={scienceBgPath}
+                  Component={LoginPage}
+                  sideImage={loginImage}
+                  {...{ ...props, api }}
+                />
+              )}
+            />
+            <Redirect from="*" to="/dashboard" />
+          </Switch>
+          <Modal />
+          <Toast {...toast}>{toast.component}</Toast>
+        </div>
+      )}
+    </ApiContext.Consumer>
   );
 });
 

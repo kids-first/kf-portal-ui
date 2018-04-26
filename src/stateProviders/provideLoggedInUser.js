@@ -5,6 +5,7 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
+import api from '../services/api';
 
 export default provideState({
   initialState: () => ({
@@ -32,12 +33,6 @@ export default provideState({
       setToken(null);
       return { ...state, isLoadingUser: false };
     },
-    setApi: (effects, api) => state => {
-      return {
-        ...state,
-        api,
-      };
-    },
     setUser: (effects, user) =>
       getAllFieldNamesPromise()
         .then(({ data }) => {
@@ -53,7 +48,7 @@ export default provideState({
           };
         }),
     addUserSet: (effects, set) => state => {
-      const { loggedInUser: { email, sets, ...rest }, api } = state;
+      const { loggedInUser: { email, sets, ...rest } } = state;
       updateProfile(api)({
         user: {
           ...rest,
