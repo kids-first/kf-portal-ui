@@ -130,7 +130,7 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
     <div
       css={`
         height: 100%;
-        height: 100vh;
+        height: calc(100vh - 180px);
         overflow-y: auto;
         background-color: #f4f5f8;
         box-shadow: 0 0 4.9px 0.2px #a0a0a3;
