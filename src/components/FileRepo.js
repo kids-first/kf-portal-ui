@@ -186,7 +186,7 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
         <QuickSearch
           {...{ ...props, setSQON }}
           placeholder="Enter Identifiers"
-          translateSQONValue={translateSQONValue({ sets: state.loggedInUser.sets })}
+          translateSQONValue={translateSQONValue({ sets: (state.loggedInUser || {}).sets })}
           LoadingIcon={
             <Spinner
               fadeIn="none"
