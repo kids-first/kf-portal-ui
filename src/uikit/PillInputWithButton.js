@@ -12,6 +12,15 @@ const enhance = compose(
   withState('selected', 'setSelected', ({ defaultSelected }) => defaultSelected),
 );
 
+const SelectStyle = `
+  border-radius: 10px;
+  border-right: none;
+  border-top-right-radius: unset;
+  border-bottom-right-radius: unset;
+  flex-grow: 1;
+  height: 30px;
+`;
+
 const PillInputWithButton = ({
   selected,
   setSelected,
@@ -32,20 +41,13 @@ const PillInputWithButton = ({
               display: flex;
             `}
           >
-            {SelectComponent && <SelectComponent {...{ setSelected }} />}
+            {SelectComponent && <SelectComponent css={SelectStyle} {...{ setSelected }} />}
             {!SelectComponent && (
               <Select
                 items={Object.keys(options)}
                 defaultSelectedItem={defaultSelected}
                 onChange={e => setSelected(e)}
-                css={`
-                  border-radius: 10px;
-                  border-right: none;
-                  border-top-right-radius: unset;
-                  border-bottom-right-radius: unset;
-                  flex-grow: 1;
-                  height: 30px;
-                `}
+                css={SelectStyle}
               />
             )}
             <Button

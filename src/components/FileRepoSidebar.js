@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 import { Trans } from 'react-i18next';
+import Spinner from 'react-spinkit';
 
 import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
@@ -17,7 +18,7 @@ import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { GEN3 } from 'common/constants';
 import { getFilesById } from 'services/arranger';
-import Select from '../uikit/Select';
+import Select, { SelectOptionDropdown, OptionDropdownWrapperCss } from '../uikit/Select';
 
 import {
   downloadBiospecimen,
@@ -60,6 +61,24 @@ const Divider = styled('div')`
   background-color: #d4d6dd;
   margin: 20px 10px 20px 0;
 `;
+
+const EnhancedFamilyManifestModal = enhanceWithFamilyModalData(familtManifestModalProps => (
+  <FamilyManifestModal {...familtManifestModalProps} />
+));
+
+const spinner = (
+  <Spinner
+    fadeIn="none"
+    name="circle"
+    color="#a9adc0"
+    style={{
+      width: 20,
+      height: 20,
+      margin: 'auto',
+      marginBottom: 20,
+    }}
+  />
+);
 
 const FileRepoSidebar = ({
   state,
@@ -121,23 +140,15 @@ const FileRepoSidebar = ({
               'Participant and family': () => {
                 return effects.setModal({
                   title: 'Download Manifest (Participant and Family)',
-                  component: (() => {
-                    const EnhancedFamilyManifestModal = enhanceWithFamilyModalData(
-                      familtManifestModalProps => (
-                        <FamilyManifestModal {...familtManifestModalProps} />
-                      ),
-                    );
-                    return (
-                      <EnhancedFamilyManifestModal
-                        api={api}
-                        sqon={sqon}
-                        index={index}
-                        projectId={projectId}
-                        columns={state.columns}
-                        {...{ EnhancedFamilyManifestModal }}
-                      />
-                    );
-                  })(),
+                  component: (
+                    <EnhancedFamilyManifestModal
+                      api={api}
+                      sqon={sqon}
+                      index={index}
+                      projectId={projectId}
+                      columns={state.columns}
+                    />
+                  ),
                 });
               },
             };
@@ -150,20 +161,59 @@ const FileRepoSidebar = ({
               >
                 <PillInputWithButton
                   options={options}
-                  SelectComponent={({ setSelected }) => {
+                  SelectComponent={({ setSelected, ...selectProps }) => {
                     return (
                       <Select
                         items={Object.keys(options)}
                         defaultSelectedItem="Participant only"
                         onChange={e => setSelected(e)}
-                        css={`
-                          border-radius: 10px;
-                          border-right: none;
-                          border-top-right-radius: unset;
-                          border-bottom-right-radius: unset;
-                          flex-grow: 1;
-                          height: 30px;
-                        `}
+                        OptionDropdownComponent={dropDownProps => {
+                          const RecomposedSelectOptionDropdown = compose(
+                            enhanceWithFamilyModalData,
+                          )(
+                            ({
+                              dataTypes,
+                              dataTypesAggregation,
+                              participantAndFamilyMemberIdsAggregation,
+                              ...familtManifestModalProps
+                            }) => {
+                              const loading =
+                                !dataTypesAggregation.data ||
+                                !participantAndFamilyMemberIdsAggregation.data ||
+                                dataTypesAggregation.loading ||
+                                participantAndFamilyMemberIdsAggregation.loading;
+                              return loading ? (
+                                <div
+                                  css={`
+                                    ${OptionDropdownWrapperCss} right: 0px;
+                                    text-align: center;
+                                  `}
+                                >
+                                  {spinner}
+                                </div>
+                              ) : (
+                                <SelectOptionDropdown
+                                  {...{
+                                    ...dropDownProps,
+                                    items: dataTypes.length
+                                      ? ['Participant only', 'Participant and family']
+                                      : ['Participant only'],
+                                  }}
+                                />
+                              );
+                            },
+                          );
+                          return (
+                            <RecomposedSelectOptionDropdown
+                              api={api}
+                              sqon={sqon}
+                              index={index}
+                              projectId={projectId}
+                              columns={state.columns}
+                            />
+                          );
+                        }}
+                        {...selectProps}
                       />
                     );
                   }}

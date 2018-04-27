@@ -3,7 +3,19 @@ import Downshift from 'downshift';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
-const SelectOptionDropdown = ({
+export const OptionDropdownWrapperCss = `
+  position: absolute;
+  background: white;
+  min-width: 100%;
+  z-index: 1;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 5px;
+  top: 100%;
+`;
+
+export const SelectOptionDropdown = ({
   align = 'right',
   itemContainerClassName = '',
   items = [],
@@ -12,17 +24,8 @@ const SelectOptionDropdown = ({
 }) => (
   <div
     css={`
-      position: absolute;
-      background: white;
-      min-width: 100%;
-      z-index: 1;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      box-sizing: border-box;
-      cursor: pointer;
-      padding: 5px;
-      right: ${align === 'right' ? `0` : `auto`};
+      ${OptionDropdownWrapperCss} right: ${align === 'right' ? `0` : `auto`};
       left: ${align === 'right' ? `auto` : `0`};
-      top: 100%;
       ${itemContainerClassName};
     `}
   >
@@ -95,7 +98,9 @@ function Select({
             />
           </div>
           {!isOpen ? null : OptionDropdownComponent ? (
-            <OptionDropdownComponent {...{ getItemProps }} />
+            <OptionDropdownComponent
+              {...{ align, itemContainerClassName, items, itemClassName, getItemProps }}
+            />
           ) : (
             <SelectOptionDropdown
               {...{ ...{ align, itemContainerClassName, items, itemClassName, getItemProps } }}
