@@ -17,6 +17,7 @@ import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { GEN3 } from 'common/constants';
 import { getFilesById } from 'services/arranger';
+import Select from '../uikit/Select';
 
 import {
   downloadBiospecimen,
@@ -102,57 +103,80 @@ const FileRepoSidebar = ({
           projectId={projectId}
           graphqlField="file"
           render={({ state }) => {
-            const Enhanced = enhanceWithFamilyModalData(familtManifestModalProps => {
-              return (
-                <div
-                  css={`
-                    display: flex;
-                    margin-bottom: 13px;
-                  `}
-                >
-                  <PillInputWithButton
-                    options={{
-                      'Participant only': () => {
-                        return effects.setModal({
-                          title: 'Download Manifest',
-                          component: (
-                            <ParticipantManifestModal
-                              api={api}
-                              sqon={sqon}
-                              index={index}
-                              projectId={projectId}
-                              columns={state.columns}
-                            />
-                          ),
-                        });
-                      },
-                      'Participant and family': () => {
-                        return effects.setModal({
-                          title: 'Download Manifest (Participant and Family)',
-                          component: <FamilyManifestModal {...familtManifestModalProps} />,
-                        });
-                      },
-                    }}
-                    render={({ loading }) => {
-                      return (
-                        <React.Fragment>
-                          <IconWithLoading {...{ loading, icon: downloadIcon }} />
-                          <Trans css={theme.uppercase}>Download</Trans>
-                        </React.Fragment>
-                      );
-                    }}
-                  />
-                </div>
-              );
-            });
+            const options = {
+              'Participant only': () => {
+                return effects.setModal({
+                  title: 'Download Manifest',
+                  component: (
+                    <ParticipantManifestModal
+                      api={api}
+                      sqon={sqon}
+                      index={index}
+                      projectId={projectId}
+                      columns={state.columns}
+                    />
+                  ),
+                });
+              },
+              'Participant and family': () => {
+                return effects.setModal({
+                  title: 'Download Manifest (Participant and Family)',
+                  component: (() => {
+                    const EnhancedFamilyManifestModal = enhanceWithFamilyModalData(
+                      familtManifestModalProps => (
+                        <FamilyManifestModal {...familtManifestModalProps} />
+                      ),
+                    );
+                    return (
+                      <EnhancedFamilyManifestModal
+                        api={api}
+                        sqon={sqon}
+                        index={index}
+                        projectId={projectId}
+                        columns={state.columns}
+                        {...{ EnhancedFamilyManifestModal }}
+                      />
+                    );
+                  })(),
+                });
+              },
+            };
             return (
-              <Enhanced
-                api={api}
-                sqon={sqon}
-                index={index}
-                projectId={projectId}
-                columns={state.columns}
-              />
+              <div
+                css={`
+                  display: flex;
+                  margin-bottom: 13px;
+                `}
+              >
+                <PillInputWithButton
+                  options={options}
+                  SelectComponent={({ setSelected }) => {
+                    return (
+                      <Select
+                        items={Object.keys(options)}
+                        defaultSelectedItem="Participant only"
+                        onChange={e => setSelected(e)}
+                        css={`
+                          border-radius: 10px;
+                          border-right: none;
+                          border-top-right-radius: unset;
+                          border-bottom-right-radius: unset;
+                          flex-grow: 1;
+                          height: 30px;
+                        `}
+                      />
+                    );
+                  }}
+                  render={({ loading }) => {
+                    return (
+                      <React.Fragment>
+                        <IconWithLoading {...{ loading, icon: downloadIcon }} />
+                        <Trans css={theme.uppercase}>Download</Trans>
+                      </React.Fragment>
+                    );
+                  }}
+                />
+              </div>
             );
           }}
         />

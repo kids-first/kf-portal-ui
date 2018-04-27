@@ -3,12 +3,52 @@ import Downshift from 'downshift';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
+const SelectOptionDropdown = ({
+  align = 'right',
+  itemContainerClassName = '',
+  items = [],
+  itemClassName = '',
+  getItemProps,
+}) => (
+  <div
+    css={`
+      position: absolute;
+      background: white;
+      min-width: 100%;
+      z-index: 1;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-sizing: border-box;
+      cursor: pointer;
+      padding: 5px;
+      right: ${align === 'right' ? `0` : `auto`};
+      left: ${align === 'right' ? `auto` : `0`};
+      top: 100%;
+      ${itemContainerClassName};
+    `}
+  >
+    {items.map(item => (
+      <div
+        {...getItemProps({ item })}
+        key={item}
+        css={`
+          cursor: pointer;
+          padding: 5px;
+          ${itemClassName};
+        `}
+      >
+        {item}
+      </div>
+    ))}
+  </div>
+);
+
 function Select({
   items,
   className,
   itemClassName,
   itemContainerClassName,
   align = 'right',
+  OptionDropdownComponent,
   ...rest
 }) {
   return (
@@ -54,37 +94,12 @@ function Select({
               `}
             />
           </div>
-          {!isOpen ? null : (
-            <div
-              css={`
-                position: absolute;
-                background: white;
-                min-width: 100%;
-                z-index: 1;
-                border: 1px solid rgba(0, 0, 0, 0.05);
-                box-sizing: border-box;
-                cursor: pointer;
-                padding: 5px;
-                right: ${align === 'right' ? `0` : `auto`};
-                left: ${align === 'right' ? `auto` : `0`};
-                top: 100%;
-                ${itemContainerClassName};
-              `}
-            >
-              {items.map(item => (
-                <div
-                  {...getItemProps({ item })}
-                  key={item}
-                  css={`
-                    cursor: pointer;
-                    padding: 5px;
-                    ${itemClassName};
-                  `}
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
+          {!isOpen ? null : OptionDropdownComponent ? (
+            <OptionDropdownComponent {...{ getItemProps }} />
+          ) : (
+            <SelectOptionDropdown
+              {...{ ...{ align, itemContainerClassName, items, itemClassName, getItemProps } }}
+            />
           )}
         </div>
       )}
