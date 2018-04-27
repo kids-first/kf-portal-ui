@@ -52,62 +52,65 @@ function Select({
   itemContainerClassName,
   align = 'right',
   OptionDropdownComponent,
+  onToggle = () => {},
   ...rest
 }) {
   return (
     <Downshift {...rest}>
-      {({ getItemProps, isOpen, toggleMenu, selectedItem }) => (
-        <div
-          css={`
-            position: relative;
-            white-space: nowrap;
-            border-radius: 10px;
-            background-color: #ffffff;
-            border: solid 1px #cacbcf;
-            color: #343434;
-            font-size: 12px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            ${className};
-          `}
-        >
+      {({ getItemProps, isOpen, toggleMenu, selectedItem, ...rest }) => {
+        return (
           <div
-            style={{
-              display: 'flex',
-              cursor: 'pointer',
-              flexGrow: 1,
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-            onClick={toggleMenu}
+            css={`
+              position: relative;
+              white-space: nowrap;
+              border-radius: 10px;
+              background-color: #ffffff;
+              border: solid 1px #cacbcf;
+              color: #343434;
+              font-size: 12px;
+              box-sizing: border-box;
+              display: flex;
+              align-items: center;
+              padding-left: 10px;
+              ${className};
+            `}
           >
-            {selectedItem}
-            <img
-              alt=""
-              src={downChevronIcon}
-              css={`
-                width: 9px;
-                margin-left: 7px;
-                margin-right: 12px;
-                transform: rotate(${isOpen ? 180 : 0}deg);
-                transition: transform 0.2s;
-              `}
-            />
+            <div
+              style={{
+                display: 'flex',
+                cursor: 'pointer',
+                flexGrow: 1,
+                height: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+              onClick={() => onToggle({ toggleMenu, isOpen })}
+            >
+              {selectedItem}
+              <img
+                alt=""
+                src={downChevronIcon}
+                css={`
+                  width: 9px;
+                  margin-left: 7px;
+                  margin-right: 12px;
+                  transform: rotate(${isOpen ? 180 : 0}deg);
+                  transition: transform 0.2s;
+                `}
+              />
+            </div>
+            {!isOpen ? null : OptionDropdownComponent ? (
+              <OptionDropdownComponent
+                {...{ align, itemContainerClassName, items, itemClassName, getItemProps }}
+              />
+            ) : (
+              <SelectOptionDropdown
+                {...{ ...{ align, itemContainerClassName, items, itemClassName, getItemProps } }}
+              />
+            )}
           </div>
-          {!isOpen ? null : OptionDropdownComponent ? (
-            <OptionDropdownComponent
-              {...{ align, itemContainerClassName, items, itemClassName, getItemProps }}
-            />
-          ) : (
-            <SelectOptionDropdown
-              {...{ ...{ align, itemContainerClassName, items, itemClassName, getItemProps } }}
-            />
-          )}
-        </div>
-      )}
+        );
+      }}
     </Downshift>
   );
 }

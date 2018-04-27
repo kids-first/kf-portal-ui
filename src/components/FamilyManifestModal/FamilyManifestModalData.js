@@ -8,6 +8,61 @@ import { withQuery } from '@arranger/components';
 
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 
+export const familyMemberAndParticipantDataQueryBody = ({ sqon }) => ({
+  query: `
+    query dataTypes($sqon: JSON) {
+      file {
+        aggregations(filters: $sqon) {
+          participants__kf_id {
+            buckets {
+              doc_count
+              key
+            }
+          }
+          participants__family__family_members__kf_id {
+            buckets {
+              doc_count
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: { sqon },
+});
+
+export const dataTypeDataQueryBody = ({ familyMemberIds }) => ({
+  query: `
+    query dataTypes($sqon: JSON) {
+      file {
+        aggregations(filters: $sqon) {
+          data_type {
+            buckets {
+              doc_count
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: {
+    sqon: {
+      op: 'and',
+      content: [
+        {
+          op: 'in',
+          content: {
+            field: 'participants.kf_id',
+            value: familyMemberIds,
+          },
+        },
+      ],
+    },
+  },
+});
+
 export const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
   const selectedDataTypes = Object.entries(values)
     .filter(([, val]) => val)
@@ -35,32 +90,14 @@ export const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
     : sqon;
 };
 
-const familyMemberData = compose(
+const enhance = compose(
+  injectState,
+
   withQuery(({ sqon, projectId, familyMemberIdAggregation }) => ({
     renderError: true,
     projectId,
     key: 'participantAndFamilyMemberIdsAggregation',
-    query: `
-      query dataTypes($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            participants__kf_id {
-              buckets {
-                doc_count
-                key
-              }
-            }
-            participants__family__family_members__kf_id {
-              buckets {
-                doc_count
-                key
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: { sqon },
+    ...familyMemberAndParticipantDataQueryBody({ sqon }),
   })),
   withProps(({ participantAndFamilyMemberIdsAggregation: { data } }) => {
     const familyMemberIds = (
@@ -75,9 +112,7 @@ const familyMemberData = compose(
       familyMembersWithoutParticipantIds: difference(familyMemberIds, participantIds),
     };
   }),
-);
 
-const dataTypeData = compose(
   withQuery(
     ({
       sqon,
@@ -90,34 +125,7 @@ const dataTypeData = compose(
         renderError: true,
         projectId,
         key: 'dataTypesAggregation',
-        query: `
-          query dataTypes($sqon: JSON) {
-            file {
-              aggregations(filters: $sqon) {
-                data_type {
-                  buckets {
-                    doc_count
-                    key
-                  }
-                }
-              }
-            }
-          }
-        `,
-        variables: {
-          sqon: {
-            op: 'and',
-            content: [
-              {
-                op: 'in',
-                content: {
-                  field: 'participants.kf_id',
-                  value: familyMembersWithoutParticipantIds,
-                },
-              },
-            ],
-          },
-        },
+        ...dataTypeDataQueryBody({ familyMemberIds: familyMembersWithoutParticipantIds }),
       };
     },
   ),
@@ -126,6 +134,45 @@ const dataTypeData = compose(
   })),
 );
 
-const enhance = compose(injectState, familyMemberData, dataTypeData);
+export const generateFamilyManifestModalProps = async ({ api, projectId, sqon }) => {
+  const fetcher = ({ body }) =>
+    api({
+      endpoint: `${projectId}/graphql`,
+      body,
+    });
+
+  // familyMembers and participants
+  const participantAndFamilyMemberIdsAggregation = await fetcher({
+    body: familyMemberAndParticipantDataQueryBody({ sqon }),
+  });
+  const familyMemberIds = (
+    get(
+      participantAndFamilyMemberIdsAggregation,
+      'data.file.aggregations.participants__family__family_members__kf_id.buckets',
+    ) || []
+  ).map(b => b.key);
+  const participantIds = (
+    get(
+      participantAndFamilyMemberIdsAggregation,
+      'data.file.aggregations.participants__kf_id.buckets',
+    ) || []
+  ).map(b => b.key);
+  const familyMembersWithoutParticipantIds = difference(familyMemberIds, participantIds);
+
+  // data types
+  const dataTypesAggregation = await fetcher({
+    body: dataTypeDataQueryBody({ familyMemberIds: familyMembersWithoutParticipantIds }),
+  });
+
+  const dataTypes = get(dataTypesAggregation, 'data.file.aggregations.data_type.buckets') || [];
+
+  return {
+    participantAndFamilyMemberIdsAggregation: { loading: false, data: {} },
+    dataTypesAggregation: { loading: false, data: {} },
+    familyMemberIds,
+    participantIds,
+    dataTypes,
+  };
+};
 
 export default enhance;

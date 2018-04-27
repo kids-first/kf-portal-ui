@@ -1,2 +1,6 @@
 export { default } from './FamilyManifestModal';
-export { default as enhanceWithFamilyModalData } from './FamilyManifestModalData';
+export {
+  familyMemberAndParticipantDataQueryBody,
+  dataTypeDataQueryBody,
+  generateFamilyManifestModalProps,
+} from './FamilyManifestModalData';

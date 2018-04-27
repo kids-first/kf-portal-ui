@@ -2,9 +2,8 @@ import React from 'react';
 import { get, difference } from 'lodash';
 import Spinner from 'react-spinkit';
 
-import { compose, withProps, withState } from 'recompose';
+import { compose, withState } from 'recompose';
 import { withFormik } from 'formik';
-import { injectState } from 'freactal/lib/inject';
 
 import DataTypeOption from './DataTypeOption';
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
@@ -12,8 +11,10 @@ import { ModalSubHeader } from '../Modal';
 import Query from '@arranger/components/dist/Query';
 import { sqonForDownload } from './FamilyManifestModalData';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
+import { withApi } from 'services/api';
 
 const enhance = compose(
+  withApi,
   withFormik({
     mapPropsToValues: ({ dataTypes }) =>
       dataTypes.reduce((acc, bucket) => ({ ...acc, [bucket.key]: false }), {}),
