@@ -32,7 +32,7 @@ class AdvancedFacetViewModalContent extends React.Component {
           css={`
             flex: 1;
             display: flex;
-            height: 100%;
+            height: calc(100% - 175px);
           `}
         >
           <div style={{ position: 'relative', flex: 1 }}>
