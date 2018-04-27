@@ -1,12 +1,8 @@
-import React from 'react';
 import { get, difference } from 'lodash';
-import { compose, withProps, withState } from 'recompose';
-import { withFormik } from 'formik';
+import { compose, withProps } from 'recompose';
 import { injectState } from 'freactal/lib/inject';
 
 import { withQuery } from '@arranger/components';
-
-import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 
 export const familyMemberAndParticipantDataQueryBody = ({ sqon }) => ({
   query: `

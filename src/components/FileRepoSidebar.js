@@ -121,50 +121,55 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
             graphqlField="file"
             render={({ state }) => {
               const options = {
-                'Participant only': () => {
+                'Participant only': ({ componentProps } = {}) => {
                   return effects.setModal({
                     title: 'Download Manifest',
                     component: (
                       <ParticipantManifestModal
-                        api={api}
-                        sqon={sqon}
-                        index={index}
-                        projectId={projectId}
-                        columns={state.columns}
+                        {...{
+                          ...componentProps,
+                          api,
+                          sqon,
+                          index,
+                          projectId,
+                          columns: state.columns,
+                        }}
                       />
                     ),
                   });
                 },
-                'Participant and family': () => {
+                'Participant and family': ({ componentProps } = {}) => {
                   return effects.setModal({
                     title: 'Download Manifest (Participant and Family)',
                     component: (
                       <EnhancedFamilyManifestModal
-                        api={api}
-                        sqon={sqon}
-                        index={index}
-                        projectId={projectId}
-                        columns={state.columns}
+                        {...{
+                          ...componentProps,
+                          api,
+                          sqon,
+                          index,
+                          projectId,
+                          columns: state.columns,
+                        }}
                       />
                     ),
                   });
                 },
               };
               return (
-                <div
-                  css={`
-                    display: flex;
-                    margin-bottom: 13px;
-                  `}
-                >
-                  <PillInputWithButton
-                    options={options}
-                    SelectComponent={({ setSelected, ...selectProps }) => {
-                      return (
-                        <Component
-                          initialState={{ familyManifestModalProps: {}, isLoading: false }}
-                        >
-                          {({ state: { isLoading, familyManifestModalProps }, setState }) => (
+                <Component initialState={{ familyManifestModalProps: {}, isLoading: false }}>
+                  {({ state: { isLoading, familyManifestModalProps }, setState }) => (
+                    <div
+                      css={`
+                        display: flex;
+                        margin-bottom: 13px;
+                      `}
+                    >
+                      <PillInputWithButton
+                        options={options}
+                        onOptionSelect={({ selected }) => options[selected]()}
+                        SelectComponent={({ setSelected, ...selectProps }) => {
+                          return (
                             <Select
                               highlightedIndex={null}
                               items={Object.keys(options).filter(option => {
@@ -207,20 +212,20 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                               }}
                               {...selectProps}
                             />
-                          )}
-                        </Component>
-                      );
-                    }}
-                    render={({ loading }) => {
-                      return (
-                        <React.Fragment>
-                          <IconWithLoading {...{ loading, icon: downloadIcon }} />
-                          <Trans css={theme.uppercase}>Download</Trans>
-                        </React.Fragment>
-                      );
-                    }}
-                  />
-                </div>
+                          );
+                        }}
+                        render={({ loading }) => {
+                          return (
+                            <React.Fragment>
+                              <IconWithLoading {...{ loading, icon: downloadIcon }} />
+                              <Trans css={theme.uppercase}>Download</Trans>
+                            </React.Fragment>
+                          );
+                        }}
+                      />
+                    </div>
+                  )}
+                </Component>
               );
             }}
           />

@@ -62,8 +62,6 @@ const component = ({
     dataTypesAggregation.loading ||
     participantAndFamilyMemberIdsAggregation.loading;
 
-  console.log('loading: ', loading);
-
   const spinner = (
     <Spinner
       fadeIn="none"

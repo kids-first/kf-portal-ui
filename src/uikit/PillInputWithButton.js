@@ -30,10 +30,11 @@ const PillInputWithButton = ({
   onClick,
   render,
   SelectComponent,
+  onOptionSelect,
 }) => {
   return (
     <LoadingOnClick
-      onClick={() => options[selected]()}
+      onClick={() => (onOptionSelect ? onOptionSelect({ selected }) : options[selected]())}
       render={({ onClick, loading }) => {
         return (
           <div
