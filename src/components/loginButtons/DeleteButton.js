@@ -6,35 +6,40 @@ import { compose } from 'recompose';
 import { uiLogout } from 'components/LogoutButton';
 import { shortUrlApi } from 'common/injectGlobals';
 import urlJoin from 'url-join';
+import { withApi } from 'services/api';
 
-export default compose(injectState, withRouter)(
+export default compose(injectState, withRouter, withApi)(
   ({
     history,
     state: { loggedInUser },
     effects: { setToken, setUser, clearIntegrationTokens },
     className,
     children,
+    api,
     ...props
   }) => (
     <button
       className={className}
       onClick={async () => {
-        await deleteProfile({ user: loggedInUser });
+        await deleteProfile(api)({ user: loggedInUser });
 
-        let response = await fetch(urlJoin(shortUrlApi, 'user', loggedInUser.egoId)).then(r =>
-          r.json(),
-        );
-
-        response.value.forEach(async ({ id }) => {
-          await fetch(urlJoin(shortUrlApi, id), {
-            method: 'DELETE',
-            headers: {
-              'Content-type': 'application/json',
-            },
+        api({
+          url: urlJoin(shortUrlApi, 'user', loggedInUser.egoId),
+          method: 'GET',
+        })
+          .then(response =>
+            Promise.all(
+              response.map(({ id }) =>
+                api({
+                  url: urlJoin(shortUrlApi, id),
+                  method: 'DELETE',
+                }),
+              ),
+            ),
+          )
+          .then(() => {
+            uiLogout({ history, setUser, setToken, clearIntegrationTokens });
           });
-        });
-
-        uiLogout({ history, setUser, setToken, clearIntegrationTokens });
       }}
       {...props}
     >

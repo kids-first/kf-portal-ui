@@ -1,4 +1,3 @@
-import ajax from 'services/ajax';
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
 
@@ -29,19 +28,22 @@ const DEFAULT_FIELDS = `
   }
 `;
 
-export const getProfile = async ({ egoId }) => {
-  const { data: { data: { users } } } = await ajax.post(urlJoin(personaApiRoot, 'graphql'), {
-    variables: { egoId },
-    query: `
-        query($egoId: String) {
-          users(filter:{egoId: $egoId}) {
-            count
-            items {
-              ${DEFAULT_FIELDS}
+export const getProfile = api => async ({ egoId }) => {
+  const { data: { users } } = await api({
+    url: urlJoin(personaApiRoot, 'graphql'),
+    body: {
+      variables: { egoId },
+      query: `
+          query($egoId: String) {
+            users(filter:{egoId: $egoId}) {
+              count
+              items {
+                ${DEFAULT_FIELDS}
+              }
             }
           }
-        }
-      `,
+        `,
+    },
   });
 
   if (users.count > 1) {
@@ -51,10 +53,10 @@ export const getProfile = async ({ egoId }) => {
   return users.items[0];
 };
 
-export const createProfile = async ({ egoId, lastName, firstName, email }) => {
-  const { data: { data: { userCreate: { record } } } } = await ajax.post(
-    urlJoin(personaApiRoot, 'graphql'),
-    {
+export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
+  const { data: { data: { userCreate: { record } } } } = await api({
+    url: urlJoin(personaApiRoot, 'graphql'),
+    body: {
       variables: { egoId, lastName, firstName, email },
       query: `
         mutation($egoId: String, $firstName: String, $lastName: String, $email: String) {
@@ -66,15 +68,15 @@ export const createProfile = async ({ egoId, lastName, firstName, email }) => {
         }
       `,
     },
-  );
+  });
 
   return record;
 };
 
-export const updateProfile = async ({ user }) => {
-  const { data: { data: { userUpdate: { record } } } } = await ajax.post(
-    urlJoin(personaApiRoot, 'graphql'),
-    {
+export const updateProfile = api => async ({ user }) => {
+  const { data: { userUpdate: { record } } } = await api({
+    url: urlJoin(personaApiRoot, 'graphql'),
+    body: {
       variables: { record: user },
       query: `
         mutation($record: UpdateByIdUserModelInput!) {
@@ -86,15 +88,15 @@ export const updateProfile = async ({ user }) => {
         }
       `,
     },
-  );
+  });
 
   return record;
 };
 
-export const deleteProfile = async ({ user }) => {
-  const { data: { data: { userRemove: { recordId } } } } = await ajax.post(
-    urlJoin(personaApiRoot, 'graphql'),
-    {
+export const deleteProfile = api => async ({ user }) => {
+  const { data: { userRemove: { recordId } } } = await api({
+    url: urlJoin(personaApiRoot, 'graphql'),
+    body: {
       variables: { _id: user._id },
       query: `
         mutation($_id: MongoID!) {
@@ -104,23 +106,26 @@ export const deleteProfile = async ({ user }) => {
         }
       `,
     },
-  );
+  });
 
   return recordId;
 };
 
-export const getAllFieldNamesPromise = () => {
-  return ajax.post(urlJoin(personaApiRoot, 'graphql'), {
-    query: `
-      query {
-      __type(name: "UserModel") {
-        fields {
-          name
-          type {
+export const getAllFieldNamesPromise = api => {
+  return api({
+    url: urlJoin(personaApiRoot, 'graphql'),
+    body: {
+      query: `
+        query {
+        __type(name: "UserModel") {
+          fields {
             name
+            type {
+              name
+            }
           }
         }
-      }
-    }`,
+      }`,
+    },
   });
 };
