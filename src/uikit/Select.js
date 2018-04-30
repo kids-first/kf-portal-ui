@@ -40,13 +40,14 @@ export const SelectOptionDropdown = ({
           padding: 5px;
           ${itemClassName};
         `}
-        onClick={
-          onToggle &&
-          (() => {
-            selectItem(item);
-            onToggle();
-          })
-        }
+        {...(onToggle
+          ? {
+              onClick: () => {
+                selectItem(item);
+                onToggle();
+              },
+            }
+          : {})}
       >
         {item}
       </div>
