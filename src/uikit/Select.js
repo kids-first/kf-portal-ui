@@ -15,6 +15,10 @@ export const OptionDropdownWrapperCss = `
   top: 100%;
 `;
 
+const DisabledDropdownOption = `
+  color: lightgrey
+`;
+
 export const SelectOptionDropdown = ({
   align = 'right',
   itemContainerClassName = '',
@@ -23,6 +27,8 @@ export const SelectOptionDropdown = ({
   getItemProps,
   selectItem = () => {},
   onToggle,
+  isItemDisabled = () => false,
+  onDisabledItemClick = () => {},
 }) => (
   <div
     css={`
@@ -39,15 +45,20 @@ export const SelectOptionDropdown = ({
           cursor: pointer;
           padding: 5px;
           ${itemClassName};
+          ${isItemDisabled({ item }) ? DisabledDropdownOption : ''};
         `}
-        {...(onToggle
+        {...(isItemDisabled({ item })
           ? {
-              onClick: () => {
-                selectItem(item);
-                onToggle();
-              },
+              onClick: () => onDisabledItemClick({ item }),
             }
-          : {})}
+          : onToggle
+            ? {
+                onClick: () => {
+                  selectItem(item);
+                  onToggle();
+                },
+              }
+            : {})}
       >
         {item}
       </div>

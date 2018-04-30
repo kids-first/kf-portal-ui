@@ -5,6 +5,7 @@ import { isEqual } from 'lodash';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
+import Tooltip from 'uikit/Tooltip';
 
 import { PillInputWithButton } from 'uikit/PillInputWithButton';
 import Select, { SelectOptionDropdown, OptionDropdownWrapperCss } from 'uikit/Select';
@@ -65,27 +66,24 @@ export default class FileManifestsDownloadInput extends React.Component {
             />
           ),
         }),
-      ...(!!(familyManifestModalProps.dataTypes || []).length
-        ? {
-            'Participant and family': () =>
-              effects.setModal({
-                title: 'Download Manifest (Participant and Family)',
-                component: (
-                  <FamilyManifestModal
-                    {...{
-                      ...familyManifestModalProps,
-                      api,
-                      sqon,
-                      index,
-                      projectId,
-                      columns,
-                    }}
-                  />
-                ),
-              }),
-          }
-        : {}),
+      'Participant and family': () =>
+        effects.setModal({
+          title: 'Download Manifest (Participant and Family)',
+          component: (
+            <FamilyManifestModal
+              {...{
+                ...familyManifestModalProps,
+                api,
+                sqon,
+                index,
+                projectId,
+                columns,
+              }}
+            />
+          ),
+        }),
     };
+    const hasNoFamilyFile = !(familyManifestModalProps.dataTypes || []).length;
     return (
       <div
         css={`
@@ -133,12 +131,22 @@ export default class FileManifestsDownloadInput extends React.Component {
                       {spinner}
                     </div>
                   ) : (
-                    <SelectOptionDropdown
-                      {...{
-                        ...dropDownProps,
-                        selectItem: item => this.setState({ selectedDropdownOption: item }),
-                      }}
-                    />
+                    <React.Fragment>
+                      <SelectOptionDropdown
+                        {...{
+                          ...dropDownProps,
+                          selectItem: item => this.setState({ selectedDropdownOption: item }),
+                          isItemDisabled: ({ item }) =>
+                            item === 'Participant and family' && hasNoFamilyFile,
+                          onDisabledItemClick: ({ item }) => console.log('item: ', item),
+                        }}
+                      />
+                      <Tooltip
+                        open={hasNoFamilyFile}
+                        position="bottom"
+                        html={<div>There is no family member files found</div>}
+                      />
+                    </React.Fragment>
                   );
                 }}
               />

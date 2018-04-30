@@ -31,6 +31,7 @@ export const PillInputWithButton = ({
   render,
   SelectComponent,
   onOptionSelect,
+  isButtonDisabled,
 }) => {
   return (
     <LoadingOnClick
@@ -54,7 +55,7 @@ export const PillInputWithButton = ({
               />
             )}
             <Button
-              disabled={!options[selected]}
+              disabled={isButtonDisabled ? isButtonDisabled() : !options[selected]}
               onClick={onClick}
               css={`
                 border-radius: 10px;
