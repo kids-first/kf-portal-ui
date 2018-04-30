@@ -52,7 +52,7 @@ function Select({
   itemContainerClassName,
   align = 'right',
   OptionDropdownComponent,
-  onToggle = () => {},
+  onToggle,
   ...rest
 }) {
   return (
@@ -84,7 +84,7 @@ function Select({
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}
-              onClick={() => onToggle({ toggleMenu, isOpen })}
+              onClick={onToggle || toggleMenu}
             >
               {selectedItem}
               <img

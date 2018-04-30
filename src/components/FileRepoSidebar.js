@@ -157,8 +157,17 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                 },
               };
               return (
-                <Component initialState={{ familyManifestModalProps: {}, isLoading: false }}>
-                  {({ state: { isLoading, familyManifestModalProps }, setState }) => (
+                <Component
+                  initialState={{
+                    familyManifestModalProps: {},
+                    isLoading: false,
+                    isDropdownOpen: false,
+                  }}
+                >
+                  {({
+                    state: { isDropdownOpen, isLoading, familyManifestModalProps },
+                    setState,
+                  }) => (
                     <div
                       css={`
                         display: flex;
@@ -171,6 +180,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                         SelectComponent={({ setSelected, ...selectProps }) => {
                           return (
                             <Select
+                              isOpen={isDropdownOpen}
                               highlightedIndex={null}
                               items={Object.keys(options).filter(option => {
                                 return option === 'Participant and family'
@@ -178,21 +188,22 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                                   : true;
                               })}
                               defaultSelectedItem="Participant only"
-                              onToggle={async ({ toggleMenu, isOpen }) => {
-                                toggleMenu();
-                                if (!isOpen) {
-                                  setState({ isLoading: true });
-                                  const familyManifestModalProps = await generateFamilyManifestModalProps(
-                                    {
-                                      api,
-                                      projectId,
-                                      sqon,
-                                    },
-                                  );
-                                  setState({ familyManifestModalProps, isLoading: false });
-                                } else {
-                                  setState({ familyManifestModalProps: {} });
-                                }
+                              onToggle={() => {
+                                setState({ isDropdownOpen: !isDropdownOpen }, async () => {
+                                  if (!isDropdownOpen) {
+                                    setState({ isLoading: true });
+                                    const familyManifestModalProps = await generateFamilyManifestModalProps(
+                                      {
+                                        api,
+                                        projectId,
+                                        sqon,
+                                      },
+                                    );
+                                    setState({ familyManifestModalProps, isLoading: false });
+                                  } else {
+                                    setState({ familyManifestModalProps: {} });
+                                  }
+                                });
                               }}
                               onChange={e => setSelected(e)}
                               OptionDropdownComponent={dropDownProps => {
