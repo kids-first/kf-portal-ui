@@ -9,9 +9,35 @@ import DataTypeOption from './DataTypeOption';
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
 import Query from '@arranger/components/dist/Query';
-import { sqonForDownload } from './FamilyManifestModalData';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { withApi } from 'services/api';
+
+const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
+  const selectedDataTypes = Object.entries(values)
+    .filter(([, val]) => val)
+    .map(([key]) => key);
+  return sqon
+    ? {
+        op: 'or',
+        content: [
+          sqon,
+          {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: 'data_type', value: selectedDataTypes },
+              },
+              {
+                op: 'in',
+                content: { field: 'participants.kf_id', value: familyMemberIds },
+              },
+            ],
+          },
+        ],
+      }
+    : sqon;
+};
 
 const enhance = compose(
   injectState,

@@ -34,7 +34,6 @@ import FamilyManifestModal, {
   dataTypeDataQueryBody,
   generateFamilyManifestModalProps,
 } from './FamilyManifestModal';
-import enhanceWithFamilyModalData from './FamilyManifestModal/FamilyManifestModalData';
 
 const styles = {
   container: css`
@@ -67,10 +66,6 @@ const Divider = styled('div')`
   background-color: #d4d6dd;
   margin: 20px 10px 20px 0;
 `;
-
-const EnhancedFamilyManifestModal = enhanceWithFamilyModalData(familtManifestModalProps => (
-  <FamilyManifestModal {...familtManifestModalProps} />
-));
 
 const spinner = (
   <Spinner

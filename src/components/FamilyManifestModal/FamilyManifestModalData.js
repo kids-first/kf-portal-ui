@@ -59,77 +59,6 @@ export const dataTypeDataQueryBody = ({ familyMemberIds }) => ({
   },
 });
 
-export const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
-  const selectedDataTypes = Object.entries(values)
-    .filter(([, val]) => val)
-    .map(([key]) => key);
-  return sqon
-    ? {
-        op: 'or',
-        content: [
-          sqon,
-          {
-            op: 'and',
-            content: [
-              {
-                op: 'in',
-                content: { field: 'data_type', value: selectedDataTypes },
-              },
-              {
-                op: 'in',
-                content: { field: 'participants.kf_id', value: familyMemberIds },
-              },
-            ],
-          },
-        ],
-      }
-    : sqon;
-};
-
-const enhance = compose(
-  injectState,
-
-  withQuery(({ sqon, projectId, familyMemberIdAggregation }) => ({
-    renderError: true,
-    projectId,
-    key: 'participantAndFamilyMemberIdsAggregation',
-    ...familyMemberAndParticipantDataQueryBody({ sqon }),
-  })),
-  withProps(({ participantAndFamilyMemberIdsAggregation: { data } }) => {
-    const familyMemberIds = (
-      get(data, 'file.aggregations.participants__family__family_members__kf_id.buckets') || []
-    ).map(b => b.key);
-    const participantIds = (get(data, 'file.aggregations.participants__kf_id.buckets') || []).map(
-      b => b.key,
-    );
-    return {
-      familyMemberIds,
-      participantIds,
-      familyMembersWithoutParticipantIds: difference(familyMemberIds, participantIds),
-    };
-  }),
-
-  withQuery(
-    ({
-      sqon,
-      projectId,
-      participantAndFamilyMemberIdsAggregation,
-      familyMembersWithoutParticipantIds,
-    }) => {
-      return {
-        shouldFetch: !participantAndFamilyMemberIdsAggregation.loading,
-        renderError: true,
-        projectId,
-        key: 'dataTypesAggregation',
-        ...dataTypeDataQueryBody({ familyMemberIds: familyMembersWithoutParticipantIds }),
-      };
-    },
-  ),
-  withProps(({ dataTypesAggregation: { data } }) => ({
-    dataTypes: get(data, 'file.aggregations.data_type.buckets') || [],
-  })),
-);
-
 export const generateFamilyManifestModalProps = async ({ api, projectId, sqon }) => {
   const fetcher = ({ body }) =>
     api({
@@ -170,5 +99,3 @@ export const generateFamilyManifestModalProps = async ({ api, projectId, sqon })
     dataTypes,
   };
 };
-
-export default enhance;
