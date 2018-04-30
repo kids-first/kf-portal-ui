@@ -4,36 +4,27 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 import { Trans } from 'react-i18next';
-import Spinner from 'react-spinkit';
-import Component from 'react-component-component';
-import { get, isEqual } from 'lodash';
 
-import downloadIcon from '../assets/icon-download-white.svg';
-import IconWithLoading from '../icons/IconWithLoading';
+import downloadIcon from 'assets/icon-download-white.svg';
+import IconWithLoading from 'icons/IconWithLoading';
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
-import LoadingOnClick from './LoadingOnClick';
+import LoadingOnClick from '../LoadingOnClick';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import { withApi } from 'services/api';
 
-import EnhancedPillInputWithButton, { PillInputWithButton } from '../uikit/PillInputWithButton';
+import EnhancedPillInputWithButton from 'uikit/PillInputWithButton';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { GEN3 } from 'common/constants';
 import { getFilesById } from 'services/arranger';
-import Select, { SelectOptionDropdown, OptionDropdownWrapperCss } from '../uikit/Select';
 
 import {
   downloadBiospecimen,
   clinicalDataParticipants,
   clinicalDataFamily,
-} from '../services/downloadData';
-import ParticipantManifestModal from './ParticipantManifestModal';
-import FamilyManifestModal, {
-  familyMemberAndParticipantDataQueryBody,
-  dataTypeDataQueryBody,
-  generateFamilyManifestModalProps,
-} from './FamilyManifestModal';
+} from 'services/downloadData';
+import FileManifestsDownloadInput from './FileManifestsDownloadInput';
 
 const styles = {
   container: css`
@@ -66,152 +57,6 @@ const Divider = styled('div')`
   background-color: #d4d6dd;
   margin: 20px 10px 20px 0;
 `;
-
-const spinner = (
-  <Spinner
-    fadeIn="none"
-    name="circle"
-    color="#a9adc0"
-    style={{
-      width: 20,
-      height: 20,
-      margin: 'auto',
-      marginBottom: 20,
-    }}
-  />
-);
-
-class FileManifestsDownloadInput extends React.Component {
-  state = {
-    familyManifestModalProps: {},
-    isLoading: false,
-    isDropdownOpen: false,
-    selectedDropdownOption: null,
-  };
-  componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps, this.props)) {
-      this.setState({
-        isDropdownOpen: false,
-        selectedDropdownOption: null,
-      });
-    }
-  }
-  render() {
-    const { api, sqon, index, projectId, theme, effects, columns } = this.props;
-    const {
-      familyManifestModalProps,
-      isLoading,
-      isDropdownOpen,
-      selectedDropdownOption,
-    } = this.state;
-    const options = {
-      'Participant only': () =>
-        effects.setModal({
-          title: 'Download Manifest',
-          component: (
-            <ParticipantManifestModal
-              {...{
-                api,
-                sqon,
-                index,
-                projectId,
-                columns,
-              }}
-            />
-          ),
-        }),
-      ...(!!(familyManifestModalProps.dataTypes || []).length
-        ? {
-            'Participant and family': () =>
-              effects.setModal({
-                title: 'Download Manifest (Participant and Family)',
-                component: (
-                  <FamilyManifestModal
-                    {...{
-                      ...familyManifestModalProps,
-                      api,
-                      sqon,
-                      index,
-                      projectId,
-                      columns,
-                    }}
-                  />
-                ),
-              }),
-          }
-        : {}),
-    };
-    return (
-      <div
-        css={`
-          display: flex;
-          margin-bottom: 13px;
-        `}
-      >
-        <PillInputWithButton
-          selected={selectedDropdownOption || Object.keys(options)[0]}
-          options={options}
-          onOptionSelect={({ selected }) => {
-            this.setState({ isDropdownOpen: false });
-            options[selected]();
-          }}
-          SelectComponent={selectProps => {
-            return (
-              <Select
-                {...selectProps}
-                isOpen={isDropdownOpen}
-                highlightedIndex={null}
-                items={Object.keys(options)}
-                defaultSelectedItem="Participant only"
-                onToggle={() => {
-                  this.setState({ isDropdownOpen: !isDropdownOpen }, async () => {
-                    if (!isDropdownOpen) {
-                      this.setState({ isLoading: true });
-                      const familyManifestModalProps = await generateFamilyManifestModalProps({
-                        api,
-                        projectId,
-                        sqon,
-                      });
-                      this.setState({ familyManifestModalProps, isLoading: false });
-                    }
-                  });
-                }}
-                OptionDropdownComponent={dropDownProps => {
-                  return isLoading ? (
-                    <div
-                      {...dropDownProps}
-                      css={`
-                        ${OptionDropdownWrapperCss};
-                        right: 0px;
-                      `}
-                    >
-                      {spinner}
-                    </div>
-                  ) : (
-                    <SelectOptionDropdown
-                      {...{
-                        ...dropDownProps,
-                        selectItem: item => this.setState({ selectedDropdownOption: item }),
-                      }}
-                    />
-                  );
-                }}
-              />
-            );
-          }}
-          render={({ loading }) => {
-            return (
-              <React.Fragment>
-                <IconWithLoading {...{ loading, icon: downloadIcon }} />
-                <Trans css={theme.uppercase}>Download</Trans>
-              </React.Fragment>
-            );
-          }}
-        />
-      </div>
-    );
-  }
-}
 
 const FileRepoSidebar = compose(injectState, withTheme, withApi)(
   ({ state, projectId, index, style, sqon, effects, theme, api, ...props }) => {
