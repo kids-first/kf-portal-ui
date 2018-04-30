@@ -134,9 +134,8 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                     setState,
                   }) => {
                     const options = {
-                      'Participant only': () => {
-                        console.log('setting participant modal!');
-                        return effects.setModal({
+                      'Participant only': () =>
+                        effects.setModal({
                           title: 'Download Manifest',
                           component: (
                             <ParticipantManifestModal
@@ -149,14 +148,11 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                               }}
                             />
                           ),
-                        });
-                      },
+                        }),
                       ...(!!(familyManifestModalProps.dataTypes || []).length
                         ? {
-                            'Participant and family': () => {
-                              console.log('setting family manifest modal!');
-
-                              return effects.setModal({
+                            'Participant and family': () =>
+                              effects.setModal({
                                 title: 'Download Manifest (Participant and Family)',
                                 component: (
                                   <FamilyManifestModal
@@ -170,8 +166,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                                     }}
                                   />
                                 ),
-                              });
-                            },
+                              }),
                           }
                         : {}),
                     };
