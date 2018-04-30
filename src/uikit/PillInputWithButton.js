@@ -21,7 +21,7 @@ const SelectStyle = `
   height: 30px;
 `;
 
-const PillInputWithButton = ({
+export const PillInputWithButton = ({
   selected,
   setSelected,
   options,
@@ -32,7 +32,6 @@ const PillInputWithButton = ({
   SelectComponent,
   onOptionSelect,
 }) => {
-  console.log('selected: ', selected);
   return (
     <LoadingOnClick
       onClick={() => (onOptionSelect ? onOptionSelect({ selected }) : options[selected]())}
@@ -43,7 +42,9 @@ const PillInputWithButton = ({
               display: flex;
             `}
           >
-            {SelectComponent && <SelectComponent css={SelectStyle} {...{ setSelected }} />}
+            {SelectComponent && (
+              <SelectComponent css={SelectStyle} {...{ setSelected, selectedItem: selected }} />
+            )}
             {!SelectComponent && (
               <Select
                 items={Object.keys(options)}

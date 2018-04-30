@@ -16,7 +16,7 @@ import LoadingOnClick from './LoadingOnClick';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import { withApi } from 'services/api';
 
-import PillInputWithButton from '../uikit/PillInputWithButton';
+import EnhancedPillInputWithButton, { PillInputWithButton } from '../uikit/PillInputWithButton';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { GEN3 } from 'common/constants';
@@ -160,6 +160,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                         ? {
                             'Participant and family': () => {
                               console.log('setting family manifest modal!');
+
                               return effects.setModal({
                                 title: 'Download Manifest (Participant and Family)',
                                 component: (
@@ -187,15 +188,17 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                         `}
                       >
                         <PillInputWithButton
-                          selected={selectedDropdownOption}
+                          selected={selectedDropdownOption || Object.keys(options)[0]}
                           options={options}
-                          onOptionSelect={({ selected }) => options[selected]()}
-                          SelectComponent={({ setSelected, ...selectProps }) => {
-                            console.log('selectedDropdownOption: ', selectedDropdownOption);
+                          onOptionSelect={({ selected }) => {
+                            setState({ isDropdownOpen: false });
+                            options[selected]();
+                          }}
+                          SelectComponent={selectProps => {
                             return (
                               <Select
+                                {...selectProps}
                                 isOpen={isDropdownOpen}
-                                selectedItem={selectedDropdownOption || Object.keys(options)[0]}
                                 highlightedIndex={null}
                                 items={Object.keys(options)}
                                 defaultSelectedItem="Participant only"
@@ -211,12 +214,9 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                                         },
                                       );
                                       setState({ familyManifestModalProps, isLoading: false });
-                                    } else {
-                                      setState({ familyManifestModalProps: {} });
                                     }
                                   });
                                 }}
-                                // onChange={e => setSelected(e)}
                                 OptionDropdownComponent={dropDownProps => {
                                   return isLoading ? (
                                     <div
@@ -238,7 +238,6 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                                     />
                                   );
                                 }}
-                                {...selectProps}
                               />
                             );
                           }}
@@ -364,7 +363,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                       margin-bottom: 13px;
                     `}
                   >
-                    <PillInputWithButton
+                    <EnhancedPillInputWithButton
                       options={{
                         'Clinical (Participant)': clinicalDataParticipants({
                           sqon,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { get, difference } from 'lodash';
 import Spinner from 'react-spinkit';
-
+import { injectState } from 'freactal';
 import { compose, withState } from 'recompose';
 import { withFormik } from 'formik';
 
@@ -14,6 +14,7 @@ import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { withApi } from 'services/api';
 
 const enhance = compose(
+  injectState,
   withApi,
   withFormik({
     mapPropsToValues: ({ dataTypes }) =>
