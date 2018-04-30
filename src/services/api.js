@@ -15,7 +15,7 @@ export const initializeApi = ({ onUnauthorized }) => ({
     .then(response => {
       return response.data;
     })
-    .catch(({ response }) => {
+    .catch(response => {
       if (response.status === 401) {
         return onUnauthorized(response);
       }
