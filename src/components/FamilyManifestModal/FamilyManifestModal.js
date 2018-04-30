@@ -64,8 +64,6 @@ const enhance = compose(
 
 const component = ({
   //aggregations
-  participantAndFamilyMemberIdsAggregation,
-  dataTypesAggregation,
 
   // actual data
   familyMemberIds,
@@ -83,12 +81,6 @@ const component = ({
   setIsDisabled,
   api,
 }) => {
-  const loading =
-    !dataTypes.length ||
-    !dataTypesAggregation.data ||
-    dataTypesAggregation.loading ||
-    participantAndFamilyMemberIdsAggregation.loading;
-
   const spinner = (
     <Spinner
       fadeIn="none"
@@ -109,9 +101,7 @@ const component = ({
           <ModalSubHeader>
             Select the data types you would like to download for the family members:
           </ModalSubHeader>
-          {loading ? (
-            spinner
-          ) : (
+          {
             <Query
               renderError
               api={api}
@@ -201,7 +191,7 @@ const component = ({
                     });
               }}
             />
-          )}
+          }
           <DownloadManifestModalFooter
             {...{
               api,

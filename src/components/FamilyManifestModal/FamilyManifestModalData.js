@@ -92,8 +92,6 @@ export const generateFamilyManifestModalProps = async ({ api, projectId, sqon })
   const dataTypes = get(dataTypesAggregation, 'data.file.aggregations.data_type.buckets') || [];
 
   return {
-    participantAndFamilyMemberIdsAggregation: { loading: false, data: {} },
-    dataTypesAggregation: { loading: false, data: {} },
     familyMemberIds,
     participantIds,
     dataTypes,
