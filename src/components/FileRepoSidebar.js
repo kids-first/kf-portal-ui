@@ -140,6 +140,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                   }) => {
                     const options = {
                       'Participant only': () => {
+                        console.log('setting participant modal!');
                         return effects.setModal({
                           title: 'Download Manifest',
                           component: (
@@ -158,6 +159,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                       ...(!!(familyManifestModalProps.dataTypes || []).length
                         ? {
                             'Participant and family': () => {
+                              console.log('setting family manifest modal!');
                               return effects.setModal({
                                 title: 'Download Manifest (Participant and Family)',
                                 component: (
@@ -185,16 +187,18 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                         `}
                       >
                         <PillInputWithButton
+                          selected={selectedDropdownOption}
                           options={options}
                           onOptionSelect={({ selected }) => options[selected]()}
                           SelectComponent={({ setSelected, ...selectProps }) => {
+                            console.log('selectedDropdownOption: ', selectedDropdownOption);
                             return (
                               <Select
                                 isOpen={isDropdownOpen}
+                                selectedItem={selectedDropdownOption || Object.keys(options)[0]}
                                 highlightedIndex={null}
                                 items={Object.keys(options)}
                                 defaultSelectedItem="Participant only"
-                                selectedItem={selectedDropdownOption || Object.keys(options)[0]}
                                 onToggle={() => {
                                   setState({ isDropdownOpen: !isDropdownOpen }, async () => {
                                     if (!isDropdownOpen) {
@@ -212,7 +216,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                                     }
                                   });
                                 }}
-                                onChange={e => setSelected(e)}
+                                // onChange={e => setSelected(e)}
                                 OptionDropdownComponent={dropDownProps => {
                                   return isLoading ? (
                                     <div

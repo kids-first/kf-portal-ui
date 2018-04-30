@@ -32,6 +32,7 @@ const PillInputWithButton = ({
   SelectComponent,
   onOptionSelect,
 }) => {
+  console.log('selected: ', selected);
   return (
     <LoadingOnClick
       onClick={() => (onOptionSelect ? onOptionSelect({ selected }) : options[selected]())}
