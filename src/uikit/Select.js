@@ -21,6 +21,8 @@ export const SelectOptionDropdown = ({
   items = [],
   itemClassName = '',
   getItemProps,
+  selectItem = () => {},
+  onToggle,
 }) => (
   <div
     css={`
@@ -38,6 +40,13 @@ export const SelectOptionDropdown = ({
           padding: 5px;
           ${itemClassName};
         `}
+        onClick={
+          onToggle &&
+          (() => {
+            selectItem(item);
+            onToggle();
+          })
+        }
       >
         {item}
       </div>
@@ -101,11 +110,27 @@ function Select({
             </div>
             {!isOpen ? null : OptionDropdownComponent ? (
               <OptionDropdownComponent
-                {...{ align, itemContainerClassName, items, itemClassName, getItemProps }}
+                {...{
+                  align,
+                  itemContainerClassName,
+                  items,
+                  itemClassName,
+                  getItemProps,
+                  onToggle,
+                }}
               />
             ) : (
               <SelectOptionDropdown
-                {...{ ...{ align, itemContainerClassName, items, itemClassName, getItemProps } }}
+                {...{
+                  ...{
+                    align,
+                    itemContainerClassName,
+                    items,
+                    itemClassName,
+                    getItemProps,
+                    onToggle,
+                  },
+                }}
               />
             )}
           </div>

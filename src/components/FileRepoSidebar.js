@@ -120,122 +120,136 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
             projectId={projectId}
             graphqlField="file"
             render={({ state }) => {
-              const options = {
-                'Participant only': ({ componentProps } = {}) => {
-                  return effects.setModal({
-                    title: 'Download Manifest',
-                    component: (
-                      <ParticipantManifestModal
-                        {...{
-                          ...componentProps,
-                          api,
-                          sqon,
-                          index,
-                          projectId,
-                          columns: state.columns,
-                        }}
-                      />
-                    ),
-                  });
-                },
-                'Participant and family': ({ componentProps } = {}) => {
-                  return effects.setModal({
-                    title: 'Download Manifest (Participant and Family)',
-                    component: (
-                      <EnhancedFamilyManifestModal
-                        {...{
-                          ...componentProps,
-                          api,
-                          sqon,
-                          index,
-                          projectId,
-                          columns: state.columns,
-                        }}
-                      />
-                    ),
-                  });
-                },
-              };
               return (
                 <Component
                   initialState={{
                     familyManifestModalProps: {},
                     isLoading: false,
                     isDropdownOpen: false,
+                    selectedDropdownOption: null,
                   }}
                 >
                   {({
-                    state: { isDropdownOpen, isLoading, familyManifestModalProps },
+                    state: {
+                      isDropdownOpen,
+                      selectedDropdownOption,
+                      isLoading,
+                      familyManifestModalProps,
+                    },
                     setState,
-                  }) => (
-                    <div
-                      css={`
-                        display: flex;
-                        margin-bottom: 13px;
-                      `}
-                    >
-                      <PillInputWithButton
-                        options={options}
-                        onOptionSelect={({ selected }) => options[selected]()}
-                        SelectComponent={({ setSelected, ...selectProps }) => {
-                          return (
-                            <Select
-                              isOpen={isDropdownOpen}
-                              highlightedIndex={null}
-                              items={Object.keys(options).filter(option => {
-                                return option === 'Participant and family'
-                                  ? !!(familyManifestModalProps.dataTypes || []).length
-                                  : true;
-                              })}
-                              defaultSelectedItem="Participant only"
-                              onToggle={() => {
-                                setState({ isDropdownOpen: !isDropdownOpen }, async () => {
-                                  if (!isDropdownOpen) {
-                                    setState({ isLoading: true });
-                                    const familyManifestModalProps = await generateFamilyManifestModalProps(
-                                      {
-                                        api,
-                                        projectId,
-                                        sqon,
-                                      },
-                                    );
-                                    setState({ familyManifestModalProps, isLoading: false });
-                                  } else {
-                                    setState({ familyManifestModalProps: {} });
-                                  }
-                                });
+                  }) => {
+                    const options = {
+                      'Participant only': () => {
+                        return effects.setModal({
+                          title: 'Download Manifest',
+                          component: (
+                            <ParticipantManifestModal
+                              {...{
+                                api,
+                                sqon,
+                                index,
+                                projectId,
+                                columns: state.columns,
                               }}
-                              onChange={e => setSelected(e)}
-                              OptionDropdownComponent={dropDownProps => {
-                                return isLoading ? (
-                                  <div
-                                    {...dropDownProps}
-                                    css={`
-                                      ${OptionDropdownWrapperCss};
-                                      right: 0px;
-                                    `}
-                                  >
-                                    {spinner}
-                                  </div>
-                                ) : (
-                                  <SelectOptionDropdown {...{ ...dropDownProps }} />
-                                );
-                              }}
-                              {...selectProps}
                             />
-                          );
-                        }}
-                        render={({ loading }) => {
-                          return (
-                            <React.Fragment>
-                              <IconWithLoading {...{ loading, icon: downloadIcon }} />
-                              <Trans css={theme.uppercase}>Download</Trans>
-                            </React.Fragment>
-                          );
-                        }}
-                      />
-                    </div>
-                  )}
+                          ),
+                        });
+                      },
+                      ...(!!(familyManifestModalProps.dataTypes || []).length
+                        ? {
+                            'Participant and family': () => {
+                              return effects.setModal({
+                                title: 'Download Manifest (Participant and Family)',
+                                component: (
+                                  <FamilyManifestModal
+                                    {...{
+                                      ...familyManifestModalProps,
+                                      api,
+                                      sqon,
+                                      index,
+                                      projectId,
+                                      columns: state.columns,
+                                    }}
+                                  />
+                                ),
+                              });
+                            },
+                          }
+                        : {}),
+                    };
+                    return (
+                      <div
+                        css={`
+                          display: flex;
+                          margin-bottom: 13px;
+                        `}
+                      >
+                        <PillInputWithButton
+                          options={options}
+                          onOptionSelect={({ selected }) => options[selected]()}
+                          SelectComponent={({ setSelected, ...selectProps }) => {
+                            return (
+                              <Select
+                                isOpen={isDropdownOpen}
+                                highlightedIndex={null}
+                                items={Object.keys(options)}
+                                defaultSelectedItem="Participant only"
+                                selectedItem={selectedDropdownOption || Object.keys(options)[0]}
+                                onToggle={() => {
+                                  setState({ isDropdownOpen: !isDropdownOpen }, async () => {
+                                    if (!isDropdownOpen) {
+                                      setState({ isLoading: true });
+                                      const familyManifestModalProps = await generateFamilyManifestModalProps(
+                                        {
+                                          api,
+                                          projectId,
+                                          sqon,
+                                        },
+                                      );
+                                      setState({ familyManifestModalProps, isLoading: false });
+                                    } else {
+                                      setState({ familyManifestModalProps: {} });
+                                    }
+                                  });
+                                }}
+                                onChange={e => setSelected(e)}
+                                OptionDropdownComponent={dropDownProps => {
+                                  return isLoading ? (
+                                    <div
+                                      {...dropDownProps}
+                                      css={`
+                                        ${OptionDropdownWrapperCss};
+                                        right: 0px;
+                                      `}
+                                    >
+                                      {spinner}
+                                    </div>
+                                  ) : (
+                                    <SelectOptionDropdown
+                                      {...{
+                                        ...dropDownProps,
+                                        selectItem: item =>
+                                          setState({ selectedDropdownOption: item }),
+                                      }}
+                                    />
+                                  );
+                                }}
+                                {...selectProps}
+                              />
+                            );
+                          }}
+                          render={({ loading }) => {
+                            return (
+                              <React.Fragment>
+                                <IconWithLoading {...{ loading, icon: downloadIcon }} />
+                                <Trans css={theme.uppercase}>Download</Trans>
+                              </React.Fragment>
+                            );
+                          }}
+                        />
+                      </div>
+                    );
+                  }}
                 </Component>
               );
             }}
