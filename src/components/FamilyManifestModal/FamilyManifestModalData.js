@@ -1,8 +1,4 @@
 import { get, difference } from 'lodash';
-import { compose, withProps } from 'recompose';
-import { injectState } from 'freactal/lib/inject';
-
-import { withQuery } from '@arranger/components';
 
 export const familyMemberAndParticipantDataQueryBody = ({ sqon }) => ({
   query: `
