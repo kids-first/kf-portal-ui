@@ -4,6 +4,10 @@ import { merge, pick } from 'lodash';
 
 import { usersnapHost, usersnapId, arrangerProjectId } from 'common/injectGlobals';
 
+let additionalUsersnapState = {
+  email: null,
+};
+
 let sqonHistory = [];
 export const addSqonHistory = sqon =>
   sqonHistory.push({
@@ -22,15 +26,9 @@ export const addInfo = obj => merge(usersnapInfo, obj);
 export const addStateInfo = obj => addInfo({ state: obj });
 
 export const addLoggedInUser = loggedInUser => {
+  additionalUsersnapState.email = loggedInUser.email;
   addStateInfo({
-    loggedInUser: pick(loggedInUser, [
-      'acceptedTerms',
-      'egoId',
-      'roles',
-      '_id',
-      'googleScholarId',
-      'email',
-    ]),
+    loggedInUser: pick(loggedInUser, ['acceptedTerms', 'egoId', 'roles', '_id', 'googleScholarId']),
   });
 };
 
@@ -45,9 +43,9 @@ window._usersnapconfig = {
   labelMultiSelect: false,
   loadHandler: () => {
     window.UserSnap.on('beforeSend', obj => (obj.addInfo = usersnapInfo));
-    window.UserSnap.on('beforeOpen', () => {
-      window.UserSnap.setEmailBox(((usersnapInfo.state || {}).loggedInUser || {}).email);
-    });
+    window.UserSnap.on('beforeOpen', () =>
+      window.UserSnap.setEmailBox(additionalUsersnapState.email),
+    );
   },
 };
 
