@@ -42,6 +42,9 @@ export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
 export const egoAppId = process.env.REACT_APP_EGO_APP_ID;
 export const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 
+export const usersnapHost = process.env.REACT_APP_USERSNAP_HOST;
+export const usersnapId = process.env.REACT_APP_USERSNAP_ID;
+
 export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
 
 export const allRedirectUris = (process.env.REACT_APP_LOGIN_REDIRECT_NOT_REQUIRED || '')
