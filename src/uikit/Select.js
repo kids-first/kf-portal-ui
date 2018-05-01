@@ -66,7 +66,7 @@ export const SelectOptionDropdown = ({
   onToggle,
   isItemDisabled = () => false,
   onDisabledItemClick = () => {},
-  DropDownOptionComponent,
+  DropDownOptionComponent = DropDownOption,
 }) => (
   <div
     className={`
@@ -77,22 +77,19 @@ export const SelectOptionDropdown = ({
       `}
       ${itemContainerClassName};`}
   >
-    {items.map(item => {
-      const dropdownOptionProp = {
-        item,
-        itemClassName,
-        isItemDisabled,
-        onToggle,
-        selectItem,
-        onDisabledItemClick,
-        getItemProps,
-      };
-      return DropDownOptionComponent ? (
-        <DropDownOptionComponent {...dropdownOptionProp} />
-      ) : (
-        <DropDownOption {...dropdownOptionProp} />
-      );
-    })}
+    {items.map(item => (
+      <DropDownOption
+        {...{
+          item,
+          itemClassName,
+          isItemDisabled,
+          onToggle,
+          selectItem,
+          onDisabledItemClick,
+          getItemProps,
+        }}
+      />
+    ))}
   </div>
 );
 
@@ -102,7 +99,7 @@ function Select({
   itemClassName,
   itemContainerClassName,
   align = 'right',
-  OptionDropdownComponent,
+  OptionDropdownComponent = SelectOptionDropdown,
   onToggle,
   ...rest
 }) {
@@ -150,7 +147,7 @@ function Select({
                 `}
               />
             </div>
-            {!isOpen ? null : OptionDropdownComponent ? (
+            {!isOpen ? null : (
               <OptionDropdownComponent
                 {...{
                   align,
@@ -159,19 +156,6 @@ function Select({
                   itemClassName,
                   getItemProps,
                   onToggle,
-                }}
-              />
-            ) : (
-              <SelectOptionDropdown
-                {...{
-                  ...{
-                    align,
-                    itemContainerClassName,
-                    items,
-                    itemClassName,
-                    getItemProps,
-                    onToggle,
-                  },
                 }}
               />
             )}
