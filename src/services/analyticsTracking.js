@@ -1,14 +1,23 @@
 import {Component} from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
-
+const debug = process.env.NODE_ENV === 'development';
 let GA_TRACKERS = [];
 
 export const initAnalyticsTracking =  async (trackers) => {
     GA_TRACKERS = trackers;
-    await ReactGA.initialize(trackers, { debug: true, alwaysSendToDefaultTracker: false });
+    await ReactGA.initialize(trackers, { debug , alwaysSendToDefaultTracker: false });
 }
 
+export const trackUserSession = async (loggedInUser) => {
+    if(loggedInUser.acceptedTerms){
+        await ReactGA.set({userId: loggedInUser._id })
+        debugger;
+        return true;
+    } else {
+        return false;
+    }
+}
 
 class GoogleAnalytics extends Component {
     componentWillUpdate ({ location, history }) {

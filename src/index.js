@@ -11,7 +11,7 @@ import './i18n';
 initAnalyticsTracking([{
     trackingId: process.env.REACT_APP_GA_TRACKING_ID,
     gaOptions:{
-        name: 'Beta.kids-first.io Tracker'
+        name: 'Beta Tracker'
     }
 }]);
 
