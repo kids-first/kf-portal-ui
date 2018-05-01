@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 import { isEqual } from 'lodash';
+import { css } from 'emotion';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
@@ -10,7 +11,7 @@ import Tooltip from 'uikit/Tooltip';
 import { PillInputWithButton } from 'uikit/PillInputWithButton';
 import Select, {
   SelectOptionDropdown,
-  OptionDropdownWrapperCss,
+  optionDropdownWrapperClassName,
   DropDownOption,
 } from 'uikit/Select';
 
@@ -127,9 +128,11 @@ export default class FileManifestsDownloadInput extends React.Component {
                   return isLoading ? (
                     <div
                       {...dropDownProps}
-                      css={`
-                        ${OptionDropdownWrapperCss};
-                        right: 0px;
+                      className={`
+                        ${optionDropdownWrapperClassName}
+                        ${css`
+                          right: 0px;
+                        `}
                       `}
                     >
                       {spinner}

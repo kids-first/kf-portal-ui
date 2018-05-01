@@ -1,9 +1,10 @@
 import React from 'react';
 import Downshift from 'downshift';
+import { css } from 'emotion';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
-export const OptionDropdownWrapperCss = `
+export const optionDropdownWrapperClassName = css`
   position: absolute;
   background: white;
   min-width: 100%;
@@ -15,14 +16,13 @@ export const OptionDropdownWrapperCss = `
   top: 100%;
 `;
 
-const DisabledDropdownOption = `
-  color: lightgrey
+const disabledDropdownOptionClassName = css`
+  color: lightgrey;
 `;
 
 export const DropDownOption = ({
   item,
   itemClassName,
-  DisabledDropdownOption,
   isItemDisabled,
   onToggle,
   selectItem,
@@ -32,12 +32,13 @@ export const DropDownOption = ({
   <div
     {...getItemProps({ item })}
     key={item}
-    css={`
-      cursor: pointer;
-      padding: 5px;
-      ${itemClassName};
-      ${isItemDisabled({ item }) ? DisabledDropdownOption : ''};
-    `}
+    className={`
+      ${css`
+        cursor: pointer;
+        padding: 5px;
+      `}
+      ${itemClassName}
+      ${isItemDisabled({ item }) ? disabledDropdownOptionClassName : ''}`}
     {...(isItemDisabled({ item })
       ? {
           onClick: () => onDisabledItemClick({ item }),
@@ -68,17 +69,18 @@ export const SelectOptionDropdown = ({
   DropDownOptionComponent,
 }) => (
   <div
-    css={`
-      ${OptionDropdownWrapperCss} right: ${align === 'right' ? `0` : `auto`};
-      left: ${align === 'right' ? `auto` : `0`};
-      ${itemContainerClassName};
-    `}
+    className={`
+      ${optionDropdownWrapperClassName}
+      ${css`
+        right: ${align === 'right' ? `0` : `auto`};
+        left: ${align === 'right' ? `auto` : `0`};
+      `}
+      ${itemContainerClassName};`}
   >
     {items.map(item => {
       const dropdownOptionProp = {
         item,
         itemClassName,
-        DisabledDropdownOption,
         isItemDisabled,
         onToggle,
         selectItem,
