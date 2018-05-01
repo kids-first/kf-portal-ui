@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 import { isEqual } from 'lodash';
@@ -135,29 +135,27 @@ export default class FileManifestsDownloadInput extends React.Component {
                       {spinner}
                     </div>
                   ) : (
-                    <React.Fragment>
-                      <SelectOptionDropdown
-                        {...{
-                          ...dropDownProps,
-                          selectItem: item => this.setState({ selectedDropdownOption: item }),
-                          isItemDisabled: ({ item }) =>
-                            item === 'Participant and family' && hasNoFamilyFile,
-                          onDisabledItemClick: ({ item }) => console.log('item: ', item),
-                          DropDownOptionComponent: ({ item, ...optionProps }) => (
-                            <React.Fragment>
-                              <DropDownOption {...{ ...optionProps, item }} />
-                              {item === 'Participant and family' && hasNoFamilyFile ? (
-                                <Tooltip
-                                  open={hasNoFamilyFile}
-                                  position="bottom"
-                                  html={<div>There is no family member files found</div>}
-                                />
-                              ) : null}
-                            </React.Fragment>
-                          ),
-                        }}
-                      />
-                    </React.Fragment>
+                    <SelectOptionDropdown
+                      {...{
+                        ...dropDownProps,
+                        selectItem: item => this.setState({ selectedDropdownOption: item }),
+                        isItemDisabled: ({ item }) =>
+                          item === 'Participant and family' && hasNoFamilyFile,
+                        onDisabledItemClick: ({ item }) => console.log('item: ', item),
+                        DropDownOptionComponent: ({ item, ...optionProps }) => (
+                          <Fragment>
+                            <DropDownOption {...{ ...optionProps, item }} />
+                            {item === 'Participant and family' && hasNoFamilyFile ? (
+                              <Tooltip
+                                open={hasNoFamilyFile}
+                                position="bottom"
+                                html={<div>There is no family member files found</div>}
+                              />
+                            ) : null}
+                          </Fragment>
+                        ),
+                      }}
+                    />
                   );
                 }}
               />
