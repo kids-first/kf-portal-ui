@@ -46,8 +46,7 @@ window._usersnapconfig = {
   loadHandler: () => {
     window.UserSnap.on('beforeSend', obj => (obj.addInfo = usersnapInfo));
     window.UserSnap.on('beforeOpen', () => {
-      console.log(usersnapInfo);
-      window.UserSnap.setEmailBox(usersnapInfo.state.loggedInUser.email);
+      window.UserSnap.setEmailBox(((usersnapInfo.state || {}).loggedInUser || {}).email);
     });
   },
 };
