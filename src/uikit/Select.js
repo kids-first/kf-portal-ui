@@ -78,7 +78,7 @@ export const SelectOptionDropdown = ({
       ${itemContainerClassName};`}
   >
     {items.map(item => (
-      <DropDownOption
+      <DropDownOptionComponent
         {...{
           item,
           itemClassName,

@@ -3,7 +3,6 @@ import React from 'react';
 import { injectGlobal } from 'emotion';
 import { Tooltip } from 'react-tippy';
 import theme from 'theme/defaultTheme';
-import ContextProvider from 'components/ContextProvider';
 
 injectGlobal`
   .tippy-tooltip {
@@ -19,6 +18,4 @@ injectGlobal`
   }
 `;
 
-export default props => (
-  <Tooltip {...props} useContext html={<ContextProvider>{props.html}</ContextProvider>} />
-);
+export default props => <Tooltip {...props} useContext html={props.html} />;

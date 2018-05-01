@@ -32,6 +32,14 @@ const spinner = (
   />
 );
 
+const toolTipStyle = css`
+  background: white;
+  padding: 5px;
+  margin-top: -6px;
+  border-radius: 7px;
+  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.2);
+`;
+
 export default class FileManifestsDownloadInput extends React.Component {
   state = {
     familyManifestModalProps: {},
@@ -111,6 +119,7 @@ export default class FileManifestsDownloadInput extends React.Component {
                 highlightedIndex={null}
                 items={Object.keys(options)}
                 defaultSelectedItem="Participant only"
+                align={'left'}
                 onToggle={() => {
                   this.setState({ isDropdownOpen: !isDropdownOpen }, async () => {
                     if (!isDropdownOpen) {
@@ -144,18 +153,30 @@ export default class FileManifestsDownloadInput extends React.Component {
                         selectItem: item => this.setState({ selectedDropdownOption: item }),
                         isItemDisabled: ({ item }) =>
                           item === 'Participant and family' && hasNoFamilyFile,
-                        DropDownOptionComponent: ({ item, ...optionProps }) => (
-                          <Fragment>
-                            <DropDownOption {...{ ...optionProps, item }} />
-                            {item === 'Participant and family' && hasNoFamilyFile ? (
-                              <Tooltip
-                                open={hasNoFamilyFile}
-                                position="bottom"
-                                html={<div>There is no family member files found</div>}
-                              />
-                            ) : null}
-                          </Fragment>
-                        ),
+                        DropDownOptionComponent: ({ item, ...optionProps }) => {
+                          return (
+                            <div
+                              css={`
+                                position: 'relative';
+                              `}
+                            >
+                              <DropDownOption {...{ ...optionProps, item }} />
+                              {item === 'Participant and family' && hasNoFamilyFile ? (
+                                <div
+                                  className={`
+                                    ${css`
+                                      position: absolute;
+                                      top: 100%;
+                                    `}
+                                    ${toolTipStyle}
+                                  `}
+                                >
+                                  There is no family member files found
+                                </div>
+                              ) : null}
+                            </div>
+                          );
+                        },
                       }}
                     />
                   );
