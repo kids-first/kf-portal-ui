@@ -141,7 +141,6 @@ export default class FileManifestsDownloadInput extends React.Component {
                         selectItem: item => this.setState({ selectedDropdownOption: item }),
                         isItemDisabled: ({ item }) =>
                           item === 'Participant and family' && hasNoFamilyFile,
-                        onDisabledItemClick: ({ item }) => console.log('item: ', item),
                         DropDownOptionComponent: ({ item, ...optionProps }) => (
                           <Fragment>
                             <DropDownOption {...{ ...optionProps, item }} />
