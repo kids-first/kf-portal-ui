@@ -6,7 +6,6 @@ import { css } from 'emotion';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
-import Tooltip from 'uikit/Tooltip';
 
 import { PillInputWithButton } from 'uikit/PillInputWithButton';
 import Select, {
@@ -171,7 +170,7 @@ export default class FileManifestsDownloadInput extends React.Component {
                                     ${toolTipStyle}
                                   `}
                                 >
-                                  There is no family member files found
+                                  No file was found for family members
                                 </div>
                               ) : null}
                             </div>
