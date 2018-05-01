@@ -25,6 +25,8 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
+import { PageViewTracker }  from 'services/analyticsTracking';
+
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -137,6 +139,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
         />
         <Redirect from="*" to="/dashboard" />
       </Switch>
+      <PageViewTracker />
       <Modal />
       <Toast {...toast}>{toast.component}</Toast>
     </div>
