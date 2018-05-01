@@ -63,14 +63,10 @@ const enhance = compose(
 );
 
 const component = ({
-  //aggregations
-
-  // actual data
   familyMemberIds,
   familyMembersWithoutParticipantIds,
   participantIds,
   dataTypes,
-
   sqon,
   index,
   projectId,
