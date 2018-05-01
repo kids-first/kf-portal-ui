@@ -5,6 +5,10 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
+import {
+  addStateInfo as addUsersnapInfo,
+  addLoggedInUser as setUsersnapUser,
+} from 'services/usersnap';
 import { initializeApi } from 'services/api';
 
 export default provideState({
@@ -45,16 +49,21 @@ export default provideState({
         })
         .then(totalFields => state => {
           const filledFields = Object.values(user || {}).filter(v => v || (isArray(v) && v.length));
+          const percentageFilled = filledFields.length / totalFields;
+          addUsersnapInfo({ percentageFilled });
+          setUsersnapUser(user);
           return {
             ...state,
             isLoadingUser: false,
             loggedInUser: user,
-            percentageFilled: filledFields.length / totalFields,
+            percentageFilled,
           };
         });
     },
     addUserSet: (effects, { api, ...set }) => state => {
-      const { loggedInUser: { email, sets, ...rest } } = state;
+      const {
+        loggedInUser: { email, sets, ...rest },
+      } = state;
       updateProfile(api)({
         user: {
           ...rest,
@@ -71,6 +80,7 @@ export default provideState({
         localStorage.removeItem('EGO_JWT');
         addHeaders({ authorization: '' });
       }
+      addUsersnapInfo({ loggedInUserToken_exist: !!token });
       return { ...state, loggedInUserToken: token };
     },
     setIntegrationToken: (effects, service, token) => state => {
