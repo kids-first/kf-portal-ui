@@ -62,7 +62,7 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
               setWarning('');
               setSetId(setId);
               onManifestGenerated(data.saveSet);
-              addUserSet({ type, setId, size });
+              addUserSet({ type, setId, size, api });
             }
           }}
           render={({ onClick, loading }) => (

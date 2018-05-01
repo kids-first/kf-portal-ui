@@ -46,18 +46,13 @@ function findColumnsByField(fields, columns) {
 }
 function getManifestDownload(type) {
   return ({ sqon, columns }) => () => {
+    const filename = `[kidsfirst-${type}-manifest_]YYYY-MM-DD`;
     return saveTSV({
       url: downloadUrl,
-      fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD`),
+      fileName: format(new Date(), filename),
       files: [
         {
-          fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD[.tsv]`),
-          sqon,
-          index: 'file',
-          columns: findColumnsByField(['kf_id', 'uuid'], columns),
-        },
-        {
-          fileName: format(new Date(), `[kidsfirst-${type}-metadata_]YYYY-MM-DD[.tsv]`),
+          fileName: format(new Date(), `${filename}[.tsv]`),
           sqon,
           index: 'file',
           columns: findColumnsByField(
@@ -69,7 +64,11 @@ function getManifestDownload(type) {
               'file_format',
               'sequencing_experiments.experiment_strategy',
               'participants.kf_id',
+              'participants.is_proband',
+              'participants.family.family_id',
               'participants.samples.kf_id',
+              'participants.samples.tissue_type',
+              'participants.samples.aliquots.kf_id',
             ],
             columns,
           ),

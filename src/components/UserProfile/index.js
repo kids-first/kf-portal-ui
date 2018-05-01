@@ -69,10 +69,10 @@ export default compose(
   withTheme,
   lifecycle({
     async componentDidMount(): void {
-      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile } = this.props;
+      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile, api } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
-        : setProfile(await getProfile({ egoId }));
+        : setProfile(await getProfile(api)({ egoId }));
     },
   }),
   withState('interests', 'setInterests', ({ profile }) => profile.interests || []),
@@ -83,22 +83,22 @@ export default compose(
   }),
   withPropsOnChange(
     ['match'],
-    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser } }) => ({
+    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser }, api }) => ({
       notUsed:
         loggedInUser && egoId === loggedInUser.egoId
           ? setProfile(loggedInUser)
-          : setProfile(await getProfile({ egoId })),
+          : setProfile(await getProfile(api)({ egoId })),
     }),
   ),
   withHandlers({
-    submit: ({ profile, effects: { setUser } }) => async values => {
-      await updateProfile({
+    submit: ({ profile, effects: { setUser }, api }) => async values => {
+      await updateProfile(api)({
         user: {
           ...profile,
           ...values,
         },
       }).then(async updatedProfile => {
-        await setUser(updatedProfile);
+        await setUser({ ...updatedProfile, api });
       });
     },
   }),
@@ -106,7 +106,7 @@ export default compose(
     ({ profile }) => !profile || profile.length === 0,
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
-)(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash } }) => (
+)(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash }, api }) => (
   <div
     className={css`
       flex: 1;
@@ -176,12 +176,12 @@ export default compose(
               `}
             >
               <EditButton
-                onClick={() =>
+                onClick={() => {
                   setModal({
                     title: 'Edit Basic Information',
-                    component: <BasicInfoForm />,
-                  })
-                }
+                    component: <BasicInfoForm {...{ api }} />,
+                  });
+                }}
               />
             </span>
           </div>

@@ -5,8 +5,8 @@ import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import Stats from './Stats';
 
-const queryStringWrapper = fields => `
-  query($sqon: JSON) {
+const queryStringWrapper = (includeIncludeMissing = false) => fields => `
+  query($sqon: JSON${includeIncludeMissing ? `, $include_missing: Boolean` : ``}) {
     ${fields}
   }
 `;
@@ -25,7 +25,7 @@ const participantsStat = {
   ),
   fragment: (fieldName = 'file') => `
     ${fieldName}: file {
-      aggregations(filters: $sqon) {
+      aggregations(filters: $sqon, include_missing: $include_missing) {
         participants__kf_id {
           buckets{
             key
@@ -36,6 +36,8 @@ const participantsStat = {
   `,
   accessor: (fieldName = 'file') => `${fieldName}.aggregations.participants__kf_id.buckets.length`,
   label: 'Participants',
+  variables: { include_missing: false },
+  query: queryStringWrapper(true),
 };
 
 const familyStat = {
@@ -52,7 +54,7 @@ const familyStat = {
   ),
   fragment: (fieldName = 'file') => `
     ${fieldName}: file {
-      aggregations(filters: $sqon) {
+      aggregations(filters: $sqon, include_missing: $include_missing) {
         participants__family__family_id {
           buckets {
             doc_count
@@ -64,6 +66,8 @@ const familyStat = {
   accessor: (fieldName = 'file') => d =>
     get(d, `${fieldName}.aggregations.participants__family__family_id.buckets.length`) || 0,
   label: 'Families',
+  variables: { include_missing: false },
+  query: queryStringWrapper(true),
 };
 
 const fileStat = {
@@ -88,6 +92,7 @@ const fileStat = {
 
   accessor: (fieldName = 'file') => `${fieldName}.hits.total`,
   label: 'Files',
+  query: queryStringWrapper(),
 };
 
 const fileSizeStat = {
@@ -104,7 +109,7 @@ const fileSizeStat = {
   ),
   fragment: (fieldName = 'file') => `
     ${fieldName}: file {
-      aggregations(filters: $sqon) {
+      aggregations(filters: $sqon, include_missing: $include_missing) {
         file_size {
           stats {
             sum
@@ -118,10 +123,11 @@ const fileSizeStat = {
       base: 10,
     }).toUpperCase(),
   label: 'Size',
+  variables: { include_missing: false },
+  query: queryStringWrapper(true),
 };
 
 export const withFileRepoStats = withProps(() => ({
-  query: fragment => queryStringWrapper(fragment),
   stats: [fileStat, participantsStat, familyStat, fileSizeStat],
 }));
 
@@ -133,7 +139,7 @@ export const FileRepoStatsQuery = withFileRepoStats(props => {
       renderError
       debounceTime={100}
       name={`CombinedFileStatsQuery`}
-      variables={{ sqon: props.sqon }}
+      variables={{ sqon: props.sqon, include_missing: false }}
       {...props}
       render={({ loading, data }) =>
         props.render(
@@ -151,7 +157,7 @@ export const FileRepoStatsQuery = withFileRepoStats(props => {
               }, {}),
         )
       }
-      query={queryStringWrapper(props.stats.map((stat, i) => stat.fragment(stat.label)))}
+      query={queryStringWrapper(true)(props.stats.map(stat => stat.fragment(stat.label)))}
     />
   );
 });
