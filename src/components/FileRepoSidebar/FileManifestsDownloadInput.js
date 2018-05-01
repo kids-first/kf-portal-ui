@@ -8,7 +8,11 @@ import IconWithLoading from 'icons/IconWithLoading';
 import Tooltip from 'uikit/Tooltip';
 
 import { PillInputWithButton } from 'uikit/PillInputWithButton';
-import Select, { SelectOptionDropdown, OptionDropdownWrapperCss } from 'uikit/Select';
+import Select, {
+  SelectOptionDropdown,
+  OptionDropdownWrapperCss,
+  DropDownOption,
+} from 'uikit/Select';
 
 import ParticipantManifestModal from '../ParticipantManifestModal';
 import FamilyManifestModal, { generateFamilyManifestModalProps } from '../FamilyManifestModal';
@@ -139,12 +143,19 @@ export default class FileManifestsDownloadInput extends React.Component {
                           isItemDisabled: ({ item }) =>
                             item === 'Participant and family' && hasNoFamilyFile,
                           onDisabledItemClick: ({ item }) => console.log('item: ', item),
+                          DropDownOptionComponent: ({ item, ...optionProps }) => (
+                            <React.Fragment>
+                              <DropDownOption {...{ ...optionProps, item }} />
+                              {item === 'Participant and family' && hasNoFamilyFile ? (
+                                <Tooltip
+                                  open={hasNoFamilyFile}
+                                  position="bottom"
+                                  html={<div>There is no family member files found</div>}
+                                />
+                              ) : null}
+                            </React.Fragment>
+                          ),
                         }}
-                      />
-                      <Tooltip
-                        open={hasNoFamilyFile}
-                        position="bottom"
-                        html={<div>There is no family member files found</div>}
                       />
                     </React.Fragment>
                   );

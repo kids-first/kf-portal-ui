@@ -19,6 +19,42 @@ const DisabledDropdownOption = `
   color: lightgrey
 `;
 
+export const DropDownOption = ({
+  item,
+  itemClassName,
+  DisabledDropdownOption,
+  isItemDisabled,
+  onToggle,
+  selectItem,
+  onDisabledItemClick,
+  getItemProps,
+}) => (
+  <div
+    {...getItemProps({ item })}
+    key={item}
+    css={`
+      cursor: pointer;
+      padding: 5px;
+      ${itemClassName};
+      ${isItemDisabled({ item }) ? DisabledDropdownOption : ''};
+    `}
+    {...(isItemDisabled({ item })
+      ? {
+          onClick: () => onDisabledItemClick({ item }),
+        }
+      : onToggle
+        ? {
+            onClick: () => {
+              selectItem(item);
+              onToggle();
+            },
+          }
+        : {})}
+  >
+    {item}
+  </div>
+);
+
 export const SelectOptionDropdown = ({
   align = 'right',
   itemContainerClassName = '',
@@ -29,6 +65,7 @@ export const SelectOptionDropdown = ({
   onToggle,
   isItemDisabled = () => false,
   onDisabledItemClick = () => {},
+  DropDownOptionComponent,
 }) => (
   <div
     css={`
@@ -37,32 +74,23 @@ export const SelectOptionDropdown = ({
       ${itemContainerClassName};
     `}
   >
-    {items.map(item => (
-      <div
-        {...getItemProps({ item })}
-        key={item}
-        css={`
-          cursor: pointer;
-          padding: 5px;
-          ${itemClassName};
-          ${isItemDisabled({ item }) ? DisabledDropdownOption : ''};
-        `}
-        {...(isItemDisabled({ item })
-          ? {
-              onClick: () => onDisabledItemClick({ item }),
-            }
-          : onToggle
-            ? {
-                onClick: () => {
-                  selectItem(item);
-                  onToggle();
-                },
-              }
-            : {})}
-      >
-        {item}
-      </div>
-    ))}
+    {items.map(item => {
+      const dropdownOptionProp = {
+        item,
+        itemClassName,
+        DisabledDropdownOption,
+        isItemDisabled,
+        onToggle,
+        selectItem,
+        onDisabledItemClick,
+        getItemProps,
+      };
+      return DropDownOptionComponent ? (
+        <DropDownOptionComponent {...dropdownOptionProp} />
+      ) : (
+        <DropDownOption {...dropdownOptionProp} />
+      );
+    })}
   </div>
 );
 
