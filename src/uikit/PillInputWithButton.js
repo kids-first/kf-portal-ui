@@ -29,7 +29,7 @@ export const PillInputWithButton = ({
   children,
   onClick,
   render,
-  SelectComponent,
+  SelectComponent = Select,
   onOptionSelect = () => options[selected](),
   isButtonDisabled = () => !options[selected],
 }) => {
@@ -43,17 +43,16 @@ export const PillInputWithButton = ({
               display: flex;
             `}
           >
-            {SelectComponent && (
-              <SelectComponent css={SelectStyle} {...{ setSelected, selectedItem: selected }} />
-            )}
-            {!SelectComponent && (
-              <Select
-                items={Object.keys(options)}
-                defaultSelectedItem={defaultSelected}
-                onChange={e => setSelected(e)}
-                css={SelectStyle}
-              />
-            )}
+            <SelectComponent
+              css={SelectStyle}
+              {...{
+                setSelected,
+                selectedItem: selected,
+                items: Object.keys(options),
+                defaultSelectedItem: defaultSelected,
+                onChange: e => setSelected(e),
+              }}
+            />
             <Button
               disabled={isButtonDisabled()}
               onClick={onClick}
