@@ -163,10 +163,10 @@ export default class FileManifestsDownloadInput extends React.Component {
           }}
           render={({ loading }) => {
             return (
-              <React.Fragment>
+              <Fragment>
                 <IconWithLoading {...{ loading, icon: downloadIcon }} />
                 <Trans css={theme.uppercase}>Download</Trans>
-              </React.Fragment>
+              </Fragment>
             );
           }}
         />
