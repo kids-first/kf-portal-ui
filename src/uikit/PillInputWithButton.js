@@ -12,7 +12,16 @@ const enhance = compose(
   withState('selected', 'setSelected', ({ defaultSelected }) => defaultSelected),
 );
 
-const PillInputWithButton = ({
+const SelectStyle = `
+  border-radius: 10px;
+  border-right: none;
+  border-top-right-radius: unset;
+  border-bottom-right-radius: unset;
+  flex-grow: 1;
+  height: 30px;
+`;
+
+export const PillInputWithButton = ({
   selected,
   setSelected,
   options,
@@ -20,10 +29,13 @@ const PillInputWithButton = ({
   children,
   onClick,
   render,
+  SelectComponent = Select,
+  onOptionSelect = () => options[selected](),
+  isButtonDisabled = () => !options[selected],
 }) => {
   return (
     <LoadingOnClick
-      onClick={() => options[selected]()}
+      onClick={() => onOptionSelect({ selected })}
       render={({ onClick, loading }) => {
         return (
           <div
@@ -31,21 +43,18 @@ const PillInputWithButton = ({
               display: flex;
             `}
           >
-            <Select
-              items={Object.keys(options)}
-              defaultSelectedItem={defaultSelected}
-              onChange={e => setSelected(e)}
-              css={`
-                border-radius: 10px;
-                border-right: none;
-                border-top-right-radius: unset;
-                border-bottom-right-radius: unset;
-                flex-grow: 1;
-                height: 30px;
-              `}
+            <SelectComponent
+              css={SelectStyle}
+              {...{
+                setSelected,
+                selectedItem: selected,
+                items: Object.keys(options),
+                defaultSelectedItem: defaultSelected,
+                onChange: e => setSelected(e),
+              }}
             />
             <Button
-              disabled={!options[selected]}
+              disabled={isButtonDisabled()}
               onClick={onClick}
               css={`
                 border-radius: 10px;

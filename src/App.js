@@ -42,7 +42,6 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
 
 const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
-
   return (
     <div className="App">
       <Switch>

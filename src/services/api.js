@@ -7,11 +7,13 @@ export const initializeApi = ({ onUnauthorized }) => ({
   method = 'post',
   endpoint = '',
   body,
-  headers,
+  headers = {},
   url,
 }) => {
   const uri = url || urlJoin(arrangerApiRoot, endpoint);
-  return ajax[method.toLowerCase()](uri, body)
+  return ajax[method.toLowerCase()](uri, body, {
+    headers: { 'Content-Type': 'application/json', ...headers },
+  })
     .then(response => {
       return response.data;
     })
