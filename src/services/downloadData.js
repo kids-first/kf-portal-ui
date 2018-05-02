@@ -72,6 +72,10 @@ function getManifestDownload(type) {
             ],
             columns,
           ),
+          sort: [
+            { field: 'participants.family.family_id', order: 'asc' },
+            { field: 'kf_id', order: 'asc' },
+          ],
         },
       ],
     });
