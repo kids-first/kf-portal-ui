@@ -45,6 +45,8 @@ export const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 export const usersnapHost = process.env.REACT_APP_USERSNAP_HOST;
 export const usersnapId = process.env.REACT_APP_USERSNAP_ID;
 
+export const gaTrackingID: string = process.env.REACT_APP_GA_TRACKING_ID;
+
 export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
 
 export const allRedirectUris = (process.env.REACT_APP_LOGIN_REDIRECT_NOT_REQUIRED || '')
