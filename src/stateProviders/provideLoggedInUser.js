@@ -9,6 +9,7 @@ import {
   addStateInfo as addUsersnapInfo,
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
+import { trackUserSession } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 
 export default provideState({
@@ -52,6 +53,7 @@ export default provideState({
           const percentageFilled = filledFields.length / totalFields;
           addUsersnapInfo({ percentageFilled });
           setUsersnapUser(user);
+          trackUserSession(user);
           return {
             ...state,
             isLoadingUser: false,
@@ -61,9 +63,7 @@ export default provideState({
         });
     },
     addUserSet: (effects, { api, ...set }) => state => {
-      const {
-        loggedInUser: { email, sets, ...rest },
-      } = state;
+      const { loggedInUser: { email, sets, ...rest } } = state;
       updateProfile(api)({
         user: {
           ...rest,

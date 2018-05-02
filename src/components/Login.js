@@ -18,7 +18,6 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
-import { trackUserSession } from 'services/analyticsTracking';
 
 const styles = {
   container: css`
@@ -56,13 +55,10 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
   const egoId = jwtData.sub;
   const existingProfile = await getProfile(api)({ egoId });
   const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
-  const trackSession = await trackUserSession(existingProfile || newProfile);
   const loggedInUser = {
     ...(existingProfile || newProfile),
-    email: user.email,
-    trackSession
+    email: user.email
   };
-  debugger
   await setUser({ ...loggedInUser, api });
   onFinish && onFinish(loggedInUser);
 };
