@@ -51,7 +51,4 @@ window._usersnapconfig = {
   },
 };
 
-export const init = () => {
-  debugger;
-  scriptjs(urlJoin(usersnapHost, `${usersnapId}.js`));
-};
+export const init = () => scriptjs(urlJoin(usersnapHost, `${usersnapId}.js`));
