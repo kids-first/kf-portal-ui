@@ -43,10 +43,15 @@ window._usersnapconfig = {
   labelMultiSelect: false,
   loadHandler: () => {
     window.UserSnap.on('beforeSend', obj => (obj.addInfo = usersnapInfo));
-    window.UserSnap.on('beforeOpen', () =>
-      window.UserSnap.setEmailBox(additionalUsersnapState.email),
-    );
+    window.UserSnap.on('beforeOpen', () => {
+      if (additionalUsersnapState.email) {
+        window.UserSnap.setEmailBox(additionalUsersnapState.email);
+      }
+    });
   },
 };
 
-export const init = () => scriptjs(urlJoin(usersnapHost, `${usersnapId}.js`));
+export const init = () => {
+  debugger;
+  scriptjs(urlJoin(usersnapHost, `${usersnapId}.js`));
+};
