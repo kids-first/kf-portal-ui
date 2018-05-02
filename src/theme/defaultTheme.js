@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+import { AdvancedFacetView } from './componentStyles';
 
 const colors = {
   primary: '#90278e', //magenta
@@ -540,6 +541,7 @@ const components = {
   error: css``,
   warning: css``,
   info: css``,
+  ...AdvancedFacetView,
 };
 
 export default {

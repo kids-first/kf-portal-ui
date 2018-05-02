@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 
 import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
-import './style.css';
+// import './style.css';
 
-const enhance = compose(provideLocalSqon, injectState);
+const enhance = compose(provideLocalSqon, injectState, withTheme);
 
 class AdvancedFacetViewModalContent extends React.Component {
   onOverlayClick = e => {
@@ -23,18 +24,12 @@ class AdvancedFacetViewModalContent extends React.Component {
       state: { localSqon },
       closeModal = () => {},
       onSqonSubmit = () => {},
+      theme,
       ...props
     } = this.props;
     return (
       <React.Fragment>
-        <div
-          className={`afvModalContent`}
-          css={`
-            flex: 1;
-            display: flex;
-            height: calc(100% - 175px);
-          `}
-        >
+        <div className={`${theme.afvModalContent}`}>
           <div style={{ position: 'relative', flex: 1 }}>
             <AdvancedFacetView
               {...{
