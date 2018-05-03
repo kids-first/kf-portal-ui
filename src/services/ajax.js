@@ -13,9 +13,7 @@ ajax.interceptors.request.use(
     const requestToken = config.url.startsWith(gen3ApiRoot) ? gen3Token : token;
     config.headers = {
       ...config.headers,
-      ...(requestToken && {
-        Authorization: `Bearer ${config.url.startsWith(gen3ApiRoot) ? gen3Token : token}`,
-      }),
+      ...(requestToken && { Authorization: `Bearer ${requestToken}` }),
     };
     return config;
   },
