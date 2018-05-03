@@ -28,7 +28,7 @@ class AdvancedFacetViewModalContent extends React.Component {
     } = this.props;
     return (
       <React.Fragment>
-        <div className={`${theme.afvModalContent}`}>
+        <div className={`${theme.advancedFacetView}`}>
           <AdvancedFacetView
             {...{
               ...props,
