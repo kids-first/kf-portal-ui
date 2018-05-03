@@ -5,6 +5,25 @@ export default `fileRepoContainer ${css`
   height: 100%;
   box-sizing: border-box;
 
+  & .aggregationsPanel {
+    height: 100%;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    background-color: #f4f5f8;
+    box-shadow: 0 0 4.9px 0.2px #a0a0a3;
+    border: solid 1px #c6c7cc;
+    flex: none;
+    & .aggregationsHeader {
+      display: flex;
+      padding: 15px 7px 15px 12px;
+      & .aggregationsHeaderTitle {
+        flex-grow: 1;
+        font-size: 18px;
+        color: #2b388f;
+      }
+    }
+  }
+
   & .tableContainer {
     padding: 30px;
     display: flex;
@@ -13,6 +32,7 @@ export default `fileRepoContainer ${css`
     height: 100%;
     box-sizing: border-box;
     overflow-y: auto;
+    flex-grow: 1;
   }
 
   & .ReactTable .rt-thead .rt-th.-sort-desc,
