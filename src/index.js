@@ -10,13 +10,7 @@ import { init as initUsersnap } from 'services/usersnap';
 
 import './i18n';
 
-initAnalyticsTracking([{
-    trackingId: process.env.REACT_APP_GA_TRACKING_ID,
-    gaOptions:{
-        name: 'Beta Tracker'
-    }
-}]);
-
+initAnalyticsTracking();
 googleSDK();
 facebookSDK();
 initUsersnap();

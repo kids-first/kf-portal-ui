@@ -1,4 +1,5 @@
 import React from 'react';
+import {Helmet} from "react-helmet";
 import { withRouter, Link } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
@@ -15,6 +16,10 @@ const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, 
       margin: auto;
     `}
   >
+    <Helmet>
+        <title>Portal - Log In</title>
+    </Helmet>
+
     <h1
       css={`
         background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed),
