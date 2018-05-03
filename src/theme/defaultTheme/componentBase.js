@@ -232,14 +232,14 @@ export default {
     display: flex;
     justify-content: space-between;
   `,
-  modalHeader: css`
+  modalHeader: `${css`
     margin-bottom: 9px;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.87;
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
-  `,
+  `}`,
   h2: css`
     text-align: center;
     color: ${colors.secondary};

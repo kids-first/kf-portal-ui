@@ -1,10 +1,11 @@
 import advancedFacetView from './advancedFacetView';
 import fileRepoContainer from './fileRepo';
+import modal from './modal';
 import * as uikit from './uikit';
-console.log('uikit: ', uikit);
 
 export default {
   ...uikit,
+  ...modal,
   advancedFacetView,
   fileRepoContainer,
 };
