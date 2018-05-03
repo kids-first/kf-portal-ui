@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Helmet } from 'react-helmet';
 import { get } from 'lodash';
 import { css } from 'react-emotion';
 import {
@@ -29,6 +30,7 @@ import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
+
 
 export const Container = styled('div')`
   justify-content: space-around;
@@ -112,6 +114,10 @@ export default compose(
       flex: 1;
     `}
   >
+    <Helmet>
+        <title>Portal - User Profile</title>
+    </Helmet>
+    
     <div
       className={css`
         background: url(${get(
