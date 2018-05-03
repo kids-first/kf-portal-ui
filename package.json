@@ -29,6 +29,7 @@
     "react-dom": "^16.3.0",
     "react-emotion": "^9.0.0",
     "react-ga": "^2.5.0",
+    "react-helmet": "^5.2.0",
     "react-i18next": "^7.5.1",
     "react-icons": "^2.2.7",
     "react-measure": "^2.0.2",
