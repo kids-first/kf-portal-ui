@@ -9,9 +9,17 @@ const debug = process.env.NODE_ENV === 'development';
 let GAState = {
     trackers: [
         {
-            trackingId: 'UA-87708930-5',//gaTrackingID
+            trackingId: 'UA-87708930-5',//gaTrackingID,
+            debug,
             gaOptions: {
-                name: 'Kids First Deploy Preview 336',
+                name: 'Kids_First_Deploy_Preview_336',
+            },
+        },
+         {
+            trackingId: 'UA-87708930-3',//gaTrackingID,
+            debug,
+            gaOptions: {
+                name: 'Kids_First_Beta',
             },
         },
     ],
@@ -23,7 +31,7 @@ let modalTimings = {};
 export const addStateInfo = obj => merge(GAState, obj);
 
 export const initAnalyticsTracking = trackers =>
-    ReactGA.initialize(GAState.trackers, { debug, alwaysSendToDefaultTracker: false });
+    ReactGA.initialize(GAState.trackers, { debug, alwaysSendToDefaultTracker: true });
 
 export const trackUserSession = async ({ _id, acceptedTerms }) => {
     let userId = _id;
