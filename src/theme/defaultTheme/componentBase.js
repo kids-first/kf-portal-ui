@@ -233,6 +233,7 @@ export default {
     justify-content: space-between;
   `,
   modalHeader: css`
+    margin-bottom: 9px;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.87;

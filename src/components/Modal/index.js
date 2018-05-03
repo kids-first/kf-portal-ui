@@ -28,11 +28,11 @@ const defaultLoadingContent = (
 
 const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
   <div
-    css={`
-      ${theme.row} justify-content: space-between;
+    className={`${theme.row} ${css`
+      justify-content: space-between;
       border-bottom: 1px solid #d4d6dd;
       margin-bottom: 1.5em;
-    `}
+    `}`}
   >
     <span css={theme.modalTitle}>{title}</span>
     <CloseIcon
@@ -44,13 +44,7 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
 );
 
 export const ModalSubHeader = withTheme(({ theme, children, ...props }) => (
-  <div
-    className={css`
-      ${theme.modalHeader};
-      margin-bottom: 9px;
-    `}
-    {...props}
-  >
+  <div className={`${theme.modalHeader}`} {...props}>
     {children}
   </div>
 ));
@@ -106,8 +100,8 @@ export const ModalFooter = enhance(
   }) => {
     return (
       <div
-        className={css`
-          ${theme.row} background-color: #edeef1;
+        className={`${theme.row} ${css`
+          background-color: #edeef1;
           border-radius: 5px;
           padding: 1em;
           margin-top: 1em;
@@ -116,7 +110,7 @@ export const ModalFooter = enhance(
           left: 0px;
           right: 0px;
           bottom: 0px;
-        `}
+        `}`}
       >
         <button css={theme.wizardButton} onClick={() => handleCancelClick()}>
           {cancelText}
