@@ -25,6 +25,7 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
+import { initializeApi, ApiContext } from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -106,34 +107,36 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             })
           }
         />
-        <Route
-          path="/join"
-          exact
-          render={props => {
-            return (
+        <ApiContext.Provider value={initializeApi()}>
+          <Route
+            path="/join"
+            exact
+            render={props => {
+              return (
+                <SideImagePage
+                  backgroundImage={scienceBgPath}
+                  logo={logo}
+                  Component={Join}
+                  sideImage={joinImage}
+                  {...props}
+                />
+              );
+            }}
+          />
+          <Route
+            path="/"
+            exact
+            render={props => (
               <SideImagePage
-                backgroundImage={scienceBgPath}
                 logo={logo}
-                Component={Join}
-                sideImage={joinImage}
-                {...{ ...props, api }}
+                backgroundImage={scienceBgPath}
+                Component={LoginPage}
+                sideImage={loginImage}
+                {...props}
               />
-            );
-          }}
-        />
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              sideImage={loginImage}
-              {...{ ...props, api }}
-            />
-          )}
-        />
+            )}
+          />
+        </ApiContext.Provider>
         <Redirect from="*" to="/dashboard" />
       </Switch>
       <Modal />

@@ -39,7 +39,6 @@ export default provideState({
         });
         return { ...state, isLoadingUser: true };
       }
-      setToken(null);
       return { ...state, isLoadingUser: false };
     },
     setUser: (effects, { api, ...user }) => {
@@ -58,7 +57,8 @@ export default provideState({
             loggedInUser: user,
             percentageFilled,
           };
-        });
+        })
+        .catch(err => console.log(err));
     },
     addUserSet: (effects, { api, ...set }) => state => {
       const {
