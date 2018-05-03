@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
-import { gaTrackingID } from 'common/injectGlobals';
+// import { gaTrackingID } from 'common/injectGlobals';
 import { merge } from 'lodash';
 
 const debug = process.env.NODE_ENV === 'development';
@@ -9,9 +9,9 @@ const debug = process.env.NODE_ENV === 'development';
 let GAState = {
     trackers: [
         {
-            trackingId: gaTrackingID,
+            trackingId: 'UA-87708930-5',//gaTrackingID
             gaOptions: {
-                name: 'Beta Tracker',
+                name: 'Kids First Deploy Preview 336',
             },
         },
     ],
@@ -57,7 +57,7 @@ export const trackUserInteraction = async eventData => {
                     value: modal.duration, // in milliseconds
                     label: eventData.label,
                 });
-            }
+        }
             break;
         default:
             break;
