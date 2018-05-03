@@ -237,6 +237,7 @@ const customTableTypes = {
 };
 
 const FileRepo = ({ state, effects, ...props }) => {
+  const { theme } = props;
   return (
     <SQONURL
       render={url => {
@@ -261,20 +262,10 @@ const FileRepo = ({ state, effects, ...props }) => {
                   `}
                 >
                   <DetectNewVersion {...props} />
-                  <div css={arrangerStyles}>
+                  <div className={theme.fileRepoContainer}>
                     <AggregationsWrapper {...props} {...url} />
                     <div style={{ flexGrow: 1, width: 580 }}>
-                      <div
-                        css={`
-                          padding: 30px;
-                          display: flex;
-                          flex-direction: column;
-                          position: relative;
-                          height: 100%;
-                          box-sizing: border-box;
-                          overflow-y: auto;
-                        `}
-                      >
+                      <div className={`tableContainer`}>
                         <div
                           css={`
                             flex: none;
@@ -294,12 +285,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                                 {...props}
                                 {...url}
                                 render={data => (
-                                  <div
-                                    css={`
-                                      display: flex;
-                                      flex-direction: column;
-                                    `}
-                                  >
+                                  <div className={theme.column}>
                                     <ShareQuery
                                       stats={data}
                                       api={props.api}
@@ -332,11 +318,9 @@ const FileRepo = ({ state, effects, ...props }) => {
                           {({ measureRef, contentRect }) => (
                             <div
                               ref={measureRef}
-                              css={`
-                                display: flex;
-                                flex-direction: column;
+                              className={`${theme.column} ${css`
                                 min-height: 300px;
-                              `}
+                              `}`}
                             >
                               <Table
                                 {...props}

@@ -7,24 +7,24 @@ export default `afvModalContent ${css`
   width: calc(100% - 40px);
   position: absolute;
 
-  .advancedFacetViewWrapper {
+  & .advancedFacetViewWrapper {
     padding: 0px;
   }
-  .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
+  & .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
     border-bottom: none;
   }
 
-  .advancedFacetViewWrapper * {
+  & .advancedFacetViewWrapper * {
     box-sizing: border-box;
   }
 
-  .afvStatContainer .statContainer {
+  & .afvStatContainer .statContainer {
     background: none;
     padding: none;
     border: none;
   }
 
-  .afvStatContainer .statContainer .stat {
+  & .afvStatContainer .statContainer .stat {
     padding-left: 10px;
     padding-right: 10px;
   }

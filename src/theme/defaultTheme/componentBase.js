@@ -294,14 +294,14 @@ export default {
     letter-spacing: 0.2px;
     color: ${colors.greyScale0};
   `,
-  column: css`
+  column: `column ${css`
     display: flex;
     flex-direction: column;
-  `,
-  row: css`
+  `}`,
+  row: `row ${css`
     display: flex;
     flex-direction: row;
-  `,
+  `}`,
   navLink: css`
     display: block;
     color: #90278e;
