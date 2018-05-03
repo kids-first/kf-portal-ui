@@ -53,4 +53,24 @@ export default `fileRepoContainer ${css`
   & div.sqon-view {
     flex-grow: 1;
   }
+
+  & .uploadIdsButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    & .button {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    & .select {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-left: none;
+      padding-left: 0;
+      & .optionDropdownWrapper {
+        padding: 0px;
+        box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.43);
+      }
+    }
+  }
 `}`;

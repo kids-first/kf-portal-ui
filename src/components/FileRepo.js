@@ -34,44 +34,10 @@ import translateSQONValue from 'common/translateSQONValue';
 
 const enhance = compose(injectState, withTheme);
 
-const arrangerStyles = css`
-  display: flex;
-  height: 100%;
-  box-sizing: border-box;
-
-  .ReactTable .rt-thead .rt-th.-sort-desc,
-  .ReactTable .rt-thead .rt-td.-sort-desc {
-    box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);
-  }
-
-  .ReactTable .rt-thead .rt-th.-sort-asc,
-  .ReactTable .rt-thead .rt-td.-sort-asc {
-    box-shadow: inset 0 3px 0 0 rgba(64, 76, 154, 0.7);
-  }
-
-  .tableToolbar {
-    border-left: solid 1px #e0e1e6;
-    border-right: solid 1px #e0e1e6;
-  }
-
-  div.sqon-view {
-    flex-grow: 1;
-  }
-`;
-
 const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
-  <div
-    className={css`
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 10px;
-    `}
-  >
+  <div className={`uploadIdsButton`}>
     <LightButton
-      className={css`
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-      `}
+      className={`button`}
       onClick={() =>
         effects.setModal({
           title: 'Upload a List of Identifiers',
@@ -82,18 +48,8 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
       <Trans css={theme.uppercase}>Upload Ids</Trans>
     </LightButton>
     <Select
-      className={css`
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-        border-left: none;
-        padding-left: 0;
-      `}
       align="right"
       items={state.loggedInUser.sets.map(x => x.setId)}
-      itemContainerClassName={css`
-        padding: 0px;
-        box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.43);
-      `}
       itemClassName={css`
         &:hover {
           background-color: ${theme.optionSelected};

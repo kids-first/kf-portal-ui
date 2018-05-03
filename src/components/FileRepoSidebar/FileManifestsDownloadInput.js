@@ -8,11 +8,7 @@ import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
 
 import { PillInputWithButton } from 'uikit/PillInputWithButton';
-import Select, {
-  SelectOptionDropdown,
-  optionDropdownWrapperClassName,
-  DropDownOption,
-} from 'uikit/Select';
+import Select, { SelectOptionDropdown, DropDownOption } from 'uikit/Select';
 
 import ParticipantManifestModal from '../ParticipantManifestModal';
 import FamilyManifestModal, { generateFamilyManifestModalProps } from '../FamilyManifestModal';
@@ -137,7 +133,7 @@ export default class FileManifestsDownloadInput extends React.Component {
                     <div
                       {...dropDownProps}
                       className={`
-                        ${optionDropdownWrapperClassName}
+                        ${theme.optionDropdownWrapper}
                         ${css`
                           right: 0px;
                         `}
