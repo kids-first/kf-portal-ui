@@ -8,7 +8,7 @@ import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
-  <div className={`${theme.column} profileInfoBar`}>
+  <div className={`profileInfoBar ${theme.column}`}>
     <CompletionWrapper completed={percentageFilled} innerCircleSize="83.18%">
       <Gravtar className={`gravatar`} email={loggedInUser.email || ''} size={180} />
     </CompletionWrapper>

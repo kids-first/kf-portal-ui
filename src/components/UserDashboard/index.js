@@ -23,7 +23,7 @@ export default compose(
   );
 
   return (
-    <div className={`${theme.row} userDashboard ${theme.userDashboard({ profileColors })}`}>
+    <div className={`userDashboard ${theme.row} ${theme.userDashboard({ profileColors })}`}>
       <ProfileInfoBar
         theme={theme}
         percentageFilled={percentageFilled}
@@ -31,7 +31,7 @@ export default compose(
         profileColors={profileColors}
       />
       <div
-        className={`${theme.column} dashboardContent`}
+        className={`dashboardContent ${theme.column}`}
         css={`
           flex-grow: 1;
         `}
