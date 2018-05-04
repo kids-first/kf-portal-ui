@@ -17,6 +17,7 @@ const RoleIconButton = ({ className = '', children, theme, state: { loggedInUser
 
   return (
     <div
+      className={className}
       css={`
         display: flex;
         height: 42px;
@@ -32,7 +33,6 @@ const RoleIconButton = ({ className = '', children, theme, state: { loggedInUser
         text-align: left;
         text-transform: capitalize;
         padding: 0 16px 0 0;
-        ${className};
       `}
     >
       <RoleIcon
@@ -49,15 +49,10 @@ const RoleIconButton = ({ className = '', children, theme, state: { loggedInUser
           display: flex;
           align-items: center;
           width: 100%;
+          font-weight: 500;
         `}
       >
-        <div
-          css={`
-            font-weight: 500;
-          `}
-        >
-          {userRole}
-        </div>
+        <div css={``}>{userRole}</div>
         {children}
       </div>
     </div>

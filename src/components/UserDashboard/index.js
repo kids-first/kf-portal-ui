@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { css } from 'emotion';
 import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
@@ -22,12 +23,7 @@ export default compose(
   );
 
   return (
-    <div
-      css={`
-        ${theme.row};
-        height: calc(100% - 170px);
-      `}
-    >
+    <div className={`${theme.row} ${theme.userDashboard}`}>
       <ProfileInfoBar
         theme={theme}
         percentageFilled={percentageFilled}
@@ -35,10 +31,9 @@ export default compose(
         profileColors={profileColors}
       />
       <div
+        className={`${theme.column} dashboardContent`}
         css={`
-          ${theme.column};
           flex-grow: 1;
-          padding: 40px;
         `}
       >
         <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>
