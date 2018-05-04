@@ -2,7 +2,7 @@ import advancedFacetView from './advancedFacetView';
 import fileRepoContainer from './fileRepo';
 import modal from './modal';
 import * as uikit from './uikit';
-import userDashboard, { mySavedQueries, integrations } from './userDashboard';
+import userDashboard, { mySavedQueries, integrations, completionWrapper } from './userDashboard';
 
 export default {
   ...uikit,
@@ -12,4 +12,5 @@ export default {
   mySavedQueries,
   userDashboard,
   integrations,
+  completionWrapper,
 };

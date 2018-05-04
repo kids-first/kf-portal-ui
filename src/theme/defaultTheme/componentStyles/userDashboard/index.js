@@ -2,9 +2,10 @@ import { css } from 'emotion';
 
 export { default as mySavedQueries } from './mySavedQueries';
 export { default as integrations } from './integrations';
+export { default as completionWrapper } from './completionWrapper';
 
 export default ({ profileColors }) =>
-  `${css`
+  `userDashboard ${css`
     &.userDashboard {
       height: calc(100% - 170px);
     }

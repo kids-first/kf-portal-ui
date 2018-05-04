@@ -7,31 +7,8 @@ const enhance = compose(withTheme);
 
 const CompletionWrapper = ({ completed, theme, children, className, innerCircleSize = '80%' }) => {
   return (
-    <div
-      css={`
-        box-sizing: border-box;
-        width: 208px;
-        padding: 0.73%;
-        border-radius: 50%;
-        position: relative;
-        overflow: hidden;
-        svg {
-          display: block;
-        }
-        ${className};
-      `}
-    >
-      <div
-        css={`
-          background-color: #fff;
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          opacity: 0.5;
-        `}
-      />
+    <div className={`${theme.completionWrapper({ innerCircleSize })} ${className}`}>
+      <div className={`backdrop`} />
       <VictoryPie
         labels={() => null}
         padding={0}
@@ -40,20 +17,7 @@ const CompletionWrapper = ({ completed, theme, children, className, innerCircleS
           { y: 100 - completed * 100, fill: '#cdd0d9' },
         ]}
       />
-      <div
-        css={`
-          border-radius: 50%;
-          overflow: hidden;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: ${innerCircleSize};
-          height: ${innerCircleSize};
-        `}
-      >
-        {children}
-      </div>
+      <div className={`innerCircle`}>{children}</div>
     </div>
   );
 };
