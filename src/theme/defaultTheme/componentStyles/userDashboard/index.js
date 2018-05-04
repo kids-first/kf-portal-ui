@@ -1,5 +1,7 @@
 import { css } from 'emotion';
 
+export { default as mySavedQueries } from './mySavedQueries';
+
 export default `userDashboard ${css`
   height: calc(100% - 170px);
 
@@ -49,53 +51,6 @@ export default `userDashboard ${css`
     & .email {
       margin: 40px 0 58px;
       text-decoration: underline;
-    }
-  }
-
-  & .mySavedQueries {
-    display: flex;
-    flex-direction: column;
-    margin-top: 15px;
-    flex: 3;
-    border: 1px solid #e0e1e6;
-    border-top: 0;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    padding: 0 10px;
-    & .gradientBar {
-      display: block;
-      width: calc(100% + 22px);
-      margin-left: -11px;
-      height: 6px;
-    }
-    & .header {
-      display: flex;
-      flex-grow: 1;
-      padding: 10px 20px 30px;
-      display: flex;
-      align-items: center;
-      &.hascontent {
-        border-bottom: 2px dotted #a9adc0;
-      }
-      & .queryCount {
-        margin-left: auto;
-        align-items: center;
-        display: flex;
-        align-items: baseline;
-        & .queryCountNumber {
-          font-size: 20px;
-          padding: 0 6px 0 9px;
-          font-size: 22px;
-        }
-        & .label {
-          font-size: 14px;
-          color: #a9adc0;
-        }
-      }
-      & .saveIcon {
-        width: 16px;
-        color: #a9adc0;
-      }
     }
   }
 `}`;

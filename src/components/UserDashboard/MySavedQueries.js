@@ -3,13 +3,13 @@ import Spinner from 'react-spinkit';
 import { Link } from 'react-router-dom';
 import { distanceInWords } from 'date-fns';
 
-import TrashIcon from 'react-icons/lib/fa/trash';
 import { StyledH3 } from './styles';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import SaveIcon from '../../icons/SaveIcon';
+import TrashIcon from '../../icons/TrashIcon';
 
 const MySavedQueries = compose(
   provideSavedQueries,
@@ -47,7 +47,7 @@ const MySavedQueries = compose(
         />
       </div>
     ) : (
-      <div className={`mySavedQueries`}>
+      <div className={`${theme.mySavedQueries(theme)}`}>
         <div
           className={'gradientBar'}
           css={`
@@ -68,12 +68,7 @@ const MySavedQueries = compose(
           </div>
         </div>
 
-        <div
-          css={`
-            overflow: auto;
-            margin: 6px 0 16px;
-          `}
-        >
+        <div className={`queriesListContainer`}>
           {queries
             .filter(q => q.alias)
             .map(q => ({
@@ -87,67 +82,20 @@ const MySavedQueries = compose(
             .map(q => (
               <div
                 key={q.id}
-                css={`
-                  display: flex;
-                  padding: 10px 10px 10px 25px;
-                  border: 1px solid #e0e1e6;
-                  border-bottom: 0;
-                  transition-property: opacity;
-
-                  ${deletingIds.includes(q.id) &&
-                    `opacity: 0.6;
-            pointer-events: none;`} &:last-child {
-                    border-bottom: 1px solid #e0e1e6;
-                  }
-                `}
+                className={`queriesListItem ${deletingIds.includes(q.id) ? 'deleting' : ''}`}
               >
-                <div
-                  css={`
-                    display: flex;
-                    flex-direction: column;
-                  `}
-                >
-                  <div
-                    css={`
-                      ${theme.row};
-                      justify-content: space-between;
-                      width: 100%;
-                    `}
-                  >
-                    <Link
-                      to={q.link}
-                      css={`
-                        font-size: 0.875em;
-                        color: #a42c90;
-                        font-weight: bold;
-                      `}
-                    >
+                <div className={`${theme.column} itemContent`}>
+                  <div className={`${theme.row} heading`}>
+                    <Link to={q.link} className={`titleLink`}>
                       {q.alias}
                     </Link>
-                    <div
-                      css={`
-                        padding: 0 5px;
-                      `}
-                    >
-                      <TrashIcon
-                        css={`
-                          color: #a42c90;
-                          &:hover {
-                            cursor: pointer;
-                            color: ${theme.hover};
-                          }
-                        `}
-                        onClick={() => deleteQuery({ api, queryId: q.id })}
-                      />
+                    <div className={`deleteButton`}>
+                      <TrashIcon onClick={() => deleteQuery({ api, queryId: q.id })} />
                     </div>
                   </div>
                   <div
+                    className={`queryStats`}
                     css={`
-                      margin: 10px 0;
-                      color: #74757d;
-                      font-size: 0.75em;
-                      letter-spacing: 0.3px;
-
                       span {
                         color: #343434;
                       }
