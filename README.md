@@ -96,7 +96,7 @@ You can find the most recent version of this guide [here](https://github.com/fac
   - [`npm run build` fails to minify](#npm-run-build-fails-to-minify)
   - [Moment.js locales are missing](#momentjs-locales-are-missing)
 - [Something Missing?](#something-missing)
-- [Acknowledgements](#acknowledgements)
+- [Acknowledgments](#acknowledgments)
 
 ## Updating to New Releases
 
@@ -2166,7 +2166,7 @@ To resolve this:
 
 If you have ideas for more “How To” recipes that should be on this page, [let us know](https://github.com/facebookincubator/create-react-app/issues) or [contribute some!](https://github.com/facebookincubator/create-react-app/edit/master/packages/react-scripts/template/README.md)
 
-## Acknowledgements
+## Acknowledgments
 
 We want to thank BrowserStack for their support and for creating phenomenal tools that empower our developers.
 
