@@ -1,6 +1,7 @@
 import { css } from 'emotion';
 
 export { default as mySavedQueries } from './mySavedQueries';
+export { default as integrations } from './integrations';
 
 export default ({ profileColors }) =>
   `${css`

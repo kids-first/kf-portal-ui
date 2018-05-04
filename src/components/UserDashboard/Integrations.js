@@ -9,34 +9,16 @@ import { IntegrationsDiv, IntegrationsCircleDiv, StyledH4 } from './styles';
 import IntegrationsStatus from './IntegrationsStatus';
 
 const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
-  <div
-    css={`
-      border-radius: 30px;
-      background-color: #f4f5f8;
-      border: solid 1px ${theme.greyScale5};
-      padding: 10px 10px;
-      ${theme.row};
-      align-items: center;
-      justify-content: space-around;
-    `}
-  >
+  <div className={`integrations ${theme.integrations({ theme })} ${theme.row}`}>
     <IntegrationsDiv>
       <IntegrationsCircleDiv>
         <img
-          css={`
-            width: 42px;
-          `}
+          className={`iconImage`}
           src={downloadControlledAccess}
           alt="Download controlled access icon"
         />
       </IntegrationsCircleDiv>
-      <div
-        css={`
-          ${theme.column};
-          padding: 10px;
-          max-width: 260px;
-        `}
-      >
+      <div className={`${theme.column} description`}>
         <StyledH4>Download Controlled Data</StyledH4>
         <IntegrationsStatus
           connected={integrationTokens[GEN3]}
@@ -46,13 +28,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           unconnectedMsg={
             <div>
               Connect to{' '}
-              <ExternalLink
-                href="https://gen3.kids-first.io/"
-                hasExternalIcon={false}
-                css={`
-                  color: #a42c90;
-                `}
-              >
+              <ExternalLink href="https://gen3.kids-first.io/" hasExternalIcon={false}>
                 Gen3
               </ExternalLink>{' '}
               to download controlled data
@@ -64,23 +40,10 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
 
     <IntegrationsDiv>
       <IntegrationsCircleDiv>
-        <img
-          css={`
-            width: 42px;
-          `}
-          src={cavaticaLogo}
-          alt="Cavatica Logo"
-        />
+        <img className={`iconImage`} src={cavaticaLogo} alt="Cavatica Logo" />
       </IntegrationsCircleDiv>
-      <div
-        css={`
-          ${theme.cloumn};
-          padding: 10px;
-          max-width: 260px;
-        `}
-      >
+      <div className={`${theme.column} description`}>
         <StyledH4>Analyze Data</StyledH4>
-
         <IntegrationsStatus
           connected={integrationTokens[CAVATICA]}
           theme={theme}
@@ -89,13 +52,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           unconnectedMsg={
             <div>
               Analyze data quickly by connecting your Kids First account to{' '}
-              <ExternalLink
-                href="http://cavatica.org/"
-                hasExternalIcon={false}
-                css={`
-                  color: #a42c90;
-                `}
-              >
+              <ExternalLink href="http://cavatica.org/" hasExternalIcon={false}>
                 Cavatica
               </ExternalLink>.
             </div>
