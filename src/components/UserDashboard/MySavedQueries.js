@@ -83,24 +83,13 @@ const MySavedQueries = compose(
                       <TrashIcon onClick={() => deleteQuery({ api, queryId: q.id })} />
                     </div>
                   </div>
-                  <div
-                    className={`queryStats`}
-                    css={`
-                      span {
-                        color: #343434;
-                      }
-                    `}
-                  >
+                  <div className={`queryStats`}>
                     <span>{(q.content.Files || 0).toLocaleString()}</span> Files |{' '}
                     <span>{(q.content.Participants || 0).toLocaleString()}</span> Participants |{' '}
                     <span>{(q.content.Families || 0).toLocaleString()}</span> Families |{' '}
                     <span>{q.content.Size}</span>
                   </div>
-                  <div
-                    css={`
-                      font-size: 0.75em;
-                    `}
-                  >
+                  <div className={`savedDate`}>
                     Saved {distanceInWords(new Date(), new Date(q.creationDate))}
                   </div>
                 </div>

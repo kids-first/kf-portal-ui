@@ -96,6 +96,10 @@ export default ({ theme, profileColors }) => {
               color: ${theme.greyScale9};
               font-size: 0.75em;
               letter-spacing: 0.3px;
+              color: ${theme.greyScale1};
+            }
+            & .savedDate {
+              font-size: 0.75em;
             }
           }
         }
