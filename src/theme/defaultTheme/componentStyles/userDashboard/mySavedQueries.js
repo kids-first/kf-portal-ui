@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export default theme => {
+export default ({ theme, profileColors }) => {
   const borderGrey = `#a9adc0`;
   return `mySavedQueries ${css`
     display: flex;
@@ -17,6 +17,12 @@ export default theme => {
       width: calc(100% + 22px);
       margin-left: -11px;
       height: 6px;
+      background-image: linear-gradient(
+        to right,
+        ${profileColors.gradientDark},
+        ${profileColors.gradientMid} 51%,
+        ${profileColors.gradientLight}
+      );
     }
     & .header {
       display: flex;
