@@ -25,13 +25,16 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
-import { PageViewTracker }  from 'services/analyticsTracking';
-
+import { withPageViewTracker } from 'services/analyticsTracking';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
-      <SideImagePage sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
+      <SideImagePage
+        sideImage={loginImage}
+        {...{ ...props }}
+        Component={withPageViewTracker(LoginPage)}
+      />
     );
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
@@ -71,7 +74,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: FileRepo,
+              Component: withPageViewTracker(FileRepo),
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
@@ -86,7 +89,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: UserProfile,
+              Component: withPageViewTracker(UserProfile),
               loggedInUser,
               ...props,
             })
@@ -99,7 +102,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: UserDashboard,
+              Component: withPageViewTracker(UserDashboard),
               containerStyle: css`
                 height: 100vh;
               `,
@@ -116,7 +119,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
               <SideImagePage
                 backgroundImage={scienceBgPath}
                 logo={logo}
-                Component={Join}
+                Component={withPageViewTracker(Join)}
                 sideImage={joinImage}
                 {...{ ...props, api }}
               />
@@ -130,7 +133,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             <SideImagePage
               logo={logo}
               backgroundImage={scienceBgPath}
-              Component={LoginPage}
+              Component={withPageViewTracker(LoginPage)}
               sideImage={loginImage}
               {...{ ...props, api }}
             />
@@ -138,7 +141,6 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
         />
         <Redirect from="*" to="/dashboard" />
       </Switch>
-      <PageViewTracker />
       <Modal />
       <Toast {...toast}>{toast.component}</Toast>
     </div>
