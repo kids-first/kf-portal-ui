@@ -1,13 +1,12 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { withRouter } from 'react-router-dom';
-// import { gaTrackingID } from 'common/injectGlobals';
+import { gaTrackingID } from 'common/injectGlobals';
 import { merge } from 'lodash';
 
 const debug = process.env.NODE_ENV === 'development';
 
 let GAState = {
-    trackingId: 'UA-87708930-5',
+    trackingId: gaTrackingID,
     userId: null,
 };
 
@@ -15,8 +14,7 @@ let modalTimings = {};
 
 export const addStateInfo = obj => merge(GAState, obj);
 
-export const initAnalyticsTracking = () =>
-    ReactGA.initialize(GAState.trackingId, { debug: true });
+export const initAnalyticsTracking = () => ReactGA.initialize(GAState.trackingId, { debug });
 
 export const trackUserSession = async ({ _id, acceptedTerms }) => {
     let userId = _id;
@@ -59,27 +57,36 @@ export const trackUserInteraction = async eventData => {
 
 export const trackTiming = async eventData => ReactGA.timing(eventData);
 
-class GoogleAnalytics extends Component {
-    componentWillUpdate({ location, history }) {
-        if (
-            location.search === this.props.location.search &&
-            location.hash === this.props.location.hash
-        ) {
-            // don't log identical link clicks (nav links likely)
-            return;
+
+export function withPageViewTracker(WrappedComponent, options = {}) {
+    const trackPage = page => {
+        ReactGA.set({
+            page,
+            ...options,
+        });
+        ReactGA.pageview(page);
+    };
+
+    const HOC = class extends Component {
+        componentDidMount() {
+            const {pathname, hash, search} = this.props.location;
+            trackPage(pathname + hash + search);
         }
 
-        if (history.action === 'PUSH') {
-            ReactGA.pageview(
-                window.location.href,
-                document.title,
-            );
-        }
-    }
+        componentWillReceiveProps(nextProps) {
+            const currentPage = this.props.location.pathname;
+            const nextPage = nextProps.location.pathname;
 
-    render() {
-        return null;
-    }
+            if (currentPage !== nextPage) {
+                const {pathname, hash, search} = this.props.location;
+                trackPage(pathname + hash + search);
+            }
+        }
+
+        render() {
+            return <WrappedComponent {...this.props} />;
+        }
+    };
+
+    return HOC;
 }
-
-export const PageViewTracker = withRouter(GoogleAnalytics);
