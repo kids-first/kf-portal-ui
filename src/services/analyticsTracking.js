@@ -6,11 +6,13 @@ import { merge } from 'lodash';
 const debug = process.env.NODE_ENV === 'development';
 
 let GAState = {
-    trackingId: gaTrackingID,
+    trackingId: 'UA-87708930-5',
     userId: null,
 };
 
 let modalTimings = {};
+
+let setUserId = userId => ReactGA.set({ userId: userId || GAState.userId });
 
 export const addStateInfo = obj => merge(GAState, obj);
 
@@ -19,7 +21,7 @@ export const initAnalyticsTracking = () => ReactGA.initialize(GAState.trackingId
 export const trackUserSession = async ({ _id, acceptedTerms }) => {
     let userId = _id;
     if (acceptedTerms && !GAState.userId) {
-        await ReactGA.set({ userId });
+        setUserId(userId);
         addStateInfo({ userId });
         return true;
     } else {
@@ -28,8 +30,8 @@ export const trackUserSession = async ({ _id, acceptedTerms }) => {
 };
 
 export const trackUserInteraction = async eventData => {
+    setUserId();
     ReactGA.event(eventData);
-
     switch (eventData.category) {
         case 'Modals':
             if (eventData.action === 'Open') {
@@ -55,11 +57,14 @@ export const trackUserInteraction = async eventData => {
     }
 };
 
-export const trackTiming = async eventData => ReactGA.timing(eventData);
-
+export const trackTiming = async eventData => {
+    setUserId();
+    ReactGA.timing(eventData);
+}
 
 export function withPageViewTracker(WrappedComponent, options = {}) {
     const trackPage = page => {
+        setUserId();
         ReactGA.set({
             page,
             ...options,
@@ -69,7 +74,7 @@ export function withPageViewTracker(WrappedComponent, options = {}) {
 
     const HOC = class extends Component {
         componentDidMount() {
-            const {pathname, hash, search} = this.props.location;
+            const { pathname, hash, search } = this.props.location;
             trackPage(pathname + hash + search);
         }
 
@@ -78,7 +83,7 @@ export function withPageViewTracker(WrappedComponent, options = {}) {
             const nextPage = nextProps.location.pathname;
 
             if (currentPage !== nextPage) {
-                const {pathname, hash, search} = this.props.location;
+                const { pathname, hash, search } = this.props.location;
                 trackPage(pathname + hash + search);
             }
         }
