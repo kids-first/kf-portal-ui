@@ -1,15 +1,19 @@
+import React from 'react';
 import styled from 'react-emotion';
 
-export const StyledH3 = styled('h3')`
-  font-family: Montserrat;
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: 0.3px;
-  text-align: left;
-  color: ${({ theme }) => theme.primaryHover};
-  margin: 0;
-`;
+export const StyledH3 = props => {
+  const Component = styled('h3')`
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: 0.3px;
+    text-align: left;
+    color: ${({ theme }) => theme.primaryHover};
+    margin: 0;
+  `;
+  return <Component {...{ ...props, className: `styledH3 ${props.className}` }} />;
+};
 
 export const StyledH2 = styled('h2')`
   font-family: Montserrat;

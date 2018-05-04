@@ -47,25 +47,10 @@ const MySavedQueries = compose(
         />
       </div>
     ) : (
-      <div
-        css={`
-          display: flex;
-          flex-direction: column;
-          margin-top: 15px;
-          flex: 3;
-          border: 1px solid #e0e1e6;
-          border-top: 0;
-          border-bottom-right-radius: 10px;
-          border-bottom-left-radius: 10px;
-          padding: 0 10px;
-        `}
-      >
+      <div className={`mySavedQueries`}>
         <div
+          className={'gradientBar'}
           css={`
-            display: block;
-            width: calc(100% + 22px);
-            margin-left: -11px;
-            height: 6px;
             background-image: linear-gradient(
               to right,
               ${profileColors.gradientDark},
@@ -74,56 +59,12 @@ const MySavedQueries = compose(
             );
           `}
         />
-        <div
-          css={`
-            display: flex;
-            flex-grow: 1;
-            padding: 10px 20px 30px;
-            ${queries.length > 0 &&
-              `
-              border-bottom: 2px dotted #a9adc0;
-            `};
-          `}
-        >
-          <StyledH3
-            css={`
-              margin-top: 6px;
-              font-weight: 300;
-            `}
-          >
-            Saved Queries
-          </StyledH3>
-          <div
-            css={`
-              margin-left: auto;
-              align-items: center;
-              display: flex;
-              align-items: baseline;
-            `}
-          >
-            <SaveIcon
-              css={`
-                width: 16px;
-                color: #a9adc0;
-              `}
-            />
-            <span
-              css={`
-                font-size: 20px;
-                padding: 0 6px 0 9px;
-                font-size: 22px;
-              `}
-            >
-              {queries.length}
-            </span>
-            <span
-              css={`
-                font-size: 14px;
-                color: #a9adc0;
-              `}
-            >
-              Queries
-            </span>
+        <div className={`header ${queries.length > 0 ? 'hascontent' : ''}`}>
+          <StyledH3>Saved Queries</StyledH3>
+          <div className={`queryCount`}>
+            <SaveIcon />
+            <span className={`queryCountNumber`}>{queries.length}</span>
+            <span className={`label`}>Queries</span>
           </div>
         </div>
 
