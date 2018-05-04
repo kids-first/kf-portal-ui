@@ -1,28 +1,26 @@
 import { provideState } from 'freactal';
 
+import { addStateInfo as addUsersnapInfo } from 'services/usersnap';
+
+const initialState = {
+  title: null,
+  component: null,
+  classNames: null,
+};
+
 export default provideState({
   initialState: props => ({
-    modalState: {
-      title: null,
-      component: null,
-    },
+    modalState: initialState,
   }),
   effects: {
-    setModal: (effects, { title, component }) => state => ({
-      ...state,
-      modalState: {
-        title,
-        component,
-      },
-    }),
+    setModal: (effects, { title, component, classNames }) => state => {
+      const modalState = { title, component, classNames };
+      addUsersnapInfo({ modalState });
+      return { ...state, modalState };
+    },
     unsetModal: effects => state => {
-      return {
-        ...state,
-        modalState: {
-          title: null,
-          component: null,
-        },
-      };
+      addUsersnapInfo({ modalState: initialState });
+      return { ...state, modalState: initialState };
     },
   },
 });

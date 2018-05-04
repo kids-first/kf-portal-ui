@@ -9,6 +9,7 @@ import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import Measure from 'react-measure';
 import { Trans } from 'react-i18next';
+import Spinner from 'react-spinkit';
 
 import {
   Arranger,
@@ -16,15 +17,20 @@ import {
   CurrentSQON,
   Table,
   DetectNewVersion,
+  QuickSearch,
 } from '@arranger/components/dist/Arranger';
+import { toggleSQON } from '@arranger/components/dist/SQONView/utils';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import FileRepoSidebar from './FileRepoSidebar';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { FileRepoStats, FileRepoStatsQuery } from './Stats';
 import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
-import AdvancedFacetViewModalContent from './AdvancedFacetViewModal/index.js';
+import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
+import UploadIdsModal from './UploadIdsModal';
 import { arrangerProjectId } from 'common/injectGlobals';
+import Select from '../uikit/Select';
+import translateSQONValue from 'common/translateSQONValue';
 
 const enhance = compose(injectState, withTheme);
 
@@ -53,19 +59,83 @@ const arrangerStyles = css`
   }
 `;
 
+const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
+  <div
+    className={css`
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    `}
+  >
+    <LightButton
+      className={css`
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+      `}
+      onClick={() =>
+        effects.setModal({
+          title: 'Upload a List of Identifiers',
+          component: <UploadIdsModal {...{ ...props, setSQON }} closeModal={effects.unsetModal} />,
+        })
+      }
+    >
+      <Trans css={theme.uppercase}>Upload Ids</Trans>
+    </LightButton>
+    <Select
+      className={css`
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left: none;
+        padding-left: 0;
+      `}
+      align="right"
+      items={state.loggedInUser.sets.map(x => x.setId)}
+      itemContainerClassName={css`
+        padding: 0px;
+        box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.43);
+      `}
+      itemClassName={css`
+        &:hover {
+          background-color: ${theme.optionSelected};
+        }
+      `}
+      onChange={(setId, { clearSelection }) => {
+        if (setId) {
+          setSQON(
+            toggleSQON(
+              {
+                op: 'and',
+                content: [
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'kf_id',
+                      value: [`set_id:${setId}`],
+                    },
+                  },
+                ],
+              },
+              props.sqon,
+            ),
+          );
+        }
+        clearSelection();
+      }}
+    />
+  </div>
+);
+
 const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props }) => {
   return (
     <div
       css={`
         height: 100%;
+        height: calc(100vh - 180px);
         overflow-y: auto;
         background-color: #f4f5f8;
         box-shadow: 0 0 4.9px 0.2px #a0a0a3;
         border: solid 1px #c6c7cc;
         flex: none;
-        & > * {
-          margin-left: -1px;
-        }
       `}
     >
       <div
@@ -88,6 +158,13 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
           onClick={() =>
             effects.setModal({
               title: 'All Filters',
+              classNames: {
+                modal: css`
+                  width: 80%;
+                  height: 90%;
+                  max-width: initial;
+                `,
+              },
               component: (
                 <AdvancedFacetViewModalContent
                   {...{
@@ -105,6 +182,22 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
         >
           <Trans css={theme.uppercase}>All Filters</Trans>
         </LightButton>
+      </div>
+      <div className="aggregation-card">
+        <QuickSearch
+          {...{ ...props, setSQON }}
+          placeholder="Enter Identifiers"
+          translateSQONValue={translateSQONValue({ sets: (state.loggedInUser || {}).sets })}
+          LoadingIcon={
+            <Spinner
+              fadeIn="none"
+              name="circle"
+              color="#a9adc0"
+              style={{ width: 15, height: 15 }}
+            />
+          }
+        />
+        <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
       </div>
       <Aggregations {...{ ...props, setSQON }} />
     </div>
@@ -188,7 +281,13 @@ const FileRepo = ({ state, effects, ...props }) => {
                             display: flex;
                           `}
                         >
-                          <CurrentSQON {...props} {...url} />
+                          <CurrentSQON
+                            {...props}
+                            {...url}
+                            translateSQONValue={translateSQONValue({
+                              sets: state.loggedInUser.sets,
+                            })}
+                          />
                           {url.sqon &&
                             Object.keys(url.sqon).length > 0 && (
                               <FileRepoStatsQuery
@@ -203,6 +302,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                                   >
                                     <ShareQuery
                                       stats={data}
+                                      api={props.api}
                                       {...url}
                                       css={`
                                         flex: 1;
@@ -210,6 +310,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                                     />
                                     <SaveQuery
                                       stats={data}
+                                      api={props.api}
                                       {...url}
                                       css={`
                                         flex: 1;

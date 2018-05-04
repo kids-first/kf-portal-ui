@@ -17,6 +17,7 @@ import { GEN3, CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
+import { withApi } from 'services/api';
 
 const styles = {
   container: css`
@@ -35,28 +36,31 @@ const styles = {
   `,
 };
 
-const enhance = compose(injectState, withRouter);
+const enhance = compose(injectState, withRouter, withApi);
 
-export const handleJWT = async ({ jwt, onFinish, setToken, setUser }) => {
+export const validateJWT = ({ jwt }) => {
+  if (!jwt) return false;
   const data = jwtDecode(jwt);
   const currentTime = Date.now();
   const tokenExpiry = new Date(data.exp * 1000).valueOf();
-  const user = data.context.user;
-  const egoId = data.sub;
+  return tokenExpiry > currentTime && data;
+};
+
+export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
+  const jwtData = validateJWT({ jwt });
+  if (!jwtData) return;
+
   await setToken(jwt);
-  const existingProfile = await getProfile({ egoId });
-  const newProfile = !existingProfile ? await createProfile({ ...user, egoId }) : {};
-  const loggedInUser =
-    tokenExpiry > currentTime
-      ? {
-          ...(existingProfile || newProfile),
-          email: user.email,
-        }
-      : null;
-  await setUser(loggedInUser);
-  if (onFinish) {
-    onFinish(loggedInUser);
-  }
+  const user = jwtData.context.user;
+  const egoId = jwtData.sub;
+  const existingProfile = await getProfile(api)({ egoId });
+  const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
+  const loggedInUser = {
+    ...(existingProfile || newProfile),
+    email: user.email,
+  };
+  await setUser({ ...loggedInUser, api });
+  onFinish && onFinish(loggedInUser);
 };
 
 /**
@@ -90,6 +94,7 @@ class Component extends React.Component<any, any> {
   static propTypes = {
     effects: PropTypes.object,
     state: PropTypes.object,
+    api: PropTypes.func,
   };
   state = {
     securityError: false,
@@ -139,11 +144,12 @@ class Component extends React.Component<any, any> {
     }
   };
   handleLoginResponse = async response => {
+    const { api } = this.props;
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
       const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
-      await handleJWT({ jwt, onFinish, setToken, setUser });
+      await handleJWT({ jwt, onFinish, setToken, setUser, api });
       fetchIntegrationTokens({ setIntegrationToken });
     } else {
       console.warn('response error');

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@arranger/components": "^0.3.11",
+    "@arranger/components": "^0.3.27",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
     "date-fns": "^1.29.0",
@@ -49,9 +49,12 @@
     "build": "NODE_PATH=src react-app-rewired build",
     "test": "NODE_PATH=src react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject",
-    "translations": "i18next-scanner --output ./public 'src/**/*.js'"
+    "translations": "i18next-scanner --output ./public 'src/**/*.js'",
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "build-storybook": "build-storybook -c .storybook -o build-storybook"
   },
   "devDependencies": {
+    "@storybook/react": "^3.4.2",
     "babel-polyfill": "^6.26.0",
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",

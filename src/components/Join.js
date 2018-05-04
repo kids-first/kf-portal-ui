@@ -34,6 +34,7 @@ const Consent = compose(
     setAccepted,
     customStepMessage,
     setCustomStepMessage = () => {},
+    api,
   }) => {
     return (
       <div
@@ -117,13 +118,13 @@ const Consent = compose(
               }
               setAccepted(event.target.checked);
               disableNextStep(!event.target.checked);
-              updateProfile({
+              updateProfile(api)({
                 user: {
                   ...rest,
                   acceptedTerms: event.target.checked,
                 },
               }).then(async profile => {
-                await setUser({ ...profile, email });
+                await setUser({ ...profile, email, api });
               });
             }}
           />
@@ -156,7 +157,7 @@ export const ButtonsDiv = styled('div')`
 `;
 
 const JoinContent = compose(injectState, withRouter, withTheme)(
-  ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme }) => (
+  ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
     <div
       className={css`
         width: 830px;
@@ -215,7 +216,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                   <SelectRoleForm
                     onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
                     onValidChange={isValid => disableNextStep(!isValid)}
-                    {...{ nextStep, nextDisabled, prevDisabled }}
+                    {...{ nextStep, nextDisabled, prevDisabled, api }}
                   />
                 </div>
               ),
@@ -235,6 +236,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                 <Fragment>
                   <Consent
                     {...{
+                      api,
                       disableNextStep,
                       customStepMessage,
                       setCustomStepMessage,
@@ -250,7 +252,7 @@ const JoinContent = compose(injectState, withRouter, withTheme)(
                       <Trans>Back</Trans>
                     </button>
                     <div className={theme.row}>
-                      <DeleteButton className={theme.wizardButton}>
+                      <DeleteButton api={api} className={theme.wizardButton}>
                         <Trans>Cancel</Trans>
                       </DeleteButton>
                       <button

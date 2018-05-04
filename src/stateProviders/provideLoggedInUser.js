@@ -2,10 +2,14 @@ import { provideState } from 'freactal';
 import { isArray, get } from 'lodash';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
-import { getAllFieldNamesPromise } from 'services/profiles';
-import { googleAppId } from 'common/injectGlobals';
+import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES } from 'common/constants';
-import { handleJWT } from 'components/Login';
+import { handleJWT, validateJWT } from 'components/Login';
+import {
+  addStateInfo as addUsersnapInfo,
+  addLoggedInUser as setUsersnapUser,
+} from 'services/usersnap';
+import { initializeApi } from 'services/api';
 
 export default provideState({
   initialState: () => ({
@@ -19,21 +23,13 @@ export default provideState({
     initialize: effects => state => {
       const { setToken, setUser } = effects;
       const jwt = localStorage.getItem('EGO_JWT');
-      if (jwt) {
-        addHeaders({ authorization: `Bearer ${jwt}` });
-
-        try {
-          const gapi = global.gapi;
-          gapi.load('auth2', () => {
-            gapi.auth2.init({
-              client_id: googleAppId,
-            });
-          });
-        } catch (e) {
-          global.log(e);
-        }
-        handleJWT({ jwt, setToken, setUser });
-
+      const api = initializeApi({
+        onUnauthorized: response => {
+          window.location.reload();
+        },
+      });
+      if (validateJWT({ jwt })) {
+        handleJWT({ jwt, setToken, setUser, api });
         // Get all integration keys from local storage
         SERVICES.forEach(service => {
           const storedToken = localStorage.getItem(`integration_${service}`);
@@ -41,24 +37,40 @@ export default provideState({
             state.integrationTokens[service] = storedToken;
           }
         });
+        return { ...state, isLoadingUser: true };
       }
-      return {
-        ...state,
-        isLoadingUser: !!jwt,
-      };
+      setToken(null);
+      return { ...state, isLoadingUser: false };
     },
-    setUser: (effects, user) =>
-      getAllFieldNamesPromise()
-        .then(({ data }) => get(data, 'data.__type.fields', []).length)
+    setUser: (effects, { api, ...user }) => {
+      return getAllFieldNamesPromise(api)
+        .then(({ data }) => {
+          return get(data, '__type.fields', []).length;
+        })
         .then(totalFields => state => {
           const filledFields = Object.values(user || {}).filter(v => v || (isArray(v) && v.length));
+          const percentageFilled = filledFields.length / totalFields;
+          addUsersnapInfo({ percentageFilled });
+          setUsersnapUser(user);
           return {
             ...state,
             isLoadingUser: false,
             loggedInUser: user,
-            percentageFilled: filledFields.length / totalFields,
+            percentageFilled,
           };
-        }),
+        });
+    },
+    addUserSet: (effects, { api, ...set }) => state => {
+      const {
+        loggedInUser: { email, sets, ...rest },
+      } = state;
+      updateProfile(api)({
+        user: {
+          ...rest,
+          sets: [...(sets || []), set],
+        },
+      }).then(profile => effects.setUser({ ...profile, email, api }));
+    },
     setToken: (effects, token) => state => {
       setToken(token);
       if (token) {
@@ -68,6 +80,7 @@ export default provideState({
         localStorage.removeItem('EGO_JWT');
         addHeaders({ authorization: '' });
       }
+      addUsersnapInfo({ loggedInUserToken_exist: !!token });
       return { ...state, loggedInUserToken: token };
     },
     setIntegrationToken: (effects, service, token) => state => {

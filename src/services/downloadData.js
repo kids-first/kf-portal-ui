@@ -1,6 +1,10 @@
 import { startCase } from 'lodash';
 import { format } from 'date-fns';
 import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
+import urlJoin from 'url-join';
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
+
+const downloadUrl = urlJoin(arrangerApiRoot, `${arrangerProjectId}/download`);
 
 function hackCrossIndex(value, key) {
   if (!key && process.env.NODE_ENV !== 'production') {
@@ -42,17 +46,13 @@ function findColumnsByField(fields, columns) {
 }
 function getManifestDownload(type) {
   return ({ sqon, columns }) => () => {
+    const filename = `[kidsfirst-${type}-manifest_]YYYY-MM-DD`;
     return saveTSV({
-      fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD`),
+      url: downloadUrl,
+      fileName: format(new Date(), filename),
       files: [
         {
-          fileName: format(new Date(), `[kidsfirst-${type}-manifest_]YYYY-MM-DD[.tsv]`),
-          sqon,
-          index: 'file',
-          columns: findColumnsByField(['kf_id', 'uuid'], columns),
-        },
-        {
-          fileName: format(new Date(), `[kidsfirst-${type}-metadata_]YYYY-MM-DD[.tsv]`),
+          fileName: format(new Date(), `${filename}[.tsv]`),
           sqon,
           index: 'file',
           columns: findColumnsByField(
@@ -64,10 +64,18 @@ function getManifestDownload(type) {
               'file_format',
               'sequencing_experiments.experiment_strategy',
               'participants.kf_id',
+              'participants.is_proband',
+              'participants.family.family_id',
               'participants.samples.kf_id',
+              'participants.samples.tissue_type',
+              'participants.samples.aliquots.kf_id',
             ],
             columns,
           ),
+          sort: [
+            { field: 'participants.family.family_id', order: 'asc' },
+            { field: 'kf_id', order: 'asc' },
+          ],
         },
       ],
     });
@@ -79,6 +87,7 @@ export const fileManifestParticipantsAndFamily = getManifestDownload('participan
 
 export const clinicalDataParticipants = ({ sqon, columns }) => () => {
   return saveTSV({
+    url: downloadUrl,
     files: [
       {
         fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
@@ -148,6 +157,7 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
 
 export const clinicalDataFamily = ({ sqon, columns }) => () => {
   return saveTSV({
+    url: downloadUrl,
     files: [
       {
         fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
@@ -180,6 +190,7 @@ export const clinicalDataFamily = ({ sqon, columns }) => () => {
 
 export const downloadBiospecimen = ({ sqon, columns }) => () => {
   return saveTSV({
+    url: downloadUrl,
     fileName: format(new Date(), '[participants_biospecimen_]YYYYMMDD[.tar.gz]'),
     files: [
       {

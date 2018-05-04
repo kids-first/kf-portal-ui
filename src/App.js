@@ -24,20 +24,21 @@ import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
+import { withApi } from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
-      <SideImagePage sideImage={loginImage} {...props} Component={LoginPage} />
+      <SideImagePage sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
     );
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   } else {
-    return <Page {...props} />;
+    return <Page {...{ ...props }} />;
   }
 };
 
-const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
+const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
   return (
     <div className="App">
@@ -45,7 +46,19 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
         <Route
           // TODO: we need a user role specific for this
           path="/admin"
-          render={({ match }) => <ArrangerDashboard basename={match.url} />}
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              Component: ({ match, ...props }) => (
+                <ArrangerDashboard basename={match.url} {...props} />
+              ),
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
@@ -54,6 +67,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           exact
           render={props =>
             forceSelectRole({
+              api,
               isLoadingUser,
               Component: FileRepo,
               loggedInUser,
@@ -68,6 +82,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           exact
           render={props =>
             forceSelectRole({
+              api,
               isLoadingUser,
               Component: UserProfile,
               loggedInUser,
@@ -80,6 +95,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
           exact
           render={props =>
             forceSelectRole({
+              api,
               isLoadingUser,
               Component: UserDashboard,
               containerStyle: css`
@@ -93,15 +109,17 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
         <Route
           path="/join"
           exact
-          render={props => (
-            <SideImagePage
-              backgroundImage={scienceBgPath}
-              logo={logo}
-              Component={Join}
-              sideImage={joinImage}
-              {...props}
-            />
-          )}
+          render={props => {
+            return (
+              <SideImagePage
+                backgroundImage={scienceBgPath}
+                logo={logo}
+                Component={Join}
+                sideImage={joinImage}
+                {...{ ...props, api }}
+              />
+            );
+          }}
         />
         <Route
           path="/"
@@ -112,7 +130,7 @@ const App = compose(injectState)(({ editing, setEditing, state, effects }) => {
               backgroundImage={scienceBgPath}
               Component={LoginPage}
               sideImage={loginImage}
-              {...props}
+              {...{ ...props, api }}
             />
           )}
         />

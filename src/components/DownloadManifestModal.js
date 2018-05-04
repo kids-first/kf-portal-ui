@@ -5,6 +5,8 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
+import saveSet from '@arranger/components/dist/utils/saveSet';
+
 import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
 import CopyToClipboard from './CopyToClipboard';
@@ -29,34 +31,38 @@ const Button = compose(withTheme)(({ theme, children, ...props }) => (
 ));
 
 const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', ''))(
-  ({ setId, setSetId, sqon, setWarning, onManifestGenerated, state: { loggedInUser } }) => (
+  ({
+    api,
+    setId,
+    setSetId,
+    sqon,
+    setWarning,
+    onManifestGenerated,
+    state: { loggedInUser },
+    effects: { addUserSet },
+  }) => (
     <div>
       {setId ? (
         <CopyToClipboard value={setId} />
       ) : (
         <LoadingOnClick
           onClick={async () => {
-            const { data: { data, errors } } = await graphql({
-              query: `
-                mutation saveSet($type: String! $userId: String! $sqon: JSON! $path: String!) {
-                  saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path) {
-                    setId
-                  }
-                }
-              `,
-              variables: {
-                sqon: sqon || {},
-                type: 'file',
-                userId: loggedInUser.egoId,
-                path: 'kf_id',
-              },
+            const type = 'file';
+            const { data, errors } = await saveSet({
+              type,
+              sqon: sqon || {},
+              userId: loggedInUser.egoId,
+              path: 'kf_id',
+              api: graphql(api),
             });
             if (errors && errors.length) {
               setWarning('Unable to generate KF-get ID, please try again later.');
             } else {
+              const { setId, size } = data.saveSet;
               setWarning('');
+              setSetId(setId);
               onManifestGenerated(data.saveSet);
-              setSetId(data.saveSet.setId);
+              addUserSet({ type, setId, size, api });
             }
           }}
           render={({ onClick, loading }) => (
@@ -88,10 +94,11 @@ export const DownloadManifestModalFooter = ({
   downloadLoading,
   onDownloadClick,
   setWarning,
+  api,
   onManifestGenerated = () => {},
 }) => (
   <ModalFooter showSubmit={false}>
-    <GenerateManifestSet {...{ sqon, projectId, setWarning, onManifestGenerated }} />
+    <GenerateManifestSet {...{ sqon, projectId, setWarning, onManifestGenerated, api }} />
     <LoadingOnClick
       onClick={onDownloadClick}
       render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
@@ -105,11 +112,12 @@ export const DownloadManifestModalFooter = ({
 );
 
 const enhance = compose(withState('warning', 'setWarning', ''));
-const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children }) => (
+const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children, api }) => (
   <div>
     {warning && <ModalWarning>{warning}</ModalWarning>}
     <ModalSubHeader>File Summary:</ModalSubHeader>
     <FileRepoStats
+      api={api}
       sqon={sqon}
       index={index}
       projectId={projectId}

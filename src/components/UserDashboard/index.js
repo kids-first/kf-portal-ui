@@ -15,7 +15,7 @@ export default compose(
   withRouter,
   withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ state: { loggedInUser, integrationTokens, percentageFilled }, theme }) => {
+)(({ state: { loggedInUser, integrationTokens, percentageFilled }, theme, api }) => {
   const profileColors = ROLES.reduce(
     (prev, curr) => (curr.type === loggedInUser.roles[0] ? curr.profileColors : prev),
     ROLES[0].profileColors,
@@ -47,7 +47,7 @@ export default compose(
             display: flex;
           `}
         >
-          <MySavedQueries loggedInUser={loggedInUser} theme={theme} profileColors={profileColors} />
+          <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
           <Notifications />
         </div>
         <div

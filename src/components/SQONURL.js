@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { parse, stringify } from 'query-string';
+import { addSqonHistory } from 'services/usersnap';
 
 export default props => (
   <Route>
@@ -10,6 +11,7 @@ export default props => (
       return props.render({
         sqon: search.sqon,
         setSQON: sqon => {
+          addSqonHistory(sqon);
           p.history.push({ search: stringify({ ...search, sqon: JSON.stringify(sqon) }) });
         },
       });

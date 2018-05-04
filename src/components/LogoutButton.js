@@ -5,31 +5,34 @@ import { injectState } from 'freactal';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
+import { withApi } from 'services/api';
 
 const wait = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
-const enhance = compose(withRouter, injectState, withTheme);
+const enhance = compose(withRouter, injectState, withTheme, withApi);
 
-export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens }) =>
-  Promise.race([logoutAll(), wait(2)]).then(() => {
-    setUser(null);
+export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) => {
+  return Promise.race([logoutAll(), wait(2)]).then(() => {
+    setUser({ api });
     setToken(null);
     clearIntegrationTokens();
     history.push('/');
   });
+};
 
 const Logout = ({
   history,
   effects: { setToken, setUser, clearIntegrationTokens },
   theme,
   className,
+  api,
 }) => (
   <button
     css={`
       ${theme.button};
       ${className};
     `}
-    onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens })}
+    onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })}
   >
     <Trans>Logout</Trans>
   </button>

@@ -2,18 +2,12 @@ import urlJoin from 'url-join';
 import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
 
-export default ({ stats, queryName, sqon, loggedInUser }) => {
+export default ({ stats, queryName, sqon, loggedInUser, api }) => {
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });
 
-  const jwt = localStorage.getItem('EGO_JWT');
-  // TODO: use ajax service?
-  return fetch(urlJoin(shortUrlApi, 'shorten'), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    },
+  return api({
+    url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
       userid: (loggedInUser || {}).egoId || 'anonymous',
       alias,
@@ -28,5 +22,5 @@ export default ({ stats, queryName, sqon, loggedInUser }) => {
         'twitter:data1': 'test data',
       },
     }),
-  }).then(r => r.json());
+  });
 };
