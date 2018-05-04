@@ -47,7 +47,7 @@ const MySavedQueries = compose(
         />
       </div>
     ) : (
-      <div className={`${theme.mySavedQueries({ theme, profileColors })}`}>
+      <div className={`mySavedQueries ${theme.mySavedQueries({ theme, profileColors })}`}>
         <div className={'gradientBar'} />
         <div className={`header ${queries.length > 0 ? 'hascontent' : ''}`}>
           <StyledH3>Saved Queries</StyledH3>
