@@ -131,34 +131,14 @@ export default compose(
           <CompletionWrapper completed={state.percentageFilled}>
             <CompleteOMeter percentage={state.percentageFilled} />
           </CompletionWrapper>
-
-          <div
-            className={css`
-              font-family: 'Open Sans';
-              font-size: 13px;
-              font-style: italic;
-              line-height: 1.69;
-              color: #ffffff;
-              padding-top: 21px;
-            `}
-          >
+          <div className={`completionGuide`}>
             Complete your profile for a more personalized<br />
             experience and to help encourage collaboration!
           </div>
         </div>
       </Container>
     </div>
-    <div
-      className={css`
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        background: #fff;
-        box-shadow: 0 0 4.9px 0.1px #bbbbbb;
-        border: solid 1px #e0e1e6;
-        padding: 15px 0;
-      `}
-    >
+    <div className={`secondaryNav`}>
       <Container>
         <ul className={theme.secondaryNav}>
           <li>
