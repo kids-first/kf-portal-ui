@@ -1,8 +1,9 @@
 import CommunityIcon from 'icons/CommunityIcon';
 import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
-import ResearchBanner from 'assets/user-banner-research.jpg';
-import CommunityBanner from 'assets/user-banner-community.jpg';
+import HealthBanner from 'assets/user-banner-health.png';
+import ResearchBanner from 'assets/user-banner-research.png';
+import CommunityBanner from 'assets/user-banner-community.png';
 
 export const ROLES = [
   {
@@ -14,9 +15,9 @@ export const ROLES = [
     banner: ResearchBanner,
     color: '#00afed',
     profileColors: {
-      gradientDark: '#266db1',
-      gradientMid: '#1186b0',
-      gradientLight: '#1297d7',
+      gradientDark: 'rgb(38, 109, 177)',
+      gradientMid: 'rgb(17, 134, 176)',
+      gradientLight: 'rgb(18, 151, 215)',
       pillBkg: '#00afed',
     },
   },
@@ -29,9 +30,9 @@ export const ROLES = [
     banner: CommunityBanner,
     color: '#e83a9c',
     profileColors: {
-      gradientDark: '#8f347f',
-      gradientMid: '#a9408b',
-      gradientLight: '#cd5162',
+      gradientDark: 'rgb(143, 52, 127)',
+      gradientMid: 'rgb(169, 64, 139)',
+      gradientLight: 'rgb(205, 81, 98)',
       pillBkg: '#e83a9c',
     },
   },
@@ -41,13 +42,13 @@ export const ROLES = [
     description:
       'I’m interested in finding treatments that can be adapted to target my patients’ needs based on their genetic characteristics.',
     icon: HealthIcon,
-    banner: 'tbd',
+    banner: HealthBanner,
     color: '#009bb8',
     profileColors: {
-      gradientDark: '#0a5d6c',
-      gradientMid: '#198895',
-      gradientLight: '#1ca39e',
-      pillBkg: '#009bb8',
+      gradientDark: 'rgb(10, 93, 108)',
+      gradientMid: 'rgb(25, 136, 149)',
+      gradientLight: 'rgb(28, 163, 158)',
+      pillBkg: '#1f9bb6',
     },
   },
 ];

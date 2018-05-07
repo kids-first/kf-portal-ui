@@ -62,6 +62,23 @@ export const H4 = styled('h4')`
   font-weight: normal;
 `;
 
+export const userProfileBackground = (loggedInUser, showBanner = true) => {
+  const role = ROLES.find(x => x.type === get(loggedInUser, 'roles[0]', '')) || {};
+  const banner = get(role, 'banner', '');
+  const profileColors = get(role, 'profileColors', {});
+  return css`
+    background-position-x: right;
+    background-repeat: no-repeat;
+    background-image: ${showBanner ? `url(${banner}), ` : ``}
+      linear-gradient(
+        to bottom,
+        ${profileColors.gradientDark} 33%,
+        ${profileColors.gradientMid} 66%,
+        ${profileColors.gradientLight}
+      );
+  `;
+};
+
 export default compose(
   injectState,
   withRouter,
@@ -69,7 +86,14 @@ export default compose(
   withTheme,
   lifecycle({
     async componentDidMount(): void {
-      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile, api } = this.props;
+      const {
+        state: { loggedInUser },
+        match: {
+          params: { egoId },
+        },
+        setProfile,
+        api,
+      } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
         : setProfile(await getProfile(api)({ egoId }));
@@ -83,7 +107,14 @@ export default compose(
   }),
   withPropsOnChange(
     ['match'],
-    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser }, api }) => ({
+    async ({
+      match: {
+        params: { egoId },
+      },
+      setProfile,
+      state: { loggedInUser },
+      api,
+    }) => ({
       notUsed:
         loggedInUser && egoId === loggedInUser.egoId
           ? setProfile(loggedInUser)
@@ -114,13 +145,7 @@ export default compose(
   >
     <div
       className={css`
-        background: url(${get(
-            ROLES.reduce((acc, { type, banner }) => ({ ...acc, [type]: banner }), {}),
-            get(profile.roles, 0),
-            '',
-          )})
-          no-repeat;
-        background-color: #1094d5;
+        ${userProfileBackground(profile)};
         min-height: 330px;
         align-items: center;
         display: flex;
