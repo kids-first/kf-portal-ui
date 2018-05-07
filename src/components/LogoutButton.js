@@ -7,12 +7,10 @@ import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { withApi } from 'services/api';
 
-const wait = seconds => new Promise(resolve => setTimeout(resolve, seconds * 1000));
-
 const enhance = compose(withRouter, injectState, withTheme, withApi);
 
 export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) => {
-  return Promise.race([logoutAll(), wait(2)]).then(() => {
+  return Promise.race([logoutAll()]).then(() => {
     setUser({ api });
     setToken(null);
     clearIntegrationTokens();
