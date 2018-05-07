@@ -96,7 +96,6 @@ export default compose(
     setInterestAutocomplete,
     interests,
     setInterests,
-    api,
   }) => (
     <div
       className={css`
@@ -197,7 +196,7 @@ export default compose(
           </StyledSection>
           {localStorage.getItem('SHOW_DELETE_ACCOUNT') && (
             <div>
-              <DeleteButton {...{ api }}>Delete my account</DeleteButton>
+              <DeleteButton>Delete my account</DeleteButton>
             </div>
           )}
           {isEditingBackgroundInfo && (
