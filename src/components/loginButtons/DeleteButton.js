@@ -38,7 +38,7 @@ export default compose(injectState, withRouter, withApi)(
             ),
           )
           .then(() => {
-            uiLogout({ history, setUser, setToken, clearIntegrationTokens });
+            uiLogout({ history, setUser, setToken, clearIntegrationTokens, api });
           });
       }}
       {...props}
