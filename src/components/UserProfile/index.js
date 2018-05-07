@@ -137,27 +137,21 @@ export default compose(
           `}
         />
         <div
-          className={css`
+          className={`${theme.column} ${css`
             width: 49%;
             align-items: flex-start;
-            ${theme.column};
             padding: 0 15px;
-          `}
+          `}`}
         >
           <RoleIconButton />
 
-          <h4
-            className={css`
-              ${theme.h4};
-            `}
-          >{`${profile.firstName} ${profile.lastName}`}</h4>
+          <h4 className={theme.h4}>{`${profile.firstName} ${profile.lastName}`}</h4>
           <div
-            className={css`
+            className={`${theme.column} ${css`
               font-family: montserrat;
               font-size: 14px;
               color: #fff;
-              ${theme.column};
-            `}
+            `}`}
           >
             <span>Contact Information</span>
             <span

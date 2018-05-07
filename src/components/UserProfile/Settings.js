@@ -18,9 +18,9 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       `}
     >
       <Container
-        className={css`
-          ${theme.row} align-items: flex-start;
-        `}
+        className={`${theme.row} ${css`
+          align-items: flex-start;
+        `}`}
       >
         <div
           className={css`
