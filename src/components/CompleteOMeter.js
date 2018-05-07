@@ -1,18 +1,17 @@
 import * as React from 'react';
+import { css } from 'emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
 const CompleteOMeter = compose(withTheme)(({ theme, percentage, className }) => (
   <div
-    css={`
+    className={`${theme.column} ${css`
       background: #f4f5f8;
       height: 100%;
-      ${theme.column};
       justify-content: center;
       align-items: center;
       line-height: 1;
-      ${className};
-    `}
+    `} ${className}`}
   >
     <span
       css={`

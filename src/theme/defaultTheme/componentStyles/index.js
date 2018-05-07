@@ -11,6 +11,7 @@ import userDashboard, {
   saveQuery,
   saveQueryTooltipContent,
 } from './userDashboard';
+import userProfile from './userProfile';
 
 export default {
   ...uikit,
@@ -18,6 +19,7 @@ export default {
   advancedFacetView,
   fileRepoContainer,
   mySavedQueries,
+
   userDashboard,
   integrations,
   completionWrapper,
@@ -25,4 +27,6 @@ export default {
   shareQueryTooltipContent,
   saveQuery,
   saveQueryTooltipContent,
+
+  userProfile,
 };

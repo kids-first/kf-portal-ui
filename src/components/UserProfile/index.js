@@ -30,12 +30,7 @@ import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 
-export const Container = styled('div')`
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  width: 76%;
-`;
+export const Container = props => <div {...props} className={`container ${props.className}`} />;
 
 export const EditButton = compose(withTheme)(({ theme, ...props }) => (
   <button className={theme.hollowButton} {...props}>
@@ -107,68 +102,20 @@ export default compose(
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
 )(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash }, api }) => (
-  <div
-    className={css`
-      flex: 1;
-    `}
-  >
-    <div
-      className={css`
-        background: url(${get(
-            ROLES.reduce((acc, { type, banner }) => ({ ...acc, [type]: banner }), {}),
-            get(profile.roles, 0),
-            '',
-          )})
-          no-repeat;
-        background-color: #1094d5;
-        min-height: 330px;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-      `}
-    >
+  <div className={theme.userProfile({ ROLES, profile })}>
+    <div className={`hero`}>
       <Container className={theme.row}>
-        <Gravtar
-          email={profile.email || ''}
-          size={173}
-          className={css`
-            border-radius: 50%;
-            border: 5px solid #fff;
-          `}
-        />
-        <div
-          className={`${theme.column} ${css`
-            width: 49%;
-            align-items: flex-start;
-            padding: 0 15px;
-          `}`}
-        >
+        <Gravtar email={profile.email || ''} size={173} />
+        <div className={`profileInfo ${theme.column}`}>
           <RoleIconButton />
-
           <h4 className={theme.h4}>{`${profile.firstName} ${profile.lastName}`}</h4>
-          <div
-            className={`${theme.column} ${css`
-              font-family: montserrat;
-              font-size: 14px;
-              color: #fff;
-            `}`}
-          >
+          <div className={`content ${theme.column}`}>
             <span>Contact Information</span>
-            <span
-              className={css`
-                text-decoration: underline;
-              `}
-            >
-              {profile.email}
-            </span>
+            <span className={`email`}>{profile.email}</span>
             <span>{profile.jobTitle}</span>
             <span>{profile.institution}</span>
             <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
-            <span
-              className={css`
-                margin-top: 5px;
-              `}
-            >
+            <span>
               <EditButton
                 onClick={() => {
                   setModal({
@@ -180,18 +127,8 @@ export default compose(
             </span>
           </div>
         </div>
-        <div
-          clasName={`${theme.column} ${css`
-            width: 310px;
-            align-items: center;
-          `}`}
-        >
-          <CompletionWrapper
-            completed={state.percentageFilled}
-            className={css`
-              width: 130px;
-            `}
-          >
+        <div className={`progressContainer ${theme.column}`}>
+          <CompletionWrapper completed={state.percentageFilled}>
             <CompleteOMeter percentage={state.percentageFilled} />
           </CompletionWrapper>
 

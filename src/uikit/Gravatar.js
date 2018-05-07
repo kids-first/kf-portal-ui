@@ -4,7 +4,7 @@ import { trim } from 'lodash';
 
 export default ({ email = '', size = 100, className, ...props }) => (
   <img
-    className={className}
+    className={`gravatar ${className}`}
     src={`https://www.gravatar.com/avatar/${md5(trim(email.toLowerCase()))}?s=${size}`}
     alt="Gravtar"
     {...props}
