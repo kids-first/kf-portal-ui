@@ -125,9 +125,11 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
   </div>
 );
 
+const aggregationsWrapperRef = React.createRef();
 const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props }) => {
   return (
     <div
+      ref={aggregationsWrapperRef}
       css={`
         height: 100%;
         height: calc(100vh - 180px);
@@ -199,7 +201,7 @@ const AggregationsWrapper = enhance(({ state, effects, theme, setSQON, ...props 
         />
         <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
       </div>
-      <Aggregations {...{ ...props, setSQON }} />
+      <Aggregations {...{ ...props, setSQON, containerRef: aggregationsWrapperRef }} />
     </div>
   );
 });
