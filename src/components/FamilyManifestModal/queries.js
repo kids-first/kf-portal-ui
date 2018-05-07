@@ -1,47 +1,58 @@
 import { get, difference } from 'lodash';
 import graphql from 'services/arranger';
 
-export const familyMemberAndParticipantDataQuery = api => ({ sqon }) =>
-  graphql(api)({
+export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
+  const response = await graphql(api)({
     query: `
-      query familyMemberAndParticipantData($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            participants__kf_id {
-              buckets {
-                doc_count
-                key
+        query familyMemberAndParticipantData($sqon: JSON) {
+          file {
+            aggregations(filters: $sqon) {
+              participants__kf_id {
+                buckets {
+                  doc_count
+                  key
+                }
               }
-            }
-            participants__family__family_members__kf_id {
-              buckets {
-                doc_count
-                key
+              participants__family__family_members__kf_id {
+                buckets {
+                  doc_count
+                  key
+                }
               }
             }
           }
         }
-      }
-    `,
+      `,
     variables: { sqon },
   });
+  const extractResults = path => get(response, path, []).map(b => b.key);
+  const familyMemberIds = extractResults(
+    'data.file.aggregations.participants__family__family_members__kf_id.buckets',
+  );
+  const participantIds = extractResults('data.file.aggregations.participants__kf_id.buckets');
+  return {
+    familyMemberIds,
+    participantIds,
+    familyMembersWithoutParticipantIds: difference(familyMemberIds, participantIds),
+  };
+};
 
-export const dataTypeDataQuery = api => ({ familyMemberIds }) =>
-  graphql(api)({
+export const dataTypesFromFamilyMemberIds = async ({ api, familyMemberIds }) => {
+  const response = await graphql(api)({
     query: `
-      query dataTypes($sqon: JSON) {
-        file {
-          aggregations(filters: $sqon) {
-            data_type {
-              buckets {
-                doc_count
-                key
+        query dataTypes($sqon: JSON) {
+          file {
+            aggregations(filters: $sqon) {
+              data_type {
+                buckets {
+                  doc_count
+                  key
+                }
               }
             }
           }
         }
-      }
-    `,
+      `,
     variables: {
       sqon: {
         op: 'and',
@@ -57,35 +68,18 @@ export const dataTypeDataQuery = api => ({ familyMemberIds }) =>
       },
     },
   });
+  return get(response, 'data.file.aggregations.data_type.buckets', []);
+};
 
-export const generateFamilyManifestModalProps = async ({ api, projectId, sqon }) => {
-  // familyMembers and participants
-  const participantAndFamilyMemberIdsAggregation = await familyMemberAndParticipantDataQuery(api)({
-    sqon,
-  });
-  const familyMemberIds = (
-    get(
-      participantAndFamilyMemberIdsAggregation,
-      'data.file.aggregations.participants__family__family_members__kf_id.buckets',
-    ) || []
-  ).map(b => b.key);
-  const participantIds = (
-    get(
-      participantAndFamilyMemberIdsAggregation,
-      'data.file.aggregations.participants__kf_id.buckets',
-    ) || []
-  ).map(b => b.key);
-  const familyMembersWithoutParticipantIds = difference(familyMemberIds, participantIds);
-
-  // data types
-  const dataTypesAggregation = await dataTypeDataQuery(api)({
-    familyMemberIds: familyMembersWithoutParticipantIds,
-  });
-  const dataTypes = get(dataTypesAggregation, 'data.file.aggregations.data_type.buckets') || [];
-
-  return {
+export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
+  const {
     familyMemberIds,
     participantIds,
-    dataTypes,
-  };
+    familyMembersWithoutParticipantIds,
+  } = await familyMemberAndParticipantIds({ api, sqon });
+  const dataTypes = await dataTypesFromFamilyMemberIds({
+    api,
+    familyMemberIds: familyMembersWithoutParticipantIds,
+  });
+  return { familyMemberIds, participantIds, familyMembersWithoutParticipantIds, dataTypes };
 };

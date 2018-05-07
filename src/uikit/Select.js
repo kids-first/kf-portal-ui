@@ -80,6 +80,7 @@ export const SelectOptionDropdown = ({
     {items.map(item => (
       <DropDownOptionComponent
         {...{
+          key: item,
           item,
           itemClassName,
           isItemDisabled,

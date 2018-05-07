@@ -54,19 +54,20 @@
   "Save Query": "Save Query",
   "Save the current configuration of filters": "Save the current configuration of filters",
   "Enter a name for your saved query:": "Enter a name for your saved query:",
+  "Browse": "Browse",
+  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Actions": "Actions",
   "fileRepoSidebar": {
     "noneSelected": "If you have not selected any files, all files in your query will be included in the actions.",
     "missingDownloadPermissions": "Your account does not have the required permission to download this file."
   },
   "Download": "Download",
+  "File Manifests": "File Manifests",
   "Selected File": "Selected File",
   "Failed!": "Failed!",
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
   "Data Analysis": "Data Analysis",
-  "Browse": "Browse",
-  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Generate KF-get ID": "Generate KF-get ID",
   "Download Manifest": "Download Manifest"
 }
