@@ -33,7 +33,7 @@ const StyledSection = styled('section')`
 `;
 
 const SaveButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
+  <button className={theme.hollowButton} {...props}>
     <SaveIcon /> Save
   </button>
 ));
@@ -278,7 +278,7 @@ export default compose(
           </H2>
           <div>
             <div
-              css={`
+              cassName={css`
                 background-color: #f4f5f8;
                 border: solid 1px #d4d6dd;
                 padding: 0.5em;
@@ -295,8 +295,8 @@ export default compose(
                 {interests.map(i => (
                   <div
                     key={i}
-                    css={`
-                      ${theme.listPill} ${editingResearchInterests && theme.listPillClickable};
+                    className={`${theme.listPill}
+                      ${editingResearchInterests && theme.listPillClickable};
                     `}
                     onClick={() => setInterests(xor(interests, [i]))}
                   >

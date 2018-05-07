@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
+import { css } from 'emotion';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
@@ -26,27 +27,26 @@ const SettingsSection = styled('section')`
 export default compose(withTheme, withState('mode', 'setMode', 'account'))(
   ({ profile, theme, submit, mode, setMode }) => (
     <div
-      css={`
-        ${theme.column} width: 70%;
+      className={`${theme.column} ${css`
+        width: 70%;
         padding: 0 2em;
-      `}
+      `}`}
     >
       <SettingsSection>
         <H2>Account Settings</H2>
         <div
-          css={`
-            ${theme.column};
+          className={`${theme.column} ${css`
             width: 70%;
-          `}
+          `}`}
         >
           Email Address:
           <input
             disabled
             value={profile.email}
-            css={`
-              ${theme.input};
+            className={`
+              ${theme.input}; ${css`
               width: 100%;
-            `}
+            `}`}
           />
         </div>
       </SettingsSection>

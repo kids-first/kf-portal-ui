@@ -38,7 +38,7 @@ export const Container = styled('div')`
 `;
 
 export const EditButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
+  <button className={theme.hollowButton} {...props}>
     <PencilIcon /> Edit
   </button>
 ));
@@ -161,7 +161,7 @@ export default compose(
           >
             <span>Contact Information</span>
             <span
-              css={`
+              className={css`
                 text-decoration: underline;
               `}
             >
@@ -171,7 +171,7 @@ export default compose(
             <span>{profile.institution}</span>
             <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
             <span
-              css={`
+              className={css`
                 margin-top: 5px;
               `}
             >
@@ -187,15 +187,14 @@ export default compose(
           </div>
         </div>
         <div
-          css={`
+          clasName={`${theme.column} ${css`
             width: 310px;
-            ${theme.column};
             align-items: center;
-          `}
+          `}`}
         >
           <CompletionWrapper
             completed={state.percentageFilled}
-            css={`
+            className={css`
               width: 130px;
             `}
           >
@@ -203,7 +202,7 @@ export default compose(
           </CompletionWrapper>
 
           <div
-            css={`
+            className={css`
               font-family: 'Open Sans';
               font-size: 13px;
               font-style: italic;
