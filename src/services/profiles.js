@@ -29,7 +29,9 @@ const DEFAULT_FIELDS = `
 `;
 
 export const getProfile = api => async ({ egoId }) => {
-  const { data: { users } } = await api({
+  const {
+    data: { users },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { egoId },
@@ -54,7 +56,11 @@ export const getProfile = api => async ({ egoId }) => {
 };
 
 export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
-  const { data: { data: { userCreate: { record } } } } = await api({
+  const {
+    data: {
+      userCreate: { record },
+    },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { egoId, lastName, firstName, email },
@@ -74,7 +80,11 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
 };
 
 export const updateProfile = api => async ({ user }) => {
-  const { data: { userUpdate: { record } } } = await api({
+  const {
+    data: {
+      userUpdate: { record },
+    },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { record: user },
@@ -94,7 +104,11 @@ export const updateProfile = api => async ({ user }) => {
 };
 
 export const deleteProfile = api => async ({ user }) => {
-  const { data: { userRemove: { recordId } } } = await api({
+  const {
+    data: {
+      userRemove: { recordId },
+    },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { _id: user._id },
