@@ -107,12 +107,14 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             })
           }
         />
-        <ApiContext.Provider value={initializeApi()}>
-          <Route
-            path="/join"
-            exact
-            render={props => {
-              return (
+        <Route
+          path="/join"
+          exact
+          render={props => {
+            return (
+              <ApiContext.Provider
+                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+              >
                 <SideImagePage
                   backgroundImage={scienceBgPath}
                   logo={logo}
@@ -120,13 +122,15 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
                   sideImage={joinImage}
                   {...props}
                 />
-              );
-            }}
-          />
-          <Route
-            path="/"
-            exact
-            render={props => (
+              </ApiContext.Provider>
+            );
+          }}
+        />
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <ApiContext.Provider value={initializeApi()}>
               <SideImagePage
                 logo={logo}
                 backgroundImage={scienceBgPath}
@@ -134,9 +138,9 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
                 sideImage={loginImage}
                 {...props}
               />
-            )}
-          />
-        </ApiContext.Provider>
+            </ApiContext.Provider>
+          )}
+        />
         <Redirect from="*" to="/dashboard" />
       </Switch>
       <Modal />

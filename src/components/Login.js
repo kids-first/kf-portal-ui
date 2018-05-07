@@ -19,6 +19,7 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
+import { logoutAll } from 'services/login';
 
 const styles = {
   container: css`
@@ -162,6 +163,7 @@ class Component extends React.Component<any, any> {
       if (await handleJWT({ jwt, onFinish, setToken, setUser, api })) {
         fetchIntegrationTokens({ setIntegrationToken });
       } else {
+        await logoutAll();
         this.setState({ authorizationError: true });
       }
     } else {
