@@ -88,43 +88,45 @@ export default {
       margin-left: 9px;
     }
   `,
-  hollowButton: css`
-    outline: none;
-    border: 0;
-    background: none;
-    box-shadow: none;
-    border-radius: 0px;
-    padding: 5px 10px;
-    margin: 0px 4px;
-    border-radius: 12px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-    font-family: Montserrat;
-    font-size: 12px;
-    font-weight: 300;
-    letter-spacing: 0.2px;
-    text-align: center;
-    color: #008199;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  hollowButton: `hollowButton ${css`
+    &.hollowButton {
+      outline: none;
+      border: 0;
+      background: none;
+      box-shadow: none;
+      border-radius: 0px;
+      padding: 5px 10px;
+      margin: 0px 4px;
+      border-radius: 12px;
+      background-color: #ffffff;
+      border: solid 1px #cacbcf;
+      font-family: Montserrat;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      text-align: center;
+      color: #008199;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-    &:hover {
-      background-color: #008199;
-      color: #fff;
+      &:hover {
+        background-color: #008199;
+        color: #fff;
+      }
+      &:link {
+        text-decoration: none;
+      }
+      &:disabled {
+        color: ${colors.greyScale7};
+      }
+      &:disabled:hover {
+        background-color: transparent;
+        color: ${colors.greyScale7};
+        cursor: default;
+      }
     }
-    &:link {
-      text-decoration: none;
-    }
-    &:disabled {
-      color: ${colors.greyScale7};
-    }
-    &:disabled:hover {
-      background-color: transparent;
-      color: ${colors.greyScale7};
-      cursor: default;
-    }
-  `,
+  `}`,
   actionButton: css`
     outline: none;
     border: 0;
@@ -296,12 +298,16 @@ export default {
     color: ${colors.greyScale0};
   `,
   column: `column ${css`
-    display: flex;
-    flex-direction: column;
+    &.column {
+      display: flex;
+      flex-direction: column;
+    }
   `}`,
   row: `row ${css`
-    display: flex;
-    flex-direction: row;
+    &.row {
+      display: flex;
+      flex-direction: row;
+    }
   `}`,
   navLink: css`
     display: block;

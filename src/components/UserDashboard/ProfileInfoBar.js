@@ -1,9 +1,10 @@
 import React from 'react';
 import Gravtar from 'uikit/Gravatar';
 import { Link } from 'react-router-dom';
-import EditButton from './EditButton';
+import CogIcon from 'react-icons/lib/fa/cog';
+import PencilIcon from 'react-icons/lib/fa/pencil';
 
-import SettingsButton from './SettingsButton';
+import LinkButton from './LinkButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 
@@ -31,13 +32,13 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
         .map((str, i) => <div key={`${str}${i}`}>{str}</div>)}
       <div className={`email`}>{loggedInUser.email}</div>
     </div>
-    <div
-      css={`
-        display: flex;
-      `}
-    >
-      <EditButton egoId={loggedInUser.egoId} theme={theme} />
-      <SettingsButton egoId={loggedInUser.egoId} theme={theme} />
+    <div className={theme.row}>
+      <LinkButton hash="#aboutMe" icon={<PencilIcon />} egoId={loggedInUser.egoId} theme={theme}>
+        edit profile
+      </LinkButton>
+      <LinkButton hash="#settings" icon={<CogIcon />} egoId={loggedInUser.egoId} theme={theme}>
+        setting
+      </LinkButton>
     </div>
   </div>
 );

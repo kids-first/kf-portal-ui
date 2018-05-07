@@ -69,5 +69,12 @@ export default ({ profileColors }) =>
         margin: 40px 0 58px;
         text-decoration: underline;
       }
+
+      & .hollowButton {
+        font-weight: 500;
+        & .iconContainer {
+          padding-right: 5px;
+        }
+      }
     }
   `}`;
