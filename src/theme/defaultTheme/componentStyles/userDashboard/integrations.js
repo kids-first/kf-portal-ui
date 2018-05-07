@@ -9,6 +9,22 @@ export default ({ theme }) => css`
     align-items: center;
     justify-content: space-around;
 
+    & .integrationsDiv {
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    & .integrationsCircleDiv {
+      width: 82px;
+      height: 82px;
+      flex: none;
+      border-radius: 100%;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      border: solid 1px ${theme.greyScale5};
+    }
+
     & .iconImage {
       width: 42px;
     }
