@@ -33,6 +33,15 @@ export default `fileRepoContainer ${css`
     box-sizing: border-box;
     overflow-y: auto;
     flex-grow: 1;
+    & .accessControlIconImage {
+      width: 11px;
+      margin: auto;
+      display: block;
+    }
+    & .downloadIconImage {
+      width: 10px;
+      margin-right: 9px;
+    }
   }
 
   & .ReactTable .rt-thead .rt-th.-sort-desc,

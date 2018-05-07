@@ -148,11 +148,7 @@ const customTableTypes = {
         <img
           src={require('../assets/icon-controlled-access.svg')}
           alt=""
-          css={`
-            width: 11px;
-            margin: auto;
-            display: block;
-          `}
+          className={`accessControlIconImage`}
         />
       );
     } else {
@@ -160,11 +156,7 @@ const customTableTypes = {
         <img
           src={require('../assets/icon-open-access.svg')}
           alt=""
-          css={`
-            width: 10px;
-            margin: auto;
-            display: block;
-          `}
+          className={`accessControlIconImage`}
         />
       );
     }
@@ -265,14 +257,7 @@ const FileRepo = ({ state, effects, ...props }) => {
                               maxPagesOptions={Math.floor((contentRect.bounds.width - 120) / 60)}
                               exportTSVText={
                                 <React.Fragment>
-                                  <img
-                                    alt=""
-                                    src={downloadIcon}
-                                    css={`
-                                      width: 10px;
-                                      margin-right: 9px;
-                                    `}
-                                  />
+                                  <img alt="" src={downloadIcon} className={`downloadIconImage`} />
                                   <Trans>Export TSV</Trans>
                                 </React.Fragment>
                               }
