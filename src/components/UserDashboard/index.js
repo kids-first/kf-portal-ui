@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css } from 'emotion';
 import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';

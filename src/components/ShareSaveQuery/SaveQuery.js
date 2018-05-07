@@ -10,7 +10,6 @@ import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import Tooltip from 'uikit/Tooltip';
 import Heading from 'uikit/Heading';
 import NiceWhiteButton from 'uikit/NiceWhiteButton';
-import theme from 'theme/defaultTheme';
 import { ModalFooter } from 'components/Modal';
 import { arrangerApiAbsolutePath } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';

@@ -2,7 +2,6 @@ import React from 'react';
 import Modal from 'react-modal';
 import { injectState } from 'freactal';
 import CloseIcon from 'react-icons/lib/md/close';
-import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { getAppElement } from '../../services/globalDomNodes.js';
