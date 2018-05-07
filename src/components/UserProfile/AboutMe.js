@@ -106,15 +106,15 @@ export default compose(
       `}
     >
       <Container
-        className={css`
-          ${theme.row} align-items: flex-start;
-        `}
+        className={`${theme.row} ${css`
+          align-items: flex-start;
+        `}`}
       >
         <div
-          className={css`
+          className={`${theme.column} ${css`
             width: 65%;
-            ${theme.column} justify-content: space-around;
-          `}
+            justify-content: space-around;
+          `}`}
         >
           <H2>
             Background Information
@@ -201,12 +201,12 @@ export default compose(
           )}
           {isEditingBackgroundInfo && (
             <div
-              css={`
-                ${theme.row} justify-content: space-between;
+              className={`${theme.row} ${css`
+                justify-content: space-between;
                 border-radius: 5px;
                 box-shadow: 0 0 2.9px 0.1px #a0a0a3;
                 padding: 1em;
-              `}
+              `}`}
             >
               <button
                 onClick={() => {
@@ -214,7 +214,7 @@ export default compose(
                   setStoryTextarea(profile.story || '');
                   setEditingBackgroundInfo(false);
                 }}
-                css={theme.hollowButton}
+                className={theme.hollowButton}
               >
                 Cancel
               </button>
@@ -259,7 +259,7 @@ export default compose(
                       setInterests([]);
                       setEditingResearchInterests(false);
                     }}
-                    css={theme.hollowButton}
+                    className={theme.hollowButton}
                   >
                     Cancel
                   </button>,
@@ -288,10 +288,9 @@ export default compose(
               <H3>Interests</H3>
               <H4>Tell people about your work background and your research specialties.</H4>
               <div
-                css={`
-                  ${theme.row};
+                className={`${theme.row}; ${css`
                   padding: 5px 0;
-                `}
+                `}`}
               >
                 {interests.map(i => (
                   <div
