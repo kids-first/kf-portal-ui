@@ -3,7 +3,12 @@ import { css } from 'emotion';
 export { default as mySavedQueries } from './mySavedQueries';
 export { default as integrations } from './integrations';
 export { default as completionWrapper } from './completionWrapper';
-export { shareQuery, shareQueryTooltipContent } from './saveShareQueries';
+export {
+  shareQuery,
+  shareQueryTooltipContent,
+  saveQuery,
+  saveQueryTooltipContent,
+} from './saveShareQueries';
 
 export default ({ profileColors }) =>
   `userDashboard ${css`

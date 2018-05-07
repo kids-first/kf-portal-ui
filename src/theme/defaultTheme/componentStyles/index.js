@@ -8,6 +8,8 @@ import userDashboard, {
   completionWrapper,
   shareQuery,
   shareQueryTooltipContent,
+  saveQuery,
+  saveQueryTooltipContent,
 } from './userDashboard';
 
 export default {
@@ -21,4 +23,6 @@ export default {
   completionWrapper,
   shareQuery,
   shareQueryTooltipContent,
+  saveQuery,
+  saveQueryTooltipContent,
 };
