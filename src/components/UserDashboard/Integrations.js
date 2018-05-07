@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { CAVATICA, GEN3 } from 'common/constants';
+import { gen3WebRoot } from 'common/injectGlobals';
 import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import ExternalLink from 'uikit/ExternalLink';
@@ -42,12 +43,12 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           connected={integrationTokens[GEN3]}
           theme={theme}
           name="Gen3"
-          url="https://gen3.kids-first.io/"
+          url={gen3WebRoot}
           unconnectedMsg={
             <div>
               Connect to{' '}
               <ExternalLink
-                href="https://gen3.kids-first.io/"
+                href={gen3WebRoot}
                 hasExternalIcon={false}
                 css={`
                   color: #a42c90;

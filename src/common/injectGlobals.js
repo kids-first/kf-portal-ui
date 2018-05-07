@@ -36,6 +36,7 @@ export const cavaticaApiRoot: string = process.env.REACT_APP_CAVATICA_API;
 export const cavaticaWebRoot: string = process.env.REACT_APP_CAVATICA_WEB;
 
 export const gen3ApiRoot: string = process.env.REACT_APP_GEN3_API;
+export const gen3WebRoot: string = process.env.REACT_APP_GEN3_WEB;
 
 export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
