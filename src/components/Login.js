@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { css } from 'react-emotion';
 import { compose } from 'recompose';
@@ -18,6 +19,7 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
+import { logoutAll } from 'services/login';
 
 const styles = {
   container: css`
@@ -41,26 +43,31 @@ const enhance = compose(injectState, withRouter, withApi);
 export const validateJWT = ({ jwt }) => {
   if (!jwt) return false;
   const data = jwtDecode(jwt);
-  const currentTime = Date.now();
-  const tokenExpiry = new Date(data.exp * 1000).valueOf();
-  return tokenExpiry > currentTime && data;
+  const isCurrent = new Date(data.exp * 1000).valueOf() > Date.now();
+  const isApproved =
+    get(data, 'context.user.roles', []).includes('ADMIN') ||
+    get(data, 'context.user.status') === 'Approved';
+  return isCurrent && isApproved && data;
 };
 
 export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
-  if (!jwtData) return;
-
-  await setToken(jwt);
-  const user = jwtData.context.user;
-  const egoId = jwtData.sub;
-  const existingProfile = await getProfile(api)({ egoId });
-  const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
-  const loggedInUser = {
-    ...(existingProfile || newProfile),
-    email: user.email,
-  };
-  await setUser({ ...loggedInUser, api });
-  onFinish && onFinish(loggedInUser);
+  if (!jwtData) {
+    setToken(null);
+  } else {
+    await setToken(jwt);
+    const user = jwtData.context.user;
+    const egoId = jwtData.sub;
+    const existingProfile = await getProfile(api)({ egoId });
+    const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
+    const loggedInUser = {
+      ...(existingProfile || newProfile),
+      email: user.email,
+    };
+    await setUser({ ...loggedInUser, api });
+    onFinish && onFinish(loggedInUser);
+  }
+  return jwtData;
 };
 
 /**
@@ -97,6 +104,7 @@ class Component extends React.Component<any, any> {
     api: PropTypes.func,
   };
   state = {
+    authorizationError: false,
     securityError: false,
   };
   async componentDidMount() {
@@ -148,24 +156,26 @@ class Component extends React.Component<any, any> {
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
-      const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
-      await handleJWT({ jwt, onFinish, setToken, setUser, api });
-      fetchIntegrationTokens({ setIntegrationToken });
+      const {
+        onFinish,
+        effects: { setToken, setUser, setIntegrationToken },
+      } = props;
+      if (await handleJWT({ jwt, onFinish, setToken, setUser, api })) {
+        fetchIntegrationTokens({ setIntegrationToken });
+      } else {
+        await logoutAll();
+        this.setState({ authorizationError: true });
+      }
     } else {
       console.warn('response error');
     }
   };
 
-  handleSecurityError() {
-    this.setState({
-      securityError: true,
-    });
-  }
+  handleSecurityError = () => this.setState({ securityError: true });
 
   render() {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
-
     return (
       <div className={styles.container}>
         {this.state.securityError ? (
@@ -179,10 +189,23 @@ class Component extends React.Component<any, any> {
             </Trans>
           </div>
         ) : renderSocialLoginButtons ? (
-          [
-            <div key="google" className={styles.googleSignin} id="googleSignin" />,
-            <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />,
-          ]
+          <React.Fragment>
+            {this.state.authorizationError && (
+              <div
+                className={css`
+                  margin-bottom: 10px;
+                  text-align: center;
+                `}
+              >
+                <Trans>
+                  You have not been authorized to access the portal, please contact the
+                  administrators to gain access
+                </Trans>
+              </div>
+            )}
+            <div key="google" className={styles.googleSignin} id="googleSignin" />
+            <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />
+          </React.Fragment>
         ) : (
           <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
         )}

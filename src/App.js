@@ -25,6 +25,7 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
+import { initializeApi, ApiContext } from 'services/api';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -111,13 +112,17 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
           exact
           render={props => {
             return (
-              <SideImagePage
-                backgroundImage={scienceBgPath}
-                logo={logo}
-                Component={Join}
-                sideImage={joinImage}
-                {...{ ...props, api }}
-              />
+              <ApiContext.Provider
+                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+              >
+                <SideImagePage
+                  backgroundImage={scienceBgPath}
+                  logo={logo}
+                  Component={Join}
+                  sideImage={joinImage}
+                  {...props}
+                />
+              </ApiContext.Provider>
             );
           }}
         />
@@ -125,13 +130,15 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
           path="/"
           exact
           render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              sideImage={loginImage}
-              {...{ ...props, api }}
-            />
+            <ApiContext.Provider value={initializeApi()}>
+              <SideImagePage
+                logo={logo}
+                backgroundImage={scienceBgPath}
+                Component={LoginPage}
+                sideImage={loginImage}
+                {...props}
+              />
+            </ApiContext.Provider>
           )}
         />
         <Redirect from="*" to="/dashboard" />

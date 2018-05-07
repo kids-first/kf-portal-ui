@@ -28,6 +28,7 @@
   "login": {
     "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
   },
+  "You have not been authorized to access the portal, please contact the administrators to gain access": "You have not been authorized to access the portal, please contact the administrators to gain access",
   "Dashboard": "Dashboard",
   "File Repository": "File Repository",
   "Login": "Login",

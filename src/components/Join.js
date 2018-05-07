@@ -15,6 +15,7 @@ import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
 import ToSearchPage from 'components/links/ToSearchPage';
+import { withApi } from 'services/api';
 
 const Consent = compose(
   injectState,
@@ -156,7 +157,7 @@ export const ButtonsDiv = styled('div')`
   padding-top: 20px;
 `;
 
-const JoinContent = compose(injectState, withRouter, withTheme)(
+const JoinContent = compose(injectState, withRouter, withTheme, withApi)(
   ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
     <div
       className={css`
