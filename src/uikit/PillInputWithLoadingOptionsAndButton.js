@@ -21,7 +21,8 @@ const LoadingSpinner = () => (
 );
 
 class PillInputWithLoadingOptionsAndButton extends React.Component {
-  initOptionState = (props, val = { enabled: true }) => mapValues(props.options, () => val);
+  initOptionState = (props, val = { enabled: true, loading: false }) =>
+    mapValues(props.options, () => val);
 
   state = {
     isDropdownOpen: false,
