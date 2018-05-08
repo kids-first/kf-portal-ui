@@ -62,7 +62,10 @@ export const H4 = styled('h4')`
   font-weight: normal;
 `;
 
-export const userProfileBackground = (loggedInUser, showBanner = true) => {
+export const userProfileBackground = (
+  loggedInUser,
+  { showBanner = true, gradientDirection = 'right' } = {},
+) => {
   const role = ROLES.find(x => x.type === get(loggedInUser, 'roles[0]', '')) || {};
   const banner = get(role, 'banner', '');
   const profileColors = get(role, 'profileColors', {});
@@ -71,7 +74,7 @@ export const userProfileBackground = (loggedInUser, showBanner = true) => {
     background-repeat: no-repeat;
     background-image: ${showBanner ? `url(${banner}), ` : ``}
       linear-gradient(
-        to bottom,
+        to ${gradientDirection},
         ${profileColors.gradientDark} 33%,
         ${profileColors.gradientMid} 66%,
         ${profileColors.gradientLight}
