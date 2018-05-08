@@ -8,11 +8,14 @@ const debug = process.env.NODE_ENV === 'development';
 let GAState = {
     trackingId: 'UA-87708930-5',
     userId: null,
+    clientId: null
 };
 
 let modalTimings = {};
 
-let setUserId = userId => {
+let setUserDimensions = userId => {
+    ReactGA.set({ clientId: GAState.clientId });
+
     if (userId || GAState.userId) {
         ReactGA.set({ userId: userId || GAState.userId });
     }
@@ -23,9 +26,13 @@ export const addStateInfo = obj => merge(GAState, obj);
 export const initAnalyticsTracking = () => ReactGA.initialize(GAState.trackingId, { debug });
 
 export const trackUserSession = async ({ _id, acceptedTerms }) => {
+    ReactGA.ga(function(tracker) {
+        var clientId = tracker.get('clientId');
+        addStateInfo({ clientId });
+    });
     let userId = _id;
     if (acceptedTerms && !GAState.userId) {
-        setUserId(userId);
+        setUserDimensions(userId);
         addStateInfo({ userId });
         return true;
     } else {
@@ -34,7 +41,7 @@ export const trackUserSession = async ({ _id, acceptedTerms }) => {
 };
 
 export const trackUserInteraction = async eventData => {
-    setUserId();
+    setUserDimensions();
     ReactGA.event(eventData);
     switch (eventData.category) {
         case 'Modals':
@@ -62,12 +69,12 @@ export const trackUserInteraction = async eventData => {
 };
 
 export const trackTiming = async eventData => {
-    setUserId();
+    setUserDimensions();
     ReactGA.timing(eventData);
 };
 
 export const trackPageView = (page, options = {}) => {
-    setUserId();
+    setUserDimensions();
     ReactGA.set({
         page,
         ...options,
