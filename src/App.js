@@ -18,6 +18,7 @@ import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
+import Error from 'components/Error';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
@@ -140,6 +141,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             </ApiContext.Provider>
           )}
         />
+        <Route path="/error" exact render={props => <Error {...props} />} />
         <Redirect from="*" to="/dashboard" />
       </Switch>
       <Modal />

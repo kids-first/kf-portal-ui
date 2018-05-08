@@ -55,17 +55,21 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
   if (!jwtData) {
     setToken(null);
   } else {
-    await setToken(jwt);
-    const user = jwtData.context.user;
-    const egoId = jwtData.sub;
-    const existingProfile = await getProfile(api)({ egoId });
-    const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
-    const loggedInUser = {
-      ...(existingProfile || newProfile),
-      email: user.email,
-    };
-    await setUser({ ...loggedInUser, api });
-    onFinish && onFinish(loggedInUser);
+    try {
+      await setToken(jwt);
+      const user = jwtData.context.user;
+      const egoId = jwtData.sub;
+      const existingProfile = await getProfile(api)({ egoId });
+      const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
+      const loggedInUser = {
+        ...(existingProfile || newProfile),
+        email: user.email,
+      };
+      await setUser({ ...loggedInUser, api });
+      onFinish && onFinish(loggedInUser);
+    } catch (err) {
+      console.error(err);
+    }
   }
   return jwtData;
 };

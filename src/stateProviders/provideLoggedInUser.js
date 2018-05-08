@@ -10,6 +10,7 @@ import {
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
 import { initializeApi } from 'services/api';
+import history from 'services/history';
 
 export default provideState({
   initialState: () => ({
@@ -24,6 +25,9 @@ export default provideState({
       const { setToken, setUser } = effects;
       const jwt = localStorage.getItem('EGO_JWT');
       const api = initializeApi({
+        onError: err => {
+          history.push('/error');
+        },
         onUnauthorized: response => {
           window.location.reload();
         },
