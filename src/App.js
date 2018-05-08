@@ -35,7 +35,7 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
   } else {
-    return <Page {...{ ...props }} />;
+    return <Page {...props} />;
   }
 };
 
@@ -68,7 +68,6 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
           exact
           render={props =>
             forceSelectRole({
-              api,
               isLoadingUser,
               Component: FileRepo,
               loggedInUser,
