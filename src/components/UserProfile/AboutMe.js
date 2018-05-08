@@ -97,25 +97,9 @@ export default compose(
     interests,
     setInterests,
   }) => (
-    <div
-      className={css`
-        display: flex;
-        justify-content: center;
-        padding: 50px 0;
-        background-image: linear-gradient(to bottom, #fff 0%, #fff 70%, transparent 95%);
-      `}
-    >
-      <Container
-        className={`${theme.row} ${css`
-          align-items: flex-start;
-        `}`}
-      >
-        <div
-          className={`${theme.column} ${css`
-            width: 65%;
-            justify-content: space-around;
-          `}`}
-        >
+    <div className={theme.aboutMe()}>
+      <Container className={theme.row}>
+        <div className={`backgroundInfo ${theme.column}`}>
           <H2>
             Background Information
             {canEdit &&
@@ -201,11 +185,8 @@ export default compose(
           )}
           {isEditingBackgroundInfo && (
             <div
-              className={`${theme.row} ${css`
+              className={`box ${theme.row} ${css`
                 justify-content: space-between;
-                border-radius: 5px;
-                box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-                padding: 1em;
               `}`}
             >
               <button
@@ -231,14 +212,11 @@ export default compose(
           )}
         </div>
         <div
-          className={css`
-            border-radius: 5px;
-            background-color: #ffffff;
-            box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-            width: 35%;
-            padding: 0 1em 1em 1em;
+          className={`box ${css`
             margin-left: 1em;
-          `}
+            width: 35%;
+            padding-top: 0px;
+          `}`}
         >
           <H2>
             Research Interests

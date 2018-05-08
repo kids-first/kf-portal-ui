@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { get } from 'lodash';
-import { css } from 'react-emotion';
 import {
   compose,
   lifecycle,
@@ -30,7 +28,9 @@ import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 
-export const Container = props => <div {...props} className={`container ${props.className}`} />;
+export const Container = props => (
+  <div {...props} className={`container ${props.className || ''}`} />
+);
 
 export const EditButton = compose(withTheme)(({ theme, ...props }) => (
   <button className={theme.hollowButton} {...props}>

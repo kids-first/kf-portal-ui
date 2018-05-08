@@ -1,6 +1,8 @@
 import { get } from 'lodash';
 import { css } from 'react-emotion';
 
+export { default as aboutMe } from './aboutMe';
+
 export default ({ ROLES, profile }) =>
   `userProfile ${css`
     &.userProfile {
@@ -8,7 +10,6 @@ export default ({ ROLES, profile }) =>
 
       & .container {
         justify-content: space-around;
-        align-items: center;
         height: 100%;
         width: 76%;
       }
@@ -25,6 +26,10 @@ export default ({ ROLES, profile }) =>
         align-items: center;
         display: flex;
         justify-content: center;
+
+        & .container {
+          align-items: center;
+        }
 
         & .gravatar {
           border-radius: 50%;

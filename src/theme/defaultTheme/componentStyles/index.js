@@ -11,7 +11,7 @@ import userDashboard, {
   saveQuery,
   saveQueryTooltipContent,
 } from './userDashboard';
-import userProfile from './userProfile';
+import userProfile, { aboutMe } from './userProfile';
 
 export default {
   ...uikit,
@@ -29,4 +29,5 @@ export default {
   saveQueryTooltipContent,
 
   userProfile,
+  aboutMe,
 };
