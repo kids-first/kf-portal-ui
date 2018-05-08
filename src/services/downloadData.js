@@ -85,38 +85,41 @@ export const fileManifestParticipantsOnly = getManifestDownload('participant');
 
 export const fileManifestParticipantsAndFamily = getManifestDownload('participant-family');
 
-export const clinicalDataParticipants = ({ sqon, columns }) => () => {
-  return saveTSV({
+const getClinicalDownload = type => ({ sqon, columns }) => () =>
+  saveTSV({
     url: downloadUrl,
     files: [
       {
-        fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
+        fileName: format(new Date(), `[${type}_clinical_]YYYYMMDD[.tsv]`),
         sqon: hackCrossIndex(sqon),
         index: 'participant',
-        uniqueBy: 'diagnoses.hits.edges[].node.diagnosis',
+        sort: [
+          { field: 'family.family_id', order: 'asc' },
+          { field: 'kf_id', order: 'asc' },
+          { field: 'diagnoses.age_at_event_days', order: 'desc' },
+        ],
         columns: findColumnsByField(
           [
             'kf_id',
-            'study.name',
             {
               Header: 'Father ID',
               field: 'family.family_members.kf_id',
               jsonPath:
                 '$.family.family_members.hits.edges[?(@.node.relationship=="father")].node.kf_id',
               query: `
-                family {
-                  family_members{
-                    hits {
-                      edges {
-                        node {
-                          relationship
-                          kf_id
-                        }
+              family {
+                family_members{
+                  hits {
+                    edges {
+                      node {
+                        relationship
+                        kf_id
                       }
                     }
                   }
                 }
-              `,
+              }
+            `,
             },
             {
               Header: 'Mother ID',
@@ -124,23 +127,46 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
               jsonPath:
                 '$.family.family_members.hits.edges[?(@.node.relationship=="mother")].node.kf_id',
               query: `
-                family {
-                  family_members{
-                    hits {
-                      edges {
-                        node {
-                          relationship
-                          kf_id
-                        }
+              family {
+                family_members{
+                  hits {
+                    edges {
+                      node {
+                        relationship
+                        kf_id
                       }
                     }
                   }
                 }
-              `,
+              }
+            `,
             },
+            'is_proband',
+            {
+              Header: 'Other Relationships',
+              field: 'family.family_members.kf_id',
+              type: 'list',
+              jsonPath:
+                '$.family.family_members.hits.edges[?(@.node.relationship!="mother" && @.node.relationship!="father")].node.kf_id',
+              query: `
+              family {
+                family_members{
+                  hits {
+                    edges {
+                      node {
+                        relationship
+                        kf_id
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+            },
+            'study.name',
+            'gender',
             'race',
             'ethnicity',
-            'gender',
             'phenotype.hpo.hpo_ids',
             'phenotype.hpo.negative_hpo_ids',
             'diagnoses.age_at_event_days',
@@ -153,40 +179,10 @@ export const clinicalDataParticipants = ({ sqon, columns }) => () => {
       },
     ],
   });
-};
 
-export const clinicalDataFamily = ({ sqon, columns }) => () => {
-  return saveTSV({
-    url: downloadUrl,
-    files: [
-      {
-        fileName: format(new Date(), '[participants_clinical_]YYYY-MM-DD[.tsv]'),
-        sqon: hackCrossIndex(sqon),
-        index: 'participant',
-        uniqueBy: 'family.family_members.hits.edges[].node.kf_id',
-        columns: findColumnsByField(
-          [
-            'diagnoses.diagnosis',
-            'family.family_members.kf_id',
-            'family.family_id',
-            'family.family_members.relationship',
-            'kf_id',
-            'family.family_members.gender',
-            'family.family_members.ethnicity',
-            'family.family_members.race',
-            'family.family_members.phenotype.hpo.hpo_ids',
-            'family.family_members.phenotype.hpo.negative_hpo_ids',
-            'family.family_members.diagnoses.age_at_event_days',
-            'family.family_members.diagnoses.diagnosis',
-            'family.family_members.diagnoses.diagnosis_category',
-            'family.family_members.diagnoses.tumor_location',
-          ],
-          columns,
-        ),
-      },
-    ],
-  });
-};
+export const clinicalDataParticipants = getClinicalDownload('participant');
+
+export const clinicalDataFamily = getClinicalDownload('participant-and-family');
 
 export const downloadBiospecimen = ({ sqon, columns }) => () => {
   return saveTSV({
