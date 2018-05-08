@@ -4,6 +4,7 @@ import { compose, withState } from 'recompose';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { GEN3 } from 'common/constants';
+import { gen3WebRoot } from 'common/injectGlobals';
 import { ModalFooter } from 'components/Modal/index.js';
 
 import { css } from 'emotion';
@@ -87,7 +88,7 @@ const Gen3Connection = ({
             <span className="numberBullet">1</span>
             <span>
               You will need to retrieve your authentication token from the{' '}
-              <a href="https://gen3qa.kids-first.io" rel="noopener noreferrer" target="_blank">
+              <a href={gen3WebRoot} rel="noopener noreferrer" target="_blank">
                 Kids First Data Catalog
               </a>. After Login, click on the "Profile" tab.
             </span>

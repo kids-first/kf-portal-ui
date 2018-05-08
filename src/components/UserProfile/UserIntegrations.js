@@ -13,7 +13,7 @@ import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
 
-import { cavaticaWebRoot } from 'common/injectGlobals';
+import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
@@ -182,7 +182,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
               <p>
                 Access controlled data by connecting your NIH Login and dbGaP authorized access to
                 the Kids First Data Catalog powered by{' '}
-                <ExternalLink href="https://gen3.kids-first.io/">Gen3</ExternalLink>.
+                <ExternalLink href={gen3WebRoot}>Gen3</ExternalLink>.
               </p>
             </td>
             <td>
