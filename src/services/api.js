@@ -22,7 +22,7 @@ export const initializeApi = ({ onError = () => {}, onUnauthorized = () => {} } 
       if ((response || {}).status === 401) {
         return onUnauthorized(response);
       }
-      onError(err);
+      return onError(err);
     });
 };
 
