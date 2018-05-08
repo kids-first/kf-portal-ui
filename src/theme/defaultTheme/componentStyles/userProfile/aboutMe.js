@@ -16,11 +16,11 @@ export default () =>
           & .editOptions {
             justify-content: space-between;
           }
-          & .researchInterest {
-            margin-left: 1em;
-            width: 35%;
-            padding-top: 0px;
-          }
+        }
+        & .researchInterest {
+          margin-left: 1em;
+          width: 35%;
+          padding-top: 0px;
         }
       }
 
