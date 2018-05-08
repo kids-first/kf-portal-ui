@@ -21,7 +21,8 @@ const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, 
           linear-gradient(#2b388f, #2b388f);
         font-family: Montserrat;
         font-size: 36px;
-        line-height: 0.72;
+        font-weight: 500;
+        margin: 10px 0;
         letter-spacing: 0.5px;
         text-align: center;
         -webkit-background-clip: text;
@@ -56,7 +57,7 @@ const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, 
           padding: 10px 10px 0 10px;
         `}
       >
-        <Trans>New to Kids First?</Trans>{' '}
+        <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
         <Link to="/join">
           <Trans>Join now</Trans>
           <RightIcon />
