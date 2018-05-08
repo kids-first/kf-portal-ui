@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { css } from 'react-emotion';
+import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
@@ -22,23 +23,23 @@ import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
 
 const styles = {
-  container: css`
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    padding-bottom: 10px;
-  `,
+  container: `container ${css`
+    &.container {
+      background-color: #fff;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      padding-bottom: 10px;
+    }
+  `}`,
   googleSignin: css`
     margin-top: 0;
     margin-bottom: 10px;
   `,
 };
 
-const enhance = compose(injectState, withRouter, withApi);
+const enhance = compose(injectState, withRouter, withApi, withTheme);
 
 export const validateJWT = ({ jwt }) => {
   if (!jwt) return false;
@@ -102,6 +103,7 @@ class Component extends React.Component<any, any> {
     effects: PropTypes.object,
     state: PropTypes.object,
     api: PropTypes.func,
+    theme: PropTypes.object,
   };
   state = {
     authorizationError: false,
@@ -156,10 +158,7 @@ class Component extends React.Component<any, any> {
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
-      const {
-        onFinish,
-        effects: { setToken, setUser, setIntegrationToken },
-      } = props;
+      const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
       if (await handleJWT({ jwt, onFinish, setToken, setUser, api })) {
         fetchIntegrationTokens({ setIntegrationToken });
       } else {
@@ -176,8 +175,9 @@ class Component extends React.Component<any, any> {
   render() {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
+    const { theme } = this.props;
     return (
-      <div className={styles.container}>
+      <div className={`${styles.container} ${theme.column}`}>
         {this.state.securityError ? (
           <div style={{ maxWidth: 600 }}>
             <Trans i18nKey="login.connectionFailed">

@@ -26,8 +26,6 @@ export default `fileRepoContainer ${css`
 
   & .tableContainer {
     padding: 30px;
-    display: flex;
-    flex-direction: column;
     position: relative;
     height: 100%;
     box-sizing: border-box;

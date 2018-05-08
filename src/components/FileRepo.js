@@ -213,7 +213,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, the
                     <div className={theme.fileRepoContainer}>
                       <AggregationsWrapper {...props} {...url} />
                       <div style={{ flexGrow: 1, width: 580 }}>
-                        <div className={`tableContainer`}>
+                        <div className={`tableContainer ${theme.column}`}>
                           <div
                             css={`
                               flex: none;

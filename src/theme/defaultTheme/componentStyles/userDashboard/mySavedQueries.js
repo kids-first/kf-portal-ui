@@ -2,10 +2,8 @@ import { css } from 'emotion';
 
 export default ({ theme, profileColors }) => {
   const borderGrey = `#a9adc0`;
-  return `${css`
+  return `mySavedQueries ${css`
     &.mySavedQueries {
-      display: flex;
-      flex-direction: column;
       margin-top: 15px;
       flex: 3;
       border: 1px solid ${theme.greyScale5};

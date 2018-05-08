@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 
-const NiceWhiteButton = () => {
+const NiceWhiteButton = props => {
   const Button = styled.button`
     border-radius: 19px;
     background-color: #ffffff;
@@ -10,8 +10,7 @@ const NiceWhiteButton = () => {
     letter-spacing: 0.2px;
     color: ${props => props.theme.tertiary};
     padding: 5px 18px 5px 5px;
-    display: flex;
-    flex-direction: row;
+
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
@@ -24,7 +23,7 @@ const NiceWhiteButton = () => {
       background-color: ${props => props.theme.greyScale5}
     }
   `;
-  return <Button className={`niceWhiteButton`} />;
+  return <Button {...props} className={`niceWhiteButton ${props.className}`} />;
 };
 
 export default NiceWhiteButton;

@@ -44,35 +44,11 @@ export const ModalSubHeader = withTheme(({ theme, children, ...props }) => (
 
 export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
-    <div
-      css={`
-        display: flex;
-        flex-direction: row;
-        align-items: left;
-        background-color: #f9dee1;
-        border-radius: 7px;
-        border-style: solid;
-        border-color: #e45562;
-        border-width: 1px;
-        padding: 10px;
-        margin-bottom: 1em;
-      `}
-    >
-      <div
-        css={`
-          padding-right: 10px;
-        `}
-      >
+    <div className={`modalWarning ${theme.row}`}>
+      <div className={`iconContainer`}>
         <ErrorIcon width={30} height={30} fill={`#e45562`} />
       </div>
-      <div
-        css={`
-          padding-top: 2px;
-          line-height: 1.6em;
-        `}
-      >
-        {props.children}
-      </div>
+      <div className={`textContainer`}>{props.children}</div>
     </div>
   );
 });
@@ -127,7 +103,7 @@ const ModalView = ({
 }) => (
   <Modal
     overlayClassName={`${theme.modalOverlay} ${classNames ? classNames.overlay : ''}`}
-    className={`${theme.modal} ${isFooterShown ? 'withFooter' : ''} ${
+    className={`${theme.modal} ${theme.column} ${isFooterShown ? 'withFooter' : ''} ${
       classNames ? classNames.modal : ''
     }`}
     {...{

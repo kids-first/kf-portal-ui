@@ -9,6 +9,7 @@ import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
 import { cavaticaWebRoot } from 'common/injectGlobals';
 
+import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import styled from 'react-emotion';
 import { injectState } from 'freactal';
@@ -54,11 +55,6 @@ const styles = css`
     line-height: 1.6em;
   }
 
-  .stepRow {
-    display: flex;
-    flex-direction: row;
-  }
-
   .stepText {
     padding-top: 20px;
   }
@@ -66,6 +62,7 @@ const styles = css`
 
 const enhance = compose(
   injectState,
+  withTheme,
   withState('cavaticaKey', 'setCavaticaKey', ''),
   withState('invalidToken', 'setInvalidToken', false),
 );
@@ -113,7 +110,7 @@ const CavaticaConnectModal = ({
             connect and start copying files.
           </ModalWarning>
         )}
-        <div className="stepRow">
+        <div className={theme.row}>
           <div>
             <NumberBullet>1</NumberBullet>
           </div>
@@ -126,7 +123,7 @@ const CavaticaConnectModal = ({
             </span>
           </div>
         </div>
-        <div className="stepRow">
+        <div className={theme.row}>
           <div>
             <NumberBullet>2</NumberBullet>
           </div>
@@ -146,7 +143,7 @@ const CavaticaConnectModal = ({
             />
           </div>
         </div>
-        <div className="stepRow">
+        <div className={theme.row}>
           <div>
             <NumberBullet>3</NumberBullet>
           </div>
@@ -157,7 +154,11 @@ const CavaticaConnectModal = ({
             </span>
           </div>
         </div>
-        <div css="display:flex; flex-direction:column; margin-left:74px;">
+        <div
+          className={`${theme.row} ${css`
+            margin-left: 74px;
+          `}`}
+        >
           <TokenTitle>Cavatica Authentication Token:</TokenTitle>
           <TokenInput
             id="cavaticaKey"

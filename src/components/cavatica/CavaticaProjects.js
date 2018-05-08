@@ -42,11 +42,6 @@ const styles = theme => css`
     justify-content: space-between;
   }
 
-  .body {
-    display: flex;
-    flex-direction: column;
-  }
-
   .footer {
     padding: 10px;
     display: flex;
@@ -132,7 +127,7 @@ const CavaticaProjects = ({
           />
         }
       </div>
-      <div className="body">
+      <div className={`body ${theme.column}`}>
         <ProjectSelector onChange={e => {}}>
           {projectList &&
             projectList.map &&

@@ -21,7 +21,7 @@ const styles = theme => css`
     border-radius: 10px;
     background-color: #ffffff;
     border: solid 1px #cacbcf;
-  
+
     input:focus,
     select:focus,
     textarea:focus,
@@ -39,8 +39,6 @@ const styles = theme => css`
 
   .body {
     border-bottom: solid 1px #cacbcf;
-    display: flex;
-    flex-direction: column;
   }
 
   .textInput {
@@ -63,29 +61,6 @@ const styles = theme => css`
     display:flex;
     flex-direction:vertical:
     align-items:center;
-  }
-
-  .niceWhiteButton {
-    border-radius: 19px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-    font-size: 11px;
-    letter-spacing: 0.2px;
-    color: ${theme.tertiary};
-    padding: 5px 18px 5px 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: bold;
-    cursor: pointer;
-  
-    :disabled {
-      cursor: default;
-      color: ${theme.greyScale2}
-      background-color: ${theme.greyScale5}
-    }
   }
 `;
 
@@ -119,11 +94,7 @@ const CavaticaExportWidget = ({ state, theme, addingProject, setAddingProject, .
     }
   }
 
-  return (
-    <div>
-      {content}
-    </div>
-  );
+  return <div>{content}</div>;
 };
 
 export default enhance(CavaticaExportWidget);

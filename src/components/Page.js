@@ -1,39 +1,42 @@
 import React from 'react';
+import { withTheme } from 'emotion-theming';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
-const Page = ({
-  Head = Header,
-  Foot = Footer,
-  Component,
-  backgroundImageUrl,
-  containerStyle,
-  ...props
-}) => (
-  <div
-    css={`
-      position: relative;
-      height: 100vh;
-      min-width: 1024px;
-      background-image: url(${backgroundImageUrl});
-      ${containerStyle};
-    `}
-  >
+const Page = withTheme(
+  ({
+    Head = Header,
+    Foot = Footer,
+    Component,
+    backgroundImageUrl,
+    containerStyle,
+    theme,
+    ...props
+  }) => (
     <div
       css={`
-        background-repeat: repeat;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
+        position: relative;
+        height: 100vh;
+        min-width: 1024px;
+        background-image: url(${backgroundImageUrl});
+        ${containerStyle};
       `}
     >
-      <Head />
-      <Component {...props} />
-      <Foot />
+      <div
+        className={theme.column}
+        css={`
+          background-repeat: repeat;
+          height: 100%;
+          width: 100%;
+          background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
+        `}
+      >
+        <Head />
+        <Component {...props} />
+        <Foot />
+      </div>
     </div>
-  </div>
+  ),
 );
 
 export default Page;

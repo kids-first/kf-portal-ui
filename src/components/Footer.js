@@ -1,5 +1,7 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
 const FooterLink = styled.a`
@@ -12,9 +14,9 @@ const FooterLink = styled.a`
   text-decoration: underline;
 `;
 
-const Footer = () => (
+const Footer = compose(withTheme)(({ theme }) => (
   <footer
-    className={css`
+    className={`${theme.column} ${css`
       height: 84px;
       background-color: #ffffff;
       box-shadow: 0 0 4.9px 0.1px #bbbbbb;
@@ -29,10 +31,8 @@ const Footer = () => (
       align-items: center;
       width: 100%;
       z-index: 100;
-      display: flex;
-      flex-direction: column;
       flex: none;
-    `}
+    `}`}
   >
     <div>
       <FooterLink>
@@ -64,6 +64,6 @@ const Footer = () => (
       <Trans i18nKey="dataReleaseVersion">Unreleased</Trans>
     </div>
   </footer>
-);
+));
 
 export default Footer;

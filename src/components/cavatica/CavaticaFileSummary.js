@@ -101,15 +101,8 @@ const styles = theme => css`
   .filePermissions {
     padding: 15px;
   }
-  .summary {
-    ${theme.row};
-    .block {
-      ${theme.row};
-    }
-  }
   .block {
     flex: 1;
-    flex-direction: column;
     padding: 15px;
   }
   .right {
@@ -141,8 +134,6 @@ const styles = theme => css`
     }
   }
   .studyDetails {
-    display: flex;
-    flex-direction: row;
     justify-content: space-between;
     margin-bottom: 1em;
   }
@@ -190,8 +181,8 @@ const CavaticaFileSummary = ({
             />
           )}
           {showAuth && (
-            <div className="summary">
-              <div className="left block">
+            <div className={`${theme.row}`}>
+              <div className={`left block ${theme.row}`}>
                 <div className="summaryLabel">
                   <span>Authorized to copy:</span>
                 </div>
@@ -203,7 +194,7 @@ const CavaticaFileSummary = ({
               </div>
 
               {showUnauth && (
-                <div className="right block">
+                <div className={`right block ${theme.row}`}>
                   <div className="summaryLabel">
                     <span>Unauthorized to copy:</span>
                   </div>
@@ -223,10 +214,10 @@ const CavaticaFileSummary = ({
           )}
           {showDetails && (
             <div className="details">
-              <div className="left block">
+              <div className={`left block ${theme.column}`}>
                 {state.fileStudyData.authorized &&
                   state.fileStudyData.authorized.map(study => (
-                    <div className="studyDetails">
+                    <div className={`studyDetails ${theme.row}`}>
                       <div className="studyName">
                         {truncate(state.fileStudyData.names[study.id], {
                           length: 50,
@@ -239,10 +230,10 @@ const CavaticaFileSummary = ({
                     </div>
                   ))}
               </div>
-              <div className="right block">
+              <div className={`right block ${theme.column}`}>
                 {state.fileStudyData.unauthorized &&
                   state.fileStudyData.unauthorized.map(study => (
-                    <div className="studyDetails">
+                    <div className={`studyDetails ${theme.row}`}>
                       <div className="studyName">
                         {truncate(state.fileStudyData.names[study.id], {
                           length: 50,

@@ -67,12 +67,7 @@ const SuccessToastComponent = ({ theme, selectedProjectData }) => (
       display: flex;
     `}
   >
-    <div
-      css={`
-        display: flex;
-        flex-direction: column;
-      `}
-    >
+    <div className={theme.column}>
       <div
         css={`
           font-size: 16px;
