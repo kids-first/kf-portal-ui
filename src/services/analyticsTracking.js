@@ -8,14 +8,13 @@ const debug = process.env.NODE_ENV === 'development';
 let GAState = {
     trackingId: 'UA-87708930-5',
     userId: null,
-    clientId: null
+    clientId: null,
 };
 
 let modalTimings = {};
 
 let setUserDimensions = userId => {
     ReactGA.set({ clientId: GAState.clientId });
-
     if (userId || GAState.userId) {
         ReactGA.set({ userId: userId || GAState.userId });
     }
@@ -23,13 +22,18 @@ let setUserDimensions = userId => {
 
 export const addStateInfo = obj => merge(GAState, obj);
 
-export const initAnalyticsTracking = () => ReactGA.initialize(GAState.trackingId, { debug });
+export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ _id, acceptedTerms }) => {
+export const initAnalyticsTracking = () => {
+    ReactGA.initialize(GAState.trackingId, { debug });
     ReactGA.ga(function(tracker) {
         var clientId = tracker.get('clientId');
         addStateInfo({ clientId });
+        ReactGA.set({ clientId: GAState.clientId });
     });
+};
+
+export const trackUserSession = async ({ _id, acceptedTerms }) => {
     let userId = _id;
     if (acceptedTerms && !GAState.userId) {
         setUserDimensions(userId);
@@ -43,24 +47,39 @@ export const trackUserSession = async ({ _id, acceptedTerms }) => {
 export const trackUserInteraction = async eventData => {
     setUserDimensions();
     ReactGA.event(eventData);
-    switch (eventData.category) {
+    const { category, action, label } = eventData;
+    switch (category) {
         case 'Modals':
-            if (eventData.action === 'Open') {
+            if (action === 'Open') {
                 modalTimings[eventData.label] = {
                     open: +new Date(),
                     close: null,
                     duration: 0,
                 };
-            } else if (eventData.action === 'Close') {
+            } else if (action === 'Close') {
                 let modal = modalTimings[eventData.label];
                 modal.close = +new Date();
                 modal.duration = modal.close - modal.open;
                 trackTiming({
-                    category: 'Modals',
+                    category,
                     variable: 'open duration',
                     value: modal.duration, // in milliseconds
-                    label: eventData.label,
+                    label: label || null,
                 });
+            }
+            break;
+        case 'Join':
+            if (action === 'Join Completed!') {
+                let joinInitTime = localStorage.getItem('KF_JOIN_INIT_TIME');
+                debugger;
+
+                trackTiming({
+                    category,
+                    variable: 'Join process completion time',
+                    value: +new Date() - joinInitTime, // in milliseconds
+                    label: label || null,
+                });
+                localStorage.removeItem('KF_JOIN_INIT_TIME');
             }
             break;
         default:
