@@ -72,6 +72,7 @@ export const SelectOptionDropdown = compose(withTheme)(
       {items.map(item => (
         <DropDownOptionComponent
           {...{
+            key: item,
             item,
             itemClassName,
             isItemDisabled,

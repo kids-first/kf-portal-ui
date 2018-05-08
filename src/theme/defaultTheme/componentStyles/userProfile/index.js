@@ -15,13 +15,6 @@ export default ({ ROLES, profile }) =>
       }
 
       & .hero {
-        background: url(${get(
-            ROLES.reduce((acc, { type, banner }) => ({ ...acc, [type]: banner }), {}),
-            get(profile.roles, 0),
-            '',
-          )})
-          no-repeat;
-        background-color: #1094d5;
         min-height: 330px;
         align-items: center;
         display: flex;

@@ -23,7 +23,7 @@
   "Save": "Save",
   "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "Log in": "Log in",
-  "New to Kids First?": "New to Kids First?",
+  "New to Kids First Data Resource Portal?": "New to Kids First Data Resource Portal?",
   "Join now": "Join now",
   "login": {
     "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
@@ -55,19 +55,20 @@
   "Save Query": "Save Query",
   "Save the current configuration of filters": "Save the current configuration of filters",
   "Enter a name for your saved query:": "Enter a name for your saved query:",
+  "Browse": "Browse",
+  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Actions": "Actions",
   "fileRepoSidebar": {
     "noneSelected": "If you have not selected any files, all files in your query will be included in the actions.",
     "missingDownloadPermissions": "Your account does not have the required permission to download this file."
   },
   "Download": "Download",
+  "File Manifests": "File Manifests",
   "Selected File": "Selected File",
   "Failed!": "Failed!",
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
   "Data Analysis": "Data Analysis",
-  "Browse": "Browse",
-  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Generate KF-get ID": "Generate KF-get ID",
   "Download Manifest": "Download Manifest"
 }

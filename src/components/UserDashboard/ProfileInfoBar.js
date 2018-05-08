@@ -7,9 +7,10 @@ import PencilIcon from 'react-icons/lib/fa/pencil';
 import LinkButton from './LinkButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
+import { userProfileBackground } from '../UserProfile';
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
-  <div className={`profileInfoBar ${theme.column}`}>
+  <div className={`profileInfoBar ${theme.column} ${userProfileBackground(loggedInUser, false)};`}>
     <CompletionWrapper completed={percentageFilled} innerCircleSize="83.18%">
       <Gravtar className={`gravatar`} email={loggedInUser.email || ''} size={180} />
     </CompletionWrapper>

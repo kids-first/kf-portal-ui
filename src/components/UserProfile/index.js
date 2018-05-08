@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+import { css } from 'emotion';
 import {
   compose,
   lifecycle,
@@ -57,6 +59,23 @@ export const H4 = styled('h4')`
   font-weight: normal;
 `;
 
+export const userProfileBackground = (loggedInUser, showBanner = true) => {
+  const role = ROLES.find(x => x.type === get(loggedInUser, 'roles[0]', '')) || {};
+  const banner = get(role, 'banner', '');
+  const profileColors = get(role, 'profileColors', {});
+  return css`
+    background-position-x: right;
+    background-repeat: no-repeat;
+    background-image: ${showBanner ? `url(${banner}), ` : ``}
+      linear-gradient(
+        to bottom,
+        ${profileColors.gradientDark} 33%,
+        ${profileColors.gradientMid} 66%,
+        ${profileColors.gradientLight}
+      );
+  `;
+};
+
 export default compose(
   injectState,
   withRouter,
@@ -103,7 +122,7 @@ export default compose(
   ),
 )(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash }, api }) => (
   <div className={theme.userProfile({ ROLES, profile })}>
-    <div className={`hero`}>
+    <div className={`hero ${userProfileBackground(profile)}`}>
       <Container className={theme.row}>
         <Gravtar email={profile.email || ''} size={173} />
         <div className={`profileInfo ${theme.column}`}>
