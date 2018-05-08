@@ -20,6 +20,8 @@ import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
+import { trackUserInteraction } from 'services/analyticsTracking';
+
 
 const styles = {
   container: css`
@@ -137,6 +139,7 @@ class Component extends React.Component<any, any> {
     });
 
     if (response) {
+      this.trackUserSignIn('Facebook');
       this.handleLoginResponse(response);
     }
   };
@@ -148,6 +151,7 @@ class Component extends React.Component<any, any> {
     });
 
     if (response) {
+      this.trackUserSignIn('Google');
       this.handleLoginResponse(response);
     }
   };
@@ -170,7 +174,15 @@ class Component extends React.Component<any, any> {
       console.warn('response error');
     }
   };
-
+  trackUserSignIn = (provider) => {
+    let { location: {pathname} } = this.props;
+    let actionType = pathname === '/join' ? 'Join' : 'Log In';
+      trackUserInteraction({
+        category: actionType,
+        action: `${actionType} with Provider`,
+        label: provider
+      })
+  };
   handleSecurityError = () => this.setState({ securityError: true });
 
   render() {
