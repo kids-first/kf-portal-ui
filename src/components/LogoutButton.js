@@ -9,14 +9,13 @@ import { withApi } from 'services/api';
 
 const enhance = compose(withRouter, injectState, withTheme, withApi);
 
-export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) => {
-  return Promise.race([logoutAll()]).then(() => {
+export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) =>
+  logoutAll().then(() => {
     setUser({ api });
     setToken(null);
     clearIntegrationTokens();
     history.push('/');
   });
-};
 
 const Logout = ({
   history,
