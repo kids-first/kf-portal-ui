@@ -69,7 +69,7 @@ export default ({ ROLES, profile }) =>
         }
       }
 
-      & .secondaryNav {
+      & .secondaryNavContainer {
         display: flex;
         justify-content: center;
         align-items: flex-start;

@@ -1,7 +1,23 @@
 import { css } from 'react-emotion';
 import colors from './colors';
 
+const utils = {
+  column: `column ${css`
+    &.column {
+      display: flex;
+      flex-direction: column;
+    }
+  `}`,
+  row: `row ${css`
+    &.row {
+      display: flex;
+      flex-direction: row;
+    }
+  `}`,
+};
+
 export default {
+  ...utils,
   normalText: css`
     font-family: 'Open Sans';
     font-size: 12px;
@@ -297,18 +313,6 @@ export default {
     letter-spacing: 0.2px;
     color: ${colors.greyScale0};
   `,
-  column: `column ${css`
-    &.column {
-      display: flex;
-      flex-direction: column;
-    }
-  `}`,
-  row: `row ${css`
-    &.row {
-      display: flex;
-      flex-direction: row;
-    }
-  `}`,
   navLink: css`
     display: block;
     color: #90278e;
@@ -327,102 +331,102 @@ export default {
       color: #ffffff;
     }
   `,
-  navBar: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-family: montserrat;
-    font-size: 14px;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
-    font-family: Montserrat;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
-    text-align: left;
-    color: #90278e;
-  `,
-  secondaryNav: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-family: montserrat;
-    font-size: 14px;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
+  navBar: `navBar ${utils.row} ${css`
+    &.navBar {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      font-family: montserrat;
+      font-size: 14px;
+      line-height: 1.86;
+      letter-spacing: 0.2px;
+      font-family: Montserrat;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.86;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: #90278e;
+    }
+  `}`,
+  secondaryNav: `secondaryNav ${utils.row} ${css`
+    &.secondaryNav {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      align-items: center;
+      font-family: montserrat;
+      font-size: 14px;
+      line-height: 1.86;
+      letter-spacing: 0.2px;
 
-    li {
-      a {
-        display: block;
-        font-family: Montserrat;
-        font-size: 14px;
-        line-height: 1.86;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: ${colors.active};
-        font-weight: 500;
-        padding: 0 10px;
-        border-bottom: 3px solid transparent;
-        margin-right: 1em;
-        text-decoration: none;
-      }
+      li {
+        a {
+          display: block;
+          font-family: Montserrat;
+          font-size: 14px;
+          line-height: 1.86;
+          letter-spacing: 0.2px;
+          text-align: left;
+          color: ${colors.active};
+          font-weight: 500;
+          padding: 0 10px;
+          border-bottom: 3px solid transparent;
+          margin-right: 1em;
+          text-decoration: none;
+        }
 
-      a:hover,
-      a.active {
-        cursor: pointer;
-        color: ${colors.highlight};
-        font-weight: 500;
-        border-bottom: 3px solid ${colors.highlight};
-        text-decoration: none;
+        a:hover,
+        a.active {
+          cursor: pointer;
+          color: ${colors.highlight};
+          font-weight: 500;
+          border-bottom: 3px solid ${colors.highlight};
+          text-decoration: none;
+        }
       }
     }
-  `,
-  verticalNav: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    font-family: Montserrat;
-    font-size: 14px;
-    line-height: 2.86;
-    letter-spacing: 0.2px;
-    text-align: left;
+  `}`,
+  verticalNav: `verticalNav ${utils.column} ${css`
+    &.verticalNav {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Montserrat;
+      font-size: 14px;
+      line-height: 2.86;
+      letter-spacing: 0.2px;
+      text-align: left;
 
-    li {
-      a {
-        display: block;
-        font-family: Montserrat;
-        font-size: 14px;
-        line-height: 1.86;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: ${colors.active};
-        font-weight: 500;
-        padding: 0 10px;
-        border-left: 3px solid transparent;
-        margin-right: 1em;
-        margin-top: 1em;
-      }
+      li {
+        a {
+          display: block;
+          font-family: Montserrat;
+          font-size: 14px;
+          line-height: 1.86;
+          letter-spacing: 0.2px;
+          text-align: left;
+          color: ${colors.active};
+          font-weight: 500;
+          padding: 0 10px;
+          border-left: 3px solid transparent;
+          margin-right: 1em;
+          margin-top: 1em;
+        }
 
-      a:hover,
-      a.active {
-        cursor: pointer;
-        color: ${colors.highlight};
-        font-weight: 500;
-        border-left: 3px solid ${colors.highlight};
+        a:hover,
+        a.active {
+          cursor: pointer;
+          color: ${colors.highlight};
+          font-weight: 500;
+          border-left: 3px solid ${colors.highlight};
+        }
       }
     }
-  `,
+  `}`,
   select: css`
     width: 200px;
     padding: 6px 12px;

@@ -138,7 +138,7 @@ export default compose(
         </div>
       </Container>
     </div>
-    <div className={`secondaryNav`}>
+    <div className={`secondaryNavContainer`}>
       <Container>
         <ul className={theme.secondaryNav}>
           <li>

@@ -81,10 +81,9 @@ const Header = ({
           </Link>
           {canSeeProtectedRoutes && (
             <ul
-              css={`
-                ${theme.navBar};
+              className={`${theme.navBar} ${css`
                 margin-left: 40px;
-              `}
+              `}`}
             >
               <li>
                 <NavLink to="/dashboard">
@@ -100,10 +99,9 @@ const Header = ({
           )}
         </div>
         <ul
-          className={css`
-            ${theme.navBar};
+          className={`${theme.navBar} ${css`
             justify-content: flex-end;
-          `}
+          `}`}
         >
           {!loggedInUser && (
             <li>
