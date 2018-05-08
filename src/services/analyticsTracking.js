@@ -3,7 +3,6 @@ import ReactGA from 'react-ga';
 import { gaTrackingID } from 'common/injectGlobals';
 import { merge } from 'lodash';
 
-
 const debug = process.env.NODE_ENV === 'development';
 
 let GAState = {
@@ -14,10 +13,10 @@ let GAState = {
 let modalTimings = {};
 
 let setUserId = userId => {
-    if(userId || GAState.userId ) {
-        ReactGA.set({ userId: userId || GAState.userId });  
+    if (userId || GAState.userId) {
+        ReactGA.set({ userId: userId || GAState.userId });
     }
-} 
+};
 
 export const addStateInfo = obj => merge(GAState, obj);
 
@@ -65,22 +64,22 @@ export const trackUserInteraction = async eventData => {
 export const trackTiming = async eventData => {
     setUserId();
     ReactGA.timing(eventData);
-}
+};
+
+export const trackPageView = (page, options = {}) => {
+    setUserId();
+    ReactGA.set({
+        page,
+        ...options,
+    });
+    ReactGA.pageview(page);
+};
 
 export function withPageViewTracker(WrappedComponent, options = {}) {
-    const trackPage = page => {
-        setUserId();
-        ReactGA.set({
-            page,
-            ...options,
-        });
-        ReactGA.pageview(page);
-    };
-
     const HOC = class extends Component {
         componentDidMount() {
             const { pathname, hash, search } = this.props.location;
-            trackPage(pathname + hash + search);
+            trackPageView(pathname + hash + search);
         }
 
         componentWillReceiveProps(nextProps) {
@@ -89,7 +88,7 @@ export function withPageViewTracker(WrappedComponent, options = {}) {
 
             if (currentPage !== nextPage) {
                 const { pathname, hash, search } = this.props.location;
-                trackPage(pathname + hash + search);
+                trackPageView(pathname + hash + search);
             }
         }
 
