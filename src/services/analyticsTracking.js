@@ -3,6 +3,7 @@ import ReactGA from 'react-ga';
 import { gaTrackingID } from 'common/injectGlobals';
 import { merge } from 'lodash';
 
+
 const debug = process.env.NODE_ENV === 'development';
 
 let GAState = {
@@ -12,7 +13,11 @@ let GAState = {
 
 let modalTimings = {};
 
-let setUserId = userId => ReactGA.set({ userId: userId || GAState.userId });
+let setUserId = userId => {
+    if(userId || GAState.userId ) {
+        ReactGA.set({ userId: userId || GAState.userId });  
+    }
+} 
 
 export const addStateInfo = obj => merge(GAState, obj);
 

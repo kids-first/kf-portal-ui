@@ -16,6 +16,7 @@ import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
 import ToSearchPage from 'components/links/ToSearchPage';
 import { withApi } from 'services/api';
+import { withPageViewTracker } from 'services/analyticsTracking';
 
 const Consent = compose(
   injectState,
@@ -157,7 +158,7 @@ export const ButtonsDiv = styled('div')`
   padding-top: 20px;
 `;
 
-const JoinContent = compose(injectState, withRouter, withTheme, withApi)(
+const JoinContent = compose(injectState, withRouter, withTheme, withPageViewTracker, withApi)(
   ({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
     <div
       className={css`
