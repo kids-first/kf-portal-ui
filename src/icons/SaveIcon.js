@@ -2,9 +2,9 @@ import React from 'react';
 
 export default ({ className, ...props }) => (
   <svg
+    className={`saveIcon ${className}`}
     css={`
       fill: #a9adc0;
-      ${className};
     `}
     {...props}
     xmlns="http://www.w3.org/2000/svg"

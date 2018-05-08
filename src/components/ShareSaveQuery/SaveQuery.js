@@ -1,4 +1,6 @@
 import React from 'react';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 import Component from 'react-component-component';
 import { injectState } from 'freactal';
 import { Route } from 'react-router-dom';
@@ -8,14 +10,13 @@ import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import Tooltip from 'uikit/Tooltip';
 import Heading from 'uikit/Heading';
 import NiceWhiteButton from 'uikit/NiceWhiteButton';
-import theme from 'theme/defaultTheme';
 import { ModalFooter } from 'components/Modal';
 import { arrangerApiAbsolutePath } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 
-export default injectState(
+export default compose(injectState, withTheme)(
   class extends React.Component {
     constructor(props) {
       super(props);
@@ -49,20 +50,10 @@ export default injectState(
     };
 
     render() {
-      const { className = '' } = this.props;
+      const { className = '', theme } = this.props;
       return (
         !!this.props.state.loggedInUser && (
-          <div
-            css={`
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 10px;
-              background-color: aliceblue;
-              border: 1px solid #d6d6d6;
-              ${className};
-            `}
-          >
+          <div className={`${theme.saveQuery()} ${className}`}>
             <div
               id="save"
               className="sqon-bubble sqon-clear"
@@ -91,60 +82,22 @@ export default injectState(
                       <Component
                         initialState={{ saved: false }}
                         render={({ state, setState }) => (
-                          <div
-                            css={`
-                              position: relative;
-                              height: 225px;
-                            `}
-                          >
+                          <div className={theme.saveQueryTooltipContent(theme)}>
                             <div
-                              css={`
-                                transform: translateX(-100%);
-                                transition: transform 0.3s ease;
-                                color: red;
-                                position: absolute;
-                                color: red;
-                                width: 100%;
-                                height: 100%;
-                                background-color: #00afee;
-                                z-index: 1;
-                                text-align: center;
-                              `}
-                              style={{
-                                ...(state.saved && this.state.link
-                                  ? { transform: 'translateX(0%)' }
-                                  : {}),
-                              }}
+                              className={`successSlideIn ${
+                                state.saved && this.state.link ? 'shown' : ''
+                              }`}
                             >
-                              <div
-                                css={`
-                                  color: white;
-                                  font-size: 20px;
-                                  padding: 20px;
-                                  font-weight: bold;
-                                `}
-                              >
+                              <div className={`slideInContent`}>
                                 <Trans>Query saved succesfully!</Trans>
                               </div>
                               <div onClick={() => history.push('/dashboard')}>
-                                <NiceWhiteButton
-                                  css={`
-                                    margin: 0 auto;
-                                    padding: 10px 15px;
-                                  `}
-                                >
+                                <NiceWhiteButton>
                                   <Trans>View in My Saved Queries</Trans>
                                 </NiceWhiteButton>
                               </div>
                             </div>
-                            <Heading
-                              css={`
-                                border-bottom: 1px solid ${theme.greyScale4};
-                                padding: 7px;
-                                display: flex;
-                                align-items: center;
-                              `}
-                            >
+                            <Heading>
                               <Trans>Save Query</Trans>
                               {this.state.loading && (
                                 <Spinner
@@ -160,49 +113,21 @@ export default injectState(
                                 />
                               )}
                             </Heading>
-                            <div
-                              css={`
-                                padding: 0 9px;
-                                font-style: italic;
-                                color: ${theme.greyScale2};
-                              `}
-                            >
+                            <div className={`explanation`}>
                               <Trans>Save the current configuration of filters</Trans>
                             </div>
-                            <div
-                              css={`
-                                font-weight: bold;
-                                margin-top: 10px;
-                                padding: 0 9px;
-                                color: ${theme.greyScale2};
-                              `}
-                            >
+                            <div className={`queryNamePrompt`}>
                               <Trans>Enter a name for your saved query:</Trans>
                             </div>
-                            <div
-                              css={`
-                                margin-bottom: 85px;
-                              `}
-                            >
-                              <input
-                                css={`
-                                  border-radius: 10px;
-                                  background-color: #ffffff;
-                                  border: solid 1px #cacbcf;
-                                  padding: 5px;
-                                  font-size: 1em;
-                                  margin: 10px;
-                                  margin-bottom: 0px;
-                                  width: calc(100% - 30px);
-                                `}
-                                type="text"
-                                value={this.state.queryName}
-                                ref={input => {
-                                  this.input = input;
-                                }}
-                                onChange={e => this.setState({ queryName: e.target.value })}
-                              />
-                            </div>
+                            <input
+                              className={`queryNameInput`}
+                              type="text"
+                              value={this.state.queryName}
+                              ref={input => {
+                                this.input = input;
+                              }}
+                              onChange={e => this.setState({ queryName: e.target.value })}
+                            />
                             <ModalFooter
                               handleSubmit={() => setState({ saved: true }, this.save)}
                               handleCancelClick={() => this.setState({ open: false })}

@@ -1,111 +1,45 @@
 import React from 'react';
 import Gravtar from 'uikit/Gravatar';
 import { Link } from 'react-router-dom';
-import EditButton from './EditButton';
+import CogIcon from 'react-icons/lib/fa/cog';
+import PencilIcon from 'react-icons/lib/fa/pencil';
 
-import SettingsButton from './SettingsButton';
+import LinkButton from './LinkButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import { userProfileBackground } from '../UserProfile';
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
-  <div
-    css={`
-      ${theme.column};
-      width: 411px;
-      height: 100%;
-      ${userProfileBackground(loggedInUser, false)};
-      box-shadow: 0 0 4.8px 0.2px #a0a0a3;
-      padding-top: 40px;
-      align-content: space-around;
-      align-items: center;
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 14px;
-      flex: none;
-      text-align: center;
-    `}
-  >
+  <div className={`profileInfoBar ${theme.column} ${userProfileBackground(loggedInUser, false)};`}>
     <CompletionWrapper completed={percentageFilled} innerCircleSize="83.18%">
-      <Gravtar
-        email={loggedInUser.email || ''}
-        size={180}
-        css={`
-          background-color: #fff;
-          border: 1px solid #cacbcf;
-          width: 100%;
-          height: 100%;
-        `}
-      />
+      <Gravtar className={`gravatar`} email={loggedInUser.email || ''} size={180} />
     </CompletionWrapper>
 
-    <RoleIconButton
-      css={`
-        margin-top: 20px;
-        margin-bottom: 43px;
-        width: 290px;
-      `}
-    >
-      <div>
-        <span
-          css={`
-            font-weight: 500;
-          `}
-        >
-          {(percentageFilled * 100).toFixed(0)}%
-        </span>{' '}
-        Complete
-      </div>
+    <RoleIconButton className={`roleIconButton`}>
+      <span>{`${(percentageFilled * 100).toFixed(0)}% Complete`}</span>
     </RoleIconButton>
     <div>
-      <Link
-        to={`/user/${loggedInUser.egoId}#aboutMe`}
-        css={`
-          text-decoration: underline;
-          text-align: center;
-          color: #ffffff;
-          font-size: 28px;
-          font-weight: 500;
-          line-height: 1.11;
-          letter-spacing: 0.4px;
-          margin-bottom: 24px;
-        `}
-      >
+      <Link to={`/user/${loggedInUser.egoId}#aboutMe`} className={`userFullName`}>
         {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
         {loggedInUser.firstName} {loggedInUser.lastName}
       </Link>
       {[
-        loggedInUser.jobTitle && (
-          <span
-            css={`
-              font-size: 18px;
-            `}
-          >
-            {loggedInUser.jobTitle}
-          </span>
-        ),
+        loggedInUser.jobTitle && <span className={`jobTitle`}>{loggedInUser.jobTitle}</span>,
         loggedInUser.institution,
         [loggedInUser.city, loggedInUser.state].filter(Boolean).join(', '),
         loggedInUser.country,
       ]
         .filter(Boolean)
         .map((str, i) => <div key={`${str}${i}`}>{str}</div>)}
-      <div
-        css={`
-          margin: 40px 0 58px;
-          text-decoration: underline;
-        `}
-      >
-        {loggedInUser.email}
-      </div>
+      <div className={`email`}>{loggedInUser.email}</div>
     </div>
-    <div
-      css={`
-        display: flex;
-      `}
-    >
-      <EditButton egoId={loggedInUser.egoId} theme={theme} />
-      <SettingsButton egoId={loggedInUser.egoId} theme={theme} />
+    <div className={theme.row}>
+      <LinkButton hash="#aboutMe" icon={<PencilIcon />} egoId={loggedInUser.egoId} theme={theme}>
+        edit profile
+      </LinkButton>
+      <LinkButton hash="#settings" icon={<CogIcon />} egoId={loggedInUser.egoId} theme={theme}>
+        setting
+      </LinkButton>
     </div>
   </div>
 );

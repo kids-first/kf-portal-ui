@@ -33,7 +33,7 @@ const StyledSection = styled('section')`
 `;
 
 const SaveButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
+  <button className={theme.hollowButton} {...props}>
     <SaveIcon /> Save
   </button>
 ));
@@ -97,25 +97,9 @@ export default compose(
     interests,
     setInterests,
   }) => (
-    <div
-      className={css`
-        display: flex;
-        justify-content: center;
-        padding: 50px 0;
-        background-image: linear-gradient(to bottom, #fff 0%, #fff 70%, transparent 95%);
-      `}
-    >
-      <Container
-        className={css`
-          ${theme.row} align-items: flex-start;
-        `}
-      >
-        <div
-          className={css`
-            width: 65%;
-            ${theme.column} justify-content: space-around;
-          `}
-        >
+    <div className={theme.aboutMe()}>
+      <Container className={theme.row}>
+        <div className={`backgroundInfo ${theme.column}`}>
           <H2>
             Background Information
             {canEdit &&
@@ -200,21 +184,14 @@ export default compose(
             </div>
           )}
           {isEditingBackgroundInfo && (
-            <div
-              css={`
-                ${theme.row} justify-content: space-between;
-                border-radius: 5px;
-                box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-                padding: 1em;
-              `}
-            >
+            <div className={`box editOptions ${theme.row}`}>
               <button
                 onClick={() => {
                   setBioTextarea(profile.bio || '');
                   setStoryTextarea(profile.story || '');
                   setEditingBackgroundInfo(false);
                 }}
-                css={theme.hollowButton}
+                className={theme.hollowButton}
               >
                 Cancel
               </button>
@@ -230,16 +207,7 @@ export default compose(
             </div>
           )}
         </div>
-        <div
-          className={css`
-            border-radius: 5px;
-            background-color: #ffffff;
-            box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-            width: 35%;
-            padding: 0 1em 1em 1em;
-            margin-left: 1em;
-          `}
-        >
+        <div className={`box researchInterest`}>
           <H2>
             Research Interests
             {canEdit &&
@@ -259,7 +227,7 @@ export default compose(
                       setInterests([]);
                       setEditingResearchInterests(false);
                     }}
-                    css={theme.hollowButton}
+                    className={theme.hollowButton}
                   >
                     Cancel
                   </button>,
@@ -278,7 +246,7 @@ export default compose(
           </H2>
           <div>
             <div
-              css={`
+              className={css`
                 background-color: #f4f5f8;
                 border: solid 1px #d4d6dd;
                 padding: 0.5em;
@@ -288,16 +256,15 @@ export default compose(
               <H3>Interests</H3>
               <H4>Tell people about your work background and your research specialties.</H4>
               <div
-                css={`
-                  ${theme.row};
+                className={`${theme.row}; ${css`
                   padding: 5px 0;
-                `}
+                `}`}
               >
                 {interests.map(i => (
                   <div
                     key={i}
-                    css={`
-                      ${theme.listPill} ${editingResearchInterests && theme.listPillClickable};
+                    className={`${theme.listPill}
+                      ${editingResearchInterests && theme.listPillClickable};
                     `}
                     onClick={() => setInterests(xor(interests, [i]))}
                   >

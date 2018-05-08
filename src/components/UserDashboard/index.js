@@ -22,12 +22,7 @@ export default compose(
   );
 
   return (
-    <div
-      css={`
-        ${theme.row};
-        height: calc(100% - 170px);
-      `}
-    >
+    <div className={`${theme.row} ${theme.userDashboard({ profileColors })}`}>
       <ProfileInfoBar
         theme={theme}
         percentageFilled={percentageFilled}
@@ -35,10 +30,9 @@ export default compose(
         profileColors={profileColors}
       />
       <div
+        className={`dashboardContent ${theme.column}`}
         css={`
-          ${theme.column};
           flex-grow: 1;
-          padding: 40px;
         `}
       >
         <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>

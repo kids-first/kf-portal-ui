@@ -18,19 +18,19 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       `}
     >
       <Container
-        className={css`
-          ${theme.row} align-items: flex-start;
-        `}
+        className={`${theme.row} ${css`
+          align-items: flex-start;
+        `}`}
       >
         <div
-          css={`
+          className={css`
             border-radius: 5px;
             background-color: #ffffff;
             box-shadow: 0 0 2.9px 0.1px #a0a0a3;
             padding: 1em;
           `}
         >
-          <ul css={theme.verticalNav}>
+          <ul className={theme.verticalNav}>
             <li>
               <a className={mode === 'account' ? 'active' : ''} onClick={() => setMode('account')}>
                 Account & Integrations

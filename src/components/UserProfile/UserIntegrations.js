@@ -93,9 +93,9 @@ const enhance = compose(
 
 const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
   return (
-    <div css="flex-direction: column;">
+    <div className={theme.column}>
       <div
-        css={`
+        className={css`
           color: ${theme.active};
           padding: 10px;
         `}
@@ -103,7 +103,11 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <CheckIcon size={20} />
         <span>Connected</span>
       </div>
-      <div css="display: flex;">
+      <div
+        className={css`
+          display: flex;
+        `}
+      >
         <Button onClick={onView} className="connectedButton">
           <ViewIcon />View
         </Button>
@@ -120,9 +124,9 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
 
 const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
   return (
-    <div css="flex-direction: column;">
+    <div className={theme.column}>
       <div
-        css={`
+        className={css`
           color: ${theme.active};
           padding: 10px;
         `}
@@ -130,7 +134,11 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         <CheckIcon size={20} />
         <span> Connected</span>
       </div>
-      <div css="display: flex;">
+      <div
+        className={css`
+          display: flex;
+        `}
+      >
         <Button onClick={onEdit} className="connectedButton">
           <PencilIcon />Edit
         </Button>
@@ -150,9 +158,9 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
 
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
   return (
-    <div css={styles}>
+    <div className={styles}>
       <table
-        css={`
+        className={css`
           td,
           th {
             border: 1px solid ${theme.greyScale5};
@@ -160,7 +168,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
         `}
       >
         <thead
-          css={`
+          className={css`
             background: ${theme.greyScale6};
             color: ${theme.secondary};
             text-align: left;
@@ -218,7 +226,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                   })
                 ) : (
                   <button
-                    css={theme.actionButton}
+                    className={theme.actionButton}
                     onClick={() =>
                       effects.setModal({
                         title: 'How to Connect to Gen3',
@@ -272,7 +280,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                   })
                 ) : (
                   <button
-                    css={theme.actionButton}
+                    className={theme.actionButton}
                     onClick={() =>
                       effects.setModal({
                         title: 'How to Connect to Cavatica',

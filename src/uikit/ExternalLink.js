@@ -8,12 +8,7 @@ export default function ExternalLink({
   ...props
 }): React.Element {
   return (
-    <a
-      {...props}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={className + ' test-external-link'}
-    >
+    <a {...props} target="_blank" rel="noopener noreferrer" className={className + ' externalLink'}>
       {hasExternalIcon && <ExternalLinkIcon style={{ marginRight: '0.5rem' }} />}
       {children}
     </a>

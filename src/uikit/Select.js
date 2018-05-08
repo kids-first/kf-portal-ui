@@ -1,20 +1,10 @@
 import React from 'react';
 import Downshift from 'downshift';
 import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
+import { compose } from 'recompose';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
-
-export const optionDropdownWrapperClassName = css`
-  position: absolute;
-  background: white;
-  min-width: 100%;
-  z-index: 1;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-sizing: border-box;
-  cursor: pointer;
-  padding: 5px;
-  top: 100%;
-`;
 
 const disabledDropdownOptionClassName = css`
   color: lightgrey;
@@ -56,42 +46,45 @@ export const DropDownOption = ({
   </div>
 );
 
-export const SelectOptionDropdown = ({
-  align = 'right',
-  itemContainerClassName = '',
-  items = [],
-  itemClassName = '',
-  getItemProps,
-  selectItem = () => {},
-  onToggle,
-  isItemDisabled = () => false,
-  onDisabledItemClick = () => {},
-  DropDownOptionComponent = DropDownOption,
-}) => (
-  <div
-    className={`
-      ${optionDropdownWrapperClassName}
+export const SelectOptionDropdown = compose(withTheme)(
+  ({
+    align = 'right',
+    itemContainerClassName = '',
+    items = [],
+    itemClassName = '',
+    getItemProps,
+    selectItem = () => {},
+    onToggle,
+    isItemDisabled = () => false,
+    onDisabledItemClick = () => {},
+    DropDownOptionComponent = DropDownOption,
+    theme,
+  }) => (
+    <div
+      className={`
+      ${theme.optionDropdownWrapper}
       ${css`
         right: ${align === 'right' ? `0` : `auto`};
         left: ${align === 'right' ? `auto` : `0`};
       `}
-      ${itemContainerClassName};`}
-  >
-    {items.map(item => (
-      <DropDownOptionComponent
-        {...{
-          key: item,
-          item,
-          itemClassName,
-          isItemDisabled,
-          onToggle,
-          selectItem,
-          onDisabledItemClick,
-          getItemProps,
-        }}
-      />
-    ))}
-  </div>
+      ${itemContainerClassName || ''};`}
+    >
+      {items.map(item => (
+        <DropDownOptionComponent
+          {...{
+            key: item,
+            item,
+            itemClassName,
+            isItemDisabled,
+            onToggle,
+            selectItem,
+            onDisabledItemClick,
+            getItemProps,
+          }}
+        />
+      ))}
+    </div>
+  ),
 );
 
 function Select({
@@ -102,28 +95,14 @@ function Select({
   align = 'right',
   OptionDropdownComponent = SelectOptionDropdown,
   onToggle,
+  theme,
   ...rest
 }) {
   return (
     <Downshift {...rest}>
       {({ getItemProps, isOpen, toggleMenu, selectedItem, ...rest }) => {
         return (
-          <div
-            css={`
-              position: relative;
-              white-space: nowrap;
-              border-radius: 10px;
-              background-color: #ffffff;
-              border: solid 1px #cacbcf;
-              color: #343434;
-              font-size: 12px;
-              box-sizing: border-box;
-              display: flex;
-              align-items: center;
-              padding-left: 10px;
-              ${className};
-            `}
-          >
+          <div className={`${theme.select} ${className || ''}`}>
             <div
               style={{
                 display: 'flex',
@@ -167,4 +146,4 @@ function Select({
   );
 }
 
-export default Select;
+export default compose(withTheme)(Select);

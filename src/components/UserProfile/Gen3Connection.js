@@ -73,15 +73,15 @@ const Gen3Connection = ({
   ...props
 }) => {
   return (
-    <div css={styles}>
+    <div className={styles}>
       <div>
         <div
-          css={css`
+          className={css`
             display: flex;
           `}
         >
           <div
-            css={css`
+            className={css`
               flex: 1;
             `}
           >
@@ -94,12 +94,12 @@ const Gen3Connection = ({
             </span>
           </div>
           <div
-            css={css`
+            className={css`
               flex: 1;
             `}
           >
             <img
-              css={css`
+              className={css`
                 width: 400px;
               `}
               src={step2Screenshot}

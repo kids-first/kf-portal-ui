@@ -1,11 +1,9 @@
-import styled from 'react-emotion';
+import React from 'react';
+import { withTheme } from 'emotion-theming';
+import { compose } from 'recompose';
 
-const Heading = styled('div')`
-  font-size: 18px;
-  letter-spacing: 0.3px;
-  color: #2b388f;
-  margin-bottom: 15px;
-  font-weight: 500;
-`;
+const Heading = compose(withTheme)(({ theme, className = '', ...rest }) => (
+  <div {...rest} className={`${theme.heading} ${className}`} />
+));
 
 export default Heading;

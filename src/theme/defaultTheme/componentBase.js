@@ -1,35 +1,23 @@
 import { css } from 'react-emotion';
+import colors from './colors';
 
-const colors = {
-  primary: '#90278e', //magenta
-  secondary: '#2b388f', //purplish blue
-  primaryHover: '#404c9a', //purple
-  tertiary: '#009bb8', //teal-blue
-  highlight: '#e83a9c', //pink
-  hover: '#c03299', //also pink
-  tertiaryHover: '#19a9c4', //lighter teal-blue
-  errorDark: '#d8202f', //red
-  errorLight: '#fadfe1', //light red (pink) fill
-
-  active: '#00afed', //light blue
-  inactive: '#dedfe4', //grey
-
-  optionSelected: '#E5F6FD', //light blue
-
-  greyScale10: 'rgb(237,238,241)', //grey for table backgrounds
-  greyScale9: '#74757d', //rgb(116, 117, 125) dark grey text on greyScale5
-  greyScale8: '#d4d6dd',
-  greyScale7: 'rgb(107,98,98)',
-  greyScale6: 'rgb(245,245,245)',
-  greyScale5: '#e0e1e6',
-  greyScale4: 'rgb(212, 214, 221)', //#d4d6dd
-  greyScale3: 'rgb(144,144,144)', //not enough contrast on white background
-  greyScale2: 'rgb(61,61,61)',
-  greyScale1: 'rgb(52, 52, 52)', //#343434
-  greyScale0: 'rgb(36,36,36)',
+const utils = {
+  column: `column ${css`
+    &.column {
+      display: flex;
+      flex-direction: column;
+    }
+  `}`,
+  row: `row ${css`
+    &.row {
+      display: flex;
+      flex-direction: row;
+    }
+  `}`,
 };
 
-const components = {
+export default {
+  ...utils,
   normalText: css`
     font-family: 'Open Sans';
     font-size: 12px;
@@ -116,43 +104,45 @@ const components = {
       margin-left: 9px;
     }
   `,
-  hollowButton: css`
-    outline: none;
-    border: 0;
-    background: none;
-    box-shadow: none;
-    border-radius: 0px;
-    padding: 5px 10px;
-    margin: 0px 4px;
-    border-radius: 12px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-    font-family: Montserrat;
-    font-size: 12px;
-    font-weight: 300;
-    letter-spacing: 0.2px;
-    text-align: center;
-    color: #008199;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  hollowButton: `hollowButton ${css`
+    &.hollowButton {
+      outline: none;
+      border: 0;
+      background: none;
+      box-shadow: none;
+      border-radius: 0px;
+      padding: 5px 10px;
+      margin: 0px 4px;
+      border-radius: 12px;
+      background-color: #ffffff;
+      border: solid 1px #cacbcf;
+      font-family: Montserrat;
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      text-align: center;
+      color: #008199;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-    &:hover {
-      background-color: #008199;
-      color: #fff;
+      &:hover {
+        background-color: #008199;
+        color: #fff;
+      }
+      &:link {
+        text-decoration: none;
+      }
+      &:disabled {
+        color: ${colors.greyScale7};
+      }
+      &:disabled:hover {
+        background-color: transparent;
+        color: ${colors.greyScale7};
+        cursor: default;
+      }
     }
-    &:link {
-      text-decoration: none;
-    }
-    &:disabled {
-      color: ${colors.greyScale7};
-    }
-    &:disabled:hover {
-      background-color: transparent;
-      color: ${colors.greyScale7};
-      cursor: default;
-    }
-  `,
+  `}`,
   actionButton: css`
     outline: none;
     border: 0;
@@ -260,13 +250,14 @@ const components = {
     display: flex;
     justify-content: space-between;
   `,
-  modalHeader: css`
+  modalHeader: `${css`
+    margin-bottom: 9px;
     font-size: 15px;
     font-weight: 600;
     line-height: 1.87;
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
-  `,
+  `}`,
   h2: css`
     text-align: center;
     color: ${colors.secondary};
@@ -322,14 +313,6 @@ const components = {
     letter-spacing: 0.2px;
     color: ${colors.greyScale0};
   `,
-  column: css`
-    display: flex;
-    flex-direction: column;
-  `,
-  row: css`
-    display: flex;
-    flex-direction: row;
-  `,
   navLink: css`
     display: block;
     color: #90278e;
@@ -348,102 +331,102 @@ const components = {
       color: #ffffff;
     }
   `,
-  navBar: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-family: montserrat;
-    font-size: 14px;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
-    font-family: Montserrat;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
-    text-align: left;
-    color: #90278e;
-  `,
-  secondaryNav: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-family: montserrat;
-    font-size: 14px;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
+  navBar: `navBar ${utils.row} ${css`
+    &.navBar {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      font-family: montserrat;
+      font-size: 14px;
+      line-height: 1.86;
+      letter-spacing: 0.2px;
+      font-family: Montserrat;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.86;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: #90278e;
+    }
+  `}`,
+  secondaryNav: `secondaryNav ${utils.row} ${css`
+    &.secondaryNav {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      align-items: center;
+      font-family: montserrat;
+      font-size: 14px;
+      line-height: 1.86;
+      letter-spacing: 0.2px;
 
-    li {
-      a {
-        display: block;
-        font-family: Montserrat;
-        font-size: 14px;
-        line-height: 1.86;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: ${colors.active};
-        font-weight: 500;
-        padding: 0 10px;
-        border-bottom: 3px solid transparent;
-        margin-right: 1em;
-        text-decoration: none;
-      }
+      li {
+        a {
+          display: block;
+          font-family: Montserrat;
+          font-size: 14px;
+          line-height: 1.86;
+          letter-spacing: 0.2px;
+          text-align: left;
+          color: ${colors.active};
+          font-weight: 500;
+          padding: 0 10px;
+          border-bottom: 3px solid transparent;
+          margin-right: 1em;
+          text-decoration: none;
+        }
 
-      a:hover,
-      a.active {
-        cursor: pointer;
-        color: ${colors.highlight};
-        font-weight: 500;
-        border-bottom: 3px solid ${colors.highlight};
-        text-decoration: none;
+        a:hover,
+        a.active {
+          cursor: pointer;
+          color: ${colors.highlight};
+          font-weight: 500;
+          border-bottom: 3px solid ${colors.highlight};
+          text-decoration: none;
+        }
       }
     }
-  `,
-  verticalNav: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    font-family: Montserrat;
-    font-size: 14px;
-    line-height: 2.86;
-    letter-spacing: 0.2px;
-    text-align: left;
+  `}`,
+  verticalNav: `verticalNav ${utils.column} ${css`
+    &.verticalNav {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Montserrat;
+      font-size: 14px;
+      line-height: 2.86;
+      letter-spacing: 0.2px;
+      text-align: left;
 
-    li {
-      a {
-        display: block;
-        font-family: Montserrat;
-        font-size: 14px;
-        line-height: 1.86;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: ${colors.active};
-        font-weight: 500;
-        padding: 0 10px;
-        border-left: 3px solid transparent;
-        margin-right: 1em;
-        margin-top: 1em;
-      }
+      li {
+        a {
+          display: block;
+          font-family: Montserrat;
+          font-size: 14px;
+          line-height: 1.86;
+          letter-spacing: 0.2px;
+          text-align: left;
+          color: ${colors.active};
+          font-weight: 500;
+          padding: 0 10px;
+          border-left: 3px solid transparent;
+          margin-right: 1em;
+          margin-top: 1em;
+        }
 
-      a:hover,
-      a.active {
-        cursor: pointer;
-        color: ${colors.highlight};
-        font-weight: 500;
-        border-left: 3px solid ${colors.highlight};
+        a:hover,
+        a.active {
+          cursor: pointer;
+          color: ${colors.highlight};
+          font-weight: 500;
+          border-left: 3px solid ${colors.highlight};
+        }
       }
     }
-  `,
+  `}`,
   select: css`
     width: 200px;
     padding: 6px 12px;
@@ -540,9 +523,4 @@ const components = {
   error: css``,
   warning: css``,
   info: css``,
-};
-
-export default {
-  ...colors,
-  ...components,
 };

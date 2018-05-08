@@ -47,11 +47,11 @@ const Gen3ConnectionDetails = ({
   ...props
 }) => {
   return (
-    <div css={styles}>
+    <div className={styles}>
       <table>
         <tr>
           <div
-            css={`
+            className={css`
               color: ${theme.active};
               padding: 10px;
             `}

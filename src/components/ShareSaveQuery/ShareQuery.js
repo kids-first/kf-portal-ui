@@ -1,4 +1,6 @@
 import React from 'react';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 import urlJoin from 'url-join';
 import Spinner from 'react-spinkit';
@@ -14,36 +16,13 @@ import { arrangerApiAbsolutePath } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 
-let Bubble = p => (
-  <span
-    css={`
-      background-color: purple;
-      color: white;
-      padding: 4px 6px;
-      border-radius: 100%;
-      margin-right: 10px;
-    `}
-    {...p}
-  />
+let Bubble = p => <span className={`bubble`} {...p} />;
+
+let ItemRow = ({ styleClass = '', ...props }) => (
+  <div className={`itemRow ${styleClass}`} {...props} />
 );
 
-let ItemRow = ({ xcss = '', ...props }) => (
-  <div
-    css={`
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      &:hover {
-        background-color: rgb(240, 240, 240);
-      }
-      ${xcss};
-    `}
-    {...props}
-  />
-);
-
-export default injectState(
+export default compose(injectState, withTheme)(
   class extends React.Component {
     state = { link: null, copied: false, error: null };
 
@@ -61,19 +40,9 @@ export default injectState(
     };
 
     render() {
-      const { className = '' } = this.props;
+      const { className = '', theme } = this.props;
       return (
-        <div
-          css={`
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            background-color: aliceblue;
-            border: 1px solid #d6d6d6;
-            ${className};
-          `}
-        >
+        <div className={`${theme.shareQuery()} ${className}`}>
           <div id="share" className="sqon-bubble sqon-clear" onClick={this.share}>
             <Tooltip
               position="bottom"
@@ -84,17 +53,9 @@ export default injectState(
               }
               interactive
               html={
-                <div
-                  css={`
-                    width: 200px;
-                  `}
-                >
+                <div className={theme.shareQueryTooltipContent()}>
                   {!this.state.link ? (
-                    <ItemRow
-                      xcss={`
-                        justify-content: center;
-                      `}
-                    >
+                    <ItemRow styleClass={`errorMsg`}>
                       {this.state.error ? (
                         <Trans>Sorry something went wrong.</Trans>
                       ) : (
