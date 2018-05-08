@@ -184,11 +184,7 @@ export default compose(
             </div>
           )}
           {isEditingBackgroundInfo && (
-            <div
-              className={`box ${theme.row} ${css`
-                justify-content: space-between;
-              `}`}
-            >
+            <div className={`box editOptions ${theme.row}`}>
               <button
                 onClick={() => {
                   setBioTextarea(profile.bio || '');
@@ -211,13 +207,7 @@ export default compose(
             </div>
           )}
         </div>
-        <div
-          className={`box ${css`
-            margin-left: 1em;
-            width: 35%;
-            padding-top: 0px;
-          `}`}
-        >
+        <div className={`box researchInterest`}>
           <H2>
             Research Interests
             {canEdit &&
@@ -256,7 +246,7 @@ export default compose(
           </H2>
           <div>
             <div
-              cassName={css`
+              className={css`
                 background-color: #f4f5f8;
                 border: solid 1px #d4d6dd;
                 padding: 0.5em;
