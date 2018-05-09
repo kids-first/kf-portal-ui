@@ -9,7 +9,10 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import {
+  trackUserInteraction,
+  addStateInfo as updateTrackingDimension,
+} from 'services/analyticsTracking';
 import { ButtonsDiv } from '../Join';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 
@@ -80,14 +83,15 @@ export const enhance = compose(
       }).then(
         async profile => {
           await setUser({ ...profile, email, api });
-          let {pathname} = window.location;
-          if(pathname === '/join'){
-            trackUserInteraction({
-              category: 'Join',
-              action: `Joined as Role: ${profile.roles[0]}`,
-              label: `Join: Account Created - ${profile._id}`
-            });
-
+          let { pathname } = window.location;
+          debugger;
+          if (pathname === '/join') {
+            updateTrackingDimension({ userRoles: profile.roles });
+            // trackUserInteraction({
+            //   category: 'Join',
+            //   action: `Joined as Role: ${profile.roles[0]}`,
+            //   label: `Join: Account Created - ${profile._id}`
+            // });
           }
           if (onFinish) {
             onFinish();

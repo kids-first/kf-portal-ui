@@ -8,6 +8,7 @@ const debug = process.env.NODE_ENV === 'development';
 let GAState = {
     trackingId: 'UA-87708930-5',
     userId: null,
+    userRoles: null,
     clientId: null,
 };
 let timingsStorage = window.localStorage;
@@ -21,22 +22,26 @@ export const initAnalyticsTracking = () => {
     });
 };
 
-let setUserDimensions = userId => {
+let setUserDimensions = (userId, role) => {
     ReactGA.set({ clientId: GAState.clientId });
     if (userId || GAState.userId) {
         ReactGA.set({ userId: userId || GAState.userId });
     }
+    if(role || GAState.userRoles){
+        ReactGA.set({ userRole: role || GAState.userRoles[0] });
+    }
+
 };
 
 export const addStateInfo = obj => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ _id, acceptedTerms }) => {
+export const trackUserSession = async ({ _id, acceptedTerms, roles }) => {
     let userId = _id;
     if (acceptedTerms && !GAState.userId) {
-        setUserDimensions(userId);
-        addStateInfo({ userId });
+        addStateInfo({ userId, userRoles: roles });
+        setUserDimensions(userId, roles[0]);
         return true;
     } else {
         return false;
@@ -49,6 +54,7 @@ export const trackUserInteraction = async eventData => {
     ReactGA.event(eventData);
     switch (category) {
         case 'Modals':
+
             if (action === 'Open') {
                 startAnalyticsTiming(`MODAL__${label}`);
             } else if (action === 'Close') {
@@ -58,8 +64,10 @@ export const trackUserInteraction = async eventData => {
                     label: label || null,
                 });
             }
+            
             break;
         case 'Join':
+
             if (action === 'Join Completed!') {
                 stopAnalyticsTiming('join process', {
                     category,
