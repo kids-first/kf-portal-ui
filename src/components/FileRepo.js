@@ -367,9 +367,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                   customTypes={customTableTypes}
                                   columnDropdownText="Columns"
                                   fieldTypesForFilter={['text', 'keyword', 'id']}
-                                  maxPagesOptions={Math.floor(
-                                    (contentRect.bounds.width - 120) / 60,
-                                  )}
+                                  maxPagesOptions={5}
                                   exportTSVText={
                                     <React.Fragment>
                                       <img
