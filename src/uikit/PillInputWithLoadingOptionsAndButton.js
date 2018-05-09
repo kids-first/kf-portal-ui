@@ -88,6 +88,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
               {...selectProps}
               align="left"
               isOpen={isDropdownOpen}
+              onOuterClick={() => this.setState({ isDropdownOpen: false })}
               highlightedIndex={null}
               items={Object.keys(options)}
               onToggle={this.onToggle}
