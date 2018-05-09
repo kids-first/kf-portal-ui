@@ -200,7 +200,7 @@ export const SelectRoleForm = ({
                 `}
                 onClick={() => {
                   setFieldValue('roles', type);
-                  if (window.pathname === '/join') {
+                  if (window.location.pathname === '/join') {
                     trackUserInteraction({
                       category: 'Join',
                       action: `Join Role Selected: ${type}`,
