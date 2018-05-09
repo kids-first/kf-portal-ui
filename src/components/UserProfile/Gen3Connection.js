@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
+import { Trans } from 'react-i18next';
+import { css } from 'emotion';
+import { injectState } from 'freactal';
 
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { GEN3 } from 'common/constants';
 import { gen3WebRoot } from 'common/injectGlobals';
 import { ModalFooter } from 'components/Modal/index.js';
-
-import { css } from 'emotion';
-import { injectState } from 'freactal';
 import { getUser as getGen3User } from 'services/gen3';
 
 const styles = css`
@@ -69,6 +69,7 @@ const Gen3Connection = ({
   editingCavitca,
   setEditingGen3,
   invalidValue,
+  invalidToken,
   setInvalidToken,
   ...props
 }) => {
@@ -123,6 +124,18 @@ const Gen3Connection = ({
             placeholder="Gen3 Key"
             onChange={e => setGen3Key(e.target.value)}
           />
+          {invalidToken && (
+            <div
+              css={`
+                color: #e45562;
+                padding: 10px;
+                padding-left: 20px;
+                height: 1.6em;
+              `}
+            >
+              <Trans>The provided Gen3 Token is invalid. Please update and try again.</Trans>
+            </div>
+          )}
         </div>
       </div>
       <ModalFooter
