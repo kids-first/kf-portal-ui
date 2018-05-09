@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
+import { addInfo as addUserSnapInfo } from './usersnap';
 import { gaTrackingID } from 'common/injectGlobals';
 import { merge } from 'lodash';
 
@@ -18,6 +19,7 @@ export const initAnalyticsTracking = () => {
     ReactGA.ga(function(tracker) {
         var clientId = tracker.get('clientId');
         addStateInfo({ clientId });
+        addUserSnapInfo({ GA_clientID: clientId });
         ReactGA.set({ clientId: GAState.clientId });
     });
 };
@@ -27,20 +29,19 @@ let setUserDimensions = (userId, role) => {
     if (userId || GAState.userId) {
         ReactGA.set({ userId: userId || GAState.userId });
     }
-    if(role || GAState.userRoles){
+    if (role || GAState.userRoles) {
         ReactGA.set({ userRole: role || GAState.userRoles[0] });
     }
-
 };
 
 export const addStateInfo = obj => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ _id, acceptedTerms, roles }) => {
-    let userId = _id;
+export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => {
+    let userId = egoId;
     if (acceptedTerms && !GAState.userId) {
-        addStateInfo({ userId, userRoles: roles });
+        addStateInfo({ userId, personaId: _id, userRoles: roles });
         setUserDimensions(userId, roles[0]);
         return true;
     } else {
@@ -54,7 +55,6 @@ export const trackUserInteraction = async eventData => {
     ReactGA.event(eventData);
     switch (category) {
         case 'Modals':
-
             if (action === 'Open') {
                 startAnalyticsTiming(`MODAL__${label}`);
             } else if (action === 'Close') {
@@ -64,10 +64,9 @@ export const trackUserInteraction = async eventData => {
                     label: label || null,
                 });
             }
-            
+
             break;
         case 'Join':
-
             if (action === 'Join Completed!') {
                 stopAnalyticsTiming('join process', {
                     category,
