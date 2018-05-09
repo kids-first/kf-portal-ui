@@ -10,8 +10,16 @@ let GAState = {
     userId: null,
     clientId: null,
 };
+let timingsStorage = window.localStorage;
 
-let modalTimings = {};
+export const initAnalyticsTracking = () => {
+    ReactGA.initialize(GAState.trackingId, { debug });
+    ReactGA.ga(function(tracker) {
+        var clientId = tracker.get('clientId');
+        addStateInfo({ clientId });
+        ReactGA.set({ clientId: GAState.clientId });
+    });
+};
 
 let setUserDimensions = userId => {
     ReactGA.set({ clientId: GAState.clientId });
@@ -23,15 +31,6 @@ let setUserDimensions = userId => {
 export const addStateInfo = obj => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
-
-export const initAnalyticsTracking = () => {
-    ReactGA.initialize(GAState.trackingId, { debug });
-    ReactGA.ga(function(tracker) {
-        var clientId = tracker.get('clientId');
-        addStateInfo({ clientId });
-        ReactGA.set({ clientId: GAState.clientId });
-    });
-};
 
 export const trackUserSession = async ({ _id, acceptedTerms }) => {
     let userId = _id;
@@ -45,41 +44,28 @@ export const trackUserSession = async ({ _id, acceptedTerms }) => {
 };
 
 export const trackUserInteraction = async eventData => {
+    const { category, action, label } = eventData;
     setUserDimensions();
     ReactGA.event(eventData);
-    const { category, action, label } = eventData;
     switch (category) {
         case 'Modals':
             if (action === 'Open') {
-                modalTimings[eventData.label] = {
-                    open: +new Date(),
-                    close: null,
-                    duration: 0,
-                };
+                startAnalyticsTiming(`MODAL__${label}`);
             } else if (action === 'Close') {
-                let modal = modalTimings[eventData.label];
-                modal.close = +new Date();
-                modal.duration = modal.close - modal.open;
-                trackTiming({
+                stopAnalyticsTiming(`MODAL__${label}`, {
                     category,
                     variable: 'open duration',
-                    value: modal.duration, // in milliseconds
                     label: label || null,
                 });
             }
             break;
         case 'Join':
             if (action === 'Join Completed!') {
-                let joinInitTime = localStorage.getItem('KF_JOIN_INIT_TIME');
-                debugger;
-
-                trackTiming({
+                stopAnalyticsTiming('join process', {
                     category,
                     variable: 'Join process completion time',
-                    value: +new Date() - joinInitTime, // in milliseconds
                     label: label || null,
                 });
-                localStorage.removeItem('KF_JOIN_INIT_TIME');
             }
             break;
         default:
@@ -87,9 +73,43 @@ export const trackUserInteraction = async eventData => {
     }
 };
 
+let sanitizeName = name => name.toUpperCase().replace(/\s/g, '_');
+let getTimingEventName = name => `KF_GA_TIMING_INIT_${sanitizeName(name)}`;
+
+export const startAnalyticsTiming = eventName => {
+    timingsStorage.setItem(getTimingEventName(eventName), +new Date());
+};
+
+export const stopAnalyticsTiming = (eventName, eventData) => {
+    const event = getTimingEventName(eventName);
+    const startEventTime = timingsStorage.getItem(event);
+    let duration = null;
+
+    if (startEventTime) {
+        duration = +new Date() - startEventTime;
+        timingsStorage.setItem(`KF_GA_TIMING_${sanitizeName(eventName)}`, duration);
+    }
+
+    if (eventData && duration) {
+        trackTiming(merge({ value: duration }, eventData));
+    }
+
+    return duration;
+};
+
 export const trackTiming = async eventData => {
     setUserDimensions();
-    ReactGA.timing(eventData);
+    ReactGA.timing(
+        merge(
+            {
+                category: null,
+                variable: null,
+                value: 0, // in milliseconds
+                label: null,
+            },
+            eventData,
+        ),
+    );
 };
 
 export const trackPageView = (page, options = {}) => {

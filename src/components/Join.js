@@ -16,7 +16,7 @@ import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
 import ToSearchPage from 'components/links/ToSearchPage';
 import { withApi } from 'services/api';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import { trackUserInteraction, startAnalyticsTiming } from 'services/analyticsTracking';
 
 const Consent = compose(
   injectState,
@@ -169,8 +169,7 @@ const JoinContent = compose(
   withApi,
   lifecycle({
     componentDidMount() {
-      if (!window.localStorage.getItem('KF_JOIN_INIT_TIME'))
-        window.localStorage.setItem('KF_JOIN_INIT_TIME', +new Date());
+      startAnalyticsTiming('join process')
     },
   }),
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (

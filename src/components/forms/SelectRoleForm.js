@@ -9,7 +9,7 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
-import { trackUserInteraction, trackTiming } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { ButtonsDiv } from '../Join';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 
