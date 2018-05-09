@@ -299,7 +299,7 @@ export default compose(
                     css={`
                       ${theme.listPill} ${editingResearchInterests && theme.listPillClickable};
                     `}
-                    onClick={() => setInterests(xor(interests, [i]))}
+                    onClick={() => editingResearchInterests && setInterests(xor(interests, [i]))}
                   >
                     {i}
                   </div>
@@ -316,9 +316,7 @@ export default compose(
                   items={xor(
                     ['Heart Defects', 'Leukemia', 'Lymphomas', 'Spina Bifida'],
                     interests,
-                  ).map(item => ({
-                    label: item,
-                  }))}
+                  ).map(x => ({ label: x }))}
                   renderItem={(item, isHighlighted) => (
                     <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                       {item.label}
