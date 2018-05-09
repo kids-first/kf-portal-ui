@@ -87,11 +87,6 @@ export const enhance = compose(
           debugger;
           if (pathname === '/join') {
             updateTrackingDimension({ userRoles: profile.roles });
-            // trackUserInteraction({
-            //   category: 'Join',
-            //   action: `Joined as Role: ${profile.roles[0]}`,
-            //   label: `Join: Account Created - ${profile._id}`
-            // });
           }
           if (onFinish) {
             onFinish();
@@ -203,7 +198,15 @@ export const SelectRoleForm = ({
                   margin-top: 10px;
                   ${theme.normalText};
                 `}
-                onClick={() => setFieldValue('roles', type)}
+                onClick={() => {
+                  setFieldValue('roles', type);
+                  if (window.pathname === '/join') {
+                    trackUserInteraction({
+                      category: 'Join',
+                      action: `Join Role Selected: ${type}`,
+                    });
+                  }
+                }}
               >
                 <Field
                   type="radio"
