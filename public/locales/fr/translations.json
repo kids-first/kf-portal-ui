@@ -21,10 +21,11 @@
   "Back": "Back",
   "Cancel": "Cancel",
   "Save": "Save",
-  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "Log in": "Log in",
   "New to Kids First Data Resource Portal?": "New to Kids First Data Resource Portal?",
   "Join now": "Join now",
+  "An error has occurred, please try again later": "An error has occurred, please try again later",
+  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "login": {
     "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
   },

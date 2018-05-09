@@ -3,7 +3,7 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import ajax from './ajax';
 
-export const initializeApi = ({ onUnauthorized = () => {} } = {}) => ({
+export const initializeApi = ({ onError = () => {}, onUnauthorized = () => {} } = {}) => ({
   method = 'post',
   endpoint = '',
   body,
@@ -17,10 +17,12 @@ export const initializeApi = ({ onUnauthorized = () => {} } = {}) => ({
     .then(response => {
       return response.data;
     })
-    .catch(({ response }) => {
-      if (response.status === 401) {
+    .catch(err => {
+      const { response } = err;
+      if ((response || {}).status === 401) {
         return onUnauthorized(response);
       }
+      return onError(err);
     });
 };
 

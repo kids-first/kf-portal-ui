@@ -2,10 +2,11 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { ThemeProvider } from 'emotion-theming';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router';
 import theme from 'theme/defaultTheme';
 import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
 import { initializeApi, ApiContext } from 'services/api';
+import history from 'services/history';
 
 export default compose(provideLoggedInUser, provideModalState, provideToast, injectState)(
   ({ children, state, effects }) => (
@@ -16,7 +17,7 @@ export default compose(provideLoggedInUser, provideModalState, provideToast, inj
         },
       })}
     >
-      <Router>
+      <Router history={history}>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </Router>
     </ApiContext.Provider>
