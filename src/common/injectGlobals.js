@@ -1,6 +1,5 @@
 import 'index.css';
 import queryString from 'querystring';
-import urlJoin from 'url-join';
 
 localStorage.setItem('debug', process.env.REACT_APP_DEBUG || ''); // manually set because CRA doesn't allow arbitrary env variable names.
 const debug = require('debug');
@@ -23,9 +22,6 @@ if (personaApiOverride) {
 export const shortUrlApi = process.env.REACT_APP_SHORTURL_API;
 
 export const arrangerApiRoot = process.env.REACT_APP_ARRANGER_API;
-
-export const arrangerApiAbsolutePath =
-  process.env.REACT_APP_ARRANGER_API_ABS_PATH || urlJoin(window.location.origin, arrangerApiRoot);
 
 export const arrangerProjectId = process.env.REACT_APP_PROJECT_ID;
 

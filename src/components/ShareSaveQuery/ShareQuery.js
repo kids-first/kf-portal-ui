@@ -10,7 +10,7 @@ import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
 import Tooltip from 'uikit/Tooltip';
-import { arrangerApiAbsolutePath } from 'common/injectGlobals';
+import { arrangerApiRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 
@@ -48,11 +48,16 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      let { stats, sqon, api, state: { loggedInUser } } = this.props;
+      let {
+        stats,
+        sqon,
+        api,
+        state: { loggedInUser },
+      } = this.props;
       shortenApi({ stats, sqon, loggedInUser, api })
         .then(data => {
           this.setState({
-            link: urlJoin(arrangerApiAbsolutePath, 's', data.id),
+            link: urlJoin(arrangerApiRoot, 's', data.id),
           });
         })
         .catch(error => {

@@ -10,7 +10,7 @@ import Heading from 'uikit/Heading';
 import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import theme from 'theme/defaultTheme';
 import { ModalFooter } from 'components/Modal';
-import { arrangerApiAbsolutePath } from 'common/injectGlobals';
+import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
@@ -34,13 +34,18 @@ export default injectState(
     }
 
     save = () => {
-      let { stats, sqon, api, state: { loggedInUser } } = this.props;
+      let {
+        stats,
+        sqon,
+        api,
+        state: { loggedInUser },
+      } = this.props;
       this.setState({ loading: true });
       shortenApi({ stats, sqon, queryName: this.state.queryName, loggedInUser, api })
         .then(data => {
           this.setState({
             loading: false,
-            link: urlJoin(arrangerApiAbsolutePath, 's', data.id),
+            link: urlJoin(arrangerApiRoot, 's', data.id),
           });
         })
         .catch(error => {
