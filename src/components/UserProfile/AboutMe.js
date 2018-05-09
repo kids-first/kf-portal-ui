@@ -290,6 +290,7 @@ export default compose(
               <div
                 css={`
                   ${theme.row};
+                  flex-wrap: wrap;
                   padding: 5px 0;
                 `}
               >
@@ -314,7 +315,14 @@ export default compose(
                   }}
                   getItemValue={item => item.label}
                   items={xor(
-                    ['Heart Defects', 'Leukemia', 'Lymphomas', 'Spina Bifida'],
+                    [
+                      'Ewing Sarcoma',
+                      'DNA Repair',
+                      'Bone Tumor',
+                      'Tumor Genomics',
+                      'Structural Birth Defects',
+                      'Cleft Palette',
+                    ],
                     interests,
                   ).map(x => ({ label: x }))}
                   renderItem={(item, isHighlighted) => (

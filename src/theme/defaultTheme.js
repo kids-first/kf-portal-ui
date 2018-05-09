@@ -106,7 +106,7 @@ const components = {
     text-align: left;
     padding: 0 12px 0 12px;
     color: #ffffff;
-    margin-right: 5px;
+    margin: 5px;
   `,
   listPillClickable: css`
     cursor: pointer;
