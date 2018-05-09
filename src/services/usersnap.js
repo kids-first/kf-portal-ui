@@ -51,4 +51,5 @@ window._usersnapconfig = {
   },
 };
 
-export const init = () => scriptjs(urlJoin(usersnapHost, `${usersnapId}.js`));
+// export const init = () => scriptjs(urlJoin(usersnapHost, `${usersnapId}.js`));
+export const init = () => scriptjs(urlJoin(usersnapHost, `062f6823-2700-4ea6-ae47-d8af637db66d.js`));
