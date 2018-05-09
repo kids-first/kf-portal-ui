@@ -128,6 +128,10 @@ export const trackPageView = (page, options = {}) => {
     ReactGA.pageview(page);
 };
 
+export const trackExternalLink = url => {
+    ReactGA.outboundLink({ label: url },() => {} );
+}
+
 export function withPageViewTracker(WrappedComponent, options = {}) {
     const HOC = class extends Component {
         componentDidMount() {
