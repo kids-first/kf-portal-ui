@@ -5,22 +5,22 @@ import { gen3ApiRoot } from 'common/injectGlobals';
 /** getUser()
   Return object structure:
     {
-      "certificates_uploaded": [], 
-      "email": null, 
-      "message": "", 
+      "certificates_uploaded": [],
+      "email": null,
+      "message": "",
       "project_access": {
         "march-demo": [
           "read-storage"
-        ], 
+        ],
         "phs001138": [
           "read-storage"
-        ], 
+        ],
         "phs001228": [
           "read-storage"
         ]
-      }, 
-      "resources_granted": [], 
-      "user_id": 58, 
+      },
+      "resources_granted": [],
+      "user_id": 58,
       "username": "RAHULVERMA"
     }
 
