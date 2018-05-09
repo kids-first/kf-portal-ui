@@ -19,7 +19,7 @@ export const initAnalyticsTracking = () => {
     ReactGA.ga(function(tracker) {
         var clientId = tracker.get('clientId');
         addStateInfo({ clientId });
-        addUserSnapInfo({ GA_clientID: clientId });
+        addUserSnapInfo({ gaClientId: clientId });
         ReactGA.set({ clientId: GAState.clientId });
     });
 };
