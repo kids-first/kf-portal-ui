@@ -24,8 +24,10 @@ export default provideState({
             method: 'GET',
           }),
         )
-        .then(json => effects.setLoading(false).then(() => json))
-        .then(value => state => ({ ...state, queries: value }));
+        .then(value => state => {
+          effects.setLoading(false);
+          return { ...state, queries: value || [] };
+        });
     },
     deleteQuery: (effects, { queryId, api }) => {
       return effects
