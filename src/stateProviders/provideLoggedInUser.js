@@ -9,7 +9,11 @@ import {
   addStateInfo as addUsersnapInfo,
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
-import { trackUserSession, trackUserInteraction, addStateInfo as updateTrackingInfo } from 'services/analyticsTracking';
+import {
+  trackUserSession,
+  trackUserInteraction,
+  addStateInfo as updateTrackingInfo,
+} from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
 
@@ -54,6 +58,14 @@ export default provideState({
         .then(totalFields => state => {
           const filledFields = Object.values(user || {}).filter(v => v || (isArray(v) && v.length));
           const percentageFilled = filledFields.length / totalFields;
+
+          if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
+            trackUserInteraction({
+              category: 'User: Profile',
+              action: `Completed Profile for role: ${user.roles[0]}`,
+              label: 'profile completion',
+            });
+          }
           addUsersnapInfo({ percentageFilled });
           setUsersnapUser(user);
           trackUserSession(user);
