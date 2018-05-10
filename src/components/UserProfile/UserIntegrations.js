@@ -44,7 +44,7 @@ const ConnectedButton = ({ onClick, action, chilren, ...props }) => (
     onClick={() => {
       trackUserInteraction({
         category: 'User: Profile',
-        action: `${action} GEN3 Integration`,
+        action: `${action} Integration`,
         label: 'Intergration',
       });
       onClick();
@@ -122,13 +122,13 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <span>Connected</span>
       </div>
       <div css="display: flex;">
-        <ConnectedButton action="view" onClick={onView}>
+        <ConnectedButton action="view GEN3" onClick={onView}>
           <ViewIcon />View
         </ConnectedButton>
-        <ConnectedButton action="edit" onClick={onEdit}>
+        <ConnectedButton action="edit GEN3" onClick={onEdit}>
           <PencilIcon />Edit
         </ConnectedButton>
-        <ConnectedButton action="remove" onClick={onRemove}>
+        <ConnectedButton action="remove GEN3" onClick={onRemove}>
           <XIcon />Remove
         </ConnectedButton>
       </div>
@@ -149,16 +149,17 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         <span> Connected</span>
       </div>
       <div css="display: flex;">
-        <Button onClick={onEdit} className="connectedButton">
+        <ConnectedButton action="edit CAVATICA" onClick={onEdit}>
           <PencilIcon />Edit
-        </Button>
+        </ConnectedButton>
+
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
-            <Button onClick={onClick} className="connectedButton">
+            <ConnectedButton action="remove CAVATICA" onClick={onClick}>
               {loading ? loadingSpinner : <XIcon />}
               <span>Remove</span>
-            </Button>
+            </ConnectedButton>
           )}
         />
       </div>

@@ -5,6 +5,7 @@ import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
 import { cavaticaWebRoot } from 'common/injectGlobals';
@@ -77,15 +78,26 @@ const submitCavaticaToken = async ({
   onSuccess,
   onFail,
 }) => {
-  await setSecret({ service: CAVATICA, secret: token });
-  const userData = await getCavaticaUser(token);
+  // await setSecret({ service: CAVATICA, secret: token });
+  // const userData = await getCavaticaUser(token);
+  const userData = { name: 'foobar', project: 'baz' };
 
   if (userData) {
     setIntegrationToken(CAVATICA, JSON.stringify(userData));
+    trackUserInteraction({
+      category: 'User: Profile',
+      action: 'Connected to Cavatica',
+      label: 'Integration',
+    });
     onSuccess();
   } else {
     setIntegrationToken(CAVATICA, null);
     deleteSecret({ service: CAVATICA });
+    trackUserInteraction({
+      category: 'User: Profile',
+      action: 'FAILED Cavatica connection',
+      label: 'Integration',
+    });
     onFail();
   }
 };
