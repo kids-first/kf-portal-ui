@@ -34,14 +34,14 @@ export default compose(withApi)(
               .map(
                 (dataType, i) => `
                 ${dataType.key.replace(/[^\da-z]/gi, '')}: aggregations(filters: $sqon${i}) {
-                  file_size {
+                  size {
                     stats {
                       sum
                     }
                   }
                 }
                 ${dataType.key.replace(/[^\da-z]/gi, '')}family: aggregations(filters: $sqon${i}) {
-                  participants__family__family_members__kf_id {
+                  participants__family__family_compositions__family_members__kf_id {
                     buckets {
                       key
                     }
@@ -83,7 +83,7 @@ export default compose(withApi)(
                 `${bucket.key.replace(
                   /[^\da-z]/gi,
                   '',
-                )}family.participants__family__family_members__kf_id.buckets`,
+                )}family.participants__family__family_compositions__family_members__kf_id.buckets`,
               );
               const familyMembersCount = difference(
                 (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
@@ -94,7 +94,7 @@ export default compose(withApi)(
                 fileType: bucket.key,
                 members: familyMembersCount,
                 files: bucket.doc_count,
-                fileSize: get(aggs, `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`),
+                fileSize: get(aggs, `${bucket.key.replace(/[^\da-z]/gi, '')}.size.stats.sum`),
               });
             });
       }}
