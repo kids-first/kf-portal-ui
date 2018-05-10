@@ -7,19 +7,21 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 import { Trans } from 'react-i18next';
-import { googleLogin, facebookLogin } from 'services/login';
+
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
+import { ModalWarning } from 'components/Modal';
 
-import { getProfile, createProfile } from 'services/profiles';
-import { egoApiRoot } from 'common/injectGlobals';
-import { allRedirectUris } from '../common/injectGlobals';
-import { GEN3, CAVATICA } from 'common/constants';
-import { getUser as getCavaticaUser } from 'services/cavatica';
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
+import { googleLogin, facebookLogin } from 'services/login';
+import { getProfile, createProfile } from 'services/profiles';
+import { getUser as getCavaticaUser } from 'services/cavatica';
+import { egoApiRoot } from 'common/injectGlobals';
+import { allRedirectUris } from '../common/injectGlobals';
+import { GEN3, CAVATICA } from 'common/constants';
 
 const styles = {
   container: css`
@@ -195,17 +197,14 @@ class Component extends React.Component<any, any> {
         ) : renderSocialLoginButtons ? (
           <React.Fragment>
             {this.state.authorizationError && (
-              <div
-                className={css`
-                  margin-bottom: 10px;
-                  text-align: center;
-                `}
-              >
-                <Trans>
-                  You have not been authorized to access the portal, please contact the
-                  administrators to gain access
+              <ModalWarning>
+                <Trans key="login.authorizationError">
+                  The Kids First DRP is currently in the internal review phase and is not accessible
+                  for beta testing. Please{' '}
+                  <a href="mailto:support@kidsfirstdrc.org">contact a Kids First administrator</a>{' '}
+                  if you have registered for internal review and are not able to log in.
                 </Trans>
-              </div>
+              </ModalWarning>
             )}
             <div key="google" className={styles.googleSignin} id="googleSignin" />
             <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />
