@@ -154,52 +154,34 @@ export const clinicalDataParticipants = getClinicalDownload('participant');
 
 export const clinicalDataFamily = getClinicalDownload('participant-and-family');
 
-export const downloadBiospecimen = ({ sqon, columns }) => () => {
-  return saveTSV({
+export const downloadBiospecimen = ({ sqon, columns }) => () =>
+  saveTSV({
     url: downloadUrl,
-    fileName: format(new Date(), '[participants_biospecimen_]YYYYMMDD[.tar.gz]'),
     files: [
       {
-        fileName: 'sample.tsv',
+        fileName: format(new Date(), '[participants_biospecimen_]YYYYMMDD[.tsv]'),
         sqon: hackCrossIndex(sqon),
         index: 'participant',
-        uniqueBy: 'samples.hits.edges[].node.kf_id',
+        uniqueBy: 'biospecimens.hits.edges[].node.kf_id',
         columns: findColumnsByField(
           [
-            'samples.kf_id',
-            'kf_id',
-            'samples.age_at_event_days',
-            'samples.anatomical_site',
-            'samples.composition',
-            'samples.external_id',
-            'samples.tissue_type',
-            'samples.tumor_descriptor',
-            'samples.uuid',
-          ],
-          columns,
-        ),
-      },
-      {
-        fileName: 'aliquot.tsv',
-        sqon: hackCrossIndex(sqon),
-        index: 'participant',
-        uniqueBy: 'samples.hits.edges[].node.aliquots.kf_id',
-        columns: findColumnsByField(
-          [
-            'samples.aliquots.kf_id',
-            'kf_id',
-            'samples.kf_id',
-            'samples.aliquots.analyte_type',
-            'samples.aliquots.concentration',
-            'samples.aliquots.shipment_date',
-            'samples.aliquots.shipment_destination',
-            'samples.aliquots.shipment_origin',
-            'samples.aliquots.uuid',
-            'samples.aliquots.volume',
+            'biospecimens.kf_id',
+            'biospecimens.external_sample_id',
+            'biospecimens.external_aliquot_id',
+            'biospecimens.age_at_event_days',
+            'biospecimens.anatomical_site',
+            'biospecimens.composition',
+            'biospecimens.tissue_type',
+            'biospecimens.tumor_descriptor',
+            'biospecimens.analyte_type',
+            'biospecimens.concentration_mg_per_ml',
+            'biospecimens.shipment_date',
+            'biospecimens.shipment_origin',
+            'biospecimens.volume_ml',
+            'biospecimens.uberon_id',
           ],
           columns,
         ),
       },
     ],
   });
-};
