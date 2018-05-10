@@ -1,14 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
 
-import PillInputWithLoadingOptionsAndButton from 'uikit/PillInputWithLoadingOptionsAndButton';
+import Button from 'uikit/Button';
 
-import ParticipantManifestModal from '../ParticipantManifestModal';
-import FamilyManifestModal, { generateFamilyManifestModalProps } from '../FamilyManifestModal';
+import FamilyManifestModal from '../FamilyManifestModal';
 
 export default ({ api, sqon, index, projectId, theme, effects }) => (
   <div
@@ -22,52 +21,17 @@ export default ({ api, sqon, index, projectId, theme, effects }) => (
       graphqlField="file"
       render={({ state: { columns } }) => {
         return (
-          <PillInputWithLoadingOptionsAndButton
-            options={{
-              'Participant only': {
-                onSelected: () =>
-                  effects.setModal({
-                    title: 'Download Manifest',
-                    component: (
-                      <ParticipantManifestModal
-                        {...{
-                          api,
-                          sqon,
-                          index,
-                          projectId,
-                          columns,
-                        }}
-                      />
-                    ),
-                  }),
-              },
-              'Participant and family': {
-                tooltip: `No file was found for family members`,
-                onDropdownOpen: async () => {
-                  const familyManifestModalProps = await generateFamilyManifestModalProps({
-                    api,
-                    sqon,
-                  });
-                  return (familyManifestModalProps.dataTypes || []).length;
-                },
-                onSelected: () =>
-                  effects.setModal({
-                    title: 'Download Manifest (Participant and Family)',
-                    component: (
-                      <FamilyManifestModal {...{ api, sqon, index, projectId, columns }} />
-                    ),
-                  }),
-              },
+          <Button
+            onClick={() => {
+              effects.setModal({
+                title: 'Download Manifest',
+                component: <FamilyManifestModal {...{ api, sqon, index, projectId, columns }} />,
+              });
             }}
-            render={({ loading }) => {
-              return (
-                <Fragment>
-                  <IconWithLoading {...{ loading, icon: downloadIcon }} />
-                  <Trans css={theme.uppercase}>Download</Trans>
-                </Fragment>
-              );
-            }}
-          />
+          >
+            <IconWithLoading icon={downloadIcon} />
+            <Trans css={theme.uppercase}>Download</Trans>
+          </Button>
         );
       }}
     />

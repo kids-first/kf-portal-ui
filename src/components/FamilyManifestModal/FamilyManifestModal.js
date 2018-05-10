@@ -1,17 +1,24 @@
-import React from 'react';
-import { get, difference } from 'lodash';
-import Spinner from 'react-spinkit';
+import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
 import { compose, lifecycle, withState } from 'recompose';
 import { withFormik } from 'formik';
+import { withTheme } from 'emotion-theming';
+import { css } from 'emotion';
 
-import DataTypeOption from './DataTypeOption';
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
-import Query from '@arranger/components/dist/Query';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
+import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';
+import {
+  FileRepoStatsQuery,
+  familyStat,
+  participantsStat,
+  fileStat,
+  fileSizeStat,
+} from 'components/Stats';
+import { dataTableStyle } from './style';
 
 const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
   const selectedDataTypes = Object.entries(values)
@@ -40,7 +47,31 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
     : sqon;
 };
 
+const ManifestTableDataRow = compose(withTheme)(({ theme, fileType, members, files, fileSize }) => (
+  <div className={`row ${theme.row}`}>
+    <div className={`tableCell ${theme.row}`}>{fileType}</div>
+    <div className={`tableCell ${theme.row}`}>{members}</div>
+    <div className={`tableCell ${theme.row}`}>{files}</div>
+    <div className={`tableCell ${theme.row}`}>{fileSize}</div>
+  </div>
+));
+
+const Table = compose(withTheme)(({ theme, stats, children }) => (
+  <div className={`${theme.column} ${dataTableStyle(theme)}`}>
+    <div className={`row ${theme.row}`}>
+      <div className={`tableCell ${theme.column}`}>Data Types</div>
+      {stats.map(({ label, icon }) => (
+        <div className={`tableCell ${theme.row}`}>
+          <div className={`left`}>{icon}</div> {label}
+        </div>
+      ))}
+    </div>
+    {children}
+  </div>
+));
+
 export default compose(
+  withTheme,
   injectState,
   withApi,
   lifecycle({
@@ -57,12 +88,7 @@ export default compose(
     handleSubmit: async (
       values,
       {
-        props: {
-          familyMemberIds,
-          sqon,
-          columns,
-          effects: { unsetModal },
-        },
+        props: { familyMemberIds, sqon, columns, effects: { unsetModal } },
         setSubmitting,
         setErrors,
       },
@@ -76,6 +102,7 @@ export default compose(
   withState('isDisabled', 'setIsDisabled', false),
 )(
   ({
+    theme,
     familyMemberIds,
     participantIds,
     dataTypes,
@@ -89,117 +116,56 @@ export default compose(
     setIsDisabled,
     api,
   }) => {
-    const spinner = (
-      <Spinner
-        fadeIn="none"
-        name="circle"
-        color="#a9adc0"
-        style={{
-          width: 30,
-          height: 30,
-          margin: 'auto',
-          marginBottom: 20,
-        }}
-      />
-    );
+    const participantStats = [participantsStat, fileStat, fileSizeStat];
+    const familyMemberStats = [
+      { icon: familyStat.icon, label: 'Family Members' },
+      fileStat,
+      fileSizeStat,
+    ];
     return (
       <DownloadManifestModal {...{ sqon, index, projectId, api }}>
         {({ setWarning }) => (
-          <div>
-            <ModalSubHeader>
-              Select the data types you would like to download for the family members:
-            </ModalSubHeader>
-            {(dataTypes || []).length && (
-              <Query
-                renderError
-                api={api}
-                projectId={projectId}
-                name={`dataTypeQuery`}
-                query={`
-                  query dataTypes(${dataTypes.map((dataType, i) => `$sqon${i}: JSON`).join(', ')}) {
-                    file {
-                      ${dataTypes
-                        .map(
-                          (dataType, i) => `
-                          ${dataType.key.replace(
-                            /[^\da-z]/gi,
-                            '',
-                          )}: aggregations(filters: $sqon${i}) {
-                            file_size {
-                              stats {
-                                sum
-                              }
-                            }
-                          }
-                          ${dataType.key.replace(
-                            /[^\da-z]/gi,
-                            '',
-                          )}family: aggregations(filters: $sqon${i}) {
-                            participants__family__family_members__kf_id {
-                              buckets {
-                                key
-                              }
-                            }
-                          }
-                        `,
-                        )
-                        .join('\n')}
-                    }
-                  }
-                `}
-                variables={dataTypes.reduce((acc, dataType, i) => {
-                  const dataTypeFilters = ids => [
-                    {
-                      op: 'in',
-                      content: { field: 'data_type', value: [dataType.key] },
-                    },
-                    {
-                      op: 'in',
-                      content: { field: 'participants.kf_id', value: ids },
-                    },
-                  ];
-
-                  return {
-                    ...acc,
-                    [`sqon${i}`]: {
-                      op: 'and',
-                      content: dataTypeFilters(participantIds),
-                    },
-                  };
-                }, {})}
-                render={({ data, loading }) => {
-                  return loading
-                    ? spinner
-                    : (dataTypes || []).map(bucket => {
-                        const aggs = get(data, `file`);
-                        const familyMemberBuckets = get(
-                          aggs,
-                          `${bucket.key.replace(
-                            /[^\da-z]/gi,
-                            '',
-                          )}family.participants__family__family_members__kf_id.buckets`,
-                        );
-                        const familyMembersCount = difference(
-                          (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
-                          participantIds,
-                        ).length;
-                        return (
-                          <DataTypeOption
-                            disabled={isDisabled}
-                            key={bucket.key}
-                            bucket={bucket}
-                            values={values}
-                            familyMembers={familyMembersCount}
-                            fileSize={get(
-                              aggs,
-                              `${bucket.key.replace(/[^\da-z]/gi, '')}.file_size.stats.sum`,
-                            )}
-                          />
-                        );
-                      });
-                }}
-              />
-            )}
+          <div className={theme.column}>
+            <Fragment>
+              <ModalSubHeader>Family Summary</ModalSubHeader>
+              <Table {...{ stats: participantStats }}>
+                <FileRepoStatsQuery
+                  api={api}
+                  sqon={sqon}
+                  index={index}
+                  projectId={projectId}
+                  stats={participantStats}
+                  render={data => (
+                    <ManifestTableDataRow
+                      {...{
+                        fileType: 'All',
+                        members: data[participantStats[0].label],
+                        files: data[participantStats[1].label],
+                        fileSize: data[participantStats[2].label],
+                      }}
+                    />
+                  )}
+                />
+              </Table>
+            </Fragment>
+            {(dataTypes || []).length ? (
+              <Fragment>
+                <ModalSubHeader>Participants Summary</ModalSubHeader>
+                <Table {...{ stats: familyMemberStats }}>
+                  <FamilyDataTypesStatsQuery
+                    {...{
+                      dataTypes,
+                      participantIds,
+                      projectId,
+                      isDisabled,
+                      values,
+                    }}
+                  >
+                    {props => <ManifestTableDataRow {...props} />}
+                  </FamilyDataTypesStatsQuery>
+                </Table>
+              </Fragment>
+            ) : null}
             <DownloadManifestModalFooter
               {...{
                 api,

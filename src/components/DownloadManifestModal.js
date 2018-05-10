@@ -11,7 +11,6 @@ import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
 import CopyToClipboard from './CopyToClipboard';
 import { ModalSubHeader, ModalFooter, ModalWarning } from './Modal';
-import { FileRepoStats } from './Stats';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
@@ -111,22 +110,11 @@ export const DownloadManifestModalFooter = ({
   </ModalFooter>
 );
 
-const enhance = compose(withState('warning', 'setWarning', ''));
-const DownloadManifestModal = ({ sqon, index, projectId, warning, setWarning, children, api }) => (
-  <div>
-    {warning && <ModalWarning>{warning}</ModalWarning>}
-    <ModalSubHeader>File Summary:</ModalSubHeader>
-    <FileRepoStats
-      api={api}
-      sqon={sqon}
-      index={index}
-      projectId={projectId}
-      css={`
-        margin-bottom: 29px;
-      `}
-    />
-    {children({ setWarning })}
-  </div>
+export default compose(withState('warning', 'setWarning', ''))(
+  ({ sqon, index, projectId, warning, setWarning, children, api }) => (
+    <div>
+      {warning && <ModalWarning>{warning}</ModalWarning>}
+      {children({ setWarning })}
+    </div>
+  ),
 );
-
-export default enhance(DownloadManifestModal);
