@@ -1,10 +1,12 @@
 import React, { Fragment } from 'react';
+import { get, sumBy, uniq } from 'lodash';
 import { injectState } from 'freactal';
 import { compose, lifecycle, withState } from 'recompose';
 import { withFormik } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import Spinner from 'react-spinkit';
+import Query from '@arranger/components/dist/Query';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
@@ -13,11 +15,12 @@ import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';
 import {
-  FileRepoStatsQuery,
   familyStat,
   participantsStat,
   fileStat,
   fileSizeStat,
+  queryStringWrapper,
+  fileSizeToString,
 } from 'components/Stats';
 import { dataTableStyle, highLightRow } from './style';
 
@@ -145,100 +148,129 @@ export default compose(
       fileStat,
       fileSizeStat,
     ];
+    const filterToCheckedTypes = data =>
+      data.filter(({ fileType }) => checkedFileTypes.includes(fileType));
     return (
       <DownloadManifestModal {...{ sqon, index, projectId, api }}>
         {({ setWarning }) => (
-          <FileRepoStatsQuery
+          <Query
             api={api}
             sqon={sqon}
+            name={`CombinedFileStatsQuery`}
+            query={queryStringWrapper(true)(
+              [fileStat, fileSizeStat].map(stat => stat.fragment(stat.label)),
+            )}
             index={index}
             projectId={projectId}
-            stats={participantStats}
-            render={({
-              [participantStats[0].label]: participantsMemberCount,
-              [participantStats[1].label]: participantsFilesCount,
-              [participantStats[2].label]: participantsFileSize,
-            }) => (
-              <div className={theme.column}>
-                <Fragment>
-                  <ModalSubHeader>Family Summary</ModalSubHeader>
-                  <Table {...{ stats: participantStats }}>
-                    <ManifestTableDataRow
-                      {...{
-                        fileType: 'All',
-                        members: participantsMemberCount,
-                        files: participantsFilesCount,
-                        fileSize: participantsFileSize,
-                      }}
-                    />
-                  </Table>
-                </Fragment>
-                {(dataTypes || []).length ? (
+            render={({ data }) => {
+              const participantsMemberCount = (participantIds || []).length;
+              const participantsFilesCount = get(data, fileStat.rawDataAccessor(fileStat.label));
+              const participantsFileSize = get(
+                data,
+                fileSizeStat.rawDataAccessor(fileSizeStat.label),
+              );
+              return (
+                <div className={theme.column}>
                   <Fragment>
                     <ModalSubHeader>Participants Summary</ModalSubHeader>
-                    <Table {...{ stats: familyMemberStats }}>
-                      <FamilyDataTypesStatsQuery
-                        {...{
-                          dataTypes,
-                          participantIds,
-                          projectId,
-                          isDisabled,
-                          values,
-                        }}
-                      >
-                        {({ loading, data }) =>
-                          loading
-                            ? spinner
-                            : data.map(({ fileType, members, files, fileSize }) => (
-                                <ManifestTableDataRow
-                                  {...{
-                                    showCheckbox: true,
-                                    onClick: e => {
-                                      setCheckedFileTypes(
-                                        checkedFileTypes.includes(fileType)
-                                          ? checkedFileTypes.filter(type => type !== fileType)
-                                          : [...checkedFileTypes, fileType],
-                                      );
-                                    },
-                                    isChecked: checkedFileTypes.includes(fileType),
-                                    fileType,
-                                    members,
-                                    files,
-                                    fileSize,
-                                  }}
-                                />
-                              ))
-                        }
-                      </FamilyDataTypesStatsQuery>
-                    </Table>
-                    <div className={dataTableStyle(theme)}>
+                    <Table {...{ stats: participantStats }}>
                       <ManifestTableDataRow
-                        className={`${theme.row} ${css`
-                          ${highLightRow(theme)};
-                        `}`}
                         {...{
-                          fileType: 'TOTAL',
+                          fileType: 'All',
                           members: participantsMemberCount,
                           files: participantsFilesCount,
-                          fileSize: participantsFileSize,
+                          fileSize: fileSizeToString(participantsFileSize),
                         }}
                       />
-                    </div>
+                    </Table>
                   </Fragment>
-                ) : null}
-                <DownloadManifestModalFooter
-                  {...{
-                    api,
-                    sqon: sqonForDownload({ sqon, values, familyMemberIds }),
-                    onManifestGenerated: () => setIsDisabled(true),
-                    projectId,
-                    setWarning,
-                    onDownloadClick: submitForm,
-                    downloadLoading: isSubmitting,
-                  }}
-                />
-              </div>
-            )}
+                  {(dataTypes || []).length ? (
+                    <FamilyDataTypesStatsQuery
+                      {...{
+                        dataTypes,
+                        participantIds,
+                        projectId,
+                        isDisabled,
+                        values,
+                      }}
+                    >
+                      {({ loading, data: fileTypeStats = [] }) => {
+                        return (
+                          <Fragment>
+                            <ModalSubHeader>Family MembersSummary</ModalSubHeader>
+                            {loading ? (
+                              spinner
+                            ) : (
+                              <Fragment>
+                                <Table {...{ stats: familyMemberStats }}>
+                                  {fileTypeStats.map(({ fileType, members, files, fileSize }) => (
+                                    <ManifestTableDataRow
+                                      {...{
+                                        showCheckbox: true,
+                                        onClick: e => {
+                                          setCheckedFileTypes(
+                                            checkedFileTypes.includes(fileType)
+                                              ? checkedFileTypes.filter(type => type !== fileType)
+                                              : [...checkedFileTypes, fileType],
+                                          );
+                                        },
+                                        isChecked: checkedFileTypes.includes(fileType),
+                                        fileType,
+                                        members,
+                                        files,
+                                        fileSize: fileSizeToString(fileSize),
+                                      }}
+                                    />
+                                  ))}
+                                </Table>
+                                <div className={dataTableStyle(theme)}>
+                                  <ManifestTableDataRow
+                                    className={`${theme.row} ${css`
+                                      ${highLightRow(theme)};
+                                    `}`}
+                                    {...{
+                                      fileType: 'TOTAL',
+                                      members: uniq([
+                                        ...participantIds,
+                                        ...filterToCheckedTypes(fileTypeStats).reduce(
+                                          (acc, { familyMembersKeys }) => [
+                                            ...acc,
+                                            ...familyMembersKeys,
+                                          ],
+                                          [],
+                                        ),
+                                      ]).length,
+                                      files:
+                                        participantsFilesCount +
+                                        sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
+                                      fileSize: fileSizeToString(
+                                        participantsFileSize +
+                                          sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
+                                      ),
+                                    }}
+                                  />
+                                </div>
+                              </Fragment>
+                            )}
+                          </Fragment>
+                        );
+                      }}
+                    </FamilyDataTypesStatsQuery>
+                  ) : null}
+                  <DownloadManifestModalFooter
+                    {...{
+                      api,
+                      sqon: sqonForDownload({ sqon, values, familyMemberIds }),
+                      onManifestGenerated: () => setIsDisabled(true),
+                      projectId,
+                      setWarning,
+                      onDownloadClick: submitForm,
+                      downloadLoading: isSubmitting,
+                    }}
+                  />
+                </div>
+              );
+            }}
           />
         )}
       </DownloadManifestModal>

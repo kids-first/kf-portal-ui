@@ -73,14 +73,14 @@ export default compose(withApi)(
                       '',
                     )}family.participants__family__family_compositions__family_members__kf_id.buckets`,
                   );
-                  const familyMembersCount = difference(
+                  const familyMembersKeys = difference(
                     (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
                     participantIds,
-                  ).length;
+                  );
                   return {
-                    key: bucket.key,
+                    familyMembersKeys,
                     fileType: bucket.key,
-                    members: familyMembersCount,
+                    members: familyMembersKeys.length,
                     files: bucket.doc_count,
                     fileSize: get(aggs, `${bucket.key.replace(/[^\da-z]/gi, '')}.size.stats.sum`),
                   };
