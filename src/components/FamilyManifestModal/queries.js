@@ -13,7 +13,7 @@ export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
                   key
                 }
               }
-              participants__family__family_members__kf_id {
+              participants__family__family_compositions__family_members__kf_id {
                 buckets {
                   doc_count
                   key
@@ -27,7 +27,7 @@ export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
   });
   const extractResults = path => get(response, path, []).map(b => b.key);
   const familyMemberIds = extractResults(
-    'data.file.aggregations.participants__family__family_members__kf_id.buckets',
+    'data.file.aggregations.participants__family__family_compositions__family_members__kf_id.buckets',
   );
   const participantIds = extractResults('data.file.aggregations.participants__kf_id.buckets');
   return {
