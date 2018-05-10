@@ -101,67 +101,37 @@ const getClinicalDownload = type => ({ sqon, columns }) => () =>
         columns: findColumnsByField(
           [
             'kf_id',
-            {
-              Header: 'Father ID',
-              field: 'family.family_members.kf_id',
-              jsonPath:
-                '$.family.family_members.hits.edges[?(@.node.relationship=="father")].node.kf_id',
-              query: `
-              family {
-                family_members{
-                  hits {
-                    edges {
-                      node {
-                        relationship
-                        kf_id
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-            },
-            {
-              Header: 'Mother ID',
-              field: 'family.family_members.kf_id',
-              jsonPath:
-                '$.family.family_members.hits.edges[?(@.node.relationship=="mother")].node.kf_id',
-              query: `
-              family {
-                family_members{
-                  hits {
-                    edges {
-                      node {
-                        relationship
-                        kf_id
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-            },
+            'family.father_id',
+            'family.mother_id',
             'is_proband',
             {
               Header: 'Other Relationships',
-              field: 'family.family_members.kf_id',
+              field: 'family.family_compositions.family_members.kf_id',
               type: 'list',
               jsonPath:
-                '$.family.family_members.hits.edges[?(@.node.relationship!="mother" && @.node.relationship!="father")].node.kf_id',
+                '$.family.family_compositions.family_members.hits.edges[?(@.node.relationship!="mother" && @.node.relationship!="father")].node.kf_id',
               query: `
-              family {
-                family_members{
-                  hits {
-                    edges {
-                      node {
-                        relationship
-                        kf_id
+                family {
+                  family_compositions {
+                    hits {
+                      edges {
+                        node {
+                          family_members {
+                            hits {
+                              edges {
+                                node {
+                                  relationship
+                                  kf_id
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
                 }
-              }
-            `,
+              `,
             },
             'study.name',
             'gender',
