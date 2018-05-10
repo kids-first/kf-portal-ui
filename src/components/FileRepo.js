@@ -7,7 +7,6 @@ import SQONURL from 'components/SQONURL';
 import downloadIcon from '../assets/icon-download-grey.svg';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
-import Measure from 'react-measure';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 
@@ -351,40 +350,35 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                               flex: none;
                             `}
                           />
-                          <Measure bounds>
-                            {({ measureRef, contentRect }) => (
-                              <div
-                                ref={measureRef}
-                                css={`
-                                  display: flex;
-                                  flex-direction: column;
-                                  min-height: 300px;
-                                `}
-                              >
-                                <Table
-                                  {...props}
-                                  {...url}
-                                  customTypes={customTableTypes}
-                                  columnDropdownText="Columns"
-                                  fieldTypesForFilter={['text', 'keyword', 'id']}
-                                  maxPagesOptions={5}
-                                  exportTSVText={
-                                    <React.Fragment>
-                                      <img
-                                        alt=""
-                                        src={downloadIcon}
-                                        css={`
-                                          width: 10px;
-                                          margin-right: 9px;
-                                        `}
-                                      />
-                                      <Trans>Export TSV</Trans>
-                                    </React.Fragment>
-                                  }
-                                />
-                              </div>
-                            )}
-                          </Measure>
+                          <div
+                            css={`
+                              display: flex;
+                              flex-direction: column;
+                              min-height: 300px;
+                            `}
+                          >
+                            <Table
+                              {...props}
+                              {...url}
+                              customTypes={customTableTypes}
+                              columnDropdownText="Columns"
+                              fieldTypesForFilter={['text', 'keyword', 'id']}
+                              maxPagesOptions={5}
+                              exportTSVText={
+                                <React.Fragment>
+                                  <img
+                                    alt=""
+                                    src={downloadIcon}
+                                    css={`
+                                      width: 10px;
+                                      margin-right: 9px;
+                                    `}
+                                  />
+                                  <Trans>Export TSV</Trans>
+                                </React.Fragment>
+                              }
+                            />
+                          </div>
                         </div>
                       </div>
                       <FileRepoSidebar {...props} sqon={selectionSQON} />
