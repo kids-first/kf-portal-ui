@@ -9,11 +9,12 @@ import { injectState } from 'freactal/lib/inject';
 
 const enhance = compose(withTheme, injectState);
 
-const roleLookup = ROLES.reduce((acc, { type, icon }) => ({ ...acc, [type]: icon }), {});
+const roleLookup = ROLES.reduce((acc, { type, ...x }) => ({ ...acc, [type]: x }), {});
 
 const RoleIconButton = ({ className = '', children, theme, state: { loggedInUser } }) => {
   const userRole = get(loggedInUser, ['roles', 0]);
-  const RoleIcon = get(roleLookup, userRole, () => null);
+  const RoleIcon = get(roleLookup, [userRole, 'icon'], null);
+  const background = get(roleLookup, [userRole, 'color'], null);
 
   return (
     <div
@@ -22,7 +23,7 @@ const RoleIconButton = ({ className = '', children, theme, state: { loggedInUser
         height: 42px;
         box-sizing: border-box;
         border-radius: 21px;
-        background-color: ${theme.active};
+        background-color: ${background};
         color: white;
         font-family: Montserrat;
         font-size: 14px;

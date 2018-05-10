@@ -105,6 +105,8 @@ const Consent = compose(
             border-radius: 10px;
             background-color: #e5f7fd;
             border: solid 1px ${theme.active};
+            background-color: #${accepted ? `e5f7fd` : `ffffff`};
+            border: solid 1px #${accepted ? `00afed` : `cacbcf`};
             width: 90%;
             margin-top: 10px;
             padding: 10px 25px;

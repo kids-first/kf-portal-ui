@@ -2,7 +2,7 @@ import React from 'react';
 import { get, difference } from 'lodash';
 import Spinner from 'react-spinkit';
 import { injectState } from 'freactal';
-import { compose, withState } from 'recompose';
+import { compose, lifecycle, withState } from 'recompose';
 import { withFormik } from 'formik';
 
 import DataTypeOption from './DataTypeOption';
@@ -11,6 +11,7 @@ import { ModalSubHeader } from '../Modal';
 import Query from '@arranger/components/dist/Query';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { withApi } from 'services/api';
+import { generateFamilyManifestModalProps } from './queries';
 
 const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
   const selectedDataTypes = Object.entries(values)
@@ -42,13 +43,26 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
 export default compose(
   injectState,
   withApi,
+  lifecycle({
+    componentDidMount() {
+      generateFamilyManifestModalProps({
+        api: this.props.api,
+        sqon: this.props.sqon,
+      }).then(x => this.setState(x));
+    },
+  }),
   withFormik({
     mapPropsToValues: ({ dataTypes }) =>
-      dataTypes.reduce((acc, bucket) => ({ ...acc, [bucket.key]: false }), {}),
+      (dataTypes || []).reduce((acc, bucket) => ({ ...acc, [bucket.key]: false }), {}),
     handleSubmit: async (
       values,
       {
-        props: { familyMemberIds, sqon, columns, effects: { unsetModal } },
+        props: {
+          familyMemberIds,
+          sqon,
+          columns,
+          effects: { unsetModal },
+        },
         setSubmitting,
         setErrors,
       },
@@ -63,7 +77,6 @@ export default compose(
 )(
   ({
     familyMemberIds,
-    familyMembersWithoutParticipantIds,
     participantIds,
     dataTypes,
     sqon,
@@ -96,7 +109,7 @@ export default compose(
             <ModalSubHeader>
               Select the data types you would like to download for the family members:
             </ModalSubHeader>
-            {
+            {(dataTypes || []).length && (
               <Query
                 renderError
                 api={api}
@@ -186,7 +199,7 @@ export default compose(
                       });
                 }}
               />
-            }
+            )}
             <DownloadManifestModalFooter
               {...{
                 api,

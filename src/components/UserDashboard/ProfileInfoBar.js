@@ -6,6 +6,7 @@ import EditButton from './EditButton';
 import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
+import { userProfileBackground } from '../UserProfile';
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
   <div
@@ -13,12 +14,7 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       ${theme.column};
       width: 411px;
       height: 100%;
-      background-image: linear-gradient(
-        to bottom,
-        ${profileColors.gradientDark} 33%,
-        ${profileColors.gradientMid} 66%,
-        ${profileColors.gradientLight}
-      );
+      ${userProfileBackground(loggedInUser, false)};
       box-shadow: 0 0 4.8px 0.2px #a0a0a3;
       padding-top: 40px;
       align-content: space-around;

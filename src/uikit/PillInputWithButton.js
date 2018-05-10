@@ -9,7 +9,7 @@ const enhance = compose(
     options,
     defaultSelected: defaultSelected || Object.keys(options)[0],
   })),
-  withState('selected', 'setSelected', ({ defaultSelected }) => defaultSelected),
+  withState('_selected', 'setSelected', ({ defaultSelected }) => defaultSelected),
 );
 
 const SelectStyle = `
@@ -22,15 +22,17 @@ const SelectStyle = `
 `;
 
 export const PillInputWithButton = ({
-  selected,
+  selected: externalSelected,
+  _selected,
   setSelected,
   options,
   defaultSelected,
   children,
   onClick,
   render,
+  selected = externalSelected || _selected,
   SelectComponent = Select,
-  onOptionSelect = () => options[selected](),
+  onOptionSelect = options[selected],
   isButtonDisabled = () => !options[selected],
 }) => {
   return (

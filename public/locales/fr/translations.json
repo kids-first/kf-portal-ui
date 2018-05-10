@@ -21,14 +21,19 @@
   "Back": "Back",
   "Cancel": "Cancel",
   "Save": "Save",
-  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "Log in": "Log in",
-  "New to Kids First?": "New to Kids First?",
+  "New to Kids First Data Resource Portal?": "New to Kids First Data Resource Portal?",
   "Join now": "Join now",
+  "An error has occurred, please try again later": "An error has occurred, please try again later",
+  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "login": {
     "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
   },
-  "You have not been authorized to access the portal, please contact the administrators to gain access": "You have not been authorized to access the portal, please contact the administrators to gain access",
+  "The Kids First DRP is currently in the internal review phase and is not accessible for beta testing": {
+    " Please<1>{' '}</1> <3>contact a Kids First administrator</3><4>{' '}</4> if you have registered for internal review and are not able to log in": {
+      "": "The Kids First DRP is currently in the internal review phase and is not accessible for beta testing. Please<1>{' '}</1> <3>contact a Kids First administrator</3><4>{' '}</4> if you have registered for internal review and are not able to log in."
+    }
+  },
   "Dashboard": "Dashboard",
   "File Repository": "File Repository",
   "Login": "Login",
@@ -55,19 +60,26 @@
   "Save Query": "Save Query",
   "Save the current configuration of filters": "Save the current configuration of filters",
   "Enter a name for your saved query:": "Enter a name for your saved query:",
+  "Browse": "Browse",
+  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Actions": "Actions",
   "fileRepoSidebar": {
     "noneSelected": "If you have not selected any files, all files in your query will be included in the actions.",
     "missingDownloadPermissions": "Your account does not have the required permission to download this file."
   },
   "Download": "Download",
+  "File Manifests": "File Manifests",
   "Selected File": "Selected File",
   "Failed!": "Failed!",
   "Unable to download file": "Unable to download file",
   "Reports": "Reports",
   "Data Analysis": "Data Analysis",
-  "Browse": "Browse",
-  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
+  "Link to Cavatica will not be available for internal review": "Link to Cavatica will not be available for internal review",
   "Generate KF-get ID": "Generate KF-get ID",
-  "Download Manifest": "Download Manifest"
+  "Download Manifest": "Download Manifest",
+  "The provided Gen3 Token is invalid": {
+    " Please update and try again": {
+      "": "The provided Gen3 Token is invalid. Please update and try again."
+    }
+  }
 }

@@ -1,15 +1,16 @@
 import CommunityIcon from 'icons/CommunityIcon';
 import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
-import ResearchBanner from 'assets/user-banner-research.jpg';
-import CommunityBanner from 'assets/user-banner-community.jpg';
+import HealthBanner from 'assets/user-banner-health.png';
+import ResearchBanner from 'assets/user-banner-research.png';
+import CommunityBanner from 'assets/user-banner-community.png';
 
 export const ROLES = [
   {
     type: 'research',
     displayName: 'Research',
     description:
-      'I’m interested in complex data analysis, cross-disease research, sharing my findings and collaborating in real time with other Kids First researchers.',
+      "I'm a biomedical researcher or data scientist interested in data analysis, cross-disease research, and real-time collaboration.",
     icon: ResearchIcon,
     banner: ResearchBanner,
     color: '#00afed',
@@ -24,7 +25,7 @@ export const ROLES = [
     type: 'community',
     displayName: 'Community',
     description:
-      'I’m interested in learning more about the available treatments for a specific disease type and connecting with researchers who are experts in that disease area.',
+      "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
     icon: CommunityIcon,
     banner: CommunityBanner,
     color: '#e83a9c',
@@ -39,15 +40,15 @@ export const ROLES = [
     type: 'health',
     displayName: 'Health',
     description:
-      'I’m interested in finding treatments that can be adapted to target my patients’ needs based on their genetic characteristics.',
+      "I'm a physician-scientist interested in finding the latest research to target patients' needs based on genetic characteristics.",
     icon: HealthIcon,
-    banner: 'tbd',
+    banner: HealthBanner,
     color: '#009bb8',
     profileColors: {
       gradientDark: '#0a5d6c',
       gradientMid: '#198895',
       gradientLight: '#1ca39e',
-      pillBkg: '#009bb8',
+      pillBkg: '#1f9bb6',
     },
   },
 ];

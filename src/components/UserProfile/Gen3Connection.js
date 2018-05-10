@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
-
-import step2Screenshot from 'assets/gen3TokenScreenshot.png';
-import { deleteSecret, setSecret } from 'services/secrets';
-import { GEN3 } from 'common/constants';
-import { ModalFooter } from 'components/Modal/index.js';
-import ExternalLink from 'uikit/ExternalLink';
-
+import { Trans } from 'react-i18next';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
-import { getUser as getGen3User } from 'services/gen3';
+
+import { ModalFooter, ModalWarning } from 'components/Modal';
+import step2Screenshot from 'assets/gen3TokenScreenshot.png';
+import { GEN3 } from 'common/constants';
+import ExternalLink from 'uikit/ExternalLink';
 import { trackUserInteraction } from 'services/analyticsTracking';
+import { gen3WebRoot } from 'common/injectGlobals';
+import { getUser as getGen3User } from 'services/gen3';
+import { deleteSecret, setSecret } from 'services/secrets';
 
 const styles = css`
   span.numberBullet {
@@ -80,12 +81,18 @@ const Gen3Connection = ({
   editingCavitca,
   setEditingGen3,
   invalidValue,
+  invalidToken,
   setInvalidToken,
   ...props
 }) => {
   return (
     <div css={styles}>
       <div>
+        {invalidToken && (
+          <ModalWarning>
+            <Trans>The provided Gen3 Token is invalid. Please update and try again.</Trans>
+          </ModalWarning>
+        )}
         <div
           css={css`
             display: flex;
@@ -100,7 +107,7 @@ const Gen3Connection = ({
             <span>
               You will need to retrieve your authentication token from the{' '}
               <ExternalLink 
-                href="https://gen3qa.kids-first.io"
+                href={gen3WebRoot}
                 hasExternalIcon={false}
               >
                 Kids First Data Catalog
