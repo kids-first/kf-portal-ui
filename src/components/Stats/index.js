@@ -110,7 +110,7 @@ const fileSizeStat = {
   fragment: (fieldName = 'file') => `
     ${fieldName}: file {
       aggregations(filters: $sqon, include_missing: $include_missing) {
-        file_size {
+        size {
           stats {
             sum
           }
@@ -119,7 +119,7 @@ const fileSizeStat = {
     }
   `,
   accessor: (fieldName = 'file') => d =>
-    filesize(get(d, `${fieldName}.aggregations.file_size.stats.sum`) || 0, {
+    filesize(get(d, `${fieldName}.aggregations.size.stats.sum`) || 0, {
       base: 10,
     }).toUpperCase(),
   label: 'Size',
