@@ -10,6 +10,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { getUser as getGen3User } from 'services/gen3';
+import { trackUserInteraction } from 'services/analyticsTracking';
 
 const styles = css`
   span.numberBullet {
@@ -47,15 +48,25 @@ const enhance = compose(
 
 const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
   const apiKey = token.replace(/\s+/g, '');
-  await setSecret({ service: GEN3, secret: apiKey });
+  // await setSecret({ service: GEN3, secret: apiKey });
   getGen3User(apiKey)
     .then(userData => {
       setIntegrationToken(GEN3, apiKey);
+      trackUserInteraction({
+        category: 'User: Profile',
+        action: 'Connected to GEN3',
+        label: 'Intergration'
+      });
       onSuccess();
     })
     .catch(response => {
       setIntegrationToken(GEN3, null);
       deleteSecret({ service: GEN3 });
+      trackUserInteraction({
+        category: 'User: Profile',
+        action: 'FAILED to connect to GEN3',
+        label: 'Intergration'
+      });
       onFail();
     });
 };
@@ -134,7 +145,7 @@ const Gen3Connection = ({
             submitGen3Token({
               token: gen3Key,
               setIntegrationToken: effects.setIntegrationToken,
-              onSuccess: props.onComplete,
+              onSuccess:props.onComplete,
               onFail: () => setInvalidToken(true),
             });
           },

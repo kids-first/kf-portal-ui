@@ -15,6 +15,7 @@ import Spinner from 'react-spinkit';
 
 import { cavaticaWebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
+import { trackUserInteraction } from 'services/analyticsTracking';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
@@ -35,6 +36,23 @@ const loadingSpinner = (
       height: 11,
     }}
   />
+);
+
+const ConnectedButton = ({ onClick, action, chilren, ...props }) => (
+  <Button
+    {...props}
+    onClick={() => {
+      trackUserInteraction({
+        category: 'User: Profile',
+        action: `${action} GEN3 Integration`,
+        label: 'Intergration',
+      });
+      onClick();
+    }}
+    className="connectedButton"
+  >
+    {props.children}
+  </Button>
 );
 
 const styles = css`
@@ -104,15 +122,15 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <span>Connected</span>
       </div>
       <div css="display: flex;">
-        <Button onClick={onView} className="connectedButton">
+        <ConnectedButton action="view" onClick={onView}>
           <ViewIcon />View
-        </Button>
-        <Button onClick={onEdit} className="connectedButton">
+        </ConnectedButton>
+        <ConnectedButton action="edit" onClick={onEdit}>
           <PencilIcon />Edit
-        </Button>
-        <Button onClick={onRemove} className="connectedButton">
+        </ConnectedButton>
+        <ConnectedButton action="remove" onClick={onRemove}>
           <XIcon />Remove
-        </Button>
+        </ConnectedButton>
       </div>
     </div>
   );
