@@ -1,9 +1,6 @@
 import { css } from 'emotion';
 export const highLightRow = theme => `
-  font-weight: bold;
-  color: ${theme.secondary};
-  background-color: #edeef1;
-  border-bottom: solid 1px ${theme.greyScale5};
+  background-color: #e4f4f8;
 `;
 
 export const dataTableStyle = theme =>
@@ -14,15 +11,21 @@ export const dataTableStyle = theme =>
         padding: 15px;
         padding-left: 50px;
         &:first-child {
-          ${highLightRow(theme)};
+          font-weight: bold;
+          color: ${theme.secondary};
+          background-color: #edeef1;
+          border-bottom: solid 1px ${theme.greyScale5};
         }
         &:nth-child(2n) {
-          background-color: #e4f4f8;
+          ${highLightRow};
         }
         & .tableCell {
           padding-right: 20px;
           position: relative;
           flex: 1;
+          & .checkbox {
+            margin-right: 20px;
+          }
           & .left {
             position: absolute;
             right: 100%;

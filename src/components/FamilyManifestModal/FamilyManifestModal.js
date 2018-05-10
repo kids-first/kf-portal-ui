@@ -4,6 +4,7 @@ import { compose, lifecycle, withState } from 'recompose';
 import { withFormik } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
+import Spinner from 'react-spinkit';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
@@ -18,7 +19,7 @@ import {
   fileStat,
   fileSizeStat,
 } from 'components/Stats';
-import { dataTableStyle } from './style';
+import { dataTableStyle, highLightRow } from './style';
 
 const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
   const selectedDataTypes = Object.entries(values)
@@ -47,14 +48,19 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
     : sqon;
 };
 
-const ManifestTableDataRow = compose(withTheme)(({ theme, fileType, members, files, fileSize }) => (
-  <div className={`row ${theme.row}`}>
-    <div className={`tableCell ${theme.row}`}>{fileType}</div>
-    <div className={`tableCell ${theme.row}`}>{members}</div>
-    <div className={`tableCell ${theme.row}`}>{files}</div>
-    <div className={`tableCell ${theme.row}`}>{fileSize}</div>
-  </div>
-));
+const ManifestTableDataRow = compose(withTheme)(
+  ({ theme, fileType, members, files, fileSize, isChecked, showCheckbox, ...rest }) => (
+    <div className={`row ${theme.row}`} {...rest}>
+      <div className={`tableCell ${theme.row}`}>
+        {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
+        {fileType}
+      </div>
+      <div className={`tableCell ${theme.row}`}>{members}</div>
+      <div className={`tableCell ${theme.row}`}>{files}</div>
+      <div className={`tableCell ${theme.row}`}>{fileSize}</div>
+    </div>
+  ),
+);
 
 const Table = compose(withTheme)(({ theme, stats, children }) => (
   <div className={`${theme.column} ${dataTableStyle(theme)}`}>
@@ -69,6 +75,20 @@ const Table = compose(withTheme)(({ theme, stats, children }) => (
     {children}
   </div>
 ));
+
+const spinner = (
+  <Spinner
+    fadeIn="none"
+    name="circle"
+    color="#a9adc0"
+    style={{
+      width: 30,
+      height: 30,
+      margin: 'auto',
+      marginBottom: 20,
+    }}
+  />
+);
 
 export default compose(
   withTheme,
@@ -100,6 +120,7 @@ export default compose(
     },
   }),
   withState('isDisabled', 'setIsDisabled', false),
+  withState('checkedFileTypes', 'setCheckedFileTypes', []),
 )(
   ({
     theme,
@@ -114,6 +135,8 @@ export default compose(
     isSubmitting,
     isDisabled,
     setIsDisabled,
+    checkedFileTypes,
+    setCheckedFileTypes,
     api,
   }) => {
     const participantStats = [participantsStat, fileStat, fileSizeStat];
@@ -125,59 +148,98 @@ export default compose(
     return (
       <DownloadManifestModal {...{ sqon, index, projectId, api }}>
         {({ setWarning }) => (
-          <div className={theme.column}>
-            <Fragment>
-              <ModalSubHeader>Family Summary</ModalSubHeader>
-              <Table {...{ stats: participantStats }}>
-                <FileRepoStatsQuery
-                  api={api}
-                  sqon={sqon}
-                  index={index}
-                  projectId={projectId}
-                  stats={participantStats}
-                  render={data => (
+          <FileRepoStatsQuery
+            api={api}
+            sqon={sqon}
+            index={index}
+            projectId={projectId}
+            stats={participantStats}
+            render={({
+              [participantStats[0].label]: participantsMemberCount,
+              [participantStats[1].label]: participantsFilesCount,
+              [participantStats[2].label]: participantsFileSize,
+            }) => (
+              <div className={theme.column}>
+                <Fragment>
+                  <ModalSubHeader>Family Summary</ModalSubHeader>
+                  <Table {...{ stats: participantStats }}>
                     <ManifestTableDataRow
                       {...{
                         fileType: 'All',
-                        members: data[participantStats[0].label],
-                        files: data[participantStats[1].label],
-                        fileSize: data[participantStats[2].label],
+                        members: participantsMemberCount,
+                        files: participantsFilesCount,
+                        fileSize: participantsFileSize,
                       }}
                     />
-                  )}
+                  </Table>
+                </Fragment>
+                {(dataTypes || []).length ? (
+                  <Fragment>
+                    <ModalSubHeader>Participants Summary</ModalSubHeader>
+                    <Table {...{ stats: familyMemberStats }}>
+                      <FamilyDataTypesStatsQuery
+                        {...{
+                          dataTypes,
+                          participantIds,
+                          projectId,
+                          isDisabled,
+                          values,
+                        }}
+                      >
+                        {({ loading, data }) =>
+                          loading
+                            ? spinner
+                            : data.map(({ fileType, members, files, fileSize }) => (
+                                <ManifestTableDataRow
+                                  {...{
+                                    showCheckbox: true,
+                                    onClick: e => {
+                                      setCheckedFileTypes(
+                                        checkedFileTypes.includes(fileType)
+                                          ? checkedFileTypes.filter(type => type !== fileType)
+                                          : [...checkedFileTypes, fileType],
+                                      );
+                                    },
+                                    isChecked: checkedFileTypes.includes(fileType),
+                                    fileType,
+                                    members,
+                                    files,
+                                    fileSize,
+                                  }}
+                                />
+                              ))
+                        }
+                      </FamilyDataTypesStatsQuery>
+                    </Table>
+                    <div className={dataTableStyle(theme)}>
+                      <ManifestTableDataRow
+                        className={`${theme.row} ${css`
+                          ${highLightRow(theme)};
+                        `}`}
+                        {...{
+                          fileType: 'TOTAL',
+                          members: participantsMemberCount,
+                          files: participantsFilesCount,
+                          fileSize: participantsFileSize,
+                        }}
+                      />
+                    </div>
+                  </Fragment>
+                ) : null}
+                <DownloadManifestModalFooter
+                  {...{
+                    api,
+                    sqon: sqonForDownload({ sqon, values, familyMemberIds }),
+                    onManifestGenerated: () => setIsDisabled(true),
+                    projectId,
+                    setWarning,
+                    onDownloadClick: submitForm,
+                    downloadLoading: isSubmitting,
+                  }}
                 />
-              </Table>
-            </Fragment>
-            {(dataTypes || []).length ? (
-              <Fragment>
-                <ModalSubHeader>Participants Summary</ModalSubHeader>
-                <Table {...{ stats: familyMemberStats }}>
-                  <FamilyDataTypesStatsQuery
-                    {...{
-                      dataTypes,
-                      participantIds,
-                      projectId,
-                      isDisabled,
-                      values,
-                    }}
-                  >
-                    {props => <ManifestTableDataRow {...props} />}
-                  </FamilyDataTypesStatsQuery>
-                </Table>
-              </Fragment>
-            ) : null}
-            <DownloadManifestModalFooter
-              {...{
-                api,
-                sqon: sqonForDownload({ sqon, values, familyMemberIds }),
-                onManifestGenerated: () => setIsDisabled(true),
-                projectId,
-                setWarning,
-                onDownloadClick: submitForm,
-                downloadLoading: isSubmitting,
-              }}
-            />
-          </div>
+              </div>
+            )}
+          />
         )}
       </DownloadManifestModal>
     );

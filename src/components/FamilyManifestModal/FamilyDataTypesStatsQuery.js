@@ -2,23 +2,8 @@ import React from 'react';
 
 import { get, difference } from 'lodash';
 import Query from '@arranger/components/dist/Query';
-import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
 import { compose } from 'recompose';
-
-const spinner = (
-  <Spinner
-    fadeIn="none"
-    name="circle"
-    color="#a9adc0"
-    style={{
-      width: 30,
-      height: 30,
-      margin: 'auto',
-      marginBottom: 20,
-    }}
-  />
-);
 
 export default compose(withApi)(
   ({ api, dataTypes = [], participantIds, projectId, isDisabled, values, children } = {}) => (
@@ -74,29 +59,34 @@ export default compose(withApi)(
         };
       }, {})}
       render={({ data, loading }) => {
-        return loading
-          ? spinner
-          : dataTypes.map(bucket => {
-              const aggs = get(data, `file`);
-              const familyMemberBuckets = get(
-                aggs,
-                `${bucket.key.replace(
-                  /[^\da-z]/gi,
-                  '',
-                )}family.participants__family__family_compositions__family_members__kf_id.buckets`,
-              );
-              const familyMembersCount = difference(
-                (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
-                participantIds,
-              ).length;
-              return children({
-                key: bucket.key,
-                fileType: bucket.key,
-                members: familyMembersCount,
-                files: bucket.doc_count,
-                fileSize: get(aggs, `${bucket.key.replace(/[^\da-z]/gi, '')}.size.stats.sum`),
-              });
-            });
+        return children(
+          loading
+            ? { loading }
+            : {
+                loading,
+                data: dataTypes.map(bucket => {
+                  const aggs = get(data, `file`);
+                  const familyMemberBuckets = get(
+                    aggs,
+                    `${bucket.key.replace(
+                      /[^\da-z]/gi,
+                      '',
+                    )}family.participants__family__family_compositions__family_members__kf_id.buckets`,
+                  );
+                  const familyMembersCount = difference(
+                    (familyMemberBuckets && familyMemberBuckets.map(({ key }) => key)) || [],
+                    participantIds,
+                  ).length;
+                  return {
+                    key: bucket.key,
+                    fileType: bucket.key,
+                    members: familyMembersCount,
+                    files: bucket.doc_count,
+                    fileSize: get(aggs, `${bucket.key.replace(/[^\da-z]/gi, '')}.size.stats.sum`),
+                  };
+                }),
+              },
+        );
       }}
     />
   ),
