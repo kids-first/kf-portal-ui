@@ -4,7 +4,6 @@ import ajax from 'services/ajax';
 import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 
 const gapi = global.gapi;
-//gapi.load('auth2');
 
 export const googleLogin = token =>
   ajax.get(urlJoin(egoApiRoot, 'oauth/google/token'), {
@@ -14,14 +13,11 @@ export const googleLogin = token =>
     },
   });
 
+const wait = s => new Promise(r => setTimeout(r, s * 1000));
+
 export const googleLogout = () => {
   const authInstance = gapi.auth2.getAuthInstance();
-  if (authInstance) {
-    return authInstance.signOut();
-  } else {
-    // already signed out
-    return Promise.resolve();
-  }
+  return authInstance ? authInstance.signOut() : Promise.resolve();
 };
 
 export const facebookLogin = token =>
@@ -32,16 +28,14 @@ export const facebookLogin = token =>
     },
   });
 
-export const facebookLogout = () => {
-  return new Promise((resolve, reject) => {
-    global.FB.getLoginStatus(response => {
-      if (response.authResponse) {
-        global.FB.logout(r => resolve(r));
-      } else {
-        resolve();
-      }
-    });
-  });
-};
+export const facebookLogout = () =>
+  Promise.race([
+    new Promise((resolve, reject) =>
+      global.FB.getLoginStatus(
+        response => (response.authResponse ? global.FB.logout(r => resolve(r)) : resolve()),
+      ),
+    ),
+    wait(2),
+  ]);
 
 export const logoutAll = () => Promise.all([googleLogout(), facebookLogout()]);
