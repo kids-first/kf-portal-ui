@@ -5,8 +5,14 @@ export const highLightRow = theme => `
 
 export const dataTableStyle = theme =>
   `table ${css`
-    border: solid 1px ${theme.greyScale5};
     &.table {
+      border: solid 1px ${theme.greyScale5};
+      &.total {
+        & .row:first-child {
+          ${highLightRow(theme)};
+          color: black;
+        }
+      }
       & .row {
         padding: 15px;
         padding-left: 50px;
@@ -38,6 +44,20 @@ export const dataTableStyle = theme =>
             }
           }
         }
+      }
+    }
+  `}`;
+
+export const totalRowStyle = theme =>
+  `totalRow ${css`
+    &.totalRow {
+      ${highLightRow(theme)};
+      justify-content: space-between;
+      padding: 15px;
+      padding-left: 50px;
+      & .tableCell {
+        display: flex;
+        flex: 1;
       }
     }
   `}`;

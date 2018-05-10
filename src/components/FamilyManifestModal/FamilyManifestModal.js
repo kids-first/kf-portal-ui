@@ -52,8 +52,8 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
 };
 
 const ManifestTableDataRow = compose(withTheme)(
-  ({ theme, fileType, members, files, fileSize, isChecked, showCheckbox, ...rest }) => (
-    <div className={`row ${theme.row}`} {...rest}>
+  ({ theme, fileType, members, files, fileSize, isChecked, showCheckbox, className, ...rest }) => (
+    <div className={`row ${theme.row} ${className}`} {...rest}>
       <div className={`tableCell ${theme.row}`}>
         {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
         {fileType}
@@ -65,10 +65,9 @@ const ManifestTableDataRow = compose(withTheme)(
   ),
 );
 
-const Table = compose(withTheme)(({ theme, stats, children }) => (
-  <div className={`${theme.column} ${dataTableStyle(theme)}`}>
+const Table = compose(withTheme)(({ theme, stats, className, children }) => (
+  <div className={`${theme.column} ${className} ${dataTableStyle(theme)}`}>
     <div className={`row ${theme.row}`}>
-      <div className={`tableCell ${theme.column}`}>Data Types</div>
       {stats.map(({ label, icon }) => (
         <div className={`tableCell ${theme.row}`}>
           <div className={`left`}>{icon}</div> {label}
@@ -91,6 +90,17 @@ const spinner = (
       marginBottom: 20,
     }}
   />
+);
+
+const Section = ({ children }) => (
+  <section
+    className={css`
+      margin-top: 20px;
+      margin-bottom: 20px;
+    `}
+  >
+    {children}
+  </section>
 );
 
 export default compose(
@@ -157,7 +167,7 @@ export default compose(
             api={api}
             sqon={sqon}
             name={`CombinedFileStatsQuery`}
-            query={queryStringWrapper(true)(
+            query={queryStringWrapper(false)(
               [fileStat, fileSizeStat].map(stat => stat.fragment(stat.label)),
             )}
             index={index}
@@ -172,17 +182,21 @@ export default compose(
               return (
                 <div className={theme.column}>
                   <Fragment>
-                    <ModalSubHeader>Participants Summary</ModalSubHeader>
-                    <Table {...{ stats: participantStats }}>
-                      <ManifestTableDataRow
-                        {...{
-                          fileType: 'All',
-                          members: participantsMemberCount,
-                          files: participantsFilesCount,
-                          fileSize: fileSizeToString(participantsFileSize),
-                        }}
-                      />
-                    </Table>
+                    <Section>
+                      <ModalSubHeader>Participants Summary</ModalSubHeader>
+                      <Table
+                        {...{ stats: [{ icon: null, label: 'Data Types' }, ...participantStats] }}
+                      >
+                        <ManifestTableDataRow
+                          {...{
+                            fileType: 'All',
+                            members: participantsMemberCount,
+                            files: participantsFilesCount,
+                            fileSize: fileSizeToString(participantsFileSize),
+                          }}
+                        />
+                      </Table>
+                    </Section>
                   </Fragment>
                   {(dataTypes || []).length ? (
                     <FamilyDataTypesStatsQuery
@@ -195,42 +209,53 @@ export default compose(
                       }}
                     >
                       {({ loading, data: fileTypeStats = [] }) => {
-                        return (
+                        return loading ? (
+                          spinner
+                        ) : (
                           <Fragment>
-                            <ModalSubHeader>Family MembersSummary</ModalSubHeader>
-                            {loading ? (
-                              spinner
-                            ) : (
-                              <Fragment>
-                                <Table {...{ stats: familyMemberStats }}>
-                                  {fileTypeStats.map(({ fileType, members, files, fileSize }) => (
-                                    <ManifestTableDataRow
-                                      {...{
-                                        showCheckbox: true,
-                                        onClick: e => {
-                                          setCheckedFileTypes(
-                                            checkedFileTypes.includes(fileType)
-                                              ? checkedFileTypes.filter(type => type !== fileType)
-                                              : [...checkedFileTypes, fileType],
-                                          );
-                                        },
-                                        isChecked: checkedFileTypes.includes(fileType),
-                                        fileType,
-                                        members,
-                                        files,
-                                        fileSize: fileSizeToString(fileSize),
-                                      }}
-                                    />
-                                  ))}
-                                </Table>
-                                <div className={dataTableStyle(theme)}>
+                            <Section>
+                              <ModalSubHeader>Family Summary</ModalSubHeader>
+                              <Table
+                                {...{
+                                  stats: [
+                                    { icon: null, label: 'Data Types' },
+                                    ...familyMemberStats,
+                                  ],
+                                }}
+                              >
+                                {fileTypeStats.map(({ fileType, members, files, fileSize }) => (
                                   <ManifestTableDataRow
-                                    className={`${theme.row} ${css`
-                                      ${highLightRow(theme)};
-                                    `}`}
                                     {...{
-                                      fileType: 'TOTAL',
-                                      members: uniq([
+                                      showCheckbox: true,
+                                      onClick: e => {
+                                        setCheckedFileTypes(
+                                          checkedFileTypes.includes(fileType)
+                                            ? checkedFileTypes.filter(type => type !== fileType)
+                                            : [...checkedFileTypes, fileType],
+                                        );
+                                      },
+                                      isChecked: checkedFileTypes.includes(fileType),
+                                      fileType,
+                                      members,
+                                      files,
+                                      fileSize: fileSizeToString(fileSize),
+                                    }}
+                                  />
+                                ))}
+                              </Table>
+                            </Section>
+                            <Section>
+                              <Table
+                                className={`total`}
+                                {...{
+                                  stats: [
+                                    {
+                                      icon: null,
+                                      label: 'TOTAL',
+                                    },
+                                    {
+                                      icon: participantsStat.icon,
+                                      label: uniq([
                                         ...participantIds,
                                         ...filterToCheckedTypes(fileTypeStats).reduce(
                                           (acc, { familyMembersKeys }) => [
@@ -240,18 +265,24 @@ export default compose(
                                           [],
                                         ),
                                       ]).length,
-                                      files:
+                                    },
+                                    {
+                                      icon: fileStat.icon,
+                                      label:
                                         participantsFilesCount +
                                         sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
-                                      fileSize: fileSizeToString(
+                                    },
+                                    {
+                                      icon: fileSizeStat.icon,
+                                      label: fileSizeToString(
                                         participantsFileSize +
                                           sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
                                       ),
-                                    }}
-                                  />
-                                </div>
-                              </Fragment>
-                            )}
+                                    },
+                                  ],
+                                }}
+                              />
+                            </Section>
                           </Fragment>
                         );
                       }}
