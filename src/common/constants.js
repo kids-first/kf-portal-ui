@@ -4,6 +4,29 @@ import HealthIcon from 'icons/HealthIcon';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
+import { without } from 'lodash';
+
+const DEFAULT_PROFILE_FIELDS = [
+      '_id',
+      'title',
+      'firstName',
+      'lastName',
+      'egoId',
+      'roles',
+      'acceptedTerms',
+      'email',
+      'story',
+      'bio',
+      'jobTitle',
+      'institution',
+      'city',
+      'state',
+      'country',
+      'website',
+      'googleScholarId',
+      'interests',
+      'sets',
+    ]
 
 export const ROLES = [
   {
@@ -20,6 +43,7 @@ export const ROLES = [
       gradientLight: '#1297d7',
       pillBkg: '#00afed',
     },
+    profileFields: DEFAULT_PROFILE_FIELDS,
   },
   {
     type: 'community',
@@ -35,6 +59,7 @@ export const ROLES = [
       gradientLight: '#cd5162',
       pillBkg: '#e83a9c',
     },
+    profileFields: without(DEFAULT_PROFILE_FIELDS, 'institution', 'jobTitle'),
   },
   {
     type: 'health',
@@ -50,6 +75,7 @@ export const ROLES = [
       gradientLight: '#1ca39e',
       pillBkg: '#1f9bb6',
     },
+    profileFields: without(DEFAULT_PROFILE_FIELDS, 'institution', 'jobTitle'),
   },
 ];
 
