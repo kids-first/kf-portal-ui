@@ -205,35 +205,30 @@ const AggregationsWrapper = compose(injectState, withTheme)(
 );
 
 const customTableTypes = {
-  access: ({ value }) => {
-    if (typeof value !== 'boolean') {
-      return 'unknown';
-    } else if (value) {
-      return (
-        <img
-          src={require('../assets/icon-controlled-access.svg')}
-          alt=""
-          css={`
-            width: 11px;
-            margin: auto;
-            display: block;
-          `}
-        />
-      );
-    } else {
-      return (
-        <img
-          src={require('../assets/icon-open-access.svg')}
-          alt=""
-          css={`
-            width: 10px;
-            margin: auto;
-            display: block;
-          `}
-        />
-      );
-    }
-  },
+  access: ({ value }) =>
+    typeof value !== 'boolean' ? (
+      ``
+    ) : value ? (
+      <img
+        src={require('../assets/icon-controlled-access.svg')}
+        alt=""
+        css={`
+          width: 11px;
+          margin: auto;
+          display: block;
+        `}
+      />
+    ) : (
+      <img
+        src={require('../assets/icon-open-access.svg')}
+        alt=""
+        css={`
+          width: 10px;
+          margin: auto;
+          display: block;
+        `}
+      />
+    ),
 };
 
 const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...props }) => (
