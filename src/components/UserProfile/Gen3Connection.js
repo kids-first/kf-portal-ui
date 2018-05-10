@@ -7,6 +7,7 @@ import { injectState } from 'freactal';
 import { ModalFooter, ModalWarning } from 'components/Modal';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { GEN3 } from 'common/constants';
+
 import ExternalLink from 'uikit/ExternalLink';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { gen3WebRoot } from 'common/injectGlobals';

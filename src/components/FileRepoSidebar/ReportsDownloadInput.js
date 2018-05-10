@@ -22,10 +22,22 @@ export default ({ api, projectId, theme, sqon }) => (
       <PillInputWithLoadingOptionsAndButton
         options={{
           'Clinical (Participant)': {
-            onSelected: clinicalDataParticipants({
-              sqon,
-              columns: state.columns,
-            }),
+            onSelected: async () => {
+              const { participantIds } = await familyMemberAndParticipantIds({
+                api,
+                sqon,
+              });
+              return clinicalDataParticipants({
+                sqon: {
+                  op: 'in',
+                  content: {
+                    field: 'participants.kf_id',
+                    value: participantIds,
+                  },
+                },
+                columns: state.columns,
+              })();
+            },
           },
           'Clinical (Participant and family)': {
             tooltip: `No file was found for family members`,
