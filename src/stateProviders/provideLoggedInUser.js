@@ -9,7 +9,7 @@ import {
   addStateInfo as addUsersnapInfo,
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
-import { trackUserSession } from 'services/analyticsTracking';
+import { trackUserSession, trackUserInteraction, addStateInfo as updateTrackingInfo } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
 

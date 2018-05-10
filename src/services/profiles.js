@@ -121,7 +121,7 @@ export const deleteProfile = api => async ({ user }) => {
       `,
     },
   });
-  debugger
+  
   return recordId;
 };
 

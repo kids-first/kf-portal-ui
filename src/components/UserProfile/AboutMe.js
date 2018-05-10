@@ -9,7 +9,7 @@ import Autocomplete from 'react-autocomplete';
 import styled from 'react-emotion';
 
 import { withTheme } from 'emotion-theming';
-import EditableLabel from 'uikit/EditableLabel';
+import EditableLabel from 'uikit/EditableLabel';  
 import ExternalLink from 'uikit/ExternalLink';
 import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
@@ -22,7 +22,6 @@ const trackProfileInteraction = eventData => {
     },
     eventData,
   );
-  debugger;
   trackUserInteraction(metaData);
 };
 
@@ -73,7 +72,6 @@ export default compose(
         default:
           break;
       }
-      debugger;
       trackProfileInteraction(editEventData);
     },
   }),

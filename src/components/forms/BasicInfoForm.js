@@ -13,6 +13,10 @@ import styled, { css } from 'react-emotion';
 import { ROLES } from 'common/constants';
 import { googleMapsKey } from 'common/injectGlobals';
 import { updateProfile } from 'services/profiles';
+import {
+  trackUserInteraction,
+  addStateInfo as updateTrackingInfo,
+} from 'services/analyticsTracking';
 import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
@@ -112,6 +116,14 @@ export default compose(
         setErrors,
       }: any,
     ) => {
+      if (window.location.pathname.includes('/user') && values.roles !== loggedInUser.roles[0]) {
+        trackUserInteraction({
+          category: 'User: Profile',
+          action: `User Updated Role to ${values.roles}`,
+          label: 'User Roles',
+        });
+        updateTrackingInfo({ userRoles: [values.roles] });
+      }
       const { email, ...rest } = loggedInUser;
       updateProfile(api)({
         user: {

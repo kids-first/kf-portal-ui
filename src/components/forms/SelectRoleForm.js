@@ -84,7 +84,6 @@ export const enhance = compose(
         async profile => {
           await setUser({ ...profile, email, api });
           let { pathname } = window.location;
-          debugger;
           if (pathname === '/join') {
             updateTrackingDimension({ userRoles: profile.roles });
           }
