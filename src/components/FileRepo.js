@@ -31,6 +31,7 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import Select from '../uikit/Select';
 import translateSQONValue from 'common/translateSQONValue';
 import { withApi } from 'services/api';
+import { withPageViewTracker } from 'services/analyticsTracking';
 import ArrangerConnectionGuard from './ArrangerConnectionGuard';
 
 const arrangerStyles = css`
@@ -231,7 +232,7 @@ const customTableTypes = {
     ),
 };
 
-const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...props }) => (
+const FileRepo = compose(injectState, withTheme, withApi, withPageViewTracker)(({ state, effects, ...props }) => (
   <SQONURL
     render={url => (
       <ArrangerConnectionGuard

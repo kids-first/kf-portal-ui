@@ -71,7 +71,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
           render={props =>
             forceSelectRole({
               isLoadingUser,
-              Component: withPageViewTracker(FileRepo),
+              Component: FileRepo,
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
