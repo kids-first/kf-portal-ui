@@ -8,7 +8,7 @@ import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { GEN3 } from 'common/constants';
 import { gen3WebRoot } from 'common/injectGlobals';
-import { ModalFooter } from 'components/Modal/index.js';
+import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import { getUser as getGen3User } from 'services/gen3';
 
 const styles = css`
@@ -76,6 +76,11 @@ const Gen3Connection = ({
   return (
     <div css={styles}>
       <div>
+        {invalidToken && (
+          <ModalWarning>
+            <Trans>The provided Gen3 Token is invalid. Please update and try again.</Trans>
+          </ModalWarning>
+        )}
         <div
           css={css`
             display: flex;
@@ -124,18 +129,6 @@ const Gen3Connection = ({
             placeholder="Gen3 Key"
             onChange={e => setGen3Key(e.target.value)}
           />
-          {invalidToken && (
-            <div
-              css={`
-                color: #e45562;
-                padding: 10px;
-                padding-left: 20px;
-                height: 1.6em;
-              `}
-            >
-              <Trans>The provided Gen3 Token is invalid. Please update and try again.</Trans>
-            </div>
-          )}
         </div>
       </div>
       <ModalFooter
