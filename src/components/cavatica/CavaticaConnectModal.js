@@ -78,9 +78,8 @@ const submitCavaticaToken = async ({
   onSuccess,
   onFail,
 }) => {
-  // await setSecret({ service: CAVATICA, secret: token });
-  // const userData = await getCavaticaUser(token);
-  const userData = { name: 'foobar', project: 'baz' };
+  await setSecret({ service: CAVATICA, secret: token });
+  const userData = await getCavaticaUser(token);
 
   if (userData) {
     setIntegrationToken(CAVATICA, JSON.stringify(userData));
