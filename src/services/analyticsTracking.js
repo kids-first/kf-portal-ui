@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
 import { addInfo as addUserSnapInfo } from './usersnap';
 import history from './history';
 import { merge } from 'lodash';
 
+const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
+
 let GAState = {
-    trackingId: 'UA-87708930-5',
+    trackingId: devDebug ? devTrackingID : gaTrackingID,
     userId: null,
     userRoles: null,
     clientId: null,
@@ -23,7 +24,7 @@ export const initAnalyticsTracking = () => {
     });
 };
 
-let setUserDimensions = (userId, role) => {
+const setUserDimensions = (userId, role) => {
     ReactGA.set({ clientId: GAState.clientId });
     if (userId || GAState.userId) {
         ReactGA.set({ userId: userId || GAState.userId });
@@ -79,8 +80,8 @@ export const trackUserInteraction = async eventData => {
     }
 };
 
-let sanitizeName = name => name.toUpperCase().replace(/\s/g, '_');
-let getTimingEventName = name => `KF_GA_TIMING_INIT_${sanitizeName(name)}`;
+const sanitizeName = name => name.toUpperCase().replace(/\s/g, '_');
+const getTimingEventName = name => `KF_GA_TIMING_INIT_${sanitizeName(name)}`;
 
 export const startAnalyticsTiming = eventName => {
     timingsStorage.setItem(getTimingEventName(eventName), +new Date());
@@ -131,31 +132,5 @@ export const trackExternalLink = url => {
     ReactGA.outboundLink({ label: url }, () => {});
 };
 
-history.listen(({ pathname, search, hash }, action) => {
-    console.log('trackPageView', pathname + hash + search);
-});
-
-export function withPageViewTracker(WrappedComponent, options = {}) {
-    const HOC = class extends Component {
-        componentDidMount() {
-            const { pathname, hash, search } = this.props.location;
-            trackPageView(pathname + hash + search);
-        }
-
-        componentWillReceiveProps(nextProps) {
-            const currentPage = this.props.location.pathname;
-            const nextPage = nextProps.location.pathname;
-
-            if (currentPage !== nextPage) {
-                const { pathname, hash, search } = this.props.location;
-                trackPageView(pathname + hash + search);
-            }
-        }
-
-        render() {
-            return <WrappedComponent {...this.props} />;
-        }
-    };
-
-    return HOC;
-}
+// track page views
+history.listen(({ pathname, search, hash }, action) => trackPageView(pathname + hash + search));

@@ -27,7 +27,6 @@ import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { withPageViewTracker } from 'services/analyticsTracking';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -86,7 +85,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: withPageViewTracker(UserProfile),
+              Component: UserProfile,
               loggedInUser,
               ...props,
             })
@@ -99,7 +98,7 @@ const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) 
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: withPageViewTracker(UserDashboard),
+              Component: UserDashboard,
               containerStyle: css`
                 height: 100vh;
               `,
