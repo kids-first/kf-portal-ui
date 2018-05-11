@@ -32,11 +32,13 @@ export const TRACKING_EVENTS = {
         open: 'Open',
         close: 'Close',
         click: 'Clicked',
+        edit: 'Edit',
+        save: 'Save',
         userRoleSelected: 'User Role Updated',
-        integration:{
+        integration: {
             connected: 'Integration Connection SUCCESS',
-            failed: 'Integration Connection FAILED'
-        }
+            failed: 'Integration Connection FAILED',
+        },
     },
     labels: {
         joinProcess: 'Join Process',
