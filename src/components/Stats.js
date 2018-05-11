@@ -2,7 +2,7 @@ import React from 'react';
 import filesize from 'filesize';
 import Stats, { CombinedStatsQuery } from '@arranger/components/dist/Stats';
 
-const config = [
+export const config = [
   {
     label: 'Files',
     isRoot: true,
