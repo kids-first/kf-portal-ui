@@ -113,6 +113,7 @@ export default compose(
       }).then(x => this.setState(x));
     },
   }),
+  withState('setId', 'setSetId', ''),
   withState('isDisabled', 'setIsDisabled', false),
   withState('checkedFileTypes', 'setCheckedFileTypes', []),
 )(
@@ -135,6 +136,8 @@ export default compose(
     api,
     columns,
     handleSubmit,
+    setId,
+    setSetId,
     effects: { unsetModal },
   }) => {
     const participantStats = [participantsStatVisual, fileStatVisual, fileSizeStatVisual];
@@ -160,6 +163,8 @@ export default compose(
             })(({ handleSubmit }) => (
               <DownloadManifestModalFooter
                 {...{
+                  setId,
+                  setSetId,
                   api,
                   onManifestGenerated: () => setIsDisabled(true),
                   projectId,
@@ -238,6 +243,7 @@ export default compose(
                                   key: i,
                                   showCheckbox: true,
                                   onClick: e => {
+                                    setSetId(null);
                                     setCheckedFileTypes(
                                       checkedFileTypes.includes(fileType)
                                         ? checkedFileTypes.filter(type => type !== fileType)

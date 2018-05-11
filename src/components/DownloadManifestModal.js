@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal/lib/inject';
 import { css } from 'emotion';
@@ -9,14 +9,14 @@ import saveSet from '@arranger/components/dist/utils/saveSet';
 
 import downloadIcon from '../assets/icon-download-white.svg';
 import IconWithLoading from '../icons/IconWithLoading';
-import CopyToClipboard from './CopyToClipboard';
-import { ModalSubHeader, ModalFooter, ModalWarning } from './Modal';
+import { copyValueToClipboard } from './CopyToClipboard';
+import { ModalFooter, ModalWarning } from './Modal';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
-const Button = compose(withTheme)(({ theme, children, ...props }) => (
-  <button css={theme.actionButton} {...props}>
+const Button = compose(withTheme)(({ theme, children, className, ...props }) => (
+  <button className={`${theme.actionButton} ${className}`} {...props}>
     <div
       className={css`
         display: flex;
@@ -29,9 +29,32 @@ const Button = compose(withTheme)(({ theme, children, ...props }) => (
   </button>
 ));
 
-const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', ''))(
+const ManifestGeneratorStyle = () =>
+  `manifestSetGenerator ${css`
+    &.manifestSetGenerator {
+      height: 100%;
+      background: white;
+      border-radius: 1000px;
+      display: flex;
+      & .copyContent {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+      }
+      & .generateButton {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+      }
+    }
+  `}`;
+
+const GenerateManifestSet = compose(injectState, withTheme)(
   ({
     api,
+    theme,
     setId,
     setSetId,
     sqon,
@@ -39,52 +62,67 @@ const GenerateManifestSet = compose(injectState, withState('setId', 'setSetId', 
     onManifestGenerated,
     state: { loggedInUser },
     effects: { addUserSet },
-  }) => (
-    <div>
-      {setId ? (
-        <CopyToClipboard value={setId} />
-      ) : (
+    className,
+  }) => {
+    const copyRef = React.createRef();
+    return (
+      <div className={`${ManifestGeneratorStyle()}`}>
         <LoadingOnClick
           onClick={async () => {
-            const type = 'file';
-            const { data, errors } = await saveSet({
-              type,
-              sqon: sqon || {},
-              userId: loggedInUser.egoId,
-              path: 'kf_id',
-              api: graphql(api),
-            });
-            if (errors && errors.length) {
-              setWarning('Unable to generate KF-get ID, please try again later.');
+            if (setId) {
+              copyValueToClipboard({ value: setId, copyRef });
             } else {
-              const { setId, size } = data.saveSet;
-              setWarning('');
-              setSetId(setId);
-              onManifestGenerated(data.saveSet);
-              addUserSet({ type, setId, size, api });
+              const type = 'file';
+              const { data, errors } = await saveSet({
+                type,
+                sqon: sqon || {},
+                userId: loggedInUser.egoId,
+                path: 'kf_id',
+                api: graphql(api),
+              });
+              if (errors && errors.length) {
+                setWarning('Unable to generate KF-get ID, please try again later.');
+              } else {
+                const { setId: receivedSetId, size } = data.saveSet;
+                setWarning('');
+                setSetId(receivedSetId);
+                onManifestGenerated(data.saveSet);
+                addUserSet({ type, setId: receivedSetId, size, api });
+              }
             }
           }}
           render={({ onClick, loading }) => (
-            <Button {...{ onClick, disabled: loading }}>
-              {loading && (
-                <Spinner
-                  fadeIn="none"
-                  name="circle"
-                  color="#fff"
-                  style={{
-                    width: 15,
-                    height: 15,
-                    marginRight: 9,
-                  }}
-                />
-              )}
-              <Trans>Generate KF-get ID</Trans>
-            </Button>
+            <Fragment>
+              <span ref={copyRef} className={`copyContent`}>
+                {setId || <Trans>Generate KF-get ID</Trans>}
+              </span>
+              <Button
+                {...{ onClick, disabled: loading, className: `generateButton ${theme.uppercase}` }}
+              >
+                {' '}
+                {loading ? (
+                  <Spinner
+                    fadeIn="none"
+                    name="circle"
+                    color="#fff"
+                    style={{
+                      width: 15,
+                      height: 15,
+                      marginRight: 9,
+                    }}
+                  />
+                ) : setId ? (
+                  <Trans>Copy</Trans>
+                ) : (
+                  <Trans>GENERATE</Trans>
+                )}
+              </Button>
+            </Fragment>
           )}
         />
-      )}
-    </div>
-  ),
+      </div>
+    );
+  },
 );
 
 export const DownloadManifestModalFooter = ({
@@ -94,10 +132,22 @@ export const DownloadManifestModalFooter = ({
   onDownloadClick,
   setWarning,
   api,
+  setId,
+  setSetId,
   onManifestGenerated = () => {},
 }) => (
   <ModalFooter showSubmit={false}>
-    <GenerateManifestSet {...{ sqon, projectId, setWarning, onManifestGenerated, api }} />
+    <GenerateManifestSet
+      {...{
+        sqon,
+        projectId,
+        setWarning,
+        onManifestGenerated,
+        api,
+        setId,
+        setSetId,
+      }}
+    />
     <LoadingOnClick
       onClick={onDownloadClick}
       render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (

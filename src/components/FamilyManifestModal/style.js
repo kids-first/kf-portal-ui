@@ -71,6 +71,7 @@ export const modalContentStyle = theme =>
           font-weight: 400;
           font-size: 18px;
           & .highlight {
+            font-weight: bold;
             color: ${theme.secondary};
           }
         }
