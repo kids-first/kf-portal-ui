@@ -58,7 +58,7 @@ function getManifestDownload(type) {
           columns: findColumnsByField(
             [
               'kf_id',
-              'uuid',
+              'participants.biospecimens.kf_id',
               'file_name',
               'data_type',
               'file_format',
