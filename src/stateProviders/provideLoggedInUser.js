@@ -12,7 +12,6 @@ import {
 import {
   trackUserSession,
   trackUserInteraction,
-  addStateInfo as updateTrackingInfo,
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';

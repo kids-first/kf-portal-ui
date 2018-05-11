@@ -379,9 +379,7 @@ const FileRepo = compose(injectState, withTheme, withApi, withPageViewTracker)(
                           </div>
                         </div>
                         <FileRepoSidebar {...props} sqon={selectionSQON} />
-
                       </div>
-                      <FileRepoSidebar {...props} sqon={selectionSQON} />
                     </div>
                   );
                 }}
@@ -393,6 +391,5 @@ const FileRepo = compose(injectState, withTheme, withApi, withPageViewTracker)(
     />
   ),
 );
-
 
 export default FileRepo;
