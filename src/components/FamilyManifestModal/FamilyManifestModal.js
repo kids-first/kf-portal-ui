@@ -7,6 +7,7 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import Spinner from 'react-spinkit';
 import filesize from 'filesize';
+import { Trans } from 'react-i18next';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
@@ -187,8 +188,12 @@ export default compose(
               <Fragment>
                 <Section>
                   <ModalSubHeader className={`modalSubHeader`}>
-                    <span className={`highlight`}>Participants Summary</span>
-                    <span> - all files will be included in the manifest.</span>
+                    <span className={`highlight`}>
+                      <Trans>Participants Summary</Trans>
+                    </span>
+                    <span>
+                      <Trans> - all files will be included in the manifest.</Trans>
+                    </span>
                   </ModalSubHeader>
                   <Table {...{ stats: [{ icon: null, label: 'Data Types' }, ...participantStats] }}>
                     <ManifestTableDataRow
@@ -231,12 +236,16 @@ export default compose(
                             <span className={`highlight`}>Family Sumary</span>
                             <span>
                               {' '}
-                              - the participants in your query have related family member data..
+                              <Trans>
+                                - the participants in your query have related family member data.
+                              </Trans>
                             </span>
                             <div>
                               {' '}
-                              To include the family data in the manifest, select your desired data
-                              types below:{' '}
+                              <Trans>
+                                To include the family data in the manifest, select your desired data
+                                types below:
+                              </Trans>{' '}
                             </div>
                           </ModalSubHeader>
                           <Table
