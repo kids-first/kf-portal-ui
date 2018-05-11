@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
+import { gaTrackingID, devDebug } from 'common/injectGlobals';
 import { addInfo as addUserSnapInfo } from './usersnap';
-import { gaTrackingID } from 'common/injectGlobals';
+import history from './history';
 import { merge } from 'lodash';
 
-const debug = process.env.NODE_ENV === 'development';
-
 let GAState = {
-    trackingId: gaTrackingID,
+    trackingId: 'UA-87708930-5',
     userId: null,
     userRoles: null,
     clientId: null,
@@ -15,7 +14,7 @@ let GAState = {
 let timingsStorage = window.localStorage;
 
 export const initAnalyticsTracking = () => {
-    ReactGA.initialize(GAState.trackingId, { debug });
+    ReactGA.initialize(GAState.trackingId, { debug: devDebug });
     ReactGA.ga(function(tracker) {
         var clientId = tracker.get('clientId');
         addStateInfo({ clientId });
@@ -129,8 +128,12 @@ export const trackPageView = (page, options = {}) => {
 };
 
 export const trackExternalLink = url => {
-    ReactGA.outboundLink({ label: url },() => {} );
-}
+    ReactGA.outboundLink({ label: url }, () => {});
+};
+
+history.listen(({ pathname, search, hash }, action) => {
+    console.log('trackPageView', pathname + hash + search);
+});
 
 export function withPageViewTracker(WrappedComponent, options = {}) {
     const HOC = class extends Component {
