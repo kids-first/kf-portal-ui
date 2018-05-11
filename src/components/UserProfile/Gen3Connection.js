@@ -8,7 +8,7 @@ import { ModalFooter, ModalWarning } from 'components/Modal';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { GEN3 } from 'common/constants';
 import ExternalLink from 'uikit/ExternalLink';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { gen3WebRoot } from 'common/injectGlobals';
 import { getUser as getGen3User } from 'services/gen3';
 import { deleteSecret, setSecret } from 'services/secrets';
@@ -54,9 +54,9 @@ const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }
     .then(userData => {
       setIntegrationToken(GEN3, apiKey);
       trackUserInteraction({
-        category: 'User: Profile',
-        action: 'Connected to GEN3',
-        label: 'Integration',
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: TRACKING_EVENTS.actions.integration.connected,
+        label: 'Gen3',
       });
       onSuccess();
     })
@@ -64,9 +64,9 @@ const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }
       setIntegrationToken(GEN3, null);
       deleteSecret({ service: GEN3 });
       trackUserInteraction({
-        category: 'User: Profile',
-        action: 'FAILED GEN3 connection',
-        label: 'Integration',
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: TRACKING_EVENTS.actions.integration.failed,
+        label: 'Gen3',
       });
       onFail();
     });

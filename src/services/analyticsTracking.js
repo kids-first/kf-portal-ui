@@ -5,16 +5,43 @@ import history from './history';
 import { merge } from 'lodash';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
-if(devDebug && devTrackingID){
+if (devDebug && devTrackingID) {
     console.warn('warning: using GA Tracking ID override');
 }
 let GAState = {
-    trackingId: (devDebug || devTrackingID) ? (devTrackingID || gaTrackingID) : gaTrackingID,
+    trackingId: devDebug || devTrackingID ? devTrackingID || gaTrackingID : gaTrackingID,
     userId: null,
     userRoles: null,
     clientId: null,
 };
 let timingsStorage = window.localStorage;
+
+export const TRACKING_EVENTS = {
+    categories: {
+        join: 'Join',
+        signIn: 'Sign In',
+        modals: 'Modals',
+        user: {
+            profile: 'User Profile',
+        },
+    },
+    actions: {
+        acceptedTerms: 'Accepted Terms',
+        signedUp: 'Join Completed!',
+        completedProfile: 'Completed Profile',
+        open: 'Open',
+        close: 'Close',
+        click: 'Clicked',
+        userRoleSelected: 'User Role Updated',
+        integration:{
+            connected: 'Integration Connection SUCCESS',
+            failed: 'Integration Connection FAILED'
+        }
+    },
+    labels: {
+        joinProcess: 'Join Process',
+    },
+};
 
 export const initAnalyticsTracking = () => {
     ReactGA.initialize(GAState.trackingId, { debug: devDebug });
@@ -51,15 +78,14 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => 
     }
 };
 
-export const trackUserInteraction = async eventData => {
-    const { category, action, label } = eventData;
+export const trackUserInteraction = async ({ category, action, label }) => {
     setUserDimensions();
-    ReactGA.event(eventData);
+    ReactGA.event({ category, action, label });
     switch (category) {
-        case 'Modals':
-            if (action === 'Open') {
+        case TRACKING_EVENTS.categories.modals:
+            if (action === TRACKING_EVENTS.actions.open) {
                 startAnalyticsTiming(`MODAL__${label}`);
-            } else if (action === 'Close') {
+            } else if (action === TRACKING_EVENTS.actions.close) {
                 stopAnalyticsTiming(`MODAL__${label}`, {
                     category,
                     variable: 'open duration',
@@ -68,9 +94,9 @@ export const trackUserInteraction = async eventData => {
             }
 
             break;
-        case 'Join':
-            if (action === 'Join Completed!') {
-                stopAnalyticsTiming('join process', {
+        case TRACKING_EVENTS.categories.join:
+            if (action === TRACKING_EVENTS.actions.signedUp) {
+                stopAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess, {
                     category,
                     variable: 'Join process completion time',
                     label: label || null,

@@ -12,6 +12,7 @@ import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
 import {
   trackUserInteraction,
+  TRACKING_EVENTS,
   addStateInfo as updateTrackingDimension,
 } from 'services/analyticsTracking';
 import { ButtonsDiv } from '../Join';
@@ -203,8 +204,9 @@ export const SelectRoleForm = ({
                   setFieldValue('roles', type);
                   if (window.location.pathname === '/join') {
                     trackUserInteraction({
-                      category: 'Join',
-                      action: `Join Role Selected: ${type}`,
+                      category: TRACKING_EVENTS.categories.join,
+                      action: TRACKING_EVENTS.actions.userRoleSelected,
+                      label: type
                     });
                   }
                 }}

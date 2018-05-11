@@ -16,7 +16,11 @@ import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
 import ToSearchPage from 'components/links/ToSearchPage';
 import { withApi } from 'services/api';
-import { trackUserInteraction, startAnalyticsTiming } from 'services/analyticsTracking';
+import {
+  trackUserInteraction,
+  startAnalyticsTiming,
+  TRACKING_EVENTS,
+} from 'services/analyticsTracking';
 
 const Consent = compose(
   injectState,
@@ -120,8 +124,9 @@ const Consent = compose(
               if (event.target.checked) {
                 setCustomStepMessage(null);
                 trackUserInteraction({
-                  category: 'Join',
-                  action: 'Accepted Terms',
+                  category: TRACKING_EVENTS.categories.join,
+                  action: TRACKING_EVENTS.actions.acceptedTerms,
+                  label: TRACKING_EVENTS.labels.joinProcess
                 });
               }
               setAccepted(event.target.checked);
@@ -171,7 +176,7 @@ const JoinContent = compose(
   withApi,
   lifecycle({
     componentDidMount() {
-      startAnalyticsTiming('join process')
+      startAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess);
     },
   }),
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
@@ -293,9 +298,9 @@ const JoinContent = compose(
                             ),
                           });
                           trackUserInteraction({
-                            category: 'Join',
-                            action: 'Join Completed!',
-                            label: `Join Completion`
+                            category: TRACKING_EVENTS.categories.join,
+                            action: TRACKING_EVENTS.actions.signedUp,
+                            label: `Join Completion: egoId ${loggedInUser.egoId}`,
                           });
                           history.push(`/user/${loggedInUser.egoId}`);
                         } else {

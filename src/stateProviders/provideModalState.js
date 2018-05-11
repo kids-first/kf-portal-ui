@@ -1,7 +1,7 @@
 import { provideState } from 'freactal';
 
 import { addStateInfo as addUsersnapInfo } from 'services/usersnap';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const initialState = {
   title: null,
@@ -17,8 +17,8 @@ export default provideState({
     setModal: (effects, { title, component, classNames }) => state => {
       const modalState = { title, component, classNames };
       trackUserInteraction({
-        category: 'Modals',
-        action: 'Open',
+        category: TRACKING_EVENTS.categories.modals,
+        action: TRACKING_EVENTS.actions.open,
         label: title
       });
       addUsersnapInfo({ modalState });
@@ -26,8 +26,8 @@ export default provideState({
     },
     unsetModal: effects => state => {
       trackUserInteraction({
-        category: 'Modals',
-        action: 'Close',
+        category: TRACKING_EVENTS.categories.modals,
+        action: TRACKING_EVENTS.actions.close,
         label: state.modalState.title
       });
       addUsersnapInfo({ modalState: initialState });

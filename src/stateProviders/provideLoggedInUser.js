@@ -10,6 +10,7 @@ import {
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
 import {
+  TRACKING_EVENTS, 
   trackUserSession,
   trackUserInteraction,
 } from 'services/analyticsTracking';
@@ -60,9 +61,9 @@ export default provideState({
 
           if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
             trackUserInteraction({
-              category: 'User: Profile',
-              action: `Completed Profile for role: ${user.roles[0]}`,
-              label: 'profile completion',
+              category: TRACKING_EVENTS.categories.user.profile,
+              action: TRACKING_EVENTS.actions.completedProfile,
+              label: user.roles[0],
             });
           }
           addUsersnapInfo({ percentageFilled });

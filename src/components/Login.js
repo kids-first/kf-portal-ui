@@ -16,7 +16,7 @@ import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
-import { trackUserInteraction } from 'services/analyticsTracking';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
@@ -178,7 +178,7 @@ class Component extends React.Component<any, any> {
   };
   trackUserSignIn = provider => {
     let { location: { pathname } } = this.props;
-    let actionType = pathname === '/join' ? 'Join' : 'Log In';
+    let actionType = pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
       category: actionType,
       action: `${actionType} with Provider`,

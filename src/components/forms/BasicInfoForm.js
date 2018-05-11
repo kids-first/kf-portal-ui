@@ -14,6 +14,7 @@ import { ROLES } from 'common/constants';
 import { googleMapsKey } from 'common/injectGlobals';
 import { updateProfile } from 'services/profiles';
 import {
+  TRACKING_EVENTS,
   trackUserInteraction,
   addStateInfo as updateTrackingInfo,
 } from 'services/analyticsTracking';
@@ -118,9 +119,9 @@ export default compose(
     ) => {
       if (window.location.pathname.includes('/user') && values.roles !== loggedInUser.roles[0]) {
         trackUserInteraction({
-          category: 'User: Profile',
-          action: `User Updated Role to ${values.roles}`,
-          label: 'User Roles',
+          category: TRACKING_EVENTS.categories.user.profile,
+          action: TRACKING_EVENTS.actions.userRoleSelected+' to',
+          label: values.roles,
         });
         updateTrackingInfo({ userRoles: [values.roles] });
       }
