@@ -7,7 +7,7 @@ import { merge } from 'lodash';
 const debug = process.env.NODE_ENV === 'development';
 
 let GAState = {
-    trackingId: 'UA-87708930-5',
+    trackingId: gaTrackingID,
     userId: null,
     userRoles: null,
     clientId: null,
