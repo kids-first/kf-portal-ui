@@ -6,7 +6,7 @@ import { withApi } from 'services/api';
 import { compose } from 'recompose';
 
 export default compose(withApi)(
-  ({ api, dataTypes = [], participantIds, projectId, isDisabled, values, children } = {}) => (
+  ({ api, dataTypes = [], participantIds, projectId, isDisabled, children } = {}) => (
     <Query
       renderError
       api={api}
