@@ -16,9 +16,7 @@ export default function ExternalLink({
       target="_blank"
       rel="noopener noreferrer"
       className={className + ' test-external-link'}
-      onClick={() => {
-        trackExternalLink(href);
-      }}
+      onClick={() => trackExternalLink(href)}
     >
       {hasExternalIcon && <ExternalLinkIcon style={{ marginRight: '0.5rem' }} />}
       {children}
