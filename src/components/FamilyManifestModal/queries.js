@@ -1,6 +1,40 @@
 import { get, difference } from 'lodash';
 import graphql from 'services/arranger';
 
+export const participantsFilesCountAndSize = async ({ api, sqon }) => {
+  const response = await graphql(api)({
+    query: `
+        query familyMemberAndParticipantData($sqon: JSON, $include_missing: Boolean) {
+          file {
+
+            hits(filters: $sqon) {
+              total
+            }
+
+            aggregations(filters: $sqon, include_missing: $include_missing) {
+              size {
+                stats {
+                  sum
+                }
+              }
+            }
+
+          }
+        }
+      `,
+    variables: { sqon, include_missing: true },
+  });
+
+  const { data } = response;
+
+  console.log('data: ', data);
+
+  const participantFilesCount = get(data, 'file.hits.total') || 0;
+  const participantFilesSize = get(data, 'file.aggregations.size.stats.sum') || 0;
+
+  return { participantFilesCount, participantFilesSize };
+};
+
 export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
   const response = await graphql(api)({
     query: `
@@ -81,5 +115,18 @@ export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
     api,
     familyMemberIds: familyMembersWithoutParticipantIds,
   });
-  return { familyMemberIds, participantIds, familyMembersWithoutParticipantIds, dataTypes };
+  const { participantFilesCount, participantFilesSize } = await participantsFilesCountAndSize({
+    api,
+    sqon,
+  });
+  console.log('participantFilesCount: ', participantFilesCount);
+  console.log('participantFilesSize: ', participantFilesSize);
+  return {
+    familyMemberIds,
+    participantIds,
+    familyMembersWithoutParticipantIds,
+    dataTypes,
+    participantFilesCount,
+    participantFilesSize,
+  };
 };
