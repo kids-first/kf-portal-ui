@@ -152,17 +152,23 @@ export default compose(
     return (
       <DownloadManifestModal {...{ sqon, index, projectId, api }}>
         {({ setWarning }) => {
-          const createFooterComponent = participantIds =>
-            withFormik({
+          const createFooterComponent = participantIds => {
+            const downloadSqon = sqonForDownload({
+              sqon,
+              fileTypes: checkedFileTypes,
+              participantIds,
+            });
+            return withFormik({
               handleSubmit: async (value, { setSubmitting, setErrors }) => {
                 fileManifestParticipantsAndFamily({
-                  sqon: sqonForDownload({ sqon, fileTypes: checkedFileTypes, participantIds }),
+                  sqon: downloadSqon,
                   columns: columns,
                 })().then(async profile => unsetModal(), errors => setSubmitting(false));
               },
             })(({ handleSubmit }) => (
               <DownloadManifestModalFooter
                 {...{
+                  sqon: downloadSqon,
                   setId,
                   setSetId,
                   api,
@@ -174,6 +180,7 @@ export default compose(
                 }}
               />
             ));
+          };
           const FooterWithParticipantsOnly = createFooterComponent(participantIds);
           return (
             <div className={`${theme.column} ${modalContentStyle(theme)}`}>
