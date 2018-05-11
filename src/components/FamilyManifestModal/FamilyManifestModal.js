@@ -6,6 +6,7 @@ import { withFormik } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import Spinner from 'react-spinkit';
+import filesize from 'filesize';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import { ModalSubHeader } from '../Modal';
@@ -14,12 +15,12 @@ import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';
 import {
-  familyStat,
-  participantsStat,
-  fileStat,
-  fileSizeStat,
-  fileSizeToString,
-} from 'components/Stats';
+  participantsStatVisual,
+  fileStatVisual,
+  fileSizeStatVisual,
+  familyMembersStatVisual,
+} from './statVisuals';
+
 import { dataTableStyle } from './style';
 
 const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
@@ -48,6 +49,8 @@ const sqonForDownload = ({ values, familyMemberIds, sqon }) => {
       }
     : sqon;
 };
+
+const fileSizeToString = fileSize => filesize(fileSize || 0).toUpperCase();
 
 const ManifestTableDataRow = compose(withTheme)(
   ({ theme, fileType, members, files, fileSize, isChecked, showCheckbox, className, ...rest }) => (
@@ -152,12 +155,8 @@ export default compose(
     setCheckedFileTypes,
     api,
   }) => {
-    const participantStats = [participantsStat, fileStat, fileSizeStat];
-    const familyMemberStats = [
-      { icon: familyStat.icon, label: 'Family Members' },
-      fileStat,
-      fileSizeStat,
-    ];
+    const participantStats = [participantsStatVisual, fileStatVisual, fileSizeStatVisual];
+    const familyMemberStats = [familyMembersStatVisual, fileStatVisual, fileSizeStatVisual];
     const participantsMemberCount = (participantIds || []).length;
 
     const filterToCheckedTypes = data =>
@@ -192,6 +191,13 @@ export default compose(
                 }}
               >
                 {({ loading, data: fileTypeStats = [] }) => {
+                  const uniqueParticipantsAndFamilyMemberIds = uniq([
+                    ...participantIds,
+                    ...filterToCheckedTypes(fileTypeStats).reduce(
+                      (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
+                      [],
+                    ),
+                  ]);
                   return loading ? (
                     spinner
                   ) : (
@@ -235,23 +241,17 @@ export default compose(
                                 label: 'TOTAL',
                               },
                               {
-                                icon: participantsStat.icon,
-                                label: uniq([
-                                  ...participantIds,
-                                  ...filterToCheckedTypes(fileTypeStats).reduce(
-                                    (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
-                                    [],
-                                  ),
-                                ]).length,
+                                icon: participantsStatVisual.icon,
+                                label: uniqueParticipantsAndFamilyMemberIds.length,
                               },
                               {
-                                icon: fileStat.icon,
+                                icon: fileStatVisual.icon,
                                 label:
                                   participantFilesCount +
                                   sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
                               },
                               {
-                                icon: fileSizeStat.icon,
+                                icon: fileSizeStatVisual.icon,
                                 label: fileSizeToString(
                                   participantFilesSize +
                                     sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
