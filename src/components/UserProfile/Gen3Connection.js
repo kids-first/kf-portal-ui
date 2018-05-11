@@ -10,6 +10,7 @@ import { GEN3 } from 'common/constants';
 
 import ExternalLink from 'uikit/ExternalLink';
 import { trackUserInteraction } from 'services/analyticsTracking';
+
 import { gen3WebRoot } from 'common/injectGlobals';
 import { getUser as getGen3User } from 'services/gen3';
 import { deleteSecret, setSecret } from 'services/secrets';
@@ -57,7 +58,7 @@ const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }
       trackUserInteraction({
         category: 'User: Profile',
         action: 'Connected to GEN3',
-        label: 'Integration'
+        label: 'Integration',
       });
       onSuccess();
     })
@@ -67,7 +68,7 @@ const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }
       trackUserInteraction({
         category: 'User: Profile',
         action: 'FAILED GEN3 connection',
-        label: 'Integration'
+        label: 'Integration',
       });
       onFail();
     });
@@ -107,10 +108,7 @@ const Gen3Connection = ({
             <span className="numberBullet">1</span>
             <span>
               You will need to retrieve your authentication token from the{' '}
-              <ExternalLink 
-                href={gen3WebRoot}
-                hasExternalIcon={false}
-              >
+              <ExternalLink href={gen3WebRoot} hasExternalIcon={false}>
                 Kids First Data Catalog
               </ExternalLink>. After Login, click on the "Profile" tab.
             </span>
@@ -153,7 +151,7 @@ const Gen3Connection = ({
             submitGen3Token({
               token: gen3Key,
               setIntegrationToken: effects.setIntegrationToken,
-              onSuccess:props.onComplete,
+              onSuccess: props.onComplete,
               onFail: () => setInvalidToken(true),
             });
           },
