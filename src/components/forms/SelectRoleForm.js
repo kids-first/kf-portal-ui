@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { injectState } from 'freactal';
 import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
@@ -31,6 +32,7 @@ const StyledLabel = styled('label')`
 export const enhance = compose(
   withTheme,
   injectState,
+  withRouter,
   withFormik({
     mapPropsToValues: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
@@ -67,7 +69,7 @@ export const enhance = compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser }, onFinish, api, ...restProps },
+        props: { state: { loggedInUser }, effects: { setUser }, onFinish, api, ...restProps, location:{pathname} },
         setSubmitting,
         setErrors,
       }: any,
@@ -83,7 +85,7 @@ export const enhance = compose(
       }).then(
         async profile => {
           await setUser({ ...profile, email, api });
-          let { pathname } = window.location;
+          
           if (pathname === '/join') {
             updateTrackingDimension({ userRoles: profile.roles });
           }
