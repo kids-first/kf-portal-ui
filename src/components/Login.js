@@ -17,7 +17,6 @@ import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
 import { trackUserInteraction } from 'services/analyticsTracking';
-
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
