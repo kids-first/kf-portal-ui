@@ -5,9 +5,11 @@ import history from './history';
 import { merge } from 'lodash';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
-
+if(devDebug && devTrackingID){
+    console.warn('warning: using GA Tracking ID override');
+}
 let GAState = {
-    trackingId: devDebug ? devTrackingID : gaTrackingID,
+    trackingId: (devDebug || devTrackingID) ? (devTrackingID || gaTrackingID) : gaTrackingID,
     userId: null,
     userRoles: null,
     clientId: null,
