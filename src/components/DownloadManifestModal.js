@@ -125,39 +125,50 @@ const GenerateManifestSet = compose(injectState, withTheme)(
   },
 );
 
-export const DownloadManifestModalFooter = ({
-  sqon,
-  projectId,
-  downloadLoading,
-  onDownloadClick,
-  setWarning,
-  api,
-  setId,
-  setSetId,
-  onManifestGenerated = () => {},
-}) => (
-  <ModalFooter showSubmit={false}>
-    <GenerateManifestSet
-      {...{
-        sqon,
-        projectId,
-        setWarning,
-        onManifestGenerated,
-        api,
-        setId,
-        setSetId,
-      }}
-    />
-    <LoadingOnClick
-      onClick={onDownloadClick}
-      render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
-        <Button {...{ onClick, disabled: finalLoading }}>
-          <IconWithLoading {...{ loading: finalLoading, icon: downloadIcon }} />
-          <Trans>Download Manifest</Trans>
-        </Button>
-      )}
-    />
-  </ModalFooter>
+export const DownloadManifestModalFooter = compose(withTheme)(
+  ({
+    theme,
+    sqon,
+    projectId,
+    downloadLoading,
+    onDownloadClick,
+    setWarning,
+    api,
+    setId,
+    setSetId,
+    onManifestGenerated = () => {},
+  }) => (
+    <ModalFooter showSubmit={false}>
+      <GenerateManifestSet
+        {...{
+          sqon,
+          projectId,
+          setWarning,
+          onManifestGenerated,
+          api,
+          setId,
+          setSetId,
+        }}
+      />
+      <LoadingOnClick
+        onClick={onDownloadClick}
+        render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
+          <Button
+            {...{
+              onClick,
+              className: `${theme.uppercase} ${css`
+                height: 100%;
+              `}`,
+              disabled: finalLoading,
+            }}
+          >
+            <IconWithLoading {...{ loading: finalLoading, icon: downloadIcon }} />
+            <Trans>Download Manifest</Trans>
+          </Button>
+        )}
+      />
+    </ModalFooter>
+  ),
 );
 
 export default compose(withState('warning', 'setWarning', ''))(
