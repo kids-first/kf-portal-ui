@@ -21,7 +21,7 @@ import {
   familyMembersStatVisual,
 } from './statVisuals';
 
-import { dataTableStyle } from './style';
+import { dataTableStyle, modalContentStyle } from './style';
 
 const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
   return sqon
@@ -93,7 +93,7 @@ const spinner = (
 const Section = ({ children }) => (
   <section
     className={css`
-      margin-top: 20px;
+      margin-top: 10px;
       margin-bottom: 20px;
     `}
   >
@@ -171,10 +171,13 @@ export default compose(
             ));
           const FooterWithParticipantsOnly = createFooterComponent(participantIds);
           return (
-            <div className={theme.column}>
+            <div className={`${theme.column} ${modalContentStyle(theme)}`}>
               <Fragment>
                 <Section>
-                  <ModalSubHeader>Participants Summary</ModalSubHeader>
+                  <ModalSubHeader className={`modalSubHeader`}>
+                    <span className={`highlight`}>Participants Summary</span>
+                    <span> - all files will be included in the manifest.</span>
+                  </ModalSubHeader>
                   <Table {...{ stats: [{ icon: null, label: 'Data Types' }, ...participantStats] }}>
                     <ManifestTableDataRow
                       {...{
@@ -212,7 +215,18 @@ export default compose(
                     ) : (
                       <Fragment>
                         <Section>
-                          <ModalSubHeader>Family Summary</ModalSubHeader>
+                          <ModalSubHeader className={`modalSubHeader`}>
+                            <span className={`highlight`}>Family Sumary</span>
+                            <span>
+                              {' '}
+                              - the participants in your query have related family member data..
+                            </span>
+                            <div>
+                              {' '}
+                              To include the family data in the manifest, select your desired data
+                              types below:{' '}
+                            </div>
+                          </ModalSubHeader>
                           <Table
                             {...{
                               stats: [{ icon: null, label: 'Data Types' }, ...familyMemberStats],

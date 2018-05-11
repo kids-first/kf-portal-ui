@@ -27,8 +27,6 @@ export const participantsFilesCountAndSize = async ({ api, sqon }) => {
 
   const { data } = response;
 
-  console.log('data: ', data);
-
   const participantFilesCount = get(data, 'file.hits.total') || 0;
   const participantFilesSize = get(data, 'file.aggregations.size.stats.sum') || 0;
 
