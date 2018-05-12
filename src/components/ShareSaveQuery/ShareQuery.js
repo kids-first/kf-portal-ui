@@ -13,6 +13,15 @@ import Tooltip from 'uikit/Tooltip';
 import { arrangerApiRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
+import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+
+const trackQueryShare = channel => {
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+    action: TRACKING_EVENTS.actions.query.share,
+    label: channel,
+  });
+};
 
 let Bubble = p => (
   <span
@@ -48,12 +57,7 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      let {
-        stats,
-        sqon,
-        api,
-        state: { loggedInUser },
-      } = this.props;
+      let { stats, sqon, api, state: { loggedInUser } } = this.props;
       shortenApi({ stats, sqon, loggedInUser, api })
         .then(data => {
           this.setState({
@@ -120,7 +124,10 @@ export default injectState(
                       <ItemRow>
                         <CopyToClipboard
                           text={this.state.link}
-                          onCopy={() => this.setState({ copied: true })}
+                          onCopy={() => {
+                            this.setState({ copied: true });
+                            trackQueryShare('copied');
+                          }}
                         >
                           <span>
                             <Bubble>
@@ -140,6 +147,7 @@ export default injectState(
                         <FacebookShareButton
                           url={this.state.link}
                           quote="Kids First File Repo Query"
+                          onClick={() => trackQueryShare('Facebook')}
                         >
                           <Bubble>
                             <FBIcon />
@@ -154,6 +162,7 @@ export default injectState(
                         <TwitterShareButton
                           title="Kids First File Repo Query"
                           url={this.state.link}
+                          onClick={() => trackQueryShare('Twitter')}
                         >
                           <Trans>share on twitter</Trans>
                         </TwitterShareButton>
@@ -162,6 +171,7 @@ export default injectState(
                         <LinkedinShareButton
                           title="Kids First File Repo Query"
                           url={this.state.link}
+                          onClick={() => trackQueryShare('LinkedIn')}
                         >
                           <Bubble>
                             <LIIcon />

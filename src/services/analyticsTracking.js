@@ -24,6 +24,12 @@ export const TRACKING_EVENTS = {
         user: {
             profile: 'User Profile',
         },
+        fileRepo: {
+            filters: 'File Repo: Filters',
+            facet: 'File Repo: Facets',
+            dataTable: 'File Repo: Data Table',
+            actionsSidebar: 'File Repo: Actions Sidebar',
+        },
     },
     actions: {
         acceptedTerms: 'Accepted Terms',
@@ -34,6 +40,10 @@ export const TRACKING_EVENTS = {
         click: 'Clicked',
         edit: 'Edit',
         save: 'Save',
+        query: {
+            save: 'Query Saved',
+            share: 'Query Shared',
+        },
         userRoleSelected: 'User Role Updated',
         integration: {
             connected: 'Integration Connection SUCCESS',
