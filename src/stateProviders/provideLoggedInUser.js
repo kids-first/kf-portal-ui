@@ -1,6 +1,5 @@
-import { ROLES } from 'common/constants';
 import { provideState } from 'freactal';
-import { isArray, get, find, pick } from 'lodash';
+import { isArray, pick, without, chain, omit } from 'lodash';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
@@ -49,16 +48,24 @@ export default provideState({
     setUser: (effects, { api, ...user }) => {
       return getAllFieldNamesPromise(api)
         .then(({ data }) => {
-          return get(data, '__type.fields', []);
+          return chain(data)
+            .get('__type.fields', [])
+            .map(f => f.name)
+            .without('sets')
+            .value();
         })
         .then(fields => state => {
           const userRole = user.roles ? user.roles[0] : null;
-          const userRoleProfileFields = userRole ?  find(ROLES, { type: userRole }).profileFields : fields;
-          const profile = pick(user, userRoleProfileFields);
+          const _userRoleProfileFields =
+            (userRole && userRole !== 'research')
+              ? without(fields, 'institution', 'jobTitle')
+              : fields;
+
+          const profile = pick(omit(user, 'sets'), _userRoleProfileFields);
           const filledFields = Object.values(profile || {}).filter(
-            v => v || (isArray(v) && v.length),
+            v => (isArray(v) && v.length) || (!isArray(v) && v),
           );
-          const percentageFilled = filledFields.length / userRoleProfileFields.length;
+          const percentageFilled = filledFields.length / _userRoleProfileFields.length;
           addUsersnapInfo({ percentageFilled });
           setUsersnapUser(user);
           return {
