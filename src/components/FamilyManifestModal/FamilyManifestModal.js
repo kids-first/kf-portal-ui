@@ -64,8 +64,8 @@ const ManifestTableDataRow = compose(withTheme)(
   ),
 );
 
-const Table = compose(withTheme)(({ theme, stats, className, children }) => (
-  <div className={`${theme.column} ${className} ${dataTableStyle(theme)}`}>
+const Table = compose(withTheme)(({ theme, stats, className, children, reverseColor = false }) => (
+  <div className={`${theme.column} ${className} ${dataTableStyle({ theme, reverseColor })}`}>
     <div className={`row ${theme.row}`}>
       {stats.map(({ label, icon }, i) => (
         <div key={i} className={`tableCell ${theme.row}`}>
@@ -196,7 +196,12 @@ export default compose(
                       <Trans>- all files will be included in the manifest</Trans>.
                     </span>
                   </ModalSubHeader>
-                  <Table {...{ stats: [{ icon: null, label: 'Data Types' }, ...participantStats] }}>
+                  <Table
+                    {...{
+                      reverseColor: !isFamilyMemberFilesAvailable,
+                      stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
+                    }}
+                  >
                     <ManifestTableDataRow
                       {...{
                         fileType: 'All',
@@ -249,6 +254,7 @@ export default compose(
                             </ModalSubHeader>
                             <Table
                               {...{
+                                reverseColor: true,
                                 stats: [{ icon: null, label: 'Data Types' }, ...familyMemberStats],
                               }}
                             >

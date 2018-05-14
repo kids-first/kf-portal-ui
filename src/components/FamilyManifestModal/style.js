@@ -3,7 +3,7 @@ export const highLightRow = theme => `
   background-color: #e4f4f8;
 `;
 
-export const dataTableStyle = theme =>
+export const dataTableStyle = ({ theme, reverseColor }) =>
   `table ${css`
     &.table {
       border: solid 1px ${theme.greyScale5};
@@ -16,14 +16,14 @@ export const dataTableStyle = theme =>
       & .row {
         padding: 15px;
         padding-left: 50px;
+        &:nth-child(${reverseColor ? `2n + 1` : `2n`}) {
+          ${highLightRow};
+        }
         &:first-child {
           font-weight: bold;
           color: ${theme.secondary};
           background-color: #edeef1;
           border-bottom: solid 1px ${theme.greyScale5};
-        }
-        &:nth-child(2n) {
-          ${highLightRow};
         }
         & .tableCell {
           padding-right: 20px;
