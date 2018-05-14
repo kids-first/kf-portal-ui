@@ -40,6 +40,7 @@ const ManifestGeneratorStyle = theme =>
       border-radius: 10px;
       display: flex;
       overflow: hidden;
+      border: solid 1px ${theme.borderGrey};
       & .clipboardIcon {
         width: 10px;
         margin-right: 9px;
