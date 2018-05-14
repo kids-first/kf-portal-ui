@@ -2,6 +2,7 @@ import React from 'react';
 import { injectState } from 'freactal';
 import urlJoin from 'url-join';
 import Spinner from 'react-spinkit';
+import { css } from 'react-emotion';
 import ShareIcon from 'react-icons/lib/fa/share-alt';
 import ChainIcon from 'react-icons/lib/fa/chain';
 import FBIcon from 'react-icons/lib/fa/facebook';
@@ -66,7 +67,7 @@ export default injectState(
     };
 
     render() {
-      const { className = '' } = this.props;
+      const { className = '', disabled } = this.props;
       return (
         <div
           css={`
@@ -79,7 +80,17 @@ export default injectState(
             ${className};
           `}
         >
-          <div id="share" className="sqon-bubble sqon-clear" onClick={this.share}>
+          <div
+            id="share"
+            className={`
+              sqon-bubble
+              sqon-clear
+              ${css`
+                cursor: ${disabled ? `default` : `pointer`};
+              `}
+            `}
+            onClick={disabled ? () => {} : this.share}
+          >
             <Tooltip
               position="bottom"
               trigger="click"

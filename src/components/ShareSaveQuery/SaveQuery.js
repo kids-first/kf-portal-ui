@@ -14,6 +14,7 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
+import { css } from 'react-emotion';
 
 export default injectState(
   class extends React.Component {
@@ -54,7 +55,7 @@ export default injectState(
     };
 
     render() {
-      const { className = '' } = this.props;
+      const { className = '', disabled } = this.props;
       return (
         !!this.props.state.loggedInUser && (
           <div
@@ -70,8 +71,15 @@ export default injectState(
           >
             <div
               id="save"
-              className="sqon-bubble sqon-clear"
+              className={`
+                sqon-bubble
+                sqon-clear
+                ${css`
+                  cursor: ${disabled ? `default` : `pointer`};
+                `}
+              `}
               onClick={() =>
+                !disabled &&
                 this.setState({ open: true }, () => {
                   // so hacky, but couldn't get any reasonable approach to work
                   let id = setInterval(() => {
