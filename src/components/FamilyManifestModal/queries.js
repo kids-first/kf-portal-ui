@@ -24,13 +24,10 @@ export const participantsFilesCountAndSize = async ({ api, sqon }) => {
       `,
     variables: { sqon, include_missing: true },
   });
-
-  const { data } = response;
-
-  const participantFilesCount = get(data, 'file.hits.total') || 0;
-  const participantFilesSize = get(data, 'file.aggregations.size.stats.sum') || 0;
-
-  return { participantFilesCount, participantFilesSize };
+  return {
+    participantFilesCount: get(response, 'data.file.hits.total') || 0,
+    participantFilesSize: get(response, 'data.file.aggregations.size.stats.sum') || 0,
+  };
 };
 
 export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
