@@ -58,7 +58,7 @@ function getManifestDownload(type) {
           columns: findColumnsByField(
             [
               'kf_id',
-              'uuid',
+              'participants.biospecimens.kf_id',
               'file_name',
               'data_type',
               'file_format',
@@ -66,9 +66,9 @@ function getManifestDownload(type) {
               'participants.kf_id',
               'participants.is_proband',
               'participants.family.family_id',
-              'participants.samples.kf_id',
-              'participants.samples.tissue_type',
-              'participants.samples.aliquots.kf_id',
+              'participants.biospecimens.external_sample_id',
+              'participants.biospecimens.tissue_type',
+              'participants.biospecimens.external_aliquot_id',
             ],
             columns,
           ),

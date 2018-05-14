@@ -43,12 +43,12 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
   </div>
 );
 
-export const ModalSubHeader = withTheme(({ theme, children, ...props }) => (
+export const ModalSubHeader = withTheme(({ theme, children, className, ...props }) => (
   <div
-    className={css`
+    className={`${css`
       ${theme.modalHeader};
       margin-bottom: 9px;
-    `}
+    `} ${className}`}
     {...props}
   >
     {children}
