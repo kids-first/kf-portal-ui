@@ -247,12 +247,10 @@ export default compose(
               </button>
               <SaveButton
                 onClick={async () => {
-                  debugger;
                   await submit({
                     bio: bioTextarea,
                     story: storyTextarea,
                   });
-                  debugger;
                   handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
                 }}
               />
