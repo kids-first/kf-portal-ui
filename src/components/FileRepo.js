@@ -32,6 +32,7 @@ import Select from '../uikit/Select';
 import translateSQONValue from 'common/translateSQONValue';
 import { withApi } from 'services/api';
 import ArrangerConnectionGuard from './ArrangerConnectionGuard';
+import { config as statsConfig } from './Stats';
 
 const arrangerStyles = css`
   display: flex;
@@ -167,13 +168,12 @@ const AggregationsWrapper = compose(injectState, withTheme)(
               },
               component: (
                 <AdvancedFacetViewModalContent
-                  {...{
-                    ...props,
-                    closeModal: effects.unsetModal,
-                    onSqonSubmit: ({ sqon }) => {
-                      setSQON(sqon);
-                      effects.unsetModal();
-                    },
+                  {...props}
+                  {...{ statsConfig }}
+                  closeModal={effects.unsetModal}
+                  onSqonSubmit={({ sqon }) => {
+                    setSQON(sqon);
+                    effects.unsetModal();
                   }}
                 />
               ),
@@ -310,7 +310,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                 <FileRepoStatsQuery
                                   {...props}
                                   {...url}
-                                  render={data => (
+                                  render={({ data, loading, stats = loading ? {} : data }) => (
                                     <div
                                       css={`
                                         display: flex;
@@ -318,17 +318,17 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                       `}
                                     >
                                       <ShareQuery
-                                        stats={data}
                                         api={props.api}
                                         {...url}
+                                        {...{ stats }}
                                         css={`
                                           flex: 1;
                                         `}
                                       />
                                       <SaveQuery
-                                        stats={data}
                                         api={props.api}
                                         {...url}
+                                        {...{ stats }}
                                         css={`
                                           flex: 1;
                                         `}
