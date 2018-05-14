@@ -117,8 +117,6 @@ export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
     api,
     sqon,
   });
-  console.log('participantFilesCount: ', participantFilesCount);
-  console.log('participantFilesSize: ', participantFilesSize);
   return {
     familyMemberIds,
     participantIds,
