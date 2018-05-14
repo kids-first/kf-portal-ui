@@ -33,7 +33,7 @@ export const fileStatVisual = {
 export const fileSizeStatVisual = {
   icon: (
     <img
-      src={require('../../assets/icon-files.svg')}
+      src={require('../../assets/icon-database.svg')}
       alt=""
       css={`
         width: 16px;
