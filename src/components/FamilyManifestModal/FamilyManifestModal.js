@@ -67,8 +67,8 @@ const ManifestTableDataRow = compose(withTheme)(
 const Table = compose(withTheme)(({ theme, stats, className, children }) => (
   <div className={`${theme.column} ${className} ${dataTableStyle(theme)}`}>
     <div className={`row ${theme.row}`}>
-      {stats.map(({ label, icon }) => (
-        <div className={`tableCell ${theme.row}`}>
+      {stats.map(({ label, icon }, i) => (
+        <div key={i} className={`tableCell ${theme.row}`}>
           <div className={`left`}>{icon}</div> {label}
         </div>
       ))}
