@@ -61,7 +61,7 @@ export default compose(withApi)(
       render={({ data, loading }) => {
         return render(
           loading
-            ? { loading }
+            ? { loading, data: [] }
             : {
                 loading,
                 data: dataTypes.map(bucket => {
