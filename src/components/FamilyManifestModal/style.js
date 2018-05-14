@@ -10,7 +10,7 @@ export const dataTableStyle = ({ theme, reverseColor }) =>
       border: solid 1px ${theme.greyScale5};
       &.total {
         & .row:first-child {
-          ${coloredRow(theme)};
+          background-color: ${theme.optionSelected};
           color: black;
         }
       }
