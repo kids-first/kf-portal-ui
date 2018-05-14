@@ -29,7 +29,7 @@ const Button = compose(withTheme)(({ theme, children, className, ...props }) => 
   </button>
 ));
 
-const ManifestGeneratorStyle = () =>
+const ManifestGeneratorStyle = theme =>
   `manifestSetGenerator ${css`
     &.manifestSetGenerator {
       height: 100%;
@@ -43,6 +43,8 @@ const ManifestGeneratorStyle = () =>
         justify-content: center;
         align-items: center;
         display: flex;
+        color: ${theme.greyScale1};
+        font-style: italic;
       }
       & .generateButton {
         border-top-left-radius: 0px;
@@ -66,7 +68,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
   }) => {
     const copyRef = React.createRef();
     return (
-      <div className={`${ManifestGeneratorStyle()}`}>
+      <div className={`${ManifestGeneratorStyle(theme)}`}>
         <LoadingOnClick
           onClick={async () => {
             if (setId) {
@@ -94,7 +96,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
           render={({ onClick, loading }) => (
             <Fragment>
               <span ref={copyRef} className={`copyContent`}>
-                {setId || <Trans>Generate KF-get ID</Trans>}
+                {setId || <Trans>Generate manifest ID</Trans>}
               </span>
               <Button
                 {...{ onClick, disabled: loading, className: `generateButton ${theme.uppercase}` }}
