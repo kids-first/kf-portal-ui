@@ -5,13 +5,16 @@ import App from './App';
 import { getAppElement } from './services/globalDomNodes.js';
 import googleSDK from 'services/googleSDK';
 import facebookSDK from 'services/facebookSDK';
+import { initAnalyticsTracking }  from 'services/analyticsTracking';
 import { init as initUsersnap } from 'services/usersnap';
 
 import './i18n';
 
+initAnalyticsTracking();
 googleSDK();
 facebookSDK();
 initUsersnap();
+
 
 ReactDOM.render(<App />, getAppElement());
 

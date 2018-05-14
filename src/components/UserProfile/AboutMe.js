@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { xor } from 'lodash';
 import { css } from 'react-emotion';
-import { compose, withState, withPropsOnChange } from 'recompose';
+import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import SaveIcon from 'react-icons/lib/md/save';
@@ -13,6 +13,14 @@ import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
 import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const trackProfileInteraction = ({ action, value, type }) =>
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.user.profile,
+    action: `${type || ''} Edit: ${value ? `open` : `close`}`,
+    label: action,
+  });
 
 const ClickToAdd = styled('span')`
   color: ${props => props.theme.primary};
@@ -43,6 +51,16 @@ export default compose(
   withState('isEditingBackgroundInfo', 'setEditingBackgroundInfo', false),
   withState('focusedTextArea', 'setFocusedTextArea', 'myBio'),
   withState('editingResearchInterests', 'setEditingResearchInterests', false),
+  withHandlers({
+    handleEditingBackgroundInfo: ({ setEditingBackgroundInfo }) => ({ type, value }) => {
+      setEditingBackgroundInfo(value);
+      trackProfileInteraction({ action: 'Background Information', value, type });
+    },
+    handleEditingResearchInterests: ({ setEditingResearchInterests }) => ({ type, value }) => {
+      setEditingResearchInterests(value);
+      trackProfileInteraction({ action: 'Research Interests', value, type });
+    },
+  }),
   withTheme,
   withState('bioTextarea', 'setBioTextarea', ({ profile }) => profile.bio || ''),
   withState('storyTextarea', 'setStoryTextarea', ({ profile }) => profile.story || ''),
@@ -54,6 +72,7 @@ export default compose(
   ),
   withState('interests', 'setInterests', ({ profile }) => profile.interests || []),
   withState('interestAutocomplete', 'setInterestAutocomplete', ''),
+
   withPropsOnChange(
     ['profile'],
     ({
@@ -79,7 +98,10 @@ export default compose(
     canEdit,
     submit,
     isEditingBackgroundInfo,
+    handleEditingBackgroundInfo,
     setEditingBackgroundInfo,
+    isEditingInfo,
+    handleEditingResearchInterests,
     setFocusedTextArea,
     focusedTextArea,
     editingResearchInterests,
@@ -120,7 +142,9 @@ export default compose(
             Background Information
             {canEdit &&
               (!isEditingBackgroundInfo ? (
-                <EditButton onClick={() => setEditingBackgroundInfo(!isEditingBackgroundInfo)} />
+                <EditButton
+                  onClick={() => handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo })}
+                />
               ) : (
                 <SaveButton
                   onClick={async () => {
@@ -128,7 +152,10 @@ export default compose(
                       bio: bioTextarea,
                       story: storyTextarea,
                     });
-                    setEditingBackgroundInfo(false);
+                    handleEditingBackgroundInfo({
+                      value: false,
+                      type: TRACKING_EVENTS.actions.save,
+                    });
                   }}
                 />
               ))}
@@ -153,7 +180,7 @@ export default compose(
                 canEdit && (
                   <ClickToAdd
                     onClick={() => {
-                      setEditingBackgroundInfo(!isEditingBackgroundInfo);
+                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
                       setFocusedTextArea('myBio');
                     }}
                   >
@@ -182,7 +209,7 @@ export default compose(
                 canEdit && (
                   <ClickToAdd
                     onClick={() => {
-                      setEditingBackgroundInfo(!isEditingBackgroundInfo);
+                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
                       setFocusedTextArea('myStory');
                     }}
                   >
@@ -212,7 +239,7 @@ export default compose(
                 onClick={() => {
                   setBioTextarea(profile.bio || '');
                   setStoryTextarea(profile.story || '');
-                  setEditingBackgroundInfo(false);
+                  handleEditingBackgroundInfo({ value: false });
                 }}
                 css={theme.hollowButton}
               >
@@ -224,7 +251,7 @@ export default compose(
                     bio: bioTextarea,
                     story: storyTextarea,
                   });
-                  setEditingBackgroundInfo(false);
+                  handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
                 }}
               />
             </div>
@@ -246,7 +273,7 @@ export default compose(
               (!editingResearchInterests ? (
                 <EditButton
                   onClick={() => {
-                    setEditingResearchInterests(!editingResearchInterests);
+                    handleEditingResearchInterests({ value: !editingResearchInterests });
                     setFocusedTextArea('interests');
                   }}
                 />
@@ -257,7 +284,7 @@ export default compose(
                       setWebsite('');
                       setGoogleScholarId('');
                       setInterests([]);
-                      setEditingResearchInterests(false);
+                      handleEditingResearchInterests({ value: false });
                     }}
                     css={theme.hollowButton}
                   >
@@ -270,7 +297,10 @@ export default compose(
                         googleScholarId,
                         interests,
                       });
-                      setEditingResearchInterests(false);
+                      handleEditingResearchInterests({
+                        value: false,
+                        type: TRACKING_EVENTS.actions.save,
+                      });
                     }}
                   />,
                 ]
@@ -360,7 +390,7 @@ export default compose(
                   canEdit && (
                     <ClickToAdd
                       onClick={() => {
-                        setEditingResearchInterests(!editingResearchInterests);
+                        handleEditingResearchInterests({ value: !editingResearchInterests });
                         setFocusedTextArea('website');
                       }}
                     >
@@ -387,7 +417,7 @@ export default compose(
                   canEdit && (
                     <ClickToAdd
                       onClick={() => {
-                        setEditingResearchInterests(!editingResearchInterests);
+                        handleEditingResearchInterests({ value: !editingResearchInterests });
                         setFocusedTextArea('googleScholarId');
                       }}
                     >

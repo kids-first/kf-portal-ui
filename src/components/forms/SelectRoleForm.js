@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { injectState } from 'freactal';
 import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
@@ -9,6 +10,11 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
+import {
+  trackUserInteraction,
+  TRACKING_EVENTS,
+  addStateInfo as updateTrackingDimension,
+} from 'services/analyticsTracking';
 import { ButtonsDiv } from '../Join';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 
@@ -27,6 +33,7 @@ const StyledLabel = styled('label')`
 export const enhance = compose(
   withTheme,
   injectState,
+  withRouter,
   withFormik({
     mapPropsToValues: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
@@ -63,7 +70,7 @@ export const enhance = compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser }, onFinish, api, ...restProps },
+        props: { state: { loggedInUser }, effects: { setUser }, onFinish, api, ...restProps, location:{pathname} },
         setSubmitting,
         setErrors,
       }: any,
@@ -79,6 +86,10 @@ export const enhance = compose(
       }).then(
         async profile => {
           await setUser({ ...profile, email, api });
+          
+          if (pathname === '/join') {
+            updateTrackingDimension({ userRoles: profile.roles });
+          }
           if (onFinish) {
             onFinish();
           }
@@ -189,7 +200,16 @@ export const SelectRoleForm = ({
                   margin-top: 10px;
                   ${theme.normalText};
                 `}
-                onClick={() => setFieldValue('roles', type)}
+                onClick={() => {
+                  setFieldValue('roles', type);
+                  if (window.location.pathname === '/join') {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.join,
+                      action: TRACKING_EVENTS.actions.userRoleSelected,
+                      label: type
+                    });
+                  }
+                }}
               >
                 <Field
                   type="radio"

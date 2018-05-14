@@ -4,6 +4,8 @@ import { injectState } from 'freactal';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import { trackPageView } from 'services/analyticsTracking';
+import { withRouter } from 'react-router';
 
 const BAR_STEP_WIDTH = 320;
 const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) => (
@@ -71,6 +73,7 @@ const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) =>
 export default compose(
   injectState,
   withTheme,
+  withRouter,
   withState('index', 'setIndex', 0),
   withState('nextDisabled', 'setNextDisabled', false),
   withState('customStepMessage', 'setCustomStepMessage', null),
@@ -79,9 +82,12 @@ export default compose(
       setIndex(index + 1 >= steps.length ? index : index + 1),
     prevStep: ({ index, setIndex, steps }) => event => setIndex(index - 1 < 0 ? index : index - 1),
   }),
-  withPropsOnChange(['index'], ({ index, setIndex, steps }) => ({
-    currentStep: steps[index] || { title: 'no step', Component: '--' },
-  })),
+  withPropsOnChange(['index'], ({ index, setIndex, steps, location }) => {
+    trackPageView(`${location.pathname}#${steps[index].title.replace(/\s/g, '')}`);
+    return {
+      currentStep: steps[index] || { title: 'no step', Component: '--' },
+    };
+  }),
 )(
   ({
     steps,

@@ -9,6 +9,7 @@ import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import { StyledH2 } from './styles';
+import {Helmet} from "react-helmet";
 
 export default compose(
   injectState,
@@ -28,6 +29,10 @@ export default compose(
         height: calc(100% - 170px);
       `}
     >
+      <Helmet>
+          <title>Portal - User Dashboard</title>
+      </Helmet>
+
       <ProfileInfoBar
         theme={theme}
         percentageFilled={percentageFilled}

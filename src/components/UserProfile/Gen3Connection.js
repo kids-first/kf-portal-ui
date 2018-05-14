@@ -7,6 +7,8 @@ import { injectState } from 'freactal';
 import { ModalFooter, ModalWarning } from 'components/Modal';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { GEN3 } from 'common/constants';
+import ExternalLink from 'uikit/ExternalLink';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { gen3WebRoot } from 'common/injectGlobals';
 import { getUser as getGen3User } from 'services/gen3';
 import { deleteSecret, setSecret } from 'services/secrets';
@@ -51,11 +53,21 @@ const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }
   getGen3User(apiKey)
     .then(userData => {
       setIntegrationToken(GEN3, apiKey);
+      trackUserInteraction({
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: TRACKING_EVENTS.actions.integration.connected,
+        label: 'Gen3',
+      });
       onSuccess();
     })
     .catch(response => {
       setIntegrationToken(GEN3, null);
       deleteSecret({ service: GEN3 });
+      trackUserInteraction({
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: TRACKING_EVENTS.actions.integration.failed,
+        label: 'Gen3',
+      });
       onFail();
     });
 };
@@ -94,9 +106,9 @@ const Gen3Connection = ({
             <span className="numberBullet">1</span>
             <span>
               You will need to retrieve your authentication token from the{' '}
-              <a href={gen3WebRoot} rel="noopener noreferrer" target="_blank">
+              <ExternalLink href={gen3WebRoot} hasExternalIcon={false}>
                 Kids First Data Catalog
-              </a>. After Login, click on the "Profile" tab.
+              </ExternalLink>. After Login, click on the "Profile" tab.
             </span>
           </div>
           <div

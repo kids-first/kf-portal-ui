@@ -15,6 +15,7 @@ import Spinner from 'react-spinkit';
 
 import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
@@ -35,6 +36,23 @@ const loadingSpinner = (
       height: 11,
     }}
   />
+);
+
+const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
+  <Button
+    {...props}
+    onClick={() => {
+      trackUserInteraction({
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: `${action} Integration clicked`,
+        label: type,
+      });
+      onClick();
+    }}
+    className="connectedButton"
+  >
+    {props.children}
+  </Button>
 );
 
 const styles = css`
@@ -104,15 +122,15 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <span>Connected</span>
       </div>
       <div css="display: flex;">
-        <Button onClick={onView} className="connectedButton">
+        <ConnectedButton action="view" type="Gen3" onClick={onView}>
           <ViewIcon />View
-        </Button>
-        <Button onClick={onEdit} className="connectedButton">
+        </ConnectedButton>
+        <ConnectedButton action="edit" type="Gen3" onClick={onEdit}>
           <PencilIcon />Edit
-        </Button>
-        <Button onClick={onRemove} className="connectedButton">
+        </ConnectedButton>
+        <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
           <XIcon />Remove
-        </Button>
+        </ConnectedButton>
       </div>
     </div>
   );
@@ -131,16 +149,17 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         <span> Connected</span>
       </div>
       <div css="display: flex;">
-        <Button onClick={onEdit} className="connectedButton">
+        <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
           <PencilIcon />Edit
-        </Button>
+        </ConnectedButton>
+
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
-            <Button onClick={onClick} className="connectedButton">
+            <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
               {loading ? loadingSpinner : <XIcon />}
               <span>Remove</span>
-            </Button>
+            </ConnectedButton>
           )}
         />
       </div>

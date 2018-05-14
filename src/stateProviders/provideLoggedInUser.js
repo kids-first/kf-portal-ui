@@ -9,6 +9,11 @@ import {
   addStateInfo as addUsersnapInfo,
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
+import {
+  TRACKING_EVENTS, 
+  trackUserSession,
+  trackUserInteraction,
+} from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
 
@@ -56,18 +61,25 @@ export default provideState({
         })
         .then(fields => state => {
           const userRole = user.roles ? user.roles[0] : null;
-          const _userRoleProfileFields =
+          const userRoleProfileFields =
             (userRole && userRole !== 'research')
               ? without(fields, 'institution', 'jobTitle')
               : fields;
-
-          const profile = pick(omit(user, 'sets'), _userRoleProfileFields);
+          const profile = pick(omit(user, 'sets'), userRoleProfileFields);
           const filledFields = Object.values(profile || {}).filter(
             v => (isArray(v) && v.length) || (!isArray(v) && v),
           );
-          const percentageFilled = filledFields.length / _userRoleProfileFields.length;
+          const percentageFilled = filledFields.length / userRoleProfileFields.length;
+          if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
+            trackUserInteraction({
+              category: TRACKING_EVENTS.categories.user.profile,
+              action: TRACKING_EVENTS.actions.completedProfile,
+              label: user.roles[0],
+            });
+          }
           addUsersnapInfo({ percentageFilled });
           setUsersnapUser(user);
+          trackUserSession(user);
           return {
             ...state,
             isLoadingUser: false,

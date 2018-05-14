@@ -16,6 +16,7 @@ import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
@@ -143,6 +144,7 @@ class Component extends React.Component<any, any> {
     });
 
     if (response) {
+      this.trackUserSignIn('Facebook');
       this.handleLoginResponse(response);
     }
   };
@@ -154,6 +156,7 @@ class Component extends React.Component<any, any> {
     });
 
     if (response) {
+      this.trackUserSignIn('Google');
       this.handleLoginResponse(response);
     }
   };
@@ -162,10 +165,7 @@ class Component extends React.Component<any, any> {
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
-      const {
-        onFinish,
-        effects: { setToken, setUser, setIntegrationToken },
-      } = props;
+      const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
       if (await handleJWT({ jwt, onFinish, setToken, setUser, api })) {
         fetchIntegrationTokens({ setIntegrationToken });
       } else {
@@ -176,7 +176,15 @@ class Component extends React.Component<any, any> {
       console.warn('response error');
     }
   };
-
+  trackUserSignIn = provider => {
+    let { location: { pathname } } = this.props;
+    let actionType = pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
+    trackUserInteraction({
+      category: actionType,
+      action: `${actionType} with Provider`,
+      label: provider,
+    });
+  };
   handleSecurityError = () => this.setState({ securityError: true });
 
   render() {

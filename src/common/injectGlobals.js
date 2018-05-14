@@ -11,6 +11,7 @@ const egoApiOverride = qs.EGO_API;
 if (egoApiOverride) {
   global.log('warning: using ego api override');
 }
+export const devDebug = process.env.NODE_ENV === 'development';
 
 export const egoApiRoot: string = egoApiOverride || process.env.REACT_APP_EGO_API || '';
 
@@ -41,6 +42,8 @@ export const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 
 export const usersnapHost = process.env.REACT_APP_USERSNAP_HOST;
 export const usersnapId = process.env.REACT_APP_USERSNAP_ID;
+
+export const gaTrackingID: string = process.env.REACT_APP_GA_TRACKING_ID;
 
 export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
 
