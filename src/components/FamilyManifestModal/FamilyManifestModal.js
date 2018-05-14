@@ -51,8 +51,18 @@ const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
 const fileSizeToString = fileSize => filesize(fileSize || 0).toUpperCase();
 
 const ManifestTableDataRow = compose(withTheme)(
-  ({ theme, fileType, members, files, fileSize, isChecked, showCheckbox, className, ...rest }) => (
-    <div className={`row ${theme.row} ${className}`} {...rest}>
+  ({
+    theme,
+    fileType,
+    members,
+    files,
+    fileSize,
+    isChecked,
+    showCheckbox,
+    className = '',
+    ...rest
+  }) => (
+    <div className={`row ${isChecked ? 'selected' : ''} ${theme.row} ${className}`} {...rest}>
       <div className={`tableCell ${theme.row}`}>
         {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
         {fileType}
@@ -208,6 +218,7 @@ export default compose(
                         members: participantsMemberCount,
                         files: participantFilesCount,
                         fileSize: fileSizeToString(participantFilesSize),
+                        isChecked: isFamilyMemberFilesAvailable,
                       }}
                     />
                   </Table>

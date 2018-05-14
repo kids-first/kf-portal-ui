@@ -1,6 +1,7 @@
 import { css } from 'emotion';
-export const highLightRow = theme => `
-  background-color: #e4f4f8;
+
+const coloredRow = theme => `
+  background-color: ${theme.greyScale10};
 `;
 
 export const dataTableStyle = ({ theme, reverseColor }) =>
@@ -9,7 +10,7 @@ export const dataTableStyle = ({ theme, reverseColor }) =>
       border: solid 1px ${theme.greyScale5};
       &.total {
         & .row:first-child {
-          ${highLightRow(theme)};
+          ${coloredRow(theme)};
           color: black;
         }
       }
@@ -17,13 +18,16 @@ export const dataTableStyle = ({ theme, reverseColor }) =>
         padding: 15px;
         padding-left: 50px;
         &:nth-child(${reverseColor ? `2n + 1` : `2n`}) {
-          ${highLightRow};
+          ${coloredRow(theme)};
         }
         &:first-child {
           font-weight: bold;
           color: ${theme.secondary};
           background-color: #edeef1;
           border-bottom: solid 1px ${theme.greyScale5};
+        }
+        &.selected {
+          background-color: ${theme.optionSelected};
         }
         & .tableCell {
           padding-right: 20px;
@@ -51,7 +55,7 @@ export const dataTableStyle = ({ theme, reverseColor }) =>
 export const totalRowStyle = theme =>
   `totalRow ${css`
     &.totalRow {
-      ${highLightRow(theme)};
+      ${coloredRow(theme)};
       justify-content: space-between;
       padding: 15px;
       padding-left: 50px;
