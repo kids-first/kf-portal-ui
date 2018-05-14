@@ -8,6 +8,7 @@ import { Trans } from 'react-i18next';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 
 import downloadIcon from '../assets/icon-download-white.svg';
+import CopyToClipboardIcon from '../icons/CopyToClipboardIcon.js';
 import IconWithLoading from '../icons/IconWithLoading';
 import { copyValueToClipboard } from './CopyToClipboard';
 import { ModalFooter, ModalWarning } from './Modal';
@@ -15,27 +16,35 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
-const Button = compose(withTheme)(({ theme, children, className, ...props }) => (
-  <button className={`${theme.actionButton} ${className}`} {...props}>
-    <div
-      className={css`
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      `}
-    >
-      {children}
-    </div>
-  </button>
-));
+const Button = compose(withTheme)(
+  ({ theme, children, className = '', contentClassName = '', ...props }) => (
+    <button className={`${theme.actionButton} ${className}`} {...props}>
+      <div
+        className={`${css`
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        `} ${contentClassName}`}
+      >
+        {children}
+      </div>
+    </button>
+  ),
+);
 
 const ManifestGeneratorStyle = theme =>
   `manifestSetGenerator ${css`
     &.manifestSetGenerator {
       height: 100%;
       background: white;
-      border-radius: 1000px;
+      border-radius: 10px;
       display: flex;
+      overflow: hidden;
+      & .clipboardIcon {
+        width: 10px;
+        margin-right: 9px;
+        color: ${theme.white};
+      }
       & .copyContent {
         padding-left: 20px;
         padding-right: 20px;
@@ -47,8 +56,11 @@ const ManifestGeneratorStyle = theme =>
         font-style: italic;
       }
       & .generateButton {
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
+        border-radius: 0px;
+        margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   `}`;
@@ -114,7 +126,10 @@ const GenerateManifestSet = compose(injectState, withTheme)(
                     }}
                   />
                 ) : setId ? (
-                  <Trans>Copy ID</Trans>
+                  <Fragment>
+                    <CopyToClipboardIcon className={`clipboardIcon`} fill={theme.white} />{' '}
+                    <Trans>Copy ID</Trans>
+                  </Fragment>
                 ) : (
                   <Trans>GENERATE</Trans>
                 )}

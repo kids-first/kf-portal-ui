@@ -1,6 +1,7 @@
 import { css } from 'react-emotion';
 
 const colors = {
+  white: '#ffffff',
   primary: '#90278e', //magenta
   secondary: '#2b388f', //purplish blue
   primaryHover: '#404c9a', //purple
