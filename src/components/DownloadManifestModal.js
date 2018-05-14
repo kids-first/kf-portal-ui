@@ -114,7 +114,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
                     }}
                   />
                 ) : setId ? (
-                  <Trans>Copy</Trans>
+                  <Trans>Copy ID</Trans>
                 ) : (
                   <Trans>GENERATE</Trans>
                 )}

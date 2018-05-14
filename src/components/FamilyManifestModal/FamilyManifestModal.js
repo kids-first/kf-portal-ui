@@ -192,7 +192,8 @@ export default compose(
                       <Trans>Participants Summary</Trans>
                     </span>
                     <span>
-                      <Trans> - all files will be included in the manifest.</Trans>
+                      {' '}
+                      <Trans>- all files will be included in the manifest</Trans>.
                     </span>
                   </ModalSubHeader>
                   <Table {...{ stats: [{ icon: null, label: 'Data Types' }, ...participantStats] }}>
@@ -235,15 +236,15 @@ export default compose(
                               <span>
                                 {' '}
                                 <Trans>
-                                  - the participants in your query have related family member data.
-                                </Trans>
+                                  - the participants in your query have related family member data
+                                </Trans>.
                               </span>
                               <div>
                                 {' '}
                                 <Trans>
                                   To include the family data in the manifest, select your desired
-                                  data types below:
-                                </Trans>{' '}
+                                  data types below
+                                </Trans>:{' '}
                               </div>
                             </ModalSubHeader>
                             <Table
