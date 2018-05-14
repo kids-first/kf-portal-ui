@@ -6,7 +6,7 @@ import { withApi } from 'services/api';
 import { compose } from 'recompose';
 
 export default compose(withApi)(
-  ({ api, dataTypes = [], participantIds, projectId, isDisabled, children } = {}) => (
+  ({ api, dataTypes = [], participantIds, projectId, isDisabled, render = () => {} } = {}) => (
     <Query
       renderError
       api={api}
@@ -59,7 +59,7 @@ export default compose(withApi)(
         };
       }, {})}
       render={({ data, loading }) => {
-        return children(
+        return render(
           loading
             ? { loading }
             : {

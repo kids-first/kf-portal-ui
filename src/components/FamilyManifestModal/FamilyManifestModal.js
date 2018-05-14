@@ -214,103 +214,102 @@ export default compose(
                     participantIds,
                     projectId,
                     isDisabled,
-                  }}
-                >
-                  {({ loading, data: fileTypeStats = [] }) => {
-                    const uniqueParticipantsAndFamilyMemberIds = uniq([
-                      ...participantIds,
-                      ...filterToCheckedTypes(fileTypeStats).reduce(
-                        (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
-                        [],
-                      ),
-                    ]);
-                    const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
-                      uniqueParticipantsAndFamilyMemberIds,
-                    );
-                    return loading ? (
-                      spinner
-                    ) : (
-                      <Fragment>
-                        <Section>
-                          <ModalSubHeader className={`modalSubHeader`}>
-                            <span className={`highlight`}>Family Sumary</span>
-                            <span>
-                              {' '}
-                              <Trans>
-                                - the participants in your query have related family member data.
-                              </Trans>
-                            </span>
-                            <div>
-                              {' '}
-                              <Trans>
-                                To include the family data in the manifest, select your desired data
-                                types below:
-                              </Trans>{' '}
-                            </div>
-                          </ModalSubHeader>
-                          <Table
-                            {...{
-                              stats: [{ icon: null, label: 'Data Types' }, ...familyMemberStats],
-                            }}
-                          >
-                            {fileTypeStats.map(({ fileType, members, files, fileSize }, i) => (
-                              <ManifestTableDataRow
-                                {...{
-                                  key: i,
-                                  showCheckbox: true,
-                                  onClick: e => {
-                                    setSetId(null);
-                                    setCheckedFileTypes(
-                                      checkedFileTypes.includes(fileType)
-                                        ? checkedFileTypes.filter(type => type !== fileType)
-                                        : [...checkedFileTypes, fileType],
-                                    );
+                    render: ({ loading, data: fileTypeStats = [] }) => {
+                      const uniqueParticipantsAndFamilyMemberIds = uniq([
+                        ...participantIds,
+                        ...filterToCheckedTypes(fileTypeStats).reduce(
+                          (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
+                          [],
+                        ),
+                      ]);
+                      const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
+                        uniqueParticipantsAndFamilyMemberIds,
+                      );
+                      return loading ? (
+                        spinner
+                      ) : (
+                        <Fragment>
+                          <Section>
+                            <ModalSubHeader className={`modalSubHeader`}>
+                              <span className={`highlight`}>Family Sumary</span>
+                              <span>
+                                {' '}
+                                <Trans>
+                                  - the participants in your query have related family member data.
+                                </Trans>
+                              </span>
+                              <div>
+                                {' '}
+                                <Trans>
+                                  To include the family data in the manifest, select your desired
+                                  data types below:
+                                </Trans>{' '}
+                              </div>
+                            </ModalSubHeader>
+                            <Table
+                              {...{
+                                stats: [{ icon: null, label: 'Data Types' }, ...familyMemberStats],
+                              }}
+                            >
+                              {fileTypeStats.map(({ fileType, members, files, fileSize }, i) => (
+                                <ManifestTableDataRow
+                                  {...{
+                                    key: i,
+                                    showCheckbox: true,
+                                    onClick: e => {
+                                      setSetId(null);
+                                      setCheckedFileTypes(
+                                        checkedFileTypes.includes(fileType)
+                                          ? checkedFileTypes.filter(type => type !== fileType)
+                                          : [...checkedFileTypes, fileType],
+                                      );
+                                    },
+                                    isChecked: checkedFileTypes.includes(fileType),
+                                    fileType,
+                                    members,
+                                    files,
+                                    fileSize: fileSizeToString(fileSize),
+                                  }}
+                                />
+                              ))}
+                            </Table>
+                          </Section>
+                          <Section>
+                            <Table
+                              className={`total`}
+                              {...{
+                                stats: [
+                                  {
+                                    icon: null,
+                                    label: 'TOTAL',
                                   },
-                                  isChecked: checkedFileTypes.includes(fileType),
-                                  fileType,
-                                  members,
-                                  files,
-                                  fileSize: fileSizeToString(fileSize),
-                                }}
-                              />
-                            ))}
-                          </Table>
-                        </Section>
-                        <Section>
-                          <Table
-                            className={`total`}
-                            {...{
-                              stats: [
-                                {
-                                  icon: null,
-                                  label: 'TOTAL',
-                                },
-                                {
-                                  icon: participantsStatVisual.icon,
-                                  label: uniqueParticipantsAndFamilyMemberIds.length,
-                                },
-                                {
-                                  icon: fileStatVisual.icon,
-                                  label:
-                                    participantFilesCount +
-                                    sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
-                                },
-                                {
-                                  icon: fileSizeStatVisual.icon,
-                                  label: fileSizeToString(
-                                    participantFilesSize +
-                                      sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
-                                  ),
-                                },
-                              ],
-                            }}
-                          />
-                        </Section>
-                        <FooterWithParticipantsAndFamilyMembers />
-                      </Fragment>
-                    );
+                                  {
+                                    icon: participantsStatVisual.icon,
+                                    label: uniqueParticipantsAndFamilyMemberIds.length,
+                                  },
+                                  {
+                                    icon: fileStatVisual.icon,
+                                    label:
+                                      participantFilesCount +
+                                      sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
+                                  },
+                                  {
+                                    icon: fileSizeStatVisual.icon,
+                                    label: fileSizeToString(
+                                      participantFilesSize +
+                                        sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
+                                    ),
+                                  },
+                                ],
+                              }}
+                            />
+                          </Section>
+                          <FooterWithParticipantsAndFamilyMembers />
+                        </Fragment>
+                      );
+                    },
                   }}
-                </FamilyDataTypesStatsQuery>
+                />
               ) : (
                 <FooterWithParticipantsOnly />
               )}
