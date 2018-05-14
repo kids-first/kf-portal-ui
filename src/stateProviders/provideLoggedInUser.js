@@ -65,7 +65,6 @@ export default provideState({
             (userRole && userRole !== 'research')
               ? without(fields, 'institution', 'jobTitle')
               : fields;
-
           const profile = pick(omit(user, 'sets'), userRoleProfileFields);
           const filledFields = Object.values(profile || {}).filter(
             v => (isArray(v) && v.length) || (!isArray(v) && v),

@@ -310,7 +310,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                 <FileRepoStatsQuery
                                   {...props}
                                   {...url}
-                                  render={({ data, loading, stats = loading ? {} : data }) => (
+                                  render={({ data: stats, loading: disabled }) => (
                                     <div
                                       css={`
                                         display: flex;
@@ -320,7 +320,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                       <ShareQuery
                                         api={props.api}
                                         {...url}
-                                        {...{ stats }}
+                                        {...{ stats, disabled }}
                                         css={`
                                           flex: 1;
                                         `}
@@ -328,7 +328,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                       <SaveQuery
                                         api={props.api}
                                         {...url}
-                                        {...{ stats }}
+                                        {...{ stats, disabled }}
                                         css={`
                                           flex: 1;
                                         `}
