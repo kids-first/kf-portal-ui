@@ -10,6 +10,7 @@ import filesize from 'filesize';
 import { Trans } from 'react-i18next';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
+import CheckCircleIcon from '../../icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { withApi } from 'services/api';
@@ -59,12 +60,14 @@ const ManifestTableDataRow = compose(withTheme)(
     fileSize,
     isChecked,
     showCheckbox,
+    leftComponent,
     className = '',
     ...rest
   }) => (
     <div className={`row ${isChecked ? 'selected' : ''} ${theme.row} ${className}`} {...rest}>
       <div className={`tableCell ${theme.row}`}>
         {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
+        {leftComponent && <div className={`left`}>{leftComponent}</div>}
         {fileType}
       </div>
       <div className={`tableCell ${theme.row}`}>{members}</div>
@@ -219,6 +222,7 @@ export default compose(
                         files: participantFilesCount,
                         fileSize: fileSizeToString(participantFilesSize),
                         isChecked: isFamilyMemberFilesAvailable,
+                        leftComponent: <CheckCircleIcon className={`checkMark`} />,
                       }}
                     />
                   </Table>

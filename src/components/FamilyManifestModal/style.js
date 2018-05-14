@@ -33,6 +33,11 @@ export const dataTableStyle = ({ theme, reverseColor }) =>
           padding-right: 20px;
           position: relative;
           flex: 1;
+          & .checkMark {
+            width: 20px;
+            height: 20px;
+            margin-right: 13px;
+          }
           & .checkbox {
             margin-right: 20px;
           }
