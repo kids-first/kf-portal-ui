@@ -10,6 +10,7 @@ import filesize from 'filesize';
 import { Trans } from 'react-i18next';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
+import CheckCircleIcon from '../../icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { withApi } from 'services/api';
@@ -51,10 +52,22 @@ const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
 const fileSizeToString = fileSize => filesize(fileSize || 0).toUpperCase();
 
 const ManifestTableDataRow = compose(withTheme)(
-  ({ theme, fileType, members, files, fileSize, isChecked, showCheckbox, className, ...rest }) => (
-    <div className={`row ${theme.row} ${className}`} {...rest}>
+  ({
+    theme,
+    fileType,
+    members,
+    files,
+    fileSize,
+    isChecked,
+    showCheckbox,
+    leftComponent,
+    className = '',
+    ...rest
+  }) => (
+    <div className={`row ${isChecked ? 'selected' : ''} ${theme.row} ${className}`} {...rest}>
       <div className={`tableCell ${theme.row}`}>
         {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
+        {leftComponent && <div className={`left`}>{leftComponent}</div>}
         {fileType}
       </div>
       <div className={`tableCell ${theme.row}`}>{members}</div>
@@ -64,11 +77,11 @@ const ManifestTableDataRow = compose(withTheme)(
   ),
 );
 
-const Table = compose(withTheme)(({ theme, stats, className, children }) => (
-  <div className={`${theme.column} ${className} ${dataTableStyle(theme)}`}>
+const Table = compose(withTheme)(({ theme, stats, className, children, reverseColor = false }) => (
+  <div className={`${theme.column} ${className} ${dataTableStyle({ theme, reverseColor })}`}>
     <div className={`row ${theme.row}`}>
-      {stats.map(({ label, icon }) => (
-        <div className={`tableCell ${theme.row}`}>
+      {stats.map(({ label, icon }, i) => (
+        <div key={i} className={`tableCell ${theme.row}`}>
           <div className={`left`}>{icon}</div> {label}
         </div>
       ))}
@@ -192,16 +205,24 @@ export default compose(
                       <Trans>Participants Summary</Trans>
                     </span>
                     <span>
-                      <Trans> - all files will be included in the manifest.</Trans>
+                      {' '}
+                      <Trans>- all files will be included in the manifest</Trans>.
                     </span>
                   </ModalSubHeader>
-                  <Table {...{ stats: [{ icon: null, label: 'Data Types' }, ...participantStats] }}>
+                  <Table
+                    {...{
+                      reverseColor: !isFamilyMemberFilesAvailable,
+                      stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
+                    }}
+                  >
                     <ManifestTableDataRow
                       {...{
                         fileType: 'All',
                         members: participantsMemberCount,
                         files: participantFilesCount,
                         fileSize: fileSizeToString(participantFilesSize),
+                        isChecked: isFamilyMemberFilesAvailable,
+                        leftComponent: <CheckCircleIcon className={`checkMark`} />,
                       }}
                     />
                   </Table>
@@ -235,19 +256,20 @@ export default compose(
                               <span>
                                 {' '}
                                 <Trans>
-                                  - the participants in your query have related family member data.
-                                </Trans>
+                                  - the participants in your query have related family member data
+                                </Trans>.
                               </span>
                               <div>
                                 {' '}
                                 <Trans>
                                   To include the family data in the manifest, select your desired
-                                  data types below:
-                                </Trans>{' '}
+                                  data types below
+                                </Trans>:{' '}
                               </div>
                             </ModalSubHeader>
                             <Table
                               {...{
+                                reverseColor: true,
                                 stats: [{ icon: null, label: 'Data Types' }, ...familyMemberStats],
                               }}
                             >

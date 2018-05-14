@@ -1,6 +1,7 @@
 import { css } from 'react-emotion';
 
 const colors = {
+  white: '#ffffff',
   primary: '#90278e', //magenta
   secondary: '#2b388f', //purplish blue
   primaryHover: '#404c9a', //purple
@@ -10,6 +11,7 @@ const colors = {
   tertiaryHover: '#19a9c4', //lighter teal-blue
   errorDark: '#d8202f', //red
   errorLight: '#fadfe1', //light red (pink) fill
+  borderGrey: '#cacbcf',
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
@@ -126,7 +128,7 @@ const components = {
     margin: 0px 4px;
     border-radius: 12px;
     background-color: #ffffff;
-    border: solid 1px #cacbcf;
+    border: solid 1px ${colors.borderGrey};
     font-family: Montserrat;
     font-size: 12px;
     font-weight: 300;
@@ -314,7 +316,7 @@ const components = {
     resize: none;
     border-radius: 10px;
     background-color: #ffffff;
-    border: solid 1px #cacbcf;
+    border: solid 1px ${colors.borderGrey};
     padding: 25px;
     font-family: 'Open Sans';
     font-size: 14px;
