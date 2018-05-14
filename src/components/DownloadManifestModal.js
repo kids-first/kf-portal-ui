@@ -83,7 +83,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
                 api: graphql(api),
               });
               if (errors && errors.length) {
-                setWarning('Unable to generate KF-get ID, please try again later.');
+                setWarning('Unable to generate manifest ID, please try again later.');
               } else {
                 const { setId: receivedSetId, size } = data.saveSet;
                 setWarning('');
