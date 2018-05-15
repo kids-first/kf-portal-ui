@@ -34,6 +34,7 @@ import translateSQONValue from 'common/translateSQONValue';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import ArrangerConnectionGuard from './ArrangerConnectionGuard';
+import { config as statsConfig } from './Stats';
 
 const trackFileRepoInteraction = eventData => {
   if (eventData.label && isObject(eventData.label)) {
@@ -218,8 +219,9 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                         label: sqon,
                       });
                       effects.unsetModal();
-                    },
+                    }
                   }}
+                  {...{ statsConfig }}
                 />
               ),
             })
@@ -376,7 +378,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                 <FileRepoStatsQuery
                                   {...props}
                                   {...url}
-                                  render={data => (
+                                  render={({ data: stats, loading: disabled }) => (
                                     <div
                                       css={`
                                         display: flex;
@@ -384,17 +386,17 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                                       `}
                                     >
                                       <ShareQuery
-                                        stats={data}
                                         api={props.api}
                                         {...url}
+                                        {...{ stats, disabled }}
                                         css={`
                                           flex: 1;
                                         `}
                                       />
                                       <SaveQuery
-                                        stats={data}
                                         api={props.api}
                                         {...url}
+                                        {...{ stats, disabled }}
                                         css={`
                                           flex: 1;
                                         `}
