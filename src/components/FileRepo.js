@@ -189,23 +189,23 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                     closeModal: effects.unsetModal,
                     onClear: () => {
                       trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
-                        action: 'Clear Filters',
+                        category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                        action: TRACKING_EVENTS.actions.query.clear,
                       });
                     },
                     onFilterChange: value => {
                       // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
                       trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
-                        action: TRACKING_EVENTS.action.filter + ' - Search',
+                        category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                        action: TRACKING_EVENTS.actions.filter + ' - Search',
                         label: value,
                       });
                     },
                     onTermSelected: ({ field, value, active }) => {
                       if (active) {
                         trackFileRepoInteraction({
-                          category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
-                          action: TRACKING_EVENTS.action.filter + ' Selected',
+                          category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                          action: TRACKING_EVENTS.actions.filter + ' Selected',
                           label: { type: 'filter', value, field },
                         });
                       }
@@ -213,7 +213,7 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                     onSqonSubmit: ({ sqon }) => {
                       setSQON(sqon);
                       trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
+                        category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                         action: 'View Results',
                         label: sqon,
                       });
@@ -361,7 +361,12 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                             <CurrentSQON
                               {...props}
                               {...url}
-                              onClear={() => {}}
+                              onClear={() => {
+                                trackFileRepoInteraction({
+                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                  action: TRACKING_EVENTS.actions.query.clear,
+                                });
+                              }}
                               translateSQONValue={translateSQONValue({
                                 sets: state.loggedInUser.sets,
                               })}
@@ -420,6 +425,13 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                               columnDropdownText="Columns"
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
+                              onFilterChange={val => {
+                                trackFileRepoInteraction({
+                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                  action: TRACKING_EVENTS.actions.filter,
+                                  label: val,
+                                });
+                              }}
                               onTableExport={({ files }) => {
                                 trackFileRepoInteraction({
                                   category: TRACKING_EVENTS.categories.fileRepo.dataTable,

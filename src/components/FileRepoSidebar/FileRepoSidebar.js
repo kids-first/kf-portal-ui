@@ -104,7 +104,6 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                     onClick={() => {
                       downloadFile(props.selectedTableRows, gen3Key)
                         .then(url => {
-                          alert(url)
                           let a = document.createElement('a');
                           a.href = url;
                           trackUserInteraction({
