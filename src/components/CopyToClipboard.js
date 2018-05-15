@@ -5,6 +5,26 @@ import { compose } from 'recompose';
 
 import CopyToClipboardIcon from '../icons/CopyToClipboardIcon';
 
+export const copyValueToClipboard = ({ value, copyRef }) => {
+  const textArea = document.createElement('textarea');
+  textArea.style.position = 'absolute';
+  textArea.style.top = '-10000px';
+  textArea.style.left = '0px';
+  document.body.appendChild(textArea);
+  textArea.textContent = value;
+
+  const selection = document.getSelection();
+  selection.removeAllRanges();
+  textArea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textArea);
+
+  const range = document.createRange();
+  range.selectNodeContents(copyRef.current);
+  selection.removeAllRanges();
+  selection.addRange(range);
+};
+
 const CopyToClipboard = compose(withTheme)(
   ({
     theme,
@@ -24,23 +44,7 @@ const CopyToClipboard = compose(withTheme)(
       `}
       {...props}
       onClick={() => {
-        const textArea = document.createElement('textarea');
-        textArea.style.position = 'absolute';
-        textArea.style.top = '-10000px';
-        textArea.style.left = '0px';
-        document.body.appendChild(textArea);
-        textArea.textContent = value;
-
-        const selection = document.getSelection();
-        selection.removeAllRanges();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-
-        const range = document.createRange();
-        range.selectNodeContents(copyRef.current);
-        selection.removeAllRanges();
-        selection.addRange(range);
+        copyValueToClipboard({ value, copyRef });
       }}
     >
       <CopyToClipboardIcon {...{ fill: '#fff' }} />
