@@ -27,18 +27,18 @@ const ParticipantManifestModal = ({
           onDownloadClick: async () => {
             await fileManifestParticipantsOnly({ sqon, columns })()
               .then(data => {
-                  trackUserInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                    action: 'Download Manifest',
-                    label: 'Participant Manifest',
-                  });
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                  action: 'Download Manifest',
+                  label: 'Participant Manifest',
+                });
               })
               .catch(err => {
                 trackUserInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                    action: 'Download Manifest FAILED',
-                    label: err,
-                  });
+                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                  action: 'Download Manifest FAILED',
+                  label: err,
+                });
               });
 
             unsetModal();

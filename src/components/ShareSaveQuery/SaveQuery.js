@@ -19,7 +19,6 @@ import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsT
 
 import { css } from 'react-emotion';
 
-
 export default injectState(
   class extends React.Component {
     constructor(props) {
@@ -39,7 +38,12 @@ export default injectState(
     }
 
     save = () => {
-      let { stats, sqon, api, state: { loggedInUser } } = this.props;
+      let {
+        stats,
+        sqon,
+        api,
+        state: { loggedInUser },
+      } = this.props;
       this.setState({ loading: true });
       shortenApi({ stats, sqon, queryName: this.state.queryName, loggedInUser, api })
         .then(data => {

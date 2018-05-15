@@ -219,7 +219,7 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                         label: sqon,
                       });
                       effects.unsetModal();
-                    }
+                    },
                   }}
                   {...{ statsConfig }}
                 />

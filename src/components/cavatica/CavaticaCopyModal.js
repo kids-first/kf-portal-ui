@@ -212,7 +212,7 @@ const CavaticaCopyModal = ({
               trackUserInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                 action: 'Copied Files to Cavatica Project',
-                label: uuids
+                label: uuids,
               });
               props.onComplete();
             } catch (e) {
@@ -220,7 +220,7 @@ const CavaticaCopyModal = ({
               trackUserInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                 action: 'Copied Files to Cavatica Project FAILED',
-                label: e
+                label: e,
               });
             }
           },

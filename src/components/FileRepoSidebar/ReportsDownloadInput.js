@@ -81,17 +81,16 @@ export default ({ api, projectId, theme, sqon }) => (
             },
           },
           Biospecimen: {
-            onSelected: async () =>{
-              await downloadBiospecimen({ sqon, columns: state.columns })()
-                .then(downloadData => {
-                  trackUserInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                    action: 'Download Report',
-                    label: 'Biospecimen',
-                  });
-                  return downloadData;
+            onSelected: async () => {
+              await downloadBiospecimen({ sqon, columns: state.columns })().then(downloadData => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                  action: 'Download Report',
+                  label: 'Biospecimen',
                 });
-            } 
+                return downloadData;
+              });
+            },
           },
         }}
         render={({ loading }) => {

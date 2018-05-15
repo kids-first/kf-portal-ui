@@ -120,7 +120,7 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                             action: 'Download File FAILED',
                             label:
                               'Your account does not have the required permission to download this file.',
-                          }); 
+                          });
                           setToast({
                             id: `${Date.now()}`,
                             action: 'success',
