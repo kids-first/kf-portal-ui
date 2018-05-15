@@ -4,6 +4,7 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import SQONURL from 'components/SQONURL';
+import { merge, isObject } from 'lodash';
 import downloadIcon from '../assets/icon-download-grey.svg';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
@@ -31,7 +32,23 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import Select from '../uikit/Select';
 import translateSQONValue from 'common/translateSQONValue';
 import { withApi } from 'services/api';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import ArrangerConnectionGuard from './ArrangerConnectionGuard';
+
+const trackFileRepoInteraction = eventData => {
+  if (eventData.label && isObject(eventData.label)) {
+    eventData.label = JSON.stringify(eventData.label);
+  }
+  trackUserInteraction(
+    merge(
+      {
+        category: 'File Repo',
+        action: 'default file repo action',
+      },
+      eventData,
+    ),
+  );
+};
 
 const arrangerStyles = css`
   display: flex;
@@ -170,8 +187,36 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                   {...{
                     ...props,
                     closeModal: effects.unsetModal,
+                    onClear: () => {
+                      trackFileRepoInteraction({
+                        category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
+                        action: 'Clear Filters',
+                      });
+                    },
+                    onFilterChange: value => {
+                      // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
+                      trackFileRepoInteraction({
+                        category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
+                        action: TRACKING_EVENTS.action.filter + ' - Search',
+                        label: value,
+                      });
+                    },
+                    onTermSelected: ({ field, value, active }) => {
+                      if (active) {
+                        trackFileRepoInteraction({
+                          category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
+                          action: TRACKING_EVENTS.action.filter + ' Selected',
+                          label: { type: 'filter', value, field },
+                        });
+                      }
+                    },
                     onSqonSubmit: ({ sqon }) => {
                       setSQON(sqon);
+                      trackFileRepoInteraction({
+                        category: TRACKING_EVENTS.fileRepo.filters + ' - Advanced',
+                        action: 'View Results',
+                        label: sqon,
+                      });
                       effects.unsetModal();
                     },
                   }}
@@ -199,7 +244,22 @@ const AggregationsWrapper = compose(injectState, withTheme)(
         />
         <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
       </div>
-      <Aggregations {...{ ...props, setSQON, containerRef: aggregationsWrapperRef }} />
+      <Aggregations
+        {...{
+          ...props,
+          setSQON,
+          containerRef: aggregationsWrapperRef,
+        }}
+        onTermSelected={({ active, field, value }) => {
+          if (active) {
+            trackFileRepoInteraction({
+              category: TRACKING_EVENTS.categories.fileRepo.filters,
+              action: 'Filter Selected',
+              label: { type: 'filter', value, field },
+            });
+          }
+        }}
+      />
     </div>
   ),
 );
@@ -301,6 +361,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                             <CurrentSQON
                               {...props}
                               {...url}
+                              onClear={() => {}}
                               translateSQONValue={translateSQONValue({
                                 sets: state.loggedInUser.sets,
                               })}
@@ -359,6 +420,13 @@ const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...
                               columnDropdownText="Columns"
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
+                              onTableExport={({ files }) => {
+                                trackFileRepoInteraction({
+                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                  action: 'Export TSV',
+                                  label: files,
+                                });
+                              }}
                               exportTSVText={
                                 <React.Fragment>
                                   <img
