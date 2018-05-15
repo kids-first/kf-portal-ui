@@ -106,12 +106,12 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                         .then(url => {
                           alert(url)
                           let a = document.createElement('a');
+                          a.href = url;
                           trackUserInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                             action: 'Download File',
                             label: url,
                           });
-                          a.href = url;
                           a.download = url.split('/').slice(-1);
                           a.click();
                         })
