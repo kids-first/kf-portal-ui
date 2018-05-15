@@ -43,6 +43,7 @@ export const TRACKING_EVENTS = {
     query: {
       save: 'Query Saved',
       share: 'Query Shared',
+      clear: 'Clear Query (sqon)',
     },
     userRoleSelected: 'User Role Updated',
     integration: {
@@ -62,6 +63,7 @@ export const initAnalyticsTracking = () => {
     addStateInfo({ clientId });
     addUserSnapInfo({ gaClientId: clientId });
     ReactGA.set({ clientId: GAState.clientId });
+    ReactGA.set({ dimension3: GAState.clientId });
   });
 };
 
@@ -69,9 +71,11 @@ const setUserDimensions = (userId, role) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
     ReactGA.set({ userId: userId || GAState.userId });
+    ReactGA.set({ dimension1: userId || GAState.userId });
   }
   if (role || GAState.userRoles) {
     ReactGA.set({ userRole: role || GAState.userRoles[0] });
+    ReactGA.set({ dimension2: role || GAState.userRoles[0] });
   }
 };
 
@@ -95,28 +99,28 @@ export const trackUserInteraction = async ({ category, action, label }) => {
   ReactGA.event({ category, action, label });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
-    if (action === TRACKING_EVENTS.actions.open) {
-      startAnalyticsTiming(`MODAL__${label}`);
-    } else if (action === TRACKING_EVENTS.actions.close) {
-      stopAnalyticsTiming(`MODAL__${label}`, {
-        category,
-        variable: 'open duration',
-        label: label || null,
-      });
-    }
+      if (action === TRACKING_EVENTS.actions.open) {
+        startAnalyticsTiming(`MODAL__${label}`);
+      } else if (action === TRACKING_EVENTS.actions.close) {
+        stopAnalyticsTiming(`MODAL__${label}`, {
+          category,
+          variable: 'open duration',
+          label: label || null,
+        });
+      }
 
-    break;
+      break;
     case TRACKING_EVENTS.categories.join:
-    if (action === TRACKING_EVENTS.actions.signedUp) {
-      stopAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess, {
-        category,
-        variable: 'Join process completion time',
-        label: label || null,
-      });
-    }
-    break;
+      if (action === TRACKING_EVENTS.actions.signedUp) {
+        stopAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess, {
+          category,
+          variable: 'Join process completion time',
+          label: label || null,
+        });
+      }
+      break;
     default:
-    break;
+      break;
   }
 };
 
@@ -148,15 +152,15 @@ export const trackTiming = async eventData => {
   setUserDimensions();
   ReactGA.timing(
     merge(
-    {
-      category: null,
-      variable: null,
-                value: 0, // in milliseconds
-                label: null,
-              },
-              eventData,
-              ),
-    );
+      {
+        category: null,
+        variable: null,
+        value: 0, // in milliseconds
+        label: null,
+      },
+      eventData,
+    ),
+  );
 };
 
 export const trackPageView = (page, options = {}) => {
