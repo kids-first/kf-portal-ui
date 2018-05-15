@@ -57,7 +57,12 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      let { stats, sqon, api, state: { loggedInUser } } = this.props;
+      let {
+        stats,
+        sqon,
+        api,
+        state: { loggedInUser },
+      } = this.props;
       shortenApi({ stats, sqon, loggedInUser, api })
         .then(data => {
           this.setState({
@@ -143,11 +148,10 @@ export default injectState(
                           </span>
                         </CopyToClipboard>
                       </ItemRow>
-                      <ItemRow>
+                      <ItemRow onClick={() => trackQueryShare('Facebook')}>
                         <FacebookShareButton
                           url={this.state.link}
                           quote="Kids First File Repo Query"
-                          onClick={() => trackQueryShare('Facebook')}
                         >
                           <Bubble>
                             <FBIcon />
@@ -155,23 +159,21 @@ export default injectState(
                           <Trans>share on facebook</Trans>
                         </FacebookShareButton>
                       </ItemRow>
-                      <ItemRow>
+                      <ItemRow onClick={() => trackQueryShare('Twitter')}>
                         <Bubble>
                           <TwitterIcon />
                         </Bubble>
                         <TwitterShareButton
                           title="Kids First File Repo Query"
                           url={this.state.link}
-                          onClick={() => trackQueryShare('Twitter')}
                         >
                           <Trans>share on twitter</Trans>
                         </TwitterShareButton>
                       </ItemRow>
-                      <ItemRow>
+                      <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
                         <LinkedinShareButton
                           title="Kids First File Repo Query"
                           url={this.state.link}
-                          onClick={() => trackQueryShare('LinkedIn')}
                         >
                           <Bubble>
                             <LIIcon />
