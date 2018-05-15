@@ -16,6 +16,7 @@ import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
 import { getFilesById, getFilesByQuery } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const enhance = compose(
   provideGen3FileAuthorizations,
@@ -208,9 +209,19 @@ const CavaticaCopyModal = ({
                 action: 'success',
                 component: SuccessToastComponent({ theme, selectedProjectData }),
               });
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: 'Copied Files to Cavatica Project',
+                label: uuids
+              });
               props.onComplete();
             } catch (e) {
               //TODO: Display failure error.
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: 'Copied Files to Cavatica Project FAILED',
+                label: e
+              });
             }
           },
           submitDisabled:
