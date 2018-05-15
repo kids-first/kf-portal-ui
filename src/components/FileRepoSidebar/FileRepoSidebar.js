@@ -17,6 +17,7 @@ import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { GEN3 } from 'common/constants';
 import { getFilesById } from 'services/arranger';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import FileManifestsDownloadInput from './FileManifestsDownloadInput';
 import Subsection from './Subsection';
@@ -103,13 +104,24 @@ const FileRepoSidebar = compose(injectState, withTheme, withApi)(
                     onClick={() => {
                       downloadFile(props.selectedTableRows, gen3Key)
                         .then(url => {
+                          alert(url)
                           let a = document.createElement('a');
-                          console.log(url);
+                          trackUserInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                            action: 'Download File',
+                            label: url,
+                          });
                           a.href = url;
                           a.download = url.split('/').slice(-1);
                           a.click();
                         })
                         .catch(err => {
+                          trackUserInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                            action: 'Download File FAILED',
+                            label:
+                              'Your account does not have the required permission to download this file.',
+                          }); 
                           setToast({
                             id: `${Date.now()}`,
                             action: 'success',

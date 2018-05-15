@@ -10,6 +10,7 @@ import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadM
 import { ModalSubHeader } from '../Modal';
 import Query from '@arranger/components/dist/Query';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
+import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 
@@ -70,7 +71,17 @@ export default compose(
       fileManifestParticipantsAndFamily({
         sqon: sqonForDownload({ sqon, values, familyMemberIds }),
         columns: columns,
-      })().then(async profile => unsetModal(), errors => setSubmitting(false));
+      })().then(
+        async profile => {
+          trackUserInteraction({
+            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+            action: 'Download Manifest',
+            label: 'Participant and Family',
+          });
+          unsetModal();
+        },
+        errors => setSubmitting(false),
+      );
     },
   }),
   withState('isDisabled', 'setIsDisabled', false),
