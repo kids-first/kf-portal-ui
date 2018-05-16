@@ -220,7 +220,7 @@ const CavaticaCopyModal = ({
               trackUserInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                 action: 'Copied Files to Cavatica Project FAILED',
-                label: e,
+                label: e.message ? e.message : null,
               });
             }
           },
