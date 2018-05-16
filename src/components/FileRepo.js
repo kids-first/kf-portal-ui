@@ -4,7 +4,7 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import SQONURL from 'components/SQONURL';
-import { merge, isObject } from 'lodash';
+import { isObject } from 'lodash';
 import downloadIcon from '../assets/icon-download-grey.svg';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
@@ -36,20 +36,13 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import ArrangerConnectionGuard from './ArrangerConnectionGuard';
 import { config as statsConfig } from './Stats';
 
-const trackFileRepoInteraction = eventData => {
-  if (eventData.label && isObject(eventData.label)) {
-    eventData.label = JSON.stringify(eventData.label);
-  }
-  trackUserInteraction(
-    merge(
-      {
-        category: 'File Repo',
-        action: 'default file repo action',
-      },
-      eventData,
-    ),
-  );
-};
+const trackFileRepoInteraction = ({ label, ...eventData }) =>
+  trackUserInteraction({
+    category: 'File Repo',
+    action: 'default file repo action',
+    ...eventData,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
 
 const arrangerStyles = css`
   display: flex;
