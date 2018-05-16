@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
 import { withTheme } from 'emotion-theming';
