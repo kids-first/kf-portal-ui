@@ -51,19 +51,18 @@ export default injectState(
             loading: false,
             link: urlJoin(arrangerApiRoot, 's', data.id),
           });
-          sqon.id = data.id;
+          const trackingSqon = { ...sqon, id: data.id };
           trackUserInteraction({
             category: TRACKING_EVENTS.categories.fileRepo.dataTable,
             action: TRACKING_EVENTS.actions.query.save,
-            label: JSON.stringify(sqon),
+            label: JSON.stringify(trackingSqon),
           });
         })
         .catch(error => {
           this.setState({ error: true, loading: false });
           trackUserInteraction({
             category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-            action: TRACKING_EVENTS.actions.query.save + ' FAILED',
-            label: JSON.stringify(sqon),
+            action: TRACKING_EVENTS.actions.query.save + ' FAILED'
           });
         });
     };
