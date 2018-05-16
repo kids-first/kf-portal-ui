@@ -72,8 +72,8 @@ export const initAnalyticsTracking = () => {
 const setUserDimensions = (userId, role) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
-    // GA Custom Dimension:index 2: userId (egoId)
-    // ReactGA.set({ userId: userId || GAState.userId });
+    ReactGA.set({ userId: userId || GAState.userId });
+    // GA Custom Dimension:index 1: userId (egoId)
     ReactGA.set({ dimension1: userId || GAState.userId });
   }
   if (role || GAState.userRoles) {
