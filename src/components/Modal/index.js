@@ -183,6 +183,7 @@ const ModalView = ({
       box-sizing: border-box;
       padding: 20px 20px;
       max-width: 1000px;
+      max-height: 95%;
       box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
       overflow: visible;
       display: flex;
@@ -200,13 +201,11 @@ const ModalView = ({
       className={`${css`
         z-index: 1000;
         flex: 1;
+        display: flex;
+        flex-direction: column;
       `}
       ${classNames ? classNames.content : ''}
     }`}
-      css={`
-        z-index: 1000;
-        flex: 1;
-      `}
     >
       {component}
     </div>
