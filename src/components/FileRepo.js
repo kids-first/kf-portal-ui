@@ -30,7 +30,7 @@ import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
 import UploadIdsModal from './UploadIdsModal';
 import { arrangerProjectId } from 'common/injectGlobals';
 import Select from '../uikit/Select';
-import translateSQONValue from 'common/translateSQONValue';
+import translateSQON from 'common/translateSQONValue';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import ArrangerConnectionGuard from './ArrangerConnectionGuard';
@@ -136,7 +136,15 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
 );
 
 const AggregationsWrapper = compose(injectState, withTheme)(
-  ({ state, effects, theme, setSQON, aggregationsWrapperRef = React.createRef(), ...props }) => (
+  ({
+    state,
+    effects,
+    theme,
+    setSQON,
+    translateSQONValue,
+    aggregationsWrapperRef = React.createRef(),
+    ...props
+  }) => (
     <div
       ref={aggregationsWrapperRef}
       css={`
@@ -180,6 +188,7 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                 <AdvancedFacetViewModalContent
                   {...{
                     ...props,
+                    translateSQONValue,
                     closeModal: effects.unsetModal,
                     onClear: () => {
                       trackFileRepoInteraction({
@@ -225,9 +234,8 @@ const AggregationsWrapper = compose(injectState, withTheme)(
       </div>
       <div className="aggregation-card">
         <QuickSearch
-          {...{ ...props, setSQON }}
+          {...{ ...props, setSQON, translateSQONValue }}
           placeholder="Enter Identifiers"
-          translateSQONValue={translateSQONValue({ sets: (state.loggedInUser || {}).sets })}
           LoadingIcon={
             <Spinner
               fadeIn="none"
@@ -286,182 +294,189 @@ const customTableTypes = {
     ),
 };
 
-const FileRepo = compose(injectState, withTheme, withApi)(({ state, effects, ...props }) => (
-  <SQONURL
-    render={url => (
-      <ArrangerConnectionGuard
-        graphqlField={props.graphqlField}
-        render={({ connecting, connectionError }) =>
-          connecting || connectionError ? (
-            <div
-              css={`
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              `}
-            >
-              {connectionError ? (
-                `Unable to connect to the file repo, please try again later`
-              ) : (
-                <Spinner
-                  fadeIn="none"
-                  name="circle"
-                  color="#a9adc0"
-                  style={{ width: 50, height: 50 }}
-                />
-              )}
-            </div>
-          ) : (
-            <Arranger
-              {...props}
-              projectId={arrangerProjectId}
-              render={props => {
-                const selectionSQON = props.selectedTableRows.length
-                  ? replaceSQON({
-                      op: 'and',
-                      content: [
-                        { op: 'in', content: { field: 'kf_id', value: props.selectedTableRows } },
-                      ],
-                    })
-                  : url.sqon;
-                return (
-                  <div
-                    css={`
-                      height: 1px;
-                      flex: 1;
-                    `}
-                  >
-                    <DetectNewVersion {...props} />
-                    <div css={arrangerStyles}>
-                      <AggregationsWrapper {...props} {...url} />
-                      <div style={{ flexGrow: 1, width: 580 }}>
-                        <div
-                          css={`
-                            padding: 30px;
-                            display: flex;
-                            flex-direction: column;
-                            position: relative;
-                            height: 100%;
-                            box-sizing: border-box;
-                            overflow-y: auto;
-                          `}
-                        >
+const FileRepo = compose(injectState, withTheme, withApi)(
+  ({
+    state,
+    effects,
+    translateSQONValue = translateSQON({
+      sets: (state.loggedInUser || {}).sets || [],
+    }),
+    ...props
+  }) => (
+    <SQONURL
+      render={url => (
+        <ArrangerConnectionGuard
+          graphqlField={props.graphqlField}
+          render={({ connecting, connectionError }) =>
+            connecting || connectionError ? (
+              <div
+                css={`
+                  height: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                {connectionError ? (
+                  `Unable to connect to the file repo, please try again later`
+                ) : (
+                  <Spinner
+                    fadeIn="none"
+                    name="circle"
+                    color="#a9adc0"
+                    style={{ width: 50, height: 50 }}
+                  />
+                )}
+              </div>
+            ) : (
+              <Arranger
+                {...props}
+                projectId={arrangerProjectId}
+                render={props => {
+                  const selectionSQON = props.selectedTableRows.length
+                    ? replaceSQON({
+                        op: 'and',
+                        content: [
+                          { op: 'in', content: { field: 'kf_id', value: props.selectedTableRows } },
+                        ],
+                      })
+                    : url.sqon;
+                  return (
+                    <div
+                      css={`
+                        height: 1px;
+                        flex: 1;
+                      `}
+                    >
+                      <DetectNewVersion {...props} />
+                      <div css={arrangerStyles}>
+                        <AggregationsWrapper {...{ ...props, ...url, translateSQONValue }} />
+                        <div style={{ flexGrow: 1, width: 580 }}>
                           <div
                             css={`
-                              flex: none;
-                              display: flex;
-                            `}
-                          >
-                            <CurrentSQON
-                              {...props}
-                              {...url}
-                              onClear={() => {
-                                trackFileRepoInteraction({
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: TRACKING_EVENTS.actions.query.clear,
-                                });
-                              }}
-                              translateSQONValue={translateSQONValue({
-                                sets: state.loggedInUser.sets,
-                              })}
-                            />
-                            {url.sqon &&
-                              Object.keys(url.sqon).length > 0 && (
-                                <FileRepoStatsQuery
-                                  {...props}
-                                  {...url}
-                                  render={({ data: stats, loading: disabled }) => (
-                                    <div
-                                      css={`
-                                        display: flex;
-                                        flex-direction: column;
-                                      `}
-                                    >
-                                      <ShareQuery
-                                        api={props.api}
-                                        {...url}
-                                        {...{ stats, disabled }}
-                                        css={`
-                                          flex: 1;
-                                        `}
-                                      />
-                                      <SaveQuery
-                                        api={props.api}
-                                        {...url}
-                                        {...{ stats, disabled }}
-                                        css={`
-                                          flex: 1;
-                                        `}
-                                      />
-                                    </div>
-                                  )}
-                                />
-                              )}
-                          </div>
-                          <FileRepoStats
-                            {...props}
-                            sqon={selectionSQON}
-                            css={`
-                              flex: none;
-                            `}
-                          />
-                          <div
-                            css={`
+                              padding: 30px;
                               display: flex;
                               flex-direction: column;
-                              min-height: 300px;
+                              position: relative;
+                              height: 100%;
+                              box-sizing: border-box;
+                              overflow-y: auto;
                             `}
                           >
-                            <Table
-                              {...props}
-                              {...url}
-                              customTypes={customTableTypes}
-                              columnDropdownText="Columns"
-                              fieldTypesForFilter={['text', 'keyword', 'id']}
-                              maxPagesOptions={5}
-                              onFilterChange={val => {
-                                trackFileRepoInteraction({
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: TRACKING_EVENTS.actions.filter,
-                                  label: val,
-                                });
-                              }}
-                              onTableExport={({ files }) => {
-                                trackFileRepoInteraction({
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: 'Export TSV',
-                                  label: files,
-                                });
-                              }}
-                              exportTSVText={
-                                <React.Fragment>
-                                  <img
-                                    alt=""
-                                    src={downloadIcon}
-                                    css={`
-                                      width: 10px;
-                                      margin-right: 9px;
-                                    `}
+                            <div
+                              css={`
+                                flex: none;
+                                display: flex;
+                              `}
+                            >
+                              <CurrentSQON
+                                {...props}
+                                {...url}
+                                {...{ translateSQONValue }}
+                                onClear={() => {
+                                  trackFileRepoInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: TRACKING_EVENTS.actions.query.clear,
+                                  });
+                                }}
+                              />
+                              {url.sqon &&
+                                Object.keys(url.sqon).length > 0 && (
+                                  <FileRepoStatsQuery
+                                    {...props}
+                                    {...url}
+                                    render={({ data: stats, loading: disabled }) => (
+                                      <div
+                                        css={`
+                                          display: flex;
+                                          flex-direction: column;
+                                        `}
+                                      >
+                                        <ShareQuery
+                                          api={props.api}
+                                          {...url}
+                                          {...{ stats, disabled }}
+                                          css={`
+                                            flex: 1;
+                                          `}
+                                        />
+                                        <SaveQuery
+                                          api={props.api}
+                                          {...url}
+                                          {...{ stats, disabled }}
+                                          css={`
+                                            flex: 1;
+                                          `}
+                                        />
+                                      </div>
+                                    )}
                                   />
-                                  <Trans>Export TSV</Trans>
-                                </React.Fragment>
-                              }
+                                )}
+                            </div>
+                            <FileRepoStats
+                              {...props}
+                              sqon={selectionSQON}
+                              css={`
+                                flex: none;
+                              `}
                             />
+                            <div
+                              css={`
+                                display: flex;
+                                flex-direction: column;
+                                min-height: 300px;
+                              `}
+                            >
+                              <Table
+                                {...props}
+                                {...url}
+                                customTypes={customTableTypes}
+                                columnDropdownText="Columns"
+                                fieldTypesForFilter={['text', 'keyword', 'id']}
+                                maxPagesOptions={5}
+                                onFilterChange={val => {
+                                  trackFileRepoInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: TRACKING_EVENTS.actions.filter,
+                                    label: val,
+                                  });
+                                }}
+                                onTableExport={({ files }) => {
+                                  trackFileRepoInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: 'Export TSV',
+                                    label: files,
+                                  });
+                                }}
+                                exportTSVText={
+                                  <React.Fragment>
+                                    <img
+                                      alt=""
+                                      src={downloadIcon}
+                                      css={`
+                                        width: 10px;
+                                        margin-right: 9px;
+                                      `}
+                                    />
+                                    <Trans>Export TSV</Trans>
+                                  </React.Fragment>
+                                }
+                              />
+                            </div>
                           </div>
                         </div>
+                        <FileRepoSidebar {...props} sqon={selectionSQON} />
                       </div>
-                      <FileRepoSidebar {...props} sqon={selectionSQON} />
                     </div>
-                  </div>
-                );
-              }}
-            />
-          )
-        }
-      />
-    )}
-  />
-));
+                  );
+                }}
+              />
+            )
+          }
+        />
+      )}
+    />
+  ),
+);
 
 export default FileRepo;
