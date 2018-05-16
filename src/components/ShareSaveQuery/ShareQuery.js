@@ -14,6 +14,15 @@ import Tooltip from 'uikit/Tooltip';
 import { arrangerApiRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
+import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+
+const trackQueryShare = channel => {
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+    action: TRACKING_EVENTS.actions.query.share,
+    label: channel,
+  });
+};
 
 let Bubble = p => (
   <span
@@ -131,7 +140,10 @@ export default injectState(
                       <ItemRow>
                         <CopyToClipboard
                           text={this.state.link}
-                          onCopy={() => this.setState({ copied: true })}
+                          onCopy={() => {
+                            this.setState({ copied: true });
+                            trackQueryShare('copied');
+                          }}
                         >
                           <span>
                             <Bubble>
@@ -147,7 +159,7 @@ export default injectState(
                           </span>
                         </CopyToClipboard>
                       </ItemRow>
-                      <ItemRow>
+                      <ItemRow onClick={() => trackQueryShare('Facebook')}>
                         <FacebookShareButton
                           url={this.state.link}
                           quote="Kids First File Repo Query"
@@ -158,7 +170,7 @@ export default injectState(
                           <Trans>share on facebook</Trans>
                         </FacebookShareButton>
                       </ItemRow>
-                      <ItemRow>
+                      <ItemRow onClick={() => trackQueryShare('Twitter')}>
                         <Bubble>
                           <TwitterIcon />
                         </Bubble>
@@ -169,7 +181,7 @@ export default injectState(
                           <Trans>share on twitter</Trans>
                         </TwitterShareButton>
                       </ItemRow>
-                      <ItemRow>
+                      <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
                         <LinkedinShareButton
                           title="Kids First File Repo Query"
                           url={this.state.link}

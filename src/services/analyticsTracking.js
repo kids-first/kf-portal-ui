@@ -24,6 +24,11 @@ export const TRACKING_EVENTS = {
     user: {
       profile: 'User Profile',
     },
+    fileRepo: {
+      filters: 'File Repo: Filters',
+      dataTable: 'File Repo: Data Table',
+      actionsSidebar: 'File Repo: Actions Sidebar',
+    },
   },
   actions: {
     acceptedTerms: 'Accepted Terms',
@@ -34,6 +39,12 @@ export const TRACKING_EVENTS = {
     click: 'Clicked',
     edit: 'Edit',
     save: 'Save',
+    filter: 'Filter',
+    query: {
+      save: 'Query Saved',
+      share: 'Query Shared',
+      clear: 'Clear Query (sqon)',
+    },
     userRoleSelected: 'User Role Updated',
     integration: {
       connected: 'Integration Connection SUCCESS',
@@ -51,17 +62,24 @@ export const initAnalyticsTracking = () => {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
     addUserSnapInfo({ gaClientId: clientId });
-    ReactGA.set({ clientId: GAState.clientId });
+    
+    // GA Custom Dimension:index 3: clientId
+    // ReactGA.set({ clientId: GAState.clientId });
+    ReactGA.set({ dimension3: GAState.clientId });
   });
 };
 
 const setUserDimensions = (userId, role) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
-    ReactGA.set({ userId: userId || GAState.userId });
+    // GA Custom Dimension:index 2: userId (egoId)
+    // ReactGA.set({ userId: userId || GAState.userId });
+    ReactGA.set({ dimension1: userId || GAState.userId });
   }
   if (role || GAState.userRoles) {
-    ReactGA.set({ userRole: role || GAState.userRoles[0] });
+    // GA Custom Dimension:index 2: userRole (current selected profile role)
+    // ReactGA.set({ userRole: role || GAState.userRoles[0] });
+    ReactGA.set({ dimension2: role || GAState.userRoles[0] });
   }
 };
 

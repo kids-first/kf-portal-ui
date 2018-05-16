@@ -13,6 +13,7 @@ import {
 } from 'services/downloadData';
 import PillInputWithLoadingOptionsAndButton from 'uikit/PillInputWithLoadingOptionsAndButton';
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
+import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
 export default ({ api, projectId, theme, sqon }) => (
   <ColumnsState
@@ -36,7 +37,14 @@ export default ({ api, projectId, theme, sqon }) => (
                   },
                 },
                 columns: state.columns,
-              })();
+              })().then(downloadData => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                  action: 'Download Report',
+                  label: 'Clinical (Participant)',
+                });
+                return downloadData;
+              });
             },
           },
           'Clinical (Participant and family)': {
@@ -62,10 +70,28 @@ export default ({ api, projectId, theme, sqon }) => (
                   },
                 },
                 columns: state.columns,
-              })();
+              })().then(downloadData => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                  action: 'Download Report',
+                  label: 'Clinical (Participant and family)',
+                });
+                return downloadData;
+              });
             },
           },
-          Biospecimen: { onSelected: downloadBiospecimen({ sqon, columns: state.columns }) },
+          Biospecimen: {
+            onSelected: async () => {
+              await downloadBiospecimen({ sqon, columns: state.columns })().then(downloadData => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                  action: 'Download Report',
+                  label: 'Biospecimen',
+                });
+                return downloadData;
+              });
+            },
+          },
         }}
         render={({ loading }) => {
           return (

@@ -14,6 +14,9 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
+
+import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+
 import { css } from 'react-emotion';
 
 export default injectState(
@@ -48,9 +51,19 @@ export default injectState(
             loading: false,
             link: urlJoin(arrangerApiRoot, 's', data.id),
           });
+          const trackingSqon = { ...sqon, id: data.id };
+          trackUserInteraction({
+            category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+            action: TRACKING_EVENTS.actions.query.save,
+            label: JSON.stringify(trackingSqon),
+          });
         })
         .catch(error => {
           this.setState({ error: true, loading: false });
+          trackUserInteraction({
+            category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+            action: TRACKING_EVENTS.actions.query.save + ' FAILED'
+          });
         });
     };
 
@@ -139,7 +152,15 @@ export default injectState(
                               >
                                 <Trans>Query saved succesfully!</Trans>
                               </div>
-                              <div onClick={() => history.push('/dashboard')}>
+                              <div
+                                onClick={() => {
+                                  trackUserInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: 'View in My Saved Queries',
+                                  });
+                                  history.push('/dashboard');
+                                }}
+                              >
                                 <NiceWhiteButton
                                   css={`
                                     margin: 0 auto;

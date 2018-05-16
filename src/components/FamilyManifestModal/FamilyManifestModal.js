@@ -13,6 +13,7 @@ import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadM
 import CheckCircleIcon from '../../icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
+import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';
@@ -177,7 +178,17 @@ export default compose(
                 fileManifestParticipantsAndFamily({
                   sqon: downloadSqon,
                   columns: columns,
-                })().then(async profile => unsetModal(), errors => setSubmitting(false));
+                })().then(
+                  async profile => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                      action: 'Download Manifest',
+                      label: 'Participant and Family',
+                    });
+                    unsetModal();
+                  },
+                  errors => setSubmitting(false),
+                );
               },
             })(({ handleSubmit }) => (
               <DownloadManifestModalFooter
