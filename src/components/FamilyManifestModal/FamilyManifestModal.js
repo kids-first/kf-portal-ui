@@ -128,38 +128,6 @@ export default compose(
       }).then(x => this.setState(x));
     },
   }),
-  withFormik({
-    mapPropsToValues: ({ dataTypes }) =>
-      (dataTypes || []).reduce((acc, bucket) => ({ ...acc, [bucket.key]: false }), {}),
-    handleSubmit: async (
-      values,
-      {
-        props: {
-          familyMemberIds,
-          sqon,
-          columns,
-          effects: { unsetModal },
-        },
-        setSubmitting,
-        setErrors,
-      },
-    ) => {
-      fileManifestParticipantsAndFamily({
-        sqon: sqonForDownload({ sqon, values, familyMemberIds }),
-        columns: columns,
-      })().then(
-        async profile => {
-          trackUserInteraction({
-            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-            action: 'Download Manifest',
-            label: 'Participant and Family',
-          });
-          unsetModal();
-        },
-        errors => setSubmitting(false),
-      );
-    },
-  }),
   withState('setId', 'setSetId', ''),
   withState('isDisabled', 'setIsDisabled', false),
   withState('checkedFileTypes', 'setCheckedFileTypes', []),
@@ -210,7 +178,17 @@ export default compose(
                 fileManifestParticipantsAndFamily({
                   sqon: downloadSqon,
                   columns: columns,
-                })().then(async profile => unsetModal(), errors => setSubmitting(false));
+                })().then(
+                  async profile => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                      action: 'Download Manifest',
+                      label: 'Participant and Family',
+                    });
+                    unsetModal();
+                  },
+                  errors => setSubmitting(false),
+                );
               },
             })(({ handleSubmit }) => (
               <DownloadManifestModalFooter
