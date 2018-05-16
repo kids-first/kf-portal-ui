@@ -84,6 +84,12 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
       `}
       onClick={() =>
         effects.setModal({
+          classNames: {
+            content: theme.column,
+            modal: css`
+              max-height: 100%;
+            `,
+          },
           title: 'Upload a List of Identifiers',
           component: <UploadIdsModal {...{ ...props, setSQON }} closeModal={effects.unsetModal} />,
         })

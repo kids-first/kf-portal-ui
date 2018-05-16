@@ -197,6 +197,12 @@ const ModalView = ({
   >
     {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
     <div
+      className={`${css`
+        z-index: 1000;
+        flex: 1;
+      `}
+      ${classNames ? classNames.content : ''}
+    }`}
       css={`
         z-index: 1000;
         flex: 1;
