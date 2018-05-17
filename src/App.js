@@ -20,7 +20,7 @@ import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
-import { validateJWT } from 'components/Login';
+import { isAdminToken, validateJWT } from 'components/Login';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
@@ -68,8 +68,9 @@ const App = compose(
               api,
               isLoadingUser,
               Component: ({ match, ...props }) => {
-                const validatedContent = validateJWT({ jwt: state.loggedInUserToken });
-                if (!get(validatedContent, 'context.user.roles', []).includes('ADMIN')) {
+                if (
+                  !isAdminToken({ validatedContent: validateJWT({ jwt: state.loggedInUserToken }) })
+                ) {
                   history.replace('/dashboard');
                 }
                 return <ArrangerDashboard basename={match.url} {...props} />;
