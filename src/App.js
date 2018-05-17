@@ -7,7 +7,6 @@ import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
-import { get } from 'lodash';
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
@@ -68,12 +67,13 @@ const App = compose(
               api,
               isLoadingUser,
               Component: ({ match, ...props }) => {
-                if (
-                  !isAdminToken({ validatedContent: validateJWT({ jwt: state.loggedInUserToken }) })
-                ) {
-                  history.replace('/dashboard');
-                }
-                return <ArrangerDashboard basename={match.url} {...props} />;
+                return !isAdminToken({
+                  validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                }) ? (
+                  <Redirect to="/dashboard" />
+                ) : (
+                  <ArrangerDashboard basename={match.url} {...props} />
+                );
               },
               loggedInUser,
               index: props.match.params.index,

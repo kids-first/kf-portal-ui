@@ -43,19 +43,19 @@ const styles = {
 
 const enhance = compose(injectState, withRouter, withApi);
 
-export const isAdminToken = ({ validatedContent }) => {
-  if (!validatedContent) return false;
-  return get(validatedContent, 'context.user.roles', []).includes('ADMIN');
+export const isAdminToken = ({ validatedPayload }) => {
+  if (!validatedPayload) return false;
+  return get(validatedPayload, 'context.user.roles', []).includes('ADMIN');
 };
 
 export const validateJWT = ({ jwt }) => {
   if (!jwt) return false;
-  const validatedContent = jwtDecode(jwt);
-  const isCurrent = new Date(validatedContent.exp * 1000).valueOf() > Date.now();
+  const validatedPayload = jwtDecode(jwt);
+  const isCurrent = new Date(validatedPayload.exp * 1000).valueOf() > Date.now();
   const isApproved =
-    isAdminToken({ validatedContent }) ||
-    get(validatedContent, 'context.user.status') === 'Approved';
-  return isCurrent && isApproved && validatedContent;
+    isAdminToken({ validatedPayload }) ||
+    get(validatedPayload, 'context.user.status') === 'Approved';
+  return isCurrent && isApproved && validatedPayload;
 };
 
 export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
