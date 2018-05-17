@@ -67,7 +67,7 @@ export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
       await setToken(jwt);
       const user = jwtData.context.user;
       const egoId = jwtData.sub;
-      const existingProfile = await getProfile(api)({ egoId });
+      const existingProfile = await getProfile(api)();
       const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
       const loggedInUser = {
         ...(existingProfile || newProfile),
@@ -170,7 +170,10 @@ class Component extends React.Component<any, any> {
     if (response.status === 200) {
       const jwt = response.data;
       const props = this.props;
-      const { onFinish, effects: { setToken, setUser, setIntegrationToken } } = props;
+      const {
+        onFinish,
+        effects: { setToken, setUser, setIntegrationToken },
+      } = props;
       if (await handleJWT({ jwt, onFinish, setToken, setUser, api })) {
         fetchIntegrationTokens({ setIntegrationToken });
       } else {
@@ -182,7 +185,9 @@ class Component extends React.Component<any, any> {
     }
   };
   trackUserSignIn = provider => {
-    let { location: { pathname } } = this.props;
+    let {
+      location: { pathname },
+    } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({

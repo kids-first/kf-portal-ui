@@ -99,7 +99,7 @@ export default compose(
       } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
-        : setProfile(await getProfile(api)({ egoId }));
+        : setProfile(await getProfile(api)());
     },
   }),
   withState('interests', 'setInterests', ({ profile }) => profile.interests || []),
@@ -121,7 +121,7 @@ export default compose(
       notUsed:
         loggedInUser && egoId === loggedInUser.egoId
           ? setProfile(loggedInUser)
-          : setProfile(await getProfile(api)({ egoId })),
+          : setProfile(await getProfile(api)()),
     }),
   ),
   withHandlers({
