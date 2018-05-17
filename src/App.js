@@ -7,6 +7,7 @@ import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
+import { get } from 'lodash';
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
@@ -19,6 +20,7 @@ import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
+import { validateJWT } from 'components/Login';
 
 import scienceBgPath from 'theme/images/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
@@ -65,9 +67,13 @@ const App = compose(
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: ({ match, ...props }) => (
-                <ArrangerDashboard basename={match.url} {...props} />
-              ),
+              Component: ({ match, ...props }) => {
+                const validatedContent = validateJWT({ jwt: state.loggedInUserToken });
+                if (!get(validatedContent, 'context.user.roles', []).includes('ADMIN')) {
+                  history.replace('/dashboard');
+                }
+                return <ArrangerDashboard basename={match.url} {...props} />;
+              },
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,

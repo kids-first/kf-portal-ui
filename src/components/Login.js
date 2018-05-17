@@ -178,7 +178,8 @@ class Component extends React.Component<any, any> {
   };
   trackUserSignIn = provider => {
     let { location: { pathname } } = this.props;
-    let actionType = pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
+    let actionType =
+      pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
       category: actionType,
       action: `${actionType} with Provider`,
