@@ -29,32 +29,30 @@ const DEFAULT_FIELDS = `
 `;
 
 export const getProfile = api => async ({ egoId }) => {
-  const { data: { users } } = await api({
+  const {
+    data: { self },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
-      variables: { egoId },
       query: `
-          query($egoId: String) {
-            users(filter:{egoId: $egoId}) {
-              count
-              items {
-                ${DEFAULT_FIELDS}
-              }
-            }
+        query {
+          self {
+            ${DEFAULT_FIELDS}
           }
-        `,
+        }
+      `,
     },
   });
 
-  if (users.count > 1) {
-    console.warn(`egoId should only match 1 profile but ${egoId} matched ${users.mount} profiles`);
-  }
-
-  return users.items[0];
+  return self;
 };
 
 export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
-  const { data: { userCreate: { record } } } = await api({
+  const {
+    data: {
+      userCreate: { record },
+    },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { egoId, lastName, firstName, email },
@@ -74,7 +72,11 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
 };
 
 export const updateProfile = api => async ({ user }) => {
-  const { data: { userUpdate: { record } } } = await api({
+  const {
+    data: {
+      userUpdate: { record },
+    },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { record: user },
@@ -94,7 +96,11 @@ export const updateProfile = api => async ({ user }) => {
 };
 
 export const deleteProfile = api => async ({ user }) => {
-  const { data: { userRemove: { recordId } } } = await api({
+  const {
+    data: {
+      userRemove: { recordId },
+    },
+  } = await api({
     url: urlJoin(personaApiRoot, 'graphql'),
     body: {
       variables: { _id: user._id },
