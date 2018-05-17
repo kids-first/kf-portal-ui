@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 import './App.css';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -27,6 +27,7 @@ import logo from 'theme/images/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
+import history from 'services/history';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -40,7 +41,19 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   }
 };
 
-const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) => {
+const App = compose(
+  injectState,
+  withApi,
+  lifecycle({
+    componentDidMount() {
+      const { effects: { unsetModal } } = this.props;
+      this.unSubscribe = history.listen(unsetModal);
+    },
+    componentWillUnmount() {
+      this.unSubscribe();
+    },
+  }),
+)(({ editing, setEditing, state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
   return (
     <div className="App">
