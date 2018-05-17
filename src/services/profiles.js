@@ -28,7 +28,7 @@ const DEFAULT_FIELDS = `
   }
 `;
 
-export const getProfile = api => async ({ egoId }) => {
+export const getProfile = api => async () => {
   const {
     data: { self },
   } = await api({
