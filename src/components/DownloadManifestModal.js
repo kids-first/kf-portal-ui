@@ -157,17 +157,26 @@ export const DownloadManifestModalFooter = compose(withTheme)(
     onManifestGenerated = () => {},
   }) => (
     <ModalFooter showSubmit={false}>
-      <GenerateManifestSet
-        {...{
-          sqon,
-          projectId,
-          setWarning,
-          onManifestGenerated,
-          api,
-          setId,
-          setSetId,
-        }}
-      />
+      <div
+        className={css`
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          height: 100%;
+        `}
+      >
+        <GenerateManifestSet
+          {...{
+            sqon,
+            projectId,
+            setWarning,
+            onManifestGenerated,
+            api,
+            setId,
+            setSetId,
+          }}
+        />
+      </div>
       <LoadingOnClick
         onClick={onDownloadClick}
         render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
