@@ -122,12 +122,13 @@ export default compose(
     customStepMessage: string,
     setCustomStepMessage: Function,
   }) => (
-    <div>
+    <div className={theme.column}>
       <div
         className={css`
           display: flex;
           justify-content: center;
           border-bottom: 1px solid ${theme.greyScale4};
+          min-height: 60px;
         `}
       >
         <WizardProgress setIndex={setIndex} index={index} steps={steps} />

@@ -86,7 +86,7 @@ export const enhance = compose(
       }).then(
         async profile => {
           await setUser({ ...profile, email, api });
-          
+
           if (pathname === '/join') {
             updateTrackingDimension({ userRoles: profile.roles });
           }
@@ -118,12 +118,10 @@ export const SelectRoleForm = ({
   prevDisabled,
 }) => {
   return (
-    <div>
+    <div className={theme.column}>
       <form
         onSubmit={handleSubmit}
-        className={css`
-          ${theme.column} justify-content: space-around;
-        `}
+        className={css`justify-content: space-around; overflow-y: scroll`}
       >
         <div className={theme.row}>
           <StyledLabel>My first name is:</StyledLabel>
