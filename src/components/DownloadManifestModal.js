@@ -16,6 +16,13 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
+const wait = async ms =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('done');
+    }, ms);
+  });
+
 const Button = compose(withTheme)(
   ({ theme, children, className = '', contentClassName = '', ...props }) => (
     <button className={`${theme.actionButton} ${className}`} {...props}>
@@ -88,13 +95,16 @@ const GenerateManifestSet = compose(injectState, withTheme)(
               copyValueToClipboard({ value: setId, copyRef });
             } else {
               const type = 'file';
-              const { data, errors } = await saveSet({
-                type,
-                sqon: sqon || {},
-                userId: loggedInUser.egoId,
-                path: 'kf_id',
-                api: graphql(api),
-              });
+              const [{ data, errors }] = await Promise.all([
+                saveSet({
+                  type,
+                  sqon: sqon || {},
+                  userId: loggedInUser.egoId,
+                  path: 'kf_id',
+                  api: graphql(api),
+                }),
+                wait(1000),
+              ]);
               if (errors && errors.length) {
                 setWarning('Unable to generate manifest ID, please try again later.');
               } else {
