@@ -126,7 +126,7 @@ const Consent = compose(
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.join,
                   action: TRACKING_EVENTS.actions.acceptedTerms,
-                  label: TRACKING_EVENTS.labels.joinProcess
+                  label: TRACKING_EVENTS.labels.joinProcess,
                 });
               }
               setAccepted(event.target.checked);
@@ -167,6 +167,7 @@ export const ButtonsDiv = styled('div')`
   border-top: solid 1px ${props => props.theme.greyScale4};
   margin-top: 20px;
   padding-top: 20px;
+  min-height: 38px;
 `;
 
 const JoinContent = compose(
@@ -181,12 +182,13 @@ const JoinContent = compose(
   }),
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
   <div
-    className={css`
+    className={`${theme.column} ${css`
       width: 830px;
       margin: auto;
-    `}
+      max-height: 90%;
+    `}`}
   >
-    <div className={theme.card}>
+    <div className={`${theme.card} ${theme.column} `}>
       <h2 className={theme.h2}>
         <Trans>Join Kids First</Trans>
       </h2>
@@ -195,7 +197,7 @@ const JoinContent = compose(
           {
             title: 'Connect',
             render: ({ nextStep }) => (
-              <div>
+              <div className={theme.column}>
                 <h3 className={theme.h3}>
                   <Trans i18nKey="join.wizard.socialSelect">
                     Select a way to connect to the Kids First Data Resource Portal
@@ -225,7 +227,7 @@ const JoinContent = compose(
           {
             title: 'Basic Info',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
-              <div>
+              <div className={theme.column}>
                 <h3 className={theme.h3}>
                   <Trans i18nKey="join.wizard.basicInfoHeader">Tell us about yourself</Trans>
                 </h3>
