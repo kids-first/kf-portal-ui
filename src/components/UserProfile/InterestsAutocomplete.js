@@ -81,7 +81,7 @@ const InterestsAutocomplete = compose(
         openMenu,
         initMenu = async () => {
           if (!isOpen) {
-            await getSuggestions('');
+            await getSuggestions(inputValue);
             openMenu();
           }
         },
