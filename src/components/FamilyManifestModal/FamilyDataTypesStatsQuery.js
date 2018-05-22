@@ -59,11 +59,12 @@ export default compose(withApi)(
           },
         };
       }, {})}
-      render={({ data }) => {
+      render={({ loading, data }) => {
         return render(
-          !data
-            ? { fileTypeStats: null }
+          loading
+            ? { loading, fileTypeStats: [] }
             : {
+                loading,
                 fileTypeStats: dataTypes.map(bucket => {
                   const aggs = get(data, `file`);
                   const familyMemberBuckets = get(

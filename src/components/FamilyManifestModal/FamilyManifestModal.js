@@ -250,7 +250,7 @@ export default compose(
                     participantIds,
                     projectId,
                     isDisabled,
-                    render: ({ fileTypeStats }) => {
+                    render: ({ loading, fileTypeStats }) => {
                       const uniqueParticipantsAndFamilyMemberIds = uniq([
                         ...participantIds,
                         ...(fileTypeStats
@@ -263,7 +263,7 @@ export default compose(
                       const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
                         uniqueParticipantsAndFamilyMemberIds,
                       );
-                      return !fileTypeStats ? (
+                      return loading ? (
                         spinner
                       ) : (
                         <Fragment>
