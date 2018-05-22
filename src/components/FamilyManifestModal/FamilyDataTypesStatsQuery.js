@@ -60,8 +60,8 @@ export default compose(withApi)(
       }, {})}
       render={({ data, loading }) => {
         return render(
-          loading
-            ? { loading, data: [] }
+          loading || !data
+            ? { loading: true, data: [] }
             : {
                 loading,
                 data: dataTypes.map(bucket => {

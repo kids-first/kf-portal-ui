@@ -207,38 +207,41 @@ export default compose(
             ));
           };
           const FooterWithParticipantsOnly = createFooterComponent(participantIds);
-          return (
+          const participantSection = (
+            <Section>
+              <ModalSubHeader className={`modalSubHeader`}>
+                <span className={`highlight`}>
+                  <Trans>Participants Summary</Trans>
+                </span>
+                <span>
+                  {' '}
+                  <Trans>- all files will be included in the manifest</Trans>.
+                </span>
+              </ModalSubHeader>
+              <Table
+                {...{
+                  reverseColor: !isFamilyMemberFilesAvailable,
+                  stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
+                }}
+              >
+                <ManifestTableDataRow
+                  {...{
+                    fileType: 'All',
+                    members: participantsMemberCount,
+                    files: participantFilesCount,
+                    fileSize: fileSizeToString(participantFilesSize),
+                    isChecked: isFamilyMemberFilesAvailable,
+                    leftComponent: <CheckCircleIcon className={`checkMark`} />,
+                  }}
+                />
+              </Table>
+            </Section>
+          );
+          return !dataTypes ? (
+            spinner
+          ) : (
             <div className={`${theme.column} ${modalContentStyle(theme)}`}>
-              <Fragment>
-                <Section>
-                  <ModalSubHeader className={`modalSubHeader`}>
-                    <span className={`highlight`}>
-                      <Trans>Participants Summary</Trans>
-                    </span>
-                    <span>
-                      {' '}
-                      <Trans>- all files will be included in the manifest</Trans>.
-                    </span>
-                  </ModalSubHeader>
-                  <Table
-                    {...{
-                      reverseColor: !isFamilyMemberFilesAvailable,
-                      stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
-                    }}
-                  >
-                    <ManifestTableDataRow
-                      {...{
-                        fileType: 'All',
-                        members: participantsMemberCount,
-                        files: participantFilesCount,
-                        fileSize: fileSizeToString(participantFilesSize),
-                        isChecked: isFamilyMemberFilesAvailable,
-                        leftComponent: <CheckCircleIcon className={`checkMark`} />,
-                      }}
-                    />
-                  </Table>
-                </Section>
-              </Fragment>
+              {!isFamilyMemberFilesAvailable && participantSection}
               {isFamilyMemberFilesAvailable ? (
                 <FamilyDataTypesStatsQuery
                   {...{
@@ -257,10 +260,11 @@ export default compose(
                       const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
                         uniqueParticipantsAndFamilyMemberIds,
                       );
-                      return loading ? (
+                      return loading || !fileTypeStats.length ? (
                         spinner
                       ) : (
                         <Fragment>
+                          {participantSection}
                           <Section>
                             <ModalSubHeader className={`modalSubHeader`}>
                               <span className={`highlight`}>Family Sumary</span>
