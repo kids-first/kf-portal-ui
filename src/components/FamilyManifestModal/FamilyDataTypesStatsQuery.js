@@ -9,6 +9,7 @@ export default compose(withApi)(
   ({ api, dataTypes = [], participantIds, projectId, isDisabled, render = () => {} } = {}) => (
     <Query
       renderError
+      shouldFetch={true}
       api={api}
       projectId={projectId}
       name={`dataTypeQuery`}
@@ -58,13 +59,12 @@ export default compose(withApi)(
           },
         };
       }, {})}
-      render={({ data, loading }) => {
+      render={({ data }) => {
         return render(
-          loading || !data
-            ? { loading: true, data: [] }
+          !data
+            ? { fileTypeStats: null }
             : {
-                loading,
-                data: dataTypes.map(bucket => {
+                fileTypeStats: dataTypes.map(bucket => {
                   const aggs = get(data, `file`);
                   const familyMemberBuckets = get(
                     aggs,

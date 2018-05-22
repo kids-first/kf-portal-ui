@@ -250,18 +250,20 @@ export default compose(
                     participantIds,
                     projectId,
                     isDisabled,
-                    render: ({ loading, data: fileTypeStats = [] }) => {
+                    render: ({ fileTypeStats }) => {
                       const uniqueParticipantsAndFamilyMemberIds = uniq([
                         ...participantIds,
-                        ...filterToCheckedTypes(fileTypeStats).reduce(
-                          (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
-                          [],
-                        ),
+                        ...(fileTypeStats
+                          ? filterToCheckedTypes(fileTypeStats).reduce(
+                              (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
+                              [],
+                            )
+                          : []),
                       ]);
                       const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
                         uniqueParticipantsAndFamilyMemberIds,
                       );
-                      return loading || !fileTypeStats.length ? (
+                      return !fileTypeStats ? (
                         spinner
                       ) : (
                         <Fragment>
