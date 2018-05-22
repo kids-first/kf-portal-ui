@@ -133,6 +133,7 @@ export default compose(
   withState('checkedFileTypes', 'setCheckedFileTypes', []),
 )(
   ({
+    loadingProps = true,
     theme,
     familyMemberIds,
     participantIds,
@@ -237,7 +238,7 @@ export default compose(
               </Table>
             </Section>
           );
-          return !dataTypes ? (
+          return loadingProps ? (
             spinner
           ) : (
             <div className={`${theme.column} ${modalContentStyle(theme)}`}>

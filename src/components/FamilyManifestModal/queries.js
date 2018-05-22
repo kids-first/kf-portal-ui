@@ -106,15 +106,16 @@ export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
     participantIds,
     familyMembersWithoutParticipantIds,
   } = await familyMemberAndParticipantIds({ api, sqon });
-  const dataTypes = await dataTypesFromFamilyMemberIds({
-    api,
-    familyMemberIds: familyMembersWithoutParticipantIds,
-  });
   const { participantFilesCount, participantFilesSize } = await participantsFilesCountAndSize({
     api,
     sqon,
   });
+  const dataTypes = await dataTypesFromFamilyMemberIds({
+    api,
+    familyMemberIds: familyMembersWithoutParticipantIds,
+  });
   return {
+    loadingProps: false,
     familyMemberIds,
     participantIds,
     familyMembersWithoutParticipantIds,
