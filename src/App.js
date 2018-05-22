@@ -33,7 +33,7 @@ import history from 'services/history';
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
-      <SideImagePage sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
+      <SideImagePage logo={logo} sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
     );
   } else if (loggedInUser && (!loggedInUser.roles || !loggedInUser.roles[0])) {
     return <Redirect to="/join" />;
