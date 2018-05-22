@@ -5,7 +5,6 @@ import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import SaveIcon from 'react-icons/lib/md/save';
-import Autocomplete from 'react-autocomplete';
 import styled from 'react-emotion';
 
 import { withTheme } from 'emotion-theming';
@@ -14,6 +13,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import InterestsAutocomplete from './InterestsAutocomplete';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
@@ -281,9 +281,9 @@ export default compose(
                 [
                   <button
                     onClick={() => {
-                      setWebsite('');
-                      setGoogleScholarId('');
-                      setInterests([]);
+                      setWebsite(profile.website || '');
+                      setGoogleScholarId(profile.googleScholarId || '');
+                      setInterests(profile.interests || []);
                       handleEditingResearchInterests({ value: false });
                     }}
                     css={theme.hollowButton}
@@ -337,43 +337,7 @@ export default compose(
                 ))}
               </div>
               {editingResearchInterests && (
-                <Autocomplete
-                  inputProps={{
-                    autoFocus: focusedTextArea === 'interests',
-                    className: theme.input,
-                    placeholder: '🔍Search for interests',
-                  }}
-                  getItemValue={item => item.label}
-                  items={xor(
-                    [
-                      'Ewing Sarcoma',
-                      'DNA Repair',
-                      'Bone Tumor',
-                      'Tumor Genomics',
-                      'Structural Birth Defects',
-                      'Cleft Palette',
-                    ],
-                    interests,
-                  ).map(x => ({ label: x }))}
-                  renderItem={(item, isHighlighted) => (
-                    <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                      {item.label}
-                    </div>
-                  )}
-                  value={interestAutocomplete}
-                  onChange={e => setInterestAutocomplete(e.target.value)}
-                  onSelect={val => {
-                    setInterests([...new Set([...interests, val])]);
-                    setInterestAutocomplete('');
-                  }}
-                  menuStyle={{
-                    backgroundcolor: '#fff',
-                    border: `1px solid ${theme.greyScale4}`,
-                    width: '100%',
-                    fontFamily: 'montserrat',
-                    fontSize: '14px',
-                  }}
-                />
+                <InterestsAutocomplete {...{ interests, setInterests }} />
               )}
             </div>
             <StyledSection>

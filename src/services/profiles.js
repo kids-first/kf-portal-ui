@@ -28,11 +28,13 @@ const DEFAULT_FIELDS = `
   }
 `;
 
+const url = urlJoin(personaApiRoot, 'graphql');
+
 export const getProfile = api => async () => {
   const {
     data: { self },
   } = await api({
-    url: urlJoin(personaApiRoot, 'graphql'),
+    url,
     body: {
       query: `
         query {
@@ -53,7 +55,7 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
       userCreate: { record },
     },
   } = await api({
-    url: urlJoin(personaApiRoot, 'graphql'),
+    url,
     body: {
       variables: { egoId, lastName, firstName, email },
       query: `
@@ -77,7 +79,7 @@ export const updateProfile = api => async ({ user }) => {
       userUpdate: { record },
     },
   } = await api({
-    url: urlJoin(personaApiRoot, 'graphql'),
+    url,
     body: {
       variables: { record: user },
       query: `
@@ -101,7 +103,7 @@ export const deleteProfile = api => async ({ user }) => {
       userRemove: { recordId },
     },
   } = await api({
-    url: urlJoin(personaApiRoot, 'graphql'),
+    url,
     body: {
       variables: { _id: user._id },
       query: `
@@ -115,6 +117,29 @@ export const deleteProfile = api => async ({ user }) => {
   });
 
   return recordId;
+};
+
+export const getTags = api => async ({ filter, size }) => {
+  const {
+    data: { tags },
+  } = await api({
+    url,
+    body: {
+      variables: { filter, size },
+      query: `
+        query($filter: String $size: Int) {
+          tags(filter: $filter, size: $size) {
+            count
+            values {
+              count
+              value
+            }
+          }
+        }
+      `,
+    },
+  });
+  return tags;
 };
 
 export const getAllFieldNamesPromise = api => {
