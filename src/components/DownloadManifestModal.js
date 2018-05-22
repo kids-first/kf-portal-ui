@@ -16,12 +16,7 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
-const wait = async ms =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('done');
-    }, ms);
-  });
+const wait = (s = 1) => new Promise(r => setTimeout(r, s));
 
 const Button = compose(withTheme)(
   ({ theme, children, className = '', contentClassName = '', ...props }) => (
@@ -103,7 +98,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
                   path: 'kf_id',
                   api: graphql(api),
                 }),
-                wait(1000),
+                wait(1),
               ]);
               if (errors && errors.length) {
                 setWarning('Unable to generate manifest ID, please try again later.');
