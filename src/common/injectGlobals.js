@@ -28,9 +28,10 @@ export const arrangerProjectId = process.env.REACT_APP_PROJECT_ID;
 
 export const personaApiRoot: string = personaApiOverride || process.env.REACT_APP_PERSONA_API || '';
 export const secretStorageApiRoot: string = process.env.REACT_APP_SECRETS_API;
-export const cavaticaApiRoot: string = process.env.REACT_APP_CAVATICA_API;
 
+export const cavaticaApiRoot: string = process.env.REACT_APP_CAVATICA_API;
 export const cavaticaWebRoot: string = process.env.REACT_APP_CAVATICA_WEB;
+export const cavaticaWebRegistrationRoot: string = process.env.REACT_APP_CAVATICA_WEB_REGISTRATION;
 
 export const gen3ApiRoot: string = process.env.REACT_APP_GEN3_API;
 export const gen3WebRoot: string = process.env.REACT_APP_GEN3_WEB;

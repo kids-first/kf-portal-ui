@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { gen3WebRoot } from 'common/injectGlobals';
+import { gen3WebRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import ExternalLink from 'uikit/ExternalLink';
@@ -86,12 +86,12 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           connected={integrationTokens[CAVATICA]}
           theme={theme}
           name="Cavatica"
-          url="http://cavatica.org/"
+          url={cavaticaWebRoot}
           unconnectedMsg={
             <div>
               Analyze data quickly by connecting your Kids First account to{' '}
               <ExternalLink
-                href="http://cavatica.org/"
+                href={cavaticaWebRoot}
                 hasExternalIcon={false}
                 css={`
                   color: #a42c90;

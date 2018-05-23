@@ -4,6 +4,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 
+import { cavaticaWebRoot } from 'common/injectGlobals';
 import { GEN3 } from 'common/constants';
 import { Link, withRouter } from 'react-router-dom';
 import ExternalLink from 'uikit/ExternalLink';
@@ -94,7 +95,7 @@ const SuccessToastComponent = ({ theme, selectedProjectData }) => (
         css={`
           font-size: 14px;
         `}
-        href={`https://kids-first-vayu.sbgenomics.com/u/${selectedProjectData.id}`}
+        href={`${cavaticaWebRoot}/u/${selectedProjectData.id}`}
       >
         Open project in Cavatica
         <RightArrows fill={theme.primary} width="10px" css="margin-left:4px;" />
