@@ -89,14 +89,7 @@ export default compose(
   withTheme,
   lifecycle({
     async componentDidMount(): void {
-      const {
-        state: { loggedInUser },
-        match: {
-          params: { egoId },
-        },
-        setProfile,
-        api,
-      } = this.props;
+      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile, api } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
         : setProfile(await getProfile(api)());
@@ -110,14 +103,7 @@ export default compose(
   }),
   withPropsOnChange(
     ['match'],
-    async ({
-      match: {
-        params: { egoId },
-      },
-      setProfile,
-      state: { loggedInUser },
-      api,
-    }) => ({
+    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser }, api }) => ({
       notUsed:
         loggedInUser && egoId === loggedInUser.egoId
           ? setProfile(loggedInUser)
@@ -184,10 +170,19 @@ export default compose(
               font-family: montserrat;
               font-size: 14px;
               color: #fff;
+              line-height: 28px;
               ${theme.column};
             `}
           >
-            <span>Contact Information</span>
+            <span
+              className={css`
+                font-size: 1.4em;
+              `}
+            >
+              {profile.jobTitle}
+            </span>
+            <span>{profile.institution}</span>
+            <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
             <span
               css={`
                 text-decoration: underline;
@@ -195,9 +190,6 @@ export default compose(
             >
               {profile.email}
             </span>
-            <span>{profile.jobTitle}</span>
-            <span>{profile.institution}</span>
-            <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
             <span
               css={`
                 margin-top: 5px;
