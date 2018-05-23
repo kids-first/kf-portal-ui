@@ -101,15 +101,16 @@ export const dataTypesFromFamilyMemberIds = async ({ api, familyMemberIds }) => 
 };
 
 export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
-  const {
-    familyMemberIds,
-    participantIds,
-    familyMembersWithoutParticipantIds,
-  } = await familyMemberAndParticipantIds({ api, sqon });
-  const { participantFilesCount, participantFilesSize } = await participantsFilesCountAndSize({
-    api,
-    sqon,
-  });
+  const [
+    { familyMemberIds, participantIds, familyMembersWithoutParticipantIds },
+    { participantFilesCount, participantFilesSize },
+  ] = await Promise.all([
+    familyMemberAndParticipantIds({ api, sqon }),
+    participantsFilesCountAndSize({
+      api,
+      sqon,
+    }),
+  ]);
   const dataTypes = await dataTypesFromFamilyMemberIds({
     api,
     familyMemberIds: familyMembersWithoutParticipantIds,
