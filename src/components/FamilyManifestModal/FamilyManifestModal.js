@@ -121,7 +121,7 @@ export default compose(
   injectState,
   withApi,
   lifecycle({
-    state: { loadingProps: true },
+    state: { loading: true },
     componentDidMount() {
       generateFamilyManifestModalProps({
         api: this.props.api,
@@ -129,7 +129,7 @@ export default compose(
       }).then(x =>
         this.setState({
           ...x,
-          loadingProps: false,
+          loading: false,
         }),
       );
     },
@@ -139,7 +139,7 @@ export default compose(
   withState('checkedFileTypes', 'setCheckedFileTypes', []),
 )(
   ({
-    loadingProps,
+    loading,
     theme,
     familyMemberIds,
     participantIds,
@@ -244,7 +244,7 @@ export default compose(
               </Table>
             </Section>
           );
-          return loadingProps ? (
+          return loading ? (
             spinner
           ) : (
             <div className={`${theme.column} ${modalContentStyle(theme)}`}>
@@ -256,7 +256,7 @@ export default compose(
                     participantIds,
                     projectId,
                     isDisabled,
-                    render: ({ loading, fileTypeStats }) => {
+                    render: ({ loading: loadingFileTypeStats, fileTypeStats }) => {
                       const uniqueParticipantsAndFamilyMemberIds = uniq([
                         ...participantIds,
                         ...(fileTypeStats
@@ -269,7 +269,7 @@ export default compose(
                       const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
                         uniqueParticipantsAndFamilyMemberIds,
                       );
-                      return loading ? (
+                      return loadingFileTypeStats ? (
                         spinner
                       ) : (
                         <Fragment>
