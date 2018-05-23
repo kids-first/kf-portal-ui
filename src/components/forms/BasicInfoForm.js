@@ -120,7 +120,7 @@ export default compose(
       if (window.location.pathname.includes('/user') && values.roles !== loggedInUser.roles[0]) {
         trackUserInteraction({
           category: TRACKING_EVENTS.categories.user.profile,
-          action: TRACKING_EVENTS.actions.userRoleSelected+' to',
+          action: TRACKING_EVENTS.actions.userRoleSelected + ' to',
           label: values.roles,
         });
         updateTrackingInfo({ userRoles: [values.roles] });
@@ -266,7 +266,7 @@ export default compose(
             />
             {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
           </div>
-          {values.roles === 'research' && [
+          {values.roles === 'research' && (
             <div css={theme.column} key="jobTitle">
               <StyledLabel>Job Title/Role:</StyledLabel>
               <Field
@@ -278,20 +278,23 @@ export default compose(
                 placeholder="Job Title/Role"
                 value={values.jobTitle}
               />
-            </div>,
+            </div>
+          )}
+          {['research', 'community'].includes(values.roles) && (
             <div css={theme.column} key="institution">
-              <StyledLabel>Institution:</StyledLabel>
+              {values.roles === 'research' && <StyledLabel>Institution:</StyledLabel>}
+              {values.roles === 'community' && <StyledLabel>Organization:</StyledLabel>}
               <Field
                 css={`
                   ${theme.input};
                   width: 90%;
                 `}
                 name="institution"
-                placeholder="Institution"
+                placeholder={values.roles === 'research' ? 'Institution' : 'Organization'}
                 value={values.institution}
               />
-            </div>,
-          ]}
+            </div>
+          )}
           <div>
             <StyledLabel>Location:</StyledLabel>
             <WrappedPlacesAutocomplete
