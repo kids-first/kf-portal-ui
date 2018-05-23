@@ -16,7 +16,7 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
-const wait = (s = 1) => new Promise(r => setTimeout(r, s));
+const wait = (s = 1) => new Promise(r => setTimeout(r, s * 1000));
 
 const Button = compose(withTheme)(
   ({ theme, children, className = '', contentClassName = '', ...props }) => (
