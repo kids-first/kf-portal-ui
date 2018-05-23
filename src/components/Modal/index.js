@@ -125,7 +125,8 @@ export const ModalFooter = enhance(
           className={css`
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
+            flex: 1;
           `}
         >
           {children}

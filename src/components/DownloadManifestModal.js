@@ -16,6 +16,8 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
+const wait = (s = 1) => new Promise(r => setTimeout(r, s * 1000));
+
 const Button = compose(withTheme)(
   ({ theme, children, className = '', contentClassName = '', ...props }) => (
     <button className={`${theme.actionButton} ${className}`} {...props}>
@@ -88,13 +90,16 @@ const GenerateManifestSet = compose(injectState, withTheme)(
               copyValueToClipboard({ value: setId, copyRef });
             } else {
               const type = 'file';
-              const { data, errors } = await saveSet({
-                type,
-                sqon: sqon || {},
-                userId: loggedInUser.egoId,
-                path: 'kf_id',
-                api: graphql(api),
-              });
+              const [{ data, errors }] = await Promise.all([
+                saveSet({
+                  type,
+                  sqon: sqon || {},
+                  userId: loggedInUser.egoId,
+                  path: 'kf_id',
+                  api: graphql(api),
+                }),
+                wait(1),
+              ]);
               if (errors && errors.length) {
                 setWarning('Unable to generate manifest ID, please try again later.');
               } else {
@@ -157,17 +162,26 @@ export const DownloadManifestModalFooter = compose(withTheme)(
     onManifestGenerated = () => {},
   }) => (
     <ModalFooter showSubmit={false}>
-      <GenerateManifestSet
-        {...{
-          sqon,
-          projectId,
-          setWarning,
-          onManifestGenerated,
-          api,
-          setId,
-          setSetId,
-        }}
-      />
+      <div
+        className={css`
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          height: 100%;
+        `}
+      >
+        <GenerateManifestSet
+          {...{
+            sqon,
+            projectId,
+            setWarning,
+            onManifestGenerated,
+            api,
+            setId,
+            setSetId,
+          }}
+        />
+      </div>
       <LoadingOnClick
         onClick={onDownloadClick}
         render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (

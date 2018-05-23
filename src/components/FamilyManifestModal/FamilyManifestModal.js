@@ -121,11 +121,17 @@ export default compose(
   injectState,
   withApi,
   lifecycle({
+    state: { loading: true },
     componentDidMount() {
       generateFamilyManifestModalProps({
         api: this.props.api,
         sqon: this.props.sqon,
-      }).then(x => this.setState(x));
+      }).then(x =>
+        this.setState({
+          ...x,
+          loading: false,
+        }),
+      );
     },
   }),
   withState('setId', 'setSetId', ''),
@@ -133,6 +139,7 @@ export default compose(
   withState('checkedFileTypes', 'setCheckedFileTypes', []),
 )(
   ({
+    loading,
     theme,
     familyMemberIds,
     participantIds,
@@ -207,38 +214,41 @@ export default compose(
             ));
           };
           const FooterWithParticipantsOnly = createFooterComponent(participantIds);
-          return (
+          const participantSection = (
+            <Section>
+              <ModalSubHeader className={`modalSubHeader`}>
+                <span className={`highlight`}>
+                  <Trans>Participants Summary</Trans>
+                </span>
+                <span>
+                  {' '}
+                  <Trans>- all files will be included in the manifest</Trans>.
+                </span>
+              </ModalSubHeader>
+              <Table
+                {...{
+                  reverseColor: !isFamilyMemberFilesAvailable,
+                  stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
+                }}
+              >
+                <ManifestTableDataRow
+                  {...{
+                    fileType: 'All',
+                    members: participantsMemberCount,
+                    files: participantFilesCount,
+                    fileSize: fileSizeToString(participantFilesSize),
+                    isChecked: isFamilyMemberFilesAvailable,
+                    leftComponent: <CheckCircleIcon className={`checkMark`} />,
+                  }}
+                />
+              </Table>
+            </Section>
+          );
+          return loading ? (
+            spinner
+          ) : (
             <div className={`${theme.column} ${modalContentStyle(theme)}`}>
-              <Fragment>
-                <Section>
-                  <ModalSubHeader className={`modalSubHeader`}>
-                    <span className={`highlight`}>
-                      <Trans>Participants Summary</Trans>
-                    </span>
-                    <span>
-                      {' '}
-                      <Trans>- all files will be included in the manifest</Trans>.
-                    </span>
-                  </ModalSubHeader>
-                  <Table
-                    {...{
-                      reverseColor: !isFamilyMemberFilesAvailable,
-                      stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
-                    }}
-                  >
-                    <ManifestTableDataRow
-                      {...{
-                        fileType: 'All',
-                        members: participantsMemberCount,
-                        files: participantFilesCount,
-                        fileSize: fileSizeToString(participantFilesSize),
-                        isChecked: isFamilyMemberFilesAvailable,
-                        leftComponent: <CheckCircleIcon className={`checkMark`} />,
-                      }}
-                    />
-                  </Table>
-                </Section>
-              </Fragment>
+              {!isFamilyMemberFilesAvailable && participantSection}
               {isFamilyMemberFilesAvailable ? (
                 <FamilyDataTypesStatsQuery
                   {...{
@@ -246,21 +256,24 @@ export default compose(
                     participantIds,
                     projectId,
                     isDisabled,
-                    render: ({ loading, data: fileTypeStats = [] }) => {
+                    render: ({ loading: loadingFileTypeStats, fileTypeStats }) => {
                       const uniqueParticipantsAndFamilyMemberIds = uniq([
                         ...participantIds,
-                        ...filterToCheckedTypes(fileTypeStats).reduce(
-                          (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
-                          [],
-                        ),
+                        ...(fileTypeStats
+                          ? filterToCheckedTypes(fileTypeStats).reduce(
+                              (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
+                              [],
+                            )
+                          : []),
                       ]);
                       const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
                         uniqueParticipantsAndFamilyMemberIds,
                       );
-                      return loading ? (
+                      return loadingFileTypeStats ? (
                         spinner
                       ) : (
                         <Fragment>
+                          {participantSection}
                           <Section>
                             <ModalSubHeader className={`modalSubHeader`}>
                               <span className={`highlight`}>Family Sumary</span>
