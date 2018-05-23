@@ -87,5 +87,7 @@
     " Please update and try again": {
       "": "The provided Gen3 Token is invalid. Please update and try again."
     }
-  }
+  },
+  "Suggestions:": "Suggestions:",
+  "(New Interest)": "(New Interest)"
 }
