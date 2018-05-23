@@ -9,31 +9,58 @@ import { Trans } from 'react-i18next';
 import { withApi } from 'services/api';
 import { getTags } from 'services/profiles';
 
+const dropdownLabelStyle = theme => css`
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  line-height: 0.8rem;
+  color: ${theme.greyScale9};
+`;
+
+const dropdownItemStyle = theme => css`
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+`;
+
+const autocompleteInputStyle = theme => css`
+  width: 100%;
+  padding: 7px;
+  border-radius: 7px;
+  border: 1px solid ${theme.greyScale8};
+  box-sizing: border-box;
+`;
+
+const dropdownMenuStyle = theme => css`
+  border-radius: 7px;
+  border: 1px solid ${theme.greyScale8};
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+  background: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+`;
+
+const DropdownMenu = compose(withTheme)(({ theme, children }) => (
+  <div className={dropdownMenuStyle}>{children}</div>
+));
+
 const DropdownLabel = compose(withTheme)(({ theme, children }) => (
-  <span
-    className={css`
-      text-transform: uppercase;
-      font-size: 0.7rem;
-      line-height: 0.8rem;
-      color: ${theme.greyScale9};
-    `}
-  >
-    {children}
-  </span>
+  <span className={dropdownLabelStyle(theme)}>{children}</span>
 ));
 
 const DropdownItem = compose(withTheme)(({ withBorder, withHover, theme, children, ...props }) => (
   <div
-    className={css`
-      padding: 7px;
-      display: flex;
-      align-items: center;
-      font-size: 0.8rem;
-      cursor: pointer;
-      ${withBorder ? `border-top: 1px solid ${theme.greyScale8}` : ``};
-      &:hover {
-        background: ${withHover ? `lightgray` : `white`};
-      }
+    className={`
+      ${dropdownItemStyle(theme)}
+      ${css`
+        ${withBorder ? `border-top: 1px solid ${theme.greyScale8}` : ``};
+        &:hover {
+          background: ${withHover ? `lightgray` : `white`};
+        }
+      `}
     `}
     {...props}
   >
@@ -93,13 +120,7 @@ const InterestsAutocomplete = compose(
           `}
         >
           <input
-            className={css`
-              width: 100%;
-              padding: 7px;
-              border-radius: 7px;
-              border: 1px solid ${theme.greyScale8};
-              box-sizing: border-box;
-            `}
+            className={autocompleteInputStyle(theme)}
             {...getInputProps({
               placeholder: `🔍 Search for interests`,
               onClick: initMenu,
@@ -107,18 +128,7 @@ const InterestsAutocomplete = compose(
             })}
           />
           {isOpen ? (
-            <div
-              className={css`
-                border-radius: 7px;
-                border: 1px solid ${theme.greyScale8};
-                box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
-                background: #fff;
-                position: absolute;
-                left: 0;
-                right: 0;
-                overflow: hidden;
-              `}
-            >
+            <DropdownMenu>
               {suggestions && suggestions.length ? (
                 <div>
                   <DropdownItem>
@@ -151,7 +161,7 @@ const InterestsAutocomplete = compose(
                   </DropdownLabel>
                 </DropdownItem>
               )}
-            </div>
+            </DropdownMenu>
           ) : null}
         </div>
       )}
