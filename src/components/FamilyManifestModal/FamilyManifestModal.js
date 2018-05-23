@@ -8,6 +8,7 @@ import { css } from 'emotion';
 import Spinner from 'react-spinkit';
 import filesize from 'filesize';
 import { Trans } from 'react-i18next';
+import formatNumber from '@arranger/components/dist/utils/formatNumber';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import CheckCircleIcon from '../../icons/CheckCircleIcon.js';
@@ -71,8 +72,8 @@ const ManifestTableDataRow = compose(withTheme)(
         {leftComponent && <div className={`left`}>{leftComponent}</div>}
         {fileType}
       </div>
-      <div className={`tableCell ${theme.row}`}>{members}</div>
-      <div className={`tableCell ${theme.row}`}>{files}</div>
+      <div className={`tableCell ${theme.row}`}>{formatNumber(members)}</div>
+      <div className={`tableCell ${theme.row}`}>{formatNumber(files)}</div>
       <div className={`tableCell ${theme.row}`}>{fileSize}</div>
     </div>
   ),
