@@ -121,11 +121,17 @@ export default compose(
   injectState,
   withApi,
   lifecycle({
+    state: { loadingProps: true },
     componentDidMount() {
       generateFamilyManifestModalProps({
         api: this.props.api,
         sqon: this.props.sqon,
-      }).then(x => this.setState(x));
+      }).then(x =>
+        this.setState({
+          ...x,
+          loadingProps: false,
+        }),
+      );
     },
   }),
   withState('setId', 'setSetId', ''),
@@ -133,7 +139,7 @@ export default compose(
   withState('checkedFileTypes', 'setCheckedFileTypes', []),
 )(
   ({
-    loadingProps = true,
+    loadingProps,
     theme,
     familyMemberIds,
     participantIds,

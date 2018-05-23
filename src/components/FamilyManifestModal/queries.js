@@ -115,7 +115,6 @@ export const generateFamilyManifestModalProps = async ({ api, sqon }) => {
     familyMemberIds: familyMembersWithoutParticipantIds,
   });
   return {
-    loadingProps: false,
     familyMemberIds,
     participantIds,
     familyMembersWithoutParticipantIds,
