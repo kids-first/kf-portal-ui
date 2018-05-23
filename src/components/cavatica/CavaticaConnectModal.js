@@ -8,7 +8,7 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
-import { cavaticaWebRoot } from 'common/injectGlobals';
+import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGlobals';
 
 import { css } from 'emotion';
 import styled from 'react-emotion';
@@ -131,7 +131,7 @@ const CavaticaConnectModal = ({
           <div className="stepText">
             <span>
               If you don't have one, please{' '}
-              <ExternalLink href={cavaticaWebRoot}>
+              <ExternalLink href={`${cavaticaWebRegistrationRoot}/auth/register`}>
                 register for a Cavatica Account <RightArrows />
               </ExternalLink>{' '}
             </span>

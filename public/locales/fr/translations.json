@@ -25,7 +25,6 @@
   "New to Kids First Data Resource Portal?": "New to Kids First Data Resource Portal?",
   "Join now": "Join now",
   "An error has occurred, please try again later": "An error has occurred, please try again later",
-  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "login": {
     "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
   },
@@ -34,6 +33,7 @@
       "": "The Kids First DRP is currently in the internal review phase and is not accessible for beta testing. Please<1>{' '}</1> <3>contact a Kids First administrator</3><4>{' '}</4> if you have registered for internal review and are not able to log in."
     }
   },
+  "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "Dashboard": "Dashboard",
   "File Repository": "File Repository",
   "Login": "Login",
