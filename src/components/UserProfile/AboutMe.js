@@ -120,7 +120,6 @@ export default compose(
         display: flex;
         justify-content: center;
         padding: 50px 0;
-        background-image: linear-gradient(to bottom, #fff 0%, #fff 70%, transparent 95%);
       `}
     >
       <Container

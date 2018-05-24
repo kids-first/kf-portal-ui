@@ -244,9 +244,8 @@ export default compose(
         justify-content: center;
         align-items: flex-start;
         background: #fff;
-        box-shadow: 0 0 4.9px 0.1px #bbbbbb;
+        box-shadow: 0px 0px 4.9px 0.1px #bbbbbb;
         border: solid 1px #e0e1e6;
-        padding: 15px 0;
       `}
     >
       <Container>
