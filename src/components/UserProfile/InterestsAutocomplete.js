@@ -1,5 +1,5 @@
 import React from 'react';
-import { debounce, get } from 'lodash';
+import { debounce, get, toLower } from 'lodash';
 import { compose, withProps, withPropsOnChange, withState } from 'recompose';
 import { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
@@ -44,7 +44,7 @@ const dropdownMenuStyle = theme => css`
 `;
 
 const DropdownMenu = compose(withTheme)(({ theme, children }) => (
-  <div className={dropdownMenuStyle}>{children}</div>
+  <div className={dropdownMenuStyle(theme)}>{children}</div>
 ));
 
 const DropdownLabel = compose(withTheme)(({ theme, children }) => (
@@ -81,8 +81,9 @@ const InterestsAutocomplete = compose(
   })),
   withProps(({ interests, getSuggestions, setInputValue, setInterests }) => ({
     onInputValueChange: val => {
-      setInputValue(val);
-      getSuggestions(val);
+      const lowered = toLower(val || '');
+      setInputValue(lowered);
+      getSuggestions(lowered);
     },
     onChange: val => {
       setInterests([...new Set([...interests, val])]);
@@ -112,6 +113,8 @@ const InterestsAutocomplete = compose(
             openMenu();
           }
         },
+        showSuggestions = (suggestions || []).length,
+        showNewItem = inputValue && !(suggestions || []).includes(inputValue),
       }) => (
         <div
           className={css`
@@ -127,9 +130,9 @@ const InterestsAutocomplete = compose(
               onFocus: initMenu,
             })}
           />
-          {isOpen ? (
+          {isOpen && (showSuggestions || showNewItem) ? (
             <DropdownMenu>
-              {suggestions && suggestions.length ? (
+              {showSuggestions ? (
                 <div>
                   <DropdownItem>
                     <DropdownLabel>
@@ -143,7 +146,7 @@ const InterestsAutocomplete = compose(
                   ))}
                 </div>
               ) : null}
-              {inputValue && (
+              {showNewItem ? (
                 <DropdownItem
                   withHover
                   withBorder={suggestions.length}
@@ -160,7 +163,7 @@ const InterestsAutocomplete = compose(
                     <Trans>(New Interest)</Trans>
                   </DropdownLabel>
                 </DropdownItem>
-              )}
+              ) : null}
             </DropdownMenu>
           ) : null}
         </div>
