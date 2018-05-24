@@ -14,7 +14,7 @@ import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
-import { ActionButton } from '../Modal';
+import { ActionButton, ModalFooter } from '../Modal';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
@@ -228,6 +228,7 @@ export default compose(
                 ${theme.row} justify-content: space-between;
                 border-radius: 5px;
                 box-shadow: 0 0 2.9px 0.1px #a0a0a3;
+                background-color: #edeef1;
                 padding: 1em;
               `}
             >
@@ -237,7 +238,11 @@ export default compose(
                   setStoryTextarea(profile.story || '');
                   handleEditingBackgroundInfo({ value: false });
                 }}
-                css={theme.hollowButton}
+                css={`
+                  ${theme.wizardButton} ${css`
+                      line-height: normal;
+                    `};
+                `}
               >
                 Cancel
               </button>
