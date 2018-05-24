@@ -25,6 +25,9 @@ const trackProfileInteraction = ({ action, value, type }) =>
 const StyledSection = withTheme(styled('section')`
   ${({ theme }) => theme.section};
   padding: 5px 0;
+  &.userStory {
+    margin-top: 25px;
+  }
   & .clickToAdd {
     font-size: 12px;
     text-decoration: underline;
@@ -188,7 +191,7 @@ export default compose(
               renderButtons={() => <div />}
             />
           </StyledSection>
-          <StyledSection>
+          <StyledSection className={'userStory'}>
             <H3>My story</H3>
             {canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
             <EditableLabel
