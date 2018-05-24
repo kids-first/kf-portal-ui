@@ -14,6 +14,7 @@ import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
+import { ActionButton, ModalFooter } from '../Modal';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
@@ -22,29 +23,24 @@ const trackProfileInteraction = ({ action, value, type }) =>
     label: action,
   });
 
-const ClickToAdd = styled('span')`
-  color: ${props => props.theme.primary};
-  font-size: 12px;
-  font-family: Montserrat;
-  text-decoration: underline;
-  &:hover {
-    cursor: pointer;
-    color: ${props => props.theme.highlight};
+const StyledSection = withTheme(styled('section')`
+  ${({ theme }) => theme.section};
+  padding: 5px 0;
+  margin-top: 25px;
+  & .clickToAdd {
     font-size: 12px;
-    font-family: Montserrat;
     text-decoration: underline;
   }
-`;
+`);
+const ClickToAdd = ({ theme, children, ...rest }) => (
+  <a className={`clickToAdd`} {...rest}>
+    {children}
+  </a>
+);
 
-const StyledSection = styled('section')`
-  padding: 5px 0;
-`;
+const SaveButton = props => <ActionButton {...props}>Save</ActionButton>;
 
-const SaveButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
-    <SaveIcon /> Save
-  </button>
-));
+const columnTopPadding = '30px';
 
 export default compose(
   injectState,
@@ -124,7 +120,6 @@ export default compose(
         display: flex;
         justify-content: center;
         padding: 50px 0;
-        background-image: linear-gradient(to bottom, #fff 0%, #fff 70%, transparent 95%);
       `}
     >
       <Container
@@ -135,6 +130,7 @@ export default compose(
         <div
           className={css`
             width: 65%;
+            padding-top: ${columnTopPadding};
             ${theme.column} justify-content: space-around;
           `}
         >
@@ -192,7 +188,7 @@ export default compose(
               renderButtons={() => <div />}
             />
           </StyledSection>
-          <StyledSection>
+          <StyledSection className={'userStory'}>
             <H3>My story</H3>
             {canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
             <EditableLabel
@@ -232,6 +228,7 @@ export default compose(
                 ${theme.row} justify-content: space-between;
                 border-radius: 5px;
                 box-shadow: 0 0 2.9px 0.1px #a0a0a3;
+                background-color: #edeef1;
                 padding: 1em;
               `}
             >
@@ -241,7 +238,11 @@ export default compose(
                   setStoryTextarea(profile.story || '');
                   handleEditingBackgroundInfo({ value: false });
                 }}
-                css={theme.hollowButton}
+                css={`
+                  ${theme.wizardButton} ${css`
+                      line-height: normal;
+                    `};
+                `}
               >
                 Cancel
               </button>
@@ -263,8 +264,8 @@ export default compose(
             background-color: #ffffff;
             box-shadow: 0 0 2.9px 0.1px #a0a0a3;
             width: 35%;
-            padding: 0 1em 1em 1em;
-            margin-left: 1em;
+            padding: ${columnTopPadding};
+            margin-left: 5em;
           `}
         >
           <H2>

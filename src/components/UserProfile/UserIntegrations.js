@@ -3,6 +3,7 @@ import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
+import styled from 'react-emotion';
 
 import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
@@ -37,6 +38,10 @@ const loadingSpinner = (
     }}
   />
 );
+
+const Paragraph = styled('p')`
+  line-height: 28px;
+`;
 
 const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   <Button
@@ -198,11 +203,11 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             </td>
             <td>
               <span className="integrationHeader">Download Controlled Data</span>
-              <p>
+              <Paragraph>
                 Access controlled data by connecting your NIH Login and dbGaP authorized access to
                 the Kids First Data Catalog powered by{' '}
                 <ExternalLink href={gen3WebRoot}>Gen3</ExternalLink>.
-              </p>
+              </Paragraph>
             </td>
             <td>
               <div className="integrationCell">
@@ -263,10 +268,10 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             </td>
             <td>
               <span className="integrationHeader">Analyze Data</span>
-              <p>
+              <Paragraph>
                 Analyze data quickly by connecting your Kids First account to{' '}
                 <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
-              </p>
+              </Paragraph>
             </td>
             <td>
               <div className="integrationCell">

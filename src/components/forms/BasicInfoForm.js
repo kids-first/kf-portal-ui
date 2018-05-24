@@ -23,7 +23,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 
-const StyledLabel = styled('label')`
+const labelStyle = `
   font-family: Montserrat;
   font-size: 14px;
   line-height: 2;
@@ -31,7 +31,10 @@ const StyledLabel = styled('label')`
   text-align: left;
   color: #343434;
   font-weight: 900;
-  border-bottom: none;
+`;
+
+const StyledLabel = styled('label')`
+  ${labelStyle};
 `;
 
 class WrappedPlacesAutocomplete extends React.Component {
@@ -196,15 +199,23 @@ export default compose(
           <div
             css={`
               ${theme.row} align-self: flex-end;
+              position: absolute;
+              top: 0px;
             `}
           >
-            <StyledLabel>Role</StyledLabel>
+            <div
+              className={`${theme.column} ${css`
+                justify-content: center;
+              `}`}
+            >
+              <StyledLabel>Role: </StyledLabel>
+            </div>
             {get(
               ROLES.reduce(
                 (acc, { type, icon, color }) => ({
                   ...acc,
                   [type]: icon({
-                    height: '18px',
+                    height: '45px',
                     className: css`
                       margin: 5px 5px 5px 5px;
                     `,
@@ -215,18 +226,27 @@ export default compose(
               ),
               values.roles,
             )}
-            <Field
-              component="select"
-              name="roles"
-              defaultValue={values.roles}
-              css={theme.hollowSelect}
+            <div
+              className={`${theme.column} ${css`
+                justify-content: center;
+              `}`}
             >
-              {ROLES.map(({ type, displayName }) => (
-                <option value={type} key={type}>
-                  {displayName}
-                </option>
-              ))}
-            </Field>
+              <Field
+                component="select"
+                name="roles"
+                defaultValue={values.roles}
+                className={`${css`
+                  ${labelStyle};
+                  color: ${theme.secondary};
+                `} ${theme.hollowSelect}`}
+              >
+                {ROLES.map(({ type, displayName }) => (
+                  <option value={type} key={type}>
+                    {displayName}
+                  </option>
+                ))}
+              </Field>
+            </div>
           </div>
           <div css={theme.column}>
             <StyledLabel>Title :</StyledLabel>

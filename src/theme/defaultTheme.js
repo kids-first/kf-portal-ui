@@ -154,6 +154,9 @@ const components = {
       color: ${colors.greyScale7};
       cursor: default;
     }
+    & .icon {
+      margin-right: 5px;
+    }
   `,
   actionButton: css`
     outline: none;
@@ -162,7 +165,7 @@ const components = {
     box-shadow: none;
     border-radius: 0px;
     color: #fff;
-    padding: 6px 16px;
+    padding: 0px 16px;
     font-family: montserrat;
     font-size: 14px;
     font-weight: 800;
@@ -242,6 +245,7 @@ const components = {
   `,
   profileH2: css`
     color: ${colors.secondary};
+    margin-top: 0px;
     font-size: 22px;
     font-weight: 300;
     line-height: 1.27;
@@ -378,23 +382,24 @@ const components = {
     flex-direction: row;
     align-items: center;
     font-family: montserrat;
-    font-size: 14px;
     line-height: 1.86;
     letter-spacing: 0.2px;
+    border-left: 1px solid ${colors.greyScale5};
 
     li {
+      box-sizing: content-box;
+      border-right: 1px solid ${colors.greyScale5};
       a {
         display: block;
         font-family: Montserrat;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 1.86;
         letter-spacing: 0.2px;
         text-align: left;
-        color: ${colors.active};
+        color: ${colors.primary};
         font-weight: 500;
-        padding: 0 10px;
-        border-bottom: 3px solid transparent;
-        margin-right: 1em;
+        padding: 10px 40px;
+        border-bottom: 5px solid transparent;
         text-decoration: none;
       }
 
@@ -403,7 +408,7 @@ const components = {
         cursor: pointer;
         color: ${colors.highlight};
         font-weight: 500;
-        border-bottom: 3px solid ${colors.highlight};
+        border-bottom: 5px solid ${colors.highlight};
         text-decoration: none;
       }
     }
@@ -503,6 +508,7 @@ const components = {
     color: ${colors.greyScale1};
 
     a {
+      cursor: pointer;
       color: ${colors.primary};
       font-weight: 500;
       text-decoration: none;
