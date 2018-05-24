@@ -264,7 +264,7 @@ export default compose(
             box-shadow: 0 0 2.9px 0.1px #a0a0a3;
             width: 35%;
             padding: 0 1em 1em 1em;
-            margin-left: 1em;
+            margin-left: 5em;
           `}
         >
           <H2>
