@@ -22,23 +22,19 @@ const trackProfileInteraction = ({ action, value, type }) =>
     label: action,
   });
 
-const ClickToAdd = styled('span')`
-  color: ${props => props.theme.primary};
-  font-size: 12px;
-  font-family: Montserrat;
-  text-decoration: underline;
-  &:hover {
-    cursor: pointer;
-    color: ${props => props.theme.highlight};
+const StyledSection = withTheme(styled('section')`
+  ${({ theme }) => theme.section};
+  padding: 5px 0;
+  & .clickToAdd {
     font-size: 12px;
-    font-family: Montserrat;
     text-decoration: underline;
   }
-`;
-
-const StyledSection = styled('section')`
-  padding: 5px 0;
-`;
+`);
+const ClickToAdd = ({ theme, children, ...rest }) => (
+  <a className={`clickToAdd`} {...rest}>
+    {children}
+  </a>
+);
 
 const SaveButton = compose(withTheme)(({ theme, ...props }) => (
   <button css={theme.hollowButton} {...props}>

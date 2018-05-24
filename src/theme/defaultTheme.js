@@ -506,6 +506,7 @@ const components = {
     color: ${colors.greyScale1};
 
     a {
+      cursor: pointer;
       color: ${colors.primary};
       font-weight: 500;
       text-decoration: none;
