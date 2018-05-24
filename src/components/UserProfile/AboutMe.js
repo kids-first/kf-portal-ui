@@ -42,7 +42,7 @@ const StyledSection = styled('section')`
 
 const SaveButton = compose(withTheme)(({ theme, ...props }) => (
   <button css={theme.hollowButton} {...props}>
-    <SaveIcon /> Save
+    <SaveIcon className={`icon`} /> Save
   </button>
 ));
 
