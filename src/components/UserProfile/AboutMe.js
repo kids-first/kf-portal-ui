@@ -4,7 +4,6 @@ import { css } from 'react-emotion';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
-import SaveIcon from 'react-icons/lib/md/save';
 import styled from 'react-emotion';
 
 import { withTheme } from 'emotion-theming';
@@ -14,7 +13,7 @@ import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
-import { ActionButton, ModalFooter } from '../Modal';
+import { ActionButton } from '../Modal';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
