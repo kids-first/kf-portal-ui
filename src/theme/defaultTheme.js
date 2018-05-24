@@ -165,7 +165,7 @@ const components = {
     box-shadow: none;
     border-radius: 0px;
     color: #fff;
-    padding: 6px 16px;
+    padding: 0px 16px;
     font-family: montserrat;
     font-size: 14px;
     font-weight: 800;

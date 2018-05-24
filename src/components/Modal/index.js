@@ -90,6 +90,10 @@ export const ModalWarning = enhance(({ theme, content, ...props }) => {
   );
 });
 
+export const ActionButton = withTheme(({ theme, ...rest }) => (
+  <button className={theme.actionButton} {...rest} />
+));
+
 export const ModalFooter = enhance(
   ({
     theme,
@@ -138,12 +142,12 @@ export const ModalFooter = enhance(
             readyContent={submitText}
             loadingContent={submitLoadingContent}
             render={({ onClick, loading, readyContent, loadingContent, submitDisabled }) => (
-              <button css={theme.actionButton} disabled={submitDisabled} onClick={onClick}>
+              <ActionButton disabled={submitDisabled} onClick={onClick}>
                 <span>
                   {loading && loadingContent}
                   {readyContent}
                 </span>
-              </button>
+              </ActionButton>
             )}
           />
         )}

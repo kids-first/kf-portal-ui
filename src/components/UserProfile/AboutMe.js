@@ -14,6 +14,7 @@ import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
+import { ActionButton } from '../Modal';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
@@ -39,11 +40,7 @@ const ClickToAdd = ({ theme, children, ...rest }) => (
   </a>
 );
 
-const SaveButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
-    <SaveIcon className={`icon`} /> Save
-  </button>
-));
+const SaveButton = props => <ActionButton {...props}>Save</ActionButton>;
 
 export default compose(
   injectState,
