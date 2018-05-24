@@ -40,6 +40,8 @@ const ClickToAdd = ({ theme, children, ...rest }) => (
 
 const SaveButton = props => <ActionButton {...props}>Save</ActionButton>;
 
+const columnTopPadding = '30px';
+
 export default compose(
   injectState,
   withState('isEditingBackgroundInfo', 'setEditingBackgroundInfo', false),
@@ -129,6 +131,7 @@ export default compose(
         <div
           className={css`
             width: 65%;
+            padding-top: ${columnTopPadding};
             ${theme.column} justify-content: space-around;
           `}
         >
@@ -257,7 +260,7 @@ export default compose(
             background-color: #ffffff;
             box-shadow: 0 0 2.9px 0.1px #a0a0a3;
             width: 35%;
-            padding: 0 1em 1em 1em;
+            padding: ${columnTopPadding};
             margin-left: 5em;
           `}
         >

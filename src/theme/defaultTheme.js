@@ -245,6 +245,7 @@ const components = {
   `,
   profileH2: css`
     color: ${colors.secondary};
+    margin-top: 0px;
     font-size: 22px;
     font-weight: 300;
     line-height: 1.27;
