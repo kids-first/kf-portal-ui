@@ -12,7 +12,10 @@ export default props => (
         sqon: search.sqon,
         setSQON: sqon => {
           addSqonHistory(sqon);
-          p.history.push({ search: stringify({ ...search, sqon: JSON.stringify(sqon) }) });
+          p.history.push({
+            ...p.location,
+            search: stringify({ ...search, sqon: JSON.stringify(sqon) }),
+          });
         },
       });
     }}
