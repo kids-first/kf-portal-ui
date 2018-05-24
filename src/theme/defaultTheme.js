@@ -154,6 +154,9 @@ const components = {
       color: ${colors.greyScale7};
       cursor: default;
     }
+    & .icon {
+      margin-right: 5px;
+    }
   `,
   actionButton: css`
     outline: none;

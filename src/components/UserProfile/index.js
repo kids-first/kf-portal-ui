@@ -39,7 +39,7 @@ export const Container = styled('div')`
 
 export const EditButton = compose(withTheme)(({ theme, ...props }) => (
   <button css={theme.hollowButton} {...props}>
-    <PencilIcon /> Edit
+    <PencilIcon className={'icon'} /> Edit
   </button>
 ));
 
