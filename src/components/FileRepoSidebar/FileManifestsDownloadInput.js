@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
+import { withTheme } from 'emotion-theming';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
@@ -8,6 +9,15 @@ import IconWithLoading from 'icons/IconWithLoading';
 import Button from 'uikit/Button';
 
 import FamilyManifestModal from '../FamilyManifestModal';
+
+export const DownloadButton = withTheme(({ theme, ...props }) => (
+  <Button {...props}>
+    <IconWithLoading icon={downloadIcon} />
+    <span css={theme.uppercase}>
+      <Trans>Download</Trans>
+    </span>
+  </Button>
+));
 
 export default ({ api, sqon, index, projectId, theme, effects }) => (
   <div
@@ -19,21 +29,16 @@ export default ({ api, sqon, index, projectId, theme, effects }) => (
     <ColumnsState
       projectId={projectId}
       graphqlField="file"
-      render={({ state: { columns } }) => {
-        return (
-          <Button
-            onClick={() => {
-              effects.setModal({
-                title: 'Download Manifest',
-                component: <FamilyManifestModal {...{ api, sqon, index, projectId, columns }} />,
-              });
-            }}
-          >
-            <IconWithLoading icon={downloadIcon} />
-            <Trans css={theme.uppercase}>Download</Trans>
-          </Button>
-        );
-      }}
+      render={({ state: { columns } }) => (
+        <DownloadButton
+          onClick={() => {
+            effects.setModal({
+              title: 'Download Manifest',
+              component: <FamilyManifestModal {...{ api, sqon, index, projectId, columns }} />,
+            });
+          }}
+        />
+      )}
     />
   </div>
 );

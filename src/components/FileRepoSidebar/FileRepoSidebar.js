@@ -21,7 +21,7 @@ import { GEN3 } from 'common/constants';
 import { getFilesById } from 'services/arranger';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import FileManifestsDownloadInput from './FileManifestsDownloadInput';
+import FileManifestsDownloadInput, { DownloadButton } from './FileManifestsDownloadInput';
 import Subsection from './Subsection';
 import ReportsDownloadInput from './ReportsDownloadInput';
 
@@ -232,22 +232,13 @@ const FileRepoSidebar = compose(
                               });
                             });
                         }}
-                        render={({ onClick, loading, disabled }) => {
-                          return (
-                            <Button
-                              css={`
-                                flex-grow: inhert;
-                                padding-left: 15px;
-                              `}
-                              disabled={props.selectedTableRows.length !== 1 || loading}
-                              onClick={onClick}
-                              loading={loading}
-                            >
-                              <IconWithLoading icon={downloadIcon} />
-                              <Trans css={theme.uppercase}>Download</Trans>
-                            </Button>
-                          );
-                        }}
+                        render={({ onClick, loading, disabled }) => (
+                          <DownloadButton
+                            disabled={props.selectedTableRows.length !== 1 || loading}
+                            onClick={onClick}
+                            loading={loading}
+                          />
+                        )}
                       />
                     </Subsection>
                   );
