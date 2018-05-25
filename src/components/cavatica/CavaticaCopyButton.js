@@ -15,9 +15,11 @@ const enhance = compose(injectState, withTheme);
 
 const styles = ({ theme, disabled = false }) => css`
   .disclaimer {
-    text-align: center;
+    text-align: left;
     font-size: 0.8rem;
     padding-bottom: 10px;
+    line-height: 26px;
+    font-size: 14px;
   }
   .niceWhiteButton {
     border-radius: 19px;
@@ -34,6 +36,8 @@ const styles = ({ theme, disabled = false }) => css`
     text-transform: uppercase;
     font-weight: bold;
     cursor: ${disabled ? 'default' : 'pointer'};
+    margin-right: 0px;
+    width: 100%;
   }
 `;
 
