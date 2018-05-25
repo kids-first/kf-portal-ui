@@ -9,6 +9,7 @@ import Spinner from 'react-spinkit';
 import filesize from 'filesize';
 import { Trans } from 'react-i18next';
 import formatNumber from '@arranger/components/dist/utils/formatNumber';
+import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import CheckCircleIcon from '../../icons/CheckCircleIcon.js';
@@ -157,7 +158,6 @@ export default compose(
     checkedFileTypes,
     setCheckedFileTypes,
     api,
-    columns,
     handleSubmit,
     setId,
     setSetId,
@@ -173,197 +173,209 @@ export default compose(
     const isFamilyMemberFilesAvailable = !!(dataTypes || []).length;
 
     return (
-      <DownloadManifestModal {...{ sqon, index, projectId, api }}>
-        {({ setWarning }) => {
-          const createFooterComponent = participantIds => {
-            const downloadSqon = sqonForDownload({
-              sqon,
-              fileTypes: checkedFileTypes,
-              participantIds,
-            });
-            return withFormik({
-              handleSubmit: async (value, { setSubmitting, setErrors }) => {
-                fileManifestParticipantsAndFamily({
-                  sqon: downloadSqon,
-                  columns: columns,
-                })().then(
-                  async profile => {
-                    trackUserInteraction({
-                      category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                      action: 'Download Manifest',
-                      label: 'Participant and Family',
-                    });
-                    unsetModal();
+      <ColumnsState
+        projectId={projectId}
+        graphqlField="file"
+        render={({ state: { columns } }) => (
+          <DownloadManifestModal {...{ sqon, index, projectId, api }}>
+            {({ setWarning }) => {
+              const createFooterComponent = participantIds => {
+                const downloadSqon = sqonForDownload({
+                  sqon,
+                  fileTypes: checkedFileTypes,
+                  participantIds,
+                });
+                return withFormik({
+                  handleSubmit: async (value, { setSubmitting, setErrors }) => {
+                    fileManifestParticipantsAndFamily({
+                      sqon: downloadSqon,
+                      columns: columns,
+                    })().then(
+                      async profile => {
+                        trackUserInteraction({
+                          category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                          action: 'Download Manifest',
+                          label: 'Participant and Family',
+                        });
+                        unsetModal();
+                      },
+                      errors => setSubmitting(false),
+                    );
                   },
-                  errors => setSubmitting(false),
-                );
-              },
-            })(({ handleSubmit }) => (
-              <DownloadManifestModalFooter
-                {...{
-                  sqon: downloadSqon,
-                  setId,
-                  setSetId,
-                  api,
-                  onManifestGenerated: () => setIsDisabled(true),
-                  projectId,
-                  setWarning,
-                  onDownloadClick: handleSubmit,
-                  downloadLoading: isSubmitting,
-                }}
-              />
-            ));
-          };
-          const FooterWithParticipantsOnly = createFooterComponent(participantIds);
-          const participantSection = (
-            <Section>
-              <ModalSubHeader className={`modalSubHeader`}>
-                <span className={`highlight`}>
-                  <Trans>Participants Summary</Trans>
-                </span>
-                <span>
-                  {' '}
-                  <Trans>- all files will be included in the manifest</Trans>.
-                </span>
-              </ModalSubHeader>
-              <Table
-                {...{
-                  reverseColor: !isFamilyMemberFilesAvailable,
-                  stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
-                }}
-              >
-                <ManifestTableDataRow
-                  {...{
-                    fileType: 'All',
-                    members: participantsMemberCount,
-                    files: participantFilesCount,
-                    fileSize: fileSizeToString(participantFilesSize),
-                    isChecked: isFamilyMemberFilesAvailable,
-                    leftComponent: <CheckCircleIcon className={`checkMark`} />,
-                  }}
-                />
-              </Table>
-            </Section>
-          );
-          return loading ? (
-            spinner
-          ) : (
-            <div className={`${theme.column} ${modalContentStyle(theme)}`}>
-              {!isFamilyMemberFilesAvailable && participantSection}
-              {isFamilyMemberFilesAvailable ? (
-                <FamilyDataTypesStatsQuery
-                  {...{
-                    dataTypes,
-                    participantIds,
-                    projectId,
-                    isDisabled,
-                    render: ({ loading: loadingFileTypeStats, fileTypeStats }) => {
-                      const uniqueParticipantsAndFamilyMemberIds = uniq([
-                        ...participantIds,
-                        ...(fileTypeStats
-                          ? filterToCheckedTypes(fileTypeStats).reduce(
-                              (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
-                              [],
-                            )
-                          : []),
-                      ]);
-                      const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
-                        uniqueParticipantsAndFamilyMemberIds,
-                      );
-                      return loadingFileTypeStats ? (
-                        spinner
-                      ) : (
-                        <Fragment>
-                          {participantSection}
-                          <Section>
-                            <ModalSubHeader className={`modalSubHeader`}>
-                              <span className={`highlight`}>Family Sumary</span>
-                              <span>
-                                {' '}
-                                <Trans>
-                                  - the participants in your query have related family member data
-                                </Trans>.
-                              </span>
-                              <div>
-                                {' '}
-                                <Trans>
-                                  To include the family data in the manifest, select your desired
-                                  data types below
-                                </Trans>:{' '}
-                              </div>
-                            </ModalSubHeader>
-                            <Table
-                              {...{
-                                reverseColor: true,
-                                stats: [{ icon: null, label: 'Data Types' }, ...familyMemberStats],
-                              }}
-                            >
-                              {fileTypeStats.map(({ fileType, members, files, fileSize }, i) => (
-                                <ManifestTableDataRow
+                })(({ handleSubmit }) => (
+                  <DownloadManifestModalFooter
+                    {...{
+                      sqon: downloadSqon,
+                      setId,
+                      setSetId,
+                      api,
+                      onManifestGenerated: () => setIsDisabled(true),
+                      projectId,
+                      setWarning,
+                      onDownloadClick: handleSubmit,
+                      downloadLoading: isSubmitting,
+                    }}
+                  />
+                ));
+              };
+              const FooterWithParticipantsOnly = createFooterComponent(participantIds);
+              const participantSection = (
+                <Section>
+                  <ModalSubHeader className={`modalSubHeader`}>
+                    <span className={`highlight`}>
+                      <Trans>Participants Summary</Trans>
+                    </span>
+                    <span>
+                      {' '}
+                      <Trans>- all files will be included in the manifest</Trans>.
+                    </span>
+                  </ModalSubHeader>
+                  <Table
+                    {...{
+                      reverseColor: !isFamilyMemberFilesAvailable,
+                      stats: [{ icon: null, label: 'Data Types' }, ...participantStats],
+                    }}
+                  >
+                    <ManifestTableDataRow
+                      {...{
+                        fileType: 'All',
+                        members: participantsMemberCount,
+                        files: participantFilesCount,
+                        fileSize: fileSizeToString(participantFilesSize),
+                        isChecked: isFamilyMemberFilesAvailable,
+                        leftComponent: <CheckCircleIcon className={`checkMark`} />,
+                      }}
+                    />
+                  </Table>
+                </Section>
+              );
+              return loading ? (
+                spinner
+              ) : (
+                <div className={`${theme.column} ${modalContentStyle(theme)}`}>
+                  {!isFamilyMemberFilesAvailable && participantSection}
+                  {isFamilyMemberFilesAvailable ? (
+                    <FamilyDataTypesStatsQuery
+                      {...{
+                        dataTypes,
+                        participantIds,
+                        projectId,
+                        isDisabled,
+                        render: ({ loading: loadingFileTypeStats, fileTypeStats }) => {
+                          const uniqueParticipantsAndFamilyMemberIds = uniq([
+                            ...participantIds,
+                            ...(fileTypeStats
+                              ? filterToCheckedTypes(fileTypeStats).reduce(
+                                  (acc, { familyMembersKeys }) => [...acc, ...familyMembersKeys],
+                                  [],
+                                )
+                              : []),
+                          ]);
+                          const FooterWithParticipantsAndFamilyMembers = createFooterComponent(
+                            uniqueParticipantsAndFamilyMemberIds,
+                          );
+                          return loadingFileTypeStats ? (
+                            spinner
+                          ) : (
+                            <Fragment>
+                              {participantSection}
+                              <Section>
+                                <ModalSubHeader className={`modalSubHeader`}>
+                                  <span className={`highlight`}>Family Sumary</span>
+                                  <span>
+                                    {' '}
+                                    <Trans>
+                                      - the participants in your query have related family member
+                                      data
+                                    </Trans>.
+                                  </span>
+                                  <div>
+                                    {' '}
+                                    <Trans>
+                                      To include the family data in the manifest, select your
+                                      desired data types below
+                                    </Trans>:{' '}
+                                  </div>
+                                </ModalSubHeader>
+                                <Table
                                   {...{
-                                    key: i,
-                                    showCheckbox: true,
-                                    onClick: e => {
-                                      setSetId(null);
-                                      setCheckedFileTypes(
-                                        checkedFileTypes.includes(fileType)
-                                          ? checkedFileTypes.filter(type => type !== fileType)
-                                          : [...checkedFileTypes, fileType],
-                                      );
-                                    },
-                                    isChecked: checkedFileTypes.includes(fileType),
-                                    fileType,
-                                    members,
-                                    files,
-                                    fileSize: fileSizeToString(fileSize),
+                                    reverseColor: true,
+                                    stats: [
+                                      { icon: null, label: 'Data Types' },
+                                      ...familyMemberStats,
+                                    ],
+                                  }}
+                                >
+                                  {fileTypeStats.map(
+                                    ({ fileType, members, files, fileSize }, i) => (
+                                      <ManifestTableDataRow
+                                        {...{
+                                          key: i,
+                                          showCheckbox: true,
+                                          onClick: e => {
+                                            setSetId(null);
+                                            setCheckedFileTypes(
+                                              checkedFileTypes.includes(fileType)
+                                                ? checkedFileTypes.filter(type => type !== fileType)
+                                                : [...checkedFileTypes, fileType],
+                                            );
+                                          },
+                                          isChecked: checkedFileTypes.includes(fileType),
+                                          fileType,
+                                          members,
+                                          files,
+                                          fileSize: fileSizeToString(fileSize),
+                                        }}
+                                      />
+                                    ),
+                                  )}
+                                </Table>
+                              </Section>
+                              <Section>
+                                <Table
+                                  className={`total`}
+                                  {...{
+                                    stats: [
+                                      {
+                                        icon: null,
+                                        label: 'TOTAL',
+                                      },
+                                      {
+                                        icon: participantsStatVisual.icon,
+                                        label: uniqueParticipantsAndFamilyMemberIds.length,
+                                      },
+                                      {
+                                        icon: fileStatVisual.icon,
+                                        label:
+                                          participantFilesCount +
+                                          sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
+                                      },
+                                      {
+                                        icon: fileSizeStatVisual.icon,
+                                        label: fileSizeToString(
+                                          participantFilesSize +
+                                            sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
+                                        ),
+                                      },
+                                    ],
                                   }}
                                 />
-                              ))}
-                            </Table>
-                          </Section>
-                          <Section>
-                            <Table
-                              className={`total`}
-                              {...{
-                                stats: [
-                                  {
-                                    icon: null,
-                                    label: 'TOTAL',
-                                  },
-                                  {
-                                    icon: participantsStatVisual.icon,
-                                    label: uniqueParticipantsAndFamilyMemberIds.length,
-                                  },
-                                  {
-                                    icon: fileStatVisual.icon,
-                                    label:
-                                      participantFilesCount +
-                                      sumBy(filterToCheckedTypes(fileTypeStats), 'files'),
-                                  },
-                                  {
-                                    icon: fileSizeStatVisual.icon,
-                                    label: fileSizeToString(
-                                      participantFilesSize +
-                                        sumBy(filterToCheckedTypes(fileTypeStats), 'fileSize'),
-                                    ),
-                                  },
-                                ],
-                              }}
-                            />
-                          </Section>
-                          <FooterWithParticipantsAndFamilyMembers />
-                        </Fragment>
-                      );
-                    },
-                  }}
-                />
-              ) : (
-                <FooterWithParticipantsOnly />
-              )}
-            </div>
-          );
-        }}
-      </DownloadManifestModal>
+                              </Section>
+                              <FooterWithParticipantsAndFamilyMembers />
+                            </Fragment>
+                          );
+                        },
+                      }}
+                    />
+                  ) : (
+                    <FooterWithParticipantsOnly />
+                  )}
+                </div>
+              );
+            }}
+          </DownloadManifestModal>
+        )}
+      />
     );
   },
 );

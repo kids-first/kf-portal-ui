@@ -5,6 +5,7 @@ const BaseButton = styled('button')`
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   display: flex;
   align-items: center;
+  justify-content: center;
   outline: none;
 `;
 
@@ -20,6 +21,12 @@ export const LightButton = styled(BaseButton)`
   border-radius: 10.5px;
   background-color: #fff;
   color: #008199;
+`;
+
+export const ActionButton = styled(Button)`
+  padding-left: 20px;
+  padding-right: 20px;
+  text-transform: uppercase;
 `;
 
 export default Button;
