@@ -7,6 +7,7 @@ import { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
+import { withTheme } from 'emotion-theming';
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
@@ -41,121 +42,123 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   }
 };
 
-const App = compose(injectState, withApi)(({ editing, setEditing, state, api }) => {
-  const { loggedInUser, toast, isLoadingUser } = state;
-  return (
-    <div className="App">
-      <Switch>
-        <Route
-          // TODO: we need a user role specific for this
-          path="/admin"
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: ({ match, ...props }) => {
-                return !isAdminToken({
-                  validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
-                }) ? (
-                  <Redirect to="/dashboard" />
-                ) : (
-                  <ArrangerDashboard basename={match.url} {...props} />
-                );
-              },
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route path="/auth-redirect" exact component={AuthRedirect} />
-        <Route path="/redirected" exact component={() => null} />
-        <Route
-          path="/search/:index"
-          exact
-          render={props =>
-            forceSelectRole({
-              isLoadingUser,
-              Component: FileRepo,
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path="/user/:egoId"
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserProfile,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path="/dashboard"
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserDashboard,
-              containerStyle: css`
-                height: 100vh;
-              `,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path="/join"
-          exact
-          render={props => {
-            return (
-              <ApiContext.Provider
-                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
-              >
+const App = compose(injectState, withApi, withTheme)(
+  ({ editing, setEditing, state, api, theme }) => {
+    const { loggedInUser, toast, isLoadingUser } = state;
+    return (
+      <div className={`App ${theme.globalStyleOverride}`}>
+        <Switch>
+          <Route
+            // TODO: we need a user role specific for this
+            path="/admin"
+            render={props =>
+              forceSelectRole({
+                api,
+                isLoadingUser,
+                Component: ({ match, ...props }) => {
+                  return !isAdminToken({
+                    validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                  }) ? (
+                    <Redirect to="/dashboard" />
+                  ) : (
+                    <ArrangerDashboard basename={match.url} {...props} />
+                  );
+                },
+                loggedInUser,
+                index: props.match.params.index,
+                graphqlField: props.match.params.index,
+                ...props,
+              })
+            }
+          />
+          <Route path="/auth-redirect" exact component={AuthRedirect} />
+          <Route path="/redirected" exact component={() => null} />
+          <Route
+            path="/search/:index"
+            exact
+            render={props =>
+              forceSelectRole({
+                isLoadingUser,
+                Component: FileRepo,
+                loggedInUser,
+                index: props.match.params.index,
+                graphqlField: props.match.params.index,
+                ...props,
+              })
+            }
+          />
+          <Route
+            path="/user/:egoId"
+            exact
+            render={props =>
+              forceSelectRole({
+                api,
+                isLoadingUser,
+                Component: UserProfile,
+                loggedInUser,
+                ...props,
+              })
+            }
+          />
+          <Route
+            path="/dashboard"
+            exact
+            render={props =>
+              forceSelectRole({
+                api,
+                isLoadingUser,
+                Component: UserDashboard,
+                containerStyle: css`
+                  height: 100vh;
+                `,
+                loggedInUser,
+                ...props,
+              })
+            }
+          />
+          <Route
+            path="/join"
+            exact
+            render={props => {
+              return (
+                <ApiContext.Provider
+                  value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+                >
+                  <SideImagePage
+                    backgroundImage={scienceBgPath}
+                    logo={logo}
+                    Component={Join}
+                    sideImage={joinImage}
+                    {...props}
+                  />
+                </ApiContext.Provider>
+              );
+            }}
+          />
+          <Route
+            path="/"
+            exact
+            render={props => (
+              <ApiContext.Provider value={initializeApi()}>
                 <SideImagePage
-                  backgroundImage={scienceBgPath}
                   logo={logo}
-                  Component={Join}
-                  sideImage={joinImage}
+                  backgroundImage={scienceBgPath}
+                  Component={LoginPage}
+                  sideImage={loginImage}
                   {...props}
                 />
               </ApiContext.Provider>
-            );
-          }}
-        />
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <ApiContext.Provider value={initializeApi()}>
-              <SideImagePage
-                logo={logo}
-                backgroundImage={scienceBgPath}
-                Component={LoginPage}
-                sideImage={loginImage}
-                {...props}
-              />
-            </ApiContext.Provider>
-          )}
-        />
-        <Route path="/error" exact render={props => <Error {...props} />} />
-        <Redirect from="*" to="/dashboard" />
-      </Switch>
-      <Modal />
-      <Toast {...toast}>{toast.component}</Toast>
-    </div>
-  );
-});
+            )}
+          />
+          <Route path="/error" exact render={props => <Error {...props} />} />
+          <Redirect from="*" to="/dashboard" />
+        </Switch>
+        <Modal />
+        <Toast {...toast}>{toast.component}</Toast>
+      </div>
+    );
+  },
+);
 
 export default translate('translations')(() => (
   <ContextProvider>

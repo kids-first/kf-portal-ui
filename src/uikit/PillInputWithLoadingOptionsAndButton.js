@@ -55,7 +55,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
         const optionResponses = await Promise.all(
           optionsWithOperation.map(async key => ({
             key,
-            enabled: !!(await options[key].onDropdownOpen()),
+            enabled: !!await options[key].onDropdownOpen(),
           })),
         );
         this.setState({
@@ -71,10 +71,16 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
     });
   };
   render() {
-    const { tooltipStyle, options, LoadingComponent = LoadingSpinner, ...props } = this.props;
+    const {
+      containerClassName = '',
+      tooltipStyle,
+      options,
+      LoadingComponent = LoadingSpinner,
+      ...props
+    } = this.props;
     const { isDropdownOpen, optionState, selected } = this.state;
     return (
-      <div>
+      <div className={containerClassName}>
         <PillInputWithButton
           {...props}
           options={options}

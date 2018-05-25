@@ -32,6 +32,11 @@ const colors = {
 };
 
 const components = {
+  globalStyleOverride: css`
+    & button {
+      border: solid 1px ${colors.borderGrey};
+    }
+  `,
   normalText: css`
     font-family: 'Open Sans';
     font-size: 12px;

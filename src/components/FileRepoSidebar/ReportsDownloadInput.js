@@ -15,12 +15,13 @@ import PillInputWithLoadingOptionsAndButton from 'uikit/PillInputWithLoadingOpti
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-export default ({ api, projectId, theme, sqon }) => (
+export default ({ api, projectId, theme, sqon, className = '' }) => (
   <ColumnsState
     projectId={projectId}
     graphqlField="participant"
     render={({ state }) => (
       <PillInputWithLoadingOptionsAndButton
+        containerClassName={className}
         options={{
           'Clinical (Participant)': {
             onSelected: async () => {

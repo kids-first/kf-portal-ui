@@ -346,6 +346,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                       css={`
                         height: 1px;
                         flex: 1;
+                        overflow: hidden;
                       `}
                     >
                       <DetectNewVersion {...props} />
