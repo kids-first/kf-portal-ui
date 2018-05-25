@@ -1,8 +1,4 @@
 {
-  "Upload Ids": "Upload Ids",
-  "Filters": "Filters",
-  "All Filters": "All Filters",
-  "Export TSV": "Export TSV",
   "join": {
     "terms": {
       "instructions": "Read and consent to our terms and conditions",
@@ -46,6 +42,15 @@
   "FOIA": "FOIA",
   "Data Release -": "Data Release -",
   "dataReleaseVersion": "Unreleased",
+  "Upload Ids": "Upload Ids",
+  "Filters": "Filters",
+  "All Filters": "All Filters",
+  "Export TSV": "Export TSV",
+  "Query saved succesfully!": "Query saved succesfully!",
+  "View in My Saved Queries": "View in My Saved Queries",
+  "Save Query": "Save Query",
+  "Save the current configuration of filters": "Save the current configuration of filters",
+  "Enter a name for your saved query:": "Enter a name for your saved query:",
   "Sorry something went wrong": {
     "": "Sorry something went wrong."
   },
@@ -55,23 +60,17 @@
   "share on twitter": "share on twitter",
   "share on linkedin": "share on linkedin",
   "share": "share",
-  "Query saved succesfully!": "Query saved succesfully!",
-  "View in My Saved Queries": "View in My Saved Queries",
-  "Save Query": "Save Query",
-  "Save the current configuration of filters": "Save the current configuration of filters",
-  "Enter a name for your saved query:": "Enter a name for your saved query:",
+  "Failed!": "Failed!",
+  "Unable to download file": "Unable to download file",
+  "fileRepoSidebar": {
+    "missingDownloadPermissions": "Your account does not have the required permission to download this file.",
+    "noneSelected": "If you have not selected any files, all files in your query will be included in the actions."
+  },
   "Browse": "Browse",
   "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
   "Actions": "Actions",
-  "fileRepoSidebar": {
-    "noneSelected": "If you have not selected any files, all files in your query will be included in the actions.",
-    "missingDownloadPermissions": "Your account does not have the required permission to download this file."
-  },
   "Download": "Download",
   "File Manifests": "File Manifests",
-  "Selected File": "Selected File",
-  "Failed!": "Failed!",
-  "Unable to download file": "Unable to download file",
   "Reports": "Reports",
   "Data Analysis": "Data Analysis",
   "Link to Cavatica will not be available for internal review": "Link to Cavatica will not be available for internal review",

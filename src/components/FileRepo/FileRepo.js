@@ -3,11 +3,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-import SQONURL from 'components/SQONURL';
 import { isObject } from 'lodash';
-import downloadIcon from '../assets/icon-download-grey.svg';
-import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
-import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 
@@ -22,19 +18,24 @@ import {
 import { toggleSQON, replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 
-import FileRepoSidebar from './FileRepoSidebar';
-import { FileRepoStats, FileRepoStatsQuery } from './Stats';
-import InfoIcon from '../icons/InfoIcon';
-import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
-import UploadIdsModal from './UploadIdsModal';
-import Select from '../uikit/Select';
-import { config as statsConfig } from './Stats';
-import { LightButton } from '../uikit/Button';
-import ArrangerConnectionGuard from './ArrangerConnectionGuard';
-import { ScrollbarSize } from './ContextProvider/ScrollbarSizeProvider';
+import SQONURL from 'components/SQONURL';
+import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
+import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
+import FileRepoSidebar from 'components/FileRepoSidebar';
+import { config as statsConfig, FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
+import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
+import UploadIdsModal from 'components/UploadIdsModal';
+import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
+import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
 
-import { arrangerProjectId } from 'common/injectGlobals';
+import DownloadIcon from 'icons/DownloadIcon';
+import InfoIcon from 'icons/InfoIcon';
+import { LightButton } from 'uikit/Button';
+import Select from 'uikit/Select';
+
 import translateSQON from 'common/translateSQONValue';
+import { arrangerProjectId } from 'common/injectGlobals';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
@@ -280,7 +281,7 @@ const customTableTypes = {
       ``
     ) : value ? (
       <img
-        src={require('../assets/icon-controlled-access.svg')}
+        src={require('../../assets/icon-controlled-access.svg')}
         alt=""
         css={`
           width: 11px;
@@ -290,7 +291,7 @@ const customTableTypes = {
       />
     ) : (
       <img
-        src={require('../assets/icon-open-access.svg')}
+        src={require('../../assets/icon-open-access.svg')}
         alt=""
         css={`
           width: 10px;
@@ -301,10 +302,35 @@ const customTableTypes = {
     ),
 };
 
+const customTableColumns = ({ theme }) => [
+  {
+    index: 13,
+    content: {
+      accessor: 'kf_id',
+      Header: () => <DownloadIcon width={13} fill={theme.greyScale3} />,
+      Cell: ({ value }) => (
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          `}
+        >
+          <DownloadFileButton kfId={value} />
+        </div>
+      ),
+      width: 40,
+      sortable: false,
+      resizable: false,
+    },
+  },
+];
+
 const FileRepo = compose(injectState, withTheme, withApi)(
   ({
     state,
     effects,
+    theme,
     translateSQONValue = translateSQON({
       sets: (state.loggedInUser || {}).sets || [],
     }),
@@ -439,6 +465,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                 {...props}
                                 {...url}
                                 customTypes={customTableTypes}
+                                customColumns={customTableColumns({ theme })}
                                 columnDropdownText="Columns"
                                 fieldTypesForFilter={['text', 'keyword', 'id']}
                                 maxPagesOptions={5}
@@ -458,11 +485,10 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                 }}
                                 exportTSVText={
                                   <React.Fragment>
-                                    <img
-                                      alt=""
-                                      src={downloadIcon}
+                                    <DownloadIcon
+                                      fill={theme.greyScale3}
+                                      width={12}
                                       css={`
-                                        width: 10px;
                                         margin-right: 9px;
                                       `}
                                     />

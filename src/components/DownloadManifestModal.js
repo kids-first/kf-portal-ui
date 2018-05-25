@@ -7,9 +7,9 @@ import { Trans } from 'react-i18next';
 
 import saveSet from '@arranger/components/dist/utils/saveSet';
 
-import downloadIcon from '../assets/icon-download-white.svg';
-import CopyToClipboardIcon from '../icons/CopyToClipboardIcon.js';
-import IconWithLoading from '../icons/IconWithLoading';
+import CopyToClipboardIcon from 'icons/CopyToClipboardIcon.js';
+import IconWithLoading from 'icons/IconWithLoading';
+import DownloadIcon from 'icons/DownloadIcon';
 import { copyValueToClipboard } from './CopyToClipboard';
 import { ModalFooter, ModalWarning } from './Modal';
 import LoadingOnClick from 'components/LoadingOnClick';
@@ -194,7 +194,16 @@ export const DownloadManifestModalFooter = compose(withTheme)(
               disabled: finalLoading,
             }}
           >
-            <IconWithLoading {...{ loading: finalLoading, icon: downloadIcon }} />
+            <IconWithLoading
+              loading={finalLoading}
+              Icon={() => (
+                <DownloadIcon
+                  className={css`
+                    margin-right: 9px;
+                  `}
+                />
+              )}
+            />
             <Trans>Download Manifest</Trans>
           </Button>
         )}

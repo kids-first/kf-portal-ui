@@ -1,14 +1,13 @@
 import React from 'react';
+import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
-import { ColumnsState } from '@arranger/components/dist/DataTable';
+import { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import { css } from 'emotion';
+import { injectState } from 'freactal';
+import { ColumnsState } from '@arranger/components/dist/DataTable';
 
-import downloadIcon from 'assets/icon-download-white.svg';
-import IconWithLoading from 'icons/IconWithLoading';
-
+import DownloadIcon from 'icons/DownloadIcon';
 import Button from 'uikit/Button';
-
 import FamilyManifestModal from '../FamilyManifestModal';
 
 export const DownloadButton = withTheme(({ theme, ...props }) => (
@@ -21,33 +20,39 @@ export const DownloadButton = withTheme(({ theme, ...props }) => (
     `}
     {...props}
   >
-    <IconWithLoading icon={downloadIcon} />
+    <DownloadIcon
+      className={css`
+        margin-right: 9px;
+      `}
+    />
     <span css={theme.uppercase}>
       <Trans>Download</Trans>
     </span>
   </Button>
 ));
 
-export default ({ api, sqon, index, projectId, theme, effects }) => (
-  <div
-    css={`
-      display: flex;
-      margin-bottom: 13px;
-    `}
-  >
-    <ColumnsState
-      projectId={projectId}
-      graphqlField="file"
-      render={({ state: { columns } }) => (
-        <DownloadButton
-          onClick={() => {
-            effects.setModal({
-              title: 'Download Manifest',
-              component: <FamilyManifestModal {...{ api, sqon, index, projectId, columns }} />,
-            });
-          }}
-        />
-      )}
-    />
-  </div>
+export default compose(injectState, withTheme)(
+  ({ theme, sqon, index, projectId, effects: { setModal } }) => (
+    <div
+      css={`
+        display: flex;
+        margin-bottom: 13px;
+      `}
+    >
+      <ColumnsState
+        projectId={projectId}
+        graphqlField="file"
+        render={({ state: { columns } }) => (
+          <DownloadButton
+            onClick={() =>
+              setModal({
+                title: 'Download Manifest',
+                component: <FamilyManifestModal {...{ sqon, index, projectId, columns }} />,
+              })
+            }
+          />
+        )}
+      />
+    </div>
+  ),
 );
