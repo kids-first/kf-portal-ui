@@ -373,6 +373,14 @@ const components = {
     text-align: left;
     color: #90278e;
   `,
+  externalLink: css`
+    color: ${colors.primary};
+    cursor: pointer;
+    &:hover,
+    &.active {
+      color: ${colors.highlight};
+    }
+  `,
   secondaryNav: css`
     list-style-type: none;
     margin: 0;
