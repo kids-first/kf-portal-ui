@@ -10,17 +10,18 @@ export const H2 = styled('h2')`
   font-size: 18px;
   font-weight: 300;
   font-style: normal;
-  line-height: 0.06;
   letter-spacing: 0.3px;
   color: #2b388f;
-  width: 200px;
+  width: 100%;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  border-bottom: 2px solid #d4d6dd;
 `;
 
 const SettingsSection = styled('section')`
-  ${props => props.theme.row} justify-content: stretch;
+  ${props => props.theme.column} justify-content: stretch;
   width: 100%;
-  border-bottom: 2px solid #d4d6dd;
-  padding: 30px 0;
+  padding-bottom: 50px;
 `;
 
 export default compose(withTheme, withState('mode', 'setMode', 'account'))(
