@@ -2,6 +2,7 @@ import React from 'react';
 import { Trans } from 'react-i18next';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { withTheme } from 'emotion-theming';
+import { css } from 'emotion';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
@@ -11,7 +12,15 @@ import Button from 'uikit/Button';
 import FamilyManifestModal from '../FamilyManifestModal';
 
 export const DownloadButton = withTheme(({ theme, ...props }) => (
-  <Button {...props}>
+  <Button
+    className={css`
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      width: 140px;
+    `}
+    {...props}
+  >
     <IconWithLoading icon={downloadIcon} />
     <span css={theme.uppercase}>
       <Trans>Download</Trans>
