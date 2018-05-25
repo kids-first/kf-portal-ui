@@ -7,6 +7,8 @@ import { Trans } from 'react-i18next';
 
 import downloadIcon from 'assets/icon-download-white.svg';
 import IconWithLoading from 'icons/IconWithLoading';
+import LeftChevron from 'icons/DoubleChevronLeftIcon';
+import RightChevron from 'icons/DoubleChevronRightIcon';
 import Button from 'uikit/Button';
 import Heading from 'uikit/Heading';
 import LoadingOnClick from '../LoadingOnClick';
@@ -23,7 +25,7 @@ import FileManifestsDownloadInput from './FileManifestsDownloadInput';
 import Subsection from './Subsection';
 import ReportsDownloadInput from './ReportsDownloadInput';
 
-const styles = ({ containerWidth, contentSidePadding, theme }) => ({
+const styles = ({ containerWidth, contentSidePadding, expanded, theme }) => ({
   container: css`
     overflow-y: auto;
     background-color: #f4f5f8;
@@ -44,8 +46,10 @@ const styles = ({ containerWidth, contentSidePadding, theme }) => ({
     cursor: pointer;
   `,
   content: css`
-    padding-left: ${contentSidePadding}px;
+    padding-left: ${expanded ? contentSidePadding : contentSidePadding * 10}px;
+    overflow: hidden;
     padding-right: ${contentSidePadding}px;
+    transition: all 0.25s;
     padding-top: 10px;
   `,
 });
@@ -74,7 +78,7 @@ const SlidablePanel = ({ expanded, containerWidth, contentSidePadding, ...rest }
       className={css`
         position: relative;
         transition: all 0.25s;
-        width: ${expanded ? `${containerWidth + contentSidePadding * 2}px` : '50px'};
+        width: ${expanded ? `${containerWidth + contentSidePadding * 2}px` : '40px'};
       `}
       {...rest}
     />
@@ -104,7 +108,7 @@ const FileRepoSidebar = compose(
     let setToast = effects.setToast;
     const containerWidth = 310;
     const contentSidePadding = 15;
-    const panelStyle = styles({ containerWidth, contentSidePadding, theme });
+    const panelStyle = styles({ containerWidth, contentSidePadding, theme, expanded });
     return (
       <SlidablePanel {...{ contentSidePadding, containerWidth, expanded }}>
         <div
@@ -114,7 +118,18 @@ const FileRepoSidebar = compose(
         >
           <div className={panelStyle.titleBar} onClick={() => setExpanded(!expanded)}>
             <Heading>
-              <span> {expanded ? '>>' : '<<'} </span>
+              <span
+                className={css`
+                  margin-right: 10px;
+                `}
+              >
+                {' '}
+                {expanded ? (
+                  <RightChevron width={14} fill={theme.secondary} />
+                ) : (
+                  <LeftChevron width={14} fill={theme.secondary} />
+                )}{' '}
+              </span>
               <Trans>Actions</Trans>
             </Heading>
           </div>
