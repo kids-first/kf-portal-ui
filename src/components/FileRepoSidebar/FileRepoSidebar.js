@@ -134,15 +134,17 @@ const FileRepoSidebar = compose(
             </Heading>
           </div>
           <div className={panelStyle.content}>
-            <Trans
-              i18nKey="fileRepoSidebar.noneSelected"
+            <div
               css={`
                 font-size: 14px;
+                line-height: 26px;
               `}
             >
-              If you have not selected any files, all files in your query will be included in the
-              actions.
-            </Trans>
+              <Trans i18nKey="fileRepoSidebar.noneSelected">
+                If you have not selected any files, all files in your query will be included in the
+                actions.
+              </Trans>
+            </div>
             <Divider />
             <Heading>
               <Trans>Download</Trans>
