@@ -247,6 +247,9 @@ const FileRepoSidebar = compose(
               <Subsection heading={<Trans>Reports</Trans>}>
                 <ReportsDownloadInput
                   {...{
+                    className: css`
+                      flex: 1;
+                    `,
                     api,
                     sqon,
                     index,
