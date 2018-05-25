@@ -1,8 +1,9 @@
 import React from 'react';
 import { compose, withState, withProps } from 'recompose';
-import Button from '../uikit/Button';
-import Select from '../uikit/Select';
-import LoadingOnClick from '../components/LoadingOnClick';
+
+import { ActionButton } from 'uikit/Button';
+import Select from 'uikit/Select';
+import LoadingOnClick from 'components/LoadingOnClick';
 
 const enhance = compose(
   withProps(({ options = [], defaultSelected }) => ({
@@ -55,7 +56,7 @@ export const PillInputWithButton = ({
                 onChange: e => setSelected(e),
               }}
             />
-            <Button
+            <ActionButton
               disabled={isButtonDisabled()}
               onClick={onClick}
               css={`
@@ -65,11 +66,10 @@ export const PillInputWithButton = ({
                 flex-grow: 1;
                 box-sizing: border-box;
                 flex: none;
-                padding-left: 8px;
               `}
             >
               {render ? render({ loading }) : children}
-            </Button>
+            </ActionButton>
           </div>
         );
       }}
