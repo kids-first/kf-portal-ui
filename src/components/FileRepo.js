@@ -19,22 +19,24 @@ import {
   DetectNewVersion,
   QuickSearch,
 } from '@arranger/components/dist/Arranger';
-import { toggleSQON } from '@arranger/components/dist/SQONView/utils';
+import { toggleSQON, replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
+
 import FileRepoSidebar from './FileRepoSidebar';
-import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { FileRepoStats, FileRepoStatsQuery } from './Stats';
-import { LightButton } from '../uikit/Button';
 import InfoIcon from '../icons/InfoIcon';
 import AdvancedFacetViewModalContent from './AdvancedFacetViewModal';
 import UploadIdsModal from './UploadIdsModal';
-import { arrangerProjectId } from 'common/injectGlobals';
 import Select from '../uikit/Select';
+import { config as statsConfig } from './Stats';
+import { LightButton } from '../uikit/Button';
+import ArrangerConnectionGuard from './ArrangerConnectionGuard';
+import { ScrollbarSize } from './ContextProvider/ScrollbarSizeProvider';
+
+import { arrangerProjectId } from 'common/injectGlobals';
 import translateSQON from 'common/translateSQONValue';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import ArrangerConnectionGuard from './ArrangerConnectionGuard';
-import { config as statsConfig } from './Stats';
 
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
@@ -145,125 +147,130 @@ const AggregationsWrapper = compose(injectState, withTheme)(
     aggregationsWrapperRef = React.createRef(),
     ...props
   }) => (
-    <div
-      ref={aggregationsWrapperRef}
-      css={`
-        height: 100%;
-        height: calc(100vh - 180px);
-        overflow-y: auto;
-        background-color: #f4f5f8;
-        box-shadow: 0 0 4.9px 0.2px #a0a0a3;
-        border: solid 1px #c6c7cc;
-        flex: none;
-      `}
-    >
-      <div
-        css={`
-          display: flex;
-          padding: 15px 7px 15px 12px;
-        `}
-      >
+    <ScrollbarSize>
+      {({ scrollbarWidth }) => (
         <div
+          ref={aggregationsWrapperRef}
           css={`
-            flex-grow: 1;
-            font-size: 18px;
-            color: #2b388f;
+            height: 100%;
+            height: calc(100vh - 180px);
+            width: ${300 + scrollbarWidth}px;
+            overflow-y: auto;
+            background-color: #f4f5f8;
+            box-shadow: 0 0 4.9px 0.2px #a0a0a3;
+            border: solid 1px #c6c7cc;
+            flex: none;
           `}
         >
-          <Trans>Filters</Trans> <InfoIcon />
-        </div>
-        <LightButton
-          css={theme.uppercase}
-          onClick={() =>
-            effects.setModal({
-              title: 'All Filters',
-              classNames: {
-                modal: css`
-                  width: 80%;
-                  height: 90%;
-                  max-width: initial;
-                `,
-              },
-              component: (
-                <AdvancedFacetViewModalContent
-                  {...{
-                    ...props,
-                    translateSQONValue,
-                    closeModal: effects.unsetModal,
-                    onClear: () => {
-                      trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                        action: TRACKING_EVENTS.actions.query.clear,
-                      });
-                    },
-                    onFilterChange: value => {
-                      // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
-                      trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                        action: TRACKING_EVENTS.actions.filter + ' - Search',
-                        label: value,
-                      });
-                    },
-                    onTermSelected: ({ field, value, active }) => {
-                      if (active) {
-                        trackFileRepoInteraction({
-                          category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                          action: TRACKING_EVENTS.actions.filter + ' Selected',
-                          label: { type: 'filter', value, field },
-                        });
-                      }
-                    },
-                    onSqonSubmit: ({ sqon }) => {
-                      setSQON(sqon);
-                      trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                        action: 'View Results',
-                        label: sqon,
-                      });
-                      effects.unsetModal();
-                    },
-                  }}
-                  {...{ statsConfig }}
+          <div
+            css={`
+              display: flex;
+              padding: 15px 7px 15px 12px;
+            `}
+          >
+            <div
+              css={`
+                flex-grow: 1;
+                font-size: 18px;
+                color: #2b388f;
+              `}
+            >
+              <Trans>Filters</Trans> <InfoIcon />
+            </div>
+            <LightButton
+              css={theme.uppercase}
+              onClick={() =>
+                effects.setModal({
+                  title: 'All Filters',
+                  classNames: {
+                    modal: css`
+                      width: 80%;
+                      height: 90%;
+                      max-width: initial;
+                    `,
+                  },
+                  component: (
+                    <AdvancedFacetViewModalContent
+                      {...{
+                        ...props,
+                        translateSQONValue,
+                        closeModal: effects.unsetModal,
+                        onClear: () => {
+                          trackFileRepoInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.query.clear,
+                          });
+                        },
+                        onFilterChange: value => {
+                          // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
+                          trackFileRepoInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.filter + ' - Search',
+                            label: value,
+                          });
+                        },
+                        onTermSelected: ({ field, value, active }) => {
+                          if (active) {
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                              action: TRACKING_EVENTS.actions.filter + ' Selected',
+                              label: { type: 'filter', value, field },
+                            });
+                          }
+                        },
+                        onSqonSubmit: ({ sqon }) => {
+                          setSQON(sqon);
+                          trackFileRepoInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: 'View Results',
+                            label: sqon,
+                          });
+                          effects.unsetModal();
+                        },
+                      }}
+                      {...{ statsConfig }}
+                    />
+                  ),
+                })
+              }
+            >
+              <Trans css={theme.uppercase}>All Filters</Trans>
+            </LightButton>
+          </div>
+          <div className="aggregation-card">
+            <QuickSearch
+              {...{ ...props, setSQON, translateSQONValue }}
+              placeholder="Enter Identifiers"
+              LoadingIcon={
+                <Spinner
+                  fadeIn="none"
+                  name="circle"
+                  color="#a9adc0"
+                  style={{ width: 15, height: 15 }}
                 />
-              ),
-            })
-          }
-        >
-          <Trans css={theme.uppercase}>All Filters</Trans>
-        </LightButton>
-      </div>
-      <div className="aggregation-card">
-        <QuickSearch
-          {...{ ...props, setSQON, translateSQONValue }}
-          placeholder="Enter Identifiers"
-          LoadingIcon={
-            <Spinner
-              fadeIn="none"
-              name="circle"
-              color="#a9adc0"
-              style={{ width: 15, height: 15 }}
+              }
             />
-          }
-        />
-        <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
-      </div>
-      <Aggregations
-        {...{
-          ...props,
-          setSQON,
-          containerRef: aggregationsWrapperRef,
-        }}
-        onTermSelected={({ active, field, value }) => {
-          if (active) {
-            trackFileRepoInteraction({
-              category: TRACKING_EVENTS.categories.fileRepo.filters,
-              action: 'Filter Selected',
-              label: { type: 'filter', value, field },
-            });
-          }
-        }}
-      />
-    </div>
+            <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
+          </div>
+          <Aggregations
+            {...{
+              ...props,
+              setSQON,
+              containerRef: aggregationsWrapperRef,
+            }}
+            onTermSelected={({ active, field, value }) => {
+              if (active) {
+                trackFileRepoInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.filters,
+                  action: 'Filter Selected',
+                  label: { type: 'filter', value, field },
+                });
+              }
+            }}
+          />
+        </div>
+      )}
+    </ScrollbarSize>
   ),
 );
 
