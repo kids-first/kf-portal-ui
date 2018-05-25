@@ -83,6 +83,7 @@
   "Copy ID": "Copy ID",
   "GENERATE": "GENERATE",
   "Download Manifest": "Download Manifest",
+  "Settings": "Settings",
   "The provided Gen3 Token is invalid": {
     " Please update and try again": {
       "": "The provided Gen3 Token is invalid. Please update and try again."

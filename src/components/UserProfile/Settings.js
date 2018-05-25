@@ -2,6 +2,7 @@ import * as React from 'react';
 import { css } from 'react-emotion';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
+import { Trans } from 'react-i18next';
 
 import { Container } from './';
 import Account from './Account';
@@ -32,7 +33,7 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
           <ul css={theme.verticalNav}>
             <li>
               <a className={mode === 'account' ? 'active' : ''} onClick={() => setMode('account')}>
-                Account & Integrations
+                <Trans>Settings</Trans>
               </a>
             </li>
           </ul>
