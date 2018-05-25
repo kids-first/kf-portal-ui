@@ -1,28 +1,28 @@
 import React from 'react';
 import Spinner from 'react-spinkit';
 
-const IconWithLoading = ({ className, loading, icon }) =>
+const IconWithLoading = ({
+  className,
+  loading,
+  width = 10,
+  Icon, // component
+  spinnerProps = {},
+  ...props
+}) =>
   loading ? (
     <Spinner
       fadeIn="none"
       name="circle"
       color="#fff"
-      style={{
-        width: 15,
-        height: 15,
-        marginRight: 9,
-      }}
-    />
-  ) : (
-    <img
-      alt=""
-      src={icon}
       css={`
-        width: 10px;
-        margin-right: 9px;
+        width: ${width + 2}px;
+        height: ${width + 2}px;
         ${className};
       `}
+      {...spinnerProps}
     />
+  ) : (
+    <Icon />
   );
 
 export default IconWithLoading;

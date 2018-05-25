@@ -1,21 +1,25 @@
 import React from 'react';
+import { compose } from 'recompose';
 import { uniq } from 'lodash';
 import { Trans } from 'react-i18next';
+import { css } from 'react-emotion';
+import { withTheme } from 'emotion-theming';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 import IconWithLoading from 'icons/IconWithLoading';
-import downloadIcon from 'assets/icon-download-white.svg';
+import DownloadIcon from 'icons/DownloadIcon';
+import PillInputWithLoadingOptionsAndButton from 'uikit/PillInputWithLoadingOptionsAndButton';
+import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { withApi } from 'services/api';
 import {
   downloadBiospecimen,
   clinicalDataParticipants,
   clinicalDataFamily,
 } from 'services/downloadData';
-import PillInputWithLoadingOptionsAndButton from 'uikit/PillInputWithLoadingOptionsAndButton';
-import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
-import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-export default ({ api, projectId, theme, sqon, className = '' }) => (
+export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, className }) => (
   <ColumnsState
     projectId={projectId}
     graphqlField="participant"
@@ -97,7 +101,16 @@ export default ({ api, projectId, theme, sqon, className = '' }) => (
         render={({ loading }) => {
           return (
             <React.Fragment>
-              <IconWithLoading {...{ loading, icon: downloadIcon }} />
+              <IconWithLoading
+                {...{ loading }}
+                Icon={() => (
+                  <DownloadIcon
+                    className={css`
+                      margin-right: 9px;
+                    `}
+                  />
+                )}
+              />
               <Trans css={theme.uppercase}>Download</Trans>
             </React.Fragment>
           );
@@ -105,4 +118,4 @@ export default ({ api, projectId, theme, sqon, className = '' }) => (
       />
     )}
   />
-);
+));
