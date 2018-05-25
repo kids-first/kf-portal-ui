@@ -51,6 +51,11 @@ const FormErrorMessage = styled.div`
   height: 1.6em;
 `;
 
+export const DemoImage = withTheme(styled.img`
+  height: 210px;
+  border: solid 2px ${({ theme }) => theme.borderGrey};
+`);
+
 const styles = css`
   div.stepText {
     line-height: 1.6em;
@@ -151,14 +156,7 @@ const CavaticaConnectModal = withTheme(
                 </ExternalLink>. From the Dashboard, click on the "Auth Token" tab.
               </span>
             </div>
-            <img
-              css={`
-                height: 210px;
-                border: solid 2px ${theme.borderGrey};
-              `}
-              src={step2Screenshot}
-              alt="Screenshot of Cavatica's Developer Den"
-            />
+            <DemoImage src={step2Screenshot} alt="Screenshot of Cavatica's Developer Den" />
           </div>
           <div className="stepRow">
             <div>

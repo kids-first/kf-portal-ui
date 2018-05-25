@@ -4,6 +4,7 @@ import { Trans } from 'react-i18next';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 
+import { DemoImage } from 'components/cavatica/CavaticaConnectModal';
 import { ModalFooter, ModalWarning } from 'components/Modal';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { GEN3 } from 'common/constants';
@@ -116,13 +117,7 @@ const Gen3Connection = ({
               flex: 1;
             `}
           >
-            <img
-              css={css`
-                width: 400px;
-              `}
-              src={step2Screenshot}
-              alt="Screenshot of Gen3's Developer Den"
-            />
+            <DemoImage src={step2Screenshot} alt="Screenshot of Gen3's Developer Den" />
           </div>
         </div>
         <div>
