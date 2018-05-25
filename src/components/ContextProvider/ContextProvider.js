@@ -3,6 +3,8 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { ThemeProvider } from 'emotion-theming';
 import { Router } from 'react-router';
+
+import ScrollbarSizeProvider from './ScrollbarSizeProvider';
 import theme from 'theme/defaultTheme';
 import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
 import { initializeApi, ApiContext } from 'services/api';
@@ -17,10 +19,11 @@ export default compose(provideLoggedInUser, provideModalState, provideToast, inj
         },
       })}
     >
-      <Router history={history}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </Router>
+      <ThemeProvider theme={theme}>
+        <ScrollbarSizeProvider>
+          <Router history={history}>{children}</Router>
+        </ScrollbarSizeProvider>
+      </ThemeProvider>
     </ApiContext.Provider>
   ),
 );
-
