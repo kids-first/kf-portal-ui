@@ -1,21 +1,15 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
+import { css } from 'emotion';
+import styled from 'react-emotion';
 import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 
-import {
-  Arranger,
-  Aggregations,
-  CurrentSQON,
-  Table,
-  DetectNewVersion,
-  QuickSearch,
-} from '@arranger/components/dist/Arranger';
-import { toggleSQON, replaceSQON } from '@arranger/components/dist/SQONView/utils';
+import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
+import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
 
 import SQONURL from 'components/SQONURL';
@@ -23,16 +17,11 @@ import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import FileRepoSidebar from 'components/FileRepoSidebar';
-import { config as statsConfig, FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
-import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
-import UploadIdsModal from 'components/UploadIdsModal';
+import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
-import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
+import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
 
 import DownloadIcon from 'icons/DownloadIcon';
-import InfoIcon from 'icons/InfoIcon';
-import { LightButton } from 'uikit/Button';
-import Select from 'uikit/Select';
 
 import translateSQON from 'common/translateSQONValue';
 import { arrangerProjectId } from 'common/injectGlobals';
@@ -46,234 +35,6 @@ const trackFileRepoInteraction = ({ label, ...eventData }) =>
     ...eventData,
     ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
   });
-
-const arrangerStyles = css`
-  display: flex;
-  height: 100%;
-  box-sizing: border-box;
-
-  .ReactTable .rt-thead .rt-th.-sort-desc,
-  .ReactTable .rt-thead .rt-td.-sort-desc {
-    box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);
-  }
-
-  .ReactTable .rt-thead .rt-th.-sort-asc,
-  .ReactTable .rt-thead .rt-td.-sort-asc {
-    box-shadow: inset 0 3px 0 0 rgba(64, 76, 154, 0.7);
-  }
-
-  .tableToolbar {
-    border-left: solid 1px #e0e1e6;
-    border-right: solid 1px #e0e1e6;
-  }
-
-  div.sqon-view {
-    flex-grow: 1;
-  }
-`;
-
-const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
-  <div
-    className={css`
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 10px;
-    `}
-  >
-    <LightButton
-      className={css`
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-      `}
-      onClick={() =>
-        effects.setModal({
-          title: 'Upload a List of Identifiers',
-          component: <UploadIdsModal {...props} {...{ setSQON }} />,
-        })
-      }
-    >
-      <Trans css={theme.uppercase}>Upload Ids</Trans>
-    </LightButton>
-    <Select
-      className={css`
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-        border-left: none;
-        padding-left: 0;
-      `}
-      align="right"
-      items={state.loggedInUser.sets.map(x => x.setId)}
-      itemContainerClassName={css`
-        padding: 0px;
-        box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.43);
-      `}
-      itemClassName={css`
-        &:hover {
-          background-color: ${theme.optionSelected};
-        }
-      `}
-      onChange={(setId, { clearSelection }) => {
-        if (setId) {
-          setSQON(
-            toggleSQON(
-              {
-                op: 'and',
-                content: [
-                  {
-                    op: 'in',
-                    content: {
-                      field: 'kf_id',
-                      value: [`set_id:${setId}`],
-                    },
-                  },
-                ],
-              },
-              props.sqon,
-            ),
-          );
-        }
-        clearSelection();
-      }}
-    />
-  </div>
-);
-
-const AggregationsWrapper = compose(injectState, withTheme)(
-  ({
-    state,
-    effects,
-    theme,
-    setSQON,
-    translateSQONValue,
-    aggregationsWrapperRef = React.createRef(),
-    ...props
-  }) => (
-    <ScrollbarSize>
-      {({ scrollbarWidth }) => (
-        <div
-          ref={aggregationsWrapperRef}
-          css={`
-            height: 100%;
-            width: ${300 + scrollbarWidth}px;
-            overflow-y: auto;
-            background-color: #f4f5f8;
-            box-shadow: 0 0 4.9px 0.2px #a0a0a3;
-            border-color: #c6c7cc;
-            border-style: solid;
-            border-width: 0 1px 0 0;
-            flex: none;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              padding: 15px 7px 15px 12px;
-            `}
-          >
-            <div
-              css={`
-                flex-grow: 1;
-                font-size: 18px;
-                color: #2b388f;
-              `}
-            >
-              <Trans>Filters</Trans> <InfoIcon />
-            </div>
-            <LightButton
-              css={theme.uppercase}
-              onClick={() =>
-                effects.setModal({
-                  title: 'All Filters',
-                  classNames: {
-                    modal: css`
-                      width: 80%;
-                      height: 90%;
-                      max-width: initial;
-                    `,
-                  },
-                  component: (
-                    <AdvancedFacetViewModalContent
-                      {...{
-                        ...props,
-                        translateSQONValue,
-                        closeModal: effects.unsetModal,
-                        onClear: () => {
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.query.clear,
-                          });
-                        },
-                        onFilterChange: value => {
-                          // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.filter + ' - Search',
-                            label: value,
-                          });
-                        },
-                        onTermSelected: ({ field, value, active }) => {
-                          if (active) {
-                            trackFileRepoInteraction({
-                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                              action: TRACKING_EVENTS.actions.filter + ' Selected',
-                              label: { type: 'filter', value, field },
-                            });
-                          }
-                        },
-                        onSqonSubmit: ({ sqon }) => {
-                          effects.unsetModal({ callback: () => setSQON(sqon) });
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: 'View Results',
-                            label: sqon,
-                          });
-                        },
-                      }}
-                      {...{ statsConfig }}
-                    />
-                  ),
-                })
-              }
-            >
-              <Trans css={theme.uppercase}>All Filters</Trans>
-            </LightButton>
-          </div>
-          <div className="aggregation-card">
-            <QuickSearch
-              {...{ ...props, setSQON, translateSQONValue }}
-              placeholder="Enter Identifiers"
-              LoadingIcon={
-                <Spinner
-                  fadeIn="none"
-                  name="circle"
-                  color="#a9adc0"
-                  style={{ width: 15, height: 15 }}
-                />
-              }
-            />
-            <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
-          </div>
-          <Aggregations
-            {...{
-              ...props,
-              setSQON,
-              containerRef: aggregationsWrapperRef,
-            }}
-            onTermSelected={({ active, field, value }) => {
-              if (active) {
-                trackFileRepoInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.filters,
-                  action: 'Filter Selected',
-                  label: { type: 'filter', value, field },
-                });
-              }
-            }}
-          />
-        </div>
-      )}
-    </ScrollbarSize>
-  ),
-);
 
 const customTableTypes = {
   access: ({ value }) =>
@@ -326,6 +87,57 @@ const customTableColumns = ({ theme }) => [
   },
 ];
 
+const ArrangerContainer = styled('div')`
+  display: flex;
+  height: 100%;
+  box-sizing: border-box;
+
+  .ReactTable .rt-thead .rt-th.-sort-desc,
+  .ReactTable .rt-thead .rt-td.-sort-desc {
+    box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);
+  }
+
+  .ReactTable .rt-thead .rt-th.-sort-asc,
+  .ReactTable .rt-thead .rt-td.-sort-asc {
+    box-shadow: inset 0 3px 0 0 rgba(64, 76, 154, 0.7);
+  }
+
+  .tableToolbar {
+    border-left: solid 1px #e0e1e6;
+    border-right: solid 1px #e0e1e6;
+  }
+
+  div.sqon-view {
+    flex-grow: 1;
+  }
+`;
+
+const TableContainer = styled('div')`
+  ${({ theme }) => theme.column};
+  flex-grow: 1;
+  width: 580px;
+  padding: 30px;
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+`;
+
+const ToolbarContainer = styled('div')`
+  flex: none;
+  display: flex;
+`;
+
+const TableWrapper = styled('div')`
+  ${({ theme }) => theme.column};
+  flex-basis: 100%;
+  min-height: 300px;
+  & .ReactTable {
+    flex-grow: 1;
+    height: 1px;
+  }
+`;
+
 const FileRepo = compose(injectState, withTheme, withApi)(
   ({
     state,
@@ -342,14 +154,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
           graphqlField={props.graphqlField}
           render={({ connecting, connectionError }) =>
             connecting || connectionError ? (
-              <div
-                css={`
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                `}
-              >
+              <div className={theme.center}>
                 {connectionError ? (
                   `Unable to connect to the file repo, please try again later`
                 ) : (
@@ -377,27 +182,12 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                   return (
                     <React.Fragment>
                       <DetectNewVersion {...props} />
-                      <div css={arrangerStyles}>
-                        <AggregationsWrapper {...{ ...props, ...url, translateSQONValue }} />
-                        <div
-                          css={`
-                            flex-grow: 1;
-                            width: 580;
-                            padding: 30px;
-                            display: flex;
-                            flex-direction: column;
-                            position: relative;
-                            height: 100%;
-                            box-sizing: border-box;
-                            overflow-y: auto;
-                          `}
-                        >
-                          <div
-                            css={`
-                              flex: none;
-                              display: flex;
-                            `}
-                          >
+                      <ArrangerContainer>
+                        <AggregationSidebar
+                          {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
+                        />
+                        <TableContainer>
+                          <ToolbarContainer>
                             <CurrentSQON
                               {...props}
                               {...url}
@@ -415,12 +205,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   {...props}
                                   {...url}
                                   render={({ data: stats, loading: disabled }) => (
-                                    <div
-                                      css={`
-                                        display: flex;
-                                        flex-direction: column;
-                                      `}
-                                    >
+                                    <div className={theme.column}>
                                       <ShareQuery
                                         api={props.api}
                                         {...url}
@@ -441,7 +226,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   )}
                                 />
                               )}
-                          </div>
+                          </ToolbarContainer>
                           <FileRepoStats
                             {...props}
                             sqon={selectionSQON}
@@ -449,18 +234,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               flex: none;
                             `}
                           />
-                          <div
-                            css={`
-                              display: flex;
-                              flex-direction: column;
-                              min-height: 300px;
-                              flex-basis: 100%;
-                              & .ReactTable {
-                                flex-grow: 1;
-                                height: 1px;
-                              }
-                            `}
-                          >
+                          <TableWrapper>
                             <Table
                               {...props}
                               {...url}
@@ -496,10 +270,10 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                 </React.Fragment>
                               }
                             />
-                          </div>
-                        </div>
+                          </TableWrapper>
+                        </TableContainer>
                         <FileRepoSidebar {...props} sqon={selectionSQON} />
-                      </div>
+                      </ArrangerContainer>
                     </React.Fragment>
                   );
                 }}
