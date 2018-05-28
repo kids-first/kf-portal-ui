@@ -9,67 +9,17 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
+import IntegrationStepsModalContent, {
+  NumberBullet,
+  TokenTitle,
+  TokenInput,
+  FormErrorMessage,
+  DemoImage,
+} from 'uikit/IntegrationStepsModal';
 import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGlobals';
 
-import { css } from 'emotion';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
-
-const NumberBullet = styled.span`
-  color: white;
-  background: ${props => props.theme.active};
-  width: 14px;
-  border-radius: 50%;
-  margin: 20px;
-  padding: 10px;
-  height: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const TokenTitle = styled.span`
-  color: ${props => props.theme.secondary};
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const TokenInput = styled.input`
-  padding: 6px;
-  font-size: 16px;
-  border-radius: 10px;
-  width: 35em;
-  max-width: 90%;
-`;
-
-const FormErrorMessage = styled.div`
-  color: #e45562;
-  padding: 10px;
-  padding-left: 20px;
-  height: 1.6em;
-`;
-
-export const DemoImage = withTheme(styled.img`
-  height: 210px;
-  border: solid 2px ${({ theme }) => theme.borderGrey};
-`);
-
-const styles = css`
-  div.stepText {
-    line-height: 1.6em;
-  }
-
-  .stepRow {
-    display: flex;
-    flex-direction: row;
-  }
-
-  .stepText {
-    padding-top: 20px;
-  }
-`;
 
 const enhance = compose(
   injectState,
@@ -123,7 +73,7 @@ const CavaticaConnectModal = withTheme(
     ...props
   }) => {
     return (
-      <div css={styles}>
+      <IntegrationStepsModalContent>
         <div>
           {props.withWarning && (
             <ModalWarning>
@@ -201,7 +151,7 @@ const CavaticaConnectModal = withTheme(
             submitDisabled: invalidToken || !cavaticaKey.length,
           }}
         />
-      </div>
+      </IntegrationStepsModalContent>
     );
   },
 );
