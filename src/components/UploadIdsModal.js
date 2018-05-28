@@ -19,9 +19,8 @@ const UploadIdsModal = ({
   api,
   theme,
   state: { loggedInUser },
-  effects: { addUserSet },
+  effects: { addUserSet, unsetModal },
   setSQON,
-  closeModal,
   ...props
 }) => (
   <MatchBox
@@ -61,8 +60,8 @@ const UploadIdsModal = ({
               api: graphql(api),
               dataPath: 'data.saveSet',
             });
-            addUserSet({ type, setId, size, api });
-            closeModal();
+            await addUserSet({ type, setId, size, api });
+            unsetModal();
           },
           submitText: 'Upload',
           submitDisabled: !hasResults,

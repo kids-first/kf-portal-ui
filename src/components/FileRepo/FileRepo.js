@@ -88,7 +88,7 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
       onClick={() =>
         effects.setModal({
           title: 'Upload a List of Identifiers',
-          component: <UploadIdsModal {...{ ...props, setSQON }} closeModal={effects.unsetModal} />,
+          component: <UploadIdsModal {...props} {...{ setSQON }} />,
         })
       }
     >
@@ -220,13 +220,13 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                           }
                         },
                         onSqonSubmit: ({ sqon }) => {
-                          setSQON(sqon);
+                          effects.unsetModal();
+                          setTimeout(() => setSQON(sqon), 0);
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
                             label: sqon,
                           });
-                          effects.unsetModal();
                         },
                       }}
                       {...{ statsConfig }}
