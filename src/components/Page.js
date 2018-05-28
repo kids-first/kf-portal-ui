@@ -30,7 +30,17 @@ const Page = ({
       `}
     >
       <Head />
-      <Component {...props} />
+      <div
+        css={`
+          height: 100%;
+          overflow: scroll;
+          & > * {
+            height: 100%;
+          }
+        `}
+      >
+        <Component {...props} />
+      </div>
       <Foot />
     </div>
   </div>

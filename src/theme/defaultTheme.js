@@ -29,6 +29,8 @@ const colors = {
   greyScale2: 'rgb(61,61,61)',
   greyScale1: 'rgb(52, 52, 52)', //#343434
   greyScale0: 'rgb(36,36,36)',
+
+  shadow: '#a0a0a3',
 };
 
 const components = {
@@ -340,6 +342,13 @@ const components = {
   row: css`
     display: flex;
     flex-direction: row;
+  `,
+  center: css`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   `,
   navLink: css`
     display: block;

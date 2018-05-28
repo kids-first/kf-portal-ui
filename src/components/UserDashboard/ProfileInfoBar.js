@@ -13,7 +13,6 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
     css={`
       ${theme.column};
       width: 411px;
-      height: 100%;
       ${userProfileBackground(loggedInUser, { showBanner: false, gradientDirection: 'bottom' })};
       box-shadow: 0 0 4.8px 0.2px #a0a0a3;
       padding-top: 40px;
