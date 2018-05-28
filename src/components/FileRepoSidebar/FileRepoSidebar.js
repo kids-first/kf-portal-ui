@@ -17,8 +17,6 @@ const styles = ({ containerWidth, contentSidePadding, expanded, theme }) => ({
   container: css`
     overflow-y: auto;
     background-color: #f4f5f8;
-    box-shadow: 0 0 4.9px 0.2px #a0a0a3;
-    border: solid 1px #c6c7cc;
     flex-grow: 0;
     flex-shrink: 1;
     width: ${containerWidth + contentSidePadding * 2}px;
@@ -55,6 +53,12 @@ const SlidablePanel = ({ expanded, containerWidth, contentSidePadding, ...rest }
         position: relative;
         transition: all 0.25s;
         width: ${expanded ? `${containerWidth + contentSidePadding * 2}px` : '40px'};
+        border-color: #c6c7cc;
+        border-style: solid;
+        border-width: 0 0 0 1px;
+        box-sizing: border-box;
+        box-shadow: 0 0 4.9px 0.2px #a0a0a3;
+        overflow: hidden;
       `}
       {...rest}
     />

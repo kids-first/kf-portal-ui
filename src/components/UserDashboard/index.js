@@ -9,7 +9,7 @@ import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import { StyledH2 } from './styles';
-import {Helmet} from "react-helmet";
+import { Helmet } from 'react-helmet';
 
 export default compose(
   injectState,
@@ -26,11 +26,10 @@ export default compose(
     <div
       css={`
         ${theme.row};
-        height: calc(100% - 170px);
       `}
     >
       <Helmet>
-          <title>Portal - User Dashboard</title>
+        <title>Portal - User Dashboard</title>
       </Helmet>
 
       <ProfileInfoBar
@@ -50,6 +49,7 @@ export default compose(
         <div
           css={`
             display: flex;
+            overflow: hidden;
           `}
         >
           <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />

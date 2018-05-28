@@ -51,7 +51,7 @@ const MySavedQueries = compose(
         css={`
           display: flex;
           flex-direction: column;
-          margin-top: 15px;
+          margin: 15px 0;
           flex: 3;
           border: 1px solid #e0e1e6;
           border-top: 0;
