@@ -220,8 +220,7 @@ const AggregationsWrapper = compose(injectState, withTheme)(
                           }
                         },
                         onSqonSubmit: ({ sqon }) => {
-                          effects.unsetModal();
-                          setTimeout(() => setSQON(sqon), 0);
+                          effects.unsetModal({ callback: () => setSQON(sqon) });
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
