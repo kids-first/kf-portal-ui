@@ -10,7 +10,7 @@ import IntegrationStepsModalContent, {
   TokenInput,
   FormErrorMessage,
   DemoImage,
-} from 'uikit/IntegrationStepsModal';
+} from 'components/IntegrationStepsModal';
 import { ModalFooter, ModalWarning } from 'components/Modal';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { GEN3 } from 'common/constants';

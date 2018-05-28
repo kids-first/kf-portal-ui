@@ -15,7 +15,7 @@ import IntegrationStepsModalContent, {
   TokenInput,
   FormErrorMessage,
   DemoImage,
-} from 'uikit/IntegrationStepsModal';
+} from 'components/IntegrationStepsModal';
 import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGlobals';
 
 import { injectState } from 'freactal';
