@@ -32,12 +32,13 @@ export default provideState({
       addUsersnapInfo({ modalState });
       return { ...state, modalState };
     },
-    unsetModal: (effects, { fromHistory = false } = {}) => state => {
+    unsetModal: (effects, { fromHistory = false, callback = () => {} } = {}) => state => {
       if (internalState.unsubscribe) {
         internalState.unsubscribe();
         internalState.unsubscribe = null;
       }
       if (!fromHistory) history.goBack();
+      setTimeout(callback, 0);
 
       trackUserInteraction({
         category: TRACKING_EVENTS.categories.modals,
