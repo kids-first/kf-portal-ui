@@ -4,6 +4,13 @@ import { Trans } from 'react-i18next';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 
+import IntegrationStepsModalContent, {
+  NumberBullet,
+  TokenTitle,
+  TokenInput,
+  FormErrorMessage,
+  DemoImage,
+} from 'components/IntegrationStepsModal';
 import { ModalFooter, ModalWarning } from 'components/Modal';
 import step2Screenshot from 'assets/gen3TokenScreenshot.png';
 import { GEN3 } from 'common/constants';
@@ -86,24 +93,19 @@ const Gen3Connection = ({
   ...props
 }) => {
   return (
-    <div css={styles}>
+    <IntegrationStepsModalContent>
       <div>
-        {invalidToken && (
+        {props.withWarning && (
           <ModalWarning>
-            <Trans>The provided Gen3 Token is invalid. Please update and try again.</Trans>
+            You have not connected to your Gen3 account. Please follow the instructions below to
+            connect and start copying files.
           </ModalWarning>
         )}
-        <div
-          css={css`
-            display: flex;
-          `}
-        >
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
-            <span className="numberBullet">1</span>
+        <div className="stepRow">
+          <div>
+            <NumberBullet>1</NumberBullet>
+          </div>
+          <div className="stepText">
             <span>
               You will need to retrieve your authentication token from the{' '}
               <ExternalLink href={gen3WebRoot} hasExternalIcon={false}>
@@ -111,29 +113,21 @@ const Gen3Connection = ({
               </ExternalLink>. After Login, click on the "Profile" tab.
             </span>
           </div>
-          <div
-            css={css`
-              flex: 1;
-            `}
-          >
-            <img
-              css={css`
-                width: 400px;
-              `}
-              src={step2Screenshot}
-              alt="Screenshot of Gen3's Developer Den"
-            />
+          <DemoImage src={step2Screenshot} alt="Screenshot of Gen3's Developer Den" />
+        </div>
+        <div className="stepRow">
+          <div>
+            <NumberBullet>2</NumberBullet>
+          </div>
+          <div className="stepText">
+            <span>
+              Click on "Create API Key", copy and paste it into the field below and click Connect.
+            </span>
           </div>
         </div>
-        <div>
-          <span className="numberBullet">2</span>
-          <span>
-            Click on "Create API Key", copy and paste it into the field below and click Connect.
-          </span>
-        </div>
-        <div>
-          <span className="tokenTitle">Gen3 Authentication Token:</span>
-          <textarea
+        <div css="display:flex; flex-direction:column; margin-left:74px;">
+          <TokenTitle>Gen3 Authentication Token:</TokenTitle>
+          <TokenInput
             className="tokenInput"
             id="gen3Key"
             value={gen3Key}
@@ -141,6 +135,11 @@ const Gen3Connection = ({
             placeholder="Gen3 Key"
             onChange={e => setGen3Key(e.target.value)}
           />
+          <FormErrorMessage>
+            {invalidToken
+              ? 'The provided Gen3 Token is invalid. Please update and try again.'
+              : ' '}
+          </FormErrorMessage>
         </div>
       </div>
       <ModalFooter
@@ -156,7 +155,7 @@ const Gen3Connection = ({
           submitText: 'Connect',
         }}
       />
-    </div>
+    </IntegrationStepsModalContent>
   );
 };
 

@@ -60,7 +60,7 @@ const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   </Button>
 );
 
-const styles = css`
+const styles = theme => css`
   table {
     border-collapse: collapse;
   }
@@ -103,8 +103,7 @@ const styles = css`
     text-align: right;
   }
   .connectedButton {
-    color: black;
-    background: none;
+    ${theme.hollowButton};
   }
 `;
 
@@ -128,13 +127,13 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
       </div>
       <div css="display: flex;">
         <ConnectedButton action="view" type="Gen3" onClick={onView}>
-          <ViewIcon />View
+          <ViewIcon className={`icon`} />View
         </ConnectedButton>
         <ConnectedButton action="edit" type="Gen3" onClick={onEdit}>
-          <PencilIcon />Edit
+          <PencilIcon className={`icon`} />Edit
         </ConnectedButton>
         <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
-          <XIcon />Remove
+          <XIcon className={`icon`} />Remove
         </ConnectedButton>
       </div>
     </div>
@@ -174,7 +173,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
 
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
   return (
-    <div css={styles}>
+    <div css={styles(theme)}>
       <table
         css={`
           td,
