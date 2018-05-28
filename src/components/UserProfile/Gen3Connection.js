@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
-import { Trans } from 'react-i18next';
-import { css } from 'emotion';
 import { injectState } from 'freactal';
 
 import IntegrationStepsModalContent, {
@@ -19,34 +17,6 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { gen3WebRoot } from 'common/injectGlobals';
 import { getUser as getGen3User } from 'services/gen3';
 import { deleteSecret, setSecret } from 'services/secrets';
-
-const styles = css`
-  span.numberBullet {
-    color: white;
-    background: #00afed;
-    width: 14px;
-    border-radius: 50%;
-    margin: 20px;
-    padding: 10px;
-    height: 14px;
-    display: inline-block;
-    text-align: center;
-  }
-
-  .tokenTitle {
-    padding: 20px;
-    color: #2b388f;
-    font-size: 18px;
-    font-weight: bold;
-    vertical-align: middle;
-  }
-
-  .tokenInput {
-    width: 400px;
-    height: 200px;
-    vertical-align: middle;
-  }
-`;
 
 const enhance = compose(
   injectState,
