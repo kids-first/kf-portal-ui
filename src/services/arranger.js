@@ -14,14 +14,16 @@ const buildFileQuery = ({ fields, first = null }) => {
   )}}}}}}`;
 };
 
+const extractHits = data => data.data.file.hits;
+
 const getFileTotals = async ({ sqon, api }) => {
   const body = {
     query: buildFileQuery({ fields: ['id'] }),
     variables: { sqon },
   };
   try {
-    const response = await graphql(api)(body);
-    return response.data.file.hits.total;
+    const { data } = await graphql(api)(body);
+    return extractHits(data).total;
   } catch (error) {
     console.warn(error);
   }
@@ -37,8 +39,8 @@ export const getFilesById = async ({ ids, fields, api }) => {
 
   let edges;
   try {
-    const response = await graphql(api)(body);
-    edges = response.data.file.hits.edges;
+    const { data } = await graphql(api)(body);
+    edges = extractHits(data).edges;
   } catch (error) {
     console.warn(error);
   }
@@ -53,8 +55,8 @@ export const getFilesByQuery = async ({ sqon, fields, api }) => {
 
   let edges;
   try {
-    const response = await graphql(api)(body);
-    edges = response.data.file.hits.edges;
+    const { data } = await graphql(api)(body);
+    edges = extractHits(data).edges;
   } catch (error) {
     console.warn(error);
   }
