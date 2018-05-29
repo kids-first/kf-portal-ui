@@ -1,41 +1,31 @@
 import React from 'react';
 import { debounce, get, toLower } from 'lodash';
 import { compose, withProps, withPropsOnChange, withState } from 'recompose';
-import { css } from 'react-emotion';
-import { withTheme } from 'emotion-theming';
+import styled from 'react-emotion';
 import Downshift from 'downshift';
 import { Trans } from 'react-i18next';
+import TextHighlight from '@arranger/components/dist/TextHighlight';
 
 import { withApi } from 'services/api';
 import { getTags } from 'services/profiles';
 
-const dropdownLabelStyle = theme => css`
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  line-height: 0.8rem;
-  color: ${theme.greyScale9};
+const InterestsAutocompleteContainer = styled('div')`
+  width: 100%;
+  position: relative;
 `;
 
-const dropdownItemStyle = theme => css`
-  padding: 7px;
-  display: flex;
-  align-items: center;
-  font-size: 0.8rem;
-  cursor: pointer;
-`;
-
-const autocompleteInputStyle = theme => css`
+const AutocompleteInput = styled('input')`
   width: 100%;
   padding: 7px;
   border-radius: 7px;
-  border: 1px solid ${theme.greyScale8};
+  border: 1px solid ${({ theme }) => theme.greyScale8};
   box-sizing: border-box;
 `;
 
-const dropdownMenuStyle = theme => css`
+const DropdownMenu = styled('div')`
   border-radius: 7px;
-  border: 1px solid ${theme.greyScale8};
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px;
+  border: 1px solid ${({ theme }) => theme.greyScale8};
+  box-shadow: ${({ theme }) => theme.shadow} 0px 1px 8px;
   background: #fff;
   position: absolute;
   left: 0;
@@ -43,34 +33,31 @@ const dropdownMenuStyle = theme => css`
   overflow: hidden;
 `;
 
-const DropdownMenu = compose(withTheme)(({ theme, children }) => (
-  <div className={dropdownMenuStyle(theme)}>{children}</div>
-));
+const DropdownLabel = styled('span')`
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  line-height: 0.8rem;
+  color: ${({ theme }) => theme.greyScale9};
+`;
 
-const DropdownLabel = compose(withTheme)(({ theme, children }) => (
-  <span className={dropdownLabelStyle(theme)}>{children}</span>
-));
+const DropdownItem = styled('div')`
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  ${({ withBorder, theme }) => (withBorder ? `border-top: 1px solid ${theme.greyScale8}` : ``)};
+  &:hover {
+    background: ${({ withHover }) => (withHover ? `lightgray` : `white`)};
+  }
+`;
 
-const DropdownItem = compose(withTheme)(({ withBorder, withHover, theme, children, ...props }) => (
-  <div
-    className={`
-      ${dropdownItemStyle(theme)}
-      ${css`
-        ${withBorder ? `border-top: 1px solid ${theme.greyScale8}` : ``};
-        &:hover {
-          background: ${withHover ? `lightgray` : `white`};
-        }
-      `}
-    `}
-    {...props}
-  >
-    {children}
-  </div>
-));
+const NewItem = styled('span')`
+  margin-right: 5px;
+`;
 
 const InterestsAutocomplete = compose(
   withApi,
-  withTheme,
   withState('inputValue', 'setInputValue', ''),
   withState('suggestions', 'setSuggestions', []),
   withPropsOnChange(['api'], ({ api, setSuggestions }) => ({
@@ -94,7 +81,6 @@ const InterestsAutocomplete = compose(
   ({
     autoFocus,
     interests,
-    theme,
     inputValue,
     suggestions,
     getSuggestions,
@@ -103,6 +89,7 @@ const InterestsAutocomplete = compose(
   }) => (
     <Downshift {...{ onInputValueChange, onChange, inputValue, selectedItem: '' }}>
       {({
+        getRootProps,
         getInputProps,
         getItemProps,
         isOpen,
@@ -116,14 +103,8 @@ const InterestsAutocomplete = compose(
         showSuggestions = (suggestions || []).length,
         showNewItem = inputValue && !(suggestions || []).includes(inputValue),
       }) => (
-        <div
-          className={css`
-            width: 100%;
-            position: relative;
-          `}
-        >
-          <input
-            className={autocompleteInputStyle(theme)}
+        <InterestsAutocompleteContainer {...getRootProps({ refKey: 'innerRef' })}>
+          <AutocompleteInput
             {...getInputProps({
               placeholder: `🔍 Search for interests`,
               onClick: initMenu,
@@ -141,7 +122,7 @@ const InterestsAutocomplete = compose(
                   </DropdownItem>
                   {suggestions.map(item => (
                     <DropdownItem withHover key={item} {...getItemProps({ item })}>
-                      {item}
+                      <TextHighlight highlightText={inputValue} content={item} />
                     </DropdownItem>
                   ))}
                 </div>
@@ -152,13 +133,7 @@ const InterestsAutocomplete = compose(
                   withBorder={suggestions.length}
                   {...getItemProps({ item: inputValue })}
                 >
-                  <span
-                    className={css`
-                      margin-right: 5px;
-                    `}
-                  >
-                    {inputValue}
-                  </span>
+                  <NewItem>{inputValue}</NewItem>
                   <DropdownLabel>
                     <Trans>(New Interest)</Trans>
                   </DropdownLabel>
@@ -166,7 +141,7 @@ const InterestsAutocomplete = compose(
               ) : null}
             </DropdownMenu>
           ) : null}
-        </div>
+        </InterestsAutocompleteContainer>
       )}
     </Downshift>
   ),
