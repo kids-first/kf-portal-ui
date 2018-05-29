@@ -15,7 +15,7 @@ import { StyledH2 } from './styles';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
-  min-height: 900px;
+  min-height: 600px;
 `;
 
 export default compose(
