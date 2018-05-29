@@ -33,7 +33,7 @@ const Page = ({
       <div
         css={`
           height: 100%;
-          overflow: scroll;
+          overflow-y: auto;
           & > * {
             height: 100%;
           }
