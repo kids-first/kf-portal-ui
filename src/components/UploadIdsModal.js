@@ -24,7 +24,7 @@ const UploadIdsModal = ({
   ...props
 }) => (
   <MatchBox
-    {...{ ...props, setSQON }}
+    {...{ ...props }}
     instructionText={
       'Type or copy-and-paste a list of comma delimited identifiers, or choose a file of identifiers to upload'
     }
@@ -55,13 +55,13 @@ const UploadIdsModal = ({
       <ModalFooter
         {...{
           handleSubmit: async () => {
-            const { type, setId, size } = await saveSet({
+            const { type, setId, size, nextSQON } = await saveSet({
               userId: loggedInUser.egoId,
               api: graphql(api),
               dataPath: 'data.saveSet',
             });
             await addUserSet({ type, setId, size, api });
-            unsetModal();
+            unsetModal({ callback: () => setSQON(nextSQON) });
           },
           submitText: 'Upload',
           submitDisabled: !hasResults,
