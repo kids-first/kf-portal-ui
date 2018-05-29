@@ -41,6 +41,8 @@ window._usersnapconfig = {
   labelPlaceholder: 'UserFeedback',
   labelAllowCreate: false,
   labelMultiSelect: false,
+  valign: 'bottom',
+  halign: 'left',
   loadHandler: () => {
     window.UserSnap.on('beforeSend', obj => (obj.addInfo = usersnapInfo));
     window.UserSnap.on('beforeOpen', () => {

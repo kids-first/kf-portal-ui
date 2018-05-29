@@ -335,6 +335,11 @@ const components = {
     flex-direction: row;
   `,
   center: css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+  fillCenter: css`
     width: 100%;
     height: 100%;
     display: flex;

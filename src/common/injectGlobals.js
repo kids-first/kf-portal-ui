@@ -54,3 +54,8 @@ export const allRedirectUris = (process.env.REACT_APP_LOGIN_REDIRECT_NOT_REQUIRE
   .filter(Boolean);
 
 export const requireLogin = process.env.REACT_APP_REQUIRE_LOGIN === 'true';
+
+export const kfWebRoot: string = process.env.REACT_APP_KF_WEB_ROOT;
+export const kfFacebook: string = process.env.REACT_APP_KF_FACEBOOK;
+export const kfTwitter: string = process.env.REACT_APP_KF_TWITTER;
+export const kfGithub: string = process.env.REACT_APP_KF_GITHUB;
