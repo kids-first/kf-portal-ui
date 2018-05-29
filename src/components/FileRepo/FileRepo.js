@@ -154,7 +154,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
           graphqlField={props.graphqlField}
           render={({ connecting, connectionError }) =>
             connecting || connectionError ? (
-              <div className={theme.center}>
+              <div className={theme.fillCenter}>
                 {connectionError ? (
                   `Unable to connect to the file repo, please try again later`
                 ) : (
