@@ -278,7 +278,7 @@ export default compose(
                   }}
                 />
               ) : (
-                [
+                <React.Fragment>
                   <button
                     onClick={() => {
                       setWebsite(profile.website || '');
@@ -289,7 +289,7 @@ export default compose(
                     css={theme.hollowButton}
                   >
                     Cancel
-                  </button>,
+                  </button>
                   <SaveButton
                     onClick={async () => {
                       await submit({
@@ -302,8 +302,8 @@ export default compose(
                         type: TRACKING_EVENTS.actions.save,
                       });
                     }}
-                  />,
-                ]
+                  />
+                </React.Fragment>
               ))}
           </H2>
           <div>
