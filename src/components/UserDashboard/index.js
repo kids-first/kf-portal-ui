@@ -3,13 +3,20 @@ import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
+import { Helmet } from 'react-helmet';
+import styled from 'react-emotion';
+
 import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
 import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import { StyledH2 } from './styles';
-import { Helmet } from 'react-helmet';
+
+const UserDashboard = styled('div')`
+  ${({ theme }) => theme.row};
+  min-height: 900px;
+`;
 
 export default compose(
   injectState,
@@ -23,11 +30,7 @@ export default compose(
   );
 
   return (
-    <div
-      css={`
-        ${theme.row};
-      `}
-    >
+    <UserDashboard>
       <Helmet>
         <title>Portal - User Dashboard</title>
       </Helmet>
@@ -67,6 +70,6 @@ export default compose(
           />
         </div>
       </div>
-    </div>
+    </UserDashboard>
   );
 });
