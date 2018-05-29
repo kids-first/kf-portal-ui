@@ -6,7 +6,6 @@ import { withTheme } from 'emotion-theming';
 import UserIntegrations from './UserIntegrations';
 
 export const H2 = styled('h2')`
-  font-family: Montserrat;
   font-size: 18px;
   font-weight: 300;
   font-style: normal;

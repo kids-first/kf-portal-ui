@@ -52,7 +52,7 @@ export const H3 = styled('h3')`
 `;
 
 export const H4 = styled('h4')`
-  font-family: 'Open Sans';
+  font-family: ${({ theme }) => theme.fonts.details};
   font-size: 13px;
   font-style: italic;
   line-height: 1.85;
@@ -167,7 +167,6 @@ export default compose(
           >{`${profile.firstName} ${profile.lastName}`}</h4>
           <div
             className={css`
-              font-family: montserrat;
               font-size: 14px;
               color: #fff;
               line-height: 28px;
@@ -224,7 +223,7 @@ export default compose(
 
           <div
             css={`
-              font-family: 'Open Sans';
+              font-family: ${theme.fonts.details};
               font-size: 13px;
               font-style: italic;
               line-height: 1.69;

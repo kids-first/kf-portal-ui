@@ -14,7 +14,6 @@ const SplashPage = compose(withTheme)(({ theme, children }) => (
       css={`
         background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed),
           linear-gradient(#2b388f, #2b388f);
-        font-family: Montserrat;
         font-size: 36px;
         font-weight: 500;
         margin: 10px 0;

@@ -1,7 +1,6 @@
 import styled from 'react-emotion';
 
 export const StyledH3 = styled('h3')`
-  font-family: Montserrat;
   font-size: 20px;
   font-weight: 300;
   line-height: 1;
@@ -12,7 +11,6 @@ export const StyledH3 = styled('h3')`
 `;
 
 export const StyledH2 = styled('h2')`
-  font-family: Montserrat;
   font-size: 28px;
   font-weight: 400;
   letter-spacing: 0.4px;
@@ -21,7 +19,6 @@ export const StyledH2 = styled('h2')`
 `;
 
 export const StyledH4 = styled('h4')`
-  font-family: Montserrat;
   font-size: 18px;
   font-weight: 300;
   line-height: 1;

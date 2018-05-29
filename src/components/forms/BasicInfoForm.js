@@ -24,17 +24,16 @@ import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 
 const labelStyle = `
-  font-family: Montserrat;
   font-size: 14px;
   line-height: 2;
   letter-spacing: 0.2px;
   text-align: left;
-  color: #343434;
   font-weight: 900;
 `;
 
 const StyledLabel = styled('label')`
   ${labelStyle};
+  color: ${({ theme }) => theme.greyScale1};
 `;
 
 class WrappedPlacesAutocomplete extends React.Component {
