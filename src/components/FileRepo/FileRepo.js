@@ -124,17 +124,14 @@ const TableContainer = styled('div')`
 `;
 
 const ToolbarContainer = styled('div')`
-  flex: none;
-  display: flex;
+  ${({ theme }) => theme.row};
 `;
 
 const TableWrapper = styled('div')`
   ${({ theme }) => theme.column};
-  flex-basis: 100%;
   min-height: 300px;
   & .ReactTable {
-    flex-grow: 1;
-    height: 1px;
+    min-height: 1px;
   }
 `;
 
