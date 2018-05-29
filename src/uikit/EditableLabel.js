@@ -106,7 +106,6 @@ export default compose(
                   transition: all 0.2s ease;
                   resize: none;
                   border: solid 1px #cacbcf;
-                  font-family: montserrat;
                   font-size: 14px;
                 `}
                 value={inputValue}

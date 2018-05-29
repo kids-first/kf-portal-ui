@@ -54,7 +54,6 @@ const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) =>
               font-size: 10px;
               font-weight: bold;
               display: inline-block;
-              font-family: Montserrat;
               font-size: 14px;
               font-weight: 600;
               line-height: 2.14;

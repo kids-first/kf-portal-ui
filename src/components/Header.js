@@ -161,7 +161,6 @@ const Header = ({
                   border: 0;
                   color: ${theme.primary};
 
-                  font-family: Montserrat;
                   font-size: 14px;
                   font-weight: 500;
                   line-height: 1.86;

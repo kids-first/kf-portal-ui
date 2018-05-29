@@ -76,7 +76,6 @@ export const modalContentStyle = theme =>
      {
       &.familyManifestModal {
         & .modalSubHeader {
-          font-family: Montserrat;
           font-weight: 400;
           font-size: 18px;
           & .highlight {

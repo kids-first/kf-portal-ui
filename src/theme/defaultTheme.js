@@ -33,14 +33,13 @@ const colors = {
   shadow: '#a0a0a3',
 };
 
+const fonts = {
+  default: 'Montserrat',
+  details: 'Open Sans',
+};
+
 const components = {
-  globalStyleOverride: css`
-    & button {
-      border: solid 1px ${colors.borderGrey};
-    }
-  `,
   normalText: css`
-    font-family: 'Open Sans';
     font-size: 12px;
     line-height: 1.67;
     letter-spacing: 0.2px;
@@ -51,7 +50,6 @@ const components = {
     text-transform: uppercase;
   `,
   linkAsButton: css`
-    font-family: Montserrat;
     font-size: 12px;
     line-height: 2.17;
     letter-spacing: 0.2px;
@@ -83,7 +81,6 @@ const components = {
     background-color: ${colors.primary};
     color: #fff;
     padding: 6px 16px;
-    font-family: montserrat;
     font-size: 14px;
     line-height: 1.86;
     letter-spacing: 0.2px;
@@ -109,7 +106,7 @@ const components = {
   listPill: css`
     border-radius: 12px;
     background-color: #404c9a;
-    font-family: 'Open Sans';
+    font-family: ${fonts.details};
     font-size: 13px;
     line-height: 2;
     text-align: left;
@@ -136,7 +133,6 @@ const components = {
     border-radius: 12px;
     background-color: #ffffff;
     border: solid 1px ${colors.borderGrey};
-    font-family: Montserrat;
     font-size: 12px;
     font-weight: 300;
     letter-spacing: 0.2px;
@@ -173,7 +169,6 @@ const components = {
     border-radius: 0px;
     color: #fff;
     padding: 0px 16px;
-    font-family: montserrat;
     font-size: 14px;
     font-weight: 800;
     line-height: 1.86;
@@ -208,7 +203,6 @@ const components = {
     background-color: '#fff';
     color: ${colors.tertiary};
     padding: 6px 16px;
-    font-family: montserrat;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.86;
@@ -242,7 +236,6 @@ const components = {
     color: ${colors.greyScale1};
   `,
   profileH3: css`
-    font-family: Montserrat;
     font-size: 14px;
     font-weight: bold;
     line-height: 1.71;
@@ -283,7 +276,6 @@ const components = {
   h2: css`
     text-align: center;
     color: ${colors.secondary};
-    font-family: Montserrat;
     font-size: 30px;
     line-height: 0.87;
     letter-spacing: 0.4px;
@@ -291,7 +283,6 @@ const components = {
     font-weight: 500;
   `,
   h3: css`
-    font-family: Montserrat;
     font-weight: 500;
     font-size: 18px;
     line-height: 1.44;
@@ -299,7 +290,7 @@ const components = {
     color: ${colors.secondary};
   `,
   h4: css`
-    font-family: 'Open Sans';
+    font-family: ${fonts.details};
     color: #fff;
     font-size: 30px;
     line-height: 31px;
@@ -329,7 +320,7 @@ const components = {
     background-color: #ffffff;
     border: solid 1px ${colors.borderGrey};
     padding: 25px;
-    font-family: 'Open Sans';
+    font-family: ${fonts.details};
     font-size: 14px;
     line-height: 1.86;
     letter-spacing: 0.2px;
@@ -357,7 +348,6 @@ const components = {
     margin: 0px 4px;
     text-decoration: none;
     border: solid 2px transparent;
-    font-family: Montserrat;
     font-size: 14px;
     font-weight: 500;
 
@@ -375,11 +365,9 @@ const components = {
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-family: montserrat;
     font-size: 14px;
     line-height: 1.86;
     letter-spacing: 0.2px;
-    font-family: Montserrat;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.86;
@@ -403,7 +391,6 @@ const components = {
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-family: montserrat;
     line-height: 1.86;
     letter-spacing: 0.2px;
     border-left: 1px solid ${colors.greyScale5};
@@ -413,7 +400,6 @@ const components = {
       border-right: 1px solid ${colors.greyScale5};
       a {
         display: block;
-        font-family: Montserrat;
         font-size: 16px;
         line-height: 1.86;
         letter-spacing: 0.2px;
@@ -442,7 +428,6 @@ const components = {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    font-family: Montserrat;
     font-size: 14px;
     line-height: 2.86;
     letter-spacing: 0.2px;
@@ -451,7 +436,6 @@ const components = {
     li {
       a {
         display: block;
-        font-family: Montserrat;
         font-size: 14px;
         line-height: 1.86;
         letter-spacing: 0.2px;
@@ -518,11 +502,10 @@ const components = {
     backgroundcolor: white;
     border: 1px solid ${colors.greyScale4};
     width: 100%;
-    font-family: montserrat;
     font-size: 14px;
   `,
   section: css`
-    font-family: 'Open Sans';
+    font-family: ${fonts.details};
     font-size: 14px;
     line-height: 2.57;
     letter-spacing: 0.2px;
@@ -544,7 +527,7 @@ const components = {
   `,
   //toasts
   success: css`
-    font-family: OpenSans;
+    font-family: ${fonts.details};
     font-size: 13px;
     font-weight: 600;
     line-height: 1.85;
@@ -575,4 +558,5 @@ const components = {
 export default {
   ...colors,
   ...components,
+  fonts,
 };

@@ -1,16 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Open+Sans:400,500,700');
+
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
   height: 100%;
-}
-
-.App {
-  overflow: auto;
-  height: 100vh;
 }
 
 * {
   outline: none;
+}
+
+#root {
+  height: 100%;
+}
+
+.dropDownHeader {
+  z-index: 100;
+}
+
+.dropDownButton {
+  background-color: #fff;
 }

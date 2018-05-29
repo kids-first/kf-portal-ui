@@ -19,7 +19,6 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       align-content: space-around;
       align-items: center;
       color: #fff;
-      font-family: Montserrat;
       font-size: 14px;
       flex: none;
       text-align: center;

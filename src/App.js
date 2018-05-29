@@ -1,9 +1,8 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import './App.css';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { css } from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
@@ -42,11 +41,22 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   }
 };
 
+const AppContainer = styled('div')`
+  height: 100vh;
+  overflow: auto;
+  & * {
+    font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
+  }
+  & button {
+    border: solid 1px ${({ theme }) => theme.borderGrey};
+  }
+`;
+
 const App = compose(injectState, withApi, withTheme)(
   ({ editing, setEditing, state, api, theme }) => {
     const { loggedInUser, toast, isLoadingUser } = state;
     return (
-      <div className={`App ${theme.globalStyleOverride}`}>
+      <AppContainer>
         <Switch>
           <Route
             // TODO: we need a user role specific for this
@@ -155,7 +165,7 @@ const App = compose(injectState, withApi, withTheme)(
         </Switch>
         <Modal />
         <Toast {...toast}>{toast.component}</Toast>
-      </div>
+      </AppContainer>
     );
   },
 );

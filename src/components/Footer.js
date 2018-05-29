@@ -1,9 +1,9 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { Trans } from 'react-i18next';
 
-const FooterLink = styled.a`
-  font-family: 'Open Sans';
+const FooterLink = styled('a')`
+  font-family: ${({ theme }) => theme.fonts.details};
   font-size: 12px;
   line-height: 2.17;
   letter-spacing: 0.2px;
@@ -12,28 +12,26 @@ const FooterLink = styled.a`
   text-decoration: underline;
 `;
 
+const FooterContainer = styled('footer')`
+  ${({ theme }) => theme.column};
+  height: 84px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-size: 12px;
+  line-height: 2.17;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: ${({ theme }) => theme.greyScale9};
+  z-index: 100;
+  flex: none;
+`;
+
 const Footer = () => (
-  <footer
-    className={css`
-      height: 84px;
-      background-color: #ffffff;
-      box-shadow: 0 0 4.9px 0.1px #bbbbbb;
-      font-family: OpenSans;
-      font-size: 12px;
-      line-height: 2.17;
-      letter-spacing: 0.2px;
-      text-align: center;
-      color: #343434;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      flex: none;
-    `}
-  >
+  <FooterContainer>
     <div>
       <FooterLink>
         <Trans>Kids First Website</Trans>
@@ -55,15 +53,11 @@ const Footer = () => (
         <Trans>FOIA</Trans>
       </FooterLink>
     </div>
-    <div
-      css={`
-        color: #74757d;
-      `}
-    >
+    <div>
       <Trans>Data Release - </Trans>
       <Trans i18nKey="dataReleaseVersion">Unreleased</Trans>
     </div>
-  </footer>
+  </FooterContainer>
 );
 
 export default Footer;

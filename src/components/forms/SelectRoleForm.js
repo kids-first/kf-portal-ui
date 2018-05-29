@@ -23,7 +23,6 @@ const StyledLabel = styled('label')`
   padding-right: 3px;
   text-decoration: none;
   border: none;
-  font-family: Montserrat;
   font-size: 13px;
   font-weight: 600;
   line-height: 2;
@@ -224,7 +223,6 @@ export const SelectRoleForm = ({
                       display: block;
                       text-transform: capitalize;
                       border: none;
-                      font-family: Montserrat;
                       font-size: 15px;
                       line-height: 1.33;
                     `}
