@@ -3,23 +3,10 @@ import Downshift from 'downshift';
 import { css } from 'emotion';
 import { truncate } from 'lodash';
 
-import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
+import downChevronIcon from '../../assets/icon-chevron-down-grey.svg';
+import { OptionDropdownWrapper, DropDownToggler, ToggleImage, StyledDropDownOption } from './ui';
 
-export const optionDropdownWrapperClassName = css`
-  position: absolute;
-  background: white;
-  min-width: 100%;
-  z-index: 1;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-sizing: border-box;
-  cursor: pointer;
-  padding: 5px;
-  top: 100%;
-`;
-
-const disabledDropdownOptionClassName = css`
-  color: lightgrey;
-`;
+export const optionDropdownWrapperClassName = css``;
 
 export const DropDownOption = ({
   item,
@@ -30,16 +17,11 @@ export const DropDownOption = ({
   onDisabledItemClick,
   getItemProps,
 }) => (
-  <div
-    {...getItemProps({ item })}
+  <StyledDropDownOption
     key={item}
-    className={`
-      ${css`
-        cursor: pointer;
-        padding: 5px;
-      `}
-      ${itemClassName}
-      ${isItemDisabled({ item }) ? disabledDropdownOptionClassName : ''}`}
+    itemClassName={itemClassName}
+    disabled={isItemDisabled({ item })}
+    {...getItemProps({ item })}
     {...(isItemDisabled({ item })
       ? {
           onClick: () => onDisabledItemClick({ item }),
@@ -54,7 +36,7 @@ export const DropDownOption = ({
         : {})}
   >
     {item}
-  </div>
+  </StyledDropDownOption>
 );
 
 export const SelectOptionDropdown = ({
@@ -69,15 +51,7 @@ export const SelectOptionDropdown = ({
   onDisabledItemClick = () => {},
   DropDownOptionComponent = DropDownOption,
 }) => (
-  <div
-    className={`
-      ${optionDropdownWrapperClassName}
-      ${css`
-        right: ${align === 'right' ? `0` : `auto`};
-        left: ${align === 'right' ? `auto` : `0`};
-      `}
-      ${itemContainerClassName};`}
-  >
+  <OptionDropdownWrapper align={align} className={itemContainerClassName}>
     {items.map(item => (
       <DropDownOptionComponent
         {...{
@@ -92,7 +66,7 @@ export const SelectOptionDropdown = ({
         }}
       />
     ))}
-  </div>
+  </OptionDropdownWrapper>
 );
 
 function Select({
@@ -126,32 +100,12 @@ function Select({
               ${className};
             `}
           >
-            <div
-              style={{
-                display: 'flex',
-                cursor: 'pointer',
-                flexGrow: 1,
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-              onClick={onToggle || toggleMenu}
-            >
+            <DropDownToggler onClick={onToggle || toggleMenu}>
               {selectedLabelTruncate
                 ? truncate(selectedItem, { length: selectedLabelTruncate })
                 : selectedItem}
-              <img
-                alt=""
-                src={downChevronIcon}
-                css={`
-                  width: 9px;
-                  margin-left: 7px;
-                  margin-right: 12px;
-                  transform: rotate(${isOpen ? 180 : 0}deg);
-                  transition: transform 0.2s;
-                `}
-              />
-            </div>
+              <ToggleImage alt="" src={downChevronIcon} />
+            </DropDownToggler>
             {!isOpen ? null : (
               <OptionDropdownComponent
                 {...{
