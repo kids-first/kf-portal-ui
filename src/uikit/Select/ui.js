@@ -19,7 +19,7 @@ export const OptionDropdownWrapper = styled('div')`
     `};
 `;
 
-export const DropDownLavelContent = styled('div')`
+export const DropDownLabelContent = styled('div')`
   display: flex;
   cursor: pointer;
   flex-grow: 1;

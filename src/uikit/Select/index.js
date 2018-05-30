@@ -1,17 +1,14 @@
 import React from 'react';
 import Downshift from 'downshift';
-import { css } from 'emotion';
 import { truncate } from 'lodash';
 
 import downChevronIcon from '../../assets/icon-chevron-down-grey.svg';
 import {
   OptionDropdownWrapper,
-  DropDownLavelContent,
+  DropDownLabelContent,
   ToggleImage,
   StyledDropDownOption,
 } from './ui';
-
-export const optionDropdownWrapperClassName = css``;
 
 export const DropDownOption = ({
   item,
@@ -105,12 +102,12 @@ function Select({
               ${className};
             `}
           >
-            <DropDownLavelContent onClick={onToggle || toggleMenu}>
+            <DropDownLabelContent onClick={onToggle || toggleMenu}>
               {selectedLabelTruncate
                 ? truncate(selectedItem, { length: selectedLabelTruncate })
                 : selectedItem}
               <ToggleImage alt="" src={downChevronIcon} />
-            </DropDownLavelContent>
+            </DropDownLabelContent>
             {!isOpen ? null : (
               <OptionDropdownComponent
                 {...{
