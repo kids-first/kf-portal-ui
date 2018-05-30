@@ -24,7 +24,7 @@ const UploadIdsModal = ({
   ...props
 }) => (
   <MatchBox
-    {...{ ...props }}
+    {...props}
     instructionText={
       'Type or copy-and-paste a list of comma delimited identifiers, or choose a file of identifiers to upload'
     }

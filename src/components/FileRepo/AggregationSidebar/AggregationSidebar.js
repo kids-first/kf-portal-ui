@@ -99,13 +99,12 @@ const AggregationSidebar = compose(injectState, withTheme)(
                           }
                         },
                         onSqonSubmit: ({ sqon }) => {
-                          setSQON(sqon);
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
                             label: sqon,
                           });
-                          effects.unsetModal();
+                          effects.unsetModal({ callback: () => setSQON(sqon) });
                         },
                       }}
                       {...{ statsConfig }}
