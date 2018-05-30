@@ -79,7 +79,7 @@ function Select({
   align = 'right',
   OptionDropdownComponent = SelectOptionDropdown,
   onToggle,
-  selectedLabelTruncate = 0,
+  selectedLabelTextTruncate = 0, //
   ...rest
 }) {
   return (
@@ -103,8 +103,8 @@ function Select({
             `}
           >
             <DropDownLabelContent onClick={onToggle || toggleMenu}>
-              {selectedLabelTruncate
-                ? truncate(selectedItem, { length: selectedLabelTruncate })
+              {selectedLabelTextTruncate
+                ? truncate(selectedItem, { length: selectedLabelTextTruncate })
                 : selectedItem}
               <ToggleImage alt="" src={downChevronIcon} />
             </DropDownLabelContent>
