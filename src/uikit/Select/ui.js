@@ -1,4 +1,3 @@
-import { css } from 'emotion';
 import styled from 'react-emotion';
 
 export const OptionDropdownWrapper = styled('div')`
@@ -13,10 +12,6 @@ export const OptionDropdownWrapper = styled('div')`
   top: 100%;
   right: ${({ align }) => (align === 'right' ? `0` : `auto`)};
   left: ${({ align }) => (align === 'right' ? `auto` : `0`)};
-  ${({ className }) =>
-    css`
-      ${className};
-    `};
 `;
 
 export const DropDownLabelContent = styled('div')`
@@ -40,8 +35,4 @@ export const StyledDropDownOption = styled('div')`
   cursor: pointer;
   padding: 5px;
   color: ${({ disabled }) => (disabled ? 'lightgrey' : 'auto')};
-  ${({ itemClassName }) =>
-    css`
-      ${itemClassName};
-    `};
 `;

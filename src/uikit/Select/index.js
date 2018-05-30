@@ -21,7 +21,7 @@ export const DropDownOption = ({
 }) => (
   <StyledDropDownOption
     key={item}
-    itemClassName={itemClassName}
+    className={itemClassName}
     disabled={isItemDisabled({ item })}
     {...getItemProps({ item })}
     {...(isItemDisabled({ item })
