@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
-import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 
 import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import PencilIcon from 'react-icons/lib/fa/pencil';
-import ViewIcon from 'react-icons/lib/fa/eye';
-import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
 
@@ -26,6 +21,14 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
+import {
+  Paragraph,
+  UserIntegrationsWrapper,
+  IntegrationTable,
+  PencilIcon,
+  ViewIcon,
+  XIcon,
+} from './ui';
 
 const loadingSpinner = (
   <Spinner
@@ -38,10 +41,6 @@ const loadingSpinner = (
     }}
   />
 );
-
-const Paragraph = styled('p')`
-  line-height: 28px;
-`;
 
 const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   <Button
@@ -59,65 +58,6 @@ const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
     {props.children}
   </Button>
 );
-
-const UserIntegrationsWrapper = styled('div')`
-  table {
-    border-collapse: collapse;
-  }
-  td,
-  th {
-    padding: 10px;
-    font-weight: normal;
-  }
-  td {
-    background: white;
-  }
-  font-size: 14px;
-  span {
-    flex: 1;
-  }
-  button {
-    flex: 1;
-    font-weight: bold;
-    padding: 6px;
-    margin: 2px;
-    padding-left: 5px;
-    text-transform: uppercase;
-  }
-
-  .logoImg {
-    width: 150px;
-  }
-
-  span.integrationHeader {
-    font-weight: bold;
-  }
-  div.integrationCell {
-    display: flex;
-  }
-  div.integrationCell button {
-    text-transform: uppercase;
-    flex: 1;
-  }
-  .right {
-    text-align: right;
-  }
-  .connectedButton {
-    ${({ theme }) => theme.hollowButton};
-  }
-`;
-
-const IntegrationTable = styled('table')`
-  td,
-  th {
-    border: 1px solid ${({ theme }) => theme.greyScale5};
-  }
-  & thead {
-    background: ${({ theme }) => theme.greyScale6};
-    color: ${({ theme }) => theme.secondary};
-    text-align: left;
-  }
-`;
 
 const enhance = compose(
   injectState,
@@ -139,13 +79,13 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
       </div>
       <div css="display: flex;">
         <ConnectedButton action="view" type="Gen3" onClick={onView}>
-          <ViewIcon className={`icon`} />View
+          <ViewIcon />View
         </ConnectedButton>
         <ConnectedButton action="edit" type="Gen3" onClick={onEdit}>
-          <PencilIcon className={`icon`} />Edit
+          <PencilIcon />Edit
         </ConnectedButton>
         <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
-          <XIcon className={`icon`} />Remove
+          <XIcon />Remove
         </ConnectedButton>
       </div>
     </div>
@@ -166,13 +106,13 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
       </div>
       <div css="display: flex;">
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
-          <PencilIcon className={`icon`} />Edit
+          <PencilIcon />Edit
         </ConnectedButton>
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
-              {loading ? loadingSpinner : <XIcon className={`icon`} />}
+              {loading ? loadingSpinner : <XIcon />}
               <span>Remove</span>
             </ConnectedButton>
           )}
