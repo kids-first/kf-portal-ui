@@ -3,6 +3,7 @@ import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import Input from 'uikit/Input';
+import { Trans } from 'react-i18next';
 
 import UserIntegrations from './UserIntegrations';
 
@@ -33,7 +34,9 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       `}
     >
       <SettingsSection>
-        <H2>Account Settings</H2>
+        <H2>
+          <Trans>Settings</Trans>
+        </H2>
         <div
           css={`
             ${theme.column};
