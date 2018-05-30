@@ -31,6 +31,7 @@ export const DropDownLabelContent = styled('div')`
 export const ToggleImage = styled('img')`
   width: 9px;
   margin-right: 12px;
+  margin-left: 10px;
   transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
   transition: transform 0.2s;
 `;
