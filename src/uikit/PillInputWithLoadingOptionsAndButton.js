@@ -3,7 +3,7 @@ import { isEqual, keys, mapValues } from 'lodash';
 import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
-import Select, { SelectOptionDropdown, DropDownOption } from '../uikit/Select';
+import Select, { SelectOptionDropdown, Option as DropDownOption } from '../uikit/Select';
 import PillInputWithButton from './PillInputWithButton';
 
 const LoadingSpinner = () => (

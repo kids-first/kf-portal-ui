@@ -6,11 +6,11 @@ import {
   OptionDropdownWrapper,
   DropDownLabelContent,
   ToggleImage,
-  StyledDropDownOption,
+  DropDownOption,
   DropDownLabelContentText,
 } from './ui';
 
-export const DropDownOption = ({
+export const Option = ({
   item,
   itemClassName,
   isItemDisabled,
@@ -19,7 +19,7 @@ export const DropDownOption = ({
   onDisabledItemClick,
   getItemProps,
 }) => (
-  <StyledDropDownOption
+  <DropDownOption
     key={item}
     className={itemClassName}
     disabled={isItemDisabled({ item })}
@@ -38,7 +38,7 @@ export const DropDownOption = ({
         : {})}
   >
     {item}
-  </StyledDropDownOption>
+  </DropDownOption>
 );
 
 export const SelectOptionDropdown = ({
@@ -51,7 +51,7 @@ export const SelectOptionDropdown = ({
   onToggle,
   isItemDisabled = () => false,
   onDisabledItemClick = () => {},
-  DropDownOptionComponent = DropDownOption,
+  DropDownOptionComponent = Option,
 }) => (
   <OptionDropdownWrapper align={align} className={itemContainerClassName}>
     {items.map(item => (

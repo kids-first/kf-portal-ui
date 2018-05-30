@@ -40,7 +40,7 @@ export const ToggleImage = styled('img')`
   transition: transform 0.2s;
 `;
 
-export const StyledDropDownOption = styled('div')`
+export const DropDownOption = styled('div')`
   cursor: pointer;
   padding: 5px;
   color: ${({ disabled }) => (disabled ? 'lightgrey' : 'auto')};
