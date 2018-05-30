@@ -1,9 +1,9 @@
 import React from 'react';
 import { isEqual, keys, mapValues } from 'lodash';
 import Spinner from 'react-spinkit';
-import { css } from 'emotion';
+import styled from 'react-emotion';
 
-import Select, { SelectOptionDropdown, DropDownOption } from '../uikit/Select';
+import Select, { SelectOptionDropdown, Option as DropDownOption } from '../uikit/Select';
 import PillInputWithButton from './PillInputWithButton';
 
 const LoadingSpinner = () => (
@@ -19,6 +19,21 @@ const LoadingSpinner = () => (
     }}
   />
 );
+
+const StyledSelect = styled(Select)`
+  flex-shrink: 2;
+  min-width: 0px;
+`;
+
+const Tooltip = styled('div')`
+  position: absolute;
+  top: 100%;
+  background: white;
+  padding: 5px;
+  margin-top: -6px;
+  border-radius: 7px;
+  box-shadow: 1px 1px 7px ${theme => theme.greyScale0};
+`;
 
 class PillInputWithLoadingOptionsAndButton extends React.Component {
   initOptionState = (props, val = { enabled: true, loading: false }) =>
@@ -90,7 +105,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
             return options[selected].onSelected();
           }}
           SelectComponent={selectProps => (
-            <Select
+            <StyledSelect
               {...selectProps}
               align="left"
               isOpen={isDropdownOpen}
@@ -115,21 +130,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
                       <div style={{ visibility: optionState[item].loading ? 'hidden' : 'visible' }}>
                         <DropDownOption {...{ ...optionProps, item }} />
                         {!optionState[item].enabled &&
-                          options[item].tooltip && (
-                            <div
-                              className={css`
-                                position: absolute;
-                                top: 100%;
-                                background: white;
-                                padding: 5px;
-                                margin-top: -6px;
-                                border-radius: 7px;
-                                box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.2);
-                              `}
-                            >
-                              {options[item].tooltip}
-                            </div>
-                          )}
+                          options[item].tooltip && <Tooltip>{options[item].tooltip}</Tooltip>}
                       </div>
                     </div>
                   )}

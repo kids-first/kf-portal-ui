@@ -1,26 +1,16 @@
 import React from 'react';
 import Downshift from 'downshift';
-import { css } from 'emotion';
 
-import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
+import downChevronIcon from '../../assets/icon-chevron-down-grey.svg';
+import {
+  OptionDropdownWrapper,
+  DropDownLabelContent,
+  ToggleImage,
+  DropDownOption,
+  DropDownLabelContentText,
+} from './ui';
 
-export const optionDropdownWrapperClassName = css`
-  position: absolute;
-  background: white;
-  min-width: 100%;
-  z-index: 1;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-sizing: border-box;
-  cursor: pointer;
-  padding: 5px;
-  top: 100%;
-`;
-
-const disabledDropdownOptionClassName = css`
-  color: lightgrey;
-`;
-
-export const DropDownOption = ({
+export const Option = ({
   item,
   itemClassName,
   isItemDisabled,
@@ -29,16 +19,11 @@ export const DropDownOption = ({
   onDisabledItemClick,
   getItemProps,
 }) => (
-  <div
-    {...getItemProps({ item })}
+  <DropDownOption
     key={item}
-    className={`
-      ${css`
-        cursor: pointer;
-        padding: 5px;
-      `}
-      ${itemClassName}
-      ${isItemDisabled({ item }) ? disabledDropdownOptionClassName : ''}`}
+    className={itemClassName}
+    disabled={isItemDisabled({ item })}
+    {...getItemProps({ item })}
     {...(isItemDisabled({ item })
       ? {
           onClick: () => onDisabledItemClick({ item }),
@@ -53,7 +38,7 @@ export const DropDownOption = ({
         : {})}
   >
     {item}
-  </div>
+  </DropDownOption>
 );
 
 export const SelectOptionDropdown = ({
@@ -66,17 +51,9 @@ export const SelectOptionDropdown = ({
   onToggle,
   isItemDisabled = () => false,
   onDisabledItemClick = () => {},
-  DropDownOptionComponent = DropDownOption,
+  DropDownOptionComponent = Option,
 }) => (
-  <div
-    className={`
-      ${optionDropdownWrapperClassName}
-      ${css`
-        right: ${align === 'right' ? `0` : `auto`};
-        left: ${align === 'right' ? `auto` : `0`};
-      `}
-      ${itemContainerClassName};`}
-  >
+  <OptionDropdownWrapper align={align} className={itemContainerClassName}>
     {items.map(item => (
       <DropDownOptionComponent
         {...{
@@ -91,7 +68,7 @@ export const SelectOptionDropdown = ({
         }}
       />
     ))}
-  </div>
+  </OptionDropdownWrapper>
 );
 
 function Select({
@@ -121,33 +98,13 @@ function Select({
               display: flex;
               align-items: center;
               padding-left: 10px;
-              ${className};
             `}
+            className={className}
           >
-            <div
-              style={{
-                display: 'flex',
-                cursor: 'pointer',
-                flexGrow: 1,
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-              onClick={onToggle || toggleMenu}
-            >
-              {selectedItem}
-              <img
-                alt=""
-                src={downChevronIcon}
-                css={`
-                  width: 9px;
-                  margin-left: 7px;
-                  margin-right: 12px;
-                  transform: rotate(${isOpen ? 180 : 0}deg);
-                  transition: transform 0.2s;
-                `}
-              />
-            </div>
+            <DropDownLabelContent onClick={onToggle || toggleMenu}>
+              <DropDownLabelContentText>{selectedItem}</DropDownLabelContentText>
+              <ToggleImage alt="" src={downChevronIcon} />
+            </DropDownLabelContent>
             {!isOpen ? null : (
               <OptionDropdownComponent
                 {...{
