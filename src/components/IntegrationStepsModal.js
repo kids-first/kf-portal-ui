@@ -1,5 +1,6 @@
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import Input from 'uikit/Input';
 
 export const NumberBullet = styled.span`
   color: white;
@@ -21,10 +22,7 @@ export const TokenTitle = styled.span`
   margin-bottom: 10px;
 `;
 
-export const TokenInput = styled.input`
-  padding: 6px;
-  font-size: 16px;
-  border-radius: 10px;
+export const TokenInput = styled(Input)`
   width: 35em;
   max-width: 90%;
 `;

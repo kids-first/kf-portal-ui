@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import Input from 'uikit/Input';
 
 import UserIntegrations from './UserIntegrations';
 
@@ -40,14 +41,7 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
           `}
         >
           Email Address:
-          <input
-            disabled
-            value={profile.email}
-            css={`
-              ${theme.input};
-              width: 100%;
-            `}
-          />
+          <Input disabled value={profile.email} />
         </div>
       </SettingsSection>
 
