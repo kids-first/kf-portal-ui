@@ -5,7 +5,8 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import history from 'services/history';
 
 const internalState = {
-  unsubscribe: null,
+  unlisten: null,
+  unblock: null,
 };
 
 const initialState = {
@@ -20,8 +21,10 @@ export default provideState({
   }),
   effects: {
     setModal: (effects, { title, component, classNames }) => state => {
-      history.push({ ...history.location, hash: '#!' });
-      internalState.unsubscribe = history.listen(() => effects.unsetModal({ fromHistory: true }));
+      internalState.unlisten = history.listen(effects.unsetModal);
+      internalState.unblock = history.block(
+        'Your changes may not be saved, are you sure you want to leave this page?',
+      );
 
       const modalState = { title, component, classNames };
       trackUserInteraction({
@@ -32,14 +35,16 @@ export default provideState({
       addUsersnapInfo({ modalState });
       return { ...state, modalState };
     },
-    unsetModal: (effects, { fromHistory = false, callback = () => {} } = {}) => state => {
-      if (internalState.unsubscribe) {
-        internalState.unsubscribe();
-        internalState.unsubscribe = null;
+    unsetModal: (effects, { callback = () => {} } = {}) => state => {
+      if (internalState.unblock) {
+        internalState.unblock();
+        internalState.unblock = null;
       }
-      if (!fromHistory) history.goBack();
-      setTimeout(callback, 0);
-
+      if (internalState.unlisten) {
+        internalState.unlisten();
+        internalState.unlisten = null;
+      }
+      callback();
       trackUserInteraction({
         category: TRACKING_EVENTS.categories.modals,
         action: TRACKING_EVENTS.actions.close,
