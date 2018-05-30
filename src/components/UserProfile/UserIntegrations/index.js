@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
-import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 
 import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import PencilIcon from 'react-icons/lib/fa/pencil';
-import ViewIcon from 'react-icons/lib/fa/eye';
-import XIcon from 'react-icons/lib/fa/close';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
 
@@ -26,6 +21,14 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
+import {
+  Paragraph,
+  UserIntegrationsWrapper,
+  IntegrationTable,
+  PencilIcon,
+  ViewIcon,
+  XIcon,
+} from './ui';
 
 const loadingSpinner = (
   <Spinner
@@ -38,10 +41,6 @@ const loadingSpinner = (
     }}
   />
 );
-
-const Paragraph = styled('p')`
-  line-height: 28px;
-`;
 
 const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   <Button
@@ -59,53 +58,6 @@ const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
     {props.children}
   </Button>
 );
-
-const styles = theme => css`
-  table {
-    border-collapse: collapse;
-  }
-  td,
-  th {
-    padding: 10px;
-    font-weight: normal;
-  }
-  td {
-    background: white;
-  }
-  font-size: 14px;
-  span {
-    flex: 1;
-  }
-  button {
-    flex: 1;
-    font-weight: bold;
-    padding: 6px;
-    margin: 2px;
-    padding-left: 5px;
-    text-transform: uppercase;
-  }
-
-  .logoImg {
-    width: 150px;
-  }
-
-  span.integrationHeader {
-    font-weight: bold;
-  }
-  div.integrationCell {
-    display: flex;
-  }
-  div.integrationCell button {
-    text-transform: uppercase;
-    flex: 1;
-  }
-  .right {
-    text-align: right;
-  }
-  .connectedButton {
-    ${theme.hollowButton};
-  }
-`;
 
 const enhance = compose(
   injectState,
@@ -127,13 +79,13 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
       </div>
       <div css="display: flex;">
         <ConnectedButton action="view" type="Gen3" onClick={onView}>
-          <ViewIcon className={`icon`} />View
+          <ViewIcon />View
         </ConnectedButton>
         <ConnectedButton action="edit" type="Gen3" onClick={onEdit}>
-          <PencilIcon className={`icon`} />Edit
+          <PencilIcon />Edit
         </ConnectedButton>
         <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
-          <XIcon className={`icon`} />Remove
+          <XIcon />Remove
         </ConnectedButton>
       </div>
     </div>
@@ -156,7 +108,6 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
           <PencilIcon />Edit
         </ConnectedButton>
-
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
@@ -173,22 +124,9 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
 
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
   return (
-    <div css={styles(theme)}>
-      <table
-        css={`
-          td,
-          th {
-            border: 1px solid ${theme.greyScale5};
-          }
-        `}
-      >
-        <thead
-          css={`
-            background: ${theme.greyScale6};
-            color: ${theme.secondary};
-            text-align: left;
-          `}
-        >
+    <UserIntegrationsWrapper>
+      <IntegrationTable>
+        <thead>
           <tr>
             <th>Service</th>
             <th>Purpose</th>
@@ -317,8 +255,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             </td>
           </tr>
         </tbody>
-      </table>
-    </div>
+      </IntegrationTable>
+    </UserIntegrationsWrapper>
   );
 };
 
