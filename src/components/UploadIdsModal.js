@@ -61,7 +61,8 @@ const UploadIdsModal = ({
               dataPath: 'data.saveSet',
             });
             await addUserSet({ type, setId, size, api });
-            unsetModal({ callback: () => setSQON(nextSQON) });
+            setSQON(nextSQON);
+            unsetModal();
           },
           submitText: 'Upload',
           submitDisabled: !hasResults,
