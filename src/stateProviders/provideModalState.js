@@ -6,7 +6,6 @@ import history from 'services/history';
 
 const internalState = {
   unlisten: null,
-  unblock: null,
 };
 
 const initialState = {
@@ -22,10 +21,6 @@ export default provideState({
   effects: {
     setModal: (effects, { title, component, classNames }) => state => {
       internalState.unlisten = history.listen(effects.unsetModal);
-      internalState.unblock = history.block(
-        'Your changes may not be saved, are you sure you want to leave this page?',
-      );
-
       const modalState = { title, component, classNames };
       trackUserInteraction({
         category: TRACKING_EVENTS.categories.modals,
@@ -35,16 +30,11 @@ export default provideState({
       addUsersnapInfo({ modalState });
       return { ...state, modalState };
     },
-    unsetModal: (effects, { callback = () => {} } = {}) => state => {
-      if (internalState.unblock) {
-        internalState.unblock();
-        internalState.unblock = null;
-      }
+    unsetModal: effects => state => {
       if (internalState.unlisten) {
         internalState.unlisten();
         internalState.unlisten = null;
       }
-      callback();
       trackUserInteraction({
         category: TRACKING_EVENTS.categories.modals,
         action: TRACKING_EVENTS.actions.close,

@@ -104,7 +104,8 @@ const AggregationSidebar = compose(injectState, withTheme)(
                             action: 'View Results',
                             label: sqon,
                           });
-                          effects.unsetModal({ callback: () => setSQON(sqon) });
+                          setSQON(sqon);
+                          effects.unsetModal();
                         },
                       }}
                       {...{ statsConfig }}
