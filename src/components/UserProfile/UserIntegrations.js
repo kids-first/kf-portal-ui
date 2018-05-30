@@ -60,7 +60,7 @@ const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   </Button>
 );
 
-const styles = theme => css`
+const UserIntegrationsWrapper = styled('div')`
   table {
     border-collapse: collapse;
   }
@@ -103,7 +103,19 @@ const styles = theme => css`
     text-align: right;
   }
   .connectedButton {
-    ${theme.hollowButton};
+    ${({ theme }) => theme.hollowButton};
+  }
+`;
+
+const IntegrationTable = styled('table')`
+  td,
+  th {
+    border: 1px solid ${({ theme }) => theme.greyScale5};
+  }
+  & thead {
+    background: ${({ theme }) => theme.greyScale6};
+    color: ${({ theme }) => theme.secondary};
+    text-align: left;
   }
 `;
 
@@ -154,14 +166,13 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
       </div>
       <div css="display: flex;">
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
-          <PencilIcon />Edit
+          <PencilIcon className={`icon`} />Edit
         </ConnectedButton>
-
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
-              {loading ? loadingSpinner : <XIcon />}
+              {loading ? loadingSpinner : <XIcon className={`icon`} />}
               <span>Remove</span>
             </ConnectedButton>
           )}
@@ -173,22 +184,9 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
 
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
   return (
-    <div css={styles(theme)}>
-      <table
-        css={`
-          td,
-          th {
-            border: 1px solid ${theme.greyScale5};
-          }
-        `}
-      >
-        <thead
-          css={`
-            background: ${theme.greyScale6};
-            color: ${theme.secondary};
-            text-align: left;
-          `}
-        >
+    <UserIntegrationsWrapper>
+      <IntegrationTable>
+        <thead>
           <tr>
             <th>Service</th>
             <th>Purpose</th>
@@ -317,8 +315,8 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             </td>
           </tr>
         </tbody>
-      </table>
-    </div>
+      </IntegrationTable>
+    </UserIntegrationsWrapper>
   );
 };
 
