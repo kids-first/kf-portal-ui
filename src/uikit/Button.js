@@ -1,4 +1,5 @@
 import styled from 'react-emotion';
+import { css } from 'emotion';
 
 const BaseButton = styled('button')`
   text-align: left;
@@ -24,6 +25,10 @@ export const LightButton = styled(BaseButton)`
 `;
 
 export const ActionButton = styled(Button)`
+  ${theme =>
+    css`
+      ${theme.actionButton};
+    `};
   padding-left: 20px;
   padding-right: 20px;
   text-transform: uppercase;

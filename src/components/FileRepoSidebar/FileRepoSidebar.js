@@ -55,10 +55,12 @@ const Text = styled('div')`
   line-height: 26px;
 `;
 
-const Divider = styled('div')`
-  height: 1px;
-  background-color: ${({ theme }) => theme.greyScale8};
-  margin: 20px 0px;
+const Section = styled('div')`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  &:not(:last-child) {
+    border-bottom: solid 1px ${({ theme }) => theme.greyScale8};
+  }
 `;
 
 const StyledReportsDownloadInput = styled(ReportsDownloadInput)`
@@ -95,29 +97,31 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
           </Heading>
         </Titlebar>
         <Content {...{ expanded, contentSidePadding, containerWidth }}>
-          <Text>
-            <Trans i18nKey="fileRepoSidebar.noneSelected">
-              If you have not selected any files, all files in your query will be included in the
-              actions.
-            </Trans>
-          </Text>
-          <Divider />
-          <Heading>
-            <Trans>Download</Trans>
-          </Heading>
-          <div>
+          <Section>
+            <Text>
+              <Trans i18nKey="fileRepoSidebar.noneSelected">
+                If you have not selected any files, all files in your query will be included in the
+                actions.
+              </Trans>
+            </Text>
+          </Section>
+          <Section>
+            <Heading>
+              <Trans>Download</Trans>
+            </Heading>
             <Subsection heading={<Trans>File Manifests</Trans>}>
               <FileManifestsDownloadInput {...props} />
             </Subsection>
             <Subsection heading={<Trans>Reports</Trans>}>
               <StyledReportsDownloadInput {...props} />
             </Subsection>
-          </div>
-          <Divider />
-          <Heading>
-            <Trans>Data Analysis</Trans>
-          </Heading>
-          <CavaticaCopyButton {...props} />
+          </Section>
+          <Section>
+            <Heading>
+              <Trans>Data Analysis</Trans>
+            </Heading>
+            <CavaticaCopyButton {...props} />
+          </Section>
         </Content>
       </Container>
     </Slideable>
