@@ -11,28 +11,12 @@ import CopyToClipboardIcon from 'icons/CopyToClipboardIcon.js';
 import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
 import { copyValueToClipboard } from './CopyToClipboard';
-import { ModalFooter, ModalWarning } from './Modal';
+import { ModalFooter, ModalWarning, ModalActionButton } from './Modal';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 
 const wait = (s = 1) => new Promise(r => setTimeout(r, s * 1000));
-
-const Button = compose(withTheme)(
-  ({ theme, children, className = '', contentClassName = '', ...props }) => (
-    <button className={`${theme.actionButton} ${className}`} {...props}>
-      <div
-        className={`${css`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        `} ${contentClassName}`}
-      >
-        {children}
-      </div>
-    </button>
-  ),
-);
 
 const ManifestGeneratorStyle = theme =>
   `manifestSetGenerator ${css`
@@ -116,9 +100,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
               <span ref={copyRef} className={`copyContent`}>
                 {setId || <Trans>Generate manifest ID</Trans>}
               </span>
-              <Button
-                {...{ onClick, disabled: loading, className: `generateButton ${theme.uppercase}` }}
-              >
+              <ModalActionButton {...{ onClick, disabled: loading, className: `generateButton` }}>
                 {' '}
                 {loading ? (
                   <Spinner
@@ -139,7 +121,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
                 ) : (
                   <Trans>GENERATE</Trans>
                 )}
-              </Button>
+              </ModalActionButton>
             </Fragment>
           )}
         />
@@ -185,7 +167,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
       <LoadingOnClick
         onClick={onDownloadClick}
         render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
-          <Button
+          <ModalActionButton
             {...{
               onClick,
               className: `${theme.uppercase} ${css`
@@ -205,7 +187,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
               )}
             />
             <Trans>Download Manifest</Trans>
-          </Button>
+          </ModalActionButton>
         )}
       />
     </ModalFooter>
