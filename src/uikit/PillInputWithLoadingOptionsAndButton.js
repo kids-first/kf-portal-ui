@@ -76,6 +76,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
       tooltipStyle,
       options,
       LoadingComponent = LoadingSpinner,
+      selectedLabelTruncate,
       ...props
     } = this.props;
     const { isDropdownOpen, optionState, selected } = this.state;
@@ -98,6 +99,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
               highlightedIndex={null}
               items={Object.keys(options)}
               onToggle={this.onToggle}
+              selectedLabelTruncate={selectedLabelTruncate}
               OptionDropdownComponent={dropDownProps => (
                 <SelectOptionDropdown
                   {...dropDownProps}

@@ -1,6 +1,7 @@
 import React from 'react';
 import Downshift from 'downshift';
 import { css } from 'emotion';
+import { truncate } from 'lodash';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
@@ -102,6 +103,7 @@ function Select({
   align = 'right',
   OptionDropdownComponent = SelectOptionDropdown,
   onToggle,
+  selectedLabelTruncate = 0,
   ...rest
 }) {
   return (
@@ -135,7 +137,9 @@ function Select({
               }}
               onClick={onToggle || toggleMenu}
             >
-              {selectedItem}
+              {selectedLabelTruncate
+                ? truncate(selectedItem, { length: selectedLabelTruncate })
+                : selectedItem}
               <img
                 alt=""
                 src={downChevronIcon}

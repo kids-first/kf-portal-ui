@@ -25,6 +25,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
     graphqlField="participant"
     render={({ state }) => (
       <PillInputWithLoadingOptionsAndButton
+        selectedLabelTruncate={26}
         containerClassName={className}
         options={{
           'Clinical (Participant)': {
