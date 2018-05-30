@@ -4,7 +4,12 @@ import { css } from 'emotion';
 import { truncate } from 'lodash';
 
 import downChevronIcon from '../../assets/icon-chevron-down-grey.svg';
-import { OptionDropdownWrapper, DropDownToggler, ToggleImage, StyledDropDownOption } from './ui';
+import {
+  OptionDropdownWrapper,
+  DropDownLavelContent,
+  ToggleImage,
+  StyledDropDownOption,
+} from './ui';
 
 export const optionDropdownWrapperClassName = css``;
 
@@ -100,12 +105,12 @@ function Select({
               ${className};
             `}
           >
-            <DropDownToggler onClick={onToggle || toggleMenu}>
+            <DropDownLavelContent onClick={onToggle || toggleMenu}>
               {selectedLabelTruncate
                 ? truncate(selectedItem, { length: selectedLabelTruncate })
                 : selectedItem}
               <ToggleImage alt="" src={downChevronIcon} />
-            </DropDownToggler>
+            </DropDownLavelContent>
             {!isOpen ? null : (
               <OptionDropdownComponent
                 {...{

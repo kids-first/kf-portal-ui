@@ -19,18 +19,17 @@ export const OptionDropdownWrapper = styled('div')`
     `};
 `;
 
-export const DropDownToggler = styled('div')`
-  display: 'flex',
-  cursor: 'pointer',
-  flexGrow: 1,
-  height: '100%',
-  alignItems: 'center',
-  justifyContent: 'space-between',
+export const DropDownLavelContent = styled('div')`
+  display: flex;
+  cursor: pointer;
+  flex-grow: 1;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const ToggleImage = styled('img')`
   width: 9px;
-  margin-left: 7px;
   margin-right: 12px;
   transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
   transition: transform 0.2s;

@@ -60,6 +60,10 @@ const Divider = styled('div')`
   margin: 20px 0px;
 `;
 
+const StyledReportsDownloadInput = styled(ReportsDownloadInput)`
+  width: 100%;
+`;
+
 const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', true))(
   ({
     theme,
@@ -105,7 +109,7 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
               <FileManifestsDownloadInput {...props} />
             </Subsection>
             <Subsection heading={<Trans>Reports</Trans>}>
-              <ReportsDownloadInput {...props} />
+              <StyledReportsDownloadInput {...props} />
             </Subsection>
           </div>
           <Divider />
