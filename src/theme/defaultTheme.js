@@ -163,14 +163,12 @@ const components = {
     border-radius: 0px;
     color: #fff;
     padding: 0px 16px;
-    font-size: 14px;
-    font-weight: 800;
     line-height: 1.86;
     letter-spacing: 0.2px;
-    margin: 0px 4px;
     border-radius: 19px;
     background-color: ${colors.tertiary};
     white-space: nowrap;
+    text-transform: uppercase;
 
     &:hover {
       background-color: ${colors.tertiaryHover};

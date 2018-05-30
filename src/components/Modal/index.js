@@ -1,5 +1,5 @@
 import React from 'react';
-import Modal from 'react-modal';
+import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import CloseIcon from 'react-icons/lib/md/close';
 import { css } from 'emotion';
@@ -9,6 +9,18 @@ import { getAppElement } from '../../services/globalDomNodes.js';
 import LoadingOnClick from 'components/LoadingOnClick';
 import ErrorIcon from 'icons/ErrorIcon';
 import Spinner from 'react-spinkit';
+
+import {
+  ModalFooterContainer,
+  ModalActionButton,
+  CancelButton,
+  ModalFooterContent,
+  ModalWarningContainer,
+  ModalWarningErrorWrapper,
+  ModalWarningErrorContent,
+  Modal,
+  ModalContent,
+} from './ui';
 
 const enhance = compose(withTheme, injectState);
 
@@ -43,56 +55,16 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
   </div>
 );
 
-export const ModalSubHeader = withTheme(({ theme, children, className, ...props }) => (
-  <div
-    className={`${css`
-      ${theme.modalHeader};
-      margin-bottom: 9px;
-    `} ${className}`}
-    {...props}
-  >
-    {children}
-  </div>
-));
-
 export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
-    <div
-      css={`
-        display: flex;
-        flex-direction: row;
-        align-items: left;
-        background-color: #f9dee1;
-        border-radius: 7px;
-        border-style: solid;
-        border-color: #e45562;
-        border-width: 1px;
-        padding: 10px;
-        margin-bottom: 1em;
-      `}
-    >
-      <div
-        css={`
-          padding-right: 10px;
-        `}
-      >
+    <ModalWarningContainer>
+      <ModalWarningErrorWrapper>
         <ErrorIcon width={30} height={30} fill={`#e45562`} />
-      </div>
-      <div
-        css={`
-          padding-top: 2px;
-          line-height: 1.6em;
-        `}
-      >
-        {props.children}
-      </div>
-    </div>
+      </ModalWarningErrorWrapper>
+      <ModalWarningErrorContent>{props.children}</ModalWarningErrorContent>
+    </ModalWarningContainer>
   );
 });
-
-export const ActionButton = withTheme(({ theme, ...rest }) => (
-  <button className={theme.actionButton} {...rest} />
-));
 
 export const ModalFooter = enhance(
   ({
@@ -109,32 +81,9 @@ export const ModalFooter = enhance(
     ...props
   }) => {
     return (
-      <div
-        className={css`
-          ${theme.row} background-color: #edeef1;
-          border-radius: 5px;
-          padding: 1em;
-          margin-top: 1em;
-          justify-content: space-between;
-          position: absolute;
-          left: 0px;
-          right: 0px;
-          bottom: 0px;
-        `}
-      >
-        <button css={theme.wizardButton} onClick={() => handleCancelClick()}>
-          {cancelText}
-        </button>
-        <div
-          className={css`
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex: 1;
-          `}
-        >
-          {children}
-        </div>
+      <ModalFooterContainer>
+        <CancelButton onClick={() => handleCancelClick()}>{cancelText}</CancelButton>
+        <ModalFooterContent>{children}</ModalFooterContent>
         {showSubmit && (
           <LoadingOnClick
             onClick={handleSubmit}
@@ -142,16 +91,16 @@ export const ModalFooter = enhance(
             readyContent={submitText}
             loadingContent={submitLoadingContent}
             render={({ onClick, loading, readyContent, loadingContent, submitDisabled }) => (
-              <ActionButton disabled={submitDisabled} onClick={onClick}>
+              <ModalActionButton disabled={submitDisabled} onClick={onClick}>
                 <span>
                   {loading && loadingContent}
                   {readyContent}
                 </span>
-              </ActionButton>
+              </ModalActionButton>
             )}
           />
         )}
-      </div>
+      </ModalFooterContainer>
     );
   },
 );
@@ -164,6 +113,8 @@ const ModalView = ({
   ...props
 }) => (
   <Modal
+    isFooterShown={isFooterShown}
+    className={`${classNames ? classNames.modal : ''}`}
     overlayClassName={`${css`
       position: fixed;
       top: 0px;
@@ -174,26 +125,6 @@ const ModalView = ({
       display: block;
       z-index: 1000;
     `} ${classNames ? classNames.overlay : ''}`}
-    className={`${css`
-      top: 50%;
-      left: 50%;
-      right: auto;
-      bottom: auto;
-      position: absolute;
-      border: 1px solid rgb(204, 204, 204);
-      background: rgb(255, 255, 255);
-      border-radius: 4px;
-      transform: translate(-50%, -50%);
-      width: 95%;
-      padding: 20px 20px;
-      max-width: 1000px;
-      max-height: 95%;
-      box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
-      overflow: visible;
-      display: flex;
-      flex-direction: column;
-      ${isFooterShown ? 'padding-bottom: 75px;' : ''};
-    `} ${classNames ? classNames.modal : ''}`}
     {...{
       appElement: getAppElement(),
       isOpen: !!component,
@@ -201,19 +132,10 @@ const ModalView = ({
     }}
   >
     {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
-    <div
-      className={`${css`
-        z-index: 1000;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-      `}
-      ${classNames ? classNames.content : ''}
-    }`}
-    >
-      {component}
-    </div>
+    <ModalContent className={`${classNames ? classNames.content : ''}`}>{component}</ModalContent>
   </Modal>
 );
 
 export default enhance(ModalView);
+export { ModalActionButton } from './ui';
+export { ModalSubHeader } from './ui';
