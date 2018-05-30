@@ -13,7 +13,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
   <div
     css={`
       border-radius: 30px;
-      background-color: #f4f5f8;
+      background-color: ${theme.backgroundGrey};
       border: solid 1px ${theme.greyScale5};
       padding: 10px 10px;
       ${theme.row};

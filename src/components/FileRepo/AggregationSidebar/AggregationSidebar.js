@@ -26,6 +26,7 @@ const AggregationWrapper = styled('div')`
   border-style: solid;
   border-width: 0 1px 0 0;
   flex: none;
+  background: ${({ theme }) => theme.backgroundGrey};
 `;
 
 const AggregationHeader = styled('div')`

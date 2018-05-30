@@ -12,6 +12,7 @@ const colors = {
   errorDark: '#d8202f', //red
   errorLight: '#fadfe1', //light red (pink) fill
   borderGrey: '#cacbcf',
+  backgroundGrey: '#f4f5f8',
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey

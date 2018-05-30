@@ -29,6 +29,7 @@ const Container = styled('div')`
   width: ${({ containerWidth, contentSidePadding }) => containerWidth + contentSidePadding * 2}px;
   min-width: 265px;
   height: 100%;
+  background: ${({ theme }) => theme.backgroundGrey};
 `;
 
 const Titlebar = styled('div')`

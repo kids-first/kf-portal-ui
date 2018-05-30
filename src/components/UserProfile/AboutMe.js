@@ -309,7 +309,7 @@ export default compose(
           <div>
             <div
               css={`
-                background-color: #f4f5f8;
+                background-color: ${theme.backgroundGrey};
                 border: solid 1px #d4d6dd;
                 padding: 0.5em;
                 border-radius: 5px;
