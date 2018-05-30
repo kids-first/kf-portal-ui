@@ -5,7 +5,7 @@ export const OptionDropdownWrapper = styled('div')`
   background: white;
   min-width: 100%;
   z-index: 1;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid ${({ theme }) => theme.borderGrey};
   box-sizing: border-box;
   cursor: pointer;
   padding: 5px;
