@@ -1,7 +1,5 @@
 import React from 'react';
 import Downshift from 'downshift';
-import { truncate } from 'lodash';
-import { css } from 'emotion';
 
 import downChevronIcon from '../../assets/icon-chevron-down-grey.svg';
 import {
