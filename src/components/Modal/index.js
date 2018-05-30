@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import CloseIcon from 'react-icons/lib/md/close';
 import { css } from 'emotion';
