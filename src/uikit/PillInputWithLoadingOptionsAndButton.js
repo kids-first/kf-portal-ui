@@ -2,6 +2,7 @@ import React from 'react';
 import { isEqual, keys, mapValues } from 'lodash';
 import Spinner from 'react-spinkit';
 import { css } from 'emotion';
+import styled from 'react-emotion';
 
 import Select, { SelectOptionDropdown, DropDownOption } from '../uikit/Select';
 import PillInputWithButton from './PillInputWithButton';
@@ -19,6 +20,11 @@ const LoadingSpinner = () => (
     }}
   />
 );
+
+const StyledSelect = styled(Select)`
+  flex-shrink: 2;
+  min-width: 0px;
+`;
 
 class PillInputWithLoadingOptionsAndButton extends React.Component {
   initOptionState = (props, val = { enabled: true, loading: false }) =>
@@ -76,7 +82,6 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
       tooltipStyle,
       options,
       LoadingComponent = LoadingSpinner,
-      selectedLabelTextTruncate,
       ...props
     } = this.props;
     const { isDropdownOpen, optionState, selected } = this.state;
@@ -91,7 +96,7 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
             return options[selected].onSelected();
           }}
           SelectComponent={selectProps => (
-            <Select
+            <StyledSelect
               {...selectProps}
               align="left"
               isOpen={isDropdownOpen}
@@ -99,7 +104,6 @@ class PillInputWithLoadingOptionsAndButton extends React.Component {
               highlightedIndex={null}
               items={Object.keys(options)}
               onToggle={this.onToggle}
-              selectedLabelTextTruncate={selectedLabelTextTruncate}
               OptionDropdownComponent={dropDownProps => (
                 <SelectOptionDropdown
                   {...dropDownProps}

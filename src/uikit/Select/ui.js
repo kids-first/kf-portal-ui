@@ -21,6 +21,15 @@ export const DropDownLabelContent = styled('div')`
   height: 100%;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  text-overflow: ellipsis;
+`;
+
+export const DropDownLabelContentText = styled('div')`
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const ToggleImage = styled('img')`
