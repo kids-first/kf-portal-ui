@@ -3,10 +3,11 @@ import { withRouter } from 'react-router';
 import { injectState } from 'freactal';
 import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
+import { Trans } from 'react-i18next';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
@@ -18,7 +19,42 @@ import {
 import { ButtonsDiv } from '../Join';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 
-const StyledLabel = styled('label')`
+import Row from 'uikit/Row';
+import Column from 'uikit/Column';
+import CheckboxBubble from 'uikit/CheckboxBubble';
+
+const SelectRoleForm = styled('form')`
+  justify-content: space-around;
+  overflow-y: scroll;
+`;
+
+const FieldInput = styled(Field)`
+  ${({ theme }) => theme.input};
+  width: 374px;
+`;
+
+const RoleBubble = styled(CheckboxBubble)`
+  width: 560px;
+  padding: 5px;
+  margin-top: 10px;
+  line-height: 1.67;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: ${({ theme }) => theme.greyScale0};
+  font-size: 12px;
+`;
+
+const RoleLabel = styled('label')`
+  color: ${({ theme }) => theme.secondary};
+  font-weight: 600;
+  display: block;
+  text-transform: capitalize;
+  border: none;
+  font-size: 15px;
+  line-height: 1.33;
+`;
+
+const Label = styled('label')`
   width: 215px;
   padding-right: 3px;
   text-decoration: none;
@@ -26,7 +62,12 @@ const StyledLabel = styled('label')`
   font-size: 13px;
   font-weight: 600;
   line-height: 2;
-  color: ${props => props.theme.greyScale1};
+  color: ${({ theme }) => theme.greyScale1};
+`;
+
+const CheckboxLabel = styled(`label`)`
+  font-size: 14px;
+  margin-left: 10px;
 `;
 
 export const enhance = compose(
@@ -35,12 +76,23 @@ export const enhance = compose(
   withRouter,
   withFormik({
     mapPropsToValues: ({
-      state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
+      state: {
+        loggedInUser = {
+          firstName: '',
+          lastName: '',
+          email: '',
+          roles: [],
+          acceptedKfOptIn: false,
+          acceptedNihOptIn: false,
+        },
+      },
     }) => ({
       firstName: loggedInUser.firstName || '',
       lastName: loggedInUser.lastName || '',
       email: loggedInUser.email || '',
       roles: (loggedInUser.roles && loggedInUser.roles[0]) || '',
+      acceptedKfOptIn: loggedInUser.acceptedKfOptIn || false,
+      acceptedNihOptIn: loggedInUser.acceptedNihOptIn || false,
     }),
     isInitialValid: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
@@ -69,7 +121,14 @@ export const enhance = compose(
     handleSubmit: async (
       values: any,
       {
-        props: { state: { loggedInUser }, effects: { setUser }, onFinish, api, ...restProps, location:{pathname} },
+        props: {
+          state: { loggedInUser },
+          effects: { setUser },
+          onFinish,
+          api,
+          location: { pathname },
+          ...restProps
+        },
         setSubmitting,
         setErrors,
       }: any,
@@ -81,6 +140,8 @@ export const enhance = compose(
           firstName: values.firstName,
           lastName: values.lastName,
           roles: [values.roles],
+          acceptedKfOptIn: !!values.acceptedKfOptIn,
+          acceptedNihOptIn: !!values.acceptedNihOptIn,
         },
       }).then(
         async profile => {
@@ -100,172 +161,156 @@ export const enhance = compose(
   withPropsOnChange(['isValid'], ({ isValid, onValidChange }) => onValidChange(isValid)),
 );
 
-export const SelectRoleForm = ({
-  theme,
-  onFinish,
-  errors,
-  touched,
-  handleSubmit,
-  setFieldValue,
-  submitForm,
-  validate,
-  isSubmitting,
-  values,
-  state: { percentageFilled },
-  nextStep,
-  nextDisabled,
-  prevDisabled,
-}) => {
-  return (
-    <div className={theme.column}>
-      <form
-        onSubmit={handleSubmit}
-        className={css`justify-content: space-around; overflow-y: scroll`}
-      >
-        <div className={theme.row}>
-          <StyledLabel>My first name is:</StyledLabel>
-          <div className={theme.column}>
+export default enhance(
+  ({
+    theme,
+    onFinish,
+    errors,
+    touched,
+    handleSubmit,
+    setFieldValue,
+    submitForm,
+    validate,
+    isSubmitting,
+    values,
+    state: { percentageFilled },
+    nextStep,
+    nextDisabled,
+    prevDisabled,
+  }) => {
+    return (
+      <Column>
+        <SelectRoleForm onSubmit={handleSubmit}>
+          <Row>
+            <Label>My first name is:</Label>
+            <Column>
+              <FieldInput
+                name="firstName"
+                placeholder="First Name"
+                value={values.firstName}
+                onBlur={submitForm}
+              />
+              {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
+            </Column>
+          </Row>
+          <Row buffer>
+            <Label>My last name is:</Label>
+            <Column>
+              <FieldInput
+                name="lastName"
+                placeholder="Last Name"
+                value={values.lastName}
+                onBlur={submitForm}
+              />
+              {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
+            </Column>
+          </Row>
+          <Row buffer>
+            <Label>My email address is:</Label>
+            <Column>
+              <FieldInput
+                type="email"
+                name="email"
+                value={values.email}
+                placeholder="Email"
+                disabled="true"
+              />
+            </Column>
+          </Row>
+          <Row buffer>
+            <Label>Best describes my needs:</Label>
+            <Column>
+              {ROLES.map(({ type, description, displayName, icon, color }) => (
+                <RoleBubble
+                  key={type}
+                  active={values.roles === type}
+                  onClick={() => {
+                    setFieldValue('roles', type);
+                    if (window.location.pathname === '/join') {
+                      trackUserInteraction({
+                        category: TRACKING_EVENTS.categories.join,
+                        action: TRACKING_EVENTS.actions.userRoleSelected,
+                        label: type,
+                      });
+                    }
+                  }}
+                >
+                  <Field
+                    type="radio"
+                    value={type}
+                    checked={values.roles.toLowerCase() === type}
+                    name="roles"
+                  />
+                  {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
+                  <div>
+                    <RoleLabel>{displayName}</RoleLabel>
+                    {description}
+                  </div>
+                </RoleBubble>
+              ))}
+            </Column>
+            {touched.roles && errors.roles && <div>{errors.roles}</div>}
+          </Row>
+          <Row buffer>
             <Field
-              css={`
-                ${theme.input};
-                width: 374px;
-              `}
-              name="firstName"
-              placeholder="First Name"
-              value={values.firstName}
-              onBlur={submitForm}
+              type="checkbox"
+              value={values.acceptedKfOptIn}
+              checked={values.acceptedKfOptIn}
+              id="acceptedKfOptIn"
+              name="acceptedKfOptIn"
             />
-            {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
-          </div>
-        </div>
-        <div
-          className={css`
-            ${theme.row} margin-top: 10px;
-          `}
-        >
-          <StyledLabel>My last name is:</StyledLabel>
-          <div className={theme.column}>
+            <CheckboxLabel htmlFor="acceptedKfOptIn">
+              <Trans>
+                I would like to receive the Kids First Data Resource Center quarterly newsletter to
+                get the latest DRC news including recent study updates, new investigators and
+                partners added to the effort.
+              </Trans>
+            </CheckboxLabel>
+          </Row>
+          <Row buffer>
             <Field
-              css={`
-                ${theme.input};
-                width: 374px;
-              `}
-              name="lastName"
-              placeholder="Last Name"
-              value={values.lastName}
-              onBlur={submitForm}
+              type="checkbox"
+              value={values.acceptedNihOptIn}
+              checked={values.acceptedNihOptIn}
+              id="acceptedNihOptIn"
+              name="acceptedNihOptIn"
             />
-            {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
-          </div>
-        </div>
+            <CheckboxLabel htmlFor="acceptedNihOptIn">
+              <Trans>
+                I would like to receive updates from the NIH Kids First program including funding
+                updates and news about the program.
+              </Trans>
+            </CheckboxLabel>
+          </Row>
+        </SelectRoleForm>
 
-        <div
-          className={css`
-            ${theme.row} margin-top: 10px;
-          `}
-        >
-          <StyledLabel>My email address is:</StyledLabel>
-          <div className={theme.column}>
-            <Field
-              css={`
-                ${theme.input};
-                width: 374px;
-              `}
-              type="email"
-              name="email"
-              value={values.email}
-              placeholder="Email"
-              disabled="true"
-            />
-          </div>
-        </div>
-
-        <div className={theme.row}>
-          <StyledLabel>Best describes my needs:</StyledLabel>
-          <div className={theme.column}>
-            {ROLES.map(({ type, description, displayName, icon, color }) => (
-              <div
-                key={type}
-                className={css`
-                  ${theme.row} border-radius: 10px;
-                  background-color: ${values.roles === type ? '#e5f7fd' : '#fff'};
-                  border: solid 1px ${values.roles === type ? theme.active : theme.greyScale4};
-                  width: 560px;
-                  padding: 5px;
-                  justify-content: space-between;
-                  align-items: center;
-                  margin-top: 10px;
-                  ${theme.normalText};
-                `}
-                onClick={() => {
-                  setFieldValue('roles', type);
-                  if (window.location.pathname === '/join') {
-                    trackUserInteraction({
-                      category: TRACKING_EVENTS.categories.join,
-                      action: TRACKING_EVENTS.actions.userRoleSelected,
-                      label: type
-                    });
-                  }
-                }}
-              >
-                <Field
-                  type="radio"
-                  value={type}
-                  checked={values.roles.toLowerCase() === type}
-                  name="roles"
-                />
-                {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
-                <div>
-                  <label
-                    className={css`
-                      color: ${theme.secondary};
-                      font-weight: 600;
-                      display: block;
-                      text-transform: capitalize;
-                      border: none;
-                      font-size: 15px;
-                      line-height: 1.33;
-                    `}
-                  >
-                    {displayName}
-                  </label>
-                  {description}
-                </div>
-              </div>
-            ))}
-          </div>
-          {touched.roles && errors.roles && <div>{errors.roles}</div>}
-        </div>
-      </form>
-
-      <ButtonsDiv>
-        <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
-          <LeftIcon />
-          Back
-        </DeleteButton>
-        <div className={theme.row}>
-          <DeleteButton
-            css={`
-              ${theme.wizardButton} font-weight: 300;
-            `}
-          >
-            Cancel
+        <ButtonsDiv>
+          <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
+            <LeftIcon />
+            Back
           </DeleteButton>
-          <button
-            className={theme.actionButton}
-            onClick={() => {
-              submitForm();
-              nextStep();
-            }}
-            disabled={nextDisabled}
-          >
-            Next
-            <RightIcon />
-          </button>
-        </div>
-      </ButtonsDiv>
-    </div>
-  );
-};
-
-export default enhance(SelectRoleForm);
+          <Row>
+            <DeleteButton
+              css={`
+                ${theme.wizardButton} font-weight: 300;
+              `}
+            >
+              Cancel
+            </DeleteButton>
+            <button
+              className={theme.actionButton}
+              onClick={() => {
+                submitForm();
+                nextStep();
+              }}
+              disabled={nextDisabled}
+            >
+              Next
+              <RightIcon />
+            </button>
+          </Row>
+        </ButtonsDiv>
+      </Column>
+    );
+  },
+);

@@ -185,7 +185,6 @@ const ModalView = ({
       border-radius: 4px;
       transform: translate(-50%, -50%);
       width: 95%;
-      box-sizing: border-box;
       padding: 20px 20px;
       max-width: 1000px;
       max-height: 95%;

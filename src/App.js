@@ -45,6 +45,7 @@ const AppContainer = styled('div')`
   height: 100vh;
   overflow: auto;
   & * {
+    box-sizing: border-box;
     font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
   }
   & button {

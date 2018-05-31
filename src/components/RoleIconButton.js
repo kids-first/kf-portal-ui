@@ -21,7 +21,6 @@ const RoleIconButton = ({ className = '', children, theme, state: { loggedInUser
       css={`
         display: flex;
         height: 42px;
-        box-sizing: border-box;
         border-radius: 21px;
         background-color: ${background};
         color: white;

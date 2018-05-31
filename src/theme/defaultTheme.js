@@ -39,13 +39,6 @@ const fonts = {
 };
 
 const components = {
-  normalText: css`
-    font-size: 12px;
-    line-height: 1.67;
-    letter-spacing: 0.2px;
-    text-align: left;
-    color: ${colors.greyScale0};
-  `,
   uppercase: css`
     text-transform: uppercase;
   `,

@@ -94,7 +94,6 @@ function Select({
               border: solid 1px #cacbcf;
               color: #343434;
               font-size: 12px;
-              box-sizing: border-box;
               display: flex;
               align-items: center;
               padding-left: 10px;

@@ -64,7 +64,6 @@ export const PillInputWithButton = ({
                 border-top-left-radius: unset;
                 border-bottom-left-radius: unset;
                 flex-grow: 1;
-                box-sizing: border-box;
                 flex: none;
               `}
             >

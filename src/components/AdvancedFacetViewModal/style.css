@@ -4,13 +4,9 @@
 .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
   border-bottom: none;
 }
-.afvModalContent{
-    position: absolute;
-    width: 95%;
-}
-
-.afvModalContent * {
-  box-sizing: border-box;
+.afvModalContent {
+  position: absolute;
+  width: 95%;
 }
 
 .afvStatContainer .statContainer {
