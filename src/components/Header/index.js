@@ -1,33 +1,30 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
 import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import ToSearchPage from 'components/links/ToSearchPage';
-
 import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
+
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
 
-import Gravtar from 'uikit/Gravatar';
 import Dropdown from 'uikit/Dropdown';
+import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';
 import { withApi } from 'services/api';
 
-const NavLink = styled(Link)`
-  ${props => props.theme.navLink};
-`;
-
-const DropdownLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
-  text-decoration: none;
-  &:hover {
-    color: ${({ theme }) => theme.highlight};
-  }
-`;
+import {
+  NavLink,
+  DropdownLink,
+  HeaderContainer,
+  GradientAccent,
+  HeaderContent,
+  Logo,
+  NavigationGravatar,
+} from './ui';
 
 const Header = ({
   state: { loggedInUser },
@@ -36,6 +33,7 @@ const Header = ({
   history,
   match: { path },
   api,
+  indeces = ['file'],
 }) => {
   const canSeeProtectedRoutes =
     loggedInUser &&
@@ -44,40 +42,14 @@ const Header = ({
       loggedInUser.acceptedTerms &&
       path !== '/join' &&
       path !== '/');
+  const currentPathName = history.location.pathname;
   return (
-    <div
-      className={css`
-        background: #fff;
-        box-shadow: 0 0 4.9px 0.1px #bbbbbb;
-        flex: none;
-        z-index: 1;
-      `}
-    >
-      <div
-        className={css`
-          width: 100%;
-          height: 5px;
-          background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
-        `}
-      />
-      <div
-        className={css`
-          display: flex;
-          justify-content: space-between;
-          padding: 10px;
-          align-items: center;
-        `}
-      >
-        <div className={theme.row}>
+    <HeaderContainer>
+      <GradientAccent />
+      <HeaderContent>
+        <Row>
           <Link to="/">
-            <img
-              src={logoPath}
-              alt="Kids First Logo"
-              className={css`
-                width: 177px;
-                height: 65px;
-              `}
-            />
+            <Logo src={logoPath} alt="Kids First Logo" />
           </Link>
           {canSeeProtectedRoutes && (
             <ul
@@ -87,18 +59,20 @@ const Header = ({
               `}
             >
               <li>
-                <NavLink to="/dashboard">
+                <NavLink currentPathName={currentPathName} to="/dashboard">
                   <HouseIcon /> <Trans>Dashboard</Trans>
                 </NavLink>
               </li>
-              <li>
-                <ToSearchPage index="file" css={theme.navLink}>
-                  <DatabaseIcon /> <Trans>File Repository</Trans>
-                </ToSearchPage>
-              </li>
+              {indeces.map(index => (
+                <li>
+                  <NavLink currentPathName={currentPathName} to={`/search/${index}`}>
+                    <DatabaseIcon /> <Trans>File Repository</Trans>
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           )}
-        </div>
+        </Row>
         <ul
           className={css`
             ${theme.navBar};
@@ -157,7 +131,7 @@ const Header = ({
                     </a>
                   </div>,
                 ]}
-                css={`
+                className={css`
                   border: 0;
                   color: ${theme.primary};
 
@@ -171,23 +145,13 @@ const Header = ({
                   padding-right: 10px;
                 `}
               >
-                <Gravtar
-                  email={loggedInUser.email || ''}
-                  size={39}
-                  css={`
-                    border-radius: 50%;
-                    padding: 2px;
-                    background-color: #fff;
-                    border: 1px solid #cacbcf;
-                    margin: 5px;
-                  `}
-                />
+                <NavigationGravatar email={loggedInUser.email || ''} size={39} />
                 {loggedInUser.firstName}
               </Dropdown>
             )}
         </ul>
-      </div>
-    </div>
+      </HeaderContent>
+    </HeaderContainer>
   );
 };
 

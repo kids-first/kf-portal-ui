@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { compose, withState, lifecycle } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
@@ -13,7 +13,6 @@ import Login from 'components/Login';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import { updateProfile } from 'services/profiles';
-import ToSearchPage from 'components/links/ToSearchPage';
 import { withApi } from 'services/api';
 import {
   trackUserInteraction,
@@ -257,15 +256,15 @@ const JoinContent = compose(
                               <div>
                                 <Trans i18nKey="join.wizard.profileOrBrowse">
                                   Fill out your profile, or skip and
-                                  <ToSearchPage
-                                    index="file"
+                                  <Link
+                                    to={`/search/file`}
                                     onClick={function() {
                                       //using 'function' so that we don't break Trans parsing
                                       closeToast();
                                     }}
                                   >
                                     browse data
-                                  </ToSearchPage>
+                                  </Link>
                                 </Trans>
                               </div>
                             ),

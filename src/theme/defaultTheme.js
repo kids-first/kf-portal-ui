@@ -41,6 +41,15 @@ const fonts = {
   details: 'Open Sans',
 };
 
+const mixins = {
+  linkButtonActive: css`
+    border-radius: 19px;
+    background-color: ${colors.primaryHover};
+    border: solid 2px ${colors.borderGrey};
+    color: ${colors.white};
+  `,
+};
+
 const components = {
   uppercase: css`
     text-transform: uppercase;
@@ -63,10 +72,7 @@ const components = {
     border: solid 2px transparent;
 
     &:hover {
-      border-radius: 19px;
-      background-color: #404c9a;
-      border: solid 2px #dcdde3;
-      color: #ffffff;
+      ${mixins.linkButtonActive};
     }
   `,
   button: css`
@@ -351,10 +357,7 @@ const components = {
     font-weight: 500;
 
     &:hover {
-      border-radius: 19px;
-      background-color: #404c9a;
-      border: solid 2px #dcdde3;
-      color: #ffffff;
+      ${mixins.linkButtonActive};
     }
   `,
   navBar: css`
@@ -557,5 +560,6 @@ const components = {
 export default {
   ...colors,
   ...components,
+  ...mixins,
   fonts,
 };
