@@ -26,7 +26,7 @@ const trackQueryShare = channel => {
 };
 
 let Bubble = styled(`span`)`
-  background-color: purple;
+  background-color: ${({ theme }) => theme.primary};
   color: white;
   padding: 4px 6px;
   border-radius: 100%;
@@ -39,7 +39,7 @@ let ItemRow = styled('div')`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: rgb(240, 240, 240);
+    background-color: ${({ theme }) => theme.greyScale6};
   }
   ${({ xcss }) => xcss};
 `;
