@@ -2,14 +2,13 @@ import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
 import { compose, withState, lifecycle } from 'recompose';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-
 import { get } from 'lodash';
-import Wizard from 'uikit/Wizard';
+
 import Login from 'components/Login';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
@@ -21,6 +20,26 @@ import {
   startAnalyticsTiming,
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
+
+import CheckboxBubble from 'uikit/CheckboxBubble';
+import Column from 'uikit/Column';
+import TextArea from 'uikit/TextArea';
+import Wizard from 'uikit/Wizard';
+
+const ConsentContainer = styled(Column)`
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Terms = styled(TextArea)`
+  height: 250px;
+  overflow-y: scroll;
+`;
+
+const Label = styled('label')`
+  margin-left: 10px;
+  font-size: 14px;
+`;
 
 const Consent = compose(
   injectState,
@@ -38,34 +57,16 @@ const Consent = compose(
     disableNextStep,
     accepted,
     setAccepted,
-    customStepMessage,
-    setCustomStepMessage = () => {},
     api,
   }) => {
     return (
-      <div
-        className={css`
-          ${theme.column} justify-content: space-between;
-          align-items: center;
-        `}
-      >
-        <h3
-          className={css`
-            ${theme.h3} width: 90%;
-          `}
-        >
+      <ConsentContainer>
+        <h3 className={theme.h3}>
           <Trans i18nKey="join.terms.instructions">
             Read and consent to our terms and conditions
           </Trans>
         </h3>
-        <div
-          css={`
-            height: 250px;
-            width: 90%;
-            overflow-y: scroll;
-            ${theme.textarea};
-          `}
-        >
+        <Terms>
           <b>
             <Trans i18nKey="join.terms.title">Draft for Demo Purposes</Trans>
           </b>
@@ -103,59 +104,38 @@ const Consent = compose(
               contrary to the terms of data access.
             </li>
           </ol>
-        </div>
-        <div
-          className={css`
-            border-radius: 10px;
-            background-color: #e5f7fd;
-            border: solid 1px ${theme.active};
-            background-color: #${accepted ? `e5f7fd` : `ffffff`};
-            border: solid 1px #${accepted ? `00afed` : `cacbcf`};
-            width: 90%;
-            margin-top: 10px;
-            padding: 10px 25px;
-          `}
-        >
-          <input
-            type="checkbox"
-            checked={accepted}
-            onChange={event => {
-              const { email, percentageFilled, ...rest } = loggedInUser;
-              if (event.target.checked) {
-                setCustomStepMessage(null);
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.join,
-                  action: TRACKING_EVENTS.actions.acceptedTerms,
-                  label: TRACKING_EVENTS.labels.joinProcess,
-                });
-              }
-              setAccepted(event.target.checked);
-              disableNextStep(!event.target.checked);
-              updateProfile(api)({
-                user: {
-                  ...rest,
-                  acceptedTerms: event.target.checked,
-                },
-              }).then(async profile => {
-                await setUser({ ...profile, email, api });
+        </Terms>
+        <CheckboxBubble
+          buffer
+          onClick={active => {
+            const { email, percentageFilled, ...rest } = loggedInUser;
+            if (active) {
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.join,
+                action: TRACKING_EVENTS.actions.acceptedTerms,
+                label: TRACKING_EVENTS.labels.joinProcess,
               });
-            }}
-          />
-          <Trans i18nKey="join.terms.userAgreement">
-            I have read and agreed to the Kids First Data Research Portal Term and Conditions
-          </Trans>
-        </div>
-        {customStepMessage && (
-          <div
-            className={css`
-              color: red;
-              width: 90%;
-            `}
-          >
-            {customStepMessage}
-          </div>
-        )}
-      </div>
+            }
+            setAccepted(active);
+            disableNextStep(!active);
+            updateProfile(api)({
+              user: {
+                ...rest,
+                acceptedTerms: active,
+              },
+            }).then(async profile => {
+              await setUser({ ...profile, email, api });
+            });
+          }}
+        >
+          <input type="checkbox" checked={accepted} />
+          <Label>
+            <Trans i18nKey="join.terms.userAgreement">
+              I have read and agreed to the Kids First Data Research Portal Term and Conditions
+            </Trans>
+          </Label>
+        </CheckboxBubble>
+      </ConsentContainer>
     );
   },
 );
@@ -170,6 +150,12 @@ export const ButtonsDiv = styled('div')`
   min-height: 38px;
 `;
 
+const JoinContainer = styled(Column)`
+  width: 830px;
+  margin: auto;
+  max-height: 90%;
+`;
+
 const JoinContent = compose(
   injectState,
   withRouter,
@@ -181,13 +167,7 @@ const JoinContent = compose(
     },
   }),
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
-  <div
-    className={`${theme.column} ${css`
-      width: 830px;
-      margin: auto;
-      max-height: 90%;
-    `}`}
-  >
+  <JoinContainer>
     <div className={`${theme.card} ${theme.column} `}>
       <h2 className={theme.h2}>
         <Trans>Join Kids First</Trans>
@@ -248,22 +228,12 @@ const JoinContent = compose(
           },
           {
             title: 'Consent',
-            render: ({
-              disableNextStep,
-              customStepMessage,
-              setCustomStepMessage,
-              nextStep,
-              prevStep,
-              nextDisabled,
-              prevDisabled,
-            }) => (
+            render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <Fragment>
                 <Consent
                   {...{
                     api,
                     disableNextStep,
-                    customStepMessage,
-                    setCustomStepMessage,
                   }}
                 />
                 <ButtonsDiv>
@@ -276,6 +246,7 @@ const JoinContent = compose(
                       <Trans>Cancel</Trans>
                     </DeleteButton>
                     <button
+                      disabled={nextDisabled}
                       className={theme.actionButton}
                       onClick={() => {
                         if (!nextDisabled) {
@@ -305,8 +276,6 @@ const JoinContent = compose(
                             label: `Join Completion: egoId ${loggedInUser.egoId}`,
                           });
                           history.push(`/user/${loggedInUser.egoId}`);
-                        } else {
-                          setCustomStepMessage('You must accept terms to continue');
                         }
                       }}
                     >
@@ -322,6 +291,6 @@ const JoinContent = compose(
         ]}
       />
     </div>
-  </div>
+  </JoinContainer>
 ));
 export default JoinContent;

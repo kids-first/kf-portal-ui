@@ -90,7 +90,6 @@ const customTableColumns = ({ theme }) => [
 const ArrangerContainer = styled('div')`
   display: flex;
   height: 100%;
-  box-sizing: border-box;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
@@ -119,7 +118,6 @@ const TableContainer = styled('div')`
   padding: 30px;
   position: relative;
   height: 100%;
-  box-sizing: border-box;
   overflow-y: auto;
 `;
 

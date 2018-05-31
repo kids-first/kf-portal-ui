@@ -17,7 +17,6 @@ function Dropdown({ items, className, children, align = 'right', ...rest }) {
             border: solid 1px #cacbcf;
             color: #343434;
             font-size: 12px;
-            box-sizing: border-box;
             display: flex;
             align-items: center;
             padding-left: 10px;
@@ -54,7 +53,6 @@ function Dropdown({ items, className, children, align = 'right', ...rest }) {
               background: white;
               min-width: 100%;
               z-index: 1;
-              box-sizing: border-box,
               cursor: pointer;
               padding: 5,
               right: ${align === 'right' ? 0 : 'auto'};

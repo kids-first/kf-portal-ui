@@ -16,7 +16,7 @@ const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) =>
         status: i === index ? 'active' : (i === steps.length - 1 && 'last') || 'inactive',
       }))
       .map(({ title, status }, i) => (
-        <div>
+        <div key={i}>
           <div
             onClick={() => i < index && (steps[i] || { canGoBack: false }).canGoBack && setIndex(i)}
             key={title}

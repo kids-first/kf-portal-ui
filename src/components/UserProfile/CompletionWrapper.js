@@ -9,7 +9,6 @@ const CompletionWrapper = ({ completed, theme, children, className, innerCircleS
   return (
     <div
       css={`
-        box-sizing: border-box;
         width: 208px;
         padding: 0.73%;
         border-radius: 50%;

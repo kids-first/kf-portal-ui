@@ -19,7 +19,6 @@ const AutocompleteInput = styled('input')`
   padding: 7px;
   border-radius: 7px;
   border: 1px solid ${({ theme }) => theme.greyScale8};
-  box-sizing: border-box;
 `;
 
 const DropdownMenu = styled('div')`
