@@ -14,19 +14,11 @@ const AfvContainer = styled('div')`
   display: flex;
   position: relative;
 
-  * {
-    box-sizing: border-box;
-  }
-
   .advancedFacetViewWrapper {
     padding: 0px;
   }
   .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
     border-bottom: none;
-  }
-  .afvModalContent {
-    position: absolute;
-    width: 100%;
   }
 
   .afvStatContainer .statContainer {
@@ -59,7 +51,7 @@ class AdvancedFacetViewModalContent extends React.Component {
     } = this.props;
     return (
       <React.Fragment>
-        <AfvContainer className={`afvModalContent`}>
+        <AfvContainer>
           <AdvancedFacetView
             {...props}
             sqon={localSqon}

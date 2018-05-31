@@ -135,9 +135,9 @@ const TableWrapper = styled('div')`
 
 const QuerySharingContainer = styled('div')`
   ${({ theme }) => theme.row};
-  border-top: 1px solid ${({ theme }) => theme.borderGrey};
-  border-right: 1px solid ${({ theme }) => theme.borderGrey};
-  border-bottom: 1px solid ${({ theme }) => theme.borderGrey};
+  border-style: solid;
+  border-color: ${({ theme }) => theme.borderGrey};
+  border-width: 1px 1px 1px 0;
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 

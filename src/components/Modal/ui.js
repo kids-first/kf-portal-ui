@@ -1,9 +1,11 @@
 import styled from 'react-emotion';
 import { ActionButton } from 'uikit/Button';
+import Column from 'uikit/Column';
 import ReactModal from 'react-modal';
 
 export const ModalFooterContainer = styled('div')`
-  ${({ theme }) => theme.row} background-color: #edeef1;
+  ${({ theme }) => theme.row};
+  background-color: #edeef1;
   border-radius: 5px;
   padding: 1em;
   margin-top: 1em;
@@ -16,9 +18,7 @@ export const ModalFooterContainer = styled('div')`
 `;
 
 export const ModalFooterContent = styled('div')`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  ${({ theme }) => theme.center};
   flex: 1;
 `;
 
@@ -38,11 +38,9 @@ export const ModalWarningContainer = styled('div')`
   display: flex;
   flex-direction: row;
   align-items: left;
-  background-color: #f9dee1;
+  background-color: ${({ theme }) => theme.errorBackground};
   border-radius: 7px;
-  border-style: solid;
-  border-color: #e45562;
-  border-width: 1px;
+  border-style: solid 1px ${({ theme }) => theme.errorBorder};
   padding: 10px;
   margin-bottom: 1em;
 `;
@@ -62,26 +60,27 @@ export const Modal = styled(ReactModal)`
   right: auto;
   bottom: auto;
   position: absolute;
-  border: 1px solid rgb(204, 204, 204);
-  background: rgb(255, 255, 255);
+  border: 1px solid ${({ theme }) => theme.borderGrey};
+  background: ${({ theme }) => theme.white};
   border-radius: 4px;
   transform: translate(-50%, -50%);
   width: 95%;
   padding: 20px 20px;
   max-width: 1000px;
   max-height: 95%;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+  box-shadow: ${({ theme }) => theme.shadow} 0px 5px 15px;
   overflow: visible;
   display: flex;
   flex-direction: column;
   padding-bottom: ${({ isFooterShown }) => (isFooterShown ? '75px' : '')};
+  & * {
+    box-sizing: border-box;
+  }
 `;
 
-export const ModalContent = styled('div')`
+export const ModalContent = styled(Column)`
   z-index: 1000;
   flex: 1;
-  display: flex;
-  flex-direction: column;
 `;
 
 export const ModalSubHeader = styled('div')`

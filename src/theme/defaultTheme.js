@@ -13,6 +13,8 @@ const colors = {
   errorLight: '#fadfe1', //light red (pink) fill
   borderGrey: '#cacbcf',
   backgroundGrey: '#f4f5f8',
+  errorBackground: '#f9dee1',
+  errorBorder: `#e45562`,
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
@@ -31,7 +33,7 @@ const colors = {
   greyScale1: 'rgb(52, 52, 52)', //#343434
   greyScale0: 'rgb(36,36,36)',
 
-  shadow: '#a0a0a3',
+  shadow: 'rgba(0, 0, 0, 0.5)',
 };
 
 const fonts = {
