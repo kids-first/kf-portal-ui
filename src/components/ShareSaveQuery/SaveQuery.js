@@ -18,8 +18,6 @@ import { ButtonContainer, CustomLightButotn } from './ui';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-import { css } from 'react-emotion';
-
 export default injectState(
   class extends React.Component {
     constructor(props) {

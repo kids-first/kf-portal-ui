@@ -2,7 +2,6 @@ import React from 'react';
 import { injectState } from 'freactal';
 import urlJoin from 'url-join';
 import Spinner from 'react-spinkit';
-import { css } from 'react-emotion';
 import ShareIcon from 'react-icons/lib/fa/share-alt';
 import ChainIcon from 'react-icons/lib/fa/chain';
 import FBIcon from 'react-icons/lib/fa/facebook';
@@ -16,6 +15,7 @@ import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { ButtonContainer, CustomLightButotn } from './ui';
+import styled from 'react-emotion';
 
 const trackQueryShare = channel => {
   trackUserInteraction({
@@ -25,34 +25,24 @@ const trackQueryShare = channel => {
   });
 };
 
-let Bubble = p => (
-  <span
-    css={`
-      background-color: purple;
-      color: white;
-      padding: 4px 6px;
-      border-radius: 100%;
-      margin-right: 10px;
-    `}
-    {...p}
-  />
-);
+let Bubble = styled(`span`)`
+  background-color: purple;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 100%;
+  margin-right: 10px;
+`;
 
-let ItemRow = ({ xcss = '', ...props }) => (
-  <div
-    css={`
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      &:hover {
-        background-color: rgb(240, 240, 240);
-      }
-      ${xcss};
-    `}
-    {...props}
-  />
-);
+let ItemRow = styled('div')`
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(240, 240, 240);
+  }
+  ${({ xcss }) => xcss};
+`;
 
 export default injectState(
   class extends React.Component {
