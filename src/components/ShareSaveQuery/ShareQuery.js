@@ -15,6 +15,7 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+import { ButtonContainer, CustomLightButotn } from './ui';
 
 const trackQueryShare = channel => {
   trackUserInteraction({
@@ -58,12 +59,7 @@ export default injectState(
     state = { link: null, copied: false, error: null };
 
     share = () => {
-      let {
-        stats,
-        sqon,
-        api,
-        state: { loggedInUser },
-      } = this.props;
+      let { stats, sqon, api, state: { loggedInUser } } = this.props;
       shortenApi({ stats, sqon, loggedInUser, api })
         .then(data => {
           this.setState({
@@ -78,28 +74,8 @@ export default injectState(
     render() {
       const { className = '', disabled } = this.props;
       return (
-        <div
-          css={`
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            background-color: aliceblue;
-            border: 1px solid #d6d6d6;
-            ${className};
-          `}
-        >
-          <div
-            id="share"
-            className={`
-              sqon-bubble
-              sqon-clear
-              ${css`
-                cursor: ${disabled ? `default` : `pointer`};
-              `}
-            `}
-            onClick={disabled ? () => {} : this.share}
-          >
+        <ButtonContainer className={className}>
+          <CustomLightButotn disabled={disabled} onClick={disabled ? () => {} : this.share}>
             <Tooltip
               position="bottom"
               trigger="click"
@@ -199,8 +175,8 @@ export default injectState(
             >
               <ShareIcon />&nbsp;<Trans>share</Trans>
             </Tooltip>
-          </div>
-        </div>
+          </CustomLightButotn>
+        </ButtonContainer>
       );
     }
   },

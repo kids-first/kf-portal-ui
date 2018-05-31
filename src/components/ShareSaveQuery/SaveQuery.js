@@ -14,6 +14,7 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
+import { ButtonContainer, CustomLightButotn } from './ui';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
@@ -38,12 +39,7 @@ export default injectState(
     }
 
     save = () => {
-      let {
-        stats,
-        sqon,
-        api,
-        state: { loggedInUser },
-      } = this.props;
+      let { stats, sqon, api, state: { loggedInUser } } = this.props;
       this.setState({ loading: true });
       shortenApi({ stats, sqon, queryName: this.state.queryName, loggedInUser, api })
         .then(data => {
@@ -62,7 +58,7 @@ export default injectState(
           this.setState({ error: true, loading: false });
           trackUserInteraction({
             category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-            action: TRACKING_EVENTS.actions.query.save + ' FAILED'
+            action: TRACKING_EVENTS.actions.query.save + ' FAILED',
           });
         });
     };
@@ -71,26 +67,9 @@ export default injectState(
       const { className = '', disabled } = this.props;
       return (
         !!this.props.state.loggedInUser && (
-          <div
-            css={`
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 10px;
-              background-color: aliceblue;
-              border: 1px solid #d6d6d6;
-              ${className};
-            `}
-          >
-            <div
-              id="save"
-              className={`
-                sqon-bubble
-                sqon-clear
-                ${css`
-                  cursor: ${disabled ? `default` : `pointer`};
-                `}
-              `}
+          <ButtonContainer className={className}>
+            <CustomLightButotn
+              disabled={disabled}
               onClick={() =>
                 !disabled &&
                 this.setState({ open: true }, () => {
@@ -250,8 +229,8 @@ export default injectState(
                   </Tooltip>
                 )}
               </Route>
-            </div>
-          </div>
+            </CustomLightButotn>
+          </ButtonContainer>
         )
       );
     }

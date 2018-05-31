@@ -133,6 +133,14 @@ const TableWrapper = styled('div')`
   }
 `;
 
+const QuerySharingContainer = styled('div')`
+  ${({ theme }) => theme.row};
+  border-top: 1px solid ${({ theme }) => theme.borderGrey};
+  border-right: 1px solid ${({ theme }) => theme.borderGrey};
+  border-bottom: 1px solid ${({ theme }) => theme.borderGrey};
+  background: ${({ theme }) => theme.backgroundGrey};
+`;
+
 const FileRepo = compose(injectState, withTheme, withApi)(
   ({
     state,
@@ -200,7 +208,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   {...props}
                                   {...url}
                                   render={({ data: stats, loading: disabled }) => (
-                                    <div className={theme.column}>
+                                    <QuerySharingContainer>
                                       <ShareQuery
                                         api={props.api}
                                         {...url}
@@ -217,7 +225,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                           flex: 1;
                                         `}
                                       />
-                                    </div>
+                                    </QuerySharingContainer>
                                   )}
                                 />
                               )}
