@@ -16,6 +16,7 @@ import { ModalFooter, ModalWarning, ModalActionButton } from './Modal';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
+import Row from 'uikit/Row';
 
 const wait = (s = 1) => new Promise(r => setTimeout(r, s * 1000));
 
@@ -49,6 +50,11 @@ const GenerateButton = styled(ModalActionButton)`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const FooterContentContainer = styled(Row)`
+  flex: 1;
+  height: 100%;
 `;
 
 const GenerateManifestSet = compose(injectState, withTheme)(
@@ -143,14 +149,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
     onManifestGenerated = () => {},
   }) => (
     <ModalFooter showSubmit={false}>
-      <div
-        className={css`
-          display: flex;
-          flex: 1;
-          justify-content: center;
-          height: 100%;
-        `}
-      >
+      <FooterContentContainer center>
         <GenerateManifestSet
           {...{
             sqon,
@@ -162,7 +161,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
             setSetId,
           }}
         />
-      </div>
+      </FooterContentContainer>
       <LoadingOnClick
         onClick={onDownloadClick}
         render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
