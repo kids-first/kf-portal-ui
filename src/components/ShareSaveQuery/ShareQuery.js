@@ -41,7 +41,6 @@ let ItemRow = styled('div')`
   &:hover {
     background-color: ${({ theme }) => theme.greyScale6};
   }
-  ${({ xcss }) => xcss};
 `;
 
 export default injectState(
@@ -82,7 +81,7 @@ export default injectState(
                 >
                   {!this.state.link ? (
                     <ItemRow
-                      xcss={`
+                      css={`
                         justify-content: center;
                       `}
                     >
