@@ -58,7 +58,7 @@ export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
     <ModalWarningContainer>
       <ModalWarningErrorWrapper>
-        <ErrorIcon width={30} height={30} fill={`#e45562`} />
+        <ErrorIcon width={30} height={30} fill={theme.errorBorder} />
       </ModalWarningErrorWrapper>
       <ModalWarningErrorContent>{props.children}</ModalWarningErrorContent>
     </ModalWarningContainer>
