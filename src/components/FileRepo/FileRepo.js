@@ -238,6 +238,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               {...url}
                               customTypes={customTableTypes}
                               customColumns={customTableColumns({ theme })}
+                              filterInputPlaceholder={'Filter table'}
                               columnDropdownText="Columns"
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
