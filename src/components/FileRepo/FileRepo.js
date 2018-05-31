@@ -123,6 +123,7 @@ const TableContainer = styled(Column)`
 
 const TableWrapper = styled(Column)`
   min-height: 300px;
+  flex: 1;
   & .ReactTable {
     min-height: 1px;
   }
