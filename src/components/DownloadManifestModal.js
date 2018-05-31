@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal/lib/inject';
+import styled from 'react-emotion';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
@@ -11,62 +12,48 @@ import CopyToClipboardIcon from 'icons/CopyToClipboardIcon.js';
 import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
 import { copyValueToClipboard } from './CopyToClipboard';
-import { ModalFooter, ModalWarning } from './Modal';
+import { ModalFooter, ModalWarning, ModalActionButton } from './Modal';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
+import Row from 'uikit/Row';
 
 const wait = (s = 1) => new Promise(r => setTimeout(r, s * 1000));
 
-const Button = compose(withTheme)(
-  ({ theme, children, className = '', contentClassName = '', ...props }) => (
-    <button className={`${theme.actionButton} ${className}`} {...props}>
-      <div
-        className={`${css`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        `} ${contentClassName}`}
-      >
-        {children}
-      </div>
-    </button>
-  ),
-);
+const GenerateManifestWrapper = styled('div')`
+  height: 100%;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+  border: solid 1px ${({ theme }) => theme.borderGrey};
+  & .clipboardIcon {
+    width: 10px;
+    margin-right: 9px;
+    color: ${({ theme }) => theme.white};
+  }
+  & .copyContent {
+    ${({ theme }) => theme.center};
+    color: ${({ theme }) => theme.greyScale1};
+    padding-left: 20px;
+    padding-right: 20px;
+    flex: 1;
+    display: flex;
+    font-style: italic;
+  }
+`;
 
-const ManifestGeneratorStyle = theme =>
-  `manifestSetGenerator ${css`
-    &.manifestSetGenerator {
-      height: 100%;
-      background: white;
-      border-radius: 10px;
-      display: flex;
-      overflow: hidden;
-      border: solid 1px ${theme.borderGrey};
-      & .clipboardIcon {
-        width: 10px;
-        margin-right: 9px;
-        color: ${theme.white};
-      }
-      & .copyContent {
-        padding-left: 20px;
-        padding-right: 20px;
-        flex: 1;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        color: ${theme.greyScale1};
-        font-style: italic;
-      }
-      & .generateButton {
-        border-radius: 0px;
-        margin: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-  `}`;
+const GenerateButton = styled(ModalActionButton)`
+  ${({ theme }) => theme.center};
+  border-radius: 0px;
+  margin: 0px;
+  display: flex;
+`;
+
+const FooterContentContainer = styled(Row)`
+  flex: 1;
+  height: 100%;
+`;
 
 const GenerateManifestSet = compose(injectState, withTheme)(
   ({
@@ -83,7 +70,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
   }) => {
     const copyRef = React.createRef();
     return (
-      <div className={`${ManifestGeneratorStyle(theme)}`}>
+      <GenerateManifestWrapper>
         <LoadingOnClick
           onClick={async () => {
             if (setId) {
@@ -116,9 +103,7 @@ const GenerateManifestSet = compose(injectState, withTheme)(
               <span ref={copyRef} className={`copyContent`}>
                 {setId || <Trans>Generate manifest ID</Trans>}
               </span>
-              <Button
-                {...{ onClick, disabled: loading, className: `generateButton ${theme.uppercase}` }}
-              >
+              <GenerateButton {...{ onClick, disabled: loading }}>
                 {' '}
                 {loading ? (
                   <Spinner
@@ -139,11 +124,11 @@ const GenerateManifestSet = compose(injectState, withTheme)(
                 ) : (
                   <Trans>GENERATE</Trans>
                 )}
-              </Button>
+              </GenerateButton>
             </Fragment>
           )}
         />
-      </div>
+      </GenerateManifestWrapper>
     );
   },
 );
@@ -162,14 +147,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
     onManifestGenerated = () => {},
   }) => (
     <ModalFooter showSubmit={false}>
-      <div
-        className={css`
-          display: flex;
-          flex: 1;
-          justify-content: center;
-          height: 100%;
-        `}
-      >
+      <FooterContentContainer center>
         <GenerateManifestSet
           {...{
             sqon,
@@ -181,14 +159,14 @@ export const DownloadManifestModalFooter = compose(withTheme)(
             setSetId,
           }}
         />
-      </div>
+      </FooterContentContainer>
       <LoadingOnClick
         onClick={onDownloadClick}
         render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
-          <Button
+          <ModalActionButton
             {...{
               onClick,
-              className: `${theme.uppercase} ${css`
+              className: `${css`
                 height: 100%;
               `}`,
               disabled: finalLoading,
@@ -205,7 +183,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
               )}
             />
             <Trans>Download Manifest</Trans>
-          </Button>
+          </ModalActionButton>
         )}
       />
     </ModalFooter>

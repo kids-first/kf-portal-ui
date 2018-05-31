@@ -1,13 +1,37 @@
 import * as React from 'react';
+import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
 
 import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
-import './style.css';
 
 const enhance = compose(provideLocalSqon, injectState);
+
+const AfvContainer = styled('div')`
+  flex: 1;
+  display: flex;
+  position: relative;
+
+  .advancedFacetViewWrapper {
+    padding: 0px;
+  }
+  .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
+    border-bottom: none;
+  }
+
+  .afvStatContainer .statContainer {
+    background: none;
+    padding: none;
+    border: none;
+  }
+
+  .afvStatContainer .statContainer .stat {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+`;
 
 class AdvancedFacetViewModalContent extends React.Component {
   onOverlayClick = e => {
@@ -27,22 +51,13 @@ class AdvancedFacetViewModalContent extends React.Component {
     } = this.props;
     return (
       <React.Fragment>
-        <div
-          className={`afvModalContent`}
-          css={`
-            flex: 1;
-            display: flex;
-            height: calc(100% - 175px);
-          `}
-        >
-          <div style={{ position: 'relative', flex: 1 }}>
-            <AdvancedFacetView
-              {...props}
-              sqon={localSqon}
-              onSqonChange={({ sqon }) => effects.setAdvancedFacetSqon(sqon)}
-            />
-          </div>
-        </div>
+        <AfvContainer>
+          <AdvancedFacetView
+            {...props}
+            sqon={localSqon}
+            onSqonChange={({ sqon }) => effects.setAdvancedFacetSqon(sqon)}
+          />
+        </AfvContainer>
         <ModalFooter
           {...{
             unsetModal: closeModal,

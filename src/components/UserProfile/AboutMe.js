@@ -13,7 +13,7 @@ import { Container, EditButton, H2, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
-import { ActionButton } from '../Modal';
+import { ModalActionButton } from '../Modal';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
@@ -37,7 +37,7 @@ const ClickToAdd = ({ theme, children, ...rest }) => (
   </a>
 );
 
-const SaveButton = props => <ActionButton {...props}>Save</ActionButton>;
+const SaveButton = props => <ModalActionButton {...props}>Save</ModalActionButton>;
 
 const columnTopPadding = '30px';
 
@@ -309,7 +309,7 @@ export default compose(
           <div>
             <div
               css={`
-                background-color: #f4f5f8;
+                background-color: ${theme.backgroundGrey};
                 border: solid 1px #d4d6dd;
                 padding: 0.5em;
                 border-radius: 5px;

@@ -14,7 +14,7 @@ import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
 import { config as statsConfig } from 'components/Stats';
 import InfoIcon from 'icons/InfoIcon';
-import { LightButton } from 'uikit/Button';
+import { ActionButton } from 'uikit/Button';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const AggregationWrapper = styled('div')`
@@ -26,11 +26,13 @@ const AggregationWrapper = styled('div')`
   border-style: solid;
   border-width: 0 1px 0 0;
   flex: none;
+  background: ${({ theme }) => theme.backgroundGrey};
 `;
 
 const AggregationHeader = styled('div')`
   display: flex;
   padding: 15px 7px 15px 12px;
+  align-items: center;
 `;
 
 const AggregationTitle = styled('div')`
@@ -57,7 +59,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
             <AggregationTitle>
               <Trans>Filters</Trans> <InfoIcon />
             </AggregationTitle>
-            <LightButton
+            <ActionButton
               css={theme.uppercase}
               onClick={() =>
                 effects.setModal({
@@ -115,7 +117,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
               }
             >
               <Trans css={theme.uppercase}>All Filters</Trans>
-            </LightButton>
+            </ActionButton>
           </AggregationHeader>
           <div className="aggregation-card">
             <QuickSearch

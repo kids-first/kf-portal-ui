@@ -24,9 +24,7 @@ export const LightButton = styled(BaseButton)`
 `;
 
 export const ActionButton = styled(Button)`
-  padding-left: 20px;
-  padding-right: 20px;
-  text-transform: uppercase;
+  ${({ theme }) => theme.actionButton};
 `;
 
 export default Button;
