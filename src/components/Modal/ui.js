@@ -6,7 +6,7 @@ import ReactModal from 'react-modal';
 
 export const ModalFooterContainer = styled('div')`
   ${({ theme }) => theme.row};
-  background-color: #edeef1;
+  background-color: ${({ theme }) => theme.greyScale10};
   border-radius: 5px;
   padding: 1em;
   margin-top: 1em;
