@@ -1,6 +1,10 @@
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
 
+// TODO: Issue #321
+// acceptedKfOptIn
+// acceptedNihOptIn
+
 const DEFAULT_FIELDS = `
   _id
   title
@@ -9,8 +13,6 @@ const DEFAULT_FIELDS = `
   egoId
   roles
   acceptedTerms
-  acceptedKfOptIn
-  acceptedNihOptIn
   email
   story
   bio
