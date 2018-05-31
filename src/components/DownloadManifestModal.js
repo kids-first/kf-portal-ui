@@ -33,23 +33,21 @@ const GenerateManifestWrapper = styled('div')`
     color: ${({ theme }) => theme.white};
   }
   & .copyContent {
+    ${({ theme }) => theme.center};
+    color: ${({ theme }) => theme.greyScale1};
     padding-left: 20px;
     padding-right: 20px;
     flex: 1;
-    justify-content: center;
-    align-items: center;
     display: flex;
-    color: ${({ theme }) => theme.greyScale1};
     font-style: italic;
   }
 `;
 
 const GenerateButton = styled(ModalActionButton)`
+  ${({ theme }) => theme.center};
   border-radius: 0px;
   margin: 0px;
   display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const FooterContentContainer = styled(Row)`
@@ -168,7 +166,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
           <ModalActionButton
             {...{
               onClick,
-              className: `${theme.uppercase} ${css`
+              className: `${css`
                 height: 100%;
               `}`,
               disabled: finalLoading,
