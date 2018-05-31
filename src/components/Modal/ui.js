@@ -1,6 +1,7 @@
 import styled from 'react-emotion';
 import { ActionButton } from 'uikit/Button';
 import Column from 'uikit/Column';
+import Row from 'uikit/Column';
 import ReactModal from 'react-modal';
 
 export const ModalFooterContainer = styled('div')`
@@ -34,9 +35,7 @@ export const CancelButton = styled(ModalActionButton)`
   text-transform: none;
 `;
 
-export const ModalWarningContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
+export const ModalWarningContainer = styled(Row)`
   align-items: left;
   background-color: ${({ theme }) => theme.errorBackground};
   border-radius: 7px;

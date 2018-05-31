@@ -27,6 +27,8 @@ import translateSQON from 'common/translateSQONValue';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
@@ -87,9 +89,8 @@ const customTableColumns = ({ theme }) => [
   },
 ];
 
-const ArrangerContainer = styled('div')`
+const ArrangerContainer = styled(Row)`
   display: flex;
-  height: 100%;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
@@ -111,8 +112,7 @@ const ArrangerContainer = styled('div')`
   }
 `;
 
-const TableContainer = styled('div')`
-  ${({ theme }) => theme.column};
+const TableContainer = styled(Column)`
   flex-grow: 1;
   width: 580px;
   padding: 30px;
@@ -121,20 +121,14 @@ const TableContainer = styled('div')`
   overflow-y: auto;
 `;
 
-const ToolbarContainer = styled('div')`
-  ${({ theme }) => theme.row};
-`;
-
-const TableWrapper = styled('div')`
-  ${({ theme }) => theme.column};
+const TableWrapper = styled(Column)`
   min-height: 300px;
   & .ReactTable {
     min-height: 1px;
   }
 `;
 
-const QuerySharingContainer = styled('div')`
-  ${({ theme }) => theme.row};
+const QuerySharingContainer = styled(Row)`
   border-style: solid;
   border-color: ${({ theme }) => theme.borderGrey};
   border-width: 1px 1px 1px 0;
@@ -190,7 +184,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                           {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
                         />
                         <TableContainer>
-                          <ToolbarContainer>
+                          <Row>
                             <CurrentSQON
                               {...props}
                               {...url}
@@ -229,7 +223,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   )}
                                 />
                               )}
-                          </ToolbarContainer>
+                          </Row>
                           <FileRepoStats
                             {...props}
                             sqon={selectionSQON}
