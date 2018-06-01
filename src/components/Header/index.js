@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { css } from 'react-emotion';
 import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
