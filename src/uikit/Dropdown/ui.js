@@ -1,10 +1,6 @@
-import React from 'react';
-import Downshift from 'downshift';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
-
-import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
 export const DropdownContainer = styled(Row)`
   position: relative;
@@ -19,12 +15,12 @@ export const DropdownContainer = styled(Row)`
   padding-left: 10px;
 `;
 
-const ItemWrapper = styled('div')`
+export const ItemWrapper = styled('div')`
   cursor: pointer;
   padding: 10px;
 `;
 
-const DropdownLabelContainer = styled(Row)`
+export const DropdownLabelContainer = styled(Row)`
   cursor: pointer;
   flex-grow: 1;
   height: 100%;
@@ -32,7 +28,7 @@ const DropdownLabelContainer = styled(Row)`
   justify-content: space-between;
 `;
 
-const DropdownOptionsContainer = styled(Column)`
+export const DropdownOptionsContainer = styled(Column)`
   position: absolute;
   background: ${({ theme }) => theme.white};
   min-width: 100%;
@@ -70,47 +66,10 @@ const DropdownOptionsContainer = styled(Column)`
   }
 `;
 
-const DropDownImage = styled('img')`
+export const DropDownImage = styled('img')`
   width: 9px;
   margin-left: 7px;
   margin-right: 12px;
   transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
   transition: transform 0.2s;
 `;
-
-function Dropdown({
-  items,
-  className,
-  children,
-  align = 'right',
-  ItemWrapperComponent = ItemWrapper,
-  ContainerComponent = DropdownContainer,
-  ...rest
-}) {
-  return (
-    <Downshift {...rest}>
-      {({ getItemProps, getRootProps, isOpen, toggleMenu, itemToString, selectedItem }) => (
-        <ContainerComponent
-          className={className}
-          {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
-        >
-          <DropdownLabelContainer onClick={toggleMenu}>
-            {children}
-            <DropDownImage alt="" isOpen={isOpen} src={downChevronIcon} />
-          </DropdownLabelContainer>
-          {!isOpen ? null : (
-            <DropdownOptionsContainer align={align}>
-              {items.map((item, i) => (
-                <ItemWrapperComponent {...getItemProps({ item })} key={i}>
-                  {item}
-                </ItemWrapperComponent>
-              ))}
-            </DropdownOptionsContainer>
-          )}
-        </ContainerComponent>
-      )}
-    </Downshift>
-  );
-}
-
-export default Dropdown;
