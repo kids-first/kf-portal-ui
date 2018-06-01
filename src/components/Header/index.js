@@ -33,7 +33,6 @@ const Header = ({
   history,
   match: { path },
   api,
-  indeces = ['file'],
 }) => {
   const canSeeProtectedRoutes =
     loggedInUser &&
@@ -63,13 +62,11 @@ const Header = ({
                   <HouseIcon /> <Trans>Dashboard</Trans>
                 </NavLink>
               </li>
-              {indeces.map(index => (
-                <li>
-                  <NavLink currentPathName={currentPathName} to={`/search/${index}`}>
-                    <DatabaseIcon /> <Trans>File Repository</Trans>
-                  </NavLink>
-                </li>
-              ))}
+              <li>
+                <NavLink currentPathName={currentPathName} to={`/search/file`}>
+                  <DatabaseIcon /> <Trans>File Repository</Trans>
+                </NavLink>
+              </li>
             </ul>
           )}
         </Row>
