@@ -17,6 +17,7 @@ function Dropdown({
   align = 'right',
   ItemWrapperComponent = ItemWrapper,
   ContainerComponent = DropdownContainer,
+  OptionsContainerComponent = DropdownOptionsContainer,
   ...rest
 }) {
   return (
@@ -31,13 +32,13 @@ function Dropdown({
             <DropDownImage alt="" isOpen={isOpen} src={downChevronIcon} />
           </DropdownLabelContainer>
           {!isOpen ? null : (
-            <DropdownOptionsContainer align={align}>
+            <OptionsContainerComponent align={align}>
               {items.map((item, i) => (
                 <ItemWrapperComponent {...getItemProps({ item })} key={i}>
                   {item}
                 </ItemWrapperComponent>
               ))}
-            </DropdownOptionsContainer>
+            </OptionsContainerComponent>
           )}
         </ContainerComponent>
       )}
@@ -45,5 +46,5 @@ function Dropdown({
   );
 }
 
-export { DropdownContainer } from './ui';
+export { DropdownContainer, DropdownOptionsContainer } from './ui';
 export default Dropdown;
