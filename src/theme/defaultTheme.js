@@ -16,6 +16,8 @@ const colors = {
   errorBackground: '#f9dee1',
   errorBorder: `#e45562`,
 
+  primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
+
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
 

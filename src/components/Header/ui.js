@@ -26,7 +26,7 @@ export const HeaderContainer = styled('div')`
 export const GradientAccent = styled('div')`
   width: 100%;
   height: 5px;
-  background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
+  background-image: linear-gradient(to right, ${({ theme }) => theme.primaryGradient});
 `;
 
 export const HeaderContent = styled(Row)`
