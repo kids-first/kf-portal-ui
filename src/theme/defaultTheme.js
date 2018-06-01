@@ -135,20 +135,23 @@ const components = {
     padding: 5px 10px;
     margin: 0px 4px;
     border-radius: 12px;
-    background-color: #ffffff;
+    background-color: ${colors.white};
     border: solid 1px ${colors.borderGrey};
     font-size: 12px;
     font-weight: 300;
     letter-spacing: 0.2px;
     text-align: center;
-    color: #008199;
+    color: ${colors.tertiary};
+    font-weight: normal;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    text-transform: uppercase;
+    font-family: ${fonts.default};
 
     &:hover {
-      background-color: #008199;
-      color: #fff;
+      background-color: ${colors.tertiary};
+      color: ${colors.white};
     }
     &:link {
       text-decoration: none;
