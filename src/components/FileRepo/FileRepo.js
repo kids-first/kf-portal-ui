@@ -129,6 +129,10 @@ const ArrangerContainer = styled(Row)`
   div.sqon-view {
     flex-grow: 1;
   }
+
+  & .sqon-clear.sqon-bubble {
+    font-weight: bold;
+  }
 `;
 
 const TableContainer = styled(Column)`
