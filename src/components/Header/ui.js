@@ -22,7 +22,7 @@ export const LinkAsButton = styled(Link)`
 
 export const NavbarDropdownWrapper = styled(DropdownContainer)`
   border: 0;
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.hover};
 
   font-size: 14px;
   font-weight: 500;
@@ -35,10 +35,10 @@ export const NavbarDropdownWrapper = styled(DropdownContainer)`
 `;
 
 export const DropdownLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.greyScale2};
   text-decoration: none;
   padding: 10px 20px;
-  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.greyScale4}` : 'none')};
+  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
   &:hover {
     color: ${({ theme }) => theme.highlight};
   }

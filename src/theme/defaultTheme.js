@@ -350,7 +350,7 @@ const components = {
   `,
   navLink: css`
     display: block;
-    color: #90278e;
+    color: ${colors.hover};
     padding: 6px 10px;
     margin: 0px 4px;
     text-decoration: none;
