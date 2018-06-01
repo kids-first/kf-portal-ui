@@ -149,7 +149,7 @@ const TableWrapper = styled(Column)`
 `;
 
 const QueryBarContainer = styled(Row)`
-  margin-bottom: 20px;
+  margin-bottom: ${({ sqon }) => (sqon ? '20px' : '0px')};
 `;
 
 const QuerySharingContainer = styled(Row)`
@@ -208,7 +208,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                           {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
                         />
                         <TableContainer>
-                          <QueryBarContainer>
+                          <QueryBarContainer sqon={url.sqon}>
                             <CurrentSQON
                               {...props}
                               {...url}
