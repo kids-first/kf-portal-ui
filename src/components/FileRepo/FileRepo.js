@@ -148,6 +148,10 @@ const TableWrapper = styled(Column)`
   }
 `;
 
+const QueryBarContainer = styled(Row)`
+  margin-bottom: 20px;
+`;
+
 const QuerySharingContainer = styled(Row)`
   border-style: solid;
   border-color: ${({ theme }) => theme.borderGrey};
@@ -204,7 +208,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                           {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
                         />
                         <TableContainer>
-                          <Row>
+                          <QueryBarContainer>
                             <CurrentSQON
                               {...props}
                               {...url}
@@ -243,7 +247,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   )}
                                 />
                               )}
-                          </Row>
+                          </QueryBarContainer>
                           <FileRepoStats
                             {...props}
                             sqon={selectionSQON}
