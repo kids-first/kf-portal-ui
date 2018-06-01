@@ -8,9 +8,24 @@ export const NavLink = styled(Link)`
   ${({ currentPathName, to, theme }) => (currentPathName === to ? theme.linkButtonActive : '')};
 `;
 
+export const NavBarList = styled('ul')`
+  ${({ theme }) => theme.navBar};
+  margin-left: ${({ ml }) => (ml ? `${ml}px` : 'none')};
+  justify-content: ${({ justify }) => justify || ''};
+`;
+
+export const LinkAsButton = styled(Link)`
+  ${({ theme }) => theme.linkAsButton};
+  ${({ theme }) => theme.uppercase};
+`;
+
+export const NavbarDropdownItemWrapper = styled('div')``;
+
 export const DropdownLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
   text-decoration: none;
+  padding: 10px 20px;
+  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.greyScale4}` : 'none')};
   &:hover {
     color: ${({ theme }) => theme.highlight};
   }

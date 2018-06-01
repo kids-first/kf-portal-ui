@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { css } from 'react-emotion';
 import { Trans } from 'react-i18next';
@@ -24,6 +24,8 @@ import {
   HeaderContent,
   Logo,
   NavigationGravatar,
+  LinkAsButton,
+  NavBarList,
 } from './ui';
 
 const Header = ({
@@ -51,12 +53,7 @@ const Header = ({
             <Logo src={logoPath} alt="Kids First Logo" />
           </Link>
           {canSeeProtectedRoutes && (
-            <ul
-              css={`
-                ${theme.navBar};
-                margin-left: 40px;
-              `}
-            >
+            <NavBarList ml={40}>
               <li>
                 <NavLink currentPathName={currentPathName} to="/dashboard">
                   <HouseIcon /> <Trans>Dashboard</Trans>
@@ -67,37 +64,20 @@ const Header = ({
                   <DatabaseIcon /> <Trans>File Repository</Trans>
                 </NavLink>
               </li>
-            </ul>
+            </NavBarList>
           )}
         </Row>
-        <ul
-          className={css`
-            ${theme.navBar};
-            justify-content: flex-end;
-          `}
-        >
+        <NavBarList justify={'flex-end'}>
           {!loggedInUser && (
             <li>
               {path === '/' ? (
-                <Link
-                  css={`
-                    ${theme.linkAsButton};
-                    ${theme.uppercase};
-                  `}
-                  to="/join"
-                >
+                <LinkAsButton to="/join">
                   <Trans>Join now</Trans>
-                </Link>
+                </LinkAsButton>
               ) : (
-                <Link
-                  css={`
-                    ${theme.linkAsButton};
-                    ${theme.uppercase};
-                  `}
-                  to="/"
-                >
+                <LinkAsButton to="/">
                   <Trans>Login</Trans>
-                </Link>
+                </LinkAsButton>
               )}
             </li>
           )}
@@ -110,24 +90,18 @@ const Header = ({
                     <Trans>My Profile</Trans>
                   </DropdownLink>,
                   <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
-                  <div
-                    css={`
-                      border-top: 1px solid ${theme.greyScale4};
-                    `}
+                  <DropdownLink
+                    to={`/dashboard`}
+                    separated
+                    onClick={e => {
+                      e.preventDefault();
+                      uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
+                    }}
                   >
-                    <a
-                      onClick={() =>
-                        uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })
-                      }
-                      css={`
-                        color: ${theme.primary};
-                        text-decoration: none;
-                      `}
-                    >
-                      <Trans>Logout</Trans>
-                    </a>
-                  </div>,
+                    <Trans>Logout</Trans>
+                  </DropdownLink>,
                 ]}
+                ItemWrapperComponent={props => <Fragment {...props} />}
                 className={css`
                   border: 0;
                   color: ${theme.primary};
@@ -146,7 +120,7 @@ const Header = ({
                 {loggedInUser.firstName}
               </Dropdown>
             )}
-        </ul>
+        </NavBarList>
       </HeaderContent>
     </HeaderContainer>
   );
