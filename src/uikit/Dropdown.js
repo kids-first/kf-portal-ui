@@ -4,6 +4,20 @@ import styled from 'react-emotion';
 
 import downChevronIcon from '../assets/icon-chevron-down-grey.svg';
 
+export const DropdownContainer = styled('div')`
+  position: relative;
+  white-space: nowrap;
+  z-index: 100;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: solid 1px #cacbcf;
+  color: #343434;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+`;
+
 const ItemWrapper = styled('div')`
   cursor: pointer;
   padding: 10px;
@@ -72,26 +86,15 @@ function Dropdown({
   children,
   align = 'right',
   ItemWrapperComponent = ItemWrapper,
+  ContainerComponent = DropdownContainer,
   ...rest
 }) {
   return (
     <Downshift {...rest}>
-      {({ getItemProps, isOpen, toggleMenu, itemToString, selectedItem }) => (
-        <div
-          css={`
-            position: relative;
-            white-space: nowrap;
-            z-index: 100;
-            border-radius: 10px;
-            background-color: #ffffff;
-            border: solid 1px #cacbcf;
-            color: #343434;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            ${className};
-          `}
+      {({ getItemProps, getRootProps, isOpen, toggleMenu, itemToString, selectedItem }) => (
+        <ContainerComponent
+          className={className}
+          {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
         >
           <DropdownLabelContainer onClick={toggleMenu}>
             {children}
@@ -106,7 +109,7 @@ function Dropdown({
               ))}
             </DropdownOptionsContainer>
           )}
-        </div>
+        </ContainerComponent>
       )}
     </Downshift>
   );

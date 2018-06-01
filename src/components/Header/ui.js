@@ -2,6 +2,7 @@ import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 import Row from 'uikit/Row';
 import Gravtar from 'uikit/Gravatar';
+import { DropdownContainer } from 'uikit/Dropdown';
 
 export const NavLink = styled(Link)`
   ${({ theme }) => theme.navLink};
@@ -19,7 +20,19 @@ export const LinkAsButton = styled(Link)`
   ${({ theme }) => theme.uppercase};
 `;
 
-export const NavbarDropdownItemWrapper = styled('div')``;
+export const NavbarDropdownWrapper = styled(DropdownContainer)`
+  border: 0;
+  color: ${({ theme }) => theme.primary};
+
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  padding-right: 10px;
+`;
 
 export const DropdownLink = styled(Link)`
   color: ${({ theme }) => theme.primary};

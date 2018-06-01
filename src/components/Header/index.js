@@ -26,6 +26,7 @@ import {
   NavigationGravatar,
   LinkAsButton,
   NavBarList,
+  NavbarDropdownWrapper,
 } from './ui';
 
 const Header = ({
@@ -102,19 +103,7 @@ const Header = ({
                   </DropdownLink>,
                 ]}
                 ItemWrapperComponent={props => <Fragment {...props} />}
-                className={css`
-                  border: 0;
-                  color: ${theme.primary};
-
-                  font-size: 14px;
-                  font-weight: 500;
-                  line-height: 1.86;
-                  letter-spacing: 0.2px;
-
-                  line-height: 1.86;
-                  letter-spacing: 0.2px;
-                  padding-right: 10px;
-                `}
+                ContainerComponent={NavbarDropdownWrapper}
               >
                 <NavigationGravatar email={loggedInUser.email || ''} size={39} />
                 {loggedInUser.firstName}
