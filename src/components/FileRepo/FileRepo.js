@@ -109,6 +109,23 @@ const ArrangerContainer = styled(Row)`
     border-right: solid 1px #e0e1e6;
   }
 
+  & .tableToolbar {
+    color: ${({ theme }) => theme.greyScale9};
+    & .group .dropDownButtonContent {
+      color: ${({ theme }) => theme.greyScale9};
+    }
+    & .group button {
+      color: ${({ theme }) => theme.greyScale9};
+    }
+  }
+
+  .pagination-bottom .-pagination {
+    color: ${({ theme }) => theme.greyScale9};
+    select {
+      color: ${({ theme }) => theme.greyScale9};
+    }
+  }
+
   div.sqon-view {
     flex-grow: 1;
   }
