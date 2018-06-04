@@ -2,7 +2,7 @@ import urlJoin from 'url-join';
 import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
 
-export default ({ stats, queryName, sqon, loggedInUser, api }) => {
+export default ({ stats, queryName, sqon, loggedInUser, api, sharedPublicly = false }) => {
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });
 
@@ -11,6 +11,7 @@ export default ({ stats, queryName, sqon, loggedInUser, api }) => {
     body: JSON.stringify({
       userid: (loggedInUser || {}).egoId || 'anonymous',
       alias,
+      sharedPublicly,
       content: {
         ...stats,
         longUrl: window.location.href,
