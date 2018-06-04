@@ -5,6 +5,8 @@ import Row from 'uikit/Row';
 import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 
+// this this component should implement the default <input> type from react-dom with some additional
+// props for styling
 export const FilterInput = withTheme(
   ({ theme, LeftIcon = SearchIcon, RightIcon = FaTimesCircleO, className, value, ...props }) => {
     const Wrapper = styled(Row)`

@@ -28,6 +28,7 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Column from 'uikit/Column';
+import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
@@ -237,6 +238,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               {...props}
                               {...url}
                               customTypes={customTableTypes}
+                              FilterInputComponent={FilterInput}
                               customColumns={customTableColumns({ theme })}
                               filterInputPlaceholder={'Filter table'}
                               columnDropdownText="Columns"
