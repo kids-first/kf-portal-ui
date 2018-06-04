@@ -48,18 +48,35 @@ export const H2 = styled('h2')`
 `;
 
 export const H3 = styled('h3')`
-  ${props => props.theme.profileH3};
+  ${props => props.theme.h3};
+  margin-top: 0px;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.27;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid #d4d6dd;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  
 `;
 
+// export const H4 = styled('h4')`
+//   font-family: ${({ theme }) => theme.fonts.details};
+//   font-size: 13px;
+//   font-style: italic;
+//   line-height: 1.85;
+//   text-align: left;
+//   color: #74757d;
+//   margin: 0;
+//   font-weight: normal;
+// `;
+
 export const H4 = styled('h4')`
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 13px;
-  font-style: italic;
-  line-height: 1.85;
-  text-align: left;
-  color: #74757d;
-  margin: 0;
-  font-weight: normal;
+  ${({ theme }) => theme.h4}
+  color: ${({ theme }) => theme.greyScale1};
+  font-weight: 700;
+  ${({ theme }) => theme.spacing.collapse};
 `;
 
 export const userProfileBackground = (
@@ -160,35 +177,38 @@ export default compose(
         >
           <RoleIconButton />
 
-          <h4
-            className={css`
-              ${theme.h4};
+          <h2
+            css={`
+              ${theme.h2} 
+              color: ${theme.white};
+              font-weight: 700;
+              margin-bottom: 0;
             `}
-          >{`${profile.firstName} ${profile.lastName}`}</h4>
+          >{`${profile.firstName} ${profile.lastName}`}</h2>
+          <h2
+              css={`
+                ${theme.spacing.collapse}
+                ${theme.h2}
+                color: ${theme.white};
+                ${theme.spacing.collapse}
+              `}
+            >
+              <small css={`${theme.text.small}`}> {profile.jobTitle} </small>
+            </h2>
           <div
-            className={css`
-              font-size: 14px;
-              color: #fff;
+            css={`
+              ${theme.paragraph}
               line-height: 28px;
+              color: #fff;
               ${theme.column};
             `}
           >
-            <span
-              className={css`
-                font-size: 1.4em;
-              `}
-            >
-              {profile.jobTitle}
-            </span>
-            <span>{profile.institution}</span>
-            <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
-            <span
-              css={`
-                text-decoration: underline;
-              `}
-            >
-              {profile.email}
-            </span>
+            <p css={`${theme.paragraph} color: ${theme.white}; margin-top:0;`}>
+              {profile.institution} <br />
+              {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}<br />
+              <span css={`${theme.text.underline}`} >{profile.email}</span>  
+            </p>
+            
             <span
               css={`
                 margin-top: 5px;
@@ -243,7 +263,7 @@ export default compose(
         justify-content: center;
         align-items: flex-start;
         background: #fff;
-        box-shadow: 0px 0px 4.9px 0.1px #bbbbbb;
+        box-shadow: 0px 0prx 4.9px 0.1px #bbbbbb;
         border: solid 1px #e0e1e6;
       `}
     >

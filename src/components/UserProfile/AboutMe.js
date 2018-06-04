@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { xor } from 'lodash';
-import { css } from 'react-emotion';
+import Styled, { css } from 'react-emotion';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
@@ -38,6 +38,11 @@ const ClickToAdd = ({ theme, children, ...rest }) => (
 );
 
 const SaveButton = props => <ModalActionButton {...props}>Save</ModalActionButton>;
+
+const DirectionsText = styled.p`
+  ${({theme}) => theme.paragraph + theme.text.italic + theme.spacing.collapse} 
+  color: ${({theme}) => theme.greyScale9};
+`;
 
 const columnTopPadding = '30px';
 
@@ -133,7 +138,7 @@ export default compose(
             ${theme.column} justify-content: space-around;
           `}
         >
-          <H2>
+          <H3>
             Background Information
             {canEdit &&
               (!isEditingBackgroundInfo ? (
@@ -154,13 +159,13 @@ export default compose(
                   }}
                 />
               ))}
-          </H2>
+          </H3>
           <StyledSection>
-            <H3>My bio</H3>
+            <H4>My bio</H4>
             {canEdit && (
-              <H4>
+              <DirectionsText>
                 Share information about your professional background and your research interests.
-              </H4>
+              </DirectionsText>
             )}
             <EditableLabel
               autoFocus={focusedTextArea !== 'myStory'}
@@ -188,8 +193,12 @@ export default compose(
             />
           </StyledSection>
           <StyledSection className={'userStory'}>
-            <H3>My story</H3>
-            {canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
+            <H4>My story</H4>
+            {canEdit && (
+              <DirectionsText>
+                Share why you’re a part of the Kids First community.
+              </DirectionsText>
+            )}
             <EditableLabel
               autoFocus={focusedTextArea === 'myStory'}
               type="textarea"
@@ -267,7 +276,7 @@ export default compose(
             margin-left: 5em;
           `}
         >
-          <H2>
+          <H3>
             Research Interests
             {canEdit &&
               (!editingResearchInterests ? (
@@ -305,7 +314,7 @@ export default compose(
                   />
                 </React.Fragment>
               ))}
-          </H2>
+          </H3>
           <div>
             <div
               css={`
@@ -315,8 +324,8 @@ export default compose(
                 border-radius: 5px;
               `}
             >
-              <H3>Interests</H3>
-              <H4>Tell people about your work background and your research specialties.</H4>
+              <H4>Interests</H4>
+              <DirectionsText>Tell people about your work background and your research specialties.</DirectionsText>
               <div
                 css={`
                   ${theme.row};
@@ -341,7 +350,7 @@ export default compose(
               )}
             </div>
             <StyledSection>
-              <H3>Website URL:</H3>
+              <H4>Website URL:</H4>
               <EditableLabel
                 autoFocus={focusedTextArea === 'website'}
                 isEditing={editingResearchInterests}
@@ -368,7 +377,7 @@ export default compose(
               />
             </StyledSection>
             <StyledSection>
-              <H3>Google Scholar ID: </H3>
+              <H4>Google Scholar ID: </H4>
               <EditableLabel
                 autoFocus={focusedTextArea === 'googleScholarId'}
                 isEditing={editingResearchInterests}

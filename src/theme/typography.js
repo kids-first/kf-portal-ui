@@ -5,6 +5,8 @@ export const fonts = {
   details: 'Open Sans',
 };
 
+export const fontSizes = [12, 14, 16, ];
+
 const typogrpahyBase = ` text-decoration: none; border: none;`;
 
 const headingsBase = `
@@ -51,15 +53,13 @@ export const headings = {
   h4: `
     ${headingsBase}
     font-family: ${fonts.details};
-    color: ${colors.white};
-    font-size: 30px;
+    font-size: 16px;
     line-height: 31px;
-    margin: 10px 0;
   `,
   h5: `
     ${headingsBase}
     ${paragraph}
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 100;
   `
 };
@@ -68,6 +68,8 @@ export const text = {
   center: 'text-align: center;',
   left: 'text-align: left;',
   right: 'text-align: right;',
+  underline: 'text-decoration: underline;',
+  italic: 'font-style: italic;',
   captialize: 'text-transform: captialize;',
   small: 'font-size: 75%;',
 };
