@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
+import { FilterInput } from 'uikit/Input';
 
 const enhance = compose(provideLocalSqon, injectState);
 
@@ -54,6 +55,11 @@ class AdvancedFacetViewModalContent extends React.Component {
         <AfvContainer>
           <AdvancedFacetView
             {...props}
+            FilterInputComponent={props => (
+              <div>
+                <FilterInput {...props} />
+              </div>
+            )}
             sqon={localSqon}
             onSqonChange={({ sqon }) => effects.setAdvancedFacetSqon(sqon)}
           />
