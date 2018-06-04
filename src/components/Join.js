@@ -61,7 +61,7 @@ const Consent = compose(
   }) => {
     return (
       <ConsentContainer>
-        <h3 className={theme.h3}>
+        <h3 css={`${theme.h3}`}>
           <Trans i18nKey="join.terms.instructions">
             Read and consent to our terms and conditions
           </Trans>
@@ -70,7 +70,7 @@ const Consent = compose(
           <b>
             <Trans i18nKey="join.terms.title">Draft for Demo Purposes</Trans>
           </b>
-          <p>
+          <p css={`${theme.paragraph}`}>
             As a user of the Kids First DRC Portal you agree to the Terms of Service and agree to
             make no attempt to identify or contact individual participants from whom these data were
             collected. Where applicable, you agree to comply with the NIH Code of Conduct for
@@ -169,7 +169,7 @@ const JoinContent = compose(
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
   <JoinContainer>
     <div className={`${theme.card} ${theme.column} `}>
-      <h2 className={theme.h2}>
+      <h2 css={`${theme.h2} ${theme.text.center}`}>
         <Trans>Join Kids First</Trans>
       </h2>
       <Wizard
@@ -177,18 +177,18 @@ const JoinContent = compose(
           {
             title: 'Connect',
             render: ({ nextStep }) => (
-              <div className={theme.column}>
-                <h3 className={theme.h3}>
+              <div className={theme.column} >
+                <h3 css={`${theme.h3} margin-bottom: 0;`}>
                   <Trans i18nKey="join.wizard.socialSelect">
                     Select a way to connect to the Kids First Data Resource Portal
                   </Trans>
                 </h3>
-                <p>
+                <h5 css={`${theme.h5}`}>
                   <Trans i18nKey="join.wizard.dataConfidentiality">
                     Your information will be kept confidential and secure and is not shared with any
                     of these providers.
                   </Trans>
-                </p>
+                </h5>
                 <Login
                   shouldNotRedirect={true}
                   onFinish={user => {
@@ -208,15 +208,15 @@ const JoinContent = compose(
             title: 'Basic Info',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <div className={theme.column}>
-                <h3 className={theme.h3}>
+                <h3 css={`${theme.h3} margin-bottom:0;`}>
                   <Trans i18nKey="join.wizard.basicInfoHeader">Tell us about yourself</Trans>
                 </h3>
-                <p>
+                <h5 css={`${theme.h5} margin-top: 5px;`}>
                   <Trans i18nKey="join.wizard.basicInfoInstructions">
                     Please provide information about yourself to help us personalize your
                     experience.
                   </Trans>
-                </p>
+                </h5>
                 <SelectRoleForm
                   onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
                   onValidChange={isValid => disableNextStep(!isValid)}
