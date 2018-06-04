@@ -8,7 +8,15 @@ import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 // this this component should implement the default <input> type from react-dom with some additional
 // props for styling
 export const FilterInput = withTheme(
-  ({ theme, LeftIcon = SearchIcon, RightIcon = FaTimesCircleO, className, value, ...props }) => {
+  ({
+    theme,
+    LeftIcon = SearchIcon,
+    RightIcon = FaTimesCircleO,
+    className,
+    value,
+    disabled,
+    ...props
+  }) => {
     const Wrapper = styled(Row)`
       ${({ theme }) => theme.input};
       color: ${({ theme }) => theme.greyScale7};
@@ -26,9 +34,9 @@ export const FilterInput = withTheme(
     `;
     const clearInput = () => props.onChange({ target: { value: '' } });
     return (
-      <Wrapper className={className}>
+      <Wrapper disabled={disabled} className={className}>
         <LeftIcon className={'icon-left'} />
-        <input {...{ value, ...props }} autoFocus />
+        <input {...{ value, disabled, ...props }} autoFocus />
         {value && value.length && <RightIcon className={'icon-right'} onClick={clearInput} />}
       </Wrapper>
     );

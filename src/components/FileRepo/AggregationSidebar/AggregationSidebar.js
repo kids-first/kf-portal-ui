@@ -123,6 +123,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
           <div className="aggregation-card">
             <QuickSearch
               {...{ ...props, setSQON, translateSQONValue }}
+              InputComponent={FilterInput}
               placeholder="Enter Identifiers"
               LoadingIcon={
                 <Spinner
