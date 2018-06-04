@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
+import FilterIcon from 'react-icons/lib/fa/filter';
 
 import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
@@ -238,7 +239,9 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               {...props}
                               {...url}
                               customTypes={customTableTypes}
-                              FilterInputComponent={FilterInput}
+                              FilterInputComponent={props => (
+                                <FilterInput {...props} LeftIcon={FilterIcon} />
+                              )}
                               customColumns={customTableColumns({ theme })}
                               filterInputPlaceholder={'Filter table'}
                               columnDropdownText="Columns"
