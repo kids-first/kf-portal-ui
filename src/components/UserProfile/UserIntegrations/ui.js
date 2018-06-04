@@ -5,7 +5,7 @@ import View from 'react-icons/lib/fa/eye';
 import X from 'react-icons/lib/fa/close';
 
 export const Paragraph = styled('p')`
-  line-height: 28px;
+  ${({theme}) => theme.paragraph}
 `;
 
 export const UserIntegrationsWrapper = styled('div')`
