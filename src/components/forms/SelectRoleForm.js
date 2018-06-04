@@ -39,30 +39,33 @@ const RoleBubble = styled(CheckboxBubble)`
   margin-top: 10px;
   line-height: 1.67;
   letter-spacing: 0.2px;
-  text-align: left;
+  ${({ theme }) => theme.text.left};
+`;
+
+const RoleDescription = styled('p')`
+  ${({ theme }) => theme.paragraph};
   color: ${({ theme }) => theme.greyScale0};
-  font-size: 12px;
+  margin:0;
+  padding:0;
+  ${({ theme }) => theme.text.small};
 `;
 
 const RoleLabel = styled('label')`
-  color: ${({ theme }) => theme.secondary};
+  ${({ theme }) => theme.paragraph};
   font-weight: 600;
   display: block;
-  text-transform: capitalize;
-  border: none;
-  font-size: 15px;
+  ${({ theme }) => theme.text.capitalize};
   line-height: 1.33;
+  
+  color: ${({ theme }) => theme.secondary};
 `;
 
 const Label = styled('label')`
   width: 215px;
   padding-right: 3px;
-  text-decoration: none;
-  border: none;
-  font-size: 13px;
   font-weight: 600;
   line-height: 2;
-  color: ${({ theme }) => theme.greyScale1};
+  ${({ theme }) => theme.paragraph};
 `;
 
 // TODO: issue #321
@@ -245,7 +248,7 @@ export default enhance(
                   {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
                   <div>
                     <RoleLabel>{displayName}</RoleLabel>
-                    {description}
+                    <RoleDescription>{description}</RoleDescription>
                   </div>
                 </RoleBubble>
               ))}

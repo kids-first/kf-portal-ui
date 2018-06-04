@@ -11,7 +11,11 @@ import SplashPage from 'components/SplashPage';
 
 const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
   <SplashPage>
-    <h2 css={theme.h2}>
+    <h2
+      css={`
+        ${theme.h2} ${theme.text.center};
+      `}
+    >
       <Trans>Log in</Trans>
     </h2>
 
@@ -35,11 +39,13 @@ const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, 
         padding: 10px 10px 0 10px;
       `}
     >
-      <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
-      <Link to="/join">
-        <Trans>Join now</Trans>
-        <RightIcon />
-      </Link>
+      <p css={`${theme.paragraph} margin:10px 0 0 0; padding:0;`}>
+        <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
+        <Link to="/join">
+          <Trans>Join now</Trans>
+          <RightIcon />
+        </Link>
+      </p>
     </div>
   </SplashPage>
 ));

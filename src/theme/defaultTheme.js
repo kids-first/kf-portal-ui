@@ -1,45 +1,47 @@
 import { css } from 'react-emotion';
+import colors from './colors';
+import { fonts, headings, text, paragraph } from './typography';
 
-const colors = {
-  white: '#ffffff',
-  primary: '#90278e', //magenta
-  secondary: '#2b388f', //purplish blue
-  primaryHover: '#404c9a', //purple
-  tertiary: '#009bb8', //teal-blue
-  highlight: '#e83a9c', //pink
-  hover: '#c03299', //also pink
-  tertiaryHover: '#19a9c4', //lighter teal-blue
-  errorDark: '#d8202f', //red
-  errorLight: '#fadfe1', //light red (pink) fill
-  borderGrey: '#cacbcf',
-  backgroundGrey: '#f4f5f8',
-  errorBackground: '#f9dee1',
-  errorBorder: `#e45562`,
+// const colors = {
+//   white: '#ffffff',
+//   primary: '#90278e', //magenta
+//   secondary: '#2b388f', //purplish blue
+//   primaryHover: '#404c9a', //purple
+//   tertiary: '#009bb8', //teal-blue
+//   highlight: '#e83a9c', //pink
+//   hover: '#c03299', //also pink
+//   tertiaryHover: '#19a9c4', //lighter teal-blue
+//   errorDark: '#d8202f', //red
+//   errorLight: '#fadfe1', //light red (pink) fill
+//   borderGrey: '#cacbcf',
+//   backgroundGrey: '#f4f5f8',
+//   errorBackground: '#f9dee1',
+//   errorBorder: `#e45562`,
 
-  active: '#00afed', //light blue
-  inactive: '#dedfe4', //grey
+//   active: '#00afed', //light blue
+//   inactive: '#dedfe4', //grey
 
-  optionSelected: '#E5F6FD', //light blue
+//   optionSelected: '#E5F6FD', //light blue
 
-  greyScale10: 'rgb(237,238,241)', //grey for table backgrounds
-  greyScale9: '#74757d', //rgb(116, 117, 125) dark grey text on greyScale5
-  greyScale8: '#d4d6dd',
-  greyScale7: 'rgb(107,98,98)',
-  greyScale6: 'rgb(245,245,245)',
-  greyScale5: '#e0e1e6',
-  greyScale4: 'rgb(212, 214, 221)', //#d4d6dd
-  greyScale3: 'rgb(144,144,144)', //not enough contrast on white background
-  greyScale2: 'rgb(61,61,61)',
-  greyScale1: 'rgb(52, 52, 52)', //#343434
-  greyScale0: 'rgb(36,36,36)',
+//   greyScale10: 'rgb(237,238,241)', //grey for table backgrounds
+//   greyScale9: '#74757d', //rgb(116, 117, 125) dark grey text on greyScale5
+//   greyScale8: '#d4d6dd',
+//   greyScale7: 'rgb(107,98,98)',
+//   greyScale6: 'rgb(245,245,245)',
+//   greyScale5: '#e0e1e6',
+//   greyScale4: 'rgb(212, 214, 221)', //#d4d6dd
+//   greyScale3: 'rgb(144,144,144)', //not enough contrast on white background
+//   greyScale2: 'rgb(61,61,61)',
+//   greyScale1: 'rgb(52, 52, 52)', //#343434
+//   greyScale0: 'rgb(36,36,36)',
 
-  shadow: 'rgba(0, 0, 0, 0.5)',
-};
+//   shadow: 'rgba(0, 0, 0, 0.5)',
+// };
 
-const fonts = {
-  default: 'Montserrat',
-  details: 'Open Sans',
-};
+// const fonts = {
+//   default: 'Montserrat',
+//   details: 'Open Sans',
+// };
 
 const components = {
   uppercase: css`
@@ -267,29 +269,29 @@ const components = {
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
   `,
-  h2: css`
-    text-align: center;
-    color: ${colors.secondary};
-    font-size: 30px;
-    line-height: 0.87;
-    letter-spacing: 0.4px;
-    color: #2b388f;
-    font-weight: 500;
-  `,
-  h3: css`
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 1.44;
-    letter-spacing: 0.3px;
-    color: ${colors.secondary};
-  `,
-  h4: css`
-    font-family: ${fonts.details};
-    color: #fff;
-    font-size: 30px;
-    line-height: 31px;
-    margin: 10px 0;
-  `,
+  // h2: css`
+  //   text-align: center;
+  //   color: ${colors.secondary};
+  //   font-size: 30px;
+  //   line-height: 0.87;
+  //   letter-spacing: 0.4px;
+  //   color: #2b388f;
+  //   font-weight: 500;
+  // `,
+  // h3: css`
+  //   font-weight: 500;
+  //   font-size: 18px;
+  //   line-height: 1.44;
+  //   letter-spacing: 0.3px;
+  //   color: ${colors.secondary};
+  // `,
+  // h4: css`
+  //   font-family: ${fonts.details};
+  //   color: #fff;
+  //   font-size: 30px;
+  //   line-height: 31px;
+  //   margin: 10px 0;
+  // `,
   input: css`
     width: 100%;
     min-width: 0;
@@ -555,7 +557,10 @@ const components = {
 };
 
 export default {
+  fonts,
+  text,
+  paragraph, 
+  ...headings,
   ...colors,
   ...components,
-  fonts,
 };
