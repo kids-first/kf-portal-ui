@@ -22,19 +22,12 @@ export const FilterInput = withTheme(
         flex: 1;
       }
     `;
+    const clearInput = () => props.onChange({ target: { value: '' } });
     return (
       <Wrapper className={className}>
         <LeftIcon className={'icon-left'} />
         <input {...{ value, ...props }} autoFocus />
-        {value &&
-          value.length && (
-            <RightIcon
-              className={'icon-right'}
-              onClick={() => {
-                props.onChange({ target: { value: '' } });
-              }}
-            />
-          )}
+        {value && value.length && <RightIcon className={'icon-right'} onClick={clearInput} />}
       </Wrapper>
     );
   },
