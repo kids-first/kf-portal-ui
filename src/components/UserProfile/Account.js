@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { H3, H4 } from './';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
@@ -34,22 +35,22 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       `}
     >
       <SettingsSection>
-        <H2>
+        <H3>
           <Trans>Settings</Trans>
-        </H2>
+        </H3>
         <div
           css={`
             ${theme.column};
             width: 70%;
           `}
         >
-          Email Address:
+          <H4 css={`${theme.spacing.collapse}`}>Email Address:</H4>
           <Input disabled value={profile.email} />
         </div>
       </SettingsSection>
 
       <SettingsSection>
-        <H2>Integrations</H2>
+        <H3>Integrations</H3>
         <UserIntegrations />
       </SettingsSection>
     </div>
