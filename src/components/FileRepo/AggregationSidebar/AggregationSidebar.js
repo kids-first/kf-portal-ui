@@ -21,7 +21,9 @@ import Column from 'uikit/Column';
 
 const AggregationWrapper = styled('div')`
   height: 100%;
-  width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
+  width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
+  max-width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
+  min-width: ${({ scrollbarWidth }) => 200 + scrollbarWidth}px;
   overflow-y: auto;
   box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
   border-color: ${({ theme }) => theme.greyScale5};
