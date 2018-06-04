@@ -16,9 +16,6 @@ const UploadButton = styled(LightButton)`
   border-top-left-radius: 100px;
   border-bottom-left-radius: 100px;
   margin: 0px;
-  font-size: 9px;
-  padding-left: 5px;
-  padding-right: 5px;
 `;
 
 const IdSelect = styled(Select)`
@@ -33,8 +30,8 @@ const IdSelect = styled(Select)`
   }
 `;
 
-const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
-  <Row>
+const UploadIdsButton = ({ theme, state, effects, setSQON, className, ...props }) => (
+  <Row className={className}>
     <UploadButton
       onClick={() =>
         effects.setModal({
