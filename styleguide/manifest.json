@@ -3,7 +3,7 @@
   "bundleVersion": 1,
   "commands": [
     {
-      "name": "KidsFirst: Styleguide",
+      "name": "Kids First: Styleguide",
       "identifier": "main",
       "script": "./main.js"
     }

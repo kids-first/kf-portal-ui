@@ -1,19 +1,9 @@
 import { css } from 'react-emotion';
-import colors, { shadows, gradients } from './colors';
-import {
-  fonts,
-  headings,
-  text,
-  paragraph,
-  links,
-  fontSizesScale,
-  lineHeightsScale,
-  fontWeights,
-  letterSpacings,
-} from './typography';
+import colors from './colors';
+import { fonts, headings, text, paragraph, links } from './typography';
 
 const spacing = {
-  collapse: 'margin:0; padding: 0;',
+  collapse: 'margin:0; padding: 0;'
 };
 
 const components = {
@@ -204,26 +194,7 @@ const components = {
     border: solid 1px #e0e1e6;
     color: ${colors.greyScale1};
   `,
-  // profileH3: css`
-  //   font-size: 14px;
-  //   font-weight: bold;
-  //   line-height: 1.71;
-  //   letter-spacing: 0.2px;
-  //   color: #343434;
-  //   margin: 0;
-  // `,
-  // profileH2: css`
-  //   color: ${colors.secondary};
-  //   margin-top: 0px;
-  //   font-size: 22px;
-  //   font-weight: 300;
-  //   line-height: 1.27;
-  //   letter-spacing: 0.3px;
-  //   border-bottom: 1px solid #d4d6dd;
-  //   display: flex;
-  //   justify-content: space-between;
-  //   padding-bottom: 10px;
-  // `,
+  
   modalTitle: css`
     color: ${colors.secondary};
     font-size: 20px;
@@ -242,7 +213,7 @@ const components = {
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
   `,
-
+  
   input: css`
     width: 100%;
     min-width: 0;
@@ -511,15 +482,9 @@ export default {
   spacing,
   fonts,
   text,
-  paragraph,
-  fontSizes: fontSizesScale,
-  lineHeights: lineHeightsScale,
-  fontWeights,
-  letterSpacings,
-  shadows,
-  gradients,
+  paragraph, 
   ...links,
   ...headings,
-  colors,
+  ...colors,
   ...components,
 };
