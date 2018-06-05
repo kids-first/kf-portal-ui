@@ -1,6 +1,6 @@
 import styled from 'react-emotion';
-import Column from 'uikit/Column';
-import Row from 'uikit/Row';
+import Column from '../Column';
+import Row from '../Row';
 
 export const DropdownContainer = styled(Row)`
   position: relative;
