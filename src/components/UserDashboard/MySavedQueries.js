@@ -85,14 +85,18 @@ const MySavedQueries = compose(
             `};
           `}
         >
-          <StyledH3
+          <h4
             css={`
+              ${theme.h4}
+              font-family: ${theme.fonts.default};
+              font-size: 20px;
               margin-top: 6px;
-              font-weight: 300;
+              font-weight: 100;
+              color: ${theme.secondary};
             `}
           >
             Saved Queries
-          </StyledH3>
+          </h4>
           <div
             css={`
               margin-left: auto;
@@ -116,14 +120,15 @@ const MySavedQueries = compose(
             >
               {queries.length}
             </span>
-            <span
+            <h3
               css={`
-                font-size: 14px;
-                color: #a9adc0;
+                ${theme.h3}
+                font-size: 90%;
+                color: ${theme.greyScale7};
               `}
             >
-              Queries
-            </span>
+              Quer{queries.length === 1 ? 'y': 'ies'}
+            </h3>
           </div>
         </div>
 
@@ -152,7 +157,7 @@ const MySavedQueries = compose(
                   border: 1px solid #e0e1e6;
                   border-bottom: 0;
                   transition-property: opacity;
-
+                    
                   ${deletingIds.includes(q.id) &&
                     `opacity: 0.6;
             pointer-events: none;`} &:last-child {
@@ -176,11 +181,7 @@ const MySavedQueries = compose(
                   >
                     <Link
                       to={q.link}
-                      css={`
-                        font-size: 0.875em;
-                        color: #a42c90;
-                        font-weight: bold;
-                      `}
+                      css={`${theme.internalLink}`}
                     >
                       {q.alias}
                     </Link>
@@ -190,41 +191,41 @@ const MySavedQueries = compose(
                       `}
                     >
                       <TrashIcon
-                        css={`
-                          color: #a42c90;
-                          &:hover {
-                            cursor: pointer;
-                            color: ${theme.hover};
-                          }
-                        `}
+                        css={`${theme.internalLink}`}
                         onClick={() => deleteQuery({ api, queryId: q.id })}
                       />
                     </div>
                   </div>
-                  <div
+                  <p
                     css={`
-                      margin: 10px 0;
-                      color: #74757d;
-                      font-size: 0.75em;
+                      ${theme.paragraph}
+                      ${theme.text.small}
+                      margin: 8px 0;
+                      color: ${theme.greyScale9};
                       letter-spacing: 0.3px;
-
-                      span {
+                      b {
                         color: #343434;
+                        padding-right: 3px;
+                      }
+                      span {
+                        margin: 0 5px;
                       }
                     `}
                   >
-                    <span>{(q.content.Files || 0).toLocaleString()}</span> Files |{' '}
-                    <span>{(q.content.Participants || 0).toLocaleString()}</span> Participants |{' '}
-                    <span>{(q.content.Families || 0).toLocaleString()}</span> Families |{' '}
-                    <span>{q.content.Size}</span>
-                  </div>
-                  <div
+                    <b>{(q.content.Files || 0).toLocaleString()}</b> Files <span>|{' '}</span>
+                    <b>{(q.content.Participants || 0).toLocaleString()}</b> Participants <span>|{' '}</span>
+                    <b>{(q.content.Families || 0).toLocaleString()}</b> Families <span>|{' '}</span>
+                    <b>{q.content.Size}</b>
+                  </p>
+                  <p
                     css={`
-                      font-size: 0.75em;
+                      ${theme.paragraph}
+                      ${theme.text.small}
+                      margin: 0;
                     `}
                   >
-                    Saved {distanceInWords(new Date(), new Date(q.creationDate))}
-                  </div>
+                    Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
+                  </p>
                 </div>
               </div>
             ))}

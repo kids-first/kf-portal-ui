@@ -48,7 +48,7 @@ export default compose(
           padding: 40px;
         `}
       >
-        <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>
+        <h3 css={`${theme.h3} font-size:24px;  font-weight: 400; margin:0;`}>Welcome, {loggedInUser.firstName}!</h3>
         <div
           css={`
             display: flex;

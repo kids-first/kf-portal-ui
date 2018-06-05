@@ -18,7 +18,7 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       padding-top: 40px;
       align-content: space-around;
       align-items: center;
-      color: #fff;
+      color: ${theme.white};
       font-size: 14px;
       flex: none;
       text-align: center;
@@ -55,39 +55,47 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
         Complete
       </div>
     </RoleIconButton>
-    <div>
+    <div css={`${theme.text.center}`}>
+      <h2 
+        css={`
+          ${theme.h2}
+          font-weight: 500;
+          margin: 0;
+        `}
+      >
       <Link
         to={`/user/${loggedInUser.egoId}#aboutMe`}
         css={`
-          text-decoration: underline;
-          text-align: center;
-          color: #ffffff;
-          font-size: 28px;
-          font-weight: 500;
-          line-height: 1.11;
-          letter-spacing: 0.4px;
-          margin-bottom: 24px;
+          color: ${theme.white};
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
         `}
       >
         {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
         {loggedInUser.firstName} {loggedInUser.lastName}
       </Link>
+      </h2>
       {[
         loggedInUser.jobTitle && (
-          <span
-            css={`
-              font-size: 18px;
-            `}
-          >
-            {loggedInUser.jobTitle}
-          </span>
+           <h2
+              css={`
+                ${theme.spacing.collapse}
+                ${theme.h2}
+                color: ${theme.white};
+                ${theme.spacing.collapse}
+              `}
+            >
+              <small css={`${theme.text.small} font-weight: 300;`}>{loggedInUser.jobTitle}</small>
+          </h2>
         ),
         loggedInUser.institution,
         [loggedInUser.city, loggedInUser.state].filter(Boolean).join(', '),
         loggedInUser.country,
       ]
         .filter(Boolean)
-        .map((str, i) => <div key={`${str}${i}`}>{str}</div>)}
+        .map((str, i) => <p css={`${theme.paragraph} ${theme.spacing.collapse} color: ${theme.white}; margin-top:0; line-height: 1.33;`} key={`${str}${i}`}>{str}</p>)}
       <div
         css={`
           margin: 40px 0 58px;
