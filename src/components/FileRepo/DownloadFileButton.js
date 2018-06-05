@@ -15,8 +15,8 @@ import { getFilesById } from 'services/arranger';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const getGen3UUIDs = async kfId => {
-  const fileData = await getFilesById({ ids: [kfId], fields: ['uuid'] });
-  return fileData.map(file => file.node.uuid);
+  const fileData = await getFilesById({ ids: [kfId], fields: ['latest_did'] });
+  return fileData.map(file => file.node.latest_did);
 };
 
 const downloadFile = async (kfId, gen3Key) => {
