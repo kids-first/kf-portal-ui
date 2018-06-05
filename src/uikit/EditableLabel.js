@@ -173,15 +173,17 @@ export default compose(
             cursor: 'text',
           }}
         >
-          <span
+          <p
             css={`
+              ${theme.paragraph}
+              ${theme.spacing.collapse}
               white-space: pre-line;
             `}
           >
             {trim(inputValue)
               ? renderNonEditing ? renderNonEditing(trim(inputValue)) : trim(inputValue)
               : placeholderComponent}
-          </span>
+          </p>
           {!disabled && <PencilIcon style={{ paddingLeft: '10px' }} />}
         </div>
       )}

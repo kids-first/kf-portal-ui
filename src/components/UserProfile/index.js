@@ -61,17 +61,6 @@ export const H3 = styled('h3')`
   
 `;
 
-// export const H4 = styled('h4')`
-//   font-family: ${({ theme }) => theme.fonts.details};
-//   font-size: 13px;
-//   font-style: italic;
-//   line-height: 1.85;
-//   text-align: left;
-//   color: #74757d;
-//   margin: 0;
-//   font-weight: normal;
-// `;
-
 export const H4 = styled('h4')`
   ${({ theme }) => theme.h4}
   color: ${({ theme }) => theme.greyScale1};
@@ -181,7 +170,7 @@ export default compose(
             css={`
               ${theme.h2} 
               color: ${theme.white};
-              font-weight: 700;
+              font-weight: 500;
               margin-bottom: 0;
             `}
           >{`${profile.firstName} ${profile.lastName}`}</h2>
@@ -191,6 +180,7 @@ export default compose(
                 ${theme.h2}
                 color: ${theme.white};
                 ${theme.spacing.collapse}
+                font-weight: 300;
               `}
             >
               <small css={`${theme.text.small}`}> {profile.jobTitle} </small>

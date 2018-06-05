@@ -23,9 +23,7 @@ const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => 
           <ExternalLink
             href={url}
             hasExternalIcon={false}
-            css={`
-              color: #a42c90;
-            `}
+            css={`${theme.ExternalLink}`}
           >
             {name}
           </ExternalLink>.

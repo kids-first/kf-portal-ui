@@ -50,9 +50,9 @@ const Content = styled('div')`
   padding-top: 10px;
 `;
 
-const Text = styled('div')`
-  font-size: 14px;
-  line-height: 26px;
+const Text = styled('p')`
+  ${({theme}) => theme.paragraph}
+  margin-top:0;
 `;
 
 const Section = styled('div')`

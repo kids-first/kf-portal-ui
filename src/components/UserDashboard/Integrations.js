@@ -35,10 +35,10 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
         css={`
           ${theme.column};
           padding: 10px;
-          max-width: 260px;
+          max-width: 100%;
         `}
       >
-        <StyledH4>Download Controlled Data</StyledH4>
+        <h3 css={`${theme.h3} font-weight: 100; color: ${theme.primaryHover}; ${theme.spacing.collapse} `}>Download Controlled Data</h3>
         <IntegrationsStatus
           connected={integrationTokens[GEN3]}
           theme={theme}
@@ -77,10 +77,10 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
         css={`
           ${theme.cloumn};
           padding: 10px;
-          max-width: 260px;
+          max-width: 305px;
         `}
       >
-        <StyledH4>Analyze Data</StyledH4>
+      <h3 css={`${theme.h3} font-weight: 100; color: ${theme.primaryHover}; ${theme.spacing.collapse} `}>Analyze Data</h3>
 
         <IntegrationsStatus
           connected={integrationTokens[CAVATICA]}

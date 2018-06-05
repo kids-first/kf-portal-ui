@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { xor } from 'lodash';
-import Styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
@@ -9,7 +9,7 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
-import { Container, EditButton, H2, H3, H4 } from './';
+import { Container, EditButton, H3, H4 } from './';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';

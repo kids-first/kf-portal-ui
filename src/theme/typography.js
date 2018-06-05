@@ -37,7 +37,7 @@ export const headings = {
     ${headingsBase}
     color: ${colors.secondary};
     font-size: 30px;
-    line-height: 0.87;
+    line-height: 0.95;
     letter-spacing: 0.4px;
     color: #2b388f;
     font-weight: 500;
@@ -63,6 +63,27 @@ export const headings = {
     font-weight: 100;
   `
 };
+
+
+export const links = {
+  internalLink: `
+              
+              color: #a42c90;
+              font-weight: bold;
+              &:hover {
+                cursor: pointer;
+                color: ${colors.hover};
+            }
+            `,
+  externalLink: `
+    color: ${colors.primary};
+    cursor: pointer;
+    &:hover,
+    &.active {
+      color: ${colors.highlight};
+    }
+  `,
+}
 
 export const text = {
   center: 'text-align: center;',
