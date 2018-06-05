@@ -21,6 +21,7 @@
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.5",
     "md5": "^2.2.1",
+    "normalize.css": "^8.0.0",
     "popback": "^0.0.3",
     "query-string": "^5.1.0",
     "react": "^16.3.0",
