@@ -59,8 +59,9 @@
     "eject": "react-app-rewired eject",
     "translations": "i18next-scanner --output ./public 'src/**/*.js'",
     "storybook": "start-storybook -p 9001 -c .storybook",
+    "build-storybook": "build-storybook -c .storybook -o build-storybook",
     "styleguide": "skpm-build --watch --run",
-    "build-storybook": "build-storybook -c .storybook -o build-storybook"
+    "build-styleguide": "skpm-build"
   },
   "devDependencies": {
     "@skpm/builder": "^0.5.7",
@@ -72,7 +73,7 @@
     "vinyl-fs": "^3.0.2"
   },
   "skpm": {
-    "main": "styleguide.sketchplugin",
+    "main": "styleguide/styleguide.sketchplugin",
     "manifest": "styleguide/manifest.json"
   },
   "prettier": {

@@ -1,7 +1,7 @@
 import colors from './colors';
 
 export const fonts = {
-  default: 'Montserrat, Helvetica, sans-serif',
+  default: 'Montserrat',
   details: 'Open Sans',
 };
 
@@ -16,7 +16,7 @@ export const paragraph = `
   font-family: ${fonts.details};
   color: ${colors.greyScale1};
   font-size: 14px;
-  line-height: 1.86;
+  line-height: 16px;
   ${typogrpahyBase}
 `;
 
