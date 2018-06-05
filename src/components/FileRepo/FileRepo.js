@@ -239,7 +239,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               {...props}
                               {...url}
                               customTypes={customTableTypes}
-                              FilterInputComponent={props => (
+                              InputComponent={props => (
                                 <FilterInput {...props} LeftIcon={FilterIcon} />
                               )}
                               customColumns={customTableColumns({ theme })}

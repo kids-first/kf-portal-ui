@@ -55,7 +55,7 @@ class AdvancedFacetViewModalContent extends React.Component {
         <AfvContainer>
           <AdvancedFacetView
             {...props}
-            FilterInputComponent={props => (
+            InputComponent={props => (
               <div>
                 <FilterInput {...props} />
               </div>
