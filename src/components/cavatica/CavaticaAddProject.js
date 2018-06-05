@@ -32,11 +32,18 @@ const CreateButton = styled(NiceWhiteButton)`
   cursor: pointer;
 `;
 
-const InputLabel = styled('div')`
-  font-size:12px;
-  line-height:2.39
+const InputLabel = styled(Row)`
+  font-size: 12px;
+  line-height: 2.39;
+  align-items: center;
   color: ${({ theme }) => theme.tertiary};
   text-transform: uppercase;
+  &::after {
+    margin-left: 13px;
+    font-size: 1.5rem;
+    content: '›';
+    margin-top: -4px;
+  }
 `;
 
 const AddIcon = styled(PlusIcon)`
@@ -75,6 +82,7 @@ const CavaticaAddProject = ({
         <InputLabel>Create a project</InputLabel>
         <Input
           italic
+          flex={1}
           type="text"
           placeholder="Enter name of project"
           value={projectName}

@@ -60,4 +60,5 @@ export const FilterInput = ({
 export default styled('input')`
   ${({ theme }) => theme.input};
   ${({ italic }) => (italic ? `font-style: italic` : ``)};
+  ${({ flex }) => (flex ? `flex: ${flex}` : '')};
 `;
