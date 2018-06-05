@@ -10,23 +10,6 @@ export const StyledH3 = styled('h3')`
   margin: 0;
 `;
 
-export const StyledH2 = styled('h2')`
-  font-size: 28px;
-  font-weight: 400;
-  letter-spacing: 0.4px;
-  color: ${({ theme }) => theme.primaryHover};
-  margin: 0px;
-`;
-
-export const StyledH4 = styled('h4')`
-  font-size: 18px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: 0.3px;
-  text-align: left;
-  color: ${({ theme }) => theme.primaryHover};
-  margin: 0 0 5px 0;
-`;
 
 export const IntegrationsDiv = styled.div`
   ${({ theme }) => theme.row};
