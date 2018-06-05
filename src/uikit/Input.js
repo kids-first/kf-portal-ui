@@ -4,8 +4,10 @@ import Row from 'uikit/Row';
 import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 
-// this this component should implement the default <input> type from react-dom with some additional
-// props for styling
+/*
+this component should implement the same interface as <input> from react-dom
+with some additional props
+*/
 const FilterInputWrapper = styled(Row)`
   ${({ theme }) => theme.input};
   color: ${({ theme }) => theme.greyScale7};
