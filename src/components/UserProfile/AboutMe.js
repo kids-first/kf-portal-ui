@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { xor } from 'lodash';
-import Styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
