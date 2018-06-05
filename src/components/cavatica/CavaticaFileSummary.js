@@ -41,7 +41,7 @@ const enhance = compose(
       const names = {};
       const files = await getFilesById({
         ids: this.props.filesSelected,
-        fields: ['participants{hits{edges{node{study{external_id, name}}}}}', 'uuid'],
+        fields: ['participants{hits{edges{node{study{external_id, name}}}}}', 'kf_id'],
       });
       if (files && files.forEach) {
         files.forEach(file => {
@@ -51,7 +51,7 @@ const enhance = compose(
           if (!studies[study]) {
             studies[study] = [];
           }
-          studies[study].push(file.node.uuid);
+          studies[study].push(file.node.kf_id);
         });
       }
 
