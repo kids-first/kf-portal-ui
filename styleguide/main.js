@@ -21,9 +21,16 @@ import TypeSpecimen from "./components/TypeSpecimen";
 
 const App = ({ system }) => (
   <Document>
+    <Page name="Color Palette">
+      <Artboard>
+        <Section title="Color Palette">
+          <Palette colors={system.colors} />
+        </Section>
+      </Artboard>
+    </Page>
+
     <Page name="Typography">
       <Artboard>
-      
         <Section title="Fonts">
           {Object.keys(system.fonts).map((name) => (
             <View style={{ flexDirection: "row", marginBottom: 24 }} >
@@ -54,9 +61,6 @@ const App = ({ system }) => (
       </Artboard>
     </Page>
 
-    <Page name="Color Palette">
-      <Text>Foobar 2</Text>
-    </Page>
   </Document>
 );
 
