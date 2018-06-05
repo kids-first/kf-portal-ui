@@ -6,6 +6,7 @@
     "@arranger/components": "^0.3.61",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
+    "chroma-js": "^1.3.7",
     "date-fns": "^1.29.0",
     "debug": "^3.1.0",
     "downshift": "^1.29.1",
@@ -41,8 +42,10 @@
     "react-scripts": "1.1.0",
     "react-scrollbar-size": "^2.1.0",
     "react-share": "^2.0.0",
+    "react-sketchapp": "^2.0.0",
     "react-social-icons": "^3.0.0",
     "react-spinkit": "^3.0.0",
+    "react-test-renderer": "^16.4.0",
     "react-tippy": "^1.2.2",
     "recompose": "^0.26.0",
     "scriptjs": "^2.5.8",
@@ -56,15 +59,21 @@
     "eject": "react-app-rewired eject",
     "translations": "i18next-scanner --output ./public 'src/**/*.js'",
     "storybook": "start-storybook -p 9001 -c .storybook",
+    "styleguide": "skpm-build --watch --run",
     "build-storybook": "build-storybook -c .storybook -o build-storybook"
   },
   "devDependencies": {
+    "@skpm/builder": "^0.5.7",
     "@storybook/react": "^3.4.2",
     "babel-polyfill": "^6.26.0",
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
     "react-app-rewired": "^1.4.1",
     "vinyl-fs": "^3.0.2"
+  },
+  "skpm": {
+    "main": "styleguide.sketchplugin",
+    "manifest": "styleguide/manifest.json"
   },
   "prettier": {
     "printWidth": 100,
