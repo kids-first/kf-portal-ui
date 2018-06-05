@@ -34,6 +34,10 @@ const AfvContainer = styled('div')`
   }
 `;
 
+const CustomFilterInput = styled(FilterInput)`
+  width: auto;
+`;
+
 class AdvancedFacetViewModalContent extends React.Component {
   onOverlayClick = e => {
     const { closeModal = () => {} } = this.props;
@@ -55,11 +59,7 @@ class AdvancedFacetViewModalContent extends React.Component {
         <AfvContainer>
           <AdvancedFacetView
             {...props}
-            InputComponent={props => (
-              <div>
-                <FilterInput {...props} />
-              </div>
-            )}
+            InputComponent={CustomFilterInput}
             sqon={localSqon}
             onSqonChange={({ sqon }) => effects.setAdvancedFacetSqon(sqon)}
           />
