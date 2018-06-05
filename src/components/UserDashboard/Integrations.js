@@ -6,7 +6,7 @@ import { gen3WebRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import ExternalLink from 'uikit/ExternalLink';
-import { IntegrationsDiv, IntegrationsCircleDiv, StyledH4 } from './styles';
+import { IntegrationsDiv, IntegrationsCircleDiv } from './styles';
 import IntegrationsStatus from './IntegrationsStatus';
 
 const Integrations = ({ loggedInUser, theme, integrationTokens }) => (

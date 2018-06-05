@@ -193,26 +193,26 @@ const components = {
     border: solid 1px #e0e1e6;
     color: ${colors.greyScale1};
   `,
-  profileH3: css`
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1.71;
-    letter-spacing: 0.2px;
-    color: #343434;
-    margin: 0;
-  `,
-  profileH2: css`
-    color: ${colors.secondary};
-    margin-top: 0px;
-    font-size: 22px;
-    font-weight: 300;
-    line-height: 1.27;
-    letter-spacing: 0.3px;
-    border-bottom: 1px solid #d4d6dd;
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-  `,
+  // profileH3: css`
+  //   font-size: 14px;
+  //   font-weight: bold;
+  //   line-height: 1.71;
+  //   letter-spacing: 0.2px;
+  //   color: #343434;
+  //   margin: 0;
+  // `,
+  // profileH2: css`
+  //   color: ${colors.secondary};
+  //   margin-top: 0px;
+  //   font-size: 22px;
+  //   font-weight: 300;
+  //   line-height: 1.27;
+  //   letter-spacing: 0.3px;
+  //   border-bottom: 1px solid #d4d6dd;
+  //   display: flex;
+  //   justify-content: space-between;
+  //   padding-bottom: 10px;
+  // `,
   modalTitle: css`
     color: ${colors.secondary};
     font-size: 20px;
@@ -231,29 +231,7 @@ const components = {
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
   `,
-  // h2: css`
-  //   text-align: center;
-  //   color: ${colors.secondary};
-  //   font-size: 30px;
-  //   line-height: 0.87;
-  //   letter-spacing: 0.4px;
-  //   color: #2b388f;
-  //   font-weight: 500;
-  // `,
-  // h3: css`
-  //   font-weight: 500;
-  //   font-size: 18px;
-  //   line-height: 1.44;
-  //   letter-spacing: 0.3px;
-  //   color: ${colors.secondary};
-  // `,
-  // h4: css`
-  //   font-family: ${fonts.details};
-  //   color: #fff;
-  //   font-size: 30px;
-  //   line-height: 31px;
-  //   margin: 10px 0;
-  // `,
+  
   input: css`
     width: 100%;
     min-width: 0;

@@ -11,7 +11,6 @@ import MySavedQueries from './MySavedQueries';
 import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import { StyledH2 } from './styles';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};

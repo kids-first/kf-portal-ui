@@ -5,8 +5,6 @@ export const fonts = {
   details: 'Open Sans',
 };
 
-export const fontSizes = [12, 14, 16, ];
-
 const typogrpahyBase = ` text-decoration: none; border: none;`;
 
 const headingsBase = `

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { distanceInWords } from 'date-fns';
 
 import TrashIcon from 'react-icons/lib/fa/trash';
-import { StyledH3 } from './styles';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
