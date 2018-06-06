@@ -153,7 +153,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
             }}
             componentProps={{
               getTermAggProps: () => ({
-                InputComponent: props => <FilterInput {...props} />,
+                InputComponent: FilterInput,
               }),
             }}
           />
