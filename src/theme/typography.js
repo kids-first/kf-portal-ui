@@ -1,78 +1,103 @@
-import colors from './colors';
+import colors, { gradients } from './colors';
+import { zipObject } from 'lodash';
 
 export const fonts = {
   default: 'Montserrat, Helvetica, sans-serif',
   details: 'Open Sans',
 };
+const baseFontSize = 16;
 
-const typogrpahyBase = ` text-decoration: none; border: none;`;
+// typographic scale
+// px based
+const fSizes = [12, 14, 16, 20, 24, 30, 32, 36, 48, 64, 96, 128];
+// keyed object to make sizes more declarative
+// ex. fontSizes['32']
+export const fontSizes = zipObject(fSizes, fSizes);
+
+// for any scale, either array or objects will work
+// em based
+const lHeights = [0.95, 1, 1.125, 1.25, 1.44, 1.5, 1.86];
+export const lineHeights = zipObject(lHeights, lHeights);
+
+// based on imported fonts in index.css
+export const fontWeights = {
+  thin: 300,
+  regular: 400,
+  normal: 500,
+  bold: 700,
+};
+
+export const letterSpacings = {
+  normal: 'normal',
+  caps: '0.25em',
+  heading: '0.5px',
+};
+
+const typographyBase = `text-decoration: none; border: none;`;
 
 const headingsBase = `
   font-family: ${fonts.default};
-  ${typogrpahyBase}
+  ${typographyBase}
 `;
 
 export const paragraph = `
   font-family: ${fonts.details};
   color: ${colors.greyScale1};
-  font-size: 14px;
-  line-height: 1.86;
-  ${typogrpahyBase}
+  font-size: ${baseFontSize};
+  line-height: ${lineHeights['1.86']};
+  ${typographyBase}
 `;
 
 export const headings = {
   h1: ` 
     ${headingsBase}
-    background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed),linear-gradient(#2b388f, #2b388f);
-    font-size: 36px;
-    font-weight: 500;
-    margin: 10px 0;
-    letter-spacing: 0.5px;
+    font-size: ${fontSizes['36']};
+    font-weight: ${fontWeights.normal};
+    letter-spacing: ${letterSpacings.heading};
+    background-image: ${gradients.blue};
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;`,
   h2: `
     ${headingsBase}
     color: ${colors.secondary};
-    font-size: 30px;
-    line-height: 0.95;
-    letter-spacing: 0.4px;
-    color: #2b388f;
-    font-weight: 500;
+    font-size: ${fontSizes['30']};
+    line-height: ${lineHeights['0.95']};
+    letter-spacing: ${letterSpacings.heading};
+    color: ${colors.secondary};
+    font-weight: ${fontWeights.normal};
   `,
   h3: `
     ${headingsBase}
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 1.44;
-    letter-spacing: 0.3px;
+    font-weight: ${fontWeights.normal};
+    font-size: ${fontSizes['18']};
+    line-height: ${lineHeights['1.44']};
+    letter-spacing: ${letterSpacings.heading};
     color: ${colors.secondary};
   `,
   h4: `
     ${headingsBase}
     font-family: ${fonts.details};
-    font-size: 16px;
-    line-height: 31px;
+    font-size: ${fontSizes['16']};
+    line-height: ${lineHeights['1.25']};
   `,
   h5: `
     ${headingsBase}
     ${paragraph}
-    font-size: 14px;
-    font-weight: 100;
-  `
+    font-size: ${fontSizes['14']};
+    font-weight: ${fontWeights.thin};
+  `,
 };
-
 
 export const links = {
   internalLink: `
-              
-              color: #a42c90;
-              font-weight: bold;
-              &:hover {
-                cursor: pointer;
-                color: ${colors.hover};
-            }
-            `,
+    color: #a42c90;
+    font-weight: bold;
+    &:hover {
+      cursor: pointer;
+      color: ${colors.hover};
+    }
+  `,
   externalLink: `
     color: ${colors.primary};
     cursor: pointer;
@@ -81,7 +106,7 @@ export const links = {
       color: ${colors.highlight};
     }
   `,
-}
+};
 
 export const text = {
   center: 'text-align: center;',

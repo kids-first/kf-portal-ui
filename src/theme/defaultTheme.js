@@ -1,8 +1,9 @@
 import { css } from 'react-emotion';
 import colors from './colors';
 import { fonts, headings, text, paragraph, links } from './typography';
+
 const spacing = {
-  collapse: 'margin:0; padding: 0;'
+  collapse: 'margin:0; padding: 0;',
 };
 
 const components = {
@@ -231,7 +232,7 @@ const components = {
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
   `,
-  
+
   input: css`
     width: 100%;
     min-width: 0;
@@ -495,12 +496,12 @@ const components = {
   warning: css``,
   info: css``,
 };
-console.log(components)
+
 export default {
   spacing,
   fonts,
   text,
-  paragraph, 
+  paragraph,
   ...links,
   ...headings,
   ...colors,

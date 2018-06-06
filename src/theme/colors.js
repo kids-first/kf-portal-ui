@@ -16,7 +16,6 @@ const colors = {
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
-  
 
   optionSelected: '#E5F6FD', //light blue
 
@@ -33,6 +32,12 @@ const colors = {
   greyScale0: 'rgb(36,36,36)',
 
   shadow: 'rgba(0, 0, 0, 0.5)',
+};
+
+export const gradients = {
+  blue: `linear-gradient(to right, ${colors.primaryHover}, ${
+    colors.tertiary
+  } 51%, #02b0ed), linear-gradient(${colors.secondary}, ${colors.secondary})`,
 };
 
 export default colors;
