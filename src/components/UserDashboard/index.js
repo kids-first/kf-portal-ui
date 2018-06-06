@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { cold } from 'react-hot-loader';
 import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
