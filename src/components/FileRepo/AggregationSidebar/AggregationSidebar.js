@@ -18,6 +18,7 @@ import { ActionButton } from 'uikit/Button';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 
 const AggregationWrapper = styled('div')`
   height: 100%;
@@ -48,9 +49,6 @@ const AggregationTitle = styled('div')`
 const IdFilterContainer = styled(Column)`
   .quick-search {
     margin-bottom: 10px;
-  }
-  .uploadIdsButton {
-    justify-content: flex-end;
   }
 `;
 
@@ -146,10 +144,9 @@ const AggregationSidebar = compose(injectState, withTheme)(
                 />
               }
             />
-            <UploadIdsButton
-              className={'uploadIdsButton'}
-              {...{ theme, effects, state, setSQON, ...props }}
-            />
+            <Row justifyContent="flex-end">
+              <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
+            </Row>
           </IdFilterContainer>
           <Aggregations
             {...{
