@@ -16,6 +16,7 @@ import { config as statsConfig } from 'components/Stats';
 import InfoIcon from 'icons/InfoIcon';
 import { ActionButton } from 'uikit/Button';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
+import { FilterInput } from 'uikit/Input';
 
 const AggregationWrapper = styled('div')`
   height: 100%;
@@ -122,6 +123,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
           <div className="aggregation-card">
             <QuickSearch
               {...{ ...props, setSQON, translateSQONValue }}
+              InputComponent={FilterInput}
               placeholder="Enter Identifiers"
               LoadingIcon={
                 <Spinner
@@ -148,6 +150,11 @@ const AggregationSidebar = compose(injectState, withTheme)(
                   label: { type: 'filter', value, field },
                 });
               }
+            }}
+            componentProps={{
+              getTermAggProps: () => ({
+                InputComponent: props => <FilterInput {...props} />,
+              }),
             }}
           />
         </AggregationWrapper>

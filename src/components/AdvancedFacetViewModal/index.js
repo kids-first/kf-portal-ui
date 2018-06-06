@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
+import { FilterInput } from 'uikit/Input';
 
 const enhance = compose(provideLocalSqon, injectState);
 
@@ -33,6 +34,10 @@ const AfvContainer = styled('div')`
   }
 `;
 
+const CustomFilterInput = styled(FilterInput)`
+  width: auto;
+`;
+
 class AdvancedFacetViewModalContent extends React.Component {
   onOverlayClick = e => {
     const { closeModal = () => {} } = this.props;
@@ -54,6 +59,7 @@ class AdvancedFacetViewModalContent extends React.Component {
         <AfvContainer>
           <AdvancedFacetView
             {...props}
+            InputComponent={CustomFilterInput}
             sqon={localSqon}
             onSqonChange={({ sqon }) => effects.setAdvancedFacetSqon(sqon)}
           />
