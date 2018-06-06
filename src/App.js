@@ -1,4 +1,5 @@
 import React from 'react';
+import { hot, setConfig } from 'react-hot-loader';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -171,8 +172,10 @@ const App = compose(injectState, withApi, withTheme)(
   },
 );
 
-export default translate('translations')(() => (
+const TranslatedApp = translate('translations', { withRef: true })(() => (
   <ContextProvider>
     <App />
   </ContextProvider>
 ));
+
+export default hot(module)(TranslatedApp);

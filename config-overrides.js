@@ -3,6 +3,7 @@ const fs = require('fs');
 const scanner = require('i18next-scanner');
 const vfs = require('vinyl-fs');
 const { injectBabelPlugin } = require('react-app-rewired');
+const rewireReactHotLoader = require('react-app-rewire-hot-loader');
 
 const i18nConfig = require('./i18next-scanner.config');
 
@@ -55,8 +56,9 @@ function extractTranslations(config) {
   return config;
 }
 
-module.exports = function(config) {
+module.exports = function(config, env) {
   transpileNodeModules(config);
   extractTranslations(config);
-  return injectBabelPlugin('emotion', config);
+  injectBabelPlugin('emotion', config);
+  return rewireReactHotLoader(config, env);
 };
