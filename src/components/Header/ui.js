@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Row from 'uikit/Row';
 import Gravtar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
+import { space } from 'styled-system';
 
 export const NavLink = styled(Link)`
   ${({ theme }) => theme.navLink};
@@ -11,7 +12,7 @@ export const NavLink = styled(Link)`
 
 export const NavBarList = styled('ul')`
   ${({ theme }) => theme.navBar};
-  margin-left: ${({ ml }) => (ml ? `${ml}px` : 'none')};
+  ${space};
   justify-content: ${({ justify }) => justify || ''};
 `;
 
