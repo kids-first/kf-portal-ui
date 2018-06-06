@@ -45,6 +45,7 @@
     "react-tippy": "^1.2.2",
     "recompose": "^0.26.0",
     "scriptjs": "^2.5.8",
+    "styled-system": "^2.2.5",
     "url-join": "^2.0.2",
     "victory-pie": "^14.0.1"
   },
