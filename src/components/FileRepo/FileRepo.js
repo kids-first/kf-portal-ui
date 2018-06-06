@@ -11,7 +11,7 @@ import FilterIcon from 'react-icons/lib/fa/filter';
 
 import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import '@arranger/components/public/themeStyles/beagle/beagle.css';
+import arrangerStyle from './arrangerStyle';
 
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
@@ -92,6 +92,8 @@ const customTableColumns = ({ theme }) => [
 ];
 
 const ArrangerContainer = styled(Row)`
+  ${arrangerStyle};
+
   display: flex;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
@@ -128,10 +130,6 @@ const ArrangerContainer = styled(Row)`
 
   div.sqon-view {
     flex-grow: 1;
-  }
-
-  & .sqon-clear.sqon-bubble {
-    font-weight: bold;
   }
 `;
 
