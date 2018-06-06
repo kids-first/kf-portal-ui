@@ -3,7 +3,7 @@ import styled from 'react-emotion';
 import Row from 'uikit/Row';
 import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
-
+import { flex } from 'styled-system';
 /*
 this component should implement the same interface as <input> from react-dom
 with some additional props
@@ -56,9 +56,8 @@ export const FilterInput = ({
     </FilterInputWrapper>
   );
 };
-
 export default styled('input')`
   ${({ theme }) => theme.input};
   ${({ italic }) => (italic ? `font-style: italic` : ``)};
-  ${({ flex }) => (flex ? `flex: ${flex}` : '')};
+  ${flex};
 `;
