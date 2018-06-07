@@ -17,10 +17,10 @@ const Button = styled(BaseButton)`
 `;
 
 export const LightButton = styled(BaseButton)`
-  ${({ theme }) => theme.hollowButton};
-  ${({ theme }) => theme.row};
-  ${({ theme }) => theme.center};
-  font-weight: bold;
+  height: 22px;
+  border-radius: 10.5px;
+  background-color: #fff;
+  color: #008199;
 `;
 
 export const ActionButton = styled(Button)`
