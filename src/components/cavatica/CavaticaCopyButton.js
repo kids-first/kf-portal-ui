@@ -2,42 +2,30 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { css } from 'emotion';
+import styled from 'react-emotion';
 
 import { CAVATICA } from 'common/constants';
 import CavaticaConnectModal from './CavaticaConnectModal';
 import CavaticaCopyModal from './CavaticaCopyModal';
 
+import { BigWhiteButton } from 'uikit/Button';
+
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 
-const enhance = compose(injectState, withTheme);
+const ButtonContent = styled('span')`
+  ${({ theme }) => theme.row};
+  ${({ theme }) => theme.center};
+  font-size: 11px;
+  letter-spacing: 0.2px;
+  color: ${({ theme }) => theme.tertiary};
+  padding: 5px 18px 5px 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+`;
 
-const styles = ({ theme }) => css`
-  .disclaimer {
-    text-align: left;
-    font-size: 0.8rem;
-    padding-bottom: 10px;
-    line-height: 26px;
-    font-size: 14px;
-  }
-  .niceWhiteButton {
-    border-radius: 19px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-    font-size: 11px;
-    letter-spacing: 0.2px;
-    color: ${theme.tertiary};
-    padding: 5px 18px 5px 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 0px;
-    width: 100%;
-  }
+const CavaticaLogo = styled('img')`
+  width: 28px;
+  margin-right: 7px;
 `;
 
 const showConnectModal = ({ effects, props }) => {
@@ -62,23 +50,19 @@ const showCopyModal = ({ effects, props }) => {
   });
 };
 
-const CavaticaCopyButton = ({ state, theme, effects, ...props }) => {
-  const connected = state.integrationTokens[CAVATICA];
-  const clickAction = connected ? showCopyModal : showConnectModal;
-  return (
-    <div css={styles({ theme })}>
-      <button className="niceWhiteButton" onClick={() => clickAction({ effects, props })}>
-        <img
-          alt=""
-          src={cavaticaLogo}
-          css={`
-            width: 28px;
-            margin-right: 7px;
-          `}
-        />Copy files to Cavatica project
-      </button>
-    </div>
-  );
-};
+const CavaticaCopyButton = compose(injectState, withTheme)(
+  ({ state, theme, effects, ...props }) => {
+    const connected = state.integrationTokens[CAVATICA];
+    const clickAction = connected ? showCopyModal : showConnectModal;
+    return (
+      <BigWhiteButton onClick={() => clickAction({ effects, props })}>
+        <ButtonContent>
+          <CavaticaLogo alt="" src={cavaticaLogo} />
+          Copy files to Cavatica project
+        </ButtonContent>
+      </BigWhiteButton>
+    );
+  },
+);
 
-export default enhance(CavaticaCopyButton);
+export default CavaticaCopyButton;
