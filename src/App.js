@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
