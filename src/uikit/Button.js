@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'react-emotion';
 
 const BaseButton = styled('button')`
@@ -29,6 +30,24 @@ export const ActionButton = styled(Button)`
 
 export const HollowButton = styled(Button)`
   ${({ theme }) => theme.hollowButton};
+`;
+
+const BigWhiteButtonContent = styled('span')`
+  ${({ theme }) => theme.row};
+`;
+const BigWhiteButtonBase = ({ children, ...x }) => (
+  <Button {...x}>
+    <BigWhiteButtonContent>{children}</BigWhiteButtonContent>
+  </Button>
+);
+export const BigWhiteButton = styled(BigWhiteButtonBase)`
+  background: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.greyScale8};
+  box-shadow: 0 0 1px 0.1px ${({ theme }) => theme.lightShadow};
+  border-radius: 25px;
+  height: auto;
+  padding-top: 0px;
+  padding-bottom: 0px;
 `;
 
 export default Button;
