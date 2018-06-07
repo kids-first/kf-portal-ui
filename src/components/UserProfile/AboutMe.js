@@ -267,7 +267,7 @@ export default compose(
                   }}
                 />
               ) : (
-                <React.Fragment>
+                <Flex>
                   <HollowButton
                     onClick={() => {
                       setWebsite(profile.website || '');
@@ -279,9 +279,6 @@ export default compose(
                     Cancel
                   </HollowButton>
                   <SaveButton
-                    css={`
-                      height: 30px;
-                    `}
                     onClick={async () => {
                       await submit({
                         website,
@@ -296,7 +293,7 @@ export default compose(
                   >
                     Save
                   </SaveButton>
-                </React.Fragment>
+                </Flex>
               ))}
           </H2>
           <div>
