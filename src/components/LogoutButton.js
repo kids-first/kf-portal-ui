@@ -12,7 +12,7 @@ const enhance = compose(withRouter, injectState, withTheme, withApi);
 export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) =>
   logoutAll().then(() => {
     setUser({ api });
-    setToken(null);
+    setToken();
     clearIntegrationTokens();
     history.push('/');
   });

@@ -27,4 +27,8 @@ export const ActionButton = styled(Button)`
   ${({ theme }) => theme.actionButton};
 `;
 
+export const HollowButton = styled(Button)`
+  ${({ theme }) => theme.hollowButton};
+`;
+
 export default Button;
