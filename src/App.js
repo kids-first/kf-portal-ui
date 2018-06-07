@@ -119,6 +119,9 @@ const App = compose(injectState, withApi, withTheme)(
                 api,
                 isLoadingUser,
                 Component: UserDashboard,
+                containerStyle: css`
+                  height: 100vh;
+                `,
                 loggedInUser,
                 ...props,
               })

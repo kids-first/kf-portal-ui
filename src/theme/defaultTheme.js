@@ -16,8 +16,6 @@ const colors = {
   errorBackground: '#f9dee1',
   errorBorder: `#e45562`,
 
-  primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
-
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
 
@@ -43,15 +41,6 @@ const fonts = {
   details: 'Open Sans',
 };
 
-const mixins = {
-  linkButtonActive: css`
-    border-radius: 19px;
-    background-color: ${colors.primaryHover};
-    border: solid 2px ${colors.borderGrey};
-    color: ${colors.white};
-  `,
-};
-
 const components = {
   uppercase: css`
     text-transform: uppercase;
@@ -74,7 +63,10 @@ const components = {
     border: solid 2px transparent;
 
     &:hover {
-      ${mixins.linkButtonActive};
+      border-radius: 19px;
+      background-color: #404c9a;
+      border: solid 2px #dcdde3;
+      color: #ffffff;
     }
   `,
   button: css`
@@ -135,23 +127,20 @@ const components = {
     padding: 5px 10px;
     margin: 0px 4px;
     border-radius: 12px;
-    background-color: ${colors.white};
+    background-color: #ffffff;
     border: solid 1px ${colors.borderGrey};
     font-size: 12px;
     font-weight: 300;
     letter-spacing: 0.2px;
     text-align: center;
-    color: ${colors.tertiary};
-    font-weight: normal;
+    color: #008199;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    text-transform: uppercase;
-    font-family: ${fonts.default};
 
     &:hover {
-      background-color: ${colors.tertiary};
-      color: ${colors.white};
+      background-color: #008199;
+      color: #fff;
     }
     &:link {
       text-decoration: none;
@@ -353,7 +342,7 @@ const components = {
   `,
   navLink: css`
     display: block;
-    color: ${colors.hover};
+    color: #90278e;
     padding: 6px 10px;
     margin: 0px 4px;
     text-decoration: none;
@@ -362,7 +351,10 @@ const components = {
     font-weight: 500;
 
     &:hover {
-      ${mixins.linkButtonActive};
+      border-radius: 19px;
+      background-color: #404c9a;
+      border: solid 2px #dcdde3;
+      color: #ffffff;
     }
   `,
   navBar: css`
@@ -565,6 +557,5 @@ const components = {
 export default {
   ...colors,
   ...components,
-  ...mixins,
   fonts,
 };
