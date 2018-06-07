@@ -237,6 +237,7 @@ const components = {
     border-bottom: 1px solid #d4d6dd;
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     padding-bottom: 10px;
   `,
   modalTitle: css`
