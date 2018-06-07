@@ -15,6 +15,7 @@ const colors = {
   backgroundGrey: '#f4f5f8',
   errorBackground: '#f9dee1',
   errorBorder: `#e45562`,
+  tertiaryBackground: '#edeef1', // light light blue
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
@@ -34,6 +35,7 @@ const colors = {
   greyScale0: 'rgb(36,36,36)',
 
   shadow: 'rgba(0, 0, 0, 0.5)',
+  lightShadow: '#a0a0a3',
 };
 
 const fonts = {
@@ -42,6 +44,13 @@ const fonts = {
 };
 
 const components = {
+  boxStyles: {
+    center: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  },
   uppercase: css`
     text-transform: uppercase;
   `,
@@ -97,25 +106,6 @@ const components = {
     &:link {
       color: #ffffff !important;
       text-decoration: none;
-    }
-  `,
-  listPill: css`
-    border-radius: 12px;
-    background-color: #404c9a;
-    font-family: ${fonts.details};
-    font-size: 13px;
-    line-height: 2;
-    text-align: left;
-    padding: 0 12px 0 12px;
-    color: #ffffff;
-    margin: 5px;
-  `,
-  listPillClickable: css`
-    cursor: pointer;
-
-    &::after {
-      content: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8' stroke='white'><line x1='0' y1='0' x2='8' y2='8' /> <line x1='8' y1='0' x2='0' y2='8' /></svg>");
-      margin-left: 9px;
     }
   `,
   hollowButton: css`
@@ -417,42 +407,6 @@ const components = {
         font-weight: 500;
         border-bottom: 5px solid ${colors.highlight};
         text-decoration: none;
-      }
-    }
-  `,
-  verticalNav: css`
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    font-size: 14px;
-    line-height: 2.86;
-    letter-spacing: 0.2px;
-    text-align: left;
-
-    li {
-      a {
-        display: block;
-        font-size: 14px;
-        line-height: 1.86;
-        letter-spacing: 0.2px;
-        text-align: left;
-        color: ${colors.active};
-        font-weight: 500;
-        padding: 0 10px;
-        border-left: 3px solid transparent;
-        margin-right: 1em;
-        margin-top: 1em;
-      }
-
-      a:hover,
-      a.active {
-        cursor: pointer;
-        color: ${colors.highlight};
-        font-weight: 500;
-        border-left: 3px solid ${colors.highlight};
       }
     }
   `,

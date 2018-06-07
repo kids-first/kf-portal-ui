@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
@@ -11,6 +11,8 @@ import { Trans } from 'react-i18next';
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
+import { Box } from 'uikit/Core';
+import Column from 'uikit/Column';
 
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
@@ -20,28 +22,8 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { egoApiRoot } from 'common/injectGlobals';
-import { allRedirectUris } from '../common/injectGlobals';
-import { GEN3, CAVATICA } from 'common/constants';
-
-const styles = {
-  container: css`
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    padding-bottom: 10px;
-  `,
-  googleSignin: css`
-    margin-top: 0;
-    margin-bottom: 10px;
-  `,
-};
-
-const enhance = compose(injectState, withRouter, withApi);
+import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
+import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
@@ -58,13 +40,13 @@ export const validateJWT = ({ jwt }) => {
   return isCurrent && isApproved && validatedPayload;
 };
 
-export const handleJWT = async ({ jwt, onFinish, setToken, setUser, api }) => {
+export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
   if (!jwtData) {
-    setToken(null);
+    setToken();
   } else {
     try {
-      await setToken(jwt);
+      await setToken({ token: jwt, provider });
       const user = jwtData.context.user;
       const egoId = jwtData.sub;
       const existingProfile = await getProfile(api)();
@@ -109,6 +91,14 @@ export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
     });
 };
 
+const LoginContainer = styled(Column)`
+  ${({ theme }) => theme.center};
+  background-color: ${({ theme }) => theme.white};
+  height: 100%;
+  width: 100%;
+  padding-bottom: 10px;
+`;
+
 class Component extends React.Component<any, any> {
   static propTypes = {
     effects: PropTypes.object,
@@ -130,7 +120,11 @@ class Component extends React.Component<any, any> {
         theme: 'light',
         onsuccess: googleUser => {
           const { id_token } = googleUser.getAuthResponse();
-          this.handleGoogleToken(id_token);
+          this.handleToken({
+            provider: GOOGLE,
+            handler: googleLogin,
+            token: id_token,
+          });
         },
         onfailure: error => global.log('login fail', error),
       });
@@ -138,62 +132,33 @@ class Component extends React.Component<any, any> {
       global.log(e);
     }
   }
-  onFacebookLogin = response => {
-    this.handleFacebookToken(response.authResponse.accessToken);
-  };
-  handleFacebookToken = async token => {
-    const response = await facebookLogin(token).catch(error => {
+  handleToken = async ({ provider, handler, token }) => {
+    const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
+
+    const response = await handler(token).catch(error => {
       if (error.message === 'Network Error') {
         this.handleSecurityError();
       }
     });
 
-    if (response) {
-      this.trackUserSignIn('Facebook');
-      this.handleLoginResponse(response);
-    }
-  };
-  handleGoogleToken = async token => {
-    const response = await googleLogin(token).catch(error => {
-      if (error.message === 'Network Error') {
-        this.handleSecurityError();
-      }
-    });
-
-    if (response) {
-      this.trackUserSignIn('Google');
-      this.handleLoginResponse(response);
-    }
-  };
-  handleLoginResponse = async response => {
-    const { api } = this.props;
-    if (response.status === 200) {
-      const jwt = response.data;
-      const props = this.props;
-      const {
-        onFinish,
-        effects: { setToken, setUser, setIntegrationToken },
-      } = props;
-      if (await handleJWT({ jwt, onFinish, setToken, setUser, api })) {
+    if ((response || {}).status === 200) {
+      if (await handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })) {
+        this.trackUserSignIn(provider);
         fetchIntegrationTokens({ setIntegrationToken });
       } else {
         await logoutAll();
         this.setState({ authorizationError: true });
       }
-    } else {
-      console.warn('response error');
     }
   };
-  trackUserSignIn = provider => {
-    let {
-      location: { pathname },
-    } = this.props;
+  trackUserSignIn = label => {
+    let { location: { pathname } } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
+      label,
       category: actionType,
       action: `${actionType} with Provider`,
-      label: provider,
     });
   };
   handleSecurityError = () => this.setState({ securityError: true });
@@ -202,9 +167,9 @@ class Component extends React.Component<any, any> {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
     return (
-      <div className={styles.container}>
+      <LoginContainer>
         {this.state.securityError ? (
-          <div style={{ maxWidth: 600 }}>
+          <Box maxWidth={600}>
             <Trans i18nKey="login.connectionFailed">
               Connection to ego failed, you may need to visit
               <a target="_blank" href={egoApiRoot}>
@@ -212,7 +177,7 @@ class Component extends React.Component<any, any> {
               </a>
               in a new tab and accept the warning
             </Trans>
-          </div>
+          </Box>
         ) : renderSocialLoginButtons ? (
           <React.Fragment>
             {this.state.authorizationError && (
@@ -225,15 +190,24 @@ class Component extends React.Component<any, any> {
                 </Trans>
               </ModalWarning>
             )}
-            <div key="google" className={styles.googleSignin} id="googleSignin" />
-            <FacebookLogin key="facebook" onLogin={this.onFacebookLogin} />
+            <Box mb={3} key="google" id="googleSignin" />
+            <FacebookLogin
+              key="facebook"
+              onLogin={r =>
+                this.handleToken({
+                  provider: FACEBOOK,
+                  handler: facebookLogin,
+                  token: r.authResponse.accessToken,
+                })
+              }
+            />
           </React.Fragment>
         ) : (
           <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
         )}
-      </div>
+      </LoginContainer>
     );
   }
 }
 
-export default enhance(Component);
+export default compose(injectState, withRouter, withApi)(Component);
