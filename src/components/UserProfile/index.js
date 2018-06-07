@@ -12,55 +12,19 @@ import {
 } from 'recompose';
 import { Link, withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
-import styled from 'react-emotion';
-import PencilIcon from 'react-icons/lib/fa/pencil';
-
 import { withTheme } from 'emotion-theming';
-import { updateProfile } from 'services/profiles';
+
+import { getProfile, updateProfile } from 'services/profiles';
 import { ROLES } from 'common/constants';
-import { getProfile } from 'services/profiles';
+
 import BasicInfoForm from 'components/forms/BasicInfoForm';
-
 import CompleteOMeter from 'components/CompleteOMeter';
-
-import Gravtar from 'uikit/Gravatar';
-
+import { Container, EditButton } from './ui';
 import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
-
-export const Container = styled('div')`
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  width: 76%;
-`;
-
-export const EditButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
-    <PencilIcon className={'icon'} /> Edit
-  </button>
-));
-
-export const H2 = styled('h2')`
-  ${props => props.theme.profileH2};
-`;
-
-export const H3 = styled('h3')`
-  ${props => props.theme.profileH3};
-`;
-
-export const H4 = styled('h4')`
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 13px;
-  font-style: italic;
-  line-height: 1.85;
-  text-align: left;
-  color: #74757d;
-  margin: 0;
-  font-weight: normal;
-`;
+import Gravtar from 'uikit/Gravatar';
 
 export const userProfileBackground = (
   loggedInUser,
@@ -141,7 +105,7 @@ export default compose(
         justify-content: center;
       `}
     >
-      <Container className={theme.row}>
+      <Container className={theme.row} alignItems="center">
         <Gravtar
           email={profile.email || ''}
           size={173}

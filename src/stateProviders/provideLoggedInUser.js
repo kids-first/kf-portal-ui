@@ -10,7 +10,7 @@ import {
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
 import {
-  TRACKING_EVENTS, 
+  TRACKING_EVENTS,
   trackUserSession,
   trackUserInteraction,
 } from 'services/analyticsTracking';
@@ -20,6 +20,7 @@ import history from 'services/history';
 export default provideState({
   initialState: () => ({
     loggedInUser: null,
+    loginProvider: null,
     isLoadingUser: true,
     loggedInUserToken: '',
     percentageFilled: 0,
@@ -28,6 +29,7 @@ export default provideState({
   effects: {
     initialize: effects => state => {
       const { setToken, setUser } = effects;
+      const provider = localStorage.getItem('LOGIN_PROVIDER');
       const jwt = localStorage.getItem('EGO_JWT');
       const api = initializeApi({
         onError: err => {
@@ -38,7 +40,7 @@ export default provideState({
         },
       });
       if (validateJWT({ jwt })) {
-        handleJWT({ jwt, setToken, setUser, api });
+        handleJWT({ provider, jwt, setToken, setUser, api });
         // Get all integration keys from local storage
         SERVICES.forEach(service => {
           const storedToken = localStorage.getItem(`integration_${service}`);
@@ -62,7 +64,7 @@ export default provideState({
         .then(fields => state => {
           const userRole = user.roles ? user.roles[0] : null;
           const userRoleProfileFields =
-            (userRole && userRole !== 'research')
+            userRole && userRole !== 'research'
               ? without(fields, 'institution', 'jobTitle')
               : fields;
           const profile = pick(omit(user, 'sets'), userRoleProfileFields);
@@ -98,17 +100,19 @@ export default provideState({
         },
       }).then(profile => effects.setUser({ ...profile, email, api }));
     },
-    setToken: (effects, token) => state => {
+    setToken: (effects, { token, provider } = {}) => state => {
       setToken(token);
       if (token) {
+        localStorage.setItem('LOGIN_PROVIDER', provider);
         localStorage.setItem('EGO_JWT', token);
         addHeaders({ authorization: `Bearer ${token}` });
       } else {
+        localStorage.removeItem('LOGIN_PROVIDER');
         localStorage.removeItem('EGO_JWT');
         addHeaders({ authorization: '' });
       }
       addUsersnapInfo({ loggedInUserToken_exist: !!token });
-      return { ...state, loggedInUserToken: token };
+      return { ...state, loggedInUserToken: token, loginProvider: provider };
     },
     setIntegrationToken: (effects, service, token) => state => {
       if (SERVICES.includes(service)) {

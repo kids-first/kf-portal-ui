@@ -56,3 +56,6 @@ export const ROLES = [
 export const GEN3 = 'gen3';
 export const CAVATICA = 'cavatica';
 export const SERVICES = [GEN3, CAVATICA];
+
+export const GOOGLE = 'google';
+export const FACEBOOK = 'facebook';

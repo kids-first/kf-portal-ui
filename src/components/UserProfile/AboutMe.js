@@ -1,19 +1,24 @@
 import * as React from 'react';
 import { xor } from 'lodash';
-import { css } from 'react-emotion';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import styled from 'react-emotion';
-
 import { withTheme } from 'emotion-theming';
-import EditableLabel from 'uikit/EditableLabel';
-import ExternalLink from 'uikit/ExternalLink';
-import { Container, EditButton, H2, H3, H4 } from './';
+
+import { Container, EditButton, H2, H3, H4 } from './ui';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
 import { ModalActionButton } from '../Modal';
+
+import { Box, Flex, Section } from 'uikit/Core';
+import Row from 'uikit/Row';
+import Column from 'uikit/Column';
+import { HollowButton } from 'uikit/Button';
+import EditableLabel from 'uikit/EditableLabel';
+import ExternalLink from 'uikit/ExternalLink';
+import { Tag } from 'uikit/Tags';
 
 const trackProfileInteraction = ({ action, value, type }) =>
   trackUserInteraction({
@@ -22,24 +27,42 @@ const trackProfileInteraction = ({ action, value, type }) =>
     label: action,
   });
 
-const StyledSection = withTheme(styled('section')`
-  ${({ theme }) => theme.section};
+const StyledSection = styled(Section)`
   padding: 5px 0;
   margin-top: 25px;
-  & .clickToAdd {
-    font-size: 12px;
-    text-decoration: underline;
-  }
-`);
-const ClickToAdd = ({ theme, children, ...rest }) => (
-  <a className={`clickToAdd`} {...rest}>
-    {children}
-  </a>
-);
+`;
 
-const SaveButton = props => <ModalActionButton {...props}>Save</ModalActionButton>;
+const AboutMeContainer = styled(Container)`
+  ${({ theme }) => theme.row};
+`;
 
-const columnTopPadding = '30px';
+const ClickToAdd = styled('a')`
+  font-size: 12px;
+  text-decoration: underline;
+`;
+
+const InterestsCard = styled(Box)`
+  border-radius: 5px;
+  box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
+`;
+
+const InterestsContainer = styled(Box)`
+  background-color: ${({ theme }) => theme.backgroundGrey};
+  border: solid 1px ${({ theme }) => theme.greyScale8};
+  border-radius: 5px;
+`;
+
+const ActionBar = styled(Row)`
+  justify-content: space-between;
+  border-radius: 5px;
+  box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
+  background-color: ${({ theme }) => theme.tertiaryBackground};
+`;
+
+const CancelButton = styled('button')`
+  ${({ theme }) => theme.wizardButton};
+`;
+const SaveButton = styled(ModalActionButton)``;
 
 export default compose(
   injectState,
@@ -114,25 +137,9 @@ export default compose(
     interests,
     setInterests,
   }) => (
-    <div
-      className={css`
-        display: flex;
-        justify-content: center;
-        padding: 50px 0;
-      `}
-    >
-      <Container
-        className={css`
-          ${theme.row} align-items: flex-start;
-        `}
-      >
-        <div
-          className={css`
-            width: 65%;
-            padding-top: ${columnTopPadding};
-            ${theme.column} justify-content: space-around;
-          `}
-        >
+    <Flex justifyContent="center" pt={4} pb={4}>
+      <AboutMeContainer alignItems="flex-start">
+        <Column width="65%" pt={2} justifyContent="space-around">
           <H2>
             Background Information
             {canEdit &&
@@ -152,7 +159,9 @@ export default compose(
                       type: TRACKING_EVENTS.actions.save,
                     });
                   }}
-                />
+                >
+                  Save
+                </SaveButton>
               ))}
           </H2>
           <StyledSection>
@@ -222,29 +231,16 @@ export default compose(
             </div>
           )}
           {isEditingBackgroundInfo && (
-            <div
-              css={`
-                ${theme.row} justify-content: space-between;
-                border-radius: 5px;
-                box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-                background-color: #edeef1;
-                padding: 1em;
-              `}
-            >
-              <button
+            <ActionBar p={3}>
+              <CancelButton
                 onClick={() => {
                   setBioTextarea(profile.bio || '');
                   setStoryTextarea(profile.story || '');
                   handleEditingBackgroundInfo({ value: false });
                 }}
-                css={`
-                  ${theme.wizardButton} ${css`
-                      line-height: normal;
-                    `};
-                `}
               >
                 Cancel
-              </button>
+              </CancelButton>
               <SaveButton
                 onClick={async () => {
                   await submit({
@@ -253,20 +249,13 @@ export default compose(
                   });
                   handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
                 }}
-              />
-            </div>
+              >
+                Save
+              </SaveButton>
+            </ActionBar>
           )}
-        </div>
-        <div
-          className={css`
-            border-radius: 5px;
-            background-color: #ffffff;
-            box-shadow: 0 0 2.9px 0.1px #a0a0a3;
-            width: 35%;
-            padding: ${columnTopPadding};
-            margin-left: 5em;
-          `}
-        >
+        </Column>
+        <InterestsCard width="35%" p={3} ml={4}>
           <H2>
             Research Interests
             {canEdit &&
@@ -279,18 +268,20 @@ export default compose(
                 />
               ) : (
                 <React.Fragment>
-                  <button
+                  <HollowButton
                     onClick={() => {
                       setWebsite(profile.website || '');
                       setGoogleScholarId(profile.googleScholarId || '');
                       setInterests(profile.interests || []);
                       handleEditingResearchInterests({ value: false });
                     }}
-                    css={theme.hollowButton}
                   >
                     Cancel
-                  </button>
+                  </HollowButton>
                   <SaveButton
+                    css={`
+                      height: 30px;
+                    `}
                     onClick={async () => {
                       await submit({
                         website,
@@ -302,44 +293,31 @@ export default compose(
                         type: TRACKING_EVENTS.actions.save,
                       });
                     }}
-                  />
+                  >
+                    Save
+                  </SaveButton>
                 </React.Fragment>
               ))}
           </H2>
           <div>
-            <div
-              css={`
-                background-color: ${theme.backgroundGrey};
-                border: solid 1px #d4d6dd;
-                padding: 0.5em;
-                border-radius: 5px;
-              `}
-            >
+            <InterestsContainer p={2}>
               <H3>Interests</H3>
               <H4>Tell people about your work background and your research specialties.</H4>
-              <div
-                css={`
-                  ${theme.row};
-                  flex-wrap: wrap;
-                  padding: 5px 0;
-                `}
-              >
-                {interests.map(i => (
-                  <div
+              <Row flexWrap="wrap" pt={2} pb={2}>
+                {interests.map((x, i) => (
+                  <Tag
                     key={i}
-                    css={`
-                      ${theme.listPill} ${editingResearchInterests && theme.listPillClickable};
-                    `}
-                    onClick={() => editingResearchInterests && setInterests(xor(interests, [i]))}
+                    clickable={editingResearchInterests}
+                    onClick={() => editingResearchInterests && setInterests(xor(interests, [x]))}
                   >
-                    {i}
-                  </div>
+                    {x}
+                  </Tag>
                 ))}
-              </div>
+              </Row>
               {editingResearchInterests && (
                 <InterestsAutocomplete {...{ interests, setInterests }} />
               )}
-            </div>
+            </InterestsContainer>
             <StyledSection>
               <H3>Website URL:</H3>
               <EditableLabel
@@ -399,8 +377,8 @@ export default compose(
               />
             </StyledSection>
           </div>
-        </div>
-      </Container>
-    </div>
+        </InterestsCard>
+      </AboutMeContainer>
+    </Flex>
   ),
 );
