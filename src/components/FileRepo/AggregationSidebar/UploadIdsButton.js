@@ -1,38 +1,27 @@
 import React from 'react';
 import { css } from 'emotion';
 import { Trans } from 'react-i18next';
-import styled from 'react-emotion';
 
 import { toggleSQON } from '@arranger/components/dist/SQONView/utils';
 
 import UploadIdsModal from 'components/UploadIdsModal';
 import { LightButton } from 'uikit/Button';
 import Select from 'uikit/Select';
-import Row from 'uikit/Row';
 
-const UploadButton = styled(LightButton)`
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-  border-top-left-radius: 100px;
-  border-bottom-left-radius: 100px;
-  margin: 0px;
-`;
-
-const IdSelect = styled(Select)`
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-  border-top-right-radius: 100px;
-  border-bottom-right-radius: 100px;
-  border-left: none;
-  padding-left: 0;
-  &:hover {
-    background: ${({ theme }) => theme.tertiary};
-  }
-`;
-
-const UploadIdsButton = ({ theme, state, effects, setSQON, className, ...props }) => (
-  <Row className={className}>
-    <UploadButton
+const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
+  <div
+    className={css`
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 10px;
+    `}
+  >
+    <LightButton
+      className={css`
+        ${theme.uppercase};
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+      `}
       onClick={() =>
         effects.setModal({
           title: 'Upload a List of Identifiers',
@@ -41,8 +30,14 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, className, ...props }
       }
     >
       <Trans>Upload Ids</Trans>
-    </UploadButton>
-    <IdSelect
+    </LightButton>
+    <Select
+      className={css`
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left: none;
+        padding-left: 0;
+      `}
       align="right"
       items={state.loggedInUser.sets.map(x => x.setId)}
       itemContainerClassName={css`
@@ -77,7 +72,7 @@ const UploadIdsButton = ({ theme, state, effects, setSQON, className, ...props }
         clearSelection();
       }}
     />
-  </Row>
+  </div>
 );
 
 export default UploadIdsButton;

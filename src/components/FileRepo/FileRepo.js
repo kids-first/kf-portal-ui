@@ -11,7 +11,7 @@ import FilterIcon from 'react-icons/lib/fa/filter';
 
 import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import arrangerStyle from './arrangerStyle';
+import '@arranger/components/public/themeStyles/beagle/beagle.css';
 
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
@@ -92,8 +92,6 @@ const customTableColumns = ({ theme }) => [
 ];
 
 const ArrangerContainer = styled(Row)`
-  ${arrangerStyle};
-
   display: flex;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
@@ -109,23 +107,6 @@ const ArrangerContainer = styled(Row)`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
-  }
-
-  & .tableToolbar {
-    color: ${({ theme }) => theme.greyScale9};
-    & .group .dropDownButtonContent {
-      color: ${({ theme }) => theme.greyScale9};
-    }
-    & .group button {
-      color: ${({ theme }) => theme.greyScale9};
-    }
-  }
-
-  .pagination-bottom .-pagination {
-    color: ${({ theme }) => theme.greyScale9};
-    select {
-      color: ${({ theme }) => theme.greyScale9};
-    }
   }
 
   div.sqon-view {
@@ -148,10 +129,6 @@ const TableWrapper = styled(Column)`
   & .ReactTable {
     min-height: 1px;
   }
-`;
-
-const QueryBarContainer = styled(Row)`
-  margin-bottom: ${({ sqon }) => (sqon ? '20px' : '0px')};
 `;
 
 const QuerySharingContainer = styled(Row)`
@@ -210,7 +187,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                           {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
                         />
                         <TableContainer>
-                          <QueryBarContainer sqon={url.sqon}>
+                          <Row>
                             <CurrentSQON
                               {...props}
                               {...url}
@@ -249,7 +226,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   )}
                                 />
                               )}
-                          </QueryBarContainer>
+                          </Row>
                           <FileRepoStats
                             {...props}
                             sqon={selectionSQON}
