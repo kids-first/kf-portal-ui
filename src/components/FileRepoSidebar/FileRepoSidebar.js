@@ -17,7 +17,8 @@ const Slideable = styled('div')`
   position: relative;
   transition: all 0.25s;
   width: ${({ expanded, containerWidth, contentSidePadding }) =>
-    expanded ? `${containerWidth + contentSidePadding * 2}px` : '40px'};
+    expanded ? `calc(${containerWidth} + ${contentSidePadding * 2}px)` : '40px'};
+  max-width: 300px;
   overflow: hidden;
   box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
 `;
@@ -26,7 +27,7 @@ const Container = styled('div')`
   overflow-y: auto;
   flex-grow: 0;
   flex-shrink: 1;
-  width: ${({ containerWidth, contentSidePadding }) => containerWidth + contentSidePadding * 2}px;
+  width: 100%;
   min-width: 265px;
   height: 100%;
   background: ${({ theme }) => theme.backgroundGrey};
@@ -73,7 +74,7 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
     expanded,
     setExpanded,
     style,
-    containerWidth = 310,
+    containerWidth = '25%',
     contentSidePadding = 15,
     ...props
   }) => (

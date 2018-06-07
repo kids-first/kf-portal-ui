@@ -17,10 +17,14 @@ import InfoIcon from 'icons/InfoIcon';
 import { ActionButton } from 'uikit/Button';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
+import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 
 const AggregationWrapper = styled('div')`
   height: 100%;
-  width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
+  width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
+  max-width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
+  min-width: ${({ scrollbarWidth }) => 200 + scrollbarWidth}px;
   overflow-y: auto;
   box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
   border-color: ${({ theme }) => theme.greyScale5};
@@ -40,6 +44,12 @@ const AggregationTitle = styled('div')`
   flex-grow: 1;
   font-size: 18px;
   color: ${({ theme }) => theme.secondary};
+`;
+
+const IdFilterContainer = styled(Column)`
+  .quick-search {
+    margin-bottom: 10px;
+  }
 `;
 
 const AggregationSidebar = compose(injectState, withTheme)(
@@ -120,7 +130,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
               <Trans css={theme.uppercase}>All Filters</Trans>
             </ActionButton>
           </AggregationHeader>
-          <div className="aggregation-card">
+          <IdFilterContainer className="aggregation-card">
             <QuickSearch
               {...{ ...props, setSQON, translateSQONValue }}
               InputComponent={FilterInput}
@@ -134,8 +144,10 @@ const AggregationSidebar = compose(injectState, withTheme)(
                 />
               }
             />
-            <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
-          </div>
+            <Row justifyContent="flex-end">
+              <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
+            </Row>
+          </IdFilterContainer>
           <Aggregations
             {...{
               ...props,
