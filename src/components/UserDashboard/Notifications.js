@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledH3 } from './styles';
+import { WidgetTitle } from './styles';
 
 const Notifications = props => (
   <div
@@ -11,14 +11,7 @@ const Notifications = props => (
       opacity: 0;
     `}
   >
-    <StyledH3
-      css={`
-        margin-top: 6px;
-        font-weight: 400;
-      `}
-    >
-      Notifications
-    </StyledH3>
+    <WidgetTitle>Notifications</WidgetTitle>
   </div>
 );
 

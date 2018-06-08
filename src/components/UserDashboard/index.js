@@ -11,6 +11,7 @@ import MySavedQueries from './MySavedQueries';
 import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
+import { H3 } from '../../uikit/Typography';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -47,7 +48,10 @@ export default compose(
           padding: 40px;
         `}
       >
-        <h3 css={`${theme.h3} font-size:24px;  font-weight: 400; margin:0;`}>Welcome, {loggedInUser.firstName}!</h3>
+        <H3 fontSize={5} my="0" fontWeight="regular">
+          Welcome, {loggedInUser.firstName}!
+        </H3>
+
         <div
           css={`
             display: flex;
@@ -55,7 +59,7 @@ export default compose(
           `}
         >
           <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-          <Notifications />
+          <Notifications />;
         </div>
         <div
           css={`

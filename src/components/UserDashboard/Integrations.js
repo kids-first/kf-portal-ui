@@ -7,14 +7,21 @@ import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import ExternalLink from 'uikit/ExternalLink';
 import { IntegrationsDiv, IntegrationsCircleDiv } from './styles';
+import { H3, P } from '../../uikit/Typography';
 import IntegrationsStatus from './IntegrationsStatus';
+
+const IntegrationHeader = ({ children }) => (
+  <H3 fontWeight="thin" color="primaryHover" my="0">
+    {children}
+  </H3>
+);
 
 const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
   <div
     css={`
       border-radius: 30px;
-      background-color: ${theme.backgroundGrey};
-      border: solid 1px ${theme.greyScale5};
+      background-color: ${theme.colors.backgroundGrey};
+      border: solid 1px ${theme.colors.greyScale5};
       padding: 10px 10px;
       ${theme.row};
       align-items: center;
@@ -38,26 +45,26 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 100%;
         `}
       >
-        <h3 css={`${theme.h3} font-weight: 100; color: ${theme.primaryHover}; ${theme.spacing.collapse} `}>Download Controlled Data</h3>
+        <IntegrationHeader>Download Controlled Data</IntegrationHeader>
+
         <IntegrationsStatus
           connected={integrationTokens[GEN3]}
           theme={theme}
           name="Gen3"
           url={gen3WebRoot}
           unconnectedMsg={
-            <div>
+            <P
+              my="0"
+              css={`
+                max-width: 75%;
+              `}
+            >
               Connect to{' '}
-              <ExternalLink
-                href={gen3WebRoot}
-                hasExternalIcon={false}
-                css={`
-                  color: #a42c90;
-                `}
-              >
+              <ExternalLink href={gen3WebRoot} hasExternalIcon={false}>
                 Gen3
               </ExternalLink>{' '}
               to download controlled data
-            </div>
+            </P>
           }
         />
       </div>
@@ -80,7 +87,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 305px;
         `}
       >
-      <h3 css={`${theme.h3} font-weight: 100; color: ${theme.primaryHover}; ${theme.spacing.collapse} `}>Analyze Data</h3>
+        <IntegrationHeader>Analyze Data</IntegrationHeader>
 
         <IntegrationsStatus
           connected={integrationTokens[CAVATICA]}
@@ -88,18 +95,17 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           name="Cavatica"
           url={cavaticaWebRoot}
           unconnectedMsg={
-            <div>
+            <P
+              my="0"
+              css={`
+                max-width: 75%;
+              `}
+            >
               Analyze data quickly by connecting your Kids First account to{' '}
-              <ExternalLink
-                href={cavaticaWebRoot}
-                hasExternalIcon={false}
-                css={`
-                  color: #a42c90;
-                `}
-              >
+              <ExternalLink href={cavaticaWebRoot} hasExternalIcon={false}>
                 Cavatica
               </ExternalLink>.
-            </div>
+            </P>
           }
         />
       </div>

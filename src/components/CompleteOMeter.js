@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 const CompleteOMeter = compose(withTheme)(({ theme, percentage, className }) => (
   <div
     css={`
-      background: ${theme.backgroundGrey};
+      background: ${theme.colors.backgroundGrey};
       height: 100%;
       ${theme.column};
       justify-content: center;
@@ -16,7 +16,7 @@ const CompleteOMeter = compose(withTheme)(({ theme, percentage, className }) => 
   >
     <span
       css={`
-        color: ${theme.active};
+        color: ${theme.colors.active};
         font-size: 24px;
         font-weight: 500;
       `}

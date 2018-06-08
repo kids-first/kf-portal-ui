@@ -7,7 +7,7 @@ const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => 
     {connected ? (
       <div
         css={`
-          color: ${theme.active};
+          color: ${theme.colors.active};
           display: flex;
           align-items: center;
         `}
@@ -23,7 +23,9 @@ const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => 
           <ExternalLink
             href={url}
             hasExternalIcon={false}
-            css={`${theme.ExternalLink}`}
+            css={`
+              ${theme.ExternalLink};
+            `}
           >
             {name}
           </ExternalLink>.

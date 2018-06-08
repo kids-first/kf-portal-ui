@@ -9,6 +9,8 @@ import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import SaveIcon from '../../icons/SaveIcon';
+import { WidgetTitle } from './styles';
+import { H3, H4, P, SmallText } from '../../uikit/Typography';
 
 const MySavedQueries = compose(
   provideSavedQueries,
@@ -77,31 +79,21 @@ const MySavedQueries = compose(
           css={`
             display: flex;
             flex-grow: 1;
-            padding: 10px 20px 30px;
+            padding: 10px 20px 10px;
             ${queries.length > 0 &&
               `
               border-bottom: 2px dotted #a9adc0;
             `};
           `}
         >
-          <h4
-            css={`
-              ${theme.h4}
-              font-family: ${theme.fonts.default};
-              font-size: 20px;
-              margin-top: 6px;
-              font-weight: 100;
-              color: ${theme.secondary};
-            `}
-          >
-            Saved Queries
-          </h4>
+          <WidgetTitle>Saved Queries</WidgetTitle>
           <div
             css={`
               margin-left: auto;
               align-items: center;
               display: flex;
               align-items: baseline;
+              margin-top: 3px;
             `}
           >
             <SaveIcon
@@ -110,24 +102,19 @@ const MySavedQueries = compose(
                 color: #a9adc0;
               `}
             />
-            <span
-              css={`
-                font-size: 20px;
-                padding: 0 6px 0 9px;
-                font-size: 22px;
-              `}
-            >
-              {queries.length}
-            </span>
-            <h3
-              css={`
-                ${theme.h3}
-                font-size: 90%;
-                color: ${theme.greyScale7};
-              `}
-            >
-              Quer{queries.length === 1 ? 'y': 'ies'}
-            </h3>
+
+            <H3 m="0">
+              <span
+                css={`
+                  padding: 0 6px 0 9px;
+                `}
+              >
+                {queries.length}
+              </span>
+              <SmallText my="0" lineHeight={1} color="greyScale9">
+                Quer{queries.length === 1 ? 'y' : 'ies'}
+              </SmallText>
+            </H3>
           </div>
         </div>
 
@@ -152,15 +139,15 @@ const MySavedQueries = compose(
                 key={q.id}
                 css={`
                   display: flex;
-                  padding: 10px 10px 10px 25px;
-                  border: 1px solid #e0e1e6;
+                  padding: 10px 10px 10px 20px;
+                  border: 1px solid ${theme.colors.greyScale5};
                   border-bottom: 0;
                   transition-property: opacity;
-                    
+
                   ${deletingIds.includes(q.id) &&
                     `opacity: 0.6;
             pointer-events: none;`} &:last-child {
-                    border-bottom: 1px solid #e0e1e6;
+                    border-bottom: 1px solid ${theme.colors.greyScale5};
                   }
                 `}
               >
@@ -180,7 +167,11 @@ const MySavedQueries = compose(
                   >
                     <Link
                       to={q.link}
-                      css={`${theme.internalLink}`}
+                      css={`
+                        ${theme.internalLink};
+                        font-weight: ${theme.fontWeights.bold};
+                        font-size: ${theme.fontSizes[1]}px;
+                      `}
                     >
                       {q.alias}
                     </Link>
@@ -190,20 +181,19 @@ const MySavedQueries = compose(
                       `}
                     >
                       <TrashIcon
-                        css={`${theme.internalLink}`}
+                        css={`
+                          ${theme.internalLink};
+                        `}
                         onClick={() => deleteQuery({ api, queryId: q.id })}
                       />
                     </div>
                   </div>
-                  <p
+
+                  <P
+                    my="0"
+                    leterSpacing={0.3}
                     css={`
-                      ${theme.paragraph}
-                      ${theme.text.small}
-                      margin: 8px 0;
-                      color: ${theme.greyScale9};
-                      letter-spacing: 0.3px;
                       b {
-                        color: #343434;
                         padding-right: 3px;
                       }
                       span {
@@ -211,16 +201,17 @@ const MySavedQueries = compose(
                       }
                     `}
                   >
-                    <b>{(q.content.Files || 0).toLocaleString()}</b> Files <span>|{' '}</span>
-                    <b>{(q.content.Participants || 0).toLocaleString()}</b> Participants <span>|{' '}</span>
-                    <b>{(q.content.Families || 0).toLocaleString()}</b> Families <span>|{' '}</span>
-                    <b>{q.content.Size}</b>
-                  </p>
+                    <SmallText>
+                      <b>{(q.content.Files || 0).toLocaleString()}</b> Files <span>| </span>
+                      <b>{(q.content.Participants || 0).toLocaleString()}</b> Participants{' '}
+                      <span>| </span>
+                      <b>{(q.content.Families || 0).toLocaleString()}</b> Families <span>| </span>
+                      <b>{q.content.Size}</b>
+                    </SmallText>
+                  </P>
                   <p
                     css={`
-                      ${theme.paragraph}
-                      ${theme.text.small}
-                      margin: 0;
+                      ${theme.paragraph} ${theme.text.small} margin: 0;
                     `}
                   >
                     Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago

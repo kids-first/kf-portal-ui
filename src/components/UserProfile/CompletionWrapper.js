@@ -35,7 +35,7 @@ const CompletionWrapper = ({ completed, theme, children, className, innerCircleS
         labels={() => null}
         padding={0}
         data={[
-          { y: 100 * completed, fill: theme.highlight },
+          { y: 100 * completed, fill: theme.colors.highlight },
           { y: 100 - completed * 100, fill: '#cdd0d9' },
         ]}
       />

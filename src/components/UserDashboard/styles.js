@@ -1,15 +1,6 @@
+import React from 'react';
 import styled from 'react-emotion';
-
-export const StyledH3 = styled('h3')`
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: 0.3px;
-  text-align: left;
-  color: ${({ theme }) => theme.primaryHover};
-  margin: 0;
-`;
-
+import { H3 } from '../../uikit/Typography';
 
 export const IntegrationsDiv = styled.div`
   ${({ theme }) => theme.row};
@@ -22,8 +13,14 @@ export const IntegrationsCircleDiv = styled.div`
   height: 82px;
   flex: none;
   border-radius: 100%;
-  background: #fff;
+  background: ${({ theme }) => theme.colors.white};
   display: flex;
   justify-content: center;
-  border: solid 1px ${({ theme }) => theme.greyScale5};
+  border: solid 1px ${({ theme }) => theme.colors.greyScale5};
 `;
+
+export const WidgetTitle = ({ children }) => (
+  <H3 p="0" mt="6" fontWeight="thin" fontSize={4} color="secondary">
+    {children}
+  </H3>
+);
