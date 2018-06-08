@@ -32,10 +32,6 @@ const StyledSection = styled(Section)`
   margin-top: 25px;
 `;
 
-const AboutMeContainer = styled(Container)`
-  ${({ theme }) => theme.row};
-`;
-
 const ClickToAdd = styled('a')`
   font-size: 12px;
   text-decoration: underline;
@@ -138,7 +134,7 @@ export default compose(
     setInterests,
   }) => (
     <Flex justifyContent="center" pt={4} pb={4}>
-      <AboutMeContainer alignItems="flex-start">
+      <Container row alignItems="flex-start">
         <Column width="65%" pt={2} justifyContent="space-around">
           <H2>
             Background Information
@@ -375,7 +371,7 @@ export default compose(
             </StyledSection>
           </div>
         </InterestsCard>
-      </AboutMeContainer>
+      </Container>
     </Flex>
   ),
 );
