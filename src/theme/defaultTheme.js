@@ -22,6 +22,7 @@ const colors = {
 
   optionSelected: '#E5F6FD', //light blue
 
+  greyScale11: '#a9adc0',
   greyScale10: 'rgb(237,238,241)', //grey for table backgrounds
   greyScale9: '#74757d', //rgb(116, 117, 125) dark grey text on greyScale5
   greyScale8: '#d4d6dd',
