@@ -35,7 +35,6 @@ const applyDefaultStyles = Component => styled(Component)`
   ${maxWidth}
   ${justifySelf}
   ${alignSelf}
-  ${boxStyles}
   ${borders}
   ${borderRadius}
   ${lineHeight}
@@ -48,7 +47,9 @@ const boxStyles = complexStyle({
   prop: 'boxStyle',
   key: 'boxStyles',
 });
-export const Box = applyDefaultStyles('div');
+export const Box = styled(applyDefaultStyles('div'))`
+  ${boxStyles};
+`;
 
 const flexStyles = complexStyle({
   prop: 'flexStyle',
