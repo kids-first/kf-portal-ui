@@ -1,9 +1,9 @@
 import React from 'react';
 import Gravtar from 'uikit/Gravatar';
-import { H2, SmallText, P } from '../../uikit/Typography';
 import { Link } from 'react-router-dom';
 import EditButton from './EditButton';
 
+import { H2,  SmallText, P } from '../../uikit/Typography';
 import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';

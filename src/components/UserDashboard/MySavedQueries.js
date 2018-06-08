@@ -9,8 +9,8 @@ import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import SaveIcon from '../../icons/SaveIcon';
-import { WidgetTitle } from './styles';
 import { H3, H4, P, SmallText } from '../../uikit/Typography';
+import DashboardWidget, { WidgetTitle } from './DashboardWidget';
 
 const MySavedQueries = compose(
   provideSavedQueries,
@@ -48,33 +48,7 @@ const MySavedQueries = compose(
         />
       </div>
     ) : (
-      <div
-        css={`
-          display: flex;
-          flex-direction: column;
-          margin: 15px 0;
-          flex: 3;
-          border: 1px solid #e0e1e6;
-          border-top: 0;
-          border-bottom-right-radius: 10px;
-          border-bottom-left-radius: 10px;
-          padding: 0 10px;
-        `}
-      >
-        <div
-          css={`
-            display: block;
-            width: calc(100% + 22px);
-            margin-left: -11px;
-            height: 6px;
-            background-image: linear-gradient(
-              to right,
-              ${profileColors.gradientDark},
-              ${profileColors.gradientMid} 51%,
-              ${profileColors.gradientLight}
-            );
-          `}
-        />
+      <DashboardWidget {...{ theme, profileColors }}>
         <div
           css={`
             display: flex;
@@ -220,7 +194,7 @@ const MySavedQueries = compose(
               </div>
             ))}
         </div>
-      </div>
+      </DashboardWidget>
     ),
 );
 export default MySavedQueries;

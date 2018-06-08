@@ -8,7 +8,6 @@ import styled from 'react-emotion';
 
 import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
-import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import { H3 } from '../../uikit/Typography';
@@ -59,7 +58,6 @@ export default compose(
           `}
         >
           <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-          <Notifications />;
         </div>
         <div
           css={`

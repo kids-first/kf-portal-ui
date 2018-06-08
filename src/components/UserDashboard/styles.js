@@ -18,9 +18,3 @@ export const IntegrationsCircleDiv = styled.div`
   justify-content: center;
   border: solid 1px ${({ theme }) => theme.colors.greyScale5};
 `;
-
-export const WidgetTitle = ({ children }) => (
-  <H3 p="0" mt="6" fontWeight="thin" fontSize={4} color="secondary">
-    {children}
-  </H3>
-);
