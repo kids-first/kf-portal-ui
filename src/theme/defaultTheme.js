@@ -1,6 +1,16 @@
 import { css } from 'react-emotion';
-import colors from './colors';
-import { fonts, headings, text, paragraph, links } from './typography';
+import colors, { shadows, gradients } from './colors';
+import {
+  fonts,
+  headings,
+  text,
+  paragraph,
+  links,
+  fontSizesScale,
+  lineHeightsScale,
+  fontWeights,
+  letterSpacings,
+} from './typography';
 
 const spacing = {
   collapse: 'margin:0; padding: 0;',
@@ -502,8 +512,14 @@ export default {
   fonts,
   text,
   paragraph,
+  fontSizes: fontSizesScale,
+  lineHeights: lineHeightsScale,
+  fontWeights,
+  letterSpacings,
+  shadows,
+  gradients,
   ...links,
   ...headings,
-  ...colors,
+  colors,
   ...components,
 };

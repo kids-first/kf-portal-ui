@@ -9,18 +9,19 @@ const baseFontSize = 16;
 
 // typographic scale
 // px based
-const fSizes = [12, 14, 16, 20, 24, 30, 32, 36, 48, 64, 96, 128];
+export const fontSizesScale = [12, 14, 16, 18, 20, 24, 30, 32, 36, 48, 64, 96, 128];
 // keyed object to make sizes more declarative
 // ex. fontSizes['32']
-export const fontSizes = zipObject(fSizes, fSizes);
+export const fontSizes = zipObject(fontSizesScale, fontSizesScale.map(v => v + 'px'));
 
 // for any scale, either array or objects will work
 // em based
-const lHeights = [0.95, 1, 1.125, 1.25, 1.44, 1.5, 1.86];
-export const lineHeights = zipObject(lHeights, lHeights);
+export const lineHeightsScale = [0.95, 1, 1.125, 1.25, 1.44, 1.5, 1.86];
+export const lineHeights = zipObject(lineHeightsScale, lineHeightsScale);
 
 // based on imported fonts in index.css
 export const fontWeights = {
+  ultraThin: 100,
   thin: 300,
   regular: 400,
   normal: 500,
@@ -43,8 +44,8 @@ const headingsBase = `
 export const paragraph = `
   font-family: ${fonts.details};
   color: ${colors.greyScale1};
-  font-size: ${baseFontSize};
-  line-height: ${lineHeights['1.86']};
+  font-size: ${baseFontSize}px;
+  line-height: ${lineHeights['1.25']};
   ${typographyBase}
 `;
 

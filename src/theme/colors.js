@@ -40,4 +40,6 @@ export const gradients = {
   } 51%, #02b0ed), linear-gradient(${colors.secondary}, ${colors.secondary})`,
 };
 
+export const shadows = ['0 0 4.8px 0.2px #a0a0a3'];
+
 export default colors;
