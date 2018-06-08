@@ -1,5 +1,5 @@
 import { css } from 'emotion';
-export default css`
+export default () => css`
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,700');
   @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
   @import url('https://fonts.googleapis.com/css?family=Open+Sans');

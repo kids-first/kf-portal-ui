@@ -11,7 +11,10 @@ import FilterIcon from 'react-icons/lib/fa/filter';
 
 import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
-import arrangerStyle from './arrangerStyle';
+
+// TODO: bringing beagle in through arrangerStyle seems to break the prod build...
+import '@arranger/components/public/themeStyles/beagle/beagle.css';
+// import arrangerStyle from './arrangerStyle';
 
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
@@ -92,10 +95,6 @@ const customTableColumns = ({ theme }) => [
 ];
 
 const ArrangerContainer = styled(Row)`
-  ${arrangerStyle};
-
-  display: flex;
-
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
     box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);

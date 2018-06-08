@@ -20,6 +20,9 @@ import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 
+// TODO: bringing beagle in through arrangerStyle seems to break the prod build...
+// import arrangerStyle from 'components/FileRepo/arrangerStyle';
+
 const AggregationWrapper = styled('div')`
   height: 100%;
   width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
