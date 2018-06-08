@@ -30,8 +30,8 @@ const IdSelect = styled(Select)`
   }
 `;
 
-const UploadIdsButton = ({ theme, state, effects, setSQON, className, ...props }) => (
-  <Row className={className}>
+const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
+  <Row>
     <UploadButton
       onClick={() =>
         effects.setModal({
