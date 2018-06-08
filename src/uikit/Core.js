@@ -36,6 +36,9 @@ export const Box = styled('div')`
 
 export const Flex = styled(Box)`
   display: flex;
+  ${({ row, theme }) => (row ? theme.row : '')}
+  ${({ column, theme }) => (column ? theme.column : '')}
+  ${({ center, theme }) => (center ? theme.center : '')}
   ${alignItems};
   ${justifyContent};
   ${flexWrap};

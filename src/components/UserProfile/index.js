@@ -105,7 +105,7 @@ export default compose(
         justify-content: center;
       `}
     >
-      <Container className={theme.row} alignItems="center">
+      <Container row alignItems="center">
         <Gravtar
           email={profile.email || ''}
           size={173}
