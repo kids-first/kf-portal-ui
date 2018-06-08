@@ -24,8 +24,7 @@ import {
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
 const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
-const overflowY = ({ overflowY, a = console.log('1111', overflowY) }) =>
-  applyProp(`overflow-y`, overflowY);
+const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
 
 const applyDefaultStyles = Component => styled(Component)`
   ${space}
