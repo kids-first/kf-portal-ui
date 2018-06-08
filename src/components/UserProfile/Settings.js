@@ -11,7 +11,7 @@ import { Flex } from 'uikit/Core';
 export default compose(withTheme, withState('mode', 'setMode', 'account'))(
   ({ profile, theme, submit, mode, setMode }) => (
     <Flex justifyContent="center" pt={4} pb={4}>
-      <Container flex flexDirection="row" alignItems="flex-start">
+      <Container row alignItems="flex-start">
         <NavContainer>
           <NavList>
             <NavItem active={mode === 'account'} onClick={() => setMode('account')}>
