@@ -6,7 +6,7 @@ import { gen3WebRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
 import ExternalLink from 'uikit/ExternalLink';
-import { IntegrationsDiv, IntegrationsCircleDiv, StyledH4 } from './styles';
+import { IntegrationsDiv, IntegrationsCircleDiv, H4 } from './styles';
 import IntegrationsStatus from './IntegrationsStatus';
 
 const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
@@ -38,7 +38,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 260px;
         `}
       >
-        <StyledH4>Download Controlled Data</StyledH4>
+        <H4>Download Controlled Data</H4>
         <IntegrationsStatus
           connected={integrationTokens[GEN3]}
           theme={theme}
@@ -80,7 +80,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 260px;
         `}
       >
-        <StyledH4>Analyze Data</StyledH4>
+        <H4>Analyze Data</H4>
 
         <IntegrationsStatus
           connected={integrationTokens[CAVATICA]}
