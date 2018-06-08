@@ -34,11 +34,13 @@ export const Box = styled('div')`
   ${borderRadius}
 `;
 
+const flexStyles = complexStyle({
+  prop: 'flexStyle',
+  key: 'flexStyles',
+});
 export const Flex = styled(Box)`
   display: flex;
-  ${({ row, theme }) => (row ? theme.row : '')}
-  ${({ column, theme }) => (column ? theme.column : '')}
-  ${({ center, theme }) => (center ? theme.center : '')}
+  ${flexStyles};
   ${alignItems};
   ${justifyContent};
   ${flexWrap};
