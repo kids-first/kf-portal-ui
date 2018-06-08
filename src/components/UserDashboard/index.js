@@ -11,7 +11,7 @@ import MySavedQueries from './MySavedQueries';
 import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import { StyledH2 } from './styles';
+import { H2 } from './styles';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -48,7 +48,7 @@ export default compose(
           padding: 40px;
         `}
       >
-        <StyledH2>Welcome, {loggedInUser.firstName}!</StyledH2>
+        <H2>Welcome, {loggedInUser.firstName}!</H2>
         <div
           css={`
             display: flex;

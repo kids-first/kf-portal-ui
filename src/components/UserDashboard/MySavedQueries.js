@@ -1,15 +1,72 @@
 import React from 'react';
 import Spinner from 'react-spinkit';
-import { Link } from 'react-router-dom';
 import { distanceInWords } from 'date-fns';
+import styled from 'react-emotion';
 
 import TrashIcon from 'react-icons/lib/fa/trash';
-import { StyledH3 } from './styles';
+import { H3 } from './styles';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
-import SaveIcon from '../../icons/SaveIcon';
+import SaveIconBase from '../../icons/SaveIcon';
+
+import { Box, Flex, Span, Link } from 'uikit/Core';
+import Column from 'uikit/Column';
+import Row from 'uikit/Row';
+
+const SaveIcon = styled(SaveIconBase)`
+  width: 16px;
+  fill: ${({ theme }) => theme.greyScale11};
+`;
+
+const GradientBar = styled('div')`
+  display: block;
+  width: calc(100% + 22px);
+  margin-left: -11px;
+  height: 6px;
+  background-image: linear-gradient(
+    to right,
+    ${({ profileColors }) => profileColors.gradientDark},
+    ${({ profileColors }) => profileColors.gradientMid} 51%,
+    ${({ profileColors }) => profileColors.gradientLight}
+  );
+`;
+
+const Header = styled(Flex)`
+  align-items: center;
+  border-bottom: ${x => (x.queries.length ? `2px dotted ${x.theme.greyScale5}` : `none`)};
+`;
+
+const Container = styled(Column)`
+  margin: 15px 0;
+  flex: 3;
+  border: 1px solid ${({ theme }) => theme.greyScale11};
+  border-top: 0;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 0 10px;
+`;
+
+const Detail = styled(Span)`
+  color: ${({ theme }) => theme.greyScale1};
+`;
+
+const Query = styled(Flex)`
+  padding: 10px 10px 10px 25px;
+  border: 1px solid ${({ theme }) => theme.greyScale5};
+  transition-property: opacity;
+  ${({ inactive, theme }) =>
+    inactive
+      ? `
+          opacity: 0.6;
+          pointer-events: none;
+          &:last-child {
+            border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
+          }
+        `
+      : ``};
+`;
 
 const MySavedQueries = compose(
   provideSavedQueries,
@@ -29,11 +86,7 @@ const MySavedQueries = compose(
     profileColors,
   }) =>
     loadingQueries ? (
-      <div
-        css={`
-          flex-grow: 1;
-        `}
-      >
+      <Box flexGrow={1}>
         <Spinner
           fadeIn="none"
           name="circle"
@@ -45,94 +98,25 @@ const MySavedQueries = compose(
             padding: 5,
           }}
         />
-      </div>
+      </Box>
     ) : (
-      <div
-        css={`
-          display: flex;
-          flex-direction: column;
-          margin: 15px 0;
-          flex: 3;
-          border: 1px solid #e0e1e6;
-          border-top: 0;
-          border-bottom-right-radius: 10px;
-          border-bottom-left-radius: 10px;
-          padding: 0 10px;
-        `}
-      >
-        <div
-          css={`
-            display: block;
-            width: calc(100% + 22px);
-            margin-left: -11px;
-            height: 6px;
-            background-image: linear-gradient(
-              to right,
-              ${profileColors.gradientDark},
-              ${profileColors.gradientMid} 51%,
-              ${profileColors.gradientLight}
-            );
-          `}
-        />
-        <div
-          css={`
-            display: flex;
-            flex-grow: 1;
-            padding: 10px 20px 30px;
-            ${queries.length > 0 &&
-              `
-              border-bottom: 2px dotted #a9adc0;
-            `};
-          `}
-        >
-          <StyledH3
-            css={`
-              margin-top: 6px;
-              font-weight: 300;
-            `}
-          >
+      <Container>
+        <GradientBar {...{ profileColors }} />
+        <Header p={3} lineHeight={2} {...{ queries }}>
+          <H3 mt={2} fontWeight={300}>
             Saved Queries
-          </StyledH3>
-          <div
-            css={`
-              margin-left: auto;
-              align-items: center;
-              display: flex;
-              align-items: baseline;
-            `}
-          >
-            <SaveIcon
-              css={`
-                width: 16px;
-                color: #a9adc0;
-              `}
-            />
-            <span
-              css={`
-                font-size: 20px;
-                padding: 0 6px 0 9px;
-                font-size: 22px;
-              `}
-            >
+          </H3>
+          <Flex ml="auto" alignItems="center">
+            <SaveIcon />
+            <Span pr={2} pl={3} fontSize={3}>
               {queries.length}
-            </span>
-            <span
-              css={`
-                font-size: 14px;
-                color: #a9adc0;
-              `}
-            >
+            </Span>
+            <Span fontSize={2} color={theme.greyScale11}>
               Queries
-            </span>
-          </div>
-        </div>
-
-        <div
-          css={`
-            overflow: auto;
-            margin: 6px 0 16px;
-          `}
-        >
+            </Span>
+          </Flex>
+        </Header>
+        <Box overflowY="auto" mt={2} mb={2}>
           {queries
             .filter(q => q.alias)
             .map(q => ({
@@ -144,92 +128,36 @@ const MySavedQueries = compose(
             .slice()
             .sort((a, b) => b.date - a.date)
             .map(q => (
-              <div
-                key={q.id}
-                css={`
-                  display: flex;
-                  padding: 10px 10px 10px 25px;
-                  border: 1px solid #e0e1e6;
-                  border-bottom: 0;
-                  transition-property: opacity;
-
-                  ${deletingIds.includes(q.id) &&
-                    `opacity: 0.6;
-            pointer-events: none;`} &:last-child {
-                    border-bottom: 1px solid #e0e1e6;
-                  }
-                `}
-              >
-                <div
-                  css={`
-                    display: flex;
-                    flex-direction: column;
-                    width: 100%;
-                  `}
-                >
-                  <div
-                    css={`
-                      ${theme.row};
-                      justify-content: space-between;
-                      width: 100%;
-                    `}
-                  >
-                    <Link
-                      to={q.link}
-                      css={`
-                        font-size: 0.875em;
-                        color: #a42c90;
-                        font-weight: bold;
-                      `}
-                    >
+              <Query key={q.id} inactive={deletingIds.includes(q.id)}>
+                <Flex flexDirection="column" width="100%">
+                  <Row justifyContent="space-between" width="100%">
+                    <Link fontSize={1} fontWeight="bold" color={theme.primary} to={q.link}>
                       {q.alias}
                     </Link>
-                    <div
-                      css={`
-                        padding: 0 5px;
-                      `}
-                    >
-                      <TrashIcon
-                        css={`
-                          color: #a42c90;
-                          &:hover {
-                            cursor: pointer;
-                            color: ${theme.hover};
-                          }
-                        `}
+                    <Box pr={2} pl={2}>
+                      <Span
+                        color={theme.primary}
+                        hover={{ cursor: 'pointer', color: theme.hover }}
                         onClick={() => deleteQuery({ api, queryId: q.id })}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    css={`
-                      margin: 10px 0;
-                      color: #74757d;
-                      font-size: 0.75em;
-                      letter-spacing: 0.3px;
-
-                      span {
-                        color: #343434;
-                      }
-                    `}
-                  >
-                    <span>{(q.content.Files || 0).toLocaleString()}</span> Files |{' '}
-                    <span>{(q.content.Participants || 0).toLocaleString()}</span> Participants |{' '}
-                    <span>{(q.content.Families || 0).toLocaleString()}</span> Families |{' '}
-                    <span>{q.content.Size}</span>
-                  </div>
-                  <div
-                    css={`
-                      font-size: 0.75em;
-                    `}
-                  >
-                    Saved {distanceInWords(new Date(), new Date(q.creationDate))}
-                  </div>
-                </div>
-              </div>
+                      >
+                        <TrashIcon />
+                      </Span>
+                    </Box>
+                  </Row>
+                  <Box mt={2} mb={2} color={theme.greyScale9} fontSize="0.75rem">
+                    <Detail>{(q.content.Files || 0).toLocaleString()}</Detail> Files |{' '}
+                    <Detail>{(q.content.Participants || 0).toLocaleString()}</Detail> Participants |{' '}
+                    <Detail>{(q.content.Families || 0).toLocaleString()}</Detail> Families |{' '}
+                    <Detail>{q.content.Size}</Detail>
+                  </Box>
+                  <Box fontSize="0.75rem">
+                    Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
+                  </Box>
+                </Flex>
+              </Query>
             ))}
-        </div>
-      </div>
+        </Box>
+      </Container>
     ),
 );
 export default MySavedQueries;
