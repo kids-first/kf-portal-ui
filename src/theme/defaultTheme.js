@@ -51,6 +51,14 @@ const components = {
       justifyContent: 'center',
     },
   },
+  flexStyles: {
+    row: {
+      flexDirection: 'row',
+    },
+    column: {
+      flexDirection: 'column',
+    },
+  },
   uppercase: css`
     text-transform: uppercase;
   `,
