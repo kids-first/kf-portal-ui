@@ -129,7 +129,7 @@ const MySavedQueries = compose(
             .sort((a, b) => b.date - a.date)
             .map(q => (
               <Query key={q.id} inactive={deletingIds.includes(q.id)}>
-                <Flex flexDirection="column" width="100%">
+                <Column width="100%">
                   <Row justifyContent="space-between" width="100%">
                     <Link fontSize={1} fontWeight="bold" color={theme.primary} to={q.link}>
                       {q.alias}
@@ -153,7 +153,7 @@ const MySavedQueries = compose(
                   <Box fontSize="0.75rem">
                     Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
                   </Box>
-                </Flex>
+                </Column>
               </Query>
             ))}
         </Box>
