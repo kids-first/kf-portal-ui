@@ -56,9 +56,19 @@ function extractTranslations(config) {
   return config;
 }
 
-module.exports = function(config, env) {
-  transpileNodeModules(config);
-  extractTranslations(config);
-  injectBabelPlugin('emotion', config);
-  return rewireReactHotLoader(config, env);
+module.exports = {
+  webpack: function(config, env) {
+    transpileNodeModules(config);
+    extractTranslations(config);
+    injectBabelPlugin('emotion', config);
+    rewireReactHotLoader(config, env);
+    return config;
+  },
+  devServer: function(configFunction) {
+    return function(proxy, allowedHost) {
+      const config = configFunction(proxy, allowedHost);
+      config.watchContentBase = false;
+      return config;
+    };
+  },
 };
