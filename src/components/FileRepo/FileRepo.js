@@ -11,7 +11,10 @@ import FilterIcon from 'react-icons/lib/fa/filter';
 
 import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
+
+// TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
+// import arrangerStyle from './arrangerStyle';
 
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
@@ -92,8 +95,6 @@ const customTableColumns = ({ theme }) => [
 ];
 
 const ArrangerContainer = styled(Row)`
-  display: flex;
-
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
     box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);
@@ -107,6 +108,23 @@ const ArrangerContainer = styled(Row)`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
+  }
+
+  & .tableToolbar {
+    color: ${({ theme }) => theme.greyScale9};
+    & .group .dropDownButtonContent {
+      color: ${({ theme }) => theme.greyScale9};
+    }
+    & .group button {
+      color: ${({ theme }) => theme.greyScale9};
+    }
+  }
+
+  .pagination-bottom .-pagination {
+    color: ${({ theme }) => theme.greyScale9};
+    select {
+      color: ${({ theme }) => theme.greyScale9};
+    }
   }
 
   div.sqon-view {
@@ -187,7 +205,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                           {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
                         />
                         <TableContainer>
-                          <Row>
+                          <Row mb={url.sqon ? 3 : 0}>
                             <CurrentSQON
                               {...props}
                               {...url}
