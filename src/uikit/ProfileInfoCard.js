@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Gravtar from './Gravatar';
 import CompletionWrapper from '../components/UserProfile/CompletionWrapper';
 import RoleIconButton from '../components/RoleIconButton';
-import { H2, P, SmallText } from './Typography';
+import { H2, H3, P, SmallText } from './Typography';
 import { withTheme } from 'emotion-theming';
 
 export const ProfileGravtar = ({ profile, theme, size }) => (
@@ -38,6 +38,7 @@ const ProfileInfoCard = ({
       flex-direction: ${orientation ? (orientation === 'horizontal' ? 'row' : 'column') : 'row'};
       align-items: center;
       justify-content: space-between;
+      align-content: flex-start;
     `}
   >
     {ProfileProgress ? (
@@ -56,19 +57,17 @@ const ProfileInfoCard = ({
     <div
       css={`
         width: 100%;
-        max-width: 300px;
-        margin: 0 auto;
+        margin-left: ${orientation === 'horizontal' ? '20px' : '0'};
       `}
     >
       <RoleIconButton
         css={`
-          margin: 20px 0;
+          margin: ${orientation === 'vertical' ? '20px auto' : '0'};
           width: ${RoleIconButtonInner ? '290px' : '140px'};
         `}
       >
         {RoleIconButtonInner && RoleIconButtonInner()}
-      </RoleIconButton>
-
+      </RoleIconButton>;
       <div
         css={`
           ${orientation === 'vertical' ? theme.text.center : theme.text.left};
@@ -89,20 +88,23 @@ const ProfileInfoCard = ({
             {profile.firstName} {profile.lastName}
           </Link>
         </H2>
-        {[
-          profile.jobTitle && (
-            <H2 my="0" color="white">
-              <SmallText>{profile.jobTitle}</SmallText>
-            </H2>
-          ),
-          profile.institution,
-          [profile.city, profile.state].filter(Boolean).join(', '),
-          profile.country,
-        ]
+
+        {profile.jobTitle ? (
+          <H3 my="0" color="white">
+            {profile.jobTitle}{' '}
+          </H3>
+        ) : null}
+        {profile.institution ? (
+          <H3 mt="10px" mb="0" color="white" fontWeight="thin">
+            {profile.institution}
+          </H3>
+        ) : null}
+
+        {[[profile.city, profile.state].filter(Boolean).join(', '), profile.country]
           .filter(Boolean)
           .map((str, i) => (
-            <P my="2px" lineHeight={3} color="white" key={`${str}${i}`}>
-              {str}
+            <P my="0" color="white" key={`${str}${i}`}>
+              <SmallText>{str}</SmallText>
             </P>
           ))}
         <P

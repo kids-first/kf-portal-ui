@@ -21,9 +21,6 @@ export const EditButton = compose(withTheme)(({ theme, ...props }) => (
   </button>
 ));
 
-// export const H2 = styled(H2)`
-//   ${props => props.theme.profileH2};
-// `;
 
 export const SectionHeader = ({ theme, children, title }) => (
   <div
@@ -44,17 +41,9 @@ export const SectionHeader = ({ theme, children, title }) => (
   </div>
 );
 
-// export const H3 = styled('h3')`
-//   ${props => props.theme.h3};
-//   margin-top: 0px;
-//   font-size: 22px;
-//   font-weight: 300;
-//   line-height: 1.27;
-//   letter-spacing: 0.3px;
-// `;
-
 export const H4 = styled('h4')`
-  ${({ theme }) => theme.h4} color: ${({ theme }) => theme.greyScale1};
+  ${({ theme }) => theme.h4} 
+  color: ${({ theme }) => theme.greyScale1};
   font-weight: 700;
   ${({ theme }) => theme.spacing.collapse};
 `;

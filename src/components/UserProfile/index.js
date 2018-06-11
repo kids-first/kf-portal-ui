@@ -88,11 +88,11 @@ export default compose(
       <Container className={theme.row}>
         <div
           className={css`
-            width: 49%;
+            width: 61%;
           `}
         >
           <ProfileInfoCard
-            direction="horizontal"
+            orientation={'horizontal'}
             {...{ profile }}
             gravatar={{ size: 173 }}
             buttons={() => (
