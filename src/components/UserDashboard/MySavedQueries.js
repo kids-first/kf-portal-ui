@@ -9,7 +9,7 @@ import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import SaveIcon from '../../icons/SaveIcon';
-import { H3, H4, P, SmallText } from '../../uikit/Typography';
+import { H3, P, SmallText } from '../../uikit/Typography';
 import DashboardWidget, { WidgetTitle } from './DashboardWidget';
 
 const MySavedQueries = compose(
