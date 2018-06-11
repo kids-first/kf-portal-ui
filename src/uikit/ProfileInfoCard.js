@@ -62,12 +62,12 @@ const ProfileInfoCard = ({
     >
       <RoleIconButton
         css={`
-          margin: ${orientation === 'vertical' ? '20px auto' : '0'};
-          width: ${RoleIconButtonInner ? '290px' : '140px'};
+          margin: ${orientation === 'vertical' ? '20px auto' : '0 0 20px 0'};
+          width: ${RoleIconButtonInner ? '290px' : '160px'};
         `}
       >
         {RoleIconButtonInner && RoleIconButtonInner()}
-      </RoleIconButton>;
+      </RoleIconButton>
       <div
         css={`
           ${orientation === 'vertical' ? theme.text.center : theme.text.left};

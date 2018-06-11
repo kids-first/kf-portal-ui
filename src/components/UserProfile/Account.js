@@ -6,7 +6,7 @@ import { withTheme } from 'emotion-theming';
 import Input from 'uikit/Input';
 import { H3 } from 'uikit/Typography';
 import { Trans } from 'react-i18next';
-
+import { SectionHeader } from './styles';
 import UserIntegrations from './UserIntegrations';
 
 export const H2 = styled('h2')`
@@ -36,9 +36,7 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       `}
     >
       <SettingsSection>
-        <H3>
-          <Trans>Settings</Trans>
-        </H3>
+        <SectionHeader title="Settings" />
         <div
           css={`
             ${theme.column};
@@ -57,7 +55,7 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       </SettingsSection>
 
       <SettingsSection>
-        <H3>Integrations</H3>
+        <SectionHeader title="Integrations" />
         <UserIntegrations />
       </SettingsSection>
     </div>
