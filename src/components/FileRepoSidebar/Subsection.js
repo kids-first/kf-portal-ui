@@ -2,17 +2,11 @@ import React from 'react';
 import styled from 'react-emotion';
 
 import Heading from 'uikit/Heading';
+import { H4 } from 'uikit/Typography';
 
 const Container = styled('div')`
   padding-top: 10px;
   padding-bottom: 10px;
-`;
-
-const StyledHeading = styled(Heading)`
-  color: ${({ theme }) => theme.greyScale1};
-  font-size: 14px;
-  margin-top: 0px;
-  margin-bottom: 0px;
 `;
 
 const Body = styled(`div`)`
@@ -22,7 +16,9 @@ const Body = styled(`div`)`
 
 export default ({ heading, children }) => (
   <Container>
-    <StyledHeading>{heading}</StyledHeading>
+    <H4 my="0" color="greyScale1" fontWeight="regular">
+      {heading}
+    </H4>
     <Body>{children}</Body>
   </Container>
 );
