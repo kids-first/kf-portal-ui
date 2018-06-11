@@ -6,7 +6,7 @@ import ReactModal from 'react-modal';
 
 export const ModalFooterContainer = styled('div')`
   ${({ theme }) => theme.row};
-  background-color: ${({ theme }) => theme.greyScale10};
+  background-color: ${({ theme }) => theme.colors.greyScale10};
   border-radius: 5px;
   padding: 1em;
   margin-top: 1em;
@@ -59,8 +59,8 @@ export const Modal = styled(ReactModal)`
   right: auto;
   bottom: auto;
   position: absolute;
-  border: 1px solid ${({ theme }) => theme.borderGrey};
-  background: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.colors.borderGrey};
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 4px;
   transform: translate(-50%, -50%);
   width: 95%;

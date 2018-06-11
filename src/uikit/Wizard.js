@@ -26,7 +26,7 @@ const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) =>
                   ? `${BAR_STEP_WIDTH / 2}px`
                   : `${BAR_STEP_WIDTH}px`}
                 0 0;
-              border-top: 6px solid ${i <= index ? theme.active : theme.inactive};
+              border-top: 6px solid ${i <= index ? theme.colors.active : theme.colors.inactive};
             `}
           >
             <div
@@ -40,7 +40,7 @@ const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) =>
                 font-size: 10px;
                 font-weight: bold;
                 display: inline-block;
-                background-color: ${i <= index ? theme.active : theme.inactive};
+                background-color: ${i <= index ? theme.colors.active : theme.colors.inactive};
               `}
             >
               {i + 1}
@@ -59,7 +59,7 @@ const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) =>
               line-height: 2.14;
               letter-spacing: 0.2px;
               text-align: center;
-              color: ${i <= index ? theme.greyScale1 : theme.inactive};
+              color: ${i <= index ? theme.colors.greyScale1 : theme.colors.inactive};
             `}
           >
             {title}
@@ -126,7 +126,7 @@ export default compose(
         className={css`
           display: flex;
           justify-content: center;
-          border-bottom: 1px solid ${theme.greyScale4};
+          border-bottom: 1px solid ${theme.colors.greyScale4};
           min-height: 60px;
         `}
       >
