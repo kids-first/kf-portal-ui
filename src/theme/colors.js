@@ -1,5 +1,6 @@
 const colors = {
   white: '#ffffff',
+  black: '#000000',
   primary: '#90278e', //magenta
   secondary: '#2b388f', //purplish blue
   primaryHover: '#404c9a', //purple

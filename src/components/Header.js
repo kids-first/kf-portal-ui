@@ -22,10 +22,10 @@ const NavLink = styled(Link)`
 `;
 
 const DropdownLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.colors.black};
   text-decoration: none;
   &:hover {
-    color: ${({ theme }) => theme.highlight};
+    color: ${({ theme }) => theme.colors.highlight};
   }
 `;
 
@@ -47,7 +47,7 @@ const Header = ({
   return (
     <div
       className={css`
-        background: #fff;
+        background: ${theme.colors.white};
         box-shadow: 0 0 4.9px 0.1px #bbbbbb;
         flex: none;
         z-index: 1;
@@ -141,7 +141,7 @@ const Header = ({
                   <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
                   <div
                     css={`
-                      border-top: 1px solid ${theme.greyScale4};
+                      border-top: 1px solid ${theme.colors.greyScale4};
                     `}
                   >
                     <a
@@ -149,7 +149,7 @@ const Header = ({
                         uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })
                       }
                       css={`
-                        color: ${theme.primary};
+                        color: ${theme.colors.primary};
                         text-decoration: none;
                       `}
                     >
@@ -159,7 +159,7 @@ const Header = ({
                 ]}
                 css={`
                   border: 0;
-                  color: ${theme.primary};
+                  color: ${theme.colors.primary};
 
                   font-size: 14px;
                   font-weight: 500;
