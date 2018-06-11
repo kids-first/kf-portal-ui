@@ -4,8 +4,6 @@ import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import Input from 'uikit/Input';
-import { H3 } from 'uikit/Typography';
-import { Trans } from 'react-i18next';
 import { SectionHeader } from './styles';
 import UserIntegrations from './UserIntegrations';
 
