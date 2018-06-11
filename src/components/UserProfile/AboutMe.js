@@ -9,7 +9,7 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
-import { Container, EditButton, H3, H4 } from './';
+import { Container, EditButton, H3, H4 } from './styles';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
@@ -40,8 +40,9 @@ const ClickToAdd = ({ theme, children, ...rest }) => (
 const SaveButton = props => <ModalActionButton {...props}>Save</ModalActionButton>;
 
 const DirectionsText = styled.p`
-  ${({theme}) => theme.paragraph + theme.text.italic + theme.spacing.collapse} 
-  color: ${({theme}) => theme.greyScale9};
+  ${({ theme }) => theme.paragraph + theme.text.italic + theme.spacing.collapse} color: ${({
+      theme,
+    }) => theme.greyScale9};
 `;
 
 const columnTopPadding = '30px';
@@ -195,9 +196,7 @@ export default compose(
           <StyledSection className={'userStory'}>
             <H4>My story</H4>
             {canEdit && (
-              <DirectionsText>
-                Share why you’re a part of the Kids First community.
-              </DirectionsText>
+              <DirectionsText>Share why you’re a part of the Kids First community.</DirectionsText>
             )}
             <EditableLabel
               autoFocus={focusedTextArea === 'myStory'}
@@ -325,7 +324,9 @@ export default compose(
               `}
             >
               <H4>Interests</H4>
-              <DirectionsText>Tell people about your work background and your research specialties.</DirectionsText>
+              <DirectionsText>
+                Tell people about your work background and your research specialties.
+              </DirectionsText>
               <div
                 css={`
                   ${theme.row};

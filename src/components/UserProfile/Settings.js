@@ -4,7 +4,7 @@ import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
-import { Container } from './';
+import { Container } from './styles';
 import Account from './Account';
 import Privacy from './Privacy';
 

@@ -1,6 +1,4 @@
-import React from 'react';
 import styled from 'react-emotion';
-import { H3 } from '../../uikit/Typography';
 
 export const IntegrationsDiv = styled.div`
   ${({ theme }) => theme.row};
