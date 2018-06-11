@@ -22,9 +22,9 @@ import CompleteOMeter from 'components/CompleteOMeter';
 import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
-// import { H3, H2, H4 } from '../../uikit/typography';
 import ProfileInfoCard from '../../uikit/ProfileInfoCard';
-import { Container, EditButton, userProfileBackground, H2, H3, H4 } from './styles';
+import { Container, EditButton, userProfileBackground } from './styles';
+import { H3, H2, H4 } from '../../uikit/Typography';
 
 export default compose(
   injectState,
@@ -93,7 +93,7 @@ export default compose(
         >
           <ProfileInfoCard
             direction="horizontal"
-            {...{ theme, profile }}
+            {...{ profile }}
             gravatar={{ size: 173 }}
             buttons={() => (
               <span

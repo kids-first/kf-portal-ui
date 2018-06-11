@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import { ROLES } from 'common/constants';
+import { H3 } from '../../uikit/Typography';
 
 export const Container = styled('div')`
   justify-content: space-between;
@@ -20,22 +21,37 @@ export const EditButton = compose(withTheme)(({ theme, ...props }) => (
   </button>
 ));
 
-export const H2 = styled('h2')`
-  ${props => props.theme.profileH2};
-`;
+// export const H2 = styled(H2)`
+//   ${props => props.theme.profileH2};
+// `;
 
-export const H3 = styled('h3')`
-  ${props => props.theme.h3};
-  margin-top: 0px;
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 1.27;
-  letter-spacing: 0.3px;
-  border-bottom: 1px solid #d4d6dd;
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 10px;
-`;
+export const SectionHeader = ({ theme, children, title }) => (
+  <div
+    css={`
+      border-bottom: 1px solid #d4d6dd;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      h3 {
+        display: inline-block;
+      }
+    `}
+  >
+    <H3 my="0" fontWeight="thin">
+      {title}
+    </H3>
+    {children}
+  </div>
+);
+
+// export const H3 = styled('h3')`
+//   ${props => props.theme.h3};
+//   margin-top: 0px;
+//   font-size: 22px;
+//   font-weight: 300;
+//   line-height: 1.27;
+//   letter-spacing: 0.3px;
+// `;
 
 export const H4 = styled('h4')`
   ${({ theme }) => theme.h4} color: ${({ theme }) => theme.greyScale1};

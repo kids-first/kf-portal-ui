@@ -70,7 +70,7 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
     <div css="flex-direction: column;">
       <div
         css={`
-          color: ${theme.active};
+          color: ${theme.colors.active};
           padding: 10px;
         `}
       >
@@ -97,7 +97,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
     <div css="flex-direction: column;">
       <div
         css={`
-          color: ${theme.active};
+          color: ${theme.colors.active};
           padding: 10px;
         `}
       >

@@ -40,6 +40,7 @@ export default compose(
         loggedInUser={loggedInUser}
         profileColors={profileColors}
       />
+
       <div
         css={`
           ${theme.column};

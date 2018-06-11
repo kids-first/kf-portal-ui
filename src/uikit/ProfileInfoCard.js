@@ -74,7 +74,7 @@ const ProfileInfoCard = ({
           ${orientation === 'vertical' ? theme.text.center : theme.text.left};
         `}
       >
-        <H2 my="0">
+        <H2 my="0" fontWeight="bold">
           <Link
             to={`/user/${profile.egoId}#aboutMe`}
             css={`
@@ -101,7 +101,7 @@ const ProfileInfoCard = ({
         ]
           .filter(Boolean)
           .map((str, i) => (
-            <P my="0" lineHeight={3} color="white" key={`${str}${i}`}>
+            <P my="2px" lineHeight={3} color="white" key={`${str}${i}`}>
               {str}
             </P>
           ))}

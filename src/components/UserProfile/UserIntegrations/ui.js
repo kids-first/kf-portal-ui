@@ -5,7 +5,7 @@ import View from 'react-icons/lib/fa/eye';
 import X from 'react-icons/lib/fa/close';
 
 export const Paragraph = styled('p')`
-  ${({theme}) => theme.paragraph}
+  ${({ theme }) => theme.paragraph};
 `;
 
 export const UserIntegrationsWrapper = styled('div')`
@@ -58,11 +58,11 @@ export const UserIntegrationsWrapper = styled('div')`
 export const IntegrationTable = styled('table')`
   td,
   th {
-    border: 1px solid ${({ theme }) => theme.greyScale5};
+    border: 1px solid ${({ theme }) => theme.colors.greyScale5};
   }
   & thead {
-    background: ${({ theme }) => theme.greyScale6};
-    color: ${({ theme }) => theme.secondary};
+    background: ${({ theme }) => theme.colors.greyScale6};
+    color: ${({ theme }) => theme.colors.secondary};
     text-align: left;
   }
 `;

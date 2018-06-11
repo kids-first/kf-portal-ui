@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { H3, H4 } from './styles';
+import { H4 } from './styles';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import Input from 'uikit/Input';
+import { H3 } from 'uikit/Typography';
 import { Trans } from 'react-i18next';
 
 import UserIntegrations from './UserIntegrations';

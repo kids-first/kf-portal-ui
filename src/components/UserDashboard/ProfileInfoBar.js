@@ -23,7 +23,6 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
     <ProfileInfoCard
       orientation="vertical"
       profile={loggedInUser}
-      theme={theme}
       ProfileProgress={percentageFilled}
       gravatar={{ size: 180 }}
       RoleIconButtonInner={() => (
