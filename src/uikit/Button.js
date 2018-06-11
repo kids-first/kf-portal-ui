@@ -18,10 +18,10 @@ const Button = styled(BaseButton)`
 `;
 
 export const LightButton = styled(BaseButton)`
-  height: 22px;
-  border-radius: 10.5px;
-  background-color: #fff;
-  color: #008199;
+  ${({ theme }) => theme.hollowButton};
+  ${({ theme }) => theme.row};
+  ${({ theme }) => theme.center};
+  font-weight: bold;
 `;
 
 export const ActionButton = styled(Button)`
