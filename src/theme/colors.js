@@ -1,5 +1,6 @@
 const colors = {
   white: '#ffffff',
+  black: '#000000',
   primary: '#90278e', //magenta
   secondary: '#2b388f', //purplish blue
   primaryHover: '#404c9a', //purple
@@ -40,6 +41,6 @@ export const gradients = {
   } 51%, #02b0ed), linear-gradient(${colors.secondary}, ${colors.secondary})`,
 };
 
-export const shadows = ['0 0 4.8px 0.2px #a0a0a3'];
+export const shadows = ['0 0 4.8px 0.2px #a0a0a3', '0 0 2.9px 0.1px #a0a0a3'];
 
 export default colors;

@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { H3, H4 } from './';
+import { H4 } from './styles';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import Input from 'uikit/Input';
-import { Trans } from 'react-i18next';
-
+import { SectionHeader } from './styles';
 import UserIntegrations from './UserIntegrations';
 
 export const H2 = styled('h2')`
@@ -35,22 +34,26 @@ export default compose(withTheme, withState('mode', 'setMode', 'account'))(
       `}
     >
       <SettingsSection>
-        <H3>
-          <Trans>Settings</Trans>
-        </H3>
+        <SectionHeader title="Settings" />
         <div
           css={`
             ${theme.column};
             width: 70%;
           `}
         >
-          <H4 css={`${theme.spacing.collapse}`}>Email Address:</H4>
+          <H4
+            css={`
+              ${theme.spacing.collapse};
+            `}
+          >
+            Email Address:
+          </H4>
           <Input disabled value={profile.email} />
         </div>
       </SettingsSection>
 
       <SettingsSection>
-        <H3>Integrations</H3>
+        <SectionHeader title="Integrations" />
         <UserIntegrations />
       </SettingsSection>
     </div>

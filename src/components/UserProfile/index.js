@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { get } from 'lodash';
 import { css } from 'react-emotion';
 import {
   compose,
@@ -12,81 +11,20 @@ import {
 } from 'recompose';
 import { Link, withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
-import styled from 'react-emotion';
-import PencilIcon from 'react-icons/lib/fa/pencil';
 
 import { withTheme } from 'emotion-theming';
 import { updateProfile } from 'services/profiles';
-import { ROLES } from 'common/constants';
 import { getProfile } from 'services/profiles';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 
 import CompleteOMeter from 'components/CompleteOMeter';
 
-import Gravtar from 'uikit/Gravatar';
-
 import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
-import RoleIconButton from '../RoleIconButton';
-
-export const Container = styled('div')`
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  width: 76%;
-`;
-
-export const EditButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
-    <PencilIcon className={'icon'} /> Edit
-  </button>
-));
-
-export const H2 = styled('h2')`
-  ${props => props.theme.profileH2};
-`;
-
-export const H3 = styled('h3')`
-  ${props => props.theme.h3};
-  margin-top: 0px;
-  font-size: 22px;
-  font-weight: 300;
-  line-height: 1.27;
-  letter-spacing: 0.3px;
-  border-bottom: 1px solid #d4d6dd;
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  
-`;
-
-export const H4 = styled('h4')`
-  ${({ theme }) => theme.h4}
-  color: ${({ theme }) => theme.greyScale1};
-  font-weight: 700;
-  ${({ theme }) => theme.spacing.collapse};
-`;
-
-export const userProfileBackground = (
-  loggedInUser,
-  { showBanner = true, gradientDirection = 'right' } = {},
-) => {
-  const role = ROLES.find(x => x.type === get(loggedInUser, 'roles[0]', '')) || {};
-  const banner = get(role, 'banner', '');
-  const profileColors = get(role, 'profileColors', {});
-  return css`
-    background-position-x: right;
-    background-repeat: no-repeat;
-    background-image: ${showBanner ? `url(${banner}), ` : ``}
-      linear-gradient(
-        to ${gradientDirection},
-        ${profileColors.gradientDark} 33%,
-        ${profileColors.gradientMid} 66%,
-        ${profileColors.gradientLight}
-      );
-  `;
-};
+import ProfileInfoCard from '../../uikit/ProfileInfoCard';
+import { Container, EditButton, userProfileBackground } from './styles';
+import { H3, H2, H4 } from '../../uikit/Typography';
 
 export default compose(
   injectState,
@@ -148,78 +86,40 @@ export default compose(
       `}
     >
       <Container className={theme.row}>
-        <Gravtar
-          email={profile.email || ''}
-          size={173}
-          className={css`
-            border-radius: 50%;
-            border: 5px solid #fff;
-          `}
-        />
         <div
           className={css`
-            width: 49%;
-            align-items: flex-start;
-            ${theme.column};
-            padding: 0 15px;
+            width: 61%;
           `}
         >
-          <RoleIconButton />
-
-          <h2
-            css={`
-              ${theme.h2} 
-              color: ${theme.white};
-              font-weight: 500;
-              margin-bottom: 0;
-            `}
-          >{`${profile.firstName} ${profile.lastName}`}</h2>
-          <h2
-              css={`
-                ${theme.spacing.collapse}
-                ${theme.h2}
-                color: ${theme.white};
-                ${theme.spacing.collapse}
-                font-weight: 300;
-              `}
-            >
-              <small css={`${theme.text.small}`}> {profile.jobTitle} </small>
-            </h2>
-          <div
-            css={`
-              ${theme.paragraph}
-              line-height: 28px;
-              color: #fff;
-              ${theme.column};
-            `}
-          >
-            <p css={`${theme.paragraph} color: ${theme.white}; margin-top:0;`}>
-              {profile.institution} <br />
-              {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}<br />
-              <span css={`${theme.text.underline}`} >{profile.email}</span>  
-            </p>
-            
-            <span
-              css={`
-                margin-top: 5px;
-              `}
-            >
-              <EditButton
-                onClick={() => {
-                  setModal({
-                    title: 'Edit Basic Information',
-                    component: <BasicInfoForm {...{ api }} />,
-                  });
-                }}
-              />
-            </span>
-          </div>
+          <ProfileInfoCard
+            orientation={'horizontal'}
+            {...{ profile }}
+            gravatar={{ size: 173 }}
+            buttons={() => (
+              <span
+                css={`
+                  margin-top: 5px;
+                `}
+              >
+                <EditButton
+                  onClick={() => {
+                    setModal({
+                      title: 'Edit Basic Information',
+                      component: <BasicInfoForm {...{ api }} />,
+                    });
+                  }}
+                />
+              </span>
+            )}
+          />
         </div>
+
         <div
           css={`
             width: 310px;
             ${theme.column};
             align-items: center;
+            margin-right: 47px;
           `}
         >
           <CompletionWrapper

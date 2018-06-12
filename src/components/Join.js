@@ -25,6 +25,7 @@ import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
 import TextArea from 'uikit/TextArea';
 import Wizard from 'uikit/Wizard';
+import { H2, H3, P } from 'uikit/Typography';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;
@@ -61,21 +62,21 @@ const Consent = compose(
   }) => {
     return (
       <ConsentContainer>
-        <h3 css={`${theme.h3}`}>
+        <H3>
           <Trans i18nKey="join.terms.instructions">
             Read and consent to our terms and conditions
           </Trans>
-        </h3>
+        </H3>
         <Terms>
           <b>
             <Trans i18nKey="join.terms.title">Draft for Demo Purposes</Trans>
           </b>
-          <p css={`${theme.paragraph}`}>
+          <P>
             As a user of the Kids First DRC Portal you agree to the Terms of Service and agree to
             make no attempt to identify or contact individual participants from whom these data were
             collected. Where applicable, you agree to comply with the NIH Code of Conduct for
             Genomic Controlled Access Data Use including, but not limited to:
-          </p>
+          </P>
           <ol>
             <li>
               Use of requested datasets solely in connection with the research project described in
@@ -169,26 +170,26 @@ const JoinContent = compose(
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
   <JoinContainer>
     <div className={`${theme.card} ${theme.column} `}>
-      <h2 css={`${theme.h2} ${theme.text.center}`}>
+      <H2 textAlign="center">
         <Trans>Join Kids First</Trans>
-      </h2>
+      </H2>
       <Wizard
         steps={[
           {
             title: 'Connect',
             render: ({ nextStep }) => (
-              <div className={theme.column} >
-                <h3 css={`${theme.h3} margin-bottom: 0;`}>
+              <div className={theme.column}>
+                <H3 mb="0" textAlign="center">
                   <Trans i18nKey="join.wizard.socialSelect">
                     Select a way to connect to the Kids First Data Resource Portal
                   </Trans>
-                </h3>
-                <h5 css={`${theme.h5}`}>
+                </H3>
+                <P textAlign="center">
                   <Trans i18nKey="join.wizard.dataConfidentiality">
                     Your information will be kept confidential and secure and is not shared with any
                     of these providers.
                   </Trans>
-                </h5>
+                </P>
                 <Login
                   shouldNotRedirect={true}
                   onFinish={user => {
@@ -208,16 +209,19 @@ const JoinContent = compose(
             title: 'Basic Info',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <div className={theme.column}>
-                <h3 css={`${theme.h3} margin-bottom:0;`}>
+                <H3 mb="0">
                   <Trans i18nKey="join.wizard.basicInfoHeader">Tell us about yourself</Trans>
-                </h3>
-                <h5 css={`${theme.h5} margin-top: 5px;`}>
+                </H3>
+                <P mt="10px" mb="20px">
                   <Trans i18nKey="join.wizard.basicInfoInstructions">
                     Please provide information about yourself to help us personalize your
                     experience.
                   </Trans>
-                </h5>
+                </P>
                 <SelectRoleForm
+                  css={`
+                    margin-top: 10px;
+                  `}
                   onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
                   onValidChange={isValid => disableNextStep(!isValid)}
                   {...{ nextStep, nextDisabled, prevDisabled, api }}

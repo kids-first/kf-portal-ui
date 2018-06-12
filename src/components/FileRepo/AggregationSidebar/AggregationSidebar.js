@@ -22,12 +22,12 @@ const AggregationWrapper = styled('div')`
   height: 100%;
   width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
   overflow-y: auto;
-  box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
-  border-color: ${({ theme }) => theme.greyScale5};
+  box-shadow: ${({ theme }) => theme.shadows[0]};
+  border-color: ${({ theme }) => theme.colors.greyScale5};
   border-style: solid;
   border-width: 0 1px 0 0;
   flex: none;
-  background: ${({ theme }) => theme.backgroundGrey};
+  background: ${({ theme }) => theme.colors.backgroundGrey};
 `;
 
 const AggregationHeader = styled('div')`
@@ -39,7 +39,7 @@ const AggregationHeader = styled('div')`
 const AggregationTitle = styled('div')`
   flex-grow: 1;
   font-size: 18px;
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.colors.secondary};
 `;
 
 const AggregationSidebar = compose(injectState, withTheme)(

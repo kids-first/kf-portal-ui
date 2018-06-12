@@ -115,6 +115,7 @@ export const text = {
   left: 'text-align: left;',
   right: 'text-align: right;',
   underline: 'text-decoration: underline;',
+  clean: 'text-decoration: none;',
   italic: 'font-style: italic;',
   captialize: 'text-transform: captialize;',
   small: 'font-size: 75%;',

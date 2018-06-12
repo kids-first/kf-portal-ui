@@ -12,7 +12,7 @@ const FooterLink = styled('a')`
   line-height: 2.17;
   letter-spacing: 0.2px;
   text-align: center;
-  color: ${({ theme }) => theme.greyScale0};
+  color: ${({ theme }) => theme.colors.greyScale0};
   text-decoration: underline;
 `;
 
@@ -28,7 +28,7 @@ const FooterContainer = styled('footer')`
   font-size: 12px;
   line-height: 2.17;
   letter-spacing: 0.2px;
-  color: ${({ theme }) => theme.greyScale9};
+  color: ${({ theme }) => theme.colors.greyScale9};
   z-index: 100;
   position: relative;
 `;

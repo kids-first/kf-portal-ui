@@ -9,8 +9,10 @@ const CheckboxBubble = styled(Row)`
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: ${({ active, theme }) => (active ? theme.optionSelected : theme.white)};
-  border: solid 1px ${({ active, theme }) => (active ? theme.active : theme.greyScale4)};
+  background-color: ${({ active, theme }) =>
+    active ? theme.colors.optionSelected : theme.colors.white};
+  border: solid 1px
+    ${({ active, theme }) => (active ? theme.colors.active : theme.colors.greyScale4)};
   padding: 10px;
   width: 100%;
   cursor: pointer;

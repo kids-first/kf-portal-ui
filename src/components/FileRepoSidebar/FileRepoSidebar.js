@@ -3,7 +3,7 @@ import styled, { css } from 'react-emotion';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
-
+import { P } from '../../uikit/Typography';
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import Heading from 'uikit/Heading';
@@ -19,7 +19,7 @@ const Slideable = styled('div')`
   width: ${({ expanded, containerWidth, contentSidePadding }) =>
     expanded ? `${containerWidth + contentSidePadding * 2}px` : '40px'};
   overflow: hidden;
-  box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
+  box-shadow: ${({ theme }) => theme.shadows[0]};
 `;
 
 const Container = styled('div')`
@@ -29,11 +29,11 @@ const Container = styled('div')`
   width: ${({ containerWidth, contentSidePadding }) => containerWidth + contentSidePadding * 2}px;
   min-width: 265px;
   height: 100%;
-  background: ${({ theme }) => theme.backgroundGrey};
+  background: ${({ theme }) => theme.colors.backgroundGrey};
 `;
 
 const Titlebar = styled('div')`
-  background-color: ${({ theme }) => theme.greyScale5};
+  background-color: ${({ theme }) => theme.colors.greyScale5};
   margin: 0px;
   display: flex;
   padding-top: 15px;
@@ -50,16 +50,13 @@ const Content = styled('div')`
   padding-top: 10px;
 `;
 
-const Text = styled('p')`
-  ${({theme}) => theme.paragraph}
-  margin-top:0;
-`;
+const Text = ({ children }) => <P mt="0">{children}</P>;
 
 const Section = styled('div')`
   padding-top: 20px;
   padding-bottom: 20px;
   &:not(:last-child) {
-    border-bottom: solid 1px ${({ theme }) => theme.greyScale8};
+    border-bottom: solid 1px ${({ theme }) => theme.colors.greyScale8};
   }
 `;
 
@@ -88,9 +85,9 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             >
               {' '}
               {expanded ? (
-                <RightChevron width={14} fill={theme.secondary} />
+                <RightChevron width={14} fill={theme.colors.secondary} />
               ) : (
-                <LeftChevron width={14} fill={theme.secondary} />
+                <LeftChevron width={14} fill={theme.colors.secondary} />
               )}{' '}
             </span>
             <Trans>Actions</Trans>

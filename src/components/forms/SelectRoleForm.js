@@ -22,6 +22,7 @@ import DeleteButton from 'components/loginButtons/DeleteButton';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
+import { P, SmallText } from 'uikit/Typography';
 
 const SelectRoleForm = styled('form')`
   justify-content: space-around;
@@ -42,13 +43,11 @@ const RoleBubble = styled(CheckboxBubble)`
   ${({ theme }) => theme.text.left};
 `;
 
-const RoleDescription = styled('p')`
-  ${({ theme }) => theme.paragraph};
-  color: ${({ theme }) => theme.greyScale0};
-  margin:0;
-  padding:0;
-  ${({ theme }) => theme.text.small};
-`;
+const RoleDescription = ({ children }) => (
+  <P my="0" p="0" color="greyScale0">
+    <SmallText>{children}</SmallText>
+  </P>
+);
 
 const RoleLabel = styled('label')`
   ${({ theme }) => theme.paragraph};
@@ -56,8 +55,8 @@ const RoleLabel = styled('label')`
   display: block;
   ${({ theme }) => theme.text.capitalize};
   line-height: 1.33;
-  
-  color: ${({ theme }) => theme.secondary};
+
+  color: ${({ theme }) => theme.colors.secondary};
 `;
 
 const Label = styled('label')`
@@ -245,7 +244,11 @@ export default enhance(
                     checked={values.roles.toLowerCase() === type}
                     name="roles"
                   />
-                  {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
+                  {icon({
+                    width: '64px',
+                    fill: color,
+                    style: { padding: '8px' },
+                  })}
                   <div>
                     <RoleLabel>{displayName}</RoleLabel>
                     <RoleDescription>{description}</RoleDescription>

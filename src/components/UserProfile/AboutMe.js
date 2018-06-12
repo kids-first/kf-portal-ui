@@ -9,7 +9,8 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import EditableLabel from 'uikit/EditableLabel';
 import ExternalLink from 'uikit/ExternalLink';
-import { Container, EditButton, H3, H4 } from './';
+import { H4, P, SmallText } from 'uikit/Typography';
+import { Container, EditButton, SectionHeader } from './styles';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
@@ -30,7 +31,12 @@ const StyledSection = withTheme(styled('section')`
     font-size: 12px;
     text-decoration: underline;
   }
+  H4 {
+    margin: 0;
+    padding: 0;
+  }
 `);
+
 const ClickToAdd = ({ theme, children, ...rest }) => (
   <a className={`clickToAdd`} {...rest}>
     {children}
@@ -39,10 +45,19 @@ const ClickToAdd = ({ theme, children, ...rest }) => (
 
 const SaveButton = props => <ModalActionButton {...props}>Save</ModalActionButton>;
 
-const DirectionsText = styled.p`
-  ${({theme}) => theme.paragraph + theme.text.italic + theme.spacing.collapse} 
-  color: ${({theme}) => theme.greyScale9};
-`;
+const DirectionsText = ({ theme, children }) => (
+  <P
+    mt="0"
+    mb="10px"
+    color="greyScale9"
+    css={`
+      font-style: italic;
+    `}
+  >
+    {' '}
+    <SmallText>{children}</SmallText>{' '}
+  </P>
+);
 
 const columnTopPadding = '30px';
 
@@ -138,8 +153,7 @@ export default compose(
             ${theme.column} justify-content: space-around;
           `}
         >
-          <H3>
-            Background Information
+          <SectionHeader title="Background Information">
             {canEdit &&
               (!isEditingBackgroundInfo ? (
                 <EditButton
@@ -159,7 +173,8 @@ export default compose(
                   }}
                 />
               ))}
-          </H3>
+          </SectionHeader>
+
           <StyledSection>
             <H4>My bio</H4>
             {canEdit && (
@@ -195,9 +210,7 @@ export default compose(
           <StyledSection className={'userStory'}>
             <H4>My story</H4>
             {canEdit && (
-              <DirectionsText>
-                Share why you’re a part of the Kids First community.
-              </DirectionsText>
+              <DirectionsText>Share why you’re a part of the Kids First community.</DirectionsText>
             )}
             <EditableLabel
               autoFocus={focusedTextArea === 'myStory'}
@@ -276,8 +289,7 @@ export default compose(
             margin-left: 5em;
           `}
         >
-          <H3>
-            Research Interests
+          <SectionHeader title="Research Interests">
             {canEdit &&
               (!editingResearchInterests ? (
                 <EditButton
@@ -314,18 +326,21 @@ export default compose(
                   />
                 </React.Fragment>
               ))}
-          </H3>
+          </SectionHeader>
           <div>
             <div
               css={`
-                background-color: ${theme.backgroundGrey};
-                border: solid 1px #d4d6dd;
+                background-color: ${theme.colors.backgroundGrey};
+                border: solid 1px ${theme.colors.greyScale8};
                 padding: 0.5em;
                 border-radius: 5px;
+                margin-top: 25px;
               `}
             >
-              <H4>Interests</H4>
-              <DirectionsText>Tell people about your work background and your research specialties.</DirectionsText>
+              <H4 my={0}>Interests</H4>
+              <DirectionsText>
+                Tell people about your work background and your research specialties.
+              </DirectionsText>
               <div
                 css={`
                   ${theme.row};
