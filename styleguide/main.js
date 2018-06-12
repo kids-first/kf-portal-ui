@@ -7,6 +7,7 @@ import { omit } from 'lodash';
 import designSystem from './designSystem';
 
 import Label from './components/Label';
+import CodeSnippet from './components/CodeSnippet';
 import Palette from './components/Palette';
 import Section from './components/Section';
 import TypeSpecimen from './components/TypeSpecimen';
@@ -24,20 +25,11 @@ const App = ({ system }) => (
     <Page name="Typography">
       <Artboard>
         <Section title="Fonts">
-          <View
-            style={{
-              flexDirection: 'row',
-              marginBottom: 24,
-              padding: 15,
-              borderRadius: 5,
-              backgroundColor: system.colors.greyScale10.hex,
-            }}
-          >
-            <Text style={{ fontFamily: 'Mono', fontWeight: 'bold' }}>
-              @import
-              url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Open+Sans:400,500,700');
-            </Text>
-          </View>
+          <CodeSnippet syntax="css" filled="#fff">
+            {
+              "@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Open+Sans:400,500,700'); "
+            }
+          </CodeSnippet>
           {Object.keys(system.fonts).map(name => (
             <View style={{ flexDirection: 'row', marginBottom: 24 }}>
               <Text style={{ fontFamily: system.fonts[name], fontWeight: 'bold', fontSize: 32 }}>

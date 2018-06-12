@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { View, Text } from 'react-sketchapp';
 
-const Badge = ({ children, filled }) => (
+const Badge = ({ children, filled, style }) => (
   <View
     style={{
       borderRadius: 4,
@@ -11,6 +11,7 @@ const Badge = ({ children, filled }) => (
       paddingRight: 8,
       borderWidth: 1,
       borderColor: '#333',
+      ...style,
     }}
   >
     <Text
