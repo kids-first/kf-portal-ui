@@ -2,10 +2,10 @@ import colors, { gradients } from './colors';
 import { zipObject } from 'lodash';
 
 export const fonts = {
-  default: 'Montserrat, Helvetica, sans-serif',
+  default: 'Montserrat',
   details: 'Open Sans',
 };
-const baseFontSize = 16;
+export const baseFontSize = 16;
 
 // typographic scale
 // px based
@@ -55,6 +55,7 @@ export const headings = {
     font-size: ${fontSizes['36']};
     font-weight: ${fontWeights.normal};
     letter-spacing: ${letterSpacings.heading};
+    line-height: ${lineHeights['1.25']};
     background-image: ${gradients.blue};
     background-clip: text;
     -webkit-background-clip: text;
