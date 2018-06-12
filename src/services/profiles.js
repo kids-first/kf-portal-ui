@@ -113,10 +113,10 @@ export const getTags = api => async ({ filter, size }) => {
   const { data: { tags } } = await api({
     url,
     body: {
-      variables: { filter, size },
+      variables: { model: 'User', field: 'interests', filter, size },
       query: `
-        query($filter: String $size: Int) {
-          tags(filter: $filter, size: $size) {
+        query($model: String! $field: String! $filter: String $size: Int) {
+          tags(model: $model, field: $field, filter: $filter, size: $size) {
             count
             values {
               count
