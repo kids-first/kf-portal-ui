@@ -1,4 +1,5 @@
 import chroma from 'chroma-js';
+import { baseFontSize } from '../src/theme/typography';
 
 String.prototype.toCamelCase = function() {
   return this.replace(/^([A-Z])|[-](\w)/g, function(match, p1, p2, offset) {
@@ -52,4 +53,4 @@ export const processColor = hex => {
   };
 };
 
-export const EmToPx = (baseFontSize, emSize) => baseFontSize * emSize;
+export const EmToPx = emSize => Math.round(baseFontSize * emSize);

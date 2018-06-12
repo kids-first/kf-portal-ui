@@ -59,19 +59,29 @@
         "eject": "react-app-rewired eject",
         "translations": "i18next-scanner --output ./public 'src/**/*.js'",
         "storybook": "start-storybook -p 9001 -c .storybook",
-        "build-storybook": "build-storybook -c .storybook -o build-storybook"
+        "build-storybook": "build-storybook -c .storybook -o build-storybook",
+        "styleguide": "skpm-build --watch --run",
+        "build-styleguide": "skpm-build"
     },
     "devDependencies": {
+        "@skpm/builder": "^0.5.7",
         "@storybook/react": "^3.4.2",
         "babel-polyfill": "^6.26.0",
+        "chroma-js": "^1.3.7",
         "i18next-scanner": "^2.4.6",
         "prettier": "^1.10.2",
         "react-app-rewired": "^1.4.1",
+        "react-sketchapp": "^2.0.0",
+        "react-test-renderer": "^16.4.0",
         "vinyl-fs": "^3.0.2"
     },
     "prettier": {
         "printWidth": 100,
         "trailingComma": "all",
         "singleQuote": true
+    },
+    "skpm": {
+        "main": "styleguide/styleguide.sketchplugin",
+        "manifest": "styleguide/manifest.json"
     }
 }

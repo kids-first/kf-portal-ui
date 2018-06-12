@@ -24,6 +24,20 @@ const App = ({ system }) => (
     <Page name="Typography">
       <Artboard>
         <Section title="Fonts">
+          <View
+            style={{
+              flexDirection: 'row',
+              marginBottom: 24,
+              padding: 15,
+              borderRadius: 5,
+              backgroundColor: system.colors.greyScale10.hex,
+            }}
+          >
+            <Text style={{ fontFamily: 'Mono', fontWeight: 'bold' }}>
+              @import
+              url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Open+Sans:400,500,700');
+            </Text>
+          </View>
           {Object.keys(system.fonts).map(name => (
             <View style={{ flexDirection: 'row', marginBottom: 24 }}>
               <Text style={{ fontFamily: system.fonts[name], fontWeight: 'bold', fontSize: 32 }}>
@@ -34,7 +48,7 @@ const App = ({ system }) => (
         </Section>
 
         <Section title="Headers">
-          {Object.keys(omit(system.typography, 'Body Copy')).map(name => (
+          {Object.keys(omit(system.typography, 'Body Copy', 'links')).map(name => (
             <TypeSpecimen key={name} name={name} style={TextStyles.get(name)}>
               {' '}
               Heading {name}{' '}
@@ -58,12 +72,34 @@ const App = ({ system }) => (
             consequat ex.
           </TypeSpecimen>
         </Section>
+
+        <Section title="Links">
+          <TypeSpecimen
+            name={'internal link'}
+            style={{ ...system.typography['Body Copy'], maxWidth: 480 }}
+          >
+            Lorem ipsum dolor sit amet,{' '}
+            <Text style={{ ...system.links.internalLink, fontWeight: 'bold' }}>internal link</Text>{' '}
+            consectetur adipiscing elit. Aliquam at eleifend ante. Donec ante lectus, hendrerit
+            vitae dui a, efficitur sollicitudin nunc.
+          </TypeSpecimen>
+
+          <TypeSpecimen
+            name={'external link'}
+            style={{ ...system.typography['Body Copy'], maxWidth: 480 }}
+          >
+            Lorem ipsum dolor sit amet,
+            <Text style={{ ...system.links.externalLink, fontWeight: 'bold' }}>external link</Text>
+            consectetur adipiscing elit. Aliquam at eleifend ante. Donec ante lectus, hendrerit
+            vitae dui a, efficitur sollicitudin nunc.
+          </TypeSpecimen>
+        </Section>
       </Artboard>
     </Page>
   </Document>
 );
 
-export default () => {
+export default context => {
   TextStyles.create(
     {
       context,

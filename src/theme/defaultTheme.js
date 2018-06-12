@@ -1,9 +1,9 @@
 import { css } from 'react-emotion';
-import colors from './colors';
+import colors, { shadows, gradients } from './colors';
 import { fonts, headings, text, paragraph, links } from './typography';
 
 const spacing = {
-  collapse: 'margin:0; padding: 0;'
+  collapse: 'margin:0; padding: 0;',
 };
 
 const components = {
@@ -194,7 +194,7 @@ const components = {
     border: solid 1px #e0e1e6;
     color: ${colors.greyScale1};
   `,
-  
+
   modalTitle: css`
     color: ${colors.secondary};
     font-size: 20px;
@@ -213,7 +213,7 @@ const components = {
     letter-spacing: 0.2px;
     color: ${colors.greyScale1};
   `,
-  
+
   input: css`
     width: 100%;
     min-width: 0;
@@ -482,9 +482,11 @@ export default {
   spacing,
   fonts,
   text,
-  paragraph, 
+  paragraph,
+  colors,
+  shadows,
+  gradients,
   ...links,
   ...headings,
-  ...colors,
   ...components,
 };

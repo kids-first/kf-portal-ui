@@ -5,7 +5,6 @@ import Label from './Label';
 
 const SWATCH_WIDTH = 100;
 
-
 const Swatch = ({ color, name }) => (
   <View name={name} style={{ marginBottom: 48, marginRight: 48 }}>
     <View
@@ -18,7 +17,10 @@ const Swatch = ({ color, name }) => (
       }}
     />
     <Label bold>{name}</Label>
-    <Label>{color.hex}</Label>
+    <Label>hex: {color.hex}</Label>
+    <Label>
+      rgba({color.rgba.map((val, i, arr) => `${val}${i !== arr.length - 1 ? ',' : ''}`)})
+    </Label>
     <AccessibilityBadge level={color.accessibility} />
   </View>
 );
