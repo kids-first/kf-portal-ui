@@ -35,7 +35,7 @@ export const config = [
   },
   {
     label: 'Families',
-    field: 'participants.family.family_id',
+    field: 'participants.family_id',
     icon: (
       <img
         src={require('../assets/icon-families-grey.svg')}
