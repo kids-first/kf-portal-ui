@@ -100,7 +100,7 @@ const Consent = compose(
           </ol>
         </Terms>
         <CheckboxBubble
-          buffer
+          mt={2}
           onClick={active => {
             const { email, percentageFilled, ...rest } = loggedInUser;
             if (active) {

@@ -193,7 +193,7 @@ export default enhance(
               {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
             </Column>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Label>My last name is:</Label>
             <Column>
               <FieldInput
@@ -205,7 +205,7 @@ export default enhance(
               {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
             </Column>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Label>My email address is:</Label>
             <Column>
               <FieldInput
@@ -217,7 +217,7 @@ export default enhance(
               />
             </Column>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Label>Best describes my needs:</Label>
             <Column>
               {ROLES.map(({ type, description, displayName, icon, color }) => (
@@ -251,7 +251,7 @@ export default enhance(
             </Column>
             {touched.roles && errors.roles && <div>{errors.roles}</div>}
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Field
               type="checkbox"
               value={values.acceptedKfOptIn}
@@ -267,7 +267,7 @@ export default enhance(
               </Trans>
             </CheckboxLabel>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Field
               type="checkbox"
               value={values.acceptedNihOptIn}
