@@ -173,6 +173,7 @@ export default compose(injectState, withTheme, withApi)(
           </DeleteButton>
           <button
             className={theme.actionButton}
+            disabled={nextDisabled}
             onClick={() => {
               subscribeUser(api)({ loggedInUser });
               if (!nextDisabled) {
