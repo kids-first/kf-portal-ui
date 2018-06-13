@@ -267,7 +267,6 @@ export default enhance(
               </Trans>
             </CheckboxLabel>
           </Row>
-          {/* // TODO: enable nih email subscription when available in persona
           <Row buffer>
             <Field
               type="checkbox"
@@ -282,7 +281,7 @@ export default enhance(
                 updates and news about the program.
               </Trans>
             </CheckboxLabel>
-          </Row> */}
+          </Row>
         </SelectRoleForm>
 
         <ButtonsDiv>
