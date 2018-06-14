@@ -4,6 +4,7 @@ import HealthIcon from 'icons/HealthIcon';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
+import packageJson from '../../package.json';
 
 export const ROLES = [
   {
@@ -59,3 +60,5 @@ export const SERVICES = [GEN3, CAVATICA];
 
 export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';
+
+export const UI_VERSION = packageJson.version;
