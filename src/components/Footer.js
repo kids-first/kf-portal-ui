@@ -5,6 +5,7 @@ import urlJoin from 'url-join';
 import { SocialIcon as ReactSocialIcon } from 'react-social-icons';
 
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
+import { UI_VERSION } from 'common/constants';
 
 const FooterLink = styled('a')`
   font-family: ${({ theme }) => theme.fonts.details};
@@ -67,7 +68,7 @@ const Footer = () => (
         </FooterLink>
       </div>
       <div>
-        <Trans>UI:</Trans> <Trans i18nKey="uiReleaseVersion">Beta</Trans>
+        <Trans>UI:</Trans> {UI_VERSION}
         {', '}
         <Trans>Data Release: </Trans>
         <Trans i18nKey="dataReleaseVersion">Pre-release</Trans>

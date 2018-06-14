@@ -1,6 +1,7 @@
 import scriptjs from 'scriptjs';
 import urlJoin from 'url-join';
 import { merge, pick } from 'lodash';
+import { UI_VERSION } from 'common/constants';
 
 import { usersnapHost, usersnapId, arrangerProjectId } from 'common/injectGlobals';
 
@@ -19,7 +20,7 @@ let usersnapInfo = {
   arrangerProjectId,
   sqonHistory,
   dataVersion: 'unreleased', // TODO add version when versioning is implemented
-  portalVersion: '0.0.0.0',
+  portalVersion: UI_VERSION,
 };
 export const addInfo = obj => merge(usersnapInfo, obj);
 
