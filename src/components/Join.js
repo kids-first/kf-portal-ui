@@ -12,17 +12,18 @@ import ConsentForm from 'components/forms/ConsentForm';
 import { withApi } from 'services/api';
 import { startAnalyticsTiming, TRACKING_EVENTS } from 'services/analyticsTracking';
 
+import { ExternalLink } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
+import FlashMessage from 'uikit/FlashMessage';
 
 export const ButtonsDiv = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
   border-top: solid 1px ${props => props.theme.greyScale4};
-  margin-top: 20px;
   padding-top: 20px;
-  min-height: 38px;
+  min-height: 60px;
 `;
 
 const JoinContainer = styled(Column)`
@@ -45,8 +46,18 @@ const JoinContent = compose(
   <JoinContainer>
     <div className={`${theme.card} ${theme.column} `}>
       <h2 className={theme.h2}>
-        <Trans>Join Kids First</Trans>
+        <Trans>Join Kids First Data Resource Portal</Trans>
       </h2>
+      <FlashMessage mb={4}>
+        <Trans>
+          We're currently in <b>beta phase</b> for the Kids First DRP. We're looking for your input
+          so we can build a data portal that better meets your needs. Please send us your feedback
+          or any other issues you experience at:{' '}
+          <ExternalLink bare primary bold href="mailto:support@kidsfirst.org">
+            support@kidsfirst.org
+          </ExternalLink>
+        </Trans>
+      </FlashMessage>
       <Wizard
         steps={[
           {

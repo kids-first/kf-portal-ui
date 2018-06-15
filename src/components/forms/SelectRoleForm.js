@@ -267,7 +267,7 @@ export default enhance(
               </Trans>
             </CheckboxLabel>
           </Row>
-          <Row mt={2}>
+          <Row mt={2} pb={2}>
             <Field
               type="checkbox"
               value={values.acceptedNihOptIn}

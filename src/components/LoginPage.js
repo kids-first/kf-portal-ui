@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import RightIcon from 'react-icons/lib/fa/angle-right';
@@ -8,6 +8,8 @@ import { withApi } from '../services/api';
 
 import Login from 'components/Login';
 import SplashPage from 'components/SplashPage';
+
+import { Link, Section } from 'uikit/Core';
 
 const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
   <SplashPage>
@@ -26,21 +28,13 @@ const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, 
         }
       }}
     />
-    <div
-      css={`
-        ${theme.section};
-        text-align: center;
-        border-top: 1px solid ${theme.greyScale8};
-        margin-top: 10px;
-        padding: 10px 10px 0 10px;
-      `}
-    >
+    <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
       <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
-      <Link to="/join">
+      <Link bare primary bold to="/join">
         <Trans>Join now</Trans>
         <RightIcon />
       </Link>
-    </div>
+    </Section>
   </SplashPage>
 ));
 export default LoginPage;

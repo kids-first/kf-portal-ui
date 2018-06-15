@@ -20,13 +20,19 @@ import {
   maxWidth,
   complexStyle,
   hover,
+  textAlign,
 } from 'styled-system';
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
 const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
 const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
 
+const baseStyles = complexStyle({
+  prop: 'baseStyle',
+  key: 'baseStyles',
+});
 const applyDefaultStyles = Component => styled(Component)`
+  ${baseStyles}
   ${space}
   ${width}
   ${fontSize}
@@ -41,6 +47,7 @@ const applyDefaultStyles = Component => styled(Component)`
   ${overflow}
   ${overflowY}
   ${hover}
+  ${textAlign}
 `;
 
 const boxStyles = complexStyle({
@@ -66,10 +73,29 @@ export const Flex = styled(Box)`
   ${flexGrow};
 `;
 
-export const Link = applyDefaultStyles(LinkBase);
+const linkStyles = complexStyle({
+  prop: 'linkStyle',
+  key: 'linkStyles',
+});
+export const Link = styled(applyDefaultStyles(LinkBase))`
+  ${linkStyles};
+  &:hover {
+    color: ${({ theme }) => theme.highlight};
+  }
+`;
+export const ExternalLink = styled(applyDefaultStyles('a'))`
+  ${linkStyles};
+  &:hover {
+    color: ${({ theme }) => theme.highlight};
+  }
+`;
 
 export const Section = styled(applyDefaultStyles('section'))`
-  ${({ theme }) => theme.section};
+  font-family: ${({ theme }) => theme.fonts.details};
+  color: ${({ theme }) => theme.greyScale1};
+  font-size: 14px;
+  line-height: 2.57;
+  letter-spacing: 0.2px;
 `;
 
 export const Span = applyDefaultStyles('span');
