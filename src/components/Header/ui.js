@@ -72,7 +72,7 @@ export const HeaderContent = styled(Row)`
 `;
 
 export const Logo = styled('img')`
-  width: 177px;
+  width: 211px;
   height: 65px;
 `;
 

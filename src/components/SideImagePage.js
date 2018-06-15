@@ -24,7 +24,7 @@ const SideImagePage = ({ backgroundImage, logo, Component, sideImage, ...props }
         src={logo}
         alt="Kids First Logo"
         className={css`
-          width: 230px;
+          width: 275px;
           position: absolute;
           margin: 20px;
         `}
