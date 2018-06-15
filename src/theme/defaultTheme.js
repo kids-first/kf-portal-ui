@@ -488,27 +488,6 @@ const components = {
     width: 100%;
     font-size: 14px;
   `,
-  section: css`
-    font-family: ${fonts.details};
-    font-size: 14px;
-    line-height: 2.57;
-    letter-spacing: 0.2px;
-    text-align: left;
-    color: ${colors.greyScale1};
-
-    a {
-      cursor: pointer;
-      color: ${colors.primary};
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: ${colors.highlight};
-      font-weight: 500;
-      text-decoration: none;
-    }
-  `,
   //toasts
   success: css`
     font-family: ${fonts.details};
