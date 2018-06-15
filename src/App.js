@@ -22,10 +22,10 @@ import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import { isAdminToken, validateJWT } from 'components/Login';
 
-import scienceBgPath from 'theme/images/background-science.jpg';
+import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
-import logo from 'theme/images/logo-kids-first-data-portal.svg';
+import logo from 'assets/logo-kids-first-data-portal-beta.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
