@@ -66,7 +66,16 @@ export const Flex = styled(Box)`
   ${flexGrow};
 `;
 
-export const Link = applyDefaultStyles(LinkBase);
+const linkStyles = complexStyle({
+  prop: 'linkStyle',
+  key: 'linkStyles',
+});
+export const Link = styled(applyDefaultStyles(LinkBase))`
+  ${linkStyles};
+`;
+export const ExternalLink = styled(applyDefaultStyles('a'))`
+  ${linkStyles};
+`;
 
 export const Section = styled(applyDefaultStyles('section'))`
   ${({ theme }) => theme.section};

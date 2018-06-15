@@ -1,5 +1,12 @@
 {
-  "Join Kids First": "Join Kids First",
+  "Join Kids First Data Resource Portal": "Join Kids First Data Resource Portal",
+  "We're currently in <1>beta phase</1> for the Kids First DRP": {
+    " We're looking for your input so we can build a data portal that better meets your needs": {
+      " Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst": {
+        "org </5>": "We're currently in <1>beta phase</1> for the Kids First DRP. We're looking for your input so we can build a data portal that better meets your needs. Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst.org </5>"
+      }
+    }
+  },
   "join": {
     "wizard": {
       "socialSelect": "Select a way to connect to the Kids First Data Resource Portal",

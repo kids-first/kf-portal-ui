@@ -71,6 +71,14 @@ const components = {
       flexDirection: 'column',
     },
   },
+  linkStyles: {
+    primary: {
+      color: colors.primary,
+    },
+    bare: {
+      textDecoration: 'none',
+    },
+  },
   uppercase: css`
     text-transform: uppercase;
   `,
