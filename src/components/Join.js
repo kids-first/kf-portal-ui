@@ -22,9 +22,8 @@ export const ButtonsDiv = styled('div')`
   justify-content: space-between;
   width: 100%;
   border-top: solid 1px ${props => props.theme.greyScale4};
-  margin-top: 20px;
   padding-top: 20px;
-  min-height: 38px;
+  min-height: 60px;
 `;
 
 const JoinContainer = styled(Column)`

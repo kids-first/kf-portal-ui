@@ -101,6 +101,7 @@ const Consent = compose(
         </Terms>
         <CheckboxBubble
           mt={2}
+          mb={2}
           onClick={active => {
             const { email, percentageFilled, ...rest } = loggedInUser;
             if (active) {
@@ -162,7 +163,7 @@ export default compose(injectState, withTheme, withApi)(
           disableNextStep,
         }}
       />
-      <ButtonsDiv>
+      <ButtonsDiv mt={2}>
         <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
           <LeftIcon />
           <Trans>Back</Trans>
