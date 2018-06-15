@@ -24,6 +24,8 @@ const DEFAULT_FIELDS = `
   website
   googleScholarId
   interests
+  acceptedKfOptIn
+  acceptedNihOptIn
   sets {
     name
     size

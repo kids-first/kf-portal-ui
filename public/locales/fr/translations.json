@@ -1,22 +1,19 @@
 {
+  "Join Kids First": "Join Kids First",
   "join": {
-    "terms": {
-      "instructions": "Read and consent to our terms and conditions",
-      "title": "Draft for Demo Purposes",
-      "userAgreement": "I have read and agreed to the Kids First Data Research Portal Term and Conditions"
-    },
     "wizard": {
       "socialSelect": "Select a way to connect to the Kids First Data Resource Portal",
       "dataConfidentiality": "Your information will be kept confidential and secure and is not shared with any of these providers.",
       "basicInfoHeader": "Tell us about yourself",
       "basicInfoInstructions": "Please provide information about yourself to help us personalize your experience.",
       "profileOrBrowse": "Fill out your profile, or skip and <1> browse data </1>"
+    },
+    "terms": {
+      "instructions": "Read and consent to our terms and conditions",
+      "title": "Draft for Demo Purposes",
+      "userAgreement": "I have read and agreed to the Kids First Data Research Portal Term and Conditions"
     }
   },
-  "Join Kids First": "Join Kids First",
-  "Back": "Back",
-  "Cancel": "Cancel",
-  "Save": "Save",
   "Log in": "Log in",
   "New to Kids First Data Resource Portal?": "New to Kids First Data Resource Portal?",
   "Join now": "Join now",
@@ -48,6 +45,9 @@
   "I would like to receive updates from the NIH Kids First program including funding updates and news about the program": {
     "": "I would like to receive updates from the NIH Kids First program including funding updates and news about the program."
   },
+  "Back": "Back",
+  "Cancel": "Cancel",
+  "Save": "Save",
   "Export TSV": "Export TSV",
   "Query saved succesfully!": "Query saved succesfully!",
   "View in My Saved Queries": "View in My Saved Queries",

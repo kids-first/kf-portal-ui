@@ -25,6 +25,8 @@ export default provideState({
     loggedInUserToken: '',
     percentageFilled: 0,
     integrationTokens: {},
+    acceptedKfOptIn: false,
+    acceptedNihOptIn: false,
   }),
   effects: {
     initialize: effects => state => {

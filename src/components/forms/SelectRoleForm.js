@@ -7,7 +7,7 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-// import { Trans } from 'react-i18next'; // TODO: issue #321
+import { Trans } from 'react-i18next';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
@@ -65,11 +65,10 @@ const Label = styled('label')`
   color: ${({ theme }) => theme.greyScale1};
 `;
 
-// TODO: issue #321
-// const CheckboxLabel = styled(`label`)`
-//   font-size: 14px;
-//   margin-left: 10px;
-// `;
+const CheckboxLabel = styled(`label`)`
+  font-size: 14px;
+  margin-left: 10px;
+`;
 
 export const enhance = compose(
   withTheme,
@@ -141,8 +140,8 @@ export const enhance = compose(
           firstName: values.firstName,
           lastName: values.lastName,
           roles: [values.roles],
-          // acceptedKfOptIn: !!values.acceptedKfOptIn, // TODO: Issue #321
-          // acceptedNihOptIn: !!values.acceptedNihOptIn,
+          acceptedKfOptIn: !!values.acceptedKfOptIn,
+          acceptedNihOptIn: !!values.acceptedNihOptIn,
         },
       }).then(
         async profile => {
@@ -194,7 +193,7 @@ export default enhance(
               {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
             </Column>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Label>My last name is:</Label>
             <Column>
               <FieldInput
@@ -206,7 +205,7 @@ export default enhance(
               {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
             </Column>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Label>My email address is:</Label>
             <Column>
               <FieldInput
@@ -218,7 +217,7 @@ export default enhance(
               />
             </Column>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Label>Best describes my needs:</Label>
             <Column>
               {ROLES.map(({ type, description, displayName, icon, color }) => (
@@ -252,8 +251,7 @@ export default enhance(
             </Column>
             {touched.roles && errors.roles && <div>{errors.roles}</div>}
           </Row>
-          {/* TODO: Issue #321 */}
-          {/* <Row buffer>
+          <Row mt={2}>
             <Field
               type="checkbox"
               value={values.acceptedKfOptIn}
@@ -269,7 +267,7 @@ export default enhance(
               </Trans>
             </CheckboxLabel>
           </Row>
-          <Row buffer>
+          <Row mt={2}>
             <Field
               type="checkbox"
               value={values.acceptedNihOptIn}
@@ -283,7 +281,7 @@ export default enhance(
                 updates and news about the program.
               </Trans>
             </CheckboxLabel>
-          </Row> */}
+          </Row>
         </SelectRoleForm>
 
         <ButtonsDiv>
