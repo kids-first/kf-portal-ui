@@ -54,7 +54,7 @@ const JoinContent = compose(
           We're currently in <b>beta phase</b> for the Kids First DRP. We're looking for your input
           so we can build a data portal that better meets your needs. Please send us your feedback
           or any other issues you experience at:{' '}
-          <ExternalLink bare primary fontWeight={500} href="mailto:support@kidsfirst.org">
+          <ExternalLink bare primary bold href="mailto:support@kidsfirst.org">
             support@kidsfirst.org
           </ExternalLink>
         </Trans>

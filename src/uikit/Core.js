@@ -26,7 +26,12 @@ const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
 const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
 const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
 
+const baseStyles = complexStyle({
+  prop: 'baseStyle',
+  key: 'baseStyles',
+});
 const applyDefaultStyles = Component => styled(Component)`
+  ${baseStyles}
   ${space}
   ${width}
   ${fontSize}

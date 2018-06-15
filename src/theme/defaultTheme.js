@@ -56,6 +56,11 @@ const mixins = {
 };
 
 const components = {
+  baseStyles: {
+    bold: {
+      fontWeight: 500,
+    },
+  },
   boxStyles: {
     center: {
       display: 'flex',
