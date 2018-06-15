@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import logoPath from 'theme/images/logo-kids-first-data-portal.svg';
+import logoPath from 'assets/logo-kids-first-data-portal-beta.svg';
 
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
