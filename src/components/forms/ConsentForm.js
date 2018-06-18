@@ -117,8 +117,8 @@ const Consent = compose(
           </p>
           <p>
             If you have any questions about these terms, conditions or the practices of this site or any of the other
-            Kids First DRC Services, please contact us at support@kidsfirstdrc.org. For a full list of Kids first DRC
-            policies see 
+            Kids First DRC Services, please contact us at support@kidsfirstdrc.org. The full list of Kids first DRC 
+            policies are located at 
             <ExternalLink href="https://kidsfirstdrc.org/policies/">
                 https://kidsfirstdrc.org/policies/
             </ExternalLink>
