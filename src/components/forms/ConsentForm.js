@@ -71,7 +71,7 @@ const Consent = compose(
             Services defined herein and where applicable the terms defined by the{' '}
             <ExternalLink href="https://osp.od.nih.gov/wp-content/uploads/Genomic_Data_User_Code_of_Conduct.pdf">
               NIH Genomic Data User Code of Conduct.
-            </ExternalLink>
+            </ExternalLink>{' '}
             These terms include, but are not limited to:
           </p>
           <ol>
@@ -87,7 +87,7 @@ const Consent = compose(
               You will adhere to computer security practices in compliance with{' '}
               <ExternalLink href="https://osp.od.nih.gov/wp-content/uploads/NIH_Best_Practices_for_Controlled-Access_Data_Subject_to_the_NIH_GDS_Policy.pdf">
                 NIH Security Best Practices for Controlled-Access Data
-              </ExternalLink>
+              </ExternalLink>{' '}
               such that only authorized individuals possess access to data files;
             </li>
             <li>
