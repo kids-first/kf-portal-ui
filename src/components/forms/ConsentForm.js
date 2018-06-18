@@ -19,6 +19,7 @@ import { personaApiRoot } from 'common/injectGlobals';
 import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
 import TextArea from 'uikit/TextArea';
+import ExternalLink from 'uikit/ExternalLink';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;
@@ -62,35 +63,36 @@ const Consent = compose(
         </h3>
         <Terms>
           <b>
-            <Trans i18nKey="join.terms.title">Draft for Demo Purposes</Trans>
+            <Trans i18nKey="join.terms.title">Last Update Date: 5/30/18</Trans>
           </b>
           <p>
-            As a user of the Kids First DRC Portal you agree to the Terms of Service and agree to
-            make no attempt to identify or contact individual participants from whom these data were
-            collected. Where applicable, you agree to comply with the NIH Code of Conduct for
-            Genomic Controlled Access Data Use including, but not limited to:
+            As a user of the Kids First DRC Website, Portal and/or other Services you agree that you
+            are 13 years of age or older and furthermore agree to the Terms and Conditions of
+            Services defined herein and where applicable the terms defined by the{' '}
+            <ExternalLink href="https://osp.od.nih.gov/wp-content/uploads/Genomic_Data_User_Code_of_Conduct.pdf">
+              NIH Genomic Data User Code of Conduct.
+            </ExternalLink>{' '}
+            These terms include, but are not limited to:
           </p>
           <ol>
             <li>
-              Use of requested datasets solely in connection with the research project described in
-              an approved Data Access Request for each dataset;
+              You will request controlled-access datasets solely in connection with the research
+              project described in an approved Data Access Request for each dataset;
             </li>
             <li>
-              You will not distribute these data to any entity or individual beyond those specified
-              in an approved Data Access Request;
+              You will not distribute controlled-access datasets to any entity or individual beyond
+              those specified in an approved Data Access Request;
             </li>
             <li>
-              You will adhere to computer security practices that ensure that only authorized
-              individuals can gain access to data files;
+              You will adhere to computer security practices in compliance with{' '}
+              <ExternalLink href="https://osp.od.nih.gov/wp-content/uploads/NIH_Best_Practices_for_Controlled-Access_Data_Subject_to_the_NIH_GDS_Policy.pdf">
+                NIH Security Best Practices for Controlled-Access Data
+              </ExternalLink>{' '}
+              such that only authorized individuals possess access to data files;
             </li>
             <li>
-              You will not submit for publication or any other form of public dissemination analyses
-              or other reports on work using or referencing NIH datasets prior to an existing
-              embargo release date listed for the dataset (or dataset version) on dbGaP;
-            </li>
-            <li>
-              You acknowledge the Intellectual Property Policies as specified in a dataset’s
-              associated Data Use Certification; and,
+              You acknowledge Intellectual Property Policies should they exist as specified in a
+              dataset’s associated Data Use Certification; and,
             </li>
             <li>
               You will report any inadvertent data release in accordance with the terms in the Data
@@ -98,6 +100,32 @@ const Consent = compose(
               contrary to the terms of data access.
             </li>
           </ol>
+          <p>
+            Kids First DRC terms and conditions may be changed at any time via a public posting of
+            revisions to the Kids First DRC Website, Portal and/or Services. As a user, you agree to
+            review the Terms & Conditions and Privacy Policies each time you use the Kids First DRC
+            Website, Portal and/or Services so that you are aware of any modifications made to these
+            policies. By accessing or using the Kids First DRC Website, Portal and/or Services, you
+            agree with and to be bound by all of the terms and conditions and policies as posted on
+            the Kids First DRC Website, Portal and/or Services at the time of your access or use,
+            including the Privacy Policies then in effect.
+          </p>
+          <p>
+            For documents and/or data available from DRC Services, the Kids First DRC does not
+            warrant or assume any legal liability or responsibility for the accuracy, completeness,
+            or usefulness of any information, apparatus, product, or process. No specific medical
+            advice is provided by any Services, and Kids First urges users of Services to consult
+            with a qualified physician for diagnosis and for answers to personal questions.
+          </p>
+          <p>
+            If you have any questions about these terms, conditions or the practices of this site or
+            any of the other Kids First DRC Services, please contact us at support@kidsfirstdrc.org.
+            The full list of Kids first DRC policies are located at{' '}
+            <ExternalLink href="https://kidsfirstdrc.org/policies/">
+              https://kidsfirstdrc.org/policies/
+            </ExternalLink>
+            .
+          </p>
         </Terms>
         <CheckboxBubble
           mt={2}
