@@ -62,3 +62,5 @@ export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';
 
 export const UI_VERSION = packageJson.version;
+
+export const EGO_JWT_KEY = 'EGO_JWT';
