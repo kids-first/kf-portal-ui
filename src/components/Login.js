@@ -13,6 +13,7 @@ import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
+import ExternalLink from 'uikit/ExternalLink';
 
 import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
@@ -183,10 +184,13 @@ class Component extends React.Component<any, any> {
             {this.state.authorizationError && (
               <ModalWarning>
                 <Trans key="login.authorizationError">
-                  The Kids First DRP is currently in the internal review phase and is not accessible
-                  for beta testing. Please{' '}
-                  <a href="mailto:support@kidsfirstdrc.org">contact a Kids First administrator</a>{' '}
-                  if you have registered for internal review and are not able to log in.
+                  The Kids First Portal is currently in early access beta, please register at{' '}
+                  <ExternalLink href="https://kidsfirstdrc.org/portal/">
+                    https://kidsfirstdrc.org/portal/
+                  </ExternalLink>
+                  {' '}if you are interested in participating. For any questions, or if you already 
+                  have access to Kids First datasets via dbGaP, please contact
+                  <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
                 </Trans>
               </ModalWarning>
             )}
