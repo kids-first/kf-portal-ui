@@ -7,7 +7,6 @@ const defaultOptions = {
 };
 
 export const setCookie = (key, value, options = {}) => {
-  document.cookie += ` ${key}=${value}; `;
   return Cookies.set(key, value, { ...defaultOptions, options });
 };
 
