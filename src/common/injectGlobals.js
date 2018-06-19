@@ -60,3 +60,6 @@ export const kfFacebook: string = process.env.REACT_APP_KF_FACEBOOK;
 export const kfTwitter: string = process.env.REACT_APP_KF_TWITTER;
 export const kfGithub: string = process.env.REACT_APP_KF_GITHUB;
 export const kfMailchimpList: string = process.env.REACT_APP_KF_MAILCHIMP_LIST;
+
+export const cookiesDomain: string =
+  process.env.REACT_APP_COOKIES_DOMAIN || window.location.hostname;

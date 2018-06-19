@@ -3,8 +3,9 @@ import { isArray, pick, without, chain, omit } from 'lodash';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
-import { SERVICES } from 'common/constants';
+import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
+import { setCookie, removeCookie } from 'services/cookie';
 import {
   addStateInfo as addUsersnapInfo,
   addLoggedInUser as setUsersnapUser,
@@ -32,7 +33,7 @@ export default provideState({
     initialize: effects => state => {
       const { setToken, setUser } = effects;
       const provider = localStorage.getItem('LOGIN_PROVIDER');
-      const jwt = localStorage.getItem('EGO_JWT');
+      const jwt = localStorage.getItem(EGO_JWT_KEY);
       const api = initializeApi({
         onError: err => {
           history.push('/error');
@@ -106,11 +107,13 @@ export default provideState({
       setToken(token);
       if (token) {
         localStorage.setItem('LOGIN_PROVIDER', provider);
-        localStorage.setItem('EGO_JWT', token);
+        localStorage.setItem(EGO_JWT_KEY, token);
+        setCookie(EGO_JWT_KEY, token);
         addHeaders({ authorization: `Bearer ${token}` });
       } else {
         localStorage.removeItem('LOGIN_PROVIDER');
-        localStorage.removeItem('EGO_JWT');
+        localStorage.removeItem(EGO_JWT_KEY);
+        removeCookie(EGO_JWT_KEY, token);
         addHeaders({ authorization: '' });
       }
       addUsersnapInfo({ loggedInUserToken_exist: !!token });
