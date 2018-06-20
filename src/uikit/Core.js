@@ -23,15 +23,15 @@ import {
   textAlign,
 } from 'styled-system';
 
-const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
-const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
-const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
+export const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
+export const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
+export const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
 
-const baseStyles = complexStyle({
+export const baseStyles = complexStyle({
   prop: 'baseStyle',
   key: 'baseStyles',
 });
-const applyDefaultStyles = Component => styled(Component)`
+export const applyDefaultStyles = Component => styled(Component)`
   ${baseStyles}
   ${space}
   ${width}
@@ -97,13 +97,3 @@ export const Section = styled(applyDefaultStyles('section'))`
   line-height: 2.57;
   letter-spacing: 0.2px;
 `;
-
-export const Span = applyDefaultStyles('span');
-
-export const H1 = applyDefaultStyles('h1');
-
-export const H2 = applyDefaultStyles('h2');
-
-export const H3 = applyDefaultStyles('h3');
-
-export const H4 = applyDefaultStyles('h4');
