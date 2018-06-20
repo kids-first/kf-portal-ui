@@ -1,5 +1,5 @@
 import React from 'react';
-import { hot, setConfig } from 'react-hot-loader';
+import { hot } from 'react-hot-loader';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';

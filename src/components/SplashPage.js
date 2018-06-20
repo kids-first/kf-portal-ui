@@ -8,7 +8,6 @@ const SplashPage = compose(withTheme)(({ theme, children }) => (
     css={`
       width: 630px;
       margin: auto;
-      border: 3px solid green;
     `}
   >
     <h1
