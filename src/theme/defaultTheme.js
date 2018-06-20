@@ -1,4 +1,5 @@
 import { css } from 'react-emotion';
+import { headings, textUtils } from './Typography';
 
 const colors = {
   white: '#ffffff',
@@ -60,6 +61,9 @@ const components = {
     bold: {
       fontWeight: 500,
     },
+  },
+  textStyles: {
+    ...textUtils,
   },
   boxStyles: {
     center: {
@@ -522,5 +526,6 @@ export default {
   ...colors,
   ...components,
   ...mixins,
+  ...headings,
   fonts,
 };

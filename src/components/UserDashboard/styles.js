@@ -1,6 +1,6 @@
 import styled from 'react-emotion';
-
-import { Flex, H2 as H2Core, H3 as H3Core, H4 as H4Core } from 'uikit/Core';
+import { Flex } from 'uikit/Core';
+import { H2 as H2Core, H3 as H3Core, H4 as H4Core } from 'uikit/Typography';
 import Row from 'uikit/Row';
 
 export const H3 = styled(H3Core)`
