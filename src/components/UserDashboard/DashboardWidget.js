@@ -1,5 +1,4 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
 import { H3 } from '../../uikit/Typography';
 
 export const WidgetTitle = ({ children }) => (

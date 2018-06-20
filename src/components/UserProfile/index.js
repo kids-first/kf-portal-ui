@@ -24,7 +24,6 @@ import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import ProfileInfoCard from '../../uikit/ProfileInfoCard';
 import { Container, EditButton, userProfileBackground } from './styles';
-import { H3, H2, H4 } from '../../uikit/Typography';
 
 export default compose(
   injectState,

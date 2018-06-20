@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'react-emotion';
-
-import Heading from 'uikit/Heading';
 import { H4 } from 'uikit/Typography';
 
 const Container = styled('div')`
