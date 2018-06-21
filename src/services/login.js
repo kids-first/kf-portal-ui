@@ -40,7 +40,6 @@ export const facebookLogout = () =>
   ]);
 
 export const logoutAll = () => {
-  console.log("============ logoutAll ===========");
   removeCookie(EGO_JWT_KEY)
   return Promise.all([googleLogout(), facebookLogout()])
 };
