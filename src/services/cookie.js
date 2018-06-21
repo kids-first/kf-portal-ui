@@ -13,13 +13,14 @@ const defaultOptions = {
   domain: cookiesDomain || defaultDomain,
 };
 
-export const removeCookie = (key) => {
-  Cookies.remove(key)
+export const removeCookie = (key, options = {}) => {
+  Cookies.remove(key, { ...defaultOptions, ...options })
 };
 
 export const setCookie = (key, value, options = {}) => {
-  removeCookie(key);
-  return Cookies.set(key, value, { ...defaultOptions, ...options });
+  const cookieOption = { ...defaultOptions, ...options }
+  removeCookie(key, cookieOption);
+  return Cookies.set(key, value, cookieOption);
 };
 
 window.Cookies = Cookies
