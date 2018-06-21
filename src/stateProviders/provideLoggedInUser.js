@@ -1,5 +1,6 @@
 import { provideState } from 'freactal';
 import { isArray, pick, without, chain, omit } from 'lodash';
+import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
@@ -17,6 +18,14 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
+
+const setEgoTokenCookie = token => {
+  const { exp } = jwtDecode(token);
+  const expires = new Date(exp*1000)
+  setCookie(EGO_JWT_KEY, token, {
+    expires: expires,
+  });
+};
 
 export default provideState({
   initialState: () => ({
@@ -51,6 +60,7 @@ export default provideState({
             state.integrationTokens[service] = storedToken;
           }
         });
+        setEgoTokenCookie(jwt);
         return { ...state, isLoadingUser: true };
       }
       return { ...state, isLoadingUser: false };
@@ -108,7 +118,7 @@ export default provideState({
       if (token) {
         localStorage.setItem('LOGIN_PROVIDER', provider);
         localStorage.setItem(EGO_JWT_KEY, token);
-        setCookie(EGO_JWT_KEY, token);
+        setEgoTokenCookie(token);
         addHeaders({ authorization: `Bearer ${token}` });
       } else {
         localStorage.removeItem('LOGIN_PROVIDER');
