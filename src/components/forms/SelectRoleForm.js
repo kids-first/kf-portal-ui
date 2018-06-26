@@ -5,8 +5,6 @@ import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import LeftIcon from 'react-icons/lib/fa/angle-left';
-import RightIcon from 'react-icons/lib/fa/angle-right';
 import { Trans } from 'react-i18next';
 
 import { ROLES } from 'common/constants';
@@ -16,16 +14,16 @@ import {
   TRACKING_EVENTS,
   addStateInfo as updateTrackingDimension,
 } from 'services/analyticsTracking';
-import { ButtonsDiv } from '../Join';
 import DeleteButton from 'components/loginButtons/DeleteButton';
-
+import LeftIcon from 'react-icons/lib/fa/angle-left';
+import RightIcon from 'react-icons/lib/fa/angle-right';
+import { ButtonsDiv } from '../Join';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
 
 const SelectRoleForm = styled('form')`
   justify-content: space-around;
-  overflow-y: scroll;
 `;
 
 const FieldInput = styled(Field)`
@@ -283,8 +281,12 @@ export default enhance(
             </CheckboxLabel>
           </Row>
         </SelectRoleForm>
-
-        <ButtonsDiv>
+        <ButtonsDiv
+          css={`
+            position: absolute;
+            bottom: 0px;
+          `}
+        >
           <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
             <LeftIcon />
             Back
