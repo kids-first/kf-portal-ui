@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
+import { css } from 'emotion';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
@@ -24,6 +25,7 @@ export const ButtonsDiv = styled('div')`
   border-top: solid 1px ${props => props.theme.greyScale4};
   padding-top: 20px;
   min-height: 60px;
+  background: ${({ theme }) => theme.white};
 `;
 
 const JoinContainer = styled(Column)`
@@ -31,6 +33,24 @@ const JoinContainer = styled(Column)`
   margin: auto;
   max-height: 90%;
 `;
+
+export const JoinPageHeader = withTheme(({ theme }) => (
+  <Fragment>
+    <h2 className={theme.h2}>
+      <Trans>Join Kids First Data Resource Portal</Trans>
+    </h2>
+    <FlashMessage mb={4}>
+      <Trans>
+        We're currently in <b>beta phase</b> for the Kids First DRP. We're looking for your input so
+        we can build a data portal that better meets your needs. Please send us your feedback or any
+        other issues you experience at:{' '}
+        <ExternalLink bare primary bold href="mailto:support@kidsfirst.org">
+          support@kidsfirst.org
+        </ExternalLink>
+      </Trans>
+    </FlashMessage>
+  </Fragment>
+));
 
 const JoinContent = compose(
   injectState,
@@ -44,21 +64,16 @@ const JoinContent = compose(
   }),
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
   <JoinContainer>
-    <div className={`${theme.card} ${theme.column} `}>
-      <h2 className={theme.h2}>
-        <Trans>Join Kids First Data Resource Portal</Trans>
-      </h2>
-      <FlashMessage mb={4}>
-        <Trans>
-          We're currently in <b>beta phase</b> for the Kids First DRP. We're looking for your input
-          so we can build a data portal that better meets your needs. Please send us your feedback
-          or any other issues you experience at:{' '}
-          <ExternalLink bare primary bold href="mailto:support@kidsfirst.org">
-            support@kidsfirst.org
-          </ExternalLink>
-        </Trans>
-      </FlashMessage>
+    <Column className={`${theme.card}`}>
       <Wizard
+        getContentClassName={({ index }) =>
+          index === 1
+            ? css`
+                margin-bottom: 60px;
+              `
+            : ''
+        }
+        HeaderComponent={() => <JoinPageHeader />}
         steps={[
           {
             title: 'Connect',
@@ -116,14 +131,22 @@ const JoinContent = compose(
             title: 'Consent',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <ConsentForm
-                {...{ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled, history }}
+                {...{
+                  disableNextStep,
+                  nextStep,
+                  prevStep,
+                  nextDisabled,
+                  prevDisabled,
+                  history,
+                }}
               />
             ),
             canGoBack: false,
           },
         ]}
       />
-    </div>
+    </Column>
   </JoinContainer>
 ));
+
 export default JoinContent;
