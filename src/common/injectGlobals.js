@@ -21,6 +21,7 @@ if (personaApiOverride) {
 }
 
 export const shortUrlApi = process.env.REACT_APP_SHORTURL_API;
+export const shortUrlResolveRoot = process.env.REACT_APP_SHORTURL_RESOLVE_ROOT;
 
 export const arrangerApiRoot = process.env.REACT_APP_ARRANGER_API;
 
