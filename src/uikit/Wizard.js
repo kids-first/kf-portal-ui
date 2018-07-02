@@ -6,6 +6,7 @@ import { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { trackPageView } from 'services/analyticsTracking';
 import { withRouter } from 'react-router';
+import Column from 'uikit/Column';
 
 const BAR_STEP_WIDTH = 320;
 const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) => (
@@ -101,6 +102,9 @@ export default compose(
     theme,
     customStepMessage,
     setCustomStepMessage,
+    HeaderComponent,
+    FooterComponent,
+    getContentClassName = () => '',
   }: {
     steps: Array<{
       title: string,
@@ -120,29 +124,39 @@ export default compose(
     setNextDisabled: Function,
     customStepMessage: string,
     setCustomStepMessage: Function,
-  }) => (
-    <div className={theme.column}>
-      <div
-        className={css`
-          display: flex;
-          justify-content: center;
-          border-bottom: 1px solid ${theme.greyScale4};
-          min-height: 60px;
-        `}
-      >
-        <WizardProgress setIndex={setIndex} index={index} steps={steps} />
-      </div>
-      {currentStep.render
-        ? currentStep.render({
-            disableNextStep: setNextDisabled,
-            customStepMessage,
-            setCustomStepMessage,
-            nextStep,
-            prevStep,
-            nextDisabled,
-            prevDisabled: index - 1 < 0 || !steps[index - 1].canGoBack,
-          })
-        : currentStep.Component}
-    </div>
-  ),
+    HeaderComponent: Function,
+    FooterComponent: Function,
+    getContentClassName: Function,
+  }) => {
+    const disableNextStep = setNextDisabled;
+    const prevDisabled = index - 1 < 0 || !steps[index - 1].canGoBack;
+    return (
+      <Column position="relative">
+        <Column scrollY className={getContentClassName({ index })}>
+          {HeaderComponent && <HeaderComponent />}
+          <div
+            className={css`
+              display: flex;
+              justify-content: center;
+              border-bottom: 1px solid ${theme.greyScale4};
+              min-height: 60px;
+            `}
+          >
+            <WizardProgress setIndex={setIndex} index={index} steps={steps} />
+          </div>
+          {currentStep.render
+            ? currentStep.render({
+                disableNextStep,
+                customStepMessage,
+                setCustomStepMessage,
+                nextStep,
+                prevStep,
+                nextDisabled,
+                prevDisabled,
+              })
+            : currentStep.Component}
+        </Column>
+      </Column>
+    );
+  },
 );
