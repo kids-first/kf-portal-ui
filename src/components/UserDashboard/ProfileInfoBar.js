@@ -1,11 +1,7 @@
 import React from 'react';
-import Gravtar from 'uikit/Gravatar';
-import { Link } from 'react-router-dom';
 import EditButton from './EditButton';
-
 import SettingsButton from './SettingsButton';
-import CompletionWrapper from '../UserProfile/CompletionWrapper';
-import RoleIconButton from '../RoleIconButton';
+import ProfileInfoCard from '../../uikit/ProfileInfoCard';
 import { userProfileBackground } from '../UserProfile';
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
@@ -24,86 +20,36 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       text-align: center;
     `}
   >
-    <CompletionWrapper completed={percentageFilled} innerCircleSize="83.18%">
-      <Gravtar
-        email={loggedInUser.email || ''}
-        size={180}
-        css={`
-          background-color: #fff;
-          border: 1px solid #cacbcf;
-          width: 100%;
-          height: 100%;
-        `}
-      />
-    </CompletionWrapper>
-
-    <RoleIconButton
-      css={`
-        margin-top: 20px;
-        margin-bottom: 43px;
-        width: 290px;
-      `}
-    >
-      <div>
-        <span
-          css={`
-            font-weight: 500;
-          `}
-        >
-          {(percentageFilled * 100).toFixed(0)}%
-        </span>{' '}
-        Complete
-      </div>
-    </RoleIconButton>
-    <div>
-      <Link
-        to={`/user/${loggedInUser.egoId}#aboutMe`}
-        css={`
-          text-decoration: underline;
-          text-align: center;
-          color: #ffffff;
-          font-size: 28px;
-          font-weight: 500;
-          line-height: 1.11;
-          letter-spacing: 0.4px;
-          margin-bottom: 24px;
-        `}
-      >
-        {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
-        {loggedInUser.firstName} {loggedInUser.lastName}
-      </Link>
-      {[
-        loggedInUser.jobTitle && (
+    <ProfileInfoCard
+      orientation="vertical"
+      profile={loggedInUser}
+      ProfileProgress={percentageFilled}
+      gravatar={{ size: 180 }}
+      theme={theme}
+      RoleIconButtonInner={() => (
+        <div>
           <span
             css={`
-              font-size: 18px;
+              font-weight: 500;
             `}
           >
-            {loggedInUser.jobTitle}
-          </span>
-        ),
-        loggedInUser.institution,
-        [loggedInUser.city, loggedInUser.state].filter(Boolean).join(', '),
-        loggedInUser.country,
-      ]
-        .filter(Boolean)
-        .map((str, i) => <div key={`${str}${i}`}>{str}</div>)}
-      <div
-        css={`
-          margin: 40px 0 58px;
-          text-decoration: underline;
-        `}
-      >
-        {loggedInUser.email}
-      </div>
-    </div>
-    <div
-      css={`
-        display: flex;
-      `}
-    >
-      <EditButton egoId={loggedInUser.egoId} theme={theme} />
-      <SettingsButton egoId={loggedInUser.egoId} theme={theme} />
-    </div>
+            {(percentageFilled * 100).toFixed(0)}%
+          </span>{' '}
+          Complete
+        </div>
+      )}
+      buttons={({ profile }) => (
+        <div
+          css={`
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0 0 0;
+          `}
+        >
+          <EditButton egoId={loggedInUser.egoId} theme={theme} />
+          <SettingsButton egoId={loggedInUser.egoId} theme={theme} />
+        </div>
+      )}
+    />
   </div>
 );

@@ -49,4 +49,4 @@ export const H3 = applyDefaultTypeStyles('h3');
 
 export const H4 = applyDefaultTypeStyles('h4');
 
-export const H5 = applyDefaultTypeStyles('h4');
+export const H5 = applyDefaultTypeStyles('h5');
