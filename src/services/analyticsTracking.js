@@ -62,7 +62,7 @@ export const initAnalyticsTracking = () => {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
     addUserSnapInfo({ gaClientId: clientId });
-    
+
     // GA Custom Dimension:index 3: clientId
     // ReactGA.set({ clientId: GAState.clientId });
     ReactGA.set({ dimension3: GAState.clientId });
@@ -100,16 +100,18 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => 
 
 export const trackUserInteraction = async ({ category, action, label }) => {
   setUserDimensions();
-  ReactGA.event({ category, action, label });
+  ReactGA.event({ category, action, ...(label && { label }) });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
       if (action === TRACKING_EVENTS.actions.open) {
+        debugger;
         startAnalyticsTiming(`MODAL__${label}`);
       } else if (action === TRACKING_EVENTS.actions.close) {
+        debugger;
         stopAnalyticsTiming(`MODAL__${label}`, {
           category,
           variable: 'open duration',
-          label: label || null,
+          ...(label && { label }),
         });
       }
 
@@ -119,7 +121,7 @@ export const trackUserInteraction = async ({ category, action, label }) => {
         stopAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess, {
           category,
           variable: 'Join process completion time',
-          label: label || null,
+          ...(label && { label }),
         });
       }
       break;
