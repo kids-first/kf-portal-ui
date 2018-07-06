@@ -20,7 +20,7 @@ import { deleteSecret, setSecret } from 'services/secrets';
 
 const enhance = compose(
   injectState,
-  withState('gen3Key', 'setGen3Key', ''),
+  withState('gen3Key', 'setGen3Key', undefined),
   withState('invalidToken', 'setInvalidToken', false),
 );
 

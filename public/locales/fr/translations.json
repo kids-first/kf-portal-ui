@@ -29,10 +29,10 @@
     "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
   },
   "The Kids First Portal is currently in early access beta, please register at<1>{' '}</1> <3> https://kidsfirstdrc": {
-    "org/portal/ </3> <5>{' '}</5>if you are interested in participating": {
-      " For any questions, or if you already have access to Kids First datasets via dbGaP, please contact <7>support@kidsfirstdrc": {
-        "org</7>": {
-          "": "The Kids First Portal is currently in early access beta, please register at<1>{' '}</1> <3> https://kidsfirstdrc.org/portal/ </3> <5>{' '}</5>if you are interested in participating. For any questions, or if you already have access to Kids First datasets via dbGaP, please contact <7>support@kidsfirstdrc.org</7>."
+    "org/portal/ </3><4>{' '}</4> if you are interested in participating": {
+      " For any questions, or if you already have access to Kids First datasets via dbGaP, please contact <6>support@kidsfirstdrc": {
+        "org</6>": {
+          "": "The Kids First Portal is currently in early access beta, please register at<1>{' '}</1> <3> https://kidsfirstdrc.org/portal/ </3><4>{' '}</4> if you are interested in participating. For any questions, or if you already have access to Kids First datasets via dbGaP, please contact <6>support@kidsfirstdrc.org</6>."
         }
       }
     }

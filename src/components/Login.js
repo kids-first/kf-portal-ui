@@ -83,8 +83,8 @@ export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
 
   // Get Gen3 Secret here
   getSecret({ service: GEN3 })
-    .then(data => {
-      setIntegrationToken(GEN3, JSON.stringify(data));
+    .then(key => {
+      setIntegrationToken(GEN3, key);
     })
     .catch(res => {
       console.error('Error getting Gen3 API Key');
@@ -187,9 +187,9 @@ class Component extends React.Component<any, any> {
                   The Kids First Portal is currently in early access beta, please register at{' '}
                   <ExternalLink href="https://kidsfirstdrc.org/portal/">
                     https://kidsfirstdrc.org/portal/
-                  </ExternalLink>
-                  {' '}if you are interested in participating. For any questions, or if you already 
-                  have access to Kids First datasets via dbGaP, please contact
+                  </ExternalLink>{' '}
+                  if you are interested in participating. For any questions, or if you already have
+                  access to Kids First datasets via dbGaP, please contact
                   <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
                 </Trans>
               </ModalWarning>

@@ -18,10 +18,11 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
+import { isObject } from 'lodash';
 
 const setEgoTokenCookie = token => {
   const { exp } = jwtDecode(token);
-  const expires = new Date(exp*1000)
+  const expires = new Date(exp * 1000);
   setCookie(EGO_JWT_KEY, token, {
     expires: expires,
   });
@@ -133,8 +134,9 @@ export default provideState({
       if (SERVICES.includes(service)) {
         const tokenKey = `integration_${service}`;
         if (token) {
-          localStorage.setItem(tokenKey, token);
-          state.integrationTokens[service] = token;
+          const tokenToSave = isObject(token) ? JSON.stringify(token) : token;
+          localStorage.setItem(tokenKey, tokenToSave);
+          state.integrationTokens[service] = tokenToSave;
         } else {
           localStorage.removeItem(tokenKey);
           delete state.integrationTokens[service];
