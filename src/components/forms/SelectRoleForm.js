@@ -281,12 +281,7 @@ export default enhance(
             </CheckboxLabel>
           </Row>
         </SelectRoleForm>
-        <ButtonsDiv
-          css={`
-            position: absolute;
-            bottom: 0px;
-          `}
-        >
+        <ButtonsDiv>
           <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
             <LeftIcon />
             Back
