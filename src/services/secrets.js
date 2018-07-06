@@ -5,7 +5,12 @@ export const getSecret = async ({ service }) => {
   const { data } = await ajax.get(secretStorageApiRoot, {
     params: { service },
   });
-  return data;
+  // axios turns no response into an empty string, which causes some breakage
+  if (data === '') {
+    return undefined;
+  } else {
+    return data;
+  }
 };
 
 export const deleteSecret = async ({ service }) => {

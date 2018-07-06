@@ -122,6 +122,10 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
   );
 };
 
+export const isValidKey = key => {
+  return key && key.length > 0;
+};
+
 const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
   return (
     <UserIntegrationsWrapper>
@@ -148,7 +152,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             </td>
             <td>
               <div className="integrationCell">
-                {integrationTokens[GEN3] ? (
+                {isValidKey(integrationTokens[GEN3]) ? (
                   gen3Status({
                     theme,
                     gen3Key: integrationTokens[GEN3],
@@ -212,7 +216,7 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
             </td>
             <td>
               <div className="integrationCell">
-                {integrationTokens[CAVATICA] ? (
+                {isValidKey(integrationTokens[CAVATICA]) ? (
                   cavaticaStatus({
                     theme,
                     cavaticaKey: integrationTokens[CAVATICA],

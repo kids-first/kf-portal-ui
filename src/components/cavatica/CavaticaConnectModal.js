@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
+import { isValidKey } from 'components/UserProfile/UserIntegrations';
 
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
@@ -148,7 +149,7 @@ const CavaticaConnectModal = withTheme(
               });
             },
             submitText: 'Connect',
-            submitDisabled: invalidToken || !cavaticaKey.length,
+            submitDisabled: invalidToken || !isValidKey(cavaticaKey),
           }}
         />
       </IntegrationStepsModalContent>
