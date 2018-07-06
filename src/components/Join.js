@@ -32,7 +32,6 @@ const JoinContainer = styled(Column)`
   width: 830px;
   margin: auto;
 `;
-// const JoinContainer = styled(`div`)``;
 
 export const JoinPageHeader = withTheme(({ theme }) => (
   <Fragment>
