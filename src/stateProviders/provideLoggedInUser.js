@@ -134,9 +134,8 @@ export default provideState({
       if (SERVICES.includes(service)) {
         const tokenKey = `integration_${service}`;
         if (token) {
-          const tokenToSave = isObject(token) ? JSON.stringify(token) : token;
-          localStorage.setItem(tokenKey, tokenToSave);
-          state.integrationTokens[service] = tokenToSave;
+          localStorage.setItem(tokenKey, token);
+          state.integrationTokens[service] = token;
         } else {
           localStorage.removeItem(tokenKey);
           delete state.integrationTokens[service];

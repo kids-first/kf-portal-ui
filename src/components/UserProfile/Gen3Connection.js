@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
+import { isValidKey } from './UserIntegrations';
 
 import IntegrationStepsModalContent, {
   NumberBullet,
@@ -114,13 +115,16 @@ const Gen3Connection = ({
       </div>
       <ModalFooter
         {...{
+          submitDisabled: !isValidKey(gen3Key),
           handleSubmit: () => {
-            submitGen3Token({
-              token: gen3Key,
-              setIntegrationToken: effects.setIntegrationToken,
-              onSuccess: props.onComplete,
-              onFail: () => setInvalidToken(true),
-            });
+            if (isValidKey(gen3Key)) {
+              submitGen3Token({
+                token: gen3Key,
+                setIntegrationToken: effects.setIntegrationToken,
+                onSuccess: props.onComplete,
+                onFail: () => setInvalidToken(true),
+              });
+            }
           },
           submitText: 'Connect',
         }}

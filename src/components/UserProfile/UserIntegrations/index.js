@@ -122,7 +122,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
   );
 };
 
-const isValidKey = key => {
+export const isValidKey = key => {
   return key && key.length > 0;
 };
 
