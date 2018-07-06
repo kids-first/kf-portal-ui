@@ -31,8 +31,8 @@ export const ButtonsDiv = styled('div')`
 const JoinContainer = styled(Column)`
   width: 830px;
   margin: auto;
-  max-height: 90%;
 `;
+// const JoinContainer = styled(`div`)``;
 
 export const JoinPageHeader = withTheme(({ theme }) => (
   <Fragment>
@@ -66,13 +66,6 @@ const JoinContent = compose(
   <JoinContainer>
     <Column className={`${theme.card}`}>
       <Wizard
-        getContentClassName={({ index }) =>
-          index === 1
-            ? css`
-                margin-bottom: 60px;
-              `
-            : ''
-        }
         HeaderComponent={() => <JoinPageHeader />}
         steps={[
           {

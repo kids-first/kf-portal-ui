@@ -132,7 +132,7 @@ export default compose(
     const prevDisabled = index - 1 < 0 || !steps[index - 1].canGoBack;
     return (
       <Column position="relative">
-        <Column scrollY className={getContentClassName({ index })}>
+        <Column className={getContentClassName({ index })}>
           {HeaderComponent && <HeaderComponent />}
           <div
             className={css`
