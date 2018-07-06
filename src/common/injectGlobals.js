@@ -62,4 +62,3 @@ export const kfGithub: string = process.env.REACT_APP_KF_GITHUB;
 export const kfMailchimpList: string = process.env.REACT_APP_KF_MAILCHIMP_LIST;
 
 export const cookiesDomain: string = process.env.REACT_APP_COOKIES_DOMAIN;
-export const kfWebsite: string = process.env.REACT_APP_KF_WEBSITE || 'https://kidsfirstdrc.org/';

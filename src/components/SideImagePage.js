@@ -1,5 +1,5 @@
 import React from 'react';
-import { kfWebsite } from 'common/injectGlobals';
+import { kfWebRoot } from 'common/injectGlobals';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
@@ -52,7 +52,7 @@ const LogoImage = styled('img')`
 const SideImagePage = ({ backgroundImage, logo, Component, sideImage, ...props }) => (
   <PageContainer backgroundImage={backgroundImage}>
     <GradientBar />
-    <a href={kfWebsite}>
+    <a href={kfWebRoot}>
       <LogoImage src={logo} alt="Kids First Logo" />
     </a>
     <Background>
