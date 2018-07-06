@@ -104,7 +104,10 @@ const Gen3Connection = ({
             value={gen3Key}
             name="gen3"
             placeholder="Gen3 Key"
-            onChange={e => setGen3Key(e.target.value)}
+            onChange={e => {
+              setGen3Key(e.target.value);
+              setInvalidToken(false);
+            }}
           />
           <FormErrorMessage>
             {invalidToken
@@ -115,18 +118,16 @@ const Gen3Connection = ({
       </div>
       <ModalFooter
         {...{
-          submitDisabled: !isValidKey(gen3Key),
-          handleSubmit: () => {
-            if (isValidKey(gen3Key)) {
-              submitGen3Token({
-                token: gen3Key,
-                setIntegrationToken: effects.setIntegrationToken,
-                onSuccess: props.onComplete,
-                onFail: () => setInvalidToken(true),
-              });
-            }
+          handleSubmit: async () => {
+            await submitGen3Token({
+              token: gen3Key,
+              setIntegrationToken: effects.setIntegrationToken,
+              onSuccess: props.onComplete,
+              onFail: () => setInvalidToken(true),
+            });
           },
           submitText: 'Connect',
+          submitDisabled: invalidToken || !isValidKey(gen3Key),
         }}
       />
     </IntegrationStepsModalContent>
