@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
+import { OauthSender } from 'react-oauth-flow';
 
 import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
@@ -17,6 +18,7 @@ import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import LoadingOnClick from 'components/LoadingOnClick';
+import Gen3OauthModal from './Gen3OauthModal';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
@@ -41,11 +43,6 @@ const loadingSpinner = (
     }}
   />
 );
-
-const CLIENT_ID = 'ErXdwNUgWfk3vhEobdICL9M2tgE8IKqseErlbrtY';
-const REDIRECT_URI = 'http%3A%2F%2Flocalhost%3A3000';
-const SCOPE = 'openid';
-const RESPONSE_TYPE = 'code';
 
 const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   <Button
@@ -187,29 +184,28 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                  <a
-                    href={`https://gen3qa.kids-first.io/user/oauth2/authorize?client_id=${CLIENT_ID}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&redirect_uri=${encodeURIComponent(
-                      window.location.origin,
-                    )}`}
+                  <button
+                    css={theme.actionButton}
+                    onClick={() => {
+                      effects.setModal({
+                        title: 'How to Connect to Gen3',
+                        component: (
+                          <Gen3OauthModal
+                            onSuccess={({ code }) => {
+                              console.log('got code: ', code);
+                            }}
+                          />
+                          // <Gen3Connection
+                          //   onComplete={effects.unsetModal}
+                          //   onCancel={effects.unsetModal}
+                          // />
+                        ),
+                      });
+                    }}
                   >
-                    <button
-                      css={theme.actionButton}
-                      onClick={() => {
-                        // effects.setModal({
-                        //   title: 'How to Connect to Gen3',
-                        //   component: (
-                        //     <Gen3Connection
-                        //       onComplete={effects.unsetModal}
-                        //       onCancel={effects.unsetModal}
-                        //     />
-                        //   ),
-                        // })
-                      }}
-                    >
-                      <span>Connect</span>
-                      <RightIcon />
-                    </button>
-                  </a>
+                    <span>Connect</span>
+                    <RightIcon />
+                  </button>
                 )}
               </div>
             </td>

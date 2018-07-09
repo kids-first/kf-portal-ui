@@ -63,3 +63,6 @@ export const kfMailchimpList: string = process.env.REACT_APP_KF_MAILCHIMP_LIST;
 
 export const cookiesDomain: string = process.env.REACT_APP_COOKIES_DOMAIN;
 export const maintenanceMode: Boolean = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
+export const oauthRedirectUrl: string = encodeURIComponent(
+  process.env.REACT_APP_OAUTH_REDIRECT_URL || `${window.location.origin}/oauth_redirect/`,
+);

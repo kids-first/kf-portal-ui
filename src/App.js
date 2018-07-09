@@ -150,17 +150,50 @@ const App = compose(injectState, withApi, withTheme)(
           <Route
             path="/"
             exact
-            render={props => (
-              <ApiContext.Provider value={initializeApi()}>
-                <SideImagePage
-                  logo={logo}
-                  backgroundImage={scienceBgPath}
-                  Component={LoginPage}
-                  sideImage={loginImage}
-                  {...props}
-                />
-              </ApiContext.Provider>
-            )}
+            render={props => {
+              const code = new URLSearchParams(window.location.search).get('code');
+              if (code) {
+                window.parent.postMessage(
+                  { type: 'OAUTH_SUCCESS', payload: code },
+                  `${window.location.origin}`,
+                );
+              } else {
+                window.parent.postMessage(
+                  { type: 'OAUTH_FAIL', payload: code },
+                  `${window.location.origin}`,
+                );
+              }
+              return (
+                <ApiContext.Provider value={initializeApi()}>
+                  <SideImagePage
+                    logo={logo}
+                    backgroundImage={scienceBgPath}
+                    Component={LoginPage}
+                    sideImage={loginImage}
+                    {...props}
+                  />
+                </ApiContext.Provider>
+              );
+            }}
+          />
+          <Route
+            path="/oauth_redirect"
+            exact
+            render={props => {
+              const code = new URLSearchParams(window.location.search).get('code');
+              if (code) {
+                window.parent.postMessage(
+                  { type: 'OAUTH_SUCCESS', payload: code },
+                  `${window.location.origin}`,
+                );
+              } else {
+                window.parent.postMessage(
+                  { type: 'OAUTH_FAIL', payload: code },
+                  `${window.location.origin}`,
+                );
+              }
+              return null;
+            }}
           />
           <Route path="/error" exact render={props => <Error {...props} />} />
           <Redirect from="*" to="/dashboard" />
