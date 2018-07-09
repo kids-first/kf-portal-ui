@@ -42,6 +42,11 @@ const loadingSpinner = (
   />
 );
 
+const CLIENT_ID = 'ErXdwNUgWfk3vhEobdICL9M2tgE8IKqseErlbrtY';
+const REDIRECT_URI = 'http%3A%2F%2Flocalhost%3A3000';
+const SCOPE = 'openid';
+const RESPONSE_TYPE = 'code';
+
 const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
   <Button
     {...props}
@@ -182,23 +187,29 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                     },
                   })
                 ) : (
-                  <button
-                    css={theme.actionButton}
-                    onClick={() =>
-                      effects.setModal({
-                        title: 'How to Connect to Gen3',
-                        component: (
-                          <Gen3Connection
-                            onComplete={effects.unsetModal}
-                            onCancel={effects.unsetModal}
-                          />
-                        ),
-                      })
-                    }
+                  <a
+                    href={`https://gen3qa.kids-first.io/user/oauth2/authorize?client_id=${CLIENT_ID}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&redirect_uri=${encodeURIComponent(
+                      window.location.origin,
+                    )}`}
                   >
-                    <span>Connect</span>
-                    <RightIcon />
-                  </button>
+                    <button
+                      css={theme.actionButton}
+                      onClick={() => {
+                        // effects.setModal({
+                        //   title: 'How to Connect to Gen3',
+                        //   component: (
+                        //     <Gen3Connection
+                        //       onComplete={effects.unsetModal}
+                        //       onCancel={effects.unsetModal}
+                        //     />
+                        //   ),
+                        // })
+                      }}
+                    >
+                      <span>Connect</span>
+                      <RightIcon />
+                    </button>
+                  </a>
                 )}
               </div>
             </td>
