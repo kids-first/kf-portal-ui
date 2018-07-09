@@ -2,8 +2,8 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { ThemeProvider } from 'emotion-theming';
+import { AppContainer } from 'react-hot-loader';
 import { Router } from 'react-router';
-
 import ScrollbarSizeProvider from './ScrollbarSizeProvider';
 import theme from 'theme/defaultTheme';
 import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
@@ -21,7 +21,9 @@ export default compose(provideLoggedInUser, provideModalState, provideToast, inj
     >
       <ThemeProvider theme={theme}>
         <ScrollbarSizeProvider>
-          <Router history={history}>{children}</Router>
+          <AppContainer>
+            <Router history={history}>{children}</Router>
+          </AppContainer>
         </ScrollbarSizeProvider>
       </ThemeProvider>
     </ApiContext.Provider>

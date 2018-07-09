@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
+import { isValidKey } from './UserIntegrations';
 
 import IntegrationStepsModalContent, {
   NumberBullet,
@@ -20,7 +21,7 @@ import { deleteSecret, setSecret } from 'services/secrets';
 
 const enhance = compose(
   injectState,
-  withState('gen3Key', 'setGen3Key', ''),
+  withState('gen3Key', 'setGen3Key', undefined),
   withState('invalidToken', 'setInvalidToken', false),
 );
 
@@ -103,7 +104,10 @@ const Gen3Connection = ({
             value={gen3Key}
             name="gen3"
             placeholder="Gen3 Key"
-            onChange={e => setGen3Key(e.target.value)}
+            onChange={e => {
+              setGen3Key(e.target.value);
+              setInvalidToken(false);
+            }}
           />
           <FormErrorMessage>
             {invalidToken
@@ -114,8 +118,8 @@ const Gen3Connection = ({
       </div>
       <ModalFooter
         {...{
-          handleSubmit: () => {
-            submitGen3Token({
+          handleSubmit: async () => {
+            await submitGen3Token({
               token: gen3Key,
               setIntegrationToken: effects.setIntegrationToken,
               onSuccess: props.onComplete,
@@ -123,6 +127,7 @@ const Gen3Connection = ({
             });
           },
           submitText: 'Connect',
+          submitDisabled: invalidToken || !isValidKey(gen3Key),
         }}
       />
     </IntegrationStepsModalContent>

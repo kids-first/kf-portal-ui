@@ -18,10 +18,11 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
+import { isObject } from 'lodash';
 
 const setEgoTokenCookie = token => {
   const { exp } = jwtDecode(token);
-  const expires = new Date(exp*1000)
+  const expires = new Date(exp * 1000);
   setCookie(EGO_JWT_KEY, token, {
     expires: expires,
   });

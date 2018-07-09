@@ -21,7 +21,7 @@ const styles = css`
 const enhance = compose(
   injectState,
   withTheme,
-  withState('gen3Key', 'setGen3Key', ''),
+  withState('gen3Key', 'setGen3Key', undefined),
   withState('userDetails', 'setUserDetails', {}),
   lifecycle({
     async componentDidMount() {

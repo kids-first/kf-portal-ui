@@ -3,6 +3,7 @@ const fs = require('fs');
 const scanner = require('i18next-scanner');
 const vfs = require('vinyl-fs');
 const { injectBabelPlugin } = require('react-app-rewired');
+const rewireReactHotLoader = require('react-app-rewire-hot-loader');
 
 const i18nConfig = require('./i18next-scanner.config');
 
@@ -55,8 +56,19 @@ function extractTranslations(config) {
   return config;
 }
 
-module.exports = function(config) {
-  transpileNodeModules(config);
-  extractTranslations(config);
-  return injectBabelPlugin('emotion', config);
+module.exports = {
+  webpack: function(config, env) {
+    transpileNodeModules(config);
+    extractTranslations(config);
+    injectBabelPlugin('emotion', config);
+    rewireReactHotLoader(config, env);
+    return config;
+  },
+  devServer: function(configFunction) {
+    return function(proxy, allowedHost) {
+      const config = configFunction(proxy, allowedHost);
+      config.watchContentBase = false;
+      return config;
+    };
+  },
 };
