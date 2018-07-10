@@ -4,7 +4,6 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import styled from 'react-emotion';
-import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 import FilterIcon from 'react-icons/lib/fa/filter';
@@ -35,13 +34,16 @@ import Column from 'uikit/Column';
 import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 
-const trackFileRepoInteraction = ({ label, ...eventData }) =>
-  trackUserInteraction({
+const trackFileRepoInteraction = ({ label, ...eventData }) => {
+  let interactionData = {
     category: 'File Repo',
     action: 'default file repo action',
     ...eventData,
-    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
-  });
+  };
+  if (label) interactionData.label = label;
+  debugger;
+  trackUserInteraction(interactionData);
+};
 
 const customTableTypes = {
   access: ({ value }) =>
@@ -266,11 +268,12 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
                               onFilterChange={val => {
-                                trackFileRepoInteraction({
+                                let filterEvent = {
                                   category: TRACKING_EVENTS.categories.fileRepo.dataTable,
                                   action: TRACKING_EVENTS.actions.filter,
-                                  label: val,
-                                });
+                                };
+                                if (val !== '') filterEvent.label = val;
+                                trackFileRepoInteraction(filterEvent);
                               }}
                               onTableExport={({ files }) => {
                                 trackFileRepoInteraction({

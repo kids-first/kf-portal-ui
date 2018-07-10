@@ -91,13 +91,9 @@ const AggregationSidebar = compose(injectState, withTheme)(
                         ...props,
                         translateSQONValue,
                         closeModal: effects.unsetModal,
-                        onClear: () => {
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.query.clear,
-                          });
-                        },
+                        trackFileRepoInteraction,
                         onFilterChange: value => {
+                          debugger;
                           // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
@@ -105,7 +101,15 @@ const AggregationSidebar = compose(injectState, withTheme)(
                             label: value,
                           });
                         },
+                        onClear: () => {
+                          debugger;
+                          trackFileRepoInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.query.clear,
+                          });
+                        },
                         onTermSelected: ({ field, value, active }) => {
+                          debugger;
                           if (active) {
                             trackFileRepoInteraction({
                               category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
@@ -115,6 +119,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                           }
                         },
                         onSqonSubmit: ({ sqon }) => {
+                          debugger;
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
