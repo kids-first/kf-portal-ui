@@ -53,11 +53,13 @@ export default injectState(
             link: urlJoin(arrangerApiRoot, 's', data.id),
           });
           const trackingSqon = { ...sqon, id: data.id };
-          trackUserInteraction({
+          let savedQueryInteraction = {
             category: TRACKING_EVENTS.categories.fileRepo.dataTable,
             action: TRACKING_EVENTS.actions.query.save,
             label: JSON.stringify(trackingSqon),
-          });
+          };
+          debugger;
+          trackUserInteraction(savedQueryInteraction);
         })
         .catch(error => {
           this.setState({ error: true, loading: false });

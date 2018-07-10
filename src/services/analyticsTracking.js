@@ -100,14 +100,12 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => 
 
 export const trackUserInteraction = async ({ category, action, label }) => {
   setUserDimensions();
-  ReactGA.event({ category, action, ...(label && { label }) });
+  await ReactGA.event({ category, action, ...(label && { label }) });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
       if (action === TRACKING_EVENTS.actions.open) {
-        debugger;
         startAnalyticsTiming(`MODAL__${label}`);
       } else if (action === TRACKING_EVENTS.actions.close) {
-        debugger;
         stopAnalyticsTiming(`MODAL__${label}`, {
           category,
           variable: 'open duration',
