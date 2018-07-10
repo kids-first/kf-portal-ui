@@ -66,3 +66,4 @@ export const maintenanceMode: Boolean = process.env.REACT_APP_MAINTENANCE_MODE =
 export const oauthRedirectUrl: string = encodeURIComponent(
   process.env.REACT_APP_OAUTH_REDIRECT_URL || `${window.location.origin}/oauth_redirect/`,
 );
+export const gen3IntegrationRoot: string = process.env.REACT_APP_GEN3_INTEGRATION_ROOT || '';

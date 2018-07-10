@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { isValidKey } from './UserIntegrations';
+import { submitGen3Token } from './UserIntegrations/Gen3OauthModal';
 
 import IntegrationStepsModalContent, {
   NumberBullet,
@@ -24,31 +25,6 @@ const enhance = compose(
   withState('gen3Key', 'setGen3Key', undefined),
   withState('invalidToken', 'setInvalidToken', false),
 );
-
-const submitGen3Token = async ({ token, setIntegrationToken, onSuccess, onFail }) => {
-  const apiKey = token.replace(/\s+/g, '');
-  await setSecret({ service: GEN3, secret: apiKey });
-  getGen3User(apiKey)
-    .then(userData => {
-      setIntegrationToken(GEN3, apiKey);
-      trackUserInteraction({
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: TRACKING_EVENTS.actions.integration.connected,
-        label: 'Gen3',
-      });
-      onSuccess();
-    })
-    .catch(response => {
-      setIntegrationToken(GEN3, null);
-      deleteSecret({ service: GEN3 });
-      trackUserInteraction({
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: TRACKING_EVENTS.actions.integration.failed,
-        label: 'Gen3',
-      });
-      onFail();
-    });
-};
 
 const Gen3Connection = ({
   state,

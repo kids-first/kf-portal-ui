@@ -2,7 +2,6 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { OauthSender } from 'react-oauth-flow';
 
 import Button from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
@@ -18,7 +17,7 @@ import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import LoadingOnClick from 'components/LoadingOnClick';
-import Gen3OauthModal from './Gen3OauthModal';
+import { connectGen3 } from './Gen3OauthModal';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
@@ -128,7 +127,12 @@ export const isValidKey = key => {
   return key && key.length > 0;
 };
 
-const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...props }) => {
+const UserIntegrations = ({
+  state: { integrationTokens, loggedInUser },
+  effects,
+  theme,
+  ...props
+}) => {
   return (
     <UserIntegrationsWrapper>
       <IntegrationTable>
@@ -187,20 +191,23 @@ const UserIntegrations = ({ state: { integrationTokens }, effects, theme, ...pro
                   <button
                     css={theme.actionButton}
                     onClick={() => {
-                      effects.setModal({
-                        title: 'How to Connect to Gen3',
-                        component: (
-                          <Gen3OauthModal
-                            onSuccess={({ code }) => {
-                              console.log('got code: ', code);
-                            }}
-                          />
-                          // <Gen3Connection
-                          //   onComplete={effects.unsetModal}
-                          //   onCancel={effects.unsetModal}
-                          // />
-                        ),
-                      });
+                      connectGen3({
+                        loggedInUser,
+                        setIntegrationToken: effects.setIntegrationToken,
+                      })
+                        .then(({ token }) => {
+                          console.log('SUCCESSS!!!!! heres the token: ', token);
+                        })
+                        .catch(err => console.log('err: ', err));
+                      // effects.setModal({
+                      //   title: 'How to Connect to Gen3',
+                      //   component: (
+                      //     <Gen3Connection
+                      //       onComplete={effects.unsetModal}
+                      //       onCancel={effects.unsetModal}
+                      //     />
+                      //   ),
+                      // });
                     }}
                   >
                     <span>Connect</span>

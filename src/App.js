@@ -152,6 +152,7 @@ const App = compose(injectState, withApi, withTheme)(
             exact
             render={props => {
               const code = new URLSearchParams(window.location.search).get('code');
+              console.log('code: ', code);
               if (code) {
                 window.parent.postMessage(
                   { type: 'OAUTH_SUCCESS', payload: code },
@@ -174,25 +175,6 @@ const App = compose(injectState, withApi, withTheme)(
                   />
                 </ApiContext.Provider>
               );
-            }}
-          />
-          <Route
-            path="/oauth_redirect"
-            exact
-            render={props => {
-              const code = new URLSearchParams(window.location.search).get('code');
-              if (code) {
-                window.parent.postMessage(
-                  { type: 'OAUTH_SUCCESS', payload: code },
-                  `${window.location.origin}`,
-                );
-              } else {
-                window.parent.postMessage(
-                  { type: 'OAUTH_FAIL', payload: code },
-                  `${window.location.origin}`,
-                );
-              }
-              return null;
             }}
           />
           <Route path="/error" exact render={props => <Error {...props} />} />
