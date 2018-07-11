@@ -55,7 +55,10 @@ const IdFilterContainer = styled(Column)`
   }
 `;
 
-const AggregationSidebar = compose(injectState, withTheme)(
+const AggregationSidebar = compose(
+  injectState,
+  withTheme,
+)(
   ({
     state,
     effects,
@@ -91,6 +94,14 @@ const AggregationSidebar = compose(injectState, withTheme)(
                         ...props,
                         translateSQONValue,
                         closeModal: effects.unsetModal,
+                        onFacetNavigation: path => {
+                          let facetNavEvent = {
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.click + ' side navigation',
+                            label: path,
+                          };
+                          trackFileRepoInteraction(facetNavEvent);
+                        },
                         onClear: () => {
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
@@ -98,19 +109,21 @@ const AggregationSidebar = compose(injectState, withTheme)(
                           });
                         },
                         onFilterChange: value => {
-                          // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.filter + ' - Search',
-                            label: value,
-                          });
+                          if (value !== '') {
+                            // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                              action: TRACKING_EVENTS.actions.filter + ' - Search',
+                              label: value,
+                            });
+                          }
                         },
                         onTermSelected: ({ field, value, active }) => {
                           if (active) {
                             trackFileRepoInteraction({
                               category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                               action: TRACKING_EVENTS.actions.filter + ' Selected',
-                              label: { type: 'filter', value, field },
+                              label: JSON.stringify({ type: 'filter', value, field }),
                             });
                           }
                         },
@@ -118,7 +131,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
-                            label: sqon,
+                            label: JSON.stringify(sqon),
                           });
                           setSQON(sqon);
                           effects.unsetModal();
@@ -162,7 +175,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters,
                   action: 'Filter Selected',
-                  label: { type: 'filter', value, field },
+                  label: JSON.stringify({ type: 'filter', value, field }),
                 });
               }
             }}

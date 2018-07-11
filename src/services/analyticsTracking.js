@@ -38,6 +38,7 @@ export const TRACKING_EVENTS = {
     close: 'Close',
     click: 'Clicked',
     edit: 'Edit',
+    scroll: 'Scrolled',
     save: 'Save',
     filter: 'Filter',
     query: {
@@ -62,7 +63,7 @@ export const initAnalyticsTracking = () => {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
     addUserSnapInfo({ gaClientId: clientId });
-    
+
     // GA Custom Dimension:index 3: clientId
     // ReactGA.set({ clientId: GAState.clientId });
     ReactGA.set({ dimension3: GAState.clientId });
