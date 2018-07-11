@@ -55,7 +55,10 @@ const IdFilterContainer = styled(Column)`
   }
 `;
 
-const AggregationSidebar = compose(injectState, withTheme)(
+const AggregationSidebar = compose(
+  injectState,
+  withTheme,
+)(
   ({
     state,
     effects,
@@ -91,6 +94,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                         ...props,
                         translateSQONValue,
                         closeModal: effects.unsetModal,
+<<<<<<< HEAD
                         trackFileRepoInteraction,
                         onFilterChange: value => {
                           debugger;
@@ -100,6 +104,31 @@ const AggregationSidebar = compose(injectState, withTheme)(
                             action: TRACKING_EVENTS.actions.filter + ' - Search',
                             label: value,
                           });
+=======
+                        onFacetNavigation: path => {
+                          let facetNavEvent = {
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.click + ' side navigation',
+                            label: path,
+                          };
+                          trackFileRepoInteraction(facetNavEvent);
+                        },
+                        onClear: () => {
+                          trackFileRepoInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.query.clear,
+                          });
+                        },
+                        onFilterChange: value => {
+                          if (value !== '') {
+                            // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                              action: TRACKING_EVENTS.actions.filter + ' - Search',
+                              label: value,
+                            });
+                          }
+>>>>>>> fae6e5b... adds  File Repo AFV onFacetNavigation GA Event tracker
                         },
                         onClear: () => {
                           debugger;
@@ -114,7 +143,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                             trackFileRepoInteraction({
                               category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                               action: TRACKING_EVENTS.actions.filter + ' Selected',
-                              label: { type: 'filter', value, field },
+                              label: JSON.stringify({ type: 'filter', value, field }),
                             });
                           }
                         },
@@ -123,7 +152,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
-                            label: sqon,
+                            label: JSON.stringify(sqon),
                           });
                           setSQON(sqon);
                           effects.unsetModal();
@@ -167,7 +196,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters,
                   action: 'Filter Selected',
-                  label: { type: 'filter', value, field },
+                  label: JSON.stringify({ type: 'filter', value, field }),
                 });
               }
             }}
