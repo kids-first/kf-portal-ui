@@ -156,7 +156,11 @@ const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-const FileRepo = compose(injectState, withTheme, withApi)(
+const FileRepo = compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     state,
     effects,
@@ -266,11 +270,13 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
                               onFilterChange={val => {
-                                trackFileRepoInteraction({
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: TRACKING_EVENTS.actions.filter,
-                                  label: val,
-                                });
+                                if (val !== '') {
+                                  trackFileRepoInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: TRACKING_EVENTS.actions.filter,
+                                    label: val,
+                                  });
+                                }
                               }}
                               onTableExport={({ files }) => {
                                 trackFileRepoInteraction({
