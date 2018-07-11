@@ -4,6 +4,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import styled from 'react-emotion';
+import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 import FilterIcon from 'react-icons/lib/fa/filter';
@@ -34,16 +35,13 @@ import Column from 'uikit/Column';
 import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 
-const trackFileRepoInteraction = ({ label, ...eventData }) => {
-  let interactionData = {
+const trackFileRepoInteraction = ({ label, ...eventData }) =>
+  trackUserInteraction({
     category: 'File Repo',
     action: 'default file repo action',
     ...eventData,
-  };
-  if (label) interactionData.label = label;
-  debugger;
-  trackUserInteraction(interactionData);
-};
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
 
 const customTableTypes = {
   access: ({ value }) =>
@@ -158,7 +156,11 @@ const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-const FileRepo = compose(injectState, withTheme, withApi)(
+const FileRepo = compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     state,
     effects,
@@ -268,12 +270,13 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
                               onFilterChange={val => {
-                                let filterEvent = {
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: TRACKING_EVENTS.actions.filter,
-                                };
-                                if (val !== '') filterEvent.label = val;
-                                trackFileRepoInteraction(filterEvent);
+                                if (val !== '') {
+                                  trackFileRepoInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: TRACKING_EVENTS.actions.filter,
+                                    label: val,
+                                  });
+                                }
                               }}
                               onTableExport={({ files }) => {
                                 trackFileRepoInteraction({

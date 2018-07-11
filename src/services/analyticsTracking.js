@@ -38,6 +38,7 @@ export const TRACKING_EVENTS = {
     close: 'Close',
     click: 'Clicked',
     edit: 'Edit',
+    scroll: 'Scrolled',
     save: 'Save',
     filter: 'Filter',
     query: {
