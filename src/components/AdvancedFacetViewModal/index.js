@@ -9,7 +9,10 @@ import { provideLocalSqon } from 'stateProviders';
 import { FilterInput } from 'uikit/Input';
 import { TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-const enhance = compose(provideLocalSqon, injectState);
+const enhance = compose(
+  provideLocalSqon,
+  injectState,
+);
 
 const AfvContainer = styled('div')`
   flex: 1;
@@ -79,16 +82,15 @@ class AdvancedFacetViewModalContent extends React.Component {
               });
             }}
             onTermSelected={({ field, value, active }) => {
-              debugger;
               if (active) {
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                   action: TRACKING_EVENTS.actions.filter + ' Selected',
-                  label: JSON.stringify({
+                  label: {
                     type: 'filter',
                     value,
                     field,
-                  }),
+                  },
                 });
               }
             }}
