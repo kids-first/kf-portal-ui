@@ -206,7 +206,8 @@ const FileRepo = compose(
                       <DetectNewVersion {...props} />
                       <ArrangerContainer>
                         <AggregationSidebar
-                          {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
+                          {...{ ...props, ...url, translateSQONValue }}
+                          trackFileRepoInteraction={trackFileRepoInteraction}
                         />
                         <TableContainer>
                           <Row mb={url.sqon ? 3 : 0}>
