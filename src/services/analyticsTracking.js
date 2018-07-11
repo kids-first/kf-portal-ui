@@ -50,6 +50,7 @@ export const TRACKING_EVENTS = {
     userRoleSelected: 'User Role Updated',
     integration: {
       connected: 'Integration Connection SUCCESS',
+      udpatedCreds: 'Integration Connection Credentials updated',
       failed: 'Integration Connection FAILED',
     },
   },
