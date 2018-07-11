@@ -13,6 +13,7 @@ let GAState = {
   userId: null,
   userRoles: null,
   clientId: null,
+  egoGroups: null,
 };
 let timingsStorage = window.localStorage;
 
@@ -70,7 +71,7 @@ export const initAnalyticsTracking = () => {
   });
 };
 
-const setUserDimensions = (userId, role) => {
+const setUserDimensions = (userId, role, groups) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
     ReactGA.set({ userId: userId || GAState.userId });
@@ -82,17 +83,23 @@ const setUserDimensions = (userId, role) => {
     // ReactGA.set({ userRole: role || GAState.userRoles[0] });
     ReactGA.set({ dimension2: role || GAState.userRoles[0] });
   }
+
+  if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
+    // GA Custom Dimension:index 4: egoGroup
+    // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
+    ReactGA.set({ dimension4: groups || GAState.egoGroups });
+  }
 };
 
 export const addStateInfo = obj => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => {
+export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGroups }) => {
   let userId = egoId;
   if (acceptedTerms && !GAState.userId) {
-    addStateInfo({ userId, personaId: _id, userRoles: roles });
-    setUserDimensions(userId, roles[0]);
+    addStateInfo({ userId, personaId: _id, userRoles: roles, egoGroups });
+    setUserDimensions(userId, roles[0], egoGroups);
     return true;
   } else {
     return false;
