@@ -49,7 +49,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   action: 'Download Report',
                   label: 'Clinical (Participant)',
                 });
-                return downloadData(downloadSQON)();
+                return downloadData(downloadSQON);
               });
             },
           },
