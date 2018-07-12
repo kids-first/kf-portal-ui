@@ -46,7 +46,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
               return clinicalDataParticipants(downloadSQON).then(downloadData => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: 'Download Report',
+                  action: TRACKING_EVENTS.actions.download.report,
                   label: 'Clinical (Participant)',
                 });
                 return downloadData(downloadSQON);
@@ -80,7 +80,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
               return clinicalDataFamily(downloadSQON).then(downloadData => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: 'Download Report',
+                  action: TRACKING_EVENTS.actions.download.report,
                   label: 'Clinical (Participant and family)',
                 });
                 return downloadData(downloadSQON);
@@ -93,7 +93,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
               await downloadBiospecimen(downloadSQON).then(downloadData => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: 'Download Report',
+                  action: TRACKING_EVENTS.actions.download.report,
                   label: 'Biospecimen',
                 });
                 return downloadData(downloadSQON);
