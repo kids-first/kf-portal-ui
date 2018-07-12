@@ -23,8 +23,9 @@ import { Container, EditButton } from './ui';
 import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
-import RoleIconButton from '../RoleIconButton';
-import Gravtar from 'uikit/Gravatar';
+
+import ProfileInfoCard from 'uikit/ProfileInfoCard';
+import { P, SmallText } from 'uikit/Typography';
 
 export const userProfileBackground = (
   loggedInUser,
@@ -106,72 +107,26 @@ export default compose(
       `}
     >
       <Container row alignItems="center">
-        <Gravtar
-          email={profile.email || ''}
-          size={173}
-          className={css`
-            border-radius: 50%;
-            border: 5px solid #fff;
-          `}
+        <ProfileInfoCard
+          orientation="horizontal"
+          profile={profile}
+          gravatar={{ size: 180 }}
+          theme={theme}
+          buttons={() => (
+            <EditButton
+              onClick={() => {
+                setModal({
+                  title: 'Edit Basic Information',
+                  component: <BasicInfoForm {...{ api }} />,
+                });
+              }}
+            />
+          )}
         />
-        <div
-          className={css`
-            width: 49%;
-            align-items: flex-start;
-            ${theme.column};
-            padding: 0 15px;
-          `}
-        >
-          <RoleIconButton />
 
-          <h4
-            className={css`
-              ${theme.h4};
-            `}
-          >{`${profile.firstName} ${profile.lastName}`}</h4>
-          <div
-            className={css`
-              font-size: 14px;
-              color: #fff;
-              line-height: 28px;
-              ${theme.column};
-            `}
-          >
-            <span
-              className={css`
-                font-size: 1.4em;
-              `}
-            >
-              {profile.jobTitle}
-            </span>
-            <span>{profile.institution}</span>
-            <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
-            <span
-              css={`
-                text-decoration: underline;
-              `}
-            >
-              {profile.email}
-            </span>
-            <span
-              css={`
-                margin-top: 5px;
-              `}
-            >
-              <EditButton
-                onClick={() => {
-                  setModal({
-                    title: 'Edit Basic Information',
-                    component: <BasicInfoForm {...{ api }} />,
-                  });
-                }}
-              />
-            </span>
-          </div>
-        </div>
         <div
           css={`
-            width: 310px;
+            width: 53%;
             ${theme.column};
             align-items: center;
           `}
@@ -180,23 +135,19 @@ export default compose(
             completed={state.percentageFilled}
             css={`
               width: 130px;
+              margin: 0 auto;
             `}
           >
             <CompleteOMeter percentage={state.percentageFilled} />
           </CompletionWrapper>
 
-          <div
-            css={`
-              font-family: ${theme.fonts.details};
-              font-size: 13px;
-              font-style: italic;
-              line-height: 1.69;
-              color: #ffffff;
-              padding-top: 21px;
-            `}
-          >
-            Complete your profile for a more personalized<br />
-            experience and to help encourage collaboration!
+          <div>
+            <P center italic color="white" mt="20px" mb="0" px="15%">
+              <SmallText>
+                Complete your profile for a more personalized experience and to help encourage
+                collaboration!
+              </SmallText>
+            </P>
           </div>
         </div>
       </Container>

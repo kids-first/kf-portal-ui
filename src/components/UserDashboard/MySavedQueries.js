@@ -10,8 +10,8 @@ import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import SaveIconBase from '../../icons/SaveIcon';
-
-import { Box, Flex, Span, Link } from 'uikit/Core';
+import { Span } from 'uikit/Typography';
+import { Box, Flex, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 
