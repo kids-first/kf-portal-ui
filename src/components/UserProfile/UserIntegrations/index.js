@@ -12,6 +12,7 @@ import Spinner from 'react-spinkit';
 import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import Component from 'react-component-component';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
@@ -31,14 +32,14 @@ import {
   XIcon,
 } from './ui';
 
-const loadingSpinner = (
+export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
     fadeIn="none"
     name="circle"
     color="black"
     style={{
-      width: 11,
-      height: 11,
+      width,
+      height,
     }}
   />
 );
@@ -110,7 +111,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
           onClick={onRemove}
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
-              {loading ? loadingSpinner : <XIcon />}
+              {loading ? <LoadingSpinner /> : <XIcon />}
               <span>Remove</span>
             </ConnectedButton>
           )}
@@ -151,40 +152,51 @@ const UserIntegrations = withApi(
               </td>
               <td>
                 <div className="integrationCell">
-                  {isValidKey(integrationTokens[GEN3]) ? (
-                    gen3Status({
-                      theme,
-                      gen3Key: integrationTokens[GEN3],
-                      onView: () =>
-                        effects.setModal({
-                          title: 'Gen3 Connection Details',
-                          component: (
-                            <Gen3ConnectionDetails
-                              onComplete={effects.unsetModal}
-                              onCancel={effects.unsetModal}
-                            />
-                          ),
-                        }),
-                      onRemove: () => {
-                        deleteSecret({ service: GEN3 });
-                        effects.setIntegrationToken(GEN3, null);
-                      },
-                    })
-                  ) : (
-                    <button
-                      css={theme.actionButton}
-                      onClick={() => {
-                        connectGen3(api)
-                          .then(data => {
-                            effects.setIntegrationToken(GEN3, 'CONNECTED');
-                          })
-                          .catch(err => console.log('err: ', err));
-                      }}
-                    >
-                      <span>Connect</span>
-                      <RightIcon />
-                    </button>
-                  )}
+                  <Component initialState={{ loading: false }}>
+                    {({ state: { loading }, setState }) => {
+                      return loading ? (
+                        <LoadingSpinner />
+                      ) : isValidKey(integrationTokens[GEN3]) ? (
+                        gen3Status({
+                          theme,
+                          gen3Key: integrationTokens[GEN3],
+                          onView: () =>
+                            effects.setModal({
+                              title: 'Gen3 Connection Details',
+                              component: (
+                                <Gen3ConnectionDetails
+                                  onComplete={effects.unsetModal}
+                                  onCancel={effects.unsetModal}
+                                />
+                              ),
+                            }),
+                          onRemove: () => {
+                            deleteSecret({ service: GEN3 });
+                            effects.setIntegrationToken(GEN3, null);
+                          },
+                        })
+                      ) : (
+                        <button
+                          css={theme.actionButton}
+                          onClick={() => {
+                            setState({ loading: true });
+                            connectGen3(api)
+                              .then(data => {
+                                effects.setIntegrationToken(GEN3, 'CONNECTED');
+                                setState({ loading: false });
+                              })
+                              .catch(err => {
+                                console.log('err: ', err);
+                                setState({ loading: false });
+                              });
+                          }}
+                        >
+                          <span>Connect</span>
+                          <RightIcon />
+                        </button>
+                      );
+                    }}
+                  </Component>
                 </div>
               </td>
             </tr>
