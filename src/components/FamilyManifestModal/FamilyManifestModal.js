@@ -187,10 +187,7 @@ export default compose(
                 });
                 return withFormik({
                   handleSubmit: async (value, { setSubmitting, setErrors }) => {
-                    fileManifestParticipantsAndFamily({
-                      sqon: downloadSqon,
-                      columns: columns,
-                    }).then(
+                    fileManifestParticipantsAndFamily().then(
                       downloadManifest => {
                         trackUserInteraction({
                           category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
@@ -323,6 +320,17 @@ export default compose(
                                                 ? checkedFileTypes.filter(type => type !== fileType)
                                                 : [...checkedFileTypes, fileType],
                                             );
+
+                                            if (e.target.checked) {
+                                              trackUserInteraction({
+                                                category:
+                                                  TRACKING_EVENTS.categories.fileRepo
+                                                    .actionsSidebar,
+                                                action:
+                                                  'Download Manifest Modal - Data Types - Checked',
+                                                label: fileType,
+                                              });
+                                            }
                                           },
                                           isChecked: checkedFileTypes.includes(fileType),
                                           fileType,
