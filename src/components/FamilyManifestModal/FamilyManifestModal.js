@@ -190,13 +190,17 @@ export default compose(
                     fileManifestParticipantsAndFamily({
                       sqon: downloadSqon,
                       columns: columns,
-                    })().then(
-                      async profile => {
+                    }).then(
+                      downloadManifest => {
                         trackUserInteraction({
                           category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                           action: 'Download Manifest',
                           label: 'Participant and Family',
                         });
+                        downloadManifest({
+                          sqon: downloadSqon,
+                          columns: columns,
+                        })();
                         unsetModal();
                       },
                       errors => setSubmitting(false),

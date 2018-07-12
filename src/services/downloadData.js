@@ -82,7 +82,9 @@ function getManifestDownload(type) {
 }
 export const fileManifestParticipantsOnly = getManifestDownload('participant');
 
-export const fileManifestParticipantsAndFamily = getManifestDownload('participant-family');
+export const fileManifestParticipantsAndFamily = async () => {
+  return getManifestDownload('participant-family');
+};
 
 const getClinicalDownload = type => ({ sqon, columns }) => () =>
   saveTSV({
