@@ -6,11 +6,11 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import { truncate } from 'lodash';
 
-import { GEN3 } from 'common/constants';
 import PlusIcon from 'icons/PlusCircleIcon';
 import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
+import { withApi } from 'services/api';
 
 import { getFilesById } from 'services/arranger';
 import { getUser as getGen3User } from 'services/gen3';
@@ -19,6 +19,7 @@ const enhance = compose(
   injectState,
   withTheme,
   withState('showDetails', 'setShowDetails', false),
+  withApi,
   lifecycle({
     async componentDidMount() {
       const {
@@ -27,11 +28,10 @@ const enhance = compose(
         setFileStudyData,
         setFileAuthInitialized,
       } = this.props.effects;
+      const { api } = this.props;
 
       // Get Gen3 permissions
-      const userDetails = await getUserInfo({
-        integrationToken: this.props.state.integrationTokens[GEN3],
-      });
+      const userDetails = await getGen3User(api);
       const approvedStudies = Object.keys(userDetails.data.project_access).sort();
       console.log({ approvedStudies });
 
@@ -78,10 +78,6 @@ const enhance = compose(
     },
   }),
 );
-
-const getUserInfo = async ({ integrationToken }) => {
-  return await getGen3User(integrationToken);
-};
 
 const styles = theme => css`
   border: solid 1px ${theme.greyScale5};

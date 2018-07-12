@@ -150,31 +150,36 @@ const App = compose(injectState, withApi, withTheme)(
           <Route
             path="/"
             exact
+            render={props => (
+              <ApiContext.Provider value={initializeApi()}>
+                <SideImagePage
+                  logo={logo}
+                  backgroundImage={scienceBgPath}
+                  Component={LoginPage}
+                  sideImage={loginImage}
+                  {...props}
+                />
+              </ApiContext.Provider>
+            )}
+          />
+          <Route
+            path="/gen3_redirect"
+            exact
             render={props => {
               const code = new URLSearchParams(window.location.search).get('code');
-              console.log('code: ', code);
               if (code) {
-                window.parent.postMessage(
+                window.top.postMessage(
                   { type: 'OAUTH_SUCCESS', payload: code },
                   `${window.location.origin}`,
                 );
               } else {
-                window.parent.postMessage(
+                window.top.postMessage(
                   { type: 'OAUTH_FAIL', payload: code },
                   `${window.location.origin}`,
                 );
               }
-              return (
-                <ApiContext.Provider value={initializeApi()}>
-                  <SideImagePage
-                    logo={logo}
-                    backgroundImage={scienceBgPath}
-                    Component={LoginPage}
-                    sideImage={loginImage}
-                    {...props}
-                  />
-                </ApiContext.Provider>
-              );
+              // window.close();
+              return null;
             }}
           />
           <Route path="/error" exact render={props => <Error {...props} />} />

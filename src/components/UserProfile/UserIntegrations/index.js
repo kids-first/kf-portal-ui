@@ -14,10 +14,10 @@ import { deleteSecret } from 'services/secrets';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
-import Gen3Connection from 'components/UserProfile/Gen3Connection';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import LoadingOnClick from 'components/LoadingOnClick';
-import { connectGen3 } from './Gen3OauthModal';
+import { connectGen3 } from 'services/gen3';
+import { withApi } from 'services/api';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
@@ -82,9 +82,6 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <ConnectedButton action="view" type="Gen3" onClick={onView}>
           <ViewIcon />View
         </ConnectedButton>
-        <ConnectedButton action="edit" type="Gen3" onClick={onEdit}>
-          <PencilIcon />Edit
-        </ConnectedButton>
         <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
           <XIcon />Remove
         </ConnectedButton>
@@ -127,155 +124,130 @@ export const isValidKey = key => {
   return key && key.length > 0;
 };
 
-const UserIntegrations = ({
-  state: { integrationTokens, loggedInUser },
-  effects,
-  theme,
-  ...props
-}) => {
-  return (
-    <UserIntegrationsWrapper>
-      <IntegrationTable>
-        <thead>
-          <tr>
-            <th>Service</th>
-            <th>Purpose</th>
-            <th>Integrate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <img className="logoImg" src={gen3Logo} alt="Gen3 Logo" />
-            </td>
-            <td>
-              <span className="integrationHeader">Download Controlled Data</span>
-              <Paragraph>
-                Access controlled data by connecting your NIH Login and dbGaP authorized access to
-                the Kids First Data Catalog powered by{' '}
-                <ExternalLink href={gen3WebRoot}>Gen3</ExternalLink>.
-              </Paragraph>
-            </td>
-            <td>
-              <div className="integrationCell">
-                {isValidKey(integrationTokens[GEN3]) ? (
-                  gen3Status({
-                    theme,
-                    gen3Key: integrationTokens[GEN3],
-                    onView: () =>
-                      effects.setModal({
-                        title: 'Gen3 Connection Details',
-                        component: (
-                          <Gen3ConnectionDetails
-                            onComplete={effects.unsetModal}
-                            onCancel={effects.unsetModal}
-                          />
-                        ),
-                      }),
-                    onEdit: () =>
-                      effects.setModal({
-                        title: 'Edit Connection Details',
-                        component: (
-                          <Gen3Connection
-                            onComplete={effects.unsetModal}
-                            onCancel={effects.unsetModal}
-                          />
-                        ),
-                      }),
-                    onRemove: () => {
-                      deleteSecret({ service: GEN3 });
-                      effects.setIntegrationToken(GEN3, null);
-                    },
-                  })
-                ) : (
-                  <button
-                    css={theme.actionButton}
-                    onClick={() => {
-                      connectGen3({
-                        loggedInUser,
-                        setIntegrationToken: effects.setIntegrationToken,
-                      })
-                        .then(({ token }) => {
-                          console.log('SUCCESSS!!!!! heres the token: ', token);
+const UserIntegrations = withApi(
+  ({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => {
+    return (
+      <UserIntegrationsWrapper>
+        <IntegrationTable>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Purpose</th>
+              <th>Integrate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <img className="logoImg" src={gen3Logo} alt="Gen3 Logo" />
+              </td>
+              <td>
+                <span className="integrationHeader">Download Controlled Data</span>
+                <Paragraph>
+                  Access controlled data by connecting your NIH Login and dbGaP authorized access to
+                  the Kids First Data Catalog powered by{' '}
+                  <ExternalLink href={gen3WebRoot}>Gen3</ExternalLink>.
+                </Paragraph>
+              </td>
+              <td>
+                <div className="integrationCell">
+                  {isValidKey(integrationTokens[GEN3]) ? (
+                    gen3Status({
+                      theme,
+                      gen3Key: integrationTokens[GEN3],
+                      onView: () =>
+                        effects.setModal({
+                          title: 'Gen3 Connection Details',
+                          component: (
+                            <Gen3ConnectionDetails
+                              onComplete={effects.unsetModal}
+                              onCancel={effects.unsetModal}
+                            />
+                          ),
+                        }),
+                      onRemove: () => {
+                        deleteSecret({ service: GEN3 });
+                        effects.setIntegrationToken(GEN3, null);
+                      },
+                    })
+                  ) : (
+                    <button
+                      css={theme.actionButton}
+                      onClick={() => {
+                        connectGen3(api)
+                          .then(data => {
+                            effects.setIntegrationToken(GEN3, 'CONNECTED');
+                          })
+                          .catch(err => console.log('err: ', err));
+                      }}
+                    >
+                      <span>Connect</span>
+                      <RightIcon />
+                    </button>
+                  )}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <img className="logoImg" src={cavaticaLogo} alt="Cavatica Logo" />
+              </td>
+              <td>
+                <span className="integrationHeader">Analyze Data</span>
+                <Paragraph>
+                  Analyze data quickly by connecting your Kids First account to{' '}
+                  <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
+                </Paragraph>
+              </td>
+              <td>
+                <div className="integrationCell">
+                  {isValidKey(integrationTokens[CAVATICA]) ? (
+                    cavaticaStatus({
+                      theme,
+                      cavaticaKey: integrationTokens[CAVATICA],
+                      onEdit: () =>
+                        effects.setModal({
+                          title: 'How to Connect to Cavatica',
+                          component: (
+                            <CavaticaConnectModal
+                              onComplete={effects.unsetModal}
+                              onCancel={effects.unsetModal}
+                            />
+                          ),
+                        }),
+                      onRemove: async () => {
+                        await deleteSecret({ service: CAVATICA });
+                        effects.setIntegrationToken(CAVATICA, null);
+                      },
+                    })
+                  ) : (
+                    <button
+                      css={theme.actionButton}
+                      onClick={() =>
+                        effects.setModal({
+                          title: 'How to Connect to Cavatica',
+                          component: (
+                            <CavaticaConnectModal
+                              onComplete={effects.unsetModal}
+                              onCancel={effects.unsetModal}
+                            />
+                          ),
                         })
-                        .catch(err => console.log('err: ', err));
-                      // effects.setModal({
-                      //   title: 'How to Connect to Gen3',
-                      //   component: (
-                      //     <Gen3Connection
-                      //       onComplete={effects.unsetModal}
-                      //       onCancel={effects.unsetModal}
-                      //     />
-                      //   ),
-                      // });
-                    }}
-                  >
-                    <span>Connect</span>
-                    <RightIcon />
-                  </button>
-                )}
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <img className="logoImg" src={cavaticaLogo} alt="Cavatica Logo" />
-            </td>
-            <td>
-              <span className="integrationHeader">Analyze Data</span>
-              <Paragraph>
-                Analyze data quickly by connecting your Kids First account to{' '}
-                <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
-              </Paragraph>
-            </td>
-            <td>
-              <div className="integrationCell">
-                {isValidKey(integrationTokens[CAVATICA]) ? (
-                  cavaticaStatus({
-                    theme,
-                    cavaticaKey: integrationTokens[CAVATICA],
-                    onEdit: () =>
-                      effects.setModal({
-                        title: 'How to Connect to Cavatica',
-                        component: (
-                          <CavaticaConnectModal
-                            onComplete={effects.unsetModal}
-                            onCancel={effects.unsetModal}
-                          />
-                        ),
-                      }),
-                    onRemove: async () => {
-                      await deleteSecret({ service: CAVATICA });
-                      effects.setIntegrationToken(CAVATICA, null);
-                    },
-                  })
-                ) : (
-                  <button
-                    css={theme.actionButton}
-                    onClick={() =>
-                      effects.setModal({
-                        title: 'How to Connect to Cavatica',
-                        component: (
-                          <CavaticaConnectModal
-                            onComplete={effects.unsetModal}
-                            onCancel={effects.unsetModal}
-                          />
-                        ),
-                      })
-                    }
-                  >
-                    <span>
-                      Connect<RightIcon />
-                    </span>
-                  </button>
-                )}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </IntegrationTable>
-    </UserIntegrationsWrapper>
-  );
-};
+                      }
+                    >
+                      <span>
+                        Connect<RightIcon />
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </IntegrationTable>
+      </UserIntegrationsWrapper>
+    );
+  },
+);
 
 export default enhance(UserIntegrations);

@@ -8,6 +8,8 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 
+import { withApi } from 'services/api';
+
 const styles = css`
   table {
     border-collapse: collapse;
@@ -23,20 +25,15 @@ const enhance = compose(
   withTheme,
   withState('gen3Key', 'setGen3Key', undefined),
   withState('userDetails', 'setUserDetails', {}),
+  withApi,
   lifecycle({
     async componentDidMount() {
-      const { setUserDetails } = this.props;
-      let userDetails = await getUserInfo({
-        integrationToken: this.props.state.integrationTokens[GEN3],
-      });
-      setUserDetails(userDetails.data);
+      const { setUserDetails, api } = this.props;
+      let userDetails = await getGen3User(api);
+      setUserDetails(userDetails);
     },
   }),
 );
-
-const getUserInfo = async ({ integrationToken }) => {
-  return await getGen3User(integrationToken);
-};
 
 const Gen3ConnectionDetails = ({
   state,
@@ -57,15 +54,15 @@ const Gen3ConnectionDetails = ({
             `}
           >
             <CheckIcon size={20} />
-            <span> Connected account: {userDetails.username}</span>
+            <span> Connected account: {userDetails.name}</span>
           </div>
         </tr>
         <tr>
           <span className="title"> You can download data from these studies:</span>
         </tr>
         <ul>
-          {userDetails.project_access ? (
-            Object.keys(userDetails.project_access).map(projectName => (
+          {userDetails.projects ? (
+            Object.keys(userDetails.projects).map(projectName => (
               <li>
                 <span>{projectName}</span>
               </li>
