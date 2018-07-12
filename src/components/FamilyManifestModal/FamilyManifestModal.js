@@ -191,7 +191,7 @@ export default compose(
                       downloadManifest => {
                         trackUserInteraction({
                           category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                          action: 'Download Manifest',
+                          action: TRACKING_EVENTS.actions.download.manifest,
                           label: 'Participant and Family',
                         });
                         downloadManifest({
@@ -327,7 +327,8 @@ export default compose(
                                                   TRACKING_EVENTS.categories.fileRepo
                                                     .actionsSidebar,
                                                 action:
-                                                  'Download Manifest Modal - Data Types - Checked',
+                                                  TRACKING_EVENTS.actions.download.manifest +
+                                                  ' Modal - Data Types - Checked',
                                                 label: fileType,
                                               });
                                             }
