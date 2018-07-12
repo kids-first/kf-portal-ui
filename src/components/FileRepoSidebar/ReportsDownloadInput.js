@@ -33,7 +33,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                 api,
                 sqon,
               });
-              return clinicalDataParticipants({
+              let downloadSQON = {
                 sqon: {
                   op: 'in',
                   content: {
@@ -42,13 +42,14 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   },
                 },
                 columns: state.columns,
-              })().then(downloadData => {
+              };
+              return clinicalDataParticipants(downloadSQON).then(downloadData => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Download Report',
                   label: 'Clinical (Participant)',
                 });
-                return downloadData;
+                return downloadData(downloadSQON)();
               });
             },
           },
@@ -66,7 +67,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                 api,
                 sqon,
               });
-              return clinicalDataFamily({
+              let downloadSQON = {
                 sqon: {
                   op: 'in',
                   content: {
@@ -75,25 +76,27 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   },
                 },
                 columns: state.columns,
-              })().then(downloadData => {
+              };
+              return clinicalDataFamily(downloadSQON).then(downloadData => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Download Report',
                   label: 'Clinical (Participant and family)',
                 });
-                return downloadData;
+                return downloadData(downloadSQON);
               });
             },
           },
           Biospecimen: {
             onSelected: async () => {
-              await downloadBiospecimen({ sqon, columns: state.columns })().then(downloadData => {
+              let downloadSQON = { sqon, columns: state.columns };
+              await downloadBiospecimen(downloadSQON).then(downloadData => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Download Report',
                   label: 'Biospecimen',
                 });
-                return downloadData;
+                return downloadData(downloadSQON);
               });
             },
           },
