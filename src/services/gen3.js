@@ -1,5 +1,3 @@
-import { setGen3Token } from 'services/ajax';
-import ajax from 'services/ajax';
 import { gen3ApiRoot } from 'common/injectGlobals';
 import { gen3OauthRedirect, gen3IntegrationRoot } from 'common/injectGlobals';
 import jwtDecode from 'jwt-decode';
@@ -11,6 +9,17 @@ const REFRESH_URL = `${`${gen3IntegrationRoot}/refresh`}`;
 const REDIRECT_URI = gen3OauthRedirect;
 const RESPONSE_TYPE = 'code';
 
+export const Gen3AuthRedirect = props => {
+  const code = new URLSearchParams(window.location.search).get('code');
+  if (code) {
+    window.top.postMessage({ type: 'OAUTH_SUCCESS', payload: code }, `${window.location.origin}`);
+  } else {
+    window.top.postMessage({ type: 'OAUTH_FAIL', payload: code }, `${window.location.origin}`);
+  }
+  window.close();
+  return null;
+};
+
 // window.open has to happen in the same synchronus callstack as the event handler,
 // so client secrets must be available at all times.
 const state = {};
@@ -18,14 +27,14 @@ fetch(CLIENT_URL)
   .then(res => res.json())
   .then(({ client_id, scope }) => {
     state.client_id = client_id;
-    state.scope = scope;
+    state.scope = `${scope}`;
   });
 
 export const connectGen3 = api => {
   const { client_id, scope } = state;
-  const authWindow = window.open(
-    `${AUTHORIZE_URL}?client_id=${client_id}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${REDIRECT_URI}`,
-  );
+  const url = `${AUTHORIZE_URL}?client_id=${client_id}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${REDIRECT_URI}`;
+  const authWindow = window.open(url);
+  console.log('url: ', url);
   window.authWindow = authWindow;
   return new Promise((resolve, reject) => {
     const state = { done: false };
@@ -91,7 +100,6 @@ export const connectGen3 = api => {
 export const getUser = async api => {
   let accessToken = await getAccessToken(api);
   const { context: { user } } = jwtDecode(accessToken);
-  console.log('user: ', user);
   return user;
 };
 
@@ -114,9 +122,15 @@ export const getAccessToken = async api => {
   return exp * 1000 > Date.now ? currentToken : await getRefreshedToken(api);
 };
 
-export const downloadFileFromGen3 = async (credentials, fileUUID) => {
-  let accessToken = await getAccessToken(credentials);
-  await setGen3Token(accessToken.data.access_token);
-  let signedUrl = await ajax.get(gen3ApiRoot + 'user/data/download/' + fileUUID);
-  return signedUrl.data.url;
+export const downloadFileFromGen3 = async ({ fileUUID, api }) => {
+  let accessToken = await getAccessToken(api);
+  const { url } = await fetch(gen3ApiRoot + 'user/data/download/' + fileUUID, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then(res => res.json());
+  if (!url) {
+    return null;
+  }
+  return url;
 };

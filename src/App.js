@@ -29,6 +29,7 @@ import logo from 'assets/logo-kids-first-data-portal-beta.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
+import { Gen3AuthRedirect } from 'services/gen3';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -162,26 +163,7 @@ const App = compose(injectState, withApi, withTheme)(
               </ApiContext.Provider>
             )}
           />
-          <Route
-            path="/gen3_redirect"
-            exact
-            render={props => {
-              const code = new URLSearchParams(window.location.search).get('code');
-              if (code) {
-                window.top.postMessage(
-                  { type: 'OAUTH_SUCCESS', payload: code },
-                  `${window.location.origin}`,
-                );
-              } else {
-                window.top.postMessage(
-                  { type: 'OAUTH_FAIL', payload: code },
-                  `${window.location.origin}`,
-                );
-              }
-              window.close();
-              return null;
-            }}
-          />
+          <Route path="/gen3_redirect" exact render={Gen3AuthRedirect} />
           <Route path="/error" exact render={props => <Error {...props} />} />
           <Redirect from="*" to="/dashboard" />
         </Switch>
