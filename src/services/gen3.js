@@ -11,8 +11,8 @@ const REFRESH_URL = `${`${gen3IntegrationRoot}/refresh`}`;
 const REDIRECT_URI = gen3OauthRedirect;
 const RESPONSE_TYPE = 'code';
 
-// window.open has to happen in the same callstack as the event handler, so
-// client secrets must be available at all times.
+// window.open has to happen in the same synchronus callstack as the event handler,
+// so client secrets must be available at all times.
 const state = {};
 fetch(CLIENT_URL)
   .then(res => res.json())
@@ -28,18 +28,24 @@ export const connectGen3 = api => {
   );
   window.authWindow = authWindow;
   return new Promise((resolve, reject) => {
+    const state = { done: false };
     const onAuthWindowMessage = e => {
-      console.log('e: ', e);
       const { data } = e;
       switch (data.type) {
         case 'OAUTH_SUCCESS':
+          clearInterval(interval);
           const code = data.payload;
-          api({
-            url: `${TOKEN_URL}/?code=${code}`,
-            method: 'POST',
-          }).then(resolve);
+          if (!state.done) {
+            api({
+              url: `${TOKEN_URL}/?code=${code}`,
+              method: 'POST',
+            }).then(resolve);
+          }
+          state.done = true;
           break;
         case `OAUTH_FAIL`:
+          clearInterval(interval);
+          state.done = true;
           reject(data);
           break;
         default:
@@ -47,19 +53,20 @@ export const connectGen3 = api => {
       }
     };
 
-    // the NIH's login screen enforces same origin, so this function reattemps on failure
-    // until the redirec screen is reached
-    const attachListener = () => {
+    // The NIH's login screen enforces same origin, so this interval ensures that
+    // the event handler is attached. It gets detached on every reload so an interval
+    // is the safest way...
+    const interval = setInterval(() => {
       try {
-        authWindow.onmessage = onAuthWindowMessage;
+        if (!authWindow.closed) {
+          authWindow.onmessage = onAuthWindowMessage;
+        } else {
+          clearInterval(interval);
+        }
       } catch (err) {
         console.log('err: ', err);
-        setTimeout(function() {
-          attachListener();
-        }, 500);
       }
-    };
-    attachListener();
+    }, 200);
   });
 };
 
@@ -78,21 +85,6 @@ export const connectGen3 = api => {
       "phs001110": [
         "read-storage"
       ],
-      "drc_test": [
-        "read-storage"
-      ],
-      "SD_BHJXBDQK": [
-        "read-storage"
-      ],
-      "phs001168": [
-        "read-storage"
-      ],
-      "phs001420": [
-        "read-storage"
-      ],
-      "phs001228": [
-        "read-storage"
-      ]
     }
   }
 */

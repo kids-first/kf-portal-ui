@@ -178,7 +178,7 @@ const App = compose(injectState, withApi, withTheme)(
                   `${window.location.origin}`,
                 );
               }
-              // window.close();
+              window.close();
               return null;
             }}
           />
