@@ -47,15 +47,9 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           unconnectedMsg={
             <div>
               Connect to{' '}
-              <ExternalLink
-                href={gen3WebRoot}
-                hasExternalIcon={false}
-                css={`
-                  color: #a42c90;
-                `}
-              >
-                Gen3
-              </ExternalLink>{' '}
+              <Link to={`/user/${loggedInUser.egoId}#settings`}>
+                <ExternalLink>Gen3</ExternalLink>
+              </Link>{' '}
               to download controlled data
             </div>
           }
