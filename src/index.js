@@ -7,6 +7,8 @@ import googleSDK from 'services/googleSDK';
 import facebookSDK from 'services/facebookSDK';
 import { initAnalyticsTracking } from 'services/analyticsTracking';
 import { init as initUsersnap } from 'services/usersnap';
+import { maintenanceMode } from 'common/injectGlobals';
+import MaintenancePage from './MaintenancePage';
 
 import './i18n';
 
@@ -19,7 +21,11 @@ const render = Component => {
   ReactDOM.render(<Component />, getAppElement());
 };
 
-render(App);
+if (!maintenanceMode) {
+  render(App);
+} else {
+  render(MaintenancePage);
+}
 
 navigator.serviceWorker.getRegistrations().then(registrations => {
   registrations.forEach(r => r.unregister());
