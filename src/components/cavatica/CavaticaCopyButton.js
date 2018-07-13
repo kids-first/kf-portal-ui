@@ -55,7 +55,7 @@ const CavaticaCopyButton = compose(injectState, withTheme)(
     const connected = state.integrationTokens[CAVATICA];
     const clickAction = connected ? showCopyModal : showConnectModal;
     return (
-      <BigWhiteButton onClick={() => clickAction({ effects, props })}>
+      <BigWhiteButton disabled onClick={() => clickAction({ effects, props })}>
         <ButtonContent>
           <CavaticaLogo alt="" src={cavaticaLogo} />
           Copy files to Cavatica project
