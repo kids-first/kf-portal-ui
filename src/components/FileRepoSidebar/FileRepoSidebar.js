@@ -121,7 +121,7 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             <Heading>
               <Trans>Data Analysis</Trans>
             </Heading>
-            <CavaticaCopyButton {...props} />
+            <CavaticaCopyButton disabled={!props.selectedTableRows.length} {...props} />
           </Section>
         </Content>
       </Container>
