@@ -120,7 +120,7 @@ export const getAccessToken = async api => {
     url: `${TOKEN_URL}`,
   }).then(({ access_token }) => access_token);
   const { exp } = jwtDecode(currentToken);
-  return exp * 1000 > Date.now ? currentToken : await getRefreshedToken(api);
+  return exp * 1000 > Date.now() ? currentToken : await getRefreshedToken(api);
 };
 
 export const downloadFileFromGen3 = async ({ fileUUID, api }) => {
