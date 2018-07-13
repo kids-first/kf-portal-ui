@@ -112,7 +112,15 @@ const getRefreshedToken = async api =>
   api({
     method: 'POST',
     url: REFRESH_URL,
-  }).then(({ access_token }) => access_token);
+  })
+    .then(data => {
+      if (data.access_token) {
+        return data;
+      } else {
+        return connectGen3(api);
+      }
+    })
+    .then(({ access_token }) => access_token);
 
 export const getAccessToken = async api => {
   const currentToken = await api({
