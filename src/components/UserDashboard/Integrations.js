@@ -38,7 +38,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 260px;
         `}
       >
-        <H4>Download Controlled Data</H4>
+        <H4>Access Controlled Data</H4>
         <IntegrationsStatus
           connected={integrationTokens[GEN3]}
           theme={theme}
@@ -48,7 +48,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
             <div>
               Connect to{' '}
               <Link to={`/user/${loggedInUser.egoId}#settings`}>
-                <ExternalLink>Gen3</ExternalLink>
+                <ExternalLink hasExternalIcon={false}>Gen3</ExternalLink>
               </Link>{' '}
               to download controlled data
             </div>
