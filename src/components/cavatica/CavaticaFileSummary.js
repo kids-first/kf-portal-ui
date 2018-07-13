@@ -32,9 +32,7 @@ const enhance = compose(
 
       // Get Gen3 permissions
       const userDetails = await getGen3User(api);
-      const approvedStudies = Object.keys(userDetails.data.project_access).sort();
-      console.log({ approvedStudies });
-
+      const approvedStudies = Object.keys(userDetails.projects).sort();
       // Get count of each study amongst files
       const counts = {};
       const studies = {};
