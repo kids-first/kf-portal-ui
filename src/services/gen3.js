@@ -34,7 +34,6 @@ export const connectGen3 = api => {
   const { client_id, scope } = state;
   const url = `${AUTHORIZE_URL}?client_id=${client_id}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${REDIRECT_URI}`;
   const authWindow = window.open(url);
-  console.log('url: ', url);
   window.authWindow = authWindow;
   return new Promise((resolve, reject) => {
     const state = { done: false };
