@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
-import { GEN3 } from 'common/constants';
 import { getUser as getGen3User } from 'services/gen3';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
+
+import { withApi } from 'services/api';
+import { LoadingSpinner } from './UserIntegrations';
+import Row from 'uikit/Row';
 
 const styles = css`
   table {
@@ -23,20 +26,18 @@ const enhance = compose(
   withTheme,
   withState('gen3Key', 'setGen3Key', undefined),
   withState('userDetails', 'setUserDetails', {}),
+  withState('loading', 'setLoading', false),
+  withApi,
   lifecycle({
     async componentDidMount() {
-      const { setUserDetails } = this.props;
-      let userDetails = await getUserInfo({
-        integrationToken: this.props.state.integrationTokens[GEN3],
-      });
-      setUserDetails(userDetails.data);
+      const { setUserDetails, api, setLoading } = this.props;
+      setLoading(true);
+      let userDetails = await getGen3User(api);
+      setLoading(false);
+      setUserDetails(userDetails);
     },
   }),
 );
-
-const getUserInfo = async ({ integrationToken }) => {
-  return await getGen3User(integrationToken);
-};
 
 const Gen3ConnectionDetails = ({
   state,
@@ -44,10 +45,15 @@ const Gen3ConnectionDetails = ({
   theme,
   userDetails,
   setUserDetails,
+  loading,
   ...props
-}) => {
-  return (
-    <div css={styles}>
+}) => (
+  <div css={styles}>
+    {loading ? (
+      <Row justifyContent={'center'}>
+        <LoadingSpinner width={20} height={20} />
+      </Row>
+    ) : (
       <table>
         <tr>
           <div
@@ -57,15 +63,15 @@ const Gen3ConnectionDetails = ({
             `}
           >
             <CheckIcon size={20} />
-            <span> Connected account: {userDetails.username}</span>
+            <span> Connected account: {userDetails.name}</span>
           </div>
         </tr>
         <tr>
           <span className="title"> You can download data from these studies:</span>
         </tr>
         <ul>
-          {userDetails.project_access ? (
-            Object.keys(userDetails.project_access).map(projectName => (
+          {userDetails.projects ? (
+            Object.keys(userDetails.projects).map(projectName => (
               <li>
                 <span>{projectName}</span>
               </li>
@@ -75,8 +81,8 @@ const Gen3ConnectionDetails = ({
           )}
         </ul>
       </table>
-    </div>
-  );
-};
+    )}
+  </div>
+);
 
 export default enhance(Gen3ConnectionDetails);
