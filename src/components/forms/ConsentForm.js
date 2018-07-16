@@ -118,10 +118,9 @@ const Consent = compose(
           <p>
             If you have any questions about these terms, conditions or the practices of this site or
             any of the other Services, please contact us at{' '}
-            <ExternalLink href="https://kidsfirstdrc.org/policies/">
-              https://kidsfirstdrc.org/policies/
-            </ExternalLink>
-            . The full list of Kids first DRC policies are located at{' '}
+            <ExternalLink hasExternalIcon={false} href="support@kidsfirstdrc.org">
+              support@kidsfirstdrc.org
+            </ExternalLink>. The full list of Kids first DRC policies are located at{' '}
             <ExternalLink href="https://kidsfirstdrc.org/policies/">
               https://kidsfirstdrc.org/policies/
             </ExternalLink>.
