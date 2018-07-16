@@ -17,7 +17,7 @@ import Component from 'react-component-component';
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import LoadingOnClick from 'components/LoadingOnClick';
-import { connectGen3 } from 'services/gen3';
+import { connectGen3, getAccessToken } from 'services/gen3';
 import { withApi } from 'services/api';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
@@ -181,8 +181,9 @@ const UserIntegrations = withApi(
                           onClick={() => {
                             setState({ loading: true });
                             connectGen3(api)
-                              .then(data => {
-                                effects.setIntegrationToken(GEN3, 'CONNECTED');
+                              .then(() => getAccessToken(api))
+                              .then(token => {
+                                effects.setIntegrationToken(GEN3, token);
                                 setState({ loading: false });
                               })
                               .catch(err => {
