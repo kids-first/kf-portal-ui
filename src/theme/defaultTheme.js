@@ -319,7 +319,6 @@ const components = {
     min-width: 0;
     padding: 6px 12px;
     font-size: 14px;
-    line-height: 1.42857143;
     background-color: #fff;
     border: 1px solid ${colors.greyScale4};
     border-radius: 10px;
