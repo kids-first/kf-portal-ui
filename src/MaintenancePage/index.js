@@ -92,7 +92,7 @@ const Container = styled('div')`
 
 export default () => (
   <Container>
-    <img class="background-img" src={backgroundScene} />
+    <img class="background-img" src={backgroundScene} alt="background" />
 
     <div class="content-container">
       <a href="http://www.kidsfirstdrc.org">

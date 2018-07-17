@@ -64,3 +64,38 @@ export const FACEBOOK = 'facebook';
 export const UI_VERSION = packageJson.version;
 
 export const EGO_JWT_KEY = 'EGO_JWT';
+
+export const DISEASE_AREAS = [
+  'Patients with both childhood cancer and birth defects',
+  'Childhood cancer',
+  'Cancer',
+  'Adolescent Idiopathic Scoliosis',
+  'Cancer Susceptibility',
+  'Congenital Diaphragmatic Hernia',
+  'Craniofacial Microsomia',
+  'Disorders of Sex Development',
+  'Enchondromatosis',
+  'Ewing Sarcoma',
+  'Familial Leukemia',
+  'Hearing Loss',
+  'Infantile Hemangiomas',
+  'Neuroblastomas',
+  'Nonsyndromic Craniosynostosis',
+  'Orofacial Clefts',
+  'Osteosarcoma',
+  'Structural Heart & Other Defects',
+  'Syndromic Cranial Dysinnervation Disorders',
+  'CBTTC/PNOC Brain Tumor Dataset',
+];
+
+export const STUDY_SHORT_NAMES = [
+'Orofacial Cleft: European Ancestry',
+'Neuroblastoma Initiation and Progressio ',
+'Orofacial Cleft: Latin America ',
+'Disorders of Sex Developmen ',
+'Adolescent Idiopathic Scoliosi ',
+'Congenital Heart Defect ',
+'Pediatric Brain Tumors: CBTT ',
+'Ewing Sarcoma: Genetic Ris ',
+'Congenital Diaphragmatic Herni ',
+];
