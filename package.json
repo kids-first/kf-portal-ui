@@ -53,7 +53,8 @@
     "scriptjs": "^2.5.8",
     "styled-system": "^2.2.5",
     "url-join": "^2.0.2",
-    "victory-pie": "^14.0.1"
+    "victory-pie": "^14.0.1",
+    "yup": "^0.25.1"
   },
   "scripts": {
     "start": "NODE_PATH=src react-app-rewired start",

@@ -3,8 +3,9 @@ import { compose } from 'recompose';
 import styled from 'react-emotion';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import { withTheme } from 'emotion-theming';
+import { ModalActionButton } from '../../Modal';
 
-import { Flex } from 'uikit/Core';
+import { Flex, Box, Section } from 'uikit/Core';
 
 export const Container = styled(Flex)`
   height: 100%;
@@ -82,3 +83,22 @@ export const NavItem = x => (
     <NavLink {...x} />
   </li>
 );
+
+export const SaveButton = styled(ModalActionButton)``;
+
+export const StyledSection = styled(Section)`
+  padding: 5px 0;
+  margin-top: 25px;
+`;
+
+export const ClickToAdd = styled('a')`
+  font-size: 12px;
+  text-decoration: underline;
+  color: ${({ theme }) => theme.primary};
+`;
+
+export const InterestsCard = styled(Box)`
+  border-radius: 5px;
+  box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
+  margin-bottom: 15px;
+`;
