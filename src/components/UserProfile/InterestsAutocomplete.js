@@ -15,10 +15,14 @@ const InterestsAutocompleteContainer = styled('div')`
 `;
 
 const AutocompleteInput = styled('input')`
-  width: 100%;
+  position: relative;
+  white-space: nowrap;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.white};
+  border: solid 1px ${({ theme }) => theme.borderGrey};
+  align-items: center;
   padding: 7px;
-  border-radius: 7px;
-  border: 1px solid ${({ theme }) => theme.greyScale8};
+  width: 100%;
 `;
 
 const DropdownMenu = styled('div')`

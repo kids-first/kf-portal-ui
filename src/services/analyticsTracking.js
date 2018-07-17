@@ -180,5 +180,12 @@ export const trackExternalLink = url => {
   ReactGA.outboundLink({ label: url }, () => {});
 };
 
+export const trackProfileInteraction = ({ action, value, type }) =>
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.user.profile,
+    action: `${type || ''} Edit: ${value ? `open` : `close`}`,
+    label: action,
+  });
+
 // track page views
 history.listen(({ pathname, search, hash }, action) => trackPageView(pathname + hash + search));

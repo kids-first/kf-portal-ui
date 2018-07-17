@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { injectState } from 'freactal';
 import { compose, withState } from 'recompose';
@@ -10,6 +10,8 @@ import scriptjs from 'scriptjs';
 
 import styled, { css } from 'react-emotion';
 
+import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 import { ROLES } from 'common/constants';
 import { googleMapsKey } from 'common/injectGlobals';
 import { updateProfile } from 'services/profiles';
@@ -22,10 +24,10 @@ import Gravtar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
+import { Box } from 'uikit/Core';
 
 const labelStyle = `
   font-size: 14px;
-  line-height: 2;
   letter-spacing: 0.2px;
   text-align: left;
   font-weight: 900;
@@ -34,6 +36,21 @@ const labelStyle = `
 const StyledLabel = styled('label')`
   ${labelStyle};
   color: ${({ theme }) => theme.greyScale1};
+`;
+
+const AddressBox = styled(Box)`
+  background: ${({ theme }) => theme.tertiaryBackground};
+  padding: 20px;
+  margin: 10px 0 10px 0;
+  border-left: 4px solid ${({ theme }) => theme.primary};
+`;
+
+const AddressRow = styled(Row)`
+  justify-content: space-between;
+`;
+
+const FormItem = styled(Column)`
+  padding: 5px 0 5px;
 `;
 
 class WrappedPlacesAutocomplete extends React.Component {
@@ -64,23 +81,26 @@ export default compose(
   withTheme,
   injectState,
   withState('location', 'setLocation', ({ state: { loggedInUser } }) => {
-    const places = [loggedInUser.city, loggedInUser.state, loggedInUser.country];
-    return places.filter(Boolean).join(', ');
+    const places = [
+      loggedInUser.addressLine1,
+      loggedInUser.city,
+      loggedInUser.state,
+      loggedInUser.country,
+    ];
+    return places.filter(place => place.length).join(', ');
   }),
   withFormik({
     mapPropsToValues: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
     }) => ({
-      title: loggedInUser.title || '',
-      firstName: loggedInUser.firstName || '',
-      lastName: loggedInUser.lastName || '',
-      email: loggedInUser.email || '',
-      jobTitle: loggedInUser.jobTitle || '',
-      institution: loggedInUser.institution || '',
+      ...Object.entries(loggedInUser).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key]: value ? value : '',
+        }),
+        {},
+      ),
       roles: (loggedInUser.roles && loggedInUser.roles[0]) || '',
-      city: loggedInUser.city || '',
-      country: loggedInUser.country || '',
-      state: loggedInUser.state || '',
     }),
     isInitialValid: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
@@ -157,7 +177,7 @@ export default compose(
     location,
     setLocation,
   }) => (
-    <div>
+    <Fragment>
       <div
         css={`
           ${theme.row};
@@ -190,76 +210,82 @@ export default compose(
         <form
           onSubmit={handleSubmit}
           css={`
-            ${theme.column} justify-content: space-around;
             padding-left: 30px;
+            padding-right: 30px;
             width: 100%;
+            overflow-y: scroll;
           `}
         >
           <div
             css={`
-              ${theme.row} align-self: flex-end;
-              position: absolute;
-              top: 0px;
+              ${theme.row};
+              justify-content: space-between;
             `}
           >
-            <div
-              className={`${theme.column} ${css`
-                justify-content: center;
-              `}`}
-            >
-              <StyledLabel>Role: </StyledLabel>
-            </div>
-            {get(
-              ROLES.reduce(
-                (acc, { type, icon, color }) => ({
-                  ...acc,
-                  [type]: icon({
-                    height: '45px',
-                    className: css`
-                      margin: 5px 5px 5px 5px;
-                    `,
-                    fill: color,
-                  }),
-                }),
-                {},
-              ),
-              values.roles,
-            )}
-            <div
-              className={`${theme.column} ${css`
-                justify-content: center;
-              `}`}
-            >
-              <Field
-                component="select"
-                name="roles"
-                defaultValue={values.roles}
-                className={`${css`
-                  ${labelStyle};
-                  color: ${theme.secondary};
-                `} ${theme.hollowSelect}`}
-              >
-                {ROLES.map(({ type, displayName }) => (
-                  <option value={type} key={type}>
-                    {displayName}
-                  </option>
-                ))}
+            <FormItem>
+              <StyledLabel>Title:</StyledLabel>
+              <Field component="select" name="title" css={theme.select}>
+                <option value="" selected disabled hidden>
+                  -- select an option --
+                </option>
+                <option value="mr">Mr.</option>
+                <option value="ms">Ms.</option>
+                <option value="mrs">Mrs.</option>
+                <option value="dr">Dr.</option>
               </Field>
+            </FormItem>
+            <div
+              css={`
+                ${theme.row} align-self: flex-end;
+              `}
+            >
+              <div
+                className={`${theme.column} ${css`
+                  justify-content: center;
+                `}`}
+              >
+                <StyledLabel>Profile Type: </StyledLabel>
+              </div>
+              {get(
+                ROLES.reduce(
+                  (acc, { type, icon, color }) => ({
+                    ...acc,
+                    [type]: icon({
+                      height: '45px',
+                      className: css`
+                        margin: 5px 5px 5px 5px;
+                      `,
+                      fill: color,
+                    }),
+                  }),
+                  {},
+                ),
+                values.roles,
+              )}
+              <div
+                className={`${theme.column} ${css`
+                  justify-content: center;
+                `}`}
+              >
+                <Field
+                  component="select"
+                  name="roles"
+                  defaultValue={values.roles}
+                  className={`${css`
+                    ${labelStyle};
+                    color: ${theme.secondary};
+                  `} ${theme.hollowSelect}`}
+                >
+                  {ROLES.map(({ type, displayName }) => (
+                    <option value={type} key={type}>
+                      {displayName}
+                    </option>
+                  ))}
+                </Field>
+              </div>
             </div>
           </div>
-          <div css={theme.column}>
-            <StyledLabel>Title :</StyledLabel>
-            <Field component="select" name="title" css={theme.select}>
-              <option value="" selected disabled hidden>
-                -- select an option --
-              </option>
-              <option value="mr">Mr.</option>
-              <option value="ms">Ms.</option>
-              <option value="mrs">Mrs.</option>
-              <option value="dr">Dr.</option>
-            </Field>
-          </div>
-          <div css={theme.column}>
+          <FormItem>
             <StyledLabel>First Name:</StyledLabel>
             <Field
               css={`
@@ -271,8 +297,8 @@ export default compose(
               value={values.firstName}
             />
             {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
-          </div>
-          <div css={theme.column}>
+          </FormItem>
+          <FormItem>
             <StyledLabel>Last Name:</StyledLabel>
             <Field
               css={`
@@ -284,10 +310,10 @@ export default compose(
               value={values.lastName}
             />
             {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
-          </div>
+          </FormItem>
           {values.roles === 'research' && (
-            <div css={theme.column} key="jobTitle">
-              <StyledLabel>Job Title/Role:</StyledLabel>
+            <FormItem>
+              <StyledLabel>Title/Role:</StyledLabel>
               <Field
                 css={`
                   ${theme.input};
@@ -297,10 +323,10 @@ export default compose(
                 placeholder="Job Title/Role"
                 value={values.jobTitle}
               />
-            </div>
+            </FormItem>
           )}
           {['research', 'community'].includes(values.roles) && (
-            <div css={theme.column} key="institution">
+            <FormItem>
               {values.roles === 'research' && <StyledLabel>Institution:</StyledLabel>}
               {values.roles === 'community' && <StyledLabel>Organization:</StyledLabel>}
               <Field
@@ -312,10 +338,56 @@ export default compose(
                 placeholder={values.roles === 'research' ? 'Institution' : 'Organization'}
                 value={values.institution}
               />
-            </div>
+            </FormItem>
           )}
-          <div>
-            <StyledLabel>Location:</StyledLabel>
+          <FormItem>
+            <StyledLabel>Suborganization/Department:</StyledLabel>
+            <Field
+              css={`
+                ${theme.input};
+                width: 90%;
+              `}
+              name="department"
+              value={values.department}
+            />
+          </FormItem>
+          <FormItem>
+            <StyledLabel>Institutional Email Address</StyledLabel>
+            <Field
+              css={`
+                ${theme.input};
+                width: 90%;
+              `}
+              name="institutionalEmail"
+              value={values.institutionalEmail}
+            />
+          </FormItem>
+          <FormItem>
+            <StyledLabel>Phone:</StyledLabel>
+            <Field
+              css={`
+                ${theme.input};
+                width: 90%;
+              `}
+              name="phone"
+              placeholder="e.g. +1-555-5555"
+              value={values.phone}
+            />
+          </FormItem>
+          <FormItem>
+            <StyledLabel>ERA Commons ID:</StyledLabel>
+            <Field
+              css={`
+                ${theme.input};
+                width: 90%;
+              `}
+              name="eraCommonsID"
+              placeholder=""
+              value={values.eraCommonsID}
+            />
+          </FormItem>
+          <FormItem>
+            <StyledLabel>Search Location:</StyledLabel>
             <WrappedPlacesAutocomplete
               inputProps={{
                 value: location,
@@ -338,26 +410,120 @@ export default compose(
                 setLocation(address);
                 geocodeByPlaceId(placeID)
                   .then(results => {
-                    const country = results[0].address_components.find(c =>
+                    const defaultObject = { long_name: ''};
+                    const country = (results[0].address_components.find(c =>
                       c.types.includes('country'),
-                    ).long_name;
-                    const administrative_area_level_1 = results[0].address_components.find(c =>
+                    ) || defaultObject).long_name;
+                    const administrative_area_level_1 = (results[0].address_components.find(c =>
                       c.types.includes('administrative_area_level_1'),
-                    ).long_name;
-                    const locality = results[0].address_components.find(c =>
+                    ) || defaultObject).long_name;
+                    const locality = (results[0].address_components.find(c =>
                       c.types.includes('locality'),
-                    ).long_name;
+                    )|| defaultObject).long_name;
+                    const streetNumber = (results[0].address_components.find(c =>
+                      c.types.includes('street_number'),
+                    ) || defaultObject).long_name;
+                    const route = (results[0].address_components.find(c => c.types.includes('route'))
+                    || defaultObject).long_name;
+                    const zip = (results[0].address_components.find(
+                      c => c.types.includes('zip') || c.types.includes('postal_code'),
+                    )|| defaultObject).long_name;
+                    setFieldValue('addressLine1', `${streetNumber} ${route}`);
                     setFieldValue('country', country);
                     setFieldValue('state', administrative_area_level_1);
                     setFieldValue('city', locality);
+                    setFieldValue('zip', zip);
                   })
                   .catch(error => console.error(error));
               }}
             />
-          </div>
+          </FormItem>
+          <AddressBox>
+            <AddressRow>
+              <div
+                css={`
+                  width: 48%;
+                `}
+              >
+                <StyledLabel>Address Line 1:</StyledLabel>
+                <Field
+                  css={`
+                    ${theme.input};
+                  `}
+                  name="addressLine1"
+                  value={values.addressLine1}
+                />
+              </div>
+              <div
+                css={`
+                  width: 48%;
+                `}
+              >
+                <StyledLabel>Address Line 2:</StyledLabel>
+                <Field
+                  css={`
+                    ${theme.input};
+                  `}
+                  name="addressLine2"
+                  value={values.addressLine2}
+                />
+              </div>
+            </AddressRow>
+            <AddressRow>
+              <div>
+                <StyledLabel>City</StyledLabel>
+                <Field
+                  css={`
+                    ${theme.input};
+                    width: 90%;
+                  `}
+                  name="city"
+                  value={values.city}
+                />
+              </div>
+              <div>
+                <StyledLabel>State/Province:</StyledLabel>
+                <Field
+                  css={`
+                    ${theme.input};
+                    width: 90%;
+                  `}
+                  name="city"
+                  value={values.state}
+                />
+              </div>
+              <div>
+                <StyledLabel>Zip/Postal Code:</StyledLabel>
+                <Field
+                  css={`
+                    ${theme.input};
+                    width: 90%;
+                  `}
+                  name="zip"
+                  value={values.zip}
+                />
+              </div>
+            </AddressRow>
+            <AddressRow>
+              <div
+                css={`
+                  width: 100%;
+                `}
+              >
+                <StyledLabel>Country:</StyledLabel>
+                <Field
+                  css={`
+                    ${theme.input};
+                  `}
+                  name="zip"
+                  value={values.country}
+                />
+              </div>
+            </AddressRow>
+          </AddressBox>
         </form>
       </div>
       <ModalFooter {...{ unsetModal, handleSubmit }} />
-    </div>
+    </Fragment>
   ),
 );
