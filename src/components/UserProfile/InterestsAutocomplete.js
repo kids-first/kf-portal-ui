@@ -20,10 +20,8 @@ const AutocompleteInput = styled('input')`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.white};
   border: solid 1px ${({ theme }) => theme.borderGrey};
-  color: ${({ theme }) => theme.greyScale1};
-  font-size: 12px;
   align-items: center;
-  padding: 5px;
+  padding: 7px;
   width: 100%;
 `;
 

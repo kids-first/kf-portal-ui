@@ -87,3 +87,15 @@ export const DISEASE_AREAS = [
   'Syndromic Cranial Dysinnervation Disorders',
   'CBTTC/PNOC Brain Tumor Dataset',
 ];
+
+export const STUDY_SHORT_NAMES = [
+'Orofacial Cleft: European Ancestry',
+'Neuroblastoma Initiation and Progressio ',
+'Orofacial Cleft: Latin America ',
+'Disorders of Sex Developmen ',
+'Adolescent Idiopathic Scoliosi ',
+'Congenital Heart Defect ',
+'Pediatric Brain Tumors: CBTT ',
+'Ewing Sarcoma: Genetic Ris ',
+'Congenital Diaphragmatic Herni ',
+];

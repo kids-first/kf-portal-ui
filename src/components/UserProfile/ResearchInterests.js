@@ -1,12 +1,10 @@
 import React from 'react';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import styled from 'react-emotion';
-import { xor, get } from 'lodash';
-import Query from '@arranger/components/dist/Query';
-import { arrangerProjectId } from 'common/injectGlobals';
+import { xor } from 'lodash';
 
 import { withApi } from 'services/api';
-import { DISEASE_AREAS } from 'common/constants';
+import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { EditButton, H2, H4, SaveButton, ClickToAdd, InterestsCard } from './ui';
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
@@ -147,54 +145,25 @@ export default compose(
               ))}
             </select>
             <InterestsLabel>Kids First Studies:</InterestsLabel>
-            <Query
-              renderError
-              shouldFetch={true}
-              api={api}
-              projectId={arrangerProjectId}
-              name={`studiesQuery`}
-              query={`
-              query {
-                file {
-                  aggregations {
-                    participants__study__short_name {
-                      buckets {
-                        key
-                      }
-                    }
-                  }
-                }
-              }`}
-              variables={{}}
-              render={({ loading, data }) =>
-                loading ? (
-                  <div>...loading</div>
-                ) : (
-                  <select
-                    css={`
-                      ${theme.select} ${theme.input};
-                    `}
-                    onChange={e => {
-                      setInterests([...interests, e.target.value]);
-                    }}
-                    value=""
-                  >
-                    <option value="" disabled selected>
-                      -- Select an option --
-                    </option>
-                    {get(data, 'file.aggregations.participants__study__short_name.buckets', [])
-                      .map(({ key }) => key)
-                      .filter(study => !interests.includes(study))
-                      .map(study => (
-                        <option value={study} key={study}>
-                          {study}
-                        </option>
-                      ))}
-                    >
-                  </select>
-                )
-              }
-            />
+            <select
+              css={`
+                ${theme.select} ${theme.input};
+              `}
+              onChange={e => {
+                setInterests([...interests, e.target.value]);
+              }}
+              value=""
+            >
+              <option value="" disabled selected>
+                -- Select an option --
+              </option>
+              {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
+                <option value={study} key={study}>
+                  {study}
+                </option>
+              ))}
+              >
+            </select>
             <InterestsLabel>Other areas of interest:</InterestsLabel>
             <InterestsAutocomplete {...{ interests, setInterests }} />
           </InterestsContainer>
