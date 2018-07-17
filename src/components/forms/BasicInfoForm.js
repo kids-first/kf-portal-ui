@@ -87,7 +87,7 @@ export default compose(
       loggedInUser.state,
       loggedInUser.country,
     ];
-    return places.filter(Boolean).join(', ');
+    return places.filter(place => place.length).join(', ');
   }),
   withFormik({
     mapPropsToValues: ({
@@ -410,23 +410,24 @@ export default compose(
                 setLocation(address);
                 geocodeByPlaceId(placeID)
                   .then(results => {
-                    const country = results[0].address_components.find(c =>
+                    const defaultObject = { long_name: ''};
+                    const country = (results[0].address_components.find(c =>
                       c.types.includes('country'),
-                    ).long_name;
-                    const administrative_area_level_1 = results[0].address_components.find(c =>
+                    ) || defaultObject).long_name;
+                    const administrative_area_level_1 = (results[0].address_components.find(c =>
                       c.types.includes('administrative_area_level_1'),
-                    ).long_name;
-                    const locality = results[0].address_components.find(c =>
+                    ) || defaultObject).long_name;
+                    const locality = (results[0].address_components.find(c =>
                       c.types.includes('locality'),
-                    ).long_name;
-                    const streetNumber = results[0].address_components.find(c =>
+                    )|| defaultObject).long_name;
+                    const streetNumber = (results[0].address_components.find(c =>
                       c.types.includes('street_number'),
-                    ).long_name;
-                    const route = results[0].address_components.find(c => c.types.includes('route'))
-                      .long_name;
-                    const zip = results[0].address_components.find(
+                    ) || defaultObject).long_name;
+                    const route = (results[0].address_components.find(c => c.types.includes('route'))
+                    || defaultObject).long_name;
+                    const zip = (results[0].address_components.find(
                       c => c.types.includes('zip') || c.types.includes('postal_code'),
-                    ).long_name;
+                    )|| defaultObject).long_name;
                     setFieldValue('addressLine1', `${streetNumber} ${route}`);
                     setFieldValue('country', country);
                     setFieldValue('state', administrative_area_level_1);
