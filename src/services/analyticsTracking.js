@@ -10,9 +10,10 @@ if (devDebug && devTrackingID) {
 }
 let GAState = {
   trackingId: devDebug || devTrackingID ? devTrackingID || gaTrackingID : gaTrackingID,
-  userId: null,
-  userRoles: null,
-  clientId: null,
+  userId: null, //int
+  userRoles: null, //string
+  clientId: null, //string
+  egoGroups: null, // array?
 };
 let timingsStorage = window.localStorage;
 
@@ -82,7 +83,7 @@ export const initAnalyticsTracking = () => {
   });
 };
 
-const setUserDimensions = (userId, role) => {
+const setUserDimensions = (userId, role, groups) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
     ReactGA.set({ userId: userId || GAState.userId });
@@ -90,9 +91,16 @@ const setUserDimensions = (userId, role) => {
     ReactGA.set({ dimension1: userId || GAState.userId });
   }
   if (role || GAState.userRoles) {
-    // GA Custom Dimension:index 2: userRole (current selected profile role)
+    // GA Custom Dimension:index 2: userRole (current selected profi;le role)
     // ReactGA.set({ userRole: role || GAState.userRoles[0] });
     ReactGA.set({ dimension2: role || GAState.userRoles[0] });
+  }
+
+  if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
+    let _groups = JSON.stringify({ egoGroups: groups || GAState.egoGroups });
+    // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
+    // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
+    ReactGA.set({ dimension4: _groups });
   }
 };
 
@@ -100,11 +108,11 @@ export const addStateInfo = obj => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => {
+export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGroups }) => {
   let userId = egoId;
   if (acceptedTerms && !GAState.userId) {
-    addStateInfo({ userId, personaId: _id, userRoles: roles });
-    setUserDimensions(userId, roles[0]);
+    addStateInfo({ userId, personaId: _id, userRoles: roles, egoGroups });
+    setUserDimensions(userId, roles[0], egoGroups);
     return true;
   } else {
     return false;
