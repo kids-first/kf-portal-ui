@@ -82,10 +82,10 @@ export default compose(
   injectState,
   withState('location', 'setLocation', ({ state: { loggedInUser } }) => {
     const places = [
-      loggedInUser.addressLine1,
-      loggedInUser.city,
-      loggedInUser.state,
-      loggedInUser.country,
+      loggedInUser.addressLine1 || '',
+      loggedInUser.city || '',
+      loggedInUser.state || '',
+      loggedInUser.country || '',
     ];
     return places.filter(place => place.length).join(', ');
   }),
@@ -410,24 +410,33 @@ export default compose(
                 setLocation(address);
                 geocodeByPlaceId(placeID)
                   .then(results => {
-                    const defaultObject = { long_name: ''};
-                    const country = (results[0].address_components.find(c =>
-                      c.types.includes('country'),
-                    ) || defaultObject).long_name;
-                    const administrative_area_level_1 = (results[0].address_components.find(c =>
-                      c.types.includes('administrative_area_level_1'),
-                    ) || defaultObject).long_name;
-                    const locality = (results[0].address_components.find(c =>
-                      c.types.includes('locality'),
-                    )|| defaultObject).long_name;
-                    const streetNumber = (results[0].address_components.find(c =>
-                      c.types.includes('street_number'),
-                    ) || defaultObject).long_name;
-                    const route = (results[0].address_components.find(c => c.types.includes('route'))
-                    || defaultObject).long_name;
-                    const zip = (results[0].address_components.find(
-                      c => c.types.includes('zip') || c.types.includes('postal_code'),
-                    )|| defaultObject).long_name;
+                    const defaultObject = { long_name: '' };
+                    const country = (
+                      results[0].address_components.find(c => c.types.includes('country')) ||
+                      defaultObject
+                    ).long_name;
+                    const administrative_area_level_1 = (
+                      results[0].address_components.find(c =>
+                        c.types.includes('administrative_area_level_1'),
+                      ) || defaultObject
+                    ).long_name;
+                    const locality = (
+                      results[0].address_components.find(c => c.types.includes('locality')) ||
+                      defaultObject
+                    ).long_name;
+                    const streetNumber = (
+                      results[0].address_components.find(c => c.types.includes('street_number')) ||
+                      defaultObject
+                    ).long_name;
+                    const route = (
+                      results[0].address_components.find(c => c.types.includes('route')) ||
+                      defaultObject
+                    ).long_name;
+                    const zip = (
+                      results[0].address_components.find(
+                        c => c.types.includes('zip') || c.types.includes('postal_code'),
+                      ) || defaultObject
+                    ).long_name;
                     setFieldValue('addressLine1', `${streetNumber} ${route}`);
                     setFieldValue('country', country);
                     setFieldValue('state', administrative_area_level_1);
@@ -488,7 +497,7 @@ export default compose(
                     ${theme.input};
                     width: 90%;
                   `}
-                  name="city"
+                  name="state"
                   value={values.state}
                 />
               </div>
@@ -515,7 +524,7 @@ export default compose(
                   css={`
                     ${theme.input};
                   `}
-                  name="zip"
+                  name="country"
                   value={values.country}
                 />
               </div>
