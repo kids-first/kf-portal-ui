@@ -1,11 +1,104 @@
 {
+  "Join Kids First Data Resource Portal": "Join Kids First Data Resource Portal",
+  "We're currently in <1>beta phase</1> for the Kids First DRP": {
+    " We're looking for your input so we can build a data portal that better meets your needs": {
+      " Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst": {
+        "org </5>": "We're currently in <1>beta phase</1> for the Kids First DRP. We're looking for your input so we can build a data portal that better meets your needs. Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst.org </5>"
+      }
+    }
+  },
+  "join": {
+    "wizard": {
+      "socialSelect": "Select a way to connect to the Kids First Data Resource Portal",
+      "dataConfidentiality": "Your information will be kept confidential and secure and is not shared with any of these providers.",
+      "basicInfoHeader": "Tell us about yourself",
+      "basicInfoInstructions": "Please provide information about yourself to help us personalize your experience.",
+      "profileOrBrowse": "Fill out your profile, or skip and <1> browse data </1>"
+    },
+    "terms": {
+      "instructions": "Read and consent to our terms and conditions",
+      "title": "Last Update Date: 7/13/18",
+      "userAgreement": "I have read and agreed to the Kids First Data Research Portal Term and Conditions"
+    }
+  },
   "Log in": "Log in",
   "New to Kids First Data Resource Portal?": "New to Kids First Data Resource Portal?",
   "Join now": "Join now",
   "An error has occurred, please try again later": "An error has occurred, please try again later",
+  "login": {
+    "connectionFailed": "Connection to ego failed, you may need to visit <1> <1>{{ egoApiRoot }}</1> </1> in a new tab and accept the warning"
+  },
+  "The Kids First Portal is currently in early access beta, please register at<1>{' '}</1> <3> https://kidsfirstdrc": {
+    "org/portal/ </3><4>{' '}</4> if you are interested in participating": {
+      " For any questions, or if you already have access to Kids First datasets via dbGaP, please contact <6>support@kidsfirstdrc": {
+        "org</6>": {
+          "": "The Kids First Portal is currently in early access beta, please register at<1>{' '}</1> <3> https://kidsfirstdrc.org/portal/ </3><4>{' '}</4> if you are interested in participating. For any questions, or if you already have access to Kids First datasets via dbGaP, please contact <6>support@kidsfirstdrc.org</6>."
+        }
+      }
+    }
+  },
   "Kids First Data Resource Portal": "Kids First Data Resource Portal",
   "Dashboard": "Dashboard",
   "File Repository": "File Repository",
   "Login": "Login",
-  "Logout": "Logout"
+  "My Profile": "My Profile",
+  "Logout": "Logout",
+  "Kids First Website": "Kids First Website",
+  "Contact Us": "Contact Us",
+  "Policies": "Policies",
+  "UI:": "UI:",
+  "Data Release:": "Data Release:",
+  "dataReleaseVersion": "Pre-release",
+  "Follow Us": "Follow Us",
+  "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort": {
+    "": "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort."
+  },
+  "I would like to receive updates from the NIH Kids First program including funding updates and news about the program": {
+    "": "I would like to receive updates from the NIH Kids First program including funding updates and news about the program."
+  },
+  "Back": "Back",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "Export TSV": "Export TSV",
+  "Query saved succesfully!": "Query saved succesfully!",
+  "View in My Saved Queries": "View in My Saved Queries",
+  "Save Query": "Save Query",
+  "Save the current configuration of filters": "Save the current configuration of filters",
+  "Enter a name for your saved query:": "Enter a name for your saved query:",
+  "Sorry something went wrong": {
+    "": "Sorry something went wrong."
+  },
+  "Copied!": "Copied!",
+  "copy short URL": "copy short URL",
+  "share on facebook": "share on facebook",
+  "share on twitter": "share on twitter",
+  "share on linkedin": "share on linkedin",
+  "share": "share",
+  "Failed!": "Failed!",
+  "Unable to download file": "Unable to download file",
+  "fileRepoSidebar": {
+    "missingDownloadPermissions": "Your account does not have the required permission to download this file.",
+    "noneSelected": "If you have not selected any files, all files in your query will be included in the actions."
+  },
+  "Filters": "Filters",
+  "All Filters": "All Filters",
+  "Upload Ids": "Upload Ids",
+  "Browse": "Browse",
+  "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
+  "Actions": "Actions",
+  "Download": "Download",
+  "File Manifests": "File Manifests",
+  "Reports": "Reports",
+  "Data Analysis": "Data Analysis",
+  "Participants Summary": "Participants Summary",
+  "- all files will be included in the manifest": "- all files will be included in the manifest",
+  "- the participants in your query have related family member data": "- the participants in your query have related family member data",
+  "To include the family data in the manifest, select your desired data types below": "To include the family data in the manifest, select your desired data types below",
+  "Generate manifest ID": "Generate manifest ID",
+  "Copy ID": "Copy ID",
+  "GENERATE": "GENERATE",
+  "Download Manifest": "Download Manifest",
+  "Settings": "Settings",
+  "Suggestions:": "Suggestions:",
+  "(New Interest)": "(New Interest)"
 }
