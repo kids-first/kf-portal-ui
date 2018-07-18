@@ -63,7 +63,7 @@ const Consent = compose(
         </h3>
         <Terms>
           <b>
-            <Trans i18nKey="join.terms.title">Last Update Date: 5/30/18</Trans>
+            <Trans i18nKey="join.terms.title">Last Update Date: 7/13/18</Trans>
           </b>
           <p>
             As a user of the Kids First DRC Website, Portal and/or other Services you agree that you
@@ -101,30 +101,29 @@ const Consent = compose(
             </li>
           </ol>
           <p>
-            Kids First DRC terms and conditions may be changed at any time via a public posting of
-            revisions to the Kids First DRC Website, Portal and/or Services. As a user, you agree to
-            review the Terms & Conditions and Privacy Policies each time you use the Kids First DRC
-            Website, Portal and/or Services so that you are aware of any modifications made to these
-            policies. By accessing or using the Kids First DRC Website, Portal and/or Services, you
-            agree with and to be bound by all of the terms and conditions and policies as posted on
-            the Kids First DRC Website, Portal and/or Services at the time of your access or use,
-            including the Privacy Policies then in effect.
+            DRC terms and conditions may be changed at any time via a public posting of revisions to
+            the Services. As a user, you agree to review the Terms & Conditions and Privacy Policies
+            each time you use the Services so that you are aware of any modifications made to these
+            policies. By accessing or using the Services, you agree with and to be bound by all of
+            the terms and conditions and policies as posted on the Services at the time of your
+            access or use, including the Privacy Policies then in effect.
           </p>
           <p>
-            For documents and/or data available from DRC Services, the Kids First DRC does not
-            warrant or assume any legal liability or responsibility for the accuracy, completeness,
-            or usefulness of any information, apparatus, product, or process. No specific medical
-            advice is provided by any Services, and Kids First urges users of Services to consult
-            with a qualified physician for diagnosis and for answers to personal questions.
+            For documents and/or data available from the Services, the DRC does not warrant or
+            assume any legal liability or responsibility for the accuracy, completeness, or
+            usefulness of any information, apparatus, product, or process. No specific medical
+            advice is provided by any Services, and the Kids First urges users to of Services to
+            consult with a qualified physician for diagnosis and for answers to personal questions.
           </p>
           <p>
             If you have any questions about these terms, conditions or the practices of this site or
-            any of the other Kids First DRC Services, please contact us at support@kidsfirstdrc.org.
-            The full list of Kids first DRC policies are located at{' '}
+            any of the other Services, please contact us at{' '}
+            <ExternalLink hasExternalIcon={false} href="support@kidsfirstdrc.org">
+              support@kidsfirstdrc.org
+            </ExternalLink>. The full list of Kids first DRC policies are located at{' '}
             <ExternalLink href="https://kidsfirstdrc.org/policies/">
               https://kidsfirstdrc.org/policies/
-            </ExternalLink>
-            .
+            </ExternalLink>.
           </p>
         </Terms>
         <CheckboxBubble

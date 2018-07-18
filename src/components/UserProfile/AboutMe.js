@@ -1,52 +1,20 @@
-import * as React from 'react';
-import { xor } from 'lodash';
+import React from 'react';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { Container, EditButton, H2, H3, H4 } from './ui';
+import { Container, EditButton, H2, H3, H4, SaveButton, StyledSection, ClickToAdd } from './ui';
+import ResearchInterests from './ResearchInterests';
+import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import InterestsAutocomplete from './InterestsAutocomplete';
-import { ModalActionButton } from '../Modal';
+import { trackProfileInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { Box, Flex, Section } from 'uikit/Core';
+import { Flex} from 'uikit/Core';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
-import { HollowButton } from 'uikit/Button';
 import EditableLabel from 'uikit/EditableLabel';
-import ExternalLink from 'uikit/ExternalLink';
-import { Tag } from 'uikit/Tags';
-
-const trackProfileInteraction = ({ action, value, type }) =>
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.user.profile,
-    action: `${type || ''} Edit: ${value ? `open` : `close`}`,
-    label: action,
-  });
-
-const StyledSection = styled(Section)`
-  padding: 5px 0;
-  margin-top: 25px;
-`;
-
-const ClickToAdd = styled('a')`
-  font-size: 12px;
-  text-decoration: underline;
-`;
-
-const InterestsCard = styled(Box)`
-  border-radius: 5px;
-  box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
-`;
-
-const InterestsContainer = styled(Box)`
-  background-color: ${({ theme }) => theme.backgroundGrey};
-  border: solid 1px ${({ theme }) => theme.greyScale8};
-  border-radius: 5px;
-`;
 
 const ActionBar = styled(Row)`
   justify-content: space-between;
@@ -58,7 +26,6 @@ const ActionBar = styled(Row)`
 const CancelButton = styled('button')`
   ${({ theme }) => theme.wizardButton};
 `;
-const SaveButton = styled(ModalActionButton)``;
 
 export default compose(
   injectState,
@@ -68,40 +35,21 @@ export default compose(
   withHandlers({
     handleEditingBackgroundInfo: ({ setEditingBackgroundInfo }) => ({ type, value }) => {
       setEditingBackgroundInfo(value);
-      trackProfileInteraction({ action: 'Background Information', value, type });
-    },
-    handleEditingResearchInterests: ({ setEditingResearchInterests }) => ({ type, value }) => {
-      setEditingResearchInterests(value);
-      trackProfileInteraction({ action: 'Research Interests', value, type });
+      trackProfileInteraction({ action: 'Profile', value, type });
     },
   }),
   withTheme,
   withState('bioTextarea', 'setBioTextarea', ({ profile }) => profile.bio || ''),
   withState('storyTextarea', 'setStoryTextarea', ({ profile }) => profile.story || ''),
-  withState('website', 'setWebsite', ({ profile }) => profile.website || ''),
-  withState(
-    'googleScholarId',
-    'setGoogleScholarId',
-    ({ profile }) => profile.googleScholarId || '',
-  ),
-  withState('interests', 'setInterests', ({ profile }) => profile.interests || []),
-  withState('interestAutocomplete', 'setInterestAutocomplete', ''),
-
   withPropsOnChange(
     ['profile'],
     ({
       setBioTextarea,
       setStoryTextarea,
-      setInterests,
-      setWebsite,
-      setGoogleScholarId,
       profile,
     }) => {
       setBioTextarea(profile.bio || '');
       setStoryTextarea(profile.story || '');
-      setInterests(profile.interests || []);
-      setWebsite(profile.website || '');
-      setGoogleScholarId(profile.googleScholarId || '');
     },
   ),
   withRouter,
@@ -115,29 +63,18 @@ export default compose(
     handleEditingBackgroundInfo,
     setEditingBackgroundInfo,
     isEditingInfo,
-    handleEditingResearchInterests,
     setFocusedTextArea,
     focusedTextArea,
-    editingResearchInterests,
-    setEditingResearchInterests,
     bioTextarea,
     setBioTextarea,
     storyTextarea,
     setStoryTextarea,
-    website,
-    setWebsite,
-    googleScholarId,
-    setGoogleScholarId,
-    interestAutocomplete,
-    setInterestAutocomplete,
-    interests,
-    setInterests,
   }) => (
     <Flex justifyContent="center" pt={4} pb={4}>
       <Container row alignItems="flex-start">
         <Column width="65%" pt={2} justifyContent="space-around">
           <H2>
-            Background Information
+            Profile
             {canEdit &&
               (!isEditingBackgroundInfo ? (
                 <EditButton
@@ -251,126 +188,14 @@ export default compose(
             </ActionBar>
           )}
         </Column>
-        <InterestsCard width="35%" p={3} ml={4}>
-          <H2>
-            Research Interests
-            {canEdit &&
-              (!editingResearchInterests ? (
-                <EditButton
-                  onClick={() => {
-                    handleEditingResearchInterests({ value: !editingResearchInterests });
-                    setFocusedTextArea('interests');
-                  }}
-                />
-              ) : (
-                <Flex>
-                  <HollowButton
-                    onClick={() => {
-                      setWebsite(profile.website || '');
-                      setGoogleScholarId(profile.googleScholarId || '');
-                      setInterests(profile.interests || []);
-                      handleEditingResearchInterests({ value: false });
-                    }}
-                  >
-                    Cancel
-                  </HollowButton>
-                  <SaveButton
-                    onClick={async () => {
-                      await submit({
-                        website,
-                        googleScholarId,
-                        interests,
-                      });
-                      handleEditingResearchInterests({
-                        value: false,
-                        type: TRACKING_EVENTS.actions.save,
-                      });
-                    }}
-                  >
-                    Save
-                  </SaveButton>
-                </Flex>
-              ))}
-          </H2>
-          <div>
-            <InterestsContainer p={2}>
-              <H3>Interests</H3>
-              <H4>Tell people about your work background and your research specialties.</H4>
-              <Row flexWrap="wrap" pt={2} pb={2}>
-                {interests.map((x, i) => (
-                  <Tag
-                    key={i}
-                    clickable={editingResearchInterests}
-                    onClick={() => editingResearchInterests && setInterests(xor(interests, [x]))}
-                  >
-                    {x}
-                  </Tag>
-                ))}
-              </Row>
-              {editingResearchInterests && (
-                <InterestsAutocomplete {...{ interests, setInterests }} />
-              )}
-            </InterestsContainer>
-            <StyledSection>
-              <H3>Website URL:</H3>
-              <EditableLabel
-                autoFocus={focusedTextArea === 'website'}
-                isEditing={editingResearchInterests}
-                disabled={true}
-                required={false}
-                name="website"
-                value={website}
-                onChange={e => setWebsite(e.target.value)}
-                placeholderComponent={
-                  canEdit && (
-                    <ClickToAdd
-                      onClick={() => {
-                        handleEditingResearchInterests({ value: !editingResearchInterests });
-                        setFocusedTextArea('website');
-                      }}
-                    >
-                      click to add
-                    </ClickToAdd>
-                  )
-                }
-                saveOnKeyDown={false}
-                renderButtons={() => <div />}
-                renderNonEditing={v => <ExternalLink href={v}>{v}</ExternalLink>}
-              />
-            </StyledSection>
-            <StyledSection>
-              <H3>Google Scholar ID: </H3>
-              <EditableLabel
-                autoFocus={focusedTextArea === 'googleScholarId'}
-                isEditing={editingResearchInterests}
-                disabled={true}
-                required={false}
-                name="googleScholarId"
-                value={googleScholarId}
-                onChange={e => setGoogleScholarId(e.target.value)}
-                placeholderComponent={
-                  canEdit && (
-                    <ClickToAdd
-                      onClick={() => {
-                        handleEditingResearchInterests({ value: !editingResearchInterests });
-                        setFocusedTextArea('googleScholarId');
-                      }}
-                    >
-                      click to add
-                    </ClickToAdd>
-                  )
-                }
-                saveOnKeyDown={false}
-                renderNonEditing={v => (
-                  <ExternalLink href={`https://scholar.google.fr/citations?user=${v}`}>
-                    {v}
-                  </ExternalLink>
-                )}
-                renderButtons={() => <div />}
-              />
-            </StyledSection>
-          </div>
-        </InterestsCard>
+        <Column width="35%">
+          <ResearchInterests
+            {...{profile, canEdit, submit}} />
+          {Object.keys(profile).length &&
+            <FindMe
+              {...{profile, canEdit, submit}} />
+            }
+        </Column>
       </Container>
     </Flex>
   ),

@@ -14,15 +14,27 @@ const DEFAULT_FIELDS = `
   roles
   acceptedTerms
   email
+  institutionalEmail
+  eraCommonsID
+  department
   story
   bio
   jobTitle
   institution
+  addressLine1
+  addressLine2
   city
   state
   country
+  zip
+  phone
   website
   googleScholarId
+  twitter
+  facebook
+  github
+  linkedin
+  orchid
   interests
   acceptedKfOptIn
   acceptedNihOptIn
