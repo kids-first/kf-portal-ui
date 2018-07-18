@@ -18,7 +18,6 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
-import { isObject } from 'lodash';
 
 const setEgoTokenCookie = token => {
   const { exp } = jwtDecode(token);

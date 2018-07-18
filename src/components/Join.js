@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
-import { css } from 'emotion';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';

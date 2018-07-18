@@ -42,6 +42,7 @@ export const UserIntegrationsWrapper = styled('div')`
   }
   div.integrationCell {
     display: flex;
+    justify-content: center;
   }
   div.integrationCell button {
     text-transform: uppercase;

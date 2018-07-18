@@ -48,6 +48,7 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
   height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
+  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `;
 
 export default Button;
