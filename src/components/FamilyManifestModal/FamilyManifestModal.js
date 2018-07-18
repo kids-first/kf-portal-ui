@@ -187,21 +187,16 @@ export default compose(
                 });
                 return withFormik({
                   handleSubmit: async (value, { setSubmitting, setErrors }) => {
-                    fileManifestParticipantsAndFamily().then(
-                      downloadManifest => {
-                        trackUserInteraction({
-                          category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                          action: TRACKING_EVENTS.actions.download.manifest,
-                          label: 'Participant and Family',
-                        });
-                        downloadManifest({
-                          sqon: downloadSqon,
-                          columns: columns,
-                        })();
-                        unsetModal();
-                      },
-                      errors => setSubmitting(false),
-                    );
+                    fileManifestParticipantsAndFamily({
+                      sqon: downloadSqon,
+                      columns: columns,
+                    })();
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                      action: 'Download Manifest ' + TRACKING_EVENTS.actions.click,
+                      label: 'Participant and Family',
+                    });
+                    unsetModal();
                   },
                 })(({ handleSubmit }) => (
                   <DownloadManifestModalFooter

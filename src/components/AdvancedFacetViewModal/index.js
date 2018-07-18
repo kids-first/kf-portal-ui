@@ -9,10 +9,7 @@ import { provideLocalSqon } from 'stateProviders';
 import { FilterInput } from 'uikit/Input';
 import { TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-const enhance = compose(
-  provideLocalSqon,
-  injectState,
-);
+const enhance = compose(provideLocalSqon, injectState);
 
 const AfvContainer = styled('div')`
   flex: 1;
@@ -67,21 +64,28 @@ class AdvancedFacetViewModalContent extends React.Component {
             InputComponent={CustomFilterInput}
             sqon={localSqon}
             onSqonChange={({ sqon, field, value }) => effects.setAdvancedFacetSqon(sqon)}
-            onSqonSubmit={({ sqon }) => {
+            onSqonSubmit={({ sqon, ...rest }) => {
               trackFileRepoInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                 action: 'View Results',
                 label: sqon,
               });
+              if (props.onSqonSubmit) {
+                props.onSqonSubmit({ sqon, ...rest });
+              }
             }}
-            onFilterChange={val => {
+            onFilterChange={({ val, ...rest }) => {
               trackFileRepoInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                 action: TRACKING_EVENTS.actions.filter + ' - Search',
                 ...(val && { label: val }),
               });
+              if (props.onFilterChange) {
+                props.onFilterChange({ val, ...rest });
+              }
             }}
-            onTermSelected={({ field, value, active }) => {
+            onTermSelected={({ field, value, active, ...rest }) => {
+              debugger;
               if (active) {
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
@@ -93,12 +97,18 @@ class AdvancedFacetViewModalContent extends React.Component {
                   },
                 });
               }
+              if (props.onTermSelected) {
+                props.onTermSelected({ field, value, active, ...rest });
+              }
             }}
             onClear={() => {
               trackFileRepoInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                 action: TRACKING_EVENTS.actions.query.clear,
               });
+              if (props.onClear()) {
+                props.onClear();
+              }
             }}
           />
         </AfvContainer>

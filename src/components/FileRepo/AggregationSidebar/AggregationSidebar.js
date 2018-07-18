@@ -55,10 +55,7 @@ const IdFilterContainer = styled(Column)`
   }
 `;
 
-const AggregationSidebar = compose(
-  injectState,
-  withTheme,
-)(
+const AggregationSidebar = compose(injectState, withTheme)(
   ({
     state,
     effects,
@@ -95,13 +92,16 @@ const AggregationSidebar = compose(
                         translateSQONValue,
                         trackFileRepoInteraction,
                         closeModal: effects.unsetModal,
-                        onFacetNavigation: path => {
+                        onFacetNavigation: ({ path, ...rest }) => {
                           let facetNavEvent = {
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: TRACKING_EVENTS.actions.click + ' side navigation',
                             label: path,
                           };
                           trackFileRepoInteraction(facetNavEvent);
+                          if (props.onFacetNavigation) {
+                            props.onFacetNavigation(path, ...rest);
+                          }
                         },
                         onClear: () => {
                           trackFileRepoInteraction({
