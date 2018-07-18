@@ -49,7 +49,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   action: TRACKING_EVENTS.actions.download.report,
                   label: 'Clinical (Participant)',
                 });
-                return downloadData(downloadSQON);
+                return downloadData(downloadSQON)();
               });
             },
           },
@@ -83,7 +83,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   action: TRACKING_EVENTS.actions.download.report,
                   label: 'Clinical (Participant and family)',
                 });
-                return downloadData(downloadSQON);
+                return downloadData(downloadSQON)();
               });
             },
           },
@@ -96,7 +96,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   action: TRACKING_EVENTS.actions.download.report,
                   label: 'Biospecimen',
                 });
-                return downloadData(downloadSQON);
+                return downloadData(downloadSQON)();
               });
             },
           },
