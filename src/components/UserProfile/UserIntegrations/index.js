@@ -172,7 +172,6 @@ const UserIntegrations = withApi(
                               ),
                             }),
                           onRemove: async () => {
-                            // await deleteSecret({ service: GEN3 });
                             await deleteGen3Token(api);
                             effects.setIntegrationToken(GEN3, null);
                           },
