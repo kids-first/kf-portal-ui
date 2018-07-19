@@ -1,16 +1,20 @@
 import { graphql } from 'services/arranger';
 
+const toGqlString = str => str.replace('.', '__');
+
 export const getStudiesAggregations = ({ api, studies, sqon }) => {
   return !studies.length
     ? []
     : graphql(api)({
         query: `
-          query approvedStudyAggs(${studies.map(study => `$${study}_sqon: JSON`).join(' ')}) {
+          query approvedStudyAggs(${studies
+            .map(study => `$${toGqlString(study)}_sqon: JSON`)
+            .join(' ')}) {
             file {
               ${studies
                 .map(
                   study => `
-                  ${study}: aggregations (filters: $${study}_sqon){
+                  ${toGqlString(study)}: aggregations (filters: $${toGqlString(study)}_sqon){
                     latest_did {
                       buckets {
                         key
@@ -31,7 +35,7 @@ export const getStudiesAggregations = ({ api, studies, sqon }) => {
         variables: studies.reduce(
           (acc, study) => ({
             ...acc,
-            [`${study}_sqon`]: {
+            [`${toGqlString(study)}_sqon`]: {
               ...sqon,
               content: [
                 ...sqon.content,
