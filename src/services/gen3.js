@@ -34,7 +34,6 @@ export const connectGen3 = api => {
   const { client_id, scope } = state;
   const url = `${AUTHORIZE_URL}?client_id=${client_id}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${REDIRECT_URI}`;
   const authWindow = window.open(url);
-  window.authWindow = authWindow;
   return new Promise((resolve, reject) => {
     const state = { done: false };
     const onAuthWindowMessage = e => {
@@ -69,7 +68,14 @@ export const connectGen3 = api => {
         if (!authWindow.closed) {
           authWindow.onmessage = onAuthWindowMessage;
         } else {
-          clearInterval(interval);
+          if (authWindow.onmessage) {
+            clearInterval(interval);
+          } else {
+            clearInterval(interval);
+            reject({
+              msg: 'PROCESS_INTERRUPTED',
+            });
+          }
         }
       } catch (err) {
         console.log('err: ', err);
@@ -100,6 +106,13 @@ export const getUser = async api => {
   let accessToken = await getAccessToken(api);
   const { context: { user } } = jwtDecode(accessToken);
   return user;
+};
+
+export const deleteGen3Token = async api => {
+  await api({
+    method: 'DELETE',
+    url: TOKEN_URL,
+  });
 };
 
 /**

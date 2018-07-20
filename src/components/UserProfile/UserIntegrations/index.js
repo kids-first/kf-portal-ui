@@ -11,6 +11,7 @@ import Spinner from 'react-spinkit';
 
 import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
+import { deleteGen3Token } from 'services/gen3';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Component from 'react-component-component';
 
@@ -170,8 +171,8 @@ const UserIntegrations = withApi(
                                 />
                               ),
                             }),
-                          onRemove: () => {
-                            deleteSecret({ service: GEN3 });
+                          onRemove: async () => {
+                            await deleteGen3Token(api);
                             effects.setIntegrationToken(GEN3, null);
                           },
                         })
