@@ -105,6 +105,7 @@ const Header = ({
                 ItemWrapperComponent={props => <Fragment {...props} />}
                 ContainerComponent={NavbarDropdownWrapper}
                 OptionsContainerComponent={NavbarDropdownOptionsContainer}
+                align="left"
               >
                 <NavigationGravatar email={loggedInUser.email || ''} size={39} />
                 {loggedInUser.firstName}
