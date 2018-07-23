@@ -3,6 +3,7 @@ import Row from 'uikit/Column';
 import { justifyContent, space } from 'styled-system';
 
 export const PromptMessageContainer = styled(Row)`
+  position: relative;
   align-items: left;
   background-color: ${({ theme, error, warning, info }) =>
     error

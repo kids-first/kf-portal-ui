@@ -19,10 +19,17 @@ import {
   PromptMessageContent,
 } from 'uikit/PromptMessage';
 import ExternalLink from 'uikit/ExternalLink';
+import labFlask from 'assets/icon-lab-flask.svg';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
   min-height: 600px;
+`;
+
+const PromptIcon = styled('img')`
+  height: 30px;
+  position: absolute;
+  right: 20px;
 `;
 
 export default compose(
@@ -71,6 +78,7 @@ export default compose(
                 <strong>support@kidsfirstdrc.org</strong>
               </ExternalLink>.
             </PromptMessageContent>
+            <PromptIcon src={labFlask} alt="flask" />
           </PromptMessageContainer>
           <div
             css={`
