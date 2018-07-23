@@ -40,7 +40,7 @@ export const DropdownOptionsContainer = styled(Column)`
   top: 100%;
   box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
   border-radius: 2px;
-
+  border: none;
   &:after,
   &:before {
     bottom: 100%;
