@@ -25,10 +25,6 @@ const UserDashboard = styled('div')`
   min-height: 600px;
 `;
 
-const BetaMessageContainer = styled(PromptMessageContainer)`
-  padding: 20px;
-`;
-
 export default compose(
   injectState,
   withRouter,
@@ -61,7 +57,7 @@ export default compose(
       >
         <H2>Welcome, {loggedInUser.firstName}!</H2>
         <Column>
-          <BetaMessageContainer info mt={20} mb={20}>
+          <PromptMessageContainer info mt={20} mb={20} p={20}>
             <PromptMessageHeading info mb={20}>
               The Portal is currently in <strong>BETA Phase</strong>
             </PromptMessageHeading>
@@ -75,7 +71,7 @@ export default compose(
                 <strong>support@kidsfirstdrc.org</strong>
               </ExternalLink>.
             </PromptMessageContent>
-          </BetaMessageContainer>
+          </PromptMessageContainer>
           <div
             css={`
               display: flex;
