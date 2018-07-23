@@ -57,7 +57,7 @@ export default compose(
       >
         <H2>Welcome, {loggedInUser.firstName}!</H2>
         <Column>
-          <PromptMessageContainer info mt={20} mb={20} p={20}>
+          <PromptMessageContainer info my={20} p={20}>
             <PromptMessageHeading info mb={20}>
               The Portal is currently in <strong>BETA Phase</strong>
             </PromptMessageHeading>
