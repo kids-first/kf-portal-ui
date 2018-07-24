@@ -90,7 +90,19 @@ const AggregationSidebar = compose(injectState, withTheme)(
                       {...{
                         ...props,
                         translateSQONValue,
+                        trackFileRepoInteraction,
                         closeModal: effects.unsetModal,
+                        onFacetNavigation: ({ path, ...rest }) => {
+                          let facetNavEvent = {
+                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            action: TRACKING_EVENTS.actions.click + ' side navigation',
+                            label: path,
+                          };
+                          trackFileRepoInteraction(facetNavEvent);
+                          if (props.onFacetNavigation) {
+                            props.onFacetNavigation(path, ...rest);
+                          }
+                        },
                         onClear: () => {
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
@@ -98,14 +110,19 @@ const AggregationSidebar = compose(injectState, withTheme)(
                           });
                         },
                         onFilterChange: value => {
-                          // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.filter + ' - Search',
-                            label: value,
-                          });
+                          if (value !== '') {
+                            // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                              action: TRACKING_EVENTS.actions.filter + ' - Search',
+                              label: value,
+                            });
+                          }
+                          if (props.onFilterChange) {
+                            props.onFilterChange(value);
+                          }
                         },
-                        onTermSelected: ({ field, value, active }) => {
+                        onValueChange: ({ field, value, active }) => {
                           if (active) {
                             trackFileRepoInteraction({
                               category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',

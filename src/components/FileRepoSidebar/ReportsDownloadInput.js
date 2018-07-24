@@ -33,7 +33,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                 api,
                 sqon,
               });
-              return clinicalDataParticipants({
+              let downloadSQON = {
                 sqon: {
                   op: 'in',
                   content: {
@@ -42,14 +42,14 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   },
                 },
                 columns: state.columns,
-              })().then(downloadData => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: 'Download Report',
-                  label: 'Clinical (Participant)',
-                });
-                return downloadData;
+              };
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: TRACKING_EVENTS.actions.download.report,
+                label: 'Clinical (Participant)',
               });
+              const downloader = clinicalDataParticipants(downloadSQON);
+              return downloader();
             },
           },
           'Clinical (Participant and family)': {
@@ -66,7 +66,7 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                 api,
                 sqon,
               });
-              return clinicalDataFamily({
+              let downloadSQON = {
                 sqon: {
                   op: 'in',
                   content: {
@@ -75,26 +75,26 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                   },
                 },
                 columns: state.columns,
-              })().then(downloadData => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: 'Download Report',
-                  label: 'Clinical (Participant and family)',
-                });
-                return downloadData;
+              };
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: TRACKING_EVENTS.actions.download.report,
+                label: 'Clinical (Participant and family)',
               });
+              const downloader = clinicalDataFamily(downloadSQON);
+              return downloader();
             },
           },
           Biospecimen: {
-            onSelected: async () => {
-              await downloadBiospecimen({ sqon, columns: state.columns })().then(downloadData => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: 'Download Report',
-                  label: 'Biospecimen',
-                });
-                return downloadData;
+            onSelected: () => {
+              let downloadSQON = { sqon, columns: state.columns };
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: TRACKING_EVENTS.actions.download.report,
+                label: 'Biospecimen',
               });
+              const downloader = downloadBiospecimen(downloadSQON);
+              return downloader();
             },
           },
         }}

@@ -10,9 +10,10 @@ if (devDebug && devTrackingID) {
 }
 let GAState = {
   trackingId: devDebug || devTrackingID ? devTrackingID || gaTrackingID : gaTrackingID,
-  userId: null,
-  userRoles: null,
-  clientId: null,
+  userId: null, //int
+  userRoles: null, //string
+  clientId: null, //string
+  egoGroups: null, // array?
 };
 let timingsStorage = window.localStorage;
 
@@ -38,8 +39,16 @@ export const TRACKING_EVENTS = {
     close: 'Close',
     click: 'Clicked',
     edit: 'Edit',
+    scroll: 'Scrolled',
     save: 'Save',
     filter: 'Filter',
+    copy: {
+      toCavatica: 'Copied Files to Cavatica Project',
+    },
+    download: {
+      manifest: 'Download Manifest',
+      report: 'Download Report',
+    },
     query: {
       save: 'Query Saved',
       share: 'Query Shared',
@@ -54,6 +63,11 @@ export const TRACKING_EVENTS = {
   labels: {
     joinProcess: 'Join Process',
   },
+  timings: {
+    modal: 'MODAL__',
+    queryToDownload: 'FILE_QUERY_TO_DOWNLOAD',
+    queryToCavatica: 'FILE_QUERY_TO_CAVATICA_COPY',
+  },
 };
 
 export const initAnalyticsTracking = () => {
@@ -62,14 +76,14 @@ export const initAnalyticsTracking = () => {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
     addUserSnapInfo({ gaClientId: clientId });
-    
+
     // GA Custom Dimension:index 3: clientId
     // ReactGA.set({ clientId: GAState.clientId });
     ReactGA.set({ dimension3: GAState.clientId });
   });
 };
 
-const setUserDimensions = (userId, role) => {
+const setUserDimensions = (userId, role, groups) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
     ReactGA.set({ userId: userId || GAState.userId });
@@ -77,9 +91,16 @@ const setUserDimensions = (userId, role) => {
     ReactGA.set({ dimension1: userId || GAState.userId });
   }
   if (role || GAState.userRoles) {
-    // GA Custom Dimension:index 2: userRole (current selected profile role)
+    // GA Custom Dimension:index 2: userRole (current selected profi;le role)
     // ReactGA.set({ userRole: role || GAState.userRoles[0] });
     ReactGA.set({ dimension2: role || GAState.userRoles[0] });
+  }
+
+  if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
+    let _groups = JSON.stringify({ egoGroups: groups || GAState.egoGroups });
+    // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
+    // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
+    ReactGA.set({ dimension4: _groups });
   }
 };
 
@@ -87,11 +108,11 @@ export const addStateInfo = obj => merge(GAState, obj);
 
 export const getUserAnalyticsState = () => GAState;
 
-export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles }) => {
+export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGroups }) => {
   let userId = egoId;
   if (acceptedTerms && !GAState.userId) {
-    addStateInfo({ userId, personaId: _id, userRoles: roles });
-    setUserDimensions(userId, roles[0]);
+    addStateInfo({ userId, personaId: _id, userRoles: roles, egoGroups });
+    setUserDimensions(userId, roles[0], egoGroups);
     return true;
   } else {
     return false;
@@ -104,9 +125,9 @@ export const trackUserInteraction = async ({ category, action, label }) => {
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
       if (action === TRACKING_EVENTS.actions.open) {
-        startAnalyticsTiming(`MODAL__${label}`);
+        startAnalyticsTiming(TRACKING_EVENTS.timings.modal + `${label}`);
       } else if (action === TRACKING_EVENTS.actions.close) {
-        stopAnalyticsTiming(`MODAL__${label}`, {
+        stopAnalyticsTiming(TRACKING_EVENTS.timings.modal + `${label}`, {
           category,
           variable: 'open duration',
           label: label || null,
@@ -119,7 +140,31 @@ export const trackUserInteraction = async ({ category, action, label }) => {
         stopAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess, {
           category,
           variable: 'Join process completion time',
-          label: label || null,
+          ...(label & label),
+        });
+      }
+      break;
+    case 'File Repo: Filters - Advanced':
+    case TRACKING_EVENTS.categories.fileRepo.filters:
+      let downloadEventStarted = timingsStorage.getItem(getTimingEventName('FILE_DOWNLOAD'));
+      if (action === 'Filter Selected' && !downloadEventStarted) {
+        startAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
+        startAnalyticsTiming('FILE_QUERY_TO_CAVATICA_COPY');
+      }
+      break;
+    case TRACKING_EVENTS.categories.fileRepo.actionsSidebar:
+      if (TRACKING_EVENTS.actions.download.report || TRACKING_EVENTS.actions.download.manifest) {
+        stopAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload, {
+          category: 'File Acquisition',
+          variable: 'First Query Filter to Download Files clicked',
+          ...(label & label),
+        });
+      }
+      if (action === 'Copied Files to Cavatica Project') {
+        stopAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica, {
+          category: 'File Acquisition',
+          variable: 'First Query Filter to Copy to Cavatica clicked',
+          ...(label & label),
         });
       }
       break;
@@ -147,9 +192,15 @@ export const stopAnalyticsTiming = (eventName, eventData) => {
 
   if (eventData && duration) {
     trackTiming(merge({ value: duration }, eventData));
+    clearAnalyticsTiming(eventName);
   }
 
   return duration;
+};
+
+export const clearAnalyticsTiming = timingEvent => {
+  timingsStorage.removeItem(getTimingEventName(timingEvent));
+  timingsStorage.removeItem('KF_GA_TIMING_' + sanitizeName(timingEvent));
 };
 
 export const trackTiming = async eventData => {
@@ -174,6 +225,10 @@ export const trackPageView = (page, options = {}) => {
     ...options,
   });
   ReactGA.pageview(page);
+  if (!page.includes('/search/file')) {
+    clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
+    clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);
+  }
 };
 
 export const trackExternalLink = url => {
