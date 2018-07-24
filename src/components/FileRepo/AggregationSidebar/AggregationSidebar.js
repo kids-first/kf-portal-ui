@@ -122,7 +122,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
                             props.onFilterChange(value);
                           }
                         },
-                        onTermSelected: ({ field, value, active }) => {
+                        onValueChange: ({ field, value, active }) => {
                           if (active) {
                             trackFileRepoInteraction({
                               category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',

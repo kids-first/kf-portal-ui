@@ -84,8 +84,7 @@ class AdvancedFacetViewModalContent extends React.Component {
                 props.onFilterChange({ val, ...rest });
               }
             }}
-            onTermSelected={({ field, value, active, ...rest }) => {
-              debugger;
+            onValueChange={({ field, value, active, ...rest }) => {
               if (active) {
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
