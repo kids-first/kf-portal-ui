@@ -43,14 +43,13 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                 },
                 columns: state.columns,
               };
-              return clinicalDataParticipants(downloadSQON).then(downloadData => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: TRACKING_EVENTS.actions.download.report,
-                  label: 'Clinical (Participant)',
-                });
-                return downloadData(downloadSQON)();
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: TRACKING_EVENTS.actions.download.report,
+                label: 'Clinical (Participant)',
               });
+              const downloader = clinicalDataParticipants(downloadSQON);
+              return downloader();
             },
           },
           'Clinical (Participant and family)': {
@@ -77,27 +76,25 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
                 },
                 columns: state.columns,
               };
-              return clinicalDataFamily(downloadSQON).then(downloadData => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: TRACKING_EVENTS.actions.download.report,
-                  label: 'Clinical (Participant and family)',
-                });
-                return downloadData(downloadSQON)();
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: TRACKING_EVENTS.actions.download.report,
+                label: 'Clinical (Participant and family)',
               });
+              const downloader = clinicalDataFamily(downloadSQON);
+              return downloader();
             },
           },
           Biospecimen: {
-            onSelected: async () => {
+            onSelected: () => {
               let downloadSQON = { sqon, columns: state.columns };
-              await downloadBiospecimen(downloadSQON).then(downloadData => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                  action: TRACKING_EVENTS.actions.download.report,
-                  label: 'Biospecimen',
-                });
-                return downloadData(downloadSQON)();
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                action: TRACKING_EVENTS.actions.download.report,
+                label: 'Biospecimen',
               });
+              const downloader = downloadBiospecimen(downloadSQON);
+              return downloader();
             },
           },
         }}

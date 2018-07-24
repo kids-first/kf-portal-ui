@@ -118,6 +118,9 @@ const AggregationSidebar = compose(injectState, withTheme)(
                               label: value,
                             });
                           }
+                          if (props.onFilterChange) {
+                            props.onFilterChange(value);
+                          }
                         },
                         onTermSelected: ({ field, value, active }) => {
                           if (active) {
