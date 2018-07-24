@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose } from 'recompose';
+import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
@@ -156,7 +156,12 @@ const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-const FileRepo = compose(injectState, withTheme, withApi)(
+const FileRepo = compose(
+  injectState,
+  withTheme,
+  withApi,
+  withState('selectedTableRows', 'setSelectedTableRows', []),
+)(
   ({
     state,
     effects,
@@ -164,6 +169,8 @@ const FileRepo = compose(injectState, withTheme, withApi)(
     translateSQONValue = translateSQON({
       sets: (state.loggedInUser || {}).sets || [],
     }),
+    selectedTableRows,
+    setSelectedTableRows,
     ...props
   }) => (
     <SQONURL
@@ -189,11 +196,11 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                 {...props}
                 projectId={arrangerProjectId}
                 render={props => {
-                  const selectionSQON = props.selectedTableRows.length
+                  const selectionSQON = selectedTableRows.length
                     ? replaceSQON({
                         op: 'and',
                         content: [
-                          { op: 'in', content: { field: 'kf_id', value: props.selectedTableRows } },
+                          { op: 'in', content: { field: 'kf_id', value: selectedTableRows } },
                         ],
                       })
                     : url.sqon;
@@ -260,6 +267,8 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               InputComponent={props => (
                                 <FilterInput {...props} LeftIcon={FilterIcon} />
                               )}
+                              selectedTableRows={selectedTableRows}
+                              setSelectedTableRows={rows => setSelectedTableRows(() => rows)}
                               customColumns={customTableColumns({ theme })}
                               filterInputPlaceholder={'Filter table'}
                               columnDropdownText="Columns"
