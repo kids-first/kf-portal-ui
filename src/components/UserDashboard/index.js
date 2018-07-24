@@ -27,9 +27,10 @@ const UserDashboard = styled('div')`
 `;
 
 const PromptIcon = styled('img')`
-  height: 30px;
+  height: 40px;
   position: absolute;
-  right: 20px;
+  right: 15px;
+  top: 15px;
 `;
 
 export default compose(
@@ -64,8 +65,8 @@ export default compose(
       >
         <H2>Welcome, {loggedInUser.firstName}!</H2>
         <Column>
-          <PromptMessageContainer info my={20} p={20}>
-            <PromptMessageHeading info mb={20}>
+          <PromptMessageContainer info my={20} p={30}>
+            <PromptMessageHeading info mb={10}>
               The Portal is currently in <strong>BETA Phase</strong>
             </PromptMessageHeading>
             <PromptMessageContent>
@@ -74,7 +75,7 @@ export default compose(
               field names or the amount of data available. We appreciate your usage and feedback
               during this phase, so please keep visiting and if you have any questions contact us
               at:{' '}
-              <ExternalLink hasExternalIcon={false} href="support@kidsfirstdrc.org">
+              <ExternalLink hasExternalIcon={false} href="mailto:support@kidsfirstdrc.org">
                 <strong>support@kidsfirstdrc.org</strong>
               </ExternalLink>.
             </PromptMessageContent>
