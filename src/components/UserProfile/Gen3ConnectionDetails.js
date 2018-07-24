@@ -115,34 +115,40 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
       render={({ loading, data }) => {
         const aggregations = get(data, 'file');
         return aggregations ? (
-          projectIds.map(id => {
-            const studyNameBuckets =
-              get(aggregations, `${toGqlString(id)}.participants__study__name.buckets`) || [];
-            const studyName = studyNameBuckets[0];
-            const sqon = sqonForStudy(id);
-            return (
-              <ItemRowContainer>
-                <Column justifyContent="center" p={20}>
-                  <StudiesIcon src={studiesStack} />
-                </Column>
-                <Column flex={1} justifyContent="center" pr={10}>
-                  <span>
-                    <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
-                  </span>
-                </Column>
-                <Column
-                  justifyContent="center"
-                  onClick={() =>
-                    history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
-                  }
-                >
-                  <ExternalLink hasExternalIcon={false}>
-                    View data files <RightChevron width={10} fill={theme.primary} />
-                  </ExternalLink>
-                </Column>
-              </ItemRowContainer>
-            );
-          })
+          projectIds
+            .filter(id =>
+              get(aggregations, `${toGqlString(id)}.participants__study__name.buckets.length`),
+            )
+            .map(id => {
+              const studyNameBuckets = get(
+                aggregations,
+                `${toGqlString(id)}.participants__study__name.buckets`,
+              );
+              const studyName = studyNameBuckets[0];
+              const sqon = sqonForStudy(id);
+              return (
+                <ItemRowContainer>
+                  <Column justifyContent="center" p={20}>
+                    <StudiesIcon src={studiesStack} />
+                  </Column>
+                  <Column flex={1} justifyContent="center" pr={10}>
+                    <span>
+                      <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
+                    </span>
+                  </Column>
+                  <Column
+                    justifyContent="center"
+                    onClick={() =>
+                      history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
+                    }
+                  >
+                    <ExternalLink hasExternalIcon={false}>
+                      View data files <RightChevron width={10} fill={theme.primary} />
+                    </ExternalLink>
+                  </Column>
+                </ItemRowContainer>
+              );
+            })
         ) : (
           <Spinner />
         );
