@@ -33,5 +33,8 @@ export const PromptMessageHeading = styled('div')`
 export const PromptMessageContent = styled('div')`
   padding-top: 2px;
   line-height: 1.6em;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 30px;
   ${space};
 `;
