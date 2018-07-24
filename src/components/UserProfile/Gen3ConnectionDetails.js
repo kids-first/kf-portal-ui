@@ -17,6 +17,9 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { toGqlString } from 'services/utils';
 import ExternalLink from 'uikit/ExternalLink';
+import RightChevron from 'icons/DoubleChevronRightIcon';
+import { withHistory } from 'services/history';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 const styles = css`
   table {
@@ -77,14 +80,15 @@ const sqonForStudy = studyId => ({
   ],
 });
 
-const Gen3ProjectList = withApi(({ projectIds, api }) => (
-  <Query
-    renderError
-    api={api}
-    projectId={'june_13'}
-    name={`gen3ItemQuery`}
-    shouldFetch={true}
-    query={`
+const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
+  ({ projectIds, api, theme, history }) => (
+    <Query
+      renderError
+      api={api}
+      projectId={'june_13'}
+      name={`gen3ItemQuery`}
+      shouldFetch={true}
+      query={`
       query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
         file {${projectIds
           .map(
@@ -101,43 +105,51 @@ const Gen3ProjectList = withApi(({ projectIds, api }) => (
         }
       }
     `}
-    variables={projectIds.reduce(
-      (acc, id) => ({
-        ...acc,
-        [`${toGqlString(id)}_sqon`]: sqonForStudy(id),
-      }),
-      {},
-    )}
-    render={({ loading, data }) => {
-      const aggregations = get(data, 'file');
-      return aggregations ? (
-        projectIds.map(id => {
-          const studyNameBuckets =
-            get(aggregations, `${toGqlString(id)}.participants__study__name.buckets`) || [];
-          const studyName = studyNameBuckets[0];
-          const sqon = sqonForStudy(id);
-          return (
-            <ItemRowContainer>
-              <Column justifyContent="center" p={20}>
-                <StudiesIcon src={studiesStack} />
-              </Column>
-              <Column flex={1} justifyContent="center">
-                <span>
-                  <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
-                </span>
-              </Column>
-              <Column justifyContent="center">
-                <ExternalLink onClick={e => console.log(sqon)}>{`View data files >>`}</ExternalLink>
-              </Column>
-            </ItemRowContainer>
-          );
-        })
-      ) : (
-        <Spinner />
-      );
-    }}
-  />
-));
+      variables={projectIds.reduce(
+        (acc, id) => ({
+          ...acc,
+          [`${toGqlString(id)}_sqon`]: sqonForStudy(id),
+        }),
+        {},
+      )}
+      render={({ loading, data }) => {
+        const aggregations = get(data, 'file');
+        return aggregations ? (
+          projectIds.map(id => {
+            const studyNameBuckets =
+              get(aggregations, `${toGqlString(id)}.participants__study__name.buckets`) || [];
+            const studyName = studyNameBuckets[0];
+            const sqon = sqonForStudy(id);
+            return (
+              <ItemRowContainer>
+                <Column justifyContent="center" p={20}>
+                  <StudiesIcon src={studiesStack} />
+                </Column>
+                <Column flex={1} justifyContent="center" pr={10}>
+                  <span>
+                    <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
+                  </span>
+                </Column>
+                <Column
+                  justifyContent="center"
+                  onClick={() =>
+                    history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
+                  }
+                >
+                  <ExternalLink hasExternalIcon={false}>
+                    View data files <RightChevron width={10} fill={theme.primary} />
+                  </ExternalLink>
+                </Column>
+              </ItemRowContainer>
+            );
+          })
+        ) : (
+          <Spinner />
+        );
+      }}
+    />
+  ),
+);
 
 const Gen3ConnectionDetails = ({
   state,
