@@ -6,10 +6,17 @@ import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
+import { get } from 'lodash';
+import Query from '@arranger/components/dist/Query';
+import styled from 'react-emotion';
+import studiesStack from 'assets/icon-studies-grey.svg';
 
 import { withApi } from 'services/api';
 import { LoadingSpinner } from './UserIntegrations';
 import Row from 'uikit/Row';
+import Column from 'uikit/Column';
+import { toGqlString } from 'services/utils';
+import ExternalLink from 'uikit/ExternalLink';
 
 const styles = css`
   table {
@@ -20,6 +27,24 @@ const styles = css`
     padding: 15px;
   }
 `;
+
+const ItemRowContainer = styled(Row)`
+  min-height: 60px;
+  padding-right: 10%;
+  &:not(:last-child) {
+    border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
+  }
+`;
+
+const StudiesIcon = styled(`img`)`
+  height: 20px;
+`;
+
+const Spinner = () => (
+  <Row justifyContent={'center'}>
+    <LoadingSpinner width={20} height={20} />
+  </Row>
+);
 
 const enhance = compose(
   injectState,
@@ -39,6 +64,81 @@ const enhance = compose(
   }),
 );
 
+const sqonForStudy = studyId => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: {
+        field: 'participants.study.external_id',
+        value: [studyId],
+      },
+    },
+  ],
+});
+
+const Gen3ProjectList = withApi(({ projectIds, api }) => (
+  <Query
+    renderError
+    api={api}
+    projectId={'june_13'}
+    name={`gen3ItemQuery`}
+    shouldFetch={true}
+    query={`
+      query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
+        file {${projectIds
+          .map(
+            id => `${toGqlString(id)}: aggregations(filters: ${`$${toGqlString(id)}_sqon`}) {
+              participants__study__name {
+                buckets {
+                  key
+                }
+              }
+            }
+          `,
+          )
+          .join('')}
+        }
+      }
+    `}
+    variables={projectIds.reduce(
+      (acc, id) => ({
+        ...acc,
+        [`${toGqlString(id)}_sqon`]: sqonForStudy(id),
+      }),
+      {},
+    )}
+    render={({ loading, data }) => {
+      const aggregations = get(data, 'file');
+      return aggregations ? (
+        projectIds.map(id => {
+          const studyNameBuckets =
+            get(aggregations, `${toGqlString(id)}.participants__study__name.buckets`) || [];
+          const studyName = studyNameBuckets[0];
+          const sqon = sqonForStudy(id);
+          return (
+            <ItemRowContainer>
+              <Column justifyContent="center" p={20}>
+                <StudiesIcon src={studiesStack} />
+              </Column>
+              <Column flex={1} justifyContent="center">
+                <span>
+                  <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
+                </span>
+              </Column>
+              <Column justifyContent="center">
+                <ExternalLink onClick={e => console.log(sqon)}>{`View data files >>`}</ExternalLink>
+              </Column>
+            </ItemRowContainer>
+          );
+        })
+      ) : (
+        <Spinner />
+      );
+    }}
+  />
+));
+
 const Gen3ConnectionDetails = ({
   state,
   effects,
@@ -50,12 +150,10 @@ const Gen3ConnectionDetails = ({
 }) => (
   <div css={styles}>
     {loading ? (
-      <Row justifyContent={'center'}>
-        <LoadingSpinner width={20} height={20} />
-      </Row>
+      <Spinner />
     ) : (
-      <table>
-        <tr>
+      <Column>
+        <Row>
           <div
             css={`
               color: ${theme.active};
@@ -65,22 +163,21 @@ const Gen3ConnectionDetails = ({
             <CheckIcon size={20} />
             <span> Connected account: {userDetails.name}</span>
           </div>
-        </tr>
-        <tr>
-          <span className="title"> You can download data from these studies:</span>
-        </tr>
-        <ul>
+        </Row>
+        <Row>
+          <span className="title">
+            {' '}
+            You can download and analyze controlled data from the following studies:
+          </span>
+        </Row>
+        <Column pl={15}>
           {userDetails.projects ? (
-            Object.keys(userDetails.projects).map(projectName => (
-              <li>
-                <span>{projectName}</span>
-              </li>
-            ))
+            <Gen3ProjectList projectIds={Object.keys(userDetails.projects)} />
           ) : (
             <tr />
           )}
-        </ul>
-      </table>
+        </Column>
+      </Column>
     )}
   </div>
 );

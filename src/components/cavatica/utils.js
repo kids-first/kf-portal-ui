@@ -1,6 +1,5 @@
 import { graphql } from 'services/arranger';
-
-const toGqlString = str => str.replace('.', '__');
+import { toGqlString } from 'services/utils';
 
 export const getStudiesAggregations = ({ api, studies, sqon }) => {
   return !studies.length
