@@ -156,11 +156,7 @@ const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-const FileRepo = compose(
-  injectState,
-  withTheme,
-  withApi,
-)(
+const FileRepo = compose(injectState, withTheme, withApi)(
   ({
     state,
     effects,
@@ -277,6 +273,9 @@ const FileRepo = compose(
                                     action: TRACKING_EVENTS.actions.filter,
                                     label: val,
                                   });
+                                }
+                                if (props.onFilterChange) {
+                                  props.onFilterChange(val);
                                 }
                               }}
                               onTableExport={({ files }) => {
