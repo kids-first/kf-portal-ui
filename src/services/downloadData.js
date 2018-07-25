@@ -149,11 +149,11 @@ const getClinicalDownload = type => ({ sqon, columns }) => () =>
     ],
   });
 
-export const clinicalDataParticipants = getClinicalDownload('participant');
+export const clinicalDataParticipants = async () => getClinicalDownload('participant');
 
-export const clinicalDataFamily = getClinicalDownload('participant-and-family');
+export const clinicalDataFamily = async () => getClinicalDownload('participant-and-family');
 
-export const downloadBiospecimen = ({ sqon, columns }) => () =>
+export const downloadBiospecimen = ({ sqon, columns }) =>
   saveTSV({
     url: downloadUrl,
     files: [

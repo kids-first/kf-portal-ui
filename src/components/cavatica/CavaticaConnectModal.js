@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { isValidKey } from 'components/UserProfile/UserIntegrations';
-
+import { debounce } from 'lodash';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
@@ -131,6 +131,11 @@ const CavaticaConnectModal = withTheme(
               onChange={e => {
                 setCavaticaKey(e.target.value);
                 setInvalidToken(false);
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.user.profile,
+                  action: TRACKING_EVENTS.actions.integration.udpatedCreds,
+                  label: 'Cavatica',
+                });
               }}
             />
             <FormErrorMessage id="cavaticaTokenErrorMsg">
