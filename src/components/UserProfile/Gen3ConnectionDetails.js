@@ -136,14 +136,15 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
                       <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
                     </span>
                   </Column>
-                  <Column
-                    justifyContent="center"
-                    onClick={() =>
-                      history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
-                    }
-                  >
+                  <Column justifyContent="center">
                     <ExternalLink hasExternalIcon={false}>
-                      View data files <RightChevron width={10} fill={theme.primary} />
+                      <span
+                        onClick={() =>
+                          history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
+                        }
+                      >
+                        View data files <RightChevron width={10} fill={theme.primary} />
+                      </span>
                     </ExternalLink>
                   </Column>
                 </ItemRowContainer>
