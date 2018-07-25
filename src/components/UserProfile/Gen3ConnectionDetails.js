@@ -10,15 +10,16 @@ import Query from '@arranger/components/dist/Query';
 import styled from 'react-emotion';
 import studiesStack from 'assets/icon-studies-grey.svg';
 
-import { withApi } from 'services/api';
 import { LoadingSpinner } from './UserIntegrations';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { toGqlString } from 'services/utils';
 import ExternalLink from 'uikit/ExternalLink';
 import { Span } from 'uikit/Core';
+import { PromptMessageContainer } from 'uikit/PromptMessage';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import { withHistory } from 'services/history';
+import { withApi } from 'services/api';
 
 const styles = css`
   table {
@@ -189,10 +190,12 @@ const Gen3ConnectionDetails = ({
           </Fragment>
         ) : (
           <Row>
-            <Span className="title" fontWeight={'bold'}>
-              {' '}
-              You do not have access to any study
-            </Span>
+            <PromptMessageContainer warning mb={0} width={'100%'}>
+              <Span className="title" fontWeight={'bold'}>
+                {' '}
+                You do not have access to any study
+              </Span>
+            </PromptMessageContainer>
           </Row>
         )}
       </Column>
