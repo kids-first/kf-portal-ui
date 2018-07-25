@@ -79,6 +79,8 @@ const sqonForStudy = studyId => ({
   ],
 });
 
+const toStudyId = consentCode => consentCode.split('.')[0];
+
 const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
   ({ projectIds, api, theme, history }) => (
     <Query
@@ -180,7 +182,7 @@ const Gen3ConnectionDetails = ({
         </Row>
         <Column pl={15}>
           {userDetails.projects ? (
-            <Gen3ProjectList projectIds={Object.keys(userDetails.projects)} />
+            <Gen3ProjectList projectIds={Object.keys(userDetails.projects).map(toStudyId)} />
           ) : null}
         </Column>
       </Column>
