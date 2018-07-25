@@ -31,7 +31,7 @@ const baseStyles = complexStyle({
   prop: 'baseStyle',
   key: 'baseStyles',
 });
-const applyDefaultStyles = Component => styled(Component)`
+export const applyDefaultStyles = Component => styled(Component)`
   ${baseStyles}
   ${space}
   ${width}

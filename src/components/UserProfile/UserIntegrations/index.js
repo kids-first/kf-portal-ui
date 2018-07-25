@@ -3,7 +3,7 @@ import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import Button from 'uikit/Button';
+import Button, { HollowButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
@@ -26,6 +26,7 @@ import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
 import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, ViewIcon, XIcon } from './ui';
+import styled from 'react-emotion';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -39,8 +40,8 @@ export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   />
 );
 
-const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
-  <Button
+const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...props }) => (
+  <HollowButton
     {...props}
     onClick={() => {
       trackUserInteraction({
@@ -50,11 +51,12 @@ const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
       });
       onClick();
     }}
-    className="connectedButton"
   >
     {props.children}
-  </Button>
-);
+  </HollowButton>
+));
+
+const Gen3DetailButton = styled(ConnectedButton)``;
 
 const enhance = compose(
   injectState,
@@ -62,7 +64,7 @@ const enhance = compose(
   withState('editingCavatica', 'setEditingCavatica', false),
 );
 
-const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
+const gen3Status = ({ theme, onView, onRemove }) => {
   return (
     <div css="flex-direction: column;">
       <div
@@ -75,9 +77,9 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <Span>Connected</Span>
       </div>
       <div css="display: flex;">
-        <ConnectedButton action="view" type="Gen3" onClick={onView}>
+        <Gen3DetailButton action="view" type="Gen3" onClick={onView}>
           <ViewIcon />View
-        </ConnectedButton>
+        </Gen3DetailButton>
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
@@ -92,7 +94,7 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
   );
 };
 
-const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
+const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
   return (
     <div css="flex-direction: column;">
       <div
@@ -160,7 +162,6 @@ const UserIntegrations = withApi(
                       ) : isValidKey(integrationTokens[GEN3]) ? (
                         gen3Status({
                           theme,
-                          gen3Key: integrationTokens[GEN3],
                           onView: () =>
                             effects.setModal({
                               title: 'Gen3 Connection Details',
@@ -218,7 +219,6 @@ const UserIntegrations = withApi(
                   {isValidKey(integrationTokens[CAVATICA]) ? (
                     cavaticaStatus({
                       theme,
-                      cavaticaKey: integrationTokens[CAVATICA],
                       onEdit: () =>
                         effects.setModal({
                           title: 'How to Connect to Cavatica',

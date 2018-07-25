@@ -20,14 +20,6 @@ export const UserIntegrationsWrapper = styled('div')`
   span {
     flex: 1;
   }
-  button {
-    flex: 1;
-    font-weight: bold;
-    padding: 6px;
-    margin: 2px;
-    padding-left: 5px;
-    text-transform: uppercase;
-  }
 
   .logoImg {
     width: 150px;
