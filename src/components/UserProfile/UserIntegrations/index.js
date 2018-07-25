@@ -84,9 +84,15 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         <ConnectedButton action="view" type="Gen3" onClick={onView}>
           <ViewIcon />View
         </ConnectedButton>
-        <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
-          <XIcon />Remove
-        </ConnectedButton>
+        <LoadingOnClick
+          onClick={onRemove}
+          render={({ onClick, loading }) => (
+            <ConnectedButton action="remove" type="Gen3" onClick={onClick}>
+              {loading ? <LoadingSpinner /> : <XIcon />}
+              <span>Disconnect</span>
+            </ConnectedButton>
+          )}
+        />
       </div>
     </div>
   );
@@ -113,7 +119,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
               {loading ? <LoadingSpinner /> : <XIcon />}
-              <span>Remove</span>
+              <span>Disconnect</span>
             </ConnectedButton>
           )}
         />
