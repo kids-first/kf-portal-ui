@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Fragment } from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
 import { getUser as getGen3User } from 'services/gen3';
@@ -61,6 +61,7 @@ const enhance = compose(
       setLoading(true);
       let userDetails = await getGen3User(api);
       setLoading(false);
+      console.log('userDetails: ', userDetails);
       setUserDetails(userDetails);
     },
   }),
@@ -174,17 +175,26 @@ const Gen3ConnectionDetails = ({
       <Spinner />
     ) : (
       <Column>
-        <Row my={30}>
-          <Span className="title" fontWeight={'bold'}>
-            {' '}
-            You can download and analyze controlled data from the following studies:
-          </Span>
-        </Row>
-        <Column pl={15}>
-          {userDetails.projects ? (
-            <Gen3ProjectList projectIds={Object.keys(userDetails.projects).map(toStudyId)} />
-          ) : null}
-        </Column>
+        {userDetails.projects && userDetails.projects.length ? (
+          <Fragment>
+            <Row my={30}>
+              <Span className="title" fontWeight={'bold'}>
+                {' '}
+                You can download and analyze controlled data from the following studies:
+              </Span>
+            </Row>
+            <Column pl={15}>
+              <Gen3ProjectList projectIds={Object.keys(userDetails.projects).map(toStudyId)} />
+            </Column>
+          </Fragment>
+        ) : (
+          <Row>
+            <Span className="title" fontWeight={'bold'}>
+              {' '}
+              You do not have access to any study
+            </Span>
+          </Row>
+        )}
       </Column>
     )}
   </div>
