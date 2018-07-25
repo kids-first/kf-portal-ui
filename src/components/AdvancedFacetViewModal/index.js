@@ -7,6 +7,7 @@ import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
 import { FilterInput } from 'uikit/Input';
+import { TRACKING_EVENTS } from '../../services/analyticsTracking';
 
 const enhance = compose(provideLocalSqon, injectState);
 
@@ -52,6 +53,7 @@ class AdvancedFacetViewModalContent extends React.Component {
       state: { localSqon },
       closeModal = () => {},
       onSqonSubmit = () => {},
+      trackFileRepoInteraction,
       ...props
     } = this.props;
     return (
@@ -61,7 +63,52 @@ class AdvancedFacetViewModalContent extends React.Component {
             {...props}
             InputComponent={CustomFilterInput}
             sqon={localSqon}
-            onSqonChange={({ sqon }) => effects.setAdvancedFacetSqon(sqon)}
+            onSqonChange={({ sqon, field, value }) => effects.setAdvancedFacetSqon(sqon)}
+            onSqonSubmit={({ sqon, ...rest }) => {
+              trackFileRepoInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                action: 'View Results',
+                label: sqon,
+              });
+              if (props.onSqonSubmit) {
+                props.onSqonSubmit({ sqon, ...rest });
+              }
+            }}
+            onFilterChange={({ val, ...rest }) => {
+              trackFileRepoInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                action: TRACKING_EVENTS.actions.filter + ' - Search',
+                ...(val && { label: val }),
+              });
+              if (props.onFilterChange) {
+                props.onFilterChange({ val, ...rest });
+              }
+            }}
+            onValueChange={({ field, value, active, ...rest }) => {
+              if (active) {
+                trackFileRepoInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                  action: TRACKING_EVENTS.actions.filter + ' Selected',
+                  label: {
+                    type: 'filter',
+                    value,
+                    field,
+                  },
+                });
+              }
+              if (props.onTermSelected) {
+                props.onTermSelected({ field, value, active, ...rest });
+              }
+            }}
+            onClear={() => {
+              trackFileRepoInteraction({
+                category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                action: TRACKING_EVENTS.actions.query.clear,
+              });
+              if (props.onClear()) {
+                props.onClear();
+              }
+            }}
           />
         </AfvContainer>
         <ModalFooter

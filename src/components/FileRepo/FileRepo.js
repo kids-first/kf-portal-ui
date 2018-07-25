@@ -202,7 +202,8 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                       <DetectNewVersion {...props} />
                       <ArrangerContainer>
                         <AggregationSidebar
-                          {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
+                          {...{ ...props, ...url, translateSQONValue }}
+                          trackFileRepoInteraction={trackFileRepoInteraction}
                         />
                         <TableContainer>
                           <Row mb={url.sqon ? 3 : 0}>
@@ -266,11 +267,16 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               fieldTypesForFilter={['text', 'keyword', 'id']}
                               maxPagesOptions={5}
                               onFilterChange={val => {
-                                trackFileRepoInteraction({
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: TRACKING_EVENTS.actions.filter,
-                                  label: val,
-                                });
+                                if (val !== '') {
+                                  trackFileRepoInteraction({
+                                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                                    action: TRACKING_EVENTS.actions.filter,
+                                    label: val,
+                                  });
+                                }
+                                if (props.onFilterChange) {
+                                  props.onFilterChange(val);
+                                }
                               }}
                               onTableExport={({ files }) => {
                                 trackFileRepoInteraction({

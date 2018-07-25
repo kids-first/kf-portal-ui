@@ -8,15 +8,17 @@ import { getAppElement } from '../../services/globalDomNodes.js';
 import LoadingOnClick from 'components/LoadingOnClick';
 import ErrorIcon from 'icons/ErrorIcon';
 import Spinner from 'react-spinkit';
+import {
+  PromptMessageContainer,
+  PromptMessageHeading,
+  PromptMessageContent,
+} from 'uikit/PromptMessage';
 
 import {
   ModalFooterContainer,
   ModalActionButton,
   CancelButton,
   ModalFooterContent,
-  ModalWarningContainer,
-  ModalWarningErrorWrapper,
-  ModalWarningErrorContent,
   Modal,
   ModalContent,
 } from './ui';
@@ -56,12 +58,12 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
 
 export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
-    <ModalWarningContainer>
-      <ModalWarningErrorWrapper>
+    <PromptMessageContainer error>
+      <PromptMessageHeading>
         <ErrorIcon width={30} height={30} fill={theme.errorBorder} />
-      </ModalWarningErrorWrapper>
-      <ModalWarningErrorContent>{props.children}</ModalWarningErrorContent>
-    </ModalWarningContainer>
+      </PromptMessageHeading>
+      <PromptMessageContent>{props.children}</PromptMessageContent>
+    </PromptMessageContainer>
   );
 });
 

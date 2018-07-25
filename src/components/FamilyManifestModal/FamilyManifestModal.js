@@ -190,17 +190,13 @@ export default compose(
                     fileManifestParticipantsAndFamily({
                       sqon: downloadSqon,
                       columns: columns,
-                    })().then(
-                      async profile => {
-                        trackUserInteraction({
-                          category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                          action: 'Download Manifest',
-                          label: 'Participant and Family',
-                        });
-                        unsetModal();
-                      },
-                      errors => setSubmitting(false),
-                    );
+                    })();
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                      action: 'Download Manifest ' + TRACKING_EVENTS.actions.click,
+                      label: 'Participant and Family',
+                    });
+                    unsetModal();
                   },
                 })(({ handleSubmit }) => (
                   <DownloadManifestModalFooter
@@ -319,6 +315,18 @@ export default compose(
                                                 ? checkedFileTypes.filter(type => type !== fileType)
                                                 : [...checkedFileTypes, fileType],
                                             );
+
+                                            if (e.target.checked) {
+                                              trackUserInteraction({
+                                                category:
+                                                  TRACKING_EVENTS.categories.fileRepo
+                                                    .actionsSidebar,
+                                                action:
+                                                  TRACKING_EVENTS.actions.download.manifest +
+                                                  ' Modal - Data Types - Checked',
+                                                label: fileType,
+                                              });
+                                            }
                                           },
                                           isChecked: checkedFileTypes.includes(fileType),
                                           fileType,
