@@ -5,7 +5,6 @@ import { getUser as getGen3User } from 'services/gen3';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import CheckIcon from 'react-icons/lib/fa/check-circle';
 import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import styled from 'react-emotion';
@@ -17,9 +16,9 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { toGqlString } from 'services/utils';
 import ExternalLink from 'uikit/ExternalLink';
+import { Span } from 'uikit/Core';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import { withHistory } from 'services/history';
-import { Route, Switch, Redirect } from 'react-router-dom';
 
 const styles = css`
   table {
@@ -132,19 +131,20 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
                     <StudiesIcon src={studiesStack} />
                   </Column>
                   <Column flex={1} justifyContent="center" pr={10}>
-                    <span>
+                    <Span>
                       <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
-                    </span>
+                    </Span>
                   </Column>
                   <Column justifyContent="center">
                     <ExternalLink hasExternalIcon={false}>
-                      <span
+                      <Span
                         onClick={() =>
                           history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
                         }
                       >
+                        {' '}
                         View data files <RightChevron width={10} fill={theme.primary} />
-                      </span>
+                      </Span>
                     </ExternalLink>
                   </Column>
                 </ItemRowContainer>
@@ -172,29 +172,16 @@ const Gen3ConnectionDetails = ({
       <Spinner />
     ) : (
       <Column>
-        <Row>
-          <div
-            css={`
-              color: ${theme.active};
-              padding: 10px;
-            `}
-          >
-            <CheckIcon size={20} />
-            <span> Connected account: {userDetails.name}</span>
-          </div>
-        </Row>
-        <Row>
-          <span className="title">
+        <Row my={30}>
+          <Span className="title" fontWeight={'bold'}>
             {' '}
             You can download and analyze controlled data from the following studies:
-          </span>
+          </Span>
         </Row>
         <Column pl={15}>
           {userDetails.projects ? (
             <Gen3ProjectList projectIds={Object.keys(userDetails.projects)} />
-          ) : (
-            <tr />
-          )}
+          ) : null}
         </Column>
       </Column>
     )}
