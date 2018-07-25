@@ -70,7 +70,7 @@ export default compose(
               The Portal is currently in <strong>BETA Phase</strong>
             </PromptMessageHeading>
             <PromptMessageContent>
-              We are actively working on features, so you might find that your data has changed,
+              We are actively working on improvements, so you might find that your data has changed,
               such as your saved queries. Data in the repository will change regularly, such as
               field names or the amount of data available. We appreciate your usage and feedback
               during this phase, so please keep visiting and if you have any questions contact us
