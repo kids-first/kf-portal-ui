@@ -102,6 +102,11 @@ export const Span = applyDefaultStyles(styled('span')`
   font-family: ${({ theme }) => theme.fonts.details};
 `);
 
+export const Paragraph = applyDefaultStyles(styled('p')`
+  font-family: ${({ theme }) => theme.fonts.details};
+  line-height: 28px;
+`);
+
 export const H1 = applyDefaultStyles('h1');
 
 export const H2 = applyDefaultStyles('h2');

@@ -14,6 +14,7 @@ import { deleteSecret } from 'services/secrets';
 import { deleteGen3Token } from 'services/gen3';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Component from 'react-component-component';
+import { Span, Paragraph } from 'uikit/Core';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
@@ -24,14 +25,7 @@ import { withApi } from 'services/api';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import {
-  Paragraph,
-  UserIntegrationsWrapper,
-  IntegrationTable,
-  PencilIcon,
-  ViewIcon,
-  XIcon,
-} from './ui';
+import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, ViewIcon, XIcon } from './ui';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -78,7 +72,7 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
         `}
       >
         <CheckIcon size={20} />
-        <span>Connected</span>
+        <Span>Connected</Span>
       </div>
       <div css="display: flex;">
         <ConnectedButton action="view" type="Gen3" onClick={onView}>
@@ -89,7 +83,7 @@ const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Gen3" onClick={onClick}>
               {loading ? <LoadingSpinner /> : <XIcon />}
-              <span>Disconnect</span>
+              <Span>Disconnect</Span>
             </ConnectedButton>
           )}
         />
@@ -108,7 +102,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
         `}
       >
         <CheckIcon size={20} />
-        <span> Connected</span>
+        <Span> Connected</Span>
       </div>
       <div css="display: flex;">
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
@@ -119,7 +113,7 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
               {loading ? <LoadingSpinner /> : <XIcon />}
-              <span>Disconnect</span>
+              <Span>Disconnect</Span>
             </ConnectedButton>
           )}
         />
@@ -150,7 +144,7 @@ const UserIntegrations = withApi(
                 <img className="logoImg" src={gen3Logo} alt="Gen3 Logo" />
               </td>
               <td>
-                <span className="integrationHeader">Download Controlled Data</span>
+                <Span className="integrationHeader">Download Controlled Data</Span>
                 <Paragraph>
                   Access controlled data by connecting your NIH Login and dbGaP authorized access to
                   the Kids First Data Catalog powered by{' '}
@@ -199,7 +193,7 @@ const UserIntegrations = withApi(
                               });
                           }}
                         >
-                          <span>Connect</span>
+                          <Span>Connect</Span>
                           <RightIcon />
                         </button>
                       );
@@ -213,7 +207,7 @@ const UserIntegrations = withApi(
                 <img className="logoImg" src={cavaticaLogo} alt="Cavatica Logo" />
               </td>
               <td>
-                <span className="integrationHeader">Analyze Data</span>
+                <Span className="integrationHeader">Analyze Data</Span>
                 <Paragraph>
                   Analyze data quickly by connecting your Kids First account to{' '}
                   <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
@@ -255,9 +249,9 @@ const UserIntegrations = withApi(
                         })
                       }
                     >
-                      <span>
+                      <Span>
                         Connect<RightIcon />
-                      </span>
+                      </Span>
                     </button>
                   )}
                 </div>
