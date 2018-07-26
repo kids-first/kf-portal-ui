@@ -87,22 +87,22 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
       name={`gen3ItemQuery`}
       shouldFetch={true}
       query={`
-      query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
-        file {${projectIds
-          .map(
-            id => `${toGqlString(id)}: aggregations(filters: ${`$${toGqlString(id)}_sqon`}) {
-              participants__study__name {
-                buckets {
-                  key
+        query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
+          file {${projectIds
+            .map(
+              id => `${toGqlString(id)}: aggregations(filters: ${`$${toGqlString(id)}_sqon`}) {
+                participants__study__name {
+                  buckets {
+                    key
+                  }
                 }
               }
-            }
-          `,
-          )
-          .join('')}
+            `,
+            )
+            .join('')}
+          }
         }
-      }
-    `}
+      `}
       variables={projectIds.reduce(
         (acc, id) => ({
           ...acc,
