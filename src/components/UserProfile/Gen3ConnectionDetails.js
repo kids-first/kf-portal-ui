@@ -8,7 +8,6 @@ import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import styled from 'react-emotion';
-import studiesStack from 'assets/icon-studies-grey.svg';
 
 import { LoadingSpinner } from './UserIntegrations';
 import Row from 'uikit/Row';
@@ -18,6 +17,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import { Span } from 'uikit/Core';
 import { PromptMessageContainer } from 'uikit/PromptMessage';
 import RightChevron from 'icons/DoubleChevronRightIcon';
+import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
 import { withApi } from 'services/api';
 
@@ -37,10 +37,6 @@ const ItemRowContainer = styled(Row)`
   &:not(:last-child) {
     border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
   }
-`;
-
-const StudiesIcon = styled(`img`)`
-  height: 20px;
 `;
 
 const Spinner = () => (
@@ -132,7 +128,7 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
               return (
                 <ItemRowContainer>
                   <Column justifyContent="center" p={20}>
-                    <StudiesIcon src={studiesStack} />
+                    <StackIcon width={20} />
                   </Column>
                   <Column flex={1} justifyContent="center" pr={10}>
                     <Span>
@@ -176,7 +172,7 @@ const Gen3ConnectionDetails = ({
       <Spinner />
     ) : (
       <Column>
-        {userDetails.projects && userDetails.projects.length ? (
+        {userDetails.projects && Object.keys(userDetails.projects).length ? (
           <Fragment>
             <Row my={30}>
               <Span className="title" fontWeight={'bold'}>

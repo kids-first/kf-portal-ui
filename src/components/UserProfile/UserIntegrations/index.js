@@ -14,7 +14,9 @@ import { deleteSecret } from 'services/secrets';
 import { deleteGen3Token } from 'services/gen3';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Component from 'react-component-component';
-import { Span, Paragraph } from 'uikit/Core';
+import { Span, Paragraph, Div } from 'uikit/Core';
+import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
@@ -26,6 +28,7 @@ import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
 import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, ViewIcon, XIcon } from './ui';
+import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
@@ -56,7 +59,14 @@ const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...p
   </HollowButton>
 ));
 
-const Gen3DetailButton = styled(ConnectedButton)``;
+const Gen3DetailButton = styled(ConnectedButton)`
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  &:hover {
+    background: ${({ theme }) => theme.primaryHover};
+  }
+  margin-bottom: 10px;
+`;
 
 const enhance = compose(
   injectState,
@@ -66,19 +76,17 @@ const enhance = compose(
 
 const gen3Status = ({ theme, onView, onRemove }) => {
   return (
-    <div css="flex-direction: column;">
-      <div
-        css={`
-          color: ${theme.active};
-          padding: 10px;
-        `}
-      >
+    <Column>
+      <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
         <Span>Connected</Span>
-      </div>
-      <div css="display: flex;">
+      </Div>
+      <Column>
         <Gen3DetailButton action="view" type="Gen3" onClick={onView}>
-          <ViewIcon />View
+          <Span mr={`5px`}>
+            <StackIcon fill={theme.white} height={15} />
+          </Span>
+          authorized studies
         </Gen3DetailButton>
         <LoadingOnClick
           onClick={onRemove}
@@ -89,24 +97,19 @@ const gen3Status = ({ theme, onView, onRemove }) => {
             </ConnectedButton>
           )}
         />
-      </div>
-    </div>
+      </Column>
+    </Column>
   );
 };
 
 const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
   return (
-    <div css="flex-direction: column;">
-      <div
-        css={`
-          color: ${theme.active};
-          padding: 10px;
-        `}
-      >
+    <Column>
+      <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
         <Span> Connected</Span>
-      </div>
-      <div css="display: flex;">
+      </Div>
+      <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
           <PencilIcon />Edit
         </ConnectedButton>
@@ -119,8 +122,8 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
             </ConnectedButton>
           )}
         />
-      </div>
-    </div>
+      </Row>
+    </Column>
   );
 };
 
