@@ -58,7 +58,6 @@ const enhance = compose(
       setLoading(true);
       let userDetails = await getGen3User(api);
       setLoading(false);
-      console.log('userDetails: ', userDetails);
       setUserDetails(userDetails);
     },
   }),
