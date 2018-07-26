@@ -99,7 +99,7 @@ const setUserDimensions = (userId, role, groups) => {
   }
 
   if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
-    let _groups = JSON.stringify({ egoGroups: groups[0] || GAState.egoGroups[0] });
+    let _groups = JSON.stringify({ egoGroups: groups ? groups[0] : GAState.egoGroups[0] });
     // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
     // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
     ReactGA.set({ dimension4: _groups });
