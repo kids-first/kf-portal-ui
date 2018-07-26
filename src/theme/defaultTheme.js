@@ -162,7 +162,6 @@ const components = {
     background-color: ${colors.white};
     border: solid 1px ${colors.borderGrey};
     font-size: 12px;
-    font-weight: 300;
     letter-spacing: 0.2px;
     text-align: center;
     color: ${colors.tertiary};

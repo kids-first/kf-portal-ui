@@ -3,7 +3,7 @@ import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import Button from 'uikit/Button';
+import Button, { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
@@ -14,6 +14,9 @@ import { deleteSecret } from 'services/secrets';
 import { deleteGen3Token } from 'services/gen3';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Component from 'react-component-component';
+import { Span, Paragraph, Div } from 'uikit/Core';
+import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
@@ -24,14 +27,9 @@ import { withApi } from 'services/api';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import {
-  Paragraph,
-  UserIntegrationsWrapper,
-  IntegrationTable,
-  PencilIcon,
-  ViewIcon,
-  XIcon,
-} from './ui';
+import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, ViewIcon, XIcon } from './ui';
+import StackIcon from 'icons/StackIcon';
+import styled from 'react-emotion';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -45,8 +43,8 @@ export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   />
 );
 
-const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
-  <Button
+const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...props }) => (
+  <HollowButton
     {...props}
     onClick={() => {
       trackUserInteraction({
@@ -56,11 +54,20 @@ const ConnectedButton = ({ onClick, action, type, chilren, ...props }) => (
       });
       onClick();
     }}
-    className="connectedButton"
   >
     {props.children}
-  </Button>
-);
+  </HollowButton>
+));
+
+const Gen3DetailButton = styled(ConnectedButton)`
+  background: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.white};
+  &:hover {
+    background: ${({ theme }) => theme.primaryHover};
+  }
+  margin-bottom: 10px;
+  min-width: 190px;
+`;
 
 const enhance = compose(
   injectState,
@@ -68,43 +75,42 @@ const enhance = compose(
   withState('editingCavatica', 'setEditingCavatica', false),
 );
 
-const gen3Status = ({ theme, gen3Key, onView, onEdit, onRemove }) => {
+const gen3Status = ({ theme, onView, onRemove }) => {
   return (
-    <div css="flex-direction: column;">
-      <div
-        css={`
-          color: ${theme.active};
-          padding: 10px;
-        `}
-      >
+    <Column>
+      <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
-        <span>Connected</span>
-      </div>
-      <div css="display: flex;">
-        <ConnectedButton action="view" type="Gen3" onClick={onView}>
-          <ViewIcon />View
-        </ConnectedButton>
-        <ConnectedButton action="remove" type="Gen3" onClick={onRemove}>
-          <XIcon />Remove
-        </ConnectedButton>
-      </div>
-    </div>
+        <Span>Connected</Span>
+      </Div>
+      <Column>
+        <Gen3DetailButton action="view" type="Gen3" onClick={onView}>
+          <Span mr={`5px`}>
+            <StackIcon fill={theme.white} height={15} />
+          </Span>
+          authorized studies
+        </Gen3DetailButton>
+        <LoadingOnClick
+          onClick={onRemove}
+          render={({ onClick, loading }) => (
+            <ConnectedButton action="remove" type="Gen3" onClick={onClick}>
+              {loading ? <LoadingSpinner /> : <XIcon />}
+              <Span>Disconnect</Span>
+            </ConnectedButton>
+          )}
+        />
+      </Column>
+    </Column>
   );
 };
 
-const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
+const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
   return (
-    <div css="flex-direction: column;">
-      <div
-        css={`
-          color: ${theme.active};
-          padding: 10px;
-        `}
-      >
+    <Column>
+      <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
-        <span> Connected</span>
-      </div>
-      <div css="display: flex;">
+        <Span> Connected</Span>
+      </Div>
+      <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
           <PencilIcon />Edit
         </ConnectedButton>
@@ -113,12 +119,12 @@ const cavaticaStatus = ({ theme, cavaticaKey, onEdit, onRemove }) => {
           render={({ onClick, loading }) => (
             <ConnectedButton action="remove" type="Cavatica" onClick={onClick}>
               {loading ? <LoadingSpinner /> : <XIcon />}
-              <span>Remove</span>
+              <Span>Disconnect</Span>
             </ConnectedButton>
           )}
         />
-      </div>
-    </div>
+      </Row>
+    </Column>
   );
 };
 
@@ -144,7 +150,7 @@ const UserIntegrations = withApi(
                 <img className="logoImg" src={gen3Logo} alt="Gen3 Logo" />
               </td>
               <td>
-                <span className="integrationHeader">Download Controlled Data</span>
+                <Span className="integrationHeader">Download Controlled Data</Span>
                 <Paragraph>
                   Access controlled data by connecting your NIH Login and dbGaP authorized access to
                   the Kids First Data Catalog powered by{' '}
@@ -160,7 +166,6 @@ const UserIntegrations = withApi(
                       ) : isValidKey(integrationTokens[GEN3]) ? (
                         gen3Status({
                           theme,
-                          gen3Key: integrationTokens[GEN3],
                           onView: () =>
                             effects.setModal({
                               title: 'Gen3 Connection Details',
@@ -177,8 +182,7 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
-                        <button
-                          css={theme.actionButton}
+                        <ActionButton
                           onClick={() => {
                             setState({ loading: true });
                             connectGen3(api)
@@ -193,9 +197,9 @@ const UserIntegrations = withApi(
                               });
                           }}
                         >
-                          <span>Connect</span>
+                          Connect
                           <RightIcon />
-                        </button>
+                        </ActionButton>
                       );
                     }}
                   </Component>
@@ -207,7 +211,7 @@ const UserIntegrations = withApi(
                 <img className="logoImg" src={cavaticaLogo} alt="Cavatica Logo" />
               </td>
               <td>
-                <span className="integrationHeader">Analyze Data</span>
+                <Span className="integrationHeader">Analyze Data</Span>
                 <Paragraph>
                   Analyze data quickly by connecting your Kids First account to{' '}
                   <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
@@ -218,7 +222,6 @@ const UserIntegrations = withApi(
                   {isValidKey(integrationTokens[CAVATICA]) ? (
                     cavaticaStatus({
                       theme,
-                      cavaticaKey: integrationTokens[CAVATICA],
                       onEdit: () =>
                         effects.setModal({
                           title: 'How to Connect to Cavatica',
@@ -235,8 +238,7 @@ const UserIntegrations = withApi(
                       },
                     })
                   ) : (
-                    <button
-                      css={theme.actionButton}
+                    <ActionButton
                       onClick={() =>
                         effects.setModal({
                           title: 'How to Connect to Cavatica',
@@ -249,10 +251,8 @@ const UserIntegrations = withApi(
                         })
                       }
                     >
-                      <span>
-                        Connect<RightIcon />
-                      </span>
-                    </button>
+                      Connect<RightIcon />
+                    </ActionButton>
                   )}
                 </div>
               </td>

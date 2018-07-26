@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
+import { applyDefaultStyles } from './Core';
 
 const BaseButton = styled('button')`
   text-align: left;
@@ -28,9 +29,9 @@ export const ActionButton = styled(Button)`
   ${({ theme }) => theme.actionButton};
 `;
 
-export const HollowButton = styled(Button)`
+export const HollowButton = applyDefaultStyles(styled(Button)`
   ${({ theme }) => theme.hollowButton};
-`;
+`);
 
 const BigWhiteButtonContent = styled('span')`
   ${({ theme }) => theme.row};
