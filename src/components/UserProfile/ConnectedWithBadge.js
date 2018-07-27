@@ -6,8 +6,7 @@ import GIcon from 'react-icons/lib/fa/google';
 import FBIcon from 'react-icons/lib/fa/facebook';
 import Check from 'react-icons/lib/fa/check';
 
-import { Box } from 'uikit/Core';
-import { BigWhiteButton } from 'uikit/Button';
+import { Box, Span } from 'uikit/Core';
 
 import { GOOGLE, FACEBOOK } from 'common/constants';
 
@@ -20,8 +19,7 @@ const icons = {
   [FACEBOOK]: x => <FBIcon color="#428bca" {...x} />,
 };
 
-const ButtonItem = styled(x => <Box p={3} {...x} />)`
-  border-right: ${({ divider, theme }) => (divider ? `1px solid ${theme.greyScale8}` : `none`)};
+const Status = styled(x => <Span p={2} {...x} />)`
   color: ${({ theme }) => theme.tertiary};
   white-space: nowrap;
   font-weight: 500;
@@ -29,13 +27,13 @@ const ButtonItem = styled(x => <Box p={3} {...x} />)`
 `;
 
 const ConnectedWithBadge = withTheme(({ theme, provider, Icon = icons[provider] }) => (
-  <BigWhiteButton>
-    <ButtonItem divider>
+  <Box>
+    <Status>
       <Check color={theme.active} />
       <Icon size={20} />
-    </ButtonItem>
-    <ButtonItem>Connected with {capitalize(provider)}</ButtonItem>
-  </BigWhiteButton>
+    </Status>
+    <Status>Connected with {capitalize(provider)}</Status>
+  </Box>
 ));
 
 export default ConnectedWithBadge;
