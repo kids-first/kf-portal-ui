@@ -27,7 +27,7 @@ import { withApi } from 'services/api';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, ViewIcon, XIcon } from './ui';
+import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 

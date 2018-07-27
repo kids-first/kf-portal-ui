@@ -7,67 +7,56 @@ import { compose, withState, shouldUpdate, mapProps } from 'recompose';
 import CloseIcon from 'react-icons/lib/md/close';
 import { withTheme } from 'emotion-theming';
 import { PromptMessageContainer } from 'uikit/PromptMessage';
+import styled from 'react-emotion';
 
 /*----------------------------------------------------------------------------*/
 
-const styles = {
-  wrapper: {
-    position: 'fixed',
-    top: 0,
-    width: '100vw',
-    zIndex: 100,
-    pointerEvents: 'none',
-    textAlign: 'center',
-    wordBreak: 'break-word',
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    margin: '1rem 0',
-    transition: 'transform 0.25s ease',
-  },
-  inactive: {
-    transform: 'translateY(-140%)',
-  },
-  active: {
-    transform: 'translateY(0)',
-  },
-  toast: {
-    position: 'relative',
-    padding: '1.5rem',
-    pointerEvents: 'all',
-  },
-  closeIcon: {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    width: '15px',
-    height: '15px',
-    cursor: 'pointer',
-    ':hover': {
-      color: 'red',
-    },
-  },
-};
+const ToastContent = styled('div')`
+  position: relative;
+  pointer-events: all;
+  width: 500px;
+  max-width: 100%;
+`;
+
+const ToastContainer = styled(`div`)`
+  position: fixed;
+  top: 0px;
+  width: 100vw;
+  z-index: 100;
+  pointer-events: none;
+  text-align: center;
+  word-break: break-word;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CloseButton = styled(CloseIcon)`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  :hover: {
+    color: red;
+  }
+`;
+
+const ToastMessage = styled(PromptMessageContainer)`
+  pointer-events: all;
+  transition: transform 0.25s ease;
+  transform: ${({ visible }) => (visible ? `translateY(0)` : `translateY(-140%)`)};
+`;
 
 const Toast = ({ style, theme, visible, action, close, closed, children, className }) => (
-  <div style={styles.wrapper} className={className}>
-    <div
-      style={{
-        ...styles.container,
-        ...(visible && !closed ? styles.active : styles.inactive),
-        ...style,
-      }}
-      className="test-notification"
-    >
-      <div style={{ ...styles.toast }} css={theme[action] || theme.success}>
-        <CloseIcon style={styles.closeIcon} onClick={close} />
-        {children}
-      </div>
-    </div>
-  </div>
+  <ToastContainer>
+    <ToastMessage visible={visible}>
+      <CloseButton onClick={close} />
+      <ToastContent>{children}</ToastContent>
+    </ToastMessage>
+  </ToastContainer>
 );
 
 Toast.propTypes = {

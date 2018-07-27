@@ -41,8 +41,8 @@ const MessageWrapper = applyDefaultStyles(styled(Column)`
   padding: 20px;
 `);
 
-const PrompMessageWrapper = ({ theme, error, warning, info, children }) => (
-  <MessageWrapper {...{ theme, error, warning, info }}>
+const PrompMessageWrapper = ({ theme, error, warning, info, className, children }) => (
+  <MessageWrapper {...{ theme, error, warning, info, className }}>
     <Row>
       <Flex flex={1} mr={10}>
         {error ? <ErrorIcon /> : warning ? <WarningIcon /> : <InfoIcon />}
