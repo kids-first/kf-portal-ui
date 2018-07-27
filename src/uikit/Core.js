@@ -31,7 +31,7 @@ const baseStyles = complexStyle({
   prop: 'baseStyle',
   key: 'baseStyles',
 });
-const applyDefaultStyles = Component => styled(Component)`
+export const applyDefaultStyles = Component => styled(Component)`
   ${baseStyles}
   ${space}
   ${width}
@@ -90,15 +90,26 @@ export const ExternalLink = styled(applyDefaultStyles('a'))`
   }
 `;
 
-export const Section = styled(applyDefaultStyles('section'))`
+export const Section = applyDefaultStyles(styled('section')`
   font-family: ${({ theme }) => theme.fonts.details};
   color: ${({ theme }) => theme.greyScale1};
   font-size: 14px;
   line-height: 2.57;
   letter-spacing: 0.2px;
-`;
+`);
 
-export const Span = applyDefaultStyles('span');
+export const Span = applyDefaultStyles(styled('span')`
+  font-family: ${({ theme }) => theme.fonts.details};
+`);
+
+export const Div = applyDefaultStyles(styled('div')`
+  font-family: ${({ theme }) => theme.fonts.details};
+`);
+
+export const Paragraph = applyDefaultStyles(styled('p')`
+  font-family: ${({ theme }) => theme.fonts.details};
+  line-height: 28px;
+`);
 
 export const H1 = applyDefaultStyles('h1');
 

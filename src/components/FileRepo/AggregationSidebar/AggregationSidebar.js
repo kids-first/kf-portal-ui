@@ -174,7 +174,7 @@ const AggregationSidebar = compose(injectState, withTheme)(
               setSQON,
               containerRef: aggregationsWrapperRef,
             }}
-            onTermSelected={({ active, field, value }) => {
+            onValueChange={({ active, field, value }) => {
               if (active) {
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters,

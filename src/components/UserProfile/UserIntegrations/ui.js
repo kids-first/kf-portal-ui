@@ -4,10 +4,6 @@ import Pencil from 'react-icons/lib/fa/pencil';
 import View from 'react-icons/lib/fa/eye';
 import X from 'react-icons/lib/fa/close';
 
-export const Paragraph = styled('p')`
-  line-height: 28px;
-`;
-
 export const UserIntegrationsWrapper = styled('div')`
   table {
     border-collapse: collapse;
@@ -23,14 +19,6 @@ export const UserIntegrationsWrapper = styled('div')`
   font-size: 14px;
   span {
     flex: 1;
-  }
-  button {
-    flex: 1;
-    font-weight: bold;
-    padding: 6px;
-    margin: 2px;
-    padding-left: 5px;
-    text-transform: uppercase;
   }
 
   .logoImg {
