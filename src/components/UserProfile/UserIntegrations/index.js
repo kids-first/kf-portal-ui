@@ -133,7 +133,15 @@ export const isValidKey = key => {
 };
 
 const UserIntegrations = withApi(
-  ({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => {
+  ({
+    state: { integrationTokens, loggedInUser },
+    effects,
+    theme,
+    api,
+    onConnectSuccess = ({ service }) => {},
+    onConnectFailure = ({ service, error }) => {},
+    ...props
+  }) => {
     return (
       <UserIntegrationsWrapper>
         <IntegrationTable>
@@ -190,10 +198,25 @@ const UserIntegrations = withApi(
                               .then(token => {
                                 effects.setIntegrationToken(GEN3, token);
                                 setState({ loading: false });
+                                onConnectSuccess({ service: GEN3 });
+                                effects.setToast({
+                                  id: `${Date.now()}`,
+                                  action: 'success',
+                                  component: (
+                                    <div
+                                      css={`
+                                        display: flex;
+                                      `}
+                                    >
+                                      yo!
+                                    </div>
+                                  ),
+                                });
                               })
                               .catch(err => {
                                 console.log('err: ', err);
                                 setState({ loading: false });
+                                onConnectFailure({ service: GEN3, error: err });
                               });
                           }}
                         >

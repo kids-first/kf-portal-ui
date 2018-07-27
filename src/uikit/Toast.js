@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { compose, withState, shouldUpdate, mapProps } from 'recompose';
 import CloseIcon from 'react-icons/lib/md/close';
 import { withTheme } from 'emotion-theming';
+import { PromptMessageContainer } from 'uikit/PromptMessage';
 
 /*----------------------------------------------------------------------------*/
 
