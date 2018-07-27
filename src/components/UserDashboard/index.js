@@ -13,7 +13,7 @@ import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import { H2 } from './styles';
 import Column from 'uikit/Column';
-import {
+import PromptMessage, {
   PromptMessageContainer,
   PromptMessageHeading,
   PromptMessageContent,
@@ -55,10 +55,10 @@ export default compose(
           padding: 40px;
         `}
       >
-        <H2>Welcome, {loggedInUser.firstName}!</H2>
+        <H2 pb={10}>Welcome, {loggedInUser.firstName}!</H2>
         <Column>
-          <PromptMessageContainer info my={20} p={30}>
-            <PromptMessageHeading info mb={10}>
+          <PromptMessageContainer info my={20}>
+            <PromptMessageHeading info mb={10} color={theme.secondary}>
               The Portal is currently in <strong>BETA Phase</strong>
             </PromptMessageHeading>
             <PromptMessageContent>

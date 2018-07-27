@@ -59,9 +59,6 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
 export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
     <PromptMessageContainer error>
-      <PromptMessageHeading>
-        <ErrorIcon width={30} height={30} fill={theme.errorBorder} />
-      </PromptMessageHeading>
       <PromptMessageContent>{props.children}</PromptMessageContent>
     </PromptMessageContainer>
   );
