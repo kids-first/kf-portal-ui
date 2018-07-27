@@ -32,9 +32,9 @@ const styles = css`
 `;
 
 const ItemRowContainer = styled(Row)`
-  padding-top: 10px;
-  padding-bottom: 10px;
-  min-height: 60px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-height: 50px;
   padding-right: 10%;
   &:not(:last-child) {
     border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
@@ -131,7 +131,7 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
               const sqon = sqonForStudy(id);
               return (
                 <ItemRowContainer>
-                  <Column justifyContent="center" p={20}>
+                  <Column justifyContent="center" p={15}>
                     <StackIcon width={20} />
                   </Column>
                   <Column flex={1} justifyContent="center" pr={10}>
@@ -181,7 +181,7 @@ const Gen3ConnectionDetails = ({
             <Row my={10}>
               <Span className="title" fontWeight={'bold'}>
                 {' '}
-                You can download and analyze controlled data from the following studies:
+                You have access to controlled datasets from the following studies:
               </Span>
             </Row>
             <Column pl={15}>

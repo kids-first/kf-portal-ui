@@ -168,7 +168,7 @@ const UserIntegrations = withApi(
                           theme,
                           onView: () =>
                             effects.setModal({
-                              title: 'Gen3 Connection Details',
+                              title: 'Your Authorized Studies',
                               component: (
                                 <Gen3ConnectionDetails
                                   onComplete={effects.unsetModal}
