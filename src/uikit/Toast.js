@@ -20,7 +20,7 @@ const ToastContent = styled('div')`
 
 const ToastContainer = styled(`div`)`
   position: fixed;
-  top: 0px;
+  top: 10px;
   width: 100vw;
   z-index: 100;
   pointer-events: none;

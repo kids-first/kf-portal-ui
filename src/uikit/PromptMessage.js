@@ -47,7 +47,7 @@ const PrompMessageWrapper = ({ theme, error, warning, info, className, children 
       <Flex flex={1} mr={10}>
         {error ? <ErrorIcon /> : warning ? <WarningIcon /> : <InfoIcon />}
       </Flex>
-      <Column>{children}</Column>
+      <Column textAlign={'left'}>{children}</Column>
     </Row>
   </MessageWrapper>
 );

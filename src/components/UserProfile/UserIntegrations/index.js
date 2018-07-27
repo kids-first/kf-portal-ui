@@ -203,13 +203,9 @@ const UserIntegrations = withApi(
                                   id: `${Date.now()}`,
                                   action: 'success',
                                   component: (
-                                    <div
-                                      css={`
-                                        display: flex;
-                                      `}
-                                    >
-                                      yo!
-                                    </div>
+                                    <Row>
+                                      Controlled dataset access sucessfully connected through Gen3
+                                    </Row>
                                   ),
                                 });
                               })
