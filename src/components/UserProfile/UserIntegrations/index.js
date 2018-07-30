@@ -78,12 +78,20 @@ const ConnectButton = ({ ...props }) => (
       border-radius: 19px;
     `}
   >
-    <ExternalLinkIcon size={12} css={`
-      margin-left:10px;
-      margin-right: 5px;
-    `} />
+    <ExternalLinkIcon
+      size={12}
+      css={`
+        margin-left: 10px;
+        margin-right: 5px;
+      `}
+    />
     Connect
-    <RightIcon size={14} css={`margin-left: 14px`} />
+    <RightIcon
+      size={14}
+      css={`
+        margin-left: 14px;
+      `}
+    />
   </ActionButton>
 );
 
@@ -130,7 +138,8 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
       </Div>
       <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
-          <PencilIcon />Edit
+          <PencilIcon />
+          Edit
         </ConnectedButton>
         <LoadingOnClick
           onClick={onRemove}
@@ -200,6 +209,7 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
+<<<<<<< HEAD
                             <ConnectButton
                               onClick={() => {
                                 setState({ loading: true });
@@ -225,6 +235,24 @@ const UserIntegrations = withApi(
                               }}
                             />
                           );
+=======
+                        <ConnectButton
+                          onClick={() => {
+                            setState({ loading: true });
+                            connectGen3(api)
+                              .then(() => getAccessToken(api))
+                              .then(token => {
+                                effects.setIntegrationToken(GEN3, token);
+                                setState({ loading: false });
+                              })
+                              .catch(err => {
+                                console.log('err: ', err);
+                                setState({ loading: false });
+                              });
+                          }}
+                        />
+                      );
+>>>>>>> prettier
                     }}
                   </Component>
                 </div>
@@ -237,8 +265,8 @@ const UserIntegrations = withApi(
               <td>
                 <Span className="integrationHeader">Analyze Data</Span>
                 <Paragraph>
-                  Analyze data quickly by connecting your Kids First account to the cloud compute environment,{' '}
-                  <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
+                  Analyze data quickly by connecting your Kids First account to the cloud compute
+                  environment, <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
                 </Paragraph>
               </td>
               <td>
@@ -262,20 +290,20 @@ const UserIntegrations = withApi(
                       },
                     })
                   ) : (
-                      <ConnectButton
-                        onClick={() =>
-                          effects.setModal({
-                            title: 'How to Connect to Cavatica',
-                            component: (
-                              <CavaticaConnectModal
-                                onComplete={effects.unsetModal}
-                                onCancel={effects.unsetModal}
-                              />
-                            ),
-                          })
-                        }
-                      />
-                    )}
+                    <ConnectButton
+                      onClick={() =>
+                        effects.setModal({
+                          title: 'How to Connect to Cavatica',
+                          component: (
+                            <CavaticaConnectModal
+                              onComplete={effects.unsetModal}
+                              onCancel={effects.unsetModal}
+                            />
+                          ),
+                        })
+                      }
+                    />
+                  )}
                 </div>
               </td>
             </tr>

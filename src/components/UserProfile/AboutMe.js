@@ -41,17 +41,10 @@ export default compose(
   withTheme,
   withState('bioTextarea', 'setBioTextarea', ({ profile }) => profile.bio || ''),
   withState('storyTextarea', 'setStoryTextarea', ({ profile }) => profile.story || ''),
-  withPropsOnChange(
-    ['profile'],
-    ({
-      setBioTextarea,
-      setStoryTextarea,
-      profile,
-    }) => {
-      setBioTextarea(profile.bio || '');
-      setStoryTextarea(profile.story || '');
-    },
-  ),
+  withPropsOnChange(['profile'], ({ setBioTextarea, setStoryTextarea, profile }) => {
+    setBioTextarea(profile.bio || '');
+    setStoryTextarea(profile.story || '');
+  }),
   withRouter,
 )(
   ({
@@ -70,148 +63,142 @@ export default compose(
     storyTextarea,
     setStoryTextarea,
   }) => (
-      <Flex justifyContent="center" pt={4} pb={4}>
-        <Container row alignItems="flex-start">
-          <Column width="65%" pt={2} justifyContent="space-around">
-            <H2>
-              Profile
+    <Flex justifyContent="center" pt={4} pb={4}>
+      <Container row alignItems="flex-start">
+        <Column width="65%" pt={2} justifyContent="space-around">
+          <H2>
+            Profile
             {canEdit &&
-                (!isEditingBackgroundInfo ? (
-                  <EditButton
-                    onClick={() => handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo })}
-                  />
-                ) : (
-                    <Flex>
-                      <CancelButton
-                        onClick={() => {
-                          setBioTextarea(profile.bio || '');
-                          setStoryTextarea(profile.story || '');
-                          handleEditingBackgroundInfo({ value: false });
-                        }}
-                      >Cancel</CancelButton>
-                      <SaveButton
-                        onClick={async () => {
-                          await submit({
-                            bio: bioTextarea,
-                            story: storyTextarea,
-                          });
-                          handleEditingBackgroundInfo({
-                            value: false,
-                            type: TRACKING_EVENTS.actions.save,
-                          });
-                        }}
-                      >
-                        Save
-                </SaveButton>
-                    </Flex>
-                  ))}
-            </H2>
-            <StyledSection>
-              <H3>My bio</H3>
-              {
-                (bioTextarea === '' || isEditingBackgroundInfo)
-                && canEdit && (
-                  <H4>
-                    Share information about your professional background and your research interests.
-              </H4>
-                )}
-              <EditableLabel
-                autoFocus={focusedTextArea !== 'myStory'}
-                type="textarea"
-                isEditing={isEditingBackgroundInfo}
-                disabled={true}
-                required={false}
-                name="bio"
-                value={bioTextarea}
-                onChange={e => setBioTextarea(e.target.value)}
-                placeholderComponent={
-                  canEdit && (
-                    <ClickToAdd
-                      onClick={() => {
-                        handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
-                        setFocusedTextArea('myBio');
-                      }}
-                    >
-                      click to add
+              (!isEditingBackgroundInfo ? (
+                <EditButton
+                  onClick={() => handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo })}
+                />
+              ) : (
+                <Flex>
+                  <CancelButton
+                    onClick={() => {
+                      setBioTextarea(profile.bio || '');
+                      setStoryTextarea(profile.story || '');
+                      handleEditingBackgroundInfo({ value: false });
+                    }}
+                  >
+                    Cancel
+                  </CancelButton>
+                  <SaveButton
+                    onClick={async () => {
+                      await submit({
+                        bio: bioTextarea,
+                        story: storyTextarea,
+                      });
+                      handleEditingBackgroundInfo({
+                        value: false,
+                        type: TRACKING_EVENTS.actions.save,
+                      });
+                    }}
+                  >
+                    Save
+                  </SaveButton>
+                </Flex>
+              ))}
+          </H2>
+          <StyledSection>
+            <H3>My bio</H3>
+            {(bioTextarea === '' || isEditingBackgroundInfo) &&
+              canEdit && (
+                <H4>
+                  Share information about your professional background and your research interests.
+                </H4>
+              )}
+            <EditableLabel
+              autoFocus={focusedTextArea !== 'myStory'}
+              type="textarea"
+              isEditing={isEditingBackgroundInfo}
+              disabled={true}
+              required={false}
+              name="bio"
+              value={bioTextarea}
+              onChange={e => setBioTextarea(e.target.value)}
+              placeholderComponent={
+                canEdit && (
+                  <ClickToAdd
+                    onClick={() => {
+                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
+                      setFocusedTextArea('myBio');
+                    }}
+                  >
+                    click to add
                   </ClickToAdd>
-                  )
-                }
-                saveOnKeyDown={false}
-                renderButtons={() => <div />}
-              />
-            </StyledSection>
-            <StyledSection className={'userStory'}>
-              <H3>My story</H3>
-              {
-                (storyTextarea === '' || isEditingBackgroundInfo)
-                && canEdit
-                && <H4>Share why you’re a part of the Kids First community.</H4>
+                )
               }
-              <EditableLabel
-                autoFocus={focusedTextArea === 'myStory'}
-                type="textarea"
-                isEditing={isEditingBackgroundInfo}
-                disabled={true}
-                required={false}
-                name="story"
-                value={storyTextarea}
-                onChange={e => setStoryTextarea(e.target.value)}
-                displayButtons={true}
-                placeholderComponent={
-                  canEdit && (
-                    <ClickToAdd
-                      onClick={() => {
-                        handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
-                        setFocusedTextArea('myStory');
-                      }}
-                    >
-                      click to add
+              saveOnKeyDown={false}
+              renderButtons={() => <div />}
+            />
+          </StyledSection>
+          <StyledSection className={'userStory'}>
+            <H3>My story</H3>
+            {(storyTextarea === '' || isEditingBackgroundInfo) &&
+              canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
+            <EditableLabel
+              autoFocus={focusedTextArea === 'myStory'}
+              type="textarea"
+              isEditing={isEditingBackgroundInfo}
+              disabled={true}
+              required={false}
+              name="story"
+              value={storyTextarea}
+              onChange={e => setStoryTextarea(e.target.value)}
+              displayButtons={true}
+              placeholderComponent={
+                canEdit && (
+                  <ClickToAdd
+                    onClick={() => {
+                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
+                      setFocusedTextArea('myStory');
+                    }}
+                  >
+                    click to add
                   </ClickToAdd>
-                  )
-                }
-                saveOnKeyDown={false}
-                renderButtons={() => <div />}
-              />
-            </StyledSection>
-            {localStorage.getItem('SHOW_DELETE_ACCOUNT') && (
-              <div>
-                <DeleteButton>Delete my account</DeleteButton>
-              </div>
-            )}
-            {isEditingBackgroundInfo && (
-              <ActionBar p={3}>
-                <CancelButton
-                  onClick={() => {
-                    setBioTextarea(profile.bio || '');
-                    setStoryTextarea(profile.story || '');
-                    handleEditingBackgroundInfo({ value: false });
-                  }}
-                >
-                  Cancel
+                )
+              }
+              saveOnKeyDown={false}
+              renderButtons={() => <div />}
+            />
+          </StyledSection>
+          {localStorage.getItem('SHOW_DELETE_ACCOUNT') && (
+            <div>
+              <DeleteButton>Delete my account</DeleteButton>
+            </div>
+          )}
+          {isEditingBackgroundInfo && (
+            <ActionBar p={3}>
+              <CancelButton
+                onClick={() => {
+                  setBioTextarea(profile.bio || '');
+                  setStoryTextarea(profile.story || '');
+                  handleEditingBackgroundInfo({ value: false });
+                }}
+              >
+                Cancel
               </CancelButton>
-                <SaveButton
-                  onClick={async () => {
-                    await submit({
-                      bio: bioTextarea,
-                      story: storyTextarea,
-                    });
-                    handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
-                  }}
-                >
-                  Save
+              <SaveButton
+                onClick={async () => {
+                  await submit({
+                    bio: bioTextarea,
+                    story: storyTextarea,
+                  });
+                  handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
+                }}
+              >
+                Save
               </SaveButton>
-              </ActionBar>
-            )}
-          </Column>
-          <Column width="35%">
-            <ResearchInterests
-              {...{ profile, canEdit, submit }} />
-            {Object.keys(profile).length &&
-              <FindMe
-                {...{ profile, canEdit, submit }} />
-            }
-          </Column>
-        </Container>
-      </Flex>
-    ),
+            </ActionBar>
+          )}
+        </Column>
+        <Column width="35%">
+          <ResearchInterests {...{ profile, canEdit, submit }} />
+          {Object.keys(profile).length && <FindMe {...{ profile, canEdit, submit }} />}
+        </Column>
+      </Container>
+    </Flex>
+  ),
 );
