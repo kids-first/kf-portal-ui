@@ -34,14 +34,12 @@ const MessageWrapper = applyDefaultStyles(styled(Column)`
       ? theme.errorBackground
       : warning
         ? theme.warningBackground
-        : info ? theme.infoBackground : success ? theme.successBackground : theme.infoBackground};
+        : success ? theme.successBackground : theme.infoBackground};
   border-left: solid 5px
     ${({ theme, error, warning, success, info }) =>
       error
         ? theme.errorBorder
-        : warning
-          ? theme.warningBorder
-          : info ? theme.infoBorder : success ? theme.successBorder : theme.infoBorder}};
+        : warning ? theme.warningBorder : success ? theme.successBorder : theme.infoBorder}};
   padding: 10px;
   margin-bottom: 1em;
   border-bottom-right-radius: 5px;
@@ -49,7 +47,28 @@ const MessageWrapper = applyDefaultStyles(styled(Column)`
   padding: 20px;
 `);
 
-const PrompMessageWrapper = ({ theme, error, warning, success, info, className, children }) => (
+export const PromptMessageHeading = applyDefaultStyles(styled(Div)`
+  padding-right: 10px;
+  font-size: 20px;
+`);
+
+export const PromptMessageContent = applyDefaultStyles(styled(Div)`
+  padding-top: 2px;
+  line-height: 1.6em;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  line-height: 30px;
+`);
+
+export const PromptMessageContainer = ({
+  theme,
+  error,
+  warning,
+  success,
+  info,
+  className,
+  children,
+}) => (
   <MessageWrapper {...{ theme, error, warning, info, success, className }}>
     <Row>
       <Flex flex={1} mr={10}>
@@ -67,21 +86,6 @@ const PrompMessageWrapper = ({ theme, error, warning, success, info, className, 
     </Row>
   </MessageWrapper>
 );
-
-export const PromptMessageContainer = PrompMessageWrapper;
-
-export const PromptMessageHeading = applyDefaultStyles(styled(Div)`
-  padding-right: 10px;
-  font-size: 20px;
-`);
-
-export const PromptMessageContent = applyDefaultStyles(styled(Div)`
-  padding-top: 2px;
-  line-height: 1.6em;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
-  line-height: 30px;
-`);
 
 export default ({ heading, content, ...props }) => (
   <PromptMessageContainer {...props}>
