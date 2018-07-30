@@ -3,7 +3,7 @@ import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import Button, { HollowButton, ActionButton } from 'uikit/Button';
+import { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';

@@ -13,7 +13,7 @@ import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import { H2 } from './styles';
 import Column from 'uikit/Column';
-import PromptMessage, {
+import {
   PromptMessageContainer,
   PromptMessageHeading,
   PromptMessageContent,
