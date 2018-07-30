@@ -58,7 +58,7 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
             });
             setToast({
               id: `${Date.now()}`,
-              action: 'success',
+              action: 'error',
               component: (
                 <div
                   css={`

@@ -3,7 +3,7 @@ import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import Button, { HollowButton, ActionButton } from 'uikit/Button';
+import { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
@@ -27,7 +27,7 @@ import { withApi } from 'services/api';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, ViewIcon, XIcon } from './ui';
+import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 
@@ -190,6 +190,15 @@ const UserIntegrations = withApi(
                               .then(token => {
                                 effects.setIntegrationToken(GEN3, token);
                                 setState({ loading: false });
+                                effects.setToast({
+                                  id: `${Date.now()}`,
+                                  action: 'success',
+                                  component: (
+                                    <Row>
+                                      Controlled dataset access sucessfully connected through Gen3
+                                    </Row>
+                                  ),
+                                });
                               })
                               .catch(err => {
                                 console.log('err: ', err);

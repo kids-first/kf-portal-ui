@@ -6,13 +6,8 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { getAppElement } from '../../services/globalDomNodes.js';
 import LoadingOnClick from 'components/LoadingOnClick';
-import ErrorIcon from 'icons/ErrorIcon';
 import Spinner from 'react-spinkit';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
+import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessage';
 
 import {
   ModalFooterContainer,
@@ -59,9 +54,6 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
 export const ModalWarning = enhance(({ theme, content, ...props }) => {
   return (
     <PromptMessageContainer error>
-      <PromptMessageHeading>
-        <ErrorIcon width={30} height={30} fill={theme.errorBorder} />
-      </PromptMessageHeading>
       <PromptMessageContent>{props.children}</PromptMessageContent>
     </PromptMessageContainer>
   );
