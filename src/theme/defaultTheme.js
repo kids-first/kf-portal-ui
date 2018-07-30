@@ -46,11 +46,16 @@ const colors = {
   warningLight: '#ff9427', // TODO: confirm this color
   warningBackground: '#fff4e9',
   warningBorder: `#ff9427`,
-  // warning
-  infoDark: '#22afe9', //yellow
+  // info
+  infoDark: '#22afe9', //blue
   infoLight: '#e8f7fd', // TODO: confirm this color
   infoBackground: '#e8f7fd',
   infoBorder: `#22afe9`,
+  // success
+  successDark: '#009bb8', //green
+  successLight: '#e6f3f5', // TODO: confirm this color
+  successBackground: '#e6f3f5',
+  successBorder: `#009bb8`,
 };
 
 const fonts = {
