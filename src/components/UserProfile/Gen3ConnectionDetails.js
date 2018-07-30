@@ -5,7 +5,7 @@ import { getUser as getGen3User } from 'services/gen3';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { get } from 'lodash';
+import { get, uniq } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import styled from 'react-emotion';
 
@@ -185,7 +185,9 @@ const Gen3ConnectionDetails = ({
               </Span>
             </Row>
             <Column pl={15}>
-              <Gen3ProjectList projectIds={Object.keys(userDetails.projects).map(toStudyId)} />
+              <Gen3ProjectList
+                projectIds={uniq(Object.keys(userDetails.projects).map(toStudyId))}
+              />
             </Column>
           </Fragment>
         ) : (
