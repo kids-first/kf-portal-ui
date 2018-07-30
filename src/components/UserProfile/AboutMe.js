@@ -81,20 +81,29 @@ export default compose(
                     onClick={() => handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo })}
                   />
                 ) : (
-                    <SaveButton
-                      onClick={async () => {
-                        await submit({
-                          bio: bioTextarea,
-                          story: storyTextarea,
-                        });
-                        handleEditingBackgroundInfo({
-                          value: false,
-                          type: TRACKING_EVENTS.actions.save,
-                        });
-                      }}
-                    >
-                      Save
+                    <Flex>
+                      <CancelButton
+                        onClick={() => {
+                          setBioTextarea(profile.bio || '');
+                          setStoryTextarea(profile.story || '');
+                          handleEditingBackgroundInfo({ value: false });
+                        }}
+                      >Cancel</CancelButton>
+                      <SaveButton
+                        onClick={async () => {
+                          await submit({
+                            bio: bioTextarea,
+                            story: storyTextarea,
+                          });
+                          handleEditingBackgroundInfo({
+                            value: false,
+                            type: TRACKING_EVENTS.actions.save,
+                          });
+                        }}
+                      >
+                        Save
                 </SaveButton>
+                    </Flex>
                   ))}
             </H2>
             <StyledSection>
