@@ -18,7 +18,7 @@ export default compose(
   injectState,
   withState('mode', 'setMode', 'account'))(
     ({ profile, submit, mode, setMode, state: { loginProvider } }) => (
-      <Box w="70%" pr={4} pl={4}>
+      <Box w="70%" pr={4} pl={0}>
         <SettingsSection>
           <H2>
             <Trans>Settings</Trans>
