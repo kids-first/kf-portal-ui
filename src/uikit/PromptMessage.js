@@ -18,6 +18,10 @@ const InfoIcon = withTheme(({ theme }) => (
   <CircleCheckSvg width={30} height={30} fill={theme.infoBorder} />
 ));
 
+const SucessIcon = withTheme(({ theme }) => (
+  <CircleCheckSvg width={30} height={30} fill={theme.successBorder} />
+));
+
 const WarningIcon = withTheme(({ theme }) => (
   <InfoSvg width={30} height={30} fill={theme.warningBorder} />
 ));
@@ -25,15 +29,19 @@ const WarningIcon = withTheme(({ theme }) => (
 const MessageWrapper = applyDefaultStyles(styled(Column)`
   position: relative;
   align-items: left;
-  background-color: ${({ theme, error, warning, info }) =>
+  background-color: ${({ theme, error, warning, success, info }) =>
     error
       ? theme.errorBackground
-      : warning ? theme.warningBackground : info ? theme.infoBackground : theme.infoBackground};
+      : warning
+        ? theme.warningBackground
+        : info ? theme.infoBackground : success ? theme.successBackground : theme.infoBackground};
   border-left: solid 5px
-    ${({ theme, error, warning, info }) =>
+    ${({ theme, error, warning, success, info }) =>
       error
         ? theme.errorBorder
-        : warning ? theme.warningBorder : info ? theme.infoBorder : theme.infoBorder}};
+        : warning
+          ? theme.warningBorder
+          : info ? theme.infoBorder : success ? theme.successBorder : theme.infoBorder}};
   padding: 10px;
   margin-bottom: 1em;
   border-bottom-right-radius: 5px;
@@ -41,11 +49,19 @@ const MessageWrapper = applyDefaultStyles(styled(Column)`
   padding: 20px;
 `);
 
-const PrompMessageWrapper = ({ theme, error, warning, info, className, children }) => (
-  <MessageWrapper {...{ theme, error, warning, info, className }}>
+const PrompMessageWrapper = ({ theme, error, warning, success, info, className, children }) => (
+  <MessageWrapper {...{ theme, error, warning, info, success, className }}>
     <Row>
       <Flex flex={1} mr={10}>
-        {error ? <ErrorIcon /> : warning ? <WarningIcon /> : <InfoIcon />}
+        {error ? (
+          <ErrorIcon />
+        ) : warning ? (
+          <WarningIcon />
+        ) : success ? (
+          <SucessIcon />
+        ) : (
+          <InfoIcon />
+        )}
       </Flex>
       <Column textAlign={'left'}>{children}</Column>
     </Row>

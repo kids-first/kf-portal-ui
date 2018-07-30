@@ -52,7 +52,7 @@ const ToastMessage = styled(PromptMessageContainer)`
 
 const Toast = ({ style, theme, visible, action, close, closed, children, className }) => (
   <ToastContainer>
-    <ToastMessage visible={visible}>
+    <ToastMessage visible={visible} {...{ [action]: true }}>
       <CloseButton onClick={close} />
       <ToastContent>{children}</ToastContent>
     </ToastMessage>

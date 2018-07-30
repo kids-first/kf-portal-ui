@@ -207,7 +207,7 @@ export default compose(injectState, withTheme, withApi)(
               if (!nextDisabled) {
                 setToast({
                   id: `${Date.now()}`,
-                  action: 'success',
+                  action: 'warning',
                   component: (
                     <div>
                       <Trans i18nKey="join.wizard.profileOrBrowse">
