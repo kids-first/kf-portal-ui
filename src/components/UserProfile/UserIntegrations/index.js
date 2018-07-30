@@ -209,33 +209,6 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
-<<<<<<< HEAD
-                            <ConnectButton
-                              onClick={() => {
-                                setState({ loading: true });
-                                connectGen3(api)
-                                  .then(() => getAccessToken(api))
-                                  .then(token => {
-                                    effects.setIntegrationToken(GEN3, token);
-                                    setState({ loading: false });
-                                    effects.setToast({
-                                      id: `${Date.now()}`,
-                                      action: 'success',
-                                      component: (
-                                        <Row>
-                                          Controlled dataset access sucessfully connected through Gen3
-                                    </Row>
-                                      ),
-                                    });
-                                  })
-                                  .catch(err => {
-                                    console.log('err: ', err);
-                                    setState({ loading: false });
-                                  });
-                              }}
-                            />
-                          );
-=======
                         <ConnectButton
                           onClick={() => {
                             setState({ loading: true });
@@ -244,6 +217,15 @@ const UserIntegrations = withApi(
                               .then(token => {
                                 effects.setIntegrationToken(GEN3, token);
                                 setState({ loading: false });
+                                effects.setToast({
+                                  id: `${Date.now()}`,
+                                  action: 'success',
+                                  component: (
+                                    <Row>
+                                      Controlled dataset access sucessfully connected through Gen3
+                                    </Row>
+                                  ),
+                                });
                               })
                               .catch(err => {
                                 console.log('err: ', err);
@@ -252,7 +234,6 @@ const UserIntegrations = withApi(
                           }}
                         />
                       );
->>>>>>> prettier
                     }}
                   </Component>
                 </div>
