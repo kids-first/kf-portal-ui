@@ -5,6 +5,7 @@ import { withTheme } from 'emotion-theming';
 
 import { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
+import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
@@ -68,6 +69,23 @@ const Gen3DetailButton = styled(ConnectedButton)`
   margin-bottom: 10px;
   min-width: 190px;
 `;
+
+const ConnectButton = ({ ...props }) => (
+  <ActionButton
+    {...props}
+    css={`
+      padding: 0 6px;
+      border-radius: 19px;
+    `}
+  >
+    <ExternalLinkIcon size={12} css={`
+      margin-left:10px;
+      margin-right: 5px;
+    `} />
+    Connect
+    <RightIcon size={14} css={`margin-left: 14px`} />
+  </ActionButton>
+);
 
 const enhance = compose(
   injectState,
@@ -182,7 +200,7 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
-                            <ActionButton
+                            <ConnectButton
                               onClick={() => {
                                 setState({ loading: true });
                                 connectGen3(api)
@@ -205,10 +223,7 @@ const UserIntegrations = withApi(
                                     setState({ loading: false });
                                   });
                               }}
-                            >
-                              Connect
-                          <RightIcon />
-                            </ActionButton>
+                            />
                           );
                     }}
                   </Component>
@@ -247,7 +262,7 @@ const UserIntegrations = withApi(
                       },
                     })
                   ) : (
-                      <ActionButton
+                      <ConnectButton
                         onClick={() =>
                           effects.setModal({
                             title: 'How to Connect to Cavatica',
@@ -259,9 +274,7 @@ const UserIntegrations = withApi(
                             ),
                           })
                         }
-                      >
-                        Connect<RightIcon />
-                      </ActionButton>
+                      />
                     )}
                 </div>
               </td>
