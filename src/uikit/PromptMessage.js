@@ -7,7 +7,8 @@ import { withTheme } from 'emotion-theming';
 import { applyDefaultStyles, Div } from './Core';
 
 import ErrorSvg from 'icons/ErrorIcon';
-import InfoSvg from 'icons/InfoIcon';
+import WarningSvg from 'icons/WarningIcon';
+import NoteSvg from 'icons/NoteIcon';
 import CircleCheckSvg from 'icons/CircleCheckIcon';
 
 const ErrorIcon = withTheme(({ theme }) => (
@@ -15,7 +16,7 @@ const ErrorIcon = withTheme(({ theme }) => (
 ));
 
 const InfoIcon = withTheme(({ theme }) => (
-  <CircleCheckSvg width={30} height={30} fill={theme.infoBorder} />
+  <NoteSvg width={30} height={30} fill={theme.infoBorder} />
 ));
 
 const SucessIcon = withTheme(({ theme }) => (
@@ -23,7 +24,7 @@ const SucessIcon = withTheme(({ theme }) => (
 ));
 
 const WarningIcon = withTheme(({ theme }) => (
-  <InfoSvg width={30} height={30} fill={theme.warningBorder} />
+  <WarningSvg width={30} height={30} fill={theme.warningBorder} />
 ));
 
 const MessageWrapper = applyDefaultStyles(styled(Column)`
