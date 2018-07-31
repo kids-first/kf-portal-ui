@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
-import { getUser as getGen3User } from 'services/gen3';
+import { getUser as getGen3User, getStudyIds } from 'services/gen3';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -20,6 +20,7 @@ import RightChevron from 'icons/DoubleChevronRightIcon';
 import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
 import { withApi } from 'services/api';
+import { graphql, arrangerGqlRecompose } from 'services/arranger';
 
 const styles = css`
   table {
@@ -78,13 +79,11 @@ const sqonForStudy = studyId => ({
   ],
 });
 
-const toStudyId = consentCode => consentCode.split('.')[0];
-
 const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
   ({ projectIds, api, theme, history }) => (
     <Query
       renderError
-      api={api}
+      api={arrangerGqlRecompose(api)}
       projectId={'june_13'}
       name={`gen3ItemQuery`}
       shouldFetch={true}
@@ -185,9 +184,7 @@ const Gen3ConnectionDetails = ({
               </Span>
             </Row>
             <Column pl={15}>
-              <Gen3ProjectList
-                projectIds={uniq(Object.keys(userDetails.projects).map(toStudyId))}
-              />
+              <Gen3ProjectList projectIds={getStudyIds(userDetails)} />
             </Column>
           </Fragment>
         ) : (

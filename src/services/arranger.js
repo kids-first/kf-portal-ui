@@ -7,6 +7,9 @@ export const graphql = api => body =>
     ? api({ endpoint: `/${arrangerProjectId}/graphql`, body })
     : ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);
 
+export const arrangerGqlRecompose = api => ({ body, ...rest }) =>
+  graphql(api)({ ...body, ...rest });
+
 const buildFileQuery = ({ fields, first = null }) => {
   const firstString = first === null ? '' : `, first:${first}`;
   return `query ($sqon: JSON) {file {hits(filters: $sqon${firstString}) {total, edges {node {${fields.reduce(
