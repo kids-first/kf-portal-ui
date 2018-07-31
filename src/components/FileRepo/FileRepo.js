@@ -156,11 +156,7 @@ const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-const FileRepo = compose(
-  injectState,
-  withTheme,
-  withApi,
-)(
+const FileRepo = compose(injectState, withTheme, withApi)(
   ({
     state,
     effects,
@@ -206,7 +202,8 @@ const FileRepo = compose(
                       <DetectNewVersion {...props} />
                       <ArrangerContainer>
                         <AggregationSidebar
-                          {...{ ...props, ...url, translateSQONValue, trackFileRepoInteraction }}
+                          {...{ ...props, ...url, translateSQONValue }}
+                          trackFileRepoInteraction={trackFileRepoInteraction}
                         />
                         <TableContainer>
                           <Row mb={url.sqon ? 3 : 0}>
@@ -276,6 +273,9 @@ const FileRepo = compose(
                                     action: TRACKING_EVENTS.actions.filter,
                                     label: val,
                                   });
+                                }
+                                if (props.onFilterChange) {
+                                  props.onFilterChange(val);
                                 }
                               }}
                               onTableExport={({ files }) => {

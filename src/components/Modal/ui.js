@@ -1,7 +1,6 @@
 import styled from 'react-emotion';
 import { ActionButton } from 'uikit/Button';
 import Column from 'uikit/Column';
-import Row from 'uikit/Column';
 import ReactModal from 'react-modal';
 
 export const ModalFooterContainer = styled('div')`
@@ -35,24 +34,6 @@ export const CancelButton = styled(ModalActionButton)`
   text-transform: none;
 `;
 
-export const ModalWarningContainer = styled(Row)`
-  align-items: left;
-  background-color: ${({ theme }) => theme.errorBackground};
-  border-radius: 7px;
-  border-style: solid 1px ${({ theme }) => theme.errorBorder};
-  padding: 10px;
-  margin-bottom: 1em;
-`;
-
-export const ModalWarningErrorWrapper = styled('div')`
-  padding-right: 10px;
-`;
-
-export const ModalWarningErrorContent = styled('div')`
-  padding-top: 2px;
-  line-height: 1.6em;
-`;
-
 export const Modal = styled(ReactModal)`
   top: 50%;
   left: 50%;
@@ -66,7 +47,7 @@ export const Modal = styled(ReactModal)`
   width: 95%;
   padding: 20px 20px;
   max-width: 1000px;
-  max-height: 95%;
+  max-height: 85%;
   box-shadow: ${({ theme }) => theme.shadow} 0px 5px 15px;
   overflow: visible;
   display: flex;
@@ -80,6 +61,7 @@ export const Modal = styled(ReactModal)`
 export const ModalContent = styled(Column)`
   z-index: 1000;
   flex: 1;
+  height: 100%;
 `;
 
 export const ModalSubHeader = styled('div')`

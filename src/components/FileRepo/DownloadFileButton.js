@@ -12,6 +12,7 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import { GEN3 } from 'common/constants';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { getFilesById } from 'services/arranger';
+import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const getGen3UUIDs = async kfId => {
@@ -19,24 +20,25 @@ const getGen3UUIDs = async kfId => {
   return fileData.map(file => file.node.latest_did);
 };
 
-const downloadFile = async (kfId, gen3Key) => {
+const downloadFile = async ({ kfId, api }) => {
   let files = await getGen3UUIDs(kfId);
   let fileUUID = files && files.length > 0 ? files[0] : null;
   if (!fileUUID) throw new Error('Error retrieving File ID for the selected Row.');
-  return downloadFileFromGen3(gen3Key, fileUUID);
+  return downloadFileFromGen3({ fileUUID, api });
 };
 
-const DownloadFileButton = compose(injectState, withTheme)(
+const DownloadFileButton = compose(injectState, withTheme, withApi)(
   ({
     kfId,
     theme,
     effects: { setToast },
     state: { integrationTokens },
     gen3Key = integrationTokens[GEN3],
+    api,
   }) => (
     <LoadingOnClick
       onClick={() =>
-        downloadFile(kfId, gen3Key)
+        downloadFile({ kfId, api })
           .then(url => {
             let a = document.createElement('a');
             a.href = url;
@@ -56,7 +58,7 @@ const DownloadFileButton = compose(injectState, withTheme)(
             });
             setToast({
               id: `${Date.now()}`,
-              action: 'success',
+              action: 'error',
               component: (
                 <div
                   css={`

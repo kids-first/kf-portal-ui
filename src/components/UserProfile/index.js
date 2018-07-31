@@ -145,6 +145,7 @@ export default compose(
               {profile.jobTitle}
             </span>
             <span>{profile.institution}</span>
+            <span>{profile.department}</span>
             <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
             <span
               css={`

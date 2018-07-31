@@ -9,12 +9,8 @@ const colors = {
   highlight: '#e83a9c', //pink
   hover: '#c03299', //also pink
   tertiaryHover: '#19a9c4', //lighter teal-blue
-  errorDark: '#d8202f', //red
-  errorLight: '#fadfe1', //light red (pink) fill
   borderGrey: '#cacbcf',
   backgroundGrey: '#f4f5f8',
-  errorBackground: '#f9dee1',
-  errorBorder: `#e45562`,
   tertiaryBackground: '#edeef1', // light light blue
 
   primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
@@ -39,6 +35,27 @@ const colors = {
 
   shadow: 'rgba(0, 0, 0, 0.5)',
   lightShadow: '#a0a0a3',
+
+  // error
+  errorDark: '#d8202f', //red
+  errorLight: '#fadfe1', //light red (pink) fill
+  errorBackground: '#f9dee1',
+  errorBorder: `#e45562`,
+  // warning
+  warningDark: '#ff9427', //yellow
+  warningLight: '#ff9427', // TODO: confirm this color
+  warningBackground: '#fff4e9',
+  warningBorder: `#ff9427`,
+  // info
+  infoDark: '#22afe9', //blue
+  infoLight: '#e8f7fd', // TODO: confirm this color
+  infoBackground: '#e8f7fd',
+  infoBorder: `#22afe9`,
+  // success
+  successDark: '#009bb8', //green
+  successLight: '#e6f3f5', // TODO: confirm this color
+  successBackground: '#e6f3f5',
+  successBorder: `#009bb8`,
 };
 
 const fonts = {
@@ -150,7 +167,6 @@ const components = {
     background-color: ${colors.white};
     border: solid 1px ${colors.borderGrey};
     font-size: 12px;
-    font-weight: 300;
     letter-spacing: 0.2px;
     text-align: center;
     color: ${colors.tertiary};

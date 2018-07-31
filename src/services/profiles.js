@@ -1,10 +1,10 @@
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
+import { omit } from 'lodash';
 
 // TODO: Issue #321
 // acceptedKfOptIn
 // acceptedNihOptIn
-
 const DEFAULT_FIELDS = `
   _id
   title
@@ -14,15 +14,27 @@ const DEFAULT_FIELDS = `
   roles
   acceptedTerms
   email
+  institutionalEmail
+  eraCommonsID
+  department
   story
   bio
   jobTitle
   institution
+  addressLine1
+  addressLine2
   city
   state
   country
+  zip
+  phone
   website
   googleScholarId
+  twitter
+  facebook
+  github
+  linkedin
+  orchid
   interests
   acceptedKfOptIn
   acceptedNihOptIn
@@ -74,10 +86,11 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
 };
 
 export const updateProfile = api => async ({ user }) => {
+  const userModel = omit(user, 'egoGroups');
   const { data: { userUpdate: { record } } } = await api({
     url,
     body: {
-      variables: { record: user },
+      variables: { record: userModel },
       query: `
         mutation($record: UpdateByIdUserModelInput!) {
           userUpdate(record: $record) {

@@ -6,19 +6,21 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import { truncate } from 'lodash';
 
-import { GEN3 } from 'common/constants';
 import PlusIcon from 'icons/PlusCircleIcon';
 import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
+import { withApi } from 'services/api';
 
-import { getFilesById } from 'services/arranger';
 import { getUser as getGen3User } from 'services/gen3';
+
+import { getStudiesAggregations, getUnapprovedStudiesForFiles } from './utils';
 
 const enhance = compose(
   injectState,
   withTheme,
   withState('showDetails', 'setShowDetails', false),
+  withApi,
   lifecycle({
     async componentDidMount() {
       const {
@@ -27,61 +29,65 @@ const enhance = compose(
         setFileStudyData,
         setFileAuthInitialized,
       } = this.props.effects;
+      const { api, filesSelected } = this.props;
+      const sqon = this.props.sqon || {
+        op: 'and',
+        content: [],
+      };
 
       // Get Gen3 permissions
-      const userDetails = await getUserInfo({
-        integrationToken: this.props.state.integrationTokens[GEN3],
+      const userDetails = await getGen3User(api);
+      const approvedStudies = Object.keys(userDetails.projects).sort();
+
+      const approvedStudyAggs = await getStudiesAggregations({
+        api,
+        sqon,
+        studies: approvedStudies,
       });
-      const approvedStudies = Object.keys(userDetails.data.project_access).sort();
-      console.log({ approvedStudies });
 
-      // Get count of each study amongst files
-      const counts = {};
-      const studies = {};
-      const names = {};
-      const files = await getFilesById({
-        ids: this.props.filesSelected,
-        fields: ['participants{hits{edges{node{study{external_id, name}}}}}', 'latest_did'],
+      const unapprovedStudies = await getUnapprovedStudiesForFiles({
+        api,
+        approvedStudyAggs,
+        files: filesSelected,
       });
-      if (files && files.forEach) {
-        files.forEach(file => {
-          const study = file.node.participants.hits.edges[0].node.study.external_id;
-          names[study] = file.node.participants.hits.edges[0].node.study.name;
-          counts[study] = counts[study] ? counts[study] + 1 : 1;
-          if (!studies[study]) {
-            studies[study] = [];
-          }
-          studies[study].push(file.node.latest_did);
-        });
-      }
 
-      // Sort file authorizations
-      let authorized = [];
-      let unauthorized = [];
-      const studyData = { authorized: [], unauthorized: [], names };
-      for (const key in studies) {
-        const count = studies[key].length;
-        const isAuth = approvedStudies.includes(key);
-        if (isAuth) {
-          authorized.push(...studies[key]);
-          if (count > 0) studyData.authorized.push({ id: key, count });
-        } else {
-          unauthorized.push(...studies[key]);
-          if (count > 0) studyData.unauthorized.push({ id: key, count });
-        }
-      }
+      const unapprovedStudiesAgg = await getStudiesAggregations({
+        api,
+        sqon,
+        studies: unapprovedStudies,
+      });
 
-      setAuthorizedFiles(authorized);
-      setUnauthorizedFiles(unauthorized);
-      setFileStudyData(studyData);
+      setAuthorizedFiles(approvedStudyAggs.reduce((acc, study) => [...acc, ...study.files], []));
+      setUnauthorizedFiles(
+        unapprovedStudiesAgg.reduce((acc, study) => [...acc, ...study.files], []),
+      );
+      setFileStudyData({
+        authorized: approvedStudyAggs
+          .map(({ study, files, studyName }) => ({
+            id: study,
+            count: files.length,
+          }))
+          .filter(({ count }) => count)
+          .sort(({ count }) => count),
+        unauthorized: unapprovedStudiesAgg
+          .map(({ study, files, studyName }) => ({
+            id: study,
+            count: files.length,
+          }))
+          .filter(({ count }) => count)
+          .sort(({ count }) => count),
+        names: [...approvedStudyAggs, ...unapprovedStudiesAgg].reduce(
+          (acc, { study, studyName }) => ({
+            ...acc,
+            [study]: studyName,
+          }),
+          {},
+        ),
+      });
       setFileAuthInitialized(true);
     },
   }),
 );
-
-const getUserInfo = async ({ integrationToken }) => {
-  return await getGen3User(integrationToken);
-};
 
 const styles = theme => css`
   border: solid 1px ${theme.greyScale5};

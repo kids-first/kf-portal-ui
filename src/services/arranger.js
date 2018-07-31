@@ -2,7 +2,7 @@ import ajax from 'services/ajax';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 
-const graphql = api => body =>
+export const graphql = api => body =>
   api
     ? api({ endpoint: `/${arrangerProjectId}/graphql`, body })
     : ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);

@@ -15,7 +15,6 @@ import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 
-import { getSecret } from 'services/secrets';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
@@ -25,6 +24,7 @@ import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
 import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
+import { getAccessToken } from 'services/gen3';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
@@ -43,6 +43,7 @@ export const validateJWT = ({ jwt }) => {
 
 export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
+
   if (!jwtData) {
     setToken();
   } else {
@@ -55,6 +56,7 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
       const loggedInUser = {
         ...(existingProfile || newProfile),
         email: user.email,
+        egoGroups: user.groups,
       };
       await setUser({ ...loggedInUser, api });
       onFinish && onFinish(loggedInUser);
@@ -72,7 +74,7 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
  * Each call to key-store is resolved separately and asynchronously. Their value will be added
  *  to state once returned.
  */
-export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
+export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
   getCavaticaUser()
     .then(userData => {
       setIntegrationToken(CAVATICA, JSON.stringify(userData));
@@ -82,9 +84,9 @@ export const fetchIntegrationTokens = ({ setIntegrationToken }) => {
     });
 
   // Get Gen3 Secret here
-  getSecret({ service: GEN3 })
+  getAccessToken(api)
     .then(key => {
-      setIntegrationToken(GEN3, JSON.stringify(key));
+      setIntegrationToken(GEN3, key);
     })
     .catch(res => {
       console.error('Error getting Gen3 API Key');
@@ -134,7 +136,11 @@ class Component extends React.Component<any, any> {
     }
   }
   handleToken = async ({ provider, handler, token }) => {
-    const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
+    const {
+      api,
+      onFinish,
+      effects: { setToken, setUser, setIntegrationToken },
+    } = this.props;
 
     const response = await handler(token).catch(error => {
       if (error.message === 'Network Error') {
@@ -145,7 +151,7 @@ class Component extends React.Component<any, any> {
     if ((response || {}).status === 200) {
       if (await handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })) {
         this.trackUserSignIn(provider);
-        fetchIntegrationTokens({ setIntegrationToken });
+        fetchIntegrationTokens({ setIntegrationToken, api });
       } else {
         await logoutAll();
         this.setState({ authorizationError: true });
@@ -153,7 +159,9 @@ class Component extends React.Component<any, any> {
     }
   };
   trackUserSignIn = label => {
-    let { location: { pathname } } = this.props;
+    let {
+      location: { pathname },
+    } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
@@ -214,4 +222,8 @@ class Component extends React.Component<any, any> {
   }
 }
 
-export default compose(injectState, withRouter, withApi)(Component);
+export default compose(
+  injectState,
+  withRouter,
+  withApi,
+)(Component);

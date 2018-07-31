@@ -210,10 +210,11 @@ const CavaticaCopyModal = ({
                 action: 'success',
                 component: SuccessToastComponent({ theme, selectedProjectData }),
               });
+
               trackUserInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                 action: 'Copied Files to Cavatica Project',
-                label: uuids,
+                label: JSON.stringify({ files: uuids.length, uuids }),
               });
               props.onComplete();
             } catch (e) {

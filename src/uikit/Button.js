@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
+import { applyDefaultStyles } from './Core';
 
 const BaseButton = styled('button')`
   text-align: left;
@@ -28,9 +29,9 @@ export const ActionButton = styled(Button)`
   ${({ theme }) => theme.actionButton};
 `;
 
-export const HollowButton = styled(Button)`
+export const HollowButton = applyDefaultStyles(styled(Button)`
   ${({ theme }) => theme.hollowButton};
-`;
+`);
 
 const BigWhiteButtonContent = styled('span')`
   ${({ theme }) => theme.row};
@@ -48,6 +49,7 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
   height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
+  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `;
 
 export default Button;
