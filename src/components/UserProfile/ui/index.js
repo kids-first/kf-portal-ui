@@ -95,6 +95,7 @@ export const ClickToAdd = styled('a')`
   font-size: 12px;
   text-decoration: underline;
   color: ${({ theme }) => theme.primary};
+  cursor: pointer;
 `;
 
 export const InterestsCard = styled(Box)`

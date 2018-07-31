@@ -5,6 +5,7 @@ import { withTheme } from 'emotion-theming';
 
 import { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
+import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
@@ -30,6 +31,7 @@ import { CAVATICA, GEN3 } from 'common/constants';
 import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
+import { applyDefaultStyles } from '../../../uikit/Core';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -68,6 +70,21 @@ const Gen3DetailButton = styled(ConnectedButton)`
   margin-bottom: 10px;
   min-width: 190px;
 `;
+
+
+const ConnectButton = ({ ...props }) => {
+  const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
+  const RightArrow = applyDefaultStyles(RightIcon);
+
+  return (
+    <ActionButton {...props} px={6} br={19}>
+      <ExternalLink size={12} ml={10} mr={5} />
+      Connect
+      <RightArrow size={14} ml={14} />
+    </ActionButton>
+  );
+}
+
 
 const enhance = compose(
   injectState,
@@ -112,7 +129,8 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
       </Div>
       <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
-          <PencilIcon />Edit
+          <PencilIcon />
+          Edit
         </ConnectedButton>
         <LoadingOnClick
           onClick={onRemove}
@@ -150,7 +168,7 @@ const UserIntegrations = withApi(
                 <img className="logoImg" src={gen3Logo} alt="Gen3 Logo" />
               </td>
               <td>
-                <Span className="integrationHeader">Download Controlled Data</Span>
+                <Span className="integrationHeader">Access Controlled Data</Span>
                 <Paragraph>
                   Access controlled data by connecting your NIH Login and dbGaP authorized access to
                   the Kids First Data Catalog powered by{' '}
@@ -182,34 +200,31 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
-                        <ActionButton
-                          onClick={() => {
-                            setState({ loading: true });
-                            connectGen3(api)
-                              .then(() => getAccessToken(api))
-                              .then(token => {
-                                effects.setIntegrationToken(GEN3, token);
-                                setState({ loading: false });
-                                effects.setToast({
-                                  id: `${Date.now()}`,
-                                  action: 'success',
-                                  component: (
-                                    <Row>
-                                      Controlled dataset access sucessfully connected through Gen3
+                            <ConnectButton
+                              onClick={() => {
+                                setState({ loading: true });
+                                connectGen3(api)
+                                  .then(() => getAccessToken(api))
+                                  .then(token => {
+                                    effects.setIntegrationToken(GEN3, token);
+                                    setState({ loading: false });
+                                    effects.setToast({
+                                      id: `${Date.now()}`,
+                                      action: 'success',
+                                      component: (
+                                        <Row>
+                                          Controlled dataset access sucessfully connected through Gen3
                                     </Row>
-                                  ),
-                                });
-                              })
-                              .catch(err => {
-                                console.log('err: ', err);
-                                setState({ loading: false });
-                              });
-                          }}
-                        >
-                          Connect
-                          <RightIcon />
-                        </ActionButton>
-                      );
+                                      ),
+                                    });
+                                  })
+                                  .catch(err => {
+                                    console.log('err: ', err);
+                                    setState({ loading: false });
+                                  });
+                              }}
+                            />
+                          );
                     }}
                   </Component>
                 </div>
@@ -222,8 +237,8 @@ const UserIntegrations = withApi(
               <td>
                 <Span className="integrationHeader">Analyze Data</Span>
                 <Paragraph>
-                  Analyze data quickly by connecting your Kids First account to{' '}
-                  <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
+                  Analyze data quickly by connecting your Kids First account to the cloud compute
+                  environment, <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
                 </Paragraph>
               </td>
               <td>
@@ -247,22 +262,20 @@ const UserIntegrations = withApi(
                       },
                     })
                   ) : (
-                    <ActionButton
-                      onClick={() =>
-                        effects.setModal({
-                          title: 'How to Connect to Cavatica',
-                          component: (
-                            <CavaticaConnectModal
-                              onComplete={effects.unsetModal}
-                              onCancel={effects.unsetModal}
-                            />
-                          ),
-                        })
-                      }
-                    >
-                      Connect<RightIcon />
-                    </ActionButton>
-                  )}
+                      <ConnectButton
+                        onClick={() =>
+                          effects.setModal({
+                            title: 'How to Connect to Cavatica',
+                            component: (
+                              <CavaticaConnectModal
+                                onComplete={effects.unsetModal}
+                                onCancel={effects.unsetModal}
+                              />
+                            ),
+                          })
+                        }
+                      />
+                    )}
                 </div>
               </td>
             </tr>
