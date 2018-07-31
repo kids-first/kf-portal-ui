@@ -32,6 +32,7 @@ const FooterContainer = styled('footer')`
   color: ${({ theme }) => theme.greyScale9};
   z-index: 100;
   position: relative;
+  margin-top: 20px;
 `;
 
 const Details = styled('div')`

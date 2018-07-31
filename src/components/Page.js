@@ -25,8 +25,8 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
     <Head />
     <ContentWrapper>
       <Component {...props} />
+      <Foot />
     </ContentWrapper>
-    <Foot />
   </Container>
 );
 
