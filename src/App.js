@@ -18,7 +18,7 @@ import LoginPage from 'components/LoginPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
-import FixedFooterPage from 'components/FixedFooterPage';
+import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import { isAdminToken, validateJWT } from 'components/Login';

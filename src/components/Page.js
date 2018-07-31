@@ -30,4 +30,14 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   </Container>
 );
 
+export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
+  <Container>
+    <Head />
+    <ContentWrapper>
+      <Component {...props} />
+    </ContentWrapper>
+    <Foot />
+  </Container>
+);
+
 export default Page;
