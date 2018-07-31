@@ -31,6 +31,7 @@ import { CAVATICA, GEN3 } from 'common/constants';
 import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
+import { applyDefaultStyles } from '../../../uikit/Core';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -70,30 +71,20 @@ const Gen3DetailButton = styled(ConnectedButton)`
   min-width: 190px;
 `;
 
-const ConnectButton = ({ ...props }) => (
-  <ActionButton
-    {...props}
-    css={`
-      padding: 0 6px;
-      border-radius: 19px;
-    `}
-  >
-    <ExternalLinkIcon
-      size={12}
-      css={`
-        margin-left: 10px;
-        margin-right: 5px;
-      `}
-    />
-    Connect
-    <RightIcon
-      size={14}
-      css={`
-        margin-left: 14px;
-      `}
-    />
-  </ActionButton>
-);
+
+const ConnectButton = ({ ...props }) => {
+  const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
+  const RightArrow = applyDefaultStyles(RightIcon);
+
+  return (
+    <ActionButton {...props} px={6} br={19}>
+      <ExternalLink size={12} ml={10} mr={5} />
+      Connect
+      <RightArrow size={14} ml={14} />
+    </ActionButton>
+  );
+}
+
 
 const enhance = compose(
   injectState,
@@ -209,31 +200,31 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
-                        <ConnectButton
-                          onClick={() => {
-                            setState({ loading: true });
-                            connectGen3(api)
-                              .then(() => getAccessToken(api))
-                              .then(token => {
-                                effects.setIntegrationToken(GEN3, token);
-                                setState({ loading: false });
-                                effects.setToast({
-                                  id: `${Date.now()}`,
-                                  action: 'success',
-                                  component: (
-                                    <Row>
-                                      Controlled dataset access sucessfully connected through Gen3
+                            <ConnectButton
+                              onClick={() => {
+                                setState({ loading: true });
+                                connectGen3(api)
+                                  .then(() => getAccessToken(api))
+                                  .then(token => {
+                                    effects.setIntegrationToken(GEN3, token);
+                                    setState({ loading: false });
+                                    effects.setToast({
+                                      id: `${Date.now()}`,
+                                      action: 'success',
+                                      component: (
+                                        <Row>
+                                          Controlled dataset access sucessfully connected through Gen3
                                     </Row>
-                                  ),
-                                });
-                              })
-                              .catch(err => {
-                                console.log('err: ', err);
-                                setState({ loading: false });
-                              });
-                          }}
-                        />
-                      );
+                                      ),
+                                    });
+                                  })
+                                  .catch(err => {
+                                    console.log('err: ', err);
+                                    setState({ loading: false });
+                                  });
+                              }}
+                            />
+                          );
                     }}
                   </Component>
                 </div>
@@ -271,20 +262,20 @@ const UserIntegrations = withApi(
                       },
                     })
                   ) : (
-                    <ConnectButton
-                      onClick={() =>
-                        effects.setModal({
-                          title: 'How to Connect to Cavatica',
-                          component: (
-                            <CavaticaConnectModal
-                              onComplete={effects.unsetModal}
-                              onCancel={effects.unsetModal}
-                            />
-                          ),
-                        })
-                      }
-                    />
-                  )}
+                      <ConnectButton
+                        onClick={() =>
+                          effects.setModal({
+                            title: 'How to Connect to Cavatica',
+                            component: (
+                              <CavaticaConnectModal
+                                onComplete={effects.unsetModal}
+                                onCancel={effects.unsetModal}
+                              />
+                            ),
+                          })
+                        }
+                      />
+                    )}
                 </div>
               </td>
             </tr>

@@ -19,8 +19,9 @@ const icons = {
   [FACEBOOK]: x => <FBIcon color="#428bca" {...x} />,
 };
 
-const Status = styled(x => <Span p={2} {...x} />)`
+const Status = styled(Span)`
   color: ${({ theme }) => theme.tertiary};
+  padding: 2px;
   white-space: nowrap;
   font-weight: 500;
   font-size: 16px;
