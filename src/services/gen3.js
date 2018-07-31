@@ -25,9 +25,9 @@ export const Gen3AuthRedirect = props => {
 const state = {};
 fetch(CLIENT_URL)
   .then(res => res.json())
-  .then(({ client_id, scope }) => {
+  .then(({ client_id }) => {
     state.client_id = client_id;
-    state.scope = `${scope}`;
+    state.scope = `openid+data+user`;
   });
 
 export const connectGen3 = api => {
