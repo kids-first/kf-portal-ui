@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { css } from 'emotion';
 import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
