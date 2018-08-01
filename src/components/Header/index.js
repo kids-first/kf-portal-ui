@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { Trans } from 'react-i18next';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
+import React, {Fragment} from 'react';
+import {Link, withRouter} from 'react-router-dom';
+import {Trans} from 'react-i18next';
+import {compose} from 'recompose';
+import {injectState} from 'freactal';
+import {withTheme} from 'emotion-theming';
 
 import logoPath from 'assets/logo-kids-first-data-portal-beta.svg';
 
@@ -12,8 +12,8 @@ import DatabaseIcon from 'react-icons/lib/fa/database';
 
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
-import { uiLogout } from 'components/LogoutButton';
-import { withApi } from 'services/api';
+import {uiLogout} from 'components/LogoutButton';
+import {withApi} from 'services/api';
 
 import {
   NavLink,
@@ -30,11 +30,11 @@ import {
 } from './ui';
 
 const Header = ({
-  state: { loggedInUser },
-  effects: { setUser, setToken, clearIntegrationTokens },
+  state: {loggedInUser},
+  effects: {setUser, setToken, clearIntegrationTokens},
   theme,
   history,
-  match: { path },
+  match: {path},
   api,
 }) => {
   const canSeeProtectedRoutes =
@@ -53,7 +53,7 @@ const Header = ({
           <Link to="/">
             <Logo src={logoPath} alt="Kids First Logo" />
           </Link>
-          {canSeeProtectedRoutes && (
+          {canSeeProtectedRoutes &&
             <NavBarList ml={40}>
               <li>
                 <NavLink currentPathName={currentPathName} to="/dashboard">
@@ -65,55 +65,59 @@ const Header = ({
                   <DatabaseIcon /> <Trans>File Repository</Trans>
                 </NavLink>
               </li>
-            </NavBarList>
-          )}
+            </NavBarList>}
         </Row>
         <NavBarList justify={'flex-end'}>
-          {!loggedInUser && (
+          {!loggedInUser &&
             <li>
-              {path === '/' ? (
-                <LinkAsButton to="/join">
-                  <Trans>Join now</Trans>
-                </LinkAsButton>
-              ) : (
-                <LinkAsButton to="/">
-                  <Trans>Login</Trans>
-                </LinkAsButton>
-              )}
-            </li>
-          )}
+              {path === '/'
+                ? <LinkAsButton to="/join">
+                    <Trans>Join now</Trans>
+                  </LinkAsButton>
+                : <LinkAsButton to="/">
+                    <Trans>Login</Trans>
+                  </LinkAsButton>}
+            </li>}
 
           {loggedInUser &&
-            canSeeProtectedRoutes && (
-              <Dropdown
-                items={[
-                  <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
-                    <Trans>My Profile</Trans>
-                  </DropdownLink>,
-                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
-                  <DropdownLink
-                    to={`/dashboard`}
-                    separated
-                    onClick={e => {
-                      e.preventDefault();
-                      uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
-                    }}
-                  >
-                    <Trans>Logout</Trans>
-                  </DropdownLink>,
-                ]}
-                ItemWrapperComponent={props => <Fragment {...props} />}
-                ContainerComponent={NavbarDropdownWrapper}
-                OptionsContainerComponent={NavbarDropdownOptionsContainer}
-              >
-                <NavigationGravatar email={loggedInUser.email || ''} size={39} />
-                {loggedInUser.firstName}
-              </Dropdown>
-            )}
+            canSeeProtectedRoutes &&
+            <Dropdown
+              align="left"
+              items={[
+                <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
+                  <Trans>My Profile</Trans>
+                </DropdownLink>,
+                <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>
+                  Settings
+                </DropdownLink>,
+                <DropdownLink
+                  to={`/dashboard`}
+                  separated
+                  onClick={e => {
+                    e.preventDefault ();
+                    uiLogout ({
+                      history,
+                      setToken,
+                      setUser,
+                      clearIntegrationTokens,
+                      api,
+                    });
+                  }}
+                >
+                  <Trans>Logout</Trans>
+                </DropdownLink>,
+              ]}
+              ItemWrapperComponent={props => <Fragment {...props} />}
+              ContainerComponent={NavbarDropdownWrapper}
+              OptionsContainerComponent={NavbarDropdownOptionsContainer}
+            >
+              <NavigationGravatar email={loggedInUser.email || ''} size={39} />
+              {loggedInUser.firstName}
+            </Dropdown>}
         </NavBarList>
       </HeaderContent>
     </HeaderContainer>
   );
 };
 
-export default compose(injectState, withTheme, withRouter, withApi)(Header);
+export default compose (injectState, withTheme, withRouter, withApi) (Header);
