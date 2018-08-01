@@ -8,7 +8,6 @@ import { isObject, get } from 'lodash';
 import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 import FilterIcon from 'react-icons/lib/fa/filter';
-import Component from 'react-component-component';
 
 import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';

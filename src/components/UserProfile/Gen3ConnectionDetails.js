@@ -5,7 +5,7 @@ import { getUser as getGen3User, getStudyIds } from 'services/gen3';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { get, uniq } from 'lodash';
+import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import styled from 'react-emotion';
 
@@ -20,7 +20,7 @@ import RightChevron from 'icons/DoubleChevronRightIcon';
 import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
 import { withApi } from 'services/api';
-import { graphql, arrangerGqlRecompose } from 'services/arranger';
+import { arrangerGqlRecompose } from 'services/arranger';
 
 const styles = css`
   table {
