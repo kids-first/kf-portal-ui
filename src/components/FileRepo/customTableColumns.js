@@ -7,6 +7,7 @@ import { withApi } from 'services/api';
 import DownloadIcon from 'icons/DownloadIcon';
 import { ControlledIcon, TableSpinner } from './ui';
 import Row from 'uikit/Row';
+import Tooltip from 'uikit/Tooltip';
 import { arrangerProjectId } from 'common/injectGlobals';
 
 export default ({ theme, userProjectIds, loadingGen3User }) => [
@@ -57,7 +58,13 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
                   userProjectIds.includes(studyIdBucket.key) ? (
                     <DownloadFileButton kfId={value} />
                   ) : (
-                    <ControlledIcon />
+                    <Tooltip
+                      position="bottom"
+                      interactive
+                      html={<Row p={'10px'}>You do not have access to this file.</Row>}
+                    >
+                      <ControlledIcon />
+                    </Tooltip>
                   )
                 ) : loadingQuery || loadingGen3User ? (
                   <TableSpinner style={{ width: 20, height: 20 }} />
