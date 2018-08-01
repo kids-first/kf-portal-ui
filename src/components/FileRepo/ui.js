@@ -8,6 +8,7 @@ import '@arranger/components/public/themeStyles/beagle/beagle.css';
 
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
+import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 
 export const ArrangerContainer = styled(Row)`
   .ReactTable .rt-thead .rt-th.-sort-desc,
@@ -71,17 +72,7 @@ export const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-export const ControlledIcon = () => (
-  <img
-    src={require('../../assets/icon-controlled-access.svg')}
-    alt=""
-    css={`
-      width: 11px;
-      margin: auto;
-      display: block;
-    `}
-  />
-);
+export const ControlledIcon = props => <ControlledAccessIcon width={12} height={12} {...props} />;
 
 export const OpenIcon = () => (
   <img
