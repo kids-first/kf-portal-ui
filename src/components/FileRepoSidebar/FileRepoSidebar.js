@@ -49,6 +49,7 @@ const Content = styled('div')`
   padding-right: ${({ contentSidePadding }) => contentSidePadding}px;
   transition: all 0.25s;
   padding-top: 10px;
+  height: 100%;
 `;
 
 const Text = styled('div')`
