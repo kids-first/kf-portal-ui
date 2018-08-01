@@ -94,9 +94,8 @@ const customTableColumns = ({ theme, userProjectIds, loadingGen3User }) => [
       Cell: withApi(({ value, api }) => (
         <Query
           renderError
-          api={arrangerGqlRecompose(api)}
+          api={arrangerGqlRecompose(api, 'TableRowStudyId')}
           projectId={'june_13'}
-          name={`gen3ItemQuery`}
           shouldFetch={true}
           query={`query ($sqon: JSON) {
             file {
