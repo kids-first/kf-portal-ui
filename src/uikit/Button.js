@@ -11,12 +11,12 @@ const BaseButton = styled('button')`
   outline: none;
 `;
 
-const Button = styled(BaseButton)`
+const Button = applyDefaultStyles(styled(BaseButton)`
   height: 30px;
   border-radius: 14px;
   background-color: ${({ disabled }) => (disabled ? '#c5dee3' : '#009bb8')};
   color: #fff;
-`;
+`);
 
 export const LightButton = styled(BaseButton)`
   ${({ theme }) => theme.hollowButton};
