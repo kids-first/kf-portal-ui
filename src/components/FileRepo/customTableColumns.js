@@ -7,6 +7,7 @@ import { arrangerGqlRecompose } from 'services/arranger';
 import { withApi } from 'services/api';
 import DownloadIcon from 'icons/DownloadIcon';
 import { ControlledIcon, TableSpinner } from './ui';
+import Row from 'uikit/Row';
 
 export default ({ theme, userProjectIds, loadingGen3User }) => [
   {
@@ -51,13 +52,7 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
               'file.aggregations.participants__study__external_id.buckets',
             ) || [])[0];
             return (
-              <div
-                className={css`
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                `}
-              >
+              <Row center height={'100%'}>
                 {studyIdBucket ? (
                   userProjectIds.includes(studyIdBucket.key) ? (
                     <DownloadFileButton kfId={value} />
@@ -69,7 +64,7 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
                 ) : (
                   <ControlledIcon />
                 )}
-              </div>
+              </Row>
             );
           }}
         />

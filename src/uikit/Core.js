@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import {
   space,
   width,
+  height,
   fontSize,
   color,
   lineHeight,
@@ -35,6 +36,7 @@ export const applyDefaultStyles = Component => styled(Component)`
   ${baseStyles}
   ${space}
   ${width}
+  ${height}
   ${fontSize}
   ${fontWeight}
   ${color}
