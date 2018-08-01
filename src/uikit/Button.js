@@ -44,7 +44,6 @@ const BigWhiteButtonBase = ({ children, ...x }) => (
 export const BigWhiteButton = styled(BigWhiteButtonBase)`
   background: ${({ theme }) => theme.white};
   border: 1px solid ${({ theme }) => theme.greyScale8};
-  box-shadow: 0 0 1px 0.1px ${({ theme }) => theme.lightShadow};
   border-radius: 25px;
   height: auto;
   padding-top: 0px;

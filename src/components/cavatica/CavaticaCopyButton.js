@@ -12,9 +12,9 @@ import { BigWhiteButton } from 'uikit/Button';
 import cavaticaLogo from 'assets/logomark-cavatica-mono-white.svg';
 
 const CavaticaButton = styled(BigWhiteButton)`
-  background: ${({ theme }) => theme.primary};
+  background: ${({ theme }) => theme.primaryLight};
   &:hover {
-    background: ${({ theme }) => theme.secondary};
+    background: ${({ theme }) => theme.primary};
   }
 `;
 
