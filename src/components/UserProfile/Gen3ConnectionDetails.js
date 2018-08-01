@@ -21,6 +21,7 @@ import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
 import { withApi } from 'services/api';
 import { arrangerGqlRecompose } from 'services/arranger';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 const styles = css`
   table {
@@ -84,7 +85,7 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
     <Query
       renderError
       api={arrangerGqlRecompose(api)}
-      projectId={'june_13'}
+      projectId={arrangerProjectId}
       name={`gen3ItemQuery`}
       shouldFetch={true}
       query={`

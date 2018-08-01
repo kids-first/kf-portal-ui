@@ -7,6 +7,7 @@ import { withApi } from 'services/api';
 import DownloadIcon from 'icons/DownloadIcon';
 import { ControlledIcon, TableSpinner } from './ui';
 import Row from 'uikit/Row';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 export default ({ theme, userProjectIds, loadingGen3User }) => [
   {
@@ -18,7 +19,7 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
         <Query
           renderError
           api={arrangerGqlRecompose(api, 'TableRowStudyId')}
-          projectId={'june_13'}
+          projectId={arrangerProjectId}
           shouldFetch={true}
           query={`query ($sqon: JSON) {
             file {
