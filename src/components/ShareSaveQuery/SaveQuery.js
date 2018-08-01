@@ -58,7 +58,6 @@ export default injectState(
             action: TRACKING_EVENTS.actions.query.save,
             label: JSON.stringify(trackingSqon),
           };
-          debugger;
           trackUserInteraction(savedQueryInteraction);
         })
         .catch(error => {
