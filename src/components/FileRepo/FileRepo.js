@@ -44,8 +44,9 @@ const trackFileRepoInteraction = ({ label, ...eventData }) =>
   });
 
 const customTableTypes = {
-  access: ({ value }) =>
-    typeof value !== 'boolean' ? `` : value ? <ControlledIcon /> : <OpenIcon />,
+  access: ({ value }) => (
+    <Row center>{typeof value !== 'boolean' ? `` : value ? <ControlledIcon /> : <OpenIcon />}</Row>
+  ),
 };
 
 const FileRepo = compose(injectState, withTheme, withApi)(

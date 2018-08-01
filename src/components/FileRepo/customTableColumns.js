@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 import Query from '@arranger/components/dist/Query';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import { arrangerGqlRecompose } from 'services/arranger';
@@ -16,7 +18,7 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
     content: {
       accessor: 'kf_id',
       Header: () => <DownloadIcon width={13} fill={theme.greyScale3} />,
-      Cell: withApi(({ value, api }) => (
+      Cell: compose(withApi, withTheme)(({ value, api, theme }) => (
         <Query
           renderError
           api={arrangerGqlRecompose(api, 'TableRowStudyId')}
@@ -63,13 +65,13 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
                       interactive
                       html={<Row p={'10px'}>You do not have access to this file.</Row>}
                     >
-                      <ControlledIcon />
+                      <ControlledIcon fill={theme.primary} />
                     </Tooltip>
                   )
                 ) : loadingQuery || loadingGen3User ? (
                   <TableSpinner style={{ width: 20, height: 20 }} />
                 ) : (
-                  <ControlledIcon />
+                  <ControlledIcon fill={theme.primary} />
                 )}
               </Row>
             );
