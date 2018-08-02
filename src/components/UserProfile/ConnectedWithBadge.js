@@ -9,13 +9,16 @@ import Check from 'react-icons/lib/fa/check';
 import { Box, Span } from 'uikit/Core';
 
 import { GOOGLE, FACEBOOK } from 'common/constants';
+import gicon from 'assets/google-icon.png';
 
-const GoogleIcon = styled(GIcon)`
+const GoogleIcon = styled('img')`
+  height: 26px;
   margin-left: 3px;
+  vertical-align: middle;
 `;
 
 const icons = {
-  [GOOGLE]: x => <GoogleIcon color="#d62d20" {...x} />,
+  [GOOGLE]: x => <GoogleIcon src={gicon} />,
   [FACEBOOK]: x => <FBIcon color="#428bca" {...x} />,
 };
 

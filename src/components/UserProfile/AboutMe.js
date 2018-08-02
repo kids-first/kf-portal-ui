@@ -65,13 +65,17 @@ export default compose(
   }) => (
     <Flex justifyContent="center" pt={4} pb={4}>
       <Container row alignItems="flex-start">
-        <Column width="65%" pt={2} justifyContent="space-around">
+        <Column width="65%" pt={2} pr={50} justifyContent="space-around">
           <H2>
             Profile
             {canEdit &&
               (!isEditingBackgroundInfo ? (
                 <EditButton
-                  onClick={() => handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo })}
+                  onClick={() =>
+                    handleEditingBackgroundInfo({
+                      value: !isEditingBackgroundInfo,
+                    })
+                  }
                 />
               ) : (
                 <Flex>
@@ -122,7 +126,9 @@ export default compose(
                 canEdit && (
                   <ClickToAdd
                     onClick={() => {
-                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
+                      handleEditingBackgroundInfo({
+                        value: !isEditingBackgroundInfo,
+                      });
                       setFocusedTextArea('myBio');
                     }}
                   >
@@ -152,7 +158,9 @@ export default compose(
                 canEdit && (
                   <ClickToAdd
                     onClick={() => {
-                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
+                      handleEditingBackgroundInfo({
+                        value: !isEditingBackgroundInfo,
+                      });
                       setFocusedTextArea('myStory');
                     }}
                   >
@@ -186,7 +194,10 @@ export default compose(
                     bio: bioTextarea,
                     story: storyTextarea,
                   });
-                  handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
+                  handleEditingBackgroundInfo({
+                    value: false,
+                    type: TRACKING_EVENTS.actions.save,
+                  });
                 }}
               >
                 Save
