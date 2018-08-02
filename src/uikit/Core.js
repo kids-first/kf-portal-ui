@@ -1,4 +1,4 @@
-import { Link as LinkBase } from 'react-router-dom';
+import {Link as LinkBase} from 'react-router-dom';
 import styled from 'react-emotion';
 import {
   space,
@@ -22,17 +22,20 @@ import {
   complexStyle,
   hover,
   textAlign,
+  position,
+  left,
+  right,
 } from 'styled-system';
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
-const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
-const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
+const overflow = ({overflow}) => applyProp (`overflow`, overflow);
+const overflowY = ({overflowY}) => applyProp (`overflow-y`, overflowY);
 
-const baseStyles = complexStyle({
+const baseStyles = complexStyle ({
   prop: 'baseStyle',
   key: 'baseStyles',
 });
-export const applyDefaultStyles = Component => styled(Component)`
+export const applyDefaultStyles = Component => styled (Component)`
   ${baseStyles}
   ${space}
   ${width}
@@ -50,21 +53,24 @@ export const applyDefaultStyles = Component => styled(Component)`
   ${overflowY}
   ${hover}
   ${textAlign}
+  ${position}
+  ${left}
+  ${right}
 `;
 
-const boxStyles = complexStyle({
+const boxStyles = complexStyle ({
   prop: 'boxStyle',
   key: 'boxStyles',
 });
-export const Box = styled(applyDefaultStyles('div'))`
+export const Box = styled (applyDefaultStyles ('div'))`
   ${boxStyles};
 `;
 
-const flexStyles = complexStyle({
+const flexStyles = complexStyle ({
   prop: 'flexStyle',
   key: 'flexStyles',
 });
-export const Flex = styled(Box)`
+export const Flex = styled (Box)`
   display: flex;
   ${flexStyles};
   ${alignItems};
@@ -75,48 +81,48 @@ export const Flex = styled(Box)`
   ${flexGrow};
 `;
 
-const linkStyles = complexStyle({
+const linkStyles = complexStyle ({
   prop: 'linkStyle',
   key: 'linkStyles',
 });
-export const Link = styled(applyDefaultStyles(LinkBase))`
+export const Link = styled (applyDefaultStyles (LinkBase))`
   ${linkStyles};
   &:hover {
-    color: ${({ theme }) => theme.highlight};
+    color: ${({theme}) => theme.highlight};
   }
 `;
-export const ExternalLink = styled(applyDefaultStyles('a'))`
+export const ExternalLink = styled (applyDefaultStyles ('a'))`
   ${linkStyles};
   &:hover {
-    color: ${({ theme }) => theme.highlight};
+    color: ${({theme}) => theme.highlight};
   }
 `;
 
-export const Section = applyDefaultStyles(styled('section')`
-  font-family: ${({ theme }) => theme.fonts.details};
-  color: ${({ theme }) => theme.greyScale1};
+export const Section = applyDefaultStyles (styled ('section')`
+  font-family: ${({theme}) => theme.fonts.details};
+  color: ${({theme}) => theme.greyScale1};
   font-size: 14px;
   line-height: 2.57;
   letter-spacing: 0.2px;
 `);
 
-export const Span = applyDefaultStyles(styled('span')`
-  font-family: ${({ theme }) => theme.fonts.details};
+export const Span = applyDefaultStyles (styled ('span')`
+  font-family: ${({theme}) => theme.fonts.details};
 `);
 
-export const Div = applyDefaultStyles(styled('div')`
-  font-family: ${({ theme }) => theme.fonts.details};
+export const Div = applyDefaultStyles (styled ('div')`
+  font-family: ${({theme}) => theme.fonts.details};
 `);
 
-export const Paragraph = applyDefaultStyles(styled('p')`
-  font-family: ${({ theme }) => theme.fonts.details};
+export const Paragraph = applyDefaultStyles (styled ('p')`
+  font-family: ${({theme}) => theme.fonts.details};
   line-height: 28px;
 `);
 
-export const H1 = applyDefaultStyles('h1');
+export const H1 = applyDefaultStyles ('h1');
 
-export const H2 = applyDefaultStyles('h2');
+export const H2 = applyDefaultStyles ('h2');
 
-export const H3 = applyDefaultStyles('h3');
+export const H3 = applyDefaultStyles ('h3');
 
-export const H4 = applyDefaultStyles('h4');
+export const H4 = applyDefaultStyles ('h4');
