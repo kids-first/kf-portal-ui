@@ -103,7 +103,6 @@ const App = compose(
               isLoadingUser,
               Component: FileRepo,
               WrapperPage: FixedFooterPage,
-              fixedHeightPage: true,
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
@@ -132,7 +131,7 @@ const App = compose(
               api,
               isLoadingUser,
               Component: UserDashboard,
-              fixedHeightPage: true,
+              WrapperPage: FixedFooterPage,
               loggedInUser,
               ...props,
             })

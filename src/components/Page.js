@@ -3,14 +3,14 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
+import { applyDefaultStyles } from '../uikit/Core';
 
-const Container = styled(Column)`
-  height: ${({ fixedHeightPage }) => (fixedHeightPage ? '100vh' : 'auto')};
+const Container = applyDefaultStyles(styled(Column)`
   position: relative;
   min-width: 1024px;
   width: 100%;
   background-repeat: repeat;
-`;
+`);
 
 const ContentWrapper = styled('div')`
   height: 100%;
@@ -20,10 +20,9 @@ const ContentWrapper = styled('div')`
   }
 `;
 
-const Page = ({ Head = Header, Foot = Footer, Component, styles, fixedHeightPage, ...props }) => {
-  console.log('ciaran', fixedHeightPage);
+const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => {
   return (
-    <Container fixedHeightPage={fixedHeightPage}>
+    <Container>
       <Head />
       <ContentWrapper>
         <Component {...props} />
@@ -33,14 +32,8 @@ const Page = ({ Head = Header, Foot = Footer, Component, styles, fixedHeightPage
   );
 };
 
-export const FixedFooterPage = ({
-  Head = Header,
-  Foot = Footer,
-  Component,
-  fixedHeightPage,
-  ...props
-}) => (
-  <Container fixedHeightPage={fixedHeightPage}>
+export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
+  <Container height="100vh">
     <Head />
     <ContentWrapper>
       <Component {...props} />
