@@ -3,7 +3,7 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
-
+import { footerHeight } from './Footer';
 const Container = styled(Column)`
   position: relative;
   height: 100vh;
@@ -26,7 +26,7 @@ const FloatFooterPageContentWrapper = styled('div')`
 `;
 
 const FloatFooterPageComponentWrapper = styled('div')`
-  min-height: 100%;
+  min-height: calc(100% - ${footerHeight});
   display: flex;
 `;
 
