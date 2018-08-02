@@ -74,12 +74,14 @@ const App = compose(injectState, withApi, withTheme)(
                 isLoadingUser,
                 Component: ({ match, ...props }) => {
                   return !isAdminToken({
-                    validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                    validatedPayload: validateJWT({
+                      jwt: state.loggedInUserToken,
+                    }),
                   }) ? (
-                      <Redirect to="/dashboard" />
-                    ) : (
-                      <ArrangerDashboard basename={match.url} {...props} />
-                    );
+                    <Redirect to="/dashboard" />
+                  ) : (
+                    <ArrangerDashboard basename={match.url} {...props} />
+                  );
                 },
                 loggedInUser,
                 index: props.match.params.index,
@@ -126,6 +128,7 @@ const App = compose(injectState, withApi, withTheme)(
                 api,
                 isLoadingUser,
                 Component: UserDashboard,
+                WrapperPage: FixedFooterPage,
                 loggedInUser,
                 ...props,
               })
@@ -137,7 +140,9 @@ const App = compose(injectState, withApi, withTheme)(
             render={props => {
               return (
                 <ApiContext.Provider
-                  value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+                  value={initializeApi({
+                    onUnauthorized: () => props.history.push('/login'),
+                  })}
                 >
                   <SideImagePage
                     backgroundImage={scienceBgPath}
