@@ -3,14 +3,14 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
-import { applyDefaultStyles } from '../uikit/Core';
 
-const Container = applyDefaultStyles(styled(Column)`
+const Container = styled(Column)`
   position: relative;
+  height: 100vh;
   min-width: 1024px;
   width: 100%;
   background-repeat: repeat;
-`);
+`;
 
 const ContentWrapper = styled('div')`
   height: 100%;
@@ -20,20 +20,18 @@ const ContentWrapper = styled('div')`
   }
 `;
 
-const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => {
-  return (
-    <Container>
-      <Head />
-      <ContentWrapper>
-        <Component {...props} />
-        <Foot />
-      </ContentWrapper>
-    </Container>
-  );
-};
+const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
+  <Container>
+    <Head />
+    <ContentWrapper>
+      <Component {...props} />
+      <Foot />
+    </ContentWrapper>
+  </Container>
+);
 
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
-  <Container height="100vh">
+  <Container>
     <Head />
     <ContentWrapper>
       <Component {...props} />
