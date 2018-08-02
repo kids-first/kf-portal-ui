@@ -20,13 +20,25 @@ const ContentWrapper = styled('div')`
   }
 `;
 
+const FloatFooterPageContentWrapper = styled('div')`
+  height: 100%;
+  overflow-y: auto;
+`;
+
+const FloatFooterPageComponentWrapper = styled('div')`
+  min-height: 100%;
+  display: flex;
+`;
+
 const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   <Container>
     <Head />
-    <ContentWrapper>
-      <Component {...props} />
+    <FloatFooterPageContentWrapper>
+      <FloatFooterPageComponentWrapper>
+        <Component {...props} />
+      </FloatFooterPageComponentWrapper>
       <Foot />
-    </ContentWrapper>
+    </FloatFooterPageContentWrapper>
   </Container>
 );
 
