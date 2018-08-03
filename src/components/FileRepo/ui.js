@@ -60,6 +60,7 @@ export const TableContainer = styled(Column)`
 export const TableWrapper = styled(Column)`
   min-height: 300px;
   flex: 1;
+  display: flex;
   & .ReactTable {
     min-height: 1px;
   }
@@ -86,12 +87,12 @@ export const OpenIcon = () => (
   />
 );
 
-export const TableSpinner = props => (
+export const TableSpinner = ({ props, style = {} }) => (
   <Spinner
     fadeIn="none"
     name="circle"
     color="#a9adc0"
-    style={{ width: 50, height: 50 }}
+    style={{ width: 50, height: 50, ...style }}
     {...props}
   />
 );

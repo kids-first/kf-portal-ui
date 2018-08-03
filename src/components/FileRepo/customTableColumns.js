@@ -69,7 +69,7 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
                     </Tooltip>
                   )
                 ) : loadingQuery || loadingGen3User ? (
-                  <TableSpinner style={{ width: 20, height: 20 }} />
+                  <TableSpinner style={{ width: 15, height: 15 }} />
                 ) : (
                   <ControlledIcon fill={theme.primary} />
                 )}
