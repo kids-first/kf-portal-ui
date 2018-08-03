@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Component from 'react-component-component';
 import { get } from 'lodash';
-import { compose, onlyUpdateForKeys, shouldUpdate } from 'recompose';
+import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import Query from '@arranger/components/dist/Query';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
@@ -17,9 +17,6 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
   ({ value, api, theme, userProjectIds, loadingGen3User }) => (
     <Component
       initialState={{ shouldFetch: true }}
-      didMount={() => {
-        console.log('MOUNTED!!!');
-      }}
       didUpdate={({ state, setState, props, prevProps }) => {
         if (props.value !== prevProps.value) {
           setState({ shouldFetch: props.value !== prevProps.value }, () => {
@@ -64,11 +61,11 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
               data,
               'file.aggregations.participants__study__external_id.buckets',
             ) || [])[0];
-            return loadingQuery ? (
-              <TableSpinner style={{ width: 15, height: 15 }} />
-            ) : (
+            return (
               <Row center height={'100%'}>
-                {studyIdBucket ? (
+                {loadingQuery ? (
+                  <TableSpinner style={{ width: 15, height: 15 }} />
+                ) : studyIdBucket ? (
                   userProjectIds.includes(studyIdBucket.key) ? (
                     <DownloadFileButton kfId={value} />
                   ) : (
