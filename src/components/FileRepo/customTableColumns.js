@@ -1,6 +1,7 @@
 import * as React from 'react';
+import Component from 'react-component-component';
 import { get } from 'lodash';
-import { compose } from 'recompose';
+import { compose, onlyUpdateForKeys, shouldUpdate } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import Query from '@arranger/components/dist/Query';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
@@ -12,29 +13,38 @@ import Row from 'uikit/Row';
 import Tooltip from 'uikit/Tooltip';
 import { arrangerProjectId } from 'common/injectGlobals';
 
-export default ({ theme, userProjectIds, loadingGen3User }) => [
-  {
-    index: 13,
-    content: {
-      accessor: 'kf_id',
-      Header: () => <DownloadIcon width={13} fill={theme.greyScale3} />,
-      Cell: compose(withApi, withTheme)(({ value, api, theme }) => (
+const DownloadColumnCellContent = compose(withApi, withTheme)(
+  ({ value, api, theme, userProjectIds, loadingGen3User }) => (
+    <Component
+      initialState={{ shouldFetch: true }}
+      didMount={() => {
+        console.log('MOUNTED!!!');
+      }}
+      didUpdate={({ state, setState, props, prevProps }) => {
+        if (props.value !== prevProps.value) {
+          setState({ shouldFetch: props.value !== prevProps.value }, () => {
+            setState({ shouldFetch: false });
+          });
+        }
+      }}
+    >
+      {({ state: { shouldFetch } }) => (
         <Query
           renderError
           api={arrangerGqlRecompose(api, 'TableRowStudyId')}
           projectId={arrangerProjectId}
-          shouldFetch={true}
+          shouldFetch={shouldFetch}
           query={`query ($sqon: JSON) {
-            file {
-              aggregations(filters: $sqon) {
-                participants__study__external_id {
-                  buckets {
-                    key
-                  }
+          file {
+            aggregations(filters: $sqon) {
+              participants__study__external_id {
+                buckets {
+                  key
                 }
               }
             }
-          }`}
+          }
+        }`}
           variables={{
             sqon: {
               op: 'and',
@@ -54,7 +64,9 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
               data,
               'file.aggregations.participants__study__external_id.buckets',
             ) || [])[0];
-            return (
+            return loadingQuery ? (
+              <TableSpinner style={{ width: 15, height: 15 }} />
+            ) : (
               <Row center height={'100%'}>
                 {studyIdBucket ? (
                   userProjectIds.includes(studyIdBucket.key) ? (
@@ -77,7 +89,24 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
             );
           }}
         />
-      )),
+      )}
+    </Component>
+  ),
+);
+
+export default ({ theme, userProjectIds, loadingGen3User }) => [
+  {
+    index: 13,
+    content: {
+      accessor: 'kf_id',
+      Header: () => <DownloadIcon width={13} fill={theme.greyScale3} />,
+      Cell: props => (
+        <DownloadColumnCellContent
+          {...props}
+          userProjectIds={userProjectIds}
+          loadingGen3User={loadingGen3User}
+        />
+      ),
       width: 40,
       sortable: false,
       resizable: false,
