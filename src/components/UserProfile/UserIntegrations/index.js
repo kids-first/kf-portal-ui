@@ -215,10 +215,20 @@ const UserIntegrations = withApi(
                                     </Row>
                                   ),
                                 });
+                                trackUserInteraction({
+                                  category: TRACKING_EVENTS.categories.user.profile,
+                                  action: TRACKING_EVENTS.actions.integration.connected,
+                                  label: TRACKING_EVENTS.gen3,
+                                });
                               })
                               .catch(err => {
                                 console.log('err: ', err);
                                 setState({ loading: false });
+                                trackUserInteraction({
+                                  category: TRACKING_EVENTS.categories.user.profile,
+                                  action: TRACKING_EVENTS.actions.integration.failed,
+                                  label: TRACKING_EVENTS.gen3,
+                                });
                               });
                           }}
                         />
