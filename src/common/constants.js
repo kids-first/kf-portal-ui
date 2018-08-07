@@ -1,15 +1,17 @@
 import CommunityIcon from 'icons/CommunityIcon';
 import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
+import PatientFamilyIcon from 'icons/PatientFamily';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
+import PatientFamilyBanner from 'assests/user-banner-patient-family.png';
 import packageJson from '../../package.json';
 
 export const ROLES = [
   {
     type: 'research',
-    displayName: 'Research',
+    displayName: 'Researcher',
     description:
       "I'm a biomedical researcher or data scientist interested in data analysis, cross-disease research, and real-time collaboration.",
     icon: ResearchIcon,
@@ -24,7 +26,7 @@ export const ROLES = [
   },
   {
     type: 'community',
-    displayName: 'Community',
+    displayName: 'Community Member',
     description:
       "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
     icon: CommunityIcon,
@@ -39,12 +41,26 @@ export const ROLES = [
   },
   {
     type: 'health',
-    displayName: 'Health',
+    displayName: 'Healthcare Professional',
     description:
       "I'm a physician-scientist interested in finding the latest research to target patients' needs based on genetic characteristics.",
     icon: HealthIcon,
     banner: HealthBanner,
     color: '#009bb8',
+    profileColors: {
+      gradientDark: '#0a5d6c',
+      gradientMid: '#198895',
+      gradientLight: '#1ca39e',
+      pillBkg: '#1f9bb6',
+    },
+  },
+  {
+    type: 'patientfamily',
+    displayName: 'Patient/Family Member',
+    description: '',
+    icon: PatientFamilyIcon,
+    banner: PatientFamilyBanner,
+    color: '#fff',
     profileColors: {
       gradientDark: '#0a5d6c',
       gradientMid: '#198895',
@@ -89,13 +105,13 @@ export const DISEASE_AREAS = [
 ];
 
 export const STUDY_SHORT_NAMES = [
-'Orofacial Cleft: European Ancestry',
-'Neuroblastoma Initiation and Progressio ',
-'Orofacial Cleft: Latin America ',
-'Disorders of Sex Developmen ',
-'Adolescent Idiopathic Scoliosi ',
-'Congenital Heart Defect ',
-'Pediatric Brain Tumors: CBTT ',
-'Ewing Sarcoma: Genetic Ris ',
-'Congenital Diaphragmatic Herni ',
+  'Orofacial Cleft: European Ancestry',
+  'Neuroblastoma Initiation and Progressio ',
+  'Orofacial Cleft: Latin America ',
+  'Disorders of Sex Developmen ',
+  'Adolescent Idiopathic Scoliosi ',
+  'Congenital Heart Defect ',
+  'Pediatric Brain Tumors: CBTT ',
+  'Ewing Sarcoma: Genetic Ris ',
+  'Congenital Diaphragmatic Herni ',
 ];
