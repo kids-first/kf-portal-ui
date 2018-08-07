@@ -5,7 +5,7 @@ import PatientIcon from 'icons/PatientIcon';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
-//import PatientBanner from 'assests/user-banner-patient.png';
+import PatientBanner from 'assets/user-banner-patient.png';
 import packageJson from '../../package.json';
 
 export const ROLES = [
@@ -31,12 +31,12 @@ export const ROLES = [
       "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
     icon: CommunityIcon,
     banner: CommunityBanner,
-    color: '#e83a9c',
+    color: '#2b388f',
     profileColors: {
-      gradientDark: '#8f347f',
-      gradientMid: '#a9408b',
-      gradientLight: '#cd5162',
-      pillBkg: '#e83a9c',
+      gradientDark: '#2b388f',
+      gradientMid: '#5c6bc0',
+      gradientLight: '#7986cb',
+      pillBkg: '#2b388f',
     },
   },
   {
@@ -60,6 +60,7 @@ export const ROLES = [
     description:
       "I'm interested in learning more about current research and connecting with others.",
     icon: PatientIcon,
+    banner: PatientBanner,
     color: '#e83a9c',
     profileColors: {
       gradientDark: '#8f347f',
