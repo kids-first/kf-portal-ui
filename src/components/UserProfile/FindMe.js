@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, withState } from 'recompose';
+import { compose, withState, withHandlers } from 'recompose';
 import styled from 'react-emotion';
 import { withFormik, Field, Form } from 'formik';
 import * as Yup from 'yup';
@@ -19,6 +19,8 @@ import LinkedInIcon from 'icons/LinkedInIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+
+import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 
 const StyledField = styled(Field)`
   ${({ theme }) => theme.input};
@@ -179,12 +181,19 @@ export default compose(
       }
     },
   }),
+  withHandlers({
+    handleIsEditing: ({ setIsEditing }) => ({ type, value }) => {
+      setIsEditing(value);
+      trackProfileInteraction({ action: 'Find Me On', value, type });
+    },
+  }),
 )(
   ({
     profile,
     canEdit,
     submit,
     isEditing,
+    handleIsEditing,
     setIsEditing,
     errors,
     touched,
@@ -203,7 +212,7 @@ export default compose(
               (!isEditing ? (
                 <EditButton
                   onClick={() => {
-                    setIsEditing(true);
+                    handleIsEditing({ value: !isEditing });
                   }}
                 />
               ) : (
@@ -211,7 +220,7 @@ export default compose(
                   <HollowButton
                     onClick={() => {
                       handleReset();
-                      setIsEditing(false);
+                      handleIsEditing({ value: false });
                     }}
                   >
                     Cancel
@@ -225,7 +234,7 @@ export default compose(
                       disabled={!!Object.keys(errors || {}).length}
                       onClick={async e => {
                         handleSubmit(e);
-                        setIsEditing(false);
+                        handleIsEditing({ value: false, type: TRACKING_EVENTS.actions.save });
                       }}
                     >
                       Save
