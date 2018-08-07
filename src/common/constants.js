@@ -1,7 +1,7 @@
 import CommunityIcon from 'icons/CommunityIcon';
 import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
-//import PatientIcon from 'icons/Patient';
+import PatientIcon from 'icons/PatientIcon';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
@@ -54,21 +54,20 @@ export const ROLES = [
       pillBkg: '#1f9bb6',
     },
   },
-  /*
   {
     type: 'patient',
     displayName: 'Patient/Family Member',
-    description: 'PATIENT FAMILY MEMBER',
-    icon: null,
-    banner: null,
-    color: '#fff',
+    description:
+      "I'm interested in learning more about current research and connecting with others.",
+    icon: PatientIcon,
+    color: '#e83a9c',
     profileColors: {
-      gradientDark: '#0a5d6c',
-      gradientMid: '#198895',
-      gradientLight: '#1ca39e',
-      pillBkg: '#1f9bb6',
+      gradientDark: '#8f347f',
+      gradientMid: '#a9408b',
+      gradientLight: '#cd5162',
+      pillBkg: '#e83a9c',
     },
-  },*/
+  },
 ];
 
 export const GEN3 = 'gen3';
