@@ -1,6 +1,10 @@
+import * as React from 'react';
 import { gen3ApiRoot } from 'common/injectGlobals';
 import { gen3OauthRedirect, gen3IntegrationRoot } from 'common/injectGlobals';
 import jwtDecode from 'jwt-decode';
+import Component from 'react-component-component';
+import { withApi } from 'services/api';
+import { uniq } from 'lodash';
 
 const AUTHORIZE_URL = `${gen3ApiRoot}user/oauth2/authorize`;
 const CLIENT_URL = `${`${gen3IntegrationRoot}/auth-client`}`;
@@ -155,3 +159,19 @@ export const downloadFileFromGen3 = async ({ fileUUID, api }) => {
   }
   return url;
 };
+
+const toStudyId = consentCode => consentCode.split('.')[0];
+export const getStudyIds = gen3User => uniq(Object.keys(gen3User.projects).map(toStudyId));
+
+export const Gen3UserProvider = withApi(({ render, api }) => (
+  <Component
+    initialState={{ gen3User: null, loading: true }}
+    didMount={({ setState }) =>
+      getUser(api)
+        .then(user => setState({ gen3User: user, loading: false }))
+        .catch(err => setState({ loading: false }))
+    }
+  >
+    {({ state: { gen3User, loading } }) => render({ gen3User, loading })}
+  </Component>
+));

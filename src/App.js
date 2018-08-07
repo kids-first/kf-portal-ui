@@ -18,6 +18,7 @@ import LoginPage from 'components/LoginPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
+import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import { isAdminToken, validateJWT } from 'components/Login';
@@ -31,7 +32,7 @@ import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { Gen3AuthRedirect } from 'services/gen3';
 
-const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
+const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
       <SideImagePage logo={logo} sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
@@ -42,7 +43,7 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, ...props }) => {
   ) {
     return <Redirect to="/join" />;
   } else {
-    return <Page {...props} />;
+    return <WrapperPage {...props} />;
   }
 };
 
@@ -75,10 +76,10 @@ const App = compose(injectState, withApi, withTheme)(
                   return !isAdminToken({
                     validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                   }) ? (
-                    <Redirect to="/dashboard" />
-                  ) : (
-                    <ArrangerDashboard basename={match.url} {...props} />
-                  );
+                      <Redirect to="/dashboard" />
+                    ) : (
+                      <ArrangerDashboard basename={match.url} {...props} />
+                    );
                 },
                 loggedInUser,
                 index: props.match.params.index,
@@ -96,6 +97,7 @@ const App = compose(injectState, withApi, withTheme)(
               forceSelectRole({
                 isLoadingUser,
                 Component: FileRepo,
+                WrapperPage: FixedFooterPage,
                 loggedInUser,
                 index: props.match.params.index,
                 graphqlField: props.match.params.index,

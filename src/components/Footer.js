@@ -7,6 +7,8 @@ import { SocialIcon as ReactSocialIcon } from 'react-social-icons';
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
 
+export const footerHeight = '84px';
+
 const FooterLink = styled('a')`
   font-family: ${({ theme }) => theme.fonts.details};
   font-size: 12px;
@@ -21,7 +23,7 @@ const FooterContainer = styled('footer')`
   ${({ theme }) => theme.row};
   ${({ theme }) => theme.center};
   flex: none;
-  height: 84px;
+  height: ${footerHeight};
   width: 100%;
   background-color: #fff;
   box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
