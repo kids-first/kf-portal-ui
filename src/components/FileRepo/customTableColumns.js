@@ -19,7 +19,7 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
       initialState={{ shouldFetch: true }}
       didUpdate={({ state, setState, props, prevProps }) => {
         if (props.value !== prevProps.value) {
-          setState({ shouldFetch: props.value !== prevProps.value }, () => {
+          setState({ shouldFetch: true }, () => {
             setState({ shouldFetch: false });
           });
         }
