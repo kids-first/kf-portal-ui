@@ -1,11 +1,11 @@
 import CommunityIcon from 'icons/CommunityIcon';
 import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
-import PatientFamilyIcon from 'icons/PatientFamily';
+//import PatientIcon from 'icons/Patient';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
-import PatientFamilyBanner from 'assests/user-banner-patient-family.png';
+//import PatientBanner from 'assests/user-banner-patient.png';
 import packageJson from '../../package.json';
 
 export const ROLES = [
@@ -54,12 +54,13 @@ export const ROLES = [
       pillBkg: '#1f9bb6',
     },
   },
+  /*
   {
-    type: 'patientfamily',
+    type: 'patient',
     displayName: 'Patient/Family Member',
-    description: '',
-    icon: PatientFamilyIcon,
-    banner: PatientFamilyBanner,
+    description: 'PATIENT FAMILY MEMBER',
+    icon: null,
+    banner: null,
     color: '#fff',
     profileColors: {
       gradientDark: '#0a5d6c',
@@ -67,7 +68,7 @@ export const ROLES = [
       gradientLight: '#1ca39e',
       pillBkg: '#1f9bb6',
     },
-  },
+  },*/
 ];
 
 export const GEN3 = 'gen3';
