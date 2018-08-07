@@ -76,10 +76,10 @@ const App = compose(injectState, withApi, withTheme)(
                   return !isAdminToken({
                     validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                   }) ? (
-                      <Redirect to="/dashboard" />
-                    ) : (
-                      <ArrangerDashboard basename={match.url} {...props} />
-                    );
+                    <Redirect to="/dashboard" />
+                  ) : (
+                    <ArrangerDashboard basename={match.url} {...props} />
+                  );
                 },
                 loggedInUser,
                 index: props.match.params.index,
@@ -154,15 +154,13 @@ const App = compose(injectState, withApi, withTheme)(
             path="/"
             exact
             render={props => (
-              <ApiContext.Provider value={initializeApi()}>
-                <SideImagePage
-                  logo={logo}
-                  backgroundImage={scienceBgPath}
-                  Component={LoginPage}
-                  sideImage={loginImage}
-                  {...props}
-                />
-              </ApiContext.Provider>
+              <SideImagePage
+                logo={logo}
+                backgroundImage={scienceBgPath}
+                Component={LoginPage}
+                sideImage={loginImage}
+                {...props}
+              />
             )}
           />
           <Route path="/gen3_redirect" exact render={Gen3AuthRedirect} />
