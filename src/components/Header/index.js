@@ -86,6 +86,7 @@ const Header = ({
           {loggedInUser &&
             canSeeProtectedRoutes && (
               <Dropdown
+                align="left"
                 items={[
                   <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
                     <Trans>My Profile</Trans>
@@ -96,7 +97,13 @@ const Header = ({
                     separated
                     onClick={e => {
                       e.preventDefault();
-                      uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
+                      uiLogout({
+                        history,
+                        setToken,
+                        setUser,
+                        clearIntegrationTokens,
+                        api,
+                      });
                     }}
                   >
                     <Trans>Logout</Trans>

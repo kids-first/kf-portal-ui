@@ -18,30 +18,33 @@ function Dropdown({
   ItemWrapperComponent = ItemWrapper,
   ContainerComponent = DropdownContainer,
   OptionsContainerComponent = DropdownOptionsContainer,
+  onToggle,
   ...rest
 }) {
   return (
     <Downshift {...rest}>
-      {({ getItemProps, getRootProps, isOpen, toggleMenu, itemToString, selectedItem }) => (
-        <ContainerComponent
-          className={className}
-          {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
-        >
-          <DropdownLabelContainer onClick={toggleMenu}>
-            {children}
-            <DropDownImage alt="" isOpen={isOpen} src={downChevronIcon} />
-          </DropdownLabelContainer>
-          {!isOpen ? null : (
-            <OptionsContainerComponent align={align}>
-              {items.map((item, i) => (
-                <ItemWrapperComponent {...getItemProps({ item })} key={i}>
-                  {item}
-                </ItemWrapperComponent>
-              ))}
-            </OptionsContainerComponent>
-          )}
-        </ContainerComponent>
-      )}
+      {({ getItemProps, getRootProps, toggleMenu, isOpen }) => {
+        return (
+          <ContainerComponent
+            className={className}
+            {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
+          >
+            <DropdownLabelContainer onClick={onToggle || toggleMenu}>
+              {children}
+              <DropDownImage alt="" isOpen={isOpen} src={downChevronIcon} />
+            </DropdownLabelContainer>
+            {!isOpen ? null : (
+              <OptionsContainerComponent align={align}>
+                {items.map((item, i) => (
+                  <ItemWrapperComponent {...getItemProps({ item })} key={i}>
+                    {item}
+                  </ItemWrapperComponent>
+                ))}
+              </OptionsContainerComponent>
+            )}
+          </ContainerComponent>
+        );
+      }}
     </Downshift>
   );
 }

@@ -9,7 +9,7 @@
     "cookies-js": "^1.2.3",
     "date-fns": "^1.29.0",
     "debug": "^3.1.0",
-    "downshift": "^1.29.1",
+    "downshift": "^1.31.16",
     "emotion": "^9.0.0",
     "emotion-theming": "^9.0.0",
     "fb": "^2.0.0",
