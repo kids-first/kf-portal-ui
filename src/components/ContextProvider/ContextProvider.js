@@ -9,6 +9,8 @@ import theme from 'theme/defaultTheme';
 import { provideLoggedInUser, provideModalState, provideToast } from 'stateProviders';
 import { initializeApi, ApiContext } from 'services/api';
 import history, { HistoryContext } from 'services/history';
+import { logoutAll } from 'services/login';
+import { EGO_JWT_KEY } from 'common/constants';
 
 export default compose(provideLoggedInUser, provideModalState, provideToast, injectState)(
   ({ children, state, effects }) => (
@@ -16,7 +18,12 @@ export default compose(provideLoggedInUser, provideModalState, provideToast, inj
       <ApiContext.Provider
         value={initializeApi({
           onUnauthorized: response => {
-            window.location.reload();
+            if (localStorage[EGO_JWT_KEY]) {
+              localStorage.removeItem(EGO_JWT_KEY);
+              logoutAll().then(() => {
+                window.location.reload();
+              });
+            }
           },
         })}
       >
