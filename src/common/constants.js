@@ -1,15 +1,17 @@
 import CommunityIcon from 'icons/CommunityIcon';
 import ResearchIcon from 'icons/ResearchIcon';
 import HealthIcon from 'icons/HealthIcon';
+import PatientIcon from 'icons/PatientIcon';
 import HealthBanner from 'assets/user-banner-health.png';
 import ResearchBanner from 'assets/user-banner-research.png';
 import CommunityBanner from 'assets/user-banner-community.png';
+import PatientBanner from 'assets/user-banner-patient.png';
 import packageJson from '../../package.json';
 
 export const ROLES = [
   {
     type: 'research',
-    displayName: 'Research',
+    displayName: 'Researcher',
     description:
       "I'm a biomedical researcher or data scientist interested in data analysis, cross-disease research, and real-time collaboration.",
     icon: ResearchIcon,
@@ -24,22 +26,22 @@ export const ROLES = [
   },
   {
     type: 'community',
-    displayName: 'Community',
+    displayName: 'Community Member',
     description:
       "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
     icon: CommunityIcon,
     banner: CommunityBanner,
-    color: '#e83a9c',
+    color: '#5a69bd',
     profileColors: {
-      gradientDark: '#8f347f',
-      gradientMid: '#a9408b',
-      gradientLight: '#cd5162',
-      pillBkg: '#e83a9c',
+      gradientDark: '#2b388f',
+      gradientMid: '#5c6bc0',
+      gradientLight: '#7986cb',
+      pillBkg: '#5a69bd',
     },
   },
   {
     type: 'health',
-    displayName: 'Health',
+    displayName: 'Healthcare Professional',
     description:
       "I'm a physician-scientist interested in finding the latest research to target patients' needs based on genetic characteristics.",
     icon: HealthIcon,
@@ -50,6 +52,21 @@ export const ROLES = [
       gradientMid: '#198895',
       gradientLight: '#1ca39e',
       pillBkg: '#1f9bb6',
+    },
+  },
+  {
+    type: 'patient',
+    displayName: 'Patient/Family Member',
+    description:
+      "I'm interested in learning more about current research and connecting with others.",
+    icon: PatientIcon,
+    banner: PatientBanner,
+    color: '#e83a9c',
+    profileColors: {
+      gradientDark: '#8f347f',
+      gradientMid: '#a9408b',
+      gradientLight: '#cd5162',
+      pillBkg: '#e83a9c',
     },
   },
 ];
@@ -89,13 +106,13 @@ export const DISEASE_AREAS = [
 ];
 
 export const STUDY_SHORT_NAMES = [
-'Orofacial Cleft: European Ancestry',
-'Neuroblastoma Initiation and Progressio ',
-'Orofacial Cleft: Latin America ',
-'Disorders of Sex Developmen ',
-'Adolescent Idiopathic Scoliosi ',
-'Congenital Heart Defect ',
-'Pediatric Brain Tumors: CBTT ',
-'Ewing Sarcoma: Genetic Ris ',
-'Congenital Diaphragmatic Herni ',
+  'Orofacial Cleft: European Ancestry',
+  'Neuroblastoma Initiation and Progressio ',
+  'Orofacial Cleft: Latin America ',
+  'Disorders of Sex Developmen ',
+  'Adolescent Idiopathic Scoliosi ',
+  'Congenital Heart Defect ',
+  'Pediatric Brain Tumors: CBTT ',
+  'Ewing Sarcoma: Genetic Ris ',
+  'Congenital Diaphragmatic Herni ',
 ];
