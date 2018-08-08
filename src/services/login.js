@@ -2,7 +2,7 @@ import urlJoin from 'url-join';
 import ajax from 'services/ajax';
 import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
-import {removeCookie} from './cookie';
+import { removeCookie } from './cookie';
 
 const gapi = global.gapi;
 
@@ -40,6 +40,6 @@ export const facebookLogout = () =>
   ]);
 
 export const logoutAll = () => {
-  removeCookie(EGO_JWT_KEY)
-  return Promise.all([googleLogout(), facebookLogout()])
+  removeCookie(EGO_JWT_KEY);
+  return Promise.all([googleLogout().catch(err => console.warn(err)), facebookLogout()]);
 };
