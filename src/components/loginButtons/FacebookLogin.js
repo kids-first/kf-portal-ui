@@ -18,7 +18,7 @@ export default class extends React.Component<any, any> {
     });
   }
   componentWillUnmount() {
-    //global.FB.Event.unsubscribe('auth.login', this.props.onLogin);
+    global.FB.Event.unsubscribe('auth.login', this.props.onLogin);
   }
   render() {
     return (
