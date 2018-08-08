@@ -31,12 +31,12 @@ export const ROLES = [
       "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
     icon: CommunityIcon,
     banner: CommunityBanner,
-    color: '#2b388f',
+    color: '#5a69bd',
     profileColors: {
       gradientDark: '#2b388f',
       gradientMid: '#5c6bc0',
       gradientLight: '#7986cb',
-      pillBkg: '#2b388f',
+      pillBkg: '#5a69bd',
     },
   },
   {
