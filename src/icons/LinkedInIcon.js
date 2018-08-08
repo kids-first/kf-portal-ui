@@ -7,4 +7,3 @@ export default ({ fill = '#007ab9', width = 13, height, ...props }) =>
     height: `${height}px`,
     ...props,
   });
-
