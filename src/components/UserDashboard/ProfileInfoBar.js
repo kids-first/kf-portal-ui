@@ -41,18 +41,17 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       css={`
         margin-top: 20px;
         margin-bottom: 43px;
-        width: 290px;
       `}
     >
       <div>
         <span
           css={`
             font-weight: 500;
+            margin-left: 30px;
           `}
         >
           {(percentageFilled * 100).toFixed(0)}%
         </span>{' '}
-        Complete
       </div>
     </RoleIconButton>
     <div>
