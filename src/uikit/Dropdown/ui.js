@@ -34,18 +34,19 @@ export const DropdownOptionsContainer = styled(Column)`
   min-width: 100%;
   z-index: 1;
   cursor: pointer;
-  padding: 5,
-  right: ${({ align }) => (align === 'right' ? 0 : 'auto')};
-  left: ${({ align }) => (align === 'right' ? 'auto' : 0)};
+  padding: 5;
+  right: ${({ align }) => (align === 'right' ? '25px' : 'auto')};
+  left: ${({ align }) => (align === 'right' ? 'auto' : '-25px')};
   top: 100%;
   box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
   border-radius: 2px;
 
-  &:after, &:before {
+  &:after,
+  &:before {
     bottom: 100%;
     left: 50%;
     border: solid transparent;
-    content: " ";
+    content: ' ';
     height: 0;
     width: 0;
     position: absolute;

@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import {
   space,
   width,
+  height,
   fontSize,
   color,
   lineHeight,
@@ -21,6 +22,9 @@ import {
   complexStyle,
   hover,
   textAlign,
+  position,
+  left,
+  right,
 } from 'styled-system';
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
@@ -35,6 +39,7 @@ export const applyDefaultStyles = Component => styled(Component)`
   ${baseStyles}
   ${space}
   ${width}
+  ${height}
   ${fontSize}
   ${fontWeight}
   ${color}
@@ -48,6 +53,9 @@ export const applyDefaultStyles = Component => styled(Component)`
   ${overflowY}
   ${hover}
   ${textAlign}
+  ${position}
+  ${left}
+  ${right}
 `;
 
 const boxStyles = complexStyle({

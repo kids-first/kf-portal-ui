@@ -14,28 +14,29 @@ import Input from 'uikit/Input';
 
 const SettingsSection = x => <Column justifyContent="stretch" w="100%" pb={4} {...x} />;
 
-export default compose(injectState, withState('mode', 'setMode', 'account'))(
-  ({ profile, submit, mode, setMode, state: { loginProvider } }) => (
-    <Box w="70%" pr={4} pl={4}>
-      <SettingsSection>
-        <H2>
-          <Trans>Settings</Trans>
-        </H2>
-        <Column>
-          Email Address:
-          <Row alignItems="center">
-            <Input disabled value={profile.email} />
-            <Box ml={3}>
-              <ConnectedWithBadge provider={loginProvider} />
-            </Box>
-          </Row>
-        </Column>
-      </SettingsSection>
+export default compose(
+  injectState,
+  withState('mode', 'setMode', 'account'),
+)(({ profile, submit, mode, setMode, state: { loginProvider } }) => (
+  <Box w="70%" pr={4} pl={0}>
+    <SettingsSection>
+      <H2>
+        <Trans>Settings</Trans>
+      </H2>
+      <Column>
+        Email Address:
+        <Row alignItems="center" mt={2}>
+          <Input disabled value={profile.email} />
+          <Box ml={3}>
+            <ConnectedWithBadge provider={loginProvider} />
+          </Box>
+        </Row>
+      </Column>
+    </SettingsSection>
 
-      <SettingsSection>
-        <H2>Integrations</H2>
-        <UserIntegrations />
-      </SettingsSection>
-    </Box>
-  ),
-);
+    <SettingsSection>
+      <H2>Integrations</H2>
+      <UserIntegrations />
+    </SettingsSection>
+  </Box>
+));

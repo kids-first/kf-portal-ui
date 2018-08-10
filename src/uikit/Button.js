@@ -11,12 +11,12 @@ const BaseButton = styled('button')`
   outline: none;
 `;
 
-const Button = styled(BaseButton)`
+const Button = applyDefaultStyles(styled(BaseButton)`
   height: 30px;
   border-radius: 14px;
   background-color: ${({ disabled }) => (disabled ? '#c5dee3' : '#009bb8')};
   color: #fff;
-`;
+`);
 
 export const LightButton = styled(BaseButton)`
   ${({ theme }) => theme.hollowButton};
@@ -44,7 +44,6 @@ const BigWhiteButtonBase = ({ children, ...x }) => (
 export const BigWhiteButton = styled(BigWhiteButtonBase)`
   background: ${({ theme }) => theme.white};
   border: 1px solid ${({ theme }) => theme.greyScale8};
-  box-shadow: 0 0 1px 0.1px ${({ theme }) => theme.lightShadow};
   border-radius: 25px;
   height: auto;
   padding-top: 0px;

@@ -43,25 +43,27 @@ export default provideState({
       const { setToken, setUser } = effects;
       const provider = localStorage.getItem('LOGIN_PROVIDER');
       const jwt = localStorage.getItem(EGO_JWT_KEY);
-      const api = initializeApi({
-        onError: err => {
-          history.push('/error');
-        },
-        onUnauthorized: response => {
-          window.location.reload();
-        },
-      });
-      if (validateJWT({ jwt })) {
-        handleJWT({ provider, jwt, setToken, setUser, api });
-        // Get all integration keys from local storage
-        SERVICES.forEach(service => {
-          const storedToken = localStorage.getItem(`integration_${service}`);
-          if (storedToken) {
-            state.integrationTokens[service] = storedToken;
-          }
+      if (jwt) {
+        const api = initializeApi({
+          onError: err => {
+            history.push('/error');
+          },
+          onUnauthorized: response => {
+            window.location.reload();
+          },
         });
-        setEgoTokenCookie(jwt);
-        return { ...state, isLoadingUser: true };
+        if (validateJWT({ jwt })) {
+          handleJWT({ provider, jwt, setToken, setUser, api });
+          // Get all integration keys from local storage
+          SERVICES.forEach(service => {
+            const storedToken = localStorage.getItem(`integration_${service}`);
+            if (storedToken) {
+              state.integrationTokens[service] = storedToken;
+            }
+          });
+          setEgoTokenCookie(jwt);
+          return { ...state, isLoadingUser: true };
+        }
       }
       return { ...state, isLoadingUser: false };
     },

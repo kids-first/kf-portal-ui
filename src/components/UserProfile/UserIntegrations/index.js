@@ -5,6 +5,7 @@ import { withTheme } from 'emotion-theming';
 
 import { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
+import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
@@ -30,6 +31,7 @@ import { CAVATICA, GEN3 } from 'common/constants';
 import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
+import { applyDefaultStyles } from '../../../uikit/Core';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -68,6 +70,19 @@ const Gen3DetailButton = styled(ConnectedButton)`
   margin-bottom: 10px;
   min-width: 190px;
 `;
+
+const ConnectButton = ({ ...props }) => {
+  const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
+  const RightArrow = applyDefaultStyles(RightIcon);
+
+  return (
+    <ActionButton {...props} maxWidth={160}>
+      <ExternalLink size={12} position="relative" right={4} />
+      Connect
+      <RightArrow size={14} position="relative" left={10} />
+    </ActionButton>
+  );
+};
 
 const enhance = compose(
   injectState,
@@ -112,7 +127,8 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
       </Div>
       <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
-          <PencilIcon />Edit
+          <PencilIcon />
+          Edit
         </ConnectedButton>
         <LoadingOnClick
           onClick={onRemove}
@@ -150,7 +166,7 @@ const UserIntegrations = withApi(
                 <img className="logoImg" src={gen3Logo} alt="Gen3 Logo" />
               </td>
               <td>
-                <Span className="integrationHeader">Download Controlled Data</Span>
+                <Span className="integrationHeader">Access Controlled Data</Span>
                 <Paragraph>
                   Access controlled data by connecting your NIH Login and dbGaP authorized access to
                   the Kids First Data Catalog powered by{' '}
@@ -182,7 +198,7 @@ const UserIntegrations = withApi(
                           },
                         })
                       ) : (
-                        <ActionButton
+                        <ConnectButton
                           onClick={() => {
                             setState({ loading: true });
                             connectGen3(api)
@@ -199,16 +215,23 @@ const UserIntegrations = withApi(
                                     </Row>
                                   ),
                                 });
+                                trackUserInteraction({
+                                  category: TRACKING_EVENTS.categories.user.profile,
+                                  action: TRACKING_EVENTS.actions.integration.connected,
+                                  label: TRACKING_EVENTS.gen3,
+                                });
                               })
                               .catch(err => {
                                 console.log('err: ', err);
                                 setState({ loading: false });
+                                trackUserInteraction({
+                                  category: TRACKING_EVENTS.categories.user.profile,
+                                  action: TRACKING_EVENTS.actions.integration.failed,
+                                  label: TRACKING_EVENTS.gen3,
+                                });
                               });
                           }}
-                        >
-                          Connect
-                          <RightIcon />
-                        </ActionButton>
+                        />
                       );
                     }}
                   </Component>
@@ -222,8 +245,8 @@ const UserIntegrations = withApi(
               <td>
                 <Span className="integrationHeader">Analyze Data</Span>
                 <Paragraph>
-                  Analyze data quickly by connecting your Kids First account to{' '}
-                  <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
+                  Analyze data quickly by connecting your Kids First account to the cloud compute
+                  environment, <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
                 </Paragraph>
               </td>
               <td>
@@ -247,7 +270,7 @@ const UserIntegrations = withApi(
                       },
                     })
                   ) : (
-                    <ActionButton
+                    <ConnectButton
                       onClick={() =>
                         effects.setModal({
                           title: 'How to Connect to Cavatica',
@@ -259,9 +282,7 @@ const UserIntegrations = withApi(
                           ),
                         })
                       }
-                    >
-                      Connect<RightIcon />
-                    </ActionButton>
+                    />
                   )}
                 </div>
               </td>

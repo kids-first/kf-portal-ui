@@ -11,7 +11,7 @@ import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { trackProfileInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { Flex} from 'uikit/Core';
+import { Flex } from 'uikit/Core';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
@@ -41,17 +41,10 @@ export default compose(
   withTheme,
   withState('bioTextarea', 'setBioTextarea', ({ profile }) => profile.bio || ''),
   withState('storyTextarea', 'setStoryTextarea', ({ profile }) => profile.story || ''),
-  withPropsOnChange(
-    ['profile'],
-    ({
-      setBioTextarea,
-      setStoryTextarea,
-      profile,
-    }) => {
-      setBioTextarea(profile.bio || '');
-      setStoryTextarea(profile.story || '');
-    },
-  ),
+  withPropsOnChange(['profile'], ({ setBioTextarea, setStoryTextarea, profile }) => {
+    setBioTextarea(profile.bio || '');
+    setStoryTextarea(profile.story || '');
+  }),
   withRouter,
 )(
   ({
@@ -72,38 +65,54 @@ export default compose(
   }) => (
     <Flex justifyContent="center" pt={4} pb={4}>
       <Container row alignItems="flex-start">
-        <Column width="65%" pt={2} justifyContent="space-around">
+        <Column width="65%" pt={2} pr={50} justifyContent="space-around">
           <H2>
             Profile
             {canEdit &&
               (!isEditingBackgroundInfo ? (
                 <EditButton
-                  onClick={() => handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo })}
+                  onClick={() =>
+                    handleEditingBackgroundInfo({
+                      value: !isEditingBackgroundInfo,
+                    })
+                  }
                 />
               ) : (
-                <SaveButton
-                  onClick={async () => {
-                    await submit({
-                      bio: bioTextarea,
-                      story: storyTextarea,
-                    });
-                    handleEditingBackgroundInfo({
-                      value: false,
-                      type: TRACKING_EVENTS.actions.save,
-                    });
-                  }}
-                >
-                  Save
-                </SaveButton>
+                <Flex>
+                  <CancelButton
+                    onClick={() => {
+                      setBioTextarea(profile.bio || '');
+                      setStoryTextarea(profile.story || '');
+                      handleEditingBackgroundInfo({ value: false });
+                    }}
+                  >
+                    Cancel
+                  </CancelButton>
+                  <SaveButton
+                    onClick={async () => {
+                      await submit({
+                        bio: bioTextarea,
+                        story: storyTextarea,
+                      });
+                      handleEditingBackgroundInfo({
+                        value: false,
+                        type: TRACKING_EVENTS.actions.save,
+                      });
+                    }}
+                  >
+                    Save
+                  </SaveButton>
+                </Flex>
               ))}
           </H2>
           <StyledSection>
             <H3>My bio</H3>
-            {canEdit && (
-              <H4>
-                Share information about your professional background and your research interests.
-              </H4>
-            )}
+            {(bioTextarea === '' || isEditingBackgroundInfo) &&
+              canEdit && (
+                <H4>
+                  Share information about your professional background and your research interests.
+                </H4>
+              )}
             <EditableLabel
               autoFocus={focusedTextArea !== 'myStory'}
               type="textarea"
@@ -117,7 +126,9 @@ export default compose(
                 canEdit && (
                   <ClickToAdd
                     onClick={() => {
-                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
+                      handleEditingBackgroundInfo({
+                        value: !isEditingBackgroundInfo,
+                      });
                       setFocusedTextArea('myBio');
                     }}
                   >
@@ -131,7 +142,8 @@ export default compose(
           </StyledSection>
           <StyledSection className={'userStory'}>
             <H3>My story</H3>
-            {canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
+            {(storyTextarea === '' || isEditingBackgroundInfo) &&
+              canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
             <EditableLabel
               autoFocus={focusedTextArea === 'myStory'}
               type="textarea"
@@ -146,7 +158,9 @@ export default compose(
                 canEdit && (
                   <ClickToAdd
                     onClick={() => {
-                      handleEditingBackgroundInfo({ value: !isEditingBackgroundInfo });
+                      handleEditingBackgroundInfo({
+                        value: !isEditingBackgroundInfo,
+                      });
                       setFocusedTextArea('myStory');
                     }}
                   >
@@ -180,7 +194,10 @@ export default compose(
                     bio: bioTextarea,
                     story: storyTextarea,
                   });
-                  handleEditingBackgroundInfo({ value: false, type: TRACKING_EVENTS.actions.save });
+                  handleEditingBackgroundInfo({
+                    value: false,
+                    type: TRACKING_EVENTS.actions.save,
+                  });
                 }}
               >
                 Save
@@ -189,12 +206,8 @@ export default compose(
           )}
         </Column>
         <Column width="35%">
-          <ResearchInterests
-            {...{profile, canEdit, submit}} />
-          {Object.keys(profile).length &&
-            <FindMe
-              {...{profile, canEdit, submit}} />
-            }
+          <ResearchInterests {...{ profile, canEdit, submit }} />
+          {Object.keys(profile).length && <FindMe {...{ profile, canEdit, submit }} />}
         </Column>
       </Container>
     </Flex>

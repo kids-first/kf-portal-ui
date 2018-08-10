@@ -6,36 +6,38 @@ import GIcon from 'react-icons/lib/fa/google';
 import FBIcon from 'react-icons/lib/fa/facebook';
 import Check from 'react-icons/lib/fa/check';
 
-import { Box } from 'uikit/Core';
-import { BigWhiteButton } from 'uikit/Button';
+import { Box, Span } from 'uikit/Core';
 
 import { GOOGLE, FACEBOOK } from 'common/constants';
+import gicon from 'assets/google-icon.png';
 
-const GoogleIcon = styled(GIcon)`
+const GoogleIcon = styled('img')`
+  height: 26px;
   margin-left: 3px;
+  vertical-align: middle;
 `;
 
 const icons = {
-  [GOOGLE]: x => <GoogleIcon color="#d62d20" {...x} />,
+  [GOOGLE]: x => <GoogleIcon src={gicon} />,
   [FACEBOOK]: x => <FBIcon color="#428bca" {...x} />,
 };
 
-const ButtonItem = styled(x => <Box p={3} {...x} />)`
-  border-right: ${({ divider, theme }) => (divider ? `1px solid ${theme.greyScale8}` : `none`)};
+const Status = styled(Span)`
   color: ${({ theme }) => theme.tertiary};
+  padding: 2px;
   white-space: nowrap;
   font-weight: 500;
   font-size: 16px;
 `;
 
 const ConnectedWithBadge = withTheme(({ theme, provider, Icon = icons[provider] }) => (
-  <BigWhiteButton>
-    <ButtonItem divider>
+  <Box>
+    <Status>
       <Check color={theme.active} />
       <Icon size={20} />
-    </ButtonItem>
-    <ButtonItem>Connected with {capitalize(provider)}</ButtonItem>
-  </BigWhiteButton>
+    </Status>
+    <Status>Connected with {capitalize(provider)}</Status>
+  </Box>
 ));
 
 export default ConnectedWithBadge;

@@ -49,6 +49,7 @@ const Content = styled('div')`
   padding-right: ${({ contentSidePadding }) => contentSidePadding}px;
   transition: all 0.25s;
   padding-top: 10px;
+  height: 100%;
 `;
 
 const Text = styled('div')`
@@ -108,6 +109,12 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
           </Section>
           <Section>
             <Heading>
+              <Trans>Data Analysis</Trans>
+            </Heading>
+            <CavaticaCopyButton {...props} />
+          </Section>
+          <Section>
+            <Heading>
               <Trans>Download</Trans>
             </Heading>
             <Subsection heading={<Trans>File Manifests</Trans>}>
@@ -116,12 +123,6 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             <Subsection heading={<Trans>Reports</Trans>}>
               <StyledReportsDownloadInput {...props} />
             </Subsection>
-          </Section>
-          <Section>
-            <Heading>
-              <Trans>Data Analysis</Trans>
-            </Heading>
-            <CavaticaCopyButton {...props} />
           </Section>
         </Content>
       </Container>

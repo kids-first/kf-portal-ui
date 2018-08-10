@@ -2,10 +2,13 @@ import ajax from 'services/ajax';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 
-export const graphql = api => body =>
+export const graphql = (api, queryName = '') => body =>
   api
-    ? api({ endpoint: `/${arrangerProjectId}/graphql`, body })
+    ? api({ endpoint: `/${arrangerProjectId}/graphql/${queryName}`, body })
     : ajax.post(urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`), body);
+
+export const arrangerGqlRecompose = (api, queryName = '') => ({ body, ...rest }) =>
+  graphql(api, queryName)({ ...body, ...rest });
 
 const buildFileQuery = ({ fields, first = null }) => {
   const firstString = first === null ? '' : `, first:${first}`;
