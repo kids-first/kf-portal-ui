@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import { compose } from 'recompose';
+import { compose, withState, withHandlers } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
@@ -36,6 +36,9 @@ const Header = ({
   history,
   match: { path },
   api,
+  toggleDropdown,
+  isDropdownVisible,
+  setDropdownVisibility,
 }) => {
   const canSeeProtectedRoutes =
     loggedInUser &&
@@ -87,16 +90,28 @@ const Header = ({
             canSeeProtectedRoutes && (
               <Dropdown
                 align="left"
+                isOpen={isDropdownVisible}
+                onToggle={toggleDropdown}
+                onOuterClick={() => setDropdownVisibility(false)}
                 items={[
-                  <DropdownLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
+                  <DropdownLink
+                    onClick={() => toggleDropdown()}
+                    to={`/user/${loggedInUser.egoId}#aboutMe`}
+                  >
                     <Trans>My Profile</Trans>
                   </DropdownLink>,
-                  <DropdownLink to={`/user/${loggedInUser.egoId}#settings`}>Settings</DropdownLink>,
+                  <DropdownLink
+                    onClick={() => toggleDropdown()}
+                    to={`/user/${loggedInUser.egoId}#settings`}
+                  >
+                    Settings
+                  </DropdownLink>,
                   <DropdownLink
                     to={`/dashboard`}
                     separated
                     onClick={e => {
                       e.preventDefault();
+                      toggleDropdown();
                       uiLogout({
                         history,
                         setToken,
@@ -123,4 +138,15 @@ const Header = ({
   );
 };
 
-export default compose(injectState, withTheme, withRouter, withApi)(Header);
+export default compose(
+  withState('isDropdownVisible', 'setDropdownVisibility', false),
+  withHandlers({
+    toggleDropdown: ({ isDropdownVisible, setDropdownVisibility }) => e => {
+      setDropdownVisibility(!isDropdownVisible);
+    },
+  }),
+  injectState,
+  withTheme,
+  withRouter,
+  withApi,
+)(Header);
