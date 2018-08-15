@@ -203,7 +203,7 @@ export default compose(
     handleSubmit,
     theme,
   }) => (
-    <InterestsCard p={3} ml={4}>
+    <InterestsCard p={3}>
       <Fragment>
         <Form>
           <H2>
