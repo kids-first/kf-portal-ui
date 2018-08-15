@@ -293,7 +293,6 @@ export default compose(
                 width: 90%;
               `}
               name="firstName"
-              placeholder="First Name"
               value={values.firstName}
             />
             {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
@@ -306,7 +305,6 @@ export default compose(
                 width: 90%;
               `}
               name="lastName"
-              placeholder="Last Name"
               value={values.lastName}
             />
             {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
@@ -335,7 +333,6 @@ export default compose(
                   width: 90%;
                 `}
                 name="institution"
-                placeholder={values.roles === 'research' ? 'Institution' : 'Organization'}
                 value={values.institution}
               />
             </FormItem>
