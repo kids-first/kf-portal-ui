@@ -94,14 +94,11 @@ const Header = ({
                 onToggle={toggleDropdown}
                 onOuterClick={() => setDropdownVisibility(false)}
                 items={[
-                  <DropdownLink
-                    onClick={() => toggleDropdown()}
-                    to={`/user/${loggedInUser.egoId}#aboutMe`}
-                  >
+                  <DropdownLink onClick={toggleDropdown} to={`/user/${loggedInUser.egoId}#aboutMe`}>
                     <Trans>My Profile</Trans>
                   </DropdownLink>,
                   <DropdownLink
-                    onClick={() => toggleDropdown()}
+                    onClick={toggleDropdown}
                     to={`/user/${loggedInUser.egoId}#settings`}
                   >
                     Settings
