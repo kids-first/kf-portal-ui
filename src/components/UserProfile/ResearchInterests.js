@@ -23,6 +23,7 @@ const InterestsContainer = styled(Box)`
   justify-content: center;
   flex-direction: column;
   padding: 10px;
+  margin-bottom: 20px;
 `;
 
 const InterestsLabel = styled('div')`
@@ -37,6 +38,38 @@ const InterestsLabel = styled('div')`
   color: ${({ theme }) => theme.greyScale1};
   width: 80%;
 `;
+
+const ActionButtons = ({
+  handleEditingResearchInterests,
+  setInterests,
+  submit,
+  profile,
+  interests,
+}) => (
+  <Flex justifyContent="flex-end">
+    <HollowButton
+      onClick={() => {
+        setInterests(profile.interests || []);
+        handleEditingResearchInterests({ value: false });
+      }}
+    >
+      Cancel
+    </HollowButton>
+    <SaveButton
+      onClick={async () => {
+        await submit({
+          interests,
+        });
+        handleEditingResearchInterests({
+          value: false,
+          type: TRACKING_EVENTS.actions.save,
+        });
+      }}
+    >
+      Save
+    </SaveButton>
+  </Flex>
+);
 
 export default compose(
   withTheme,
@@ -83,29 +116,9 @@ export default compose(
               }}
             />
           ) : (
-            <Flex>
-              <HollowButton
-                onClick={() => {
-                  setInterests(profile.interests || []);
-                  handleEditingResearchInterests({ value: false });
-                }}
-              >
-                Cancel
-              </HollowButton>
-              <SaveButton
-                onClick={async () => {
-                  await submit({
-                    interests,
-                  });
-                  handleEditingResearchInterests({
-                    value: false,
-                    type: TRACKING_EVENTS.actions.save,
-                  });
-                }}
-              >
-                Save
-              </SaveButton>
-            </Flex>
+            <ActionButtons
+              {...{ handleEditingResearchInterests, setInterests, submit, profile, interests }}
+            />
           ))}
       </H2>
       <div>
@@ -124,49 +137,54 @@ export default compose(
           ))}
         </Row>
         {editingResearchInterests && (
-          <InterestsContainer>
-            <InterestsLabel>Kids First Disease Area:</InterestsLabel>
-            <select
-              css={`
-                ${theme.select} ${theme.input};
-              `}
-              onChange={e => {
-                setInterests([...interests, e.target.value]);
-              }}
-              value=""
-            >
-              <option value="" disabled selected>
-                -- Select an option --
-              </option>
-              {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
-                <option value={area} key={area}>
-                  {area}
-                </option>
-              ))}
-            </select>
-            <InterestsLabel>Kids First Studies:</InterestsLabel>
-            <select
-              css={`
-                ${theme.select} ${theme.input};
-              `}
-              onChange={e => {
-                setInterests([...interests, e.target.value]);
-              }}
-              value=""
-            >
-              <option value="" disabled selected>
-                -- Select an option --
-              </option>
-              {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
-                <option value={study} key={study}>
-                  {study}
-                </option>
-              ))}
+          <React.Fragment>
+            <InterestsContainer>
+              <InterestsLabel>Kids First Disease Area:</InterestsLabel>
+              <select
+                css={`
+                  ${theme.select} ${theme.input};
+                `}
+                onChange={e => {
+                  setInterests([...interests, e.target.value]);
+                }}
+                value=""
               >
-            </select>
-            <InterestsLabel>Other areas of interest:</InterestsLabel>
-            <InterestsAutocomplete {...{ interests, setInterests }} />
-          </InterestsContainer>
+                <option value="" disabled selected>
+                  -- Select an option --
+                </option>
+                {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
+                  <option value={area} key={area}>
+                    {area}
+                  </option>
+                ))}
+              </select>
+              <InterestsLabel>Kids First Studies:</InterestsLabel>
+              <select
+                css={`
+                  ${theme.select} ${theme.input};
+                `}
+                onChange={e => {
+                  setInterests([...interests, e.target.value]);
+                }}
+                value=""
+              >
+                <option value="" disabled selected>
+                  -- Select an option --
+                </option>
+                {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
+                  <option value={study} key={study}>
+                    {study}
+                  </option>
+                ))}
+                >
+              </select>
+              <InterestsLabel>Other areas of interest:</InterestsLabel>
+              <InterestsAutocomplete {...{ interests, setInterests }} />
+            </InterestsContainer>
+            <ActionButtons
+              {...{ handleEditingResearchInterests, setInterests, submit, profile, interests }}
+            />
+          </React.Fragment>
         )}
 
         {canEdit &&
