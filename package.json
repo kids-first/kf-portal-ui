@@ -71,6 +71,7 @@
     "babel-polyfill": "^6.26.0",
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
+    "react-app-rewire-emotion": "^4.0.0",
     "react-app-rewired": "^1.4.1",
     "vinyl-fs": "^3.0.2"
   },
