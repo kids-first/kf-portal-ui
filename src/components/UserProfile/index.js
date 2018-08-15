@@ -25,6 +25,7 @@ import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import Gravtar from 'uikit/Gravatar';
+import Row from 'uikit/Row';
 
 export const userProfileBackground = (
   loggedInUser,
@@ -106,73 +107,78 @@ export default compose(
       `}
     >
       <Container row alignItems="center">
-        <Gravtar
-          email={profile.email || ''}
-          size={173}
-          className={css`
-            border-radius: 50%;
-            border: 5px solid #fff;
-          `}
-        />
-        <div
-          className={css`
-            width: 49%;
-            align-items: flex-start;
-            ${theme.column};
-            padding: 0 15px;
-          `}
-        >
-          <RoleIconButton />
-
-          <h4
+        <Row width="65%" pr={50} alignItems="center">
+          <Gravtar
+            email={profile.email || ''}
+            size={173}
             className={css`
-              ${theme.h4};
+              border-radius: 50%;
+              border: 5px solid #fff;
             `}
-          >{`${profile.firstName} ${profile.lastName}`}</h4>
+          />
           <div
             className={css`
-              font-size: 14px;
-              color: #fff;
-              line-height: 28px;
+              width: 49%;
+              align-items: flex-start;
               ${theme.column};
+              padding: 0 15px;
             `}
           >
-            <span
+            <RoleIconButton />
+
+            <h4
               className={css`
-                font-size: 1.4em;
+                ${theme.h4};
+              `}
+            >{`${profile.firstName} ${profile.lastName}`}</h4>
+            <div
+              className={css`
+                font-size: 14px;
+                color: #fff;
+                line-height: 28px;
+                ${theme.column};
               `}
             >
-              {profile.jobTitle}
-            </span>
-            <span>{profile.institution}</span>
-            <span>{profile.department}</span>
-            <span>{[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}</span>
-            <span
-              css={`
-                text-decoration: underline;
-              `}
-            >
-              {profile.email}
-            </span>
-            <span
-              css={`
-                margin-top: 5px;
-              `}
-            >
-              <EditButton
-                onClick={() => {
-                  setModal({
-                    title: 'Edit Basic Information',
-                    component: <BasicInfoForm {...{ api }} />,
-                  });
-                }}
-              />
-            </span>
+              <span
+                className={css`
+                  font-size: 1.4em;
+                `}
+              >
+                {profile.jobTitle}
+              </span>
+              <span>{profile.institution}</span>
+              <span>{profile.department}</span>
+              <span>
+                {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
+              </span>
+              <span
+                css={`
+                  text-decoration: underline;
+                `}
+              >
+                {profile.email}
+              </span>
+              <span
+                css={`
+                  margin-top: 5px;
+                `}
+              >
+                <EditButton
+                  onClick={() => {
+                    setModal({
+                      title: 'Edit Basic Information',
+                      component: <BasicInfoForm {...{ api }} />,
+                    });
+                  }}
+                />
+              </span>
+            </div>
           </div>
-        </div>
+        </Row>
+
         <div
           css={`
-            width: 310px;
+            width: 35%;
             ${theme.column};
             align-items: center;
           `}
