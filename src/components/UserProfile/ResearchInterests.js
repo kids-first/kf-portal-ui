@@ -71,7 +71,7 @@ export default compose(
     interests,
     setInterests,
   }) => (
-    <InterestsCard p={3} ml={4}>
+    <InterestsCard p={3}>
       <H2>
         Research Interests
         {canEdit &&
