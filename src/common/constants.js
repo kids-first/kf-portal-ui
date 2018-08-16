@@ -25,21 +25,6 @@ export const ROLES = [
     },
   },
   {
-    type: 'community',
-    displayName: 'Community Member',
-    description:
-      "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
-    icon: CommunityIcon,
-    banner: CommunityBanner,
-    color: '#5a69bd',
-    profileColors: {
-      gradientDark: '#2b388f',
-      gradientMid: '#5c6bc0',
-      gradientLight: '#7986cb',
-      pillBkg: '#5a69bd',
-    },
-  },
-  {
     type: 'health',
     displayName: 'Healthcare Professional',
     description:
@@ -67,6 +52,21 @@ export const ROLES = [
       gradientMid: '#a9408b',
       gradientLight: '#cd5162',
       pillBkg: '#e83a9c',
+    },
+  },
+  {
+    type: 'community',
+    displayName: 'Community Member',
+    description:
+      "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
+    icon: CommunityIcon,
+    banner: CommunityBanner,
+    color: '#5a69bd',
+    profileColors: {
+      gradientDark: '#2b388f',
+      gradientMid: '#5c6bc0',
+      gradientLight: '#7986cb',
+      pillBkg: '#5a69bd',
     },
   },
 ];
