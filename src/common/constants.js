@@ -60,7 +60,7 @@ export const ROLES = [
       "I'm interested in learning about scientific discoverires in pediatric cancer and structural birth defects.",
     icon: CommunityIcon,
     banner: CommunityBanner,
-    color: '#5a69bd',
+    color: '#2b388f',
     profileColors: {
       gradientDark: '#2b388f',
       gradientMid: '#5c6bc0',
