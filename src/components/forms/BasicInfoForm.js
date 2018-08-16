@@ -409,6 +409,7 @@ export default compose(
               {({ getInputProps }) => (
                 <FieldInput
                   width="90%"
+                  name="searchLocation"
                   placeholder="e.g 3401 Civic Center Blvd."
                   {...getInputProps()}
                 />
