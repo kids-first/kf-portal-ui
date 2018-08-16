@@ -326,7 +326,7 @@ export default compose(
           {['research', 'community'].includes(values.roles) && (
             <FormItem>
               {values.roles === 'research' && <StyledLabel>Institution:</StyledLabel>}
-              {values.roles === 'community' && <StyledLabel>Organization:</StyledLabel>}
+              {values.roles === 'community' && <StyledLabel>Institution/Organization:</StyledLabel>}
               <Field
                 css={`
                   ${theme.input};
