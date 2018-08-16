@@ -367,7 +367,7 @@ export default compose(
                 width: 90%;
               `}
               name="phone"
-              placeholder="e.g. +1-555-5555"
+              placeholder="e.g. +1-555-555-5555"
               value={values.phone}
             />
           </FormItem>
