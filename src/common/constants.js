@@ -12,8 +12,7 @@ export const ROLES = [
   {
     type: 'research',
     displayName: 'Researcher',
-    description:
-      "I'm a biomedical researcher or data scientist interested in data analysis, cross-disease research, and real-time collaboration.",
+    description: "I'm interested in genomics research.",
     icon: ResearchIcon,
     banner: ResearchBanner,
     color: '#00afed',
@@ -28,7 +27,7 @@ export const ROLES = [
     type: 'health',
     displayName: 'Healthcare Professional',
     description:
-      "I'm a physician-scientist interested in finding the latest research to target patients' needs based on genetic characteristics.",
+      "I'm interested in finding the latest research to target patients' needs based on genetic characteristics.",
     icon: HealthIcon,
     banner: HealthBanner,
     color: '#009bb8',
@@ -58,7 +57,7 @@ export const ROLES = [
     type: 'community',
     displayName: 'Community Member',
     description:
-      "I'm part of a patient family or foundation interested in learning more about current research and connecting with researchers in specific disease area.",
+      "I'm interested in learning about scientific discoverires in pediatric cancer and structural birth defects.",
     icon: CommunityIcon,
     banner: CommunityBanner,
     color: '#5a69bd',
