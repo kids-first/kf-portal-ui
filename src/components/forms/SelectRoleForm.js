@@ -40,6 +40,7 @@ const RoleBubble = styled(CheckboxBubble)`
   text-align: left;
   color: ${({ theme }) => theme.greyScale0};
   font-size: 12px;
+  justify-content: flex-start;
 `;
 
 const RoleLabel = styled('label')`
