@@ -228,6 +228,7 @@ export default compose(
                 <option value="" selected disabled hidden>
                   -- select an option --
                 </option>
+                <option value="">N/A</option>
                 <option value="mr">Mr.</option>
                 <option value="ms">Ms.</option>
                 <option value="mrs">Mrs.</option>
