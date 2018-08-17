@@ -16,6 +16,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
+import ErrorIcon from 'icons/ErrorIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -36,6 +37,15 @@ const StyledLabel = styled('label')`
   letter-spacing: normal;
   text-align: left;
   color: ${({ theme }) => theme.greyScale1};
+`;
+
+const ClearIcon = styled(ErrorIcon)`
+  position: absolute;
+  background-color: 'red';
+  top: 34px;
+  right: 0;
+  height: 18px;
+  width: 34px;
 `;
 
 const transformURL = value => {
@@ -230,6 +240,7 @@ export default compose(
     submitForm,
     handleSubmit,
     theme,
+    setFieldValue,
   }) => (
     <InterestsCard p={3}>
       <Fragment>
@@ -284,8 +295,14 @@ export default compose(
                         `}
                       >
                         {config.icon}
-                        <Column width="100%">
+                        <Column width="100%" position="relative">
                           <StyledLabel>{config.name}</StyledLabel>
+                          <ClearIcon
+                            fill="#6a6262"
+                            width="35px"
+                            height="18px"
+                            onClick={() => setFieldValue(field, '')}
+                          />
                           <Tooltip
                             position="left"
                             html={(errors || {})[field]}
