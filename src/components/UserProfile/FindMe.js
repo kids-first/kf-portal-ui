@@ -191,6 +191,7 @@ const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...
 export default compose(
   withTheme,
   withState('isEditing', 'setIsEditing', false),
+  withState('currentField', 'setCurrentField', null),
   withFormik({
     enableReinitialize: true,
     mapPropsToValues: ({ profile }) => {
@@ -224,6 +225,10 @@ export default compose(
       setIsEditing(value);
       trackProfileInteraction({ action: 'Find Me On', value, type });
     },
+    handleSetCurrentField: ({ setCurrentField, values, handleChange }) => (e, field) => {
+      handleChange(e);
+      setCurrentField(field);
+    },
   }),
 )(
   ({
@@ -241,6 +246,9 @@ export default compose(
     handleSubmit,
     theme,
     setFieldValue,
+    handleSetCurrentField,
+    currentField,
+    setCurrentField,
   }) => (
     <InterestsCard p={3}>
       <Fragment>
@@ -301,6 +309,9 @@ export default compose(
                             fill="#6a6262"
                             width="35px"
                             height="18px"
+                            display={
+                              currentField === field && values[field] !== '' ? 'block' : 'none'
+                            }
                             onClick={() => setFieldValue(field, '')}
                           />
                           <Tooltip
@@ -321,6 +332,8 @@ export default compose(
                               placeholder={config.placeholder}
                               type={config.type}
                               value={values[field]}
+                              onClick={e => handleSetCurrentField(e, field)}
+                              onChange={e => handleSetCurrentField(e, field)}
                             />
                           </Tooltip>
                         </Column>
