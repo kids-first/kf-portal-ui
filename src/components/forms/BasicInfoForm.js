@@ -6,7 +6,7 @@ import { withFormik, Field } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
-import { width } from 'styled-system';
+import { width, space } from 'styled-system';
 import SearchIcon from 'react-icons/lib/fa/search';
 
 import scriptjs from 'scriptjs';
@@ -59,6 +59,13 @@ const FormItem = styled(Column)`
 const FieldInput = styled(Field)`
   ${({ theme }) => theme.input};
   ${width};
+  ${space};
+`;
+
+const SearchLocationIcon = styled(SearchIcon)`
+  position: relative;
+  top: 25px;
+  left: 8px;
 `;
 
 class WrappedPlacesAutocomplete extends React.Component {
@@ -407,12 +414,16 @@ export default compose(
               }}
             >
               {({ getInputProps }) => (
-                <FieldInput
-                  width="90%"
-                  name="searchLocation"
-                  placeholder="e.g 3401 Civic Center Blvd."
-                  {...getInputProps()}
-                />
+                <React.Fragment>
+                  <SearchLocationIcon fill="#a9adc0" />
+                  <FieldInput
+                    width="90%"
+                    pl="34px"
+                    name="searchLocation"
+                    placeholder="e.g 3401 Civic Center Blvd."
+                    {...getInputProps()}
+                  />
+                </React.Fragment>
               )}
             </WrappedPlacesAutocomplete>
           </FormItem>
