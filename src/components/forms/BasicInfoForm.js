@@ -63,8 +63,8 @@ const FieldInput = styled(Field)`
 `;
 
 const SearchLocationIcon = styled(SearchIcon)`
-  position: relative;
-  top: 25px;
+  position: absolute;
+  top: 8px;
   left: 8px;
 `;
 
@@ -414,7 +414,7 @@ export default compose(
               }}
             >
               {({ getInputProps }) => (
-                <React.Fragment>
+                <Box position="relative">
                   <SearchLocationIcon fill="#a9adc0" />
                   <FieldInput
                     width="90%"
@@ -423,7 +423,7 @@ export default compose(
                     placeholder="e.g 3401 Civic Center Blvd."
                     {...getInputProps()}
                   />
-                </React.Fragment>
+                </Box>
               )}
             </WrappedPlacesAutocomplete>
           </FormItem>
