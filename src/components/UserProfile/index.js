@@ -153,13 +153,6 @@ export default compose(
               </span>
               <span
                 css={`
-                  text-decoration: underline;
-                `}
-              >
-                {profile.email}
-              </span>
-              <span
-                css={`
                   margin-top: 5px;
                 `}
               >
