@@ -37,11 +37,11 @@ const StyledLabel = styled('label')`
   letter-spacing: normal;
   text-align: left;
   color: ${({ theme }) => theme.greyScale1};
+  margin-left: 40px;
 `;
 
 const ClearIcon = styled(ErrorIcon)`
   position: absolute;
-  background-color: 'red';
   top: 34px;
   right: 0;
   height: 18px;
@@ -295,16 +295,10 @@ export default compose(
                     `}
                   >
                     {isEditing ? (
-                      <Row
-                        css={`
-                          align-items: center;
-                          padding-bottom: 5px;
-                          width: 100%;
-                        `}
-                      >
-                        {config.icon}
-                        <Column width="100%" position="relative">
-                          <StyledLabel>{config.name}</StyledLabel>
+                      <Column pb="5px">
+                        <StyledLabel>{config.name}</StyledLabel>
+                        <Row>
+                          {config.icon}
                           <ClearIcon
                             fill="#6a6262"
                             width="35px"
@@ -316,6 +310,7 @@ export default compose(
                           />
                           <Tooltip
                             position="left"
+                            style={{ flex: '1 1 auto' }}
                             html={(errors || {})[field]}
                             open={Object.keys(errors || {}).includes(field)}
                           >
@@ -336,8 +331,8 @@ export default compose(
                               onChange={e => handleSetCurrentField(e, field)}
                             />
                           </Tooltip>
-                        </Column>
-                      </Row>
+                        </Row>
+                      </Column>
                     ) : (
                       <Fragment>
                         {config.icon}
