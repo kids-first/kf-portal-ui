@@ -82,14 +82,14 @@ export const UI_VERSION = packageJson.version;
 export const EGO_JWT_KEY = 'EGO_JWT';
 
 export const DISEASE_AREAS = [
-  'Patients with both childhood cancer and birth defects',
-  'Childhood cancer',
+  'Patients With Both Childhood Cancer And Birth Defects',
+  'Childhood Cancer',
   'Cancer',
   'Adolescent Idiopathic Scoliosis',
   'Cancer Susceptibility',
   'Congenital Diaphragmatic Hernia',
   'Craniofacial Microsomia',
-  'Disorders of Sex Development',
+  'Disorders Of Sex Development',
   'Enchondromatosis',
   'Ewing Sarcoma',
   'Familial Leukemia',
@@ -101,7 +101,7 @@ export const DISEASE_AREAS = [
   'Osteosarcoma',
   'Structural Heart & Other Defects',
   'Syndromic Cranial Dysinnervation Disorders',
-  'CBTTC/PNOC Brain Tumor Dataset',
+  'Pediatric Brain Tumors',
 ];
 
 export const STUDY_SHORT_NAMES = [
