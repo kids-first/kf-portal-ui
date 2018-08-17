@@ -79,8 +79,8 @@ const socialItems = {
         `}
       />
     ),
-    name: 'Website URL',
-    placeholder: 'eg. kidsfirstdrc.org',
+    name: 'Website URL:',
+    placeholder: 'e.g. kidsfirstdrc.org',
     type: 'text',
   },
   googleScholarId: {
@@ -93,8 +93,8 @@ const socialItems = {
         `}
       />
     ),
-    name: 'Google Scholar Id URL',
-    placeholder: 'eg. e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
+    name: 'Google Scholar URL:',
+    placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
     type: 'text',
   },
   linkedin: {
@@ -107,28 +107,28 @@ const socialItems = {
         `}
       />
     ),
-    name: 'LinkedIn URL',
+    name: 'LinkedIn URL:',
     placeholder: 'e.g. linkedin.com/in/acresnick',
     type: 'text',
   },
   facebook: {
     icon: <SocialIcon url={kfFacebook} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Facebook URL',
+    name: 'Facebook URL:',
     placeholder: 'e.g. facebook.com/kidsfirstDRC',
     type: 'text',
   },
   twitter: {
     icon: <SocialIcon url={kfTwitter} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Twitter handle/username',
-    placeholder: 'e.g. @simonSci',
+    name: 'Twitter handle/username:',
+    placeholder: 'e.g. @kidsfirstDRC',
     type: 'text',
     href: v => `https://twitter.com/${v}`,
     linkText: v => `@${v}`,
   },
   github: {
     icon: <SocialIcon url={kfGithub} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Github username',
-    placeholder: 'e.g. simonscientist',
+    name: 'Github username:',
+    placeholder: 'e.g. kids-first',
     type: 'text',
     href: v => `https://github.com/${v}`,
   },
@@ -143,7 +143,7 @@ const socialItems = {
         `}
       />
     ),
-    name: 'ORCHID ID',
+    name: 'ORCID iD:',
     placeholder: 'e.g. 0000-0003-0436-4189',
     type: 'text',
     href: v => `https://orcid.org/${v}`,
@@ -280,10 +280,11 @@ export default compose(
                         css={`
                           align-items: center;
                           padding-bottom: 5px;
+                          width: 100%;
                         `}
                       >
                         {config.icon}
-                        <Column>
+                        <Column width="100%">
                           <StyledLabel>{config.name}</StyledLabel>
                           <Tooltip
                             position="left"
