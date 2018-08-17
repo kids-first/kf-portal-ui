@@ -42,10 +42,8 @@ const StyledLabel = styled('label')`
 
 const ClearIcon = styled(ErrorIcon)`
   position: absolute;
-  top: 34px;
+  top: 8px;
   right: 0;
-  height: 18px;
-  width: 34px;
 `;
 
 const transformURL = value => {
@@ -297,7 +295,7 @@ export default compose(
                     {isEditing ? (
                       <Column pb="5px">
                         <StyledLabel>{config.name}</StyledLabel>
-                        <Row>
+                        <Row position="relative">
                           {config.icon}
                           <ClearIcon
                             fill="#6a6262"
