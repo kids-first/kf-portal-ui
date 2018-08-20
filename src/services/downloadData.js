@@ -93,7 +93,7 @@ const getClinicalDownload = type => ({ sqon, columns }) => () =>
         sqon: hackCrossIndex(sqon),
         index: 'participant',
         sort: [
-          { field: 'family.family_id', order: 'asc' },
+          { field: 'family_id', order: 'asc' },
           { field: 'kf_id', order: 'asc' },
           { field: 'diagnoses.age_at_event_days', order: 'desc' },
         ],
