@@ -57,7 +57,7 @@ export const ROLES = [
     type: 'community',
     displayName: 'Community Member',
     description:
-      "I'm interested in learning about scientific discoverires in pediatric cancer and structural birth defects.",
+      "I'm interested in learning about scientific discoveries in pediatric cancer and structural birth defects.",
     icon: CommunityIcon,
     banner: CommunityBanner,
     color: '#5a69bd',
