@@ -92,46 +92,9 @@ const AggregationSidebar = compose(injectState, withTheme)(
                         translateSQONValue,
                         trackFileRepoInteraction,
                         closeModal: effects.unsetModal,
-                        onFacetNavigation: ({ path, ...rest }) => {
-                          let facetNavEvent = {
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.click + ' side navigation',
-                            label: path,
-                          };
-                          trackFileRepoInteraction(facetNavEvent);
-                          if (props.onFacetNavigation) {
-                            props.onFacetNavigation(path, ...rest);
-                          }
-                        },
-                        onClear: () => {
-                          trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                            action: TRACKING_EVENTS.actions.query.clear,
-                          });
-                        },
-                        onFilterChange: value => {
-                          if (value !== '') {
-                            // TODO: add GA search tracking to filters w/ pageview events (url?filter=value)
-                            trackFileRepoInteraction({
-                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                              action: TRACKING_EVENTS.actions.filter + ' - Search',
-                              label: value,
-                            });
-                          }
-                          if (props.onFilterChange) {
-                            props.onFilterChange(value);
-                          }
-                        },
-                        onValueChange: ({ field, value, active }) => {
-                          if (active) {
-                            trackFileRepoInteraction({
-                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                              action: TRACKING_EVENTS.actions.filter + ' Selected',
-                              label: { type: 'filter', value, field },
-                            });
-                          }
-                        },
                         onSqonSubmit: ({ sqon }) => {
+                          // leaving this prop here because it uses
+                          // the modal effects
                           trackFileRepoInteraction({
                             category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                             action: 'View Results',
