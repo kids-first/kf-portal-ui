@@ -148,7 +148,8 @@ export const DownloadManifestModalFooter = compose(withTheme)(
   }) => (
     <ModalFooter showSubmit={false}>
       <FooterContentContainer center>
-        <GenerateManifestSet
+        {/* // NOTE: feature disabled temporarily, likely to return so we are leaving this here
+          <GenerateManifestSet
           {...{
             sqon,
             projectId,
@@ -158,7 +159,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
             setId,
             setSetId,
           }}
-        />
+        /> */}
       </FooterContentContainer>
       <LoadingOnClick
         onClick={onDownloadClick}
