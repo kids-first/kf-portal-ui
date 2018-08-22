@@ -10,10 +10,15 @@ import EnvelopeIcon from '../../icons/EnvelopeIcon';
 import MapMarkerIcon from '../../icons/MapMarkerIcon';
 import PhoneIcon from '../../icons/PhoneIcon';
 import Row from 'uikit/Row';
+import { Section } from '../../uikit/Core';
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
   width: auto;
+`;
+
+const ContactItem = styled(Section)`
+  line-height: 1.83;
 `;
 
 const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api }, ...props) => (
@@ -30,30 +35,28 @@ const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api },
       />
     </H2>
 
-    <Row mb={'20px'}>
-      <MapMarkerIcon height={'17px'} style={{ marginRight: '7px' }} />
-      <Box mr={'7px'}>
+    <Row alignItems="flex-start" mb={'20px'}>
+      <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
+      <ContactItem ml={'7px'}>
         <H3>Children’s Hospital of Philadelphia</H3>
         <div>3401 Civic Center Blvd </div>
         <div>Philadelphia, PA, USA</div>
         <div>19104</div>
-      </Box>
+      </ContactItem>
     </Row>
 
     <Row alignItems="center" mb={'20px'}>
-      <Box mr={'7px'}>
-        <EnvelopeIcon height={'10px'} style={{ marginRight: '7px' }} />
+      <EnvelopeIcon height={'10px'} />
+      <ContactItem ml={'7px'}>
         <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
           simonscientist@chop.edu
         </EmailLink>
-      </Box>
+      </ContactItem>
     </Row>
 
     <Row alignItems="center">
-      <Box mr={'7px'}>
-        <PhoneIcon height={'12px'} style={{ marginRight: '7px' }} />
-        555-555-5555
-      </Box>
+      <PhoneIcon height={'12px'} />
+      <ContactItem ml={'7px'}>555-555-5555</ContactItem>
     </Row>
   </Box>
 ));
