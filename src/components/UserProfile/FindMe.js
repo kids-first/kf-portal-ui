@@ -16,6 +16,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
+import ErrorIcon from 'icons/ErrorIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -36,6 +37,13 @@ const StyledLabel = styled('label')`
   letter-spacing: normal;
   text-align: left;
   color: ${({ theme }) => theme.greyScale1};
+  margin-left: 40px;
+`;
+
+const ClearIcon = styled(ErrorIcon)`
+  position: absolute;
+  top: 8px;
+  right: 0;
 `;
 
 const transformURL = value => {
@@ -79,8 +87,8 @@ const socialItems = {
         `}
       />
     ),
-    name: 'Website URL',
-    placeholder: 'eg. kidsfirstdrc.org',
+    name: 'Website URL:',
+    placeholder: 'e.g. kidsfirstdrc.org',
     type: 'text',
   },
   googleScholarId: {
@@ -93,8 +101,8 @@ const socialItems = {
         `}
       />
     ),
-    name: 'Google Scholar Id URL',
-    placeholder: 'eg. e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
+    name: 'Google Scholar URL:',
+    placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
     type: 'text',
   },
   linkedin: {
@@ -107,28 +115,28 @@ const socialItems = {
         `}
       />
     ),
-    name: 'LinkedIn URL',
+    name: 'LinkedIn URL:',
     placeholder: 'e.g. linkedin.com/in/acresnick',
     type: 'text',
   },
   facebook: {
     icon: <SocialIcon url={kfFacebook} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Facebook URL',
+    name: 'Facebook URL:',
     placeholder: 'e.g. facebook.com/kidsfirstDRC',
     type: 'text',
   },
   twitter: {
     icon: <SocialIcon url={kfTwitter} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Twitter handle/username',
-    placeholder: 'e.g. @simonSci',
+    name: 'Twitter handle/username:',
+    placeholder: 'e.g. @kidsfirstDRC',
     type: 'text',
     href: v => `https://twitter.com/${v}`,
     linkText: v => `@${v}`,
   },
   github: {
     icon: <SocialIcon url={kfGithub} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Github username',
-    placeholder: 'e.g. simonscientist',
+    name: 'Github username:',
+    placeholder: 'e.g. kids-first',
     type: 'text',
     href: v => `https://github.com/${v}`,
   },
@@ -143,7 +151,7 @@ const socialItems = {
         `}
       />
     ),
-    name: 'ORCHID ID',
+    name: 'ORCID iD:',
     placeholder: 'e.g. 0000-0003-0436-4189',
     type: 'text',
     href: v => `https://orcid.org/${v}`,
@@ -181,6 +189,7 @@ const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...
 export default compose(
   withTheme,
   withState('isEditing', 'setIsEditing', false),
+  withState('currentField', 'setCurrentField', null),
   withFormik({
     enableReinitialize: true,
     mapPropsToValues: ({ profile }) => {
@@ -214,6 +223,10 @@ export default compose(
       setIsEditing(value);
       trackProfileInteraction({ action: 'Find Me On', value, type });
     },
+    handleSetCurrentField: ({ setCurrentField, values, handleChange }) => (e, field) => {
+      handleChange(e);
+      setCurrentField(field);
+    },
   }),
 )(
   ({
@@ -230,6 +243,10 @@ export default compose(
     submitForm,
     handleSubmit,
     theme,
+    setFieldValue,
+    handleSetCurrentField,
+    currentField,
+    setCurrentField,
   }) => (
     <InterestsCard p={3}>
       <Fragment>
@@ -276,17 +293,22 @@ export default compose(
                     `}
                   >
                     {isEditing ? (
-                      <Row
-                        css={`
-                          align-items: center;
-                          padding-bottom: 5px;
-                        `}
-                      >
-                        {config.icon}
-                        <Column>
-                          <StyledLabel>{config.name}</StyledLabel>
+                      <Column pb="5px">
+                        <StyledLabel>{config.name}</StyledLabel>
+                        <Row position="relative">
+                          {config.icon}
+                          <ClearIcon
+                            fill="#6a6262"
+                            width="35px"
+                            height="18px"
+                            display={
+                              currentField === field && values[field] !== '' ? 'block' : 'none'
+                            }
+                            onClick={() => setFieldValue(field, '')}
+                          />
                           <Tooltip
                             position="left"
+                            style={{ flex: '1 1 auto' }}
                             html={(errors || {})[field]}
                             open={Object.keys(errors || {}).includes(field)}
                           >
@@ -303,10 +325,12 @@ export default compose(
                               placeholder={config.placeholder}
                               type={config.type}
                               value={values[field]}
+                              onClick={e => handleSetCurrentField(e, field)}
+                              onChange={e => handleSetCurrentField(e, field)}
                             />
                           </Tooltip>
-                        </Column>
-                      </Row>
+                        </Row>
+                      </Column>
                     ) : (
                       <Fragment>
                         {config.icon}
