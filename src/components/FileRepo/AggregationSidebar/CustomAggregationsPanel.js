@@ -12,24 +12,33 @@ import { FILE_AGGS_CONFIG, PARTICIPANT_AGGS_CONFIG } from './aggsConfig';
 import { withApi } from 'services/api';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+import { Span } from 'uikit/Core';
 
 const TabsRow = styled(({ className, ...props }) => (
-  <Row {...{ ...props, className: `${className} tabs-titles` }} />
+  <Row {...props} className={`${className} tabs-titles`} />
 ))`
   padding-left: 10px;
   border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
+  text-align: center;
+  font-size: 12px;
 `;
+const Tab = styled(({ className, selected, ...props }) => (
+  <Row
+    {...props}
+    center
+    width={'100%'}
+    className={`tabs-title ${className} ${selected ? 'active-tab' : ''}`}
+  />
+))`
+  padding: 5px;
+`;
+
 const Tabs = ({ selectedTab, onTabSelect, options }) => (
   <TabsRow>
     {options.map(({ id, display }) => (
-      <Row
-        width={'100%'}
-        center
-        className={`tabs-title ${selectedTab === id ? 'active-tab' : ''}`}
-        onClick={() => onTabSelect({ id })}
-      >
-        {display}
-      </Row>
+      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
+        <Span>{display}</Span>
+      </Tab>
     ))}
   </TabsRow>
 );
@@ -90,8 +99,8 @@ export default compose(injectState, withTheme, withApi)(
                     <Tabs
                       selectedTab={selectedTab}
                       options={[
-                        { id: 'FILE', display: 'file' },
-                        { id: 'PARTICIPANT', display: 'participant' },
+                        { id: 'FILE', display: 'Clinical Filters' },
+                        { id: 'PARTICIPANT', display: 'File Filters' },
                       ]}
                       onTabSelect={({ id }) => setState({ selectedTab: id })}
                     />
