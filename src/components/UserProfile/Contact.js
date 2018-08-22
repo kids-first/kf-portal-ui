@@ -6,8 +6,8 @@ import { injectState } from 'freactal';
 import { Box, ExternalLink } from 'uikit/Core';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import MapMarker from 'react-icons/lib/fa/map-marker';
-import Envelope from 'react-icons/lib/fa/envelope';
+import EnvelopeIcon from '../../icons/EnvelopeIcon';
+import MapMarkerIcon from '../../icons/MapMarkerIcon';
 
 const Section = styled(Box)`
   ${({ theme }) => theme.column};
@@ -16,14 +16,6 @@ const Section = styled(Box)`
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
-`;
-
-const MapMarkerIcon = styled(MapMarker)`
-  color: #a42c90;
-`;
-
-const EnvelopeIcon = styled(Envelope)`
-  color: #a42c90;
 `;
 
 const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api }, ...props) => (
@@ -50,7 +42,7 @@ const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api },
     </Section>
     <Section>
       <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
-        <EnvelopeIcon size={16} />
+        <EnvelopeIcon height={'16px'} />
         simonscientist@chop.edu
       </EmailLink>
     </Section>

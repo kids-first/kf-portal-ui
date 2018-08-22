@@ -2,6 +2,6 @@ import { BaseSvg } from 'icons';
 
 export default ({ ...props }) =>
   BaseSvg({
-    svg: `<svg id="size_copy" data-name="size copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.46 22.45"><defs><style>.cls-1{fill:#a42c90;}</style></defs><title>icon-mail</title><path class="cls-1" d="M16.68,11.88h0l-.07,0h0l-.08,0h0l-.08,0h0l-.08,0h0l-.09,0h0l-.08,0h0l-.08,0h0L16,12h0l-.08,0h0l-.06,0h0L.4,1.63A3.15,3.15,0,0,0,0,3.16V19.28a3.17,3.17,0,0,0,3.15,3.17H29.31a3.17,3.17,0,0,0,3.15-3.17V3.16A3.09,3.09,0,0,0,32,1.44L16.69,11.87Z"/><path class="cls-1" d="M30.74.35A3.08,3.08,0,0,0,29.31,0H3.15A3.14,3.14,0,0,0,1.52.46l14.71,9.8Z"/></svg>`,
+    svg: `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67.83 85.6"><defs><style>.cls-1{fill:#a42c90;}</style></defs><title>icon-location</title><path class="cls-1" d="M34.25.51A34,34,0,0,0,.34,34.42c0,18.33,31.52,49.35,32.86,50.66l1,1,1-1c1.34-1.31,32.87-32.34,32.87-50.66A34,34,0,0,0,34.25.51Zm0,46.44A12.53,12.53,0,1,1,46.79,34.42,12.54,12.54,0,0,1,34.25,47Z" transform="translate(-0.34 -0.51)"/></svg>`,
     ...props,
   });
