@@ -106,12 +106,12 @@ export const DISEASE_AREAS = [
 
 export const STUDY_SHORT_NAMES = [
   'Orofacial Cleft: European Ancestry',
-  'Neuroblastoma Initiation and Progressio ',
-  'Orofacial Cleft: Latin America ',
-  'Disorders of Sex Developmen ',
-  'Adolescent Idiopathic Scoliosi ',
-  'Congenital Heart Defect ',
-  'Pediatric Brain Tumors: CBTT ',
-  'Ewing Sarcoma: Genetic Ris ',
-  'Congenital Diaphragmatic Herni ',
+  'Neuroblastoma Initiation and Progression',
+  'Orofacial Cleft: Latin American',
+  'Disorders of Sex Development',
+  'Adolescent Idiopathic Scoliosis',
+  'Congenital Heart Defects',
+  'Pediatric Brain Tumors: CBTTC',
+  'Ewing Sarcoma: Genetic Risk',
+  'Congenital Diaphragmatic Hernia',
 ];
