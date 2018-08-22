@@ -95,7 +95,7 @@ export const DISEASE_AREAS = [
   'Familial Leukemia',
   'Hearing Loss',
   'Infantile Hemangiomas',
-  'Neuroblastomas',
+  'Neuroblastoma',
   'Nonsyndromic Craniosynostosis',
   'Orofacial Clefts',
   'Osteosarcoma',
