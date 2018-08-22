@@ -150,6 +150,34 @@ const socialItems = {
   },
 };
 
+const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...rest }) => (
+  <Flex {...rest} justifyContent="flex-end">
+    <HollowButton
+      onClick={() => {
+        handleReset();
+        handleIsEditing({ value: false });
+      }}
+    >
+      Cancel
+    </HollowButton>
+    <Tooltip
+      position="bottom"
+      html="Please fix errors before saving"
+      open={!!Object.keys(errors || {}).length}
+    >
+      <SaveButton
+        disabled={!!Object.keys(errors || {}).length}
+        onClick={async e => {
+          handleSubmit(e);
+          handleIsEditing({ value: false, type: TRACKING_EVENTS.actions.save });
+        }}
+      >
+        Save
+      </SaveButton>
+    </Tooltip>
+  </Flex>
+);
+
 export default compose(
   withTheme,
   withState('isEditing', 'setIsEditing', false),
@@ -216,31 +244,7 @@ export default compose(
                   }}
                 />
               ) : (
-                <Flex>
-                  <HollowButton
-                    onClick={() => {
-                      handleReset();
-                      handleIsEditing({ value: false });
-                    }}
-                  >
-                    Cancel
-                  </HollowButton>
-                  <Tooltip
-                    position="bottom"
-                    html="Please fix errors before saving"
-                    open={!!Object.keys(errors || {}).length}
-                  >
-                    <SaveButton
-                      disabled={!!Object.keys(errors || {}).length}
-                      onClick={async e => {
-                        handleSubmit(e);
-                        handleIsEditing({ value: false, type: TRACKING_EVENTS.actions.save });
-                      }}
-                    >
-                      Save
-                    </SaveButton>
-                  </Tooltip>
-                </Flex>
+                <ActionButtons {...{ handleIsEditing, handleReset, handleSubmit, errors }} />
               ))}
           </H2>
           <StyledSection>
@@ -315,6 +319,12 @@ export default compose(
                     )}
                   </li>
                 ))}
+              {isEditing ? (
+                <ActionButtons
+                  {...{ handleIsEditing, handleReset, handleSubmit, errors }}
+                  mt={'20px'}
+                />
+              ) : null}
             </ul>
           </StyledSection>
         </Form>
