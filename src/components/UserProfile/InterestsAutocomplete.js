@@ -37,6 +37,7 @@ const DropdownMenu = styled('div')`
   left: 0;
   right: 0;
   overflow: hidden;
+  z-index: 999;
 `;
 
 const DropdownLabel = styled('span')`
