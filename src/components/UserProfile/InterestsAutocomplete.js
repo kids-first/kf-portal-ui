@@ -60,9 +60,6 @@ const DropdownItem = styled('div')`
 
 const NewItem = styled('span')`
   margin-right: 5px;
-  position: relative;
-  top: 40px;
-  left: 5px;
 `;
 
 const SearchIconInterests = styled(SearchIcon)`
