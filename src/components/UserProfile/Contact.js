@@ -16,6 +16,7 @@ const Section = styled(Box)`
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
+  width: auto;
 `;
 
 const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api }, ...props) => (
@@ -33,7 +34,7 @@ const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api },
     </H2>
     <Section>
       <H3>
-        <MapMarkerIcon size={16} />
+        <MapMarkerIcon height={'17px'} />
         Children’s Hospital of Philadelphia
       </H3>
       <span>3401 Civic Center Blvd </span>
@@ -42,7 +43,7 @@ const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api },
     </Section>
     <Section>
       <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
-        <EnvelopeIcon height={'16px'} />
+        <EnvelopeIcon height={'10px'} />
         simonscientist@chop.edu
       </EmailLink>
     </Section>
