@@ -7,12 +7,7 @@ import { Trans } from 'react-i18next';
 import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
-import {
-  Aggregations,
-  QuickSearch,
-  AggregationsListDisplay,
-} from '@arranger/components/dist/Arranger';
-import Query from '@arranger/components/dist/Query';
+import { QuickSearch } from '@arranger/components/dist/Arranger';
 
 import UploadIdsButton from './UploadIdsButton';
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
@@ -24,8 +19,8 @@ import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
-import { FILE_AGGS_CONFIG, PARTICIPANT_AGGS_CONFIG } from './aggsConfig';
 import { withApi } from 'services/api';
+import CustomAggregationsPanel from './CustomAggregationsPanel';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
@@ -62,91 +57,6 @@ const IdFilterContainer = styled(Column)`
   }
 `;
 
-const CustomAggs = compose(injectState, withTheme, withApi)(({ api, sqon }) => (
-  <Query
-    renderError
-    shouldFetch={true}
-    api={api}
-    projectId={'august_14'}
-    name={`aggsIntrospection`}
-    query={`
-      query dataTypes {
-        __schema {
-          types {
-            name
-            fields {
-              name
-              type {
-                name
-              }
-            }
-          }
-        }
-      }
-    `}
-    render={({ loading, data }) => {
-      if (data) {
-        const { __schema: { types } } = data;
-        const fileAggregationFields = types.find(({ name }) => name === 'fileAggregations').fields;
-        const extendedAggConfig = FILE_AGGS_CONFIG.filter(({ show }) => show).map(config => ({
-          ...config,
-          type: fileAggregationFields.find(fileAggField => config.field === fileAggField.name).type
-            .name,
-        }));
-        return (
-          <Query
-            renderError
-            shouldFetch={true}
-            api={api}
-            projectId={'august_14'}
-            name={`customAggsQuery`}
-            query={`
-            query AggsQuery($sqon: JSON) {
-              file {
-                extended
-                aggregations(filters: $sqon) {
-                  ${extendedAggConfig.map(
-                    ({ field, type }) => `
-                    ${field} {
-                      ${type === 'Aggregations' ? `buckets {doc_count key key_as_string}` : ''}
-                      ${type === 'NumericAggregations' ? `stats {max min count}` : ''}
-                    }
-                  `,
-                  )}
-                }
-              }
-            }
-          `}
-            variables={{ sqon }}
-            render={({ loading, data }) => {
-              if (data) {
-                return AggregationsListDisplay({
-                  data,
-                  onValueChange: () => {
-                    console.log('yaaa!');
-                  },
-                  aggs: extendedAggConfig,
-                  graphqlField: 'file',
-                  setSQON: () => {
-                    console.log('yo!!!');
-                  },
-                  sqon,
-                  containerRef: React.createRef(),
-                  componentProps: {},
-                });
-              } else {
-                return null;
-              }
-            }}
-          />
-        );
-      } else {
-        return null;
-      }
-    }}
-  />
-));
-
 const AggregationSidebar = compose(injectState, withTheme, withApi)(
   ({
     api,
@@ -159,7 +69,6 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
     aggregationsWrapperRef = React.createRef(),
     ...props
   }) => {
-    console.log('props: ', props);
     return (
       <ScrollbarSize>
         {({ scrollbarWidth }) => (
@@ -226,28 +135,27 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
                 <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
               </Row>
             </IdFilterContainer>
-            <Aggregations
+            <CustomAggregationsPanel
               {...{
                 ...props,
                 setSQON,
                 containerRef: aggregationsWrapperRef,
-              }}
-              onValueChange={({ active, field, value }) => {
-                if (active) {
-                  trackFileRepoInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.filters,
-                    action: 'Filter Selected',
-                    label: { type: 'filter', value, field },
-                  });
-                }
-              }}
-              componentProps={{
-                getTermAggProps: () => ({
-                  InputComponent: FilterInput,
-                }),
+                onValueChange: ({ active, field, value }) => {
+                  if (active) {
+                    trackFileRepoInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.filters,
+                      action: 'Filter Selected',
+                      label: { type: 'filter', value, field },
+                    });
+                  }
+                },
+                componentProps: {
+                  getTermAggProps: () => ({
+                    InputComponent: FilterInput,
+                  }),
+                },
               }}
             />
-            <CustomAggs />
           </AggregationWrapper>
         )}
       </ScrollbarSize>

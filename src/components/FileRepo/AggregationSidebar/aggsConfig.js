@@ -15,51 +15,6 @@ export const FILE_AGGS_CONFIG = [
     active: true,
   },
   {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__gender',
-    show: true,
-    active: true,
-  },
-  {
     field: 'participants__family__family_compositions__family_members__gender',
     show: false,
     active: true,
