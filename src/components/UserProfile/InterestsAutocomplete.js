@@ -8,6 +8,8 @@ import TextHighlight from '@arranger/components/dist/TextHighlight';
 
 import { withApi } from 'services/api';
 import { getTags } from 'services/profiles';
+import SearchIcon from '../../icons/SearchIcon';
+import { Box } from 'uikit/Core';
 
 const InterestsAutocompleteContainer = styled('div')`
   width: 100%;
@@ -23,6 +25,7 @@ const AutocompleteInput = styled('input')`
   align-items: center;
   padding: 7px;
   width: 100%;
+  padding-left: 31px;
 `;
 
 const DropdownMenu = styled('div')`
@@ -34,6 +37,7 @@ const DropdownMenu = styled('div')`
   left: 0;
   right: 0;
   overflow: hidden;
+  z-index: 999;
 `;
 
 const DropdownLabel = styled('span')`
@@ -57,6 +61,14 @@ const DropdownItem = styled('div')`
 
 const NewItem = styled('span')`
   margin-right: 5px;
+`;
+
+const SearchIconInterests = styled(SearchIcon)`
+  height: 14px;
+  position: absolute;
+  z-index: 1;
+  top: 7px;
+  left: 8px;
 `;
 
 const InterestsAutocomplete = compose(
@@ -107,17 +119,20 @@ const InterestsAutocomplete = compose(
         showNewItem = inputValue && !(suggestions || []).includes(inputValue),
       }) => (
         <InterestsAutocompleteContainer {...getRootProps({ refKey: 'innerRef' })}>
-          <AutocompleteInput
-            {...getInputProps({
-              placeholder: `🔍 Search for interests`,
-              onClick: initMenu,
-              onFocus: initMenu,
-            })}
-          />
+          <div>
+            <SearchIconInterests fill="#a9adc0" />
+            <AutocompleteInput
+              {...getInputProps({
+                placeholder: `Search for interests`,
+                onClick: initMenu,
+                onFocus: initMenu,
+              })}
+            />
+          </div>
           {isOpen && (showSuggestions || showNewItem) ? (
             <DropdownMenu>
               {showSuggestions ? (
-                <div>
+                <Box>
                   <DropdownItem>
                     <DropdownLabel>
                       <Trans>Suggestions:</Trans>
@@ -128,7 +143,7 @@ const InterestsAutocomplete = compose(
                       <TextHighlight highlightText={inputValue} content={item} />
                     </DropdownItem>
                   ))}
-                </div>
+                </Box>
               ) : null}
               {showNewItem ? (
                 <DropdownItem

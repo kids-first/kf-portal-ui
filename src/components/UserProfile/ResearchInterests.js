@@ -9,7 +9,7 @@ import { EditButton, H2, H4, SaveButton, ClickToAdd, InterestsCard } from './ui'
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
 
-import { Box, Flex } from 'uikit/Core';
+import { Box, Flex, textTransform } from 'uikit/Core';
 import Row from 'uikit/Row';
 import { HollowButton } from 'uikit/Button';
 import { Tag } from 'uikit/Tags';
@@ -39,6 +39,13 @@ const InterestsLabel = styled('div')`
   width: 80%;
 `;
 
+const InterestsSelect = styled('select')`
+  ${({ theme }) => theme.select};
+  ${({ theme }) => theme.input};
+  text-transform: none;
+`;
+
+const InterestsOption = styled('option')``;
 const ActionButtons = ({
   handleEditingResearchInterests,
   setInterests,
@@ -137,54 +144,43 @@ export default compose(
           ))}
         </Row>
         {editingResearchInterests && (
-          <React.Fragment>
-            <InterestsContainer>
-              <InterestsLabel>Kids First Disease Area:</InterestsLabel>
-              <select
-                css={`
-                  ${theme.select} ${theme.input};
-                `}
-                onChange={e => {
-                  setInterests([...interests, e.target.value]);
-                }}
-                value=""
+          <InterestsContainer>
+            <InterestsLabel>Kids First Disease Areas:</InterestsLabel>
+            <InterestsSelect
+              onChange={e => {
+                setInterests([...interests, e.target.value]);
+              }}
+              value=""
+            >
+              <InterestsOption value="" disabled selected>
+                -- Select an option --
+              </InterestsOption>
+              {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
+                <InterestsOption value={area} key={area}>
+                  {area}
+                </InterestsOption>
+              ))}
+            </InterestsSelect>
+            <InterestsLabel>Kids First Studies:</InterestsLabel>
+            <InterestsSelect
+              onChange={e => {
+                setInterests([...interests, e.target.value]);
+              }}
+              value=""
+            >
+              <InterestsOption value="" disabled selected>
+                -- Select an option --
+              </InterestsOption>
+              {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
+                <InterestsOption value={study} key={study}>
+                  {study}
+                </InterestsOption>
+              ))}
               >
-                <option value="" disabled selected>
-                  -- Select an option --
-                </option>
-                {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
-                  <option value={area} key={area}>
-                    {area}
-                  </option>
-                ))}
-              </select>
-              <InterestsLabel>Kids First Studies:</InterestsLabel>
-              <select
-                css={`
-                  ${theme.select} ${theme.input};
-                `}
-                onChange={e => {
-                  setInterests([...interests, e.target.value]);
-                }}
-                value=""
-              >
-                <option value="" disabled selected>
-                  -- Select an option --
-                </option>
-                {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
-                  <option value={study} key={study}>
-                    {study}
-                  </option>
-                ))}
-                >
-              </select>
-              <InterestsLabel>Other areas of interest:</InterestsLabel>
-              <InterestsAutocomplete {...{ interests, setInterests }} />
-            </InterestsContainer>
-            <ActionButtons
-              {...{ handleEditingResearchInterests, setInterests, submit, profile, interests }}
-            />
-          </React.Fragment>
+            </InterestsSelect>
+            <InterestsLabel>Other areas of interest:</InterestsLabel>
+            <InterestsAutocomplete {...{ interests, setInterests }} />
+          </InterestsContainer>
         )}
 
         {canEdit &&

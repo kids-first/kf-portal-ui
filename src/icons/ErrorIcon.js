@@ -9,6 +9,7 @@ export default ({ width = 94, height = 94, fill = '#d8202f', background = '#fff'
       viewBox="0 0 94 94"
       height={height}
       width={width}
+      {...props}
     >
       <defs />
       <title>icon-error</title>
