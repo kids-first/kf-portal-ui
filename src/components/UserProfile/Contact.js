@@ -10,6 +10,7 @@ import MapMarkerIcon from '../../icons/MapMarkerIcon';
 import PhoneIcon from '../../icons/PhoneIcon';
 import Row from 'uikit/Row';
 import { Section } from '../../uikit/Core';
+import { withApi } from 'services/api';
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
@@ -20,11 +21,11 @@ const ContactItem = styled(Section)`
   line-height: 1.83;
 `;
 
-const Contact = compose(injectState)(({ effects: { setModal }, profile, mt }) => {
+const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, profile, mt }) => {
   console.log('ciaran api');
   console.log('ciaran profile', profile);
   console.log('ciaran props');
-  const api = {};
+
   return (
     <Box mt={mt}>
       <H2>
