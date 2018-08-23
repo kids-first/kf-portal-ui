@@ -11,6 +11,7 @@ import PhoneIcon from '../../icons/PhoneIcon';
 import Row from 'uikit/Row';
 import { Section } from '../../uikit/Core';
 import { withApi } from 'services/api';
+import { formatPhoneNumber } from '../../common/displayFormatters';
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
@@ -61,7 +62,7 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
 
       <Row alignItems="center">
         <PhoneIcon height={'12px'} />
-        <ContactItem ml={'7px'}>{profile.phone}</ContactItem>
+        <ContactItem ml={'7px'}>{formatPhoneNumber(profile.phone)}</ContactItem>
       </Row>
     </Box>
   );
