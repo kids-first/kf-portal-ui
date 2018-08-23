@@ -5,4 +5,5 @@ import { applyDefaultStyles } from './Core';
 export default applyDefaultStyles(styled(Flex)`
   ${({ theme }) => theme.row};
   ${({ center, theme }) => (center ? theme.center : ``)};
+  ${({ flexStrink }) => (flexStrink || !isNaN(flexStrink) ? `flex-shrink: ${flexStrink}` : ``)};
 `);

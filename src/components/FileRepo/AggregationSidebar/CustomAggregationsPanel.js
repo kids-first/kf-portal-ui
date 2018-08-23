@@ -15,7 +15,7 @@ import Column from 'uikit/Column';
 import { Span } from 'uikit/Core';
 
 const TabsRow = styled(({ className, ...props }) => (
-  <Row {...props} className={`${className} tabs-titles`} />
+  <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
 ))`
   padding-left: 10px;
   border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
