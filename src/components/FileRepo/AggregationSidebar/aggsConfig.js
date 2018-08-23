@@ -54,9 +54,6 @@ export const CLINICAL_FILTERS = [
     show: true,
     active: true,
   },
-];
-
-export const FILE_FILTERS = [
   {
     field: 'participants__diagnoses__source_text_diagnosis',
     show: true,
@@ -64,26 +61,6 @@ export const FILE_FILTERS = [
   },
   {
     field: 'participants__biospecimens__source_text_tissue_type',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'is_harmonized',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'sequencing_experiments__experiment_strategy',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'data_type',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'file_format',
     show: true,
     active: true,
   },
@@ -105,11 +82,6 @@ export const FILE_FILTERS = [
   {
     field: 'participants__phenotype__hpo__source_text_phenotype',
     show: false,
-    active: true,
-  },
-  {
-    field: 'participants__family__family_compositions__available_data_types',
-    show: true,
     active: true,
   },
   {
@@ -731,6 +703,34 @@ export const FILE_FILTERS = [
     field: 'participants__family__family_id',
     type: 'Aggregations',
     show: false,
+    active: true,
+  },
+];
+
+export const FILE_FILTERS = [
+  {
+    field: 'sequencing_experiments__experiment_strategy',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'is_harmonized',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'data_type',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'file_format',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__family__family_compositions__available_data_types',
+    show: true,
     active: true,
   },
 ];

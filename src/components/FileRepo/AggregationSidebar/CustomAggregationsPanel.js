@@ -78,7 +78,7 @@ export default compose(injectState, withTheme, withApi)(
         const containerRef = React.createRef();
         if (data) {
           return (
-            <Component initialState={{ selectedTab: 'FILE' }}>
+            <Component initialState={{ selectedTab: 'CLINICAL' }}>
               {({ state: { selectedTab }, setState }) => {
                 const { __schema: { types } } = data;
                 const gqlAggregationFields = types.find(
