@@ -87,26 +87,23 @@ export default compose(injectState, withTheme, withApi)(
               type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
                 .type.name,
             }));
-          const extendedClinicalFilterConfigs = extendAggsConfig(CLINICAL_FILTERS);
-          const extendedFileFilterConfigs = extendAggsConfig(FILE_FILTERS);
           return (
             <Component initialState={{ selectedTab: 'CLINICAL' }}>
-              {({ state: { selectedTab }, setState }) => {
-                const aggConfigToRender =
-                  selectedTab === 'FILE'
-                    ? extendedFileFilterConfigs
-                    : extendedClinicalFilterConfigs;
-                return (
-                  <Column>
-                    <Tabs
-                      selectedTab={selectedTab}
-                      options={[
-                        { id: 'CLINICAL', display: 'Clinical Filters' },
-                        { id: 'FILE', display: 'File Filters' },
-                      ]}
-                      onTabSelect={({ id }) => setState({ selectedTab: id })}
-                    />
-                    <Column scrollY innerRef={containerRef}>
+              {({ state: { selectedTab }, setState }) => (
+                <Column>
+                  <Tabs
+                    selectedTab={selectedTab}
+                    options={[
+                      { id: 'CLINICAL', display: 'Clinical Filters' },
+                      { id: 'FILE', display: 'File Filters' },
+                    ]}
+                    onTabSelect={({ id }) => setState({ selectedTab: id })}
+                  />
+                  <Column scrollY innerRef={containerRef}>
+                    <div
+                      key={'FILE'}
+                      style={{ display: selectedTab === 'FILE' ? 'block' : 'none' }}
+                    >
                       <AggregationsList
                         {...{
                           onValueChange: onValueChange,
@@ -116,14 +113,32 @@ export default compose(injectState, withTheme, withApi)(
                           graphqlField,
                           api,
                           containerRef,
-                          aggs: aggConfigToRender,
+                          aggs: extendAggsConfig(FILE_FILTERS),
                           debounceTime: 300,
                         }}
                       />
-                    </Column>
+                    </div>
+                    <div
+                      key={'CLINICAL'}
+                      style={{ display: selectedTab === 'CLINICAL' ? 'block' : 'none' }}
+                    >
+                      <AggregationsList
+                        {...{
+                          onValueChange: onValueChange,
+                          setSQON: setSQON,
+                          sqon,
+                          projectId,
+                          graphqlField,
+                          api,
+                          containerRef,
+                          aggs: extendAggsConfig(CLINICAL_FILTERS),
+                          debounceTime: 300,
+                        }}
+                      />
+                    </div>
                   </Column>
-                );
-              }}
+                </Column>
+              )}
             </Component>
           );
         } else {
