@@ -105,10 +105,7 @@ export default compose(injectState, withTheme, withApi)(
                       prevent re-rendering of AggregationsList which results in extra
                       fetching and visual flash
                     */}
-                    <div
-                      key={'FILE'}
-                      style={{ display: selectedTab === 'FILE' ? 'block' : 'none' }}
-                    >
+                    <div style={{ display: selectedTab === 'FILE' ? 'block' : 'none' }}>
                       <AggregationsList
                         {...{
                           onValueChange: onValueChange,
@@ -123,10 +120,7 @@ export default compose(injectState, withTheme, withApi)(
                         }}
                       />
                     </div>
-                    <div
-                      key={'CLINICAL'}
-                      style={{ display: selectedTab === 'CLINICAL' ? 'block' : 'none' }}
-                    >
+                    <div style={{ display: selectedTab === 'CLINICAL' ? 'block' : 'none' }}>
                       <AggregationsList
                         {...{
                           onValueChange: onValueChange,
