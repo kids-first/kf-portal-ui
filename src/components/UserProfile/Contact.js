@@ -22,44 +22,64 @@ const ContactItem = styled(Section)`
   line-height: 1.83;
 `;
 
-const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, profile, mt }) => (
-  <Box mt={mt}>
-    <H2>
-      Contact Information
-      <EditButton
-        onClick={() => {
-          setModal({
-            title: 'Edit Basic Information',
-            component: <BasicInfoForm {...{ api }} />,
-          });
-        }}
-      />
-    </H2>
+const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, profile, mt }) => {
+  const {
+    addressLine1,
+    addressLine2,
+    institution,
+    city,
+    country,
+    state,
+    email,
+    phone,
+    zip,
+  } = profile;
 
-    <Row alignItems="flex-start" mb={'20px'}>
-      <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
-      <ContactItem ml={'7px'}>
-        <H3>{profile.institution}</H3>
-        <div>{`${profile.addressLine1} ${profile.addressLine2}`}</div>
-        <div>{`${profile.city}, ${profile.state}, ${profile.country}`}</div>
-        <div>{profile.zip}</div>
-      </ContactItem>
-    </Row>
+  return (
+    <Box mt={mt}>
+      <H2>
+        Contact Information
+        <EditButton
+          onClick={() => {
+            setModal({
+              title: 'Edit Basic Information',
+              component: <BasicInfoForm {...{ api }} />,
+            });
+          }}
+        />
+      </H2>
 
-    <Row alignItems="center" mb={'20px'}>
-      <EnvelopeIcon height={'10px'} />
-      <ContactItem ml={'7px'}>
-        <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
-          {profile.email}
-        </EmailLink>
-      </ContactItem>
-    </Row>
+      {(addressLine1 || addressLine2 || institution || city || country || state) && (
+        <Row alignItems="flex-start" mb={'20px'}>
+          <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
+          <ContactItem ml={'7px'}>
+            {institution && <H3>{institution}</H3>}
+            {(addressLine1 || addressLine2) && <div>{`${addressLine1} ${addressLine2}`}</div>}
+            <div>{[city, state, country].filter(x => x).join(', ')}</div>
+            {zip && <div>{zip}</div>}
+          </ContactItem>
+        </Row>
+      )}
 
-    <Row alignItems="center">
-      <PhoneIcon height={'12px'} />
-      <ContactItem ml={'7px'}>{formatPhoneNumber(profile.phone)}</ContactItem>
-    </Row>
-  </Box>
-));
+      {email && (
+        <Row alignItems="center" mb={'20px'}>
+          <EnvelopeIcon height={'10px'} />
+          <ContactItem ml={'7px'}>
+            <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
+              {email}
+            </EmailLink>
+          </ContactItem>
+        </Row>
+      )}
+
+      {phone && (
+        <Row alignItems="center" mb={'20px'}>
+          <PhoneIcon height={'12px'} />
+          <ContactItem ml={'7px'}>{formatPhoneNumber(phone)}</ContactItem>
+        </Row>
+      )}
+    </Box>
+  );
+});
 
 export default Contact;
