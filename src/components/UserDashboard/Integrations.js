@@ -44,15 +44,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           theme={theme}
           name="Gen3"
           url={gen3WebRoot}
-          unconnectedMsg={
-            <div>
-              Connect to{' '}
-              <Link to={`/user/${loggedInUser.egoId}#settings`}>
-                <ExternalLink hasExternalIcon={false}>Gen3</ExternalLink>
-              </Link>{' '}
-              to download controlled data
-            </div>
-          }
+          unconnectedMsg={<div>Connect to Gen3 to download controlled data</div>}
         />
       </div>
     </IntegrationsDiv>
@@ -82,18 +74,7 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           name="Cavatica"
           url={cavaticaWebRoot}
           unconnectedMsg={
-            <div>
-              Analyze data quickly by connecting your Kids First account to{' '}
-              <ExternalLink
-                href={cavaticaWebRoot}
-                hasExternalIcon={false}
-                css={`
-                  color: #a42c90;
-                `}
-              >
-                Cavatica
-              </ExternalLink>.
-            </div>
+            <div>Analyze data quickly by connecting your Kids First account to Cavatica</div>
           }
         />
       </div>
