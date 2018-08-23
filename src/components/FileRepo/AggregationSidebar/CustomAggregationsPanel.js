@@ -100,6 +100,11 @@ export default compose(injectState, withTheme, withApi)(
                     onTabSelect={({ id }) => setState({ selectedTab: id })}
                   />
                   <Column scrollY innerRef={containerRef}>
+                    {/*
+                      NOTE: this style-based conditional rendering is an optimization strategy to
+                      prevent re-rendering of AggregationsList which results in extra
+                      fetching and visual flash
+                    */}
                     <div
                       key={'FILE'}
                       style={{ display: selectedTab === 'FILE' ? 'block' : 'none' }}
