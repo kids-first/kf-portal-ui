@@ -70,102 +70,99 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
     trackFileRepoInteraction,
     aggregationsWrapperRef = React.createRef(),
     ...props
-  }) => {
-    return (
-      <ScrollbarSize>
-        {({ scrollbarWidth }) => (
-          <AggregationWrapper {...{ scrollbarWidth, innerRef: aggregationsWrapperRef }}>
-            <Column flexStrink={0}>
-              <AggregationHeader>
-                <AggregationTitle>
-                  <Trans>Filters</Trans> <InfoIcon />
-                </AggregationTitle>
-                <ActionButton
-                  css={theme.uppercase}
-                  onClick={() =>
-                    effects.setModal({
-                      title: 'All Filters',
-                      classNames: {
-                        modal: css`
-                          width: 80%;
-                          height: 90%;
-                          max-width: initial;
-                        `,
-                      },
-                      component: (
-                        <AdvancedFacetViewModalContent
-                          {...{
-                            ...props,
-                            translateSQONValue,
-                            trackFileRepoInteraction,
-                            closeModal: effects.unsetModal,
-                            onSqonSubmit: ({ sqon }) => {
-                              // leaving this prop here because it uses
-                              // the modal effects
-                              trackFileRepoInteraction({
-                                category:
-                                  TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                                action: 'View Results',
-                                label: sqon,
-                              });
-                              setSQON(sqon);
-                              effects.unsetModal();
-                            },
-                          }}
-                          {...{ statsConfig }}
-                        />
-                      ),
-                    })
-                  }
-                >
-                  <Trans css={theme.uppercase}>All Filters</Trans>
-                </ActionButton>
-              </AggregationHeader>
-              <IdFilterContainer className="aggregation-card">
-                <QuickSearch
-                  {...{ ...props, setSQON, translateSQONValue }}
-                  InputComponent={FilterInput}
-                  placeholder="Enter Identifiers"
-                  LoadingIcon={
-                    <Spinner
-                      fadeIn="none"
-                      name="circle"
-                      color="#a9adc0"
-                      style={{ width: 15, height: 15 }}
-                    />
-                  }
-                />
-                <Row justifyContent="flex-end">
-                  <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
-                </Row>
-              </IdFilterContainer>
-            </Column>
-            <CustomAggregationsPanel
-              {...{
-                ...props,
-                setSQON,
-                containerRef: aggregationsWrapperRef,
-                onValueChange: ({ active, field, value }) => {
-                  if (active) {
-                    trackFileRepoInteraction({
-                      category: TRACKING_EVENTS.categories.fileRepo.filters,
-                      action: 'Filter Selected',
-                      label: { type: 'filter', value, field },
-                    });
-                  }
-                },
-                componentProps: {
-                  getTermAggProps: () => ({
-                    InputComponent: FilterInput,
-                  }),
-                },
-              }}
-            />
-          </AggregationWrapper>
-        )}
-      </ScrollbarSize>
-    );
-  },
+  }) => (
+    <ScrollbarSize>
+      {({ scrollbarWidth }) => (
+        <AggregationWrapper {...{ scrollbarWidth, innerRef: aggregationsWrapperRef }}>
+          <Column flexStrink={0}>
+            <AggregationHeader>
+              <AggregationTitle>
+                <Trans>Filters</Trans> <InfoIcon />
+              </AggregationTitle>
+              <ActionButton
+                css={theme.uppercase}
+                onClick={() =>
+                  effects.setModal({
+                    title: 'All Filters',
+                    classNames: {
+                      modal: css`
+                        width: 80%;
+                        height: 90%;
+                        max-width: initial;
+                      `,
+                    },
+                    component: (
+                      <AdvancedFacetViewModalContent
+                        {...{
+                          ...props,
+                          translateSQONValue,
+                          trackFileRepoInteraction,
+                          closeModal: effects.unsetModal,
+                          onSqonSubmit: ({ sqon }) => {
+                            // leaving this prop here because it uses
+                            // the modal effects
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                              action: 'View Results',
+                              label: sqon,
+                            });
+                            setSQON(sqon);
+                            effects.unsetModal();
+                          },
+                        }}
+                        {...{ statsConfig }}
+                      />
+                    ),
+                  })
+                }
+              >
+                <Trans css={theme.uppercase}>All Filters</Trans>
+              </ActionButton>
+            </AggregationHeader>
+            <IdFilterContainer className="aggregation-card">
+              <QuickSearch
+                {...{ ...props, setSQON, translateSQONValue }}
+                InputComponent={FilterInput}
+                placeholder="Enter Identifiers"
+                LoadingIcon={
+                  <Spinner
+                    fadeIn="none"
+                    name="circle"
+                    color="#a9adc0"
+                    style={{ width: 15, height: 15 }}
+                  />
+                }
+              />
+              <Row justifyContent="flex-end">
+                <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
+              </Row>
+            </IdFilterContainer>
+          </Column>
+          <CustomAggregationsPanel
+            {...{
+              ...props,
+              setSQON,
+              containerRef: aggregationsWrapperRef,
+              onValueChange: ({ active, field, value }) => {
+                if (active) {
+                  trackFileRepoInteraction({
+                    category: TRACKING_EVENTS.categories.fileRepo.filters,
+                    action: 'Filter Selected',
+                    label: { type: 'filter', value, field },
+                  });
+                }
+              },
+              componentProps: {
+                getTermAggProps: () => ({
+                  InputComponent: FilterInput,
+                }),
+              },
+            }}
+          />
+        </AggregationWrapper>
+      )}
+    </ScrollbarSize>
+  ),
 );
 
 export default AggregationSidebar;
