@@ -24,6 +24,7 @@ import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails'
 import LoadingOnClick from 'components/LoadingOnClick';
 import { connectGen3, getAccessToken } from 'services/gen3';
 import { withApi } from 'services/api';
+import { Gen3UserProvider } from 'services/gen3';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
@@ -179,58 +180,69 @@ const UserIntegrations = withApi(
                     {({ state: { loading }, setState }) => {
                       return loading ? (
                         <LoadingSpinner />
-                      ) : isValidKey(integrationTokens[GEN3]) ? (
-                        gen3Status({
-                          theme,
-                          onView: () =>
-                            effects.setModal({
-                              title: 'Your Authorized Studies',
-                              component: (
-                                <Gen3ConnectionDetails
-                                  onComplete={effects.unsetModal}
-                                  onCancel={effects.unsetModal}
-                                />
-                              ),
-                            }),
-                          onRemove: async () => {
-                            await deleteGen3Token(api);
-                            effects.setIntegrationToken(GEN3, null);
-                          },
-                        })
                       ) : (
-                        <ConnectButton
-                          onClick={() => {
-                            setState({ loading: true });
-                            connectGen3(api)
-                              .then(() => getAccessToken(api))
-                              .then(token => {
-                                effects.setIntegrationToken(GEN3, token);
-                                setState({ loading: false });
-                                effects.setToast({
-                                  id: `${Date.now()}`,
-                                  action: 'success',
-                                  component: (
-                                    <Row>
-                                      Controlled dataset access sucessfully connected through Gen3
-                                    </Row>
-                                  ),
-                                });
-                                trackUserInteraction({
-                                  category: TRACKING_EVENTS.categories.user.profile,
-                                  action: TRACKING_EVENTS.actions.integration.connected,
-                                  label: TRACKING_EVENTS.gen3,
-                                });
+                        <Gen3UserProvider
+                          render={({ gen3User, loading: loadingGen3User }) =>
+                            loadingGen3User ? (
+                              <LoadingSpinner />
+                            ) : gen3User ? (
+                              gen3Status({
+                                theme,
+                                onView: () =>
+                                  effects.setModal({
+                                    title: 'Your Authorized Studies',
+                                    component: (
+                                      <Gen3ConnectionDetails
+                                        onComplete={effects.unsetModal}
+                                        onCancel={effects.unsetModal}
+                                      />
+                                    ),
+                                  }),
+                                onRemove: async () => {
+                                  setState({ loading: true });
+                                  await deleteGen3Token(api);
+                                  effects.setIntegrationToken(GEN3, null);
+                                  setState({ loading: false });
+                                },
                               })
-                              .catch(err => {
-                                console.log('err: ', err);
-                                setState({ loading: false });
-                                trackUserInteraction({
-                                  category: TRACKING_EVENTS.categories.user.profile,
-                                  action: TRACKING_EVENTS.actions.integration.failed,
-                                  label: TRACKING_EVENTS.gen3,
-                                });
-                              });
-                          }}
+                            ) : (
+                              <ConnectButton
+                                onClick={() => {
+                                  setState({ loading: true });
+                                  connectGen3(api)
+                                    .then(() => getAccessToken(api))
+                                    .then(token => {
+                                      effects.setIntegrationToken(GEN3, token);
+                                      setState({ loading: false });
+                                      effects.setToast({
+                                        id: `${Date.now()}`,
+                                        action: 'success',
+                                        component: (
+                                          <Row>
+                                            Controlled dataset access sucessfully connected through
+                                            Gen3
+                                          </Row>
+                                        ),
+                                      });
+                                      trackUserInteraction({
+                                        category: TRACKING_EVENTS.categories.user.profile,
+                                        action: TRACKING_EVENTS.actions.integration.connected,
+                                        label: TRACKING_EVENTS.gen3,
+                                      });
+                                    })
+                                    .catch(err => {
+                                      console.log('err: ', err);
+                                      setState({ loading: false });
+                                      trackUserInteraction({
+                                        category: TRACKING_EVENTS.categories.user.profile,
+                                        action: TRACKING_EVENTS.actions.integration.failed,
+                                        label: TRACKING_EVENTS.gen3,
+                                      });
+                                    });
+                                }}
+                              />
+                            )
+                          }
                         />
                       );
                     }}
