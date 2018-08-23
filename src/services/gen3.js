@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { gen3ApiRoot } from 'common/injectGlobals';
 import { gen3OauthRedirect, gen3IntegrationRoot } from 'common/injectGlobals';
 import jwtDecode from 'jwt-decode';
 import Component from 'react-component-component';
 import { withApi } from 'services/api';
 import { uniq } from 'lodash';
+import { compose } from 'recompose';
+import { injectState } from 'freactal';
+import { gen3ApiRoot } from 'common/injectGlobals';
+import { EGO_JWT_KEY } from 'common/constants';
 
 const AUTHORIZE_URL = `${gen3ApiRoot}user/oauth2/authorize`;
 const CLIENT_URL = `${`${gen3IntegrationRoot}/auth-client`}`;
@@ -13,16 +16,25 @@ const REFRESH_URL = `${`${gen3IntegrationRoot}/refresh`}`;
 const REDIRECT_URI = gen3OauthRedirect;
 const RESPONSE_TYPE = 'code';
 
-export const Gen3AuthRedirect = props => {
+// This component gets rendered on a new window just to write token to key manager. No need to render anything
+export const Gen3AuthRedirect = compose(withApi, injectState)(({ api, state }) => {
   const code = new URLSearchParams(window.location.search).get('code');
-  if (code) {
-    window.top.postMessage({ type: 'OAUTH_SUCCESS', payload: code }, `${window.location.origin}`);
+  const egoJwt = localStorage.getItem(EGO_JWT_KEY);
+  if (code && egoJwt) {
+    api({
+      url: `${TOKEN_URL}/?code=${code}`,
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${egoJwt}`,
+      },
+    }).then(result => {
+      window.close();
+    });
   } else {
-    window.top.postMessage({ type: 'OAUTH_FAIL', payload: code }, `${window.location.origin}`);
+    window.close();
   }
-  window.close();
   return null;
-};
+});
 
 // window.open has to happen in the same synchronus callstack as the event handler,
 // so client secrets must be available at all times.
@@ -39,52 +51,25 @@ export const connectGen3 = api => {
   const url = `${AUTHORIZE_URL}?client_id=${client_id}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${REDIRECT_URI}`;
   const authWindow = window.open(url);
   return new Promise((resolve, reject) => {
-    const state = { done: false };
-    const onAuthWindowMessage = e => {
-      const { data } = e;
-      switch (data.type) {
-        case 'OAUTH_SUCCESS':
-          clearInterval(interval);
-          const code = data.payload;
-          if (!state.done) {
-            api({
-              url: `${TOKEN_URL}/?code=${code}`,
-              method: 'POST',
-            }).then(resolve);
-          }
-          state.done = true;
-          break;
-        case `OAUTH_FAIL`:
-          clearInterval(interval);
-          state.done = true;
-          reject(data);
-          break;
-        default:
-          console.log('default: ', data);
-      }
-    };
-
-    // The NIH's login screen enforces same origin, so this interval ensures that
-    // the event handler is attached. It gets detached on every reload so an interval
-    // is the safest way...
     const interval = setInterval(() => {
-      try {
-        if (!authWindow.closed) {
-          authWindow.onmessage = onAuthWindowMessage;
-        } else {
-          if (authWindow.onmessage) {
+      if (authWindow.closed) {
+        getAccessToken(api)
+          .then(access_token => {
+            if (access_token) {
+              clearInterval(interval);
+              resolve(access_token);
+            }
+          })
+          .catch(err => {
             clearInterval(interval);
-          } else {
-            clearInterval(interval);
-            reject({
-              msg: 'PROCESS_INTERRUPTED',
-            });
-          }
-        }
-      } catch (err) {
-        console.log('err: ', err);
+            reject({ msg: 'AUTH_FAILED' });
+          });
       }
-    }, 200);
+    }, 1000);
+    setTimeout(() => {
+      clearInterval(interval);
+      reject('nothing');
+    }, 1000 * 60 * 10);
   });
 };
 
