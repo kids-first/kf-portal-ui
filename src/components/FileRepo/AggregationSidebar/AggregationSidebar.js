@@ -77,7 +77,7 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
           <Column flexStrink={0}>
             <AggregationHeader>
               <AggregationTitle>
-                <Trans>Filters</Trans> <InfoIcon />
+                <Trans>Filters</Trans>
               </AggregationTitle>
               <ActionButton
                 css={theme.uppercase}
