@@ -5,7 +5,6 @@ import BasicInfoForm from 'components/forms/BasicInfoForm';
 import { injectState } from 'freactal';
 import { Box, ExternalLink } from 'uikit/Core';
 import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
 import EnvelopeIcon from '../../icons/EnvelopeIcon';
 import MapMarkerIcon from '../../icons/MapMarkerIcon';
 import PhoneIcon from '../../icons/PhoneIcon';
@@ -21,44 +20,50 @@ const ContactItem = styled(Section)`
   line-height: 1.83;
 `;
 
-const Contact = compose(injectState, withTheme)(({ effects: { setModal }, api }, ...props) => (
-  <Box {...props}>
-    <H2>
-      Contact Information
-      <EditButton
-        onClick={() => {
-          setModal({
-            title: 'Edit Basic Information',
-            component: <BasicInfoForm {...{ api }} />,
-          });
-        }}
-      />
-    </H2>
+const Contact = compose(injectState)(({ effects: { setModal }, profile, mt }) => {
+  console.log('ciaran api');
+  console.log('ciaran profile', profile);
+  console.log('ciaran props');
+  const api = {};
+  return (
+    <Box mt={mt}>
+      <H2>
+        Contact Information
+        <EditButton
+          onClick={() => {
+            setModal({
+              title: 'Edit Basic Information',
+              component: <BasicInfoForm {...{ api }} />,
+            });
+          }}
+        />
+      </H2>
 
-    <Row alignItems="flex-start" mb={'20px'}>
-      <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
-      <ContactItem ml={'7px'}>
-        <H3>Children’s Hospital of Philadelphia</H3>
-        <div>3401 Civic Center Blvd </div>
-        <div>Philadelphia, PA, USA</div>
-        <div>19104</div>
-      </ContactItem>
-    </Row>
+      <Row alignItems="flex-start" mb={'20px'}>
+        <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
+        <ContactItem ml={'7px'}>
+          <H3>{profile.institution}</H3>
+          <div>{`${profile.addressLine1} ${profile.addressLine2}`}</div>
+          <div>{`${profile.city}, ${profile.state}, ${profile.country}`}</div>
+          <div>{profile.zip}</div>
+        </ContactItem>
+      </Row>
 
-    <Row alignItems="center" mb={'20px'}>
-      <EnvelopeIcon height={'10px'} />
-      <ContactItem ml={'7px'}>
-        <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
-          simonscientist@chop.edu
-        </EmailLink>
-      </ContactItem>
-    </Row>
+      <Row alignItems="center" mb={'20px'}>
+        <EnvelopeIcon height={'10px'} />
+        <ContactItem ml={'7px'}>
+          <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
+            {profile.email}
+          </EmailLink>
+        </ContactItem>
+      </Row>
 
-    <Row alignItems="center">
-      <PhoneIcon height={'12px'} />
-      <ContactItem ml={'7px'}>555-555-5555</ContactItem>
-    </Row>
-  </Box>
-));
+      <Row alignItems="center">
+        <PhoneIcon height={'12px'} />
+        <ContactItem ml={'7px'}>{profile.phone}</ContactItem>
+      </Row>
+    </Box>
+  );
+});
 
 export default Contact;

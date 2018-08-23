@@ -205,7 +205,7 @@ export default compose(
               </SaveButton>
             </ActionBar>
           )}
-          <Contact mt={'50px'} />
+          <Contact mt={'50px'} profile={profile} />
         </Column>
 
         <Column width="35%">
