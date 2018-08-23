@@ -8,7 +8,7 @@ import styled from 'react-emotion';
 import { AggregationsList } from '@arranger/components/dist/Arranger';
 import Query from '@arranger/components/dist/Query';
 
-import { FILE_AGGS_CONFIG, PARTICIPANT_AGGS_CONFIG } from './aggsConfig';
+import { CLINICAL_FILTERS, FILE_FILTERS } from './aggsConfig';
 import { withApi } from 'services/api';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -84,8 +84,7 @@ export default compose(injectState, withTheme, withApi)(
                 const gqlAggregationFields = types.find(
                   ({ name }) => name === `${graphqlField}Aggregations`,
                 ).fields;
-                const aggConfigToRender =
-                  selectedTab === 'FILE' ? FILE_AGGS_CONFIG : PARTICIPANT_AGGS_CONFIG;
+                const aggConfigToRender = selectedTab === 'FILE' ? FILE_FILTERS : CLINICAL_FILTERS;
                 const extendedAggConfig = aggConfigToRender
                   .filter(({ show }) => show)
                   .map(config => ({
@@ -99,8 +98,8 @@ export default compose(injectState, withTheme, withApi)(
                     <Tabs
                       selectedTab={selectedTab}
                       options={[
-                        { id: 'FILE', display: 'Clinical Filters' },
-                        { id: 'PARTICIPANT', display: 'File Filters' },
+                        { id: 'CLINICAL', display: 'Clinical Filters' },
+                        { id: 'FILE', display: 'File Filters' },
                       ]}
                       onTabSelect={({ id }) => setState({ selectedTab: id })}
                     />

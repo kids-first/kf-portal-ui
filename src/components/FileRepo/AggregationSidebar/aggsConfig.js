@@ -1,4 +1,4 @@
-export const FILE_AGGS_CONFIG = [
+export const CLINICAL_FILTERS = [
   {
     field: 'participants__study__short_name',
     show: true,
@@ -19,9 +19,6 @@ export const FILE_AGGS_CONFIG = [
     show: false,
     active: true,
   },
-];
-
-export const PARTICIPANT_AGGS_CONFIG = [
   {
     field: 'participants__family__family_compositions__family_members__race',
     show: false,
@@ -57,6 +54,9 @@ export const PARTICIPANT_AGGS_CONFIG = [
     show: true,
     active: true,
   },
+];
+
+export const FILE_FILTERS = [
   {
     field: 'participants__diagnoses__source_text_diagnosis',
     show: true,
