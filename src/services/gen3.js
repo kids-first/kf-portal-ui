@@ -28,7 +28,6 @@ export const Gen3AuthRedirect = compose(withApi, injectState)(({ api, state }) =
         Authorization: `Bearer ${egoJwt}`,
       },
     }).then(result => {
-      console.log('result: ', result);
       window.close();
     });
   } else {
