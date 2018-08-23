@@ -77,22 +77,25 @@ export default compose(injectState, withTheme, withApi)(
       render={({ loading, data }) => {
         const containerRef = React.createRef();
         if (data) {
+          const { __schema: { types } } = data;
+          const gqlAggregationFields = types.find(
+            ({ name }) => name === `${graphqlField}Aggregations`,
+          ).fields;
+          const extendAggsConfig = config =>
+            config.filter(({ show }) => show).map(config => ({
+              ...config,
+              type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
+                .type.name,
+            }));
+          const extendedClinicalFilterConfigs = extendAggsConfig(CLINICAL_FILTERS);
+          const extendedFileFilterConfigs = extendAggsConfig(FILE_FILTERS);
           return (
             <Component initialState={{ selectedTab: 'CLINICAL' }}>
               {({ state: { selectedTab }, setState }) => {
-                const { __schema: { types } } = data;
-                const gqlAggregationFields = types.find(
-                  ({ name }) => name === `${graphqlField}Aggregations`,
-                ).fields;
-                const aggConfigToRender = selectedTab === 'FILE' ? FILE_FILTERS : CLINICAL_FILTERS;
-                const extendedAggConfig = aggConfigToRender
-                  .filter(({ show }) => show)
-                  .map(config => ({
-                    ...config,
-                    type: gqlAggregationFields.find(
-                      fileAggField => config.field === fileAggField.name,
-                    ).type.name,
-                  }));
+                const aggConfigToRender =
+                  selectedTab === 'FILE'
+                    ? extendedFileFilterConfigs
+                    : extendedClinicalFilterConfigs;
                 return (
                   <Column>
                     <Tabs
@@ -113,7 +116,7 @@ export default compose(injectState, withTheme, withApi)(
                           graphqlField,
                           api,
                           containerRef,
-                          aggs: extendedAggConfig,
+                          aggs: aggConfigToRender,
                           debounceTime: 300,
                         }}
                       />
