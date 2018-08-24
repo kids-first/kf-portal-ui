@@ -43,6 +43,17 @@ const Tabs = ({ selectedTab, onTabSelect, options }) => (
   </TabsRow>
 );
 
+const ShowIf = ({ condition, children, ...rest }) => (
+  /*
+    NOTE: this style-based conditional rendering is an optimization strategy to
+    prevent re-rendering of AggregationsList which results in extra
+    fetching and visual flash
+  */
+  <div style={{ display: condition ? 'block' : 'none' }} {...rest}>
+    {children}
+  </div>
+);
+
 export default compose(injectState, withTheme, withApi)(
   ({
     api,
@@ -100,12 +111,7 @@ export default compose(injectState, withTheme, withApi)(
                     onTabSelect={({ id }) => setState({ selectedTab: id })}
                   />
                   <Column scrollY innerRef={containerRef}>
-                    {/*
-                      NOTE: this style-based conditional rendering is an optimization strategy to
-                      prevent re-rendering of AggregationsList which results in extra
-                      fetching and visual flash
-                    */}
-                    <div style={{ display: selectedTab === 'FILE' ? 'block' : 'none' }}>
+                    <ShowIf condition={selectedTab === 'FILE'}>
                       <AggregationsList
                         {...{
                           onValueChange: onValueChange,
@@ -119,8 +125,8 @@ export default compose(injectState, withTheme, withApi)(
                           debounceTime: 300,
                         }}
                       />
-                    </div>
-                    <div style={{ display: selectedTab === 'CLINICAL' ? 'block' : 'none' }}>
+                    </ShowIf>
+                    <ShowIf condition={selectedTab === 'CLINICAL'}>
                       <AggregationsList
                         {...{
                           onValueChange: onValueChange,
@@ -134,7 +140,7 @@ export default compose(injectState, withTheme, withApi)(
                           debounceTime: 300,
                         }}
                       />
-                    </div>
+                    </ShowIf>
                   </Column>
                 </Column>
               )}
