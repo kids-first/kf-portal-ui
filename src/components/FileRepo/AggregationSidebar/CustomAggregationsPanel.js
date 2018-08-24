@@ -98,6 +98,18 @@ export default compose(injectState, withTheme, withApi)(
               type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
                 .type.name,
             }));
+          const renderAggsConfig = aggConfig =>
+            AggregationsList({
+              onValueChange: onValueChange,
+              setSQON: setSQON,
+              sqon,
+              projectId,
+              graphqlField,
+              api,
+              containerRef,
+              aggs: aggConfig,
+              debounceTime: 300,
+            });
           return (
             <Component initialState={{ selectedTab: 'CLINICAL' }}>
               {({ state: { selectedTab }, setState }) => (
@@ -112,34 +124,10 @@ export default compose(injectState, withTheme, withApi)(
                   />
                   <Column scrollY innerRef={containerRef}>
                     <ShowIf condition={selectedTab === 'FILE'}>
-                      <AggregationsList
-                        {...{
-                          onValueChange: onValueChange,
-                          setSQON: setSQON,
-                          sqon,
-                          projectId,
-                          graphqlField,
-                          api,
-                          containerRef,
-                          aggs: extendAggsConfig(FILE_FILTERS),
-                          debounceTime: 300,
-                        }}
-                      />
+                      {renderAggsConfig(extendAggsConfig(FILE_FILTERS))}
                     </ShowIf>
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
-                      <AggregationsList
-                        {...{
-                          onValueChange: onValueChange,
-                          setSQON: setSQON,
-                          sqon,
-                          projectId,
-                          graphqlField,
-                          api,
-                          containerRef,
-                          aggs: extendAggsConfig(CLINICAL_FILTERS),
-                          debounceTime: 300,
-                        }}
-                      />
+                      {renderAggsConfig(extendAggsConfig(CLINICAL_FILTERS))}
                     </ShowIf>
                   </Column>
                 </Column>
