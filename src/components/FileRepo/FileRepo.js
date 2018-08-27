@@ -110,6 +110,12 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   category: TRACKING_EVENTS.categories.fileRepo.dataTable,
                                   action: TRACKING_EVENTS.actions.query.clear,
                                 });
+                                trackFileRepoInteraction({
+                                  category: 'File Repo',
+                                  action: TRACKING_EVENTS.actions.query.abandoned,
+                                  label: 'cleared SQON',
+                                  value: 1,
+                                });
                               }}
                             />
                             {url.sqon &&
