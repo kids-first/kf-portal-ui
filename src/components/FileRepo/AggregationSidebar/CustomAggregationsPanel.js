@@ -20,7 +20,7 @@ const TabsRow = styled(({ className, ...props }) => (
   padding-left: 10px;
   border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
 `;
 const Tab = styled(({ className, selected, ...props }) => (
   <Row
