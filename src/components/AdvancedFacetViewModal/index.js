@@ -53,6 +53,7 @@ class AdvancedFacetViewModalContent extends React.Component {
       state: { localSqon },
       closeModal = () => {},
       onSqonSubmit = () => {},
+      setSQON,
       trackFileRepoInteraction,
       ...props
     } = this.props;
@@ -64,27 +65,30 @@ class AdvancedFacetViewModalContent extends React.Component {
             InputComponent={CustomFilterInput}
             sqon={localSqon}
             onSqonChange={({ sqon, field, value }) => effects.setAdvancedFacetSqon(sqon)}
-            onSqonSubmit={({ sqon, ...rest }) => {
-              trackFileRepoInteraction({
+            onFacetNavigation={path => {
+              let facetNavEvent = {
                 category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                action: 'View Results',
-                label: sqon,
-              });
-              if (props.onSqonSubmit) {
-                props.onSqonSubmit({ sqon, ...rest });
+                action: TRACKING_EVENTS.actions.click + ' side navigation',
+                label: path,
+              };
+              trackFileRepoInteraction(facetNavEvent);
+              if (props.onFacetNavigation) {
+                props.onFacetNavigation(path);
               }
             }}
-            onFilterChange={({ val, ...rest }) => {
-              trackFileRepoInteraction({
-                category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                action: TRACKING_EVENTS.actions.filter + ' - Search',
-                ...(val && { label: val }),
-              });
-              if (props.onFilterChange) {
-                props.onFilterChange({ val, ...rest });
+            onFilterChange={val => {
+              if (val !== '') {
+                trackFileRepoInteraction({
+                  category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                  action: TRACKING_EVENTS.actions.filter + ' - Search',
+                  ...(val && { label: val }),
+                });
+                if (props.onFilterChange) {
+                  props.onFilterChange(val);
+                }
               }
             }}
-            onValueChange={({ field, value, active, ...rest }) => {
+            onTermSelected={({ field, value, active, ...rest }) => {
               if (active) {
                 trackFileRepoInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
@@ -105,7 +109,7 @@ class AdvancedFacetViewModalContent extends React.Component {
                 category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
                 action: TRACKING_EVENTS.actions.query.clear,
               });
-              if (props.onClear()) {
+              if (props.onClear) {
                 props.onClear();
               }
             }}
