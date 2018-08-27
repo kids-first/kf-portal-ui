@@ -62,6 +62,8 @@ export const TRACKING_EVENTS = {
   },
   labels: {
     joinProcess: 'Join Process',
+    gen3: 'Gen3',
+    cavatica: 'Cavatica',
   },
   timings: {
     modal: 'MODAL__',
