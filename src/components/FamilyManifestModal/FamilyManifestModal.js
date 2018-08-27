@@ -191,10 +191,23 @@ export default compose(
                       sqon: downloadSqon,
                       columns: columns,
                     })();
+                    // track only the file_name column so that we can cross-reference against S3 logs
                     trackUserInteraction({
                       category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                       action: 'Download Manifest ' + TRACKING_EVENTS.actions.click,
-                      label: 'Participant and Family',
+                      label: JSON.stringify({
+                        sqon: downloadSqon,
+                        columns: [
+                          {
+                            field: 'file_name',
+                            accessor: 'file_name',
+                            show: true,
+                            type: 'string',
+                            sortable: true,
+                            type: 'string',
+                          },
+                        ],
+                      }),
                     });
                     unsetModal();
                   },
