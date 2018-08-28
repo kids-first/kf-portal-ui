@@ -20,13 +20,15 @@ import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
 import TextArea from 'uikit/TextArea';
 import ExternalLink from 'uikit/ExternalLink';
+import { H3 } from 'uikit/Core';
+import { FormLabel, FormTextArea } from '../../uikit/Form/ui';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;
   align-items: center;
 `;
 
-const Terms = styled(TextArea)`
+const Terms = styled(FormTextArea)`
   height: 250px;
   overflow-y: scroll;
 `;
@@ -56,11 +58,11 @@ const Consent = compose(
   }) => {
     return (
       <ConsentContainer>
-        <h3 className={theme.h3}>
+        <H3 mr={'auto'}>
           <Trans i18nKey="join.terms.instructions">
             Read and consent to our terms and conditions
           </Trans>
-        </h3>
+        </H3>
         <Terms>
           <b>
             <Trans i18nKey="join.terms.title">Last Update Date: 7/13/18</Trans>
@@ -151,11 +153,11 @@ const Consent = compose(
           }}
         >
           <input type="checkbox" checked={accepted} />
-          <Label>
+          <FormLabel>
             <Trans i18nKey="join.terms.userAgreement">
               I have read and agreed to the Kids First Data Research Portal Term and Conditions
             </Trans>
-          </Label>
+          </FormLabel>
         </CheckboxBubble>
       </ConsentContainer>
     );

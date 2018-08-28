@@ -124,6 +124,13 @@ export const H1 = applyDefaultStyles('h1');
 
 export const H2 = applyDefaultStyles('h2');
 
-export const H3 = applyDefaultStyles('h3');
+export const H3 = applyDefaultStyles(styled('h3')`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.44;
+  letter-spacing: 0.3px;
+  color: ${({ theme }) => theme.secondary};
+  letter-spacing: 0;
+`);
 
 export const H4 = applyDefaultStyles('h4');

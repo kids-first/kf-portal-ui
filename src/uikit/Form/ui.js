@@ -1,5 +1,6 @@
 import styled from 'react-emotion';
 import { applyDefaultStyles } from '../Core';
+import TextArea from '../TextArea';
 
 const formText = ` 
   font-family: ${({ theme }) => theme.fonts.details};
@@ -14,6 +15,10 @@ export const FormCopy = applyDefaultStyles(styled('p')`
 `);
 
 export const FormLabel = applyDefaultStyles(styled('label')`
+  ${formText};
+`);
+
+export const FormTextArea = applyDefaultStyles(styled(TextArea)`
   ${formText};
 `);
 
