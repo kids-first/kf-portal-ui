@@ -7,7 +7,7 @@ import { SocialIcon } from 'react-social-icons';
 import { withTheme } from 'emotion-theming';
 
 import { kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
-import { EditButton, H2, H4, SaveButton, StyledSection, ClickToAdd, InterestsCard } from './ui';
+import { EditButton, H4, SaveButton, StyledSection, ClickToAdd, InterestsCard } from './ui';
 
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
 import { Flex } from 'uikit/Core';
@@ -20,6 +20,7 @@ import ErrorIcon from 'icons/ErrorIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+import { H2 } from 'uikit/Headings';
 
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 

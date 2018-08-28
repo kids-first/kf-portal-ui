@@ -120,14 +120,13 @@ export const Paragraph = applyDefaultStyles(styled('p')`
   font-family: ${({ theme }) => theme.fonts.details};
   line-height: 28px;
   font-size: 15px;
+  color: ${({ theme }) => theme.greyScale1};
+  margin: 0;
 `);
 
 export const H1 = applyDefaultStyles('h1');
 
-export const H2 = applyDefaultStyles(styled('h2')`
-  font-weight: 500;
-  color: ${({ theme }) => theme.secondary};
-`);
+export const H2 = applyDefaultStyles('h2');
 
 export const H3 = applyDefaultStyles('h3');
 

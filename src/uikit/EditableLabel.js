@@ -8,6 +8,7 @@ import { Trans } from 'react-i18next';
 import { withTheme } from 'emotion-theming';
 
 import PencilIcon from 'react-icons/lib/fa/pencil';
+import { BioCopy } from '../components/UserProfile/ui';
 
 export default compose(
   withTheme,
@@ -173,7 +174,7 @@ export default compose(
             cursor: 'text',
           }}
         >
-          <span
+          <BioCopy
             css={`
               white-space: pre-line;
             `}
@@ -181,7 +182,7 @@ export default compose(
             {trim(inputValue)
               ? renderNonEditing ? renderNonEditing(trim(inputValue)) : trim(inputValue)
               : placeholderComponent}
-          </span>
+          </BioCopy>
           {!disabled && <PencilIcon style={{ paddingLeft: '10px' }} />}
         </div>
       )}

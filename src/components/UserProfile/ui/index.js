@@ -103,3 +103,10 @@ export const InterestsCard = styled(Box)`
   box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
   margin-bottom: 15px;
 `;
+
+export const BioCopy = styled('div')`
+  font-family: ${({ theme }) => theme.fonts.details};
+  line-height: 26px;
+  font-size: 14px;
+  color: ${({ theme }) => theme.greyScale1};
+`;

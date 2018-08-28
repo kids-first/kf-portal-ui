@@ -26,6 +26,7 @@ import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import Gravtar from 'uikit/Gravatar';
 import Row from 'uikit/Row';
+import { H1 } from 'uikit/Headings';
 
 export const userProfileBackground = (
   loggedInUser,
@@ -126,11 +127,7 @@ export default compose(
           >
             <RoleIconButton />
 
-            <h4
-              className={css`
-                ${theme.h4};
-              `}
-            >{`${profile.firstName} ${profile.lastName}`}</h4>
+            <H1 color="#fff">{`${profile.firstName} ${profile.lastName}`}</H1>
             <div
               className={css`
                 font-size: 14px;

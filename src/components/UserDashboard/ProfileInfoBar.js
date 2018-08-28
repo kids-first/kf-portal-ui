@@ -57,9 +57,10 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       </div>
     </RoleIconButton>
     <div>
-      <H2 mb={'24px'} color={'#fff'}>
+      <H2>
         <Link
           to={`/user/${loggedInUser.egoId}#aboutMe`}
+          style={{ color: '#fff' }}
           css={`
             text-decoration: none;
             text-align: center;

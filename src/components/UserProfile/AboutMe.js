@@ -5,7 +5,7 @@ import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { Container, EditButton, H2, H3, H4, SaveButton, StyledSection, ClickToAdd } from './ui';
+import { Container, EditButton, H4, SaveButton, StyledSection, ClickToAdd, BioCopy } from './ui';
 import ResearchInterests from './ResearchInterests';
 import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';
@@ -15,6 +15,7 @@ import { Flex } from 'uikit/Core';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
+import { H2, H3 } from 'uikit/Headings';
 
 const ActionBar = styled(Row)`
   justify-content: space-between;
@@ -109,9 +110,9 @@ export default compose(
             <H3>My bio</H3>
             {(bioTextarea === '' || isEditingBackgroundInfo) &&
               canEdit && (
-                <H4>
+                <BioCopy>
                   Share information about your professional background and your research interests.
-                </H4>
+                </BioCopy>
               )}
             <EditableLabel
               autoFocus={focusedTextArea !== 'myStory'}
@@ -143,7 +144,7 @@ export default compose(
           <StyledSection className={'userStory'}>
             <H3>My story</H3>
             {(storyTextarea === '' || isEditingBackgroundInfo) &&
-              canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
+              canEdit && <BioCopy>Share why you’re a part of the Kids First community.</BioCopy>}
             <EditableLabel
               autoFocus={focusedTextArea === 'myStory'}
               type="textarea"

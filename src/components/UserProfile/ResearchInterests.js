@@ -5,15 +5,16 @@ import { xor } from 'lodash';
 
 import { withApi } from 'services/api';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
-import { EditButton, H2, H4, SaveButton, ClickToAdd, InterestsCard } from './ui';
+import { EditButton, H4, SaveButton, ClickToAdd, InterestsCard } from './ui';
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
 
-import { Box, Flex, textTransform } from 'uikit/Core';
+import { Box, Flex } from 'uikit/Core';
 import Row from 'uikit/Row';
 import { HollowButton } from 'uikit/Button';
 import { Tag } from 'uikit/Tags';
 import { withTheme } from 'emotion-theming';
+import { H2 } from 'uikit/Headings';
 
 const InterestsContainer = styled(Box)`
   background-color: ${({ theme }) => theme.backgroundGrey};

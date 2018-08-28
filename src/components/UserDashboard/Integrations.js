@@ -9,6 +9,9 @@ import ExternalLink from 'uikit/ExternalLink';
 import { IntegrationsDiv, IntegrationsCircleDiv, H4 } from './styles';
 import IntegrationsStatus from './IntegrationsStatus';
 
+import { H3 } from 'uikit/Headings';
+import { Paragraph } from '../../uikit/Core';
+
 const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
   <div
     css={`
@@ -38,13 +41,15 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 260px;
         `}
       >
-        <H4>Access Controlled Data</H4>
+        <H3 lineHeight="1" mb="5px">
+          Access Controlled Data
+        </H3>
         <IntegrationsStatus
           connected={integrationTokens[GEN3]}
           theme={theme}
           name="Gen3"
           url={gen3WebRoot}
-          unconnectedMsg={<div>Connect to Gen3 to download controlled data</div>}
+          unconnectedMsg={<Paragraph>Connect to Gen3 to download controlled data</Paragraph>}
         />
       </div>
     </IntegrationsDiv>
@@ -66,7 +71,9 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           max-width: 260px;
         `}
       >
-        <H4>Analyze Data</H4>
+        <H3 lineHeight="1" mb="5px">
+          Analyze Data
+        </H3>
 
         <IntegrationsStatus
           connected={integrationTokens[CAVATICA]}
@@ -74,7 +81,9 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           name="Cavatica"
           url={cavaticaWebRoot}
           unconnectedMsg={
-            <div>Analyze data quickly by connecting your Kids First account to Cavatica</div>
+            <Paragraph>
+              Analyze data quickly by connecting your Kids First account to Cavatica
+            </Paragraph>
           }
         />
       </div>
