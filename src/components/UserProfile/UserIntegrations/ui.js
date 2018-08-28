@@ -9,10 +9,6 @@ export const UserIntegrationsWrapper = styled('div')`
     border-collapse: collapse;
   }
   td,
-  th {
-    padding: 10px;
-    font-weight: normal;
-  }
   td {
     background: white;
   }
@@ -45,8 +41,7 @@ export const UserIntegrationsWrapper = styled('div')`
 `;
 
 export const IntegrationTable = styled('table')`
-  td,
-  th {
+  td {
     border: 1px solid ${({ theme }) => theme.greyScale5};
   }
   & thead {

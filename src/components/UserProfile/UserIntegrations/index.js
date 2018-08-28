@@ -33,6 +33,7 @@ import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 import { applyDefaultStyles } from '../../../uikit/Core';
+import { TableHeader } from '../../../uikit/Table/TableHeaders';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -156,9 +157,9 @@ const UserIntegrations = withApi(
         <IntegrationTable>
           <thead>
             <tr>
-              <th>Service</th>
-              <th>Purpose</th>
-              <th>Integrate</th>
+              <TableHeader>Service</TableHeader>
+              <TableHeader>Purpose</TableHeader>
+              <TableHeader>Integrate</TableHeader>
             </tr>
           </thead>
           <tbody>
