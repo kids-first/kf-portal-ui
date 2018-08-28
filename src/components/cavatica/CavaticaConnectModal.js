@@ -42,7 +42,7 @@ const submitCavaticaToken = async ({
     trackUserInteraction({
       category: TRACKING_EVENTS.categories.user.profile,
       action: TRACKING_EVENTS.actions.integration.connected,
-      label: 'Cavatica',
+      label: TRACKING_EVENTS.labels.cavatica,
     });
     onSuccess();
   } else {
@@ -51,7 +51,7 @@ const submitCavaticaToken = async ({
     trackUserInteraction({
       category: TRACKING_EVENTS.categories.user.profile,
       action: TRACKING_EVENTS.actions.integration.failed,
-      label: 'Cavatica',
+      label: TRACKING_EVENTS.labels.cavatica,
     });
     onFail();
   }
@@ -133,7 +133,7 @@ const CavaticaConnectModal = withTheme(
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.user.profile,
                   action: TRACKING_EVENTS.actions.integration.udpatedCreds,
-                  label: 'Cavatica',
+                  label: TRACKING_EVENTS.labels.cavatica,
                 });
               }}
             />
