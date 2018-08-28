@@ -311,18 +311,20 @@ const components = {
   h2: css`
     text-align: center;
     color: ${colors.secondary};
-    font-size: 30px;
+    font-size: 28px;
     line-height: 0.87;
     letter-spacing: 0.4px;
+    font-family: ${fonts.default}, sans-serif;
     color: #2b388f;
     font-weight: 500;
   `,
   h3: css`
     font-weight: 500;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.44;
     letter-spacing: 0.3px;
     color: ${colors.secondary};
+    letter-spacing: 0;
   `,
   h4: css`
     font-family: ${fonts.details};
