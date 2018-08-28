@@ -21,6 +21,7 @@ import { ButtonsDiv } from '../Join';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
+import { FormLabel, FormCopy, FormHeading } from '../../uikit/Form/ui';
 
 const SelectRoleForm = styled('form')`
   justify-content: space-around;
@@ -43,14 +44,8 @@ const RoleBubble = styled(CheckboxBubble)`
   justify-content: flex-start;
 `;
 
-const RoleLabel = styled('label')`
-  color: ${({ theme }) => theme.secondary};
-  font-weight: 600;
-  display: block;
+const RoleLabel = styled(FormHeading)`
   text-transform: capitalize;
-  border: none;
-  font-size: 15px;
-  line-height: 1.33;
 `;
 
 const Label = styled('label')`
@@ -62,11 +57,6 @@ const Label = styled('label')`
   font-weight: 600;
   line-height: 2;
   color: ${({ theme }) => theme.greyScale1};
-`;
-
-const CheckboxLabel = styled(`label`)`
-  font-size: 14px;
-  margin-left: 10px;
 `;
 
 export const enhance = compose(
@@ -243,7 +233,7 @@ export default enhance(
                   {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
                   <div>
                     <RoleLabel>{displayName}</RoleLabel>
-                    {description}
+                    <FormCopy>{description}</FormCopy>
                   </div>
                 </RoleBubble>
               ))}
@@ -258,13 +248,13 @@ export default enhance(
               id="acceptedKfOptIn"
               name="acceptedKfOptIn"
             />
-            <CheckboxLabel htmlFor="acceptedKfOptIn">
+            <FormLabel ml={'10px'} htmlFor="acceptedKfOptIn">
               <Trans>
                 I would like to receive the Kids First Data Resource Center quarterly newsletter to
                 get the latest DRC news including recent study updates, new investigators and
                 partners added to the effort.
               </Trans>
-            </CheckboxLabel>
+            </FormLabel>
           </Row>
           <Row mt={2} pb={2}>
             <Field
@@ -274,12 +264,13 @@ export default enhance(
               id="acceptedNihOptIn"
               name="acceptedNihOptIn"
             />
-            <CheckboxLabel htmlFor="acceptedNihOptIn">
+
+            <FormLabel ml={'10px'} htmlFor="acceptedNihOptIn">
               <Trans>
                 I would like to receive updates from the NIH Kids First program including funding
                 updates and news about the program.
               </Trans>
-            </CheckboxLabel>
+            </FormLabel>
           </Row>
         </SelectRoleForm>
         <ButtonsDiv>

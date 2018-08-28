@@ -12,7 +12,7 @@ import ConsentForm from 'components/forms/ConsentForm';
 import { withApi } from 'services/api';
 import { startAnalyticsTiming, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { ExternalLink } from 'uikit/Core';
+import { ExternalLink, Paragraph } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
 import FlashMessage from 'uikit/FlashMessage';
@@ -75,12 +75,14 @@ const JoinContent = compose(
                     Select a way to connect to the Kids First Data Resource Portal
                   </Trans>
                 </h3>
-                <p>
+
+                <Paragraph>
                   <Trans i18nKey="join.wizard.dataConfidentiality">
                     Your information will be kept confidential and secure and is not shared with any
                     of these providers.
                   </Trans>
-                </p>
+                </Paragraph>
+
                 <Login
                   shouldNotRedirect={true}
                   onFinish={user => {
@@ -103,12 +105,12 @@ const JoinContent = compose(
                 <h3 className={theme.h3}>
                   <Trans i18nKey="join.wizard.basicInfoHeader">Tell us about yourself</Trans>
                 </h3>
-                <p>
+                <Paragraph>
                   <Trans i18nKey="join.wizard.basicInfoInstructions">
                     Please provide information about yourself to help us personalize your
                     experience.
                   </Trans>
-                </p>
+                </Paragraph>
                 <SelectRoleForm
                   onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}
                   onValidChange={isValid => disableNextStep(!isValid)}
