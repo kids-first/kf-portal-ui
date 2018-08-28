@@ -1,12 +1,14 @@
 import React from 'react';
-import Gravtar from 'uikit/Gravatar';
 import { Link } from 'react-router-dom';
-import EditButton from './EditButton';
 
+import EditButton from './EditButton';
 import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import { userProfileBackground } from '../UserProfile';
+
+import Gravtar from 'uikit/Gravatar';
+import { H2 } from 'uikit/Headings';
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
   <div
@@ -55,22 +57,20 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       </div>
     </RoleIconButton>
     <div>
-      <Link
-        to={`/user/${loggedInUser.egoId}#aboutMe`}
-        css={`
-          text-decoration: underline;
-          text-align: center;
-          color: #ffffff;
-          font-size: 28px;
-          font-weight: 500;
-          line-height: 1.11;
-          letter-spacing: 0.4px;
-          margin-bottom: 24px;
-        `}
-      >
-        {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
-        {loggedInUser.firstName} {loggedInUser.lastName}
-      </Link>
+      <H2 mb={'24px'} color={'#fff'}>
+        <Link
+          to={`/user/${loggedInUser.egoId}#aboutMe`}
+          css={`
+            text-decoration: none;
+            text-align: center;
+            line-height: 1.11;
+            letter-spacing: 0.4px;
+          `}
+        >
+          {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
+          {loggedInUser.firstName} {loggedInUser.lastName}
+        </Link>
+      </H2>
       {[
         loggedInUser.jobTitle && (
           <span

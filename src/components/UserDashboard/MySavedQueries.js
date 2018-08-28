@@ -11,6 +11,7 @@ import { injectState } from 'freactal';
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import SaveIconBase from '../../icons/SaveIcon';
 
+import { H2 } from 'uikit/Headings';
 import { Box, Flex, Span, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
@@ -103,9 +104,7 @@ const MySavedQueries = compose(
       <Container>
         <GradientBar {...{ profileColors }} />
         <Header p={3} lineHeight={2} {...{ queries }}>
-          <H3 mt={2} fontWeight={300}>
-            Saved Queries
-          </H3>
+          <H2 mt={2}>Saved Queries</H2>
           <Flex ml="auto" alignItems="center">
             <SaveIcon />
             <Span pr={2} pl={3} fontSize={3}>

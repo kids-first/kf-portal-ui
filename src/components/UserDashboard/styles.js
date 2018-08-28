@@ -10,6 +10,7 @@ export const H3 = styled(H3Core)`
   letter-spacing: 0.3px;
   text-align: left;
   color: ${({ theme }) => theme.primaryHover};
+
   margin: 0;
 `;
 

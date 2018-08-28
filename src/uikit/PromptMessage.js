@@ -58,7 +58,7 @@ export const PromptMessageContent = applyDefaultStyles(styled(Div)`
   line-height: 1.6em;
   font-family: 'Open Sans', sans-serif;
   font-size: 15px;
-  line-height: 30px;
+  line-height: 28px;
 `);
 
 export const PromptMessageContainer = ({

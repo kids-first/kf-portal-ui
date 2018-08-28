@@ -25,6 +25,7 @@ import {
   position,
   left,
   right,
+  display,
 } from 'styled-system';
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
@@ -56,6 +57,7 @@ export const applyDefaultStyles = Component => styled(Component)`
   ${position}
   ${left}
   ${right}
+  ${display}
 `;
 
 const boxStyles = complexStyle({
@@ -122,7 +124,10 @@ export const Paragraph = applyDefaultStyles(styled('p')`
 
 export const H1 = applyDefaultStyles('h1');
 
-export const H2 = applyDefaultStyles('h2');
+export const H2 = applyDefaultStyles(styled('h2')`
+  font-weight: 500;
+  color: ${({ theme }) => theme.secondary};
+`);
 
 export const H3 = applyDefaultStyles('h3');
 
