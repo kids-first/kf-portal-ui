@@ -1,6 +1,5 @@
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
-import { omit } from 'lodash';
 
 // TODO: Issue #321
 // acceptedKfOptIn
@@ -86,11 +85,10 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
 };
 
 export const updateProfile = api => async ({ user }) => {
-  const userModel = omit(user, 'egoGroups');
   const { data: { userUpdate: { record } } } = await api({
     url,
     body: {
-      variables: { record: userModel },
+      variables: { record: user },
       query: `
         mutation($record: UpdateByIdUserModelInput!) {
           userUpdate(record: $record) {

@@ -99,7 +99,7 @@ const setUserDimensions = (userId, role, groups) => {
   }
 
   if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
-    let _groups = JSON.stringify({ egoGroups: groups || GAState.egoGroups });
+    let _groups = JSON.stringify({ egoGroups: groups ? groups[0] : GAState.egoGroups[0] });
     // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
     // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
     ReactGA.set({ dimension4: _groups });
@@ -122,7 +122,7 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGr
 };
 
 export const trackUserInteraction = async ({ category, action, label }) => {
-  setUserDimensions();
+  setUserDimensions(GAState.userId, GAState.userRoles[0], GAState.egoGroups);
   ReactGA.event({ category, action, label });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
@@ -224,7 +224,7 @@ export const trackTiming = async eventData => {
 };
 
 export const trackPageView = (page, options = {}) => {
-  setUserDimensions();
+  setUserDimensions(GAState.userId, GAState.userRoles[0], GAState.egoGroups);
   ReactGA.set({
     page,
     ...options,
