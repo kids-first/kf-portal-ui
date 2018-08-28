@@ -20,15 +20,15 @@ import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
 import TextArea from 'uikit/TextArea';
 import ExternalLink from 'uikit/ExternalLink';
-import { H3 } from 'uikit/Core';
-import { FormLabel, FormTextArea } from '../../uikit/Form/ui';
+import { H3 } from 'uikit/Headings';
+import { FormLabel } from '../../uikit/Form/ui';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;
   align-items: center;
 `;
 
-const Terms = styled(FormTextArea)`
+const Terms = styled(TextArea)`
   height: 250px;
   overflow-y: scroll;
 `;
