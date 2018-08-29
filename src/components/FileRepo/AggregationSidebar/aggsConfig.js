@@ -10,7 +10,37 @@ export const CLINICAL_FILTERS = [
     active: true,
   },
   {
+    field: 'participants__diagnoses__source_text_diagnosis',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__family__family_compositions__composition',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__is_proband',
+    show: true,
+    active: true,
+  },
+  {
     field: 'participants__gender',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__race',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__biospecimens__source_text_tissue_type',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__study__external_id',
     show: true,
     active: true,
   },
@@ -25,11 +55,6 @@ export const CLINICAL_FILTERS = [
     active: true,
   },
   {
-    field: 'participants__race',
-    show: true,
-    active: true,
-  },
-  {
     field: 'participants__family__family_compositions__family_members__ethnicity',
     show: false,
     active: true,
@@ -40,38 +65,13 @@ export const CLINICAL_FILTERS = [
     active: true,
   },
   {
-    field: 'participants__family__family_compositions__composition',
-    show: true,
-    active: true,
-  },
-  {
     field: 'participants__family__family_compositions__family_members__is_proband',
     show: false,
     active: true,
   },
   {
-    field: 'participants__is_proband',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__diagnoses__source_text_diagnosis',
-    show: true,
-    active: true,
-  },
-  {
-    field: 'participants__biospecimens__source_text_tissue_type',
-    show: true,
-    active: true,
-  },
-  {
     field: 'participants__study__name',
     show: false,
-    active: true,
-  },
-  {
-    field: 'participants__study__external_id',
-    show: true,
     active: true,
   },
   {
