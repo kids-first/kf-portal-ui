@@ -32,16 +32,13 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
           projectId={arrangerProjectId}
           shouldFetch={shouldFetch}
           query={`query ($sqon: JSON) {
-          file {
-            aggregations(filters: $sqon) {
-              participants__study__external_id {
-                buckets {
-                  key
-                }
+            file {
+              aggregations(filters: $sqon) {
+                participants__study__external_id { buckets { key } }
+                acl { buckets { key } }
               }
             }
-          }
-        }`}
+          }`}
           variables={{
             sqon: {
               op: 'and',
@@ -61,6 +58,9 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
               data,
               'file.aggregations.participants__study__external_id.buckets',
             ) || [])[0];
+            const acl = get(data, 'file.aggregations.acl.buckets') || [];
+            console.log('acl: ', acl);
+            console.log('userProjectIds: ', userProjectIds);
             return (
               <Row center height={'100%'}>
                 {loadingQuery ? (
