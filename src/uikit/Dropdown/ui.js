@@ -7,7 +7,7 @@ import ChevronIcon from '../../icons/ChevronIcon';
 export const DropdownContainer = styled(Row)`
   position: relative;
   white-space: nowrap;
-  z-index: 100;
+  z-index: auto;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.white};
   border: solid 1px ${({ theme }) => theme.borderGrey};
@@ -34,7 +34,7 @@ export const DropdownOptionsContainer = styled(Column)`
   position: absolute;
   background: ${({ theme }) => theme.white};
   min-width: 100%;
-  z-index: 1;
+  z-index: 200;
   cursor: pointer;
   padding: 5;
   right: ${({ align }) => (align === 'right' ? '25px' : 'auto')};
