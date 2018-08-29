@@ -10,7 +10,7 @@ import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
 import Tooltip from 'uikit/Tooltip';
-import { arrangerApiRoot } from 'common/injectGlobals';
+import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
@@ -52,7 +52,7 @@ export default injectState(
       shortenApi({ stats, sqon, loggedInUser, api, sharedPublicly: true })
         .then(data => {
           this.setState({
-            link: urlJoin(arrangerApiRoot, 's', data.id),
+            link: urlJoin(shortUrlResolveRoot, data.id),
           });
         })
         .catch(error => {

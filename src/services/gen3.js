@@ -17,24 +17,32 @@ const REDIRECT_URI = gen3OauthRedirect;
 const RESPONSE_TYPE = 'code';
 
 // This component gets rendered on a new window just to write token to key manager. No need to render anything
-export const Gen3AuthRedirect = compose(withApi, injectState)(({ api, state }) => {
-  const code = new URLSearchParams(window.location.search).get('code');
-  const egoJwt = localStorage.getItem(EGO_JWT_KEY);
-  if (code && egoJwt) {
-    api({
-      url: `${TOKEN_URL}/?code=${code}`,
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${egoJwt}`,
-      },
-    }).then(result => {
-      window.close();
-    });
-  } else {
-    window.close();
-  }
-  return null;
-});
+export const Gen3AuthRedirect = compose(withApi, injectState)(({ api, state }) => (
+  <Component
+    didMount={() => {
+      const code = new URLSearchParams(window.location.search).get('code');
+      const egoJwt = localStorage.getItem(EGO_JWT_KEY);
+      if (code && egoJwt) {
+        api({
+          url: `${TOKEN_URL}/?code=${code}`,
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${egoJwt}`,
+          },
+        })
+          .then(result => {
+            window.close();
+          })
+          .catch(err => {
+            window.alert('Something went wrong, please refresh your window and try again.');
+            window.close();
+          });
+      } else {
+        window.close();
+      }
+    }}
+  />
+));
 
 // window.open has to happen in the same synchronus callstack as the event handler,
 // so client secrets must be available at all times.
