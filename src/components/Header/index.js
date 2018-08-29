@@ -53,7 +53,7 @@ const Header = ({
       <GradientAccent />
       <HeaderContent>
         <Row>
-          <Link to="/">
+          <Link to="/dashboard">
             <Logo src={logoPath} alt="Kids First Logo" />
           </Link>
           {canSeeProtectedRoutes && (
