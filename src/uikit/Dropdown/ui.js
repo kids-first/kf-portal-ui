@@ -1,6 +1,8 @@
+import React from 'react';
 import styled from 'react-emotion';
 import Column from '../Column';
 import Row from '../Row';
+import ChevronIcon from '../../icons/ChevronIcon';
 
 export const DropdownContainer = styled(Row)`
   position: relative;
@@ -67,10 +69,10 @@ export const DropdownOptionsContainer = styled(Column)`
   }
 `;
 
-export const DropDownImage = styled('img')`
+export const DropdownChevron = styled(ChevronIcon)`
   width: 9px;
   margin-left: 7px;
   margin-right: 12px;
-  transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
   transition: transform 0.2s;
+  transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
 `;

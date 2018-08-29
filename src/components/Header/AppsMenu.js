@@ -2,7 +2,44 @@ import React, { Fragment } from 'react';
 import Dropdown from 'uikit/Dropdown';
 import { Trans } from 'react-i18next';
 import { compose, withState, withHandlers } from 'recompose';
-import { DropdownLink, NavbarDropdownWrapper, NavbarDropdownOptionsContainer } from './ui';
+import styled from 'react-emotion';
+import {
+  NavbarDropdownWrapper,
+  NavbarKidsFirstDropdown,
+  AllAppsRow,
+  DropdownExternalLink,
+} from './ui';
+import AllAppsContact from '../../icons/AllAppsContact';
+import AllAppsSupport from '../../icons/AllAppsSupport';
+import AllAppsWebsite from '../../icons/AllAppsWebsite';
+import AllAppsPortal from '../../icons/AllAppsPortal';
+import AllAppsMenu from '../../icons/AllAppsMenu';
+import { DropdownChevron } from '../../uikit/Dropdown/ui';
+
+const KidsFirstMenu = ({ isDropdownVisible }) => {
+  const color = isDropdownVisible ? '#e83a9c' : '#a42c90';
+  return (
+    <AllAppsRow alignItems="center" height={'55px'}>
+      <AllAppsMenu width="14px" height="14px" fill={color} />{' '}
+      <span
+        css={`
+          color: ${color};
+        `}
+      >
+        Kids First
+      </span>
+    </AllAppsRow>
+  );
+};
+
+const DropdownArrow = styled(DropdownChevron)`
+  width: 9px;
+  margin-left: 7px;
+  margin-right: 12px;
+  transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
+  transition: transform 0.2s;
+  fill: ${({ isOpen }) => (isOpen ? '#e83a9c' : '#a42c90')};
+`;
 
 const AppsMenu = ({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
   <Dropdown
@@ -11,27 +48,50 @@ const AppsMenu = ({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) 
     onToggle={toggleDropdown}
     onOuterClick={() => setDropdownVisibility(false)}
     items={[
-      <DropdownLink onClick={toggleDropdown} to={'/'}>
-        <Trans>Data Resource Portal</Trans>
-      </DropdownLink>,
-      <DropdownLink onClick={toggleDropdown} to={'https://kidsfirstdrc.org/'}>
-        <Trans>Website</Trans>
-      </DropdownLink>,
-      <DropdownLink
+      <DropdownExternalLink onClick={toggleDropdown}>
+        <AllAppsRow
+          alignItems="center"
+          css={`
+            color: #e83a9c;
+          `}
+        >
+          <AllAppsPortal width="12px" height="14px" fill="#e83a9c" />
+          <Trans>Data Resource Portal</Trans>
+        </AllAppsRow>
+      </DropdownExternalLink>,
+      <DropdownExternalLink
         onClick={toggleDropdown}
-        to={'https://kidsfirstdrc.org/support/getting-started/'}
+        href="https://kidsfirstdrc.org/"
+        target="_blank"
       >
-        <Trans>Support</Trans>
-      </DropdownLink>,
-      <DropdownLink onClick={toggleDropdown} to={'https://kidsfirstdrc.org/contact'}>
-        <Trans>Contact</Trans>
-      </DropdownLink>,
+        <AllAppsRow alignItems="center">
+          <AllAppsWebsite width="14px" height="13px" />
+          <Trans>Website</Trans>
+        </AllAppsRow>
+      </DropdownExternalLink>,
+      <DropdownExternalLink
+        onClick={toggleDropdown}
+        href="https://kidsfirstdrc.org/support/getting-started/"
+        target="_blank"
+      >
+        <AllAppsRow alignItems="center">
+          <AllAppsSupport width="15px" height="15px" />
+          <Trans>Support</Trans>
+        </AllAppsRow>
+      </DropdownExternalLink>,
+      <DropdownExternalLink onClick={toggleDropdown} href="https://kidsfirstdrc.org/contact">
+        <AllAppsRow alignItems="center">
+          <AllAppsContact width="16px" height="11px" />
+          <Trans>Contact</Trans>
+        </AllAppsRow>
+      </DropdownExternalLink>,
     ]}
     ItemWrapperComponent={props => <Fragment {...props} />}
     ContainerComponent={NavbarDropdownWrapper}
-    OptionsContainerComponent={NavbarDropdownOptionsContainer}
+    OptionsContainerComponent={NavbarKidsFirstDropdown}
+    DropdownArrow={DropdownArrow}
   >
-    <div>Kids First</div>
+    <KidsFirstMenu isDropdownVisible={isDropdownVisible} />
   </Dropdown>
 );
 

@@ -27,6 +27,10 @@ export const NavbarDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   padding-bottom: 8px;
 `;
 
+export const NavbarKidsFirstDropdown = styled(NavbarDropdownOptionsContainer)`
+  left: -40px;
+`;
+
 export const NavbarDropdownWrapper = styled(DropdownContainer)`
   border: 0;
   color: ${({ theme }) => theme.hover};
@@ -50,6 +54,26 @@ export const DropdownLink = styled(Link)`
   &:hover {
     color: ${({ theme }) => theme.highlight};
     border-left: solid 2px ${({ theme }) => theme.highlight};
+
+    svg {
+      fill: ${({ theme }) => theme.highlight};
+    }
+  }
+`;
+
+export const DropdownExternalLink = styled('a')`
+  color: ${({ theme }) => theme.greyScale2};
+  text-decoration: none;
+  padding: 10px 20px;
+  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
+  border-left: solid 2px ${({ theme }) => theme.white};
+  &:hover {
+    color: ${({ theme }) => theme.highlight};
+    border-left: solid 2px ${({ theme }) => theme.highlight};
+
+    svg {
+      fill: ${({ theme }) => theme.highlight};
+    }
   }
 `;
 
@@ -83,3 +107,5 @@ export const NavigationGravatar = styled(Gravtar)`
   border: 1px solid ${({ theme }) => theme.borderGrey};
   margin: 5px;
 `;
+
+export const AllAppsRow = styled(Row)``;
