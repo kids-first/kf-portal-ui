@@ -27,6 +27,8 @@ import {
   NavBarList,
   NavbarDropdownWrapper,
   NavbarDropdownOptionsContainer,
+  DropdownRow,
+  MenuLabelContainer,
 } from './ui';
 import AppsMenu from './AppsMenu';
 
@@ -127,9 +129,10 @@ const Header = ({
                 ItemWrapperComponent={props => <Fragment {...props} />}
                 ContainerComponent={NavbarDropdownWrapper}
                 OptionsContainerComponent={NavbarDropdownOptionsContainer}
+                LabelContainer={MenuLabelContainer}
               >
                 <NavigationGravatar email={loggedInUser.email || ''} size={39} />
-                {loggedInUser.firstName}
+                <DropdownRow>{loggedInUser.firstName}</DropdownRow>
               </Dropdown>
             )}
         </NavBarList>

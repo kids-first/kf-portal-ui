@@ -69,10 +69,16 @@ export const DropdownOptionsContainer = styled(Column)`
   }
 `;
 
-export const DropdownChevron = styled(ChevronIcon)`
+export const DropdownArrowIcon = styled(ChevronIcon)`
+  color: ${({ theme }) => theme.primary};
   width: 9px;
   margin-left: 7px;
   margin-right: 12px;
-  transition: transform 0.2s;
   transform: rotate(${({ isOpen }) => (isOpen ? 180 : 0)}deg);
+  transition: transform 0.2s;
+  fill: ${({ isOpen, theme }) => (isOpen ? theme.hover : theme.primary)};
+
+  &:hover {
+    fill: '#e83a9c';
+  }
 `;

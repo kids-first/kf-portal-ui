@@ -4,9 +4,11 @@ import Row from 'uikit/Row';
 import Gravtar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
 import { space } from 'styled-system';
+import { DropdownLabelContainer } from '../../uikit/Dropdown/ui';
 
 export const NavLink = styled(Link)`
   ${({ theme }) => theme.navLink};
+  color: ${({ theme }) => theme.primary};
   ${({ currentPathName, to, theme }) => (currentPathName === to ? theme.linkButtonActive : '')};
 `;
 
@@ -52,11 +54,11 @@ export const DropdownLink = styled(Link)`
   border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
   border-left: solid 2px ${({ theme }) => theme.white};
   &:hover {
-    color: ${({ theme }) => theme.highlight};
-    border-left: solid 2px ${({ theme }) => theme.highlight};
+    color: ${({ theme }) => theme.hover};
+    border-left: solid 2px ${({ theme }) => theme.hover};
 
     svg {
-      fill: ${({ theme }) => theme.highlight};
+      fill: ${({ theme }) => theme.hover};
     }
   }
 `;
@@ -68,11 +70,11 @@ export const DropdownExternalLink = styled('a')`
   border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
   border-left: solid 2px ${({ theme }) => theme.white};
   &:hover {
-    color: ${({ theme }) => theme.highlight};
-    border-left: solid 2px ${({ theme }) => theme.highlight};
+    color: ${({ theme }) => theme.hover};
+    border-left: solid 2px ${({ theme }) => theme.hover};
 
     svg {
-      fill: ${({ theme }) => theme.highlight};
+      fill: ${({ theme }) => theme.hover};
     }
   }
 `;
@@ -108,4 +110,17 @@ export const NavigationGravatar = styled(Gravtar)`
   margin: 5px;
 `;
 
-export const AllAppsRow = styled(Row)``;
+export const DropdownRow = styled(Row)``;
+
+export const MenuLabelContainer = styled(DropdownLabelContainer)`
+  color: ${({ theme }) => theme.primary};
+  svg {
+    fill: ${({ theme }) => theme.primary};
+  }
+  &:hover {
+    color: ${({ theme }) => theme.hover};
+    svg {
+      fill: ${({ theme }) => theme.hover};
+    }
+  }
+`;

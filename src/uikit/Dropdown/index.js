@@ -6,7 +6,7 @@ import {
   ItemWrapper,
   DropdownLabelContainer,
   DropdownOptionsContainer,
-  DropdownChevron,
+  DropdownArrowIcon,
 } from './ui';
 
 function Dropdown({
@@ -17,7 +17,8 @@ function Dropdown({
   ItemWrapperComponent = ItemWrapper,
   ContainerComponent = DropdownContainer,
   OptionsContainerComponent = DropdownOptionsContainer,
-  DropdownArrow = DropdownChevron,
+  DropdownArrow = DropdownArrowIcon,
+  LabelContainer = DropdownLabelContainer,
   onToggle,
   ...rest
 }) {
@@ -29,10 +30,10 @@ function Dropdown({
             className={className}
             {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
           >
-            <DropdownLabelContainer onClick={onToggle || toggleMenu}>
+            <LabelContainer onClick={onToggle || toggleMenu}>
               {children}
               <DropdownArrow isOpen={isOpen} />
-            </DropdownLabelContainer>
+            </LabelContainer>
             {!isOpen ? null : (
               <OptionsContainerComponent align={align}>
                 {items.map((item, i) => (
