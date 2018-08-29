@@ -6,6 +6,7 @@ import { withTheme } from 'emotion-theming';
 import { ModalActionButton } from '../../Modal';
 
 import { Flex, Box, Section } from 'uikit/Core';
+import { WhiteButton } from '../../../uikit/Button';
 
 export const Container = styled(Flex)`
   height: 100%;
@@ -13,9 +14,9 @@ export const Container = styled(Flex)`
 `;
 
 export const EditButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
-    <PencilIcon className={'icon'} /> Edit
-  </button>
+  <WhiteButton {...props}>
+    <PencilIcon className={'icon'} width="12px" /> Edit
+  </WhiteButton>
 ));
 
 export const H2 = styled('h2')`

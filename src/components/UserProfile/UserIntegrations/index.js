@@ -34,6 +34,7 @@ import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 import { applyDefaultStyles } from '../../../uikit/Core';
 import { TableHeader } from '../../../uikit/Table/TableHeaders';
+import { WhiteButton } from '../../../uikit/Button';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -48,7 +49,7 @@ export const LoadingSpinner = ({ width = 11, height = 11 }) => (
 );
 
 const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...props }) => (
-  <HollowButton
+  <WhiteButton
     {...props}
     onClick={() => {
       trackUserInteraction({
@@ -60,7 +61,7 @@ const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...p
     }}
   >
     {props.children}
-  </HollowButton>
+  </WhiteButton>
 ));
 
 const Gen3DetailButton = styled(ConnectedButton)`

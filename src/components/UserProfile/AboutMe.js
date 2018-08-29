@@ -16,6 +16,7 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
 import { H2, H3 } from 'uikit/Headings';
+import { WhiteButton } from '../../uikit/Button';
 
 const ActionBar = styled(Row)`
   justify-content: space-between;
@@ -24,9 +25,7 @@ const ActionBar = styled(Row)`
   background-color: ${({ theme }) => theme.tertiaryBackground};
 `;
 
-const CancelButton = styled('button')`
-  ${({ theme }) => theme.wizardButton};
-`;
+const CancelButton = styled(WhiteButton)``;
 
 export default compose(
   injectState,

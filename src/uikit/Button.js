@@ -51,4 +51,27 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `;
 
+export const WhiteButton = styled('button')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 10px 8px;
+  border: 1px solid #cacbcf;
+  color: #008199;
+  font-family: ${({ theme }) => theme.fonts.default};
+  text-transform: uppercase;
+  font-weight: 500;
+  background-color: #fff;
+  font-size: 12px;
+  border-radius: 15px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.tertiary};
+    color: #fff;
+  }
+`;
+
 export default Button;
