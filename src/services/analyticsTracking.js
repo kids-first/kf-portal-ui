@@ -86,8 +86,8 @@ export const initAnalyticsTracking = () => {
 };
 
 export const setUserDimension = (dimension, val) => {
-  if (isObject(val)) val = JSON.stringify(val);
-  ReactGA.set({ [dimension]: val });
+  const serialized = isObject(val) ? JSON.stringify(val) : val;
+  ReactGA.set({ [dimension]: serialized });
 };
 
 const setUserDimensions = (userId, role, groups) => {
