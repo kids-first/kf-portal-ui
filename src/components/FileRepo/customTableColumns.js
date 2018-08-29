@@ -34,7 +34,6 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
           query={`query ($sqon: JSON) {
             file {
               aggregations(filters: $sqon) {
-                participants__study__external_id { buckets { key } }
                 acl { buckets { key } }
               }
             }
@@ -54,19 +53,13 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
             },
           }}
           render={({ loading: loadingQuery, data }) => {
-            const studyIdBucket = (get(
-              data,
-              'file.aggregations.participants__study__external_id.buckets',
-            ) || [])[0];
-            const acl = get(data, 'file.aggregations.acl.buckets') || [];
-            console.log('acl: ', acl);
-            console.log('userProjectIds: ', userProjectIds);
+            const acl = (get(data, 'file.aggregations.acl.buckets') || []).map(({ key }) => key);
             return (
               <Row center height={'100%'}>
                 {loadingQuery ? (
                   <TableSpinner style={{ width: 15, height: 15 }} />
-                ) : studyIdBucket ? (
-                  userProjectIds.includes(studyIdBucket.key) ? (
+                ) : acl ? (
+                  acl.some(code => userProjectIds.includes(code)) ? (
                     <DownloadFileButton kfId={value} />
                   ) : (
                     <Tooltip
