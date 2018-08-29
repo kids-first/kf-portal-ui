@@ -59,7 +59,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
     translateSQONValue = translateSQON({
       sets: (state.loggedInUser || {}).sets || [],
     }),
-    userProjectIds = gen3User ? getStudyIds(gen3User) : [],
+    userProjectIds = gen3User ? Object.keys(gen3User.projects) : [],
     ...props
   }) => (
     <SQONURL
