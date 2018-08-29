@@ -113,10 +113,11 @@ export const NavigationGravatar = styled(Gravtar)`
 export const DropdownRow = styled(Row)``;
 
 export const MenuLabelContainer = styled(DropdownLabelContainer)`
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme, isOpen }) => (isOpen ? theme.hover : theme.primary)};
   svg {
-    fill: ${({ theme }) => theme.primary};
+    fill: ${({ theme, isOpen }) => (isOpen ? theme.hover : theme.primary)};
   }
+
   &:hover {
     color: ${({ theme }) => theme.hover};
     svg {

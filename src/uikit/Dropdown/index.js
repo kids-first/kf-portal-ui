@@ -30,7 +30,7 @@ function Dropdown({
             className={className}
             {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
           >
-            <LabelContainer onClick={onToggle || toggleMenu}>
+            <LabelContainer isOpen={isOpen} onClick={onToggle || toggleMenu}>
               {children}
               <DropdownArrow isOpen={isOpen} />
             </LabelContainer>
