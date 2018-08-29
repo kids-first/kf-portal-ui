@@ -27,6 +27,9 @@ const AppsMenu = ({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) 
         <Trans>Contact</Trans>
       </DropdownLink>,
     ]}
+    ItemWrapperComponent={props => <Fragment {...props} />}
+    ContainerComponent={NavbarDropdownWrapper}
+    OptionsContainerComponent={NavbarDropdownOptionsContainer}
   >
     <div>Kids First</div>
   </Dropdown>
