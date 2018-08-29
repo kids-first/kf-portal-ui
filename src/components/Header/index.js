@@ -28,6 +28,7 @@ import {
   NavbarDropdownWrapper,
   NavbarDropdownOptionsContainer,
 } from './ui';
+import AppsMenu from './AppsMenu';
 
 const Header = ({
   state: { loggedInUser },
@@ -85,6 +86,8 @@ const Header = ({
               )}
             </li>
           )}
+
+          <AppsMenu />
 
           {loggedInUser &&
             canSeeProtectedRoutes && (
