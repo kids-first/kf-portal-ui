@@ -5,6 +5,7 @@ import Gravtar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
 import { space } from 'styled-system';
 import { DropdownLabelContainer } from '../../uikit/Dropdown/ui';
+import { applyDefaultStyles } from 'uikit/Core';
 
 export const NavLink = styled(Link)`
   ${({ theme }) => theme.navLink};
@@ -63,12 +64,12 @@ export const DropdownLink = styled(Link)`
   }
 `;
 
-export const DropdownExternalLink = styled('a')`
+export const DropdownExternalLink = applyDefaultStyles(styled('a')`
   color: ${({ theme }) => theme.greyScale2};
   text-decoration: none;
   padding: 10px 20px;
   border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
-  border-left: solid 2px ${({ theme }) => theme.white};
+  border-left: solid 2px ${({ theme, borderColor }) => (borderColor ? borderColor : theme.white)};
   &:hover {
     color: ${({ theme }) => theme.hover};
     border-left: solid 2px ${({ theme }) => theme.hover};
@@ -77,7 +78,7 @@ export const DropdownExternalLink = styled('a')`
       fill: ${({ theme }) => theme.hover};
     }
   }
-`;
+`);
 
 export const HeaderContainer = styled('div')`
   background: ${({ theme }) => theme.white};
@@ -110,7 +111,7 @@ export const NavigationGravatar = styled(Gravtar)`
   margin: 5px;
 `;
 
-export const DropdownRow = styled(Row)``;
+export const DropdownRow = applyDefaultStyles(styled(Row)``);
 
 export const MenuLabelContainer = styled(DropdownLabelContainer)`
   color: ${({ theme, isOpen }) => (isOpen ? theme.hover : theme.primary)};

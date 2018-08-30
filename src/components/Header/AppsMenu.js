@@ -23,9 +23,9 @@ const AppsMenu = ({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) 
     onToggle={toggleDropdown}
     onOuterClick={() => setDropdownVisibility(false)}
     items={[
-      <DropdownExternalLink onClick={toggleDropdown}>
-        <DropdownRow alignItems="center">
-          <AllAppsPortalIcon width="12px" height="14px" fill="#e83a9c" />
+      <DropdownExternalLink onClick={toggleDropdown} borderColor={'#c03299'}>
+        <DropdownRow alignItems="center" color={'#c03299'}>
+          <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
           <Trans>Data Resource Portal</Trans>
         </DropdownRow>
       </DropdownExternalLink>,
