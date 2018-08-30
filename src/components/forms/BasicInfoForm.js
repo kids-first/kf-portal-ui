@@ -373,12 +373,6 @@ export default compose(
             <WrappedPlacesAutocomplete
               value={location}
               onChange={setLocation}
-              classNames={{
-                input: css`
-                  ${theme.input};
-                  width: 90%;
-                `,
-              }}
               onSelect={(address, placeID) => {
                 setLocation(address);
                 geocodeByPlaceId(placeID)
