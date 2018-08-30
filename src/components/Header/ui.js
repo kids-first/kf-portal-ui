@@ -1,10 +1,11 @@
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
+import { space } from 'styled-system';
+
 import Row from 'uikit/Row';
 import Gravtar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
-import { space } from 'styled-system';
-import { DropdownLabelContainer } from '../../uikit/Dropdown/ui';
+import { DropdownLabelContainer } from 'uikit/Dropdown/ui';
 import { applyDefaultStyles } from 'uikit/Core';
 
 export const NavLink = styled(Link)`
