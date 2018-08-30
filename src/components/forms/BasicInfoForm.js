@@ -419,33 +419,30 @@ export default compose(
                   .catch(error => console.error(error));
               }}
             >
-              {({ getInputProps, getSuggestionItemProps, suggestions, loading, ...rest }) => {
-                console.log('location: ', location);
-                return (
-                  <Box position="relative">
-                    <SearchLocationIcon fill="#a9adc0" />
-                    <FieldInput
-                      width="90%"
-                      pl="34px"
-                      name="searchLocation"
-                      placeholder="e.g 3401 Civic Center Blvd."
-                      {...getInputProps()}
-                    />
-                    {!!suggestions.length && (
-                      <AutoCompleteContainer>
-                        {suggestions.map(suggestion => (
-                          <AutoCompleteItem
-                            isSelected={suggestion.description === location}
-                            {...getSuggestionItemProps(suggestion)}
-                          >
-                            {suggestion.description}
-                          </AutoCompleteItem>
-                        ))}
-                      </AutoCompleteContainer>
-                    )}
-                  </Box>
-                );
-              }}
+              {({ getInputProps, getSuggestionItemProps, suggestions, loading, ...rest }) => (
+                <Box position="relative">
+                  <SearchLocationIcon fill="#a9adc0" />
+                  <FieldInput
+                    width="90%"
+                    pl="34px"
+                    name="searchLocation"
+                    placeholder="e.g 3401 Civic Center Blvd."
+                    {...getInputProps()}
+                  />
+                  {!!suggestions.length && (
+                    <AutoCompleteContainer>
+                      {suggestions.map(suggestion => (
+                        <AutoCompleteItem
+                          isSelected={suggestion.description === location}
+                          {...getSuggestionItemProps(suggestion)}
+                        >
+                          {suggestion.description}
+                        </AutoCompleteItem>
+                      ))}
+                    </AutoCompleteContainer>
+                  )}
+                </Box>
+              )}
             </WrappedPlacesAutocomplete>
           </FormItem>
           <AddressBox>
