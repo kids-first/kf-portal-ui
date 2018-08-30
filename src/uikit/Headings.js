@@ -17,11 +17,7 @@ export const H1 = applyDefaultStyles(styled('h1')`
 `);
 
 export const H2 = applyDefaultStyles(styled('h2')`
-  font-weight: 500;
-  margin: 0;
-
-  color: ${({ theme }) => theme.secondary};
-  margin: 0;
+  ${BaseHeading};
   font-size: 22px;
 `);
 

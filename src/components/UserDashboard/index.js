@@ -11,7 +11,6 @@ import MySavedQueries from './MySavedQueries';
 import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import { H2 } from './styles';
 import Column from 'uikit/Column';
 import {
   PromptMessageContainer,
@@ -19,7 +18,7 @@ import {
   PromptMessageContent,
 } from 'uikit/PromptMessage';
 import ExternalLink from 'uikit/ExternalLink';
-import { H1 } from '../../uikit/Headings';
+import { H1, H2 } from '../../uikit/Headings';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -56,11 +55,13 @@ export default compose(
           padding: 40px;
         `}
       >
-        <H1 pb={10}>Welcome, {loggedInUser.firstName}!</H1>
+        <H1 mb={'35px' /* On removing Beta Message change to 44px */}>
+          Welcome, {loggedInUser.firstName}!
+        </H1>
         <Column>
           <PromptMessageContainer info my={20}>
             <PromptMessageHeading info mb={10} color={theme.secondary}>
-              The Portal is currently in <strong>BETA Phase</strong>
+              The Portal is currently in <H2 display="inline-block">BETA Phase</H2>
             </PromptMessageHeading>
             <PromptMessageContent>
               We are actively working on improvements, so you might find that your data has changed,
