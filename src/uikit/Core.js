@@ -25,6 +25,7 @@ import {
   position,
   left,
   right,
+  display,
 } from 'styled-system';
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
@@ -56,6 +57,7 @@ export const applyDefaultStyles = Component => styled(Component)`
   ${position}
   ${left}
   ${right}
+  ${display}
 `;
 
 const boxStyles = complexStyle({
