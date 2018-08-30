@@ -61,8 +61,10 @@ const AppsMenu = ({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) 
     OptionsContainerComponent={NavbarKidsFirstDropdown}
     LabelContainer={MenuLabelContainer}
   >
-    <AllAppsMenuIcon width="14px" height="14px" />
-    Kids First
+    <DropdownRow height="55px" alignItems="center">
+      <AllAppsMenuIcon width="14px" height="14px" />
+      Kids First
+    </DropdownRow>
   </Dropdown>
 );
 
