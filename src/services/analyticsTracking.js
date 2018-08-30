@@ -224,7 +224,11 @@ export const trackTiming = async eventData => {
 };
 
 export const trackPageView = (page, options = {}) => {
-  setUserDimensions(GAState.userId, GAState.userRoles[0], GAState.egoGroups);
+  setUserDimensions(
+    GAState.userId,
+    GAState.userRoles ? GAState.userRoles[0] : null,
+    GAState.egoGroups,
+  );
   ReactGA.set({
     page,
     ...options,
