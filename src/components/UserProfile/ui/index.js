@@ -88,7 +88,6 @@ export const SaveButton = styled(ModalActionButton)``;
 
 export const StyledSection = styled(Section)`
   padding: 5px 0;
-  margin-top: 25px;
 `;
 
 export const ClickToAdd = styled('a')`
