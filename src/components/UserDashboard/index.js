@@ -19,6 +19,7 @@ import {
   PromptMessageContent,
 } from 'uikit/PromptMessage';
 import ExternalLink from 'uikit/ExternalLink';
+import { H1 } from '../../uikit/Headings';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -55,7 +56,7 @@ export default compose(
           padding: 40px;
         `}
       >
-        <H2 pb={10}>Welcome, {loggedInUser.firstName}!</H2>
+        <H1 pb={10}>Welcome, {loggedInUser.firstName}!</H1>
         <Column>
           <PromptMessageContainer info my={20}>
             <PromptMessageHeading info mb={10} color={theme.secondary}>
