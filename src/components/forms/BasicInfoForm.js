@@ -68,6 +68,19 @@ const SearchLocationIcon = styled(SearchIcon)`
   left: 8px;
 `;
 
+const AutoCompleteContainer = styled(Column)`
+  position: absolute;
+  top: 100%;
+  background-color: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.greyScale4};
+  width: 100%;
+`;
+
+const AutoCompleteItem = styled(Row)`
+  background-color: ${({ isSelected, theme }) => (isSelected ? theme.greyScale4 : theme.white)};
+  padding: 10px;
+`;
+
 class WrappedPlacesAutocomplete extends React.Component {
   //https://github.com/kenny-hibino/react-places-autocomplete/pull/107
   state = {
@@ -360,19 +373,6 @@ export default compose(
             <WrappedPlacesAutocomplete
               value={location}
               onChange={setLocation}
-              classNames={{
-                input: css`
-                  ${theme.input};
-                  width: 90%;
-                `,
-                autocompleteContainer: css`
-                  position: absolute;
-                  top: 100%;
-                  backgroundcolor: white;
-                  border: 1px solid ${theme.greyScale4};
-                  width: 100%;
-                `,
-              }}
               onSelect={(address, placeID) => {
                 setLocation(address);
                 geocodeByPlaceId(placeID)
@@ -413,7 +413,7 @@ export default compose(
                   .catch(error => console.error(error));
               }}
             >
-              {({ getInputProps }) => (
+              {({ getInputProps, getSuggestionItemProps, suggestions, loading, ...rest }) => (
                 <Box position="relative">
                   <SearchLocationIcon fill="#a9adc0" />
                   <FieldInput
@@ -423,6 +423,18 @@ export default compose(
                     placeholder="e.g 3401 Civic Center Blvd."
                     {...getInputProps()}
                   />
+                  {!!suggestions.length && (
+                    <AutoCompleteContainer>
+                      {suggestions.map(suggestion => (
+                        <AutoCompleteItem
+                          isSelected={suggestion.description === location}
+                          {...getSuggestionItemProps(suggestion)}
+                        >
+                          {suggestion.description}
+                        </AutoCompleteItem>
+                      ))}
+                    </AutoCompleteContainer>
+                  )}
                 </Box>
               )}
             </WrappedPlacesAutocomplete>
