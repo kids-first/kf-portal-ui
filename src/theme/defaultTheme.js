@@ -60,8 +60,8 @@ const colors = {
 };
 
 const fonts = {
-  default: 'Montserrat',
-  details: 'Open Sans',
+  default: 'Montserrat, sans-serif',
+  details: 'Open Sans, sans-serif',
 };
 
 const mixins = {
