@@ -68,6 +68,19 @@ const SearchLocationIcon = styled(SearchIcon)`
   left: 8px;
 `;
 
+const AutoCompleteContainer = styled(Column)`
+  position: absolute;
+  top: 100%;
+  background-color: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.greyScale4};
+  width: 100%;
+`;
+
+const AutoCompleteItem = styled(Row)`
+  background-color: ${({ isSelected, theme }) => (isSelected ? theme.greyScale4 : theme.white)};
+  padding: 10px;
+`;
+
 class WrappedPlacesAutocomplete extends React.Component {
   //https://github.com/kenny-hibino/react-places-autocomplete/pull/107
   state = {
@@ -365,13 +378,6 @@ export default compose(
                   ${theme.input};
                   width: 90%;
                 `,
-                autocompleteContainer: css`
-                  position: absolute;
-                  top: 100%;
-                  backgroundcolor: white;
-                  border: 1px solid ${theme.greyScale4};
-                  width: 100%;
-                `,
               }}
               onSelect={(address, placeID) => {
                 setLocation(address);
@@ -413,18 +419,33 @@ export default compose(
                   .catch(error => console.error(error));
               }}
             >
-              {({ getInputProps }) => (
-                <Box position="relative">
-                  <SearchLocationIcon fill="#a9adc0" />
-                  <FieldInput
-                    width="90%"
-                    pl="34px"
-                    name="searchLocation"
-                    placeholder="e.g 3401 Civic Center Blvd."
-                    {...getInputProps()}
-                  />
-                </Box>
-              )}
+              {({ getInputProps, getSuggestionItemProps, suggestions, loading, ...rest }) => {
+                console.log('location: ', location);
+                return (
+                  <Box position="relative">
+                    <SearchLocationIcon fill="#a9adc0" />
+                    <FieldInput
+                      width="90%"
+                      pl="34px"
+                      name="searchLocation"
+                      placeholder="e.g 3401 Civic Center Blvd."
+                      {...getInputProps()}
+                    />
+                    {!!suggestions.length && (
+                      <AutoCompleteContainer>
+                        {suggestions.map(suggestion => (
+                          <AutoCompleteItem
+                            isSelected={suggestion.description === location}
+                            {...getSuggestionItemProps(suggestion)}
+                          >
+                            {suggestion.description}
+                          </AutoCompleteItem>
+                        ))}
+                      </AutoCompleteContainer>
+                    )}
+                  </Box>
+                );
+              }}
             </WrappedPlacesAutocomplete>
           </FormItem>
           <AddressBox>
