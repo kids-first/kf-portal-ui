@@ -117,6 +117,7 @@ export const Div = applyDefaultStyles(styled('div')`
 `);
 
 export const Paragraph = applyDefaultStyles(styled('p')`
+  margin: 0;
   font-family: ${({ theme }) => theme.fonts.details};
   line-height: 28px;
   font-size: 15px;

@@ -19,6 +19,7 @@ import {
 } from 'uikit/PromptMessage';
 import ExternalLink from 'uikit/ExternalLink';
 import { H1, H2 } from '../../uikit/Headings';
+import { Paragraph } from '../../uikit/Core';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -64,14 +65,16 @@ export default compose(
               The Portal is currently in <H2 display="inline-block">BETA Phase</H2>
             </PromptMessageHeading>
             <PromptMessageContent>
-              We are actively working on improvements, so you might find that your data has changed,
-              such as your saved queries. Data in the repository will change regularly, such as
-              field names or the amount of data available. We appreciate your usage and feedback
-              during this phase, so please keep visiting and if you have any questions contact us
-              at:{' '}
-              <ExternalLink hasExternalIcon={false} href="mailto:support@kidsfirstdrc.org">
-                <strong>support@kidsfirstdrc.org</strong>
-              </ExternalLink>.
+              <Paragraph>
+                We are actively working on improvements, so you might find that your data has
+                changed, such as your saved queries. Data in the repository will change regularly,
+                such as field names or the amount of data available. We appreciate your usage and
+                feedback during this phase, so please keep visiting and if you have any questions
+                contact us at:{' '}
+                <ExternalLink hasExternalIcon={false} href="mailto:support@kidsfirstdrc.org">
+                  <strong>support@kidsfirstdrc.org</strong>
+                </ExternalLink>.
+              </Paragraph>
             </PromptMessageContent>
           </PromptMessageContainer>
           <div
