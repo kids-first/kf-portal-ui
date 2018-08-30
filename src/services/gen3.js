@@ -3,6 +3,7 @@ import { gen3OauthRedirect, gen3IntegrationRoot } from 'common/injectGlobals';
 import jwtDecode from 'jwt-decode';
 import Component from 'react-component-component';
 import { withApi } from 'services/api';
+import { setUserDimension } from 'services/analyticsTracking';
 import { uniq } from 'lodash';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
@@ -102,10 +103,15 @@ export const connectGen3 = api => {
 export const getUser = async api => {
   let accessToken = await getAccessToken(api);
   const { context: { user } } = jwtDecode(accessToken);
+  // track how many projects a use has access to
+  // dimensionr in GA is "authorizedStudies"
+  setUserDimension('dimension5', user.projects);
   return user;
 };
 
 export const deleteGen3Token = async api => {
+  // reset authorized studies tracking
+  setUserDimension('dimension5', 'none');
   await api({
     method: 'DELETE',
     url: TOKEN_URL,
