@@ -2,7 +2,7 @@ import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
 import { addInfo as addUserSnapInfo } from './usersnap';
 import history from './history';
-import { merge } from 'lodash';
+import { merge, isObject } from 'lodash';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
 if (devDebug && devTrackingID) {
@@ -13,7 +13,7 @@ let GAState = {
   userId: null, //int
   userRoles: null, //string
   clientId: null, //string
-  egoGroups: null, // array?
+  egoGroups: null, // array?,
 };
 let timingsStorage = window.localStorage;
 
@@ -83,6 +83,11 @@ export const initAnalyticsTracking = () => {
     // ReactGA.set({ clientId: GAState.clientId });
     ReactGA.set({ dimension3: GAState.clientId });
   });
+};
+
+export const setUserDimension = (dimension, val) => {
+  const serialized = isObject(val) ? JSON.stringify(val) : val;
+  ReactGA.set({ [dimension]: serialized });
 };
 
 const setUserDimensions = (userId, role, groups) => {
