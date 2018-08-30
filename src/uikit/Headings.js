@@ -9,6 +9,7 @@ const BaseHeading = ({ theme }) => css`
   line-height: 0.71;
   letter-spacing: 0.4px;
   font-family: ${theme.fonts.default};
+  text-decoration: none;
 `;
 
 export const H1 = applyDefaultStyles(styled('h1')`
@@ -22,10 +23,9 @@ export const H2 = applyDefaultStyles(styled('h2')`
 `);
 
 export const H3 = applyDefaultStyles(styled('h3')`
-  font-weight: 500;
-  margin: 0;
+  ${BaseHeading};
   font-size: 16px;
-  line-height: 1.44;
+  line-height: 1;
   letter-spacing: 0.3px;
 `);
 
