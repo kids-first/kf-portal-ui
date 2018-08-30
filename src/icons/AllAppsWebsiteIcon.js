@@ -10,6 +10,7 @@ const svg = ({ width = '12px', height = '12px', ...props }) => (
     height={height}
     css={`
       margin-right: 10px;
+      fill: #a9adc0;
     `}
     {...props}
   >
