@@ -1,12 +1,16 @@
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
+import { space } from 'styled-system';
+
 import Row from 'uikit/Row';
 import Gravtar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
-import { space } from 'styled-system';
+import { DropdownLabelContainer } from 'uikit/Dropdown/ui';
+import { applyDefaultStyles } from 'uikit/Core';
 
 export const NavLink = styled(Link)`
   ${({ theme }) => theme.navLink};
+  color: ${({ theme }) => theme.primary};
   ${({ currentPathName, to, theme }) => (currentPathName === to ? theme.linkButtonActive : '')};
 `;
 
@@ -25,6 +29,10 @@ export const NavbarDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   border-radius: 6px;
   padding-top: 8px;
   padding-bottom: 8px;
+`;
+
+export const NavbarKidsFirstDropdown = styled(NavbarDropdownOptionsContainer)`
+  left: -40px;
 `;
 
 export const NavbarDropdownWrapper = styled(DropdownContainer)`
@@ -48,10 +56,30 @@ export const DropdownLink = styled(Link)`
   border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
   border-left: solid 2px ${({ theme }) => theme.white};
   &:hover {
-    color: ${({ theme }) => theme.highlight};
-    border-left: solid 2px ${({ theme }) => theme.highlight};
+    color: ${({ theme }) => theme.hover};
+    border-left: solid 2px ${({ theme }) => theme.hover};
+
+    svg {
+      fill: ${({ theme }) => theme.hover};
+    }
   }
 `;
+
+export const DropdownExternalLink = applyDefaultStyles(styled('a')`
+  color: ${({ theme }) => theme.greyScale2};
+  text-decoration: none;
+  padding: 10px 20px;
+  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
+  border-left: solid 2px ${({ theme, borderColor }) => (borderColor ? borderColor : theme.white)};
+  &:hover {
+    color: ${({ theme }) => theme.hover};
+    border-left: solid 2px ${({ theme }) => theme.hover};
+
+    svg {
+      fill: ${({ theme }) => theme.hover};
+    }
+  }
+`);
 
 export const HeaderContainer = styled('div')`
   background: ${({ theme }) => theme.white};
@@ -82,4 +110,20 @@ export const NavigationGravatar = styled(Gravtar)`
   background-color: ${({ theme }) => theme.white};
   border: 1px solid ${({ theme }) => theme.borderGrey};
   margin: 5px;
+`;
+
+export const DropdownRow = applyDefaultStyles(styled(Row)``);
+
+export const MenuLabelContainer = styled(DropdownLabelContainer)`
+  color: ${({ theme, isOpen }) => (isOpen ? theme.hover : theme.primary)};
+  svg {
+    fill: ${({ theme, isOpen }) => (isOpen ? theme.hover : theme.primary)};
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.hover};
+    svg {
+      fill: ${({ theme }) => theme.hover};
+    }
+  }
 `;

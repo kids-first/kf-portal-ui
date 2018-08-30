@@ -1,13 +1,12 @@
 import React from 'react';
 import Downshift from 'downshift';
 
-import downChevronIcon from '../../assets/icon-chevron-down-grey.svg';
 import {
   DropdownContainer,
   ItemWrapper,
   DropdownLabelContainer,
   DropdownOptionsContainer,
-  DropDownImage,
+  DropdownArrowIcon,
 } from './ui';
 
 function Dropdown({
@@ -18,6 +17,8 @@ function Dropdown({
   ItemWrapperComponent = ItemWrapper,
   ContainerComponent = DropdownContainer,
   OptionsContainerComponent = DropdownOptionsContainer,
+  DropdownArrow = DropdownArrowIcon,
+  LabelContainer = DropdownLabelContainer,
   onToggle,
   ...rest
 }) {
@@ -29,10 +30,10 @@ function Dropdown({
             className={className}
             {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
           >
-            <DropdownLabelContainer onClick={onToggle || toggleMenu}>
+            <LabelContainer isOpen={isOpen} onClick={onToggle || toggleMenu}>
               {children}
-              <DropDownImage alt="" isOpen={isOpen} src={downChevronIcon} />
-            </DropdownLabelContainer>
+              <DropdownArrow isOpen={isOpen} />
+            </LabelContainer>
             {!isOpen ? null : (
               <OptionsContainerComponent align={align}>
                 {items.map((item, i) => (
