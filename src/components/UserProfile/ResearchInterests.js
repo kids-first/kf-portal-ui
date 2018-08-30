@@ -144,43 +144,49 @@ export default compose(
           ))}
         </Row>
         {editingResearchInterests && (
-          <InterestsContainer>
-            <InterestsLabel>Kids First Disease Areas:</InterestsLabel>
-            <InterestsSelect
-              onChange={e => {
-                setInterests([...interests, e.target.value]);
-              }}
-              value=""
-            >
-              <InterestsOption value="" disabled selected>
-                -- Select an option --
-              </InterestsOption>
-              {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
-                <InterestsOption value={area} key={area}>
-                  {area}
-                </InterestsOption>
-              ))}
-            </InterestsSelect>
-            <InterestsLabel>Kids First Studies:</InterestsLabel>
-            <InterestsSelect
-              onChange={e => {
-                setInterests([...interests, e.target.value]);
-              }}
-              value=""
-            >
-              <InterestsOption value="" disabled selected>
-                -- Select an option --
-              </InterestsOption>
-              {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
-                <InterestsOption value={study} key={study}>
-                  {study}
-                </InterestsOption>
-              ))}
+          <React.Fragment>
+            <InterestsContainer>
+              <InterestsLabel>Kids First Disease Areas:</InterestsLabel>
+              <InterestsSelect
+                onChange={e => {
+                  setInterests([...interests, e.target.value]);
+                }}
+                value=""
               >
-            </InterestsSelect>
-            <InterestsLabel>Other areas of interest:</InterestsLabel>
-            <InterestsAutocomplete {...{ interests, setInterests }} />
-          </InterestsContainer>
+                <InterestsOption value="" disabled selected>
+                  -- Select an option --
+                </InterestsOption>
+                {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
+                  <InterestsOption value={area} key={area}>
+                    {area}
+                  </InterestsOption>
+                ))}
+              </InterestsSelect>
+              <InterestsLabel>Kids First Studies:</InterestsLabel>
+              <InterestsSelect
+                onChange={e => {
+                  setInterests([...interests, e.target.value]);
+                }}
+                value=""
+              >
+                <InterestsOption value="" disabled selected>
+                  -- Select an option --
+                </InterestsOption>
+                {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
+                  <InterestsOption value={study} key={study}>
+                    {study}
+                  </InterestsOption>
+                ))}
+                >
+              </InterestsSelect>
+              <InterestsLabel>Other areas of interest:</InterestsLabel>
+              <InterestsAutocomplete {...{ interests, setInterests }} />
+            </InterestsContainer>
+
+            <ActionButtons
+              {...{ handleEditingResearchInterests, setInterests, submit, profile, interests }}
+            />
+          </React.Fragment>
         )}
 
         {canEdit &&

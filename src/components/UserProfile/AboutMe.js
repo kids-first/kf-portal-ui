@@ -15,6 +15,7 @@ import { Flex } from 'uikit/Core';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
+import Contact from './Contact';
 
 const ActionBar = styled(Row)`
   justify-content: space-between;
@@ -204,7 +205,9 @@ export default compose(
               </SaveButton>
             </ActionBar>
           )}
+          <Contact mt={'50px'} profile={profile} />
         </Column>
+
         <Column width="35%">
           <ResearchInterests {...{ profile, canEdit, submit }} />
           {Object.keys(profile).length && <FindMe {...{ profile, canEdit, submit }} />}
