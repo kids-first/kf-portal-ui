@@ -18,6 +18,7 @@ import Component from 'react-component-component';
 import { Span, Paragraph, Div } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
+import { TableHeader } from 'uikit/Table';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
@@ -29,7 +30,7 @@ import { Gen3UserProvider } from 'services/gen3';
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
+import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon, ConnectedText } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 import { applyDefaultStyles } from '../../../uikit/Core';
@@ -124,7 +125,7 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
     <Column>
       <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
-        <Span> Connected</Span>
+        <ConnectedText> Connected</ConnectedText>
       </Div>
       <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
@@ -156,9 +157,9 @@ const UserIntegrations = withApi(
         <IntegrationTable>
           <thead>
             <tr>
-              <th>Service</th>
-              <th>Purpose</th>
-              <th>Integrate</th>
+              <TableHeader p="10px">Service</TableHeader>
+              <TableHeader p="10px">Purpose</TableHeader>
+              <TableHeader p="10px">Integrate</TableHeader>
             </tr>
           </thead>
           <tbody>
