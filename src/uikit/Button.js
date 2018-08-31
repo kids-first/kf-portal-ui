@@ -75,25 +75,26 @@ export const WhiteButton = applyDefaultStyles(styled(BaseButton)`
   text-align: center;
   cursor: pointer;
 
-  &:hover {
-    background-color: ${({ theme }) => theme.tertiary};
-    color: ${({ theme }) => theme.white};
-
-    & .icon {
-      background-color: ${({ theme }) => theme.tertiary};
-      color: ${({ theme }) => theme.white};
-    }
-  }
-
   & a {
     text-decoration: none;
-  }
-
-  &:disabled {
-    color: ${({ theme }) => theme.greyScale7};
+    color: ${({ theme }) => theme.lightBlue};
   }
 
   & .icon {
     margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.tertiary};
+    color: ${({ theme }) => theme.white};
+
+    .icon {
+      background-color: ${({ theme }) => theme.tertiary};
+      color: ${({ theme }) => theme.white};
+    }
+
+    a {
+      color: ${({ theme }) => theme.white};
+    }
   }
 `);
