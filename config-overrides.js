@@ -8,6 +8,7 @@ const { rewireEmotion } = require('react-app-rewire-emotion');
 
 const i18nConfig = require('./i18next-scanner.config');
 
+
 const appDirectory = fs.realpathSync(process.cwd());
 const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
