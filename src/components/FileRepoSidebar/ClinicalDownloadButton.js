@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
-import Downshift from 'downshift';
 import { uniq } from 'lodash';
 import Component from 'react-component-component';
 
@@ -15,6 +14,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadData';
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
+import { DropDownState } from 'services/utils';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: relative;
@@ -129,24 +129,39 @@ export default compose(withApi, injectState)(props => {
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         return (
-          <Downshift>
-            {({ isOpen, toggleMenu, openMenu, closeMenu, getRootProps, ...stuff }) => (
-              <Fragment {...getRootProps({ refKey: 'innerRef' })}>
+          <DropDownState
+            render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
+              <Fragment>
                 <DownloadButton
                   content={() => <Trans>Clinical</Trans>}
-                  onClick={toggleMenu}
+                  onClick={e => {
+                    e.stopPropagation();
+                    toggleDropdown();
+                  }}
                   {...props}
                 />
-                {isOpen ? (
+                {isDropdownVisible ? (
                   <StyledDropdownOptionsContainer hideTip align={'left'}>
-                    <OptionRow onClick={() => participantDownload().then(closeMenu)}>
+                    <OptionRow
+                      onClick={e => {
+                        e.stopPropagation();
+                        participantDownload().then(() => setDropdownVisibility(false));
+                      }}
+                    >
                       Participant
                     </OptionRow>
                     <FamilyDownloadAvailabilityProvider
                       sqon={sqon}
                       render={({ available, isLoading }) =>
                         available ? (
-                          <OptionRow onClick={() => participantAndFamilyDownload().then(closeMenu)}>
+                          <OptionRow
+                            onClick={e => {
+                              e.stopPropagation();
+                              participantAndFamilyDownload().then(() =>
+                                setDropdownVisibility(false),
+                              );
+                            }}
+                          >
                             Participant and family
                           </OptionRow>
                         ) : (
@@ -163,7 +178,7 @@ export default compose(withApi, injectState)(props => {
                 ) : null}
               </Fragment>
             )}
-          </Downshift>
+          />
         );
       }}
     />

@@ -27,7 +27,8 @@ import {
   DropdownRow,
   MenuLabelContainer,
 } from './ui';
-import AppsMenu, { DropDownState } from './AppsMenu';
+import AppsMenu from './AppsMenu';
+import { DropDownState } from 'services/utils';
 
 const Header = ({
   state: { loggedInUser },
