@@ -14,7 +14,7 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
-import { ButtonContainer, CustomLightButotn } from './ui';
+import { ButtonContainer, CustomLightButton } from './ui';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
@@ -74,7 +74,7 @@ export default injectState(
       return (
         !!this.props.state.loggedInUser && (
           <ButtonContainer className={className}>
-            <CustomLightButotn
+            <CustomLightButton
               disabled={disabled}
               onClick={() =>
                 !disabled &&
@@ -235,7 +235,7 @@ export default injectState(
                   </Tooltip>
                 )}
               </Route>
-            </CustomLightButotn>
+            </CustomLightButton>
           </ButtonContainer>
         )
       );

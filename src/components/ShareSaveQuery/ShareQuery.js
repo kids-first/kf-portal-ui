@@ -14,7 +14,7 @@ import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
-import { ButtonContainer, CustomLightButotn } from './ui';
+import { ButtonContainer, CustomLightButton } from './ui';
 import styled from 'react-emotion';
 
 const trackQueryShare = channel => {
@@ -45,7 +45,7 @@ let ItemRow = styled('div')`
 
 export default injectState(
   class extends React.Component {
-    state = { link: null, copied: false, error: null };
+    state = { link: null, copied: false, error: null, open: false };
 
     share = () => {
       let { stats, sqon, api, state: { loggedInUser } } = this.props;
@@ -64,14 +64,25 @@ export default injectState(
       const { className = '', disabled } = this.props;
       return (
         <ButtonContainer className={className}>
-          <CustomLightButotn disabled={disabled} onClick={disabled ? () => {} : this.share}>
+          <CustomLightButton
+            disabled={disabled}
+            onClick={
+              disabled
+                ? () => {}
+                : () => {
+                    this.setState({ open: true });
+                    this.share();
+                  }
+            }
+          >
             <Tooltip
               position="bottom"
-              trigger="click"
-              onRequestClose={() =>
+              open={this.state.open}
+              onRequestClose={() => {
+                this.setState({ open: false });
                 // after fadeout transition finishes, clear copy state
-                setTimeout(() => this.setState({ copied: false }), 1000)
-              }
+                setTimeout(() => this.setState({ copied: false }), 1000);
+              }}
               interactive
               html={
                 <div
@@ -164,7 +175,7 @@ export default injectState(
             >
               <ShareIcon />&nbsp;<Trans>share</Trans>
             </Tooltip>
-          </CustomLightButotn>
+          </CustomLightButton>
         </ButtonContainer>
       );
     }
