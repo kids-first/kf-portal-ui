@@ -59,8 +59,7 @@ const ButtonWithIcon = ({ theme }) => css`
   justify-content: space-between;
 `;
 
-export const WhiteButton = applyDefaultStyles(styled('button')`
-  ${BaseButton};
+export const WhiteButton = applyDefaultStyles(styled(BaseButton)`
   border: 1px solid ${({ theme }) => theme.borderGrey};
   color: ${({ theme }) => theme.lightBlue};
   font-family: ${({ theme }) => theme.fonts.default};
@@ -92,5 +91,9 @@ export const WhiteButton = applyDefaultStyles(styled('button')`
 
   &:disabled {
     color: ${({ theme }) => theme.greyScale7};
+  }
+
+  & .icon {
+    margin-right: 5px;
   }
 `);

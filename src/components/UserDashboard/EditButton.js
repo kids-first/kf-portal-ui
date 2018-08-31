@@ -10,6 +10,7 @@ const EditButton = ({ egoId, theme, ...props }) => (
       hash: '#aboutMe',
     }}
     {...props}
+    style={{ textDecoration: 'none' }}
   >
     <WhiteButton mx="4px">
       <PencilIcon size={12} className="icon" /> Edit Profile
