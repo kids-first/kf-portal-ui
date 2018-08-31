@@ -15,7 +15,18 @@ import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
 import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
 import AllAppsPortalIcon from 'icons/AllAppsPortalIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
-import { hocToRenderProps, DropDownState } from 'services/utils';
+import { hocToRenderProps } from 'services/utils';
+
+const withDropdownState = compose(
+  withState('isDropdownVisible', 'setDropdownVisibility', false),
+  withHandlers({
+    toggleDropdown: ({ isDropdownVisible, setDropdownVisibility }) => e => {
+      setDropdownVisibility(!isDropdownVisible);
+    },
+  }),
+);
+
+export const DropDownState = hocToRenderProps(withDropdownState);
 
 export default () => (
   <DropDownState
