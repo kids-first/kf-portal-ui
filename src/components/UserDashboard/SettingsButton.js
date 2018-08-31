@@ -10,6 +10,7 @@ const SettingsButton = ({ egoId, theme, ...props }) => (
       hash: '#settings',
     }}
     {...props}
+    style={{ textDecoration: 'none' }}
   >
     <WhiteButton mx="4px">
       <CogIcon size={15} className="icon" /> Settings

@@ -7,17 +7,24 @@ import { ModalActionButton } from '../../Modal';
 
 import { Flex, Box, Section } from 'uikit/Core';
 import { H2 as H2Core } from 'uikit/Headings';
+import { WhiteButton } from '../../../uikit/Button';
 
 export const Container = styled(Flex)`
   height: 100%;
   width: 76%;
 `;
 
-export const EditButton = compose(withTheme)(({ theme, ...props }) => (
+export const xEditButton = compose(withTheme)(({ theme, ...props }) => (
   <button css={theme.hollowButton} {...props}>
     <PencilIcon className={'icon'} /> Edit
   </button>
 ));
+
+export const EditButton = () => (
+  <WhiteButton>
+    <PencilIcon size={12} className="icon" /> Edit
+  </WhiteButton>
+);
 
 export const H2 = styled('h2')`
   ${props => props.theme.profileH2};
