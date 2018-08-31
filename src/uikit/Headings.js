@@ -1,8 +1,8 @@
 import styled, { css } from 'react-emotion';
 import { applyDefaultStyles } from 'uikit/Core';
 
-const BaseHeading = ({ theme }) => css`
-  color: ${theme.secondary};
+const BaseHeading = ({ theme, ...props }) => css`
+  color: ${props.color ? props.color : theme.secondary};
   margin: 0;
   padding: 0;
   font-weight: 500;
@@ -29,8 +29,14 @@ export const H3 = applyDefaultStyles(styled('h3')`
   letter-spacing: 0.3px;
 `);
 
-export const H4 = styled('h4')`
-  font-weight: 500;
+export const H4 = applyDefaultStyles(styled('h4')`
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.85;
+  text-align: left;
+  color: ${({ theme }) => theme.greyScale9};
   margin: 0;
-  color: ${({ theme }) => theme.secondary};
-`;
+  padding: 0;
+  font-weight: normal;
+`);

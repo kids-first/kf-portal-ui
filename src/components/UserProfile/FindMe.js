@@ -7,7 +7,7 @@ import { SocialIcon } from 'react-social-icons';
 import { withTheme } from 'emotion-theming';
 
 import { kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
-import { EditButton, H2, H4, SaveButton, StyledSection, ClickToAdd, InterestsCard } from './ui';
+import { EditButton, SaveButton, StyledSection, ClickToAdd, InterestsCard, CardHeader } from './ui';
 
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
 import { Flex } from 'uikit/Core';
@@ -20,6 +20,7 @@ import ErrorIcon from 'icons/ErrorIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+import { H4 } from 'uikit/Headings';
 
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 
@@ -251,7 +252,7 @@ export default compose(
     <InterestsCard p={3}>
       <Fragment>
         <Form>
-          <H2>
+          <CardHeader>
             Find me on
             {canEdit &&
               (!isEditing ? (
@@ -263,16 +264,21 @@ export default compose(
               ) : (
                 <ActionButtons {...{ handleIsEditing, handleReset, handleSubmit, errors }} />
               ))}
-          </H2>
+          </CardHeader>
+
           <StyledSection>
             {canEdit &&
               !isEditing &&
               !Object.values(values).filter(Boolean).length && (
-                <H4>
-                  Add links to your personal channels such as Google Scholar, ORCHID, GitHub,
-                  LinkedIn, Twitter and Facebook.
-                </H4>
+                <Fragment>
+                  <H4 mt="29px">
+                    Add links to your personal channels such as Google Scholar, ORCHID, GitHub,
+                    LinkedIn, Twitter and Facebook.
+                  </H4>
+                  <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
+                </Fragment>
               )}
+
             <ul
               css={`
                 list-style-type: none;
@@ -352,11 +358,6 @@ export default compose(
             </ul>
           </StyledSection>
         </Form>
-        {canEdit &&
-          !isEditing &&
-          !Object.values(values).filter(Boolean).length && (
-            <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
-          )}
       </Fragment>
     </InterestsCard>
   ),
