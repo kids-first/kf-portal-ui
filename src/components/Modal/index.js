@@ -16,6 +16,7 @@ import {
   ModalFooterContent,
   Modal,
   ModalContent,
+  ModalTitle,
 } from './ui';
 
 const enhance = compose(withTheme, injectState);
@@ -42,7 +43,7 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
       margin-bottom: 1.5em;
     `}
   >
-    <span css={theme.modalTitle}>{title}</span>
+    <ModalTitle>{title}</ModalTitle>
     <CloseIcon
       css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
       fill="black"
