@@ -17,16 +17,13 @@ import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
 import Contact from './Contact';
 import { H3, H4 } from 'uikit/Headings';
+import { WhiteButton } from '../../uikit/Button';
 
 const ActionBar = styled(Row)`
-  justify-content: space-between;
+  justify-content: flex-end;
   border-radius: 5px;
   box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
   background-color: ${({ theme }) => theme.tertiaryBackground};
-`;
-
-const CancelButton = styled('button')`
-  ${({ theme }) => theme.wizardButton};
 `;
 
 export default compose(
@@ -81,7 +78,8 @@ export default compose(
                 />
               ) : (
                 <Flex>
-                  <CancelButton
+                  <WhiteButton
+                    mx="10px"
                     onClick={() => {
                       setBioTextarea(profile.bio || '');
                       setStoryTextarea(profile.story || '');
@@ -89,7 +87,7 @@ export default compose(
                     }}
                   >
                     Cancel
-                  </CancelButton>
+                  </WhiteButton>
                   <SaveButton
                     onClick={async () => {
                       await submit({
@@ -186,7 +184,8 @@ export default compose(
           )}
           {isEditingBackgroundInfo && (
             <ActionBar p={3}>
-              <CancelButton
+              <WhiteButton
+                mx="10px"
                 onClick={() => {
                   setBioTextarea(profile.bio || '');
                   setStoryTextarea(profile.story || '');
@@ -194,7 +193,7 @@ export default compose(
                 }}
               >
                 Cancel
-              </CancelButton>
+              </WhiteButton>
               <SaveButton
                 onClick={async () => {
                   await submit({
