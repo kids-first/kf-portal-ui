@@ -14,7 +14,7 @@ import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
-import { ButtonContainer, CustomLightButotn } from './ui';
+import { ButtonContainer, CustomLightButton } from './ui';
 import styled from 'react-emotion';
 
 const trackQueryShare = channel => {
@@ -64,7 +64,7 @@ export default injectState(
       const { className = '', disabled } = this.props;
       return (
         <ButtonContainer className={className}>
-          <CustomLightButotn disabled={disabled} onClick={disabled ? () => {} : this.share}>
+          <CustomLightButton disabled={disabled} onClick={disabled ? () => {} : this.share}>
             <Tooltip
               position="bottom"
               trigger="click"
@@ -164,7 +164,7 @@ export default injectState(
             >
               <ShareIcon />&nbsp;<Trans>share</Trans>
             </Tooltip>
-          </CustomLightButotn>
+          </CustomLightButton>
         </ButtonContainer>
       );
     }
