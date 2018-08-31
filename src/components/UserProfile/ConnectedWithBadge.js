@@ -24,7 +24,7 @@ const icons = {
 };
 
 const Status = styled(Span)`
-  color: ${({ theme }) => theme.tertiary};
+  color: ${({ theme }) => theme.active};
   padding: 2px;
   white-space: nowrap;
   font-weight: 500;

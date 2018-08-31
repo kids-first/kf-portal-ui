@@ -159,6 +159,7 @@ export default compose(
           </Tag>
         ))}
       </Row>
+
       {editingResearchInterests && (
         <React.Fragment>
           <InterestsContainer>
