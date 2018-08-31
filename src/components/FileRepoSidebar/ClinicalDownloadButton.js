@@ -16,6 +16,10 @@ import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadD
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 
+const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
+  width: 200px;
+`;
+
 const Tooltip = styled('div')`
   position: absolute;
   top: 100%;
@@ -127,7 +131,7 @@ export default compose(withApi, injectState)(props => {
                 />
                 {isOpen ? (
                   <div style={{ position: 'relative' }}>
-                    <DropdownOptionsContainer hideTip align={'left'}>
+                    <StyledDropdownOptionsContainer hideTip align={'left'}>
                       <OptionRow onClick={() => participantDownload().then(closeMenu)}>
                         Participant
                       </OptionRow>
@@ -150,7 +154,7 @@ export default compose(withApi, injectState)(props => {
                           )
                         }
                       />
-                    </DropdownOptionsContainer>
+                    </StyledDropdownOptionsContainer>
                   </div>
                 ) : null}
               </div>
