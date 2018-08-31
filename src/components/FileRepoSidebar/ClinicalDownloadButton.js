@@ -18,6 +18,7 @@ import { withApi } from 'services/api';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   width: 200px;
+  border-radius: 7px;
 `;
 
 const Tooltip = styled('div')`
@@ -37,6 +38,12 @@ const OptionRow = styled(Row)`
   background: ${({ theme, disabled }) => (disabled ? theme.greyScale10 : theme.white)};
   &:first-child {
     border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
+  &:last-child {
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
   }
   &:hover {
     background: ${({ theme }) => theme.greyScale10};
