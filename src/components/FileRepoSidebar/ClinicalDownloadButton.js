@@ -16,19 +16,30 @@ import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadD
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 
+const Tooltip = styled('div')`
+  position: absolute;
+  top: 100%;
+  background: white;
+  padding: 5px;
+  margin-top: -6px;
+  border-radius: 7px;
+  box-shadow: 1px 1px 7px ${theme => theme.greyScale0};
+`;
+
+const OptionRow = styled(Row)`
+  padding: 10px;
+  font-size: 12px;
+  color: ${({ theme, disabled }) => (disabled ? theme.greyScale1 : 'auto')};
+  background: ${({ theme, disabled }) => (disabled ? theme.greyScale10 : theme.white)};
+  &:first-child {
+    border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
+  }
+  &:hover {
+    background: ${({ theme }) => theme.greyScale10};
+  }
+`;
+
 export default compose(withApi, injectState)(props => {
-  const OptionRow = styled(Row)`
-    padding: 10px;
-    font-size: 12px;
-    color: ${({ theme, disabled }) => (disabled ? theme.greyScale1 : 'auto')};
-    background: ${({ theme, disabled }) => (disabled ? theme.greyScale10 : theme.white)};
-    &:first-child {
-      border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
-    }
-    &:hover {
-      background: ${({ theme, disabled }) => (disabled ? theme.greyScale10 : theme.white)};
-    }
-  `;
   const { api, sqon, projectId } = props;
   return (
     <ColumnsState
@@ -91,9 +102,9 @@ export default compose(withApi, injectState)(props => {
         const FamilyDownloadAvailabilityProvider = ({ render }) => (
           <Component
             initialState={{ isLoading: true, available: false }}
-            didMount={async ({ state, setState }) => {
-              setState({ loading: false, available: await isFamilyDownloadAvailable() });
-            }}
+            didMount={async ({ state, setState }) =>
+              setState({ isLoading: false, available: await isFamilyDownloadAvailable() })
+            }
           >
             {({ state }) => render(state)}
           </Component>
@@ -114,7 +125,7 @@ export default compose(withApi, injectState)(props => {
                         Participant
                       </OptionRow>
                       <FamilyDownloadAvailabilityProvider
-                        render={({ available }) =>
+                        render={({ available, isLoading }) =>
                           available ? (
                             <OptionRow
                               onClick={() => onParticipantAndFamilyDownloadSelect().then(closeMenu)}
@@ -122,7 +133,13 @@ export default compose(withApi, injectState)(props => {
                               Participant and family
                             </OptionRow>
                           ) : (
-                            <OptionRow disabled>Participant and family</OptionRow>
+                            <OptionRow disabled>
+                              Participant and family
+                              {console.log('isLoading: ', isLoading)}
+                              {isLoading ? null : (
+                                <Tooltip>No file was found for family members</Tooltip>
+                              )}
+                            </OptionRow>
                           )
                         }
                       />
