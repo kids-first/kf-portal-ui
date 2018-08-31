@@ -130,6 +130,7 @@ export default compose(withApi, injectState)(props => {
         return (
           <Downshift>
             {({ isOpen, toggleMenu, openMenu, closeMenu, ...stuff }) => (
+              // Downshift constraint: it expects a dom element
               <div>
                 <DownloadButton
                   content={() => <Trans>Clinical</Trans>}
@@ -137,6 +138,7 @@ export default compose(withApi, injectState)(props => {
                   {...props}
                 />
                 {isOpen ? (
+                  // this dom element is just to keep DropdownOptionsContainer in place properly
                   <div style={{ position: 'relative' }}>
                     <StyledDropdownOptionsContainer hideTip align={'left'}>
                       <OptionRow onClick={() => participantDownload().then(closeMenu)}>
