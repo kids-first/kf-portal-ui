@@ -39,6 +39,74 @@ const OptionRow = styled(Row)`
   }
 `;
 
+const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon }) => {
+  const isFamilyDownloadAvailable = async () => {
+    const { familyMembersWithoutParticipantIds } = await familyMemberAndParticipantIds({
+      api,
+      sqon,
+    });
+    return Boolean((familyMembersWithoutParticipantIds || []).length);
+  };
+  return (
+    <Component
+      initialState={{ isLoading: true, available: false }}
+      didMount={async ({ state, setState }) =>
+        setState({ isLoading: false, available: await isFamilyDownloadAvailable() })
+      }
+    >
+      {({ state }) => render(state)}
+    </Component>
+  );
+});
+
+const participantDownloader = ({ api, sqon, columnState }) => async () => {
+  const { participantIds } = await familyMemberAndParticipantIds({
+    api,
+    sqon,
+  });
+  let downloadConfig = {
+    sqon: {
+      op: 'in',
+      content: {
+        field: 'participants.kf_id',
+        value: participantIds,
+      },
+    },
+    columns: columnState.columns,
+  };
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+    action: TRACKING_EVENTS.actions.download.report,
+    label: 'Clinical (Participant)',
+  });
+  const downloader = clinicalDataParticipants(downloadConfig);
+  return downloader();
+};
+
+const familyDownloader = ({ api, sqon, columnState }) => async () => {
+  const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
+    api,
+    sqon,
+  });
+  let downloadConfig = {
+    sqon: {
+      op: 'in',
+      content: {
+        field: 'participants.kf_id',
+        value: uniq([...familyMemberIds, ...participantIds]),
+      },
+    },
+    columns: columnState.columns,
+  };
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+    action: TRACKING_EVENTS.actions.download.report,
+    label: 'Clinical (Participant and family)',
+  });
+  const downloader = clinicalDataFamily(downloadConfig);
+  return downloader();
+};
+
 export default compose(withApi, injectState)(props => {
   const { api, sqon, projectId } = props;
   return (
@@ -46,69 +114,8 @@ export default compose(withApi, injectState)(props => {
       projectId={projectId}
       graphqlField="participant"
       render={({ state: columnState }) => {
-        const onParticipantDownloadSelect = async () => {
-          const { participantIds } = await familyMemberAndParticipantIds({
-            api,
-            sqon,
-          });
-          let downloadConfig = {
-            sqon: {
-              op: 'in',
-              content: {
-                field: 'participants.kf_id',
-                value: participantIds,
-              },
-            },
-            columns: columnState.columns,
-          };
-          trackUserInteraction({
-            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-            action: TRACKING_EVENTS.actions.download.report,
-            label: 'Clinical (Participant)',
-          });
-          const downloader = clinicalDataParticipants(downloadConfig);
-          return downloader();
-        };
-        const onParticipantAndFamilyDownloadSelect = async () => {
-          const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
-            api,
-            sqon,
-          });
-          let downloadConfig = {
-            sqon: {
-              op: 'in',
-              content: {
-                field: 'participants.kf_id',
-                value: uniq([...familyMemberIds, ...participantIds]),
-              },
-            },
-            columns: columnState.columns,
-          };
-          trackUserInteraction({
-            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-            action: TRACKING_EVENTS.actions.download.report,
-            label: 'Clinical (Participant and family)',
-          });
-          const downloader = clinicalDataFamily(downloadConfig);
-          return downloader();
-        };
-        const isFamilyDownloadAvailable = async () => {
-          const { familyMembersWithoutParticipantIds } = await familyMemberAndParticipantIds({
-            api,
-            sqon,
-          });
-          return Boolean((familyMembersWithoutParticipantIds || []).length);
-        };
-        const FamilyDownloadAvailabilityProvider = ({ render }) => (
-          <Component
-            initialState={{ isLoading: true, available: false }}
-            didMount={async ({ state, setState }) =>
-              setState({ isLoading: false, available: await isFamilyDownloadAvailable() })
-            }
-          >
-            {({ state }) => render(state)}
-          </Component>
-        );
+        const participantDownload = participantDownloader({ api, sqon, columnState });
+        const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         return (
           <Downshift>
             {({ isOpen, toggleMenu, openMenu, closeMenu, ...stuff }) => (
@@ -121,14 +128,15 @@ export default compose(withApi, injectState)(props => {
                 {isOpen ? (
                   <div style={{ position: 'relative' }}>
                     <DropdownOptionsContainer hideTip align={'left'}>
-                      <OptionRow onClick={() => onParticipantDownloadSelect().then(closeMenu)}>
+                      <OptionRow onClick={() => participantDownload().then(closeMenu)}>
                         Participant
                       </OptionRow>
                       <FamilyDownloadAvailabilityProvider
+                        sqon={sqon}
                         render={({ available, isLoading }) =>
                           available ? (
                             <OptionRow
-                              onClick={() => onParticipantAndFamilyDownloadSelect().then(closeMenu)}
+                              onClick={() => participantAndFamilyDownload().then(closeMenu)}
                             >
                               Participant and family
                             </OptionRow>
