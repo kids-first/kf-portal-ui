@@ -85,18 +85,6 @@ export default compose(withApi, withTheme)(({ api, projectId, theme, sqon, class
               return downloader();
             },
           },
-          Biospecimen: {
-            onSelected: () => {
-              let downloadConfig = { sqon, columns: state.columns };
-              trackUserInteraction({
-                category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-                action: TRACKING_EVENTS.actions.download.report,
-                label: 'Biospecimen',
-              });
-              const downloader = downloadBiospecimen(downloadConfig);
-              return downloader();
-            },
-          },
         }}
         render={({ loading }) => {
           return (
