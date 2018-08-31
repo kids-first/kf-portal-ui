@@ -1,6 +1,7 @@
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
 import { addInfo as addUserSnapInfo } from './usersnap';
+import { trackVirtualPageView } from 'services/hotjarTracking';
 import history from './history';
 import { merge, isObject } from 'lodash';
 
@@ -173,13 +174,16 @@ export const trackUserInteraction = async ({ category, action, label }) => {
           variable: 'First Query Filter to Download Files clicked',
           ...(label & label),
         });
+        trackVirtualPageView('#download');
       }
+
       if (action === 'Copied Files to Cavatica Project') {
         stopAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica, {
           category: 'File Acquisition',
           variable: 'First Query Filter to Copy to Cavatica clicked',
           ...(label & label),
         });
+        trackVirtualPageView('#download');
       }
       break;
     default:
