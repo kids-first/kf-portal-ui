@@ -20,6 +20,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+
     <title>Portal</title>
   </head>
   <body>
@@ -38,5 +39,13 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script src="https://apis.google.com/js/platform.js"></script>
+    <script>
+      <!-- track when users exit the site after starting a query -->
+      window.onbeforeunload = function () {
+        if(window.localStorage.getItem('KF_GA_TIMING_INIT_FILE_QUERY_TO_CAVATICA_COPY') || window.localStorage.getItem('KF_GA_TIMING_INIT_FILE_QUERY_TO_DOWNLOAD') ){
+          window.ga('send', 'event', 'File Repo', 'Query Abandoned', 'exited site', 3);
+        }
+      }
+    </script>
   </body>
 </html>
