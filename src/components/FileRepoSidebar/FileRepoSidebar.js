@@ -1,26 +1,21 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
-import Downshift from 'downshift';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import Heading from 'uikit/Heading';
 import Row from 'uikit/Row';
-import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import FamilyManifestModal from '../FamilyManifestModal';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import {
-  downloadBiospecimen,
-  clinicalDataParticipants,
-  clinicalDataFamily,
-} from 'services/downloadData';
+import { downloadBiospecimen } from 'services/downloadData';
 import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
+import ClinicalDownloadButton from './ClinicalDownloadButton';
 
 const FileManifestsDownloadInput = compose(injectState)(({ effects: { setModal }, ...props }) => (
   <DownloadButton
@@ -57,26 +52,6 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
     )}
   />
 );
-
-const ClinicalDownloadButton = compose()(props => {
-  return (
-    <Downshift>
-      {({ isOpen, toggleMenu, openMenu, closeMenu, ...stuff }) => (
-        <div>
-          <DownloadButton content={() => <Trans>Clinical</Trans>} onClick={toggleMenu} {...props} />
-          {isOpen ? (
-            <div style={{ position: 'relative' }}>
-              <DropdownOptionsContainer hideTip align={'left'}>
-                <Row>{'asdfsdfg'}</Row>
-                <Row>{'asdfsdfg'}</Row>
-              </DropdownOptionsContainer>
-            </div>
-          ) : null}
-        </div>
-      )}
-    </Downshift>
-  );
-});
 
 const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', true))(
   ({
