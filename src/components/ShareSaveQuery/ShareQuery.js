@@ -45,7 +45,7 @@ let ItemRow = styled('div')`
 
 export default injectState(
   class extends React.Component {
-    state = { link: null, copied: false, error: null };
+    state = { link: null, copied: false, error: null, open: false };
 
     share = () => {
       let { stats, sqon, api, state: { loggedInUser } } = this.props;
@@ -64,14 +64,25 @@ export default injectState(
       const { className = '', disabled } = this.props;
       return (
         <ButtonContainer className={className}>
-          <CustomLightButton disabled={disabled} onClick={disabled ? () => {} : this.share}>
+          <CustomLightButton
+            disabled={disabled}
+            onClick={
+              disabled
+                ? () => {}
+                : () => {
+                    this.setState({ open: true });
+                    this.share();
+                  }
+            }
+          >
             <Tooltip
               position="bottom"
-              trigger="click"
-              onRequestClose={() =>
+              open={this.state.open}
+              onRequestClose={() => {
+                this.setState({ open: false });
                 // after fadeout transition finishes, clear copy state
-                setTimeout(() => this.setState({ copied: false }), 1000)
-              }
+                setTimeout(() => this.setState({ copied: false }), 1000);
+              }}
               interactive
               html={
                 <div
