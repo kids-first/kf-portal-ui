@@ -23,7 +23,7 @@ const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
   color: ${({ theme }) => theme.white};
   text-align: center;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.2px;
   padding: 5px 18px 5px 5px;
   text-transform: uppercase;
