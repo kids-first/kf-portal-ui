@@ -7,7 +7,7 @@ export const ButtonContainer = styled(Row)`
   padding: 10px 5px;
 `;
 
-export const CustomLightButotn = styled(LightButton)`
+export const CustomLightButton = styled(LightButton)`
   min-width: 75px;
   font-size: 10px;
 `;
