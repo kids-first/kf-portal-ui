@@ -52,3 +52,20 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
 `;
 
 export default Button;
+
+export const WhiteButton = styled('button')`
+  border: 1px solid ${({ theme }) => theme.borderGrey};
+  color: #000;
+  font-family: ${({ theme }) => theme.fonts.default};
+  text-transform: uppercase;
+  font-weight: 500;
+  background-color: ${({ theme }) => theme.white};
+  font-size: 12px;
+  border-radius: 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.tertiary};
+    color: ${({ theme }) => theme.white};
+  }
+`;
