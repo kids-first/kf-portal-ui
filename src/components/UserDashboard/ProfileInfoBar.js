@@ -100,7 +100,7 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       `}
     >
       <EditButton egoId={loggedInUser.egoId} theme={theme} />
-      <SettingsButton egoId={loggedInUser.egoId} theme={theme} />
+      <SettingsButton egoId={loggedInUser.egoId} />
     </div>
   </div>
 );
