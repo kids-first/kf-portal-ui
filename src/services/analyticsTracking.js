@@ -165,8 +165,8 @@ export const trackUserInteraction = async ({ category, action, label }) => {
       break;
     case TRACKING_EVENTS.categories.fileRepo.actionsSidebar:
       if (
-        TRACKING_EVENTS.actions.download.report ||
-        'Download Manifest ' + TRACKING_EVENTS.actions.click
+        action === TRACKING_EVENTS.actions.download.report ||
+        action === `${TRACKING_EVENTS.actions.download.manifest} ${TRACKING_EVENTS.actions.click}`
       ) {
         stopAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload, {
           category: 'File Acquisition',
