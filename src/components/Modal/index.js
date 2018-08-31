@@ -12,12 +12,12 @@ import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessag
 import {
   ModalFooterContainer,
   ModalActionButton,
-  CancelButton,
   ModalFooterContent,
   Modal,
   ModalContent,
   ModalTitle,
 } from './ui';
+import { WhiteButton } from '../../uikit/Button.js';
 
 const enhance = compose(withTheme, injectState);
 
@@ -76,7 +76,7 @@ export const ModalFooter = enhance(
   }) => {
     return (
       <ModalFooterContainer>
-        <CancelButton onClick={() => handleCancelClick()}>{cancelText}</CancelButton>
+        <WhiteButton onClick={() => handleCancelClick()}>{cancelText}</WhiteButton>
         <ModalFooterContent>{children}</ModalFooterContent>
         {showSubmit && (
           <LoadingOnClick
