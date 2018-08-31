@@ -85,8 +85,8 @@ export const Subsection = ({ heading, children }) => {
 };
 
 export const DownloadButton = compose(withTheme)(
-  ({ onClick, theme, content = () => <Trans>Download</Trans> }) => (
-    <ActionButton m={'3px'} onClick={onClick}>
+  ({ onClick, theme, content = () => <Trans>Download</Trans>, ...rest }) => (
+    <ActionButton m={'3px'} onClick={onClick} {...rest}>
       <DownloadIcon
         className={css`
           margin-right: 9px;

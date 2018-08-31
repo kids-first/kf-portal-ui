@@ -17,6 +17,7 @@ import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
+  position: relative;
   width: 200px;
   border-radius: 7px;
 `;
@@ -137,33 +138,28 @@ export default compose(withApi, injectState)(props => {
                   {...props}
                 />
                 {isOpen ? (
-                  // this dom element is just to keep DropdownOptionsContainer in place properly
-                  <div style={{ position: 'relative' }}>
-                    <StyledDropdownOptionsContainer hideTip align={'left'}>
-                      <OptionRow onClick={() => participantDownload().then(closeMenu)}>
-                        Participant
-                      </OptionRow>
-                      <FamilyDownloadAvailabilityProvider
-                        sqon={sqon}
-                        render={({ available, isLoading }) =>
-                          available ? (
-                            <OptionRow
-                              onClick={() => participantAndFamilyDownload().then(closeMenu)}
-                            >
-                              Participant and family
-                            </OptionRow>
-                          ) : (
-                            <OptionRow disabled>
-                              Participant and family
-                              {isLoading ? null : (
-                                <Tooltip>No file was found for family members</Tooltip>
-                              )}
-                            </OptionRow>
-                          )
-                        }
-                      />
-                    </StyledDropdownOptionsContainer>
-                  </div>
+                  <StyledDropdownOptionsContainer hideTip align={'left'}>
+                    <OptionRow onClick={() => participantDownload().then(closeMenu)}>
+                      Participant
+                    </OptionRow>
+                    <FamilyDownloadAvailabilityProvider
+                      sqon={sqon}
+                      render={({ available, isLoading }) =>
+                        available ? (
+                          <OptionRow onClick={() => participantAndFamilyDownload().then(closeMenu)}>
+                            Participant and family
+                          </OptionRow>
+                        ) : (
+                          <OptionRow disabled>
+                            Participant and family
+                            {isLoading ? null : (
+                              <Tooltip>No file was found for family members</Tooltip>
+                            )}
+                          </OptionRow>
+                        )
+                      }
+                    />
+                  </StyledDropdownOptionsContainer>
                 ) : null}
               </Fragment>
             )}
