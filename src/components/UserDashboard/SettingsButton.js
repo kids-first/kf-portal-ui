@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CogIcon from 'react-icons/lib/fa/cog';
+import { WhiteButton } from '../../uikit/Button';
 
 const SettingsButton = ({ egoId, theme, ...props }) => (
   <Link
@@ -8,19 +9,11 @@ const SettingsButton = ({ egoId, theme, ...props }) => (
       pathname: `/user/${egoId}`,
       hash: '#settings',
     }}
-    css={`
-      ${theme.hollowButton};
-      text-transform: uppercase;
-      font-weight: 500;
-    `}
     {...props}
   >
-    <CogIcon
-      css={`
-        padding-right: 5px;
-      `}
-    />{' '}
-    Settings
+    <WhiteButton>
+      <CogIcon size={15} className="icon" /> Settings
+    </WhiteButton>
   </Link>
 );
 

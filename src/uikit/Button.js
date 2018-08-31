@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { applyDefaultStyles } from './Core';
 
 const BaseButton = styled('button')`
@@ -53,19 +53,44 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
 
 export default Button;
 
-export const WhiteButton = styled('button')`
+const ButtonWithIcon = ({ theme }) => css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const WhiteButton = applyDefaultStyles(styled('button')`
+  ${BaseButton};
   border: 1px solid ${({ theme }) => theme.borderGrey};
-  color: #000;
+  color: ${({ theme }) => theme.lightBlue};
   font-family: ${({ theme }) => theme.fonts.default};
   text-transform: uppercase;
   font-weight: 500;
   background-color: ${({ theme }) => theme.white};
   font-size: 12px;
   border-radius: 15px;
+  letter-spacing: 0.2px;
+  padding: 8px 10px;
+  outline: none;
+  box-shadow: none;
+  text-align: center;
   cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) => theme.tertiary};
     color: ${({ theme }) => theme.white};
+
+    & .icon {
+      background-color: ${({ theme }) => theme.tertiary};
+      color: ${({ theme }) => theme.white};
+    }
   }
-`;
+
+  & a {
+    text-decoration: none;
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.greyScale7};
+  }
+`);
