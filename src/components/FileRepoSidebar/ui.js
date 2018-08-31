@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 
 import DownloadIcon from 'icons/DownloadIcon';
 import { ActionButton } from 'uikit/Button';
+import Heading from 'uikit/Heading';
 
 export const Slideable = styled('div')`
   position: relative;
@@ -59,6 +60,29 @@ export const Section = styled('div')`
     border-bottom: solid 1px ${({ theme }) => theme.greyScale8};
   }
 `;
+
+export const Subsection = ({ heading, children }) => {
+  const Container = styled('div')`
+    padding-top: 10px;
+    padding-bottom: 10px;
+  `;
+  const StyledHeading = styled(Heading)`
+    color: ${({ theme }) => theme.greyScale1};
+    font-size: 14px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  `;
+  const Body = styled(`div`)`
+    display: flex;
+    padding-top: 5px;
+  `;
+  return (
+    <Container>
+      <StyledHeading>{heading}</StyledHeading>
+      <Body>{children}</Body>
+    </Container>
+  );
+};
 
 export const DownloadButton = compose(withTheme)(
   ({ onClick, theme, content = () => <Trans>Download</Trans> }) => (

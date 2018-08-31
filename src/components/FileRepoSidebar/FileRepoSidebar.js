@@ -5,35 +5,32 @@ import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
+import Downshift from 'downshift';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import Heading from 'uikit/Heading';
+import Row from 'uikit/Row';
+import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import FamilyManifestModal from '../FamilyManifestModal';
-import Subsection from './Subsection';
-import ReportsDownloadInput from './ReportsDownloadInput';
-import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import {
   downloadBiospecimen,
   clinicalDataParticipants,
   clinicalDataFamily,
 } from 'services/downloadData';
-
-const StyledReportsDownloadInput = styled(ReportsDownloadInput)`
-  width: 100%;
-`;
+import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
 
 const FileManifestsDownloadInput = compose(injectState)(({ effects: { setModal }, ...props }) => (
   <DownloadButton
+    content={() => <Trans>Manifest</Trans>}
     onClick={() =>
       setModal({
         title: 'Download Manifest',
         component: <FamilyManifestModal {...props} />,
       })
     }
-    content={() => <Trans>Manifest</Trans>}
     {...props}
   />
 ));
@@ -44,6 +41,7 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
     graphqlField="participant"
     render={({ state }) => (
       <DownloadButton
+        content={() => <Trans>BioSpecimen</Trans>}
         onClick={() => {
           let downloadConfig = { sqon, columns: state.columns };
           trackUserInteraction({
@@ -54,12 +52,31 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
           const downloader = downloadBiospecimen(downloadConfig);
           return downloader();
         }}
-        content={() => <Trans>BioSpecimen</Trans>}
         {...props}
       />
     )}
   />
 );
+
+const ClinicalDownloadButton = compose()(props => {
+  return (
+    <Downshift>
+      {({ isOpen, toggleMenu, openMenu, closeMenu, ...stuff }) => (
+        <div>
+          <DownloadButton content={() => <Trans>Clinical</Trans>} onClick={toggleMenu} {...props} />
+          {isOpen ? (
+            <div style={{ position: 'relative' }}>
+              <DropdownOptionsContainer hideTip align={'left'}>
+                <Row>{'asdfsdfg'}</Row>
+                <Row>{'asdfsdfg'}</Row>
+              </DropdownOptionsContainer>
+            </div>
+          ) : null}
+        </div>
+      )}
+    </Downshift>
+  );
+});
 
 const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', true))(
   ({
@@ -109,13 +126,11 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             <Heading>
               <Trans>Download</Trans>
             </Heading>
-            <Subsection>
+            <Row justifyContent={'space-between'} flexWrap={'wrap'}>
               <FileManifestsDownloadInput {...props} />
               <BioSpecimentDownloadButton {...props} />
-            </Subsection>
-            <Subsection>
-              <StyledReportsDownloadInput {...props} />
-            </Subsection>
+              <ClinicalDownloadButton {...props} />
+            </Row>
           </Section>
         </Content>
       </Container>
