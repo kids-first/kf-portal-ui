@@ -15,6 +15,7 @@ import Row from 'uikit/Row';
 import { HollowButton } from 'uikit/Button';
 import { Tag } from 'uikit/Tags';
 import { H4 } from 'uikit/Headings';
+import { WhiteButton } from '../../uikit/Button';
 
 const InterestsContainer = styled(Box)`
   background-color: ${({ theme }) => theme.backgroundGrey};
@@ -55,14 +56,15 @@ const ActionButtons = ({
   interests,
 }) => (
   <Flex justifyContent="flex-end">
-    <HollowButton
+    <WhiteButton
+      mx="10px"
       onClick={() => {
         setInterests(profile.interests || []);
         handleEditingResearchInterests({ value: false });
       }}
     >
       Cancel
-    </HollowButton>
+    </WhiteButton>
     <SaveButton
       onClick={async () => {
         await submit({

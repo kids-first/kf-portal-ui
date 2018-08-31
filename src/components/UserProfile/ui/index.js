@@ -20,8 +20,8 @@ export const xEditButton = compose(withTheme)(({ theme, ...props }) => (
   </button>
 ));
 
-export const EditButton = () => (
-  <WhiteButton>
+export const EditButton = props => (
+  <WhiteButton {...props}>
     <PencilIcon size={12} className="icon" /> Edit
   </WhiteButton>
 );

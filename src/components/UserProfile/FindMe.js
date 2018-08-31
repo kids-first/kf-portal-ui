@@ -23,6 +23,7 @@ import Column from 'uikit/Column';
 import { H4 } from 'uikit/Headings';
 
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
+import { WhiteButton } from '../../uikit/Button';
 
 const StyledField = styled(Field)`
   ${({ theme }) => theme.input};
@@ -161,14 +162,15 @@ const socialItems = {
 
 const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...rest }) => (
   <Flex {...rest} justifyContent="flex-end">
-    <HollowButton
+    <WhiteButton
+      mx="10px"
       onClick={() => {
         handleReset();
         handleIsEditing({ value: false });
       }}
     >
       Cancel
-    </HollowButton>
+    </WhiteButton>
     <Tooltip
       position="bottom"
       html="Please fix errors before saving"
