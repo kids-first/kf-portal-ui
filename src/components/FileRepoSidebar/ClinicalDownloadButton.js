@@ -135,7 +135,6 @@ export default compose(withApi, injectState)(props => {
                           ) : (
                             <OptionRow disabled>
                               Participant and family
-                              {console.log('isLoading: ', isLoading)}
                               {isLoading ? null : (
                                 <Tooltip>No file was found for family members</Tooltip>
                               )}
