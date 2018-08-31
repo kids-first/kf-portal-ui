@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { EditButton, H2, H3 } from './ui';
+import { EditButton, H2, H3, CardHeader } from './ui';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 import { injectState } from 'freactal';
 import { Box, ExternalLink } from 'uikit/Core';
@@ -42,7 +42,7 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
 
   return (
     <Box mt={mt}>
-      <H2>
+      <CardHeader mb="29px">
         Contact Information
         <EditButton
           onClick={() => {
@@ -52,7 +52,7 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
             });
           }}
         />
-      </H2>
+      </CardHeader>
 
       {(addressLine1 || addressLine2 || institution || city || country || state) && (
         <Row alignItems="flex-start" mb={'20px'}>

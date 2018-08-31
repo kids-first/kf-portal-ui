@@ -6,6 +6,7 @@ import { withTheme } from 'emotion-theming';
 import { ModalActionButton } from '../../Modal';
 
 import { Flex, Box, Section } from 'uikit/Core';
+import { H2 as H2Core } from 'uikit/Headings';
 
 export const Container = styled(Flex)`
   height: 100%;
@@ -35,6 +36,7 @@ export const H4 = styled('h4')`
   color: #74757d;
   margin: 0;
   font-weight: normal;
+  margin-top: 29px;
 `;
 
 export const NavContainer = styled('div')`
@@ -88,6 +90,7 @@ export const SaveButton = styled(ModalActionButton)``;
 
 export const StyledSection = styled(Section)`
   padding: 5px 0;
+  line-height: normal;
 `;
 
 export const ClickToAdd = styled('a')`
@@ -101,4 +104,15 @@ export const InterestsCard = styled(Box)`
   border-radius: 5px;
   box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
   margin-bottom: 15px;
+`;
+
+export const CardHeader = styled(H2Core)`
+  line-height: 1.27;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid #d4d6dd;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 10px;
+  margin-top: 13px;
 `;
