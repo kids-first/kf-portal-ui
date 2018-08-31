@@ -34,6 +34,7 @@ import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon, Connected
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 import { applyDefaultStyles } from '../../../uikit/Core';
+import { WhiteButton } from '../../../uikit/Button';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -48,7 +49,8 @@ export const LoadingSpinner = ({ width = 11, height = 11 }) => (
 );
 
 const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...props }) => (
-  <HollowButton
+  <WhiteButton
+    mx="10px"
     {...props}
     onClick={() => {
       trackUserInteraction({
@@ -60,7 +62,7 @@ const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...p
     }}
   >
     {props.children}
-  </HollowButton>
+  </WhiteButton>
 ));
 
 const Gen3DetailButton = styled(ConnectedButton)`
@@ -132,6 +134,7 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
           <PencilIcon />
           Edit
         </ConnectedButton>
+
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
