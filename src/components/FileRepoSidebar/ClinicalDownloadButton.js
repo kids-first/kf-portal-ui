@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
@@ -129,9 +129,8 @@ export default compose(withApi, injectState)(props => {
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         return (
           <Downshift>
-            {({ isOpen, toggleMenu, openMenu, closeMenu, ...stuff }) => (
-              // Downshift constraint: it expects a dom element
-              <div>
+            {({ isOpen, toggleMenu, openMenu, closeMenu, getRootProps, ...stuff }) => (
+              <Fragment {...getRootProps({ refKey: 'innerRef' })}>
                 <DownloadButton
                   content={() => <Trans>Clinical</Trans>}
                   onClick={toggleMenu}
@@ -166,7 +165,7 @@ export default compose(withApi, injectState)(props => {
                     </StyledDropdownOptionsContainer>
                   </div>
                 ) : null}
-              </div>
+              </Fragment>
             )}
           </Downshift>
         );

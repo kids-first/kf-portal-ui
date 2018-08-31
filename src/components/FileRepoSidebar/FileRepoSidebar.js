@@ -5,6 +5,7 @@ import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
+import styled from 'react-emotion';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
@@ -16,6 +17,16 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { downloadBiospecimen } from 'services/downloadData';
 import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
 import ClinicalDownloadButton from './ClinicalDownloadButton';
+
+const DownloadButtonsContainer = styled(Row)`
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @media (max-width: 1100px) {
+    & > * {
+      width: 100%;
+    }
+  }
+`;
 
 const FileManifestsDownloadInput = compose(injectState)(({ effects: { setModal }, ...props }) => (
   <DownloadButton
@@ -101,11 +112,11 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             <Heading>
               <Trans>Download</Trans>
             </Heading>
-            <Row justifyContent={'space-between'} flexWrap={'wrap'}>
+            <DownloadButtonsContainer>
               <FileManifestsDownloadInput {...props} />
               <BioSpecimentDownloadButton {...props} />
               <ClinicalDownloadButton {...props} />
-            </Row>
+            </DownloadButtonsContainer>
           </Section>
         </Content>
       </Container>
