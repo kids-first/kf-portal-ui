@@ -11,7 +11,7 @@ const SettingsButton = ({ egoId, theme, ...props }) => (
     }}
     {...props}
   >
-    <WhiteButton>
+    <WhiteButton mx="4px">
       <CogIcon size={15} className="icon" /> Settings
     </WhiteButton>
   </Link>

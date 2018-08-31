@@ -99,7 +99,7 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
         display: flex;
       `}
     >
-      <EditButton egoId={loggedInUser.egoId} theme={theme} />
+      <EditButton egoId={loggedInUser.egoId} />
       <SettingsButton egoId={loggedInUser.egoId} />
     </div>
   </div>
