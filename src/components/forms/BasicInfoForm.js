@@ -28,6 +28,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 import { Box } from 'uikit/Core';
+import { WhiteButton } from '../../uikit/Button.js';
 
 const labelStyle = `
   font-size: 14px;
@@ -220,20 +221,23 @@ export default compose(
             border-right: 1px solid #cacbcf;
           `}
         >
-          <Gravtar
-            email={values.email || ''}
-            size={143}
-            css={`
-              border-radius: 50%;
-              padding: 5px;
-              background-color: #fff;
-              border: 1px solid #cacbcf;
-              margin-bottom: 5px;
-            `}
-          />
-          <ExternalLink href="https://en.gravatar.com/site/login" css={theme.hollowButton}>
-            change gravatar
-          </ExternalLink>
+          <Column>
+            <Gravtar
+              email={values.email || ''}
+              size={143}
+              css={`
+                align-self: center;
+                border-radius: 50%;
+                padding: 5px;
+                background-color: #fff;
+                border: 1px solid #cacbcf;
+                margin-bottom: 5px;
+              `}
+            />
+            <WhiteButton mt="4px" w="170px">
+              <ExternalLink href="https://en.gravatar.com/site/login">change gravatar</ExternalLink>
+            </WhiteButton>
+          </Column>
         </div>
         <form
           onSubmit={handleSubmit}
