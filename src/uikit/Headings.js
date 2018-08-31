@@ -1,6 +1,9 @@
 import styled, { css } from 'react-emotion';
 import { applyDefaultStyles } from 'uikit/Core';
 
+/**
+ * Headings: Standard
+ */
 const BaseHeading = ({ theme, ...props }) => css`
   color: ${props.color ? props.color : theme.secondary};
   margin: 0;
@@ -39,4 +42,28 @@ export const H4 = applyDefaultStyles(styled('h4')`
   margin: 0;
   padding: 0;
   font-weight: normal;
+`);
+
+/**
+ * Headings: Join/Login
+ */
+const BaseJoinHeading = ({ theme }) => css`
+  font-family: ${theme.fonts.default};
+  color: ${theme.secondary};
+  font-weight: 500;
+`;
+
+export const JoinH2 = applyDefaultStyles(styled('h2')`
+  ${BaseJoinHeading};
+  font-size: 28px;
+  line-height: 0.87;
+  letter-spacing: 0.4px;
+  text-align: center;
+`);
+
+export const JoinH3 = applyDefaultStyles(styled('h3')`
+  ${BaseJoinHeading};
+  font-size: 16px;
+  line-height: 1.44;
+  letter-spacing: 0;
 `);
