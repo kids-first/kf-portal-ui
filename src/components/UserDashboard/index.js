@@ -20,6 +20,7 @@ import {
 import ExternalLink from 'uikit/ExternalLink';
 import { H1, H2 } from '../../uikit/Headings';
 import { Paragraph } from '../../uikit/Core';
+import TweetBlock from './TweetBlock';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -68,6 +69,7 @@ export default compose(
             `}
           >
             <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
+            <TweetBlock />
             <Notifications />
           </div>
         </Column>
