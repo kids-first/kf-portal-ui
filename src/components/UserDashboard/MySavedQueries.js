@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { H2 } from 'uikit/Headings';
+import { H3 } from './styles';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 

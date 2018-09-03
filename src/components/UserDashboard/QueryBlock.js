@@ -34,7 +34,7 @@ const Query = styled(Flex)`
 `;
 
 const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)(
-  ({ effects: { deleteQuery }, api, query: q, inactive = false, theme, canDelete = true }) => (
+  ({ effects: { deleteQuery }, api, query: q, inactive = false, theme }) => (
     <Query inactive={inactive}>
       <Column width="100%">
         <Row justifyContent="space-between" width="100%">

@@ -32,6 +32,14 @@ const DefaultSavedQueries = () => (
     </PromptMessageContainer>
     <QueriesHeading>Popular Queries:</QueriesHeading>
     <div>{defaultQueries.map(q => <QueryBlock key={q.id} canDelete={false} />)}</div>
+        Explore the{' '}
+        <Link hasExternalIcon={false} to="/search/file">
+          File Repository
+        </Link>{' '}
+        and start saving queries!
+      </PromptMessageContent>
+    </PromptMessageContainer>
+    Popular queries
   </Fragment>
 );
 export default DefaultSavedQueries;
