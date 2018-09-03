@@ -6,6 +6,9 @@ import {
   PromptMessageContent,
 } from 'uikit/PromptMessage';
 import { Link } from 'uikit/Core';
+import QueryBlock from './QueryBlock';
+
+const defaultQueries = [];
 
 const DefaultSavedQueries = () => (
   <Fragment>
@@ -14,14 +17,11 @@ const DefaultSavedQueries = () => (
         You have no saved queries yet.
       </PromptMessageHeading>
       <PromptMessageContent>
-        Explore the{' '}
-        <Link hasExternalIcon={false} to="/search/file">
-          File Repository
-        </Link>{' '}
-        and start saving queries!
+        Explore the <Link to="/search/file">File Repository</Link> and start saving queries!
       </PromptMessageContent>
     </PromptMessageContainer>
-    Popular queries
+    Examples:
+    <div>{defaultQueries.map(q => <QueryBlock key={q.id} canDelete={false} />)}</div>
   </Fragment>
 );
 export default DefaultSavedQueries;
