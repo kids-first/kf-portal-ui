@@ -33,8 +33,8 @@ import { CAVATICA, GEN3 } from 'common/constants';
 import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon, ConnectedText } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
-import { applyDefaultStyles } from '../../../uikit/Core';
-import { WhiteButton } from '../../../uikit/Button';
+import { applyDefaultStyles } from 'uikit/Core';
+import { WhiteButton, LargeTealActionButton } from 'uikit/Button';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -80,11 +80,11 @@ const ConnectButton = ({ ...props }) => {
   const RightArrow = applyDefaultStyles(RightIcon);
 
   return (
-    <ActionButton {...props} maxWidth={160}>
+    <LargeTealActionButton {...props} maxWidth={160}>
       <ExternalLink size={12} position="relative" right={4} />
       Connect
       <RightArrow size={14} position="relative" left={10} />
-    </ActionButton>
+    </LargeTealActionButton>
   );
 };
 
