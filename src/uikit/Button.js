@@ -111,4 +111,15 @@ export const TealActionButton = applyDefaultStyles(styled('button')`
     background-color: ${({ theme, disabled }) =>
       disabled ? theme.greyScale8 : theme.tertiaryHover};
   }
+
+  & a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.white};
+  }
 `);
+
+export const LargeTealActionButton = styled(TealActionButton)`
+  padding: 13px 25px;
+  font-size: 14px;
+  border-radius: 18px;
+`;

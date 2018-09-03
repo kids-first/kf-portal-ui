@@ -9,6 +9,7 @@ import { IntegrationsDiv, IntegrationsCircleDiv, H4 } from './styles';
 import IntegrationsStatus from './IntegrationsStatus';
 import { H3 } from 'uikit/Headings';
 import { Paragraph } from '../../uikit/Core';
+import { LargeTealActionButton } from '../../uikit/Button';
 
 const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
   <div
@@ -88,9 +89,11 @@ const Integrations = ({ loggedInUser, theme, integrationTokens }) => (
           pathname: `/user/${loggedInUser.egoId}`,
           hash: '#settings',
         }}
-        css={theme.actionButton}
+        style={{ textDecoration: 'none' }}
       >
-        Settings <RightIcon />
+        <LargeTealActionButton>
+          Settings <RightIcon size="18" />
+        </LargeTealActionButton>
       </Link>
     </div>
   </div>
