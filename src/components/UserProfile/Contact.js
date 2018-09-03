@@ -36,6 +36,7 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
     state,
     email,
     phone,
+    institutionalEmail,
     zip,
   } = profile;
 
@@ -67,12 +68,12 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
         </Row>
       )}
 
-      {email && (
+      {institutionalEmail && (
         <Row alignItems="center" mb={'20px'}>
           <EnvelopeIcon height={'10px'} />
           <ContactItem ml={'7px'}>
             <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
-              {email}
+              {institutionalEmail}
             </EmailLink>
           </ContactItem>
         </Row>
