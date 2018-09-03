@@ -33,7 +33,7 @@ export default compose(injectState, withState('mode', 'setMode', 'account'))(
       </SettingsSection>
 
       <SettingsSection>
-        <CardHeader mb="43px">
+        <CardHeader mt="22px" mb="31px">
           <Trans>Integrations</Trans>
         </CardHeader>
 
