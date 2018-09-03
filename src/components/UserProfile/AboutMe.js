@@ -5,7 +5,7 @@ import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { Container, EditButton, H2, SaveButton, StyledSection, ClickToAdd, CardHeader } from './ui';
+import { Container, EditButton, SaveButton, StyledSection, ClickToAdd, CardHeader } from './ui';
 import ResearchInterests from './ResearchInterests';
 import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';
@@ -17,7 +17,8 @@ import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
 import Contact from './Contact';
 import { H3, H4 } from 'uikit/Headings';
-import { WhiteButton } from '../../uikit/Button';
+import { WhiteButton } from 'uikit/Button';
+import { TealActionButton } from '../../uikit/Button';
 
 const ActionBar = styled(Row)`
   justify-content: flex-end;
@@ -88,7 +89,7 @@ export default compose(
                   >
                     Cancel
                   </WhiteButton>
-                  <SaveButton
+                  <TealActionButton
                     onClick={async () => {
                       await submit({
                         bio: bioTextarea,
@@ -101,7 +102,7 @@ export default compose(
                     }}
                   >
                     Save
-                  </SaveButton>
+                  </TealActionButton>
                 </Flex>
               ))}
           </CardHeader>
@@ -194,7 +195,7 @@ export default compose(
               >
                 Cancel
               </WhiteButton>
-              <SaveButton
+              <TealActionButton
                 onClick={async () => {
                   await submit({
                     bio: bioTextarea,
@@ -207,7 +208,7 @@ export default compose(
                 }}
               >
                 Save
-              </SaveButton>
+              </TealActionButton>
             </ActionBar>
           )}
           <Contact mt={'50px'} profile={profile} />

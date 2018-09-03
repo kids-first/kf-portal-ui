@@ -53,27 +53,29 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
 
 export default Button;
 
-const ButtonWithIcon = ({ theme }) => css`
+const BaseButtonWithIcon = ({ theme, disabled }) => css`
+  ${() => console.log('theme', theme, 'disabled', disabled)} color: ${theme.white};
+  text-align: center;
+  cursor: ${disabled => (disabled ? 'default' : 'pointer')};
   display: flex;
   align-items: center;
-  justify-content: space-between;
-`;
-
-export const WhiteButton = applyDefaultStyles(styled(BaseButton)`
-  border: 1px solid ${({ theme }) => theme.borderGrey};
-  color: ${({ theme }) => theme.lightBlue};
-  font-family: ${({ theme }) => theme.fonts.default};
+  justify-content: center;
+  outline: none;
   text-transform: uppercase;
   font-weight: 500;
-  background-color: ${({ theme }) => theme.white};
   font-size: 12px;
-  border-radius: 15px;
+  font-family: ${theme.fonts.default};
   letter-spacing: 0.2px;
   padding: 8px 10px;
-  outline: none;
+  border-radius: 15px;
   box-shadow: none;
-  text-align: center;
-  cursor: pointer;
+`;
+
+export const WhiteButton = applyDefaultStyles(styled('button')`
+  ${BaseButtonWithIcon};
+  border: 1px solid ${({ theme }) => theme.borderGrey};
+  color: ${({ theme }) => theme.lightBlue};
+  background-color: ${({ theme }) => theme.white};
 
   & a {
     text-decoration: none;
@@ -96,5 +98,17 @@ export const WhiteButton = applyDefaultStyles(styled(BaseButton)`
     a {
       color: ${({ theme }) => theme.white};
     }
+  }
+`);
+
+export const TealActionButton = applyDefaultStyles(styled('button')`
+  ${BaseButtonWithIcon};
+  border: 1px solid ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.tertiary)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.tertiary)};
+  color: ${({ theme, disabled }) => (disabled ? theme.greyDisabled : theme.white)};
+
+  &:hover {
+    background-color: ${({ theme, disabled }) =>
+      disabled ? theme.greyScale8 : theme.tertiaryHover};
   }
 `);

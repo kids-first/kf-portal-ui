@@ -15,7 +15,7 @@ import Row from 'uikit/Row';
 import { HollowButton } from 'uikit/Button';
 import { Tag } from 'uikit/Tags';
 import { H4 } from 'uikit/Headings';
-import { WhiteButton } from '../../uikit/Button';
+import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
 const InterestsContainer = styled(Box)`
   background-color: ${({ theme }) => theme.backgroundGrey};
@@ -65,7 +65,7 @@ const ActionButtons = ({
     >
       Cancel
     </WhiteButton>
-    <SaveButton
+    <TealActionButton
       onClick={async () => {
         await submit({
           interests,
@@ -77,7 +77,7 @@ const ActionButtons = ({
       }}
     >
       Save
-    </SaveButton>
+    </TealActionButton>
   </Flex>
 );
 

@@ -17,7 +17,7 @@ import {
   ModalContent,
   ModalTitle,
 } from './ui';
-import { WhiteButton } from '../../uikit/Button.js';
+import { WhiteButton, TealActionButton } from '../../uikit/Button.js';
 
 const enhance = compose(withTheme, injectState);
 
@@ -85,12 +85,10 @@ export const ModalFooter = enhance(
             readyContent={submitText}
             loadingContent={submitLoadingContent}
             render={({ onClick, loading, readyContent, loadingContent, submitDisabled }) => (
-              <ModalActionButton disabled={submitDisabled} onClick={onClick}>
-                <span>
-                  {loading && loadingContent}
-                  {readyContent}
-                </span>
-              </ModalActionButton>
+              <TealActionButton disabled={submitDisabled} onClick={onClick}>
+                {loading && loadingContent}
+                {readyContent}
+              </TealActionButton>
             )}
           />
         )}
