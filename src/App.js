@@ -54,10 +54,6 @@ const AppContainer = styled('div')`
     box-sizing: border-box;
     font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
   }
-  /*
-  & button {
-    border: solid 1px ${({ theme }) => theme.borderGrey};
-  }*/
 `;
 
 const App = compose(injectState, withApi, withTheme)(
