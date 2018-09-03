@@ -17,6 +17,7 @@ const FooterLink = styled('a')`
   text-align: center;
   color: ${({ theme }) => theme.greyScale0};
   text-decoration: underline;
+  margin: 0 3px;
 `;
 
 const FooterContainer = styled('footer')`
@@ -57,16 +58,24 @@ const Footer = () => (
   <FooterContainer>
     <Details>
       <div>
-        <FooterLink href={kfWebRoot}>
-          <Trans>Kids First Website</Trans>
+        <FooterLink href={kfWebRoot} target="_blank">
+          <Trans>kidsfirstrdc.org</Trans>
         </FooterLink>
         {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/contact')}>
-          <Trans>Contact Us</Trans>
+        <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
+          <Trans>About the Portal</Trans>
         </FooterLink>
         {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/policies')}>
+        <FooterLink href={urlJoin(kfWebRoot, '/policies')} target="_blank">
           <Trans>Policies</Trans>
+        </FooterLink>
+        {' | '}
+        <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')} target="_blank">
+          <Trans>Support</Trans>
+        </FooterLink>
+        {' | '}
+        <FooterLink href={urlJoin(kfWebRoot, '/contact')} target="_blank">
+          <Trans>Contact</Trans>
         </FooterLink>
       </div>
       <div>

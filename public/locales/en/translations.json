@@ -43,17 +43,19 @@
   "Login": "Login",
   "My Profile": "My Profile",
   "Logout": "Logout",
-  "Kids First Website": "Kids First Website",
-  "Contact Us": "Contact Us",
+  "kidsfirstrdc": {
+    "org": "kidsfirstrdc.org"
+  },
+  "About the Portal": "About the Portal",
   "Policies": "Policies",
+  "Support": "Support",
+  "Contact": "Contact",
   "UI:": "UI:",
   "Data Release:": "Data Release:",
   "dataReleaseVersion": "Pre-release",
   "Follow Us": "Follow Us",
   "Data Resource Portal": "Data Resource Portal",
   "Website": "Website",
-  "Support": "Support",
-  "Contact": "Contact",
   "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort": {
     "": "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort."
   },
