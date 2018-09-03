@@ -5,7 +5,7 @@ import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { Container, EditButton, SaveButton, StyledSection, ClickToAdd, CardHeader } from './ui';
+import { Container, EditButton, StyledSection, ClickToAdd, CardHeader } from './ui';
 import ResearchInterests from './ResearchInterests';
 import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';

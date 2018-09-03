@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { EditButton, H2, H3, CardHeader } from './ui';
+import { EditButton, H3, CardHeader } from './ui';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 import { injectState } from 'freactal';
 import { Box, ExternalLink } from 'uikit/Core';
