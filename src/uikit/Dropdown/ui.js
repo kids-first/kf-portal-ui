@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'react-emotion';
 import Column from '../Column';
 import Row from '../Row';

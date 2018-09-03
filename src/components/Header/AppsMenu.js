@@ -7,7 +7,6 @@ import {
   NavbarKidsFirstDropdown,
   DropdownExternalLink,
   DropdownRow,
-  AllAppsLabelContainer,
   MenuLabelContainer,
 } from './ui';
 import AllAppsContactIcon from 'icons/AllAppsContactIcon';

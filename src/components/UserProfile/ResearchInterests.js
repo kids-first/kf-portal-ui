@@ -6,13 +6,12 @@ import { withTheme } from 'emotion-theming';
 
 import { withApi } from 'services/api';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
-import { EditButton, SaveButton, ClickToAdd, InterestsCard, CardHeader } from './ui';
+import { EditButton, ClickToAdd, InterestsCard, CardHeader } from './ui';
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
 
 import { Box, Flex } from 'uikit/Core';
 import Row from 'uikit/Row';
-import { HollowButton } from 'uikit/Button';
 import { Tag } from 'uikit/Tags';
 import { H4 } from 'uikit/Headings';
 import { WhiteButton, TealActionButton } from '../../uikit/Button';

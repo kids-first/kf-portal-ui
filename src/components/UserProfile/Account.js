@@ -3,7 +3,7 @@ import { compose, withState } from 'recompose';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 
-import { H2, CardHeader } from './ui';
+import { CardHeader } from './ui';
 import UserIntegrations from './UserIntegrations';
 import ConnectedWithBadge from './ConnectedWithBadge';
 

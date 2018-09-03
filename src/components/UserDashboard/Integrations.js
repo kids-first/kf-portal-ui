@@ -5,7 +5,7 @@ import { CAVATICA, GEN3 } from 'common/constants';
 import { gen3WebRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import downloadControlledAccess from 'assets/icon-download-controlled-data.svg';
 import cavaticaLogo from 'assets/logomark-cavatica.svg';
-import { IntegrationsDiv, IntegrationsCircleDiv, H4 } from './styles';
+import { IntegrationsDiv, IntegrationsCircleDiv } from './styles';
 import IntegrationsStatus from './IntegrationsStatus';
 import { H3 } from 'uikit/Headings';
 import { Paragraph } from '../../uikit/Core';

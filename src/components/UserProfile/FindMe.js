@@ -7,11 +7,10 @@ import { SocialIcon } from 'react-social-icons';
 import { withTheme } from 'emotion-theming';
 
 import { kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
-import { EditButton, SaveButton, StyledSection, ClickToAdd, InterestsCard, CardHeader } from './ui';
+import { EditButton, StyledSection, ClickToAdd, InterestsCard, CardHeader } from './ui';
 
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
 import { Flex } from 'uikit/Core';
-import { HollowButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';

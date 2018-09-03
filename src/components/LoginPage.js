@@ -10,7 +10,6 @@ import Login from 'components/Login';
 import SplashPage from 'components/SplashPage';
 
 import { Link, Section } from 'uikit/Core';
-import { H2 } from 'uikit/Headings';
 import { JoinH2 } from '../uikit/Headings';
 
 const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
