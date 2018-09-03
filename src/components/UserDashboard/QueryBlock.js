@@ -11,6 +11,7 @@ import { Box, Flex, Span, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { withTheme } from 'emotion-theming';
+import { withApi } from 'services/api';
 
 const Detail = styled(Span)`
   color: ${({ theme }) => theme.greyScale1};
@@ -32,8 +33,8 @@ const Query = styled(Flex)`
       : ``};
 `;
 
-const QueryBlock = compose(provideSavedQueries, injectState, withTheme)(
-  ({ effects: { deleteQuery }, api, query: q, inactive, theme }) => (
+const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)(
+  ({ effects: { deleteQuery }, api, query: q, inactive = false, theme, canDelete = true }) => (
     <Query inactive={inactive}>
       <Column width="100%">
         <Row justifyContent="space-between" width="100%">
