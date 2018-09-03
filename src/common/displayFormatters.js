@@ -7,3 +7,11 @@ export const formatPhoneNumber = phone => {
     return phone;
   }
 };
+
+/**
+ *
+ * @param {Array} addresses
+ */
+export const formatAddressLine = (addresses = []) => {
+  return addresses.filter(x => x).join(', ');
+};

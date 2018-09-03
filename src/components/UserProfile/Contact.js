@@ -5,13 +5,13 @@ import BasicInfoForm from 'components/forms/BasicInfoForm';
 import { injectState } from 'freactal';
 import { Box, ExternalLink } from 'uikit/Core';
 import styled from 'react-emotion';
-import EnvelopeIcon from '../../icons/EnvelopeIcon';
-import MapMarkerIcon from '../../icons/MapMarkerIcon';
-import PhoneIcon from '../../icons/PhoneIcon';
+import EnvelopeIcon from 'icons/EnvelopeIcon';
+import MapMarkerIcon from 'icons/MapMarkerIcon';
+import PhoneIcon from 'icons/PhoneIcon';
 import Row from 'uikit/Row';
-import { Section } from '../../uikit/Core';
+import { Section } from 'uikit/Core';
 import { withApi } from 'services/api';
-import { formatPhoneNumber } from '../../common/displayFormatters';
+import { formatPhoneNumber, formatAddressLine } from 'common/displayFormatters';
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
@@ -20,6 +20,10 @@ const EmailLink = styled(ExternalLink)`
 
 const ContactItem = styled(Section)`
   line-height: 1.83;
+`;
+
+const Address = styled('div')`
+  text-transform: capitalize;
 `;
 
 const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, profile, mt }) => {
@@ -53,10 +57,12 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
         <Row alignItems="flex-start" mb={'20px'}>
           <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
           <ContactItem ml={'7px'}>
-            {institution && <H3>{institution}</H3>}
-            {(addressLine1 || addressLine2) && <div>{`${addressLine1} ${addressLine2}`}</div>}
-            <div>{[city, state, country].filter(x => x).join(', ')}</div>
-            {zip && <div>{zip}</div>}
+            <Address>
+              {institution && <H3>{institution}</H3>}
+              <div>{formatAddressLine([addressLine1, addressLine2])}</div>
+              <div>{formatAddressLine([city, state, country])}</div>
+            </Address>
+            {zip && <div>{zip.toUpperCase()}</div>}
           </ContactItem>
         </Row>
       )}
