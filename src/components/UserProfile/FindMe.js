@@ -23,7 +23,7 @@ import Column from 'uikit/Column';
 import { H4 } from 'uikit/Headings';
 
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
-import { WhiteButton } from '../../uikit/Button';
+import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
 const StyledField = styled(Field)`
   ${({ theme }) => theme.input};
@@ -176,7 +176,7 @@ const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...
       html="Please fix errors before saving"
       open={!!Object.keys(errors || {}).length}
     >
-      <SaveButton
+      <TealActionButton
         disabled={!!Object.keys(errors || {}).length}
         onClick={async e => {
           handleSubmit(e);
@@ -184,7 +184,7 @@ const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...
         }}
       >
         Save
-      </SaveButton>
+      </TealActionButton>
     </Tooltip>
   </Flex>
 );
