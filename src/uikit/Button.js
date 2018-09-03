@@ -54,7 +54,7 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
 export default Button;
 
 const BaseButtonWithIcon = ({ theme, disabled }) => css`
-  ${() => console.log('theme', theme, 'disabled', disabled)} color: ${theme.white};
+  color: ${theme.white};
   text-align: center;
   cursor: ${disabled => (disabled ? 'default' : 'pointer')};
   display: flex;
