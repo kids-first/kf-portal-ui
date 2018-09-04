@@ -63,7 +63,11 @@ export default () => (
               <Trans>Support</Trans>
             </DropdownRow>
           </DropdownExternalLink>,
-          <DropdownExternalLink onClick={toggleDropdown} href="https://kidsfirstdrc.org/contact">
+          <DropdownExternalLink
+            onClick={toggleDropdown}
+            href="https://kidsfirstdrc.org/contact"
+            target="_blank"
+          >
             <DropdownRow alignItems="center">
               <AllAppsContactIcon width="16px" height="11px" />
               <Trans>Contact</Trans>
