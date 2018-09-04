@@ -45,6 +45,24 @@ export const H4 = applyDefaultStyles(styled('h4')`
 `);
 
 /**
+ * Headings: FileRepo
+ */
+const BaseFileRepoHeading = ({ theme }) => css`
+  font-family: ${theme.fonts.default};
+  color: ${theme.secondary};
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+`;
+
+export const FileRepoH1 = applyDefaultStyles(styled('h1')``);
+
+export const FileRepoH2 = applyDefaultStyles(styled('h2')`
+  ${BaseFileRepoHeading};
+  font-size: 18px;
+`);
+
+/**
  * Headings: Join/Login
  */
 const BaseJoinHeading = ({ theme }) => css`
