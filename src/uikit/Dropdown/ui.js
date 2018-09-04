@@ -38,24 +38,25 @@ export const DropdownOptionsContainer = styled(Column)`
   cursor: pointer;
   padding: 5;
   right: ${({ align }) => (align === 'right' ? '25px' : 'auto')};
-  left: ${({ align }) => (align === 'right' ? 'auto' : '-25px')};
+  left: ${({ align }) => (align === 'left' ? 'auto' : '-25px')};
   top: 100%;
   box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
   border-radius: 2px;
 
-  &:after,
-  &:before {
-    bottom: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: ' ';
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  &:after {
+  ${({ hideTip }) =>
+    hideTip
+      ? ''
+      : ` &:after, &:before {
+      bottom: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: ' ';
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+  `} &:after {
     border-color: rgba(255, 255, 255, 0);
     border-bottom-color: ${({ theme }) => theme.white};
     border-width: 6px;
