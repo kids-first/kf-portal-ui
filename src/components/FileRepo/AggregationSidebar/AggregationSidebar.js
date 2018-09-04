@@ -20,6 +20,7 @@ import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
+import { FileRepoH2 } from '../../../uikit/Headings';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
@@ -76,7 +77,9 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
           <Column flexStrink={0}>
             <AggregationHeader>
               <AggregationTitle>
-                <Trans>Filters</Trans>
+                <FileRepoH2>
+                  <Trans>Filters</Trans>
+                </FileRepoH2>
               </AggregationTitle>
               <ActionButton
                 css={theme.uppercase}
