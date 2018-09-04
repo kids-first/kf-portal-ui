@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
-import Downshift from 'downshift';
 import { uniq } from 'lodash';
 import Component from 'react-component-component';
 
