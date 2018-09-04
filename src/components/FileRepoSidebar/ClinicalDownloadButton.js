@@ -131,68 +131,66 @@ export default compose(withApi, injectState)(props => {
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         return (
-          <Component initialState={{ isComputing: false }}>
-            {({ state: { isComputing }, setState: setComputingState }) => (
+          <Component initialState={{ isDownloading: false }}>
+            {({ state: { isDownloading }, setState: setDownloadingState }) => (
               <DropDownState
-                render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => {
-                  return (
-                    <Fragment>
-                      <DownloadButton
-                        buttonRef={buttonRef}
-                        content={() => <Trans>Clinical</Trans>}
-                        onBlur={async e => {
-                          if (!isComputing) {
-                            setDropdownVisibility(false);
+                render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
+                  <Fragment>
+                    <DownloadButton
+                      buttonRef={buttonRef}
+                      content={() => <Trans>Clinical</Trans>}
+                      onBlur={async e => {
+                        if (!isDownloading) {
+                          setDropdownVisibility(false);
+                        }
+                      }}
+                      onClick={() => {
+                        toggleDropdown();
+                      }}
+                      {...props}
+                    />
+                    {isDropdownVisible ? (
+                      <StyledDropdownOptionsContainer hideTip align={'left'}>
+                        <OptionRow
+                          onMouseDown={() => {
+                            setDownloadingState({ isDownloading: true });
+                            participantDownload().then(() => {
+                              setDropdownVisibility(false);
+                              setDownloadingState({ isDownloading: false });
+                            });
+                          }}
+                        >
+                          Participant
+                        </OptionRow>
+                        <FamilyDownloadAvailabilityProvider
+                          sqon={sqon}
+                          render={({ available, isLoading }) =>
+                            available ? (
+                              <OptionRow
+                                onMouseDown={() => {
+                                  setDownloadingState({ isDownloading: true });
+                                  participantAndFamilyDownload().then(() => {
+                                    setDropdownVisibility(false);
+                                    setDownloadingState({ isDownloading: false });
+                                  });
+                                }}
+                              >
+                                Participant and family
+                              </OptionRow>
+                            ) : (
+                              <OptionRow disabled>
+                                Participant and family
+                                {isLoading ? null : (
+                                  <Tooltip>No file was found for family members</Tooltip>
+                                )}
+                              </OptionRow>
+                            )
                           }
-                        }}
-                        onClick={() => {
-                          toggleDropdown();
-                        }}
-                        {...props}
-                      />
-                      {isDropdownVisible ? (
-                        <StyledDropdownOptionsContainer hideTip align={'left'}>
-                          <OptionRow
-                            onMouseDown={() => {
-                              setComputingState({ isComputing: true });
-                              participantDownload().then(() => {
-                                setDropdownVisibility(false);
-                                setComputingState({ isComputing: false });
-                              });
-                            }}
-                          >
-                            Participant
-                          </OptionRow>
-                          <FamilyDownloadAvailabilityProvider
-                            sqon={sqon}
-                            render={({ available, isLoading }) =>
-                              available ? (
-                                <OptionRow
-                                  onMouseDown={() => {
-                                    setComputingState({ isComputing: true });
-                                    participantAndFamilyDownload().then(() => {
-                                      setDropdownVisibility(false);
-                                      setComputingState({ isComputing: false });
-                                    });
-                                  }}
-                                >
-                                  Participant and family
-                                </OptionRow>
-                              ) : (
-                                <OptionRow disabled>
-                                  Participant and family
-                                  {isLoading ? null : (
-                                    <Tooltip>No file was found for family members</Tooltip>
-                                  )}
-                                </OptionRow>
-                              )
-                            }
-                          />
-                        </StyledDropdownOptionsContainer>
-                      ) : null}
-                    </Fragment>
-                  );
-                }}
+                        />
+                      </StyledDropdownOptionsContainer>
+                    ) : null}
+                  </Fragment>
+                )}
               />
             )}
           </Component>
