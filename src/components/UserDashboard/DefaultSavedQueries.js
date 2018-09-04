@@ -8,6 +8,7 @@ import {
 } from 'uikit/PromptMessage';
 import { Link } from 'uikit/Core';
 import QueryBlock from './QueryBlock';
+//import { TealActionButton } from 'uikit/Button';
 
 const defaultQueries = [];
 
@@ -27,7 +28,11 @@ const DefaultSavedQueries = () => (
         You have no saved queries yet.
       </PromptMessageHeading>
       <PromptMessageContent>
-        Explore the <Link to="/search/file">File Repository</Link> and start saving queries!
+        Explore the{' '}
+        <Link to="/search/file" style={{ textDecoration: 'none' }}>
+          File Repository
+        </Link>{' '}
+        and start saving queries!
       </PromptMessageContent>
     </PromptMessageContainer>
     <QueriesHeading>Popular Queries:</QueriesHeading>
