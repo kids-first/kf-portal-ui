@@ -84,6 +84,10 @@ export const Subsection = ({ heading, children }) => {
   );
 };
 
+const StyledActionButton = styled(ActionButton)`
+  justify-content: flex-start;
+`;
+
 export const DownloadButton = compose(withTheme)(
   ({
     onClick,
@@ -93,7 +97,7 @@ export const DownloadButton = compose(withTheme)(
     ...rest
   }) => {
     return (
-      <ActionButton
+      <StyledActionButton
         m={'3px'}
         onClick={onClick}
         innerRef={ref => {
@@ -107,7 +111,7 @@ export const DownloadButton = compose(withTheme)(
           `}
         />
         <span css={theme.uppercase}>{content()}</span>
-      </ActionButton>
+      </StyledActionButton>
     );
   },
 );

@@ -10,7 +10,7 @@ import styled from 'react-emotion';
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import Heading from 'uikit/Heading';
-import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import FamilyManifestModal from '../FamilyManifestModal';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -18,13 +18,12 @@ import { downloadBiospecimen } from 'services/downloadData';
 import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
 import ClinicalDownloadButton from './ClinicalDownloadButton';
 
-const DownloadButtonsContainer = styled(Row)`
+const DownloadButtonsContainer = styled(Column)`
   justify-content: space-between;
   flex-wrap: wrap;
-  @media (max-width: 1100px) {
-    & > * {
-      width: 100%;
-    }
+  width: 150px;
+  & > * {
+    width: 100%;
   }
 `;
 
