@@ -23,6 +23,15 @@ const QueriesHeading = styled('h4')`
 =======
 >>>>>>> Add Query Block to DefaultQueries
 
+const QueriesHeading = styled('h4')`
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: ${({ theme }) => theme.greyScale1};
+  margin-bottom: 7px;
+  margin-top: 0;
+`;
+
 const DefaultSavedQueries = () => (
   <Fragment>
     <PromptMessageContainer info my={20}>
@@ -45,7 +54,7 @@ const DefaultSavedQueries = () => (
 >>>>>>> Add Query Block to DefaultQueries
       </PromptMessageContent>
     </PromptMessageContainer>
-    Examples:
+    <QueriesHeading>Popular Queries:</QueriesHeading>
     <div>{defaultQueries.map(q => <QueryBlock key={q.id} canDelete={false} />)}</div>
   </Fragment>
 );
