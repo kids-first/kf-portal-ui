@@ -6,17 +6,9 @@ const CardContainer = styled(Flex)`
   border-radius: 10px;
   background-color: #ffffff;
   border: solid 1px #e0e1e6;
+  flex: 1;
 `;
 
-const CardHeading = styled('div')``;
-
-const CardContent = styled('div')``;
-
-const Card = ({ heading, content }) => (
-  <CardContainer>
-    <CardHeading>{heading}</CardHeading>
-    <CardContent>{content}</CardContent>
-  </CardContainer>
-);
+const Card = ({ children, ...props }) => <CardContainer {...props}>{children}</CardContainer>;
 
 export default Card;

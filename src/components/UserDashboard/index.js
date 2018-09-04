@@ -12,6 +12,7 @@ import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 import {
   PromptMessageContainer,
   PromptMessageHeading,
@@ -20,7 +21,7 @@ import {
 import ExternalLink from 'uikit/ExternalLink';
 import { H1, H2 } from '../../uikit/Headings';
 import { Paragraph } from '../../uikit/Core';
-import TweetBlock from './TweetBlock';
+import TwitterBlock from './TwitterBlock';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -69,9 +70,8 @@ export default compose(
             `}
           >
             <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-            <TweetBlock />
-            <Notifications />
-          </div>
+            <TwitterBlock />
+          </Row>
         </Column>
         <div
           css={`
