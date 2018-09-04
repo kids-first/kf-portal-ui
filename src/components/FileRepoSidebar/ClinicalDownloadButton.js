@@ -122,6 +122,7 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
 
 export default compose(withApi, injectState)(props => {
   const { api, sqon, projectId } = props;
+  const buttonRef = { current: null };
   return (
     <ColumnsState
       projectId={projectId}
@@ -130,53 +131,71 @@ export default compose(withApi, injectState)(props => {
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         return (
-          <DropDownState
-            render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => {
-              return (
-                <Fragment>
-                  <DownloadButton
-                    content={() => <Trans>Clinical</Trans>}
-                    onClick={toggleDropdown}
-                    {...props}
-                  />
-                  {isDropdownVisible ? (
-                    <StyledDropdownOptionsContainer hideTip align={'left'}>
-                      <OptionRow
-                        onClick={() =>
-                          participantDownload().then(() => setDropdownVisibility(false))
-                        }
-                      >
-                        Participant
-                      </OptionRow>
-                      <FamilyDownloadAvailabilityProvider
-                        sqon={sqon}
-                        render={({ available, isLoading }) =>
-                          available ? (
-                            <OptionRow
-                              onClick={() =>
-                                participantAndFamilyDownload().then(() =>
-                                  setDropdownVisibility(false),
-                                )
-                              }
-                            >
-                              Participant and family
-                            </OptionRow>
-                          ) : (
-                            <OptionRow disabled>
-                              Participant and family
-                              {isLoading ? null : (
-                                <Tooltip>No file was found for family members</Tooltip>
-                              )}
-                            </OptionRow>
-                          )
-                        }
+          <Component initialState={{ isComputing: false }}>
+            {({ state: { isComputing }, setState: setComputingState }) => (
+              <DropDownState
+                render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => {
+                  return (
+                    <Fragment>
+                      <DownloadButton
+                        buttonRef={buttonRef}
+                        content={() => <Trans>Clinical</Trans>}
+                        onBlur={async e => {
+                          if (!isComputing) {
+                            setDropdownVisibility(false);
+                          }
+                        }}
+                        onClick={() => {
+                          toggleDropdown();
+                        }}
+                        {...props}
                       />
-                    </StyledDropdownOptionsContainer>
-                  ) : null}
-                </Fragment>
-              );
-            }}
-          />
+                      {isDropdownVisible ? (
+                        <StyledDropdownOptionsContainer hideTip align={'left'}>
+                          <OptionRow
+                            onMouseDown={() => {
+                              setComputingState({ isComputing: true });
+                              participantDownload().then(() => {
+                                setDropdownVisibility(false);
+                                setComputingState({ isComputing: false });
+                              });
+                            }}
+                          >
+                            Participant
+                          </OptionRow>
+                          <FamilyDownloadAvailabilityProvider
+                            sqon={sqon}
+                            render={({ available, isLoading }) =>
+                              available ? (
+                                <OptionRow
+                                  onMouseDown={() => {
+                                    setComputingState({ isComputing: true });
+                                    participantAndFamilyDownload().then(() => {
+                                      setDropdownVisibility(false);
+                                      setComputingState({ isComputing: false });
+                                    });
+                                  }}
+                                >
+                                  Participant and family
+                                </OptionRow>
+                              ) : (
+                                <OptionRow disabled>
+                                  Participant and family
+                                  {isLoading ? null : (
+                                    <Tooltip>No file was found for family members</Tooltip>
+                                  )}
+                                </OptionRow>
+                              )
+                            }
+                          />
+                        </StyledDropdownOptionsContainer>
+                      ) : null}
+                    </Fragment>
+                  );
+                }}
+              />
+            )}
+          </Component>
         );
       }}
     />
