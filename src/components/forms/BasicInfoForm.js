@@ -34,7 +34,7 @@ const labelStyle = `
   font-size: 14px;
   letter-spacing: 0.2px;
   text-align: left;
-  font-weight: 900;
+  font-weight: 700;
 `;
 
 const StyledLabel = styled('label')`

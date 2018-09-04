@@ -12,7 +12,7 @@ import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import FileManifestsDownloadInput from './FileManifestsDownloadInput';
 import Subsection from './Subsection';
 import ReportsDownloadInput from './ReportsDownloadInput';
-import { FileRepoH2 } from '../../uikit/Headings';
+import { FileRepoH2 as H2, FileRepoH3 as H3 } from '../../uikit/Headings';
 
 const Slideable = styled('div')`
   position: relative;
@@ -96,9 +96,9 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
                 <LeftChevron width={14} fill={theme.secondary} />
               )}{' '}
             </span>
-            <FileRepoH2 display="inline-block">
+            <H2 display="inline-block">
               <Trans>Actions</Trans>
-            </FileRepoH2>
+            </H2>
           </Heading>
         </Titlebar>
         <Content {...{ expanded, contentSidePadding, containerWidth }}>
@@ -111,9 +111,9 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             </Text>
           </Section>
           <Section>
-            <Heading>
+            <H3 mb="15px">
               <Trans>Data Analysis</Trans>
-            </Heading>
+            </H3>
             <CavaticaCopyButton {...props} />
           </Section>
           <Section>
