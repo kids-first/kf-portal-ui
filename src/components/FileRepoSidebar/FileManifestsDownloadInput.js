@@ -8,9 +8,10 @@ import { injectState } from 'freactal';
 import DownloadIcon from 'icons/DownloadIcon';
 import { ActionButton } from 'uikit/Button';
 import FamilyManifestModal from '../FamilyManifestModal';
+import { TealActionButton } from '../../uikit/Button';
 
 export default compose(injectState, withTheme)(({ theme, effects: { setModal }, ...props }) => (
-  <ActionButton
+  <TealActionButton
     onClick={() =>
       setModal({
         title: 'Download Manifest',
@@ -23,8 +24,6 @@ export default compose(injectState, withTheme)(({ theme, effects: { setModal }, 
         margin-right: 9px;
       `}
     />
-    <span css={theme.uppercase}>
-      <Trans>Download</Trans>
-    </span>
-  </ActionButton>
+    <Trans>Download</Trans>
+  </TealActionButton>
 ));
