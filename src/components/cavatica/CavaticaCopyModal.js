@@ -169,7 +169,7 @@ const CavaticaCopyModal = ({
           )}
           {!gen3Connected && (
             <Paragraph>
-              <br />Please{' '}
+              Please{' '}
               <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
                 connect to GEN3
               </Link>{' '}
