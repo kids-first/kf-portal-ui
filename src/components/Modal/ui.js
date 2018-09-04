@@ -48,6 +48,7 @@ export const Modal = styled(ReactModal)`
   padding: 20px 20px;
   max-width: 1000px;
   max-height: 85%;
+  min-height: 0;
   box-shadow: ${({ theme }) => theme.shadow} 0px 5px 15px;
   overflow: visible;
   display: flex;
@@ -62,6 +63,7 @@ export const ModalContent = styled(Column)`
   z-index: 1000;
   flex: 1;
   height: 100%;
+  min-height: 0;
 `;
 
 export const ModalSubHeader = styled('div')`

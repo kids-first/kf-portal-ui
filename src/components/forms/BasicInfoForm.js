@@ -206,14 +206,7 @@ export default compose(
     setLocation,
   }) => (
     <Fragment>
-      <div
-        css={`
-          ${theme.row};
-          margin-bottom: 20px;
-          z-index: 1;
-          position: relative;
-        `}
-      >
+      <Row mb="20px" zIndex="1" position="relative" minHeight="0">
         <div
           css={`
             padding-right: 30px;
@@ -484,7 +477,7 @@ export default compose(
             </AddressRow>
           </AddressBox>
         </form>
-      </div>
+      </Row>
       <ModalFooter {...{ unsetModal, handleSubmit }} />
     </Fragment>
   ),
