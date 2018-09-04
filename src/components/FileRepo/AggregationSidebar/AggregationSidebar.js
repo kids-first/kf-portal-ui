@@ -20,6 +20,7 @@ import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
+import Heading from 'uikit/Heading';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
@@ -44,10 +45,10 @@ const AggregationHeader = styled('div')`
   align-items: center;
 `;
 
-const AggregationTitle = styled('div')`
+const AggregationTitle = styled(Heading)`
   flex-grow: 1;
+  margin-bottom: 0px;
   font-size: 18px;
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const IdFilterContainer = styled(Column)`
