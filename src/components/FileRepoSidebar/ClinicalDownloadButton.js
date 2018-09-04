@@ -15,6 +15,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadData';
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
+import { DropDownState } from 'components/Header/AppsMenu';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: relative;
@@ -129,41 +130,53 @@ export default compose(withApi, injectState)(props => {
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         return (
-          <Downshift>
-            {({ isOpen, toggleMenu, openMenu, closeMenu, getRootProps, ...stuff }) => (
-              <Fragment {...getRootProps({ refKey: 'innerRef' })}>
-                <DownloadButton
-                  content={() => <Trans>Clinical</Trans>}
-                  onClick={toggleMenu}
-                  {...props}
-                />
-                {isOpen ? (
-                  <StyledDropdownOptionsContainer hideTip align={'left'}>
-                    <OptionRow onClick={() => participantDownload().then(closeMenu)}>
-                      Participant
-                    </OptionRow>
-                    <FamilyDownloadAvailabilityProvider
-                      sqon={sqon}
-                      render={({ available, isLoading }) =>
-                        available ? (
-                          <OptionRow onClick={() => participantAndFamilyDownload().then(closeMenu)}>
-                            Participant and family
-                          </OptionRow>
-                        ) : (
-                          <OptionRow disabled>
-                            Participant and family
-                            {isLoading ? null : (
-                              <Tooltip>No file was found for family members</Tooltip>
-                            )}
-                          </OptionRow>
-                        )
-                      }
-                    />
-                  </StyledDropdownOptionsContainer>
-                ) : null}
-              </Fragment>
-            )}
-          </Downshift>
+          <DropDownState
+            render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => {
+              return (
+                <Fragment>
+                  <DownloadButton
+                    content={() => <Trans>Clinical</Trans>}
+                    onClick={toggleDropdown}
+                    {...props}
+                  />
+                  {isDropdownVisible ? (
+                    <StyledDropdownOptionsContainer hideTip align={'left'}>
+                      <OptionRow
+                        onClick={() =>
+                          participantDownload().then(() => setDropdownVisibility(false))
+                        }
+                      >
+                        Participant
+                      </OptionRow>
+                      <FamilyDownloadAvailabilityProvider
+                        sqon={sqon}
+                        render={({ available, isLoading }) =>
+                          available ? (
+                            <OptionRow
+                              onClick={() =>
+                                participantAndFamilyDownload().then(() =>
+                                  setDropdownVisibility(false),
+                                )
+                              }
+                            >
+                              Participant and family
+                            </OptionRow>
+                          ) : (
+                            <OptionRow disabled>
+                              Participant and family
+                              {isLoading ? null : (
+                                <Tooltip>No file was found for family members</Tooltip>
+                              )}
+                            </OptionRow>
+                          )
+                        }
+                      />
+                    </StyledDropdownOptionsContainer>
+                  ) : null}
+                </Fragment>
+              );
+            }}
+          />
         );
       }}
     />

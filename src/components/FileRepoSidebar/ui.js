@@ -85,14 +85,29 @@ export const Subsection = ({ heading, children }) => {
 };
 
 export const DownloadButton = compose(withTheme)(
-  ({ onClick, theme, content = () => <Trans>Download</Trans>, ...rest }) => (
-    <ActionButton m={'3px'} onClick={onClick} {...rest}>
-      <DownloadIcon
-        className={css`
-          margin-right: 9px;
-        `}
-      />
-      <span css={theme.uppercase}>{content()}</span>
-    </ActionButton>
-  ),
+  ({
+    onClick,
+    theme,
+    content = () => <Trans>Download</Trans>,
+    buttonRef = React.createRef(),
+    ...rest
+  }) => {
+    return (
+      <ActionButton
+        m={'3px'}
+        onClick={onClick}
+        innerRef={ref => {
+          buttonRef.current = ref;
+        }}
+        {...rest}
+      >
+        <DownloadIcon
+          className={css`
+            margin-right: 9px;
+          `}
+        />
+        <span css={theme.uppercase}>{content()}</span>
+      </ActionButton>
+    );
+  },
 );
