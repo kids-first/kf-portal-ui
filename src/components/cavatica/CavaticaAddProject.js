@@ -12,7 +12,7 @@ import { injectState } from 'freactal';
 import { createProject, getBillingGroups } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
-import { WhiteButton } from 'uikit/Button';
+import { WhiteButton, TealActionButton } from 'uikit/Button';
 
 const Container = styled(Row)`
   align-items: center;
@@ -97,12 +97,12 @@ const CavaticaAddProject = ({
             setProjectName('');
           }}
           render={({ loading, onClick }) => (
-            <ActionButton className="saveButton" disabled={loading} onClick={onClick}>
-              <span>Save</span>
-            </ActionButton>
+            <TealActionButton disabled={loading} onClick={onClick}>
+              Save
+            </TealActionButton>
           )}
         />
-        <CancelButton onClick={() => setAddingProject(false)}>Cancel</CancelButton>
+        <WhiteButton onClick={() => setAddingProject(false)}>Cancel</WhiteButton>
       </Fragment>
     ) : (
       <CreateButton onClick={() => setAddingProject(true)}>

@@ -8,10 +8,9 @@ import { injectState } from 'freactal';
 import { MatchBox } from '@arranger/components/dist/Arranger';
 import graphql from 'services/arranger';
 import { ModalFooter } from './Modal';
+import { TealActionButton } from '../uikit/Button';
 
-const UploadButton = withTheme(({ theme, ...props }) => (
-  <button className={theme.actionButton} {...props} />
-));
+const UploadButton = withTheme(({ theme, ...props }) => <TealActionButton {...props} />);
 
 const enhance = compose(withTheme, injectState);
 
