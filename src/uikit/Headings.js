@@ -45,7 +45,7 @@ export const H4 = applyDefaultStyles(styled('h4')`
 `);
 
 /**
- * Headings: FileRepo
+ * Headings: File Repo
  */
 const BaseFileRepoHeading = ({ theme }) => css`
   font-family: ${theme.fonts.default};
@@ -60,6 +60,11 @@ export const FileRepoH1 = applyDefaultStyles(styled('h1')``);
 export const FileRepoH2 = applyDefaultStyles(styled('h2')`
   ${BaseFileRepoHeading};
   font-size: 18px;
+`);
+
+export const FileRepoH3 = applyDefaultStyles(styled('h3')`
+  ${BaseFileRepoHeading};
+  font-size: 16px;
 `);
 
 /**
