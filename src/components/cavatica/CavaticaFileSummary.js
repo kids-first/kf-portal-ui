@@ -264,15 +264,15 @@ const CavaticaFileSummary = ({
             </div>
           )}
         </div>
-        {true &&
-          true && (
+        {showUnauth &&
+          state.fileStudyData && (
             <button
               className="showDetailsButton"
               onClick={() => {
                 setShowDetails(!showDetails);
               }}
             >
-              {true ? (
+              {showDetails ? (
                 <div>
                   <PlusIcon
                     width={10}
