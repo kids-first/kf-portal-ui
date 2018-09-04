@@ -4,6 +4,8 @@ import { Trans } from 'react-i18next';
 import { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
+import Column from 'uikit/Column';
+import { TealActionButton } from 'uikit/Button';
 
 import DownloadIcon from 'icons/DownloadIcon';
 import { ActionButton } from 'uikit/Button';
@@ -84,7 +86,16 @@ export const Subsection = ({ heading, children }) => {
   );
 };
 
-const StyledActionButton = styled(ActionButton)`
+export const DownloadButtonsContainer = styled(Column)`
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 150px;
+  & > * {
+    width: 100%;
+  }
+`;
+
+const StyledActionButton = styled(TealActionButton)`
   justify-content: flex-start;
 `;
 

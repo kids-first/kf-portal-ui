@@ -5,6 +5,7 @@ import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import styled from 'react-emotion';
+import { injectState } from 'freactal';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
@@ -15,8 +16,8 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { downloadBiospecimen } from 'services/downloadData';
 import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
 import ClinicalDownloadButton from './ClinicalDownloadButton';
-import FileManifestsDownloadInput from './FileManifestsDownloadInput';
 import { FileRepoH2 as H2, FileRepoH3 as H3 } from '../../uikit/Headings';
+import FamilyManifestModal from '../FamilyManifestModal';
 
 const DownloadButtonsContainer = styled(Column)`
   justify-content: space-between;
@@ -26,6 +27,21 @@ const DownloadButtonsContainer = styled(Column)`
     width: 100%;
   }
 `;
+
+const FileManifestsDownloadButton = compose(injectState, withTheme)(
+  ({ theme, effects: { setModal }, ...props }) => (
+    <DownloadButton
+      onClick={() =>
+        setModal({
+          title: 'Download Manifest',
+          component: <FamilyManifestModal {...props} />,
+        })
+      }
+    >
+      <Trans>Download</Trans>
+    </DownloadButton>
+  ),
+);
 
 const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
   <ColumnsState
@@ -101,7 +117,7 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
               <Trans>Download</Trans>
             </Heading>
             <DownloadButtonsContainer>
-              <FileManifestsDownloadInput {...props} />
+              <FileManifestsDownloadButton {...props} />
               <BioSpecimentDownloadButton {...props} />
               <ClinicalDownloadButton {...props} />
             </DownloadButtonsContainer>
