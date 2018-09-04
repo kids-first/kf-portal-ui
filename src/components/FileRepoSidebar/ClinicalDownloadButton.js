@@ -122,7 +122,6 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
 
 export default compose(withApi, injectState)(props => {
   const { api, sqon, projectId } = props;
-  const buttonRef = { current: null };
   return (
     <ColumnsState
       projectId={projectId}
@@ -137,7 +136,6 @@ export default compose(withApi, injectState)(props => {
                 render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
                   <Fragment>
                     <DownloadButton
-                      buttonRef={buttonRef}
                       content={() => <Trans>Clinical</Trans>}
                       onBlur={async e => {
                         if (!isDownloading) {
