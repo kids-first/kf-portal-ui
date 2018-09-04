@@ -15,6 +15,7 @@ import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { ButtonContainer, CustomLightButton } from './ui';
+import { WhiteButton } from 'uikit/Button';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
@@ -70,11 +71,11 @@ export default injectState(
     };
 
     render() {
-      const { className = '', disabled } = this.props;
+      const { disabled } = this.props;
       return (
         !!this.props.state.loggedInUser && (
-          <ButtonContainer className={className}>
-            <CustomLightButton
+          <ButtonContainer>
+            <WhiteButton
               disabled={disabled}
               onClick={() =>
                 !disabled &&
@@ -235,7 +236,7 @@ export default injectState(
                   </Tooltip>
                 )}
               </Route>
-            </CustomLightButton>
+            </WhiteButton>
           </ButtonContainer>
         )
       );
