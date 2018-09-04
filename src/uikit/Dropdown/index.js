@@ -50,5 +50,11 @@ function Dropdown({
   );
 }
 
-export { DropdownContainer, DropdownOptionsContainer } from './ui';
+export {
+  DropdownContainer,
+  ItemWrapper,
+  DropdownLabelContainer,
+  DropdownOptionsContainer,
+  DropdownArrowIcon,
+};
 export default Dropdown;

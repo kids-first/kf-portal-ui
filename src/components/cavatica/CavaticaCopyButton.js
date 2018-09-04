@@ -13,6 +13,7 @@ import cavaticaLogo from 'assets/logomark-cavatica-mono-white.svg';
 
 const CavaticaButton = styled(BigWhiteButton)`
   background: ${({ theme }) => theme.primaryLight};
+  width: 100%;
   &:hover {
     background: ${({ theme }) => theme.primary};
   }
@@ -22,7 +23,7 @@ const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
   color: ${({ theme }) => theme.white};
   text-align: center;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.2px;
   padding: 5px 18px 5px 5px;
   text-transform: uppercase;
@@ -64,7 +65,7 @@ const CavaticaCopyButton = compose(injectState, withTheme)(
       <CavaticaButton disabled={disabled} onClick={() => clickAction({ effects, props })}>
         <ButtonContent>
           <CavaticaLogo alt="" src={cavaticaLogo} />
-          Copy files to Cavatica project
+          Copy files to Cavatica
         </ButtonContent>
       </CavaticaButton>
     );
