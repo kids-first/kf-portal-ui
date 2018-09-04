@@ -111,8 +111,4 @@ const CavaticaAddProject = ({
   </Container>
 );
 
-// css={`
-
-// `}
-
 export default enhance(CavaticaAddProject);
