@@ -1,31 +1,29 @@
 import React from 'react';
-import { css } from 'react-emotion';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
-import styled from 'react-emotion';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import Heading from 'uikit/Heading';
-import Column from 'uikit/Column';
+import { Span } from 'uikit/Core';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import FamilyManifestModal from '../FamilyManifestModal';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { downloadBiospecimen } from 'services/downloadData';
-import { Slideable, Container, Titlebar, Content, Text, Section, DownloadButton } from './ui';
+import {
+  Slideable,
+  Container,
+  Titlebar,
+  Content,
+  Text,
+  Section,
+  DownloadButton,
+  DownloadButtonsContainer,
+} from './ui';
 import ClinicalDownloadButton from './ClinicalDownloadButton';
-
-const DownloadButtonsContainer = styled(Column)`
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 150px;
-  & > * {
-    width: 100%;
-  }
-`;
 
 const FileManifestsDownloadInput = compose(injectState)(({ effects: { setModal }, ...props }) => (
   <DownloadButton
@@ -76,19 +74,15 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
     <Slideable {...{ contentSidePadding, containerWidth, expanded }}>
       <Container {...{ contentSidePadding, containerWidth }}>
         <Titlebar onClick={() => setExpanded(!expanded)}>
-          <Heading>
-            <span
-              className={css`
-                margin-right: 10px;
-              `}
-            >
+          <Heading fontSize="18px">
+            <Span mr="10px">
               {' '}
               {expanded ? (
                 <RightChevron width={14} fill={theme.secondary} />
               ) : (
                 <LeftChevron width={14} fill={theme.secondary} />
               )}{' '}
-            </span>
+            </Span>
             <Trans>Actions</Trans>
           </Heading>
         </Titlebar>
@@ -102,13 +96,13 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             </Text>
           </Section>
           <Section>
-            <Heading>
+            <Heading fontSize="16px">
               <Trans>Data Analysis</Trans>
             </Heading>
             <CavaticaCopyButton {...props} />
           </Section>
           <Section>
-            <Heading>
+            <Heading fontSize="16px">
               <Trans>Download</Trans>
             </Heading>
             <DownloadButtonsContainer>
