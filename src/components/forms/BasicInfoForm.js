@@ -81,6 +81,13 @@ const AutoCompleteItem = styled(Row)`
   padding: 10px;
 `;
 
+const ContentRow = styled(Row)`
+  margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+  min-height: 0;
+`;
+
 class WrappedPlacesAutocomplete extends React.Component {
   //https://github.com/kenny-hibino/react-places-autocomplete/pull/107
   state = {
@@ -206,7 +213,7 @@ export default compose(
     setLocation,
   }) => (
     <Fragment>
-      <Row mb="20px" zIndex="1" position="relative" minHeight="0">
+      <ContentRow>
         <div
           css={`
             padding-right: 30px;
@@ -477,7 +484,7 @@ export default compose(
             </AddressRow>
           </AddressBox>
         </form>
-      </Row>
+      </ContentRow>
       <ModalFooter {...{ unsetModal, handleSubmit }} />
     </Fragment>
   ),
