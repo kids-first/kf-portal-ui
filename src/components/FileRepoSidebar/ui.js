@@ -8,7 +8,6 @@ import Column from 'uikit/Column';
 import { TealActionButton } from 'uikit/Button';
 
 import DownloadIcon from 'icons/DownloadIcon';
-import { ActionButton } from 'uikit/Button';
 import Heading from 'uikit/Heading';
 
 export const Slideable = styled('div')`
