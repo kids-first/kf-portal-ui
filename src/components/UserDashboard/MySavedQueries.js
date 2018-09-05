@@ -124,32 +124,29 @@ const MySavedQueries = compose(
               and start saving queries!
             </PromptMessageContent>
           </PromptMessageContainer>
-        ) : (
-          <Fragment>
-            <Box overflowY="auto" mt={2} mb={2}>
-              {queries
-                .filter(q => q.alias)
-                .map(q => ({
-                  ...q,
-                  date: +new Date(q.creationDate),
-                  // TODO: save origin + pathname separately in dynamo
-                  link: `/search${q.content.longUrl.split('/search')[1]}`,
-                }))
-                .slice()
-                .sort((a, b) => b.date - a.date)
-                .map(q => (
-                  <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
-                ))}
-            </Box>
-            <Box overflowY="auto" mt={2} mb={2}>
-              <QueriesHeading>Examples:</QueriesHeading>
-              {exampleQueries.map(q => {
-                q.link = `/search${q.content.longUrl.split('/search')[1]}`;
-                return <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />;
-              })}
-            </Box>
-          </Fragment>
-        )}
+        ) : null}
+        <Fragment>
+          <Box overflowY="auto" mt={2} mb={2}>
+            {queries
+              .filter(q => q.alias)
+              .map(q => ({
+                ...q,
+                date: +new Date(q.creationDate),
+                // TODO: save origin + pathname separately in dynamo
+                link: `/search${q.content.longUrl.split('/search')[1]}`,
+              }))
+              .slice()
+              .sort((a, b) => b.date - a.date)
+              .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
+          </Box>
+          <Box overflowY="auto" mt={2} mb={2}>
+            <QueriesHeading>Examples:</QueriesHeading>
+            {exampleQueries.map(q => {
+              q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+              return <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />;
+            })}
+          </Box>
+        </Fragment>
       </Container>
     ),
 );
