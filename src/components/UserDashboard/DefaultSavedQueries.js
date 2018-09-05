@@ -6,6 +6,7 @@ import QueryBlock from './QueryBlock';
 //import { TealActionButton } from 'uikit/Button';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const defaultQueries = [];
 <<<<<<< HEAD
 
@@ -91,8 +92,12 @@ const DefaultSavedQueries = () => (
     <div>{defaultQueries.map(q => <QueryBlock key={q.id} savedTime={false} />)}</div>
 =======
     <QueriesHeading>Examples:</QueriesHeading>
+=======
+const DefaultSavedQueries = ({ queries }) => (
+  <Fragment>
+>>>>>>> Example queries working
     <div>
-      {defaultQueries.filter(q => q.content.sample).map(q => {
+      {queries.filter(q => q.content.example).map(q => {
         q.link = `/search${q.content.longUrl.split('/search')[1]}`;
         return <QueryBlock key={q.id} query={q} savedTime={false} />;
       })}

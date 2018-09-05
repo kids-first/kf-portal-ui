@@ -41,6 +41,10 @@ export const validateJWT = ({ jwt }) => {
   return isCurrent && isApproved && validatedPayload;
 };
 
+const initProfile = async () => {
+  // await createProfile
+};
+
 export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
 
@@ -136,11 +140,7 @@ class Component extends React.Component<any, any> {
     }
   }
   handleToken = async ({ provider, handler, token }) => {
-    const {
-      api,
-      onFinish,
-      effects: { setToken, setUser, setIntegrationToken },
-    } = this.props;
+    const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
 
     const response = await handler(token).catch(error => {
       if (error.message === 'Network Error') {
@@ -159,9 +159,7 @@ class Component extends React.Component<any, any> {
     }
   };
   trackUserSignIn = label => {
-    let {
-      location: { pathname },
-    } = this.props;
+    let { location: { pathname } } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
@@ -222,8 +220,4 @@ class Component extends React.Component<any, any> {
   }
 }
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(Component);
+export default compose(injectState, withRouter, withApi)(Component);
