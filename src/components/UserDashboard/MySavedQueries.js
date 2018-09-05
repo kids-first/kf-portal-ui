@@ -20,7 +20,6 @@ import {
 } from 'uikit/PromptMessage';
 
 import QueryBlock from './QueryBlock';
-import DefaultSavedQueries from './DefaultSavedQueries';
 
 const SaveIcon = styled(SaveIconBase)`
   width: 16px;
@@ -52,7 +51,8 @@ const GradientBar = styled('div')`
 
 const Header = styled(Flex)`
   align-items: center;
-  border-bottom: ${x => (x.queries.length ? `2px dotted ${x.theme.greyScale5}` : `none`)};
+  border-bottom: ${({ queries, theme }) =>
+    queries.length ? `2px dotted ${theme.greyScale5}` : `none`};
 `;
 
 const Container = styled(Column)`
@@ -76,7 +76,7 @@ const MySavedQueries = compose(
   }),
 )(
   ({
-    state: { queries, loadingQueries, deletingIds },
+    state: { queries, exampleQueries, loadingQueries, deletingIds },
     effects: { getQueries, deleteQuery },
     api,
     theme,
@@ -128,7 +128,7 @@ const MySavedQueries = compose(
           <Fragment>
             <Box overflowY="auto" mt={2} mb={2}>
               {queries
-                .filter(q => q.alias && !q.content.example)
+                .filter(q => q.alias)
                 .map(q => ({
                   ...q,
                   date: +new Date(q.creationDate),
@@ -143,7 +143,7 @@ const MySavedQueries = compose(
             </Box>
             <Box overflowY="auto" mt={2} mb={2}>
               <QueriesHeading>Examples:</QueriesHeading>
-              {queries.filter(q => q.content.example).map(q => {
+              {exampleQueries.map(q => {
                 q.link = `/search${q.content.longUrl.split('/search')[1]}`;
                 return <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />;
               })}
