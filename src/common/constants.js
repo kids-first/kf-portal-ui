@@ -129,4 +129,28 @@ export const EXAMPLE_QUERIES = [
     },
     example: true,
   },
+  {
+    queryName: 'Aligned Reads, trio, HP:0000175, Female',
+    url:
+      'https://kf-qa-portal.netlify.com/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.available_data_types%22%2C%22value%22%3A%5B%22Aligned%20Reads%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.composition%22%2C%22value%22%3A%5B%22trio%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.family_members.phenotype.hpo.hpo_phenotype_observed%22%2C%22value%22%3A%5B%22HP%3A0000175%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.gender%22%2C%22value%22%3A%5B%22Female%22%5D%7D%7D%5D%7D',
+    stats: {
+      Files: 738,
+      Participants: 369,
+      Families: 274,
+      Size: '9.34 TB',
+    },
+    example: true,
+  },
+  {
+    queryName: 'All Harmonized Data',
+    url:
+      'https://kf-qa-portal.netlify.com/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D',
+    stats: {
+      Files: 9194,
+      Participants: 3698,
+      Families: 1159,
+      Size: '108.62 TB',
+    },
+    example: true,
+  },
 ];
