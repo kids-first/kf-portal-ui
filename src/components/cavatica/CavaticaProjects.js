@@ -92,6 +92,8 @@ const ProjectSelector = styled.div`
     width: 20px;
     padding-top: 2px;
     margin-bottom: -2px;
+    display: flex;
+    align-items: center;
   }
 `;
 
