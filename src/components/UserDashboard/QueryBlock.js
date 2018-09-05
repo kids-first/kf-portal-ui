@@ -3,8 +3,6 @@ import { distanceInWords } from 'date-fns';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
-
-import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import { injectState } from 'freactal';
 
 import { Box, Flex, Span, Link } from 'uikit/Core';
@@ -33,7 +31,7 @@ const Query = styled(Flex)`
       : ``};
 `;
 
-const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)(
+const QueryBlock = compose(injectState, withApi, withTheme)(
   ({ effects: { deleteQuery }, api, query: q, inactive = false, theme, savedTime = true }) => (
     <Query inactive={inactive}>
       <Column width="100%">
