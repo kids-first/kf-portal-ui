@@ -34,7 +34,7 @@ const Query = styled(Flex)`
 `;
 
 const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)(
-  ({ effects: { deleteQuery }, api, query: q, inactive = false, theme, canDelete = true }) => (
+  ({ effects: { deleteQuery }, api, query: q, inactive = false, theme, savedTime = true }) => (
     <Query inactive={inactive}>
       <Column width="100%">
         <Row justifyContent="space-between" width="100%">
@@ -57,9 +57,11 @@ const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)
           <Detail>{(q.content.Families || 0).toLocaleString()}</Detail> Families |{' '}
           <Detail>{q.content.Size}</Detail>
         </Box>
-        <Box fontSize="0.75rem">
-          Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
-        </Box>
+        {savedTime ? (
+          <Box fontSize="0.75rem">
+            Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
+          </Box>
+        ) : null}
       </Column>
     </Query>
   ),
