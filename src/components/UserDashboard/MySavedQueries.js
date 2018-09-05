@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
@@ -23,6 +23,16 @@ import DefaultSavedQueries from './DefaultSavedQueries';
 const SaveIcon = styled(SaveIconBase)`
   width: 16px;
   fill: ${({ theme }) => theme.greyScale11};
+`;
+
+const QueriesHeading = styled('h4')`
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: ${({ theme }) => theme.greyScale1};
+  margin-bottom: 7px;
+  margin-top: 0;
+  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
 `;
 
 const GradientBar = styled('div')`
@@ -115,20 +125,30 @@ const MySavedQueries = compose(
             </PromptMessageContent>
           </PromptMessageContainer>
         ) : (
-          <Box overflowY="auto" mt={2} mb={2}>
-            {queries
-              .filter(q => q.alias)
-              .map(q => ({
-                ...q,
-                date: +new Date(q.creationDate),
-                // TODO: save origin + pathname separately in dynamo
-                link: `/search${q.content.longUrl.split('/search')[1]}`,
-              }))
-              .slice()
-              .sort((a, b) => b.date - a.date)
-              .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
-            <DefaultSavedQueries />
-          </Box>
+          <Fragment>
+            <Box overflowY="auto" mt={2} mb={2}>
+              {queries
+                .filter(q => q.alias && !q.content.example)
+                .map(q => ({
+                  ...q,
+                  date: +new Date(q.creationDate),
+                  // TODO: save origin + pathname separately in dynamo
+                  link: `/search${q.content.longUrl.split('/search')[1]}`,
+                }))
+                .slice()
+                .sort((a, b) => b.date - a.date)
+                .map(q => (
+                  <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
+                ))}
+            </Box>
+            <Box overflowY="auto" mt={2} mb={2}>
+              <QueriesHeading>Examples:</QueriesHeading>
+              {queries.filter(q => q.content.example).map(q => {
+                q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+                return <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />;
+              })}
+            </Box>
+          </Fragment>
         )}
       </Container>
     ),
