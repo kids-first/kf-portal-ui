@@ -33,7 +33,7 @@ const Query = styled(Flex)`
       : ``};
 `;
 
-const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)(
+const QueryBlock = compose(injectState, withApi, withTheme)(
   ({ effects: { deleteQuery }, api, query: q, inactive = false, theme, savedTime = true }) => (
     <Query inactive={inactive}>
       <Column width="100%">
