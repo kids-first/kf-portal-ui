@@ -12,8 +12,6 @@ import { Paragraph } from 'uikit/Core';
 import { FileRepoH3 as H3 } from 'uikit/Headings';
 import { TableHeader } from 'uikit/Table';
 
-const UploadButton = withTheme(({ theme, ...props }) => <TealActionButton {...props} />);
-
 const enhance = compose(withTheme, injectState);
 
 const UploadIdsModal = ({
@@ -48,7 +46,7 @@ const UploadIdsModal = ({
         <Trans>Matching files in the Kids First Data Repository</Trans>
       </H3>
     }
-    ButtonComponent={UploadButton}
+    ButtonComponent={TealActionButton}
   >
     {({ hasResults, saveSet }) => (
       <ModalFooter
