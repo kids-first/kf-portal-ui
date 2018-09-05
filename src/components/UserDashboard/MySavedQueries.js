@@ -96,7 +96,7 @@ const MySavedQueries = compose(
             </Span>
           </Flex>
         </Header>
-        {queries.length === 10 ? (
+        {queries.length <= 0 ? (
           <DefaultSavedQueries />
         ) : (
           <Box overflowY="auto" mt={2} mb={2}>

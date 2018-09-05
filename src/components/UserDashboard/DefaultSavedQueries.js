@@ -62,7 +62,10 @@ const QueriesHeading = styled('h4')`
   color: ${({ theme }) => theme.greyScale1};
   margin-bottom: 7px;
   margin-top: 0;
+<<<<<<< HEAD
   border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
+=======
+>>>>>>> d15535be7f6f0cd78fed2748cb653f0a566d4c64
 `;
 
 const DefaultSavedQueries = () => (
@@ -72,6 +75,7 @@ const DefaultSavedQueries = () => (
         You have no saved queries yet.
       </PromptMessageHeading>
       <PromptMessageContent>
+<<<<<<< HEAD
         Explore the{' '}
         <Link to="/search/file" style={{ textDecoration: 'none' }}>
           File Repository
@@ -81,6 +85,13 @@ const DefaultSavedQueries = () => (
     </PromptMessageContainer>
     <QueriesHeading>Examples:</QueriesHeading>
     <div>{defaultQueries.map(q => <QueryBlock key={q.id} savedTime={false} />)}</div>
+=======
+        Explore the <Link to="/search/file">File Repository</Link> and start saving queries!
+      </PromptMessageContent>
+    </PromptMessageContainer>
+    <QueriesHeading>Popular Queries:</QueriesHeading>
+    <div>{defaultQueries.map(q => <QueryBlock key={q.id} canDelete={false} />)}</div>
+>>>>>>> d15535be7f6f0cd78fed2748cb653f0a566d4c64
   </Fragment>
 );
 export default DefaultSavedQueries;

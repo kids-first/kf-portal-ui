@@ -57,11 +57,17 @@ const QueryBlock = compose(provideSavedQueries, injectState, withApi, withTheme)
           <Detail>{(q.content.Families || 0).toLocaleString()}</Detail> Families |{' '}
           <Detail>{q.content.Size}</Detail>
         </Box>
+<<<<<<< HEAD
         {savedTime ? (
           <Box fontSize="0.75rem">
             Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
           </Box>
         ) : null}
+=======
+        <Box fontSize="0.75rem">
+          Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
+        </Box>
+>>>>>>> d15535be7f6f0cd78fed2748cb653f0a566d4c64
       </Column>
     </Query>
   ),
