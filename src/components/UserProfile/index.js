@@ -19,12 +19,11 @@ import { ROLES } from 'common/constants';
 
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 import CompleteOMeter from 'components/CompleteOMeter';
-import { Container, EditButton } from './ui';
+import { Container, EditButton, ProfileImage } from './ui';
 import AboutMe from './AboutMe';
 import Settings from './Settings';
 import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
-import Gravtar from 'uikit/Gravatar';
 import Row from 'uikit/Row';
 import { H1 } from 'uikit/Headings';
 
@@ -109,14 +108,7 @@ export default compose(
     >
       <Container row alignItems="center">
         <Row width="65%" pr={50} alignItems="center">
-          <Gravtar
-            email={profile.email || ''}
-            size={173}
-            className={css`
-              border-radius: 50%;
-              border: 5px solid #fff;
-            `}
-          />
+          <ProfileImage email={profile.email || ''} />
           <div
             className={css`
               width: 49%;
