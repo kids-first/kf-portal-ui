@@ -2,6 +2,7 @@ import React from 'react';
 import Gravtar from 'uikit/Gravatar';
 import { Link } from 'react-router-dom';
 import EditButton from './EditButton';
+import styled from 'react-emotion';
 
 import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
@@ -9,6 +10,14 @@ import RoleIconButton from '../RoleIconButton';
 import { userProfileBackground } from '../UserProfile';
 
 import { H2 } from 'uikit/Headings';
+
+const UserLink = styled(Link)`
+  line-height: 33px;
+  display: block;
+  text-align: center;
+  margin-bottom: 24px;
+  color: ${({ theme }) => theme.white};
+`;
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
   <div
@@ -57,18 +66,12 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       </div>
     </RoleIconButton>
     <div>
-      <Link
-        to={`/user/${loggedInUser.egoId}#aboutMe`}
-        css={`
-          text-align: center;
-          margin-bottom: 24px;
-        `}
-      >
+      <UserLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
         {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
         <H2 color={theme.white}>
           {loggedInUser.firstName} {loggedInUser.lastName}
         </H2>
-      </Link>
+      </UserLink>
       {[
         loggedInUser.jobTitle && (
           <span
