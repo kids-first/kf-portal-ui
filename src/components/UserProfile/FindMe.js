@@ -77,6 +77,20 @@ const SocialLinksSchema = Yup.object().shape({
   orchid: Yup.string().trim(),
 });
 
+const List = styled('ul')`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const ListItem = styled('li')`
+  display: flex;
+  flex-direction: ${({ isEditing }) => (isEditing ? 'column' : 'row')};
+  padding: 5px 0 5px 0;
+  align-items: ${({ isEditing }) => (isEditing ? 'auto' : 'center')};
+  ${({ theme, isEditing }) => !isEditing && `border-bottom: ${theme.greyScale4} 1px solid;`};
+`;
+
 const socialItems = {
   website: {
     icon: (
@@ -280,25 +294,11 @@ export default compose(
                 </Fragment>
               )}
 
-            <ul
-              css={`
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-              `}
-            >
+            <List>
               {Object.entries(socialItems)
                 .filter(([field]) => isEditing || values[field])
                 .map(([field, config]) => (
-                  <li
-                    key={field}
-                    css={`
-                      display: flex;
-                      flex-direction: ${isEditing ? 'column' : 'row'};
-                      padding: 5px 0 5px 0;
-                      ${!isEditing && `border-bottom: ${theme.greyScale4} 1px solid;`};
-                    `}
-                  >
+                  <ListItem key={field} isEditing={isEditing}>
                     {isEditing ? (
                       <Column pb="5px">
                         <StyledLabel>{config.name}</StyledLabel>
@@ -348,7 +348,7 @@ export default compose(
                         </ExternalLink>
                       </Fragment>
                     )}
-                  </li>
+                  </ListItem>
                 ))}
               {isEditing ? (
                 <ActionButtons
@@ -356,7 +356,7 @@ export default compose(
                   mt={'20px'}
                 />
               ) : null}
-            </ul>
+            </List>
           </StyledSection>
         </Form>
       </Fragment>
