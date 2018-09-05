@@ -15,6 +15,7 @@ import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { ButtonContainer, CustomLightButton } from './ui';
+import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
 const trackQueryShare = channel => {
@@ -61,10 +62,10 @@ export default injectState(
     };
 
     render() {
-      const { className = '', disabled } = this.props;
+      const { disabled } = this.props;
       return (
-        <ButtonContainer className={className}>
-          <CustomLightButton
+        <ButtonContainer>
+          <WhiteButton
             disabled={disabled}
             onClick={
               disabled
@@ -175,7 +176,7 @@ export default injectState(
             >
               <ShareIcon />&nbsp;<Trans>share</Trans>
             </Tooltip>
-          </CustomLightButton>
+          </WhiteButton>
         </ButtonContainer>
       );
     }

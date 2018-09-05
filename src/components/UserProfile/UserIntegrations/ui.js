@@ -8,8 +8,7 @@ export const UserIntegrationsWrapper = styled('div')`
   table {
     border-collapse: collapse;
   }
-  td,
-  th {
+  td {
     padding: 10px;
     font-weight: normal;
   }
@@ -54,6 +53,10 @@ export const IntegrationTable = styled('table')`
     color: ${({ theme }) => theme.secondary};
     text-align: left;
   }
+`;
+
+export const ConnectedText = styled('span')`
+  font-size: 16px;
 `;
 
 export const PencilIcon = props => <Pencil className={'icon'} {...props} />;

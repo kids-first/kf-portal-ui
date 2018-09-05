@@ -20,6 +20,9 @@ import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
+import { FileRepoH2 as H2 } from 'uikit/Headings';
+import { TealActionButton } from 'uikit/Button';
+import Heading from 'uikit/Heading';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
@@ -44,10 +47,10 @@ const AggregationHeader = styled('div')`
   align-items: center;
 `;
 
-const AggregationTitle = styled('div')`
+const AggregationTitle = styled(Heading)`
   flex-grow: 1;
+  margin-bottom: 0px;
   font-size: 18px;
-  color: ${({ theme }) => theme.secondary};
 `;
 
 const IdFilterContainer = styled(Column)`
@@ -76,10 +79,11 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
           <Column flexStrink={0}>
             <AggregationHeader>
               <AggregationTitle>
-                <Trans>Filters</Trans>
+                <H2>
+                  <Trans>Filters</Trans>
+                </H2>
               </AggregationTitle>
-              <ActionButton
-                css={theme.uppercase}
+              <TealActionButton
                 onClick={() =>
                   effects.setModal({
                     title: 'All Filters',
@@ -115,8 +119,8 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
                   })
                 }
               >
-                <Trans css={theme.uppercase}>All Filters</Trans>
-              </ActionButton>
+                <Trans>All Filters</Trans>
+              </TealActionButton>
             </AggregationHeader>
             <IdFilterContainer className="aggregation-card">
               <QuickSearch

@@ -1,7 +1,9 @@
 import styled from 'react-emotion';
+import ReactModal from 'react-modal';
+
 import { ActionButton } from 'uikit/Button';
 import Column from 'uikit/Column';
-import ReactModal from 'react-modal';
+import { H2 } from 'uikit/Headings';
 
 export const ModalFooterContainer = styled('div')`
   ${({ theme }) => theme.row};
@@ -69,4 +71,12 @@ export const ModalContent = styled(Column)`
 export const ModalSubHeader = styled('div')`
   ${({ theme }) => theme.modalHeader};
   margin-bottom: 9px;
+`;
+
+export const ModalTitle = styled(H2)`
+  line-height: 1.3;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.8em;
+  display: flex;
+  justify-content: space-between;
 `;

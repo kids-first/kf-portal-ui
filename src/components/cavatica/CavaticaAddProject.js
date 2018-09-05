@@ -12,6 +12,7 @@ import { injectState } from 'freactal';
 import { createProject, getBillingGroups } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
+import { WhiteButton, TealActionButton } from 'uikit/Button';
 
 const Container = styled(Row)`
   align-items: center;
@@ -21,15 +22,15 @@ const Container = styled(Row)`
   }
 `;
 
-const CreateButton = styled(NiceWhiteButton)`
-  text-transform: uppercase;
+const CreateButton = styled(WhiteButton)`
   font-size: 11.5px;
-  font-weight: normal;
-  color: ${({ theme }) => theme.tertiary};
   border-radius: 19px;
-  padding: 10px;
-  ${({ theme }) => theme.row};
-  cursor: pointer;
+
+  &:hover {
+    svg {
+      fill: ${({ theme }) => theme.white};
+    }
+  }
 `;
 
 const InputLabel = styled(Row)`
@@ -49,6 +50,7 @@ const InputLabel = styled(Row)`
 const AddIcon = styled(PlusIcon)`
   margin-top: 1px;
   margin-right: 4px;
+  fill: ${({ theme }) => theme.tertiary};
 `;
 
 const enhance = compose(
@@ -95,24 +97,20 @@ const CavaticaAddProject = ({
             setProjectName('');
           }}
           render={({ loading, onClick }) => (
-            <ActionButton className="saveButton" disabled={loading} onClick={onClick}>
-              <span>Save</span>
-            </ActionButton>
+            <TealActionButton disabled={loading} onClick={onClick}>
+              Save
+            </TealActionButton>
           )}
         />
-        <CancelButton onClick={() => setAddingProject(false)}>Cancel</CancelButton>
+        <WhiteButton onClick={() => setAddingProject(false)}>Cancel</WhiteButton>
       </Fragment>
     ) : (
       <CreateButton onClick={() => setAddingProject(true)}>
-        <AddIcon width={12} height={12} fill={theme.tertiary} />
-        <div>Create a project</div>
+        <AddIcon width={12} height={12} />
+        Create a project
       </CreateButton>
     )}
   </Container>
 );
-
-// css={`
-
-// `}
 
 export default enhance(CavaticaAddProject);

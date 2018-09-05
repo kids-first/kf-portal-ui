@@ -10,6 +10,10 @@ import { getProjects as getCavaticaProjects } from 'services/cavatica';
 import CavaticaAddProject from './CavaticaAddProject';
 
 import CheckIcon from 'icons/CircleCheckIcon';
+import SearchIcon from 'icons/SearchIcon';
+
+import { TableHeader } from 'uikit/Table';
+import { Paragraph, Box } from 'uikit/Core';
 
 const enhance = compose(
   injectState,
@@ -58,7 +62,7 @@ const styles = theme => css`
     border-radius: 10px;
     background-color: #ffffff;
     border: solid 1px #cacbcf;
-    padding: 5px;
+    padding: 5px 5px 5px 25px;
   }
 `;
 
@@ -88,7 +92,22 @@ const ProjectSelector = styled.div`
     width: 20px;
     padding-top: 2px;
     margin-bottom: -2px;
+    display: flex;
+    align-items: center;
   }
+`;
+
+const ProjectHeader = styled(TableHeader)`
+  line-height: 2.55;
+  text-transform: uppercase;
+`;
+
+const SearchProjectsIcon = styled(SearchIcon)`
+  position: absolute;
+  width: 14px;
+  margin: 0 7px;
+  top: 12px;
+  left: 0;
 `;
 
 const CavaticaProjects = ({
@@ -108,28 +127,22 @@ const CavaticaProjects = ({
   return (
     <div css={styles(theme)}>
       <div className="header">
-        <span
-          css={`
-            letter-spacing: 0.2px;
-            font-size: 11px;
-            line-height: 2.55;
-            text-transform: uppercase;
-          `}
-        >
-          Cavatica Projects:
-        </span>
+        <ProjectHeader>Cavatica Projects:</ProjectHeader>{' '}
         {
-          <input
-            className="textInput"
-            id="cavaticaProjectSearch"
-            type="text"
-            value={projectSearchValue}
-            name="cavaticaProjectSearch"
-            placeholder="Search projects"
-            onChange={e => {
-              setProjectSearchValue(e.target.value);
-            }}
-          />
+          <Box position="relative">
+            <SearchProjectsIcon fill="#a9adc0" />
+            <input
+              className="textInput"
+              id="cavaticaProjectSearch"
+              type="text"
+              value={projectSearchValue}
+              name="cavaticaProjectSearch"
+              placeholder="Search projects"
+              onChange={e => {
+                setProjectSearchValue(e.target.value);
+              }}
+            />
+          </Box>
         }
       </div>
       <div className="body">
@@ -155,7 +168,7 @@ const CavaticaProjects = ({
                     <div className="checkSymbol">
                       {selected && <CheckIcon width={14} height={14} fill={theme.active} />}
                     </div>
-                    <div>{project.name}</div>
+                    <Paragraph>{project.name}</Paragraph>
                   </div>
                 );
               })}

@@ -6,11 +6,11 @@ import styled from 'react-emotion';
 import { toggleSQON } from '@arranger/components/dist/SQONView/utils';
 
 import UploadIdsModal from 'components/UploadIdsModal';
-import { LightButton } from 'uikit/Button';
+import { WhiteButton } from 'uikit/Button';
 import Select from 'uikit/Select';
 import Row from 'uikit/Row';
 
-const UploadButton = styled(LightButton)`
+const UploadButton = styled(WhiteButton)`
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   border-top-left-radius: 100px;

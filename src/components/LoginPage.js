@@ -10,12 +10,13 @@ import Login from 'components/Login';
 import SplashPage from 'components/SplashPage';
 
 import { Link, Section } from 'uikit/Core';
+import { JoinH2 } from '../uikit/Headings';
 
 const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
   <SplashPage>
-    <h2 css={theme.h2}>
+    <JoinH2 mt="9px" mb="40px">
       <Trans>Log in</Trans>
-    </h2>
+    </JoinH2>
 
     <Login
       api={api}
