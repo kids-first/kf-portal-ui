@@ -36,6 +36,7 @@ export const Titlebar = styled('div')`
   display: flex;
   padding-top: 15px;
   padding-left: 15px;
+  padding-bottom: 15px;
   cursor: pointer;
 `;
 

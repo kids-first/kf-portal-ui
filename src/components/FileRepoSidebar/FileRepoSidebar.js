@@ -7,7 +7,6 @@ import { injectState } from 'freactal';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
-import Heading from 'uikit/Heading';
 import { Span } from 'uikit/Core';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -75,19 +74,17 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
     <Slideable {...{ contentSidePadding, containerWidth, expanded }}>
       <Container {...{ contentSidePadding, containerWidth }}>
         <Titlebar onClick={() => setExpanded(!expanded)}>
-          <Heading fontSize="18px">
-            <Span mr="10px">
-              {' '}
-              {expanded ? (
-                <RightChevron width={14} fill={theme.secondary} />
-              ) : (
-                <LeftChevron width={14} fill={theme.secondary} />
-              )}{' '}
-            </Span>
-            <H2 display="inline-block">
-              <Trans>Actions</Trans>
-            </H2>
-          </Heading>
+          <Span mr="10px">
+            {' '}
+            {expanded ? (
+              <RightChevron width={14} fill={theme.secondary} />
+            ) : (
+              <LeftChevron width={14} fill={theme.secondary} />
+            )}{' '}
+          </Span>
+          <H2 display="inline-block">
+            <Trans>Actions</Trans>
+          </H2>
         </Titlebar>
         <Content {...{ expanded, contentSidePadding, containerWidth }}>
           <Section>
@@ -105,9 +102,9 @@ const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', 
             <CavaticaCopyButton {...props} />
           </Section>
           <Section>
-            <Heading fontSize="16px">
+            <H3 mb="15px">
               <Trans>Download</Trans>
-            </Heading>
+            </H3>
             <DownloadButtonsContainer>
               <FileManifestsDownloadButton {...props} />
               <BioSpecimentDownloadButton {...props} />
