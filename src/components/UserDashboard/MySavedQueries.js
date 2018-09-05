@@ -11,6 +11,11 @@ import SaveIconBase from 'icons/SaveIcon';
 
 import { Box, Flex, Span, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
+import {
+  PromptMessageContainer,
+  PromptMessageHeading,
+  PromptMessageContent,
+} from 'uikit/PromptMessage';
 
 import QueryBlock from './QueryBlock';
 import DefaultSavedQueries from './DefaultSavedQueries';
@@ -97,7 +102,18 @@ const MySavedQueries = compose(
           </Flex>
         </Header>
         {queries.length <= 0 ? (
-          <DefaultSavedQueries />
+          <PromptMessageContainer info my={20}>
+            <PromptMessageHeading info mb={10}>
+              You have no saved queries yet.
+            </PromptMessageHeading>
+            <PromptMessageContent>
+              Explore the{' '}
+              <Link to="/search/file" style={{ textDecoration: 'none' }}>
+                File Repository
+              </Link>{' '}
+              and start saving queries!
+            </PromptMessageContent>
+          </PromptMessageContainer>
         ) : (
           <Box overflowY="auto" mt={2} mb={2}>
             {queries
@@ -111,6 +127,7 @@ const MySavedQueries = compose(
               .slice()
               .sort((a, b) => b.date - a.date)
               .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
+            <DefaultSavedQueries />
           </Box>
         )}
       </Container>
