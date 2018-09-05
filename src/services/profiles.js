@@ -84,7 +84,6 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
   });
 
   const x = EXAMPLE_QUERIES.forEach(q => {
-    console.log('q', q);
     const { stats, queryName, url, example } = q;
     exampleQuery({ ...q, api, egoId });
   });

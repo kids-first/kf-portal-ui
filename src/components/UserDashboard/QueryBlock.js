@@ -19,7 +19,7 @@ const Detail = styled(Span)`
 
 const Query = styled(Flex)`
   padding: 10px 10px 10px 25px;
-  border: 1px solid ${({ theme }) => theme.greyScale5};
+  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
   transition-property: opacity;
   ${({ inactive, theme }) =>
     inactive
