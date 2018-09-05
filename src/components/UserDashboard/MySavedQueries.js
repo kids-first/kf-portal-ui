@@ -61,6 +61,7 @@ const Container = styled(Column)`
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   padding: 0 10px;
+  overflow-y: auto;
 `;
 
 const MySavedQueries = compose(
@@ -126,7 +127,7 @@ const MySavedQueries = compose(
           </PromptMessageContainer>
         ) : null}
         <Fragment>
-          <Box overflowY="auto" mt={2} mb={2}>
+          <Box mt={2} mb={2}>
             {queries
               .filter(q => q.alias)
               .map(q => ({
@@ -139,13 +140,23 @@ const MySavedQueries = compose(
               .sort((a, b) => b.date - a.date)
               .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
           </Box>
-          <Box overflowY="auto" mt={2} mb={2}>
-            <QueriesHeading>Examples:</QueriesHeading>
-            {exampleQueries.map(q => {
-              q.link = `/search${q.content.longUrl.split('/search')[1]}`;
-              return <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />;
-            })}
-          </Box>
+
+          {exampleQueries.length <= 0 ? null : (
+            <Box mt={2} mb={2}>
+              <QueriesHeading>Examples:</QueriesHeading>
+              {exampleQueries.map(q => {
+                q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+                return (
+                  <QueryBlock
+                    key={q.id}
+                    query={q}
+                    inactive={deletingIds.includes(q.id)}
+                    savedTime={false}
+                  />
+                );
+              })}
+            </Box>
+          )}
         </Fragment>
       </Container>
     ),
