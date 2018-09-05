@@ -25,6 +25,7 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
 import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
 import { getAccessToken } from 'services/gen3';
+import { createExampleQueries } from 'services/riffQueries';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
@@ -41,8 +42,10 @@ export const validateJWT = ({ jwt }) => {
   return isCurrent && isApproved && validatedPayload;
 };
 
-const initProfile = async () => {
-  // await createProfile
+const initProfile = async (api, user, egoId) => {
+  const x = await createProfile(api)({ ...user, egoId });
+  createExampleQueries(api, egoId);
+  return x;
 };
 
 export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, api }) => {
@@ -56,7 +59,7 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
       const user = jwtData.context.user;
       const egoId = jwtData.sub;
       const existingProfile = await getProfile(api)();
-      const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
+      const newProfile = !existingProfile ? await initProfile(api, user, egoId) : {};
       const loggedInUser = {
         ...(existingProfile || newProfile),
         email: user.email,
