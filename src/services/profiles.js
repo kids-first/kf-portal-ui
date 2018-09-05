@@ -1,7 +1,5 @@
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
-import { EXAMPLE_QUERIES } from '../common/constants';
-import exampleQuery from './riffQueries';
 
 // TODO: Issue #321
 // acceptedKfOptIn
@@ -81,11 +79,6 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
         }
       `,
     },
-  });
-
-  const x = EXAMPLE_QUERIES.forEach(q => {
-    const { stats, queryName, url, example } = q;
-    exampleQuery({ ...q, api, egoId });
   });
 
   return record;

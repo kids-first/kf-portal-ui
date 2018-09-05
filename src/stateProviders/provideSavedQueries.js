@@ -26,7 +26,6 @@ export default provideState({
           }),
         )
         .then(value => state => {
-          console.log('ciaran', value, state);
           effects.setLoading(false);
           const queries = value.filter(q => !q.content.example) || [];
           const exampleQueries = value.filter(q => q.content.example) || [];

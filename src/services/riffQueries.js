@@ -1,8 +1,9 @@
 import urlJoin from 'url-join';
 import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
+import { EXAMPLE_QUERIES } from 'common/constants';
 
-export default ({
+const riffQuery = ({
   stats,
   queryName,
   sqon,
@@ -12,13 +13,6 @@ export default ({
   sharedPublicly = false,
   example = false,
 }) => {
-  console.log('ciaran');
-  console.log('query name', queryName);
-  console.log('stats', stats);
-  console.log('alias', alias);
-  console.log('url', window.location.href);
-  console.log('api', api);
-  console.log('logged user', loggedInUser);
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });
 
@@ -40,5 +34,14 @@ export default ({
         'twitter:data1': 'test data',
       },
     }),
+  });
+};
+
+export default riffQuery;
+
+export const createExampleQueries = (api, egoId) => {
+  EXAMPLE_QUERIES.forEach(q => {
+    const { stats, queryName, url, example } = q;
+    riffQuery({ ...q, api, egoId });
   });
 };

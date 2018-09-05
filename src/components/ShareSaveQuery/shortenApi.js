@@ -5,10 +5,6 @@ import { shortUrlApi } from 'common/injectGlobals';
 export default ({ stats, queryName, sqon, loggedInUser, api, sharedPublicly = false }) => {
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });
-  console.log('query name', queryName);
-  console.log('stats', stats);
-  console.log('alias', alias);
-  console.log('url', window.location.href);
 
   return api({
     url: urlJoin(shortUrlApi, 'shorten'),
