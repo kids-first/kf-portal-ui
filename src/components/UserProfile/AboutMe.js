@@ -5,7 +5,7 @@ import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import { Container, EditButton, H2, H3, H4, SaveButton, StyledSection, ClickToAdd } from './ui';
+import { Container, EditButton, StyledSection, ClickToAdd, CardHeader } from './ui';
 import ResearchInterests from './ResearchInterests';
 import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';
@@ -16,16 +16,15 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import EditableLabel from 'uikit/EditableLabel';
 import Contact from './Contact';
+import { H3, H4 } from 'uikit/Headings';
+import { WhiteButton } from 'uikit/Button';
+import { TealActionButton } from '../../uikit/Button';
 
 const ActionBar = styled(Row)`
-  justify-content: space-between;
+  justify-content: flex-end;
   border-radius: 5px;
   box-shadow: 0 0 2.9px 0.1px ${({ theme }) => theme.lightShadow};
   background-color: ${({ theme }) => theme.tertiaryBackground};
-`;
-
-const CancelButton = styled('button')`
-  ${({ theme }) => theme.wizardButton};
 `;
 
 export default compose(
@@ -67,7 +66,7 @@ export default compose(
     <Flex justifyContent="center" pt={4} pb={4}>
       <Container row alignItems="flex-start">
         <Column width="65%" pt={2} pr={50} justifyContent="space-around">
-          <H2>
+          <CardHeader mb="29px">
             Profile
             {canEdit &&
               (!isEditingBackgroundInfo ? (
@@ -80,7 +79,8 @@ export default compose(
                 />
               ) : (
                 <Flex>
-                  <CancelButton
+                  <WhiteButton
+                    mx="10px"
                     onClick={() => {
                       setBioTextarea(profile.bio || '');
                       setStoryTextarea(profile.story || '');
@@ -88,8 +88,8 @@ export default compose(
                     }}
                   >
                     Cancel
-                  </CancelButton>
-                  <SaveButton
+                  </WhiteButton>
+                  <TealActionButton
                     onClick={async () => {
                       await submit({
                         bio: bioTextarea,
@@ -102,12 +102,15 @@ export default compose(
                     }}
                   >
                     Save
-                  </SaveButton>
+                  </TealActionButton>
                 </Flex>
               ))}
-          </H2>
+          </CardHeader>
+
           <StyledSection>
-            <H3>My bio</H3>
+            <H3 lineHeight="1.71" letterSpacing="0.2px">
+              My bio
+            </H3>
             {(bioTextarea === '' || isEditingBackgroundInfo) &&
               canEdit && (
                 <H4>
@@ -142,7 +145,9 @@ export default compose(
             />
           </StyledSection>
           <StyledSection className={'userStory'}>
-            <H3>My story</H3>
+            <H3 lineHeight="1.71" letterSpacing="0.2px" mt="40px">
+              My story
+            </H3>
             {(storyTextarea === '' || isEditingBackgroundInfo) &&
               canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
             <EditableLabel
@@ -180,7 +185,8 @@ export default compose(
           )}
           {isEditingBackgroundInfo && (
             <ActionBar p={3}>
-              <CancelButton
+              <WhiteButton
+                mx="10px"
                 onClick={() => {
                   setBioTextarea(profile.bio || '');
                   setStoryTextarea(profile.story || '');
@@ -188,8 +194,8 @@ export default compose(
                 }}
               >
                 Cancel
-              </CancelButton>
-              <SaveButton
+              </WhiteButton>
+              <TealActionButton
                 onClick={async () => {
                   await submit({
                     bio: bioTextarea,
@@ -202,7 +208,7 @@ export default compose(
                 }}
               >
                 Save
-              </SaveButton>
+              </TealActionButton>
             </ActionBar>
           )}
           <Contact mt={'50px'} profile={profile} />

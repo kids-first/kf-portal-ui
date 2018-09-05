@@ -1,6 +1,5 @@
 import React from 'react';
 import CheckIcon from '../../icons/CheckCircleIcon';
-import ExternalLink from 'uikit/ExternalLink';
 
 const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => (
   <div>
@@ -18,18 +17,7 @@ const IntegrationsStatus = ({ connected, unconnectedMsg, name, url, theme }) => 
             margin-right: 7px;
           `}
         />
-        <span>
-          Connected to{' '}
-          <ExternalLink
-            href={url}
-            hasExternalIcon={false}
-            css={`
-              color: #a42c90;
-            `}
-          >
-            {name}
-          </ExternalLink>.
-        </span>
+        <span>Connected to {name}</span>
       </div>
     ) : (
       unconnectedMsg

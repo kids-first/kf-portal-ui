@@ -12,7 +12,7 @@ import formatNumber from '@arranger/components/dist/utils/formatNumber';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
-import CheckCircleIcon from '../../icons/CheckCircleIcon.js';
+import CheckCircleIcon from 'icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
@@ -27,6 +27,9 @@ import {
 } from './statVisuals';
 
 import { dataTableStyle, modalContentStyle } from './style';
+import { FileRepoH3 as H3 } from 'uikit/Headings';
+import { Paragraph } from 'uikit/Core';
+import { TableHeader } from 'uikit/Table';
 
 const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
   return sqon
@@ -54,6 +57,13 @@ const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
 
 const fileSizeToString = fileSize => filesize(fileSize || 0).toUpperCase();
 
+const DataText = css`
+  font-size: 15px;
+  line-height: 28px;
+  font-family: 'Open Sans', sans serif;
+  color: #343434;
+`;
+
 const ManifestTableDataRow = compose(withTheme)(
   ({
     theme,
@@ -73,9 +83,9 @@ const ManifestTableDataRow = compose(withTheme)(
         {leftComponent && <div className={`left`}>{leftComponent}</div>}
         {fileType}
       </div>
-      <div className={`tableCell ${theme.row}`}>{formatNumber(members)}</div>
-      <div className={`tableCell ${theme.row}`}>{formatNumber(files)}</div>
-      <div className={`tableCell ${theme.row}`}>{fileSize}</div>
+      <div className={`tableCell ${theme.row} ${DataText}`}>{formatNumber(members)}</div>
+      <div className={`tableCell ${theme.row} ${DataText}`}>{formatNumber(files)}</div>
+      <div className={`tableCell ${theme.row} ${DataText}`}>{fileSize}</div>
     </div>
   ),
 );
@@ -85,7 +95,8 @@ const Table = compose(withTheme)(({ theme, stats, className, children, reverseCo
     <div className={`row ${theme.row}`}>
       {stats.map(({ label, icon }, i) => (
         <div key={i} className={`tableCell ${theme.row}`}>
-          <div className={`left`}>{icon}</div> {label}
+          <div className={`left`}>{icon}</div>
+          <TableHeader>{label}</TableHeader>
         </div>
       ))}
     </div>
@@ -231,12 +242,14 @@ export default compose(
               const participantSection = (
                 <Section>
                   <ModalSubHeader className={`modalSubHeader`}>
-                    <span className={`highlight`}>
+                    <H3 display="inline-block">
                       <Trans>Participants Summary</Trans>
-                    </span>
+                    </H3>
                     <span>
                       {' '}
-                      <Trans>- all files will be included in the manifest</Trans>.
+                      <Paragraph display="inline-block">
+                        <Trans>- all files will be included in the manifest</Trans>.
+                      </Paragraph>
                     </span>
                   </ModalSubHeader>
                   <Table
@@ -290,20 +303,24 @@ export default compose(
                               {participantSection}
                               <Section>
                                 <ModalSubHeader className={`modalSubHeader`}>
-                                  <span className={`highlight`}>Family Sumary</span>
+                                  <H3 display="inline-block">Family Summary</H3>
                                   <span>
                                     {' '}
-                                    <Trans>
-                                      - the participants in your query have related family member
-                                      data
-                                    </Trans>.
+                                    <Paragraph display="inline-block">
+                                      <Trans>
+                                        - the participants in your query have related family member
+                                        data
+                                      </Trans>.
+                                    </Paragraph>
                                   </span>
                                   <div>
                                     {' '}
-                                    <Trans>
-                                      To include the family data in the manifest, select your
-                                      desired data types below
-                                    </Trans>:{' '}
+                                    <Paragraph>
+                                      <Trans>
+                                        To include the family data in the manifest, select your
+                                        desired data types below
+                                      </Trans>:{' '}
+                                    </Paragraph>
                                   </div>
                                 </ModalSubHeader>
                                 <Table

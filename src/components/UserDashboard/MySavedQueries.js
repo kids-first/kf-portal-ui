@@ -4,7 +4,7 @@ import { distanceInWords } from 'date-fns';
 import styled from 'react-emotion';
 
 import TrashIcon from 'react-icons/lib/fa/trash';
-import { H3 } from './styles';
+import { H2 } from 'uikit/Headings';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
@@ -103,9 +103,7 @@ const MySavedQueries = compose(
       <Container>
         <GradientBar {...{ profileColors }} />
         <Header p={3} lineHeight={2} {...{ queries }}>
-          <H3 mt={2} fontWeight={300}>
-            Saved Queries
-          </H3>
+          <H2 mt={2}>Saved Queries</H2>
           <Flex ml="auto" alignItems="center">
             <SaveIcon />
             <Span pr={2} pl={3} fontSize={3}>

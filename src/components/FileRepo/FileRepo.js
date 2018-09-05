@@ -129,17 +129,11 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                         api={props.api}
                                         {...url}
                                         {...{ stats, disabled }}
-                                        css={`
-                                          flex: 1;
-                                        `}
                                       />
                                       <SaveQuery
                                         api={props.api}
                                         {...url}
                                         {...{ stats, disabled }}
-                                        css={`
-                                          flex: 1;
-                                        `}
                                       />
                                     </QuerySharingContainer>
                                   )}

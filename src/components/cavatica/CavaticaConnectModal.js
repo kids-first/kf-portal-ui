@@ -20,6 +20,7 @@ import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGloba
 
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
+import { Paragraph } from '../../uikit/Core';
 
 const enhance = compose(
   injectState,
@@ -86,12 +87,12 @@ const CavaticaConnectModal = withTheme(
               <NumberBullet>1</NumberBullet>
             </div>
             <div className="stepText">
-              <span>
+              <Paragraph>
                 If you don't have one, please{' '}
                 <ExternalLink href={`${cavaticaWebRegistrationRoot}/auth/register`}>
                   register for a Cavatica Account <RightArrows />
-                </ExternalLink>{' '}
-              </span>
+                </ExternalLink>
+              </Paragraph>
             </div>
           </div>
           <div className="stepRow">
@@ -99,12 +100,12 @@ const CavaticaConnectModal = withTheme(
               <NumberBullet>2</NumberBullet>
             </div>
             <div className="stepText">
-              <span>
+              <Paragraph>
                 You will need to retrieve your authentication token from the Cavatica{' '}
                 <ExternalLink href={`${cavaticaWebRoot}/developer#token`}>
                   Developer Dashboard
                 </ExternalLink>. From the Dashboard, click on the "Auth Token" tab.
-              </span>
+              </Paragraph>
             </div>
             <DemoImage src={step2Screenshot} alt="Screenshot of Cavatica's Developer Den" />
           </div>
@@ -113,10 +114,10 @@ const CavaticaConnectModal = withTheme(
               <NumberBullet>3</NumberBullet>
             </div>
             <div className="stepText">
-              <span>
+              <Paragraph>
                 Click on "<strong>Generate Token</strong>", copy and paste it into the field below
                 and click Connect.
-              </span>
+              </Paragraph>
             </div>
           </div>
           <div css="display:flex; flex-direction:column; margin-left:74px;">

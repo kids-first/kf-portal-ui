@@ -28,12 +28,13 @@ import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 import { Box } from 'uikit/Core';
+import { WhiteButton } from '../../uikit/Button.js';
 
 const labelStyle = `
   font-size: 14px;
   letter-spacing: 0.2px;
   text-align: left;
-  font-weight: 900;
+  font-weight: 700;
 `;
 
 const StyledLabel = styled('label')`
@@ -79,6 +80,13 @@ const AutoCompleteContainer = styled(Column)`
 const AutoCompleteItem = styled(Row)`
   background-color: ${({ isSelected, theme }) => (isSelected ? theme.greyScale4 : theme.white)};
   padding: 10px;
+`;
+
+const ContentRow = styled(Row)`
+  margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+  min-height: 0;
 `;
 
 class WrappedPlacesAutocomplete extends React.Component {
@@ -206,34 +214,30 @@ export default compose(
     setLocation,
   }) => (
     <Fragment>
-      <div
-        css={`
-          ${theme.row};
-          margin-bottom: 20px;
-          z-index: 1;
-          position: relative;
-        `}
-      >
+      <ContentRow>
         <div
           css={`
             padding-right: 30px;
             border-right: 1px solid #cacbcf;
           `}
         >
-          <Gravtar
-            email={values.email || ''}
-            size={143}
-            css={`
-              border-radius: 50%;
-              padding: 5px;
-              background-color: #fff;
-              border: 1px solid #cacbcf;
-              margin-bottom: 5px;
-            `}
-          />
-          <ExternalLink href="https://en.gravatar.com/site/login" css={theme.hollowButton}>
-            change gravatar
-          </ExternalLink>
+          <Column>
+            <Gravtar
+              email={values.email || ''}
+              size={143}
+              css={`
+                align-self: center;
+                border-radius: 50%;
+                padding: 5px;
+                background-color: #fff;
+                border: 1px solid #cacbcf;
+                margin-bottom: 5px;
+              `}
+            />
+            <WhiteButton mt="4px" w="170px">
+              <ExternalLink href="https://en.gravatar.com/site/login">change gravatar</ExternalLink>
+            </WhiteButton>
+          </Column>
         </div>
         <form
           onSubmit={handleSubmit}
@@ -484,7 +488,7 @@ export default compose(
             </AddressRow>
           </AddressBox>
         </form>
-      </div>
+      </ContentRow>
       <ModalFooter {...{ unsetModal, handleSubmit }} />
     </Fragment>
   ),

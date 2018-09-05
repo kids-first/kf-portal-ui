@@ -12,11 +12,12 @@ import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessag
 import {
   ModalFooterContainer,
   ModalActionButton,
-  CancelButton,
   ModalFooterContent,
   Modal,
   ModalContent,
+  ModalTitle,
 } from './ui';
+import { WhiteButton, TealActionButton } from '../../uikit/Button.js';
 
 const enhance = compose(withTheme, injectState);
 
@@ -42,7 +43,7 @@ const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
       margin-bottom: 1.5em;
     `}
   >
-    <span css={theme.modalTitle}>{title}</span>
+    <ModalTitle>{title}</ModalTitle>
     <CloseIcon
       css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
       fill="black"
@@ -75,7 +76,7 @@ export const ModalFooter = enhance(
   }) => {
     return (
       <ModalFooterContainer>
-        <CancelButton onClick={() => handleCancelClick()}>{cancelText}</CancelButton>
+        <WhiteButton onClick={() => handleCancelClick()}>{cancelText}</WhiteButton>
         <ModalFooterContent>{children}</ModalFooterContent>
         {showSubmit && (
           <LoadingOnClick
@@ -84,12 +85,10 @@ export const ModalFooter = enhance(
             readyContent={submitText}
             loadingContent={submitLoadingContent}
             render={({ onClick, loading, readyContent, loadingContent, submitDisabled }) => (
-              <ModalActionButton disabled={submitDisabled} onClick={onClick}>
-                <span>
-                  {loading && loadingContent}
-                  {readyContent}
-                </span>
-              </ModalActionButton>
+              <TealActionButton disabled={submitDisabled} onClick={onClick}>
+                {loading && loadingContent}
+                {readyContent}
+              </TealActionButton>
             )}
           />
         )}

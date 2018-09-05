@@ -14,7 +14,9 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
-import { ButtonContainer, CustomLightButton } from './ui';
+import { ButtonContainer, CustomLightButton, SaveQueryHeading } from './ui';
+import { WhiteButton } from 'uikit/Button';
+import { FileRepoH3 as H3 } from 'uikit/Headings';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
@@ -70,11 +72,11 @@ export default injectState(
     };
 
     render() {
-      const { className = '', disabled } = this.props;
+      const { disabled } = this.props;
       return (
         !!this.props.state.loggedInUser && (
-          <ButtonContainer className={className}>
-            <CustomLightButton
+          <ButtonContainer>
+            <WhiteButton
               disabled={disabled}
               onClick={() =>
                 !disabled &&
@@ -156,14 +158,7 @@ export default injectState(
                                 </NiceWhiteButton>
                               </div>
                             </div>
-                            <Heading
-                              css={`
-                                border-bottom: 1px solid ${theme.greyScale4};
-                                padding: 7px;
-                                display: flex;
-                                align-items: center;
-                              `}
-                            >
+                            <SaveQueryHeading>
                               <Trans>Save Query</Trans>
                               {this.state.loading && (
                                 <Spinner
@@ -178,7 +173,7 @@ export default injectState(
                                   }}
                                 />
                               )}
-                            </Heading>
+                            </SaveQueryHeading>
                             <div
                               css={`
                                 padding: 0 9px;
@@ -235,7 +230,7 @@ export default injectState(
                   </Tooltip>
                 )}
               </Route>
-            </CustomLightButton>
+            </WhiteButton>
           </ButtonContainer>
         )
       );

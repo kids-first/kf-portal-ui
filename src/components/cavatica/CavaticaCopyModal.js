@@ -19,6 +19,8 @@ import { getFilesById, getFilesByQuery } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
+import { Paragraph } from 'uikit/Core';
+
 const enhance = compose(
   provideGen3FileAuthorizations,
   injectState,
@@ -166,13 +168,13 @@ const CavaticaCopyModal = ({
             </span>
           )}
           {!gen3Connected && (
-            <span>
-              <br />Please{' '}
+            <Paragraph>
+              Please{' '}
               <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
                 connect to GEN3
               </Link>{' '}
               to lookup which files you are authorized to copy.
-            </span>
+            </Paragraph>
           )}
         </ModalWarning>
       )}
