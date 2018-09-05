@@ -45,6 +45,7 @@ export default provideState({
         .then(r => state => ({
           ...state,
           queries: state.queries.filter(({ id }) => id !== queryId),
+          exampleQueries: state.exampleQueries.filter(({ id }) => id !== queryId),
         }));
     },
   },
