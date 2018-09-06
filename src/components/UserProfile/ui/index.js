@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 import { withTheme } from 'emotion-theming';
 import { ModalActionButton } from '../../Modal';
+import Gravtar from 'uikit/Gravatar';
 
 import { Flex, Box, Section } from 'uikit/Core';
 import { H2 as H2Core } from 'uikit/Headings';
@@ -122,4 +123,11 @@ export const CardHeader = styled(H2Core)`
   align-items: flex-start;
   padding-bottom: 10px;
   margin-top: 13px;
+`;
+
+export const ProfileImage = styled(Gravtar)`
+  height: 173px;
+  width: 173px;
+  border-radius: 50%;
+  border: 5px solid #fff;
 `;

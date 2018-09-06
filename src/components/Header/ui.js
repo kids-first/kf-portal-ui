@@ -105,6 +105,8 @@ export const Logo = styled('img')`
 `;
 
 export const NavigationGravatar = styled(Gravtar)`
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   padding: 2px;
   background-color: ${({ theme }) => theme.white};
