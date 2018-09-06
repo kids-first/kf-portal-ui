@@ -25,6 +25,7 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
 import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
 import { getAccessToken } from 'services/gen3';
+import { createExampleQueries } from 'services/riffQueries';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
@@ -41,6 +42,13 @@ export const validateJWT = ({ jwt }) => {
   return isCurrent && isApproved && validatedPayload;
 };
 
+const initProfile = async (api, user, egoId) => {
+  const profileCreation = createProfile(api)({ ...user, egoId });
+  const sampleQueryCreation = createExampleQueries(api, egoId);
+  const [x] = await Promise.all([profileCreation, sampleQueryCreation]);
+  return x;
+};
+
 export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
 
@@ -52,7 +60,7 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
       const user = jwtData.context.user;
       const egoId = jwtData.sub;
       const existingProfile = await getProfile(api)();
-      const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
+      const newProfile = !existingProfile ? await initProfile(api, user, egoId) : {};
       const loggedInUser = {
         ...(existingProfile || newProfile),
         email: user.email,
@@ -136,11 +144,7 @@ class Component extends React.Component<any, any> {
     }
   }
   handleToken = async ({ provider, handler, token }) => {
-    const {
-      api,
-      onFinish,
-      effects: { setToken, setUser, setIntegrationToken },
-    } = this.props;
+    const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
 
     const response = await handler(token).catch(error => {
       if (error.message === 'Network Error') {
@@ -159,9 +163,7 @@ class Component extends React.Component<any, any> {
     }
   };
   trackUserSignIn = label => {
-    let {
-      location: { pathname },
-    } = this.props;
+    let { location: { pathname } } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
@@ -222,8 +224,4 @@ class Component extends React.Component<any, any> {
   }
 }
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(Component);
+export default compose(injectState, withRouter, withApi)(Component);
