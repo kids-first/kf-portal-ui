@@ -66,6 +66,11 @@ const Container = styled(Column)`
   overflow-y: auto;
 `;
 
+const FileRepositoryLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.primary};
+`;
+
 const MySavedQueries = compose(
   provideSavedQueries,
   injectState,
@@ -118,10 +123,7 @@ const MySavedQueries = compose(
               You have no saved queries yet.
             </PromptMessageHeading>
             <PromptMessageContent>
-              Explore the{' '}
-              <Link to="/search/file" style={{ textDecoration: 'none' }}>
-                File Repository
-              </Link>{' '}
+              Explore the <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink>{' '}
               and start saving queries!
             </PromptMessageContent>
           </PromptMessageContainer>
