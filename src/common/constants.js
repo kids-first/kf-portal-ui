@@ -119,8 +119,9 @@ export const STUDY_SHORT_NAMES = [
 export const EXAMPLE_QUERIES = [
   {
     queryName: 'Cheek Swab / Mouth Wash / Salivacop',
-    url:
-      'https://kf-qa-portal.netlify.com/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.biospecimens.source_text_tissue_type%22%2C%22value%22%3A%5B%22Cheek%20Swab%22%2C%22Mouth%20Wash%22%2C%22Saliva%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.composition%22%2C%22value%22%3A%5B%22trio%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.is_proband%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D',
+    url: `${window.location.protocol}://${
+      window.location.host
+    }/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.biospecimens.source_text_tissue_type%22%2C%22value%22%3A%5B%22Cheek%20Swab%22%2C%22Mouth%20Wash%22%2C%22Saliva%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.composition%22%2C%22value%22%3A%5B%22trio%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.is_proband%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D`,
     stats: {
       Files: 1434,
       Participants: 478,
@@ -131,8 +132,9 @@ export const EXAMPLE_QUERIES = [
   },
   {
     queryName: 'Aligned Reads, trio, HP:0000175, Female',
-    url:
-      'https://kf-qa-portal.netlify.com/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.available_data_types%22%2C%22value%22%3A%5B%22Aligned%20Reads%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.composition%22%2C%22value%22%3A%5B%22trio%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.family_members.phenotype.hpo.hpo_phenotype_observed%22%2C%22value%22%3A%5B%22HP%3A0000175%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.gender%22%2C%22value%22%3A%5B%22Female%22%5D%7D%7D%5D%7D',
+    url: `${window.location.protocol}://${
+      window.location.host
+    }/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.available_data_types%22%2C%22value%22%3A%5B%22Aligned%20Reads%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.composition%22%2C%22value%22%3A%5B%22trio%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.family_members.phenotype.hpo.hpo_phenotype_observed%22%2C%22value%22%3A%5B%22HP%3A0000175%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.gender%22%2C%22value%22%3A%5B%22Female%22%5D%7D%7D%5D%7D`,
     stats: {
       Files: 738,
       Participants: 369,
@@ -143,8 +145,9 @@ export const EXAMPLE_QUERIES = [
   },
   {
     queryName: 'All Harmonized Data',
-    url:
-      'https://kf-qa-portal.netlify.com/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D',
+    url: `${window.location.protocol}://${
+      window.location.host
+    }/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D`,
     stats: {
       Files: 9194,
       Participants: 3698,
