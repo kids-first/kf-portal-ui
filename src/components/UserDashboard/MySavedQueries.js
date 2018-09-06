@@ -112,7 +112,7 @@ const MySavedQueries = compose(
             </Span>
           </Flex>
         </Header>
-        {queries.length <= 0 ? (
+        {!queries.length ? (
           <PromptMessageContainer info my={20}>
             <PromptMessageHeading info mb={10}>
               You have no saved queries yet.
@@ -132,8 +132,7 @@ const MySavedQueries = compose(
               .filter(q => q.alias)
               .map(q => ({
                 ...q,
-                date: +new Date(q.creationDate),
-                // TODO: save origin + pathname separately in dynamo
+                date: Number(new Date(q.creationDate)),
                 link: `/search${q.content.longUrl.split('/search')[1]}`,
               }))
               .slice()
@@ -141,7 +140,7 @@ const MySavedQueries = compose(
               .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
           </Box>
 
-          {exampleQueries.length <= 0 ? null : (
+          {!exampleQueries.length ? null : (
             <Box mt={2} mb={2}>
               <QueriesHeading>Examples:</QueriesHeading>
               {exampleQueries.map(q => {

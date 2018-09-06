@@ -27,9 +27,9 @@ export default provideState({
         )
         .then(value => state => {
           effects.setLoading(false);
-          const queries = value.filter(q => !q.content.example) || [];
-          const exampleQueries = value.filter(q => q.content.example) || [];
-          return { ...state, queries: queries, exampleQueries: exampleQueries };
+          const queries = (value || []).filter(q => !q.content.example);
+          const exampleQueries = (value || []).filter(q => q.content.example);
+          return { ...state, queries, exampleQueries };
         });
     },
     deleteQuery: (effects, { queryId, api }) => {

@@ -39,9 +39,5 @@ const riffQuery = ({
 
 export default riffQuery;
 
-export const createExampleQueries = (api, egoId) => {
-  EXAMPLE_QUERIES.forEach(q => {
-    const { stats, queryName, url, example } = q;
-    riffQuery({ ...q, api, egoId });
-  });
-};
+export const createExampleQueries = (api, egoId) =>
+  Promise.all(EXAMPLE_QUERIES.map(q => riffQuery({ ...q, api, egoId })));

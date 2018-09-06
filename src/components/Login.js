@@ -43,8 +43,9 @@ export const validateJWT = ({ jwt }) => {
 };
 
 const initProfile = async (api, user, egoId) => {
-  const x = await createProfile(api)({ ...user, egoId });
-  createExampleQueries(api, egoId);
+  const profileCreation = createProfile(api)({ ...user, egoId });
+  const sampleQueryCreation = createExampleQueries(api, egoId);
+  const [x] = await Promise.all([profileCreation, sampleQueryCreation]);
   return x;
 };
 
