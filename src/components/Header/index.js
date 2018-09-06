@@ -7,7 +7,7 @@ import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
 
-import logoPath from 'assets/logo-kids-first-data-portal-beta.svg';
+import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';

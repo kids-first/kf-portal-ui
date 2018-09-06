@@ -12,10 +12,8 @@ import ConsentForm from 'components/forms/ConsentForm';
 import { withApi } from 'services/api';
 import { startAnalyticsTiming, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { ExternalLink } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
-import FlashMessage from 'uikit/FlashMessage';
 import { JoinH2, JoinH3 } from '../uikit/Headings';
 import { Paragraph } from '../uikit/Core';
 
@@ -35,21 +33,9 @@ const JoinContainer = styled(Column)`
 `;
 
 export const JoinPageHeader = withTheme(({ theme }) => (
-  <Fragment>
-    <JoinH2 mt="25px" mb="25px">
-      <Trans>Join Kids First Data Resource Portal</Trans>
-    </JoinH2>
-    <FlashMessage mb={4}>
-      <Trans>
-        We're currently in <b>beta phase</b> for the Kids First DRP. We're looking for your input so
-        we can build a data portal that better meets your needs. Please send us your feedback or any
-        other issues you experience at:{' '}
-        <ExternalLink bare primary bold href="mailto:support@kidsfirst.org">
-          support@kidsfirst.org
-        </ExternalLink>
-      </Trans>
-    </FlashMessage>
-  </Fragment>
+  <JoinH2 mt="25px" mb="35px">
+    <Trans>Join Kids First Data Resource Portal</Trans>
+  </JoinH2>
 ));
 
 const JoinContent = compose(
