@@ -52,7 +52,7 @@
   "Contact": "Contact",
   "UI:": "UI:",
   "Data Release:": "Data Release:",
-  "dataReleaseVersion": "Pre-release",
+  "dataReleaseVersion": "<0>{version}</0>",
   "Follow Us": "Follow Us",
   "Data Resource Portal": "Data Resource Portal",
   "Website": "Website",
