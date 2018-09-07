@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import { Trans } from 'react-i18next';
 import urlJoin from 'url-join';
 import { SocialIcon as ReactSocialIcon } from 'react-social-icons';
+import { DataVersionProvider } from 'services/dataVersion';
 
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
@@ -82,7 +83,9 @@ const Footer = () => (
         <Trans>UI:</Trans> {UI_VERSION}
         {', '}
         <Trans>Data Release: </Trans>
-        <Trans i18nKey="dataReleaseVersion">Pre-release</Trans>
+        <DataVersionProvider
+          render={({ version }) => <Trans i18nKey="dataReleaseVersion">{version}</Trans>}
+        />
       </div>
     </Details>
     <SocialIcons>
