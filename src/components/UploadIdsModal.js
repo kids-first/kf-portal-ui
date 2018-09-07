@@ -11,8 +11,9 @@ import { TealActionButton } from 'uikit/Button';
 import { Paragraph } from 'uikit/Core';
 import { FileRepoH3 as H3 } from 'uikit/Headings';
 import { TableHeader } from 'uikit/Table';
+import { withApi } from 'services/api';
 
-const enhance = compose(withTheme, injectState);
+const enhance = compose(withTheme, injectState, withApi);
 
 const UploadIdsModal = ({
   api,
@@ -54,8 +55,7 @@ const UploadIdsModal = ({
           handleSubmit: async () => {
             const { type, setId, size, nextSQON } = await saveSet({
               userId: loggedInUser.egoId,
-              api: graphql(api),
-              dataPath: 'data.saveSet',
+              api: graphql(),
             });
             await addUserSet({ type, setId, size, api });
             setSQON(nextSQON);
