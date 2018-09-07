@@ -14,6 +14,7 @@ import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
 import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
 import AllAppsPortalIcon from 'icons/AllAppsPortalIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
+import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
 import { hocToRenderProps } from 'services/utils';
 
 const withDropdownState = compose(
@@ -50,6 +51,16 @@ export default () => (
             <DropdownRow alignItems="center">
               <AllAppsWebsiteIcon width="14px" height="13px" />
               <Trans>Website</Trans>
+            </DropdownRow>
+          </DropdownExternalLink>,
+          <DropdownExternalLink
+            onClick={toggleDropdown}
+            href="https://kidsfirstdrc.org/support/studies-and-access/"
+            target="_blank"
+          >
+            <DropdownRow alignItems="center">
+              <AllAppsStudiesIcon width="15" height="15" />
+              <Trans>Studies and Access</Trans>
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink

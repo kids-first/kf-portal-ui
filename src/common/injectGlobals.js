@@ -71,3 +71,6 @@ export const gen3OauthRedirect: string = encodeURIComponent(
   `${window.location.origin}/gen3_redirect/`,
 );
 export const gen3IntegrationRoot: string = process.env.REACT_APP_GEN3_INTEGRATION_ROOT || '';
+export const reactApiDataVersionApi: string = process.env.REACT_APP_DATA_VERSION_API || null;
+export const reactApiDataVersionFallback: string =
+  process.env.REACT_APP_DATA_VERSION_FALLBACK || '';

@@ -1,12 +1,5 @@
 {
   "Join Kids First Data Resource Portal": "Join Kids First Data Resource Portal",
-  "We're currently in <1>beta phase</1> for the Kids First DRP": {
-    " We're looking for your input so we can build a data portal that better meets your needs": {
-      " Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst": {
-        "org </5>": "We're currently in <1>beta phase</1> for the Kids First DRP. We're looking for your input so we can build a data portal that better meets your needs. Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst.org </5>"
-      }
-    }
-  },
   "join": {
     "wizard": {
       "socialSelect": "Select a way to connect to the Kids First Data Resource Portal",
@@ -52,10 +45,11 @@
   "Contact": "Contact",
   "UI:": "UI:",
   "Data Release:": "Data Release:",
-  "dataReleaseVersion": "Pre-release",
+  "dataReleaseVersion": "<0>{version}</0>",
   "Follow Us": "Follow Us",
   "Data Resource Portal": "Data Resource Portal",
   "Website": "Website",
+  "Studies and Access": "Studies and Access",
   "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort": {
     "": "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort."
   },

@@ -60,23 +60,6 @@ export default compose(
           Welcome, {loggedInUser.firstName}!
         </H1>
         <Column>
-          <PromptMessageContainer info my={20}>
-            <PromptMessageHeading info mb={10} color={theme.secondary}>
-              The Portal is currently in <H2 display="inline-block">BETA Phase</H2>
-            </PromptMessageHeading>
-            <PromptMessageContent>
-              <Paragraph>
-                We are actively working on improvements, so you might find that your data has
-                changed, such as your saved queries. Data in the repository will change regularly,
-                such as field names or the amount of data available. We appreciate your usage and
-                feedback during this phase, so please keep visiting and if you have any questions
-                contact us at:{' '}
-                <ExternalLink hasExternalIcon={false} href="mailto:support@kidsfirstdrc.org">
-                  <strong>support@kidsfirstdrc.org</strong>
-                </ExternalLink>.
-              </Paragraph>
-            </PromptMessageContent>
-          </PromptMessageContainer>
           <div
             css={`
               display: flex;

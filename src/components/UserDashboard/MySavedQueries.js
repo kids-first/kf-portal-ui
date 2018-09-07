@@ -63,7 +63,6 @@ const Container = styled(Column)`
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   padding: 0 10px;
-  overflow-y: auto;
 `;
 
 const FileRepositoryLink = styled(Link)`
