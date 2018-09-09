@@ -23,6 +23,7 @@ import { Paragraph } from '../../uikit/Core';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
+  width: 100%;
   min-height: 600px;
 `;
 
