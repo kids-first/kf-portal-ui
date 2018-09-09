@@ -23,6 +23,13 @@ const AfvContainer = styled('div')`
     border-bottom: none;
   }
 
+  & .advancedFacetViewWrapper .facetViewWrapper .facetsPanel {
+    flex: 3;
+    & .bucket-count {
+      display: none;
+    }
+  }
+
   .afvStatContainer .statContainer {
     background: none;
     padding: none;
