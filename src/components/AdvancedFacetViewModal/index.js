@@ -23,6 +23,10 @@ const AfvContainer = styled('div')`
     border-bottom: none;
   }
 
+  .advancedFacetViewWrapper .facetViewWrapper .facetsPanel {
+    flex: 4;
+  }
+
   .afvStatContainer .statContainer {
     background: none;
     padding: none;
