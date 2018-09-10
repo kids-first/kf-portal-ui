@@ -31,11 +31,16 @@ export const facebookLogin = token =>
 
 export const facebookLogout = () =>
   Promise.race([
-    new Promise((resolve, reject) =>
-      global.FB.getLoginStatus(
-        response => (response.authResponse ? global.FB.logout(r => resolve(r)) : resolve()),
-      ),
-    ),
+    new Promise((resolve, reject) => {
+      try {
+        global.FB.getLoginStatus(
+          response => (response.authResponse ? global.FB.logout(r => resolve(r)) : resolve()),
+        );
+      } catch (err) {
+        console.warn('failed to get fb login status: ', err);
+        resolve();
+      }
+    }),
     wait(2),
   ]);
 
