@@ -8,17 +8,25 @@ export default class extends React.Component<any, any> {
     if (!global.FB) {
       await facebookSDK();
     }
-    global.FB.getLoginStatus(response => {
-      if (response.authResponse) {
-        this.props.onLogin(response);
-      } else {
-        global.FB.XFBML.parse();
-        global.FB.Event.subscribe('auth.login', this.props.onLogin);
-      }
-    });
+    try {
+      global.FB.getLoginStatus(response => {
+        if (response.authResponse) {
+          this.props.onLogin(response);
+        } else {
+          global.FB.XFBML.parse();
+          global.FB.Event.subscribe('auth.login', this.props.onLogin);
+        }
+      });
+    } catch (err) {
+      console.warn('unable to get fb login status: ', err);
+    }
   }
   componentWillUnmount() {
-    global.FB.Event.unsubscribe('auth.login', this.props.onLogin);
+    try {
+      global.FB.Event.unsubscribe('auth.login', this.props.onLogin);
+    } catch (err) {
+      console.warn('unable to unsubscribe to fb event: ', err);
+    }
   }
   render() {
     return (
