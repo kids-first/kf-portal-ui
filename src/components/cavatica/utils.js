@@ -1,16 +1,16 @@
 import { graphql } from 'services/arranger';
 import { toGqlString } from 'services/utils';
 
-export const getStudiesAggregations = ({ api, studies, sqon }) => {
-  return !studies.length
+export const getStudiesAggregations = ({ api, acls, sqon }) => {
+  return !acls.length
     ? []
     : graphql(api)({
         query: `
-          query approvedStudyAggs(${studies
+          query approvedStudyAggs(${acls
             .map(study => `$${toGqlString(study)}_sqon: JSON`)
             .join(' ')}) {
             file {
-              ${studies
+              ${acls
                 .map(
                   study => `
                   ${toGqlString(study)}: aggregations (filters: $${toGqlString(study)}_sqon){
@@ -31,7 +31,7 @@ export const getStudiesAggregations = ({ api, studies, sqon }) => {
             }
           }
         `,
-        variables: studies.reduce(
+        variables: acls.reduce(
           (acc, study) => ({
             ...acc,
             [`${toGqlString(study)}_sqon`]: {
@@ -60,21 +60,21 @@ export const getStudiesAggregations = ({ api, studies, sqon }) => {
         })),
       );
 };
-export const getUnapprovedStudiesForFiles = ({ api, files, approvedStudyAggs }) =>
+export const getUnapprovedStudiesForFiles = ({ api, files, approvedStudyAggs, acl = [] }) =>
   graphql(api)({
     query: `
-    query ($sqon: JSON) {
-      file {
-        aggregations (filters: $sqon){
-          participants__study__external_id {
-            buckets {
-              key
+      query ($sqon: JSON) {
+        file {
+          aggregations (filters: $sqon){
+            participants__study__external_id {
+              buckets {
+                key
+              }
             }
           }
         }
       }
-    }
-  `,
+    `,
     variables: {
       sqon: {
         op: 'and',
@@ -86,12 +86,22 @@ export const getUnapprovedStudiesForFiles = ({ api, files, approvedStudyAggs }) 
               value: files,
             },
           },
+          {
+            op: 'not',
+            content: [
+              {
+                op: 'in',
+                content: {
+                  field: 'acl',
+                  value: acl,
+                },
+              },
+            ],
+          },
         ],
       },
     },
   }).then(
     ({ data: { file: { aggregations: { participants__study__external_id: { buckets } } } } }) =>
-      buckets
-        .map(({ key }) => key)
-        .filter(study => !approvedStudyAggs.map(({ study }) => study).includes(study)),
+      buckets.map(({ key }) => key),
   );

@@ -11,9 +11,8 @@ import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
-
+import { graphql } from 'services/arranger';
 import { getUser as getGen3User } from 'services/gen3';
-
 import { getStudiesAggregations, getUnapprovedStudiesForFiles } from './utils';
 
 const enhance = compose(
@@ -37,24 +36,36 @@ const enhance = compose(
 
       // Get Gen3 permissions
       const userDetails = await getGen3User(api);
-      const approvedStudies = Object.keys(userDetails.projects).sort();
+      const approvedAcls = Object.keys(userDetails.projects).sort();
+
+      const allAcl = await graphql(api)({
+        query: `{
+          file {
+            aggregations {
+              acl {
+                buckets {
+                  key
+                }
+              }
+            }
+          }
+        }`,
+      }).then(({ data: { file: { aggregations: { acl: { buckets } } } } }) => {
+        return buckets.map(({ key }) => key);
+      });
 
       const approvedStudyAggs = await getStudiesAggregations({
         api,
         sqon,
-        studies: approvedStudies,
+        acls: approvedAcls,
       });
 
-      const unapprovedStudies = await getUnapprovedStudiesForFiles({
-        api,
-        approvedStudyAggs,
-        files: filesSelected,
-      });
+      const unapprovedStudies = allAcl.filter(acl => !approvedAcls.includes(acl));
 
       const unapprovedStudiesAgg = await getStudiesAggregations({
         api,
         sqon,
-        studies: unapprovedStudies,
+        acls: unapprovedStudies,
       });
 
       console.log('approvedStudyAggs: ', approvedStudyAggs);
