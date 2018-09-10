@@ -41,7 +41,7 @@ export const getStudiesAggregations = ({ api, studies, sqon }) => {
                 {
                   op: 'in',
                   content: {
-                    field: 'participants.study.external_id',
+                    field: 'acl',
                     value: study,
                   },
                 },

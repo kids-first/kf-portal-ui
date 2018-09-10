@@ -57,6 +57,10 @@ const enhance = compose(
         studies: unapprovedStudies,
       });
 
+      console.log('approvedStudyAggs: ', approvedStudyAggs);
+      console.log('unapprovedStudies: ', unapprovedStudies);
+      console.log('unapprovedStudiesAgg: ', unapprovedStudiesAgg);
+
       setAuthorizedFiles(approvedStudyAggs.reduce((acc, study) => [...acc, ...study.files], []));
       setUnauthorizedFiles(
         unapprovedStudiesAgg.reduce((acc, study) => [...acc, ...study.files], []),
