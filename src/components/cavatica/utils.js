@@ -1,7 +1,7 @@
 import { graphql } from 'services/arranger';
 import { toGqlString } from 'services/utils';
 
-export const getStudiesAggregations = ({ api, acls, sqon }) => {
+export const getAclAggregations = ({ api, acls, sqon }) => {
   return !acls.length
     ? []
     : graphql(api)({
@@ -13,7 +13,9 @@ export const getStudiesAggregations = ({ api, acls, sqon }) => {
               ${acls
                 .map(
                   study => `
-                  ${toGqlString(study)}: aggregations (filters: $${toGqlString(study)}_sqon){
+                  ${toGqlString(study)}: aggregations (filters: $${toGqlString(
+                    study,
+                  )}_sqon, aggregations_filter_themselves: true){
                     latest_did {
                       buckets {
                         key
@@ -51,8 +53,8 @@ export const getStudiesAggregations = ({ api, acls, sqon }) => {
           {},
         ),
       }).then(({ data: { file: fileAggs } }) =>
-        Object.entries(fileAggs).map(([study, aggs]) => ({
-          study: study,
+        Object.entries(fileAggs).map(([acl, aggs]) => ({
+          acl: acl.split('__').join('.'),
           files: aggs.latest_did.buckets.map(({ key }) => key),
           studyName: aggs.participants__study__name.buckets.length
             ? aggs.participants__study__name.buckets[0].key

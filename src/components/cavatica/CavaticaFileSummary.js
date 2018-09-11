@@ -13,7 +13,6 @@ import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
 import { graphql } from 'services/arranger';
 import { getUser as getGen3User } from 'services/gen3';
-import { getStudiesAggregations, getUnapprovedStudiesForFiles } from './utils';
 
 const enhance = compose(
   injectState,
@@ -28,7 +27,7 @@ const enhance = compose(
         setFileStudyData,
         setFileAuthInitialized,
       } = this.props.effects;
-      const { api, filesSelected } = this.props;
+      const { api } = this.props;
       const sqon = this.props.sqon || {
         op: 'and',
         content: [],
@@ -38,63 +37,217 @@ const enhance = compose(
       const userDetails = await getGen3User(api);
       const approvedAcls = Object.keys(userDetails.projects).sort();
 
-      const allAcl = await graphql(api)({
-        query: `{
-          file {
-            aggregations {
-              acl {
-                buckets {
-                  key
+      const acceptedStudyIds = await graphql(api)({
+        query: `
+          query AcceptedStudyIds($sqon: JSON) {
+            file {
+              aggregations (filters: $sqon, aggregations_filter_themselves: true){
+                participants__study__external_id {
+                  buckets {
+                    key
+                  }
                 }
               }
             }
           }
-        }`,
-      }).then(({ data: { file: { aggregations: { acl: { buckets } } } } }) => {
-        return buckets.map(({ key }) => key);
-      });
+        `,
+        variables: {
+          sqon: {
+            op: 'and',
+            content: [
+              ...sqon.content,
+              {
+                op: 'in',
+                content: {
+                  field: 'acl',
+                  value: approvedAcls,
+                },
+              },
+            ],
+          },
+        },
+      }).then(
+        ({ data: { file: { aggregations: { participants__study__external_id: { buckets } } } } }) =>
+          buckets.map(({ key }) => key),
+      );
 
-      const approvedStudyAggs = await getStudiesAggregations({
-        api,
-        sqon,
-        acls: approvedAcls,
-      });
+      const unacceptedStudyIds = await graphql(api)({
+        query: `
+          query UnacceptedStudyIds($sqon: JSON) {
+            file {
+              aggregations (filters: $sqon, aggregations_filter_themselves: true){
+                participants__study__external_id {
+                  buckets {
+                    key
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          sqon: {
+            op: 'and',
+            content: [
+              ...sqon.content,
+              {
+                op: 'not',
+                content: [
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'acl',
+                      value: approvedAcls,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      }).then(
+        ({ data: { file: { aggregations: { participants__study__external_id: { buckets } } } } }) =>
+          buckets.map(({ key }) => key),
+      );
 
-      const unapprovedStudies = allAcl.filter(acl => !approvedAcls.includes(acl));
+      const acceptedStudiesAggs = await (!acceptedStudyIds.length
+        ? []
+        : graphql(api)({
+            query: `
+          query AcceptedStudiesAggs(${acceptedStudyIds.map(id => `$${id}_sqon: JSON`)}) {
+            file {
+              ${acceptedStudyIds
+                .map(
+                  id => `
+                  ${id}: aggregations (filters: $${id}_sqon, aggregations_filter_themselves: true){
+                    kf_id { buckets { key } }
+                    participants__study__name { buckets { key } }
+                  }
+                `,
+                )
+                .join('')}
+            }
+          }
+        `,
+            variables: acceptedStudyIds.reduce((acc, id) => {
+              acc[`${id}_sqon`] = {
+                op: 'and',
+                content: [
+                  ...sqon.content,
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'acl',
+                      value: approvedAcls,
+                    },
+                  },
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'participants.study.external_id',
+                      value: [id],
+                    },
+                  },
+                ],
+              };
+              return acc;
+            }, {}),
+          }).then(({ data: { file: aggregations } }) => {
+            return acceptedStudyIds.map(id => {
+              const aggregation = aggregations[id];
+              const { kf_id: { buckets: fileIds } } = aggregation;
+              const { participants__study__name: { buckets: studyNames } } = aggregation;
+              return {
+                id: id,
+                files: fileIds,
+                studyName: studyNames.map(({ key }) => key)[0],
+              };
+            });
+          }));
 
-      const unapprovedStudiesAgg = await getStudiesAggregations({
-        api,
-        sqon,
-        acls: unapprovedStudies,
-      });
+      const unacceptedStudiesAggs = await (!unacceptedStudyIds.length
+        ? []
+        : graphql(api)({
+            query: `
+          query UnacceptedStudiesAggs(${unacceptedStudyIds.map(id => `$${id}_sqon: JSON`)}) {
+            file {
+              ${unacceptedStudyIds
+                .map(
+                  id => `
+                  ${id}: aggregations (filters: $${id}_sqon, aggregations_filter_themselves: true){
+                    kf_id { buckets { key } }
+                    participants__study__name { buckets { key } }
+                  }
+                `,
+                )
+                .join('')}
+            }
+          }
+        `,
+            variables: unacceptedStudyIds.reduce((acc, id) => {
+              acc[`${id}_sqon`] = {
+                op: 'and',
+                content: [
+                  ...sqon.content,
+                  {
+                    op: 'not',
+                    content: [
+                      {
+                        op: 'in',
+                        content: {
+                          field: 'acl',
+                          value: approvedAcls,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'participants.study.external_id',
+                      value: [id],
+                    },
+                  },
+                ],
+              };
+              return acc;
+            }, {}),
+          }).then(({ data: { file: aggregations } }) => {
+            return unacceptedStudyIds.map(id => {
+              const aggregation = aggregations[id];
+              const { kf_id: { buckets: fileIds } } = aggregation;
+              const { participants__study__name: { buckets: studyNames } } = aggregation;
+              return {
+                id: id,
+                files: fileIds,
+                studyName: studyNames.map(({ key }) => key)[0],
+              };
+            });
+          }));
 
-      console.log('approvedStudyAggs: ', approvedStudyAggs);
-      console.log('unapprovedStudies: ', unapprovedStudies);
-      console.log('unapprovedStudiesAgg: ', unapprovedStudiesAgg);
-
-      setAuthorizedFiles(approvedStudyAggs.reduce((acc, study) => [...acc, ...study.files], []));
+      setAuthorizedFiles(acceptedStudiesAggs.reduce((acc, study) => [...acc, ...study.files], []));
       setUnauthorizedFiles(
-        unapprovedStudiesAgg.reduce((acc, study) => [...acc, ...study.files], []),
+        unacceptedStudiesAggs.reduce((acc, study) => [...acc, ...study.files], []),
       );
       setFileStudyData({
-        authorized: approvedStudyAggs
-          .map(({ study, files, studyName }) => ({
-            id: study,
+        authorized: acceptedStudiesAggs
+          .map(({ id, files, studyName }) => ({
+            id: id,
             count: files.length,
           }))
           .filter(({ count }) => count)
-          .sort(({ count }) => count),
-        unauthorized: unapprovedStudiesAgg
-          .map(({ study, files, studyName }) => ({
-            id: study,
+          .sort(({ count }, { count: nextCount }) => nextCount - count),
+        unauthorized: unacceptedStudiesAggs
+          .map(({ id, files, studyName }) => ({
+            id: id,
             count: files.length,
           }))
           .filter(({ count }) => count)
-          .sort(({ count }) => count),
-        names: [...approvedStudyAggs, ...unapprovedStudiesAgg].reduce(
-          (acc, { study, studyName }) => ({
+          .sort(({ count }, { count: nextCount }) => nextCount - count),
+        names: [...acceptedStudiesAggs, ...unacceptedStudiesAggs].reduce(
+          (acc, { id, studyName }) => ({
             ...acc,
-            [study]: studyName,
+            [id]: studyName,
           }),
           {},
         ),
