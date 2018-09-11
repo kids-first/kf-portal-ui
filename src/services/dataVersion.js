@@ -18,7 +18,7 @@ const getLatestDataVersion = () => {
         })
         .filter(({ etl: { state } }) => state === 'published');
       const sortedEtls = sortBy(publishedEtl, ({ releaseDate, releaseVersion }) =>
-        new Date().valueOf('2018-09-06T21:17:53.127888Z'),
+        new Date().valueOf(releaseDate),
       );
       const latestVersion = (sortedEtls[0] || {}).releaseVersion;
       return latestVersion;
