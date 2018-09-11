@@ -1,73 +1,11 @@
 import { graphql } from 'services/arranger';
-import { toGqlString } from 'services/utils';
 
-export const getAclAggregations = ({ api, acls, sqon }) => {
-  return !acls.length
-    ? []
-    : graphql(api)({
-        query: `
-          query approvedStudyAggs(${acls
-            .map(study => `$${toGqlString(study)}_sqon: JSON`)
-            .join(' ')}) {
-            file {
-              ${acls
-                .map(
-                  study => `
-                  ${toGqlString(study)}: aggregations (filters: $${toGqlString(
-                    study,
-                  )}_sqon, aggregations_filter_themselves: true){
-                    latest_did {
-                      buckets {
-                        key
-                      }
-                    }
-                    participants__study__name {
-                      buckets {
-                        key
-                      }
-                    }
-                  }
-                `,
-                )
-                .join(' ')}
-            }
-          }
-        `,
-        variables: acls.reduce(
-          (acc, study) => ({
-            ...acc,
-            [`${toGqlString(study)}_sqon`]: {
-              ...sqon,
-              content: [
-                ...sqon.content,
-                {
-                  op: 'in',
-                  content: {
-                    field: 'acl',
-                    value: study,
-                  },
-                },
-              ],
-            },
-          }),
-          {},
-        ),
-      }).then(({ data: { file: fileAggs } }) =>
-        Object.entries(fileAggs).map(([acl, aggs]) => ({
-          acl: acl.split('__').join('.'),
-          files: aggs.latest_did.buckets.map(({ key }) => key),
-          studyName: aggs.participants__study__name.buckets.length
-            ? aggs.participants__study__name.buckets[0].key
-            : null,
-        })),
-      );
-};
-export const getUnapprovedStudiesForFiles = ({ api, files, approvedStudyAggs, acl = [] }) =>
+export const getStudyIdsFromSqon = api => ({ sqon }) =>
   graphql(api)({
     query: `
-      query ($sqon: JSON) {
+      query StudyIds($sqon: JSON) {
         file {
-          aggregations (filters: $sqon){
+          aggregations (filters: $sqon, aggregations_filter_themselves: true){
             participants__study__external_id {
               buckets {
                 key
@@ -78,32 +16,43 @@ export const getUnapprovedStudiesForFiles = ({ api, files, approvedStudyAggs, ac
       }
     `,
     variables: {
-      sqon: {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: {
-              field: '_id',
-              value: files,
-            },
-          },
-          {
-            op: 'not',
-            content: [
-              {
-                op: 'in',
-                content: {
-                  field: 'acl',
-                  value: acl,
-                },
-              },
-            ],
-          },
-        ],
-      },
+      sqon,
     },
   }).then(
     ({ data: { file: { aggregations: { participants__study__external_id: { buckets } } } } }) =>
       buckets.map(({ key }) => key),
   );
+
+export const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
+  !studyIds.length
+    ? []
+    : graphql(api)({
+        query: `
+          query AcceptedStudiesAggs(${studyIds.map(id => `$${id}_sqon: JSON`)}) {
+            file {
+              ${studyIds
+                .map(
+                  id => `
+                  ${id}: aggregations (filters: $${id}_sqon, aggregations_filter_themselves: true){
+                    kf_id { buckets { key } }
+                    participants__study__name { buckets { key } }
+                  }
+                `,
+                )
+                .join('')}
+            }
+          }
+        `,
+        variables: sqons,
+      }).then(({ data: { file: aggregations } }) => {
+        return studyIds.map(id => {
+          const aggregation = aggregations[id];
+          const { kf_id: { buckets: fileIds } } = aggregation;
+          const { participants__study__name: { buckets: studyNames } } = aggregation;
+          return {
+            id: id,
+            files: fileIds,
+            studyName: studyNames.map(({ key }) => key)[0],
+          };
+        });
+      });
