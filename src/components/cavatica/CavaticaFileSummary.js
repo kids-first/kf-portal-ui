@@ -133,9 +133,15 @@ const enhance = compose(
         ),
       ]);
 
-      setAuthorizedFiles(acceptedStudiesAggs.reduce((acc, study) => [...acc, ...study.files], []));
+      setAuthorizedFiles(
+        acceptedStudiesAggs
+          .reduce((acc, study) => [...acc, ...study.files], [])
+          .map(({ key }) => key),
+      );
       setUnauthorizedFiles(
-        unacceptedStudiesAggs.reduce((acc, study) => [...acc, ...study.files], []),
+        unacceptedStudiesAggs
+          .reduce((acc, study) => [...acc, ...study.files], [])
+          .map(({ key }) => key),
       );
       setFileStudyData({
         authorized: acceptedStudiesAggs
