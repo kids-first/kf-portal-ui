@@ -34,7 +34,7 @@ export const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
                 .map(
                   id => `
                   ${id}: aggregations (filters: $${id}_sqon, aggregations_filter_themselves: true){
-                    kf_id { buckets { key } }
+                    latest_did { buckets { key } }
                     participants__study__name { buckets { key } }
                   }
                 `,
@@ -47,7 +47,7 @@ export const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
       }).then(({ data: { file: aggregations } }) => {
         return studyIds.map(id => {
           const aggregation = aggregations[id];
-          const { kf_id: { buckets: fileIds } } = aggregation;
+          const { latest_did: { buckets: fileIds } } = aggregation;
           const { participants__study__name: { buckets: studyNames } } = aggregation;
           return {
             id: id,
