@@ -116,10 +116,15 @@ class Component extends React.Component<any, any> {
     state: PropTypes.object,
     api: PropTypes.func,
   };
+
   state = {
     authorizationError: false,
     securityError: false,
+    thirdPartyDataError: false,
+    facebookError: false,
+    unknownError: false,
   };
+
   async componentDidMount() {
     try {
       await googleSDK();
@@ -137,12 +142,24 @@ class Component extends React.Component<any, any> {
             token: id_token,
           });
         },
-        onfailure: error => global.log('login fail', error),
+        onfailure: error => {
+          global.log('login fail', error);
+          console.log('google login fail', error);
+        },
       });
     } catch (e) {
+      const errorDetail = e.details;
+      const COOKIES_NOT_ENABLED = 'Cookies are not enabled in current environment.';
+      if (errorDetail === COOKIES_NOT_ENABLED) {
+        this.setState({ thirdPartyDataError: true });
+      } else {
+        this.setState({ unknownError: true });
+      }
+
       global.log(e);
     }
   }
+
   handleToken = async ({ provider, handler, token }) => {
     const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
 
@@ -162,6 +179,7 @@ class Component extends React.Component<any, any> {
       }
     }
   };
+
   trackUserSignIn = label => {
     let { location: { pathname } } = this.props;
     let actionType =
@@ -172,6 +190,7 @@ class Component extends React.Component<any, any> {
       action: `${actionType} with Provider`,
     });
   };
+
   handleSecurityError = () => this.setState({ securityError: true });
 
   render() {
@@ -204,7 +223,9 @@ class Component extends React.Component<any, any> {
                 </Trans>
               </ModalWarning>
             )}
+
             <Box mb={3} key="google" id="googleSignin" />
+
             <FacebookLogin
               key="facebook"
               onLogin={r =>
