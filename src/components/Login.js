@@ -9,13 +9,13 @@ import jwtDecode from 'jwt-decode';
 import { Trans } from 'react-i18next';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
+import GoogleLogin from 'components/loginButtons/GoogleLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 
-import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -125,40 +125,7 @@ class Component extends React.Component<any, any> {
     unknownError: false,
   };
 
-  async componentDidMount() {
-    try {
-      await googleSDK();
-      global.gapi.signin2.render('googleSignin', {
-        scope: 'profile email',
-        width: 240,
-        height: 40,
-        longtitle: true,
-        theme: 'light',
-        onsuccess: googleUser => {
-          const { id_token } = googleUser.getAuthResponse();
-          this.handleToken({
-            provider: GOOGLE,
-            handler: googleLogin,
-            token: id_token,
-          });
-        },
-        onfailure: error => {
-          global.log('login fail', error);
-          console.log('google login fail', error);
-        },
-      });
-    } catch (e) {
-      const errorDetail = e.details;
-      const COOKIES_NOT_ENABLED = 'Cookies are not enabled in current environment.';
-      if (errorDetail === COOKIES_NOT_ENABLED) {
-        this.setState({ thirdPartyDataError: true });
-      } else {
-        this.setState({ unknownError: true });
-      }
-
-      global.log(e);
-    }
-  }
+  async componentDidMount() {}
 
   handleToken = async ({ provider, handler, token }) => {
     const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
@@ -193,6 +160,8 @@ class Component extends React.Component<any, any> {
 
   handleSecurityError = () => this.setState({ securityError: true });
 
+  handleError = errorField => this.setState({ [errorField]: true });
+
   render() {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
@@ -224,10 +193,20 @@ class Component extends React.Component<any, any> {
               </ModalWarning>
             )}
 
-            <Box mb={3} key="google" id="googleSignin" />
+            <GoogleLogin
+              onError={this.handleError}
+              onLogin={id_token =>
+                this.handleToken({
+                  provider: GOOGLE,
+                  handler: googleLogin,
+                  token: id_token,
+                })
+              }
+            />
 
             <FacebookLogin
               key="facebook"
+              onError={this.handleError}
               onLogin={r =>
                 this.handleToken({
                   provider: FACEBOOK,
