@@ -16,7 +16,7 @@ import FileRepoSidebar from 'components/FileRepoSidebar';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
-import { Gen3UserProvider, getStudyIds } from 'services/gen3';
+import { Gen3UserProvider } from 'services/gen3';
 import DownloadIcon from 'icons/DownloadIcon';
 import translateSQON from 'common/translateSQONValue';
 import { arrangerProjectId } from 'common/injectGlobals';
