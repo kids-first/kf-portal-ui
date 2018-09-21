@@ -15,6 +15,7 @@ import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
+import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessage';
 
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
@@ -110,6 +111,14 @@ const LoginContainer = styled(Column)`
   padding-bottom: 10px;
 `;
 
+const LoginError = styled(Box)`
+  color: ${({ theme }) => theme.greyScale1};
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+`;
+
 class Component extends React.Component<any, any> {
   static propTypes = {
     effects: PropTypes.object,
@@ -192,6 +201,14 @@ class Component extends React.Component<any, any> {
                 </Trans>
               </ModalWarning>
             )}
+
+            <PromptMessageContainer p={'15px'} pr={'26px'} error>
+              <PromptMessageContent pt={0}>
+                <LoginError>
+                  To sign in with Google, please enabled thir party coookies in your browser.
+                </LoginError>
+              </PromptMessageContent>
+            </PromptMessageContainer>
 
             <GoogleLogin
               onError={this.handleError}

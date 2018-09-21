@@ -12,7 +12,7 @@ import NoteSvg from 'icons/NoteIcon';
 import CircleCheckSvg from 'icons/CircleCheckIcon';
 
 const ErrorIcon = withTheme(({ theme }) => (
-  <ErrorSvg width={30} height={30} fill={theme.errorBorder} />
+  <ErrorSvg width={26} height={26} fill={theme.errorBorder} />
 ));
 
 const InfoIcon = withTheme(({ theme }) => (
@@ -69,8 +69,9 @@ export const PromptMessageContainer = ({
   info,
   className,
   children,
+  ...rest
 }) => (
-  <MessageWrapper {...{ theme, error, warning, info, success, className }}>
+  <MessageWrapper {...{ theme, error, warning, info, success, className, ...rest }}>
     <Row>
       <Flex flex={1} mr={10}>
         {error ? (
