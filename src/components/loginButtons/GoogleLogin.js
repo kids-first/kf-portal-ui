@@ -3,10 +3,18 @@ import React, { Component } from 'react';
 import googleSDK from 'services/googleSDK';
 
 import { Box } from 'uikit/Core';
+import DisabledGoogleLogin from './DisabledGoogleLogin';
 
 const COOKIES_NOT_ENABLED = 'Cookies are not enabled in current environment.';
 
 class GoogleButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      disabled: false,
+    };
+  }
+
   async componentDidMount() {
     try {
       await googleSDK();
@@ -30,8 +38,10 @@ class GoogleButton extends Component {
 
       if (errorDetail === COOKIES_NOT_ENABLED) {
         onError('thirdPartyDataError');
+        this.setState({ disabled: true });
       } else {
-        onError('unknowError');
+        onError('unknownError');
+        this.setState({ disabled: true });
       }
 
       global.log(e);
@@ -39,21 +49,12 @@ class GoogleButton extends Component {
   }
 
   render() {
-    return <Box mb={3} key="google" id="googleSignin" />;
+    return this.state.disabled ? (
+      <DisabledGoogleLogin />
+    ) : (
+      <Box mb={3} key="google" id="googleSignin" />
+    );
   }
 }
 
 export default GoogleButton;
-
-/*const GoogleSignIn = styled(Box)`
-  #googleSignin > div {
-    background-color: #efefef;
-    color: #cfcece;
-    opacity: 0.75;
-
-    &:hover {
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
-      cursor: not-allowed;
-    }
-  }
-`;*/
