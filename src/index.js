@@ -13,8 +13,6 @@ import MaintenancePage from './MaintenancePage';
 import './i18n';
 
 initAnalyticsTracking();
-googleSDK();
-facebookSDK();
 initUsersnap();
 
 const render = Component => {

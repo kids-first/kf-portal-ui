@@ -1,9 +1,15 @@
 import { googleAppId } from 'common/injectGlobals';
 
 const googleSDK = () => {
-  console.log('GOOGLE SDK INIT');
   return new Promise((resolve, reject) => {
     const gapi = global.gapi;
+
+    if (!gapi) {
+      console.log('CIARAN GOOGLE API NOT DEFINED');
+      reject({ details: 'Google API not defined' });
+      return;
+    }
+
     gapi.load('auth2', () => {
       gapi.auth2
         .init({ client_id: googleAppId })
