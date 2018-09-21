@@ -165,5 +165,5 @@ export const LOGIN_ERROR_DETAILS = {
     'Uh oh, looks like something went wrong. Contact us and we will help investigate why you are unable to sign in.',
   facebook:
     'To sign in with Facebook, please whitelist Facebook in your ad blocker or other privacy settings.',
-  thirdPartyCookie: 'To sign in with Google, please enable third party cookies in your browser.',
+  thirdPartyData: 'To sign in with Google, please enable third party cookies in your browser.',
 };

@@ -110,7 +110,6 @@ const LoginContainer = styled(Column)`
   height: 100%;
   width: 100%;
   padding-bottom: 10px;
-
   margin-top: ${props => (props.disabled ? '11px' : '40px')};
 `;
 
@@ -134,7 +133,7 @@ class Component extends React.Component<any, any> {
     securityError: false,
     thirdPartyDataError: false,
     facebookError: false,
-    unknownError: true,
+    unknownError: false,
   };
 
   async componentDidMount() {}
