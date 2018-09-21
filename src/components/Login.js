@@ -7,6 +7,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 import { Trans } from 'react-i18next';
+import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
@@ -24,7 +25,7 @@ import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
-import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
+import { GEN3, CAVATICA, GOOGLE, FACEBOOK, LOGIN_ERROR_DETAILS } from 'common/constants';
 import { getAccessToken } from 'services/gen3';
 import { createExampleQueries } from 'services/riffQueries';
 
@@ -133,7 +134,7 @@ class Component extends React.Component<any, any> {
     securityError: false,
     thirdPartyDataError: false,
     facebookError: false,
-    unknownError: false,
+    unknownError: true,
   };
 
   async componentDidMount() {}
@@ -173,6 +174,25 @@ class Component extends React.Component<any, any> {
 
   handleError = errorField => this.setState({ [errorField]: true });
 
+  getErrorMessage = () => {
+    const { thirdPartyDataError, unknownError } = this.state;
+    if (unknownError) {
+      return reactStringReplace(LOGIN_ERROR_DETAILS.unknown, 'Contact us', (match, i) => (
+        <ExternalLink
+          hasExternalIcon={false}
+          href="https://kidsfirstdrc.org/contact"
+          target="_blank"
+        >
+          Contact us
+        </ExternalLink>
+      ));
+    } else if (thirdPartyDataError) {
+      return LOGIN_ERROR_DETAILS.thirdPartyData;
+    } else {
+      return LOGIN_ERROR_DETAILS.facebook;
+    }
+  };
+
   render() {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
@@ -211,9 +231,7 @@ class Component extends React.Component<any, any> {
             {disabled ? (
               <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
                 <PromptMessageContent pt={0}>
-                  <LoginError>
-                    To sign in with Google, please enabled thir party coookies in your browser.
-                  </LoginError>
+                  <LoginError>{this.getErrorMessage()} </LoginError>
                 </PromptMessageContent>
               </PromptMessageContainer>
             ) : null}
