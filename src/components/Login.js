@@ -109,6 +109,8 @@ const LoginContainer = styled(Column)`
   height: 100%;
   width: 100%;
   padding-bottom: 10px;
+
+  margin-top: ${props => (props.disabled ? '11px' : '40px')};
 `;
 
 const LoginError = styled(Box)`
@@ -174,8 +176,12 @@ class Component extends React.Component<any, any> {
   render() {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
+
+    const { thirdPartyDataError, facebookError, unknownError } = this.state;
+    const disabled = thirdPartyDataError || facebookError || unknownError;
+
     return (
-      <LoginContainer>
+      <LoginContainer disabled={disabled}>
         {this.state.securityError ? (
           <Box maxWidth={600}>
             <Trans i18nKey="login.connectionFailed">
@@ -202,13 +208,15 @@ class Component extends React.Component<any, any> {
               </ModalWarning>
             )}
 
-            <PromptMessageContainer p={'15px'} pr={'26px'} error>
-              <PromptMessageContent pt={0}>
-                <LoginError>
-                  To sign in with Google, please enabled thir party coookies in your browser.
-                </LoginError>
-              </PromptMessageContent>
-            </PromptMessageContainer>
+            {disabled ? (
+              <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
+                <PromptMessageContent pt={0}>
+                  <LoginError>
+                    To sign in with Google, please enabled thir party coookies in your browser.
+                  </LoginError>
+                </PromptMessageContent>
+              </PromptMessageContainer>
+            ) : null}
 
             <GoogleLogin
               onError={this.handleError}
