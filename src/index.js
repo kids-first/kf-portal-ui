@@ -12,6 +12,8 @@ import MaintenancePage from './MaintenancePage';
 
 import './i18n';
 
+googleSDK();
+facebookSDK();
 initAnalyticsTracking();
 initUsersnap();
 
