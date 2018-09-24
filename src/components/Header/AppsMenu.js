@@ -91,7 +91,7 @@ export default () => (
       >
         <DropdownRow height="55px" alignItems="center">
           <AllAppsMenuIcon width="14px" height="14px" />
-          Kids First
+          Resources
         </DropdownRow>
       </Dropdown>
     )}
