@@ -5,7 +5,6 @@ const googleSDK = () => {
     const gapi = global.gapi;
 
     if (!gapi) {
-      console.log('CIARAN GOOGLE API NOT DEFINED');
       reject({ details: 'Google API not defined' });
       return;
     }

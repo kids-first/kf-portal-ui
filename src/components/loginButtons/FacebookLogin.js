@@ -3,6 +3,8 @@ import _ from 'lodash';
 
 import facebookSDK from 'services/facebookSDK';
 
+import DisabledFacebookLogin from './DisabledFacebookLogin';
+
 export default class extends React.Component<any, any> {
   constructor(props) {
     super(props);
@@ -25,6 +27,7 @@ export default class extends React.Component<any, any> {
       });
     } catch (err) {
       console.warn('unable to get fb login status: ', err);
+      this.props.onError('facebookError');
       this.setState({ disabled: true });
     }
   }
@@ -39,10 +42,10 @@ export default class extends React.Component<any, any> {
 
   render() {
     return this.state.disabled ? (
-      <div>disabled</div>
+      <DisabledFacebookLogin />
     ) : (
       <div
-        {..._.omit(this.props, 'onLogin')}
+        {..._.omit(this.props, ['onLogin', 'onError'])}
         className="fb-login-button"
         style={{ height: '40px' }}
         data-max-rows="1"

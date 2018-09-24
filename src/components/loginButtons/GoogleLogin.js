@@ -36,13 +36,11 @@ class GoogleButton extends Component {
       const errorDetail = e.details;
       const onError = this.props.onError;
 
-      if (errorDetail === COOKIES_NOT_ENABLED) {
-        onError('thirdPartyDataError');
-        this.setState({ disabled: true });
-      } else {
-        onError('unknownError');
-        this.setState({ disabled: true });
-      }
+      this.setState({ disabled: true });
+
+      errorDetail === COOKIES_NOT_ENABLED
+        ? onError('thirdPartyDataError')
+        : onError('unknownError');
 
       global.log(e);
     }

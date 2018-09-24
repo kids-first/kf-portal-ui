@@ -21,9 +21,17 @@ const DisabledLogin = styled(Box)`
   }
 `;
 
-const IconWrapper = styled(Box)``;
+const IconWrapper = styled(Box)`
+  margin-right: auto;
+  height: 100%;
+
+  svg {
+    margin: 8px;
+  }
+`;
 
 const ButtonText = styled(Box)`
+  margin: 0 24px 0 12px;
   font-family: Helvetica, Arial, sans-serif;
   letter-spacing: 0.25px;
   font-weight: 400;
@@ -32,7 +40,7 @@ const ButtonText = styled(Box)`
 `;
 
 const DisabledGoogleLogin = () => (
-  <DisabledLogin height="40px" width="240px">
+  <DisabledLogin height="40px" width="236px">
     <IconWrapper>
       <FBIcon />
     </IconWrapper>
