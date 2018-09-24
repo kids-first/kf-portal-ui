@@ -158,7 +158,7 @@ const socialItems = {
   orchid: {
     icon: (
       <img
-        alt="ORCId"
+        alt="ORCHID"
         src={orchidIcon}
         height={28}
         css={`
@@ -166,7 +166,7 @@ const socialItems = {
         `}
       />
     ),
-    name: 'ORCId id:',
+    name: 'ORCHID ID:',
     placeholder: 'e.g. 0000-0003-0436-4189',
     type: 'text',
     href: v => `https://orcid.org/${v}`,
@@ -287,7 +287,7 @@ export default compose(
               !Object.values(values).filter(Boolean).length && (
                 <Fragment>
                   <H4 mt="29px">
-                    Add links to your personal channels such as Google Scholar, ORCId id, GitHub,
+                    Add links to your personal channels such as Google Scholar, ORCHID ID, GitHub,
                     LinkedIn, Twitter and Facebook.
                   </H4>
                   <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
