@@ -166,7 +166,7 @@ const socialItems = {
         `}
       />
     ),
-    name: 'ORCHID ID:',
+    name: 'ORCID ID:',
     placeholder: 'e.g. 0000-0003-0436-4189',
     type: 'text',
     href: v => `https://orcid.org/${v}`,
@@ -287,7 +287,7 @@ export default compose(
               !Object.values(values).filter(Boolean).length && (
                 <Fragment>
                   <H4 mt="29px">
-                    Add links to your personal channels such as Google Scholar, ORCHID ID, GitHub,
+                    Add links to your personal channels such as Google Scholar, ORCID ID, GitHub,
                     LinkedIn, Twitter and Facebook.
                   </H4>
                   <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
