@@ -167,14 +167,14 @@ export default compose(
             <InterestsLabel>Kids First Disease Areas:</InterestsLabel>
             <InterestsSelect
               onChange={e => {
-                setInterests([...interests, e.target.value]);
+                setInterests([...interests, e.target.value.toLowerCase()]);
               }}
               value=""
             >
               <InterestsOption value="" disabled selected>
                 -- Select an option --
               </InterestsOption>
-              {DISEASE_AREAS.filter(area => !interests.includes(area)).map(area => (
+              {DISEASE_AREAS.filter(area => !interests.includes(area.toLowerCase())).map(area => (
                 <InterestsOption value={area} key={area}>
                   {area}
                 </InterestsOption>
@@ -190,11 +190,13 @@ export default compose(
               <InterestsOption value="" disabled selected>
                 -- Select an option --
               </InterestsOption>
-              {STUDY_SHORT_NAMES.filter(study => !interests.includes(study)).map(study => (
-                <InterestsOption value={study} key={study}>
-                  {study}
-                </InterestsOption>
-              ))}
+              {STUDY_SHORT_NAMES.filter(study => !interests.includes(study.toLowerCase())).map(
+                study => (
+                  <InterestsOption value={study} key={study}>
+                    {study}
+                  </InterestsOption>
+                ),
+              )}
               >
             </InterestsSelect>
             <InterestsLabel>Other areas of interest:</InterestsLabel>

@@ -87,7 +87,8 @@ const InterestsAutocomplete = compose(
       getSuggestions(val);
     },
     onChange: val => {
-      setInterests([...new Set([...interests, val])]);
+      const newInterest = val.toLowerCase().trim();
+      setInterests([...new Set([...interests, newInterest])]);
       setInputValue('');
     },
   })),
