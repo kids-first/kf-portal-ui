@@ -11,7 +11,6 @@ import { Box } from 'uikit/Core';
 const StyledCard = styled(Card)`
   margin: 15px 0 15px 40px;
   padding: 21px 29px 29px 27px;
-  height: 440px;
 
   flex-direction: column;
 

@@ -7,6 +7,7 @@ const CardContainer = styled(Flex)`
   background-color: #ffffff;
   border: solid 1px #e0e1e6;
   flex: 1;
+  min-height: 440px;
 `;
 
 const Card = ({ children, ...props }) => <CardContainer {...props}>{children}</CardContainer>;

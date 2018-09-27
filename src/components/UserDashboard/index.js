@@ -62,17 +62,10 @@ export default compose(
         <H1 mb={'35px' /* On removing Beta Message change to 44px */}>
           Welcome, {loggedInUser.firstName}!
         </H1>
-        <Column>
-          <div
-            css={`
-              display: flex;
-              overflow: hidden;
-            `}
-          >
-            <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-            <TwitterBlock handle="kidsfirstDRC" />
-          </Row>
-        </Column>
+        <Row>
+          <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
+          <TwitterBlock handle="kidsfirstDRC" />
+        </Row>
         <div
           css={`
             margin-top: auto;
