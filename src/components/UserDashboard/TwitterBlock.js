@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import styled from 'react-emotion';
 import scriptjs from 'scriptjs';
 import Spinner from 'react-spinkit';
+import { withTheme } from 'emotion-theming';
 
 import Card from 'uikit/Card';
-
-const handle = 'kidsfirstDRC';
+import ExternalLink from 'uikit/ExternalLink';
+import { Box } from 'uikit/Core';
 
 const StyledCard = styled(Card)`
   margin: 15px 0 15px 40px;
-  padding: 31px 29px 29px 27px;
+  padding: 21px 29px 29px 27px;
   height: 440px;
+
+  flex-direction: column;
 
   & #twitter-timeline {
     width: 100%;
@@ -27,6 +30,7 @@ class TwitterBlock extends Component {
 
   componentDidMount() {
     const timelineEl = document.getElementById('twitter-timeline');
+    const handle = this.props.handle;
 
     scriptjs('https://platform.twitter.com/widgets.js', () => {
       const twttr = window.twttr;
@@ -40,7 +44,7 @@ class TwitterBlock extends Component {
             },
             timelineEl,
             {
-              chrome: 'nofooter',
+              chrome: 'nofooter noheader',
               height: 390,
             },
           )
@@ -50,6 +54,46 @@ class TwitterBlock extends Component {
           });
       });
     });
+  }
+
+  renderTwitterTitle() {
+    const handle = this.props.handle;
+
+    const commonStyle = {
+      fontFamily: this.props.theme.fonts.default,
+      fontWeight: 500,
+    };
+
+    const words = [
+      {
+        text: 'Tweets',
+        el: 'span',
+        props: {
+          style: { ...commonStyle, ...{ fontSize: '20px', color: '#404c9a' } },
+        },
+      },
+      {
+        text: 'by',
+        el: 'span',
+        props: { style: { ...commonStyle, ...{ fontSize: '14px', color: '#74757d' } } },
+      },
+      {
+        text: `@${handle}`,
+        el: ExternalLink,
+        props: {
+          style: { ...commonStyle, ...{ fontSize: '14px', color: '#a42c90' } },
+          hasExternalIcon: false,
+          href: `https://twitter.com/@${handle}`,
+        },
+      },
+    ];
+
+    const output = words.map((w, i) => {
+      const text = i !== words.length - 1 ? w.text + ' ' : w.text;
+      return React.createElement(w.el, w.props, text);
+    });
+
+    return <div>{output}</div>;
   }
 
   render() {
@@ -69,10 +113,14 @@ class TwitterBlock extends Component {
             display: !isLoaded ? 'block' : 'none',
           }}
         />
-        <div id="twitter-timeline" style={{ display: isLoaded ? 'block' : 'none' }} />
+
+        <div style={{ display: isLoaded ? 'block' : 'none' }}>
+          <Box mb={'21px'}>{this.renderTwitterTitle()}</Box>
+          <div id="twitter-timeline" />
+        </div>
       </StyledCard>
     );
   }
 }
 
-export default TwitterBlock;
+export default withTheme(TwitterBlock);

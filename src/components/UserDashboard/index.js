@@ -70,7 +70,7 @@ export default compose(
             `}
           >
             <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-            <TwitterBlock />
+            <TwitterBlock handle="kidsfirstDRC" />
           </Row>
         </Column>
         <div
