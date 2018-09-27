@@ -116,7 +116,7 @@ const LoginContainer = styled(Column)`
 const LoginError = styled(Box)`
   color: ${({ theme }) => theme.greyScale1};
   font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
+  font-family: ${({ theme }) => theme.font.details};
   font-size: 14px;
   line-height: 1.7;
 `;
@@ -135,8 +135,6 @@ class Component extends React.Component<any, any> {
     facebookError: false,
     unknownError: false,
   };
-
-  async componentDidMount() {}
 
   handleToken = async ({ provider, handler, token }) => {
     const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;

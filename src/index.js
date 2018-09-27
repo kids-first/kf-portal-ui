@@ -12,9 +12,9 @@ import MaintenancePage from './MaintenancePage';
 
 import './i18n';
 
+initAnalyticsTracking();
 googleSDK();
 facebookSDK();
-initAnalyticsTracking();
 initUsersnap();
 
 const render = Component => {
