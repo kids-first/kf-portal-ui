@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
 import scriptjs from 'scriptjs';
-import { Div } from 'uikit/Core';
+import Spinner from 'react-spinkit';
+
 import Card from 'uikit/Card';
 
 const handle = 'kidsfirstDRC';
@@ -17,43 +18,58 @@ const StyledCard = styled(Card)`
 `;
 
 class TwitterBlock extends Component {
-  state = {
-    loaded: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    };
+  }
 
   componentDidMount() {
-    const setLoaded = () => setTimeout(() => this.setState({ loaded: true }), 1000);
+    const timelineEl = document.getElementById('twitter-timeline');
 
     scriptjs('https://platform.twitter.com/widgets.js', () => {
       const twttr = window.twttr;
 
       twttr.ready(() => {
-        twttr.events.bind('loaded', function(event) {
-          console.log('eevent', event);
-          setLoaded();
-        });
-
         twttr.widgets
           .createTimeline(
             {
               sourceType: 'profile',
               screenName: handle,
             },
-            document.getElementById('twitter-timeline'),
+            timelineEl,
             {
               chrome: 'nofooter',
               height: 390,
             },
           )
-          .then(() => twttr.widgets.load());
+          .then(() => {
+            twttr.widgets.load(timelineEl);
+            this.setState({ loaded: true });
+          });
       });
     });
   }
 
   render() {
+    const isLoaded = this.state.loaded;
+
     return (
       <StyledCard>
-        <Div id="twitter-timeline" display={!this.state.loaded ? 'none' : 'block'} />
+        <Spinner
+          fadeIn="none"
+          name="circle"
+          color="purple"
+          style={{
+            width: 15,
+            height: 15,
+            margin: '20px auto',
+            padding: 5,
+            display: !isLoaded ? 'block' : 'none',
+          }}
+        />
+        <div id="twitter-timeline" style={{ display: isLoaded ? 'block' : 'none' }} />
       </StyledCard>
     );
   }
