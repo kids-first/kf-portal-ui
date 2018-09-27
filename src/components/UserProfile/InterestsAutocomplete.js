@@ -83,9 +83,8 @@ const InterestsAutocomplete = compose(
   })),
   withProps(({ interests, getSuggestions, setInputValue, setInterests }) => ({
     onInputValueChange: val => {
-      const lowered = toLower(val || '');
-      setInputValue(lowered);
-      getSuggestions(lowered);
+      setInputValue(val);
+      getSuggestions(val);
     },
     onChange: val => {
       setInterests([...new Set([...interests, val])]);
