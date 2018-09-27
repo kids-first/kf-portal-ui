@@ -17,6 +17,8 @@ const StyledCard = styled(Card)`
 
   & #twitter-timeline {
     width: 100%;
+    height: 100%;
+    padding-bottom: 66px;
   }
 `;
 
@@ -45,7 +47,7 @@ class TwitterBlock extends Component {
             timelineEl,
             {
               chrome: 'nofooter noheader',
-              height: 390,
+              height: '100%',
             },
           )
           .then(() => {
@@ -57,10 +59,10 @@ class TwitterBlock extends Component {
   }
 
   renderTwitterTitle() {
-    const handle = this.props.handle;
+    const { handle, theme } = this.props;
 
     const commonStyle = {
-      fontFamily: this.props.theme.fonts.default,
+      fontFamily: theme.fonts.default,
       fontWeight: 500,
     };
 
@@ -75,13 +77,13 @@ class TwitterBlock extends Component {
       {
         text: 'by',
         el: 'span',
-        props: { style: { ...commonStyle, ...{ fontSize: '14px', color: '#74757d' } } },
+        props: { style: { ...commonStyle, ...{ fontSize: '14px', color: theme.greyScale9 } } },
       },
       {
         text: `@${handle}`,
         el: ExternalLink,
         props: {
-          style: { ...commonStyle, ...{ fontSize: '14px', color: '#a42c90' } },
+          style: { ...commonStyle, ...{ fontSize: '14px', color: theme.primaryLight } },
           hasExternalIcon: false,
           href: `https://twitter.com/@${handle}`,
         },
@@ -114,10 +116,10 @@ class TwitterBlock extends Component {
           }}
         />
 
-        <div style={{ display: isLoaded ? 'block' : 'none' }}>
+        <Box height="100%" style={{ display: isLoaded ? 'block' : 'none' }}>
           <Box mb={'21px'}>{this.renderTwitterTitle()}</Box>
           <div id="twitter-timeline" />
-        </div>
+        </Box>
       </StyledCard>
     );
   }
