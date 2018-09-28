@@ -116,7 +116,7 @@ const LoginContainer = styled(Column)`
 const LoginError = styled(Box)`
   color: ${({ theme }) => theme.greyScale1};
   font-weight: 600;
-  font-family: ${({ theme }) => theme.font.details};
+  font-family: ${({ theme }) => theme.fonts.details};
   font-size: 14px;
   line-height: 1.7;
 `;
