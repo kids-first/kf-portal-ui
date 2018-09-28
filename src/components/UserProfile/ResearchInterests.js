@@ -183,7 +183,7 @@ export default compose(
             <InterestsLabel>Kids First Studies:</InterestsLabel>
             <InterestsSelect
               onChange={e => {
-                setInterests([...interests, e.target.value]);
+                setInterests([...interests, e.target.value.toLowerCase()]);
               }}
               value=""
             >
