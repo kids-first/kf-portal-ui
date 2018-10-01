@@ -13,6 +13,7 @@ import { createProject, getBillingGroups } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
+import projectDescriptionPath from './projectDescription.md';
 
 const Container = styled(Row)`
   align-items: center;
@@ -61,10 +62,17 @@ const enhance = compose(
 );
 
 const saveProject = async ({ projectName, onSuccess }) => {
-  const billingGroups = await getBillingGroups();
+  const [billingGroups, projectDescription] = await Promise.all([
+    getBillingGroups(),
+    fetch(projectDescriptionPath).then(res => res.text()),
+  ]);
   if (billingGroups && billingGroups.length > 0) {
     const groupId = billingGroups[0].id;
-    createProject({ billing_group: groupId, name: projectName }).then(response => onSuccess());
+    createProject({
+      billing_group: groupId,
+      name: projectName,
+      description: projectDescription,
+    }).then(response => onSuccess());
   }
 };
 
