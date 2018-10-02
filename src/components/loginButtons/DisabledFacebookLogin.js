@@ -7,9 +7,9 @@ import { Box } from 'uikit/Core';
 import FBIcon from 'icons/Facebook';
 
 const DisabledLogin = styled(Box)`
-  opacity: 0.45;
-  background-color: #4267b2;
-  color: #fff;
+  background-color: #efefef;
+  color: #cfcece;
+  opacity: 0.75;
   border-radius: 4px;
   display: flex;
   align-items: center;
