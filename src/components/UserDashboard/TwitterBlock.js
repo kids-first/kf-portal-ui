@@ -5,8 +5,8 @@ import Spinner from 'react-spinkit';
 import { withTheme } from 'emotion-theming';
 
 import Card from 'uikit/Card';
-import ExternalLink from 'uikit/ExternalLink';
 import { Box } from 'uikit/Core';
+import TwitterHeading from './TwitterHeading';
 
 const StyledCard = styled(Card)`
   margin: 15px 0 15px 40px;
@@ -57,46 +57,6 @@ class TwitterBlock extends Component {
     });
   }
 
-  renderTwitterTitle() {
-    const { handle, theme } = this.props;
-
-    const commonStyle = {
-      fontFamily: theme.fonts.default,
-      fontWeight: 500,
-    };
-
-    const words = [
-      {
-        text: 'Tweets',
-        el: 'span',
-        props: {
-          style: { ...commonStyle, ...{ fontSize: '20px', color: '#404c9a' } },
-        },
-      },
-      {
-        text: 'by',
-        el: 'span',
-        props: { style: { ...commonStyle, ...{ fontSize: '14px', color: theme.greyScale9 } } },
-      },
-      {
-        text: `@${handle}`,
-        el: ExternalLink,
-        props: {
-          style: { ...commonStyle, ...{ fontSize: '14px', color: theme.primaryLight } },
-          hasExternalIcon: false,
-          href: `https://twitter.com/@${handle}`,
-        },
-      },
-    ];
-
-    const output = words.map((w, i) => {
-      const text = i !== words.length - 1 ? w.text + ' ' : w.text;
-      return React.createElement(w.el, w.props, text);
-    });
-
-    return <div>{output}</div>;
-  }
-
   render() {
     const isLoaded = this.state.loaded;
 
@@ -116,7 +76,7 @@ class TwitterBlock extends Component {
         />
 
         <Box height="100%" style={{ display: isLoaded ? 'block' : 'none' }}>
-          <Box mb={'21px'}>{this.renderTwitterTitle()}</Box>
+          <TwitterHeading handle={this.props.handle} mb={'21px'} />
           <div id="twitter-timeline" ref={this.timeline} />
         </Box>
       </StyledCard>
