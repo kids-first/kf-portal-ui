@@ -176,6 +176,7 @@ const CavaticaProjects = ({
       </div>
       <div className="footer">
         <CavaticaAddProject
+          setSelectedProject={setSelectedProject}
           onSuccess={() => {
             getCavaticaProjects().then(projects => {
               setProjectList(projects);

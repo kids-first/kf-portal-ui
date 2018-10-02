@@ -75,7 +75,7 @@ const saveProject = async ({ projectName, onSuccess }) => {
       billing_group: groupId,
       name: projectName,
       description: projectDescription,
-    }).then(response => onSuccess());
+    }).then(response => onSuccess(response));
   }
 };
 
@@ -86,6 +86,7 @@ const CavaticaAddProject = ({
   setProjectName,
   addingProject,
   setAddingProject,
+  setSelectedProject,
   ...props
 }) => (
   <Container>
@@ -103,7 +104,13 @@ const CavaticaAddProject = ({
         />
         <LoadingOnClick
           onClick={async () => {
-            await saveProject({ projectName, onSuccess: props.onSuccess });
+            await saveProject({
+              projectName,
+              onSuccess: ({ id }) => {
+                props.onSuccess();
+                setSelectedProject(id);
+              },
+            });
             setAddingProject(false);
             setProjectName('');
           }}
