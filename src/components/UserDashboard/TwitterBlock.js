@@ -11,7 +11,6 @@ import { Box } from 'uikit/Core';
 const StyledCard = styled(Card)`
   margin: 15px 0 15px 40px;
   padding: 21px 29px 29px 27px;
-
   flex-direction: column;
 
   & #twitter-timeline {
@@ -27,10 +26,11 @@ class TwitterBlock extends Component {
     this.state = {
       loaded: false,
     };
+    this.timeline = React.createRef();
   }
 
   componentDidMount() {
-    const timelineEl = document.getElementById('twitter-timeline');
+    const timelineEl = this.timeline.current;
     const handle = this.props.handle;
 
     scriptjs('https://platform.twitter.com/widgets.js', () => {
@@ -117,7 +117,7 @@ class TwitterBlock extends Component {
 
         <Box height="100%" style={{ display: isLoaded ? 'block' : 'none' }}>
           <Box mb={'21px'}>{this.renderTwitterTitle()}</Box>
-          <div id="twitter-timeline" />
+          <div id="twitter-timeline" ref={this.timeline} />
         </Box>
       </StyledCard>
     );
