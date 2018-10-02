@@ -16,6 +16,7 @@ class GoogleButton extends Component {
   }
 
   async componentDidMount() {
+    const { onLogin, onError } = this.props;
     try {
       await googleSDK();
       global.gapi.signin2.render('googleSignin', {
@@ -26,7 +27,7 @@ class GoogleButton extends Component {
         theme: 'light',
         onsuccess: googleUser => {
           const { id_token } = googleUser.getAuthResponse();
-          this.props.login(id_token);
+          onLogin(id_token);
         },
         onfailure: error => {
           global.log('login fail', error);
@@ -34,7 +35,6 @@ class GoogleButton extends Component {
       });
     } catch (e) {
       const errorDetail = e.details;
-      const onError = this.props.onError;
 
       this.setState({ disabled: true });
 
