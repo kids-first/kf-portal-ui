@@ -5,10 +5,10 @@ export const memoize = asyncOp => {
   const hash = JSON.stringify;
   const cache = {};
   return async (...input) => {
-    const hasKey = hash(input);
-    if (!cache[hasKey]) {
-      cache[hasKey] = await asyncOp(...input);
+    const hashKey = hash(input);
+    if (!cache[hashKey]) {
+      cache[hashKey] = await asyncOp(...input);
     }
-    return cache[hasKey];
+    return cache[hashKey];
   };
 };
