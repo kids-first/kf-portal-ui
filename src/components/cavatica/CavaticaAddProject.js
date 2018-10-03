@@ -10,7 +10,7 @@ import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import { CancelButton } from 'components/Modal/ui';
 import { injectState } from 'freactal';
 import { memoize } from 'services/utils';
-import { createProject, getBillingGroups } from 'services/cavatica';
+import { createProject, getBillingGroups, getUser } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
@@ -62,13 +62,23 @@ const enhance = compose(
   withState('addingProject', 'setAddingProject', false),
 );
 
-const getProjectDescription = memoize(() => fetch(projectDescriptionPath).then(res => res.text()));
+const getProjectDescriptionTemplate = memoize(() =>
+  fetch(projectDescriptionPath).then(res => res.text()),
+);
 
 const saveProject = async ({ projectName, onSuccess }) => {
-  const [billingGroups, projectDescription] = await Promise.all([
+  const USER_NAME_TEMPLATE_STRING = '<username>';
+  const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
+  const [billingGroups, descriptionTemplate, { username }] = await Promise.all([
     getBillingGroups(),
-    getProjectDescription(),
+    getProjectDescriptionTemplate(),
+    getUser(),
   ]);
+  const projectDescription = descriptionTemplate
+    .split(PROJECT_NAME_TEMPLATE_STRING)
+    .join(projectName)
+    .split(USER_NAME_TEMPLATE_STRING)
+    .join(username);
   if (billingGroups && billingGroups.length > 0) {
     const groupId = billingGroups[0].id;
     createProject({

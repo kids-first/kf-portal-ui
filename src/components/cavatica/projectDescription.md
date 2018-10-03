@@ -17,6 +17,6 @@ To start adding your description, click **Add Description** below.
 
 Remember that details of each pipeline execution you run on the Cavatica Platform are logged on the dedicated task page.
 
-Good luck with your research! If you get stuck with Cavatica, take a look at the [Knowledge Center](http://docs.cavatica.org/) and if you have questions about data or data access, contact the [Portal Support Team](https://kidsfirstdrc.org/contact/g).
+Good luck with your research! If you get stuck with Cavatica, take a look at the [Knowledge Center](http://docs.cavatica.org/) and if you have questions about data or data access, contact the [Portal Support Team](https://kidsfirstdrc.org/contact/).
 
 The Kids First Portal & Cavatica Team
