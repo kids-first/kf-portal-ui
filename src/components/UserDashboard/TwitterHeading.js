@@ -1,25 +1,28 @@
 import React from 'react';
-import ExternalLink from 'uikit/ExternalLink';
+import styled, { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { Box } from 'uikit/Core';
+import { Box, applyDefaultStyles } from 'uikit/Core';
+import ExternalLink from 'uikit/ExternalLink';
 
 export default compose(withTheme)(({ handle, theme, ...rest }) => {
-  const commonStyle = {
-    fontFamily: theme.fonts.default,
-    fontWeight: 500,
-  };
+  const baseStyle = css`
+    font-family: ${theme.fonts.default};
+    font-weight: 500;
+  `;
+  const BaseElement = applyDefaultStyles(styled('span')`
+    ${baseStyle};
+  `);
+  const Link = styled(ExternalLink)`
+    ${baseStyle};
+  `;
   return (
     <Box {...rest}>
-      <span style={{ ...commonStyle, ...{ fontSize: '20px', color: '#404c9a' } }}>Tweets</span>
-      <span style={{ style: { ...commonStyle, ...{ fontSize: '14px', color: theme.greyScale9 } } }}>
-        {` by `}
-      </span>
-      <ExternalLink
-        hasExternalIcon={false}
-        href={`https://twitter.com/@${handle}`}
-        style={{ ...commonStyle, ...{ fontSize: '14px', color: theme.primaryLight } }}
-      >{`@${handle}`}</ExternalLink>
+      <BaseElement fontSize="20px" color={theme.secondary}>
+        Tweets
+      </BaseElement>
+      <BaseElement fontSize="14px" color={theme.greyScale9}>{` by `}</BaseElement>
+      <Link hasExternalIcon={false} href={`https://twitter.com/@${handle}`}>{`@${handle}`}</Link>
     </Box>
   );
 });
