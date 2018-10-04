@@ -48,6 +48,7 @@
     "react-share": "^2.0.0",
     "react-social-icons": "^3.0.0",
     "react-spinkit": "^3.0.0",
+    "react-string-replace": "^0.4.1",
     "react-tippy": "^1.2.2",
     "recompose": "^0.26.0",
     "scriptjs": "^2.5.8",
