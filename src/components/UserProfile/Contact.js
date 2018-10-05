@@ -34,7 +34,6 @@ const Contact = compose(injectState, withApi)(({ effects: { setModal }, api, pro
     city,
     country,
     state,
-    email,
     phone,
     institutionalEmail,
     zip,

@@ -14,7 +14,7 @@ import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
-import { ButtonContainer, CustomLightButton } from './ui';
+import { ButtonContainer } from './ui';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 

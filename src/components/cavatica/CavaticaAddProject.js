@@ -5,9 +5,6 @@ import styled from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Input from 'uikit/Input';
-import { ActionButton } from 'uikit/Button';
-import NiceWhiteButton from 'uikit/NiceWhiteButton';
-import { CancelButton } from 'components/Modal/ui';
 import { injectState } from 'freactal';
 import { memoize } from 'services/utils';
 import { createProject, getBillingGroups, getUser } from 'services/cavatica';
