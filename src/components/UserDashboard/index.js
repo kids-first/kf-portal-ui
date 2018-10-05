@@ -12,6 +12,7 @@ import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import Row from 'uikit/Row';
 import { H1 } from '../../uikit/Headings';
+import TwitterBlock from './TwitterBlock';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -53,16 +54,8 @@ export default compose(
           Welcome, {loggedInUser.firstName}!
         </H1>
         <Row>
-          <div
-            css={`
-              display: flex;
-              overflow: hidden;
-              max-width: 50%;
-            `}
-          >
-            <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-          </div>
-          <div />
+          <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
+          <TwitterBlock handle="kidsfirstDRC" />ature/twitter block (#805)
         </Row>
         <div
           css={`

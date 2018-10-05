@@ -55,7 +55,7 @@ const Header = styled(Flex)`
 
 const Container = styled(Column)`
   margin: 15px 0;
-  flex: 3;
+  flex: 1;
   border: 1px solid ${({ theme }) => theme.greyScale11};
   border-top: 0;
   border-bottom-right-radius: 10px;
