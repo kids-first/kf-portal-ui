@@ -12,6 +12,7 @@ import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 import {
   PromptMessageContainer,
   PromptMessageHeading,
@@ -20,6 +21,7 @@ import {
 import ExternalLink from 'uikit/ExternalLink';
 import { H1, H2 } from '../../uikit/Headings';
 import { Paragraph } from '../../uikit/Core';
+import TwitterBlock from './TwitterBlock';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -60,17 +62,10 @@ export default compose(
         <H1 mb={'35px' /* On removing Beta Message change to 44px */}>
           Welcome, {loggedInUser.firstName}!
         </H1>
-        <Column>
-          <div
-            css={`
-              display: flex;
-              overflow: hidden;
-            `}
-          >
-            <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-            <Notifications />
-          </div>
-        </Column>
+        <Row>
+          <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
+          <TwitterBlock handle="kidsfirstDRC" />
+        </Row>
         <div
           css={`
             margin-top: auto;
