@@ -4,7 +4,6 @@ import TrashIcon from 'react-icons/lib/fa/trash';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 
-import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import { injectState } from 'freactal';
 
 import { Box, Flex, Span, Link } from 'uikit/Core';

@@ -8,19 +8,10 @@ import styled from 'react-emotion';
 
 import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
-import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import Column from 'uikit/Column';
 import Row from 'uikit/Row';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
-import ExternalLink from 'uikit/ExternalLink';
-import { H1, H2 } from '../../uikit/Headings';
-import { Paragraph } from '../../uikit/Core';
+import { H1 } from '../../uikit/Headings';
 import TwitterBlock from './TwitterBlock';
 
 const UserDashboard = styled('div')`
