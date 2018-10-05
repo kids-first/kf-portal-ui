@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { applyDefaultStyles } from './Core';
 
 const BaseButton = styled('button')`
@@ -52,3 +52,74 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
 `;
 
 export default Button;
+
+const BaseButtonWithIcon = ({ theme, disabled }) => css`
+  color: ${theme.white};
+  text-align: center;
+  cursor: ${disabled => (disabled ? 'default' : 'pointer')};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 12px;
+  font-family: ${theme.fonts.default};
+  letter-spacing: 0.2px;
+  padding: 8px 10px;
+  border-radius: 15px;
+  box-shadow: none;
+`;
+
+export const WhiteButton = applyDefaultStyles(styled('button')`
+  ${BaseButtonWithIcon};
+  border: 1px solid ${({ theme }) => theme.borderGrey};
+  color: ${({ theme }) => theme.lightBlue};
+  background-color: ${({ theme }) => theme.white};
+
+  & a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.lightBlue};
+  }
+
+  & .icon {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => theme.tertiary};
+    color: ${({ theme }) => theme.white};
+
+    .icon {
+      background-color: ${({ theme }) => theme.tertiary};
+      color: ${({ theme }) => theme.white};
+    }
+
+    a {
+      color: ${({ theme }) => theme.white};
+    }
+  }
+`);
+
+export const TealActionButton = applyDefaultStyles(styled('button')`
+  ${BaseButtonWithIcon};
+  border: 1px solid ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.tertiary)};
+  background-color: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.tertiary)};
+  color: ${({ theme, disabled }) => (disabled ? theme.greyDisabled : theme.white)};
+
+  &:hover {
+    background-color: ${({ theme, disabled }) =>
+      disabled ? theme.greyScale8 : theme.tertiaryHover};
+  }
+
+  & a {
+    text-decoration: none;
+    color: ${({ theme }) => theme.white};
+  }
+`);
+
+export const LargeTealActionButton = styled(TealActionButton)`
+  padding: 13px 25px;
+  font-size: 14px;
+  border-radius: 18px;
+`;

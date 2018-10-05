@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { capitalize } from 'lodash';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import GIcon from 'react-icons/lib/fa/google';
 import FBIcon from 'react-icons/lib/fa/facebook';
 import Check from 'react-icons/lib/fa/check';
 
@@ -17,13 +16,15 @@ const GoogleIcon = styled('img')`
   vertical-align: middle;
 `;
 
+const identityProviders = [GOOGLE, FACEBOOK];
+
 const icons = {
   [GOOGLE]: x => <GoogleIcon src={gicon} />,
   [FACEBOOK]: x => <FBIcon color="#428bca" {...x} />,
 };
 
 const Status = styled(Span)`
-  color: ${({ theme }) => theme.tertiary};
+  color: ${({ theme }) => theme.active};
   padding: 2px;
   white-space: nowrap;
   font-weight: 500;
@@ -32,11 +33,15 @@ const Status = styled(Span)`
 
 const ConnectedWithBadge = withTheme(({ theme, provider, Icon = icons[provider] }) => (
   <Box>
-    <Status>
-      <Check color={theme.active} />
-      <Icon size={20} />
-    </Status>
-    <Status>Connected with {capitalize(provider)}</Status>
+    {identityProviders.includes(provider) && (
+      <Fragment>
+        <Status>
+          <Check color={theme.active} />
+          {Icon && <Icon size={20} />}
+        </Status>
+        <Status>Connected with {capitalize(provider)}</Status>
+      </Fragment>
+    )}
   </Box>
 ));
 

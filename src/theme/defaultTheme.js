@@ -13,6 +13,7 @@ const colors = {
   borderGrey: '#cacbcf',
   backgroundGrey: '#f4f5f8',
   tertiaryBackground: '#edeef1', // light light blue
+  lightBlue: '#008199',
 
   primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
 
@@ -20,6 +21,8 @@ const colors = {
   inactive: '#dedfe4', //grey
 
   optionSelected: '#E5F6FD', //light blue
+
+  greyDisabled: '#686868',
 
   greyScale11: '#a9adc0',
   greyScale10: 'rgb(237,238,241)', //grey for table backgrounds
@@ -60,8 +63,8 @@ const colors = {
 };
 
 const fonts = {
-  default: 'Montserrat',
-  details: 'Open Sans',
+  default: 'Montserrat, sans-serif',
+  details: 'Open Sans, sans-serif',
 };
 
 const mixins = {

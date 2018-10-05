@@ -3,27 +3,49 @@ import _ from 'lodash';
 
 import facebookSDK from 'services/facebookSDK';
 
+import DisabledFacebookLogin from './DisabledFacebookLogin';
+
 export default class extends React.Component<any, any> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      disabled: false,
+    };
+  }
+
   async componentDidMount() {
-    if (!global.FB) {
+    try {
       await facebookSDK();
+
+      global.FB.getLoginStatus(response => {
+        if (response.authResponse) {
+          this.props.onLogin(response);
+        } else {
+          global.FB.XFBML.parse();
+          global.FB.Event.subscribe('auth.login', this.props.onLogin);
+        }
+      });
+    } catch (err) {
+      console.warn('unable to get fb login status: ', err);
+      this.props.onError('facebookError');
+      this.setState({ disabled: true });
     }
-    global.FB.getLoginStatus(response => {
-      if (response.authResponse) {
-        this.props.onLogin(response);
-      } else {
-        global.FB.XFBML.parse();
-        global.FB.Event.subscribe('auth.login', this.props.onLogin);
-      }
-    });
   }
+
   componentWillUnmount() {
-    global.FB.Event.unsubscribe('auth.login', this.props.onLogin);
+    try {
+      global.FB.Event.unsubscribe('auth.login', this.props.onLogin);
+    } catch (err) {
+      console.warn('unable to unsubscribe to fb event: ', err);
+    }
   }
+
   render() {
-    return (
+    return this.state.disabled ? (
+      <DisabledFacebookLogin />
+    ) : (
       <div
-        {..._.omit(this.props, 'onLogin')}
+        {..._.omit(this.props, ['onLogin', 'onError'])}
         className="fb-login-button"
         style={{ height: '40px' }}
         data-max-rows="1"

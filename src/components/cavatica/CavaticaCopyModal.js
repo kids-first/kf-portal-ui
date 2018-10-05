@@ -11,32 +11,50 @@ import ExternalLink from 'uikit/ExternalLink';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
 import CavaticaFileSummary from './CavaticaFileSummary';
 import CavaticaProjects from './CavaticaProjects';
+import { graphql } from 'services/arranger';
+import { withApi } from 'services/api';
 
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 
 import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
-import { getFilesById, getFilesByQuery } from 'services/arranger';
+import { getFilesById } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+import { Paragraph } from 'uikit/Core';
 
 const enhance = compose(
   provideGen3FileAuthorizations,
   injectState,
   withTheme,
   withRouter,
+  withApi,
   withState('addingProject', 'setAddingProject', false),
   withState('selectedProjectData', 'setSelectedProjectData', null),
   withState('filesSelected', 'setFilesSelected', []),
   lifecycle({
     async componentDidMount() {
-      const { selectedTableRows, setFilesSelected, sqon } = this.props;
+      const { selectedTableRows, setFilesSelected, sqon, api } = this.props;
       let ids = selectedTableRows;
       if (!ids || ids.length === 0) {
-        const response = await getFilesByQuery({
-          sqon,
-          fields: ['id'],
-        });
-        ids = response.map(file => file.node.id);
+        ids = await graphql(api)({
+          query: `query ($sqon: JSON){
+            file {
+              aggregations(filters: $sqon) {
+                kf_id {
+                  buckets {
+                    key
+                  }
+                }
+              }
+            }
+          }`,
+          variables: {
+            sqon,
+          },
+        }).then(({ data: { file: { aggregations: { kf_id: { buckets } } } } }) =>
+          buckets.map(({ key }) => key),
+        );
       }
       setFilesSelected(ids);
     },
@@ -166,13 +184,13 @@ const CavaticaCopyModal = ({
             </span>
           )}
           {!gen3Connected && (
-            <span>
-              <br />Please{' '}
+            <Paragraph>
+              Please{' '}
               <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
                 connect to GEN3
               </Link>{' '}
               to lookup which files you are authorized to copy.
-            </span>
+            </Paragraph>
           )}
         </ModalWarning>
       )}

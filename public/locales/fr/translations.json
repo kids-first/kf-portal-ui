@@ -1,12 +1,5 @@
 {
   "Join Kids First Data Resource Portal": "Join Kids First Data Resource Portal",
-  "We're currently in <1>beta phase</1> for the Kids First DRP": {
-    " We're looking for your input so we can build a data portal that better meets your needs": {
-      " Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst": {
-        "org </5>": "We're currently in <1>beta phase</1> for the Kids First DRP. We're looking for your input so we can build a data portal that better meets your needs. Please send us your feedback or any other issues you experience at:<3>{' '}</3> <5> support@kidsfirst.org </5>"
-      }
-    }
-  },
   "join": {
     "wizard": {
       "socialSelect": "Select a way to connect to the Kids First Data Resource Portal",
@@ -43,13 +36,20 @@
   "Login": "Login",
   "My Profile": "My Profile",
   "Logout": "Logout",
-  "Kids First Website": "Kids First Website",
-  "Contact Us": "Contact Us",
+  "kidsfirstrdc": {
+    "org": "kidsfirstrdc.org"
+  },
+  "About the Portal": "About the Portal",
   "Policies": "Policies",
+  "Support": "Support",
+  "Contact": "Contact",
   "UI:": "UI:",
   "Data Release:": "Data Release:",
-  "dataReleaseVersion": "Pre-release",
+  "dataReleaseVersion": "<0>{version}</0>",
   "Follow Us": "Follow Us",
+  "Data Resource Portal": "Data Resource Portal",
+  "Website": "Website",
+  "Studies and Access": "Studies and Access",
   "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort": {
     "": "I would like to receive the Kids First Data Resource Center quarterly newsletter to get the latest DRC news including recent study updates, new investigators and partners added to the effort."
   },
@@ -83,13 +83,14 @@
   "Filters": "Filters",
   "All Filters": "All Filters",
   "Upload Ids": "Upload Ids",
-  "Browse": "Browse",
+  "Upload csv": "Upload csv",
   "Matching files in the Kids First Data Repository": "Matching files in the Kids First Data Repository",
+  "Manifest": "Manifest",
+  "BioSpecimen": "BioSpecimen",
   "Actions": "Actions",
   "Data Analysis": "Data Analysis",
   "Download": "Download",
-  "File Manifests": "File Manifests",
-  "Reports": "Reports",
+  "Clinical": "Clinical",
   "Participants Summary": "Participants Summary",
   "- all files will be included in the manifest": "- all files will be included in the manifest",
   "- the participants in your query have related family member data": "- the participants in your query have related family member data",
@@ -99,6 +100,7 @@
   "GENERATE": "GENERATE",
   "Download Manifest": "Download Manifest",
   "Settings": "Settings",
+  "Integrations": "Integrations",
   "Suggestions:": "Suggestions:",
   "(New Interest)": "(New Interest)"
 }

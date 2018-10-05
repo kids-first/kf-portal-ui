@@ -14,6 +14,7 @@ import { downloadFileFromGen3 } from 'services/gen3';
 import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { getAppElement } from 'services/globalDomNodes';
 
 const getGen3UUIDs = async kfId => {
   const fileData = await getFilesById({ ids: [kfId], fields: ['latest_did'] });
@@ -40,7 +41,7 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
       onClick={() =>
         downloadFile({ kfId, api })
           .then(url => {
-            let a = document.createElement('a');
+            const a = document.createElement('a');
             a.href = url;
             trackUserInteraction({
               category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
@@ -48,7 +49,13 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
               label: url,
             });
             a.download = url.split('/').slice(-1);
+            a.style.display = 'none';
+
+            // firefox would not trigger download unless the element is present in the dom
+            const appRoot = getAppElement();
+            appRoot.appendChild(a);
             a.click();
+            appRoot.removeChild(a);
           })
           .catch(err => {
             trackUserInteraction({

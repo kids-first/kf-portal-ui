@@ -11,10 +11,8 @@ import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
-
 import { getUser as getGen3User } from 'services/gen3';
-
-import { getStudiesAggregations, getUnapprovedStudiesForFiles } from './utils';
+import { getStudyIdsFromSqon, getStudiesAggregationsFromSqon } from './utils';
 
 const enhance = compose(
   injectState,
@@ -29,7 +27,7 @@ const enhance = compose(
         setFileStudyData,
         setFileAuthInitialized,
       } = this.props.effects;
-      const { api, filesSelected } = this.props;
+      const { api } = this.props;
       const sqon = this.props.sqon || {
         op: 'and',
         content: [],
@@ -37,49 +35,133 @@ const enhance = compose(
 
       // Get Gen3 permissions
       const userDetails = await getGen3User(api);
-      const approvedStudies = Object.keys(userDetails.projects).sort();
+      const approvedAcls = Object.keys(userDetails.projects).sort();
 
-      const approvedStudyAggs = await getStudiesAggregations({
-        api,
-        sqon,
-        studies: approvedStudies,
-      });
+      const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
+        getStudyIdsFromSqon(api)({
+          sqon: {
+            op: 'and',
+            content: [
+              ...sqon.content,
+              {
+                op: 'in',
+                content: {
+                  field: 'acl',
+                  value: approvedAcls,
+                },
+              },
+            ],
+          },
+        }),
+        getStudyIdsFromSqon(api)({
+          sqon: {
+            op: 'and',
+            content: [
+              ...sqon.content,
+              {
+                op: 'not',
+                content: [
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'acl',
+                      value: approvedAcls,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        }),
+      ]);
 
-      const unapprovedStudies = await getUnapprovedStudiesForFiles({
-        api,
-        approvedStudyAggs,
-        files: filesSelected,
-      });
+      const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
+        getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
+          acceptedStudyIds.reduce((acc, id) => {
+            acc[`${id}_sqon`] = {
+              op: 'and',
+              content: [
+                ...sqon.content,
+                {
+                  op: 'in',
+                  content: {
+                    field: 'acl',
+                    value: approvedAcls,
+                  },
+                },
+                {
+                  op: 'in',
+                  content: {
+                    field: 'participants.study.external_id',
+                    value: [id],
+                  },
+                },
+              ],
+            };
+            return acc;
+          }, {}),
+        ),
+        getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
+          unacceptedStudyIds.reduce((acc, id) => {
+            acc[`${id}_sqon`] = {
+              op: 'and',
+              content: [
+                ...sqon.content,
+                {
+                  op: 'not',
+                  content: [
+                    {
+                      op: 'in',
+                      content: {
+                        field: 'acl',
+                        value: approvedAcls,
+                      },
+                    },
+                  ],
+                },
+                {
+                  op: 'in',
+                  content: {
+                    field: 'participants.study.external_id',
+                    value: [id],
+                  },
+                },
+              ],
+            };
+            return acc;
+          }, {}),
+        ),
+      ]);
 
-      const unapprovedStudiesAgg = await getStudiesAggregations({
-        api,
-        sqon,
-        studies: unapprovedStudies,
-      });
-
-      setAuthorizedFiles(approvedStudyAggs.reduce((acc, study) => [...acc, ...study.files], []));
+      setAuthorizedFiles(
+        acceptedStudiesAggs
+          .reduce((acc, study) => [...acc, ...study.files], [])
+          .map(({ key }) => key),
+      );
       setUnauthorizedFiles(
-        unapprovedStudiesAgg.reduce((acc, study) => [...acc, ...study.files], []),
+        unacceptedStudiesAggs
+          .reduce((acc, study) => [...acc, ...study.files], [])
+          .map(({ key }) => key),
       );
       setFileStudyData({
-        authorized: approvedStudyAggs
-          .map(({ study, files, studyName }) => ({
-            id: study,
+        authorized: acceptedStudiesAggs
+          .map(({ id, files, studyName }) => ({
+            id: id,
             count: files.length,
           }))
           .filter(({ count }) => count)
-          .sort(({ count }) => count),
-        unauthorized: unapprovedStudiesAgg
-          .map(({ study, files, studyName }) => ({
-            id: study,
+          .sort(({ count }, { count: nextCount }) => nextCount - count),
+        unauthorized: unacceptedStudiesAggs
+          .map(({ id, files, studyName }) => ({
+            id: id,
             count: files.length,
           }))
           .filter(({ count }) => count)
-          .sort(({ count }) => count),
-        names: [...approvedStudyAggs, ...unapprovedStudiesAgg].reduce(
-          (acc, { study, studyName }) => ({
+          .sort(({ count }, { count: nextCount }) => nextCount - count),
+        names: [...acceptedStudiesAggs, ...unacceptedStudiesAggs].reduce(
+          (acc, { id, studyName }) => ({
             ...acc,
-            [study]: studyName,
+            [id]: studyName,
           }),
           {},
         ),
@@ -277,8 +359,8 @@ const CavaticaFileSummary = ({
                   <PlusIcon
                     width={10}
                     height={10}
-                    fill={theme.primary}
                     css={`
+                      fill: ${theme.primary};
                       margin-top: 1px;
                       margin-right: 4px;
                     `}
@@ -289,8 +371,8 @@ const CavaticaFileSummary = ({
                   <PlusIcon
                     width={10}
                     height={10}
-                    fill={theme.primary}
                     css={`
+                      fill: ${theme.primary};
                       margin-top: 1px;
                       margin-right: 4px;
                     `}

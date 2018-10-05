@@ -2,6 +2,7 @@ import scriptjs from 'scriptjs';
 import urlJoin from 'url-join';
 import { merge, pick } from 'lodash';
 import { UI_VERSION } from 'common/constants';
+import { getAppElement } from './globalDomNodes.js';
 
 import { usersnapHost, usersnapId, arrangerProjectId } from 'common/injectGlobals';
 
@@ -37,15 +38,18 @@ window._usersnapconfig = {
   lang: 'en',
   tools: ['pen', 'blackout', 'note', 'highlight', 'arrow', 'comment'],
   consoleRecorder: true,
-  label: true,
-  labelRequired: true,
+  label: false,
+  labelRequired: false,
   labelPlaceholder: 'UserFeedback',
   labelAllowCreate: false,
   labelMultiSelect: false,
   valign: 'bottom',
   halign: 'left',
   loadHandler: () => {
-    window.UserSnap.on('beforeSend', obj => (obj.addInfo = usersnapInfo));
+    window.UserSnap.on(
+      'beforeSend',
+      obj => (obj.addInfo = { ...usersnapInfo, reactAppRenderedDOM: getAppElement().innerHTML }),
+    );
     window.UserSnap.on('beforeOpen', () => {
       if (additionalUsersnapState.email) {
         window.UserSnap.setEmailBox(additionalUsersnapState.email);

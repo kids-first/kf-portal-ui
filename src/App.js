@@ -26,7 +26,7 @@ import { isAdminToken, validateJWT } from 'components/Login';
 import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
-import logo from 'assets/logo-kids-first-data-portal-beta.svg';
+import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
@@ -53,9 +53,6 @@ const AppContainer = styled('div')`
   & * {
     box-sizing: border-box;
     font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
-  }
-  & button {
-    border: solid 1px ${({ theme }) => theme.borderGrey};
   }
 `;
 

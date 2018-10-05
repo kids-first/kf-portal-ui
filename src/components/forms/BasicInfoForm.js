@@ -6,6 +6,9 @@ import { withFormik, Field } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
+import { width, space } from 'styled-system';
+import SearchIcon from 'react-icons/lib/fa/search';
+
 import scriptjs from 'scriptjs';
 
 import styled, { css } from 'react-emotion';
@@ -25,12 +28,13 @@ import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 import { Box } from 'uikit/Core';
+import { WhiteButton } from '../../uikit/Button.js';
 
 const labelStyle = `
   font-size: 14px;
   letter-spacing: 0.2px;
   text-align: left;
-  font-weight: 900;
+  font-weight: 700;
 `;
 
 const StyledLabel = styled('label')`
@@ -53,6 +57,38 @@ const FormItem = styled(Column)`
   padding: 5px 0 5px;
 `;
 
+const FieldInput = styled(Field)`
+  ${({ theme }) => theme.input};
+  ${width};
+  ${space};
+`;
+
+const SearchLocationIcon = styled(SearchIcon)`
+  position: absolute;
+  top: 8px;
+  left: 8px;
+`;
+
+const AutoCompleteContainer = styled(Column)`
+  position: absolute;
+  top: 100%;
+  background-color: ${({ theme }) => theme.white};
+  border: 1px solid ${({ theme }) => theme.greyScale4};
+  width: 100%;
+`;
+
+const AutoCompleteItem = styled(Row)`
+  background-color: ${({ isSelected, theme }) => (isSelected ? theme.greyScale4 : theme.white)};
+  padding: 10px;
+`;
+
+const ContentRow = styled(Row)`
+  margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+  min-height: 0;
+`;
+
 class WrappedPlacesAutocomplete extends React.Component {
   //https://github.com/kenny-hibino/react-places-autocomplete/pull/107
   state = {
@@ -72,7 +108,7 @@ class WrappedPlacesAutocomplete extends React.Component {
 
   render() {
     if (!this.state.loaded) return null;
-    return <PlacesAutocomplete {...this.props} />;
+    return <PlacesAutocomplete {...this.props}>{this.props.children}</PlacesAutocomplete>;
   }
 }
 
@@ -178,34 +214,30 @@ export default compose(
     setLocation,
   }) => (
     <Fragment>
-      <div
-        css={`
-          ${theme.row};
-          margin-bottom: 20px;
-          z-index: 1;
-          position: relative;
-        `}
-      >
+      <ContentRow>
         <div
           css={`
             padding-right: 30px;
             border-right: 1px solid #cacbcf;
           `}
         >
-          <Gravtar
-            email={values.email || ''}
-            size={143}
-            css={`
-              border-radius: 50%;
-              padding: 5px;
-              background-color: #fff;
-              border: 1px solid #cacbcf;
-              margin-bottom: 5px;
-            `}
-          />
-          <ExternalLink href="https://en.gravatar.com/site/login" css={theme.hollowButton}>
-            change gravatar
-          </ExternalLink>
+          <Column>
+            <Gravtar
+              email={values.email || ''}
+              size={143}
+              css={`
+                align-self: center;
+                border-radius: 50%;
+                padding: 5px;
+                background-color: #fff;
+                border: 1px solid #cacbcf;
+                margin-bottom: 5px;
+              `}
+            />
+            <WhiteButton mt="4px" w="170px">
+              <ExternalLink href="https://en.gravatar.com/site/login">change gravatar</ExternalLink>
+            </WhiteButton>
+          </Column>
         </div>
         <form
           onSubmit={handleSubmit}
@@ -228,6 +260,7 @@ export default compose(
                 <option value="" selected disabled hidden>
                   -- select an option --
                 </option>
+                <option value="">N/A</option>
                 <option value="mr">Mr.</option>
                 <option value="ms">Ms.</option>
                 <option value="mrs">Mrs.</option>
@@ -287,38 +320,19 @@ export default compose(
           </div>
           <FormItem>
             <StyledLabel>First Name:</StyledLabel>
-            <Field
-              css={`
-                ${theme.input};
-                width: 90%;
-              `}
-              name="firstName"
-              placeholder="First Name"
-              value={values.firstName}
-            />
+            <FieldInput width="90%" name="firstName" value={values.firstName} />
             {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
           </FormItem>
           <FormItem>
             <StyledLabel>Last Name:</StyledLabel>
-            <Field
-              css={`
-                ${theme.input};
-                width: 90%;
-              `}
-              name="lastName"
-              placeholder="Last Name"
-              value={values.lastName}
-            />
+            <FieldInput width="90%" name="lastName" value={values.lastName} />
             {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
           </FormItem>
           {values.roles === 'research' && (
             <FormItem>
               <StyledLabel>Title/Role:</StyledLabel>
-              <Field
-                css={`
-                  ${theme.input};
-                  width: 90%;
-                `}
+              <FieldInput
+                width="90%"
                 name="jobTitle"
                 placeholder="Job Title/Role"
                 value={values.jobTitle}
@@ -328,59 +342,31 @@ export default compose(
           {['research', 'community'].includes(values.roles) && (
             <FormItem>
               {values.roles === 'research' && <StyledLabel>Institution:</StyledLabel>}
-              {values.roles === 'community' && <StyledLabel>Organization:</StyledLabel>}
-              <Field
-                css={`
-                  ${theme.input};
-                  width: 90%;
-                `}
-                name="institution"
-                placeholder={values.roles === 'research' ? 'Institution' : 'Organization'}
-                value={values.institution}
-              />
+              {values.roles === 'community' && <StyledLabel>Institution/Organization:</StyledLabel>}
+              <FieldInput width="90%" name="institution" value={values.institution} />
             </FormItem>
           )}
           <FormItem>
             <StyledLabel>Suborganization/Department:</StyledLabel>
-            <Field
-              css={`
-                ${theme.input};
-                width: 90%;
-              `}
-              name="department"
-              value={values.department}
-            />
+            <FieldInput width="90%" name="department" value={values.department} />
           </FormItem>
           <FormItem>
             <StyledLabel>Institutional Email Address</StyledLabel>
-            <Field
-              css={`
-                ${theme.input};
-                width: 90%;
-              `}
-              name="institutionalEmail"
-              value={values.institutionalEmail}
-            />
+            <FieldInput width="90%" name="institutionalEmail" value={values.institutionalEmail} />
           </FormItem>
           <FormItem>
             <StyledLabel>Phone:</StyledLabel>
-            <Field
-              css={`
-                ${theme.input};
-                width: 90%;
-              `}
+            <FieldInput
+              width="90%"
               name="phone"
-              placeholder="e.g. +1-555-5555"
+              placeholder="e.g. +1-555-555-5555"
               value={values.phone}
             />
           </FormItem>
           <FormItem>
             <StyledLabel>ERA Commons ID:</StyledLabel>
-            <Field
-              css={`
-                ${theme.input};
-                width: 90%;
-              `}
+            <FieldInput
+              width="90%"
               name="eraCommonsID"
               placeholder=""
               value={values.eraCommonsID}
@@ -389,23 +375,8 @@ export default compose(
           <FormItem>
             <StyledLabel>Search Location:</StyledLabel>
             <WrappedPlacesAutocomplete
-              inputProps={{
-                value: location,
-                onChange: setLocation,
-              }}
-              classNames={{
-                input: css`
-                  ${theme.input};
-                  width: 90%;
-                `,
-                autocompleteContainer: css`
-                  position: absolute;
-                  top: 100%;
-                  backgroundcolor: white;
-                  border: 1px solid ${theme.greyScale4};
-                  width: 100%;
-                `,
-              }}
+              value={location}
+              onChange={setLocation}
               onSelect={(address, placeID) => {
                 setLocation(address);
                 geocodeByPlaceId(placeID)
@@ -445,7 +416,32 @@ export default compose(
                   })
                   .catch(error => console.error(error));
               }}
-            />
+            >
+              {({ getInputProps, getSuggestionItemProps, suggestions, loading, ...rest }) => (
+                <Box position="relative">
+                  <SearchLocationIcon fill="#a9adc0" />
+                  <FieldInput
+                    width="90%"
+                    pl="34px"
+                    name="searchLocation"
+                    placeholder="e.g 3401 Civic Center Blvd."
+                    {...getInputProps()}
+                  />
+                  {!!suggestions.length && (
+                    <AutoCompleteContainer>
+                      {suggestions.map(suggestion => (
+                        <AutoCompleteItem
+                          isSelected={suggestion.description === location}
+                          {...getSuggestionItemProps(suggestion)}
+                        >
+                          {suggestion.description}
+                        </AutoCompleteItem>
+                      ))}
+                    </AutoCompleteContainer>
+                  )}
+                </Box>
+              )}
+            </WrappedPlacesAutocomplete>
           </FormItem>
           <AddressBox>
             <AddressRow>
@@ -455,13 +451,7 @@ export default compose(
                 `}
               >
                 <StyledLabel>Address Line 1:</StyledLabel>
-                <Field
-                  css={`
-                    ${theme.input};
-                  `}
-                  name="addressLine1"
-                  value={values.addressLine1}
-                />
+                <FieldInput name="addressLine1" value={values.addressLine1} />
               </div>
               <div
                 css={`
@@ -469,48 +459,21 @@ export default compose(
                 `}
               >
                 <StyledLabel>Address Line 2:</StyledLabel>
-                <Field
-                  css={`
-                    ${theme.input};
-                  `}
-                  name="addressLine2"
-                  value={values.addressLine2}
-                />
+                <FieldInput name="addressLine2" value={values.addressLine2} />
               </div>
             </AddressRow>
             <AddressRow>
               <div>
                 <StyledLabel>City</StyledLabel>
-                <Field
-                  css={`
-                    ${theme.input};
-                    width: 90%;
-                  `}
-                  name="city"
-                  value={values.city}
-                />
+                <FieldInput width="90$" name="city" value={values.city} />
               </div>
               <div>
                 <StyledLabel>State/Province:</StyledLabel>
-                <Field
-                  css={`
-                    ${theme.input};
-                    width: 90%;
-                  `}
-                  name="state"
-                  value={values.state}
-                />
+                <FieldInput width="90%" name="state" value={values.state} />
               </div>
               <div>
                 <StyledLabel>Zip/Postal Code:</StyledLabel>
-                <Field
-                  css={`
-                    ${theme.input};
-                    width: 90%;
-                  `}
-                  name="zip"
-                  value={values.zip}
-                />
+                <FieldInput width="90%" name="zip" value={values.zip} />
               </div>
             </AddressRow>
             <AddressRow>
@@ -520,18 +483,12 @@ export default compose(
                 `}
               >
                 <StyledLabel>Country:</StyledLabel>
-                <Field
-                  css={`
-                    ${theme.input};
-                  `}
-                  name="country"
-                  value={values.country}
-                />
+                <FieldInput name="country" value={values.country} />
               </div>
             </AddressRow>
           </AddressBox>
         </form>
-      </div>
+      </ContentRow>
       <ModalFooter {...{ unsetModal, handleSubmit }} />
     </Fragment>
   ),

@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import { Trans } from 'react-i18next';
 import urlJoin from 'url-join';
 import { SocialIcon as ReactSocialIcon } from 'react-social-icons';
+import { DataVersionProvider } from 'services/dataVersion';
 
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
@@ -17,6 +18,7 @@ const FooterLink = styled('a')`
   text-align: center;
   color: ${({ theme }) => theme.greyScale0};
   text-decoration: underline;
+  margin: 0 3px;
 `;
 
 const FooterContainer = styled('footer')`
@@ -57,23 +59,33 @@ const Footer = () => (
   <FooterContainer>
     <Details>
       <div>
-        <FooterLink href={kfWebRoot}>
-          <Trans>Kids First Website</Trans>
+        <FooterLink href={kfWebRoot} target="_blank">
+          <Trans>kidsfirstrdc.org</Trans>
         </FooterLink>
         {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/contact')}>
-          <Trans>Contact Us</Trans>
+        <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
+          <Trans>About the Portal</Trans>
         </FooterLink>
         {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/policies')}>
+        <FooterLink href={urlJoin(kfWebRoot, '/policies')} target="_blank">
           <Trans>Policies</Trans>
+        </FooterLink>
+        {' | '}
+        <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')} target="_blank">
+          <Trans>Support</Trans>
+        </FooterLink>
+        {' | '}
+        <FooterLink href={urlJoin(kfWebRoot, '/contact')} target="_blank">
+          <Trans>Contact</Trans>
         </FooterLink>
       </div>
       <div>
         <Trans>UI:</Trans> {UI_VERSION}
         {', '}
         <Trans>Data Release: </Trans>
-        <Trans i18nKey="dataReleaseVersion">Pre-release</Trans>
+        <DataVersionProvider
+          render={({ version }) => <Trans i18nKey="dataReleaseVersion">{version}</Trans>}
+        />
       </div>
     </Details>
     <SocialIcons>

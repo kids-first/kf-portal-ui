@@ -10,4 +10,5 @@ export default styled(Flex)`
   ${alignItems};
   ${justifyContent};
   ${flex};
+  ${({ flexStrink }) => (flexStrink || !isNaN(flexStrink) ? `flex-shrink: ${flexStrink}` : ``)};
 `;

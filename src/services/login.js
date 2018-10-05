@@ -2,7 +2,7 @@ import urlJoin from 'url-join';
 import ajax from 'services/ajax';
 import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
-import {removeCookie} from './cookie';
+import { removeCookie } from './cookie';
 
 const gapi = global.gapi;
 
@@ -31,15 +31,20 @@ export const facebookLogin = token =>
 
 export const facebookLogout = () =>
   Promise.race([
-    new Promise((resolve, reject) =>
-      global.FB.getLoginStatus(
-        response => (response.authResponse ? global.FB.logout(r => resolve(r)) : resolve()),
-      ),
-    ),
+    new Promise((resolve, reject) => {
+      try {
+        global.FB.getLoginStatus(
+          response => (response.authResponse ? global.FB.logout(r => resolve(r)) : resolve()),
+        );
+      } catch (err) {
+        console.warn('failed to get fb login status: ', err);
+        resolve();
+      }
+    }),
     wait(2),
   ]);
 
 export const logoutAll = () => {
-  removeCookie(EGO_JWT_KEY)
-  return Promise.all([googleLogout(), facebookLogout()])
+  removeCookie(EGO_JWT_KEY);
+  return Promise.all([googleLogout().catch(err => console.warn(err)), facebookLogout()]);
 };

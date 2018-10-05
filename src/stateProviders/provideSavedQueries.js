@@ -6,6 +6,7 @@ import { shortUrlApi } from 'common/injectGlobals';
 export default provideState({
   initialState: props => ({
     queries: [],
+    exampleQueries: [],
     loadingQueries: false,
     deletingIds: [],
   }),
@@ -26,7 +27,9 @@ export default provideState({
         )
         .then(value => state => {
           effects.setLoading(false);
-          return { ...state, queries: value || [] };
+          const queries = (value || []).filter(q => !q.content.example);
+          const exampleQueries = (value || []).filter(q => q.content.example);
+          return { ...state, queries, exampleQueries };
         });
     },
     deleteQuery: (effects, { queryId, api }) => {
@@ -42,6 +45,7 @@ export default provideState({
         .then(r => state => ({
           ...state,
           queries: state.queries.filter(({ id }) => id !== queryId),
+          exampleQueries: state.exampleQueries.filter(({ id }) => id !== queryId),
         }));
     },
   },

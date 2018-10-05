@@ -67,7 +67,7 @@ export default provideState({
       }
       return { ...state, isLoadingUser: false };
     },
-    setUser: (effects, { api, ...user }) => {
+    setUser: (effects, { api, egoGroups, ...user }) => {
       return getAllFieldNamesPromise(api)
         .then(({ data }) => {
           return chain(data)
@@ -96,7 +96,7 @@ export default provideState({
           }
           addUsersnapInfo({ percentageFilled });
           setUsersnapUser(user);
-          trackUserSession(user);
+          trackUserSession({ ...user, egoGroups });
           return {
             ...state,
             isLoadingUser: false,

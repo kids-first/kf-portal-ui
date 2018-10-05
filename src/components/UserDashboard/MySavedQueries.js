@@ -1,23 +1,39 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Spinner from 'react-spinkit';
-import { distanceInWords } from 'date-fns';
 import styled from 'react-emotion';
 
 import TrashIcon from 'react-icons/lib/fa/trash';
+import { H2 } from 'uikit/Headings';
 import { H3 } from './styles';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
-import SaveIconBase from '../../icons/SaveIcon';
+import SaveIconBase from 'icons/SaveIcon';
 
 import { Box, Flex, Span, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
-import Row from 'uikit/Row';
+import {
+  PromptMessageContainer,
+  PromptMessageHeading,
+  PromptMessageContent,
+} from 'uikit/PromptMessage';
+
+import QueryBlock from './QueryBlock';
 
 const SaveIcon = styled(SaveIconBase)`
   width: 16px;
   fill: ${({ theme }) => theme.greyScale11};
+`;
+
+const QueriesHeading = styled('h4')`
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: ${({ theme }) => theme.greyScale1};
+  margin-bottom: 7px;
+  margin-top: 0;
+  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
 `;
 
 const GradientBar = styled('div')`
@@ -35,7 +51,8 @@ const GradientBar = styled('div')`
 
 const Header = styled(Flex)`
   align-items: center;
-  border-bottom: ${x => (x.queries.length ? `2px dotted ${x.theme.greyScale5}` : `none`)};
+  border-bottom: ${({ queries, theme }) =>
+    queries.length ? `2px dotted ${theme.greyScale5}` : `none`};
 `;
 
 const Container = styled(Column)`
@@ -48,24 +65,9 @@ const Container = styled(Column)`
   padding: 0 10px;
 `;
 
-const Detail = styled(Span)`
-  color: ${({ theme }) => theme.greyScale1};
-`;
-
-const Query = styled(Flex)`
-  padding: 10px 10px 10px 25px;
-  border: 1px solid ${({ theme }) => theme.greyScale5};
-  transition-property: opacity;
-  ${({ inactive, theme }) =>
-    inactive
-      ? `
-          opacity: 0.6;
-          pointer-events: none;
-          &:last-child {
-            border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-          }
-        `
-      : ``};
+const FileRepositoryLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.primary};
 `;
 
 const MySavedQueries = compose(
@@ -79,7 +81,7 @@ const MySavedQueries = compose(
   }),
 )(
   ({
-    state: { queries, loadingQueries, deletingIds },
+    state: { queries, exampleQueries, loadingQueries, deletingIds },
     effects: { getQueries, deleteQuery },
     api,
     theme,
@@ -103,9 +105,7 @@ const MySavedQueries = compose(
       <Container>
         <GradientBar {...{ profileColors }} />
         <Header p={3} lineHeight={2} {...{ queries }}>
-          <H3 mt={2} fontWeight={300}>
-            Saved Queries
-          </H3>
+          <H2 mt={2}>Saved Queries</H2>
           <Flex ml="auto" alignItems="center">
             <SaveIcon />
             <Span pr={2} pl={3} fontSize={3}>
@@ -116,47 +116,48 @@ const MySavedQueries = compose(
             </Span>
           </Flex>
         </Header>
-        <Box overflowY="auto" mt={2} mb={2}>
-          {queries
-            .filter(q => q.alias)
-            .map(q => ({
-              ...q,
-              date: +new Date(q.creationDate),
-              // TODO: save origin + pathname separately in dynamo
-              link: `/search${q.content.longUrl.split('/search')[1]}`,
-            }))
-            .slice()
-            .sort((a, b) => b.date - a.date)
-            .map(q => (
-              <Query key={q.id} inactive={deletingIds.includes(q.id)}>
-                <Column width="100%">
-                  <Row justifyContent="space-between" width="100%">
-                    <Link fontSize={1} fontWeight="bold" color={theme.primary} to={q.link}>
-                      {q.alias}
-                    </Link>
-                    <Box pr={2} pl={2}>
-                      <Span
-                        color={theme.primary}
-                        hover={{ cursor: 'pointer', color: theme.hover }}
-                        onClick={() => deleteQuery({ api, queryId: q.id })}
-                      >
-                        <TrashIcon />
-                      </Span>
-                    </Box>
-                  </Row>
-                  <Box mt={2} mb={2} color={theme.greyScale9} fontSize="0.75rem">
-                    <Detail>{(q.content.Files || 0).toLocaleString()}</Detail> Files |{' '}
-                    <Detail>{(q.content.Participants || 0).toLocaleString()}</Detail> Participants |{' '}
-                    <Detail>{(q.content.Families || 0).toLocaleString()}</Detail> Families |{' '}
-                    <Detail>{q.content.Size}</Detail>
-                  </Box>
-                  <Box fontSize="0.75rem">
-                    Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
-                  </Box>
-                </Column>
-              </Query>
-            ))}
-        </Box>
+        {!queries.length ? (
+          <PromptMessageContainer info my={20}>
+            <PromptMessageHeading info mb={10}>
+              You have no saved queries yet.
+            </PromptMessageHeading>
+            <PromptMessageContent>
+              Explore the <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink>{' '}
+              and start saving queries!
+            </PromptMessageContent>
+          </PromptMessageContainer>
+        ) : null}
+        <Fragment>
+          <Box mt={2} mb={2}>
+            {queries
+              .filter(q => q.alias)
+              .map(q => ({
+                ...q,
+                date: Number(new Date(q.creationDate)),
+                link: `/search${q.content.longUrl.split('/search')[1]}`,
+              }))
+              .slice()
+              .sort((a, b) => b.date - a.date)
+              .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
+          </Box>
+
+          {!exampleQueries.length ? null : (
+            <Box mt={2} mb={2}>
+              <QueriesHeading>Examples:</QueriesHeading>
+              {exampleQueries.map(q => {
+                q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+                return (
+                  <QueryBlock
+                    key={q.id}
+                    query={q}
+                    inactive={deletingIds.includes(q.id)}
+                    savedTime={false}
+                  />
+                );
+              })}
+            </Box>
+          )}
+        </Fragment>
       </Container>
     ),
 );

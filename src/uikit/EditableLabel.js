@@ -176,6 +176,10 @@ export default compose(
           <span
             css={`
               white-space: pre-line;
+              font-family: 'Open Sans', sans-serif;
+              font-size: 14px;
+              line-height: 26px;
+              color: #343434;
             `}
           >
             {trim(inputValue)

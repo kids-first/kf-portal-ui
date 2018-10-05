@@ -21,6 +21,8 @@ import { ButtonsDiv } from '../Join';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
+import { JoinH3 } from '../../uikit/Headings';
+import { Paragraph } from '../../uikit/Core';
 
 const SelectRoleForm = styled('form')`
   justify-content: space-around;
@@ -40,16 +42,15 @@ const RoleBubble = styled(CheckboxBubble)`
   text-align: left;
   color: ${({ theme }) => theme.greyScale0};
   font-size: 12px;
+  justify-content: flex-start;
 `;
 
-const RoleLabel = styled('label')`
-  color: ${({ theme }) => theme.secondary};
-  font-weight: 600;
+const RoleLabel = styled(JoinH3)`
   display: block;
   text-transform: capitalize;
   border: none;
-  font-size: 15px;
   line-height: 1.33;
+  margin: 0;
 `;
 
 const Label = styled('label')`
@@ -242,7 +243,9 @@ export default enhance(
                   {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
                   <div>
                     <RoleLabel>{displayName}</RoleLabel>
-                    {description}
+                    <Paragraph lineHeight="26px" fontSize="14px">
+                      {description}
+                    </Paragraph>
                   </div>
                 </RoleBubble>
               ))}
@@ -258,11 +261,13 @@ export default enhance(
               name="acceptedKfOptIn"
             />
             <CheckboxLabel htmlFor="acceptedKfOptIn">
-              <Trans>
-                I would like to receive the Kids First Data Resource Center quarterly newsletter to
-                get the latest DRC news including recent study updates, new investigators and
-                partners added to the effort.
-              </Trans>
+              <Paragraph lineHeight="26px" fontSize="14px">
+                <Trans>
+                  I would like to receive the Kids First Data Resource Center quarterly newsletter
+                  to get the latest DRC news including recent study updates, new investigators and
+                  partners added to the effort.
+                </Trans>
+              </Paragraph>
             </CheckboxLabel>
           </Row>
           <Row mt={2} pb={2}>
@@ -274,10 +279,12 @@ export default enhance(
               name="acceptedNihOptIn"
             />
             <CheckboxLabel htmlFor="acceptedNihOptIn">
-              <Trans>
-                I would like to receive updates from the NIH Kids First program including funding
-                updates and news about the program.
-              </Trans>
+              <Paragraph lineHeight="26px" fontSize="14px">
+                <Trans>
+                  I would like to receive updates from the NIH Kids First program including funding
+                  updates and news about the program.
+                </Trans>
+              </Paragraph>
             </CheckboxLabel>
           </Row>
         </SelectRoleForm>

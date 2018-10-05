@@ -7,15 +7,17 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
 import { Trans } from 'react-i18next';
+import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
+import GoogleLogin from 'components/loginButtons/GoogleLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
+import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessage';
 
-import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -23,8 +25,9 @@ import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
-import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
+import { GEN3, CAVATICA, GOOGLE, FACEBOOK, LOGIN_ERROR_DETAILS } from 'common/constants';
 import { getAccessToken } from 'services/gen3';
+import { createExampleQueries } from 'services/riffQueries';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
@@ -41,6 +44,13 @@ export const validateJWT = ({ jwt }) => {
   return isCurrent && isApproved && validatedPayload;
 };
 
+const initProfile = async (api, user, egoId) => {
+  const profileCreation = createProfile(api)({ ...user, egoId });
+  const sampleQueryCreation = createExampleQueries(api, egoId);
+  const [x] = await Promise.all([profileCreation, sampleQueryCreation]);
+  return x;
+};
+
 export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, api }) => {
   const jwtData = validateJWT({ jwt });
 
@@ -52,7 +62,7 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
       const user = jwtData.context.user;
       const egoId = jwtData.sub;
       const existingProfile = await getProfile(api)();
-      const newProfile = !existingProfile ? await createProfile(api)({ ...user, egoId }) : {};
+      const newProfile = !existingProfile ? await initProfile(api, user, egoId) : {};
       const loggedInUser = {
         ...(existingProfile || newProfile),
         email: user.email,
@@ -100,6 +110,15 @@ const LoginContainer = styled(Column)`
   height: 100%;
   width: 100%;
   padding-bottom: 10px;
+  margin-top: ${props => (props.disabled ? '11px' : '40px')};
+`;
+
+const LoginError = styled(Box)`
+  color: ${({ theme }) => theme.greyScale1};
+  font-weight: 600;
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-size: 14px;
+  line-height: 1.7;
 `;
 
 class Component extends React.Component<any, any> {
@@ -108,39 +127,17 @@ class Component extends React.Component<any, any> {
     state: PropTypes.object,
     api: PropTypes.func,
   };
+
   state = {
     authorizationError: false,
     securityError: false,
+    thirdPartyDataError: false,
+    facebookError: false,
+    unknownError: false,
   };
-  async componentDidMount() {
-    try {
-      await googleSDK();
-      global.gapi.signin2.render('googleSignin', {
-        scope: 'profile email',
-        width: 240,
-        height: 40,
-        longtitle: true,
-        theme: 'light',
-        onsuccess: googleUser => {
-          const { id_token } = googleUser.getAuthResponse();
-          this.handleToken({
-            provider: GOOGLE,
-            handler: googleLogin,
-            token: id_token,
-          });
-        },
-        onfailure: error => global.log('login fail', error),
-      });
-    } catch (e) {
-      global.log(e);
-    }
-  }
+
   handleToken = async ({ provider, handler, token }) => {
-    const {
-      api,
-      onFinish,
-      effects: { setToken, setUser, setIntegrationToken },
-    } = this.props;
+    const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
 
     const response = await handler(token).catch(error => {
       if (error.message === 'Network Error') {
@@ -158,10 +155,9 @@ class Component extends React.Component<any, any> {
       }
     }
   };
+
   trackUserSignIn = label => {
-    let {
-      location: { pathname },
-    } = this.props;
+    let { location: { pathname } } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
@@ -170,13 +166,39 @@ class Component extends React.Component<any, any> {
       action: `${actionType} with Provider`,
     });
   };
+
   handleSecurityError = () => this.setState({ securityError: true });
+
+  handleError = errorField => this.setState({ [errorField]: true });
+
+  getErrorMessage = () => {
+    const { thirdPartyDataError, unknownError } = this.state;
+    if (unknownError) {
+      return reactStringReplace(LOGIN_ERROR_DETAILS.unknown, 'Contact us', (match, i) => (
+        <ExternalLink
+          hasExternalIcon={false}
+          href="https://kidsfirstdrc.org/contact"
+          target="_blank"
+        >
+          Contact us
+        </ExternalLink>
+      ));
+    } else if (thirdPartyDataError) {
+      return LOGIN_ERROR_DETAILS.thirdPartyData;
+    } else {
+      return LOGIN_ERROR_DETAILS.facebook;
+    }
+  };
 
   render() {
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
+
+    const { thirdPartyDataError, facebookError, unknownError } = this.state;
+    const disabled = thirdPartyDataError || facebookError || unknownError;
+
     return (
-      <LoginContainer>
+      <LoginContainer disabled={disabled}>
         {this.state.securityError ? (
           <Box maxWidth={600}>
             <Trans i18nKey="login.connectionFailed">
@@ -202,9 +224,29 @@ class Component extends React.Component<any, any> {
                 </Trans>
               </ModalWarning>
             )}
-            <Box mb={3} key="google" id="googleSignin" />
+
+            {disabled ? (
+              <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
+                <PromptMessageContent pt={0}>
+                  <LoginError>{this.getErrorMessage()} </LoginError>
+                </PromptMessageContent>
+              </PromptMessageContainer>
+            ) : null}
+
+            <GoogleLogin
+              onError={this.handleError}
+              onLogin={id_token =>
+                this.handleToken({
+                  provider: GOOGLE,
+                  handler: googleLogin,
+                  token: id_token,
+                })
+              }
+            />
+
             <FacebookLogin
               key="facebook"
+              onError={this.handleError}
               onLogin={r =>
                 this.handleToken({
                   provider: FACEBOOK,
@@ -222,8 +264,4 @@ class Component extends React.Component<any, any> {
   }
 }
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(Component);
+export default compose(injectState, withRouter, withApi)(Component);

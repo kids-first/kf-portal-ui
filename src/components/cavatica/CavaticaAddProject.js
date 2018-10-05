@@ -9,9 +9,12 @@ import { ActionButton } from 'uikit/Button';
 import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import { CancelButton } from 'components/Modal/ui';
 import { injectState } from 'freactal';
-import { createProject, getBillingGroups } from 'services/cavatica';
+import { memoize } from 'services/utils';
+import { createProject, getBillingGroups, getUser } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
+import { WhiteButton, TealActionButton } from 'uikit/Button';
+import projectDescriptionPath from './projectDescription.md';
 
 const Container = styled(Row)`
   align-items: center;
@@ -21,15 +24,15 @@ const Container = styled(Row)`
   }
 `;
 
-const CreateButton = styled(NiceWhiteButton)`
-  text-transform: uppercase;
+const CreateButton = styled(WhiteButton)`
   font-size: 11.5px;
-  font-weight: normal;
-  color: ${({ theme }) => theme.tertiary};
   border-radius: 19px;
-  padding: 10px;
-  ${({ theme }) => theme.row};
-  cursor: pointer;
+
+  &:hover {
+    svg {
+      fill: ${({ theme }) => theme.white};
+    }
+  }
 `;
 
 const InputLabel = styled(Row)`
@@ -49,6 +52,7 @@ const InputLabel = styled(Row)`
 const AddIcon = styled(PlusIcon)`
   margin-top: 1px;
   margin-right: 4px;
+  fill: ${({ theme }) => theme.tertiary};
 `;
 
 const enhance = compose(
@@ -58,11 +62,30 @@ const enhance = compose(
   withState('addingProject', 'setAddingProject', false),
 );
 
+const getProjectDescriptionTemplate = memoize(() =>
+  fetch(projectDescriptionPath).then(res => res.text()),
+);
+
 const saveProject = async ({ projectName, onSuccess }) => {
-  const billingGroups = await getBillingGroups();
+  const USER_NAME_TEMPLATE_STRING = '<username>';
+  const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
+  const [billingGroups, descriptionTemplate, { username }] = await Promise.all([
+    getBillingGroups(),
+    getProjectDescriptionTemplate(),
+    getUser(),
+  ]);
+  const projectDescription = descriptionTemplate
+    .split(PROJECT_NAME_TEMPLATE_STRING)
+    .join(projectName)
+    .split(USER_NAME_TEMPLATE_STRING)
+    .join(username);
   if (billingGroups && billingGroups.length > 0) {
     const groupId = billingGroups[0].id;
-    createProject({ billing_group: groupId, name: projectName }).then(response => onSuccess());
+    createProject({
+      billing_group: groupId,
+      name: projectName,
+      description: projectDescription,
+    }).then(response => onSuccess(response));
   }
 };
 
@@ -73,6 +96,7 @@ const CavaticaAddProject = ({
   setProjectName,
   addingProject,
   setAddingProject,
+  setSelectedProject,
   ...props
 }) => (
   <Container>
@@ -90,29 +114,31 @@ const CavaticaAddProject = ({
         />
         <LoadingOnClick
           onClick={async () => {
-            await saveProject({ projectName, onSuccess: props.onSuccess });
+            await saveProject({
+              projectName,
+              onSuccess: ({ id }) => {
+                props.onSuccess();
+                setSelectedProject(id);
+              },
+            });
             setAddingProject(false);
             setProjectName('');
           }}
           render={({ loading, onClick }) => (
-            <ActionButton className="saveButton" disabled={loading} onClick={onClick}>
-              <span>Save</span>
-            </ActionButton>
+            <TealActionButton disabled={loading} onClick={onClick}>
+              Save
+            </TealActionButton>
           )}
         />
-        <CancelButton onClick={() => setAddingProject(false)}>Cancel</CancelButton>
+        <WhiteButton onClick={() => setAddingProject(false)}>Cancel</WhiteButton>
       </Fragment>
     ) : (
       <CreateButton onClick={() => setAddingProject(true)}>
-        <AddIcon width={12} height={12} fill={theme.tertiary} />
-        <div>Create a project</div>
+        <AddIcon width={12} height={12} />
+        Create a project
       </CreateButton>
     )}
   </Container>
 );
-
-// css={`
-
-// `}
 
 export default enhance(CavaticaAddProject);

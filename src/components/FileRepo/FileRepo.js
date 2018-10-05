@@ -16,7 +16,7 @@ import FileRepoSidebar from 'components/FileRepoSidebar';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
-import { Gen3UserProvider, getStudyIds } from 'services/gen3';
+import { Gen3UserProvider } from 'services/gen3';
 import DownloadIcon from 'icons/DownloadIcon';
 import translateSQON from 'common/translateSQONValue';
 import { arrangerProjectId } from 'common/injectGlobals';
@@ -59,7 +59,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
     translateSQONValue = translateSQON({
       sets: (state.loggedInUser || {}).sets || [],
     }),
-    userProjectIds = gen3User ? getStudyIds(gen3User) : [],
+    userProjectIds = gen3User ? Object.keys(gen3User.projects) : [],
     ...props
   }) => (
     <SQONURL
@@ -110,6 +110,12 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                   category: TRACKING_EVENTS.categories.fileRepo.dataTable,
                                   action: TRACKING_EVENTS.actions.query.clear,
                                 });
+                                trackFileRepoInteraction({
+                                  category: 'File Repo',
+                                  action: TRACKING_EVENTS.actions.query.abandoned,
+                                  label: 'cleared SQON',
+                                  value: 1,
+                                });
                               }}
                             />
                             {url.sqon &&
@@ -123,17 +129,11 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                         api={props.api}
                                         {...url}
                                         {...{ stats, disabled }}
-                                        css={`
-                                          flex: 1;
-                                        `}
                                       />
                                       <SaveQuery
                                         api={props.api}
                                         {...url}
                                         {...{ stats, disabled }}
-                                        css={`
-                                          flex: 1;
-                                        `}
                                       />
                                     </QuerySharingContainer>
                                   )}

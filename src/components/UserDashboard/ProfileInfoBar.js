@@ -2,11 +2,22 @@ import React from 'react';
 import Gravtar from 'uikit/Gravatar';
 import { Link } from 'react-router-dom';
 import EditButton from './EditButton';
+import styled from 'react-emotion';
 
 import SettingsButton from './SettingsButton';
 import CompletionWrapper from '../UserProfile/CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import { userProfileBackground } from '../UserProfile';
+
+import { H2 } from 'uikit/Headings';
+
+const UserLink = styled(Link)`
+  line-height: 33px;
+  display: block;
+  text-align: center;
+  margin-bottom: 24px;
+  color: ${({ theme }) => theme.white};
+`;
 
 export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
   <div
@@ -41,37 +52,26 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
       css={`
         margin-top: 20px;
         margin-bottom: 43px;
-        width: 290px;
       `}
     >
       <div>
         <span
           css={`
             font-weight: 500;
+            margin-left: 30px;
           `}
         >
           {(percentageFilled * 100).toFixed(0)}%
         </span>{' '}
-        Complete
       </div>
     </RoleIconButton>
     <div>
-      <Link
-        to={`/user/${loggedInUser.egoId}#aboutMe`}
-        css={`
-          text-decoration: underline;
-          text-align: center;
-          color: #ffffff;
-          font-size: 28px;
-          font-weight: 500;
-          line-height: 1.11;
-          letter-spacing: 0.4px;
-          margin-bottom: 24px;
-        `}
-      >
+      <UserLink to={`/user/${loggedInUser.egoId}#aboutMe`}>
         {loggedInUser.title && loggedInUser.title.replace(/^./, m => m.toUpperCase()) + '. '}
-        {loggedInUser.firstName} {loggedInUser.lastName}
-      </Link>
+        <H2 color={theme.white}>
+          {loggedInUser.firstName} {loggedInUser.lastName}
+        </H2>
+      </UserLink>
       {[
         loggedInUser.jobTitle && (
           <span
@@ -102,8 +102,8 @@ export default ({ theme, percentageFilled, loggedInUser, profileColors }) => (
         display: flex;
       `}
     >
-      <EditButton egoId={loggedInUser.egoId} theme={theme} />
-      <SettingsButton egoId={loggedInUser.egoId} theme={theme} />
+      <EditButton egoId={loggedInUser.egoId} />
+      <SettingsButton egoId={loggedInUser.egoId} />
     </div>
   </div>
 );

@@ -3,7 +3,6 @@ import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import { HollowButton, ActionButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
@@ -18,20 +17,23 @@ import Component from 'react-component-component';
 import { Span, Paragraph, Div } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
+import { TableHeader } from 'uikit/Table';
 
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import Gen3ConnectionDetails from 'components/UserProfile/Gen3ConnectionDetails';
 import LoadingOnClick from 'components/LoadingOnClick';
 import { connectGen3, getAccessToken } from 'services/gen3';
 import { withApi } from 'services/api';
+import { Gen3UserProvider } from 'services/gen3';
 
 import gen3Logo from 'assets/logo-gen3-data-commons.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon } from './ui';
+import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon, ConnectedText } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
-import { applyDefaultStyles } from '../../../uikit/Core';
+import { applyDefaultStyles } from 'uikit/Core';
+import { WhiteButton, LargeTealActionButton } from 'uikit/Button';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -46,7 +48,8 @@ export const LoadingSpinner = ({ width = 11, height = 11 }) => (
 );
 
 const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...props }) => (
-  <HollowButton
+  <WhiteButton
+    mx="10px"
     {...props}
     onClick={() => {
       trackUserInteraction({
@@ -58,7 +61,7 @@ const ConnectedButton = withTheme(({ onClick, theme, action, type, chilren, ...p
     }}
   >
     {props.children}
-  </HollowButton>
+  </WhiteButton>
 ));
 
 const Gen3DetailButton = styled(ConnectedButton)`
@@ -76,11 +79,11 @@ const ConnectButton = ({ ...props }) => {
   const RightArrow = applyDefaultStyles(RightIcon);
 
   return (
-    <ActionButton {...props} maxWidth={160}>
+    <LargeTealActionButton {...props} maxWidth={160}>
       <ExternalLink size={12} position="relative" right={4} />
       Connect
       <RightArrow size={14} position="relative" left={10} />
-    </ActionButton>
+    </LargeTealActionButton>
   );
 };
 
@@ -123,13 +126,14 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
     <Column>
       <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
-        <Span> Connected</Span>
+        <ConnectedText> Connected</ConnectedText>
       </Div>
       <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
           <PencilIcon />
           Edit
         </ConnectedButton>
+
         <LoadingOnClick
           onClick={onRemove}
           render={({ onClick, loading }) => (
@@ -155,9 +159,9 @@ const UserIntegrations = withApi(
         <IntegrationTable>
           <thead>
             <tr>
-              <th>Service</th>
-              <th>Purpose</th>
-              <th>Integrate</th>
+              <TableHeader p="10px">Service</TableHeader>
+              <TableHeader p="10px">Purpose</TableHeader>
+              <TableHeader p="10px">Integrate</TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -179,58 +183,69 @@ const UserIntegrations = withApi(
                     {({ state: { loading }, setState }) => {
                       return loading ? (
                         <LoadingSpinner />
-                      ) : isValidKey(integrationTokens[GEN3]) ? (
-                        gen3Status({
-                          theme,
-                          onView: () =>
-                            effects.setModal({
-                              title: 'Your Authorized Studies',
-                              component: (
-                                <Gen3ConnectionDetails
-                                  onComplete={effects.unsetModal}
-                                  onCancel={effects.unsetModal}
-                                />
-                              ),
-                            }),
-                          onRemove: async () => {
-                            await deleteGen3Token(api);
-                            effects.setIntegrationToken(GEN3, null);
-                          },
-                        })
                       ) : (
-                        <ConnectButton
-                          onClick={() => {
-                            setState({ loading: true });
-                            connectGen3(api)
-                              .then(() => getAccessToken(api))
-                              .then(token => {
-                                effects.setIntegrationToken(GEN3, token);
-                                setState({ loading: false });
-                                effects.setToast({
-                                  id: `${Date.now()}`,
-                                  action: 'success',
-                                  component: (
-                                    <Row>
-                                      Controlled dataset access sucessfully connected through Gen3
-                                    </Row>
-                                  ),
-                                });
-                                trackUserInteraction({
-                                  category: TRACKING_EVENTS.categories.user.profile,
-                                  action: TRACKING_EVENTS.actions.integration.connected,
-                                  label: TRACKING_EVENTS.gen3,
-                                });
+                        <Gen3UserProvider
+                          render={({ gen3User, loading: loadingGen3User }) =>
+                            loadingGen3User ? (
+                              <LoadingSpinner />
+                            ) : gen3User ? (
+                              gen3Status({
+                                theme,
+                                onView: () =>
+                                  effects.setModal({
+                                    title: 'Your Authorized Studies',
+                                    component: (
+                                      <Gen3ConnectionDetails
+                                        onComplete={effects.unsetModal}
+                                        onCancel={effects.unsetModal}
+                                      />
+                                    ),
+                                  }),
+                                onRemove: async () => {
+                                  setState({ loading: true });
+                                  await deleteGen3Token(api);
+                                  effects.setIntegrationToken(GEN3, null);
+                                  setState({ loading: false });
+                                },
                               })
-                              .catch(err => {
-                                console.log('err: ', err);
-                                setState({ loading: false });
-                                trackUserInteraction({
-                                  category: TRACKING_EVENTS.categories.user.profile,
-                                  action: TRACKING_EVENTS.actions.integration.failed,
-                                  label: TRACKING_EVENTS.gen3,
-                                });
-                              });
-                          }}
+                            ) : (
+                              <ConnectButton
+                                onClick={() => {
+                                  setState({ loading: true });
+                                  connectGen3(api)
+                                    .then(() => getAccessToken(api))
+                                    .then(token => {
+                                      effects.setIntegrationToken(GEN3, token);
+                                      setState({ loading: false });
+                                      effects.setToast({
+                                        id: `${Date.now()}`,
+                                        action: 'success',
+                                        component: (
+                                          <Row>
+                                            Controlled dataset access sucessfully connected through
+                                            Gen3
+                                          </Row>
+                                        ),
+                                      });
+                                      trackUserInteraction({
+                                        category: TRACKING_EVENTS.categories.user.profile,
+                                        action: TRACKING_EVENTS.actions.integration.connected,
+                                        label: TRACKING_EVENTS.labels.gen3,
+                                      });
+                                    })
+                                    .catch(err => {
+                                      console.log('err: ', err);
+                                      setState({ loading: false });
+                                      trackUserInteraction({
+                                        category: TRACKING_EVENTS.categories.user.profile,
+                                        action: TRACKING_EVENTS.actions.integration.failed,
+                                        label: TRACKING_EVENTS.labels.gen3,
+                                      });
+                                    });
+                                }}
+                              />
+                            )
+                          }
                         />
                       );
                     }}

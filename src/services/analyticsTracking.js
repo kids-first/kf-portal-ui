@@ -2,7 +2,7 @@ import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
 import { addInfo as addUserSnapInfo } from './usersnap';
 import history from './history';
-import { merge } from 'lodash';
+import { merge, isObject } from 'lodash';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
 if (devDebug && devTrackingID) {
@@ -13,7 +13,7 @@ let GAState = {
   userId: null, //int
   userRoles: null, //string
   clientId: null, //string
-  egoGroups: null, // array?
+  egoGroups: null, // array?,
 };
 let timingsStorage = window.localStorage;
 
@@ -62,6 +62,8 @@ export const TRACKING_EVENTS = {
   },
   labels: {
     joinProcess: 'Join Process',
+    gen3: 'Gen3',
+    cavatica: 'Cavatica',
   },
   timings: {
     modal: 'MODAL__',
@@ -83,6 +85,11 @@ export const initAnalyticsTracking = () => {
   });
 };
 
+export const setUserDimension = (dimension, val) => {
+  const serialized = isObject(val) ? JSON.stringify(val) : val;
+  ReactGA.set({ [dimension]: serialized });
+};
+
 const setUserDimensions = (userId, role, groups) => {
   ReactGA.set({ clientId: GAState.clientId });
   if (userId || GAState.userId) {
@@ -97,7 +104,7 @@ const setUserDimensions = (userId, role, groups) => {
   }
 
   if ((groups && groups.length) || (GAState.egoGroups && GAState.egoGroups.length)) {
-    let _groups = JSON.stringify({ egoGroups: groups || GAState.egoGroups });
+    let _groups = JSON.stringify({ egoGroups: groups ? groups[0] : GAState.egoGroups[0] });
     // GA Custom Dimension:index 4: egoGroup (pulled from ego jwt)
     // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
     ReactGA.set({ dimension4: _groups });
@@ -120,7 +127,11 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGr
 };
 
 export const trackUserInteraction = async ({ category, action, label }) => {
-  setUserDimensions();
+  setUserDimensions(
+    GAState.userId,
+    GAState.userRoles ? GAState.userRoles[0] : null,
+    GAState.egoGroups,
+  );
   ReactGA.event({ category, action, label });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
@@ -154,8 +165,8 @@ export const trackUserInteraction = async ({ category, action, label }) => {
       break;
     case TRACKING_EVENTS.categories.fileRepo.actionsSidebar:
       if (
-        TRACKING_EVENTS.actions.download.report ||
-        'Download Manifest ' + TRACKING_EVENTS.actions.click
+        action === TRACKING_EVENTS.actions.download.report ||
+        action === `${TRACKING_EVENTS.actions.download.manifest} ${TRACKING_EVENTS.actions.click}`
       ) {
         stopAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload, {
           category: 'File Acquisition',
@@ -222,7 +233,11 @@ export const trackTiming = async eventData => {
 };
 
 export const trackPageView = (page, options = {}) => {
-  setUserDimensions();
+  setUserDimensions(
+    GAState.userId,
+    GAState.userRoles ? GAState.userRoles[0] : null,
+    GAState.egoGroups,
+  );
   ReactGA.set({
     page,
     ...options,

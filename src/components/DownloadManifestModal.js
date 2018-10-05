@@ -17,6 +17,7 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
 import Row from 'uikit/Row';
+import { TealActionButton } from '../uikit/Button';
 
 const wait = (s = 1) => new Promise(r => setTimeout(r, s * 1000));
 
@@ -148,7 +149,8 @@ export const DownloadManifestModalFooter = compose(withTheme)(
   }) => (
     <ModalFooter showSubmit={false}>
       <FooterContentContainer center>
-        <GenerateManifestSet
+        {/* // NOTE: feature disabled temporarily, likely to return so we are leaving this here
+          <GenerateManifestSet
           {...{
             sqon,
             projectId,
@@ -158,12 +160,12 @@ export const DownloadManifestModalFooter = compose(withTheme)(
             setId,
             setSetId,
           }}
-        />
+        /> */}
       </FooterContentContainer>
       <LoadingOnClick
         onClick={onDownloadClick}
         render={({ onClick, loading, finalLoading = loading || downloadLoading }) => (
-          <ModalActionButton
+          <TealActionButton
             {...{
               onClick,
               className: `${css`
@@ -183,7 +185,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
               )}
             />
             <Trans>Download Manifest</Trans>
-          </ModalActionButton>
+          </TealActionButton>
         )}
       />
     </ModalFooter>

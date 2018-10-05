@@ -9,6 +9,16 @@ import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
+import { css } from 'emotion';
+
+const montserrat = css`
+  font-family: 'Montserrat', sans-serif;
+`;
+
+const arrangerValueText = css`
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+`;
 
 export const ArrangerContainer = styled(Row)`
   .ReactTable .rt-thead .rt-th.-sort-desc,
@@ -27,6 +37,7 @@ export const ArrangerContainer = styled(Row)`
   }
 
   & .tableToolbar {
+    font-size: 13px;
     color: ${({ theme }) => theme.greyScale9};
     & .group .dropDownButtonContent {
       color: ${({ theme }) => theme.greyScale9};
@@ -45,6 +56,32 @@ export const ArrangerContainer = styled(Row)`
 
   div.sqon-view {
     flex-grow: 1;
+  }
+
+  & .aggregation-card {
+    .title-wrapper .title {
+      ${montserrat};
+      font-size: 14px;
+      font-weight: 700;
+      color: ${({ theme }) => theme.secondary};
+    }
+    .bucket-item {
+      .bucket-link {
+        ${arrangerValueText};
+        color: ${({ theme }) => theme.greyScale1};
+      }
+    }
+  }
+
+  & .ReactTable {
+    & .rt-thead .rt-tr .rt-th {
+      ${montserrat};
+      font-size: 13px;
+    }
+    & .rt-tbody .rt-tl .rt-td {
+      ${arrangerValueText};
+      color: ${({ theme }) => theme.greyScale1};
+    }
   }
 `;
 

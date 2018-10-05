@@ -21,6 +21,7 @@ if (personaApiOverride) {
 }
 
 export const shortUrlApi = process.env.REACT_APP_SHORTURL_API;
+export const shortUrlResolveRoot = process.env.REACT_APP_SHORTURL_RESOLVE_ROOT;
 
 export const arrangerApiRoot = process.env.REACT_APP_ARRANGER_API;
 
@@ -34,7 +35,7 @@ export const cavaticaWebRoot: string = process.env.REACT_APP_CAVATICA_WEB;
 export const cavaticaWebRegistrationRoot: string = process.env.REACT_APP_CAVATICA_WEB_REGISTRATION;
 
 export const gen3ApiRoot: string = process.env.REACT_APP_GEN3_API;
-export const gen3WebRoot: string = process.env.REACT_APP_GEN3_WEB;
+export const gen3WebRoot: string = process.env.REACT_APP_GEN3_WEB || 'http://www.gen3.org/';
 
 export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
 export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
@@ -70,3 +71,6 @@ export const gen3OauthRedirect: string = encodeURIComponent(
   `${window.location.origin}/gen3_redirect/`,
 );
 export const gen3IntegrationRoot: string = process.env.REACT_APP_GEN3_INTEGRATION_ROOT || '';
+export const reactApiDataVersionApi: string = process.env.REACT_APP_DATA_VERSION_API || null;
+export const reactApiDataVersionFallback: string =
+  process.env.REACT_APP_DATA_VERSION_FALLBACK || '';

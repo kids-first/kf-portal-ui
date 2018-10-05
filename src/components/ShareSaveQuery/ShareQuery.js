@@ -10,11 +10,12 @@ import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
 import Tooltip from 'uikit/Tooltip';
-import { arrangerApiRoot } from 'common/injectGlobals';
+import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
-import { ButtonContainer, CustomLightButotn } from './ui';
+import { ButtonContainer, CustomLightButton } from './ui';
+import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
 const trackQueryShare = channel => {
@@ -45,14 +46,14 @@ let ItemRow = styled('div')`
 
 export default injectState(
   class extends React.Component {
-    state = { link: null, copied: false, error: null };
+    state = { link: null, copied: false, error: null, open: false };
 
     share = () => {
       let { stats, sqon, api, state: { loggedInUser } } = this.props;
       shortenApi({ stats, sqon, loggedInUser, api, sharedPublicly: true })
         .then(data => {
           this.setState({
-            link: urlJoin(arrangerApiRoot, 's', data.id),
+            link: urlJoin(shortUrlResolveRoot, data.id),
           });
         })
         .catch(error => {
@@ -61,17 +62,28 @@ export default injectState(
     };
 
     render() {
-      const { className = '', disabled } = this.props;
+      const { disabled } = this.props;
       return (
-        <ButtonContainer className={className}>
-          <CustomLightButotn disabled={disabled} onClick={disabled ? () => {} : this.share}>
+        <ButtonContainer>
+          <WhiteButton
+            disabled={disabled}
+            onClick={
+              disabled
+                ? () => {}
+                : () => {
+                    this.setState({ open: true });
+                    this.share();
+                  }
+            }
+          >
             <Tooltip
               position="bottom"
-              trigger="click"
-              onRequestClose={() =>
+              open={this.state.open}
+              onRequestClose={() => {
+                this.setState({ open: false });
                 // after fadeout transition finishes, clear copy state
-                setTimeout(() => this.setState({ copied: false }), 1000)
-              }
+                setTimeout(() => this.setState({ copied: false }), 1000);
+              }}
               interactive
               html={
                 <div
@@ -164,7 +176,7 @@ export default injectState(
             >
               <ShareIcon />&nbsp;<Trans>share</Trans>
             </Tooltip>
-          </CustomLightButotn>
+          </WhiteButton>
         </ButtonContainer>
       );
     }

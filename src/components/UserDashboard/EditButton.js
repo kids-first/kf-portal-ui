@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PencilIcon from 'react-icons/lib/fa/pencil';
+import { WhiteButton } from '../../uikit/Button';
 
 const EditButton = ({ egoId, theme, ...props }) => (
   <Link
@@ -8,19 +9,12 @@ const EditButton = ({ egoId, theme, ...props }) => (
       pathname: `/user/${egoId}`,
       hash: '#aboutMe',
     }}
-    css={`
-      ${theme.hollowButton};
-      text-transform: uppercase;
-      font-weight: 500;
-    `}
     {...props}
+    style={{ textDecoration: 'none' }}
   >
-    <PencilIcon
-      css={`
-        padding-right: 5px;
-      `}
-    />{' '}
-    Edit Profile
+    <WhiteButton mx="4px">
+      <PencilIcon size={12} className="icon" /> Edit Profile
+    </WhiteButton>
   </Link>
 );
 

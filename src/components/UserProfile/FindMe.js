@@ -7,20 +7,22 @@ import { SocialIcon } from 'react-social-icons';
 import { withTheme } from 'emotion-theming';
 
 import { kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
-import { EditButton, H2, H4, SaveButton, StyledSection, ClickToAdd, InterestsCard } from './ui';
+import { EditButton, StyledSection, ClickToAdd, InterestsCard, CardHeader } from './ui';
 
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
 import { Flex } from 'uikit/Core';
-import { HollowButton } from 'uikit/Button';
 import ExternalLink from 'uikit/ExternalLink';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
+import ErrorIcon from 'icons/ErrorIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+import { H4 } from 'uikit/Headings';
 
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
+import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
 const StyledField = styled(Field)`
   ${({ theme }) => theme.input};
@@ -36,6 +38,13 @@ const StyledLabel = styled('label')`
   letter-spacing: normal;
   text-align: left;
   color: ${({ theme }) => theme.greyScale1};
+  margin-left: 40px;
+`;
+
+const ClearIcon = styled(ErrorIcon)`
+  position: absolute;
+  top: 8px;
+  right: 0;
 `;
 
 const transformURL = value => {
@@ -68,6 +77,20 @@ const SocialLinksSchema = Yup.object().shape({
   orchid: Yup.string().trim(),
 });
 
+const List = styled('ul')`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const ListItem = styled('li')`
+  display: flex;
+  flex-direction: ${({ isEditing }) => (isEditing ? 'column' : 'row')};
+  padding: 5px 0 5px 0;
+  align-items: ${({ isEditing }) => (isEditing ? 'auto' : 'center')};
+  ${({ theme, isEditing }) => !isEditing && `border-bottom: ${theme.greyScale4} 1px solid;`};
+`;
+
 const socialItems = {
   website: {
     icon: (
@@ -79,8 +102,8 @@ const socialItems = {
         `}
       />
     ),
-    name: 'Website URL',
-    placeholder: 'eg. kidsfirstdrc.org',
+    name: 'Website URL:',
+    placeholder: 'e.g. kidsfirstdrc.org',
     type: 'text',
   },
   googleScholarId: {
@@ -93,8 +116,8 @@ const socialItems = {
         `}
       />
     ),
-    name: 'Google Scholar Id URL',
-    placeholder: 'eg. e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
+    name: 'Google Scholar URL:',
+    placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
     type: 'text',
   },
   linkedin: {
@@ -107,28 +130,28 @@ const socialItems = {
         `}
       />
     ),
-    name: 'LinkedIn URL',
+    name: 'LinkedIn URL:',
     placeholder: 'e.g. linkedin.com/in/acresnick',
     type: 'text',
   },
   facebook: {
     icon: <SocialIcon url={kfFacebook} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Facebook URL',
+    name: 'Facebook URL:',
     placeholder: 'e.g. facebook.com/kidsfirstDRC',
     type: 'text',
   },
   twitter: {
     icon: <SocialIcon url={kfTwitter} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Twitter handle/username',
-    placeholder: 'e.g. @simonSci',
+    name: 'Twitter handle/username:',
+    placeholder: 'e.g. @kidsfirstDRC',
     type: 'text',
     href: v => `https://twitter.com/${v}`,
     linkText: v => `@${v}`,
   },
   github: {
     icon: <SocialIcon url={kfGithub} style={{ width: 28, height: 28, margin: '5px 10px 0 0' }} />,
-    name: 'Github username',
-    placeholder: 'e.g. simonscientist',
+    name: 'Github username:',
+    placeholder: 'e.g. kids-first',
     type: 'text',
     href: v => `https://github.com/${v}`,
   },
@@ -143,16 +166,46 @@ const socialItems = {
         `}
       />
     ),
-    name: 'ORCHID ID',
+    name: 'ORCID ID:',
     placeholder: 'e.g. 0000-0003-0436-4189',
     type: 'text',
     href: v => `https://orcid.org/${v}`,
   },
 };
 
+const ActionButtons = ({ handleReset, handleIsEditing, handleSubmit, errors, ...rest }) => (
+  <Flex {...rest} justifyContent="flex-end">
+    <WhiteButton
+      mx="10px"
+      onClick={() => {
+        handleReset();
+        handleIsEditing({ value: false });
+      }}
+    >
+      Cancel
+    </WhiteButton>
+    <Tooltip
+      position="bottom"
+      html="Please fix errors before saving"
+      open={!!Object.keys(errors || {}).length}
+    >
+      <TealActionButton
+        disabled={!!Object.keys(errors || {}).length}
+        onClick={async e => {
+          handleSubmit(e);
+          handleIsEditing({ value: false, type: TRACKING_EVENTS.actions.save });
+        }}
+      >
+        Save
+      </TealActionButton>
+    </Tooltip>
+  </Flex>
+);
+
 export default compose(
   withTheme,
   withState('isEditing', 'setIsEditing', false),
+  withState('currentField', 'setCurrentField', null),
   withFormik({
     enableReinitialize: true,
     mapPropsToValues: ({ profile }) => {
@@ -186,6 +239,10 @@ export default compose(
       setIsEditing(value);
       trackProfileInteraction({ action: 'Find Me On', value, type });
     },
+    handleSetCurrentField: ({ setCurrentField, values, handleChange }) => (e, field) => {
+      handleChange(e);
+      setCurrentField(field);
+    },
   }),
 )(
   ({
@@ -202,11 +259,15 @@ export default compose(
     submitForm,
     handleSubmit,
     theme,
+    setFieldValue,
+    handleSetCurrentField,
+    currentField,
+    setCurrentField,
   }) => (
-    <InterestsCard p={3} ml={4}>
+    <InterestsCard p={3}>
       <Fragment>
         <Form>
-          <H2>
+          <CardHeader>
             Find me on
             {canEdit &&
               (!isEditing ? (
@@ -216,73 +277,45 @@ export default compose(
                   }}
                 />
               ) : (
-                <Flex>
-                  <HollowButton
-                    onClick={() => {
-                      handleReset();
-                      handleIsEditing({ value: false });
-                    }}
-                  >
-                    Cancel
-                  </HollowButton>
-                  <Tooltip
-                    position="bottom"
-                    html="Please fix errors before saving"
-                    open={!!Object.keys(errors || {}).length}
-                  >
-                    <SaveButton
-                      disabled={!!Object.keys(errors || {}).length}
-                      onClick={async e => {
-                        handleSubmit(e);
-                        handleIsEditing({ value: false, type: TRACKING_EVENTS.actions.save });
-                      }}
-                    >
-                      Save
-                    </SaveButton>
-                  </Tooltip>
-                </Flex>
+                <ActionButtons {...{ handleIsEditing, handleReset, handleSubmit, errors }} />
               ))}
-          </H2>
+          </CardHeader>
+
           <StyledSection>
             {canEdit &&
               !isEditing &&
               !Object.values(values).filter(Boolean).length && (
-                <H4>
-                  Add links to your personal channels such as Google Scholar, ORCHID, GitHub,
-                  LinkedIn, Twitter and Facebook.
-                </H4>
+                <Fragment>
+                  <H4 mt="29px">
+                    Add links to your personal channels such as Google Scholar, ORCID ID, GitHub,
+                    LinkedIn, Twitter and Facebook.
+                  </H4>
+                  <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
+                </Fragment>
               )}
-            <ul
-              css={`
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-              `}
-            >
+
+            <List>
               {Object.entries(socialItems)
                 .filter(([field]) => isEditing || values[field])
                 .map(([field, config]) => (
-                  <li
-                    key={field}
-                    css={`
-                      display: flex;
-                      flex-direction: ${isEditing ? 'column' : 'row'};
-                      padding: 5px 0 5px 0;
-                      ${!isEditing && `border-bottom: ${theme.greyScale4} 1px solid;`};
-                    `}
-                  >
+                  <ListItem key={field} isEditing={isEditing}>
                     {isEditing ? (
-                      <Row
-                        css={`
-                          align-items: center;
-                          padding-bottom: 5px;
-                        `}
-                      >
-                        {config.icon}
-                        <Column>
-                          <StyledLabel>{config.name}</StyledLabel>
+                      <Column pb="5px">
+                        <StyledLabel>{config.name}</StyledLabel>
+                        <Row position="relative">
+                          {config.icon}
+                          <ClearIcon
+                            fill="#6a6262"
+                            width="35px"
+                            height="18px"
+                            display={
+                              currentField === field && values[field] !== '' ? 'block' : 'none'
+                            }
+                            onClick={() => setFieldValue(field, '')}
+                          />
                           <Tooltip
                             position="left"
+                            style={{ flex: '1 1 auto' }}
                             html={(errors || {})[field]}
                             open={Object.keys(errors || {}).includes(field)}
                           >
@@ -299,10 +332,12 @@ export default compose(
                               placeholder={config.placeholder}
                               type={config.type}
                               value={values[field]}
+                              onClick={e => handleSetCurrentField(e, field)}
+                              onChange={e => handleSetCurrentField(e, field)}
                             />
                           </Tooltip>
-                        </Column>
-                      </Row>
+                        </Row>
+                      </Column>
                     ) : (
                       <Fragment>
                         {config.icon}
@@ -313,16 +348,17 @@ export default compose(
                         </ExternalLink>
                       </Fragment>
                     )}
-                  </li>
+                  </ListItem>
                 ))}
-            </ul>
+              {isEditing ? (
+                <ActionButtons
+                  {...{ handleIsEditing, handleReset, handleSubmit, errors }}
+                  mt={'20px'}
+                />
+              ) : null}
+            </List>
           </StyledSection>
         </Form>
-        {canEdit &&
-          !isEditing &&
-          !Object.values(values).filter(Boolean).length && (
-            <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
-          )}
       </Fragment>
     </InterestsCard>
   ),
