@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { injectState } from 'freactal';
 import { withRouter } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';

@@ -8,18 +8,10 @@ import styled from 'react-emotion';
 
 import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
-import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
 import Column from 'uikit/Column';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
-import ExternalLink from 'uikit/ExternalLink';
-import { H1, H2 } from '../../uikit/Headings';
-import { Paragraph } from '../../uikit/Core';
+import { H1 } from '../../uikit/Headings';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -68,7 +60,6 @@ export default compose(
             `}
           >
             <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-            <Notifications />
           </div>
         </Column>
         <div

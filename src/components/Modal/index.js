@@ -9,14 +9,7 @@ import LoadingOnClick from 'components/LoadingOnClick';
 import Spinner from 'react-spinkit';
 import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessage';
 
-import {
-  ModalFooterContainer,
-  ModalActionButton,
-  ModalFooterContent,
-  Modal,
-  ModalContent,
-  ModalTitle,
-} from './ui';
+import { ModalFooterContainer, ModalFooterContent, Modal, ModalContent, ModalTitle } from './ui';
 import { WhiteButton, TealActionButton } from '../../uikit/Button.js';
 
 const enhance = compose(withTheme, injectState);
