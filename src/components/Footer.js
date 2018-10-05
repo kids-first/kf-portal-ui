@@ -7,8 +7,9 @@ import { DataVersionProvider } from 'services/dataVersion';
 
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
+import Row from 'uikit/Row';
 
-export const footerHeight = '84px';
+export const footerHeight = '56px';
 
 const FooterLink = styled('a')`
   font-family: ${({ theme }) => theme.fonts.details};
@@ -18,7 +19,7 @@ const FooterLink = styled('a')`
   text-align: center;
   color: ${({ theme }) => theme.greyScale0};
   text-decoration: underline;
-  margin: 0 3px;
+  margin: 0 8px;
 `;
 
 const FooterContainer = styled('footer')`
@@ -38,10 +39,7 @@ const FooterContainer = styled('footer')`
   position: relative;
 `;
 
-const Details = styled('div')`
-  ${({ theme }) => theme.column};
-  ${({ theme }) => theme.center};
-`;
+const Details = styled(Row)``;
 
 const SocialIcons = styled('div')`
   position: absolute;
@@ -58,35 +56,32 @@ const SocialIcon = styled(({ width = 30, height = width, ...props }) => (
 const Footer = () => (
   <FooterContainer>
     <Details>
-      <div>
-        <FooterLink href={kfWebRoot} target="_blank">
-          <Trans>kidsfirstrdc.org</Trans>
-        </FooterLink>
-        {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
-          <Trans>About the Portal</Trans>
-        </FooterLink>
-        {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/policies')} target="_blank">
-          <Trans>Policies</Trans>
-        </FooterLink>
-        {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')} target="_blank">
-          <Trans>Support</Trans>
-        </FooterLink>
-        {' | '}
-        <FooterLink href={urlJoin(kfWebRoot, '/contact')} target="_blank">
-          <Trans>Contact</Trans>
-        </FooterLink>
-      </div>
-      <div>
-        <Trans>UI:</Trans> {UI_VERSION}
-        {', '}
-        <Trans>Data Release: </Trans>
-        <DataVersionProvider
-          render={({ version }) => <Trans i18nKey="dataReleaseVersion">{version}</Trans>}
-        />
-      </div>
+      <FooterLink href={kfWebRoot} target="_blank">
+        <Trans>kidsfirstrdc.org</Trans>
+      </FooterLink>
+      {' | '}
+      <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
+        <Trans>About the Portal</Trans>
+      </FooterLink>
+      {' | '}
+      <FooterLink href={urlJoin(kfWebRoot, '/policies')} target="_blank">
+        <Trans>Policies</Trans>
+      </FooterLink>
+      {' | '}
+      <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')} target="_blank">
+        <Trans>Support</Trans>
+      </FooterLink>
+      {' | '}
+      <FooterLink href={urlJoin(kfWebRoot, '/contact')} target="_blank">
+        <Trans>Contact</Trans>
+      </FooterLink>
+      {' | '}
+      <Trans>UI:</Trans> {UI_VERSION}
+      {', '}
+      <Trans>Data Release: </Trans>
+      <DataVersionProvider
+        render={({ version }) => <Trans i18nKey="dataReleaseVersion">{version}</Trans>}
+      />
     </Details>
     <SocialIcons>
       <Trans>Follow Us</Trans>
