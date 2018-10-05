@@ -51,6 +51,46 @@ const customTableTypes = {
 
 const FileRepoContent = compose(withTheme)(
   ({ url, translateSQONValue, theme, userProjectIds, loadingGen3User, arrangerProps }) => {
+    const onSqonClear = arrangerProps => args => {
+      trackFileRepoInteraction({
+        category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+        action: TRACKING_EVENTS.actions.query.clear,
+      });
+      trackFileRepoInteraction({
+        category: 'File Repo',
+        action: TRACKING_EVENTS.actions.query.abandoned,
+        label: 'cleared SQON',
+        value: 1,
+      });
+      if (arrangerProps.onClear) {
+        return arrangerProps.onClear(args);
+      }
+    };
+
+    const onTableFilterChange = arrangerProps => val => {
+      if (val !== '') {
+        trackFileRepoInteraction({
+          category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+          action: TRACKING_EVENTS.actions.filter,
+          label: val,
+        });
+      }
+      if (arrangerProps.onFilterChange) {
+        arrangerProps.onFilterChange(val);
+      }
+    };
+
+    const onTableExport = arrangerProps => ({ files, ...rest }) => {
+      trackFileRepoInteraction({
+        category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+        action: 'Export TSV',
+        label: files,
+      });
+      if (arrangerProps.onTableExport) {
+        arrangerProps.onTableExport({ files, ...rest });
+      }
+    };
+
     const selectionSQON = arrangerProps.selectedTableRows.length
       ? replaceSQON({
           op: 'and',
@@ -76,18 +116,7 @@ const FileRepoContent = compose(withTheme)(
                 {...arrangerProps}
                 {...url}
                 {...{ translateSQONValue }}
-                onClear={() => {
-                  trackFileRepoInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                    action: TRACKING_EVENTS.actions.query.clear,
-                  });
-                  trackFileRepoInteraction({
-                    category: 'File Repo',
-                    action: TRACKING_EVENTS.actions.query.abandoned,
-                    label: 'cleared SQON',
-                    value: 1,
-                  });
-                }}
+                onClear={onSqonClear(arrangerProps)}
               />
               {url.sqon &&
                 Object.keys(url.sqon).length > 0 && (
@@ -125,25 +154,8 @@ const FileRepoContent = compose(withTheme)(
                 columnDropdownText="Columns"
                 fieldTypesForFilter={['text', 'keyword', 'id']}
                 maxPagesOptions={5}
-                onFilterChange={val => {
-                  if (val !== '') {
-                    trackFileRepoInteraction({
-                      category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                      action: TRACKING_EVENTS.actions.filter,
-                      label: val,
-                    });
-                  }
-                  if (arrangerProps.onFilterChange) {
-                    arrangerProps.onFilterChange(val);
-                  }
-                }}
-                onTableExport={({ files }) => {
-                  trackFileRepoInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                    action: 'Export TSV',
-                    label: files,
-                  });
-                }}
+                onFilterChange={onTableFilterChange(arrangerProps)}
+                onTableExport={onTableExport(arrangerProps)}
                 exportTSVText={
                   <React.Fragment>
                     <DownloadIcon
