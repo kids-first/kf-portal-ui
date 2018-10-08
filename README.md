@@ -1,3 +1,9 @@
+<p align="center">
+  <a herf="https://github.com/kids-first/kf-portal-ui/blob/master/LICENSE"><img src="https://img.shields.io/github/license/kids-first/kf-portal-ui.svg?style=for-the-badge"></a>
+  <a href="https://circleci.com/gh/kids-first/kf-portal-ui"><img src="https://img.shields.io/circleci/project/github/kids-first/kf-portal-ui/master.svg?style=for-the-badge"></a>
+  <a href="https://app.codacy.com/app/kids-first/kf-portal-ui/dashboard"><img src="https://img.shields.io/codacy/grade/1b50c2125fb34caa937e5144b5da56ad/master.svg?style=for-the-badge"></a>
+</p>
+
 # kf-portal-ui
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
