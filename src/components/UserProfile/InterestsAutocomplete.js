@@ -91,12 +91,10 @@ const InterestsAutocomplete = compose(
     },
     onChange: val => {
       const newInterest = val.toLowerCase().trim();
-      console.log('ON CHANGE', val, 'interests', interests, 'new interest', newInterest);
-
-      if (!newInterest === '') {
+      if (newInterest !== '') {
+        console.log('setting new interest', [...new Set([...interests, newInterest])]);
         setInterests([...new Set([...interests, newInterest])]);
       }
-      console.log('interests after change', interests);
       setInputValue('');
     },
   })),
