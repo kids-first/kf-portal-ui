@@ -1,5 +1,5 @@
 import React from 'react';
-import { debounce, get, toLower } from 'lodash';
+import { debounce, get } from 'lodash';
 import { compose, withProps, withPropsOnChange, withState } from 'recompose';
 import styled from 'react-emotion';
 import Downshift from 'downshift';
@@ -78,19 +78,25 @@ const InterestsAutocomplete = compose(
   withPropsOnChange(['api'], ({ api, setSuggestions }) => ({
     getSuggestions: debounce(async filter => {
       const suggestions = await getTags(api)({ filter, size: 5 });
+      console.log('suggestions', suggestions);
       setSuggestions(get(suggestions, 'values', []).map(x => x.value) || []);
     }, 300),
   })),
   withProps(({ interests, getSuggestions, setInputValue, setInterests }) => ({
     onInputValueChange: val => {
-      setInputValue(val);
-      getSuggestions(val);
+      console.log('INPUT VAL CHANGE', val, 'interests', interests);
+      const interest = val.trim();
+      setInputValue(interest);
+      getSuggestions(interest);
     },
     onChange: val => {
       const newInterest = val.toLowerCase().trim();
+      console.log('ON CHANGE', val, 'interests', interests, 'new interest', newInterest);
+
       if (!newInterest === '') {
         setInterests([...new Set([...interests, newInterest])]);
       }
+      console.log('interests after change', interests);
       setInputValue('');
     },
   })),
