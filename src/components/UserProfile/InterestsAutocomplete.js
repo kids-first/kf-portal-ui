@@ -6,6 +6,7 @@ import Downshift from 'downshift';
 import { Trans } from 'react-i18next';
 import TextHighlight from '@arranger/components/dist/TextHighlight';
 
+import { titleCase } from 'common/displayFormatters';
 import { withApi } from 'services/api';
 import { getTags } from 'services/profiles';
 import SearchIcon from '../../icons/SearchIcon';
@@ -85,7 +86,6 @@ const InterestsAutocomplete = compose(
   })),
   withProps(({ interests, getSuggestions, setInputValue, setInterests }) => ({
     onInputValueChange: val => {
-      // console.log('INPUT VAL CHANGE', val, 'interests', interests);
       setInputValue(val);
       getSuggestions(val);
     },
@@ -148,7 +148,7 @@ const InterestsAutocomplete = compose(
                   </DropdownItem>
                   {suggestions.map(item => (
                     <DropdownItem withHover key={item} {...getItemProps({ item })}>
-                      <TextHighlight highlightText={inputValue} content={item} />
+                      <TextHighlight highlightText={inputValue} content={titleCase(item)} />
                     </DropdownItem>
                   ))}
                 </Box>
@@ -159,7 +159,7 @@ const InterestsAutocomplete = compose(
                   withBorder={suggestions.length}
                   {...getItemProps({ item: inputValue })}
                 >
-                  <NewItem>{inputValue}</NewItem>
+                  <NewItem>{titleCase(inputValue)}</NewItem>
                   <DropdownLabel>
                     <Trans>(New Interest)</Trans>
                   </DropdownLabel>
