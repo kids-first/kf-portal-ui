@@ -39,8 +39,6 @@ const FooterContainer = styled('footer')`
   position: relative;
 `;
 
-const Details = styled(Row)``;
-
 const SocialIcons = styled('div')`
   position: absolute;
   right: 30px;
@@ -55,7 +53,7 @@ const SocialIcon = styled(({ width = 30, height = width, ...props }) => (
 
 const Footer = () => (
   <FooterContainer>
-    <Details>
+    <Row>
       <FooterLink href={kfWebRoot} target="_blank">
         <Trans>kidsfirstrdc.org</Trans>
       </FooterLink>
@@ -82,7 +80,7 @@ const Footer = () => (
       <DataVersionProvider
         render={({ version }) => <Trans i18nKey="dataReleaseVersion">{version}</Trans>}
       />
-    </Details>
+    </Row>
     <SocialIcons>
       <Trans>Follow Us</Trans>
       <SocialIcon url={kfFacebook} />
