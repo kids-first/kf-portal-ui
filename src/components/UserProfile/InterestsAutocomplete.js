@@ -76,11 +76,19 @@ const InterestsAutocomplete = compose(
   withApi,
   withState('inputValue', 'setInputValue', ''),
   withState('suggestions', 'setSuggestions', []),
-  withPropsOnChange(['api'], ({ api, setSuggestions, interests }) => ({
+  withPropsOnChange(['api', 'interests'], ({ api, setSuggestions, interests }) => ({
     getSuggestions: debounce(async filter => {
       const suggestions = await getTags(api)({ filter, size: 5 });
       const loweredSuggestions = [...new Set(suggestions.values.map(x => x.value.toLowerCase()))];
       const uniqueSuggestions = difference(loweredSuggestions, interests);
+      console.log(
+        'suggestions',
+        loweredSuggestions,
+        'interests',
+        interests,
+        'uniqueSuggestions',
+        uniqueSuggestions,
+      );
       setSuggestions(uniqueSuggestions || []);
     }, 300),
   })),
