@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@arranger/components": "0.5.1",
