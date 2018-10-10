@@ -12,11 +12,15 @@ const StyledCard = styled(Card)`
   margin: 15px 0 15px 40px;
   padding: 21px 29px 29px 27px;
   flex-direction: column;
+  min-height: 600px;
 
   & #twitter-timeline {
     width: 100%;
     height: 100%;
     padding-bottom: 66px;
+    & .timeline-Tweet-text {
+      color: red;
+    }
   }
 `;
 
