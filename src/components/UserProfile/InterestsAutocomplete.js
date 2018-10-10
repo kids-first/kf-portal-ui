@@ -81,14 +81,7 @@ const InterestsAutocomplete = compose(
       const suggestions = await getTags(api)({ filter, size: 5 });
       const loweredSuggestions = [...new Set(suggestions.values.map(x => x.value.toLowerCase()))];
       const uniqueSuggestions = difference(loweredSuggestions, interests);
-      console.log(
-        'suggestions',
-        loweredSuggestions,
-        'interests',
-        interests,
-        'uniqueSuggestions',
-        uniqueSuggestions,
-      );
+
       setSuggestions(uniqueSuggestions || []);
     }, 300),
   })),
