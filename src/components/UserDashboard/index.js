@@ -10,8 +10,8 @@ import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import Row from 'uikit/Row';
 import { H1 } from '../../uikit/Headings';
+import Row from 'uikit/Row';
 import TwitterBlock from './TwitterBlock';
 
 const UserDashboard = styled('div')`
