@@ -10,7 +10,7 @@ import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import Column from 'uikit/Column';
+import Row from 'uikit/Row';
 import { H1 } from '../../uikit/Headings';
 
 const UserDashboard = styled('div')`
@@ -52,16 +52,18 @@ export default compose(
         <H1 mb={'35px' /* On removing Beta Message change to 44px */}>
           Welcome, {loggedInUser.firstName}!
         </H1>
-        <Column>
+        <Row>
           <div
             css={`
               display: flex;
               overflow: hidden;
+              max-width: 50%;
             `}
           >
             <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
           </div>
-        </Column>
+          <div />
+        </Row>
         <div
           css={`
             margin-top: auto;
