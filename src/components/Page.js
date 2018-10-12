@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styled from 'react-emotion';
@@ -43,13 +43,15 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
 );
 
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
-  <Container>
-    <Head />
-    <ContentWrapper>
-      <Component {...props} />
-    </ContentWrapper>
+  <Fragment>
+    <Container>
+      <Head />
+      <ContentWrapper>
+        <Component {...props} />
+      </ContentWrapper>
+    </Container>
     <Foot />
-  </Container>
+  </Fragment>
 );
 
 export default Page;
