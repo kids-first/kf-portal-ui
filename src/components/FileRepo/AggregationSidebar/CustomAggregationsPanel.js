@@ -3,9 +3,10 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import Component from 'react-component-component';
+import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
-import { AggregationsList } from '@arranger/components/dist/Arranger';
+import { AggregationsList, QuickSearch } from '@arranger/components/dist/Arranger';
 import Query from '@arranger/components/dist/Query';
 
 import { CLINICAL_FILTERS, FILE_FILTERS } from './aggsConfig';
@@ -13,6 +14,17 @@ import { withApi } from 'services/api';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Span } from 'uikit/Core';
+import { FilterInput } from 'uikit/Input';
+import UploadIdsButton from './UploadIdsButton';
+
+const IdFilterContainer = styled(Column)`
+  margin-top: 0px;
+  margin-bottom: 10px;
+
+  .quick-search {
+    margin-bottom: 10px;
+  }
+`;
 
 const TabsRow = styled(({ className, ...props }) => (
   <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
@@ -54,6 +66,24 @@ const ShowIf = ({ condition, children, ...rest }) => (
   </div>
 );
 
+const FilterBox = compose(withTheme)(
+  ({ theme, setSQON, translateSQONValue, effects, state, ...props }) => (
+    <IdFilterContainer className="aggregation-card">
+      <QuickSearch
+        {...{ ...props, setSQON, translateSQONValue }}
+        InputComponent={FilterInput}
+        placeholder="Enter Identifiers"
+        LoadingIcon={
+          <Spinner fadeIn="none" name="circle" color="#a9adc0" style={{ width: 15, height: 15 }} />
+        }
+      />
+      <Row justifyContent="flex-end">
+        <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
+      </Row>
+    </IdFilterContainer>
+  ),
+);
+
 export default compose(injectState, withTheme, withApi)(
   ({
     api,
@@ -63,6 +93,11 @@ export default compose(injectState, withTheme, withApi)(
     onValueChange = () => {},
     projectId,
     graphqlField,
+    translateSQONValue,
+    theme,
+    state,
+    effects,
+    ...props
   }) => (
     <Query
       renderError
@@ -98,18 +133,35 @@ export default compose(injectState, withTheme, withApi)(
               type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
                 .type.name,
             }));
-          const renderAggsConfig = aggConfig =>
-            AggregationsList({
-              onValueChange: onValueChange,
-              setSQON: setSQON,
-              sqon,
-              projectId,
-              graphqlField,
-              api,
-              containerRef,
-              aggs: aggConfig,
-              debounceTime: 300,
-            });
+          const renderAggsConfig = aggConfig => (
+            <AggregationsList
+              {...{
+                onValueChange: onValueChange,
+                setSQON: setSQON,
+                sqon,
+                projectId,
+                graphqlField,
+                api,
+                containerRef,
+                aggs: aggConfig,
+                debounceTime: 300,
+                customItems: ({ aggs }) => [
+                  // {
+                  //   index: 2,
+                  //   component: () => (
+                  //     <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
+                  //   ),
+                  // },
+                  // {
+                  //   index: 3,
+                  //   component: () => (
+                  //     <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
+                  //   ),
+                  // },
+                ],
+              }}
+            />
+          );
           return (
             <Component initialState={{ selectedTab: 'CLINICAL' }}>
               {({ state: { selectedTab }, setState }) => (
@@ -129,6 +181,7 @@ export default compose(injectState, withTheme, withApi)(
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
                       {renderAggsConfig(extendAggsConfig(CLINICAL_FILTERS))}
                     </ShowIf>
+                    <FilterBox {...{ ...props, setSQON, translateSQONValue, effects, state }} />
                   </Column>
                 </Column>
               )}
