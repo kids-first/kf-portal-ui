@@ -100,48 +100,30 @@ const getClinicalDownload = type => ({ sqon, columns }) => () =>
         columns: findColumnsByField(
           [
             'kf_id',
+            'external_id',
             'family.father_id',
             'family.mother_id',
+            'family.family_id',
+            'family.external_id',
             'is_proband',
-            {
-              Header: 'Other Relationships',
-              field: 'family.family_compositions.family_members.kf_id',
-              type: 'list',
-              jsonPath:
-                '$.family.family_compositions.family_members.hits.edges[?(@.node.relationship!="mother" && @.node.relationship!="father")].node.kf_id',
-              query: `
-                family {
-                  family_compositions {
-                    hits {
-                      edges {
-                        node {
-                          family_members {
-                            hits {
-                              edges {
-                                node {
-                                  relationship
-                                  kf_id
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              `,
-            },
             'study.name',
+            'study.external_id',
             'gender',
             'race',
             'ethnicity',
-            'phenotype.hpo.hpo_ids',
-            'phenotype.hpo.negative_hpo_ids',
-            'diagnoses.age_at_event_days',
+            'phenotype.hpo.hpo_phenotype_observed',
+            'phenotype.hpo.hpo_phenotype_not_observed',
             'diagnoses.diagnosis',
+            'diagnoses.external_id',
+            'diagnoses.age_at_event_days',
             'diagnoses.diagnosis_category',
-            'diagnoses.tumor_location',
+            'diagnoses.idc_id_diagnosis',
+            'diagnoses.mondo_id_diagnosis',
+            'diagnoses.ncit_id_diagnosis',
+            'diagnoses.source_text_diagnosis',
+            'diagnoses.source_text_tumor_location',
+            'diagnoses.spatial_scriptor',
+            'diagnoses.uberon_id_tumor_location',
           ],
           columns,
         ),
