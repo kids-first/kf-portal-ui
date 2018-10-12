@@ -19,7 +19,6 @@ import UploadIdsButton from './UploadIdsButton';
 
 const IdFilterContainer = styled(Column)`
   margin-top: 0px;
-  margin-bottom: 10px;
 
   .quick-search {
     margin-bottom: 10px;
@@ -133,7 +132,7 @@ export default compose(injectState, withTheme, withApi)(
               type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
                 .type.name,
             }));
-          const renderAggsConfig = aggConfig => (
+          const renderAggsConfig = ({ aggConfig }) => (
             <AggregationsList
               {...{
                 onValueChange: onValueChange,
@@ -145,19 +144,13 @@ export default compose(injectState, withTheme, withApi)(
                 containerRef,
                 aggs: aggConfig,
                 debounceTime: 300,
-                customItems: ({ aggs }) => [
-                  // {
-                  //   index: 2,
-                  //   component: () => (
-                  //     <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
-                  //   ),
-                  // },
-                  // {
-                  //   index: 3,
-                  //   component: () => (
-                  //     <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
-                  //   ),
-                  // },
+                getCustomItems: ({ aggs }) => [
+                  {
+                    index: aggs.length,
+                    component: () => (
+                      <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
+                    ),
+                  },
                 ],
               }}
             />
@@ -176,12 +169,11 @@ export default compose(injectState, withTheme, withApi)(
                   />
                   <Column scrollY innerRef={containerRef}>
                     <ShowIf condition={selectedTab === 'FILE'}>
-                      {renderAggsConfig(extendAggsConfig(FILE_FILTERS))}
+                      {renderAggsConfig({ aggConfig: extendAggsConfig(FILE_FILTERS) })}
                     </ShowIf>
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
-                      {renderAggsConfig(extendAggsConfig(CLINICAL_FILTERS))}
+                      {renderAggsConfig({ aggConfig: extendAggsConfig(CLINICAL_FILTERS) })}
                     </ShowIf>
-                    <FilterBox {...{ ...props, setSQON, translateSQONValue, effects, state }} />
                   </Column>
                 </Column>
               )}
