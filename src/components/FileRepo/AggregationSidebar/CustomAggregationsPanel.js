@@ -151,7 +151,9 @@ export default compose(injectState, withTheme, withApi)(
                     component: () => (
                       <Fragment>
                         {console.log('props from renderAggsConfig: ', props)}
-                        <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
+                        <FilterBox
+                          {...{ setSQON, translateSQONValue, effects, state, projectId, ...props }}
+                        />
                       </Fragment>
                     ),
                   },
