@@ -6,7 +6,7 @@ import Component from 'react-component-component';
 import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
-import { AggregationsList, QuickSearch } from '@arranger/components/dist/Arranger';
+import { AggregationsList, QuickSearch, AggsWrapper } from '@arranger/components/dist/Arranger';
 import Query from '@arranger/components/dist/Query';
 
 import { CLINICAL_FILTERS, FILE_FILTERS } from './aggsConfig';
@@ -66,8 +66,8 @@ const ShowIf = ({ condition, children, ...rest }) => (
 );
 
 const FilterBox = compose(withTheme)(
-  ({ theme, setSQON, translateSQONValue, effects, state, ...props }) => (
-    <IdFilterContainer className="aggregation-card">
+  ({ header, theme, setSQON, translateSQONValue, effects, state, ...props }) => (
+    <AggsWrapper displayName={header}>
       <QuickSearch
         {...{ ...props, setSQON, translateSQONValue }}
         InputComponent={FilterInput}
@@ -79,7 +79,7 @@ const FilterBox = compose(withTheme)(
       <Row justifyContent="flex-end">
         <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
       </Row>
-    </IdFilterContainer>
+    </AggsWrapper>
   ),
 );
 
@@ -149,8 +149,8 @@ export default compose(injectState, withTheme, withApi)(
                     index: aggs.length,
                     component: () => (
                       <Fragment>
-                        {header}
                         <FilterBox
+                          header={header}
                           whitelist={[field]}
                           {...{
                             setSQON,
