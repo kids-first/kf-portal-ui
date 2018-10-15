@@ -68,7 +68,6 @@ const ShowIf = ({ condition, children, ...rest }) => (
 const FilterBox = compose(withTheme)(
   ({ theme, setSQON, translateSQONValue, effects, state, ...props }) => (
     <IdFilterContainer className="aggregation-card">
-      {console.log('props: ', props)}
       <QuickSearch
         {...{ ...props, setSQON, translateSQONValue }}
         InputComponent={FilterInput}
@@ -150,7 +149,6 @@ export default compose(injectState, withTheme, withApi)(
                     index: aggs.length,
                     component: () => (
                       <Fragment>
-                        {console.log('props from renderAggsConfig: ', props)}
                         <FilterBox
                           {...{ setSQON, translateSQONValue, effects, state, projectId, ...props }}
                         />
