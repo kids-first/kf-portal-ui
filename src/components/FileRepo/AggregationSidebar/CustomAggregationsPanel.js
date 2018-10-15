@@ -145,13 +145,13 @@ export default compose(injectState, withTheme, withApi)(
                 aggs: aggConfig,
                 debounceTime: 300,
                 getCustomItems: ({ aggs }) =>
-                  quickSearchFields.map((quickSearchField, i) => ({
-                    index: aggs.length - 1,
+                  quickSearchFields.map(({ field, header }, i) => ({
+                    index: aggs.length,
                     component: () => (
                       <Fragment>
-                        Search Files by Participant ID
+                        {header}
                         <FilterBox
-                          whitelist={[quickSearchField]}
+                          whitelist={[field]}
                           {...{
                             setSQON,
                             translateSQONValue,
@@ -183,15 +183,21 @@ export default compose(injectState, withTheme, withApi)(
                     <ShowIf condition={selectedTab === 'FILE'}>
                       {renderAggsConfig({
                         aggConfig: extendAggsConfig(FILE_FILTERS),
-                        quickSearchFields: ['kf_id'],
+                        quickSearchFields: [{ header: 'Search by File ID', field: 'kf_id' }],
                       })}
                     </ShowIf>
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
                       {renderAggsConfig({
                         aggConfig: extendAggsConfig(CLINICAL_FILTERS),
                         quickSearchFields: [
-                          'participants.kf_id',
-                          'participants.biospecimens.external_aliquot_id',
+                          {
+                            header: 'Search Files by Biospecimen ID',
+                            field: 'participants.biospecimens.external_aliquot_id',
+                          },
+                          {
+                            header: 'Search Files by Participant ID',
+                            field: 'participants.kf_id',
+                          },
                         ],
                       })}
                     </ShowIf>
