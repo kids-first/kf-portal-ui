@@ -6,7 +6,7 @@ import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
-import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
+import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
@@ -93,7 +93,6 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                     : url.sqon;
                   return (
                     <React.Fragment>
-                      <DetectNewVersion {...props} />
                       <ArrangerContainer>
                         <AggregationSidebar
                           {...{ ...props, ...url, translateSQONValue }}
