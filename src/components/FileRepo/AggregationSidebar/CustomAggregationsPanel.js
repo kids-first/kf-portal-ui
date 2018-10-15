@@ -132,7 +132,7 @@ export default compose(injectState, withTheme, withApi)(
               type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
                 .type.name,
             }));
-          const renderAggsConfig = ({ aggConfig }) => (
+          const renderAggsConfig = ({ aggConfig, quickSearchFields = [] }) => (
             <AggregationsList
               {...{
                 onValueChange: onValueChange,
@@ -144,18 +144,26 @@ export default compose(injectState, withTheme, withApi)(
                 containerRef,
                 aggs: aggConfig,
                 debounceTime: 300,
-                getCustomItems: ({ aggs }) => [
-                  {
-                    index: aggs.length,
+                getCustomItems: ({ aggs }) =>
+                  quickSearchFields.map((quickSearchField, i) => ({
+                    index: aggs.length - 1,
                     component: () => (
                       <Fragment>
+                        Search Files by Participant ID
                         <FilterBox
-                          {...{ setSQON, translateSQONValue, effects, state, projectId, ...props }}
+                          whitelist={[quickSearchField]}
+                          {...{
+                            setSQON,
+                            translateSQONValue,
+                            effects,
+                            state,
+                            projectId,
+                            ...props,
+                          }}
                         />
                       </Fragment>
                     ),
-                  },
-                ],
+                  })),
               }}
             />
           );
@@ -173,10 +181,19 @@ export default compose(injectState, withTheme, withApi)(
                   />
                   <Column scrollY innerRef={containerRef}>
                     <ShowIf condition={selectedTab === 'FILE'}>
-                      {renderAggsConfig({ aggConfig: extendAggsConfig(FILE_FILTERS) })}
+                      {renderAggsConfig({
+                        aggConfig: extendAggsConfig(FILE_FILTERS),
+                        quickSearchFields: ['kf_id'],
+                      })}
                     </ShowIf>
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
-                      {renderAggsConfig({ aggConfig: extendAggsConfig(CLINICAL_FILTERS) })}
+                      {renderAggsConfig({
+                        aggConfig: extendAggsConfig(CLINICAL_FILTERS),
+                        quickSearchFields: [
+                          'participants.kf_id',
+                          'participants.biospecimens.external_aliquot_id',
+                        ],
+                      })}
                     </ShowIf>
                   </Column>
                 </Column>
