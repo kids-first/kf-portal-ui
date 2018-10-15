@@ -21,6 +21,8 @@ const arrangerValueText = css`
 `;
 
 export const ArrangerContainer = styled(Row)`
+  height: 960px;
+
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
     box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);
