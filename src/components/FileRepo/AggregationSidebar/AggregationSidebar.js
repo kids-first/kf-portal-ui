@@ -109,6 +109,7 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
               </TealActionButton>
             </AggregationHeader>
           </Column>
+          {console.log('props from AggregationSidebar: ', props)}
           <CustomAggregationsPanel
             {...{
               ...props,

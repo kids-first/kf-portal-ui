@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -148,7 +148,10 @@ export default compose(injectState, withTheme, withApi)(
                   {
                     index: aggs.length,
                     component: () => (
-                      <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
+                      <Fragment>
+                        {console.log('props: ', props)}
+                        <FilterBox {...{ setSQON, translateSQONValue, effects, state, ...props }} />
+                      </Fragment>
                     ),
                   },
                 ],
