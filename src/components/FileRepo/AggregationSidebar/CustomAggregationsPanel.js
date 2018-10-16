@@ -117,13 +117,13 @@ export default compose(injectState, withTheme, withApi)(
                 aggs: aggConfig,
                 debounceTime: 300,
                 getCustomItems: ({ aggs }) =>
-                  quickSearchFields.map(({ field, header, uploadableField }, i) => ({
+                  quickSearchFields.map(({ entityField, header, uploadableField }, i) => ({
                     index: aggs.length,
                     component: () => (
                       <Fragment>
                         <QuickSearchBox
                           uploadableFields={[uploadableField]}
-                          whitelist={[field]}
+                          whitelist={[entityField]}
                           {...{
                             graphqlField,
                             header,
@@ -160,7 +160,7 @@ export default compose(injectState, withTheme, withApi)(
                         quickSearchFields: [
                           {
                             header: 'Search by File ID',
-                            field: 'kf_id',
+                            entityField: 'kf_id',
                             uploadableField: 'kf_id',
                           },
                         ],
@@ -172,12 +172,12 @@ export default compose(injectState, withTheme, withApi)(
                         quickSearchFields: [
                           {
                             header: 'Search Files by Biospecimen ID',
-                            field: 'participants.biospecimens.external_aliquot_id',
+                            entityField: 'participants.biospecimens.external_aliquot_id',
                             uploadableField: 'participants.biospecimens.kf_id',
                           },
                           {
                             header: 'Search Files by Participant ID',
-                            field: 'participants.kf_id',
+                            entityField: 'participants.kf_id',
                             uploadableField: 'participants.kf_id',
                           },
                         ],
