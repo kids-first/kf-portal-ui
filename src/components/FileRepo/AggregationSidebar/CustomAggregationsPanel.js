@@ -3,10 +3,9 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import Component from 'react-component-component';
-import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
-import { AggregationsList, QuickSearch, AggsWrapper } from '@arranger/components/dist/Arranger';
+import { AggregationsList } from '@arranger/components/dist/Arranger';
 import Query from '@arranger/components/dist/Query';
 
 import { CLINICAL_FILTERS, FILE_FILTERS } from './aggsConfig';
@@ -14,16 +13,7 @@ import { withApi } from 'services/api';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Span } from 'uikit/Core';
-import { FilterInput } from 'uikit/Input';
-import UploadIdsButton from './UploadIdsButton';
-
-const IdFilterContainer = styled(Column)`
-  margin-top: 0px;
-
-  .quick-search {
-    margin-bottom: 10px;
-  }
-`;
+import QuickSearchBox from './QuickSearchBox';
 
 const TabsRow = styled(({ className, ...props }) => (
   <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
@@ -63,36 +53,6 @@ const ShowIf = ({ condition, children, ...rest }) => (
   <div style={{ display: condition ? 'block' : 'none' }} {...rest}>
     {children}
   </div>
-);
-
-const QuickSearchBox = compose(withTheme)(
-  ({
-    header,
-    theme,
-    setSQON,
-    translateSQONValue,
-    effects,
-    state,
-    graphqlField,
-    uploadableFields = null,
-    ...props
-  }) => (
-    <AggsWrapper displayName={header}>
-      <QuickSearch
-        {...{ ...props, setSQON, translateSQONValue }}
-        InputComponent={FilterInput}
-        placeholder="Enter Identifiers"
-        LoadingIcon={
-          <Spinner fadeIn="none" name="circle" color="#a9adc0" style={{ width: 15, height: 15 }} />
-        }
-      />
-      <Row justifyContent="flex-end">
-        <UploadIdsButton
-          {...{ theme, effects, state, setSQON, uploadableFields, graphqlField, ...props }}
-        />
-      </Row>
-    </AggsWrapper>
-  ),
 );
 
 export default compose(injectState, withTheme, withApi)(
@@ -197,7 +157,13 @@ export default compose(injectState, withTheme, withApi)(
                     <ShowIf condition={selectedTab === 'FILE'}>
                       {renderAggsConfig({
                         aggConfig: extendAggsConfig(FILE_FILTERS),
-                        quickSearchFields: [{ header: 'Search by File ID', field: 'kf_id' }],
+                        quickSearchFields: [
+                          {
+                            header: 'Search by File ID',
+                            field: 'kf_id',
+                            uploadableField: 'kf_id',
+                          },
+                        ],
                       })}
                     </ShowIf>
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
