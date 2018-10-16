@@ -160,7 +160,7 @@ export default compose(injectState, withTheme, withApi)(
                         quickSearchFields: [
                           {
                             header: 'Search by File ID',
-                            entityField: 'kf_id',
+                            entityField: '', // "" denotes root level entity
                             uploadableField: 'kf_id',
                           },
                         ],
@@ -172,12 +172,12 @@ export default compose(injectState, withTheme, withApi)(
                         quickSearchFields: [
                           {
                             header: 'Search Files by Biospecimen ID',
-                            entityField: 'participants.biospecimens.external_aliquot_id',
+                            entityField: 'participants.biospecimens',
                             uploadableField: 'participants.biospecimens.kf_id',
                           },
                           {
                             header: 'Search Files by Participant ID',
-                            entityField: 'participants.kf_id',
+                            entityField: 'participants',
                             uploadableField: 'participants.kf_id',
                           },
                         ],
