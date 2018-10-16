@@ -65,8 +65,18 @@ const ShowIf = ({ condition, children, ...rest }) => (
   </div>
 );
 
-const FilterBox = compose(withTheme)(
-  ({ header, theme, setSQON, translateSQONValue, effects, state, ...props }) => (
+const QuickSearchBox = compose(withTheme)(
+  ({
+    header,
+    theme,
+    setSQON,
+    translateSQONValue,
+    effects,
+    state,
+    graphqlField,
+    uploadableFields = null,
+    ...props
+  }) => (
     <AggsWrapper displayName={header}>
       <QuickSearch
         {...{ ...props, setSQON, translateSQONValue }}
@@ -77,7 +87,9 @@ const FilterBox = compose(withTheme)(
         }
       />
       <Row justifyContent="flex-end">
-        <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
+        <UploadIdsButton
+          {...{ theme, effects, state, setSQON, uploadableFields, graphqlField, ...props }}
+        />
       </Row>
     </AggsWrapper>
   ),
@@ -145,14 +157,16 @@ export default compose(injectState, withTheme, withApi)(
                 aggs: aggConfig,
                 debounceTime: 300,
                 getCustomItems: ({ aggs }) =>
-                  quickSearchFields.map(({ field, header }, i) => ({
+                  quickSearchFields.map(({ field, header, uploadableField }, i) => ({
                     index: aggs.length,
                     component: () => (
                       <Fragment>
-                        <FilterBox
-                          header={header}
+                        <QuickSearchBox
+                          uploadableFields={[uploadableField]}
                           whitelist={[field]}
                           {...{
+                            graphqlField,
+                            header,
                             setSQON,
                             translateSQONValue,
                             effects,
@@ -193,10 +207,12 @@ export default compose(injectState, withTheme, withApi)(
                           {
                             header: 'Search Files by Biospecimen ID',
                             field: 'participants.biospecimens.external_aliquot_id',
+                            uploadableField: 'participants.biospecimens.kf_id',
                           },
                           {
                             header: 'Search Files by Participant ID',
                             field: 'participants.kf_id',
+                            uploadableField: 'participants.kf_id',
                           },
                         ],
                       })}

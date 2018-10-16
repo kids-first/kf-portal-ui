@@ -12,13 +12,18 @@ const UploadButton = styled(WhiteButton)`
   margin: 0px;
 `;
 
-const UploadIdsButton = ({ theme, state, effects, setSQON, ...props }) => (
+const UploadIdsButton = ({ theme, state, effects, searchFields, setSQON, ...props }) => (
   <Row>
     <UploadButton
       onClick={() =>
         effects.setModal({
           title: 'Upload a List of Identifiers',
-          component: <UploadIdsModal {...{ ...props, setSQON }} closeModal={effects.unsetModal} />,
+          component: (
+            <UploadIdsModal
+              {...{ ...props, setSQON, searchFields }}
+              closeModal={effects.unsetModal}
+            />
+          ),
         })
       }
     >
