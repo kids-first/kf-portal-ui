@@ -4,18 +4,19 @@ import Footer from 'components/Footer';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import { footerHeight } from './Footer';
+import { applyDefaultStyles } from 'uikit/Core';
 
-const Container = styled(Column)`
+const Container = applyDefaultStyles(styled(Column)`
   position: relative;
   height: 100vh;
   min-width: 1024px;
   width: 100%;
   background-repeat: repeat;
-`;
+`);
 
 const ContentWrapper = styled('div')`
-  & > * {
-  }
+  display: flex;
+  flex-direction: column;
 `;
 
 const FloatFooterPageContentWrapper = styled('div')`
@@ -42,12 +43,12 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
 
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   <Fragment>
-    <Container>
+    <Container height="auto">
       <Head />
       <ContentWrapper>
         <Component {...props} />
-        <Foot />
       </ContentWrapper>
+      <Foot />
     </Container>
   </Fragment>
 );

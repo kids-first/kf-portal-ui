@@ -21,7 +21,8 @@ const arrangerValueText = css`
 `;
 
 export const ArrangerContainer = styled(Row)`
-  height: 960px;
+  flex: 1 1 0%;
+  min-height: 970px;
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {

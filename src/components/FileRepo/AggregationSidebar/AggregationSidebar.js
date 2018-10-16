@@ -27,7 +27,9 @@ import Heading from 'uikit/Heading';
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
 
 const AggregationWrapper = styled(Column)`
-  height: 100%;
+  flex: 0 0 auto;
+  min-height: 970px;
+  height: 1100px;
   width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
   max-width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
   min-width: ${({ scrollbarWidth }) => 200 + scrollbarWidth}px;
@@ -38,6 +40,10 @@ const AggregationWrapper = styled(Column)`
   border-width: 0 1px 0 0;
   flex: none;
   background: ${({ theme }) => theme.backgroundGrey};
+
+  @media screen and (min-height: 1200px) {
+    height: 100vh;
+  }
 `;
 
 const AggregationHeader = styled('div')`
