@@ -31,6 +31,7 @@ import {
   QuerySharingContainer,
   ControlledIcon,
   OpenIcon,
+  TableSpinnerWrapper,
   TableSpinner,
 } from './ui';
 import customTableColumns from './customTableColumns';
@@ -72,7 +73,9 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                 {connectionError ? (
                   `Unable to connect to the file repo, please try again later`
                 ) : (
-                  <TableSpinner />
+                  <TableSpinnerWrapper>
+                    <TableSpinner />
+                  </TableSpinnerWrapper>
                 )}
               </div>
             ) : (
