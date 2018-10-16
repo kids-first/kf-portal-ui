@@ -14,11 +14,6 @@ const Container = applyDefaultStyles(styled(Column)`
   background-repeat: repeat;
 `);
 
-const ContentWrapper = styled('div')`
-  display: flex;
-  flex-direction: column;
-`;
-
 const FloatFooterPageContentWrapper = styled('div')`
   height: 100%;
   overflow-y: auto;
@@ -45,9 +40,9 @@ export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...pr
   <Fragment>
     <Container height="auto">
       <Head />
-      <ContentWrapper>
+      <Column>
         <Component {...props} />
-      </ContentWrapper>
+      </Column>
       <Foot />
     </Container>
   </Fragment>
