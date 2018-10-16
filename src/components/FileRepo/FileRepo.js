@@ -93,7 +93,6 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                     : url.sqon;
                   return (
                     <React.Fragment>
-                      {' '}
                       <ArrangerContainer>
                         <AggregationSidebar
                           {...{ ...props, ...url, translateSQONValue }}

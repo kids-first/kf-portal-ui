@@ -30,7 +30,7 @@ const QuickSearchBox = compose(withTheme)(
           <Spinner fadeIn="none" name="circle" color="#a9adc0" style={{ width: 15, height: 15 }} />
         }
       />
-      <Row justifyContent="flex-end">
+      <Row mt={'5px'}>
         <UploadIdsButton
           {...{ theme, effects, state, setSQON, uploadableFields, graphqlField, ...props }}
         />
