@@ -21,7 +21,7 @@ export const Slideable = styled('div')`
 `;
 
 export const Container = styled('div')`
-  overflow-y: auto;
+  overflow-y: hidden;
   flex-grow: 0;
   flex-shrink: 1;
   width: 100%;
