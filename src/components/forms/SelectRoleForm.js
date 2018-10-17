@@ -7,11 +7,10 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
-import { ROLES } from 'common/constants';
+import { ROLES, TRACKING_EVENTS } from 'common/constants';
 import { updateProfile } from 'services/profiles';
 import {
   trackUserInteraction,
-  TRACKING_EVENTS,
   addStateInfo as updateTrackingDimension,
 } from 'services/analyticsTracking';
 import DeleteButton from 'components/loginButtons/DeleteButton';

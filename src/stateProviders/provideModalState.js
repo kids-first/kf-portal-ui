@@ -1,7 +1,8 @@
 import { provideState } from 'freactal';
 
 import { addStateInfo as addUsersnapInfo } from 'services/usersnap';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS } from 'common/constants';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import history from 'services/history';
 
 const internalState = {

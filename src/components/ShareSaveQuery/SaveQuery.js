@@ -11,6 +11,7 @@ import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import theme from 'theme/defaultTheme';
 import { ModalFooter } from 'components/Modal';
 import { arrangerApiRoot } from 'common/injectGlobals';
+import { TRACKING_EVENTS } from 'common/constants';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
@@ -18,7 +19,7 @@ import { ButtonContainer, CustomLightButton, SaveQueryHeading } from './ui';
 import { WhiteButton } from 'uikit/Button';
 import { FileRepoH3 as H3 } from 'uikit/Headings';
 
-import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+import { trackUserInteraction } from '../../services/analyticsTracking';
 
 export default injectState(
   class extends React.Component {

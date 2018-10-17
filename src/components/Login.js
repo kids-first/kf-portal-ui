@@ -18,12 +18,12 @@ import ExternalLink from 'uikit/ExternalLink';
 import googleSDK from 'services/googleSDK';
 import { withApi } from 'services/api';
 import { logoutAll } from 'services/login';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
-import { GEN3, CAVATICA, GOOGLE, FACEBOOK } from 'common/constants';
+import { GEN3, CAVATICA, GOOGLE, FACEBOOK, TRACKING_EVENTS } from 'common/constants';
 import { getAccessToken } from 'services/gen3';
 import { createExampleQueries } from 'services/riffQueries';
 

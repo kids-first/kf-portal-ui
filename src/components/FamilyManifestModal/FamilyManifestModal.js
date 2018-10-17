@@ -15,7 +15,8 @@ import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadM
 import CheckCircleIcon from 'icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
 import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
-import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+import { TRACKING_EVENTS } from 'common/constants';
+import { trackUserInteraction } from '../../services/analyticsTracking';
 import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';

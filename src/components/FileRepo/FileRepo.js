@@ -19,9 +19,10 @@ import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
 import { Gen3UserProvider, getStudyIds } from 'services/gen3';
 import DownloadIcon from 'icons/DownloadIcon';
 import translateSQON from 'common/translateSQONValue';
+import { TRACKING_EVENTS } from 'common/constants';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
 import {

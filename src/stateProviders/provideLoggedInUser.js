@@ -4,18 +4,14 @@ import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@arranger/components';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
-import { SERVICES, EGO_JWT_KEY } from 'common/constants';
+import { TRACKING_EVENTS, SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
 import { setCookie, removeCookie } from 'services/cookie';
 import {
   addStateInfo as addUsersnapInfo,
   addLoggedInUser as setUsersnapUser,
 } from 'services/usersnap';
-import {
-  TRACKING_EVENTS,
-  trackUserSession,
-  trackUserInteraction,
-} from 'services/analyticsTracking';
+import { trackUserSession, trackUserInteraction } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
 

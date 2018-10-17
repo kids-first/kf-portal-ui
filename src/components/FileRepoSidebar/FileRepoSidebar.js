@@ -9,7 +9,8 @@ import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import { Span } from 'uikit/Core';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS } from 'common/constants';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { downloadBiospecimen } from 'services/downloadData';
 import {
   Slideable,

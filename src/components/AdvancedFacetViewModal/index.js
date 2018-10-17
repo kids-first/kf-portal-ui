@@ -7,7 +7,7 @@ import { ModalFooter } from '../Modal/index.js';
 import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
 import { FilterInput } from 'uikit/Input';
-import { TRACKING_EVENTS } from '../../services/analyticsTracking';
+import { TRACKING_EVENTS } from '../../common/constants';
 
 const enhance = compose(provideLocalSqon, injectState);
 

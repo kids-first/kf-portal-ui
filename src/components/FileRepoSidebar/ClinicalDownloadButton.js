@@ -6,11 +6,11 @@ import { injectState } from 'freactal';
 import { ColumnsState } from '@arranger/components/dist/DataTable';
 import { uniq } from 'lodash';
 import Component from 'react-component-component';
-
+import { TRACKING_EVENTS } from 'common/constants';
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 import Row from 'uikit/Row';
 import { DropdownOptionsContainer } from 'uikit/Dropdown';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadData';
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';

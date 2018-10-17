@@ -4,12 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-
+import { TRACKING_EVENTS } from '../../common/constants';
 import { Container, EditButton, StyledSection, ClickToAdd, CardHeader } from './ui';
 import ResearchInterests from './ResearchInterests';
 import FindMe from './FindMe';
 import DeleteButton from 'components/loginButtons/DeleteButton';
-import { trackProfileInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackProfileInteraction } from 'services/analyticsTracking';
 
 import { Flex } from 'uikit/Core';
 import Row from 'uikit/Row';

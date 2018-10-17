@@ -10,9 +10,10 @@ import CheckIcon from 'react-icons/lib/fa/check-circle';
 import Spinner from 'react-spinkit';
 
 import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
+import { TRACKING_EVENTS } from 'common/constants';
 import { deleteSecret } from 'services/secrets';
 import { deleteGen3Token } from 'services/gen3';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import Component from 'react-component-component';
 import { Span, Paragraph, Div } from 'uikit/Core';
 import Column from 'uikit/Column';

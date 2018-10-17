@@ -9,11 +9,11 @@ import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
 import LoadingOnClick from 'components/LoadingOnClick';
 
-import { GEN3 } from 'common/constants';
+import { GEN3, TRACKING_EVENTS } from 'common/constants';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { getAppElement } from 'services/globalDomNodes';
 
 const getGen3UUIDs = async kfId => {

@@ -4,9 +4,9 @@ import { withTheme } from 'emotion-theming';
 import { isValidKey } from 'components/UserProfile/UserIntegrations';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
-import { CAVATICA } from 'common/constants';
+import { CAVATICA, TRACKING_EVENTS } from 'common/constants';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
 import IntegrationStepsModalContent, {

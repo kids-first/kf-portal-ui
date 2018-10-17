@@ -5,9 +5,9 @@ import { xor } from 'lodash';
 import { withTheme } from 'emotion-theming';
 
 import { withApi } from 'services/api';
-import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
+import { TRACKING_EVENTS, DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { EditButton, ClickToAdd, InterestsCard, CardHeader } from './ui';
-import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
+import { trackProfileInteraction } from 'services/analyticsTracking';
 import InterestsAutocomplete from './InterestsAutocomplete';
 
 import { Box, Flex } from 'uikit/Core';

@@ -14,7 +14,7 @@ import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
 import { config as statsConfig } from 'components/Stats';
 import { ActionButton } from 'uikit/Button';
-import { TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS } from 'common/constants';
 import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';

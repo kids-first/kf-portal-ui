@@ -15,11 +15,10 @@ import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
-import { ROLES } from 'common/constants';
+import { ROLES, TRACKING_EVENTS } from 'common/constants';
 import { googleMapsKey } from 'common/injectGlobals';
 import { updateProfile } from 'services/profiles';
 import {
-  TRACKING_EVENTS,
   trackUserInteraction,
   addStateInfo as updateTrackingInfo,
 } from 'services/analyticsTracking';

@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 
 import { cavaticaWebRoot } from 'common/injectGlobals';
-import { GEN3 } from 'common/constants';
+import { GEN3, TRACKING_EVENTS } from 'common/constants';
 import { Link, withRouter } from 'react-router-dom';
 import ExternalLink from 'uikit/ExternalLink';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
@@ -19,7 +19,7 @@ import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
 import { getFilesById } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 
 import { Paragraph } from 'uikit/Core';
 

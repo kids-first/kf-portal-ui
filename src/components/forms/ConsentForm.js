@@ -12,9 +12,10 @@ import DeleteButton from 'components/loginButtons/DeleteButton';
 import { updateProfile } from 'services/profiles';
 import { Link } from 'react-router-dom';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { ButtonsDiv } from 'components/Join';
 import { personaApiRoot } from 'common/injectGlobals';
+import { TRACKING_EVENTS } from 'common/constants';
 
 import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';

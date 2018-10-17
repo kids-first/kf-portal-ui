@@ -20,8 +20,8 @@ import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { H4 } from 'uikit/Headings';
-
-import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
+import { TRACKING_EVENTS } from 'common/constants';
+import { trackProfileInteraction } from 'services/analyticsTracking';
 import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
 const StyledField = styled(Field)`

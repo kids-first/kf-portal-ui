@@ -1,9 +1,10 @@
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
 import { addInfo as addUserSnapInfo } from './usersnap';
-import { trackVirtualPageView } from 'services/hotjarTracking';
+import { HJVirtualPageView } from 'services/hotjarTracking';
 import history from './history';
 import { merge, isObject } from 'lodash';
+import { TRACKING_EVENTS } from '../common/constants';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
 if (devDebug && devTrackingID) {
@@ -17,61 +18,6 @@ let GAState = {
   egoGroups: null, // array?,
 };
 let timingsStorage = window.localStorage;
-
-export const TRACKING_EVENTS = {
-  categories: {
-    join: 'Join',
-    signIn: 'Sign In',
-    modals: 'Modals',
-    user: {
-      profile: 'User Profile',
-    },
-    fileRepo: {
-      filters: 'File Repo: Filters',
-      dataTable: 'File Repo: Data Table',
-      actionsSidebar: 'File Repo: Actions Sidebar',
-    },
-  },
-  actions: {
-    acceptedTerms: 'Accepted Terms',
-    signedUp: 'Join Completed!',
-    completedProfile: 'Completed Profile',
-    open: 'Open',
-    close: 'Close',
-    click: 'Clicked',
-    edit: 'Edit',
-    scroll: 'Scrolled',
-    save: 'Save',
-    filter: 'Filter',
-    copy: {
-      toCavatica: 'Copied Files to Cavatica Project',
-    },
-    download: {
-      manifest: 'Download Manifest',
-      report: 'Download Report',
-    },
-    query: {
-      save: 'Query Saved',
-      share: 'Query Shared',
-      clear: 'Clear Query (sqon)',
-    },
-    userRoleSelected: 'User Role Updated',
-    integration: {
-      connected: 'Integration Connection SUCCESS',
-      failed: 'Integration Connection FAILED',
-    },
-  },
-  labels: {
-    joinProcess: 'Join Process',
-    gen3: 'Gen3',
-    cavatica: 'Cavatica',
-  },
-  timings: {
-    modal: 'MODAL__',
-    queryToDownload: 'FILE_QUERY_TO_DOWNLOAD',
-    queryToCavatica: 'FILE_QUERY_TO_CAVATICA_COPY',
-  },
-};
 
 export const initAnalyticsTracking = () => {
   ReactGA.initialize(GAState.trackingId, { debug: devDebug });
@@ -174,7 +120,7 @@ export const trackUserInteraction = async ({ category, action, label }) => {
           variable: 'First Query Filter to Download Files clicked',
           ...(label & label),
         });
-        trackVirtualPageView('#download');
+        HJVirtualPageView('#download');
       }
 
       if (action === 'Copied Files to Cavatica Project') {
@@ -183,7 +129,7 @@ export const trackUserInteraction = async ({ category, action, label }) => {
           variable: 'First Query Filter to Copy to Cavatica clicked',
           ...(label & label),
         });
-        trackVirtualPageView('#download');
+        HJVirtualPageView('#download');
       }
       break;
     default:
@@ -247,6 +193,7 @@ export const trackPageView = (page, options = {}) => {
     ...options,
   });
   ReactGA.pageview(page);
+
   if (!page.includes('/search/file')) {
     clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
     clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);

@@ -10,7 +10,8 @@ import Login from 'components/Login';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import ConsentForm from 'components/forms/ConsentForm';
 import { withApi } from 'services/api';
-import { startAnalyticsTiming, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS } from 'common/constants';
+import { startAnalyticsTiming } from 'services/analyticsTracking';
 
 import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
