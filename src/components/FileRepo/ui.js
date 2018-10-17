@@ -37,6 +37,7 @@ export const ArrangerContainer = styled(Row)`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
+    min-height: 55px;
   }
 
   & .tableToolbar {
