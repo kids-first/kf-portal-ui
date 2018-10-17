@@ -35,6 +35,7 @@ import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 import { applyDefaultStyles } from 'uikit/Core';
 import { WhiteButton, LargeTealActionButton } from 'uikit/Button';
+import { HJTrigger } from 'services/hotjarTracking';
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -213,6 +214,13 @@ const UserIntegrations = withApi(
                               <ConnectButton
                                 onClick={() => {
                                   setState({ loading: true });
+                                  HJTrigger({
+                                    property: 'portal',
+                                    type: 'recording',
+                                    uiArea: TRACKING_EVENTS.categories.user.profile,
+                                    action: TRACKING_EVENTS.actions.integration.init,
+                                    label: TRACKING_EVENTS.labels.gen3,
+                                  });
                                   connectGen3(api)
                                     .then(() => getAccessToken(api))
                                     .then(token => {
@@ -287,7 +295,15 @@ const UserIntegrations = withApi(
                     })
                   ) : (
                     <ConnectButton
-                      onClick={() =>
+                      trackingLabel={TRACKING_EVENTS.labels.cavatica}
+                      onClick={() => {
+                        HJTrigger({
+                          property: 'portal',
+                          type: 'recording',
+                          uiArea: TRACKING_EVENTS.categories.user.profile,
+                          action: TRACKING_EVENTS.actions.integration.init,
+                          label: TRACKING_EVENTS.labels.cavatica,
+                        });
                         effects.setModal({
                           title: 'How to Connect to Cavatica',
                           component: (
@@ -296,8 +312,8 @@ const UserIntegrations = withApi(
                               onCancel={effects.unsetModal}
                             />
                           ),
-                        })
-                      }
+                        });
+                      }}
                     />
                   )}
                 </div>

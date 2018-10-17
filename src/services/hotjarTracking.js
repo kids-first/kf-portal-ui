@@ -1,5 +1,6 @@
 import scriptjs from 'scriptjs';
 import urlJoin from 'url-join';
+import { lowerCase, snakeCase } from 'lodash';
 import { hotjarHost, hotjarId } from 'common/injectGlobals';
 
 const hj = () => {
@@ -21,4 +22,12 @@ export const HJVirtualPageView = path => {
   }
 };
 
-export const HJTrigger = triggerName => hj('trigger', triggerName);
+// example: record_portal__user_profile__Integration_Connection_init__cavatica
+export const HJTrigger = ({ property, type, uiArea, action, label }) => {
+  const normalizeStr = str => snakeCase(lowerCase(str));
+  const triggerName = `${normalizeStr(type)}_${normalizeStr(property)}__${normalizeStr(
+    uiArea,
+  )}__${normalizeStr(action)}__${normalizeStr(label)}`;
+  console.info(`Hotjar Triggered: ${triggerName}`);
+  hj('trigger', triggerName);
+};
