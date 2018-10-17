@@ -14,6 +14,7 @@ import SearchIcon from 'icons/SearchIcon';
 
 import { TableHeader } from 'uikit/Table';
 import { Paragraph, Box } from 'uikit/Core';
+import { FilterInput } from 'uikit/Input';
 
 const enhance = compose(
   injectState,
@@ -31,6 +32,7 @@ const enhance = compose(
     },
   }),
 );
+
 const styles = theme => css`
   border: solid 1px ${theme.greyScale5};
 
@@ -55,14 +57,6 @@ const styles = theme => css`
     padding: 10px;
     display: flex;
     justify-content: space-between;
-  }
-
-  input {
-    ${theme.textarea};
-    border-radius: 10px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-    padding: 5px 5px 5px 25px;
   }
 `;
 
@@ -102,14 +96,6 @@ const ProjectHeader = styled(TableHeader)`
   text-transform: uppercase;
 `;
 
-const SearchProjectsIcon = styled(SearchIcon)`
-  position: absolute;
-  width: 14px;
-  margin: 0 7px;
-  top: 12px;
-  left: 0;
-`;
-
 const CavaticaProjects = ({
   effects: { setToast, closeToast },
   theme,
@@ -130,13 +116,8 @@ const CavaticaProjects = ({
         <ProjectHeader>Cavatica Projects:</ProjectHeader>{' '}
         {
           <Box position="relative">
-            <SearchProjectsIcon fill="#a9adc0" />
-            <input
-              className="textInput"
-              id="cavaticaProjectSearch"
-              type="text"
+            <FilterInput
               value={projectSearchValue}
-              name="cavaticaProjectSearch"
               placeholder="Search projects"
               onChange={e => {
                 setProjectSearchValue(e.target.value);
