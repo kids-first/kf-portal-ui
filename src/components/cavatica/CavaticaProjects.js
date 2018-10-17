@@ -10,7 +10,6 @@ import { getProjects as getCavaticaProjects } from 'services/cavatica';
 import CavaticaAddProject from './CavaticaAddProject';
 
 import CheckIcon from 'icons/CircleCheckIcon';
-import SearchIcon from 'icons/SearchIcon';
 
 import { TableHeader } from 'uikit/Table';
 import { Paragraph, Box } from 'uikit/Core';
