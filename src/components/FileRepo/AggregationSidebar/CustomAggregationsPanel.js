@@ -14,6 +14,7 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Span } from 'uikit/Core';
 import QuickSearchBox from './QuickSearchBox';
+import { FilterInput } from '../../../uikit/Input';
 
 const TabsRow = styled(({ className, ...props }) => (
   <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
@@ -116,6 +117,11 @@ export default compose(injectState, withTheme, withApi)(
                 containerRef,
                 aggs: aggConfig,
                 debounceTime: 300,
+                componentProps: {
+                  getTermAggProps: () => ({
+                    InputComponent: FilterInput,
+                  }),
+                },
                 getCustomItems: ({ aggs }) =>
                   quickSearchFields.map(
                     ({ entityField, header, uploadableField, inputPlaceholser }, i) => ({
