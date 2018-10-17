@@ -24,7 +24,13 @@ export const TRACKING_EVENTS = {
     modals: 'Modals',
     user: {
       profile: 'User Profile',
+      dashboard: {
+        widgets: {
+          savedQueries: 'User Dashboard: Saved Queries widget',
+        },
+      },
     },
+
     fileRepo: {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
@@ -53,6 +59,7 @@ export const TRACKING_EVENTS = {
       save: 'Query Saved',
       share: 'Query Shared',
       clear: 'Clear Query (sqon)',
+      delete: 'Query Deleted ',
     },
     userRoleSelected: 'User Role Updated',
     integration: {
