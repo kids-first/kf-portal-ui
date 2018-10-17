@@ -216,7 +216,6 @@ export default compose(
                             show: true,
                             type: 'string',
                             sortable: true,
-                            type: 'string',
                           },
                         ],
                       }),

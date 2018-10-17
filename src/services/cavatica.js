@@ -98,7 +98,7 @@ export const getProjects = async () => {
     },
     "billing_group": "864ca119-0298-4e0b-83e2-36861d3a5ace"
   }
- * 
+ *
  */
 export const createProject = async ({ name, billing_group, description = '' }) => {
   let data;
@@ -143,7 +143,7 @@ export const convertGen3FileIds = async ({ ids }) => {
   let items = [];
 
   /* ABOUT THE CHUNKS:
-  * Cavatica has a limit of how many items it can take at one time, 
+  * Cavatica has a limit of how many items it can take at one time,
   *  so we batch a list of ids into chunks of size 75
   *  and then repeat the conversion call for each chunk
   */

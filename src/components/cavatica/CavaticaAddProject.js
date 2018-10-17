@@ -5,14 +5,13 @@ import styled from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Input from 'uikit/Input';
-import { ActionButton } from 'uikit/Button';
-import NiceWhiteButton from 'uikit/NiceWhiteButton';
-import { CancelButton } from 'components/Modal/ui';
 import { injectState } from 'freactal';
-import { createProject, getBillingGroups } from 'services/cavatica';
+import { memoize } from 'services/utils';
+import { createProject, getBillingGroups, getUser } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
+import projectDescriptionPath from './projectDescription.md';
 
 const Container = styled(Row)`
   align-items: center;
@@ -60,11 +59,30 @@ const enhance = compose(
   withState('addingProject', 'setAddingProject', false),
 );
 
+const getProjectDescriptionTemplate = memoize(() =>
+  fetch(projectDescriptionPath).then(res => res.text()),
+);
+
 const saveProject = async ({ projectName, onSuccess }) => {
-  const billingGroups = await getBillingGroups();
+  const USER_NAME_TEMPLATE_STRING = '<username>';
+  const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
+  const [billingGroups, descriptionTemplate, { username }] = await Promise.all([
+    getBillingGroups(),
+    getProjectDescriptionTemplate(),
+    getUser(),
+  ]);
+  const projectDescription = descriptionTemplate
+    .split(PROJECT_NAME_TEMPLATE_STRING)
+    .join(projectName)
+    .split(USER_NAME_TEMPLATE_STRING)
+    .join(username);
   if (billingGroups && billingGroups.length > 0) {
     const groupId = billingGroups[0].id;
-    createProject({ billing_group: groupId, name: projectName }).then(response => onSuccess());
+    createProject({
+      billing_group: groupId,
+      name: projectName,
+      description: projectDescription,
+    }).then(response => onSuccess(response));
   }
 };
 
@@ -75,6 +93,7 @@ const CavaticaAddProject = ({
   setProjectName,
   addingProject,
   setAddingProject,
+  setSelectedProject,
   ...props
 }) => (
   <Container>
@@ -92,7 +111,13 @@ const CavaticaAddProject = ({
         />
         <LoadingOnClick
           onClick={async () => {
-            await saveProject({ projectName, onSuccess: props.onSuccess });
+            await saveProject({
+              projectName,
+              onSuccess: ({ id }) => {
+                props.onSuccess();
+                setSelectedProject(id);
+              },
+            });
             setAddingProject(false);
             setProjectName('');
           }}

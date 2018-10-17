@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -13,6 +13,7 @@ import { withApi } from 'services/api';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Span } from 'uikit/Core';
+import QuickSearchBox from './QuickSearchBox';
 
 const TabsRow = styled(({ className, ...props }) => (
   <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
@@ -63,6 +64,11 @@ export default compose(injectState, withTheme, withApi)(
     onValueChange = () => {},
     projectId,
     graphqlField,
+    translateSQONValue,
+    theme,
+    state,
+    effects,
+    ...props
   }) => (
     <Query
       renderError
@@ -98,18 +104,46 @@ export default compose(injectState, withTheme, withApi)(
               type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
                 .type.name,
             }));
-          const renderAggsConfig = aggConfig =>
-            AggregationsList({
-              onValueChange: onValueChange,
-              setSQON: setSQON,
-              sqon,
-              projectId,
-              graphqlField,
-              api,
-              containerRef,
-              aggs: aggConfig,
-              debounceTime: 300,
-            });
+          const renderAggsConfig = ({ aggConfig, quickSearchFields = [] }) => (
+            <AggregationsList
+              {...{
+                onValueChange: onValueChange,
+                setSQON: setSQON,
+                sqon,
+                projectId,
+                graphqlField,
+                api,
+                containerRef,
+                aggs: aggConfig,
+                debounceTime: 300,
+                getCustomItems: ({ aggs }) =>
+                  quickSearchFields.map(
+                    ({ entityField, header, uploadableField, inputPlaceholser }, i) => ({
+                      index: aggs.length,
+                      component: () => (
+                        <Fragment>
+                          <QuickSearchBox
+                            uploadableFields={[uploadableField]}
+                            inputPlaceholser={inputPlaceholser}
+                            whitelist={[entityField]}
+                            {...{
+                              graphqlField,
+                              header,
+                              setSQON,
+                              translateSQONValue,
+                              effects,
+                              state,
+                              projectId,
+                              ...props,
+                            }}
+                          />
+                        </Fragment>
+                      ),
+                    }),
+                  ),
+              }}
+            />
+          );
           return (
             <Component initialState={{ selectedTab: 'CLINICAL' }}>
               {({ state: { selectedTab }, setState }) => (
@@ -124,10 +158,36 @@ export default compose(injectState, withTheme, withApi)(
                   />
                   <Column scrollY innerRef={containerRef}>
                     <ShowIf condition={selectedTab === 'FILE'}>
-                      {renderAggsConfig(extendAggsConfig(FILE_FILTERS))}
+                      {renderAggsConfig({
+                        aggConfig: extendAggsConfig(FILE_FILTERS),
+                        quickSearchFields: [
+                          {
+                            header: 'Search by File ID',
+                            entityField: '', // "" denotes root level entity
+                            uploadableField: 'kf_id',
+                            inputPlaceholser: 'Eg. GF_851CMY87',
+                          },
+                        ],
+                      })}
                     </ShowIf>
                     <ShowIf condition={selectedTab === 'CLINICAL'}>
-                      {renderAggsConfig(extendAggsConfig(CLINICAL_FILTERS))}
+                      {renderAggsConfig({
+                        aggConfig: extendAggsConfig(CLINICAL_FILTERS),
+                        quickSearchFields: [
+                          {
+                            header: 'Search Files by Biospecimen ID',
+                            entityField: 'participants.biospecimens',
+                            uploadableField: 'participants.biospecimens.kf_id',
+                            inputPlaceholser: 'Eg. BS_4F9171D5, S88-3',
+                          },
+                          {
+                            header: 'Search Files by Participant ID',
+                            entityField: 'participants',
+                            uploadableField: 'participants.kf_id',
+                            inputPlaceholser: 'Eg. PT_RR05KSJC',
+                          },
+                        ],
+                      })}
                     </ShowIf>
                   </Column>
                 </Column>

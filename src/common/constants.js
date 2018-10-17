@@ -12,7 +12,8 @@ export const ROLES = [
   {
     type: 'research',
     displayName: 'Researcher',
-    description: "I'm interested in genomics research.",
+    description:
+      'Search, view, analyze, and identify currently accessible data along with your own to support your research',
     icon: ResearchIcon,
     banner: ResearchBanner,
     color: '#00afed',
@@ -27,7 +28,7 @@ export const ROLES = [
     type: 'health',
     displayName: 'Healthcare Professional',
     description:
-      "I'm interested in finding the latest research to target patients' needs based on genetic characteristics.",
+      'Map patients in your disease of interest by disease characteristics and view molecular profiling',
     icon: HealthIcon,
     banner: HealthBanner,
     color: '#009bb8',
@@ -42,7 +43,7 @@ export const ROLES = [
     type: 'patient',
     displayName: 'Patient/Family Member',
     description:
-      "I'm interested in learning more about current research and connecting with others.",
+      'Learn about disease-specific research, become a Kids First partner, and support data sharing',
     icon: PatientIcon,
     banner: PatientBanner,
     color: '#e83a9c',
@@ -57,7 +58,7 @@ export const ROLES = [
     type: 'community',
     displayName: 'Community Member',
     description:
-      "I'm interested in learning about scientific discoveries in pediatric cancer and structural birth defects.",
+      'Learn about scientific discoveries in pediatric cancer and structural birth defects',
     icon: CommunityIcon,
     banner: CommunityBanner,
     color: '#5a69bd',
@@ -159,6 +160,7 @@ export const EXAMPLE_QUERIES = [
   },
 ];
 
+
 export const TRACKING_EVENTS = {
   categories: {
     join: 'Join',
@@ -213,4 +215,12 @@ export const TRACKING_EVENTS = {
     queryToDownload: 'FILE_QUERY_TO_DOWNLOAD',
     queryToCavatica: 'FILE_QUERY_TO_CAVATICA_COPY',
   },
+
+export const LOGIN_ERROR_DETAILS = {
+  unknown:
+    'Uh oh, looks like something went wrong. Contact us and we will help investigate why you are unable to sign in.',
+  facebook:
+    'To sign in with Facebook, please whitelist Facebook in your ad blocker or other privacy settings.',
+  thirdPartyData: 'To sign in with Google, please enable third party cookies in your browser.',
+
 };

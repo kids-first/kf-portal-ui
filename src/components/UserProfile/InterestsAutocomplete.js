@@ -1,11 +1,12 @@
 import React from 'react';
-import { debounce, get, toLower } from 'lodash';
+import { debounce, difference } from 'lodash';
 import { compose, withProps, withPropsOnChange, withState } from 'recompose';
 import styled from 'react-emotion';
 import Downshift from 'downshift';
 import { Trans } from 'react-i18next';
 import TextHighlight from '@arranger/components/dist/TextHighlight';
 
+import { titleCase } from 'common/displayFormatters';
 import { withApi } from 'services/api';
 import { getTags } from 'services/profiles';
 import SearchIcon from '../../icons/SearchIcon';
@@ -75,20 +76,25 @@ const InterestsAutocomplete = compose(
   withApi,
   withState('inputValue', 'setInputValue', ''),
   withState('suggestions', 'setSuggestions', []),
-  withPropsOnChange(['api'], ({ api, setSuggestions }) => ({
+  withPropsOnChange(['api', 'interests'], ({ api, setSuggestions, interests }) => ({
     getSuggestions: debounce(async filter => {
       const suggestions = await getTags(api)({ filter, size: 5 });
-      setSuggestions(get(suggestions, 'values', []).map(x => x.value) || []);
+      const loweredSuggestions = [...new Set(suggestions.values.map(x => x.value.toLowerCase()))];
+      const uniqueSuggestions = difference(loweredSuggestions, interests);
+
+      setSuggestions(uniqueSuggestions || []);
     }, 300),
   })),
   withProps(({ interests, getSuggestions, setInputValue, setInterests }) => ({
     onInputValueChange: val => {
-      const lowered = toLower(val || '');
-      setInputValue(lowered);
-      getSuggestions(lowered);
+      setInputValue(val);
+      getSuggestions(val);
     },
     onChange: val => {
-      setInterests([...new Set([...interests, val])]);
+      const newInterest = val.toLowerCase().trim();
+      if (newInterest !== '') {
+        setInterests([...new Set([...interests, newInterest])]);
+      }
       setInputValue('');
     },
   })),
@@ -116,7 +122,10 @@ const InterestsAutocomplete = compose(
           }
         },
         showSuggestions = (suggestions || []).length,
-        showNewItem = inputValue && !(suggestions || []).includes(inputValue),
+        showNewItem = () => {
+          const val = inputValue.toLowerCase().trim();
+          return val && !interests.includes(val) && !suggestions.includes(val);
+        },
       }) => (
         <InterestsAutocompleteContainer {...getRootProps({ refKey: 'innerRef' })}>
           <div>
@@ -129,7 +138,7 @@ const InterestsAutocomplete = compose(
               })}
             />
           </div>
-          {isOpen && (showSuggestions || showNewItem) ? (
+          {isOpen && (showSuggestions || showNewItem()) ? (
             <DropdownMenu>
               {showSuggestions ? (
                 <Box>
@@ -140,18 +149,18 @@ const InterestsAutocomplete = compose(
                   </DropdownItem>
                   {suggestions.map(item => (
                     <DropdownItem withHover key={item} {...getItemProps({ item })}>
-                      <TextHighlight highlightText={inputValue} content={item} />
+                      <TextHighlight highlightText={inputValue} content={titleCase(item)} />
                     </DropdownItem>
                   ))}
                 </Box>
               ) : null}
-              {showNewItem ? (
+              {showNewItem() ? (
                 <DropdownItem
                   withHover
                   withBorder={suggestions.length}
                   {...getItemProps({ item: inputValue })}
                 >
-                  <NewItem>{inputValue}</NewItem>
+                  <NewItem>{titleCase(inputValue)}</NewItem>
                   <DropdownLabel>
                     <Trans>(New Interest)</Trans>
                   </DropdownLabel>

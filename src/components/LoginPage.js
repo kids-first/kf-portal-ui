@@ -14,7 +14,7 @@ import { JoinH2 } from '../uikit/Headings';
 
 const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
   <SplashPage>
-    <JoinH2 mt="9px" mb="40px">
+    <JoinH2 mt="9px" mb={0}>
       <Trans>Log in</Trans>
     </JoinH2>
 

@@ -8,18 +8,10 @@ import styled from 'react-emotion';
 
 import { ROLES } from 'common/constants';
 import MySavedQueries from './MySavedQueries';
-import Notifications from './Notifications';
 import Integrations from './Integrations';
 import ProfileInfoBar from './ProfileInfoBar';
-import Column from 'uikit/Column';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
-import ExternalLink from 'uikit/ExternalLink';
-import { H1, H2 } from '../../uikit/Headings';
-import { Paragraph } from '../../uikit/Core';
+import Row from 'uikit/Row';
+import { H1 } from '../../uikit/Headings';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -60,17 +52,18 @@ export default compose(
         <H1 mb={'35px' /* On removing Beta Message change to 44px */}>
           Welcome, {loggedInUser.firstName}!
         </H1>
-        <Column>
+        <Row>
           <div
             css={`
               display: flex;
               overflow: hidden;
+              max-width: 50%;
             `}
           >
             <MySavedQueries {...{ api, loggedInUser, theme, profileColors }} />
-            <Notifications />
           </div>
-        </Column>
+          <div />
+        </Row>
         <div
           css={`
             margin-top: auto;

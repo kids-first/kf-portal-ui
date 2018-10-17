@@ -6,7 +6,7 @@ import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
-import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
+import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
@@ -16,7 +16,7 @@ import FileRepoSidebar from 'components/FileRepoSidebar';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
-import { Gen3UserProvider, getStudyIds } from 'services/gen3';
+import { Gen3UserProvider } from 'services/gen3';
 import DownloadIcon from 'icons/DownloadIcon';
 import translateSQON from 'common/translateSQONValue';
 import { TRACKING_EVENTS } from 'common/constants';
@@ -94,7 +94,6 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                     : url.sqon;
                   return (
                     <React.Fragment>
-                      <DetectNewVersion {...props} />
                       <ArrangerContainer>
                         <AggregationSidebar
                           {...{ ...props, ...url, translateSQONValue }}

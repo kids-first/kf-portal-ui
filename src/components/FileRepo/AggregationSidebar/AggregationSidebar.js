@@ -4,20 +4,16 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
-import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 
-import { QuickSearch } from '@arranger/components/dist/Arranger';
-
-import UploadIdsButton from './UploadIdsButton';
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
 import { config as statsConfig } from 'components/Stats';
+
 import { ActionButton } from 'uikit/Button';
 import { TRACKING_EVENTS } from 'common/constants';
 import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
-import Row from 'uikit/Row';
 import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
 import { FileRepoH2 as H2 } from 'uikit/Headings';
@@ -51,14 +47,6 @@ const AggregationTitle = styled(Heading)`
   flex-grow: 1;
   margin-bottom: 0px;
   font-size: 18px;
-`;
-
-const IdFilterContainer = styled(Column)`
-  margin-top: 0px;
-  margin-bottom: 10px;
-  .quick-search {
-    margin-bottom: 10px;
-  }
 `;
 
 const AggregationSidebar = compose(injectState, withTheme, withApi)(
@@ -122,30 +110,15 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
                 <Trans>All Filters</Trans>
               </TealActionButton>
             </AggregationHeader>
-            <IdFilterContainer className="aggregation-card">
-              <QuickSearch
-                {...{ ...props, setSQON, translateSQONValue }}
-                InputComponent={FilterInput}
-                placeholder="Enter Identifiers"
-                LoadingIcon={
-                  <Spinner
-                    fadeIn="none"
-                    name="circle"
-                    color="#a9adc0"
-                    style={{ width: 15, height: 15 }}
-                  />
-                }
-              />
-              <Row justifyContent="flex-end">
-                <UploadIdsButton {...{ theme, effects, state, setSQON, ...props }} />
-              </Row>
-            </IdFilterContainer>
           </Column>
           <CustomAggregationsPanel
             {...{
               ...props,
+              state,
+              effects,
               setSQON,
               containerRef: aggregationsWrapperRef,
+              translateSQONValue,
               onValueChange: ({ active, field, value }) => {
                 if (active) {
                   trackFileRepoInteraction({

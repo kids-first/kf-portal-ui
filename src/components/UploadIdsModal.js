@@ -21,6 +21,7 @@ const UploadIdsModal = ({
   state: { loggedInUser },
   effects: { addUserSet, unsetModal },
   setSQON,
+  uploadableFields = null,
   ...props
 }) => (
   <MatchBox
@@ -41,7 +42,8 @@ const UploadIdsModal = ({
       matchedEntity: <TableHeader>Matched Entity</TableHeader>,
       entityId: <TableHeader>Entity Id</TableHeader>,
     }}
-    browseButtonText={<Trans>Browse</Trans>}
+    uploadableFields={uploadableFields}
+    browseButtonText={<Trans>Upload csv</Trans>}
     matchHeaderText={
       <H3 mb="0.8em">
         <Trans>Matching files in the Kids First Data Repository</Trans>
@@ -61,7 +63,7 @@ const UploadIdsModal = ({
             setSQON(nextSQON);
             unsetModal();
           },
-          submitText: 'Upload',
+          submitText: 'View Results',
           submitDisabled: !hasResults,
         }}
       />
