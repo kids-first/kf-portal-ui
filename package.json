@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@arranger/components": "0.5.12",
+    "@arranger/components": "0.5.13",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
     "cookies-js": "^1.2.3",
