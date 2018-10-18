@@ -44,6 +44,7 @@ export const TRACKING_EVENTS = {
     },
     userRoleSelected: 'User Role Updated',
     integration: {
+      init: 'Integration Connection INIT',
       connected: 'Integration Connection SUCCESS',
       failed: 'Integration Connection FAILED',
     },

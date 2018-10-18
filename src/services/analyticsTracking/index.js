@@ -1,6 +1,7 @@
 import { initGATracking } from './googleAnalytics';
-import { init as initHJTracking } from './hotjarTracking';
+import { init as initHJTracking, HJTrigger } from './hotjarTracking';
 
+export { TRACKING_EVENTS } from './trackingEventConstants';
 export {
   trackUserInteraction,
   trackUserSession,
@@ -12,9 +13,7 @@ export {
   trackExternalLink,
   startAnalyticsTiming,
 } from './googleAnalytics';
-
-export { TRACKING_EVENTS } from './trackingEventConstants';
-
+export const analyticsTrigger = HJTrigger;
 export const initAnalyticsTracking = () => {
   initGATracking();
   initHJTracking();

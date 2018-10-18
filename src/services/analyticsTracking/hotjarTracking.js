@@ -15,20 +15,20 @@ const hj = () => {
 export const init = () => scriptjs(`${hotjarHost}${hotjarId}.js?sv=6`);
 
 export const HJVirtualPageView = path => {
-  if (hj) {
+  if (window.hj) {
     hj('vpv', path);
   } else {
-    console.error('Unable to trackVirtualPageView, hj global not found');
+    console.error('Unable to trackVirtualPageView, "window.hj" global not found');
   }
 };
 
-// example: record_portal__user_profile__Integration_Connection_init__cavatica
 export const HJTrigger = ({ property, type, uiArea, action, label }) => {
+  // example triggerName: record_portal__user_profile__Integration_Connection_init__cavatica
   const normalizeStr = str => snakeCase(lowerCase(str));
+
   const triggerName = `${normalizeStr(type)}_${normalizeStr(property)}__${normalizeStr(
     uiArea,
   )}__${normalizeStr(action)}__${normalizeStr(label)}`;
   console.info(`Hotjar Triggered: ${triggerName}`);
-  console.log(hj());
   hj('trigger', triggerName);
 };

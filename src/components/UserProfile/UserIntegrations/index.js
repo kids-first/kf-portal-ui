@@ -12,7 +12,11 @@ import Spinner from 'react-spinkit';
 import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
 import { deleteSecret } from 'services/secrets';
 import { deleteGen3Token } from 'services/gen3';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import {
+  trackUserInteraction,
+  analyticsTrigger,
+  TRACKING_EVENTS,
+} from 'services/analyticsTracking';
 import Component from 'react-component-component';
 import { Span, Paragraph, Div } from 'uikit/Core';
 import Column from 'uikit/Column';
@@ -211,6 +215,13 @@ const UserIntegrations = withApi(
                             ) : (
                               <ConnectButton
                                 onClick={() => {
+                                  analyticsTrigger({
+                                    property: 'portal',
+                                    type: 'recording',
+                                    uiArea: TRACKING_EVENTS.categories.user.profile,
+                                    action: TRACKING_EVENTS.actions.integration.init,
+                                    label: TRACKING_EVENTS.labels.gen3,
+                                  });
                                   setState({ loading: true });
                                   connectGen3(api)
                                     .then(() => getAccessToken(api))
@@ -286,7 +297,14 @@ const UserIntegrations = withApi(
                     })
                   ) : (
                     <ConnectButton
-                      onClick={() =>
+                      onClick={() => {
+                        analyticsTrigger({
+                          property: 'portal',
+                          type: 'recording',
+                          uiArea: TRACKING_EVENTS.categories.user.profile,
+                          action: TRACKING_EVENTS.actions.integration.init,
+                          label: TRACKING_EVENTS.labels.cavatica,
+                        });
                         effects.setModal({
                           title: 'How to Connect to Cavatica',
                           component: (
@@ -295,8 +313,8 @@ const UserIntegrations = withApi(
                               onCancel={effects.unsetModal}
                             />
                           ),
-                        })
-                      }
+                        });
+                      }}
                     />
                   )}
                 </div>
