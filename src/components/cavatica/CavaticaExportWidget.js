@@ -119,11 +119,7 @@ const CavaticaExportWidget = ({ state, theme, addingProject, setAddingProject, .
     }
   }
 
-  return (
-    <div>
-      {content}
-    </div>
-  );
+  return <div>{content}</div>;
 };
 
 export default enhance(CavaticaExportWidget);

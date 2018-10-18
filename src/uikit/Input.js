@@ -50,7 +50,7 @@ export const FilterInput = ({
   };
   return (
     <FilterInputWrapper disabled={disabled} className={className}>
-      <LeftIcon className={'icon-left'} />
+      {LeftIcon && <LeftIcon className={'icon-left'} />}
       <input {...{ value, disabled, ...props }} ref={ref} autoFocus />
       {value && value.length && <RightIcon className={'icon-right'} onClick={clearInput} />}
     </FilterInputWrapper>
