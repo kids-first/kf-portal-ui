@@ -7,6 +7,7 @@ import Gravtar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
 import { DropdownLabelContainer } from 'uikit/Dropdown/ui';
 import { applyDefaultStyles } from 'uikit/Core';
+import ExternalLink from 'uikit/ExternalLink';
 
 export const NavLink = styled(Link)`
   ${({ theme }) => theme.navLink};
@@ -65,7 +66,7 @@ export const DropdownLink = styled(Link)`
   }
 `;
 
-export const DropdownExternalLink = applyDefaultStyles(styled('a')`
+export const DropdownExternalLink = applyDefaultStyles(styled(ExternalLink)`
   color: ${({ theme }) => theme.greyScale2};
   text-decoration: none;
   padding: 10px 20px;
