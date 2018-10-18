@@ -11,13 +11,14 @@ import { withApi } from 'services/api';
 import { getTags } from 'services/profiles';
 import SearchIcon from '../../icons/SearchIcon';
 import { Box } from 'uikit/Core';
+import { FilterInput } from '../../uikit/Input';
 
 const InterestsAutocompleteContainer = styled('div')`
   width: 100%;
   position: relative;
 `;
 
-const AutocompleteInput = styled('input')`
+const AutocompleteInput = styled(FilterInput)`
   position: relative;
   white-space: nowrap;
   border-radius: 10px;
@@ -135,6 +136,7 @@ const InterestsAutocomplete = compose(
                 placeholder: `Search for interests`,
                 onClick: initMenu,
                 onFocus: initMenu,
+                LeftIcon: null,
               })}
             />
           </div>
