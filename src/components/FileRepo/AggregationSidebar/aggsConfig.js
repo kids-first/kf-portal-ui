@@ -15,15 +15,21 @@ export const CLINICAL_FILTERS = [
     active: true,
   },
   {
-    field: 'participants__phenotype__hpo_phenotype_not_observed',
+    field: 'participants__phenotype__hpo_phenotype_observed_text',
     type: 'Aggregations',
     show: true,
     active: true,
   },
   {
+    field: 'participants__phenotype__hpo_phenotype_not_observed',
+    type: 'Aggregations',
+    show: false,
+    active: true,
+  },
+  {
     field: 'participants__phenotype__hpo_phenotype_observed',
     type: 'Aggregations',
-    show: true,
+    show: false,
     active: true,
   },
   {
