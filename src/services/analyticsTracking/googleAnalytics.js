@@ -1,13 +1,16 @@
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
-import { addInfo as addUserSnapInfo } from './usersnap';
-import history from './history';
+import { addInfo as addUserSnapInfo } from '../usersnap';
+import history from '../history';
 import { merge, isObject } from 'lodash';
+import { TRACKING_EVENTS } from './trackingEventConstants';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
+
 if (devDebug && devTrackingID) {
   console.warn('warning: using GA Tracking ID override');
 }
+
 let GAState = {
   trackingId: devDebug || devTrackingID ? devTrackingID || gaTrackingID : gaTrackingID,
   userId: null, //int
@@ -17,69 +20,7 @@ let GAState = {
 };
 let timingsStorage = window.localStorage;
 
-export const TRACKING_EVENTS = {
-  categories: {
-    join: 'Join',
-    signIn: 'Sign In',
-    modals: 'Modals',
-    user: {
-      profile: 'User Profile',
-      dashboard: {
-        widgets: {
-          savedQueries: 'User Dashboard: Saved Queries widget',
-        },
-      },
-    },
-
-    fileRepo: {
-      filters: 'File Repo: Filters',
-      dataTable: 'File Repo: Data Table',
-      actionsSidebar: 'File Repo: Actions Sidebar',
-    },
-  },
-  actions: {
-    acceptedTerms: 'Accepted Terms',
-    signedUp: 'Join Completed!',
-    completedProfile: 'Completed Profile',
-    open: 'Open',
-    close: 'Close',
-    click: 'Clicked',
-    edit: 'Edit',
-    scroll: 'Scrolled',
-    save: 'Save',
-    filter: 'Filter',
-    copy: {
-      toCavatica: 'Copied Files to Cavatica Project',
-    },
-    download: {
-      manifest: 'Download Manifest',
-      report: 'Download Report',
-    },
-    query: {
-      save: 'Query Saved',
-      share: 'Query Shared',
-      clear: 'Clear Query (sqon)',
-      delete: 'Query Deleted ',
-    },
-    userRoleSelected: 'User Role Updated',
-    integration: {
-      connected: 'Integration Connection SUCCESS',
-      failed: 'Integration Connection FAILED',
-    },
-  },
-  labels: {
-    joinProcess: 'Join Process',
-    gen3: 'Gen3',
-    cavatica: 'Cavatica',
-  },
-  timings: {
-    modal: 'MODAL__',
-    queryToDownload: 'FILE_QUERY_TO_DOWNLOAD',
-    queryToCavatica: 'FILE_QUERY_TO_CAVATICA_COPY',
-  },
-};
-
-export const initAnalyticsTracking = () => {
+export const initGATracking = () => {
   ReactGA.initialize(GAState.trackingId, { debug: devDebug });
   ReactGA.ga(function(tracker) {
     var clientId = tracker.get('clientId');
