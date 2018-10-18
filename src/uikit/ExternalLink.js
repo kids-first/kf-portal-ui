@@ -21,9 +21,9 @@ export default withTheme(
         target="_blank"
         rel="noopener noreferrer"
         className={`${theme.externalLink} ${className} test-external-link`}
-        onClick={() => {
+        onClick={e => {
           trackExternalLink(href);
-          onClick();
+          onClick(e);
         }}
       >
         {hasExternalIcon && <ExternalLinkIcon style={{ marginRight: '0.5rem' }} />}
