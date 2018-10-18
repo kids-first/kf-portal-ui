@@ -37,13 +37,18 @@ export default () => (
         onToggle={toggleDropdown}
         onOuterClick={() => setDropdownVisibility(false)}
         items={[
-          <DropdownExternalLink onClick={toggleDropdown} borderColor={'#c03299'}>
+          <DropdownExternalLink
+            hasExternalIcon={false}
+            onClick={toggleDropdown}
+            borderColor={'#c03299'}
+          >
             <DropdownRow alignItems="center" color={'#c03299'}>
               <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
               <Trans>Data Resource Portal</Trans>
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
+            hasExternalIcon={false}
             onClick={toggleDropdown}
             href="https://kidsfirstdrc.org/"
             target="_blank"
@@ -54,6 +59,7 @@ export default () => (
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
+            hasExternalIcon={false}
             onClick={toggleDropdown}
             href="https://kidsfirstdrc.org/support/studies-and-access/"
             target="_blank"
@@ -64,6 +70,7 @@ export default () => (
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
+            hasExternalIcon={false}
             onClick={toggleDropdown}
             href="https://kidsfirstdrc.org/support/getting-started/"
             target="_blank"
@@ -74,6 +81,7 @@ export default () => (
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
+            hasExternalIcon={false}
             onClick={toggleDropdown}
             href="https://kidsfirstdrc.org/contact"
             target="_blank"
