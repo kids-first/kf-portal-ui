@@ -38,7 +38,7 @@ const Tab = styled(({ className, selected, ...props }) => (
 const Tabs = ({ selectedTab, onTabSelect, options }) => (
   <TabsRow>
     {options.map(({ id, display }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
+      <Tab key={id} onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
         <Span>{display}</Span>
       </Tab>
     ))}
@@ -126,25 +126,22 @@ export default compose(injectState, withTheme, withApi)(
                     ) => ({
                       index: aggs.length,
                       component: () => (
-                        <Fragment>
-                          <QuickSearchBox
-                            uploadableFields={[uploadableField]}
-                            inputPlaceholder={inputPlaceholder}
-                            whitelist={[entityField]}
-                            matchboxPlaceholderText={inputPlaceholder}
-                            {...{
-                              modalTitle,
-                              graphqlField,
-                              header,
-                              setSQON,
-                              translateSQONValue,
-                              effects,
-                              state,
-                              projectId,
-                              ...props,
-                            }}
-                          />
-                        </Fragment>
+                        <QuickSearchBox
+                          key={`${entityField}_${i}`}
+                          uploadableFields={[uploadableField]}
+                          inputPlaceholder={inputPlaceholder}
+                          whitelist={[entityField]}
+                          matchboxPlaceholderText={inputPlaceholder}
+                          {...{
+                            modalTitle,
+                            graphqlField,
+                            header,
+                            setSQON,
+                            translateSQONValue,
+                            projectId,
+                            ...props,
+                          }}
+                        />
                       ),
                     }),
                   ),
