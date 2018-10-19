@@ -13,13 +13,23 @@ const UploadButton = styled(ActionButton)`
   margin: 0px;
 `;
 
-const UploadIdsButton = ({ theme, state, effects, searchFields, setSQON, ...props }) => (
+const UploadIdsButton = ({
+  theme,
+  state,
+  effects,
+  searchFields,
+  matchboxPlaceholderText,
+  modalTitle = 'Upload a List of Identifiers',
+  setSQON,
+  ...props
+}) => (
   <UploadButton
     onClick={() =>
       effects.setModal({
-        title: 'Upload a List of Identifiers',
+        title: modalTitle,
         component: (
           <UploadIdsModal
+            placeholderText={matchboxPlaceholderText}
             {...{ ...props, setSQON, searchFields }}
             closeModal={effects.unsetModal}
           />
