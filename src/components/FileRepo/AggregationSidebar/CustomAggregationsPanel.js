@@ -117,22 +117,23 @@ export default compose(injectState, withTheme, withApi)(
                 containerRef,
                 aggs: aggConfig,
                 debounceTime: 300,
-                componentProps: {
-                  getTermAggProps: () => ({
-                    InputComponent: FilterInput,
-                  }),
-                },
+                componentProps: { getTermAggProps: () => ({ InputComponent: FilterInput }) },
                 getCustomItems: ({ aggs }) =>
                   quickSearchFields.map(
-                    ({ entityField, header, uploadableField, inputPlaceholser }, i) => ({
+                    (
+                      { entityField, header, uploadableField, inputPlaceholder, modalTitle },
+                      i,
+                    ) => ({
                       index: aggs.length,
                       component: () => (
                         <Fragment>
                           <QuickSearchBox
                             uploadableFields={[uploadableField]}
-                            inputPlaceholser={inputPlaceholser}
+                            inputPlaceholder={inputPlaceholder}
                             whitelist={[entityField]}
+                            matchboxPlaceholderText={inputPlaceholder}
                             {...{
+                              modalTitle,
                               graphqlField,
                               header,
                               setSQON,
@@ -171,7 +172,8 @@ export default compose(injectState, withTheme, withApi)(
                             header: 'Search by File ID',
                             entityField: '', // "" denotes root level entity
                             uploadableField: 'kf_id',
-                            inputPlaceholser: 'Eg. GF_851CMY87',
+                            inputPlaceholder: 'Eg. GF_851CMY87',
+                            modalTitle: 'Upload a List of File Identifiers',
                           },
                         ],
                       })}
@@ -184,13 +186,15 @@ export default compose(injectState, withTheme, withApi)(
                             header: 'Search Files by Biospecimen ID',
                             entityField: 'participants.biospecimens',
                             uploadableField: 'participants.biospecimens.kf_id',
-                            inputPlaceholser: 'Eg. BS_4F9171D5, S88-3',
+                            inputPlaceholder: 'Eg. BS_4F9171D5, S88-3',
+                            modalTitle: 'Upload a List of Biospecimen Identifiers',
                           },
                           {
                             header: 'Search Files by Participant ID',
                             entityField: 'participants',
                             uploadableField: 'participants.kf_id',
-                            inputPlaceholser: 'Eg. PT_RR05KSJC',
+                            inputPlaceholder: 'Eg. PT_RR05KSJC, 01-0460',
+                            modalTitle: 'Upload a List of Participant Identifiers',
                           },
                         ],
                       })}
