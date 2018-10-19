@@ -20,7 +20,7 @@ let GAState = {
 };
 let timingsStorage = window.localStorage;
 
-export const initAnalyticsTracking = () => {
+export const initGATracking = () => {
   ReactGA.initialize(GAState.trackingId, { debug: devDebug });
   ReactGA.ga(function(tracker) {
     var clientId = tracker.get('clientId');
@@ -197,10 +197,9 @@ export const trackPageView = (page, options = {}) => {
   });
   ReactGA.pageview(page);
   if (page.includes('sqon')) {
-    sessionStorage.setItem(
-      'lastSqon',
-      JSON.stringify(decodeURIComponent(page.replace('/search/file?sqon=', ''))),
-    );
+    let urlParams = new URLSearchParams(window.location.search);
+
+    sessionStorage.setItem('lastSqon', JSON.stringify(decodeURIComponent(urlParams.get('sqon'))));
   }
   if (
     !page.includes('/search/file') &&
