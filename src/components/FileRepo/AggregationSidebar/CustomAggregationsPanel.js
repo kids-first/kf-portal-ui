@@ -100,11 +100,16 @@ export default compose(injectState, withTheme, withApi)(
             ({ name }) => name === `${graphqlField}Aggregations`,
           ).fields;
           const extendAggsConfig = config =>
-            config.filter(({ show }) => show).map(config => ({
-              ...config,
-              type: gqlAggregationFields.find(fileAggField => config.field === fileAggField.name)
-                .type.name,
-            }));
+            config.filter(({ show }) => show).map(config => {
+              const gqlAggField = gqlAggregationFields.find(
+                fileAggField => config.field === fileAggField.name,
+              );
+              console.log('gqlAggField: ', gqlAggField);
+              return {
+                ...config,
+                type: gqlAggField ? gqlAggField.type.name : null,
+              };
+            });
           const renderAggsConfig = ({ aggConfig, quickSearchFields = [] }) => (
             <AggregationsList
               {...{

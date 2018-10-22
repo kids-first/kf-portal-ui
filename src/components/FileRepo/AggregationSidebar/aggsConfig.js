@@ -14,12 +14,12 @@ export const CLINICAL_FILTERS = [
     show: true,
     active: true,
   },
-  {
-    field: 'participants__phenotype__hpo_phenotype_observed_text',
-    type: 'Aggregations',
-    show: true,
-    active: true,
-  },
+  // {
+  //   field: 'participants__phenotype__hpo_phenotype_observed_text',
+  //   type: 'Aggregations',
+  //   show: true,
+  //   active: true,
+  // },
   {
     field: 'participants__phenotype__hpo_phenotype_not_observed',
     type: 'Aggregations',
@@ -32,11 +32,11 @@ export const CLINICAL_FILTERS = [
     show: false,
     active: true,
   },
-  {
-    field: 'participants__family__family_compositions__composition',
-    show: true,
-    active: true,
-  },
+  // {
+  //   field: 'participants__family__family_compositions__composition',
+  //   show: true,
+  //   active: true,
+  // },
   {
     field: 'participants__is_proband',
     show: true,
@@ -734,9 +734,9 @@ export const FILE_FILTERS = [
     show: true,
     active: true,
   },
-  {
-    field: 'participants__family__family_compositions__available_data_types',
-    show: true,
-    active: true,
-  },
+  // {
+  //   field: 'participants__family__family_compositions__available_data_types',
+  //   show: true,
+  //   active: true,
+  // },
 ];
