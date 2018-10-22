@@ -81,6 +81,7 @@ const QuickSearchBox = compose(withTheme, injectState)(
         }
         DropdownItemComponent={({ ...props }) => {
           const { entityName } = props;
+          console.log('entityName: ', entityName);
           return (
             <DropdownItemComponent
               IconComponent={
