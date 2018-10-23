@@ -21,8 +21,7 @@ const arrangerValueText = css`
 `;
 
 export const ArrangerContainer = styled(Row)`
-  flex: 1 1 0%;
-  min-height: 970px;
+  min-height: calc(100vh - 56px);
 
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
@@ -90,11 +89,9 @@ export const ArrangerContainer = styled(Row)`
 `;
 
 export const TableContainer = styled(Column)`
-  flex: 1 1 0%;
+  flex: 1 1 auto;
   width: 580px;
   padding: 30px;
-  position: relative;
-  overflow-y: auto;
 `;
 
 export const TableWrapper = styled(Column)`
