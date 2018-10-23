@@ -153,7 +153,7 @@ export default compose(injectState, withTheme, withApi)(
           return (
             <Component initialState={{ selectedTab: 'CLINICAL' }}>
               {({ state: { selectedTab }, setState }) => (
-                <Column>
+                <Column w="100%">
                   <Tabs
                     selectedTab={selectedTab}
                     options={[
@@ -162,7 +162,7 @@ export default compose(injectState, withTheme, withApi)(
                     ]}
                     onTabSelect={({ id }) => setState({ selectedTab: id })}
                   />
-                  <Column scrollY innerRef={containerRef}>
+                  <Column innerRef={containerRef}>
                     <ShowIf condition={selectedTab === 'FILE'}>
                       {renderAggsConfig({
                         aggConfig: extendAggsConfig(FILE_FILTERS),

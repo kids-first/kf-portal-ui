@@ -89,7 +89,7 @@ export const ArrangerContainer = styled(Row)`
 `;
 
 export const TableContainer = styled(Column)`
-  flex: 1 1 0%;
+  flex: 1 1 auto;
   width: 580px;
   padding: 30px;
 `;
