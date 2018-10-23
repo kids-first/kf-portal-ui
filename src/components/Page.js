@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import styled from 'react-emotion';
