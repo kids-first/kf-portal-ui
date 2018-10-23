@@ -74,13 +74,13 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGr
   }
 };
 
-export const trackUserInteraction = async ({ category, action, label }) => {
+export const trackUserInteraction = async ({ category, action, label, value }) => {
   setUserDimensions(
     GAState.userId,
     GAState.userRoles ? GAState.userRoles[0] : null,
     GAState.egoGroups,
   );
-  ReactGA.event({ category, action, label });
+  ReactGA.event({ category, action, label, value });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
       if (action === TRACKING_EVENTS.actions.open) {
@@ -108,7 +108,7 @@ export const trackUserInteraction = async ({ category, action, label }) => {
       let downloadEventStarted = timingsStorage.getItem(getTimingEventName('FILE_DOWNLOAD'));
       if (action === 'Filter Selected' && !downloadEventStarted) {
         startAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
-        startAnalyticsTiming('FILE_QUERY_TO_CAVATICA_COPY');
+        startAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);
       }
       break;
     case TRACKING_EVENTS.categories.fileRepo.actionsSidebar:
@@ -128,6 +128,11 @@ export const trackUserInteraction = async ({ category, action, label }) => {
           variable: 'First Query Filter to Copy to Cavatica clicked',
           ...(label & label),
         });
+      }
+      break;
+    case TRACKING_EVENTS.categories.fileRepo.dataTable:
+      if (action === TRACKING_EVENTS.actions.query.save) {
+        localStorage.setItem('KF_GA_QUERY_SAVED', true);
       }
       break;
     default:
@@ -191,9 +196,28 @@ export const trackPageView = (page, options = {}) => {
     ...options,
   });
   ReactGA.pageview(page);
+  if (page.includes('sqon')) {
+    let urlParams = new URLSearchParams(window.location.search);
+
+    sessionStorage.setItem('lastSqon', JSON.stringify(decodeURIComponent(urlParams.get('sqon'))));
+  }
+  if (
+    !page.includes('/search/file') &&
+    (timingsStorage.getItem(getTimingEventName(TRACKING_EVENTS.timings.queryToDownload)) ||
+      timingsStorage.getItem(getTimingEventName(TRACKING_EVENTS.timings.queryToCavatica))) &&
+    !localStorage.getItem('KF_GA_QUERY_SAVED')
+  ) {
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.fileRepo.all,
+      action: `${TRACKING_EVENTS.actions.query.abandon}: Navigated to "${page}"`,
+      label: window.sessionStorage.getItem('lastSqon'),
+      value: 2,
+    });
+  }
   if (!page.includes('/search/file')) {
     clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
     clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);
+    localStorage.removeItem('KF_GA_QUERY_SAVED');
   }
 };
 
