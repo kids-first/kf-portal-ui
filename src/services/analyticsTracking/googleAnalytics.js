@@ -1,13 +1,16 @@
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
-import { addInfo as addUserSnapInfo } from './usersnap';
-import history from './history';
+import { addInfo as addUserSnapInfo } from '../usersnap';
+import history from '../history';
 import { merge, isObject } from 'lodash';
+import { TRACKING_EVENTS } from './trackingEventConstants';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');
+
 if (devDebug && devTrackingID) {
   console.warn('warning: using GA Tracking ID override');
 }
+
 let GAState = {
   trackingId: devDebug || devTrackingID ? devTrackingID || gaTrackingID : gaTrackingID,
   userId: null, //int
@@ -17,69 +20,7 @@ let GAState = {
 };
 let timingsStorage = window.localStorage;
 
-export const TRACKING_EVENTS = {
-  categories: {
-    join: 'Join',
-    signIn: 'Sign In',
-    modals: 'Modals',
-    user: {
-      profile: 'User Profile',
-      dashboard: {
-        widgets: {
-          savedQueries: 'User Dashboard: Saved Queries widget',
-        },
-      },
-    },
-
-    fileRepo: {
-      filters: 'File Repo: Filters',
-      dataTable: 'File Repo: Data Table',
-      actionsSidebar: 'File Repo: Actions Sidebar',
-    },
-  },
-  actions: {
-    acceptedTerms: 'Accepted Terms',
-    signedUp: 'Join Completed!',
-    completedProfile: 'Completed Profile',
-    open: 'Open',
-    close: 'Close',
-    click: 'Clicked',
-    edit: 'Edit',
-    scroll: 'Scrolled',
-    save: 'Save',
-    filter: 'Filter',
-    copy: {
-      toCavatica: 'Copied Files to Cavatica Project',
-    },
-    download: {
-      manifest: 'Download Manifest',
-      report: 'Download Report',
-    },
-    query: {
-      save: 'Query Saved',
-      share: 'Query Shared',
-      clear: 'Clear Query (sqon)',
-      delete: 'Query Deleted ',
-    },
-    userRoleSelected: 'User Role Updated',
-    integration: {
-      connected: 'Integration Connection SUCCESS',
-      failed: 'Integration Connection FAILED',
-    },
-  },
-  labels: {
-    joinProcess: 'Join Process',
-    gen3: 'Gen3',
-    cavatica: 'Cavatica',
-  },
-  timings: {
-    modal: 'MODAL__',
-    queryToDownload: 'FILE_QUERY_TO_DOWNLOAD',
-    queryToCavatica: 'FILE_QUERY_TO_CAVATICA_COPY',
-  },
-};
-
-export const initAnalyticsTracking = () => {
+export const initGATracking = () => {
   ReactGA.initialize(GAState.trackingId, { debug: devDebug });
   ReactGA.ga(function(tracker) {
     var clientId = tracker.get('clientId');
@@ -133,13 +74,13 @@ export const trackUserSession = async ({ egoId, _id, acceptedTerms, roles, egoGr
   }
 };
 
-export const trackUserInteraction = async ({ category, action, label }) => {
+export const trackUserInteraction = async ({ category, action, label, value }) => {
   setUserDimensions(
     GAState.userId,
     GAState.userRoles ? GAState.userRoles[0] : null,
     GAState.egoGroups,
   );
-  ReactGA.event({ category, action, label });
+  ReactGA.event({ category, action, label, value });
   switch (category) {
     case TRACKING_EVENTS.categories.modals:
       if (action === TRACKING_EVENTS.actions.open) {
@@ -167,7 +108,7 @@ export const trackUserInteraction = async ({ category, action, label }) => {
       let downloadEventStarted = timingsStorage.getItem(getTimingEventName('FILE_DOWNLOAD'));
       if (action === 'Filter Selected' && !downloadEventStarted) {
         startAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
-        startAnalyticsTiming('FILE_QUERY_TO_CAVATICA_COPY');
+        startAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);
       }
       break;
     case TRACKING_EVENTS.categories.fileRepo.actionsSidebar:
@@ -187,6 +128,11 @@ export const trackUserInteraction = async ({ category, action, label }) => {
           variable: 'First Query Filter to Copy to Cavatica clicked',
           ...(label & label),
         });
+      }
+      break;
+    case TRACKING_EVENTS.categories.fileRepo.dataTable:
+      if (action === TRACKING_EVENTS.actions.query.save) {
+        localStorage.setItem('KF_GA_QUERY_SAVED', true);
       }
       break;
     default:
@@ -250,9 +196,28 @@ export const trackPageView = (page, options = {}) => {
     ...options,
   });
   ReactGA.pageview(page);
+  if (page.includes('sqon')) {
+    let urlParams = new URLSearchParams(window.location.search);
+
+    sessionStorage.setItem('lastSqon', JSON.stringify(decodeURIComponent(urlParams.get('sqon'))));
+  }
+  if (
+    !page.includes('/search/file') &&
+    (timingsStorage.getItem(getTimingEventName(TRACKING_EVENTS.timings.queryToDownload)) ||
+      timingsStorage.getItem(getTimingEventName(TRACKING_EVENTS.timings.queryToCavatica))) &&
+    !localStorage.getItem('KF_GA_QUERY_SAVED')
+  ) {
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.fileRepo.all,
+      action: `${TRACKING_EVENTS.actions.query.abandon}: Navigated to "${page}"`,
+      label: window.sessionStorage.getItem('lastSqon'),
+      value: 2,
+    });
+  }
   if (!page.includes('/search/file')) {
     clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToDownload);
     clearAnalyticsTiming(TRACKING_EVENTS.timings.queryToCavatica);
+    localStorage.removeItem('KF_GA_QUERY_SAVED');
   }
 };
 
