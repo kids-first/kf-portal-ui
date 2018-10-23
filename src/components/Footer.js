@@ -55,7 +55,7 @@ const Footer = () => (
   <FooterContainer>
     <Row>
       <FooterLink href={kfWebRoot} target="_blank">
-        <Trans>kidsfirstrdc.org</Trans>
+        <Trans>kidsfirstdrc.org</Trans>
       </FooterLink>
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
