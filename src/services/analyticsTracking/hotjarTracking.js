@@ -1,5 +1,4 @@
 import scriptjs from 'scriptjs';
-import urlJoin from 'url-join';
 import { lowerCase, snakeCase } from 'lodash';
 import { hotjarHost, hotjarId } from 'common/injectGlobals';
 
