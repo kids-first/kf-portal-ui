@@ -46,10 +46,8 @@
     /* track when users exit the site after starting a query */
     window.onbeforeunload = function () {
 
-      if ((window.localStorage.getItem('KF_GA_TIMING_INIT_FILE_QUERY_TO_CAVATICA_COPY') || window.localStorage.getItem('
-              KF_GA_TIMING_INIT_FILE_QUERY_TO_DOWNLOAD')) &&  !window.localStorage.getItem('KF_GA_QUERY_SAVED')) {
+      if ((window.localStorage.getItem('KF_GA_TIMING_INIT_FILE_QUERY_TO_CAVATICA_COPY') || window.localStorage.getItem('KF_GA_TIMING_INIT_FILE_QUERY_TO_DOWNLOAD')) && !window.localStorage.getItem('KF_GA_QUERY_SAVED')) {
         window.ga('send', 'event', 'File Repo', 'Query Abandoned: Exited Site', window.sessionStorage.getItem('lastSqon'), 3);
-        
       }
     }
   </script>
