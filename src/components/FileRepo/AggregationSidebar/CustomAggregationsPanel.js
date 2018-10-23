@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -38,7 +38,7 @@ const Tab = styled(({ className, selected, ...props }) => (
 const Tabs = ({ selectedTab, onTabSelect, options }) => (
   <TabsRow>
     {options.map(({ id, display }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
+      <Tab key={id} onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
         <Span>{display}</Span>
       </Tab>
     ))}
@@ -117,33 +117,31 @@ export default compose(injectState, withTheme, withApi)(
                 containerRef,
                 aggs: aggConfig,
                 debounceTime: 300,
-                componentProps: {
-                  getTermAggProps: () => ({
-                    InputComponent: FilterInput,
-                  }),
-                },
+                componentProps: { getTermAggProps: () => ({ InputComponent: FilterInput }) },
                 getCustomItems: ({ aggs }) =>
                   quickSearchFields.map(
-                    ({ entityField, header, uploadableField, inputPlaceholser }, i) => ({
+                    (
+                      { entityField, header, uploadableField, inputPlaceholder, modalTitle },
+                      i,
+                    ) => ({
                       index: aggs.length,
                       component: () => (
-                        <Fragment>
-                          <QuickSearchBox
-                            uploadableFields={[uploadableField]}
-                            inputPlaceholser={inputPlaceholser}
-                            whitelist={[entityField]}
-                            {...{
-                              graphqlField,
-                              header,
-                              setSQON,
-                              translateSQONValue,
-                              effects,
-                              state,
-                              projectId,
-                              ...props,
-                            }}
-                          />
-                        </Fragment>
+                        <QuickSearchBox
+                          key={`${entityField}_${i}`}
+                          uploadableFields={[uploadableField]}
+                          inputPlaceholder={inputPlaceholder}
+                          whitelist={[entityField]}
+                          matchboxPlaceholderText={inputPlaceholder}
+                          {...{
+                            modalTitle,
+                            graphqlField,
+                            header,
+                            setSQON,
+                            translateSQONValue,
+                            projectId,
+                            ...props,
+                          }}
+                        />
                       ),
                     }),
                   ),
@@ -171,7 +169,8 @@ export default compose(injectState, withTheme, withApi)(
                             header: 'Search by File ID',
                             entityField: '', // "" denotes root level entity
                             uploadableField: 'kf_id',
-                            inputPlaceholser: 'Eg. GF_851CMY87',
+                            inputPlaceholder: 'Eg. GF_851CMY87',
+                            modalTitle: 'Upload a List of File Identifiers',
                           },
                         ],
                       })}
@@ -184,13 +183,15 @@ export default compose(injectState, withTheme, withApi)(
                             header: 'Search Files by Biospecimen ID',
                             entityField: 'participants.biospecimens',
                             uploadableField: 'participants.biospecimens.kf_id',
-                            inputPlaceholser: 'Eg. BS_4F9171D5, S88-3',
+                            inputPlaceholder: 'Eg. BS_4F9171D5, S88-3',
+                            modalTitle: 'Upload a List of Biospecimen Identifiers',
                           },
                           {
                             header: 'Search Files by Participant ID',
                             entityField: 'participants',
                             uploadableField: 'participants.kf_id',
-                            inputPlaceholser: 'Eg. PT_RR05KSJC',
+                            inputPlaceholder: 'Eg. PT_RR05KSJC, 01-0460',
+                            modalTitle: 'Upload a List of Participant Identifiers',
                           },
                         ],
                       })}
