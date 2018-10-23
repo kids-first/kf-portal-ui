@@ -16,35 +16,6 @@ import { Span } from 'uikit/Core';
 import QuickSearchBox from './QuickSearchBox';
 import { FilterInput } from '../../../uikit/Input';
 
-const TabsRow = styled(({ className, ...props }) => (
-  <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
-))`
-  padding-left: 10px;
-  border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
-  text-align: center;
-  font-size: 14px;
-`;
-const Tab = styled(({ className, selected, ...props }) => (
-  <Row
-    {...props}
-    center
-    width={'100%'}
-    className={`tabs-title ${className} ${selected ? 'active-tab' : ''}`}
-  />
-))`
-  padding: 5px;
-`;
-
-const Tabs = ({ selectedTab, onTabSelect, options }) => (
-  <TabsRow>
-    {options.map(({ id, display }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
-        <Span>{display}</Span>
-      </Tab>
-    ))}
-  </TabsRow>
-);
-
 const ShowIf = ({ condition, children, ...rest }) => (
   /*
     NOTE: this style-based conditional rendering is an optimization strategy to
@@ -69,6 +40,7 @@ export default compose(injectState, withTheme, withApi)(
     theme,
     state,
     effects,
+    selectedTab = 'CLINICAL',
     ...props
   }) => (
     <Query
@@ -151,53 +123,43 @@ export default compose(injectState, withTheme, withApi)(
             />
           );
           return (
-            <Component initialState={{ selectedTab: 'CLINICAL' }}>
-              {({ state: { selectedTab }, setState }) => (
-                <Column w="100%">
-                  <Tabs
-                    selectedTab={selectedTab}
-                    options={[
-                      { id: 'CLINICAL', display: 'Clinical Filters' },
-                      { id: 'FILE', display: 'File Filters' },
-                    ]}
-                    onTabSelect={({ id }) => setState({ selectedTab: id })}
-                  />
-                  <Column innerRef={containerRef}>
-                    <ShowIf condition={selectedTab === 'FILE'}>
-                      {renderAggsConfig({
-                        aggConfig: extendAggsConfig(FILE_FILTERS),
-                        quickSearchFields: [
-                          {
-                            header: 'Search by File ID',
-                            entityField: '', // "" denotes root level entity
-                            uploadableField: 'kf_id',
-                            inputPlaceholser: 'Eg. GF_851CMY87',
-                          },
-                        ],
-                      })}
-                    </ShowIf>
-                    <ShowIf condition={selectedTab === 'CLINICAL'}>
-                      {renderAggsConfig({
-                        aggConfig: extendAggsConfig(CLINICAL_FILTERS),
-                        quickSearchFields: [
-                          {
-                            header: 'Search Files by Biospecimen ID',
-                            entityField: 'participants.biospecimens',
-                            uploadableField: 'participants.biospecimens.kf_id',
-                            inputPlaceholser: 'Eg. BS_4F9171D5, S88-3',
-                          },
-                          {
-                            header: 'Search Files by Participant ID',
-                            entityField: 'participants',
-                            uploadableField: 'participants.kf_id',
-                            inputPlaceholser: 'Eg. PT_RR05KSJC',
-                          },
-                        ],
-                      })}
-                    </ShowIf>
-                  </Column>
+            <Component>
+              <Column w="100%">
+                <Column innerRef={containerRef}>
+                  <ShowIf condition={selectedTab === 'FILE'}>
+                    {renderAggsConfig({
+                      aggConfig: extendAggsConfig(FILE_FILTERS),
+                      quickSearchFields: [
+                        {
+                          header: 'Search by File ID',
+                          entityField: '', // "" denotes root level entity
+                          uploadableField: 'kf_id',
+                          inputPlaceholser: 'Eg. GF_851CMY87',
+                        },
+                      ],
+                    })}
+                  </ShowIf>
+                  <ShowIf condition={selectedTab === 'CLINICAL'}>
+                    {renderAggsConfig({
+                      aggConfig: extendAggsConfig(CLINICAL_FILTERS),
+                      quickSearchFields: [
+                        {
+                          header: 'Search Files by Biospecimen ID',
+                          entityField: 'participants.biospecimens',
+                          uploadableField: 'participants.biospecimens.kf_id',
+                          inputPlaceholser: 'Eg. BS_4F9171D5, S88-3',
+                        },
+                        {
+                          header: 'Search Files by Participant ID',
+                          entityField: 'participants',
+                          uploadableField: 'participants.kf_id',
+                          inputPlaceholser: 'Eg. PT_RR05KSJC',
+                        },
+                      ],
+                    })}
+                  </ShowIf>
                 </Column>
-              )}
+              </Column>
             </Component>
           );
         } else {

@@ -5,6 +5,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import styled from 'react-emotion';
+import Component from 'react-component-component';
 
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
@@ -17,6 +18,8 @@ import CustomAggregationsPanel from './CustomAggregationsPanel';
 import { FileRepoH2 as H2 } from 'uikit/Headings';
 import { TealActionButton } from 'uikit/Button';
 import Heading from 'uikit/Heading';
+import Row from 'uikit/Row';
+import { Span } from 'uikit/Core';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
@@ -63,6 +66,35 @@ const Controls = styled(Column)`
   flex: 0 0 auto;
 `;
 
+const TabsRow = styled(({ className, ...props }) => (
+  <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
+))`
+  padding-left: 10px;
+  border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
+  text-align: center;
+  font-size: 14px;
+`;
+const Tab = styled(({ className, selected, ...props }) => (
+  <Row
+    {...props}
+    center
+    width={'100%'}
+    className={`tabs-title ${className} ${selected ? 'active-tab' : ''}`}
+  />
+))`
+  padding: 5px;
+`;
+
+const Tabs = ({ selectedTab, onTabSelect, options }) => (
+  <TabsRow>
+    {options.map(({ id, display }) => (
+      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
+        <Span>{display}</Span>
+      </Tab>
+    ))}
+  </TabsRow>
+);
+
 const AggregationSidebar = compose(injectState, withTheme, withApi)(
   ({
     api,
@@ -75,87 +107,101 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
     aggregationsWrapperRef = React.createRef(),
     ...props
   }) => (
-    <ScrollbarSize>
-      {({ scrollbarWidth }) => (
-        <AggregationWrapper {...{ scrollbarWidth, innerRef: aggregationsWrapperRef }}>
-          <Controls>
-            <AggregationHeader>
-              <AggregationTitle>
-                <H2>
-                  <Trans>Filters</Trans>
-                </H2>
-              </AggregationTitle>
-              <TealActionButton
-                onClick={() =>
-                  effects.setModal({
-                    title: 'All Filters',
-                    classNames: {
-                      modal: css`
-                        width: 80%;
-                        height: 90%;
-                        max-width: initial;
-                      `,
-                    },
-                    component: (
-                      <AdvancedFacetViewModalContent
-                        {...{
-                          ...props,
-                          translateSQONValue,
-                          trackFileRepoInteraction,
-                          closeModal: effects.unsetModal,
-                          onSqonSubmit: ({ sqon }) => {
-                            // leaving this prop here because it uses
-                            // the modal effects
-                            trackFileRepoInteraction({
-                              category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                              action: 'View Results',
-                              label: sqon,
-                            });
-                            setSQON(sqon);
-                            effects.unsetModal();
-                          },
-                        }}
-                        {...{ statsConfig }}
-                      />
-                    ),
-                  })
-                }
-              >
-                <Trans>All Filters</Trans>
-              </TealActionButton>
-            </AggregationHeader>
-          </Controls>
-          <Wrapper>
-            <Scroll>
-              <CustomAggregationsPanel
-                {...{
-                  ...props,
-                  state,
-                  effects,
-                  setSQON,
-                  containerRef: aggregationsWrapperRef,
-                  translateSQONValue,
-                  onValueChange: ({ active, field, value }) => {
-                    if (active) {
-                      trackFileRepoInteraction({
-                        category: TRACKING_EVENTS.categories.fileRepo.filters,
-                        action: 'Filter Selected',
-                        label: { type: 'filter', value, field },
-                      });
+    <Component initialState={{ selectedTab: 'CLINICAL' }}>
+      {({ state: { selectedTab }, setState }) => (
+        <ScrollbarSize>
+          {({ scrollbarWidth }) => (
+            <AggregationWrapper {...{ scrollbarWidth, innerRef: aggregationsWrapperRef }}>
+              <Controls>
+                <AggregationHeader>
+                  <AggregationTitle>
+                    <H2>
+                      <Trans>Filters</Trans>
+                    </H2>
+                  </AggregationTitle>
+                  <TealActionButton
+                    onClick={() =>
+                      effects.setModal({
+                        title: 'All Filters',
+                        classNames: {
+                          modal: css`
+                            width: 80%;
+                            height: 90%;
+                            max-width: initial;
+                          `,
+                        },
+                        component: (
+                          <AdvancedFacetViewModalContent
+                            {...{
+                              ...props,
+                              translateSQONValue,
+                              trackFileRepoInteraction,
+                              closeModal: effects.unsetModal,
+                              onSqonSubmit: ({ sqon }) => {
+                                // leaving this prop here because it uses
+                                // the modal effects
+                                trackFileRepoInteraction({
+                                  category:
+                                    TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                                  action: 'View Results',
+                                  label: sqon,
+                                });
+                                setSQON(sqon);
+                                effects.unsetModal();
+                              },
+                            }}
+                            {...{ statsConfig }}
+                          />
+                        ),
+                      })
                     }
-                  },
-                  componentProps: {
-                    getTermAggProps: () => ({
-                      InputComponent: FilterInput,
-                    }),
-                  },
-                }}
+                  >
+                    <Trans>All Filters</Trans>
+                  </TealActionButton>
+                </AggregationHeader>
+              </Controls>
+              <Tabs
+                selectedTab={selectedTab}
+                options={[
+                  { id: 'CLINICAL', display: 'Clinical Filters' },
+                  { id: 'FILE', display: 'File Filters' },
+                ]}
+                onTabSelect={({ id }) => setState({ selectedTab: id })}
               />
-            </Scroll>
-          </Wrapper>
-        </AggregationWrapper>
+              <Wrapper>
+                <Scroll>
+                  <CustomAggregationsPanel
+                    {...{
+                      ...props,
+                      state,
+                      effects,
+                      setSQON,
+                      containerRef: aggregationsWrapperRef,
+                      translateSQONValue,
+                      selectedTab,
+                      onValueChange: ({ active, field, value }) => {
+                        if (active) {
+                          trackFileRepoInteraction({
+                            category: TRACKING_EVENTS.categories.fileRepo.filters,
+                            action: 'Filter Selected',
+                            label: { type: 'filter', value, field },
+                          });
+                        }
+                      },
+                      componentProps: {
+                        getTermAggProps: () => ({
+                          InputComponent: FilterInput,
+                        }),
+                      },
+                    }}
+                  />
+                </Scroll>
+              </Wrapper>
+            </AggregationWrapper>
+          )}
+        </ScrollbarSize>
       )}
-    </ScrollbarSize>
+    </Component>
   ),
 );
 
