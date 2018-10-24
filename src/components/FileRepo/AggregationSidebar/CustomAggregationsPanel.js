@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -93,26 +93,28 @@ export default compose(injectState, withTheme, withApi)(
                 },
                 getCustomItems: ({ aggs }) =>
                   quickSearchFields.map(
-                    ({ entityField, header, uploadableField, inputPlaceholser }, i) => ({
+                    (
+                      { entityField, header, uploadableField, inputPlaceholder, modalTitle },
+                      i,
+                    ) => ({
                       index: aggs.length,
                       component: () => (
-                        <Fragment>
-                          <QuickSearchBox
-                            uploadableFields={[uploadableField]}
-                            inputPlaceholser={inputPlaceholser}
-                            whitelist={[entityField]}
-                            {...{
-                              graphqlField,
-                              header,
-                              setSQON,
-                              translateSQONValue,
-                              effects,
-                              state,
-                              projectId,
-                              ...props,
-                            }}
-                          />
-                        </Fragment>
+                        <QuickSearchBox
+                          key={`${entityField}_${i}`}
+                          uploadableFields={[uploadableField]}
+                          inputPlaceholder={inputPlaceholder}
+                          whitelist={[entityField]}
+                          matchboxPlaceholderText={inputPlaceholder}
+                          {...{
+                            modalTitle,
+                            graphqlField,
+                            header,
+                            setSQON,
+                            translateSQONValue,
+                            projectId,
+                            ...props,
+                          }}
+                        />
                       ),
                     }),
                   ),

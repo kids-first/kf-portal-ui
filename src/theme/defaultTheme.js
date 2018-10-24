@@ -14,6 +14,7 @@ const colors = {
   backgroundGrey: '#f4f5f8',
   tertiaryBackground: '#edeef1', // light light blue
   lightBlue: '#008199',
+  orange: '#ffaa52',
 
   primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
 
