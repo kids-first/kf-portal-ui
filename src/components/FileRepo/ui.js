@@ -61,6 +61,10 @@ export const ArrangerContainer = styled(Row)`
     flex-grow: 1;
   }
 
+  & .aggregation-card:last-child {
+    margin-bottom: 120px;
+  }
+
   & .aggregation-card {
     .title-wrapper .title {
       ${montserrat};
