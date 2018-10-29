@@ -12,6 +12,7 @@ import { withTheme } from 'emotion-theming';
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
+import UserDashboardV2 from 'components/UserDashboardV2';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
@@ -123,6 +124,19 @@ const App = compose(injectState, withApi, withTheme)(
                 api,
                 isLoadingUser,
                 Component: UserDashboard,
+                loggedInUser,
+                ...props,
+              })
+            }
+          />
+          <Route
+            path="/dashboard-v2"
+            exact
+            render={props =>
+              forceSelectRole({
+                api,
+                isLoadingUser,
+                Component: UserDashboardV2,
                 loggedInUser,
                 ...props,
               })
