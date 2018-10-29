@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { defaultTheme } from '../themes';
+import Legend from './Legend';
 
 const HorizontalBar = ({
   data,
@@ -76,6 +77,9 @@ const HorizontalBar = ({
       theme={defaultTheme}
       {...overrides}
     />
+    {!legends ? null : (
+      <Legend style={{ marginLeft: 160 }} legends={legends} theme={defaultTheme.legend} />
+    )}
   </div>
 );
 
