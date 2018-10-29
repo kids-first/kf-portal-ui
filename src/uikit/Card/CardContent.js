@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'react-emotion';
 
-const Content = styled('div')``;
+const Content = styled('div')`
+  height: 100%;
+`;
 
 const CardContent = ({ children }) => <Content>{children}</Content>;
 
