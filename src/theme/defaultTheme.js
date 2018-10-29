@@ -61,6 +61,8 @@ const colors = {
   successLight: '#e6f3f5', // TODO: confirm this color
   successBackground: '#e6f3f5',
   successBorder: `#009bb8`,
+
+  cardTitle: '#404c9a',
 };
 
 const fonts = {
