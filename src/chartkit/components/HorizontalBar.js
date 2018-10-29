@@ -19,7 +19,7 @@ const HorizontalBar = ({
       keys={keys}
       indexBy="id"
       margin={{
-        top: 20,
+        top: 0,
         right: 50,
         bottom: 30,
         left: 160,

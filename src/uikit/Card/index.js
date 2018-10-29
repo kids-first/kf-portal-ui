@@ -11,6 +11,8 @@ const CardWrapper = applyDefaultStyles(styled('div')`
   box-shadow: 0 0 9.5px 0.5px rgba(160, 160, 163, 0.25);
   background-color: #ffffff;
   padding: 26px 30px;
+  display: flex;
+  flex-direction: column;
 `);
 
 const Card = ({ Header = CardHeader, Content = CardContent, title, children, className }) => (
