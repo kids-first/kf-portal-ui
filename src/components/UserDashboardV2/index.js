@@ -8,6 +8,7 @@ import styled from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Card from 'uikit/Card';
+import ChartWrapper from '../../chartkit/components/ChartWrapper';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -35,7 +36,9 @@ export default compose(
       </Helmet>
       <Row flexWrap="wrap" width="100%">
         <DashboardCard title="Test Card Title">
-          <div>some card content</div>
+          <ChartWrapper>
+            <div>Got them data</div>
+          </ChartWrapper>
         </DashboardCard>
       </Row>
     </UserDashboard>
