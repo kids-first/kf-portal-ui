@@ -13,6 +13,13 @@ const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
   width: 100%;
   min-height: 600px;
+  background-color: ${({ theme }) => theme.backgroundGrey};
+`;
+
+const DashboardCard = styled(Card)`
+  width: 33%;
+  height: 400px;
+  margin: 30px;
 `;
 
 export default compose(
@@ -26,10 +33,10 @@ export default compose(
       <Helmet>
         <title>Portal - User Dashboard</title>
       </Helmet>
-      <Row>
-        <Card title="Test Card Title">
+      <Row flexWrap="wrap" width="100%">
+        <DashboardCard title="Test Card Title">
           <div>some card content</div>
-        </Card>
+        </DashboardCard>
       </Row>
     </UserDashboard>
   );
