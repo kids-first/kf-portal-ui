@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 
 import CardsContainer from 'uikit/Card/CardsContainer';
 import Card from 'uikit/Card';
+import ChartWrapper from '../../chartkit/components/ChartWrapper';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
