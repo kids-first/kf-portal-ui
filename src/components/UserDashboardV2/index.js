@@ -6,6 +6,9 @@ import { withTheme } from 'emotion-theming';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
 
+import Row from 'uikit/Row';
+import Card from 'uikit/Card';
+
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
   width: 100%;
@@ -23,6 +26,11 @@ export default compose(
       <Helmet>
         <title>Portal - User Dashboard</title>
       </Helmet>
+      <Row>
+        <Card title="Test Card Title">
+          <div>some card content</div>
+        </Card>
+      </Row>
     </UserDashboard>
   );
 });
