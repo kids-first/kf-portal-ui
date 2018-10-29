@@ -1,14 +1,20 @@
 import React from 'react';
 import Spinner from 'react-spinkit';
+import { Flex } from './Core';
+import Column from './Column';
 
-export const LoadingSpinner = ({ width = 11, height = 11 }) => (
-  <Spinner
-    fadeIn="none"
-    name="circle"
-    color="black"
-    style={{
-      width,
-      height,
-    }}
-  />
+const LoadingSpinner = ({ size = '11px' }) => (
+  <Column center={true}>
+    <Spinner
+      fadeIn="none"
+      name="circle"
+      color="black"
+      style={{
+        width: size,
+        height: size,
+      }}
+    />
+  </Column>
 );
+
+export default LoadingSpinner;
