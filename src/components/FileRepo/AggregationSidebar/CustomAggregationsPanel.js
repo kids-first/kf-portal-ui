@@ -83,7 +83,6 @@ export default compose(injectState, withTheme, withApi)(
     theme,
     state,
     effects,
-    selectedTab = 'CLINICAL',
     ...props
   }) => (
     <Component initialState={{ selectedTab: 'CLINICAL' }}>
