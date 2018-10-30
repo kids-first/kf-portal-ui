@@ -40,6 +40,7 @@ export default compose(
         <DashboardCard title="Test Card Title">
           <ChartWrapper>
             <HorizontalBar
+              indexBy="name"
               keys={['probands', 'familyMembers']}
               colors={[ChartColors.blue, ChartColors.purple]}
               tickValues={[0, 250, 500, 750, 1000, 1250]}

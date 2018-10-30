@@ -12,13 +12,14 @@ const HorizontalBar = ({
   maxValue,
   legendItemWidth,
   legends,
+  indexBy = 'id',
   ...overrides
 }) => (
   <div style={{ height: 'calc(100% - 20px)' }}>
     <ResponsiveBar
       data={data}
       keys={keys}
-      indexBy="id"
+      indexBy={indexBy}
       margin={{
         top: 0,
         right: 50,
