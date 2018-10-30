@@ -77,3 +77,6 @@ export const gen3IntegrationRoot: string = process.env.REACT_APP_GEN3_INTEGRATIO
 export const reactApiDataVersionApi: string = process.env.REACT_APP_DATA_VERSION_API || null;
 export const reactApiDataVersionFallback: string =
   process.env.REACT_APP_DATA_VERSION_FALLBACK || '';
+
+// Public Stats
+export const publicStatsApiRoot = process.env.REACT_APP_PUBLIC_STATS_API || '';
