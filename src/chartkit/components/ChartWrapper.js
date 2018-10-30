@@ -3,12 +3,12 @@ import Component from 'react-component-component';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
-const ChartWrapper = ({ endpoint = '', children }) => (
+const ChartWrapper = ({ api, getData, children }) => (
   <Component
     style={{ height: '100%' }}
     initialState={{ data: null, isLoading: true }}
     didMount={({ setState }) => {
-      fetch('http://localhost:3000/barChart')
+      getData(api)
         .then(res => res.json())
         .then(data => setState({ data: data, isLoading: false }))
         .catch(err => console.log('err', err));
