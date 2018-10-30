@@ -10,7 +10,7 @@ import Card from 'uikit/Card';
 import ChartWrapper from 'chartkit/components/ChartWrapper';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { ChartColors } from 'chartkit/themes';
-import { initializeApi, getBarChartData } from 'services/publicStats';
+import { initializeApi } from 'services/publicStats';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
