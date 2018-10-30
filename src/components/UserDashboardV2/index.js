@@ -44,6 +44,7 @@ export default compose(
               keys={['probands', 'familyMembers']}
               colors={[ChartColors.blue, ChartColors.purple]}
               tickValues={[0, 250, 500, 750, 1000, 1250]}
+              xTickTextLength={22}
               legends={[
                 { title: '# Probands', color: '#1f9bb6' },
                 { title: '# Family Members', color: '#e3429b' },

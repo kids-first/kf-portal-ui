@@ -3,6 +3,7 @@ import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
+import { truncateText } from '../utils';
 
 const HorizontalBar = ({
   data,
@@ -10,9 +11,9 @@ const HorizontalBar = ({
   colors,
   tickValues,
   maxValue,
-  legendItemWidth,
   legends,
   indexBy = 'id',
+  xTickTextLength = 10,
   ...overrides
 }) => (
   <div style={{ height: 'calc(100% - 20px)' }}>
@@ -43,20 +44,22 @@ const HorizontalBar = ({
         tickPadding: 5,
         tickRotation: 0,
         renderTick: tick => {
-          const { value, format, key, x, y, theme } = tick;
+          const { format, key, x, y, theme } = tick;
+          let value = tick.value;
 
           // Custom formatting
-          let renderedValue = value;
           if (format !== undefined) {
-            renderedValue = format(value);
+            value = format(value);
           }
+
+          const croppedValue = truncateText(value, xTickTextLength);
 
           const xOffset = 160;
 
           return (
             <g key={key} transform={`translate(${x - xOffset},${y})`}>
               <text textAnchor="start" alignmentBaseline="middle" style={theme.axis.ticks.text}>
-                {renderedValue}
+                {croppedValue}
               </text>
             </g>
           );
