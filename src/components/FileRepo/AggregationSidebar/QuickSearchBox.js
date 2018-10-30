@@ -46,7 +46,8 @@ const FileIcon = withTheme(({ theme }) => (
 ));
 
 const DropdownItemComponent = ({ inputValue, result, primaryKey, onClick, IconComponent }) => (
-  <div className={`quick-search-result`} onClick={onClick}>
+  // onMouseDown because the quicksearch input's onBlur would prevent onClick from triggering
+  <div className={`quick-search-result`} onMouseDown={onClick}>
     <IconComponent />
     <div className="quick-search-result-details">
       <div className="quick-search-result-key">{primaryKey}</div>
