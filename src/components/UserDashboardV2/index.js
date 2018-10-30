@@ -11,7 +11,7 @@ import Card from 'uikit/Card';
 import ChartWrapper from 'chartkit/components/ChartWrapper';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { ChartColors } from 'chartkit/themes';
-import { initializeApi, getBarChartData } from 'services/publicStats';
+import { initializeApi } from 'services/publicStats';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -29,11 +29,8 @@ const DashboardCard = styled(Card)`
 export default compose(
   injectState,
   withRouter,
-  withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ state }) => {
-  const publicStatsApi = initializeApi();
-
+)(() => {
   return (
     <UserDashboard>
       <Helmet>
@@ -41,7 +38,7 @@ export default compose(
       </Helmet>
       <Row flexWrap="wrap" width="100%">
         <DashboardCard title="Test Card Title">
-          <ChartWrapper api={publicStatsApi} getData={getBarChartData}>
+          <ChartWrapper endpoint="studies" api={initializeApi({})}>
             <HorizontalBar
               indexBy="name"
               keys={['probands', 'familyMembers']}
