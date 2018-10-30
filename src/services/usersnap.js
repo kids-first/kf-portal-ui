@@ -44,7 +44,7 @@ window._usersnapconfig = {
   labelAllowCreate: false,
   labelMultiSelect: false,
   valign: 'bottom',
-  halign: 'left',
+  halign: 'right',
   loadHandler: () => {
     window.UserSnap.on(
       'beforeSend',
