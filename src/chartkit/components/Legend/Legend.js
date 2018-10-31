@@ -17,7 +17,7 @@ import SvgText from './SvgText';
 
 const DIRECTION_ROW = 'ROW';
 
-const Legend = ({ legends = [], direction = DIRECTION_ROW, style, theme }) => {
+const Legend = ({ width: dynamicWidth, legends = [], direction = DIRECTION_ROW, style, theme }) => {
   const { itemWidth, itemsSpacing, iconSize, icon, text } = theme;
 
   // Max height for our svg based on the largest child elements
@@ -26,9 +26,12 @@ const Legend = ({ legends = [], direction = DIRECTION_ROW, style, theme }) => {
   // Center text with our label. Decimals (put simply) don't work with SVG so ceil() it for visually pleasing results
   const textOffsetY = Math.ceil(text.fontSize / 2);
 
+  // Dynamic width on resize for responsiveness
+  const width = dynamicWidth - style.marginLeft;
+
   return (
     <div style={style}>
-      <svg height={maxHeight} xmlns="http://www.w3.org/2000/svg">
+      <svg height={maxHeight} width={width} xmlns="http://www.w3.org/2000/svg">
         {legends.map((l, i) => {
           let xOffset = 0;
 
