@@ -31,7 +31,7 @@ const Legend = ({ legends = [], direction = DIRECTION_ROW, theme }) => {
 
   return (
     <div style={style}>
-      <svg height={maxHeight} xmlns="http://www.w3.org/2000/svg">
+      <svg height={maxHeight} width={width} xmlns="http://www.w3.org/2000/svg">
         {legends.map((l, i) => {
           let xOffset = 0;
 
