@@ -3,6 +3,13 @@ export const ChartColors = {
   purple: '#e3429b',
   gridGrey: '#e7e8ec',
   axisGrey: '#a9acbd',
+  tickTextGrey: '#343434',
+};
+
+const defaultText = {
+  fill: ChartColors.tickTextGrey,
+  fontSize: 11,
+  fontFamily: 'Open Sans',
 };
 
 export const defaultTheme = {
@@ -12,18 +19,22 @@ export const defaultTheme = {
     itemHeight: 10,
     itemsSpacing: 5,
     iconSize: 10,
-
     icon: {},
     text: {
-      fontSize: '10px',
+      ...defaultText,
     },
   },
-  // Used by Nivo
+  // Used by Nivos
   axis: {
     domain: {
       line: {
         stroke: ChartColors.axisGrey,
         strokeWidth: 2,
+      },
+    },
+    ticks: {
+      text: {
+        ...defaultText,
       },
     },
   },
