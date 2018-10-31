@@ -1,10 +1,19 @@
 import React from 'react';
-import { ResponsiveBar } from '@nivo/bar';
+import { ResponsiveBar, Bar } from '@nivo/bar';
 import PropTypes from 'prop-types';
+import styled from 'react-emotion';
+
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import { truncateText } from '../utils';
 import ResponsiveWrapper from './ResponsiveWrapper';
+import Column from 'uikit/Column';
+
+const HorizontalBarWrapper = styled('div')`
+  height: calc(100% - 20px);
+  display: flex;
+  flex-direction: column;
+`;
 
 const HorizontalBar = ({
   data,
@@ -17,8 +26,9 @@ const HorizontalBar = ({
   xTickTextLength = 10,
   ...overrides
 }) => (
-  <div style={{ height: 'calc(100% - 20px)' }}>
+  <HorizontalBarWrapper>
     <ResponsiveBar
+      style={{ flexBasis: '200px' }}
       data={data}
       keys={keys}
       indexBy={indexBy}
@@ -83,18 +93,9 @@ const HorizontalBar = ({
       {...overrides}
     />
     {!legends ? null : (
-      <ResponsiveWrapper>
-        {({ width }) => (
-          <Legend
-            width={width}
-            style={{ marginLeft: 160 }}
-            legends={legends}
-            theme={defaultTheme.legend}
-          />
-        )}
-      </ResponsiveWrapper>
+      <Legend style={{ marginLeft: 160 }} legends={legends} theme={defaultTheme.legend} />
     )}
-  </div>
+  </HorizontalBarWrapper>
 );
 
 HorizontalBar.propTypes = {
