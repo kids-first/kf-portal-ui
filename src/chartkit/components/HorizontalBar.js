@@ -11,8 +11,6 @@ import Column from 'uikit/Column';
 
 const HorizontalBarWrapper = styled('div')`
   height: calc(100% - 20px);
-  display: flex;
-  flex-direction: column;
 `;
 
 const HorizontalBar = ({
@@ -28,7 +26,6 @@ const HorizontalBar = ({
 }) => (
   <HorizontalBarWrapper>
     <ResponsiveBar
-      style={{ flexBasis: '200px' }}
       data={data}
       keys={keys}
       indexBy={indexBy}
