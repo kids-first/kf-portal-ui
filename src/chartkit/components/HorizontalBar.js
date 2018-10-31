@@ -91,7 +91,7 @@ const HorizontalBar = ({
             legends={legends}
             theme={defaultTheme.legend}
           />
-        )}}
+        )}
       </ResponsiveWrapper>
     )}
   </div>
