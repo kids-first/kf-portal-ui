@@ -37,7 +37,7 @@ export default compose(
         <title>Portal - User Dashboard</title>
       </Helmet>
       <Row flexWrap="wrap" width="100%">
-        <DashboardCard title="Test Card Title">
+        <DashboardCard title="Studies">
           <ChartWrapper endpoint="studies" api={initializeApi({})}>
             {({ data, isLoading }) =>
               isLoading ? (
