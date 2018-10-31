@@ -17,7 +17,7 @@ export const defaultTheme = {
   legend: {
     itemWidth: 50,
     itemHeight: 10,
-    itemsSpacing: 5,
+    itemsSpacing: 1,
     iconSize: 10,
     icon: {},
     text: {
