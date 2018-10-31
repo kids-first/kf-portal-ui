@@ -32,7 +32,7 @@ SvgText.propTypes = {
   textAnchor: PropTypes.string,
   x: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   y: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  style: PropTypes.string,
+  style: PropTypes.object,
   textValue: PropTypes.string,
   fill: PropTypes.object,
 };
