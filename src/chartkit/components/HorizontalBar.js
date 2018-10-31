@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import { truncateText } from '../utils';
+import ResponsiveWrapper from './ResponsiveWrapper';
 
 const HorizontalBar = ({
   data,
@@ -82,7 +83,16 @@ const HorizontalBar = ({
       {...overrides}
     />
     {!legends ? null : (
-      <Legend style={{ marginLeft: 160 }} legends={legends} theme={defaultTheme.legend} />
+      <ResponsiveWrapper>
+        {({ width }) => (
+          <Legend
+            width={width}
+            style={{ marginLeft: 160 }}
+            legends={legends}
+            theme={defaultTheme.legend}
+          />
+        )}}
+      </ResponsiveWrapper>
     )}
   </div>
 );
