@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import CardsContainer from 'uikit/Card/CardsContainer';
 import Card from 'uikit/Card';
