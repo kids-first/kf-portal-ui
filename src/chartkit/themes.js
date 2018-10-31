@@ -6,6 +6,12 @@ const defaultText = {
   fontFamily: 'Open Sans',
 };
 
+const defaultText = {
+  fill: ChartColors.tickTextGrey,
+  fontSize: 11,
+  fontFamily: 'Open Sans',
+};
+
 export const defaultTheme = {
   // Not used by Nivo
   legend: {
