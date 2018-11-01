@@ -28,7 +28,7 @@ import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
-import { requireLogin } from './common/injectGlobals';
+import { requireLogin, publicStatsApiRoot } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { Gen3AuthRedirect } from 'services/gen3';
@@ -132,15 +132,23 @@ const App = compose(injectState, withApi, withTheme)(
           <Route
             path="/dashboard-v2"
             exact
-            render={props =>
-              forceSelectRole({
-                api,
-                isLoadingUser,
-                Component: UserDashboardV2,
-                loggedInUser,
-                ...props,
-              })
-            }
+            render={props => (
+              <ApiContext.Provider
+                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })({
+                  method: 'get',
+                  url: publicStatsApiRoot,
+                })}
+              >
+                {forceSelectRole({
+                  api,
+                  isLoadingUser,
+                  Component: UserDashboardV2,
+
+                  loggedInUser,
+                  ...props,
+                })}
+              </ApiContext.Provider>
+            )}
           />
           <Route
             path="/join"
