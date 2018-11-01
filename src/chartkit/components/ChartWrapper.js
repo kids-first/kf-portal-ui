@@ -3,18 +3,14 @@ import Component from 'react-component-component';
 import PropTypes from 'prop-types';
 
 /**
- * Expects an axios object to make a request
- * an api endpoint
+ * Expects an api object to make a request
  * optional data transform
- * optional loader
- * optional err message
  */
-const ChartWrapper = ({ api = '', endpoint = '', transform = x => x, children }) => (
+const ChartWrapper = ({ api, url = '', transform = x => x, children }) => (
   <Component
     initialState={{ data: null, isLoading: true }}
     didMount={({ setState }) => {
-      api(`${endpoint}`)
-        .then(resp => resp.data)
+      api({ method: 'get', url: url })
         .then(data => transform(data))
         .then(data => setState({ data: data, isLoading: false }))
         .catch(err => console.log('err', err));
@@ -24,11 +20,11 @@ const ChartWrapper = ({ api = '', endpoint = '', transform = x => x, children })
   </Component>
 );
 
-ChartWrapper.protoTypes = {
-  api: PropTypes.object.isRequired,
+ChartWrapper.propTypes = {
+  api: PropTypes.func.isRequired,
   endpoint: PropTypes.string,
   transform: PropTypes.func,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.func.isRequired,
 };
 
 export default ChartWrapper;
