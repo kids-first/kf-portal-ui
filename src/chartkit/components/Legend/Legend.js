@@ -17,7 +17,7 @@ import SvgText from './SvgText';
 
 const DIRECTION_ROW = 'ROW';
 
-const Legend = ({ width: dynamicWidth, legends = [], direction = DIRECTION_ROW, style, theme }) => {
+const Legend = ({ legends = [], direction = DIRECTION_ROW, style, theme }) => {
   const { itemWidth, itemsSpacing, iconSize, icon, text } = theme;
 
   // Max height for our svg based on the largest child elements
@@ -31,7 +31,7 @@ const Legend = ({ width: dynamicWidth, legends = [], direction = DIRECTION_ROW, 
 
   return (
     <div style={style}>
-      <svg height={maxHeight} width={width} xmlns="http://www.w3.org/2000/svg">
+      <svg height={maxHeight} xmlns="http://www.w3.org/2000/svg">
         {legends.map((l, i) => {
           let xOffset = 0;
 
