@@ -11,9 +11,9 @@ import Card from 'uikit/Card';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import ChartWrapper from 'chartkit/components/ChartWrapper';
 
-import { initializeApi } from 'services/publicStats';
-
 import { StudiesChart } from './charts';
+import { withApi } from '../../services/api';
+import { publicStatsApiRoot } from '../../common/injectGlobals';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -31,20 +31,19 @@ const DashboardCard = styled(Card)`
 export default compose(
   injectState,
   withRouter,
+  withApi,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(() => {
-  return (
-    <UserDashboard>
-      <Helmet>
-        <title>Portal - User Dashboard</title>
-      </Helmet>
-      <CardsContainer>
-        <DashboardCard title="Studies">
-          <ChartWrapper endpoint="studies" api={initializeApi({})}>
-            {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
-          </ChartWrapper>
-        </DashboardCard>
-      </CardsContainer>
-    </UserDashboard>
-  );
-});
+)(({ api }) => (
+  <UserDashboard>
+    <Helmet>
+      <title>Portal - User Dashboard</title>
+    </Helmet>
+    <CardsContainer>
+      <DashboardCard title="Studies">
+        <ChartWrapper url={`${publicStatsApiRoot}studies`} api={api}>
+          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
+        </ChartWrapper>
+      </DashboardCard>
+    </CardsContainer>
+  </UserDashboard>
+));
