@@ -5,15 +5,15 @@ import { injectState } from 'freactal';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
 
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import CardsContainer from 'uikit/Card/CardsContainer';
 import Card from 'uikit/Card';
 
+import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import ChartWrapper from 'chartkit/components/ChartWrapper';
-import HorizontalBar from 'chartkit/components/HorizontalBar';
-import { ChartColors } from 'chartkit/themes';
 
 import { initializeApi } from 'services/publicStats';
+
+import { StudiesChart } from './charts';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -41,74 +41,7 @@ export default compose(
       <CardsContainer>
         <DashboardCard title="Studies">
           <ChartWrapper endpoint="studies" api={initializeApi({})}>
-            {({ data, isLoading }) =>
-              isLoading ? (
-                <LoadingSpinner />
-              ) : data ? (
-                <HorizontalBar
-                  data={data}
-                  indexBy="name"
-                  keys={['probands', 'familyMembers']}
-                  colors={[ChartColors.blue, ChartColors.purple]}
-                  tickValues={[0, 250, 500, 750, 1000, 1250]}
-                  xTickTextLength={22}
-                  legends={[
-                    { title: 'Probands', color: '#1f9bb6' },
-                    { title: 'Family Members', color: '#e3429b' },
-                  ]}
-                />
-              ) : (
-                <div>No data</div>
-              )
-            }
-          </ChartWrapper>
-        </DashboardCard>
-        <DashboardCard title="Studies">
-          <ChartWrapper endpoint="studies" api={initializeApi({})}>
-            {({ data, isLoading }) =>
-              isLoading ? (
-                <LoadingSpinner />
-              ) : data ? (
-                <HorizontalBar
-                  data={data}
-                  indexBy="name"
-                  keys={['probands', 'familyMembers']}
-                  colors={[ChartColors.blue, ChartColors.purple]}
-                  tickValues={[0, 250, 500, 750, 1000, 1250]}
-                  xTickTextLength={22}
-                  legends={[
-                    { title: 'Probands', color: '#1f9bb6' },
-                    { title: 'Family Members', color: '#e3429b' },
-                  ]}
-                />
-              ) : (
-                <div>No data</div>
-              )
-            }
-          </ChartWrapper>
-        </DashboardCard>
-        <DashboardCard title="Studies">
-          <ChartWrapper endpoint="studies" api={initializeApi({})}>
-            {({ data, isLoading }) =>
-              isLoading ? (
-                <LoadingSpinner />
-              ) : data ? (
-                <HorizontalBar
-                  data={data}
-                  indexBy="name"
-                  keys={['probands', 'familyMembers']}
-                  colors={[ChartColors.blue, ChartColors.purple]}
-                  tickValues={[0, 250, 500, 750, 1000, 1250]}
-                  xTickTextLength={22}
-                  legends={[
-                    { title: 'Probands', color: '#1f9bb6' },
-                    { title: 'Family Members', color: '#e3429b' },
-                  ]}
-                />
-              ) : (
-                <div>No data</div>
-              )
-            }
+            {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
           </ChartWrapper>
         </DashboardCard>
       </CardsContainer>

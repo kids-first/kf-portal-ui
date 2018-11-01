@@ -1,6 +1,5 @@
 import React from 'react';
 import Spinner from 'react-spinkit';
-import { Flex } from './Core';
 import Column from './Column';
 
 const LoadingSpinner = ({ size = '11px' }) => (

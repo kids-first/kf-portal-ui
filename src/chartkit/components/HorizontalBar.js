@@ -1,13 +1,11 @@
 import React from 'react';
-import { ResponsiveBar, Bar } from '@nivo/bar';
+import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import { truncateText } from '../utils';
-import ResponsiveWrapper from './ResponsiveWrapper';
-import Column from 'uikit/Column';
 
 const HorizontalBarWrapper = styled('div')`
   height: calc(100% - 20px);
