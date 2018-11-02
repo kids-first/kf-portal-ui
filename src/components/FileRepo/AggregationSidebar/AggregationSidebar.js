@@ -22,23 +22,15 @@ import Heading from 'uikit/Heading';
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
 
 const AggregationWrapper = styled(Column)`
-  flex: 0 0 auto;
-  min-height: 970px;
-  height: 1100px;
   width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
   max-width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
   min-width: ${({ scrollbarWidth }) => 200 + scrollbarWidth}px;
-  overflow-y: auto;
   box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
   border-color: ${({ theme }) => theme.greyScale5};
   border-style: solid;
   border-width: 0 1px 0 0;
-  flex: none;
+  flex: 1 1 auto;
   background: ${({ theme }) => theme.backgroundGrey};
-
-  @media screen and (min-height: 1200px) {
-    height: 100vh;
-  }
 `;
 
 const AggregationHeader = styled('div')`
@@ -51,6 +43,10 @@ const AggregationTitle = styled(Heading)`
   flex-grow: 1;
   margin-bottom: 0px;
   font-size: 18px;
+`;
+
+const Controls = styled(Column)`
+  flex: 0 0 auto;
 `;
 
 const AggregationSidebar = compose(injectState, withTheme, withApi)(
@@ -68,7 +64,7 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
     <ScrollbarSize>
       {({ scrollbarWidth }) => (
         <AggregationWrapper {...{ scrollbarWidth, innerRef: aggregationsWrapperRef }}>
-          <Column flexStrink={0}>
+          <Controls>
             <AggregationHeader>
               <AggregationTitle>
                 <H2>
@@ -114,7 +110,7 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
                 <Trans>All Filters</Trans>
               </TealActionButton>
             </AggregationHeader>
-          </Column>
+          </Controls>
           <CustomAggregationsPanel
             {...{
               ...props,

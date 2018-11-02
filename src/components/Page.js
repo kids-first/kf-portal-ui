@@ -39,9 +39,7 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   <Container height="auto">
     <Head />
-    <Column>
-      <Component {...props} />
-    </Column>
+    <Component {...props} />
     <Foot />
   </Container>
 );
