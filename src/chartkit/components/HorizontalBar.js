@@ -29,7 +29,7 @@ const HorizontalBar = ({
       indexBy={indexBy}
       margin={{
         top: 0,
-        right: 50,
+        right: 8,
         bottom: 30,
         left: 160,
       }}

@@ -9,7 +9,7 @@ const defaultText = {
 export const defaultTheme = {
   // Not used by Nivo
   legend: {
-    itemWidth: 50,
+    itemWidth: 40,
     itemHeight: 10,
     itemsSpacing: 1,
     iconSize: 10,
