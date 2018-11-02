@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
  */
 const DataProvider = ({ api, url = '', transform = x => x, children }) => (
   <Component
-    initialState={{ data: null, isLoading: true, error: null }}
+    initialState={{ data: null, isLoading: true }}
     didMount={({ setState }) => {
       api({ method: 'get', url: url })
         .then(data => transform(data))
         .then(data => setState({ data: data, isLoading: false }))
-        .catch(err => setState({ isLoading: false, error: err }));
+        .catch(err => console.log('err', err));
     }}
   >
     {({ state }) => children(state)}
