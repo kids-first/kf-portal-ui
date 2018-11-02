@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
  * Expects an api object to make a request
  * optional data transform
  */
-const ChartWrapper = ({ api, url = '', transform = x => x, children }) => (
+const DataProvider = ({ api, url = '', transform = x => x, children }) => (
   <Component
     initialState={{ data: null, isLoading: true }}
     didMount={({ setState }) => {
@@ -20,11 +20,11 @@ const ChartWrapper = ({ api, url = '', transform = x => x, children }) => (
   </Component>
 );
 
-ChartWrapper.propTypes = {
+DataProvider.propTypes = {
   api: PropTypes.func.isRequired,
   endpoint: PropTypes.string,
   transform: PropTypes.func,
   children: PropTypes.func.isRequired,
 };
 
-export default ChartWrapper;
+export default DataProvider;

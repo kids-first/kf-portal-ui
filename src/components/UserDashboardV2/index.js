@@ -9,7 +9,7 @@ import CardsContainer from 'uikit/Card/CardsContainer';
 import Card from 'uikit/Card';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
-import ChartWrapper from 'chartkit/components/ChartWrapper';
+import DataProvider from 'chartkit/components/DataProvider';
 
 import { StudiesChart } from './charts';
 import { withApi } from '../../services/api';
@@ -40,9 +40,9 @@ export default compose(
     </Helmet>
     <CardsContainer>
       <DashboardCard title="Studies">
-        <ChartWrapper url={`${publicStatsApiRoot}studies`} api={api}>
+        <DataProvider url={publicStatsApiRoot} api={api}>
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
-        </ChartWrapper>
+        </DataProvider>
       </DashboardCard>
     </CardsContainer>
   </UserDashboard>
