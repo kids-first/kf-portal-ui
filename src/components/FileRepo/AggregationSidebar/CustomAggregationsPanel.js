@@ -197,7 +197,7 @@ export default compose(injectState, withTheme, withApi)(
                                   header: 'Search by File ID',
                                   entityField: '', // "" denotes root level entity
                                   uploadableField: 'kf_id',
-                                  inputPlaceholser: 'Eg. GF_851CMY87',
+                                  inputPlaceholder: 'Eg. GF_851CMY87',
                                 },
                               ],
                             })}
@@ -210,13 +210,13 @@ export default compose(injectState, withTheme, withApi)(
                                   header: 'Search Files by Biospecimen ID',
                                   entityField: 'participants.biospecimens',
                                   uploadableField: 'participants.biospecimens.kf_id',
-                                  inputPlaceholser: 'Eg. BS_4F9171D5, S88-3',
+                                  inputPlaceholder: 'Eg. BS_4F9171D5, S88-3',
                                 },
                                 {
                                   header: 'Search Files by Participant ID',
                                   entityField: 'participants',
                                   uploadableField: 'participants.kf_id',
-                                  inputPlaceholser: 'Eg. PT_RR05KSJC',
+                                  inputPlaceholder: 'Eg. PT_RR05KSJC',
                                 },
                               ],
                             })}
