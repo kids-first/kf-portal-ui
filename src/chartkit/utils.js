@@ -1,1 +1,3 @@
-export const truncateText = (string = '', length = 5) => string.substring(0, length) + '...';
+import _ from 'lodash';
+
+export const truncateText = (string = '', length = 5) => _.truncate(string, { length: length });
