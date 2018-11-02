@@ -40,7 +40,11 @@ export default compose(
     </Helmet>
     <CardsContainer>
       <DashboardCard title="Studies">
-        <DataProvider url={`${publicStatsApiRoot}${arrangerProjectId}/studies`} api={api}>
+        <DataProvider
+          url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
+          api={api}
+          transform={data => data.studies}
+        >
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
         </DataProvider>
       </DashboardCard>
