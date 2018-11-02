@@ -6,7 +6,7 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 const ErrorText = () => <div>Error no data</div>;
 
 const ChartLoadGate = ({
-  fetchedState: { isLoading, data },
+  fetchedState: { isLoading, data, error },
   Chart,
   Loader = LoadingSpinner,
   ErrorMessage = ErrorText,
