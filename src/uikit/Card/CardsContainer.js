@@ -7,10 +7,6 @@ import Row from '../Row';
 const StyledCardsContainer = applyDefaultStyles(styled(Row)`
   flex-wrap: wrap;
   width: 100%;
-
-  * >  {
-    box-sizing: border-box;
-  }
 `);
 
 const CardsContainer = ({ children }) => <StyledCardsContainer>{children}</StyledCardsContainer>;
