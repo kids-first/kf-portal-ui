@@ -550,6 +550,7 @@ const components = {
 };
 
 export default {
+  chartColors,
   ...colors,
   ...components,
   ...mixins,
