@@ -1,13 +1,7 @@
-export const ChartColors = {
-  blue: '#1f9bb6',
-  purple: '#e3429b',
-  gridGrey: '#e7e8ec',
-  axisGrey: '#a9acbd',
-  tickTextGrey: '#343434',
-};
+import { chartColors } from '../theme/defaultTheme';
 
 const defaultText = {
-  fill: ChartColors.tickTextGrey,
+  fill: chartColors.tickTextGrey,
   fontSize: 11,
   fontFamily: 'Open Sans',
 };
@@ -28,7 +22,7 @@ export const defaultTheme = {
   axis: {
     domain: {
       line: {
-        stroke: ChartColors.axisGrey,
+        stroke: chartColors.axisGrey,
         strokeWidth: 2,
       },
     },
@@ -40,7 +34,7 @@ export const defaultTheme = {
   },
   grid: {
     line: {
-      stroke: ChartColors.gridGrey,
+      stroke: chartColors.gridGrey,
       strokeWidth: 2,
     },
   },

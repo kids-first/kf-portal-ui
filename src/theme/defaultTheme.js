@@ -65,6 +65,14 @@ const colors = {
   cardTitle: '#404c9a',
 };
 
+export const chartColors = {
+  blue: '#1f9bb6',
+  purple: '#e3429b',
+  gridGrey: '#e7e8ec',
+  axisGrey: '#a9acbd',
+  tickTextGrey: '#343434',
+};
+
 const fonts = {
   default: 'Montserrat, sans-serif',
   details: 'Open Sans, sans-serif',
