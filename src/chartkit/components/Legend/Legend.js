@@ -27,7 +27,7 @@ const Legend = ({ legends = [], direction = DIRECTION_ROW, style, theme }) => {
   const textOffsetY = Math.ceil(text.fontSize / 2);
 
   // Dynamic width on resize for responsiveness
-  const width = `calc(100% - ${style.marginLeft})`;
+  // const width = `calc(100% - ${style.marginLeft})`;
 
   return (
     <div style={style}>
