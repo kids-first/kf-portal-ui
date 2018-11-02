@@ -1,18 +1,19 @@
 import React from 'react';
-import HorizontalBar from 'chartkit/components/HorizontalBar';
-import { ChartColors } from 'chartkit/themes';
+import { withTheme } from 'emotion-theming';
 
-export const StudiesChart = ({ data }) => (
+import HorizontalBar from 'chartkit/components/HorizontalBar';
+
+export const StudiesChart = withTheme(({ data, theme }) => (
   <HorizontalBar
     data={data}
     indexBy="name"
     keys={['probands', 'familyMembers']}
-    colors={[ChartColors.blue, ChartColors.purple]}
+    colors={[theme.chartColors.blue, theme.chartColors.purple]}
     tickValues={[0, 250, 500, 750, 1000, 1250]}
     xTickTextLength={22}
     legends={[
-      { title: 'Probands', color: ChartColors.blue },
-      { title: 'Family Members', color: ChartColors.purple },
+      { title: 'Probands', color: theme.chartColors.blue },
+      { title: 'Family Members', color: theme.chartColors.purple },
     ]}
   />
-);
+));
