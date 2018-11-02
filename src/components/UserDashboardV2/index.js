@@ -23,7 +23,7 @@ const UserDashboard = styled('div')`
 `;
 
 const DashboardCard = styled(Card)`
-  width: calc(33% - 60px);
+  width: calc(40% - 60px);
   height: 400px;
   margin: 30px;
 `;

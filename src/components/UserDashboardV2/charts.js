@@ -10,10 +10,11 @@ export const StudiesChart = withTheme(({ data, theme }) => (
     keys={['probands', 'familyMembers']}
     colors={[theme.chartColors.blue, theme.chartColors.purple]}
     tickValues={[0, 250, 500, 750, 1000, 1250]}
-    xTickTextLength={22}
+    xTickTextLength={28}
     legends={[
       { title: 'Probands', color: theme.chartColors.blue },
       { title: 'Family Members', color: theme.chartColors.purple },
     ]}
+    padding={0.7}
   />
 ));
