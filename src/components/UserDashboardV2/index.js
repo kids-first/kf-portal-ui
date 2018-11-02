@@ -13,7 +13,7 @@ import DataProvider from 'chartkit/components/DataProvider';
 
 import { StudiesChart } from './charts';
 import { withApi } from '../../services/api';
-import { publicStatsApiRoot } from '../../common/injectGlobals';
+import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
 const UserDashboard = styled('div')`
   ${({ theme }) => theme.row};
@@ -40,7 +40,7 @@ export default compose(
     </Helmet>
     <CardsContainer>
       <DashboardCard title="Studies">
-        <DataProvider url={publicStatsApiRoot} api={api}>
+        <DataProvider url={`${publicStatsApiRoot}${arrangerProjectId}/studies`} api={api}>
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
         </DataProvider>
       </DashboardCard>
