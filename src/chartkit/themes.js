@@ -7,7 +7,7 @@ const defaultText = {
 };
 
 const defaultText = {
-  fill: ChartColors.tickTextGrey,
+  fill: chartColors.tickTextGrey,
   fontSize: 11,
   fontFamily: 'Open Sans',
 };
