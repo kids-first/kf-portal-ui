@@ -70,7 +70,7 @@
     "build-storybook": "build-storybook -c .storybook -o build-storybook"
   },
   "devDependencies": {
-    "@storybook/react": "^3.4.2",
+    "@storybook/react": "^4.0.2",
     "babel-polyfill": "^6.26.0",
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
