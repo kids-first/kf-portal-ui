@@ -15,82 +15,88 @@ const HorizontalBar = ({
   data,
   keys,
   colors,
-  tickValues,
+  tickInterval = 5,
   legends,
   indexBy = 'id',
   xTickTextLength = 10,
   ...overrides
-}) => (
-  <HorizontalBarWrapper>
-    <ResponsiveBar
-      data={data}
-      keys={keys}
-      indexBy={indexBy}
-      margin={{
-        top: 0,
-        right: 8,
-        bottom: 30,
-        left: 160,
-      }}
-      padding={0.3}
-      colors={colors}
-      colorBy="id"
-      layout="horizontal"
-      borderColor="inherit:darker(1.6)"
-      axisBottom={{
-        orient: 'bottom',
-        tickSize: 0,
-        tickPadding: 5,
-        tickRotation: 0,
-        tickValues: tickValues,
-      }}
-      axisLeft={{
-        tickSize: 0,
-        tickPadding: 5,
-        tickRotation: 0,
-        renderTick: tick => {
-          const { format, key, x, y, theme } = tick;
-          let value = tick.value;
+}) => {
+  const chartMaxValue = maxValue(data, keys);
+  const tickValues = 0;
 
-          // Custom formatting
-          if (format !== undefined) {
-            value = format(value);
-          }
+  return (
+    <HorizontalBarWrapper>
+      {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
+      <ResponsiveBar
+        data={data}
+        keys={keys}
+        indexBy={indexBy}
+        margin={{
+          top: 0,
+          right: 8,
+          bottom: 30,
+          left: 160,
+        }}
+        padding={0.3}
+        colors={colors}
+        colorBy="id"
+        layout="horizontal"
+        borderColor="inherit:darker(1.6)"
+        axisBottom={{
+          orient: 'bottom',
+          tickSize: 0,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: '# Participants',
+          legendPosition: 'middle',
+          legendOffset: 20,
+          //  tickValues: tickValues,
+        }}
+        axisLeft={{
+          tickSize: 0,
+          tickPadding: 5,
+          tickRotation: 0,
+          renderTick: tick => {
+            const { format, key, x, y, theme } = tick;
+            let value = tick.value;
 
-          const croppedValue = truncateText(value, xTickTextLength);
+            // Custom formatting
+            if (format !== undefined) {
+              value = format(value);
+            }
 
-          const xOffset = 160;
+            const croppedValue = truncateText(value, xTickTextLength);
 
-          return (
-            <g key={key} transform={`translate(${x - xOffset},${y})`}>
-              <text textAnchor="start" alignmentBaseline="middle" style={theme.axis.ticks.text}>
-                {croppedValue}
-              </text>
-            </g>
-          );
-        },
-      }}
-      enableGridX={true}
-      gridXValues={tickValues}
-      maxValue={maxValue(data, keys) + 50}
-      enableGridY={false}
-      enableLabel={false}
-      labelSkipWidth={12}
-      labelSkipHeight={12}
-      labelTextColor="inherit:darker(1.6)"
-      animate={true}
-      motionStiffness={90}
-      motionDamping={15}
-      tooltip={null}
-      isInteractive={false}
-      theme={defaultTheme}
-      {...overrides}
-    />
-    {!legends ? null : (
-      <Legend style={{ marginLeft: 160 }} legends={legends} theme={defaultTheme.legend} />
-    )}
-  </HorizontalBarWrapper>
-);
+            const xOffset = 160;
+
+            return (
+              <g key={key} transform={`translate(${x - xOffset},${y})`}>
+                <text textAnchor="start" alignmentBaseline="middle" style={theme.axis.ticks.text}>
+                  {croppedValue}
+                </text>
+              </g>
+            );
+          },
+        }}
+        enableGridX={true}
+        // gridXValues={tickValues}
+        maxValue={chartMaxValue + 50}
+        enableGridY={false}
+        enableLabel={false}
+        labelSkipWidth={12}
+        labelSkipHeight={12}
+        labelTextColor="inherit:darker(1.6)"
+        animate={true}
+        motionStiffness={90}
+        motionDamping={15}
+        tooltip={null}
+        isInteractive={false}
+        theme={defaultTheme}
+        {...overrides}
+      />
+    </HorizontalBarWrapper>
+  );
+};
 
 HorizontalBar.propTypes = {
   maxValue: PropTypes.number,

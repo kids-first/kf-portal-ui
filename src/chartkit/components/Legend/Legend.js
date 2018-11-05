@@ -17,8 +17,8 @@ import SvgText from './SvgText';
 
 const DIRECTION_ROW = 'ROW';
 
-const Legend = ({ legends = [], direction = DIRECTION_ROW, style, theme }) => {
-  const { itemWidth, itemsSpacing, iconSize, icon, text } = theme;
+const Legend = ({ legends = [], direction = DIRECTION_ROW, theme }) => {
+  const { itemWidth, itemsSpacing, iconSize, icon, text, style } = theme;
 
   // Max height for our svg based on the largest child elements
   const maxHeight = Math.max(iconSize, text.fontSize) + 1;
@@ -38,7 +38,7 @@ const Legend = ({ legends = [], direction = DIRECTION_ROW, style, theme }) => {
           xOffset = itemWidth + itemsSpacing;
 
           const legendItem = (
-            <g key={i} height={maxHeight} transform={`translate(${i * xOffset}, 0)`}>
+            <g key={i} height={maxHeight} transform={`translate(${i * xOffset}, 0)`} style={style}>
               <SvgSquare
                 style={icon}
                 fill={l.color}
