@@ -9,42 +9,45 @@ export const bar = {};
 
 export const actions = {};
 
-const FixedHeightWrapper = ({ children }) => <div style={{ height: '300px' }}>{children}</div>;
+const FixedHeightWrapper = ({ children }) => (
+  <div style={{ height: '300px', padding: '25px' }}>{children}</div>
+);
 
-const randMax = 200;
+const randMax = 2100;
 const mock = [
   {
-    name: 'Pediatric Brain Tumors: CBTTC',
+    id: 'Pediatric Brain Tumors: CBTTC',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
   {
-    name: 'Orofacial Cleft: European Ancestry',
+    id: 'Orofacial Cleft: European Ancestry',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
   {
-    name: 'Ewing Sarcoma: Genetic Risk',
+    id: 'Ewing Sarcoma: Genetic Risk',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
   {
-    name: 'Syndromic Cranial Dysinnervation',
+    id: 'Syndromic Cranial Dysinnervation',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
   {
-    name: 'Congenital Heart Defects',
+    id: 'Congenital Heart Defects',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
   {
-    name: 'Adolescent nameiopathic Scoliosis',
+    id: 'Adolescent nameiopathic Scoliosis',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
   {
-    name: 'Congenital Diaphragmatic Hernia',
+    id: 'Congenital Diaphragmatic Hernia',
+    random: 'xx',
     probands: _.random(0, randMax),
     familyMembers: _.random(0, randMax),
   },
@@ -54,9 +57,10 @@ storiesOf('ChartKit/HorizontalBar', module).add('default', () => (
   <FixedHeightWrapper>
     <HorizontalBar
       data={mock}
-      indexBy="name"
+      indexBy="id"
       keys={['probands', 'familyMembers']}
       colors={[chartColors.blue, chartColors.purple]}
+      tickInterval={5}
       xTickTextLength={28}
       legends={[
         { title: 'Probands', color: chartColors.blue },
