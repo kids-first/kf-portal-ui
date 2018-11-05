@@ -9,6 +9,10 @@ import Legend from './Legend';
 import Tooltip from './Tooltip';
 import { truncateText, maxValues, getChartMaxValue, roundTo, getDataRangeSize } from '../utils';
 
+const Tooltip = ({ id, value, index, color, data }) => (
+  <div keys={index}>{`${data.maxVal.toLocaleString()} Participants`}</div>
+);
+
 const HorizontalBarWrapper = styled('div')`
   height: calc(100% - 20px);
 `;
