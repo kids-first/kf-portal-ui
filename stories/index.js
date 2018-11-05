@@ -1,1 +1,2 @@
 import './uikit';
+import './ChartKit';
