@@ -5,7 +5,7 @@ import styled from 'react-emotion';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
-import { truncateText } from '../utils';
+import { truncateText, maxValue } from '../utils';
 
 const HorizontalBarWrapper = styled('div')`
   height: calc(100% - 20px);
@@ -16,7 +16,6 @@ const HorizontalBar = ({
   keys,
   colors,
   tickValues,
-  maxValue,
   legends,
   indexBy = 'id',
   xTickTextLength = 10,
@@ -73,7 +72,7 @@ const HorizontalBar = ({
       }}
       enableGridX={true}
       gridXValues={tickValues}
-      maxValue={maxValue || tickValues[tickValues.length - 1] + 40}
+      maxValue={maxValue(data, keys) + 50}
       enableGridY={false}
       enableLabel={false}
       labelSkipWidth={12}

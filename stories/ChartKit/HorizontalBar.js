@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import _ from 'lodash';
 
 import HorizontalBar from '../../src/chartkit/components/HorizontalBar';
 import { chartColors } from '../../src/theme/defaultTheme';
@@ -10,41 +11,42 @@ export const actions = {};
 
 const FixedHeightWrapper = ({ children }) => <div style={{ height: '300px' }}>{children}</div>;
 
+const randMax = 200;
 const mock = [
   {
     name: 'Pediatric Brain Tumors: CBTTC',
-    probands: 10,
-    familyMembers: 100,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
   {
     name: 'Orofacial Cleft: European Ancestry',
-    probands: 102,
-    familyMembers: 167,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
   {
     name: 'Ewing Sarcoma: Genetic Risk',
-    probands: 23,
-    familyMembers: 630,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
   {
     name: 'Syndromic Cranial Dysinnervation',
-    probands: 430,
-    familyMembers: 500,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
   {
     name: 'Congenital Heart Defects',
-    probands: 230,
-    familyMembers: 550,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
   {
     name: 'Adolescent nameiopathic Scoliosis',
-    probands: 340,
-    familyMembers: 400,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
   {
     name: 'Congenital Diaphragmatic Hernia',
-    probands: 60,
-    familyMembers: 420,
+    probands: _.random(0, randMax),
+    familyMembers: _.random(0, randMax),
   },
 ];
 
@@ -55,13 +57,12 @@ storiesOf('ChartKit/HorizontalBar', module).add('default', () => (
       indexBy="name"
       keys={['probands', 'familyMembers']}
       colors={[chartColors.blue, chartColors.purple]}
-      tickValues={[0, 250, 500, 750, 1000, 1250]}
       xTickTextLength={28}
       legends={[
         { title: 'Probands', color: chartColors.blue },
         { title: 'Family Members', color: chartColors.purple },
       ]}
-      padding={0.7}
+      padding={0.4}
     />
   </FixedHeightWrapper>
 ));
