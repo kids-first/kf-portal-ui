@@ -38,6 +38,7 @@ const localMock = [
   { id: 'b', url: 'www.duckduckgo.com' },
   { id: 'c', url: 'www.bbc.com' },
 ];
+*/
 
 const mergedMockData = serverMock.map(d => ({ ...d, ..._.find(localMock, { id: d.id }) }));
 
