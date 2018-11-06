@@ -22,6 +22,7 @@ class HorizontalBar extends Component {
     this.state = {
       highlighted: null,
     };
+
     const { data, keys } = props;
     this.dataMaxValues = maxValues(data, keys);
     //  this.chartMaxValue = chartMaxValue(maxValues);
@@ -37,6 +38,17 @@ class HorizontalBar extends Component {
 
     console.log('dddd', data, this.chartData);
   }
+
+  onMouseEnter(data, e) {
+    console.log('Mouse enter!', data, typeof data.index, 'state', this.state);
+    if (data) {
+      const { index, indexValue } = data;
+      console.log('data', data);
+      this.setState({ highlighted: { index, indexValue } });
+    }
+  }
+
+  onMouseLeave(data, e) {}
 
   render() {
     const tickValues = 0;
@@ -57,14 +69,7 @@ class HorizontalBar extends Component {
           data={this.data}
           keys={keys}
           indexBy={indexBy}
-          onMouseEnter={(data, e) => {
-            console.log('Mouse enter!', data, typeof data.index);
-            if (data) {
-              const { index, indexValue } = data;
-              console.log('data', data);
-              this.setState({ highlighted: { index, indexValue } });
-            }
-          }}
+          onMouseEnter={this.onMouseEnter}
           onMouseLeave={(data, e) => {
             //  console.log('Mouse leave!');
             this.setState({ highlighted: null });
@@ -90,7 +95,8 @@ class HorizontalBar extends Component {
           ]}
           fill={[
             {
-              match: x => x.data.index === this.state.highlighted?.index,
+              match: x =>
+                x.data.index === this.state.highlighted ? this.state.highlighted.index : null,
               id: 'lines',
             },
           ]}
@@ -113,7 +119,7 @@ class HorizontalBar extends Component {
             tickRotation: 0,
             renderTick: tick => {
               const { format, key, x, y, theme } = tick;
-              console.log('format', format, 'key', key, 'theme', theme);
+              // console.log('format', format, 'key', key, 'theme', theme);
               let value = tick.value;
 
               // Custom formatting
@@ -125,15 +131,17 @@ class HorizontalBar extends Component {
 
               const xOffset = 160;
 
-              //  const indexValue = this.state.highlighted ? null : this.state.highlighted.indexValue;
-              //  const highlighted = value === indexValue ? { color: 'red' } : {};
+              const highlighted = this.state.highlighted;
+              const { index, indexValue } = highlighted ? highlighted : null;
+              //   const highlighted = value === indexValue ? { fill: 'red' } : {};
 
+              console.log('indexvalue', indexValue, 'value', value, 'highlighted', highlighted);
               return (
                 <g key={key} transform={`translate(${x - xOffset},${y})`}>
                   <text
                     textAnchor="start"
                     alignmentBaseline="middle"
-                    style={{ ...theme.axis.ticks.text, ...{} }}
+                    style={{ ...theme.axis.ticks.text, ...highlighted }}
                   >
                     {croppedValue}
                   </text>
