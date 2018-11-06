@@ -17,6 +17,10 @@ export const defaultTheme = {
     text: {
       ...defaultText,
     },
+    style: {
+      backgroundColor: '#f4f5f8',
+      marginBottom: '20px',
+    },
   },
   // Used by Nivos
   axis: {
