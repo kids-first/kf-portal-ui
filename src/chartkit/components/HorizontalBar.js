@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import { truncateText, maxValues } from '../utils';
+import BarItem from './BarItem';
 
 const Tooltip = ({ id, value, index, color, data }) => (
   <div keys={index}>{`${data.maxVal.toLocaleString()} Participants`}</div>
@@ -20,7 +21,8 @@ class HorizontalBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      highlighted: null,
+      highlightedIndex: null,
+      highlightedIndexValue: null,
     };
 
     const { data, keys } = props;
@@ -36,19 +38,59 @@ class HorizontalBar extends Component {
       })
       .value();
 
-    console.log('dddd', data, this.chartData);
+    this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
   onMouseEnter(data, e) {
-    console.log('Mouse enter!', data, typeof data.index, 'state', this.state);
+    e.target.style.cursor = 'pointer';
     if (data) {
       const { index, indexValue } = data;
-      console.log('data', data);
-      this.setState({ highlighted: { index, indexValue } });
+      this.setState({ highlightedIndex: index, highlightedIndexValue: indexValue });
     }
   }
 
-  onMouseLeave(data, e) {}
+  onMouseLeave(data, e) {
+    e.target.style.cursor = 'default';
+    this.setState({ highlightedIndex: null, highlightedIndexValue: null });
+  }
+
+  renderAxisLeftTick(tick) {
+    const { highlightedIndexValue } = this.state;
+    const { xTickTextLength } = this.props;
+    const { format, key, x, y, theme } = tick;
+
+    // console.log('format', format, 'key', key, 'theme', theme);
+    let value = tick.value;
+
+    // Custom formatting
+    if (format !== undefined) {
+      value = format(value);
+    }
+
+    const croppedValue = truncateText(value, xTickTextLength);
+
+    const xOffset = 160;
+
+    const highlighted = value === highlightedIndexValue ? { fill: 'red' } : {};
+
+    return (
+      <g
+        key={key}
+        transform={`translate(${x - xOffset},${y})`}
+        style={{ cursor: highlighted ? 'pointer' : 'default' }}
+      >
+        <text
+          textAnchor="start"
+          alignmentBaseline="middle"
+          style={{ ...theme.axis.ticks.text, ...highlighted }}
+        >
+          {croppedValue}
+        </text>
+      </g>
+    );
+  }
 
   render() {
     const tickValues = 0;
@@ -70,10 +112,7 @@ class HorizontalBar extends Component {
           keys={keys}
           indexBy={indexBy}
           onMouseEnter={this.onMouseEnter}
-          onMouseLeave={(data, e) => {
-            //  console.log('Mouse leave!');
-            this.setState({ highlighted: null });
-          }}
+          onMouseLeave={this.onMouseLeave}
           margin={{
             top: 0,
             right: 8,
@@ -95,8 +134,7 @@ class HorizontalBar extends Component {
           ]}
           fill={[
             {
-              match: x =>
-                x.data.index === this.state.highlighted ? this.state.highlighted.index : null,
+              match: x => x.data.index === this.state.highlightedIndex,
               id: 'lines',
             },
           ]}
@@ -117,37 +155,7 @@ class HorizontalBar extends Component {
             tickSize: 0,
             tickPadding: 5,
             tickRotation: 0,
-            renderTick: tick => {
-              const { format, key, x, y, theme } = tick;
-              // console.log('format', format, 'key', key, 'theme', theme);
-              let value = tick.value;
-
-              // Custom formatting
-              if (format !== undefined) {
-                value = format(value);
-              }
-
-              const croppedValue = truncateText(value, xTickTextLength);
-
-              const xOffset = 160;
-
-              const highlighted = this.state.highlighted;
-              const { index, indexValue } = highlighted ? highlighted : null;
-              //   const highlighted = value === indexValue ? { fill: 'red' } : {};
-
-              console.log('indexvalue', indexValue, 'value', value, 'highlighted', highlighted);
-              return (
-                <g key={key} transform={`translate(${x - xOffset},${y})`}>
-                  <text
-                    textAnchor="start"
-                    alignmentBaseline="middle"
-                    style={{ ...theme.axis.ticks.text, ...highlighted }}
-                  >
-                    {croppedValue}
-                  </text>
-                </g>
-              );
-            },
+            renderTick: this.renderAxisLeftTick,
           }}
           enableGridX={true}
           // gridXValues={tickValues}
