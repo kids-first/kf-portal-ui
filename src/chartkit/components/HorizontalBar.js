@@ -6,12 +6,8 @@ import _ from 'lodash';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
-import { truncateText, maxValues } from '../utils';
-import BarItem from './BarItem';
-
-const Tooltip = ({ id, value, index, color, data }) => (
-  <div keys={index}>{`${data.maxVal.toLocaleString()} Participants`}</div>
-);
+import Tooltip from './Tooltip';
+import { truncateText, maxValues, getChartMaxValue, roundTo, getDataRangeSize } from '../utils';
 
 const HorizontalBarWrapper = styled('div')`
   height: calc(100% - 20px);
@@ -56,20 +52,23 @@ class HorizontalBar extends Component {
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
+  onClick(data) {
+    const { onClick } = this.props;
+    onClick ? onClick(data) : null;
+  }
+
   renderAxisLeftTick(tick) {
     const { highlightedIndexValue } = this.state;
     const { xTickTextLength } = this.props;
     const { format, key, x, y, theme } = tick;
 
-    // console.log('format', format, 'key', key, 'theme', theme);
     let value = tick.value;
 
-    // Custom formatting
     if (format !== undefined) {
       value = format(value);
     }
 
-    const croppedValue = truncateText(value, xTickTextLength);
+    const text = truncateText(value, xTickTextLength);
 
     const xOffset = 160;
 
@@ -77,30 +76,32 @@ class HorizontalBar extends Component {
 
     return (
       <g
+        ref={this.textRef}
         key={key}
         transform={`translate(${x - xOffset},${y})`}
         style={{ cursor: highlighted ? 'pointer' : 'default' }}
       >
         <text
+          className="tickTextAxisLeft"
           textAnchor="start"
           alignmentBaseline="middle"
           style={{ ...theme.axis.ticks.text, ...highlighted }}
         >
-          {croppedValue}
+          {text}
         </text>
       </g>
     );
   }
 
   render() {
-    const tickValues = 0;
     const {
       keys,
       colors,
-      tickInterval = 5,
+      tickInterval,
       legends,
       indexBy = 'id',
       xTickTextLength = 10,
+      tickValues,
       ...overrides
     } = this.props;
 
@@ -113,6 +114,7 @@ class HorizontalBar extends Component {
           indexBy={indexBy}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
+          onClick={this.onClick}
           margin={{
             top: 0,
             right: 8,
@@ -142,6 +144,7 @@ class HorizontalBar extends Component {
           layout="horizontal"
           borderColor="inherit:darker(1.6)"
           axisBottom={{
+            format: v => v.toLocaleString(),
             orient: 'bottom',
             tickSize: 0,
             tickPadding: 5,
