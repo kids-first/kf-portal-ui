@@ -21,22 +21,26 @@ class HorizontalBar extends Component {
       highlightedIndexValue: null,
     };
 
-    const { data, keys } = props;
+    const { data, keys, sortBy, tickInterval } = props;
     this.dataMaxValues = maxValues(data, keys);
-    //  this.chartMaxValue = chartMaxValue(maxValues);
 
-    this.data = _(data)
+    const maxValue = getChartMaxValue(data, keys);
+    this.maxValue = tickInterval ? this.maxValue : 'auto';
+
+    this.tickValues = tickInterval;
+
+    this.data = data
       .filter(x => x)
-      .sortBy(data, d => d.id)
+      .sort(sortBy)
       .map(d => {
         const maxVal = this.dataMaxValues[d.id];
         return { ...d, maxVal };
-      })
-      .value();
+      });
 
     this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   onMouseEnter(data, e) {
@@ -152,7 +156,7 @@ class HorizontalBar extends Component {
             legend: '# Participants',
             legendPosition: 'middle',
             legendOffset: 20,
-            //  tickValues: tickValues,
+            tickValues: this.tickValues,
           }}
           axisLeft={{
             tickSize: 0,
@@ -161,8 +165,8 @@ class HorizontalBar extends Component {
             renderTick: this.renderAxisLeftTick,
           }}
           enableGridX={true}
-          // gridXValues={tickValues}
-          // maxValue={_.max(this.maxValues) + 50}
+          gridXValues={undefined}
+          maxValue={this.maxValue}
           enableGridY={false}
           enableLabel={false}
           labelSkipWidth={12}
@@ -187,6 +191,7 @@ HorizontalBar.propTypes = {
   data: PropTypes.array,
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
+  sortBy: PropTypes.func,
 };
 
 export default HorizontalBar;
