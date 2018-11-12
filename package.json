@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@arranger/components": "0.5.15",
-    "@nivo/bar": "^0.50.0",
+    "@nivo/bar": "^0.51.0",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
     "cookies-js": "^1.2.3",
@@ -70,6 +70,7 @@
     "build-storybook": "build-storybook -c .storybook -o build-storybook"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^4.0.4",
     "@storybook/react": "^4.0.4",
     "babel-polyfill": "^6.26.0",
     "i18next-scanner": "^2.4.6",
