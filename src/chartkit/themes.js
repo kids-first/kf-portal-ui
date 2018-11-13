@@ -6,12 +6,6 @@ const defaultText = {
   fontFamily: 'Open Sans',
 };
 
-const defaultText = {
-  fill: chartColors.tickTextGrey,
-  fontSize: 11,
-  fontFamily: 'Open Sans',
-};
-
 export const defaultTheme = {
   legend: {
     itemWidth: 40,
