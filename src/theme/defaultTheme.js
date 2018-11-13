@@ -61,6 +61,16 @@ const colors = {
   successLight: '#e6f3f5', // TODO: confirm this color
   successBackground: '#e6f3f5',
   successBorder: `#009bb8`,
+
+  cardTitle: '#404c9a',
+};
+
+export const chartColors = {
+  blue: '#1f9bb6',
+  purple: '#e3429b',
+  gridGrey: '#e7e8ec',
+  axisGrey: '#a9acbd',
+  tickTextGrey: '#343434',
 };
 
 const fonts = {
@@ -540,6 +550,7 @@ const components = {
 };
 
 export default {
+  chartColors,
   ...colors,
   ...components,
   ...mixins,
