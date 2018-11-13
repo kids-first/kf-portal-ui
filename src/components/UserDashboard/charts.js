@@ -103,16 +103,6 @@ const topDiagnosesChartMock = [
   { name: 'Li-Fraumeni syndrome', probands: 8, familyMembers: _.random(0, 500) },
   { name: 'metastatic melanoma', probands: 7, familyMembers: _.random(0, 500) },
   { name: 'chordoma (disease)', probands: 4, familyMembers: _.random(0, 500) },
-  { name: 'neuroblastoma', probands: 6, familyMembers: _.random(0, 500) },
-  { name: 'neurofibromatosis type 2', probands: 7, familyMembers: 0 },
-  { name: 'neurofibromatosis type 3', probands: 7, familyMembers: 0 },
-  { name: 'germinoma (disease)', probands: 6, familyMembers: 0 },
-  { name: 'malignant peripheral nerve sheath tumor', probands: 5, familyMembers: 0 },
-  { name: 'pineoblastoma', probands: 5, familyMembers: 0 },
-  { name: 'ganglioneuroblastoma (disease)', probands: 3, familyMembers: 0 },
-  { name: 'mixed neuronal-glial tumor', probands: 5, familyMembers: 0 },
-  { name: 'Langerhans cell histiocytosis', probands: 4, familyMembers: 0 },
-  { name: 'adenoma', probands: 4, familyMembers: 0 },
 ];
 
 export const TopDiagnosesChart = withTheme(({ data, theme }) => (
