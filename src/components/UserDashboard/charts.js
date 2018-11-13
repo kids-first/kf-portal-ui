@@ -61,9 +61,93 @@ export const StudiesChart = withTheme(({ data, theme }) => {
   );
 });
 
+const topDiagnosesChartMock = [
+  { name: 'disease or disorder', probands: 923, familyMembers: _.random(0, 500) },
+  { name: 'congenital diaphragmatic hernia', probands: 512, familyMembers: _.random(0, 500) },
+  { name: 'nervous system disorder', probands: 376, familyMembers: _.random(0, 500) },
+  { name: 'Ewing sarcoma', probands: 379, familyMembers: _.random(0, 500) },
+  { name: 'epilepsy', probands: 294, familyMembers: _.random(0, 500) },
+  { name: 'low grade glioma', probands: 270, familyMembers: _.random(0, 500) },
+  { name: 'hydrocephalus', probands: 245, familyMembers: _.random(0, 500) },
+  { name: 'vision disorder', probands: 223, familyMembers: _.random(0, 500) },
+  { name: 'medulloblastoma', probands: 129, familyMembers: _.random(0, 500) },
+  { name: 'grade III glioma', probands: 109, familyMembers: _.random(0, 500) },
+  { name: 'mood disorder', probands: 96, familyMembers: _.random(0, 500) },
+  { name: 'ependymoma', probands: 91, familyMembers: _.random(0, 500) },
+  {
+    name: 'macrocephaly-developmental delay syndrome',
+    probands: 83,
+    familyMembers: _.random(0, 500),
+  },
+  { name: 'diffuse intrinsic pontine glioma', probands: 79, familyMembers: _.random(0, 500) },
+  { name: 'endocrine system disease', probands: 64, familyMembers: _.random(0, 500) },
+  { name: 'ganglioglioma', probands: 54, familyMembers: _.random(0, 500) },
+  { name: 'other acquired skin disease', probands: 47, familyMembers: _.random(0, 500) },
+  { name: 'craniopharyngioma', probands: 40, familyMembers: _.random(0, 500) },
+  { name: 'neurofibromatosis type 1', probands: 39, familyMembers: _.random(0, 500) },
+  {
+    name: 'otopalatodigital syndrome spectrum disorder',
+    probands: 35,
+    familyMembers: _.random(0, 500),
+  },
+  { name: 'meningioma (disease)', probands: 31, familyMembers: _.random(0, 500) },
+  { name: 'atypical teratoid rhabdoid tumor', probands: 29, familyMembers: _.random(0, 500) },
+  { name: 'dysembryoplastic neuroepithelial tumor', probands: 29, familyMembers: _.random(0, 500) },
+  { name: 'plexiform neurofibroma (disease)', probands: 24, familyMembers: _.random(0, 500) },
+  { name: 'inherited genetic disease', probands: 23, familyMembers: _.random(0, 500) },
+  {
+    name: 'spinal cord primitive neuroectodermal tumor',
+    probands: 21,
+    familyMembers: _.random(0, 500),
+  },
+  { name: 'schwannoma', probands: 17, familyMembers: _.random(0, 500) },
+  { name: 'choroid plexus papilloma', probands: 18, familyMembers: _.random(0, 500) },
+  { name: 'Gnathodiaphyseal dysplasia', probands: 17, familyMembers: _.random(0, 500) },
+  { name: 'tuberous sclerosis', probands: 14, familyMembers: _.random(0, 500) },
+  { name: 'teratoma', probands: 10, familyMembers: _.random(0, 500) },
+  { name: 'Li-Fraumeni syndrome', probands: 8, familyMembers: _.random(0, 500) },
+  { name: 'metastatic melanoma', probands: 7, familyMembers: _.random(0, 500) },
+  { name: 'chordoma (disease)', probands: 4, familyMembers: _.random(0, 500) },
+  { name: 'neuroblastoma', probands: 6, familyMembers: _.random(0, 500) },
+  { name: 'neurofibromatosis type 2', probands: 7, familyMembers: 0 },
+  { name: 'neurofibromatosis type 3', probands: 7, familyMembers: 0 },
+  { name: 'germinoma (disease)', probands: 6, familyMembers: 0 },
+  { name: 'malignant peripheral nerve sheath tumor', probands: 5, familyMembers: 0 },
+  { name: 'pineoblastoma', probands: 5, familyMembers: 0 },
+  { name: 'ganglioneuroblastoma (disease)', probands: 3, familyMembers: 0 },
+  { name: 'mixed neuronal-glial tumor', probands: 5, familyMembers: 0 },
+  { name: 'Langerhans cell histiocytosis', probands: 4, familyMembers: 0 },
+  { name: 'adenoma', probands: 4, familyMembers: 0 },
+  { name: 'choroid plexus carcinoma', probands: 4, familyMembers: 0 },
+  { name: 'hemangioblastoma', probands: 3, familyMembers: 0 },
+  { name: 'sarcoma', probands: 4, familyMembers: 0 },
+  { name: 'cavernous hemangioma', probands: 3, familyMembers: _.random(0, 500) },
+  { name: 'central neurocytoma', probands: 3, familyMembers: _.random(0, 500) },
+  { name: 'oligodendroglioma', probands: 3, familyMembers: _.random(0, 500) },
+  { name: 'posterior fossa malformation', probands: 3, familyMembers: _.random(0, 500) },
+  { name: 'extraskeletal Ewing sarcoma', probands: 2, familyMembers: _.random(0, 500) },
+  { name: 'gliomatosis cerebri', probands: 2, familyMembers: _.random(0, 500) },
+  {
+    name: 'peripheral primitive neuroectodermal tumor',
+    probands: 2,
+    familyMembers: _.random(0, 500),
+  },
+  { name: 'rhabdomyosarcoma (disease)', probands: 2, familyMembers: _.random(0, 500) },
+  { name: 'subependymal giant cell astrocytoma', probands: 2, familyMembers: _.random(0, 500) },
+  {
+    name: '170.9: Malignant neoplasm of bon and articular cartilage, Ewing Sarcoma',
+    probands: 1,
+    familyMembers: 0,
+  },
+  { name: 'Ewing sarcoma of bone', probands: 1, familyMembers: 0 },
+  { name: 'nongerminomatous germ cell tumor', probands: 1, familyMembers: 0 },
+  { name: 'primary central nervous system lymphoma', probands: 1, familyMembers: 0 },
+  { name: 'soft tissue sarcoma', probands: 1, familyMembers: 0 },
+];
+
 export const TopDiagnosesChart = withTheme(({ data, theme }) => (
   <HorizontalBar
-    data={data}
+    data={topDiagnosesChartMock}
     indexBy="name"
     keys={['probands', 'familyMembers']}
     tickInterval={4}
