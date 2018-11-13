@@ -15,10 +15,17 @@ const CardWrapper = applyDefaultStyles(styled('div')`
   flex-direction: column;
 `);
 
-const Card = ({ Header = CardHeader, Content = CardContent, title, children, className }) => (
+const Card = ({
+  Header = CardHeader,
+  Content = CardContent,
+  title,
+  children,
+  className,
+  scrollable,
+}) => (
   <CardWrapper className={className}>
     <Header title={title} />
-    <Content>{children}</Content>
+    <Content scrollable={scrollable}>{children}</Content>
   </CardWrapper>
 );
 

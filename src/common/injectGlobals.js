@@ -79,4 +79,4 @@ export const reactApiDataVersionFallback: string =
   process.env.REACT_APP_DATA_VERSION_FALLBACK || '';
 
 // Public Stats
-export const publicStatsApiRoot = process.env.REACT_APP_PUBLIC_STATS_API || '';
+export const publicStatsApiRoot = process.env.REACT_APP_PUBLIC_STATS_ROOT || '';

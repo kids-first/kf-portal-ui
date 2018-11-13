@@ -52,7 +52,7 @@ class HorizontalBar extends Component {
   }
 
   onMouseLeave(data, e) {
-    e.target.style.cursor = 'default';
+    //   e.target.style.cursor = 'default';
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
@@ -64,7 +64,7 @@ class HorizontalBar extends Component {
   renderAxisLeftTick(tick) {
     const { highlightedIndexValue } = this.state;
     const { xTickTextLength } = this.props;
-    const { format, key, x, y, theme } = tick;
+    const { format, key, x, y, theme, tickIndex } = tick;
 
     let value = tick.value;
 
@@ -76,14 +76,15 @@ class HorizontalBar extends Component {
 
     const xOffset = 160;
 
-    const highlighted = value === highlightedIndexValue ? { fill: 'red' } : {};
+    const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
     return (
       <g
-        ref={this.textRef}
         key={key}
         transform={`translate(${x - xOffset},${y})`}
         style={{ cursor: highlighted ? 'pointer' : 'default' }}
+        onMouseEnter={e => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
+        onMouseLeave={this.onMouseLeave}
       >
         <text
           className="tickTextAxisLeft"
@@ -106,80 +107,87 @@ class HorizontalBar extends Component {
       indexBy = 'id',
       xTickTextLength = 10,
       tickValues,
+      height,
       ...overrides
     } = this.props;
+
+    const chartData = {
+      data: this.data,
+      keys: keys,
+      indexBy: indexBy,
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
+      onClick: this.onClick,
+      margin: {
+        top: 0,
+        right: 8,
+        bottom: 70,
+        left: 160,
+      },
+      padding: this.props.padding ? this.props.padding : 0.3,
+      colors: colors,
+      defs: [
+        {
+          id: 'lines',
+          type: 'patternLines',
+          background: 'inherit',
+          color: '#ffffff54',
+          rotation: -45,
+          lineWidth: 4,
+          spacing: 10,
+        },
+      ],
+      fill: [
+        {
+          match: x => x.data.index === this.state.highlightedIndex,
+          id: 'lines',
+        },
+      ],
+      colorBy: 'id',
+      layout: 'horizontal',
+      borderColor: 'inherit:darker(1.6)',
+      axisBottom: {
+        format: v => v.toLocaleString(),
+        orient: 'bottom',
+        tickSize: 0,
+        tickPadding: 5,
+        tickRotation: 0,
+        legend: '# Participants',
+        legendPosition: 'middle',
+        legendOffset: 38,
+        tickValues: this.tickValues,
+      },
+      axisLeft: {
+        tickSize: 0,
+        tickPadding: 5,
+        tickRotation: 0,
+        renderTick: this.renderAxisLeftTick,
+      },
+      enableGridX: true,
+      gridXValues: undefined,
+      maxValue: this.maxValue,
+      enableGridY: false,
+      enableLabel: false,
+      labelSkipWidth: 12,
+      labelSkipHeight: 12,
+      labelTextColor: 'inherit:darker(1.6)',
+      animate: true,
+      motionStiffness: 90,
+      motionDamping: 15,
+      tooltip: null,
+      isInteractive: true,
+      theme: defaultTheme,
+      tooltip: Tooltip,
+    };
 
     return (
       <HorizontalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <ResponsiveBar
-          data={this.data}
-          keys={keys}
-          indexBy={indexBy}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-          onClick={this.onClick}
-          margin={{
-            top: 0,
-            right: 8,
-            bottom: 30,
-            left: 160,
-          }}
-          padding={0.3}
-          colors={colors}
-          defs={[
-            {
-              id: 'lines',
-              type: 'patternLines',
-              background: 'inherit',
-              color: '#ffffff54',
-              rotation: -45,
-              lineWidth: 4,
-              spacing: 10,
-            },
-          ]}
-          fill={[
-            {
-              match: x => x.data.index === this.state.highlightedIndex,
-              id: 'lines',
-            },
-          ]}
-          colorBy="id"
-          layout="horizontal"
-          borderColor="inherit:darker(1.6)"
-          axisBottom={{
-            format: v => v.toLocaleString(),
-            orient: 'bottom',
-            tickSize: 0,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: '# Participants',
-            legendPosition: 'middle',
-            legendOffset: 20,
-            tickValues: this.tickValues,
-          }}
-          axisLeft={{
-            tickSize: 0,
-            tickPadding: 5,
-            tickRotation: 0,
-            renderTick: this.renderAxisLeftTick,
-          }}
-          enableGridX={true}
-          gridXValues={undefined}
-          maxValue={this.maxValue}
-          enableGridY={false}
-          enableLabel={false}
-          labelSkipWidth={12}
-          labelSkipHeight={12}
-          labelTextColor="inherit:darker(1.6)"
-          animate={true}
-          motionStiffness={90}
-          motionDamping={15}
-          tooltip={null}
-          isInteractive={true}
-          theme={defaultTheme}
-          tooltip={Tooltip}
-        />
+        {height ? (
+          <ResponsiveBar {...chartData} height={height} />
+        ) : (
+          <ResponsiveBar {...chartData} />
+        )}
       </HorizontalBarWrapper>
     );
   }

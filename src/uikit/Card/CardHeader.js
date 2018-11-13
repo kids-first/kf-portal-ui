@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'react-emotion';
 
-const Heading = styled('h2')`
+import { applyDefaultStyles } from 'uikit/Core';
+
+const Heading = applyDefaultStyles(styled('h2')`
   margin-top: 0;
   font-family: ${({ theme }) => theme.fonts.default};
   font-size: 20px;
@@ -11,8 +13,8 @@ const Heading = styled('h2')`
   border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
   padding-bottom: 20px;
   width: 100%;
-`;
+`);
 
-const CardHeader = ({ title }) => <Heading>{title}</Heading>;
+const CardHeader = ({ title, ...rest }) => <Heading {...rest}>{title}</Heading>;
 
 export default CardHeader;

@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'react-emotion';
 
 const Content = styled('div')`
-  overflow: hidden;
   height: 100%;
+  overflow-y: ${props => (props.scrollable ? 'scroll' : 'visible')};
 `;
 
-const CardContent = ({ children }) => <Content>{children}</Content>;
+const CardContent = ({ children, scrollable }) => (
+  <Content scrollable={scrollable}>{children}</Content>
+);
 
 export default CardContent;

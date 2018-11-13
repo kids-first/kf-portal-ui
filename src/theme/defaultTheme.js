@@ -71,6 +71,7 @@ export const chartColors = {
   gridGrey: '#e7e8ec',
   axisGrey: '#a9acbd',
   tickTextGrey: '#343434',
+  axisLegend: colors.secondary,
 };
 
 const fonts = {
