@@ -41,7 +41,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
     ..._.find(fileRepoLinks, { name: d.name }),
   }));
 
-  const onClick = barData => (parent.window.location.href = barData.data.url);
+  const onClick = barData => (window.location.href = barData.data.url);
 
   return (
     <HorizontalBar
