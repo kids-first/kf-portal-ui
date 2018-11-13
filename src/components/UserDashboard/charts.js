@@ -1,5 +1,6 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
+import _ from 'lodash';
 
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 
@@ -147,6 +148,7 @@ const topDiagnosesChartMock = [
 
 export const TopDiagnosesChart = withTheme(({ data, theme }) => (
   <HorizontalBar
+    height={1200}
     data={topDiagnosesChartMock}
     indexBy="name"
     keys={['probands', 'familyMembers']}
