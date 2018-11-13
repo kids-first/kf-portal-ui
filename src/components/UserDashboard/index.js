@@ -12,7 +12,7 @@ import CardHeader from 'uikit/Card/CardHeader';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 
-import { StudiesChart } from './charts';
+import { StudiesChart, TopDiagnosesChart } from './charts';
 import { withApi } from '../../services/api';
 import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
@@ -51,6 +51,15 @@ export default compose(
           transform={data => data.studies}
         >
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
+        </DataProvider>
+      </DashboardCard>
+      <DashboardCard title="Top Diagnoses" Header={CardLegendHeader}>
+        <DataProvider
+          url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
+          api={api}
+          transform={data => data.studies}
+        >
+          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />}
         </DataProvider>
       </DashboardCard>
     </CardsContainer>
