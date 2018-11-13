@@ -28,3 +28,5 @@ yarn.lock
 .vscode/launch.json
 
 .cache/
+
+public/locales/*
