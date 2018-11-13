@@ -84,13 +84,7 @@ const topDiagnosesChartMock = [
   { name: 'endocrine system disease', probands: 64, familyMembers: _.random(0, 500) },
   { name: 'ganglioglioma', probands: 54, familyMembers: _.random(0, 500) },
   { name: 'other acquired skin disease', probands: 47, familyMembers: _.random(0, 500) },
-  { name: 'craniopharyngioma', probands: 40, familyMembers: _.random(0, 500) },
-  { name: 'neurofibromatosis type 1', probands: 39, familyMembers: _.random(0, 500) },
-  {
-    name: 'otopalatodigital syndrome spectrum disorder',
-    probands: 35,
-    familyMembers: _.random(0, 500),
-  },
+
   { name: 'meningioma (disease)', probands: 31, familyMembers: _.random(0, 500) },
   { name: 'atypical teratoid rhabdoid tumor', probands: 29, familyMembers: _.random(0, 500) },
   { name: 'dysembryoplastic neuroepithelial tumor', probands: 29, familyMembers: _.random(0, 500) },
@@ -119,31 +113,6 @@ const topDiagnosesChartMock = [
   { name: 'mixed neuronal-glial tumor', probands: 5, familyMembers: 0 },
   { name: 'Langerhans cell histiocytosis', probands: 4, familyMembers: 0 },
   { name: 'adenoma', probands: 4, familyMembers: 0 },
-  { name: 'choroid plexus carcinoma', probands: 4, familyMembers: 0 },
-  { name: 'hemangioblastoma', probands: 3, familyMembers: 0 },
-  { name: 'sarcoma', probands: 4, familyMembers: 0 },
-  { name: 'cavernous hemangioma', probands: 3, familyMembers: _.random(0, 500) },
-  { name: 'central neurocytoma', probands: 3, familyMembers: _.random(0, 500) },
-  { name: 'oligodendroglioma', probands: 3, familyMembers: _.random(0, 500) },
-  { name: 'posterior fossa malformation', probands: 3, familyMembers: _.random(0, 500) },
-  { name: 'extraskeletal Ewing sarcoma', probands: 2, familyMembers: _.random(0, 500) },
-  { name: 'gliomatosis cerebri', probands: 2, familyMembers: _.random(0, 500) },
-  {
-    name: 'peripheral primitive neuroectodermal tumor',
-    probands: 2,
-    familyMembers: _.random(0, 500),
-  },
-  { name: 'rhabdomyosarcoma (disease)', probands: 2, familyMembers: _.random(0, 500) },
-  { name: 'subependymal giant cell astrocytoma', probands: 2, familyMembers: _.random(0, 500) },
-  {
-    name: '170.9: Malignant neoplasm of bon and articular cartilage, Ewing Sarcoma',
-    probands: 1,
-    familyMembers: 0,
-  },
-  { name: 'Ewing sarcoma of bone', probands: 1, familyMembers: 0 },
-  { name: 'nongerminomatous germ cell tumor', probands: 1, familyMembers: 0 },
-  { name: 'primary central nervous system lymphoma', probands: 1, familyMembers: 0 },
-  { name: 'soft tissue sarcoma', probands: 1, familyMembers: 0 },
 ];
 
 export const TopDiagnosesChart = withTheme(({ data, theme }) => (
