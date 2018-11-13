@@ -52,7 +52,7 @@ class HorizontalBar extends Component {
   }
 
   onMouseLeave(data, e) {
-    e.target.style.cursor = 'default';
+    //   e.target.style.cursor = 'default';
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
@@ -64,7 +64,7 @@ class HorizontalBar extends Component {
   renderAxisLeftTick(tick) {
     const { highlightedIndexValue } = this.state;
     const { xTickTextLength } = this.props;
-    const { format, key, x, y, theme } = tick;
+    const { format, key, x, y, theme, tickIndex } = tick;
 
     let value = tick.value;
 
@@ -76,14 +76,15 @@ class HorizontalBar extends Component {
 
     const xOffset = 160;
 
-    const highlighted = value === highlightedIndexValue ? { fill: 'red' } : {};
+    const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
     return (
       <g
-        ref={this.textRef}
         key={key}
         transform={`translate(${x - xOffset},${y})`}
         style={{ cursor: highlighted ? 'pointer' : 'default' }}
+        onMouseEnter={e => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
+        onMouseLeave={this.onMouseLeave}
       >
         <text
           className="tickTextAxisLeft"
