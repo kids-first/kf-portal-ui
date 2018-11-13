@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'react-emotion';
 
 const Content = styled('div')`
-  overflow: hidden;
   height: 100%;
 `;
 

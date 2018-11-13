@@ -13,11 +13,10 @@ const defaultText = {
 };
 
 export const defaultTheme = {
-  // Not used by Nivo
   legend: {
     itemWidth: 40,
     itemHeight: 10,
-    itemsSpacing: 1,
+    itemsSpacing: 2,
     iconSize: 10,
     icon: {},
     text: {
@@ -42,6 +41,14 @@ export const defaultTheme = {
         ...defaultText,
       },
     },
+    legend: {
+      text: {
+        fill: chartColors.axisLegend,
+        fontSize: 12,
+        fontWeight: 500,
+        fontFamily: 'Montserrat',
+      },
+    },
   },
   grid: {
     line: {
@@ -49,6 +56,7 @@ export const defaultTheme = {
       strokeWidth: 2,
     },
   },
+
   tooltip: {
     container: {
       background: 'white',

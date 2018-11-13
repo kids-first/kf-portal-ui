@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 
 import CardsContainer from 'uikit/Card/CardsContainer';
 import Card from 'uikit/Card';
+import CardHeader from 'uikit/Card/CardHeader';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
@@ -24,8 +25,12 @@ const UserDashboard = styled('div')`
 
 const DashboardCard = styled(Card)`
   width: calc(40% - 60px);
-  height: 400px;
+  height: 404px;
   margin: 30px;
+`;
+
+const CardLegendHeader = styled(CardHeader)`
+  margin-bottom: 4px;
 `;
 
 export default compose(
@@ -39,7 +44,7 @@ export default compose(
       <title>Portal - User Dashboard</title>
     </Helmet>
     <CardsContainer>
-      <DashboardCard title="Studies">
+      <DashboardCard title="Studies" Header={CardLegendHeader}>
         <DataProvider
           url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
           api={api}

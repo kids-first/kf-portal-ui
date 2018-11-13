@@ -122,10 +122,10 @@ class HorizontalBar extends Component {
           margin={{
             top: 0,
             right: 8,
-            bottom: 30,
+            bottom: 70,
             left: 160,
           }}
-          padding={0.3}
+          padding={this.props.padding ? this.props.padding : 0.3}
           colors={colors}
           defs={[
             {
@@ -155,7 +155,7 @@ class HorizontalBar extends Component {
             tickRotation: 0,
             legend: '# Participants',
             legendPosition: 'middle',
-            legendOffset: 20,
+            legendOffset: 38,
             tickValues: this.tickValues,
           }}
           axisLeft={{
