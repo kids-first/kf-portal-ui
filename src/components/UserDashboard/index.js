@@ -16,6 +16,9 @@ import { StudiesChart, TopDiagnosesChart } from './charts';
 import { withApi } from '../../services/api';
 import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
+import MySavedQueries from './MySavedQueries';
+import { withTheme } from 'emotion-theming';
+
 const UserDashboard = styled('div')`
   width: 100%;
   min-height: 600px;
@@ -48,14 +51,18 @@ export default compose(
   injectState,
   withRouter,
   withApi,
+  withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ api }) => (
+)(({ state: { loggedInUser }, theme, api }) => (
   <UserDashboard>
     <Helmet>
       <title>Portal - User Dashboard</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
     <CardsContainer>
+      <DashboardCard title="Saved Queries" Header={CardLegendHeader} scrollable>
+        <MySavedQueries {...{ api, loggedInUser, theme }} />
+      </DashboardCard>
       <DashboardCard title="Studies" Header={CardLegendHeader}>
         <DataProvider
           url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
