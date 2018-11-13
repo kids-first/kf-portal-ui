@@ -80,33 +80,17 @@ export const MySavedQueries = compose(
     ) : (
       <Container>
         {!queries.length ? (
-          <PromptMessageContainer info my={20}>
-            <PromptMessageHeading info mb={10}>
-              You have no saved queries yet.
-            </PromptMessageHeading>
-            <PromptMessageContent>
-              Explore the <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink>{' '}
-              and start saving queries!
-            </PromptMessageContent>
-          </PromptMessageContainer>
-        ) : null}
-        <Fragment>
-          <Box mt={2} mb={2}>
-            {queries
-              .filter(q => q.alias)
-              .map(q => ({
-                ...q,
-                date: Number(new Date(q.creationDate)),
-                link: `/search${q.content.longUrl.split('/search')[1]}`,
-              }))
-              .slice()
-              .sort((a, b) => b.date - a.date)
-              .map(q => (
-                <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
-              ))}
-          </Box>
-
-          {exampleQueries.length === 0 ? null : (
+          <Fragment>
+            <PromptMessageContainer info mb={'8px'}>
+              <PromptMessageHeading info mb={10}>
+                You have no saved queries yet.
+              </PromptMessageHeading>
+              <PromptMessageContent>
+                Explore the
+                <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink> and start
+                saving queries!
+              </PromptMessageContent>
+            </PromptMessageContainer>
             <Box mt={2} mb={2}>
               <QueriesHeading>Examples:</QueriesHeading>
               {exampleQueries.map(q => {
@@ -121,8 +105,25 @@ export const MySavedQueries = compose(
                 );
               })}
             </Box>
-          )}
-        </Fragment>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Box mt={2} mb={2}>
+              {queries
+                .filter(q => q.alias)
+                .map(q => ({
+                  ...q,
+                  date: Number(new Date(q.creationDate)),
+                  link: `/search${q.content.longUrl.split('/search')[1]}`,
+                }))
+                .slice()
+                .sort((a, b) => b.date - a.date)
+                .map(q => (
+                  <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
+                ))}
+            </Box>
+          </Fragment>
+        )}
       </Container>
     ),
 );
