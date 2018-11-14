@@ -66,7 +66,13 @@ export default compose(
         </DataProvider>
       </DashboardCard>
       <DashboardCard title="Top Diagnoses" Header={CardLegendHeader} scrollable>
-        <TopDiagnosesChart />
+        <DataProvider
+          url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
+          api={api}
+          transform={data => data.diagnoses}
+        >
+          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />}
+        </DataProvider>
       </DashboardCard>
     </CardsContainer>
   </UserDashboard>

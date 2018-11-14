@@ -62,53 +62,10 @@ export const StudiesChart = withTheme(({ data, theme }) => {
   );
 });
 
-const topDiagnosesChartMock = [
-  { name: 'disease or disorder', probands: 923, familyMembers: _.random(0, 500) },
-  { name: 'congenital diaphragmatic hernia', probands: 512, familyMembers: _.random(0, 500) },
-  { name: 'nervous system disorder', probands: 376, familyMembers: _.random(0, 500) },
-  { name: 'Ewing sarcoma', probands: 379, familyMembers: _.random(0, 500) },
-  { name: 'epilepsy', probands: 294, familyMembers: _.random(0, 500) },
-  { name: 'low grade glioma', probands: 270, familyMembers: _.random(0, 500) },
-  { name: 'hydrocephalus', probands: 245, familyMembers: _.random(0, 500) },
-  { name: 'vision disorder', probands: 223, familyMembers: _.random(0, 500) },
-  { name: 'medulloblastoma', probands: 129, familyMembers: _.random(0, 500) },
-  { name: 'grade III glioma', probands: 109, familyMembers: _.random(0, 500) },
-  { name: 'mood disorder', probands: 96, familyMembers: _.random(0, 500) },
-  { name: 'ependymoma', probands: 91, familyMembers: _.random(0, 500) },
-  {
-    name: 'macrocephaly-developmental delay syndrome',
-    probands: 83,
-    familyMembers: _.random(0, 500),
-  },
-  { name: 'diffuse intrinsic pontine glioma', probands: 79, familyMembers: _.random(0, 500) },
-  { name: 'endocrine system disease', probands: 64, familyMembers: _.random(0, 500) },
-  { name: 'ganglioglioma', probands: 54, familyMembers: _.random(0, 500) },
-  { name: 'other acquired skin disease', probands: 47, familyMembers: _.random(0, 500) },
-
-  { name: 'meningioma (disease)', probands: 31, familyMembers: _.random(0, 500) },
-  { name: 'atypical teratoid rhabdoid tumor', probands: 29, familyMembers: _.random(0, 500) },
-  { name: 'dysembryoplastic neuroepithelial tumor', probands: 29, familyMembers: _.random(0, 500) },
-  { name: 'plexiform neurofibroma (disease)', probands: 24, familyMembers: _.random(0, 500) },
-  { name: 'inherited genetic disease', probands: 23, familyMembers: _.random(0, 500) },
-  {
-    name: 'spinal cord primitive neuroectodermal tumor',
-    probands: 21,
-    familyMembers: _.random(0, 500),
-  },
-  { name: 'schwannoma', probands: 17, familyMembers: _.random(0, 500) },
-  { name: 'choroid plexus papilloma', probands: 18, familyMembers: _.random(0, 500) },
-  { name: 'Gnathodiaphyseal dysplasia', probands: 17, familyMembers: _.random(0, 500) },
-  { name: 'tuberous sclerosis', probands: 14, familyMembers: _.random(0, 500) },
-  { name: 'teratoma', probands: 10, familyMembers: _.random(0, 500) },
-  { name: 'Li-Fraumeni syndrome', probands: 8, familyMembers: _.random(0, 500) },
-  { name: 'metastatic melanoma', probands: 7, familyMembers: _.random(0, 500) },
-  { name: 'chordoma (disease)', probands: 4, familyMembers: _.random(0, 500) },
-];
-
 export const TopDiagnosesChart = withTheme(({ data, theme }) => (
   <HorizontalBar
     height={1200}
-    data={topDiagnosesChartMock}
+    data={data}
     indexBy="name"
     keys={['probands', 'familyMembers']}
     tickInterval={4}
