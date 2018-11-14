@@ -6,6 +6,12 @@ import { titleCase } from 'common/displayFormatters';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
 
+const sortDescParticipant = (a, b) => {
+  const aTotal = a.probands + a.familyMembers;
+  const bTotal = b.probands + b.familyMembers;
+  return aTotal <= bTotal ? -1 : 1;
+};
+
 const fileRepoLinks = [
   {
     name: 'Pediatric Brain Tumors: CBTTC',
@@ -51,6 +57,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       indexBy="name"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
+      sortBy={sortDescParticipant}
       tickInterval={4}
       padding={15}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
@@ -70,6 +77,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => (
     data={data}
     indexBy="name"
     keys={['probands', 'familyMembers']}
+    sortBy={sortDescParticipant}
     tickInterval={4}
     padding={15}
     colors={[theme.chartColors.blue, theme.chartColors.purple]}
