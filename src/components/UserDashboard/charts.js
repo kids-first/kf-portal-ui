@@ -73,7 +73,6 @@ export const StudiesChart = withTheme(({ data, theme }) => {
 
 export const TopDiagnosesChart = withTheme(({ data, theme }) => (
   <HorizontalBar
-    height={1200}
     data={data}
     indexBy="name"
     keys={['probands', 'familyMembers']}
