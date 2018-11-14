@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import Tooltip from './Tooltip';
-import { truncateText, maxValues, getChartMaxValue, roundTo, getDataRangeSize } from '../utils';
+import { truncateText, getChartMaxValue } from '../utils';
 
 const HorizontalBarWrapper = styled('div')`
   height: 90%;
@@ -22,20 +22,13 @@ class HorizontalBar extends Component {
     };
 
     const { data, keys, sortBy, tickInterval } = props;
-    this.dataMaxValues = maxValues(data, keys);
 
     const maxValue = getChartMaxValue(data, keys);
     this.maxValue = tickInterval ? this.maxValue : 'auto';
 
     this.tickValues = tickInterval;
 
-    this.data = data
-      .filter(x => x)
-      .sort(sortBy)
-      .map(d => {
-        const maxVal = this.dataMaxValues[d.id];
-        return { ...d, maxVal };
-      });
+    this.data = data.filter(x => x).sort(sortBy);
 
     this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -108,6 +101,7 @@ class HorizontalBar extends Component {
       xTickTextLength = 10,
       tickValues,
       height,
+      tooltipFormatter,
       ...overrides
     } = this.props;
 
@@ -176,7 +170,7 @@ class HorizontalBar extends Component {
       motionDamping: 15,
       isInteractive: true,
       theme: defaultTheme,
-      tooltip: Tooltip,
+      tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
     return (

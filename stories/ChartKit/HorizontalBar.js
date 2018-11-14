@@ -38,7 +38,6 @@ const localMock = [
   { id: 'b', url: 'www.duckduckgo.com' },
   { id: 'c', url: 'www.bbc.com' },
 ];
-*/
 
 const mergedMockData = serverMock.map(d => ({ ...d, ..._.find(localMock, { id: d.id }) }));
 
@@ -123,6 +122,28 @@ storiesOf('ChartKit/HorizontalBar', module).add('Small numbers', () => (
         const bTotal = b.probands + b.familyMembers;
         return aTotal <= bTotal ? 1 : -1;
       }}
+      xTickTextLength={28}
+      legends={[
+        { title: 'Probands', color: chartColors.blue },
+        { title: 'Family Members', color: chartColors.purple },
+      ]}
+      padding={0.4}
+    />
+  </FixedHeightWrapper>
+));
+
+storiesOf('ChartKit/HorizontalBar', module).add('tool tip formatter', () => (
+  <FixedHeightWrapper>
+    <HorizontalBar
+      data={randomMock}
+      tooltipFormatter={data => {
+        const participants = data.familyMembers + data.probands;
+        return `${participants.toLocaleString()} participant${participants > 1 ? 's' : ''}`;
+      }}
+      indexBy="id"
+      keys={['probands', 'familyMembers']}
+      colors={[chartColors.blue, chartColors.purple]}
+      tickInterval={5}
       xTickTextLength={28}
       legends={[
         { title: 'Probands', color: chartColors.blue },

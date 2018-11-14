@@ -12,6 +12,11 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
+const participantTooltip = data => {
+  const participants = data.familyMembers + data.probands;
+  return `${participants.toLocaleString()} participant${participants > 1 ? 's' : ''}`;
+};
+
 const fileRepoLinks = [
   {
     name: 'Pediatric Brain Tumors: CBTTC',
@@ -57,6 +62,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       indexBy="name"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
+      tooltipFormatter={participantTooltip}
       sortBy={sortDescParticipant}
       tickInterval={4}
       padding={15}
@@ -76,6 +82,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => (
     data={data}
     indexBy="name"
     keys={['probands', 'familyMembers']}
+    tooltipFormatter={participantTooltip}
     sortBy={sortDescParticipant}
     tickInterval={4}
     padding={15}
