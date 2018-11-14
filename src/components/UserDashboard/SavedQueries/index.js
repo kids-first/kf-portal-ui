@@ -1,21 +1,24 @@
 import React, { Fragment } from 'react';
 import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
-
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
-import { Box, Flex, Span, Link } from 'uikit/Core';
+import { Box, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
 import {
   PromptMessageContainer,
   PromptMessageHeading,
   PromptMessageContent,
 } from 'uikit/PromptMessage';
+import LoadingSpinner from 'uikit/LoadingSpinner';
+
+import { DashboardCard } from '../styles';
 
 import QueryBlock from './QueryBlock';
+import CardHeader from '../../../uikit/Card/CardHeader';
 
 const QueriesHeading = styled('h4')`
   font-size: 16px;
@@ -25,12 +28,6 @@ const QueriesHeading = styled('h4')`
   margin-bottom: 7px;
   margin-top: 0;
   border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-`;
-
-const Header = styled(Flex)`
-  align-items: center;
-  border-bottom: ${({ queries, theme }) =>
-    queries.length ? `2px dotted ${theme.greyScale5}` : `none`};
 `;
 
 const Container = styled(Column)`
@@ -62,52 +59,40 @@ export const MySavedQueries = compose(
     effects: { getQueries, deleteQuery },
     api,
     theme,
-  }) =>
-    loadingQueries ? (
-      <Box flexGrow={1}>
-        <Spinner
-          fadeIn="none"
-          name="circle"
-          color="purple"
-          style={{
-            width: 15,
-            height: 15,
-            margin: '20px auto',
-            padding: 5,
-          }}
-        />
-      </Box>
-    ) : (
-      <Container>
-        {!queries.length ? (
-          <Fragment>
-            <PromptMessageContainer info mb={'8px'}>
-              <PromptMessageHeading info mb={10}>
-                You have no saved queries yet.
-              </PromptMessageHeading>
-              <PromptMessageContent>
-                Explore the
-                <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink> and start
-                saving queries!
-              </PromptMessageContent>
-            </PromptMessageContainer>
-            <Box mt={2} mb={2}>
-              <QueriesHeading>Examples:</QueriesHeading>
-              {exampleQueries.map(q => {
-                q.link = `/search${q.content.longUrl.split('/search')[1]}`;
-                return (
-                  <QueryBlock
-                    key={q.id}
-                    query={q}
-                    inactive={deletingIds.includes(q.id)}
-                    savedTime={false}
-                  />
-                );
-              })}
-            </Box>
-          </Fragment>
-        ) : (
-          <Fragment>
+  }) => (
+    <DashboardCard title="Saved Queries" Header={CardHeader} badge={queries.length} scrollable>
+      {loadingQueries ? (
+        <LoadingSpinner />
+      ) : (
+        <Container>
+          {!queries.length ? (
+            <Fragment>
+              <PromptMessageContainer info mb={'8px'}>
+                <PromptMessageHeading info mb={10}>
+                  You have no saved queries yet.
+                </PromptMessageHeading>
+                <PromptMessageContent>
+                  Explore the
+                  <FileRepositoryLink to="/search/file"> File Repository</FileRepositoryLink> and
+                  start saving queries!
+                </PromptMessageContent>
+              </PromptMessageContainer>
+              <Box mt={2} mb={2}>
+                <QueriesHeading>Examples:</QueriesHeading>
+                {exampleQueries.map(q => {
+                  q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+                  return (
+                    <QueryBlock
+                      key={q.id}
+                      query={q}
+                      inactive={deletingIds.includes(q.id)}
+                      savedTime={false}
+                    />
+                  );
+                })}
+              </Box>
+            </Fragment>
+          ) : (
             <Box mt={2} mb={2}>
               {queries
                 .filter(q => q.alias)
@@ -122,9 +107,10 @@ export const MySavedQueries = compose(
                   <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
                 ))}
             </Box>
-          </Fragment>
-        )}
-      </Container>
-    ),
+          )}
+        </Container>
+      )}
+    </DashboardCard>
+  ),
 );
 export default MySavedQueries;
