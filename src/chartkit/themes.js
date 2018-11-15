@@ -47,7 +47,7 @@ export const defaultTheme = {
   grid: {
     line: {
       stroke: chartColors.gridGrey,
-      strokeWidth: 2,
+      strokeWidth: 1,
     },
   },
 
