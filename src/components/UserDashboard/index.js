@@ -71,6 +71,7 @@ export default compose(
             _(data.diagnoses)
               .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
               .take(10)
+              .map(d => ({ ...d, name: _.startCase(d.name) }))
               .value()
           }
         >
