@@ -6,8 +6,6 @@ import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
 
 import CardsContainer from 'uikit/Card/CardsContainer';
-import Card from 'uikit/Card';
-import CardHeader from 'uikit/Card/CardHeader';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
@@ -16,21 +14,16 @@ import { StudiesChart, TopDiagnosesChart } from './charts';
 import { withApi } from '../../services/api';
 import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
+import SavedQueries from './SavedQueries';
+import { withTheme } from 'emotion-theming';
+
+import { DashboardCard } from './styles';
+import CardHeader from '../../uikit/Card/CardHeader';
+
 const UserDashboard = styled('div')`
   width: 100%;
   min-height: 600px;
   background-color: ${({ theme }) => theme.backgroundGrey};
-`;
-
-const DashboardCard = styled(Card)`
-  width: calc(40% - 60px);
-  height: 404px;
-  margin: 30px;
-  margin-top: 0;
-`;
-
-const CardLegendHeader = styled(CardHeader)`
-  margin-bottom: 4px;
 `;
 
 const DashboardTitle = styled('h1')`
@@ -48,15 +41,17 @@ export default compose(
   injectState,
   withRouter,
   withApi,
+  withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ api }) => (
+)(({ state: { loggedInUser }, theme, api }) => (
   <UserDashboard>
     <Helmet>
       <title>Portal - User Dashboard</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
     <CardsContainer>
-      <DashboardCard title="Studies" Header={CardLegendHeader}>
+      <SavedQueries {...{ api, loggedInUser, theme }} />
+      <DashboardCard title="Studies" Header={CardHeader}>
         <DataProvider
           url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
           api={api}
@@ -65,7 +60,7 @@ export default compose(
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
         </DataProvider>
       </DashboardCard>
-      <DashboardCard title="Top Diagnoses" Header={CardLegendHeader} scrollable>
+      <DashboardCard title="Top Diagnoses" Header={CardHeader} scrollable>
         <DataProvider
           url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
           api={api}

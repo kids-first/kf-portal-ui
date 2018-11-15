@@ -121,23 +121,15 @@ const App = compose(
         <Route
           path="/dashboard"
           exact
-          render={props => (
-            <ApiContext.Provider
-              value={initializeApi({ onUnauthorized: () => props.history.push('/login') })({
-                method: 'get',
-                url: publicStatsApiRoot,
-              })}
-            >
-              {forceSelectRole({
-                api,
-                isLoadingUser,
-                Component: UserDashboard,
-
-                loggedInUser,
-                ...props,
-              })}
-            </ApiContext.Provider>
-          )}
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              Component: UserDashboard,
+              loggedInUser,
+              ...props,
+            })
+          }
         />
         <Route
           path="/join"

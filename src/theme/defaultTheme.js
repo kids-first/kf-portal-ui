@@ -63,6 +63,7 @@ const colors = {
   successBorder: `#009bb8`,
 
   cardTitle: '#404c9a',
+  defaultBadge: '#404c9a',
 };
 
 export const chartColors = {
