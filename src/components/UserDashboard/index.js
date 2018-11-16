@@ -15,10 +15,11 @@ import { withApi } from '../../services/api';
 import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
 import SavedQueries from './SavedQueries';
+import AuthorizedStudies from './AuthorizedStudies';
 import { withTheme } from 'emotion-theming';
 
 import { DashboardCard } from './styles';
-import CardHeader from '../../uikit/Card/CardHeader';
+import CardHeader from 'uikit/Card/CardHeader';
 
 const UserDashboard = styled('div')`
   width: 100%;
@@ -51,6 +52,7 @@ export default compose(
     <DashboardTitle>My Dashboard</DashboardTitle>
     <CardsContainer>
       <SavedQueries {...{ api, loggedInUser, theme }} />
+      <AuthorizedStudies />
       <DashboardCard title="Studies" Header={CardHeader}>
         <DataProvider
           url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
