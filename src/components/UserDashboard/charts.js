@@ -84,12 +84,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => (
 
 export const UserInterestsChart = withTheme(({ data, theme }) => {
   // sort by count then alpha, limit to top 10
-  const sortedInterests = data
-    .sort((a, b) => {
-      if (a.count > b.count) return -1;
-      if (a.count < b.count) return 1;
-      return a.name > b.name ? 1 : -1;
-    })
+  const sortedInterests = _.orderBy(data, ['count', 'name'], ['desc', 'asc'])
     .slice(0, 10)
     .map(interest => ({
       id: titleCase(interest.name),

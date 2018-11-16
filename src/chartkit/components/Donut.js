@@ -23,9 +23,7 @@ class Donut extends Component {
       highlightedIndexValue: null,
     };
 
-    const { data, colors, interactive } = this.props;
-    this.data = data;
-    this.interactive = interactive || false;
+    const { data, colors } = this.props;
     const gradient = tinygradient(...colors).rgb(data.length + 1);
     data.forEach((d, i) => {
       d.color = gradient[i].toHexString();
@@ -49,17 +47,17 @@ class Donut extends Component {
   }
 
   render() {
-    const { keys, colors, interactive, height, ...overrides } = this.props;
+    const { keys, colors, interactive, height } = this.props;
 
     const chartData = {
-      data: this.data,
+      data: this.props.data,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
       margin: {
         top: 30,
-        right: 8,
-        bottom: 10,
-        left: 8,
+        right: 20,
+        bottom: 20,
+        left: 20,
       },
       defs: [
         {
@@ -99,7 +97,8 @@ class Donut extends Component {
       motionDamping: 15,
       // tooltip: null,
       theme: defaultTheme,
-      tooltip: null,
+      // tooltip: null,
+      isInteractive: false,
     };
 
     return (
