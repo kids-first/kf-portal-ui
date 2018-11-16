@@ -12,8 +12,12 @@ import Tooltip from './Tooltip';
 import { truncateText, maxValues, getChartMaxValue, roundTo, getDataRangeSize } from '../utils';
 
 const DonutWrapper = styled('div')`
-  height: calc(100% - 20px);
+  height: 90%;
 `;
+
+const DonutTooltip = ({ id, value, label, color }) => (
+  <div style={{ fill: '#404c9a' }} keys={id}>{`${value} Members`}</div>
+);
 
 class Donut extends Component {
   constructor(props) {
@@ -35,7 +39,7 @@ class Donut extends Component {
   }
 
   onMouseEnter(data, e) {
-    if (this.interactive) e.target.style.cursor = 'pointer';
+    if (this.props.interactive) e.target.style.cursor = 'pointer';
     if (data) {
       const { index, value } = data;
       this.setState({ highlightedIndex: index, highlightedIndexValue: value });
@@ -88,17 +92,15 @@ class Donut extends Component {
       radialLabelsTextColor: '#333333',
       radialLabelsLinkOffset: 0,
       radialLabelsLinkDiagonalLength: 16,
-      radialLabelsLinkHorizontalLength: 24,
+      radialLabelsLinkHorizontalLength: 16,
       radialLabelsLinkStrokeWidth: 1,
       radialLabelsLinkColor: '#333333',
       enableSlicesLabels: false,
       animate: true,
       motionStiffness: 90,
       motionDamping: 15,
-      // tooltip: null,
       theme: defaultTheme,
-      // tooltip: null,
-      isInteractive: false,
+      tooltip: DonutTooltip,
     };
 
     return (

@@ -60,6 +60,15 @@ export default compose(
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
         </DataProvider>
       </DashboardCard>
+      <DashboardCard title="Top Diagnoses" Header={CardHeader} scrollable>
+        <DataProvider
+          url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
+          api={api}
+          transform={data => data.diagnoses}
+        >
+          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />}
+        </DataProvider>
+      </DashboardCard>
       <DashboardCard title="Research Interests" Header={CardHeader}>
         <DataProvider
           url={`${publicStatsApiRoot}users/interests`}

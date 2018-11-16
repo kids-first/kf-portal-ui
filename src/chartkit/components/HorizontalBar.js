@@ -10,7 +10,7 @@ import Tooltip from './Tooltip';
 import { truncateText, maxValues, getChartMaxValue, roundTo, getDataRangeSize } from '../utils';
 
 const HorizontalBarWrapper = styled('div')`
-  height: calc(100% - 20px);
+  height: 90%;
 `;
 
 class HorizontalBar extends Component {
@@ -174,7 +174,6 @@ class HorizontalBar extends Component {
       animate: true,
       motionStiffness: 90,
       motionDamping: 15,
-      tooltip: null,
       isInteractive: true,
       theme: defaultTheme,
       tooltip: Tooltip,
