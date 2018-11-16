@@ -69,6 +69,7 @@ const colors = {
 export const chartColors = {
   blue: '#1f9bb6',
   purple: '#e3429b',
+  red: '#dd1f2a',
   gridGrey: '#e7e8ec',
   axisGrey: '#a9acbd',
   tickTextGrey: '#343434',

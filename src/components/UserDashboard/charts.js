@@ -2,7 +2,9 @@ import React from 'react';
 import { withTheme } from 'emotion-theming';
 import _ from 'lodash';
 
+import { titleCase } from 'common/displayFormatters';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
+import Donut from 'chartkit/components/Donut';
 
 const fileRepoLinks = [
   {
@@ -79,3 +81,21 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => (
     padding={0.7}
   />
 ));
+
+export const UserInterestsChart = withTheme(({ data, theme }) => {
+  // sort by count then alpha, limit to top 10
+  const sortedInterests = data
+    .sort((a, b) => {
+      if (a.count > b.count) return -1;
+      if (a.count < b.count) return 1;
+      return a.name > b.name ? 1 : -1;
+    })
+    .slice(0, 10)
+    .map(interest => ({
+      id: titleCase(interest.name),
+      label: titleCase(interest.name),
+      value: interest.count,
+    }));
+
+  return <Donut data={sortedInterests} colors={[theme.chartColors.red, '#FFF']} />;
+});
