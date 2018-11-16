@@ -10,7 +10,7 @@ import CardsContainer from 'uikit/Card/CardsContainer';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 
-import { StudiesChart, TopDiagnosesChart } from './charts';
+import { StudiesChart, TopDiagnosesChart, UserInterestsChart } from './charts';
 import { withApi } from '../../services/api';
 import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
@@ -67,6 +67,15 @@ export default compose(
           transform={data => data.diagnoses}
         >
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />}
+        </DataProvider>
+      </DashboardCard>
+      <DashboardCard title="Research Interests" Header={CardHeader}>
+        <DataProvider
+          url={`${publicStatsApiRoot}users/interests`}
+          api={api}
+          transform={data => data.interests}
+        >
+          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={UserInterestsChart} />}
         </DataProvider>
       </DashboardCard>
     </CardsContainer>
