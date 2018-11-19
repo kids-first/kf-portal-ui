@@ -16,21 +16,15 @@ const CardWrapper = applyDefaultStyles(styled('div')`
   border: solid 1px #e0e1e6;
 `);
 
-const Card = ({
-  Header = CardHeader,
-  Content = CardContent,
-  title,
-  children,
-  className,
-  scrollable,
-  badge,
-  stack,
-  stackIndex,
-}) => (
-  <CardWrapper className={className}>
-    <Header title={title} badge={badge} stack={stack} stackIndex={stackIndex} />
-    <Content scrollable={scrollable}>{children}</Content>
-  </CardWrapper>
-);
+const Card = ({ Header, Content = CardContent, children, className, scrollable, title }) => {
+  const DefaultHeader = <CardHeader title={title} />;
+
+  return (
+    <CardWrapper className={className}>
+      {Header || DefaultHeader}
+      <Content scrollable={scrollable}>{children}</Content>
+    </CardWrapper>
+  );
+};
 
 export default Card;

@@ -28,22 +28,19 @@ import {
 import Info from '../Info';
 
 import { ConnectButton } from '../styles';
+import Card from '../../../uikit/Card';
 
 const AuthorizedStudies = compose(
   withApi,
   injectState,
   withTheme,
-)(({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => {
-  return (
-    <Component initialState={{ loading: false, connected: false, badgeNumber: 0 }}>
-      {({ setState, state }) => (
-        <DashboardCard
-          title="Authorized Studies"
-          Header={CardHeader}
-          badge={state.badgeNumber}
-          inactive={!state.connected}
-          scrollable
-        >
+)(({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => (
+  <Component initialState={{ loading: false, connected: false, badgeNumber: 0 }}>
+    {({ setState, state }) => {
+      const Header = <CardHeader title="Authorized Studies" badge={state.badgeNumber} />;
+
+      return (
+        <DashboardCard Header={Header} inactive={!state.connected} scrollable>
           <Gen3UserProvider
             render={({ gen3User, loading: loadingGen3User }) =>
               loadingGen3User ? (
@@ -105,9 +102,9 @@ const AuthorizedStudies = compose(
             }}
           />
         </DashboardCard>
-      )}
-    </Component>
-  );
-});
+      );
+    }}
+  </Component>
+));
 
 export default AuthorizedStudies;
