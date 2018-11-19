@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
 import { getUser as getGen3User, getStudyIds } from 'services/gen3';
@@ -6,12 +6,10 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 import { getStudyIdsFromSqon, getStudiesAggregationsFromSqon } from '../../cavatica/utils';
 
-import { Span } from 'uikit/Core';
 import {
   PromptMessageContainer,
   PromptMessageHeading,

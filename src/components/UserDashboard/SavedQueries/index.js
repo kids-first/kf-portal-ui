@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import Spinner from 'react-spinkit';
 import styled from 'react-emotion';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';

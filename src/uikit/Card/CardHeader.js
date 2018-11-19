@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'react-emotion';
 
 import { applyDefaultStyles } from 'uikit/Core';

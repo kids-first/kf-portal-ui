@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { connectGen3, getAccessToken } from 'services/gen3';
@@ -13,15 +13,12 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import Component from 'react-component-component';
 import { withApi } from 'services/api';
-import { CAVATICA, GEN3 } from 'common/constants';
+import { GEN3 } from 'common/constants';
 import Gen3Connected from './Gen3Connected';
 
-import ExternalLink from 'uikit/ExternalLink';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import CheckIcon from 'react-icons/lib/fa/check-circle';
-import Spinner from 'react-spinkit';
-import { WhiteButton, LargeTealActionButton } from 'uikit/Button';
+import { LargeTealActionButton } from 'uikit/Button';
 import {
   trackUserInteraction,
   analyticsTrigger,
