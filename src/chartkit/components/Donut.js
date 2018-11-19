@@ -5,6 +5,7 @@ import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 
 import { defaultTheme } from '../themes';
+import ChartDisplayContainer from './ChartDisplayContainer';
 
 const DonutWrapper = styled('div')`
   height: 90%;
@@ -99,11 +100,13 @@ class Donut extends Component {
 
     return (
       <DonutWrapper>
-        {height ? (
-          <ResponsivePie {...chartData} height={height} />
-        ) : (
-          <ResponsivePie {...chartData} />
-        )}
+        <ChartDisplayContainer>
+          {height ? (
+            <ResponsivePie {...chartData} height={height} />
+          ) : (
+            <ResponsivePie {...chartData} />
+          )}
+        </ChartDisplayContainer>
       </DonutWrapper>
     );
   }
