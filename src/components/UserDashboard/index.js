@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
+import _ from 'lodash';
 
 import CardsContainer from 'uikit/Card/CardsContainer';
 
@@ -66,7 +67,13 @@ export default compose(
         <DataProvider
           url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
           api={api}
-          transform={data => data.diagnoses}
+          transform={data =>
+            _(data.diagnoses)
+              .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
+              .take(10)
+              .map(d => ({ ...d, name: _.startCase(d.name) }))
+              .value()
+          }
         >
           {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />}
         </DataProvider>
