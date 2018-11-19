@@ -1,27 +1,11 @@
-import React, { Fragment } from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import React from 'react';
 
-import { getUser as getGen3User, getStudyIds } from 'services/gen3';
 import { css } from 'emotion';
-import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
-import { get } from 'lodash';
-import Query from '@arranger/components/dist/Query';
+
 import styled from 'react-emotion';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Row from 'uikit/Row';
-import Column from 'uikit/Column';
-import { toGqlString } from 'services/utils';
-import ExternalLink from 'uikit/ExternalLink';
-import { Span } from 'uikit/Core';
-import { PromptMessageContainer } from 'uikit/PromptMessage';
-import RightChevron from 'icons/DoubleChevronRightIcon';
-import StackIcon from 'icons/StackIcon';
-import { withHistory } from 'services/history';
-import { withApi } from 'services/api';
-import { arrangerGqlRecompose } from 'services/arranger';
-import { arrangerProjectId } from 'common/injectGlobals';
 
 export const styles = css`
   table {

@@ -17,6 +17,7 @@ import { withApi } from 'services/api';
 import { arrangerGqlRecompose } from 'services/arranger';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ItemRowContainer } from './style';
+import ProgressBar from '../../../chartkit/components/ProgressBar';
 
 const sqonForStudy = studyId => ({
   op: 'and',
@@ -52,6 +53,7 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
     .join('')}
   }
 }`;
+
   return (
     <Query
       renderError
@@ -92,6 +94,7 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
                   </Column>
                   <Column flex={1} justifyContent="center" pr={10}>
                     <Span>
+                      <ProgressBar numerator={400} denominator={650} />
                       <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
                     </Span>
                   </Column>
@@ -103,7 +106,6 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
                         }
                       >
                         {' '}
-                        View data files <RightChevron width={10} fill={theme.primary} />
                       </Span>
                     </ExternalLink>
                   </Column>
