@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 
 import { applyDefaultStyles } from 'uikit/Core';
 import Column from 'uikit/Column';
-import ExternalLink from 'uikit/ExternalLink';
 
 const Wrapper = applyDefaultStyles(styled(Column)`
   background-color: #fff;
@@ -59,13 +58,6 @@ const ActionSection = styled('div')`
   margin: 20px 0;
 `;
 
-const InfoLink = styled(ExternalLink)`
-  font-size: 14px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  margin-bottom: 0;
-  text-decoration: underline;
-`;
-
 const AccessGate = ({
   title,
   detail,
@@ -85,10 +77,6 @@ const AccessGate = ({
       <Message>{detail}</Message>
       <ActionSection>{children}</ActionSection>
     </Wrapper>
-    <Message>Visit our website for more information on</Message>
-    <InfoLink href={infoLink.url} hasExternalIcon={false}>
-      {infoLink.text}
-    </InfoLink>
   </Column>
 );
 
