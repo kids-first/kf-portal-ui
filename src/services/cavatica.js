@@ -143,6 +143,20 @@ export const getMembers = async ({ project }) => {
   return data;
 };
 
+export const getTasks = async ({ type, project }) => {
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: `/tasks?project=${project}&status=${type}`,
+      method: 'GET',
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
+};
+
 /**
  * ids - array of Gen3 Ids as strings
  * returns an array of objects representing the Cavatica file equivalents

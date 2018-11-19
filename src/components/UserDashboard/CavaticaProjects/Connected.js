@@ -17,6 +17,7 @@ import {
 import { withApi } from 'services/api';
 import Info from '../Info';
 import ProjectList from './ProjectList';
+import { getTasks } from '../../../services/cavatica';
 
 const enhance = compose(
   injectState,
@@ -28,16 +29,27 @@ const enhance = compose(
     async componentDidMount() {
       const { setProjectList, setLoading } = this.props;
       setLoading(true);
-      getCavaticaProjects()
-        .then(projects => {
-          getMembers({ project: p.id }))
-        .then(m => ({ ...p, members: members.items.length }))
-        .then(p => {
-          setProjectList(mergedProjects);
-          setLoading(false);
-        });
-      
-    }),
+      const projects = await getCavaticaProjects();
+      const projectsWithMembers = await projects.map(async p => {
+        const members = await getMembers({ project: p.id });
+        const completedTasks = await getTasks({ project: p.id, type: 'COMPLETED' });
+        const failedTasks = await getTasks({ project: p.id, type: 'FAILED' });
+        const runningTasks = await getTasks({ project: p.id, type: 'RUNNING' });
+
+        const tasks = {
+          completed: completedTasks.items.length,
+          failed: failedTasks.items.length,
+          running: runningTasks.items.length,
+        };
+
+        return { ...p, members: members.items.length, tasks };
+      });
+      Promise.all(projectsWithMembers).then(projectList => {
+        console.log('x', projectList);
+        setProjectList(projectList);
+        setLoading(false);
+      });
+    },
   }),
 );
 
