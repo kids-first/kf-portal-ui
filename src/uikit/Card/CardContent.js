@@ -3,7 +3,7 @@ import styled from 'react-emotion';
 
 const Content = styled('div')`
   height: 100%;
-  overflow-y: ${props => (props.scrollable ? 'scroll' : 'visible')};
+  overflow-y: ${props => (props.scrollable ? 'auto' : 'visible')};
 `;
 
 const CardContent = ({ children, scrollable }) => (
