@@ -45,7 +45,6 @@ const enhance = compose(
         return { ...p, members: members.items.length, tasks };
       });
       Promise.all(projectsWithMembers).then(projectList => {
-        console.log('x', projectList);
         setProjectList(projectList);
         setLoading(false);
       });
@@ -54,9 +53,7 @@ const enhance = compose(
 );
 
 const Connected = ({ state, effects, theme, loading, projectList, setBadge, ...props }) => {
-  console.log('project list', projectList);
   setBadge(projectList ? projectList.length : null);
-
   return (
     <div>
       {loading ? (

@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 
 import { applyDefaultStyles } from 'uikit/Core';
 import Row from 'uikit/Row';
-
 const Heading = applyDefaultStyles(styled('h2')`
   display: inline-block;
   font-family: ${({ theme }) => theme.fonts.default};
@@ -35,21 +34,19 @@ const Badge = applyDefaultStyles(styled('div')`
 `);
 
 const Header = styled(Row)`
-  align-items: 'center';
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
   padding-bottom: 20px;
 `;
 
-const CardStackItem = styled('div')`
-  font-family: ${({ theme }) => theme.fonts.default};
-  font-size: 12px;
-  color: #cc3399;
-`;
-
-const CardHeader = ({ title, badge, ...rest }) => (
+const CardHeader = ({ title, badge, children, ...rest }) => (
   <Header>
-    <Heading {...rest}>{title}</Heading>
-    {badge ? <Badge>{badge}</Badge> : null}
+    <Row>
+      <Heading {...rest}>{title}</Heading>
+      {badge ? <Badge>{badge}</Badge> : null}
+    </Row>
+    <Row>{children}</Row>
   </Header>
 );
 
