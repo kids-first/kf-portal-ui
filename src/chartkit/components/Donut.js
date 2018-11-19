@@ -23,13 +23,6 @@ class Donut extends Component {
       highlightedIndexValue: null,
     };
 
-    const { data, colors } = this.props;
-    const gradient = tinygradient(...colors).rgb(data.length + 1);
-    data.forEach((d, i) => {
-      d.color = gradient[i].toHexString();
-      d.index = i;
-    });
-
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
@@ -47,18 +40,24 @@ class Donut extends Component {
   }
 
   render() {
-    const { height } = this.props;
+    const { height, data: rawData, colors } = this.props;
+
+    /*****
+     * If we find performance issues with this component, we can try caching
+     * the gradient array and only recompute when data length changes
+     ******/
+    const gradient = tinygradient(...colors).rgb(rawData.length + 1);
+    const data = rawData.map((d, i) => ({
+      ...d,
+      color: gradient[i].toHexString(),
+      index: i,
+    }));
 
     const chartData = {
-      data: this.props.data,
+      data: data,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
-      margin: {
-        top: 30,
-        right: 20,
-        bottom: 20,
-        left: 20,
-      },
+      margin: { top: 30, right: 20, bottom: 20, left: 20 },
       defs: [
         {
           id: 'lines',
@@ -70,12 +69,7 @@ class Donut extends Component {
           spacing: 10,
         },
       ],
-      fill: [
-        {
-          match: x => x.data.index === this.state.highlightedIndex,
-          id: 'lines',
-        },
-      ],
+      fill: [{ match: x => x.data.index === this.state.highlightedIndex, id: 'lines' }],
       sortByValue: true,
       innerRadius: 0.5,
       colors: 'reds',
