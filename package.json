@@ -29,6 +29,7 @@
     "md5": "^2.2.1",
     "popback": "^0.0.3",
     "query-string": "^5.1.0",
+    "rc-progress": "^2.2.6",
     "react": "^16.5.2",
     "react-app-rewire-hot-loader": "^1.0.1",
     "react-autocomplete": "^1.8.1",
