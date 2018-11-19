@@ -28,6 +28,8 @@ import {
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
 
+import Info from '../Info';
+
 const ConnectButton = ({ ...props }) => {
   const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
   const RightArrow = applyDefaultStyles(RightIcon);
@@ -72,11 +74,6 @@ const AuthorizedStudies = compose(
                   Icon={DownloadController}
                   title="Access Controlled Data"
                   detail="To access controlled study files, connect to Gen3."
-                  infoLink={{
-                    text: 'applying for data access',
-                    url:
-                      'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
-                  }}
                 >
                   <ConnectButton
                     onClick={() => {
