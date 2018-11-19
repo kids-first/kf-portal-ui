@@ -38,7 +38,7 @@ const DashboardTitle = styled('h1')`
   padding-left: 34px;
 `;
 
-const Container = styled(Row)`
+const ContainerRow = styled(Row)`
   padding-left: 34px;
   padding-right: 34px;
 `;
@@ -59,7 +59,7 @@ export default compose(
       <title>Portal - User Dashboard</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
-    <Container>
+    <ContainerRow>
       <CardSlot sm={12} lg={6} xl={4}>
         <SavedQueries {...{ api, loggedInUser, theme }} />
       </CardSlot>
@@ -109,6 +109,6 @@ export default compose(
           </DataProvider>
         </DashboardCard>
       </CardSlot>
-    </Container>
+    </ContainerRow>
   </UserDashboard>
 ));
