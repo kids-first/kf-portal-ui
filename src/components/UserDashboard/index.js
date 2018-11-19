@@ -16,6 +16,7 @@ import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobal
 
 import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
+import CavaticaProjects from './CavaticaProjects';
 import { withTheme } from 'emotion-theming';
 
 import { DashboardCard } from './styles';

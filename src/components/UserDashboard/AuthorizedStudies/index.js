@@ -27,18 +27,7 @@ import {
 
 import Info from '../Info';
 
-const ConnectButton = ({ ...props }) => {
-  const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
-  const RightArrow = applyDefaultStyles(RightIcon);
-
-  return (
-    <LargeTealActionButton {...props} maxWidth={160}>
-      <ExternalLink size={12} position="relative" right={4} />
-      Connect
-      <RightArrow size={14} position="relative" left={10} />
-    </LargeTealActionButton>
-  );
-};
+import { ConnectButton } from '../styles';
 
 const AuthorizedStudies = compose(
   withApi,
@@ -105,16 +94,15 @@ const AuthorizedStudies = compose(
                         });
                     }}
                   />
-                  <Info
-                    link={{
-                      url:
-                        'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
-                      text: 'applying for data access.',
-                    }}
-                  />
                 </AccessGate>
               )
             }
+          />
+          <Info
+            link={{
+              url: 'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
+              text: 'applying for data access.',
+            }}
           />
         </DashboardCard>
       )}
