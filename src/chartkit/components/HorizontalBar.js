@@ -7,6 +7,7 @@ import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import Tooltip from './Tooltip';
 import { truncateText } from '../utils';
+import ChartDisplayContainer from './ChartDisplayContainer';
 
 const HorizontalBarWrapper = styled('div')`
   height: 90%;
@@ -164,11 +165,13 @@ class HorizontalBar extends Component {
     return (
       <HorizontalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        {height ? (
-          <ResponsiveBar {...chartData} height={height} />
-        ) : (
-          <ResponsiveBar {...chartData} />
-        )}
+        <ChartDisplayContainer>
+          {height ? (
+            <ResponsiveBar {...chartData} height={height} />
+          ) : (
+            <ResponsiveBar {...chartData} />
+          )}
+        </ChartDisplayContainer>
       </HorizontalBarWrapper>
     );
   }
