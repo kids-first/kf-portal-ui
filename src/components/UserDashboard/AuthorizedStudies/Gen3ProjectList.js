@@ -18,6 +18,7 @@ import { arrangerGqlRecompose } from 'services/arranger';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ItemRowContainer } from './style';
 import ProgressBar from '../../../chartkit/components/ProgressBar';
+import Study from './Study';
 
 const sqonForStudy = studyId => ({
   op: 'and',
@@ -80,7 +81,7 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
                 `${toGqlString(id)}.participants__study__short_name.buckets.length`,
               ),
             )
-            .map(id => {
+            .map((id, i) => {
               const studyNameBuckets = get(
                 aggregations,
                 `${toGqlString(id)}.participants__study__short_name.buckets`,
@@ -88,13 +89,24 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
               const studyName = studyNameBuckets[0];
               const sqon = sqonForStudy(id);
               return (
-                <ItemRowContainer>
+                <Study
+                  key={i}
+                  name={studyName ? studyName.key : ''}
+                  codes={''}
+                  authorized={400}
+                  total={600}
+                />
+              );
+              {
+                /*
+                  <ProgressBar numerator={400} denominator={650} />
                   <Column justifyContent="center" p={15}>
                     <StackIcon width={20} />
                   </Column>
                   <Column flex={1} justifyContent="center" pr={10}>
+                    <ProgressBar numerator={400} denominator={650} />
+
                     <Span>
-                      <ProgressBar numerator={400} denominator={650} />
                       <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
                     </Span>
                   </Column>
@@ -106,11 +118,11 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
                         }
                       >
                         {' '}
+                        View data files <RightChevron width={10} fill={theme.primary} />
                       </Span>
                     </ExternalLink>
-                  </Column>
-                </ItemRowContainer>
-              );
+                      </Column>*/
+              }
             })
         ) : (
           <LoadingSpinner />

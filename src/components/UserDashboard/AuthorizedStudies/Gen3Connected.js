@@ -54,16 +54,9 @@ const Gen3Connected = ({
     ) : (
       <Column>
         {userDetails.projects && Object.keys(userDetails.projects).length ? (
-          <Fragment>
-            <Row my={10}>
-              <Span className="title" fontWeight={'bold'}>
-                You have access to controlled datasets from the following studies:
-              </Span>
-            </Row>
-            <Column pl={15}>
-              <Gen3ProjectList projectIds={getStudyIds(userDetails)} />
-            </Column>
-          </Fragment>
+          <Column pl={15}>
+            <Gen3ProjectList projectIds={getStudyIds(userDetails)} />
+          </Column>
         ) : (
           <Column>
             <PromptMessageContainer mb={0} width={'100%'}>

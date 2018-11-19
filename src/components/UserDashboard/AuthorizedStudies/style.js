@@ -1,27 +1,13 @@
 import React from 'react';
-
-import { css } from 'emotion';
-
 import styled from 'react-emotion';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 
-export const styles = css`
-  table {
-    border-collapse: collapse;
-  }
-  span.title {
-    font-weight: bold;
-    padding: 15px;
-  }
-`;
-
-export const ItemRowContainer = styled(Row)`
+export const StudyCol = styled(Column)`
+  font-family: ${({ theme }) => theme.fonts.details}
   padding-top: 5px;
   padding-bottom: 5px;
-  min-height: 50px;
-  padding-right: 10%;
   &:not(:last-child) {
     border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
   }
