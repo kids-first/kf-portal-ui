@@ -20,6 +20,7 @@ import { withApi } from 'services/api';
 import Info from '../Info';
 
 import { ConnectButton } from '../styles';
+import Connected from './Connected';
 
 const isValidKey = key => {
   return key && key.length > 0;
@@ -40,7 +41,9 @@ const CavaticaProjects = compose(
           scrollable
         >
           {isValidKey(integrationTokens[CAVATICA]) ? (
-            <div>valid</div>
+            <Connected
+              setBadge={n => (n && n !== state.badgeNumber ? setState({ badgeNumber: n }) : null)}
+            />
           ) : (
             <Fragment>
               <AccessGate
