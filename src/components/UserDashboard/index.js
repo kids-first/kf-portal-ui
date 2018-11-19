@@ -5,8 +5,7 @@ import { injectState } from 'freactal';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
 import _ from 'lodash';
-
-import CardsContainer from 'uikit/Card/CardsContainer';
+import { Row, Col } from 'react-grid-system';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
@@ -34,9 +33,18 @@ const DashboardTitle = styled('h1')`
   font-weight: 500;
   text-align: left;
   color: ${({ theme }) => theme.secondary};
-  margin-left: 34px;
   margin-top: 26px;
   margin-bottom: 24px;
+  padding-left: 34px;
+`;
+
+const Container = styled(Row)`
+  padding-left: 34px;
+  padding-right: 34px;
+`;
+
+const CardSlot = styled(Col)`
+  padding-bottom: 30px;
 `;
 
 export default compose(
@@ -51,42 +59,56 @@ export default compose(
       <title>Portal - User Dashboard</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
-    <CardsContainer>
-      <SavedQueries {...{ api, loggedInUser, theme }} />
-      <AuthorizedStudies />
-      <DashboardCard title="Studies" Header={CardHeader}>
-        <DataProvider
-          url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
-          api={api}
-          transform={data => data.studies}
-        >
-          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
-        </DataProvider>
-      </DashboardCard>
-      <DashboardCard title="Top Diagnoses" Header={CardHeader} scrollable>
-        <DataProvider
-          url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
-          api={api}
-          transform={data =>
-            _(data.diagnoses)
-              .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
-              .take(10)
-              .map(d => ({ ...d, name: _.startCase(d.name) }))
-              .value()
-          }
-        >
-          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />}
-        </DataProvider>
-      </DashboardCard>
-      <DashboardCard title="Research Interests" Header={CardHeader}>
-        <DataProvider
-          url={`${publicStatsApiRoot}users/interests`}
-          api={api}
-          transform={data => data.interests}
-        >
-          {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={UserInterestsChart} />}
-        </DataProvider>
-      </DashboardCard>
-    </CardsContainer>
+    <Container>
+      <CardSlot sm={12} lg={6} xl={4}>
+        <SavedQueries {...{ api, loggedInUser, theme }} />
+      </CardSlot>
+      <CardSlot sm={12} lg={6} xl={4}>
+        <AuthorizedStudies />
+      </CardSlot>
+      <CardSlot sm={12} lg={6} xl={4}>
+        <DashboardCard title="Studies" Header={CardHeader}>
+          <DataProvider
+            url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
+            api={api}
+            transform={data => data.studies}
+          >
+            {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
+          </DataProvider>
+        </DashboardCard>
+      </CardSlot>
+      <CardSlot sm={12} lg={6} xl={4}>
+        <DashboardCard title="Top Diagnoses" Header={CardHeader} scrollable>
+          <DataProvider
+            url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
+            api={api}
+            transform={data =>
+              _(data.diagnoses)
+                .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
+                .take(10)
+                .map(d => ({ ...d, name: _.startCase(d.name) }))
+                .value()
+            }
+          >
+            {fetchedState => (
+              <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />
+            )}
+          </DataProvider>
+        </DashboardCard>
+      </CardSlot>
+      <CardSlot sm={12} lg={6} xl={4}>
+        <DashboardCard title="Research Interests" Header={CardHeader}>
+          <DataProvider
+            url={`${publicStatsApiRoot}users/interests`}
+            api={api}
+            transform={data => data.interests}
+          >
+            {fetchedState => (
+              <ChartLoadGate fetchedState={fetchedState} Chart={UserInterestsChart} />
+            )}
+          </DataProvider>
+        </DashboardCard>
+      </CardSlot>
+    </Container>
   </UserDashboard>
 ));
