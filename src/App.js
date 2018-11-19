@@ -27,7 +27,7 @@ import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
-import { requireLogin, publicStatsApiRoot } from './common/injectGlobals';
+import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { Gen3AuthRedirect } from 'services/gen3';

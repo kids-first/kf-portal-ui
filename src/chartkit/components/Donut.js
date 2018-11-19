@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
-import { linearGradientDef } from '@nivo/core';
 import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import _ from 'lodash';
 import tinygradient from 'tinygradient';
 
 import { defaultTheme } from '../themes';
-import Legend from './Legend';
-import Tooltip from './Tooltip';
-import { truncateText, maxValues, getChartMaxValue, roundTo, getDataRangeSize } from '../utils';
 
 const DonutWrapper = styled('div')`
   height: 90%;
 `;
 
-const DonutTooltip = ({ id, value, label, color }) => (
+const DonutTooltip = ({ id, value }) => (
   <div style={{ fill: '#404c9a' }} keys={id}>{`${value} Members`}</div>
 );
 
@@ -51,7 +46,7 @@ class Donut extends Component {
   }
 
   render() {
-    const { keys, colors, interactive, height } = this.props;
+    const { height } = this.props;
 
     const chartData = {
       data: this.props.data,
@@ -81,7 +76,6 @@ class Donut extends Component {
         },
       ],
       sortByValue: true,
-      colors: colors,
       innerRadius: 0.5,
       colors: 'reds',
       colorBy: data => data.color,

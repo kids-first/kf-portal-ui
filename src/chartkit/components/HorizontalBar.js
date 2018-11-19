@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import _ from 'lodash';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import Tooltip from './Tooltip';
-import { truncateText, getChartMaxValue } from '../utils';
+import { truncateText } from '../utils';
 
 const HorizontalBarWrapper = styled('div')`
   height: 90%;
@@ -21,9 +20,9 @@ class HorizontalBar extends Component {
       highlightedIndexValue: null,
     };
 
-    const { data, keys, sortBy, tickInterval } = props;
+    const { data, sortBy, tickInterval } = props;
 
-    const maxValue = getChartMaxValue(data, keys);
+    // const maxValue = getChartMaxValue(data, keys);
     this.maxValue = tickInterval ? this.maxValue : 'auto';
 
     this.tickValues = tickInterval;
@@ -51,12 +50,12 @@ class HorizontalBar extends Component {
 
   onClick(data) {
     const { onClick } = this.props;
-    onClick ? onClick(data) : null;
+    if (onClick) onClick(data);
   }
 
   renderAxisLeftTick(tick) {
     const { highlightedIndexValue } = this.state;
-    const { xTickTextLength } = this.props;
+    const { xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
 
     let value = tick.value;
@@ -92,18 +91,7 @@ class HorizontalBar extends Component {
   }
 
   render() {
-    const {
-      keys,
-      colors,
-      tickInterval,
-      legends,
-      indexBy = 'id',
-      xTickTextLength = 10,
-      tickValues,
-      height,
-      tooltipFormatter,
-      ...overrides
-    } = this.props;
+    const { keys, colors, legends, indexBy = 'id', height, tooltipFormatter } = this.props;
 
     const chartData = {
       data: this.data,

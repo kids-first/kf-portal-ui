@@ -53,7 +53,6 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       tooltipFormatter={participantTooltip}
       sortBy={sortDescParticipant}
       tickInterval={4}
-      padding={15}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
       xTickTextLength={28}
       legends={[
@@ -95,7 +94,6 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
       tooltipFormatter={participantTooltip}
       sortBy={sortDescParticipant}
       tickInterval={4}
-      padding={15}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
       xTickTextLength={28}
       legends={[
