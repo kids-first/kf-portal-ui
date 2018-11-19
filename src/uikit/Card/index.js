@@ -24,9 +24,11 @@ const Card = ({
   className,
   scrollable,
   badge,
+  stack,
+  stackIndex,
 }) => (
   <CardWrapper className={className}>
-    <Header title={title} badge={badge} />
+    <Header title={title} badge={badge} stack={stack} stackIndex={stackIndex} />
     <Content scrollable={scrollable}>{children}</Content>
   </CardWrapper>
 );

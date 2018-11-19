@@ -40,10 +40,23 @@ const Header = styled(Row)`
   padding-bottom: 20px;
 `;
 
-const CardHeader = ({ title, badge, ...rest }) => (
+const CardStackItem = styled('div')`
+  font-family: ${({ theme }) => theme.fonts.default};
+  font-size: 12px;
+  color: #cc3399;
+`;
+
+const CardHeader = ({ title, badge, stack = null, stackIndex = 0, ...rest }) => (
   <Header>
     <Heading {...rest}>{title}</Heading>
     {badge ? <Badge>{badge}</Badge> : null}
+    {stack ? (
+      <Row>
+        {stack.map(s => (
+          <CardStackItem>{s}</CardStackItem>
+        ))}
+      </Row>
+    ) : null}
   </Header>
 );
 
