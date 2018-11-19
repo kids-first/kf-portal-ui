@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 
+import Row from 'uikit/Row';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Column from 'uikit/Column';
 
