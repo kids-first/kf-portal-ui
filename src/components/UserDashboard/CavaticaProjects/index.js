@@ -26,18 +26,27 @@ const isValidKey = key => {
   return key && key.length > 0;
 };
 
+const cardStack = [
+  {
+    name: 'Projects',
+  },
+  { name: 'Create' },
+];
+
 const CavaticaProjects = compose(
   withApi,
   injectState,
   withTheme,
 )(({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => {
   return (
-    <Component initialState={{ loading: false, connected: false, badgeNumber: 0 }}>
+    <Component initialState={{ loading: false, connected: false, badgeNumber: 0, cardIndex: 0 }}>
       {({ setState, state }) => (
         <DashboardCard
           title="Cavatica Projects"
           Header={CardHeader}
           inactive={!state.connected}
+          stack={cardStack}
+          stackIndex={state.cardIndex}
           scrollable
         >
           {isValidKey(integrationTokens[CAVATICA]) ? (
