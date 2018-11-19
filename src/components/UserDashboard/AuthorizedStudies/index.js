@@ -9,10 +9,12 @@ import CardHeader from 'uikit/Card/CardHeader';
 import AccessGate from '../../AccessGate';
 import DownloadController from 'icons/DownloadController';
 import { applyDefaultStyles } from 'uikit/Core';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import Component from 'react-component-component';
 import { withApi } from 'services/api';
 import { CAVATICA, GEN3 } from 'common/constants';
+import Gen3Connected from './Gen3Connected';
 
 import ExternalLink from 'uikit/ExternalLink';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
@@ -25,7 +27,7 @@ import {
   analyticsTrigger,
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
-import Connected from './Connected';
+
 const ConnectButton = ({ ...props }) => {
   const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
   const RightArrow = applyDefaultStyles(RightIcon);
@@ -44,61 +46,82 @@ const AuthorizedStudies = compose(
   injectState,
   withTheme,
 )(({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => {
-  console.log('props', props);
   return (
-    <Component initialState={{ loading: false, connected: false }}>
+    <Component initialState={{ loading: false, connected: false, badgeNumber: 0 }}>
       {({ setState, state }) => (
-        <DashboardCard title="Authorized Studies" Header={CardHeader} inactive>
-          {state.connected ? (
-            <Connected />
-          ) : (
-            <AccessGate
-              Icon={DownloadController}
-              title="Access Controlled Data"
-              detail="To access controlled study files, connect to Gen3."
-            >
-              <ConnectButton
-                onClick={() => {
-                  analyticsTrigger({
-                    property: 'portal',
-                    type: 'recording',
-                    uiArea: TRACKING_EVENTS.categories.user.profile,
-                    action: TRACKING_EVENTS.actions.integration.init,
-                    label: TRACKING_EVENTS.labels.gen3,
-                  });
-                  setState({ loading: true });
-                  connectGen3(api)
-                    .then(() => getAccessToken(api))
-                    .then(token => {
-                      console.log('token', token);
-                      effects.setIntegrationToken(GEN3, token);
-                      setState({ loading: false, connected: true });
-                      effects.setToast({
-                        id: `${Date.now()}`,
-                        action: 'success',
-                        component: (
-                          <Row>Controlled dataset access sucessfully connected through Gen3</Row>
-                        ),
-                      });
-                      trackUserInteraction({
-                        category: TRACKING_EVENTS.categories.user.profile,
-                        action: TRACKING_EVENTS.actions.integration.connected,
+        <DashboardCard
+          title="Authorized Studies"
+          Header={CardHeader}
+          badge={state.badgeNumber}
+          inactive={!state.connected}
+          scrollable
+        >
+          <Gen3UserProvider
+            render={({ gen3User, loading: loadingGen3User }) =>
+              loadingGen3User ? (
+                <LoadingSpinner />
+              ) : gen3User ? (
+                <Gen3Connected
+                  setBadge={n =>
+                    n && n !== state.badgeNumber ? setState({ badgeNumber: n }) : null
+                  }
+                />
+              ) : (
+                <AccessGate
+                  mt={'30px'}
+                  Icon={DownloadController}
+                  title="Access Controlled Data"
+                  detail="To access controlled study files, connect to Gen3."
+                  infoLink={{
+                    text: 'applying for data access',
+                    url:
+                      'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
+                  }}
+                >
+                  <ConnectButton
+                    onClick={() => {
+                      analyticsTrigger({
+                        property: 'portal',
+                        type: 'recording',
+                        uiArea: TRACKING_EVENTS.categories.user.profile,
+                        action: TRACKING_EVENTS.actions.integration.init,
                         label: TRACKING_EVENTS.labels.gen3,
                       });
-                    })
-                    .catch(err => {
-                      console.log('err: ', err);
-                      setState({ loading: false });
-                      trackUserInteraction({
-                        category: TRACKING_EVENTS.categories.user.profile,
-                        action: TRACKING_EVENTS.actions.integration.failed,
-                        label: TRACKING_EVENTS.labels.gen3,
-                      });
-                    });
-                }}
-              />
-            </AccessGate>
-          )}
+                      setState({ loading: true });
+                      connectGen3(api)
+                        .then(() => getAccessToken(api))
+                        .then(token => {
+                          console.log('token', token);
+                          effects.setIntegrationToken(GEN3, token);
+                          setState({ loading: false, connected: true });
+                          trackUserInteraction({
+                            category: TRACKING_EVENTS.categories.user.profile,
+                            action: TRACKING_EVENTS.actions.integration.connected,
+                            label: TRACKING_EVENTS.labels.gen3,
+                          });
+                        })
+                        .catch(err => {
+                          console.log('err: ', err);
+                          setState({ loading: false });
+                          trackUserInteraction({
+                            category: TRACKING_EVENTS.categories.user.profile,
+                            action: TRACKING_EVENTS.actions.integration.failed,
+                            label: TRACKING_EVENTS.labels.gen3,
+                          });
+                        });
+                    }}
+                  />
+                  <Info
+                    link={{
+                      url:
+                        'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
+                      text: 'applying for data access.',
+                    }}
+                  />
+                </AccessGate>
+              )
+            }
+          />
         </DashboardCard>
       )}
     </Component>

@@ -1,10 +1,17 @@
 import React from 'react';
 import styled from 'react-emotion';
 
-import { StudyCol } from './style';
 import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 import ProgressBar from 'chartkit/components/ProgressBar';
+
+export const StudyCol = styled(Column)`
+  font-family: ${({ theme }) => theme.fonts.details}
+  padding-left: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
 
 const Name = styled('div')`
   color: #343434;
@@ -33,7 +40,7 @@ const NumberLink = styled(ExternalLink)`
 
 const Study = ({ name, codes, total, authorized }) => (
   <StudyCol>
-    <Row justifyContent="space-between">
+    <Row justifyContent="space-between" pl={0}>
       <Name>{name}</Name>
       <StudyCount>
         Authorized: <NumberLink hasExternalIcon={false}>{authorized}</NumberLink>
