@@ -5,7 +5,7 @@ import { applyDefaultStyles } from 'uikit/Core';
 import Row from 'uikit/Row';
 
 const Heading = applyDefaultStyles(styled('h2')`
-  display: inline-block;
+  display: block;
   font-family: ${({ theme }) => theme.fonts.default};
   font-size: 20px;
   font-weight: 500;

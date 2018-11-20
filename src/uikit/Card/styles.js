@@ -8,4 +8,6 @@ export const CardWrapper = applyDefaultStyles(styled('div')`
   background-color: rgba(255, 255, 255, ${({ inactive }) => (inactive ? '50%' : '100%')});
   padding: 26px 30px;
   border: solid 1px #e0e1e6;
+  display: flex;
+  flex-direction: column;
 `);

@@ -4,25 +4,22 @@ import styled from 'react-emotion';
 
 const Content = styled('div')`
   position: relative;
-  height: calc(100% - 40px);
+  display: flex;
+  flex: 1;
 `;
 
 const ScrollContainer = styled('div')`
-  height: 100%;
+  flex: 1;
   overflow-y: ${props => (props.scrollable ? 'auto' : 'visible')};
 `;
 
 const Fader = styled('div')`
-  background: linear-gradient(
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 1)
-  );
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
   pointer-events: none;
   height: 50px;
   width: 100%;
   position: absolute;
-  bottom: 0px;
+  bottom: 00px;
   left: 0px;
   right: 0px;
   transition: all 0.5s;
