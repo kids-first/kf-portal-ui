@@ -30,7 +30,7 @@ const QueriesHeading = styled('h4')`
 `;
 
 const Container = styled(Column)`
-  margin: 15px 0;
+  margin: 0 0 15px 0;
   flex: 3;
   border-top: 0;
   border-bottom-right-radius: 10px;
