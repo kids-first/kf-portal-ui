@@ -19,7 +19,7 @@ const Fader = styled('div')`
   height: 50px;
   width: 100%;
   position: absolute;
-  bottom: 00px;
+  bottom: 0px;
   left: 0px;
   right: 0px;
   transition: all 0.5s;
@@ -31,7 +31,7 @@ const isScrolledToBottom = domElement => {
   return scrollTop + offsetHeight >= scrollHeight;
 };
 
-const CardContent = ({ children, scrollable, showsContentFader = true }) => {
+const CardContent = ({ children, scrollable = false, showsContentFader = true }) => {
   const initialState = { isAtBottom: !scrollable };
   const scrollContainerRef = React.createRef();
   const didMount = ({ setState }) => {
