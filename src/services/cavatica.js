@@ -129,6 +129,34 @@ export const getFiles = async () => {
   return data;
 };
 
+export const getMembers = async ({ project }) => {
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: `/projects/${project}/members`,
+      method: 'GET',
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
+};
+
+export const getTasks = async ({ type, project }) => {
+  let data;
+  try {
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: `/tasks?project=${project}&status=${type}`,
+      method: 'GET',
+    });
+    data = response.data;
+  } catch (error) {
+    console.warn(error);
+  }
+  return data;
+};
+
 /**
  * ids - array of Gen3 Ids as strings
  * returns an array of objects representing the Cavatica file equivalents
@@ -143,10 +171,10 @@ export const convertGen3FileIds = async ({ ids }) => {
   let items = [];
 
   /* ABOUT THE CHUNKS:
-  * Cavatica has a limit of how many items it can take at one time,
-  *  so we batch a list of ids into chunks of size 75
-  *  and then repeat the conversion call for each chunk
-  */
+   * Cavatica has a limit of how many items it can take at one time,
+   *  so we batch a list of ids into chunks of size 75
+   *  and then repeat the conversion call for each chunk
+   */
   const chunks = makeChunks(ids, 75);
   for (const chunk of chunks) {
     try {

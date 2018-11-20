@@ -16,6 +16,7 @@ import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobal
 
 import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
+import CavaticaProjects from './CavaticaProjects';
 import { withTheme } from 'emotion-theming';
 
 import { DashboardCard } from './styles';
@@ -68,6 +69,9 @@ export default compose(
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
             <AuthorizedStudies />
+          </CardSlot>
+          <CardSlot sm={12} md={6} lg={6} xl={4}>
+            <CavaticaProjects />
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
             <DashboardCard title="Studies" Header={CardHeader}>

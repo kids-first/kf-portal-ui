@@ -34,7 +34,6 @@ const enhance = compose(
       let userDetails = await getGen3User(api);
 
       const approvedAcls = Object.keys(userDetails.projects).sort();
-      console.log('approved acls', approvedAcls);
 
       const sqon = this.props.sqon || {
         op: 'and',
@@ -78,7 +77,6 @@ const enhance = compose(
           },
         }),
       ]);
-      console.log('accepted', acceptedStudyIds, 'unaccepted', unacceptedStudyIds);
 
       const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
         getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
@@ -137,7 +135,6 @@ const enhance = compose(
           }, {}),
         ),
       ]);
-      console.log('accepted', acceptedStudiesAggs, 'unaccepted', unacceptedStudiesAggs);
 
       setLoading(false);
       setUserDetails(userDetails);

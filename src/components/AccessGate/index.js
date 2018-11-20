@@ -10,6 +10,7 @@ const Wrapper = applyDefaultStyles(styled(Column)`
   border-radius: 20px;
   width: 100%;
   margin-bottom: 10px;
+  text-align: center;
 `);
 
 const IconWrapper = styled('div')`

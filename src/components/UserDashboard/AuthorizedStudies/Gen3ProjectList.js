@@ -65,7 +65,6 @@ query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
       )}
       render={({ loading, data }) => {
         const aggregations = get(data, 'file');
-        console.log('data', data);
         return aggregations ? (
           projectIds
             .filter(id =>
