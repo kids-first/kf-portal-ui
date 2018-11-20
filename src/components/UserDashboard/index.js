@@ -74,7 +74,7 @@ export default compose(
             <CavaticaProjects />
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Studies" Header={CardHeader}>
+            <DashboardCard title="Studies">
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
                 api={api}
@@ -85,7 +85,7 @@ export default compose(
             </DashboardCard>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Top Diagnoses" Header={CardHeader}>
+            <DashboardCard title="Top Diagnoses">
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
                 api={api}
@@ -104,7 +104,7 @@ export default compose(
             </DashboardCard>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Research Interests" Header={CardHeader}>
+            <DashboardCard title="Research Interests">
               <DataProvider
                 url={`${publicStatsApiRoot}users/interests`}
                 api={api}
