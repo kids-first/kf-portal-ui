@@ -9,5 +9,5 @@ export const CardWrapper = applyDefaultStyles(styled('div')`
   padding: 26px 30px;
   display: flex;
   flex-direction: column;
-  border: solid 1px #e0e1e6;
+  border: solid 1px ${({ theme }) => theme.greyScale5};
 `);
