@@ -20,6 +20,12 @@ const Members = styled('div')`
   color: #74757d;
 `;
 
+const MemberCount = styled('span')`
+  font-size: 13px;
+  color: #343434;
+  font-family: ${({ theme }) => theme.fonts.details};
+`;
+
 const Link = styled(ExternalLink)`
   text-decoration: underline;
 `;
@@ -30,21 +36,33 @@ const Task = styled('div')`
   margin-left: 8px;
   font-size: 12px;
   font-family: ${({ theme }) => theme.fonts.details};
-  padding: 2px;
+  padding: 2px 4px;
+  font-weight: 600;
+`;
+
+const TaskBreakdown = styled('div')`
+  font-size: 12px;
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-weight: 600;
 `;
 
 const ProjectList = ({ projects }) => {
-  return projects.map(p => (
-    <Project>
+  return projects.map((p, i) => (
+    <Project key={i}>
       <Row justifyContent="space-between" pl={0}>
         <Link href={p.href}>{p.name}</Link>
-        <Members>{`${p.members} ${p.members.length > 1 ? 'people' : 'person'}`}</Members>
+        <div>
+          <Members>
+            <MemberCount>{p.members}</MemberCount>
+            {`${p.members.length > 1 ? ' people' : ' person'}`}
+          </Members>
+        </div>
       </Row>
       <Row mt={'10px'} pl={0}>
-        <div>
+        <TaskBreakdown>
           Task Breakdown:{' '}
-          {!p.tasks ? (
-            'There are no tasks for this project yet.'
+          {Object.keys(p.tasks).reduce((prev, key) => prev + p.tasks[key], 0) === 0 ? (
+            <span style={{ fontWeight: 'normal' }}>There are no tasks for this project yet.</span>
           ) : (
             <Fragment>
               <Task style={{ backgroundColor: '#dcfbf3', color: '#0e906f' }}>{`${
@@ -58,7 +76,7 @@ const ProjectList = ({ projects }) => {
               } RUNNING`}</Task>
             </Fragment>
           )}
-        </div>
+        </TaskBreakdown>
       </Row>
     </Project>
   ));
