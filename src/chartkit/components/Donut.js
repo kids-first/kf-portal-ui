@@ -6,16 +6,17 @@ import tinygradient from 'tinygradient';
 
 import { defaultTheme } from '../themes';
 import ChartDisplayContainer from './ChartDisplayContainer';
+import Tooltip from './Tooltip';
 
 const DonutWrapper = styled('div')`
   height: 90%;
 `;
 
 const DonutTooltip = ({ id, value }) => (
-  <div style={{ fill: '#404c9a' }} keys={id}>
-    <div style={{ paddingBottom: 6 }}>{id}</div>
+  <Tooltip key={id}>
+    <div>{id}</div>
     <div>{`${value} Members`}</div>
-  </div>
+  </Tooltip>
 );
 
 class Donut extends Component {
