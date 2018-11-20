@@ -46,11 +46,11 @@ const TaskBreakdown = styled('div')`
   font-weight: 600;
 `;
 
-const ProjectList = ({ projects }) => {
-  return projects.map((p, i) => (
+const ProjectList = ({ projects }) =>
+  projects.map((p, i) => (
     <Project key={i}>
       <Row justifyContent="space-between" pl={0}>
-        <Link href={p.href}>{p.name}</Link>
+        <Link href={`https://cavatica.sbgenomics.com/u/${p.id}`}>{p.name}</Link>
         <div>
           <Members>
             <MemberCount>{p.members}</MemberCount>
@@ -80,6 +80,5 @@ const ProjectList = ({ projects }) => {
       </Row>
     </Project>
   ));
-};
 
 export default ProjectList;

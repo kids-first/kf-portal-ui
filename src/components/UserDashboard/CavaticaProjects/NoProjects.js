@@ -7,7 +7,6 @@ import {
   PromptMessageHeading,
   PromptMessageContent,
 } from 'uikit/PromptMessage';
-import Info from '../Info';
 
 const NoProjects = () => (
   <Column>
@@ -39,12 +38,6 @@ const NoProjects = () => (
         </ul>
       </PromptMessageContent>
     </PromptMessageContainer>
-    <Info
-      link={{
-        url: 'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
-        text: 'applying for data access.',
-      }}
-    />
   </Column>
 );
 

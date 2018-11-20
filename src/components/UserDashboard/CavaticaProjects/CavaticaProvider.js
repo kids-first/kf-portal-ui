@@ -25,7 +25,6 @@ const CavaticaProvider = ({ children, setBadge }) => (
 
       Promise.all(projectsWithData).then(projectList => {
         setState({ projects: projectList, loading: false });
-        console.log('projects', projects);
         setBadge(projects.length);
       });
     }}
