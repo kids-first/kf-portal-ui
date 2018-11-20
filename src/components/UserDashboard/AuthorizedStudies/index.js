@@ -35,7 +35,7 @@ const AuthorizedStudies = compose(
   injectState,
   withTheme,
 )(({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => (
-  <Component initialState={{ loading: false, connected: false, badgeNumber: 0 }}>
+  <Component initialState={{ loading: false, connected: false, badgeNumber: null }}>
     {({ setState, state }) => {
       const Header = <CardHeader title="Authorized Studies" badge={state.badgeNumber} />;
 
