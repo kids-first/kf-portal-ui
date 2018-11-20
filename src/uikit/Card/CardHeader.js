@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 
 import { applyDefaultStyles } from 'uikit/Core';
 import Row from 'uikit/Row';
+
 const Heading = applyDefaultStyles(styled('h2')`
   display: inline-block;
   font-family: ${({ theme }) => theme.fonts.default};
@@ -40,11 +41,11 @@ const Header = styled(Row)`
   padding-bottom: 20px;
 `;
 
-const CardHeader = ({ title, badge, children, ...rest }) => (
+const CardHeader = ({ title, badge = null, children, ...rest }) => (
   <Header>
     <Row>
       <Heading {...rest}>{title}</Heading>
-      {badge ? <Badge>{badge}</Badge> : null}
+      {badge !== null ? <Badge>{badge}</Badge> : null}
     </Row>
     <Row>{children}</Row>
   </Header>
