@@ -14,7 +14,7 @@ const sortDescParticipant = (a, b) => {
 
 const participantTooltip = data => {
   const participants = data.familyMembers + data.probands;
-  return `${participants.toLocaleString()} participant${participants > 1 ? 's' : ''}`;
+  return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
 };
 
 const sqon = {
