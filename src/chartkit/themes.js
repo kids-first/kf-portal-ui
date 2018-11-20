@@ -21,7 +21,6 @@ export const defaultTheme = {
       marginBottom: '20px',
     },
   },
-
   // Used by Nivos
   axis: {
     domain: {
@@ -50,7 +49,9 @@ export const defaultTheme = {
       strokeWidth: 1,
     },
   },
-
+  labels: {
+    text: { ...defaultText },
+  },
   tooltip: {
     container: {
       background: 'white',

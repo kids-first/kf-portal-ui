@@ -12,7 +12,10 @@ const DonutWrapper = styled('div')`
 `;
 
 const DonutTooltip = ({ id, value }) => (
-  <div style={{ fill: '#404c9a' }} keys={id}>{`${value} Members`}</div>
+  <div style={{ fill: '#404c9a' }} keys={id}>
+    <div style={{ paddingBottom: 6 }}>{id}</div>
+    <div>{`${value} Members`}</div>
+  </div>
 );
 
 class Donut extends Component {
@@ -57,7 +60,7 @@ class Donut extends Component {
       data: data,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
-      margin: { top: 30, right: 20, bottom: 20, left: 20 },
+      margin: { top: 30, right: 84, bottom: 30, left: 84 },
       defs: [
         {
           id: 'lines',
@@ -80,10 +83,11 @@ class Donut extends Component {
       radialLabelsTextXOffset: 6,
       radialLabelsTextColor: '#333333',
       radialLabelsLinkOffset: 0,
-      radialLabelsLinkDiagonalLength: 16,
-      radialLabelsLinkHorizontalLength: 16,
+      radialLabelsLinkDiagonalLength: 12,
+      radialLabelsLinkHorizontalLength: 10,
       radialLabelsLinkStrokeWidth: 1,
       radialLabelsLinkColor: '#333333',
+      radialLabel: d => _.truncate(d.label, { length: 12 }),
       enableSlicesLabels: false,
       animate: true,
       motionStiffness: 90,
