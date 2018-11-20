@@ -71,6 +71,9 @@ export default compose(
             <AuthorizedStudies />
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
+            <CavaticaProjects />
+          </CardSlot>
+          <CardSlot sm={12} md={6} lg={6} xl={4}>
             <DashboardCard title="Studies" Header={CardHeader}>
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
