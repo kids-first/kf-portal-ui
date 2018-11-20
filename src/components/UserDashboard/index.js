@@ -85,7 +85,7 @@ export default compose(
             </DashboardCard>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Top Diagnoses" Header={CardHeader} scrollable>
+            <DashboardCard title="Top Diagnoses" Header={CardHeader}>
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
                 api={api}
