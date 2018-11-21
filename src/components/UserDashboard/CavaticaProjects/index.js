@@ -17,6 +17,7 @@ import CardHeader from 'uikit/Card/CardHeader';
 import Create from './Create';
 import DualPaneHeader from 'uikit/Card/DualPaneCard/DualPaneHeader';
 import CavaticaProvider from './CavaticaProvider';
+import NotConnected from './NotConnected';
 
 const isValidKey = key => {
   return key && key.length > 0;
@@ -82,45 +83,7 @@ const CavaticaProjects = compose(
         inactive={!isConnected}
         scrollable={isConnected}
       >
-        {isConnected ? (
-          activeCard.component
-        ) : (
-          <Fragment>
-            <AccessGate
-              mt={'40px'}
-              Icon={Cavatica}
-              title="Collaborative Analysis"
-              detail="To analyze Kids First data on the cloud, connect to Cavatica."
-            >
-              <ConnectButton
-                onClick={() => {
-                  analyticsTrigger({
-                    property: 'portal',
-                    type: 'recording',
-                    uiArea: TRACKING_EVENTS.categories.user.profile,
-                    action: TRACKING_EVENTS.actions.integration.init,
-                    label: TRACKING_EVENTS.labels.cavatica,
-                  });
-                  effects.setModal({
-                    title: 'How to Connect to Cavatica',
-                    component: (
-                      <CavaticaConnectModal
-                        onComplete={effects.unsetModal}
-                        onCancel={effects.unsetModal}
-                      />
-                    ),
-                  });
-                }}
-              />
-            </AccessGate>
-            <Info
-              link={{
-                url: 'https://kidsfirstdrc.org/support/analyze-data/',
-                text: 'CAVATICA compute cloud platform',
-              }}
-            />
-          </Fragment>
-        )}
+        {isConnected ? activeCard.component : <NotConnected />}
       </DualPaneCard>
     );
   },
