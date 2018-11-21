@@ -67,7 +67,7 @@ export default compose(
       <title>Portal - User Dashboard</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
-    <SizeProvider refreshRate={100}>
+    <SizeProvider>
       {({ size }) => (
         <ContainerRow currentWidth={size.width}>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
