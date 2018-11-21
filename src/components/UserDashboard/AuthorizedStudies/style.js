@@ -1,8 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
-
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import Column from 'uikit/Column';
 
 export const Spinner = () => (
   <Row justifyContent={'center'}>

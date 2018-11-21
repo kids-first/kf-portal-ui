@@ -54,7 +54,7 @@ const ProjectList = ({ projects }) =>
         <div>
           <Members>
             <MemberCount>{p.members}</MemberCount>
-            {`${p.members.length > 1 ? ' people' : ' person'}`}
+            {`${p.members > 1 ? ' people' : ' person'}`}
           </Members>
         </div>
       </Row>
