@@ -6,6 +6,7 @@ const Content = styled('div')`
   position: relative;
   display: flex;
   flex: 1;
+  overflow: hidden;
 `;
 
 const ScrollContainer = styled('div')`
