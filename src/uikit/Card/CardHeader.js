@@ -39,7 +39,6 @@ const Header = applyDefaultStyles(styled(Row)`
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
   padding-bottom: 20px;
-  margin-bottom: 15px;
 `);
 
 const CardHeader = ({ title, badge = null, children, ...rest }) => (

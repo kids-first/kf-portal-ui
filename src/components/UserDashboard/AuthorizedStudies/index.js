@@ -4,11 +4,8 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { connectGen3, getAccessToken } from 'services/gen3';
 import { Gen3UserProvider } from 'services/gen3';
-import { DashboardCard } from '../styles';
 import CardHeader from 'uikit/Card/CardHeader';
-import AccessGate from '../../AccessGate';
 import DownloadController from 'icons/DownloadController';
-import { applyDefaultStyles } from 'uikit/Core';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import Component from 'react-component-component';
@@ -16,9 +13,9 @@ import { withApi } from 'services/api';
 import { GEN3 } from 'common/constants';
 import Gen3Connected from './Gen3Connected';
 
-import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
-import RightIcon from 'react-icons/lib/fa/angle-right';
-import { LargeTealActionButton } from 'uikit/Button';
+import AccessGate from '../../AccessGate';
+import { DashboardCard } from '../styles';
+
 import {
   trackUserInteraction,
   analyticsTrigger,
@@ -28,7 +25,6 @@ import {
 import Info from '../Info';
 
 import { ConnectButton } from '../styles';
-import Card from '../../../uikit/Card';
 
 const AuthorizedStudies = compose(
   withApi,
@@ -40,7 +36,7 @@ const AuthorizedStudies = compose(
       const Header = <CardHeader title="Authorized Studies" badge={state.badgeNumber} />;
 
       return (
-        <DashboardCard Header={Header} inactive={!state.connected} scrollable>
+        <DashboardCard Header={Header} inactive={!state.connected} scrollable={state.connected}>
           <Gen3UserProvider
             render={({ gen3User, loading: loadingGen3User }) =>
               loadingGen3User ? (
@@ -53,7 +49,7 @@ const AuthorizedStudies = compose(
                 />
               ) : (
                 <AccessGate
-                  mt={'30px'}
+                  mt={'40px'}
                   Icon={DownloadController}
                   title="Access Controlled Data"
                   detail="To access controlled study files, connect to Gen3."

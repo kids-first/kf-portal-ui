@@ -80,14 +80,14 @@ const CavaticaProjects = compose(
         stackIndex={stackIndex}
         setStackIndex={index => setStackIndex(index)}
         inactive={!isConnected}
-        scrollable
+        scrollable={isConnected}
       >
         {isConnected ? (
           activeCard.component
         ) : (
           <Fragment>
             <AccessGate
-              mt={'30px'}
+              mt={'40px'}
               Icon={Cavatica}
               title="Collaborative Analysis"
               detail="To analyze Kids First data on the cloud, connect to Cavatica."
