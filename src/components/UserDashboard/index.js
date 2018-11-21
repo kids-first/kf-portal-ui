@@ -20,7 +20,7 @@ import CavaticaProjects from './CavaticaProjects';
 import { withTheme } from 'emotion-theming';
 
 import { DashboardCard } from './styles';
-import { SizeMe } from 'react-sizeme';
+import { SizeProvider } from 'components/Utils';
 
 const UserDashboard = styled('div')`
   width: 100%;
@@ -67,7 +67,7 @@ export default compose(
       <title>Portal - User Dashboard</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
-    <SizeMe refreshRate={100}>
+    <SizeProvider>
       {({ size }) => (
         <ContainerRow currentWidth={size.width}>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
@@ -124,6 +124,6 @@ export default compose(
           </CardSlot>
         </ContainerRow>
       )}
-    </SizeMe>
+    </SizeProvider>
   </UserDashboard>
 ));
