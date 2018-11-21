@@ -3,6 +3,7 @@ import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
+import { truncate } from 'lodash';
 
 import { defaultTheme } from '../themes';
 import ChartDisplayContainer from './ChartDisplayContainer';
@@ -88,7 +89,7 @@ class Donut extends Component {
       radialLabelsLinkHorizontalLength: 10,
       radialLabelsLinkStrokeWidth: 1,
       radialLabelsLinkColor: '#333333',
-      radialLabel: d => _.truncate(d.label, { length: 12 }),
+      radialLabel: d => truncate(d.label, { length: 12 }),
       enableSlicesLabels: false,
       animate: true,
       motionStiffness: 90,
