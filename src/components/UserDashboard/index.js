@@ -36,12 +36,19 @@ const DashboardTitle = styled('h1')`
   color: ${({ theme }) => theme.secondary};
   margin-top: 26px;
   margin-bottom: 24px;
-  padding-left: 34px;
+  padding-left: 30px;
 `;
 
-const ContainerRow = styled(Row)`
-  padding-left: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 10 : 34)}px;
-  padding-right: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 10 : 34)}px;
+const Container = props => (
+  // This is to cancel out the negative margin set by react-grid-system
+  <div style={{ marginLeft: '15px', marginRight: '15px' }}>
+    <Row {...props} />
+  </div>
+);
+
+const ContainerRow = styled(Container)`
+  padding-left: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 0 : 15)}px;
+  padding-right: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 0 : 15)}px;
 `;
 
 const CardSlot = styled(Col)`
