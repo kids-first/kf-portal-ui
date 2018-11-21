@@ -6,7 +6,7 @@ import { applyDefaultStyles } from 'uikit/Core';
 
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { LargeTealActionButton } from 'uikit/Button';
+import { TealActionButton } from 'uikit/Button';
 
 const cardCSS = css`
   height: 404px;
@@ -20,15 +20,23 @@ export const DualPaneCard = styled(DashboardCard)`
   ${cardCSS}
 `;
 
-export const ConnectButton = ({ ...props }) => {
+const Connect = styled(TealActionButton)`
+  height: 37px;
+  padding-right: 21px;
+  padding-left: 21px;
+  font-size: 14px;
+  border-radius: 18px;
+`;
+
+export const ConnectButton = ({ external = true, ...props }) => {
   const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
   const RightArrow = applyDefaultStyles(RightIcon);
 
   return (
-    <LargeTealActionButton {...props} maxWidth={160}>
-      <ExternalLink size={12} position="relative" right={4} />
+    <Connect {...props} maxWidth={160}>
+      {external ? <ExternalLink size={12} position="relative" right={5} /> : null}
       Connect
-      <RightArrow size={14} position="relative" left={10} />
-    </LargeTealActionButton>
+      <RightArrow size={14} position="relative" left={5} />
+    </Connect>
   );
 };

@@ -20,7 +20,6 @@ import CavaticaProjects from './CavaticaProjects';
 import { withTheme } from 'emotion-theming';
 
 import { DashboardCard } from './styles';
-import CardHeader from 'uikit/Card/CardHeader';
 import { SizeMe } from 'react-sizeme';
 
 const UserDashboard = styled('div')`

@@ -60,14 +60,15 @@ const CavaticaProjects = compose(
 
     const Header = (
       <CardHeader title="Cavatica Projects" badge={badgeNumber}>
-        {cardStack.map((card, i) => (
-          <DualPaneHeader
-            key={i}
-            active={i === stackIndex}
-            onClick={() => setStackIndex(i)}
-            title={card.title}
-          />
-        ))}
+        {!isConnected &&
+          cardStack.map((card, i) => (
+            <DualPaneHeader
+              key={i}
+              active={i === stackIndex}
+              onClick={() => setStackIndex(i)}
+              title={card.title}
+            />
+          ))}
       </CardHeader>
     );
 

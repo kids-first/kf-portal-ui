@@ -33,12 +33,16 @@ const Legend = ({ legends = [], direction = DIRECTION_ROW, theme }) => {
     <div style={style}>
       <svg height={maxHeight} xmlns="http://www.w3.org/2000/svg">
         {legends.map((l, i) => {
-          let xOffset = 0;
-
-          xOffset = itemWidth + itemsSpacing;
+          const xOffset = itemWidth + itemsSpacing;
+          const margin = 10;
 
           const legendItem = (
-            <g key={i} height={maxHeight} transform={`translate(${i * xOffset}, 0)`} style={style}>
+            <g
+              key={i}
+              height={maxHeight}
+              transform={`translate(${i * xOffset + margin}, 0)`}
+              style={style}
+            >
               <SvgSquare
                 style={icon}
                 fill={l.color}
