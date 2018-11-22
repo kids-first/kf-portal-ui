@@ -1,41 +1,86 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import CardContent from 'uikit/Card/CardContent';
 import CardHeader from 'uikit/Card/CardHeader';
 import { CardWrapper } from 'uikit/Card/styles';
-import { withState, compose } from 'recompose';
+import posed, { PoseGroup } from 'react-pose';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
-const Multicard = compose(
-  withState('badgeNumber', 'setBadgeNumber', null),
-  withState('index', 'setIndex', 0),
-)(
-  ({
-    Header,
-    Content = CardContent,
-    children,
-    className,
-    title,
-    scrollable,
-    setTitle,
-    setIndex,
-    setBadgeNumber,
-    index,
-    tabMenu,
-  }) => {
-    const setBadge = n => {
-      if (n !== badgeNumber) setBadgeNumber(n);
+const Box = posed.div({
+  enter: {
+    y: 0,
+    opacity: 1,
+  },
+  exit: {
+    y: 50,
+    opacity: 0,
+    transition: { duration: 150 },
+  },
+});
+
+class Multicard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      badgeNumber: null,
+      contentIndex: 0,
+      title: '',
+      loading: true,
     };
 
-    console.log('children', children, React.Children.map(children, c => console.log('c', c)));
-    return (
-      <CardWrapper className={className}>
-        {Header || <CardHeader title={title} />}
+    this.setBadge = this.setBadge.bind(this);
+    this.setTitle = this.setTitle.bind(this);
+    this.setIndex = this.setIndex.bind(this);
+  }
 
-        <Content scrollable={scrollable} />
-        {children({ setTitle, setIndex, setBadge, index })}
-      </CardWrapper>
+  componentDidMount() {
+    console.log('CDM');
+    const animatedChildren = React.Children.map(this.props.children, (child, i) => (
+      <Box key={i}>
+        {React.cloneElement(child, {
+          setBadge: this.setBadge,
+          setIndex: this.setIndex,
+          setTitle: this.setTitle,
+        })}
+      </Box>
+    ));
+    this.children = animatedChildren;
+    this.setState({ loading: false });
+    console.log('children', animatedChildren);
+    // setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
+  }
+
+  setBadge(n) {
+    console.log('set badge', n);
+    if (n !== this.state.badgeNumber) this.setState({ badgeNumber: n });
+  }
+
+  setIndex(i) {
+    console.log('set index', i);
+    this.setState({ contentIndex: i });
+  }
+
+  setTitle(title) {
+    console.log('set title', title);
+    this.setState({ title });
+  }
+
+  render() {
+    console.log('render');
+    const { loading, contentIndex } = this.state;
+    return (
+      <div>
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <CardWrapper>
+            <PoseGroup>{this.children[contentIndex]}</PoseGroup>
+          </CardWrapper>
+        )}
+      </div>
     );
-  },
-);
+  }
+}
 
 export default Multicard;
