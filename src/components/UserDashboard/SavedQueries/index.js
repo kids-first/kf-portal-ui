@@ -66,7 +66,7 @@ export const MySavedQueries = compose(
         ) : (
           <Container>
             {!queries.length ? (
-              <Fragment>
+              <Box mt={2}>
                 <PromptMessageContainer info mb={'8px'}>
                   <PromptMessageHeading info mb={10}>
                     You have no saved queries yet.
@@ -91,7 +91,7 @@ export const MySavedQueries = compose(
                     );
                   })}
                 </Box>
-              </Fragment>
+              </Box>
             ) : (
               <Box mt={2} mb={2}>
                 {queries
