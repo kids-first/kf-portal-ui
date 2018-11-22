@@ -18,6 +18,7 @@ import Create from './Create';
 import DualPaneHeader from 'uikit/Card/DualPaneCard/DualPaneHeader';
 import CavaticaProvider from './CavaticaProvider';
 import NotConnected from './NotConnected';
+import MultiCard from 'uikit/Multicard';
 
 const isValidKey = key => {
   return key && key.length > 0;
@@ -38,27 +39,8 @@ const CavaticaProjects = compose(
     setStackIndex,
     setBadgeNumber,
   }) => {
-    const setBadge = n => {
-      if (n !== badgeNumber) setBadgeNumber(n);
-    };
-
-    const cardStack = [
-      {
-        title: 'Projects',
-        component: (
-          <CavaticaProvider setBadge={setBadge}>
-            {({ projects, loading }) => <Connected projects={projects} loading={loading} />}
-          </CavaticaProvider>
-        ),
-      },
-      {
-        title: 'Create',
-        component: <Create setBadge={setBadge} setStackIndex={index => setStackIndex(index)} />,
-      },
-    ];
-
     const isConnected = isValidKey(integrationTokens[CAVATICA]);
-
+    /*
     const Header = (
       <CardHeader title="Cavatica Projects" badge={badgeNumber}>
         {!isConnected &&
@@ -71,20 +53,34 @@ const CavaticaProjects = compose(
             />
           ))}
       </CardHeader>
-    );
 
-    const activeCard = cardStack[stackIndex];
+
+       <CavaticaProvider setBadge={setBadgeNumber}>
+              {({ projects, loading }) => <Connected projects={projects} loading={loading} />}
+            </CavaticaProvider>
+    );*/
 
     return (
-      <DualPaneCard
-        Header={Header}
-        stackIndex={stackIndex}
-        setStackIndex={index => setStackIndex(index)}
+      <MultiCard
         inactive={!isConnected}
-        scrollable={isConnected}
+        title="Cavatica Projects"
+        tabMenu={['Projects', 'Create']}
+        scrollable
       >
-        {isConnected ? activeCard.component : <NotConnected />}
-      </DualPaneCard>
+        {({ index, setTitle, setIndex, setBadge }) => {
+          const cardContent = [
+            <Create setBadge={setBadge} setIndex={setIndex} />,
+
+            <div>
+              <button onClick={() => setTitle('debaser')}>title</button>
+
+              <button onClick={() => setIndex(0)}>go back</button>
+            </div>,
+          ];
+
+          return isConnected ? cardContent[index] : <NotConnected />;
+        }}
+      </MultiCard>
     );
   },
 );
