@@ -28,7 +28,7 @@ const sqon = {
 };
 
 const SHORT_NAME_FIELD = 'participants.study.short_name';
-const TEXT_DIAGNOSES_FIELD = 'participants.diagnoses.source_text_diagnosis';
+const TEXT_DIAGNOSES_FIELD = 'participants.diagnoses.diagnosis';
 
 const getFileRepoURL = (field, value) => {
   sqon.content[0].content = { field, value };
@@ -80,7 +80,7 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
 export const TopDiagnosesChart = withTheme(({ data, theme }) => {
   const mergedData = data.map(d => ({
     ...d,
-    url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, d.name),
+    url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, _.lowerCase(d.name)),
   }));
 
   const onClick = barData => (window.location.href = barData.data.url);
