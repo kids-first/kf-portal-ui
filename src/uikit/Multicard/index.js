@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import CardContent from 'uikit/Card/CardContent';
 import CardHeader from 'uikit/Card/CardHeader';
+import CardContent from 'uikit/Card/CardContent';
 import { CardWrapper } from 'uikit/Card/styles';
 import posed, { PoseGroup } from 'react-pose';
 import LoadingSpinner from 'uikit/LoadingSpinner';
@@ -48,7 +48,7 @@ class Multicard extends Component {
     this.children = animatedChildren;
     this.setState({ loading: false });
     console.log('children', animatedChildren);
-    // setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
+    setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
   }
 
   setBadge(n) {
@@ -69,13 +69,16 @@ class Multicard extends Component {
   render() {
     console.log('render');
     const { loading, contentIndex } = this.state;
+    const { inactive, className } = this.props;
     return (
       <div>
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <CardWrapper>
-            <PoseGroup>{this.children[contentIndex]}</PoseGroup>
+          <CardWrapper className={className} inactive={inactive}>
+            <CardContent>
+              <PoseGroup>{this.children[contentIndex]}</PoseGroup>
+            </CardContent>
           </CardWrapper>
         )}
       </div>
