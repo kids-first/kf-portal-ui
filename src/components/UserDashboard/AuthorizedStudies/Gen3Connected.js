@@ -2,7 +2,6 @@ import React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Column from 'uikit/Column';
@@ -14,45 +13,83 @@ import {
   PromptMessageContent,
 } from 'uikit/PromptMessage';
 import { withApi } from 'services/api';
+import { withHistory } from 'services/history';
+import { getUser as getGen3User } from 'services/gen3';
 
 import Info from '../Info';
-import { getUserStudyPermission } from 'services/fileAccessControl';
+import {
+  getUserStudyPermission,
+  createStudyIdSqon,
+  createAcceptedFilesByUserStudySqon,
+} from 'services/fileAccessControl';
 import Study from './Study';
 
 const enhance = compose(
   injectState,
-  withTheme,
-  withState('gen3Key', 'setGen3Key', undefined),
-  withState('authorizedStudies', 'setauthorizedStudies', []),
+  withHistory,
+  withState('gen3userDetails', 'setGen3UserDetails', {}),
+  withState('authorizedStudies', 'setAuthorizedStudies', []),
+  withState('unauthorizedStudies', 'setUnauthorizedStudies', []),
   withState('loading', 'setLoading', false),
   withApi,
   lifecycle({
     async componentDidMount() {
-      const { setauthorizedStudies, api, setLoading } = this.props;
+      const {
+        api,
+        setAuthorizedStudies,
+        setLoading,
+        setUnauthorizedStudies,
+        setGen3UserDetails,
+      } = this.props;
       setLoading(true);
 
-      const { acceptedStudiesAggs: authorizedStudies } = await getUserStudyPermission(api)({});
+      const [{ acceptedStudiesAggs, unacceptedStudiesAggs }, gen3User] = await Promise.all([
+        getUserStudyPermission(api)({}),
+        getGen3User(api),
+      ]);
 
+      setAuthorizedStudies(acceptedStudiesAggs);
+      setUnauthorizedStudies(unacceptedStudiesAggs);
+      setGen3UserDetails(gen3User);
       setLoading(false);
-      setauthorizedStudies(authorizedStudies);
     },
   }),
 );
 
 const Gen3Connected = ({
-  state,
-  effects,
-  theme,
-  authorizedStudies,
-  setUserDetails,
+  history,
+  authorizedStudies = [],
+  unauthorizedStudies = [],
   setBadge,
+  gen3userDetails,
   loading,
-  ...props
 }) => {
-  setBadge(authorizedStudies ? authorizedStudies.length : null);
+  setBadge(authorizedStudies.length || null);
 
-  const totalFileCount = authorizedStudies.reduce((acc, { files }) => [...acc, ...files], [])
-    .length;
+  const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
+    const unAuthorizedFiles = (
+      unauthorizedStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }
+    ).files;
+    return {
+      ...acc,
+      [authorizedStudy.id]: {
+        authorizedFiles: authorizedStudy.files,
+        unAuthorizedFiles: unAuthorizedFiles,
+      },
+    };
+  }, {});
+
+  const onStudyTotalClick = studyId => () => {
+    history.push(`/search/file?sqon=${encodeURI(JSON.stringify(createStudyIdSqon(studyId)))}`);
+  };
+
+  const onStudyAuthorizedClick = studyId => () => {
+    history.push(
+      `/search/file?sqon=${encodeURI(
+        JSON.stringify(createAcceptedFilesByUserStudySqon(gen3userDetails)({ studyId })),
+      )}`,
+    );
+  };
 
   return (
     <div>
@@ -61,16 +98,21 @@ const Gen3Connected = ({
       ) : (
         <Column>
           {authorizedStudies ? (
-            authorizedStudies.map(({ studyShortName, id, files }) => (
-              <Study
-                key={id}
-                studyId={id}
-                name={studyShortName}
-                codes={''}
-                authorized={files.length}
-                total={totalFileCount}
-              />
-            ))
+            authorizedStudies.map(({ studyShortName, id: studyId }) => {
+              const { authorizedFiles, unAuthorizedFiles } = combinedStudyData[studyId];
+              return (
+                <Study
+                  key={studyId}
+                  studyId={studyId}
+                  name={studyShortName}
+                  codes={''}
+                  authorized={authorizedFiles.length}
+                  total={authorizedFiles.length + unAuthorizedFiles.length}
+                  onStudyTotalClick={onStudyTotalClick(studyId)}
+                  onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
+                />
+              );
+            })
           ) : (
             <Column>
               <PromptMessageContainer mb={0} width={'100%'}>

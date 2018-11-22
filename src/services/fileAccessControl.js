@@ -73,6 +73,42 @@ const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
         });
       });
 
+export const createStudyIdSqon = studyId => ({
+  op: 'and',
+  content: [
+    {
+      op: 'in',
+      content: {
+        field: 'participants.study.external_id',
+        value: [studyId],
+      },
+    },
+  ],
+});
+
+export const createAcceptedFilesByUserStudySqon = gen3User => ({ sqon, studyId }) => {
+  const approvedAcls = Object.keys(gen3User.projects).sort();
+  return {
+    op: 'and',
+    content: [
+      ...(sqon ? sqon.content : []),
+      { op: 'in', content: { field: 'acl', value: approvedAcls } },
+      { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
+    ],
+  };
+};
+export const createUnacceptedFilesByUserStudySqon = gen3User => ({ studyId, sqon }) => {
+  const approvedAcls = Object.keys(gen3User.projects).sort();
+  return {
+    op: 'and',
+    content: [
+      ...(sqon ? sqon.content : []),
+      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: approvedAcls } }] },
+      { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
+    ],
+  };
+};
+
 export const getUserStudyPermission = api => async ({
   sqon = {
     op: 'and',
@@ -123,56 +159,19 @@ export const getUserStudyPermission = api => async ({
   const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
     getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
       acceptedStudyIds.reduce((acc, id) => {
-        acc[`${id}_sqon`] = {
-          op: 'and',
-          content: [
-            ...sqon.content,
-            {
-              op: 'in',
-              content: {
-                field: 'acl',
-                value: approvedAcls,
-              },
-            },
-            {
-              op: 'in',
-              content: {
-                field: 'participants.study.external_id',
-                value: [id],
-              },
-            },
-          ],
-        };
+        acc[`${id}_sqon`] = createAcceptedFilesByUserStudySqon(userDetails)({
+          studyId: id,
+          sqon,
+        });
         return acc;
       }, {}),
     ),
     getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
       unacceptedStudyIds.reduce((acc, id) => {
-        acc[`${id}_sqon`] = {
-          op: 'and',
-          content: [
-            ...sqon.content,
-            {
-              op: 'not',
-              content: [
-                {
-                  op: 'in',
-                  content: {
-                    field: 'acl',
-                    value: approvedAcls,
-                  },
-                },
-              ],
-            },
-            {
-              op: 'in',
-              content: {
-                field: 'participants.study.external_id',
-                value: [id],
-              },
-            },
-          ],
-        };
+        acc[`${id}_sqon`] = createUnacceptedFilesByUserStudySqon(userDetails)({
+          studyId: id,
+          sqon,
+        });
         return acc;
       }, {}),
     ),

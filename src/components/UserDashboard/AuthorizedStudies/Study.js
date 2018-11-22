@@ -38,14 +38,27 @@ const NumberLink = styled(ExternalLink)`
   text-decoration: underline;
 `;
 
-const Study = ({ name, codes, total, authorized }) => (
+const Study = ({
+  name,
+  codes,
+  total,
+  authorized,
+  onStudyAuthorizedClick = () => {},
+  onStudyTotalClick = () => {},
+}) => (
   <StudyCol>
     <Row justifyContent="space-between" pl={0}>
       <Name>{name}</Name>
       <StudyCount>
-        Authorized: <NumberLink hasExternalIcon={false}>{authorized}</NumberLink>
+        Authorized:{' '}
+        <NumberLink onClick={onStudyAuthorizedClick} hasExternalIcon={false}>
+          {authorized}
+        </NumberLink>
         {' / '}
-        <NumberLink hasExternalIcon={false}>{total}</NumberLink> files
+        <NumberLink onClick={onStudyTotalClick} hasExternalIcon={false}>
+          {total}
+        </NumberLink>{' '}
+        files
       </StudyCount>
     </Row>
     <Codes>Consent Codes:</Codes> {}
