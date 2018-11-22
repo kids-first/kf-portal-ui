@@ -19,7 +19,7 @@ import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 import { withTheme } from 'emotion-theming';
 
-import { DashboardCard } from './styles';
+import { DashboardCard, CardContentSpinner } from './styles';
 import { SizeProvider } from 'components/Utils';
 
 const UserDashboard = styled('div')`
@@ -86,7 +86,13 @@ export default compose(
                 api={api}
                 transform={data => data.studies}
               >
-                {fetchedState => <ChartLoadGate fetchedState={fetchedState} Chart={StudiesChart} />}
+                {fetchedState => (
+                  <ChartLoadGate
+                    Loader={CardContentSpinner}
+                    fetchedState={fetchedState}
+                    Chart={StudiesChart}
+                  />
+                )}
               </DataProvider>
             </DashboardCard>
           </CardSlot>
@@ -98,7 +104,11 @@ export default compose(
                 transform={data => data.interests}
               >
                 {fetchedState => (
-                  <ChartLoadGate fetchedState={fetchedState} Chart={UserInterestsChart} />
+                  <ChartLoadGate
+                    Loader={CardContentSpinner}
+                    fetchedState={fetchedState}
+                    Chart={UserInterestsChart}
+                  />
                 )}
               </DataProvider>
             </DashboardCard>
@@ -117,7 +127,11 @@ export default compose(
                 }
               >
                 {fetchedState => (
-                  <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />
+                  <ChartLoadGate
+                    Loader={CardContentSpinner}
+                    fetchedState={fetchedState}
+                    Chart={TopDiagnosesChart}
+                  />
                 )}
               </DataProvider>
             </DashboardCard>

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
+import { withProps } from 'recompose';
 
 import Card from 'uikit/Card';
 import { applyDefaultStyles } from 'uikit/Core';
@@ -7,6 +8,8 @@ import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { TealActionButton } from 'uikit/Button';
+import LoadingSpinner from 'uikit/LoadingSpinner';
+import Spinner from 'react-spinkit';
 
 const cardCSS = css`
   height: 404px;
@@ -19,6 +22,25 @@ export const DashboardCard = styled(Card)`
 export const DualPaneCard = styled(DashboardCard)`
   ${cardCSS}
 `;
+
+const LoadingScreenContainer = styled('div')`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const CardContentSpinner = () => (
+  <LoadingScreenContainer>
+    <Spinner
+      name="circle"
+      style={{
+        width: 50,
+        height: 50,
+      }}
+    />
+  </LoadingScreenContainer>
+);
 
 const Connect = styled(TealActionButton)`
   height: 37px;

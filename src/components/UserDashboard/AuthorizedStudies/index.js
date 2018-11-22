@@ -6,7 +6,6 @@ import { connectGen3, getAccessToken } from 'services/gen3';
 import { Gen3UserProvider } from 'services/gen3';
 import CardHeader from 'uikit/Card/CardHeader';
 import DownloadController from 'icons/DownloadController';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import Component from 'react-component-component';
 import { withApi } from 'services/api';
@@ -14,7 +13,7 @@ import { GEN3 } from 'common/constants';
 import Gen3Connected from './Gen3Connected';
 
 import AccessGate from '../../AccessGate';
-import { DashboardCard } from '../styles';
+import { DashboardCard, CardContentSpinner } from '../styles';
 
 import {
   trackUserInteraction,
@@ -40,7 +39,7 @@ const AuthorizedStudies = compose(
           <Gen3UserProvider
             render={({ gen3User, loading: loadingGen3User }) =>
               loadingGen3User ? (
-                <LoadingSpinner />
+                <CardContentSpinner />
               ) : gen3User ? (
                 <Gen3Connected
                   setBadge={n =>

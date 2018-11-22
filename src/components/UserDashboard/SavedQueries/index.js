@@ -12,7 +12,7 @@ import {
   PromptMessageHeading,
   PromptMessageContent,
 } from 'uikit/PromptMessage';
-import LoadingSpinner from 'uikit/LoadingSpinner';
+import { CardContentSpinner } from '../styles';
 
 import { DashboardCard } from '../styles';
 
@@ -62,7 +62,7 @@ export const MySavedQueries = compose(
     return (
       <DashboardCard Header={Header} scrollable>
         {loadingQueries ? (
-          <LoadingSpinner />
+          <CardContentSpinner />
         ) : (
           <Container>
             {!queries.length ? (
