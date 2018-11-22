@@ -91,6 +91,19 @@ export default compose(
             </DashboardCard>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
+            <DashboardCard title="Research Interests">
+              <DataProvider
+                url={`${publicStatsApiRoot}users/interests`}
+                api={api}
+                transform={data => data.interests}
+              >
+                {fetchedState => (
+                  <ChartLoadGate fetchedState={fetchedState} Chart={UserInterestsChart} />
+                )}
+              </DataProvider>
+            </DashboardCard>
+          </CardSlot>
+          <CardSlot sm={12} md={6} lg={6} xl={4}>
             <DashboardCard title="Top Diagnoses">
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
@@ -105,19 +118,6 @@ export default compose(
               >
                 {fetchedState => (
                   <ChartLoadGate fetchedState={fetchedState} Chart={TopDiagnosesChart} />
-                )}
-              </DataProvider>
-            </DashboardCard>
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Research Interests">
-              <DataProvider
-                url={`${publicStatsApiRoot}users/interests`}
-                api={api}
-                transform={data => data.interests}
-              >
-                {fetchedState => (
-                  <ChartLoadGate fetchedState={fetchedState} Chart={UserInterestsChart} />
                 )}
               </DataProvider>
             </DashboardCard>

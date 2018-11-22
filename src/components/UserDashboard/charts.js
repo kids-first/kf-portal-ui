@@ -100,7 +100,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
         { title: 'Probands', color: theme.chartColors.blue },
         { title: 'Family Members', color: theme.chartColors.purple },
       ]}
-      padding={0.7}
+      padding={0.4}
     />
   );
 });
