@@ -12,7 +12,7 @@ import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
 import { getUser as getGen3User } from 'services/gen3';
-import { getStudyIdsFromSqon, getStudiesAggregationsFromSqon } from './utils';
+import { getUserStudyPermission } from 'services/fileAccessControl';
 
 const enhance = compose(
   injectState,
@@ -37,101 +37,9 @@ const enhance = compose(
       const userDetails = await getGen3User(api);
       const approvedAcls = Object.keys(userDetails.projects).sort();
 
-      const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
-        getStudyIdsFromSqon(api)({
-          sqon: {
-            op: 'and',
-            content: [
-              ...sqon.content,
-              {
-                op: 'in',
-                content: {
-                  field: 'acl',
-                  value: approvedAcls,
-                },
-              },
-            ],
-          },
-        }),
-        getStudyIdsFromSqon(api)({
-          sqon: {
-            op: 'and',
-            content: [
-              ...sqon.content,
-              {
-                op: 'not',
-                content: [
-                  {
-                    op: 'in',
-                    content: {
-                      field: 'acl',
-                      value: approvedAcls,
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        }),
-      ]);
-
-      const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
-        getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
-          acceptedStudyIds.reduce((acc, id) => {
-            acc[`${id}_sqon`] = {
-              op: 'and',
-              content: [
-                ...sqon.content,
-                {
-                  op: 'in',
-                  content: {
-                    field: 'acl',
-                    value: approvedAcls,
-                  },
-                },
-                {
-                  op: 'in',
-                  content: {
-                    field: 'participants.study.external_id',
-                    value: [id],
-                  },
-                },
-              ],
-            };
-            return acc;
-          }, {}),
-        ),
-        getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
-          unacceptedStudyIds.reduce((acc, id) => {
-            acc[`${id}_sqon`] = {
-              op: 'and',
-              content: [
-                ...sqon.content,
-                {
-                  op: 'not',
-                  content: [
-                    {
-                      op: 'in',
-                      content: {
-                        field: 'acl',
-                        value: approvedAcls,
-                      },
-                    },
-                  ],
-                },
-                {
-                  op: 'in',
-                  content: {
-                    field: 'participants.study.external_id',
-                    value: [id],
-                  },
-                },
-              ],
-            };
-            return acc;
-          }, {}),
-        ),
-      ]);
+      const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(api)({
+        sqon,
+      });
 
       setAuthorizedFiles(
         acceptedStudiesAggs
@@ -346,41 +254,42 @@ const CavaticaFileSummary = ({
             </div>
           )}
         </div>
-        {showUnauth &&
-          state.fileStudyData && (
-            <button
-              className="showDetailsButton"
-              onClick={() => {
-                setShowDetails(!showDetails);
-              }}
-            >
-              {showDetails ? (
-                <div>
-                  <PlusIcon
-                    width={10}
-                    height={10}
-                    css={`
-                      fill: ${theme.primary};
-                      margin-top: 1px;
-                      margin-right: 4px;
-                    `}
-                  />Close Details
-                </div>
-              ) : (
-                <div>
-                  <PlusIcon
-                    width={10}
-                    height={10}
-                    css={`
-                      fill: ${theme.primary};
-                      margin-top: 1px;
-                      margin-right: 4px;
-                    `}
-                  />File Details
-                </div>
-              )}
-            </button>
-          )}
+        {showUnauth && state.fileStudyData && (
+          <button
+            className="showDetailsButton"
+            onClick={() => {
+              setShowDetails(!showDetails);
+            }}
+          >
+            {showDetails ? (
+              <div>
+                <PlusIcon
+                  width={10}
+                  height={10}
+                  css={`
+                    fill: ${theme.primary};
+                    margin-top: 1px;
+                    margin-right: 4px;
+                  `}
+                />
+                Close Details
+              </div>
+            ) : (
+              <div>
+                <PlusIcon
+                  width={10}
+                  height={10}
+                  css={`
+                    fill: ${theme.primary};
+                    margin-top: 1px;
+                    margin-right: 4px;
+                  `}
+                />
+                File Details
+              </div>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

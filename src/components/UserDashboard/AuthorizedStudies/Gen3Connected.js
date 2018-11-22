@@ -8,7 +8,6 @@ import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
-import { getStudyIdsFromSqon, getStudiesAggregationsFromSqon } from '../../cavatica/utils';
 
 import {
   PromptMessageContainer,
@@ -31,110 +30,10 @@ const enhance = compose(
     async componentDidMount() {
       const { setUserDetails, api, setLoading } = this.props;
       setLoading(true);
-      let userDetails = await getGen3User(api);
 
-      const approvedAcls = Object.keys(userDetails.projects).sort();
-
-      const sqon = this.props.sqon || {
-        op: 'and',
-        content: [],
-      };
-
-      const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
-        getStudyIdsFromSqon(api)({
-          sqon: {
-            op: 'and',
-            content: [
-              ...sqon.content,
-              {
-                op: 'in',
-                content: {
-                  field: 'acl',
-                  value: approvedAcls,
-                },
-              },
-            ],
-          },
-        }),
-        getStudyIdsFromSqon(api)({
-          sqon: {
-            op: 'and',
-            content: [
-              ...sqon.content,
-              {
-                op: 'not',
-                content: [
-                  {
-                    op: 'in',
-                    content: {
-                      field: 'acl',
-                      value: approvedAcls,
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        }),
-      ]);
-
-      const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
-        getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
-          acceptedStudyIds.reduce((acc, id) => {
-            acc[`${id}_sqon`] = {
-              op: 'and',
-              content: [
-                ...sqon.content,
-                {
-                  op: 'in',
-                  content: {
-                    field: 'acl',
-                    value: approvedAcls,
-                  },
-                },
-                {
-                  op: 'in',
-                  content: {
-                    field: 'participants.study.external_id',
-                    value: [id],
-                  },
-                },
-              ],
-            };
-            return acc;
-          }, {}),
-        ),
-        getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
-          unacceptedStudyIds.reduce((acc, id) => {
-            acc[`${id}_sqon`] = {
-              op: 'and',
-              content: [
-                ...sqon.content,
-                {
-                  op: 'not',
-                  content: [
-                    {
-                      op: 'in',
-                      content: {
-                        field: 'acl',
-                        value: approvedAcls,
-                      },
-                    },
-                  ],
-                },
-                {
-                  op: 'in',
-                  content: {
-                    field: 'participants.study.external_id',
-                    value: [id],
-                  },
-                },
-              ],
-            };
-            return acc;
-          }, {}),
-        ),
-      ]);
+      const userDetails = await getGen3User(api);
+      // const sqon = this.props.sqon || { op: 'and', content: [] };
+      // const approvedAcls = Object.keys(userDetails.projects).sort();
 
       setLoading(false);
       setUserDetails(userDetails);
