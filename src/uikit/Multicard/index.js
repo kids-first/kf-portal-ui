@@ -6,6 +6,7 @@ import { CardWrapper, HeaderWrapper } from 'uikit/Card/styles';
 import posed, { PoseGroup } from 'react-pose';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import TabMenu from './TabMenu';
+import IndexDots from './IndexDots';
 
 const AnimatedChild = posed.div({
   enter: {
@@ -89,6 +90,7 @@ class Multicard extends Component {
             <CardContent scrollable={scrollable}>
               <PoseGroup>{this.children[contentIndex]}</PoseGroup>
             </CardContent>
+            <IndexDots index={contentIndex} items={this.children.length} />
           </CardWrapper>
         )}
       </div>
