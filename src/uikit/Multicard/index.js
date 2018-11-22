@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 
 import CardHeader from 'uikit/Card/CardHeader';
 import CardContent from 'uikit/Card/CardContent';
-import { CardWrapper } from 'uikit/Card/styles';
+import { CardWrapper, HeaderWrapper } from 'uikit/Card/styles';
 import posed, { PoseGroup } from 'react-pose';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import TabMenu from './TabMenu';
 
 const Box = posed.div({
   enter: {
@@ -48,7 +49,7 @@ class Multicard extends Component {
     this.children = animatedChildren;
     this.setState({ loading: false });
     console.log('children', animatedChildren);
-    setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
+    // setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
   }
 
   setBadge(n) {
@@ -67,8 +68,8 @@ class Multicard extends Component {
   }
 
   render() {
-    console.log('render');
-    const { loading, contentIndex, title } = this.state;
+    console.log('render', this.props.children);
+    const { loading, contentIndex, title, badgeNumber } = this.state;
     const { inactive, className, tabMenu } = this.props;
     console.log('props', this.props);
     return (
@@ -78,15 +79,16 @@ class Multicard extends Component {
         ) : (
           <CardWrapper className={className} inactive={inactive}>
             <HeaderWrapper inactive={inactive}>
-              <CardHeader title={title}>
-                {tabMenu.map((tab, i) => (
-                  <TabMenu
-                    key={i}
-                    active={i === contentIndex}
-                    onClick={() => this.setIndex(i)}
-                    title={tabMenu[i]}
-                  />
-                ))}
+              <CardHeader title={title} badge={badgeNumber}>
+                {!inactive &&
+                  tabMenu.map((tab, i) => (
+                    <TabMenu
+                      key={i}
+                      active={i === contentIndex}
+                      onClick={() => this.setIndex(i)}
+                      title={tabMenu[i]}
+                    />
+                  ))}
               </CardHeader>
             </HeaderWrapper>
             <CardContent>
