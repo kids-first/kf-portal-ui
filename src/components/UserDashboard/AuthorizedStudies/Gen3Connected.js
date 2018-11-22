@@ -3,7 +3,6 @@ import { compose, lifecycle, withState } from 'recompose';
 
 import { injectState } from 'freactal';
 
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 
@@ -23,6 +22,7 @@ import {
   createAcceptedFilesByUserStudySqon,
 } from 'services/fileAccessControl';
 import Study from './Study';
+import { CardContentSpinner } from '../styles';
 
 const enhance = compose(
   injectState,
@@ -92,9 +92,9 @@ const Gen3Connected = ({
   };
 
   return (
-    <div>
+    <React.Fragment>
       {loading ? (
-        <LoadingSpinner />
+        <CardContentSpinner />
       ) : (
         <Column>
           {authorizedStudies ? (
@@ -140,7 +140,7 @@ const Gen3Connected = ({
           )}
         </Column>
       )}
-    </div>
+    </React.Fragment>
   );
 };
 
