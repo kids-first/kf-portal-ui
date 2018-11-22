@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
-import { compose } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 
 import AccessGate from '../../AccessGate';
 import Cavatica from 'icons/Cavatica';
@@ -9,7 +9,14 @@ import { analyticsTrigger, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Info from '../Info';
 import { ConnectButton } from '../styles';
 
-const NotConnected = compose(injectState)(({ effects }) => (
+const NotConnected = compose(
+  injectState,
+  lifecycle({
+    componentDidMount() {
+      this.props.setTitle('Cavatica Projects');
+    },
+  }),
+)(({ effects }) => (
   <Fragment>
     <AccessGate
       mt={'30px'}

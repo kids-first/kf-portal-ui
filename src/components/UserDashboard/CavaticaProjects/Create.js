@@ -39,8 +39,9 @@ const enhance = compose(
   withState('billingGroup', 'selectBillingGroup', null),
   lifecycle({
     async componentDidMount() {
-      const { setBadge, setBillingGroups } = this.props;
+      const { setBadge, setBillingGroups, setTitle } = this.props;
       setBadge(null);
+      setTitle('Create a CAVATICA Project');
       getBillingGroups().then(bg => setBillingGroups(bg));
     },
   }),
@@ -81,7 +82,7 @@ const Create = ({
   billingGroups,
   selectedBillingGroup,
   selectBillingGroup,
-  setStackIndex,
+  setIndex,
   setBadge,
 }) => (
   <Column>
@@ -101,7 +102,7 @@ const Create = ({
     </BillingGroupSelect>
 
     <Row mt="20px" justifyContent="space-between">
-      <WhiteButton onClick={() => setStackIndex(0)}>Cancel</WhiteButton>
+      <WhiteButton onClick={() => setIndex(0)}>Cancel</WhiteButton>
       <LoadingOnClick
         onClick={async () => {
           await saveProject({
@@ -110,7 +111,7 @@ const Create = ({
             billingGroups,
             onSuccess: ({ id }) => {
               setBadge(null);
-              setStackIndex(0);
+              setIndex(0);
             },
           });
           setAddingProject(false);
