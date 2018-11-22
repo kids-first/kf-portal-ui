@@ -8,6 +8,7 @@ import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { TealActionButton } from 'uikit/Button';
+<<<<<<< HEAD
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Spinner from 'react-spinkit';
 import {
@@ -15,6 +16,9 @@ import {
   PromptMessageHeading as PMHeading,
   PromptMessageContent as PMContent,
 } from 'uikit/PromptMessage';
+=======
+import Multicard from '../../uikit/Multicard';
+>>>>>>> fix multi card style
 
 const cardCSS = css`
   height: 404px;
@@ -24,7 +28,7 @@ export const DashboardCard = styled(Card)`
   ${cardCSS}
 `;
 
-export const DualPaneCard = styled(DashboardCard)`
+export const DashboardMulticard = styled(Multicard)`
   ${cardCSS}
 `;
 
