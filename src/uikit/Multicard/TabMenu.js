@@ -13,9 +13,9 @@ const Header = styled('div')`
   }
 `;
 
-const DualPaneHeader = ({ title, onClick, active }) => (
+const TabMenu = ({ title, onClick, active }) => (
   <Header onClick={onClick} active={active}>
     {title}
   </Header>
 );
-export default DualPaneHeader;
+export default TabMenu;

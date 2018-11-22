@@ -68,14 +68,27 @@ class Multicard extends Component {
 
   render() {
     console.log('render');
-    const { loading, contentIndex } = this.state;
-    const { inactive, className } = this.props;
+    const { loading, contentIndex, title } = this.state;
+    const { inactive, className, tabMenu } = this.props;
+    console.log('props', this.props);
     return (
       <div>
         {loading ? (
           <LoadingSpinner />
         ) : (
           <CardWrapper className={className} inactive={inactive}>
+            <HeaderWrapper inactive={inactive}>
+              <CardHeader title={title}>
+                {tabMenu.map((tab, i) => (
+                  <TabMenu
+                    key={i}
+                    active={i === contentIndex}
+                    onClick={() => this.setIndex(i)}
+                    title={tabMenu[i]}
+                  />
+                ))}
+              </CardHeader>
+            </HeaderWrapper>
             <CardContent>
               <PoseGroup>{this.children[contentIndex]}</PoseGroup>
             </CardContent>
