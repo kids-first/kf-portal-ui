@@ -180,7 +180,8 @@ const CavaticaCopyModal = ({
           </span>
           {unauthFilesWarning && (
             <span>
-              <br />You are attempting to copy files that you are not authorized to access.
+              <br />
+              You are attempting to copy files that you are not authorized to access.
             </span>
           )}
           {!gen3Connected && (
@@ -194,12 +195,11 @@ const CavaticaCopyModal = ({
           )}
         </ModalWarning>
       )}
-      {gen3Connected &&
-        isFilesSelected && (
-          <div className="content">
-            <CavaticaFileSummary filesSelected={filesSelected} {...props} />
-          </div>
-        )}
+      {gen3Connected && isFilesSelected && (
+        <div className="content">
+          <CavaticaFileSummary filesSelected={filesSelected} {...props} />
+        </div>
+      )}
       <div className="content">
         <span css={theme.modalHeader}>Select which Cavatica project you want to copy to:</span>
         <CavaticaProjects

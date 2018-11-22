@@ -1,14 +1,11 @@
 import React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
-import { getUser as getGen3User, getStudyIds } from 'services/gen3';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
-import { getStudyIdsFromSqon, getStudiesAggregationsFromSqon } from '../../cavatica/utils';
 
 import {
   PromptMessageContainer,
@@ -16,148 +13,83 @@ import {
   PromptMessageContent,
 } from 'uikit/PromptMessage';
 import { withApi } from 'services/api';
+import { withHistory } from 'services/history';
+import { getUser as getGen3User } from 'services/gen3';
 
-import Gen3ProjectList from './Gen3ProjectList';
 import Info from '../Info';
+import {
+  getUserStudyPermission,
+  createStudyIdSqon,
+  createAcceptedFilesByUserStudySqon,
+} from 'services/fileAccessControl';
+import Study from './Study';
 
 const enhance = compose(
   injectState,
-  withTheme,
-  withState('gen3Key', 'setGen3Key', undefined),
-  withState('userDetails', 'setUserDetails', {}),
+  withHistory,
+  withState('gen3userDetails', 'setGen3UserDetails', {}),
+  withState('authorizedStudies', 'setAuthorizedStudies', []),
+  withState('unauthorizedStudies', 'setUnauthorizedStudies', []),
   withState('loading', 'setLoading', false),
   withApi,
   lifecycle({
     async componentDidMount() {
-      const { setUserDetails, api, setLoading } = this.props;
+      const {
+        api,
+        setAuthorizedStudies,
+        setLoading,
+        setUnauthorizedStudies,
+        setGen3UserDetails,
+      } = this.props;
       setLoading(true);
-      let userDetails = await getGen3User(api);
 
-      const approvedAcls = Object.keys(userDetails.projects).sort();
-
-      const sqon = this.props.sqon || {
-        op: 'and',
-        content: [],
-      };
-
-      const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
-        getStudyIdsFromSqon(api)({
-          sqon: {
-            op: 'and',
-            content: [
-              ...sqon.content,
-              {
-                op: 'in',
-                content: {
-                  field: 'acl',
-                  value: approvedAcls,
-                },
-              },
-            ],
-          },
-        }),
-        getStudyIdsFromSqon(api)({
-          sqon: {
-            op: 'and',
-            content: [
-              ...sqon.content,
-              {
-                op: 'not',
-                content: [
-                  {
-                    op: 'in',
-                    content: {
-                      field: 'acl',
-                      value: approvedAcls,
-                    },
-                  },
-                ],
-              },
-            ],
-          },
-        }),
+      const [{ acceptedStudiesAggs, unacceptedStudiesAggs }, gen3User] = await Promise.all([
+        getUserStudyPermission(api)({}),
+        getGen3User(api),
       ]);
 
-      const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
-        getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
-          acceptedStudyIds.reduce((acc, id) => {
-            acc[`${id}_sqon`] = {
-              op: 'and',
-              content: [
-                ...sqon.content,
-                {
-                  op: 'in',
-                  content: {
-                    field: 'acl',
-                    value: approvedAcls,
-                  },
-                },
-                {
-                  op: 'in',
-                  content: {
-                    field: 'participants.study.external_id',
-                    value: [id],
-                  },
-                },
-              ],
-            };
-            return acc;
-          }, {}),
-        ),
-        getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
-          unacceptedStudyIds.reduce((acc, id) => {
-            acc[`${id}_sqon`] = {
-              op: 'and',
-              content: [
-                ...sqon.content,
-                {
-                  op: 'not',
-                  content: [
-                    {
-                      op: 'in',
-                      content: {
-                        field: 'acl',
-                        value: approvedAcls,
-                      },
-                    },
-                  ],
-                },
-                {
-                  op: 'in',
-                  content: {
-                    field: 'participants.study.external_id',
-                    value: [id],
-                  },
-                },
-              ],
-            };
-            return acc;
-          }, {}),
-        ),
-      ]);
-
+      setAuthorizedStudies(acceptedStudiesAggs);
+      setUnauthorizedStudies(unacceptedStudiesAggs);
+      setGen3UserDetails(gen3User);
       setLoading(false);
-      setUserDetails(userDetails);
     },
   }),
 );
 
 const Gen3Connected = ({
-  state,
-  effects,
-  theme,
-  userDetails,
-  setUserDetails,
+  history,
+  authorizedStudies = [],
+  unauthorizedStudies = [],
   setBadge,
+  gen3userDetails,
   loading,
-  ...props
 }) => {
-  const projectIds =
-    !loading && userDetails.projects && Object.keys(userDetails.projects).length
-      ? getStudyIds(userDetails)
-      : null;
+  setBadge(authorizedStudies.length || null);
 
-  setBadge(projectIds ? projectIds.length : null);
+  const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
+    const unAuthorizedFiles = (
+      unauthorizedStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }
+    ).files;
+    return {
+      ...acc,
+      [authorizedStudy.id]: {
+        authorizedFiles: authorizedStudy.files,
+        unAuthorizedFiles: unAuthorizedFiles,
+      },
+    };
+  }, {});
+
+  const onStudyTotalClick = studyId => () => {
+    history.push(`/search/file?sqon=${encodeURI(JSON.stringify(createStudyIdSqon(studyId)))}`);
+  };
+
+  const onStudyAuthorizedClick = studyId => () => {
+    history.push(
+      `/search/file?sqon=${encodeURI(
+        JSON.stringify(createAcceptedFilesByUserStudySqon(gen3userDetails)({ studyId })),
+      )}`,
+    );
+  };
 
   return (
     <div>
@@ -165,8 +97,22 @@ const Gen3Connected = ({
         <LoadingSpinner />
       ) : (
         <Column>
-          {projectIds ? (
-            <Gen3ProjectList projectIds={projectIds} />
+          {authorizedStudies ? (
+            authorizedStudies.map(({ studyShortName, id: studyId }) => {
+              const { authorizedFiles, unAuthorizedFiles } = combinedStudyData[studyId];
+              return (
+                <Study
+                  key={studyId}
+                  studyId={studyId}
+                  name={studyShortName}
+                  codes={''}
+                  authorized={authorizedFiles.length}
+                  total={authorizedFiles.length + unAuthorizedFiles.length}
+                  onStudyTotalClick={onStudyTotalClick(studyId)}
+                  onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
+                />
+              );
+            })
           ) : (
             <Column>
               <PromptMessageContainer mb={0} width={'100%'}>
