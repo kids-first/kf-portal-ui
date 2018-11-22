@@ -10,7 +10,7 @@ import ChartDisplayContainer from './ChartDisplayContainer';
 import Tooltip from './Tooltip';
 
 const DonutWrapper = styled('div')`
-  height: 90%;
+  height: 100%;
 `;
 
 const DonutTooltip = ({ id, value }) => (
@@ -58,11 +58,12 @@ class Donut extends Component {
       index: i,
     }));
 
+    // TODO: A lot of the following can be parameterized for the component, these settings are for use on the dashboard cards.
     const chartData = {
       data: data,
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
-      margin: { top: 30, right: 84, bottom: 30, left: 84 },
+      margin: { top: 30, right: 40, bottom: 15, left: 40 },
       defs: [
         {
           id: 'lines',
@@ -81,12 +82,13 @@ class Donut extends Component {
       colorBy: data => data.color,
       borderWidth: 1,
       borderColor: '#ffffff',
+      startAngle: -315,
       radialLabelsSkipAngle: 10,
       radialLabelsTextXOffset: 6,
       radialLabelsTextColor: '#333333',
       radialLabelsLinkOffset: 0,
-      radialLabelsLinkDiagonalLength: 12,
-      radialLabelsLinkHorizontalLength: 10,
+      radialLabelsLinkDiagonalLength: 8,
+      radialLabelsLinkHorizontalLength: 8,
       radialLabelsLinkStrokeWidth: 1,
       radialLabelsLinkColor: '#333333',
       radialLabel: d => truncate(d.label, { length: 12 }),
