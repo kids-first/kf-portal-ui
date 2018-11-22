@@ -7,7 +7,7 @@ import posed, { PoseGroup } from 'react-pose';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import TabMenu from './TabMenu';
 
-const Box = posed.div({
+const AnimatedChild = posed.div({
   enter: {
     y: 0,
     opacity: 1,
@@ -36,15 +36,14 @@ class Multicard extends Component {
   }
 
   componentDidMount() {
-    console.log('CDM');
     const animatedChildren = React.Children.map(this.props.children, (child, i) => (
-      <Box key={i}>
+      <AnimatedChild key={i}>
         {React.cloneElement(child, {
           setBadge: this.setBadge,
           setIndex: this.setIndex,
           setTitle: this.setTitle,
         })}
-      </Box>
+      </AnimatedChild>
     ));
     this.children = animatedChildren;
     this.setState({ loading: false });
@@ -53,25 +52,21 @@ class Multicard extends Component {
   }
 
   setBadge(n) {
-    console.log('set badge', n);
     if (n !== this.state.badgeNumber) this.setState({ badgeNumber: n });
   }
 
   setIndex(i) {
-    console.log('set index', i);
     this.setState({ contentIndex: i });
   }
 
   setTitle(title) {
-    console.log('set title', title);
     this.setState({ title });
   }
 
   render() {
-    console.log('render', this.props.children);
     const { loading, contentIndex, title, badgeNumber } = this.state;
-    const { inactive, className, tabMenu } = this.props;
-    console.log('props', this.props);
+    const { inactive, className, tabMenu, scrollable } = this.props;
+
     return (
       <div>
         {loading ? (
@@ -91,7 +86,7 @@ class Multicard extends Component {
                   ))}
               </CardHeader>
             </HeaderWrapper>
-            <CardContent>
+            <CardContent scrollable={scrollable}>
               <PoseGroup>{this.children[contentIndex]}</PoseGroup>
             </CardContent>
           </CardWrapper>
