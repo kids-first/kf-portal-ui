@@ -10,8 +10,11 @@ import {
   NoteList,
 } from '../styles';
 import Info from '../Info';
+import { compose } from 'recompose';
+import { withCard } from 'uikit/Multicard/context';
+import { CardLink } from '../styles';
 
-const NoProjects = () => (
+const NoProjects = compose(withCard)(({ card }) => (
   <Column>
     <PromptMessageContainer mb={0} width={'100%'}>
       <PromptMessageHeading mb={10}>
@@ -20,12 +23,7 @@ const NoProjects = () => (
       <PromptMessageContent>
         <NoteList>
           <NotePoints>
-            <ExternalLink
-              href={'https://kidsfirstdrc.org/support/studies-and-access/'}
-              hasExternalIcon={false}
-            >
-              Create a CAVATICA Project
-            </ExternalLink>{' '}
+            <CardLink onClick={() => card.setIndex(1)}>Create a CAVATICA Project</CardLink>
             easily from the portal.
           </NotePoints>
           <NotePoints>
@@ -47,6 +45,6 @@ const NoProjects = () => (
       }}
     />
   </Column>
-);
+));
 
 export default NoProjects;

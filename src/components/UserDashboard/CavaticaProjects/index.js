@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
@@ -21,7 +21,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       {isConnected ? (
         [
           <CavaticaProvider>
-            {({ projects, loading }) => <Connected projects={projects} loading={loading} />}
+            {({ projects, loading }) => <Connected projects={[]} loading={loading} />}
           </CavaticaProvider>,
           <Create />,
         ]
