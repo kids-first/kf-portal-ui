@@ -45,6 +45,7 @@ const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
                   ${id}: aggregations (filters: $${id}_sqon, aggregations_filter_themselves: true){
                     latest_did { buckets { key } }
                     participants__study__name { buckets { key } }
+                    participants__study__short_name { buckets { key } }
                   }
                 `,
                 )
@@ -61,11 +62,13 @@ const getStudiesAggregationsFromSqon = api => studyIds => sqons =>
           } = aggregation;
           const {
             participants__study__name: { buckets: studyNames },
+            participants__study__short_name: { buckets: studyShortNames },
           } = aggregation;
           return {
             id: id,
             files: fileIds,
             studyName: studyNames.map(({ key }) => key)[0],
+            studyShortName: studyShortNames.map(({ key }) => key)[0],
           };
         });
       });
@@ -75,7 +78,7 @@ export const getUserStudyPermission = api => async ({
     op: 'and',
     content: [],
   },
-}) => {
+} = {}) => {
   const userDetails = await getGen3User(api);
   const approvedAcls = Object.keys(userDetails.projects).sort();
 

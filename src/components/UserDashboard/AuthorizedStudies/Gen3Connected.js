@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
-import { getUser as getGen3User, getStudyIds } from 'services/gen3';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
@@ -16,27 +15,26 @@ import {
 } from 'uikit/PromptMessage';
 import { withApi } from 'services/api';
 
-import Gen3ProjectList from './Gen3ProjectList';
 import Info from '../Info';
+import { getUserStudyPermission } from 'services/fileAccessControl';
+import Study from './Study';
 
 const enhance = compose(
   injectState,
   withTheme,
   withState('gen3Key', 'setGen3Key', undefined),
-  withState('userDetails', 'setUserDetails', {}),
+  withState('authorizedStudies', 'setauthorizedStudies', []),
   withState('loading', 'setLoading', false),
   withApi,
   lifecycle({
     async componentDidMount() {
-      const { setUserDetails, api, setLoading } = this.props;
+      const { setauthorizedStudies, api, setLoading } = this.props;
       setLoading(true);
 
-      const userDetails = await getGen3User(api);
-      // const sqon = this.props.sqon || { op: 'and', content: [] };
-      // const approvedAcls = Object.keys(userDetails.projects).sort();
+      const { acceptedStudiesAggs: authorizedStudies } = await getUserStudyPermission(api)({});
 
       setLoading(false);
-      setUserDetails(userDetails);
+      setauthorizedStudies(authorizedStudies);
     },
   }),
 );
@@ -45,18 +43,16 @@ const Gen3Connected = ({
   state,
   effects,
   theme,
-  userDetails,
+  authorizedStudies,
   setUserDetails,
   setBadge,
   loading,
   ...props
 }) => {
-  const projectIds =
-    !loading && userDetails.projects && Object.keys(userDetails.projects).length
-      ? getStudyIds(userDetails)
-      : null;
+  setBadge(authorizedStudies ? authorizedStudies.length : null);
 
-  setBadge(projectIds ? projectIds.length : null);
+  const totalFileCount = authorizedStudies.reduce((acc, { files }) => [...acc, ...files], [])
+    .length;
 
   return (
     <div>
@@ -64,8 +60,17 @@ const Gen3Connected = ({
         <LoadingSpinner />
       ) : (
         <Column>
-          {projectIds ? (
-            <Gen3ProjectList projectIds={projectIds} />
+          {authorizedStudies ? (
+            authorizedStudies.map(({ studyShortName, id, files }) => (
+              <Study
+                key={id}
+                studyId={id}
+                name={studyShortName}
+                codes={''}
+                authorized={files.length}
+                total={totalFileCount}
+              />
+            ))
           ) : (
             <Column>
               <PromptMessageContainer mb={0} width={'100%'}>
