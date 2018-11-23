@@ -10,25 +10,18 @@ import {
   NoteList,
 } from '../styles';
 import Info from '../Info';
-import { compose } from 'recompose';
 import { CardLink } from '../styles';
 
-const NoProjects = () => (
+const NoProjects = ({ tabToCreate }) => (
   <Column>
     <PromptMessageContainer mb={0} width={'100%'}>
       <PromptMessageHeading mb={10}>
         You are connected to CAVATICA, but you don’t have any projects yet.
       </PromptMessageHeading>
       <PromptMessageContent>
-<<<<<<< HEAD
         <NoteList>
           <NotePoints>
             <CardLink onClick={() => card.setIndex(1)}>Create a CAVATICA Project</CardLink>
-=======
-        <ul>
-          <li>
-            <CardLink>Create a CAVATICA Project</CardLink>
->>>>>>> remove context and hoc card
             easily from the portal.
           </NotePoints>
           <NotePoints>

@@ -32,6 +32,10 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
     cardState.setBadge(null);
   };
 
+  const tabToCreate = cardState => d => {
+    cardState.setIndex(1);
+  };
+
   return (
     <DashboardMulticard
       inactive={!isConnected}
@@ -44,7 +48,13 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                 nav: 'Projects',
                 component: cardState => (
                   <CavaticaProvider onData={onCavaticaData(cardState)}>
-                    {({ projects, loading }) => <Connected projects={projects} loading={loading} />}
+                    {({ projects, loading }) => (
+                      <Connected
+                        tabToCreate={tabToCreate(cardState)}
+                        projects={projects}
+                        loading={loading}
+                      />
+                    )}
                   </CavaticaProvider>
                 ),
               },

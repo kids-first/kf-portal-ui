@@ -8,8 +8,7 @@ import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { TealActionButton } from 'uikit/Button';
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Spinner from 'react-spinkit';
 import {
@@ -17,13 +16,7 @@ import {
   PromptMessageHeading as PMHeading,
   PromptMessageContent as PMContent,
 } from 'uikit/PromptMessage';
-=======
-import Multicard from '../../uikit/Multicard';
->>>>>>> fix multi card style
-=======
 import Multicard from 'uikit/Multicard';
-import { withTheme } from 'emotion-theming';
->>>>>>> Context for Card
 
 const cardCSS = css`
   height: 404px;
@@ -78,7 +71,6 @@ export const ConnectButton = ({ external = true, ...props }) => {
   );
 };
 
-<<<<<<< HEAD
 export const NoteList = styled('ul')`
   padding-left: 18px;
 `;
@@ -98,9 +90,9 @@ export const PromptMessageContent = styled(PMContent)`
   font-family: ${({ theme }) => theme.fonts.details};
   font-size: 14px;
   line-height: normal;
-=======
+`;
+
 export const CardLink = styled('a')`
   ${({ theme }) => theme.externalLink};
   text-decoration: underline;
->>>>>>> Context for Card
 `;

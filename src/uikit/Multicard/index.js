@@ -37,6 +37,7 @@ class Multicard extends Component {
   }
 
   componentDidMount() {
+    // Animation to be added
     /*const animatedChildren = React.Children.map(this.props.children, (child, i) => (
       <AnimatedChild key={i}>{React.cloneElement(child)}</AnimatedChild>
     ));
