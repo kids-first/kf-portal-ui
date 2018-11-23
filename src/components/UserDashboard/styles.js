@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { withProps } from 'recompose';
 
 import Card from 'uikit/Card';
 import { applyDefaultStyles } from 'uikit/Core';
@@ -9,7 +8,6 @@ import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { TealActionButton } from 'uikit/Button';
 
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import Spinner from 'react-spinkit';
 import {
   PromptMessageContainer as PMCont,

@@ -1,5 +1,5 @@
 // @ts-check
-import { getUser as getGen3User, getStudyIds } from 'services/gen3';
+import { getUser as getGen3User } from 'services/gen3';
 import { graphql } from 'services/arranger';
 
 const getStudyIdsFromSqon = api => ({ sqon }) =>

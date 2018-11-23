@@ -11,7 +11,6 @@ import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
-import { getUser as getGen3User } from 'services/gen3';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 
 const enhance = compose(
@@ -32,10 +31,6 @@ const enhance = compose(
         op: 'and',
         content: [],
       };
-
-      // Get Gen3 permissions
-      const userDetails = await getGen3User(api);
-      const approvedAcls = Object.keys(userDetails.projects).sort();
 
       const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(api)({
         sqon,

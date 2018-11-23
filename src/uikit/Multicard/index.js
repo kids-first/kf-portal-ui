@@ -1,24 +1,24 @@
-import React, { Component, createContext } from 'react';
+import React, { Component } from 'react';
 
 import CardHeader from 'uikit/Card/CardHeader';
 import CardContent from 'uikit/Card/CardContent';
 import { CardWrapper, HeaderWrapper } from 'uikit/Card/styles';
-import posed, { PoseGroup } from 'react-pose';
+// import posed from 'react-pose';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import TabMenu from './TabMenu';
 import IndexDots from './IndexDots';
 
-const AnimatedChild = posed.div({
-  enter: {
-    y: 0,
-    opacity: 1,
-  },
-  exit: {
-    y: 50,
-    opacity: 0,
-    transition: { duration: 150 },
-  },
-});
+// const AnimatedChild = posed.div({
+//   enter: {
+//     y: 0,
+//     opacity: 1,
+//   },
+//   exit: {
+//     y: 50,
+//     opacity: 0,
+//     transition: { duration: 150 },
+//   },
+// });
 
 class Multicard extends Component {
   constructor(props) {
@@ -36,16 +36,18 @@ class Multicard extends Component {
     this.setIndex = this.setIndex.bind(this);
   }
 
+  /*
   componentDidMount() {
     // Animation to be added
-    /*const animatedChildren = React.Children.map(this.props.children, (child, i) => (
+    const animatedChildren = React.Children.map(this.props.children, (child, i) => (
       <AnimatedChild key={i}>{React.cloneElement(child)}</AnimatedChild>
     ));
     this.children = animatedChildren;
     this.setState({ loading: false });
     console.log('children', animatedChildren);
-    // setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);*/
+    setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
   }
+  */
 
   setBadge(n) {
     if (n !== this.state.badgeNumber) this.setState({ badgeNumber: n });

@@ -10,24 +10,26 @@ const CavaticaProvider = ({ children, onData }) => (
       const projects = await getCavaticaProjects();
       onData(projects);
 
-      const projectsWithData = await projects.map(async p => {
-        const members = await getMembers({ project: p.id });
-        const completedTasks = await getTasks({ project: p.id, type: 'COMPLETED' });
-        const failedTasks = await getTasks({ project: p.id, type: 'FAILED' });
-        const runningTasks = await getTasks({ project: p.id, type: 'RUNNING' });
+      const projectList = await Promise.all(
+        projects.map(async p => {
+          const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
+            getMembers({ project: p.id }),
+            getTasks({ project: p.id, type: 'COMPLETED' }),
+            getTasks({ project: p.id, type: 'FAILED' }),
+            getTasks({ project: p.id, type: 'RUNNING' }),
+          ]);
 
-        const tasks = {
-          completed: completedTasks.items.length,
-          failed: failedTasks.items.length,
-          running: runningTasks.items.length,
-        };
+          const tasks = {
+            completed: completedTasks.items.length,
+            failed: failedTasks.items.length,
+            running: runningTasks.items.length,
+          };
 
-        return { ...p, members: members.items.length, tasks };
-      });
+          return { ...p, members: members.items.length, tasks };
+        }),
+      );
 
-      Promise.all(projectsWithData).then(projectList => {
-        setState({ projects: projectList, loading: false });
-      });
+      setState({ projects: projectList, loading: false });
     }}
   >
     {({ state }) => children(state)}
