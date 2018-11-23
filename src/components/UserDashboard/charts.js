@@ -47,7 +47,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
   return (
     <HorizontalBar
       data={mergedStudyData}
-      indexBy="name"
+      indexBy="label"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
       tooltipFormatter={participantTooltip}
@@ -80,7 +80,7 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
 export const TopDiagnosesChart = withTheme(({ data, theme }) => {
   const mergedData = data.map(d => ({
     ...d,
-    url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, _.lowerCase(d.name)),
+    url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, d.name),
   }));
 
   const onClick = barData => (window.location.href = barData.data.url);
@@ -88,7 +88,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
   return (
     <HorizontalBar
       data={mergedData}
-      indexBy="name"
+      indexBy="label"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
       tooltipFormatter={participantTooltip}

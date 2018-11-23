@@ -72,7 +72,7 @@ class HorizontalBar extends Component {
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
     const onLabelClick = tick => {
-      const data = this.data.find(d => d.name === tick.value);
+      const data = this.data.find(d => d.label === tick.value);
 
       data ? onClick({ data }) : null;
     };

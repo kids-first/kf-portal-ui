@@ -84,7 +84,11 @@ export default compose(
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
                 api={api}
-                transform={data => data.studies}
+                transform={data =>
+                  _(data.studies)
+                    .map(study => ({ ...study, label: _.startCase(study.name) }))
+                    .value()
+                }
               >
                 {fetchedState => (
                   <ChartLoadGate
@@ -122,7 +126,7 @@ export default compose(
                   _(data.diagnoses)
                     .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
                     .take(10)
-                    .map(d => ({ ...d, name: _.startCase(d.name) }))
+                    .map(d => ({ ...d, label: _.startCase(d.name) }))
                     .value()
                 }
               >
