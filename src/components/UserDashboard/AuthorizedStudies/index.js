@@ -37,14 +37,18 @@ const AuthorizedStudies = compose(
       return (
         <DashboardCard Header={Header} inactive={!state.connected} scrollable={state.connected}>
           <Gen3UserProvider
-            render={({ gen3User, loading: loadingGen3User }) =>
+            render={({ gen3User, loading: loadingGen3User, refresh }) =>
               loadingGen3User ? (
                 <CardContentSpinner />
               ) : gen3User ? (
                 <Gen3Connected
                   setConnected={status => setState({ connected: status })}
                   setBadge={n =>
-                    n && n !== state.badgeNumber ? setState({ badgeNumber: n }) : null
+                    n && n !== state.badgeNumber
+                      ? setState({
+                          badgeNumber: n,
+                        })
+                      : null
                   }
                 />
               ) : (
@@ -74,6 +78,7 @@ const AuthorizedStudies = compose(
                               action: TRACKING_EVENTS.actions.integration.connected,
                               label: TRACKING_EVENTS.labels.gen3,
                             });
+                            refresh();
                           })
                           .catch(err => {
                             console.log('err: ', err);
