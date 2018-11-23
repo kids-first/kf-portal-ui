@@ -38,7 +38,7 @@ const NumberLink = styled(ExternalLink)`
 
 const Study = ({
   name,
-  codes,
+  consentCodes = [],
   total,
   authorized,
   onStudyAuthorizedClick = () => {},
@@ -59,7 +59,7 @@ const Study = ({
         files
       </StudyCount>
     </Row>
-    <Codes>Consent Codes:</Codes> {}
+    <Codes>Consent Codes: {consentCodes.join(', ')}</Codes>
     <ProgressBar numerator={authorized} denominator={total} />
   </StudyCol>
 );
