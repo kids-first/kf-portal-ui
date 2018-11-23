@@ -73,8 +73,9 @@ class HorizontalBar extends Component {
 
     const onLabelClick = tick => {
       const data = this.data.find(d => d.label === tick.value);
-
-      data ? onClick({ data }) : null;
+      if (data) {
+        onClick({ data });
+      }
     };
 
     return (

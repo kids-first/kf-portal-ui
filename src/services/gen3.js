@@ -10,7 +10,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { gen3ApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
-import { GEN3 } from 'common/constants';
 
 const AUTHORIZE_URL = `${gen3ApiRoot}user/oauth2/authorize`;
 const CLIENT_URL = `${`${gen3IntegrationRoot}/auth-client`}`;

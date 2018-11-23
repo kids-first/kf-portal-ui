@@ -1,6 +1,8 @@
 import ajax from 'services/ajax';
 import { cavaticaApiRoot } from 'common/injectGlobals';
 import { chunk as makeChunks } from 'lodash';
+import projectDescriptionPath from './projectDescription.md';
+import { memoize } from 'lodash';
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -100,7 +102,7 @@ export const getProjects = async () => {
   }
  *
  */
-export const createProject = async ({ name, billing_group, description = '' }) => {
+const createProject = async ({ name, billing_group, description = '' }) => {
   let data;
   try {
     const response = await ajax.post(cavaticaApiRoot, {
@@ -234,3 +236,34 @@ export const copyFiles = async ({ project, ids }) => {
 };
 
 //jonqa01/public-housing
+
+/**
+ * Fetches the content of the markdown template. Memoizes the result
+ */
+const getProjectDescriptionTemplate = memoize(() =>
+  fetch(projectDescriptionPath).then(res => res.text()),
+);
+
+/**
+ * A wrapper for the above createProject method. Every project
+ * created from kidsfirst comes with a description in markdown
+ * @param {projectName: string, billingGroupId: string} param0
+ */
+export const saveProject = async ({ projectName, billingGroupId }) => {
+  const USER_NAME_TEMPLATE_STRING = '<username>';
+  const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
+  const [descriptionTemplate, { username }] = await Promise.all([
+    getProjectDescriptionTemplate(),
+    getUser(),
+  ]);
+  const projectDescription = descriptionTemplate
+    .split(PROJECT_NAME_TEMPLATE_STRING)
+    .join(projectName)
+    .split(USER_NAME_TEMPLATE_STRING)
+    .join(username);
+  return createProject({
+    billing_group: billingGroupId,
+    name: projectName,
+    description: projectDescription,
+  });
+};

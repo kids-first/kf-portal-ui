@@ -1,6 +1,5 @@
 import React from 'react';
 
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import Column from 'uikit/Column';
 
 import ProjectList from './ProjectList';

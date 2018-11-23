@@ -4,8 +4,6 @@ import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import projectDescriptionPath from './projectDescription.md';
-
 import LoadingOnClick from 'components/LoadingOnClick';
 
 import Column from 'uikit/Column';
@@ -13,8 +11,7 @@ import Row from 'uikit/Row';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Input from 'uikit/Input';
 
-import { memoize } from 'services/utils';
-import { createProject, getBillingGroups, getUser } from 'services/cavatica';
+import { getBillingGroups, saveProject } from 'services/cavatica';
 
 const StyledLabel = styled('label')`
   font-size: 14px;
@@ -46,34 +43,6 @@ const enhance = compose(
   }),
 );
 
-const getProjectDescriptionTemplate = memoize(() =>
-  fetch(projectDescriptionPath).then(res => res.text()),
-);
-
-const saveProject = async ({ projectName, billingGroups, selectedBillingGroup, onSuccess }) => {
-  const USER_NAME_TEMPLATE_STRING = '<username>';
-  const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
-  const [descriptionTemplate, { username }] = await Promise.all([
-    getProjectDescriptionTemplate(),
-    getUser(),
-  ]);
-
-  const projectDescription = descriptionTemplate
-    .split(PROJECT_NAME_TEMPLATE_STRING)
-    .join(projectName)
-    .split(USER_NAME_TEMPLATE_STRING)
-    .join(username);
-
-  if (billingGroups && billingGroups.length > 0) {
-    const groupId = selectedBillingGroup || billingGroups[0].id;
-    createProject({
-      billing_group: groupId,
-      name: projectName,
-      description: projectDescription,
-    }).then(response => onSuccess(response));
-  }
-};
-
 const Create = ({
   projectName,
   setProjectName,
@@ -83,46 +52,46 @@ const Create = ({
   selectBillingGroup,
   onProjectCreated,
   onProjectCreationCancelled,
-}) => (
-  <Column>
-    <StyledLabel>Project Name:</StyledLabel>
-    <Input
-      type="text"
-      placeholder="Enter name of project"
-      onChange={e => setProjectName(e.target.value)}
-    />
-    <StyledLabel>Billing Group:</StyledLabel>
-    <BillingGroupSelect onChange={e => selectBillingGroup(e.target.value)}>
-      {billingGroups.map((bg, i) => (
-        <option key={i} value={bg.id}>
-          {bg.name}
-        </option>
-      ))}
-    </BillingGroupSelect>
+}) => {
+  const onSaveButtonClick = () =>
+    saveProject({
+      projectName,
+      selectedBillingGroup,
+      billingGroups,
+    }).then(({ id }) => {
+      onProjectCreated();
+      setAddingProject(false);
+      setProjectName('');
+    });
+  const onCancelClick = () => onProjectCreationCancelled();
+  const onProjectNameChange = e => setProjectName(e.target.value);
+  const onBillingGroupSelect = e => selectBillingGroup(e.target.value);
+  return (
+    <Column>
+      <StyledLabel>Project Name:</StyledLabel>
+      <Input type="text" placeholder="Enter name of project" onChange={onProjectNameChange} />
+      <StyledLabel>Billing Group:</StyledLabel>
+      <BillingGroupSelect onChange={onBillingGroupSelect}>
+        {billingGroups.map((bg, i) => (
+          <option key={i} value={bg.id}>
+            {bg.name}
+          </option>
+        ))}
+      </BillingGroupSelect>
 
-    <Row mt="20px" justifyContent="space-between">
-      <WhiteButton onClick={() => onProjectCreationCancelled()}>Cancel</WhiteButton>
-      <LoadingOnClick
-        onClick={async () => {
-          await saveProject({
-            projectName,
-            selectedBillingGroup,
-            billingGroups,
-            onSuccess: ({ id }) => {
-              onProjectCreated();
-            },
-          });
-          setAddingProject(false);
-          setProjectName('');
-        }}
-        render={({ loading, onClick }) => (
-          <TealActionButton onClick={onClick} disabled={loading}>
-            Save
-          </TealActionButton>
-        )}
-      />
-    </Row>
-  </Column>
-);
+      <Row mt="20px" justifyContent="space-between">
+        <WhiteButton onClick={onCancelClick}>Cancel</WhiteButton>
+        <LoadingOnClick
+          onClick={onSaveButtonClick}
+          render={({ loading, onClick }) => (
+            <TealActionButton onClick={onClick} disabled={loading}>
+              Save
+            </TealActionButton>
+          )}
+        />
+      </Row>
+    </Column>
+  );
+};
 
 export default enhance(Create);
