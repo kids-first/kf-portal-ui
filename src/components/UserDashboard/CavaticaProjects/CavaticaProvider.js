@@ -7,9 +7,8 @@ const CavaticaProvider = ({ children, onData }) => (
   <Component
     initialState={{ loading: true, projects: null }}
     didMount={async ({ setState }) => {
-      onData('-');
       const projects = await getCavaticaProjects();
-      onData(projects.length);
+      onData(projects);
 
       const projectsWithData = await projects.map(async p => {
         const members = await getMembers({ project: p.id });

@@ -16,8 +16,8 @@ const isValidKey = key => {
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
-  const onCavaticaData = cardState => projectLength => {
-    cardState.setBadge(projectLength);
+  const onCavaticaData = cardState => projects => {
+    cardState.setBadge(projects.length);
   };
 
   // leaving this duplication here for now, animation hooks to come
