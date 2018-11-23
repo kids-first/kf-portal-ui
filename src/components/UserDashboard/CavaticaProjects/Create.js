@@ -39,8 +39,8 @@ const enhance = compose(
   withState('billingGroup', 'selectBillingGroup', null),
   lifecycle({
     async componentDidMount() {
-      const { setBadge, setBillingGroups } = this.props;
-      setBadge(null);
+      const { setBillingGroups, onInit } = this.props;
+      onInit();
       getBillingGroups().then(bg => setBillingGroups(bg));
     },
   }),
@@ -81,8 +81,8 @@ const Create = ({
   billingGroups,
   selectedBillingGroup,
   selectBillingGroup,
-  setStackIndex,
-  setBadge,
+  onProjectCreated,
+  onProjectCreationCancelled,
 }) => (
   <Column>
     <StyledLabel>Project Name:</StyledLabel>
@@ -101,7 +101,7 @@ const Create = ({
     </BillingGroupSelect>
 
     <Row mt="20px" justifyContent="space-between">
-      <WhiteButton onClick={() => setStackIndex(0)}>Cancel</WhiteButton>
+      <WhiteButton onClick={() => onProjectCreationCancelled()}>Cancel</WhiteButton>
       <LoadingOnClick
         onClick={async () => {
           await saveProject({
@@ -109,8 +109,7 @@ const Create = ({
             selectedBillingGroup,
             billingGroups,
             onSuccess: ({ id }) => {
-              setBadge(null);
-              setStackIndex(0);
+              onProjectCreated();
             },
           });
           setAddingProject(false);

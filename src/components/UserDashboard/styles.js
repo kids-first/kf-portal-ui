@@ -8,6 +8,7 @@ import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { TealActionButton } from 'uikit/Button';
+
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Spinner from 'react-spinkit';
 import {
@@ -15,6 +16,7 @@ import {
   PromptMessageHeading as PMHeading,
   PromptMessageContent as PMContent,
 } from 'uikit/PromptMessage';
+import Multicard from 'uikit/Multicard';
 
 const cardCSS = css`
   height: 404px;
@@ -24,7 +26,7 @@ export const DashboardCard = styled(Card)`
   ${cardCSS}
 `;
 
-export const DualPaneCard = styled(DashboardCard)`
+export const DashboardMulticard = styled(Multicard)`
   ${cardCSS}
 `;
 
@@ -88,4 +90,9 @@ export const PromptMessageContent = styled(PMContent)`
   font-family: ${({ theme }) => theme.fonts.details};
   font-size: 14px;
   line-height: normal;
+`;
+
+export const CardLink = styled('a')`
+  ${({ theme }) => theme.externalLink};
+  text-decoration: underline;
 `;

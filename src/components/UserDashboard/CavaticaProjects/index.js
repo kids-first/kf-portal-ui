@@ -1,129 +1,84 @@
-import React, { Fragment } from 'react';
-import { compose, withState } from 'recompose';
+import React from 'react';
+import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
-import { DualPaneCard } from '../styles';
-import AccessGate from '../../AccessGate';
-import Cavatica from 'icons/Cavatica';
-import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import { CAVATICA } from 'common/constants';
-import { analyticsTrigger, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { withApi } from 'services/api';
-import Info from '../Info';
-import { ConnectButton } from '../styles';
-import Connected from './Connected';
-import CardHeader from 'uikit/Card/CardHeader';
 import Create from './Create';
-import DualPaneHeader from 'uikit/Card/DualPaneCard/DualPaneHeader';
+import NotConnected from './NotConnected';
+import { DashboardMulticard } from '../styles';
 import CavaticaProvider from './CavaticaProvider';
+import Connected from './Connected';
 
 const isValidKey = key => {
   return key && key.length > 0;
 };
 
-const CavaticaProjects = compose(
-  withApi,
-  injectState,
-  withTheme,
-  withState('badgeNumber', 'setBadgeNumber', null),
-  withState('stackIndex', 'setStackIndex', 0),
-)(
-  ({
-    state: { integrationTokens },
-    effects,
-    badgeNumber,
-    stackIndex,
-    setStackIndex,
-    setBadgeNumber,
-  }) => {
-    const setBadge = n => {
-      if (n !== badgeNumber) setBadgeNumber(n);
-    };
+const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
+  const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
-    const cardStack = [
-      {
-        title: 'Projects',
-        component: (
-          <CavaticaProvider setBadge={setBadge}>
-            {({ projects, loading }) => <Connected projects={projects} loading={loading} />}
-          </CavaticaProvider>
-        ),
-      },
-      {
-        title: 'Create',
-        component: <Create setBadge={setBadge} setStackIndex={index => setStackIndex(index)} />,
-      },
-    ];
+  const onCavaticaData = cardState => projects => {
+    cardState.setBadge(projects.length);
+  };
 
-    const isConnected = isValidKey(integrationTokens[CAVATICA]);
+  // leaving this duplication here for now, animation hooks to come
+  const onProjectCreationComplete = cardState => data => {
+    cardState.setIndex(0);
+  };
+  const onProjectCreationCanceled = cardState => data => {
+    cardState.setIndex(0);
+  };
 
-    const Header = (
-      <CardHeader title="Cavatica Projects" badge={badgeNumber}>
-        {!isConnected &&
-          cardStack.map((card, i) => (
-            <DualPaneHeader
-              key={i}
-              active={i === stackIndex}
-              onClick={() => setStackIndex(i)}
-              title={card.title}
-            />
-          ))}
-      </CardHeader>
-    );
+  const unsetBadge = cardState => d => {
+    cardState.setBadge(null);
+  };
 
-    const activeCard = cardStack[stackIndex];
+  const tabToCreate = cardState => d => {
+    cardState.setIndex(1);
+  };
 
-    return (
-      <DualPaneCard
-        Header={Header}
-        stackIndex={stackIndex}
-        setStackIndex={index => setStackIndex(index)}
-        inactive={!isConnected}
-        scrollable={isConnected}
-      >
-        {isConnected ? (
-          activeCard.component
-        ) : (
-          <Fragment>
-            <AccessGate
-              mt={'40px'}
-              Icon={Cavatica}
-              title="Collaborative Analysis"
-              detail="To analyze Kids First data on the cloud, connect to Cavatica."
-            >
-              <ConnectButton
-                onClick={() => {
-                  analyticsTrigger({
-                    property: 'portal',
-                    type: 'recording',
-                    uiArea: TRACKING_EVENTS.categories.user.profile,
-                    action: TRACKING_EVENTS.actions.integration.init,
-                    label: TRACKING_EVENTS.labels.cavatica,
-                  });
-                  effects.setModal({
-                    title: 'How to Connect to Cavatica',
-                    component: (
-                      <CavaticaConnectModal
-                        onComplete={effects.unsetModal}
-                        onCancel={effects.unsetModal}
+  return (
+    <DashboardMulticard
+      inactive={!isConnected}
+      scrollable
+      tabs={
+        isConnected
+          ? [
+              {
+                title: 'Cavatica Projects',
+                nav: 'Projects',
+                component: cardState => (
+                  <CavaticaProvider onData={onCavaticaData(cardState)}>
+                    {({ projects, loading }) => (
+                      <Connected
+                        tabToCreate={tabToCreate(cardState)}
+                        projects={projects}
+                        loading={loading}
                       />
-                    ),
-                  });
-                }}
-              />
-            </AccessGate>
-            <Info
-              link={{
-                url: 'https://kidsfirstdrc.org/support/analyze-data/',
-                text: 'CAVATICA compute cloud platform',
-              }}
-            />
-          </Fragment>
-        )}
-      </DualPaneCard>
-    );
-  },
-);
+                    )}
+                  </CavaticaProvider>
+                ),
+              },
+              {
+                title: 'Create a CAVATICA Project',
+                nav: 'Create',
+                component: cardState => (
+                  <Create
+                    onInit={unsetBadge(cardState)}
+                    onProjectCreated={onProjectCreationComplete(cardState)}
+                    onProjectCreationCancelled={onProjectCreationCanceled(cardState)}
+                  />
+                ),
+              },
+            ]
+          : [
+              {
+                title: 'CAVATICA Projects',
+                component: cardState => <NotConnected />,
+              },
+            ]
+      }
+    />
+  );
+});
 
 export default CavaticaProjects;

@@ -3,11 +3,13 @@ import Component from 'react-component-component';
 
 import { getProjects as getCavaticaProjects, getMembers, getTasks } from 'services/cavatica';
 
-const CavaticaProvider = ({ children, setBadge }) => (
+const CavaticaProvider = ({ children, onData }) => (
   <Component
     initialState={{ loading: true, projects: null }}
     didMount={async ({ setState }) => {
       const projects = await getCavaticaProjects();
+      onData(projects);
+
       const projectsWithData = await projects.map(async p => {
         const members = await getMembers({ project: p.id });
         const completedTasks = await getTasks({ project: p.id, type: 'COMPLETED' });
@@ -25,7 +27,6 @@ const CavaticaProvider = ({ children, setBadge }) => (
 
       Promise.all(projectsWithData).then(projectList => {
         setState({ projects: projectList, loading: false });
-        setBadge(projects.length);
       });
     }}
   >
