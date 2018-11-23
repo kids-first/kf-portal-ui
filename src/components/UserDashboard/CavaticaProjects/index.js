@@ -16,19 +16,58 @@ const isValidKey = key => {
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
+  const onCavaticaData = cardState => projectLength => {
+    cardState.setBadge(projectLength);
+  };
+
+  // leaving this duplication here for now, animation hooks to come
+  const onProjectCreationComplete = cardState => data => {
+    cardState.setIndex(0);
+  };
+  const onProjectCreationCanceled = cardState => data => {
+    cardState.setIndex(0);
+  };
+
+  const unsetBadge = cardState => d => {
+    cardState.setBadge(null);
+  };
+
   return (
-    <DashboardMulticard inactive={!isConnected} tabMenu={['Projects', 'Create']} scrollable>
-      {isConnected ? (
-        [
-          <CavaticaProvider>
-            {({ projects, loading }) => <Connected projects={[]} loading={loading} />}
-          </CavaticaProvider>,
-          <Create />,
-        ]
-      ) : (
-        <NotConnected />
-      )}
-    </DashboardMulticard>
+    <DashboardMulticard
+      inactive={!isConnected}
+      scrollable
+      tabs={
+        isConnected
+          ? [
+              {
+                title: 'Cavatica Projects',
+                nav: 'Projects',
+                component: cardState => (
+                  <CavaticaProvider onData={onCavaticaData(cardState)}>
+                    {({ projects, loading }) => <Connected projects={projects} loading={loading} />}
+                  </CavaticaProvider>
+                ),
+              },
+              {
+                title: 'Create a CAVATICA Project',
+                nav: 'Create',
+                component: cardState => (
+                  <Create
+                    onInit={unsetBadge(cardState)}
+                    onProjectCreated={onProjectCreationComplete(cardState)}
+                    onProjectCreationCancelled={onProjectCreationCanceled(cardState)}
+                  />
+                ),
+              },
+            ]
+          : [
+              {
+                title: 'CAVATICA Projects',
+                component: cardState => <NotConnected />,
+              },
+            ]
+      }
+    />
   );
 });
 

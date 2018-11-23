@@ -20,10 +20,6 @@ const AnimatedChild = posed.div({
   },
 });
 
-const CardContext = createContext({});
-const CardProvider = CardContext.Provider;
-export const CardConsumer = CardContext.Consumer;
-
 class Multicard extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +28,7 @@ class Multicard extends Component {
       badgeNumber: null,
       contentIndex: 0,
       title: '',
-      loading: true,
+      loading: false,
     };
 
     this.setBadge = this.setBadge.bind(this);
@@ -41,13 +37,13 @@ class Multicard extends Component {
   }
 
   componentDidMount() {
-    const animatedChildren = React.Children.map(this.props.children, (child, i) => (
+    /*const animatedChildren = React.Children.map(this.props.children, (child, i) => (
       <AnimatedChild key={i}>{React.cloneElement(child)}</AnimatedChild>
     ));
     this.children = animatedChildren;
     this.setState({ loading: false });
     console.log('children', animatedChildren);
-    // setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);
+    // setInterval(() => this.setState({ contentIndex: this.state.contentIndex === 0 ? 1 : 0 }), 1500);*/
   }
 
   setBadge(n) {
@@ -58,46 +54,55 @@ class Multicard extends Component {
     this.setState({ contentIndex: i });
   }
 
-  setTitle(title) {
+  setTitle(title = this.props.tabs[this.state.contentIndex].title) {
     this.setState({ title });
+  }
+
+  componentDidMount() {
+    this.setTitle();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // tab has updated
+    if (prevState.contentIndex !== this.state.contentIndex) {
+      this.setTitle();
+    }
   }
 
   render() {
     const { loading, contentIndex, title, badgeNumber } = this.state;
-    const { inactive, className, tabMenu, scrollable } = this.props;
+    const { tabs, inactive, className, scrollable } = this.props;
+
+    const activeTab = tabs[contentIndex];
 
     return (
       <div>
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <CardProvider
-            value={{
-              setBadge: this.setBadge,
-              setIndex: this.setIndex,
-              setTitle: this.setTitle,
-            }}
-          >
-            <CardWrapper className={className} inactive={inactive}>
-              <HeaderWrapper inactive={inactive}>
-                <CardHeader title={title} badge={badgeNumber}>
-                  {!inactive &&
-                    tabMenu.map((tab, i) => (
-                      <TabMenu
-                        key={i}
-                        active={i === contentIndex}
-                        onClick={() => this.setIndex(i)}
-                        title={tabMenu[i]}
-                      />
-                    ))}
-                </CardHeader>
-              </HeaderWrapper>
-              <CardContent scrollable={scrollable}>
-                <PoseGroup>{this.children[contentIndex]}</PoseGroup>
-              </CardContent>
-              <IndexDots index={contentIndex} items={this.children.length} />
-            </CardWrapper>
-          </CardProvider>
+          <CardWrapper className={className} inactive={inactive}>
+            <HeaderWrapper inactive={inactive}>
+              <CardHeader title={title} badge={badgeNumber}>
+                {!inactive &&
+                  tabs.map((tab, i) => (
+                    <TabMenu
+                      key={i}
+                      active={i === contentIndex}
+                      onClick={() => this.setIndex(i)}
+                      title={tab.nav}
+                    />
+                  ))}
+              </CardHeader>
+            </HeaderWrapper>
+            <CardContent scrollable={scrollable}>
+              {activeTab.component({
+                setTitle: this.setTitle,
+                setBadge: this.setBadge,
+                setIndex: this.setIndex,
+              })}
+            </CardContent>
+            {inactive ? null : <IndexDots index={contentIndex} items={tabs.length} />}
+          </CardWrapper>
         )}
       </div>
     );
