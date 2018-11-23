@@ -6,7 +6,10 @@ import {
   PromptMessageContainer,
   PromptMessageHeading,
   PromptMessageContent,
-} from 'uikit/PromptMessage';
+  NotePoints,
+  NoteList,
+} from '../styles';
+import Info from '../Info';
 
 const NoProjects = () => (
   <Column>
@@ -15,8 +18,8 @@ const NoProjects = () => (
         You are connected to CAVATICA, but you don’t have any projects yet.
       </PromptMessageHeading>
       <PromptMessageContent>
-        <ul>
-          <li>
+        <NoteList>
+          <NotePoints>
             <ExternalLink
               href={'https://kidsfirstdrc.org/support/studies-and-access/'}
               hasExternalIcon={false}
@@ -24,20 +27,25 @@ const NoProjects = () => (
               Create a CAVATICA Project
             </ExternalLink>{' '}
             easily from the portal.
-          </li>
-          <li>
-            Or join one of the
+          </NotePoints>
+          <NotePoints>
+            Or join one of the{' '}
             <ExternalLink
               href={'https://cavatica.sbgenomics.com/public/controlled-projects#q'}
               hasExternalIcon={false}
             >
-              {' '}
               CAVATICA public controlled projects
             </ExternalLink>
-          </li>
-        </ul>
+          </NotePoints>
+        </NoteList>
       </PromptMessageContent>
     </PromptMessageContainer>
+    <Info
+      link={{
+        url: 'https://kidsfirstdrc.org/support/analyze-data/',
+        text: 'CAVATICA compute cloud platform',
+      }}
+    />
   </Column>
 );
 

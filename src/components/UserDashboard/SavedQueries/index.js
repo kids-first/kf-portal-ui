@@ -7,17 +7,14 @@ import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
 import { Box, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
+import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
+
 import { CardContentSpinner } from '../styles';
 
 import { DashboardCard } from '../styles';
 
 import QueryBlock from './QueryBlock';
-import CardHeader from '../../../uikit/Card/CardHeader';
+import CardHeader from 'uikit/Card/CardHeader';
 
 const QueriesHeading = styled('h4')`
   font-size: 16px;

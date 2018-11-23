@@ -6,11 +6,7 @@ import { injectState } from 'freactal';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
+import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import { withApi } from 'services/api';
 import { withHistory } from 'services/history';
 import { getUser as getGen3User } from 'services/gen3';
@@ -40,7 +36,10 @@ const enhance = compose(
         setLoading,
         setUnauthorizedStudies,
         setGen3UserDetails,
+        setBadge,
+        setConnected,
       } = this.props;
+      setConnected(true);
       setLoading(true);
 
       const [{ acceptedStudiesAggs, unacceptedStudiesAggs }, gen3User] = await Promise.all([
@@ -51,6 +50,7 @@ const enhance = compose(
       setAuthorizedStudies(acceptedStudiesAggs);
       setUnauthorizedStudies(unacceptedStudiesAggs);
       setGen3UserDetails(gen3User);
+      setBadge(acceptedStudiesAggs.length || null);
       setLoading(false);
     },
   }),
@@ -60,12 +60,9 @@ const Gen3Connected = ({
   history,
   authorizedStudies = [],
   unauthorizedStudies = [],
-  setBadge,
   gen3userDetails,
   loading,
 }) => {
-  setBadge(authorizedStudies.length || null);
-
   const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
     const unAuthorizedFiles = (
       unauthorizedStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }

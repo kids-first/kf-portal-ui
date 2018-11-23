@@ -7,10 +7,8 @@ import ExternalLink from 'uikit/ExternalLink';
 import ProgressBar from 'chartkit/components/ProgressBar';
 
 export const StudyCol = styled(Column)`
-  font-family: ${({ theme }) => theme.fonts.details}
-  padding-left: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  font-family: ${({ theme }) => theme.fonts.details};
+  padding: 10px 10px 10px 0;
 `;
 
 const Name = styled('div')`
@@ -52,11 +50,11 @@ const Study = ({
       <StudyCount>
         Authorized:{' '}
         <NumberLink onClick={onStudyAuthorizedClick} hasExternalIcon={false}>
-          {authorized}
+          {authorized.toLocaleString()}
         </NumberLink>
         {' / '}
         <NumberLink onClick={onStudyTotalClick} hasExternalIcon={false}>
-          {total}
+          {total.toLocaleString()}
         </NumberLink>{' '}
         files
       </StudyCount>
