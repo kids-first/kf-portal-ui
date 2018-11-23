@@ -40,7 +40,10 @@ const enhance = compose(
         setLoading,
         setUnauthorizedStudies,
         setGen3UserDetails,
+        setBadge,
+        setConnected,
       } = this.props;
+      setConnected(true);
       setLoading(true);
 
       const [{ acceptedStudiesAggs, unacceptedStudiesAggs }, gen3User] = await Promise.all([
@@ -51,6 +54,7 @@ const enhance = compose(
       setAuthorizedStudies(acceptedStudiesAggs);
       setUnauthorizedStudies(unacceptedStudiesAggs);
       setGen3UserDetails(gen3User);
+      setBadge(acceptedStudiesAggs.length || null);
       setLoading(false);
     },
   }),
@@ -60,12 +64,9 @@ const Gen3Connected = ({
   history,
   authorizedStudies = [],
   unauthorizedStudies = [],
-  setBadge,
   gen3userDetails,
   loading,
 }) => {
-  setBadge(authorizedStudies.length || null);
-
   const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
     const unAuthorizedFiles = (
       unauthorizedStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }

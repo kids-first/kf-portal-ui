@@ -30,7 +30,7 @@ const AuthorizedStudies = compose(
   injectState,
   withTheme,
 )(({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => (
-  <Component initialState={{ loading: false, connected: false, badgeNumber: null }}>
+  <Component initialState={{ connected: false, badgeNumber: null }}>
     {({ setState, state }) => {
       const Header = <CardHeader title="Authorized Studies" badge={state.badgeNumber} />;
 
@@ -42,6 +42,7 @@ const AuthorizedStudies = compose(
                 <CardContentSpinner />
               ) : gen3User ? (
                 <Gen3Connected
+                  setConnected={status => setState({ connected: status })}
                   setBadge={n =>
                     n && n !== state.badgeNumber ? setState({ badgeNumber: n }) : null
                   }
@@ -62,13 +63,11 @@ const AuthorizedStudies = compose(
                         action: TRACKING_EVENTS.actions.integration.init,
                         label: TRACKING_EVENTS.labels.gen3,
                       });
-                      setState({ loading: true });
                       connectGen3(api)
                         .then(() => getAccessToken(api))
                         .then(token => {
                           console.log('token', token);
                           effects.setIntegrationToken(GEN3, token);
-                          setState({ loading: false, connected: true });
                           trackUserInteraction({
                             category: TRACKING_EVENTS.categories.user.profile,
                             action: TRACKING_EVENTS.actions.integration.connected,
