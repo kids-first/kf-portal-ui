@@ -1,3 +1,4 @@
+// @ts-check
 import * as React from 'react';
 import { gen3OauthRedirect, gen3IntegrationRoot } from 'common/injectGlobals';
 import jwtDecode from 'jwt-decode';
@@ -9,6 +10,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { gen3ApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
+import { GEN3 } from 'common/constants';
 
 const AUTHORIZE_URL = `${gen3ApiRoot}user/oauth2/authorize`;
 const CLIENT_URL = `${`${gen3IntegrationRoot}/auth-client`}`;
@@ -18,7 +20,10 @@ const REDIRECT_URI = gen3OauthRedirect;
 const RESPONSE_TYPE = 'code';
 
 // This component gets rendered on a new window just to write token to key manager. No need to render anything
-export const Gen3AuthRedirect = compose(withApi, injectState)(({ api, state }) => (
+export const Gen3AuthRedirect = compose(
+  withApi,
+  injectState,
+)(({ api, state }) => (
   <Component
     didMount={() => {
       const code = new URLSearchParams(window.location.search).get('code');
@@ -102,7 +107,9 @@ export const connectGen3 = api => {
 */
 export const getUser = async api => {
   let accessToken = await getAccessToken(api);
-  const { context: { user } } = jwtDecode(accessToken);
+  const {
+    context: { user },
+  } = jwtDecode(accessToken);
   // track how many projects a use has access to
   // dimensionr in GA is "authorizedStudies"
   setUserDimension('dimension5', user.projects);
@@ -162,15 +169,26 @@ export const downloadFileFromGen3 = async ({ fileUUID, api }) => {
 const toStudyId = consentCode => consentCode.split('.')[0];
 export const getStudyIds = gen3User => uniq(Object.keys(gen3User.projects).map(toStudyId));
 
-export const Gen3UserProvider = withApi(({ render, api }) => (
-  <Component
-    initialState={{ gen3User: null, loading: true }}
-    didMount={({ setState }) =>
-      getUser(api)
-        .then(user => setState({ gen3User: user, loading: false }))
-        .catch(err => setState({ loading: false }))
-    }
-  >
-    {({ state: { gen3User, loading } }) => render({ gen3User, loading })}
-  </Component>
-));
+export const Gen3UserProvider = compose(withApi)(({ render, api }) => {
+  const initialState = { gen3User: null, loading: true, error: null };
+
+  const refresh = ({ state, setState }) => () => {
+    setState({ loading: true });
+    return getUser(api)
+      .then(user => setState({ gen3User: user, loading: false, error: null }))
+      .catch(err => setState({ loading: false, error: err }));
+  };
+
+  return (
+    <Component initialState={initialState} didMount={s => refresh(s)()}>
+      {s =>
+        render({
+          gen3User: s.state.gen3User,
+          loading: s.state.loading,
+          error: s.state.error,
+          refresh: refresh(s),
+        })
+      }
+    </Component>
+  );
+});
