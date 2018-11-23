@@ -63,8 +63,6 @@ const Gen3Connected = ({
   gen3userDetails,
   loading,
 }) => {
-  setBadge(authorizedStudies.length || null);
-
   const userConsentCodes = Object.keys(gen3userDetails.projects || {});
 
   const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
