@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'react-emotion';
-import _ from 'lodash';
 
 import { kfWebRoot } from 'common/injectGlobals';
 import ExternalLink from 'uikit/ExternalLink';
