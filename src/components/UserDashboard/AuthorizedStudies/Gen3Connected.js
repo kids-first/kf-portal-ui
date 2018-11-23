@@ -2,15 +2,16 @@ import React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
 import { injectState } from 'freactal';
-
+import { kfWebRoot } from 'common/injectGlobals';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
+import { Box } from 'uikit/Core';
 
-import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import { withApi } from 'services/api';
 import { withHistory } from 'services/history';
 import { getUser as getGen3User } from 'services/gen3';
 
+import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import Info from '../Info';
 import {
   getUserStudyPermission,
@@ -19,6 +20,20 @@ import {
 } from 'services/fileAccessControl';
 import Study from './Study';
 import { CardContentSpinner } from '../styles';
+
+const NoAuthorizedStudiesMessage = () => (
+  <PromptMessageContainer info mb={'8px'}>
+    <PromptMessageHeading info mb={10}>
+      You are connected to Gen3, but you don't have access to controlled data yet.
+    </PromptMessageHeading>
+    <PromptMessageContent>
+      Start applying for access to studies of interest from our{' '}
+      <ExternalLink hasExternalIcon={false} href={`${kfWebRoot}/support/studies-and-access/`}>
+        studies and access page.
+      </ExternalLink>
+    </PromptMessageContent>
+  </PromptMessageContainer>
+);
 
 const enhance = compose(
   injectState,
@@ -98,23 +113,29 @@ const Gen3Connected = ({
       ) : (
         <Column>
           {authorizedStudies ? (
-            authorizedStudies.map(({ studyShortName, id: studyId }) => {
-              const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[
-                studyId
-              ];
-              return (
-                <Study
-                  key={studyId}
-                  studyId={studyId}
-                  name={studyShortName}
-                  consentCodes={consentCodes}
-                  authorized={authorizedFiles.length}
-                  total={authorizedFiles.length + unAuthorizedFiles.length}
-                  onStudyTotalClick={onStudyTotalClick(studyId)}
-                  onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
-                />
-              );
-            })
+            !authorizedStudies.length ? (
+              <Box mt={20}>
+                <NoAuthorizedStudiesMessage />
+              </Box>
+            ) : (
+              authorizedStudies.map(({ studyShortName, id: studyId }) => {
+                const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[
+                  studyId
+                ];
+                return (
+                  <Study
+                    key={studyId}
+                    studyId={studyId}
+                    name={studyShortName}
+                    consentCodes={consentCodes}
+                    authorized={authorizedFiles.length}
+                    total={authorizedFiles.length + unAuthorizedFiles.length}
+                    onStudyTotalClick={onStudyTotalClick(studyId)}
+                    onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
+                  />
+                );
+              })
+            )
           ) : (
             <Column>
               <PromptMessageContainer mb={0} width={'100%'}>
