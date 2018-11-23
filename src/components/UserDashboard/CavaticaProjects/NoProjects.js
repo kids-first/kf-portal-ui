@@ -2,11 +2,7 @@ import React from 'react';
 
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
+import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 
 const NoProjects = () => (
   <Column>

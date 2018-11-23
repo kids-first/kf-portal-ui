@@ -6,11 +6,7 @@ import { injectState } from 'freactal';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-} from 'uikit/PromptMessage';
+import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import { withApi } from 'services/api';
 import { withHistory } from 'services/history';
 import { getUser as getGen3User } from 'services/gen3';

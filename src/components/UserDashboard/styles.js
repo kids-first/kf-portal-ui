@@ -10,6 +10,11 @@ import RightIcon from 'react-icons/lib/fa/angle-right';
 import { TealActionButton } from 'uikit/Button';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Spinner from 'react-spinkit';
+import {
+  PromptMessageContainer as PMCont,
+  PromptMessageHeading as PMHeading,
+  PromptMessageContent as PMContent,
+} from 'uikit/PromptMessage';
 
 const cardCSS = css`
   height: 404px;
@@ -63,3 +68,17 @@ export const ConnectButton = ({ external = true, ...props }) => {
     </Connect>
   );
 };
+
+export const PromptMessageContainer = styled(PMCont)``;
+
+export const PromptMessageHeading = styled(PMHeading)`
+  font-family: ${({ theme }) => theme.fonts.default};
+  font-weight: 500;
+  font-size: 16px;
+`;
+
+export const PromptMessageContent = styled(PMContent)`
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-size: 14px;
+  line-height: normal;
+`;
