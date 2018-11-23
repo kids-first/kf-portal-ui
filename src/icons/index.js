@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const encodeSVG = svg => encodeURI(svg).replace('#', '%23');
+export const encodeSVG = svg => encodeURI(svg).replace(/#/g, '%23');
 
 export const BaseSvg = ({ alt = '', height, width, svg, style, className, ...props }) => (
   <img
