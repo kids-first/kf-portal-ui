@@ -69,6 +69,13 @@ export const ConnectButton = ({ external = true, ...props }) => {
   );
 };
 
+export const NoteList = styled('ul')`
+  padding-left: 18px;
+`;
+export const NotePoints = styled('li')`
+  margin-top: 5px;
+`;
+
 export const PromptMessageContainer = styled(PMCont)``;
 
 export const PromptMessageHeading = styled(PMHeading)`
