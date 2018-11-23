@@ -12,7 +12,7 @@ import { ConnectButton } from '../styles';
 const NotConnected = compose(injectState)(({ effects }) => (
   <Fragment>
     <AccessGate
-      mt={'30px'}
+      mt={'40px'}
       Icon={Cavatica}
       title="Collaborative Analysis"
       detail="To analyze Kids First data on the cloud, connect to Cavatica."
