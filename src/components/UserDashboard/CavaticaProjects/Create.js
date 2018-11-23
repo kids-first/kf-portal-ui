@@ -3,7 +3,6 @@ import { compose, lifecycle, withState } from 'recompose';
 import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { withCard } from 'uikit/Multicard/context';
 
 import projectDescriptionPath from './projectDescription.md';
 
@@ -34,16 +33,14 @@ const BillingGroupSelect = styled('select')`
 const enhance = compose(
   injectState,
   withTheme,
-  withCard,
   withState('projectName', 'setProjectName', ''),
   withState('addingProject', 'setAddingProject', false),
   withState('billingGroups', 'setBillingGroups', []),
   withState('billingGroup', 'selectBillingGroup', null),
   lifecycle({
     async componentDidMount() {
-      const { setBillingGroups, card } = this.props;
-      card.setBadge(null);
-      card.setTitle('Create a CAVATICA Project');
+      const { setBillingGroups, onInit } = this.props;
+      onInit();
       getBillingGroups().then(bg => setBillingGroups(bg));
     },
   }),
@@ -84,7 +81,8 @@ const Create = ({
   billingGroups,
   selectedBillingGroup,
   selectBillingGroup,
-  card,
+  onProjectCreated,
+  onProjectCreationCancelled,
 }) => (
   <Column>
     <StyledLabel>Project Name:</StyledLabel>
@@ -103,16 +101,15 @@ const Create = ({
     </BillingGroupSelect>
 
     <Row mt="20px" justifyContent="space-between">
-      <WhiteButton onClick={() => card.setIndex(0)}>Cancel</WhiteButton>
+      <WhiteButton onClick={() => onProjectCreationCancelled()}>Cancel</WhiteButton>
       <LoadingOnClick
         onClick={async () => {
           await saveProject({
             projectName,
             selectedBillingGroup,
             billingGroups,
-            onSuccess: ({ id, card }) => {
-              card.setBadge(null);
-              card.setIndex(0);
+            onSuccess: ({ id }) => {
+              onProjectCreated();
             },
           });
           setAddingProject(false);
