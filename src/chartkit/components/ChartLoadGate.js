@@ -9,8 +9,8 @@ const ChartLoadGate = ({
   fetchedState: { isLoading, data, error },
   Chart,
   Loader = LoadingSpinner,
-  ErrorMessage = ErrorText,
-}) => (isLoading ? <Loader /> : data ? <Chart data={data} /> : <ErrorMessage />);
+  Error = ErrorText,
+}) => (isLoading ? <Loader /> : data ? <Chart data={data} /> : <Error />);
 
 ChartLoadGate.propTypes = {
   fetchedState: PropTypes.object,

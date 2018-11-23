@@ -9,6 +9,7 @@ import { Row, Col } from 'react-grid-system';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
+import { withTheme } from 'emotion-theming';
 
 import { StudiesChart, TopDiagnosesChart, UserInterestsChart } from './charts';
 import { withApi } from '../../services/api';
@@ -17,10 +18,10 @@ import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobal
 import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
-import { withTheme } from 'emotion-theming';
 
 import { DashboardCard, CardContentSpinner } from './styles';
 import { SizeProvider } from 'components/Utils';
+import DashboardCardError from './DashboardCardError';
 
 const UserDashboard = styled('div')`
   width: 100%;
@@ -92,6 +93,7 @@ export default compose(
               >
                 {fetchedState => (
                   <ChartLoadGate
+                    Error={DashboardCardError}
                     Loader={CardContentSpinner}
                     fetchedState={fetchedState}
                     Chart={StudiesChart}
@@ -109,6 +111,7 @@ export default compose(
               >
                 {fetchedState => (
                   <ChartLoadGate
+                    Error={DashboardCardError}
                     Loader={CardContentSpinner}
                     fetchedState={fetchedState}
                     Chart={UserInterestsChart}
@@ -132,6 +135,7 @@ export default compose(
               >
                 {fetchedState => (
                   <ChartLoadGate
+                    Error={DashboardCardError}
                     Loader={CardContentSpinner}
                     fetchedState={fetchedState}
                     Chart={TopDiagnosesChart}
