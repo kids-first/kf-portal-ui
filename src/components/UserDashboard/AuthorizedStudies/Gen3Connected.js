@@ -113,7 +113,7 @@ const Gen3Connected = ({
       ) : (
         <Column>
           {authorizedStudies ? (
-            authorizedStudies.length ? (
+            !authorizedStudies.length ? (
               <Box mt={20}>
                 <NoAuthorizedStudiesMessage />
               </Box>
