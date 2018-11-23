@@ -10,7 +10,7 @@ const CavaticaProvider = ({ children, onData }) => (
       const projects = await getCavaticaProjects();
       onData(projects);
 
-      Promise.all(
+      const projectList = await Promise.all(
         projects.map(async p => {
           const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
             getMembers({ project: p.id }),
@@ -27,9 +27,9 @@ const CavaticaProvider = ({ children, onData }) => (
 
           return { ...p, members: members.items.length, tasks };
         }),
-      ).then(projectList => {
-        setState({ projects: projectList, loading: false });
-      });
+      );
+
+      setState({ projects: projectList, loading: false });
     }}
   >
     {({ state }) => children(state)}
