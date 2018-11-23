@@ -21,8 +21,8 @@ const NoProjects = ({ tabToCreate }) => (
       <PromptMessageContent>
         <NoteList>
           <NotePoints>
-            <CardLink onClick={() => card.setIndex(1)}>Create a CAVATICA Project</CardLink>
-            easily from the portal.
+            <CardLink onClick={tabToCreate}>Create a CAVATICA Project</CardLink> easily from the
+            portal.
           </NotePoints>
           <NotePoints>
             Or join one of the{' '}
