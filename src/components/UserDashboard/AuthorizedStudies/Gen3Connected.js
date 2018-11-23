@@ -63,6 +63,8 @@ const Gen3Connected = ({
   gen3userDetails,
   loading,
 }) => {
+  const userConsentCodes = Object.keys(gen3userDetails.projects || {});
+
   const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
     const unAuthorizedFiles = (
       unauthorizedStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }
@@ -72,6 +74,7 @@ const Gen3Connected = ({
       [authorizedStudy.id]: {
         authorizedFiles: authorizedStudy.files,
         unAuthorizedFiles: unAuthorizedFiles,
+        consentCodes: userConsentCodes.filter(code => code.includes(authorizedStudy.id)),
       },
     };
   }, {});
@@ -96,13 +99,15 @@ const Gen3Connected = ({
         <Column>
           {authorizedStudies ? (
             authorizedStudies.map(({ studyShortName, id: studyId }) => {
-              const { authorizedFiles, unAuthorizedFiles } = combinedStudyData[studyId];
+              const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[
+                studyId
+              ];
               return (
                 <Study
                   key={studyId}
                   studyId={studyId}
                   name={studyShortName}
-                  codes={''}
+                  consentCodes={consentCodes}
                   authorized={authorizedFiles.length}
                   total={authorizedFiles.length + unAuthorizedFiles.length}
                   onStudyTotalClick={onStudyTotalClick(studyId)}
