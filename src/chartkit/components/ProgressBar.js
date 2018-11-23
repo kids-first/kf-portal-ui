@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ProgressBar = ({ percent, width, strokeColor, trailColor }) => {
+const ProgressBar = ({ percent, width, onHover, onClick, strokeColor, trailColor }) => {
   const pathStyle = {
     strokeDasharray: '100px, 100px',
     strokeDashoffset: `${100 - percent}px`,
@@ -13,7 +13,7 @@ const ProgressBar = ({ percent, width, strokeColor, trailColor }) => {
   const viewBoxString = `0 0 100 ${width}`;
 
   return (
-    <svg viewBox={viewBoxString} preserveAspectRatio="none">
+    <svg viewBox={viewBoxString} preserveAspectRatio="none" onClick={onClick}>
       <path
         d={pathString}
         strokeLinecap={'round'}

@@ -59,8 +59,13 @@ const Study = ({
         files
       </StudyCount>
     </Row>
+<<<<<<< HEAD
     <Codes>Consent Codes: {consentCodes.join(', ')}</Codes>
     <ProgressBar numerator={authorized} denominator={total} />
+=======
+    <Codes>Consent Codes:</Codes> {}
+    <ProgressBar onClick={onStudyAuthorizedClick} percent={(authorized / total) * 100} />
+>>>>>>> add onclick
   </StudyCol>
 );
 
