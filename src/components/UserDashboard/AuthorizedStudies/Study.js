@@ -52,11 +52,11 @@ const Study = ({
       <StudyCount>
         Authorized:{' '}
         <NumberLink onClick={onStudyAuthorizedClick} hasExternalIcon={false}>
-          {authorized}
+          {authorized.toLocaleString()}
         </NumberLink>
         {' / '}
         <NumberLink onClick={onStudyTotalClick} hasExternalIcon={false}>
-          {total}
+          {total.toLocaleString()}
         </NumberLink>{' '}
         files
       </StudyCount>
