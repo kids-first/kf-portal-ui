@@ -16,6 +16,8 @@ const isValidKey = key => {
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
+  console.log('isConnected: ', isConnected);
+
   const onCavaticaData = cardState => projects => {
     cardState.setBadge(projects.length);
   };
@@ -39,7 +41,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
   return (
     <DashboardMulticard
       inactive={!isConnected}
-      scrollable
+      scrollable={isConnected}
       tabs={
         isConnected
           ? [
@@ -70,12 +72,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                 ),
               },
             ]
-          : [
-              {
-                title: 'CAVATICA Projects',
-                component: cardState => <NotConnected />,
-              },
-            ]
+          : [{ title: 'CAVATICA Projects', component: cardState => <NotConnected /> }]
       }
     />
   );
