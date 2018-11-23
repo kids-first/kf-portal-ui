@@ -5,7 +5,7 @@ import { applyDefaultStyles } from 'uikit/Core';
 export const CardWrapper = applyDefaultStyles(styled('div')`
   border-radius: 10px;
   box-shadow: 0 0 9.5px 0.5px rgba(160, 160, 163, 0.25);
-  background-color: rgba(255, 255, 255, ${props => (props.inactive ? '50%' : '100%')});
+  background-color: ${({ inactive }) => (inactive ? '#FAFAFC' : '#FFF')};
   padding: 20px 30px;
   display: flex;
   flex-direction: column;
