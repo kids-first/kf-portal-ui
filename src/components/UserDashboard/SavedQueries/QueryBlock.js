@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 
 import { injectState } from 'freactal';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { Box, Flex, Span, Link } from 'uikit/Core';
+import { Box, Flex, Span, Link as Linkbase } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { withTheme } from 'emotion-theming';
@@ -14,6 +14,7 @@ import { withApi } from 'services/api';
 
 const Detail = styled(Span)`
   color: ${({ theme }) => theme.greyScale1};
+  font-family: ${({ theme }) => theme.fonts.details};
 `;
 
 const Query = styled(Flex)`
@@ -32,6 +33,24 @@ const Query = styled(Flex)`
       : ``};
 `;
 
+const Link = styled(Linkbase)`
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-size: 14px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.primary};
+`;
+
+const DetailBox = styled(Box)`
+  font-size: 12px;
+  margin: 2px 0;
+  color: ${({ theme }) => theme.greyScale1};
+  font-family: ${({ theme }) => theme.fonts.details};
+`;
+
+const DetailHeading = styled('span')`
+  color: ${({ theme }) => theme.greyScale9};
+`;
+
 const QueryBlock = compose(
   injectState,
   withApi,
@@ -48,9 +67,6 @@ const QueryBlock = compose(
               label: JSON.stringify(q),
             });
           }}
-          fontSize={1}
-          fontWeight="bold"
-          color={theme.primary}
           to={q.link}
         >
           {q.alias}
@@ -72,16 +88,17 @@ const QueryBlock = compose(
           </Span>
         </Box>
       </Row>
-      <Box mt={2} mb={2} color={theme.greyScale9} fontSize="0.75rem">
-        <Detail>{(q.content.Files || 0).toLocaleString()}</Detail> Files |{' '}
-        <Detail>{(q.content.Participants || 0).toLocaleString()}</Detail> Participants |{' '}
-        <Detail>{(q.content.Families || 0).toLocaleString()}</Detail> Families |{' '}
+      <DetailBox>
+        <Detail>{(q.content.Files || 0).toLocaleString()}</Detail>{' '}
+        <DetailHeading>Files | </DetailHeading>
+        <Detail>{(q.content.Participants || 0).toLocaleString()}</Detail>{' '}
+        <DetailHeading>Participants | </DetailHeading>
+        <Detail>{(q.content.Families || 0).toLocaleString()}</Detail>
+        <DetailHeading> Families | </DetailHeading>
         <Detail>{q.content.Size}</Detail>
-      </Box>
+      </DetailBox>
       {savedTime ? (
-        <Box fontSize="0.75rem">
-          Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago
-        </Box>
+        <DetailBox>Saved {distanceInWords(new Date(), new Date(q.creationDate))} ago</DetailBox>
       ) : null}
     </Column>
   </Query>

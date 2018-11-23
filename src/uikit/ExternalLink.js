@@ -11,6 +11,7 @@ export default withTheme(
     className = '',
     href,
     theme,
+    iconSize,
     onClick = () => {},
     ...props
   }): React.Element => {
@@ -26,7 +27,7 @@ export default withTheme(
           onClick(e);
         }}
       >
-        {hasExternalIcon && <ExternalLinkIcon style={{ marginRight: '0.5rem' }} />}
+        {hasExternalIcon && <ExternalLinkIcon size={iconSize} style={{ marginRight: '0.5rem' }} />}
         {children}
       </a>
     );
