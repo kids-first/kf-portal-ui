@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
+import { getTaskLink } from 'services/cavatica';
 
 const Project = styled(Column)`
   justify-content: center;
@@ -32,14 +33,43 @@ const Link = styled(ExternalLink)`
   font-weight: 600;
 `;
 
-const Task = styled('div')`
+const taskStyle = props => css`
   display: inline-block;
   border-radius: 7.5px;
   margin-left: 8px;
   font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  padding: 2px 4px;
+  font-family: ${props.theme.fonts.details};
+  padding: 2px 5px;
   font-weight: 600;
+`;
+
+const completedTaskStyle = props =>
+  css`
+    background-color: #dcfbf3;
+    color: #0e906f;
+  `;
+
+const runningTaskStyle = props =>
+  css`
+    background-color: #daecfb;
+    color: #1163a7;
+  `;
+
+const failedTaskStyle = props =>
+  css`
+    background-color: #fbdada;
+    color: #a71111;
+  `;
+
+const TaskLink = styled('a')`
+  ${taskStyle};
+  ${props => props.displayStyle};
+  text-decoration: none;
+`;
+
+const TaskSpan = styled('span')`
+  ${taskStyle};
+  ${props => props.displayStyle};
 `;
 
 const TaskBreakdown = styled('div')`
@@ -53,6 +83,18 @@ const NoTasks = styled('span')`
   font-family: ${({ theme }) => theme.fonts.details};
   font-weight: normal;
 `;
+
+const Task = ({ tasks, status, projectId, ...props }) => {
+  const text = `${tasks} ${status}`;
+
+  return tasks > 0 ? (
+    <TaskLink href={getTaskLink({ project: projectId, status: status })} target="_blank" {...props}>
+      {text}
+    </TaskLink>
+  ) : (
+    <TaskSpan {...props}>{text}</TaskSpan>
+  );
+};
 
 const ProjectList = ({ projects }) =>
   projects.map((p, i) => (
@@ -68,26 +110,31 @@ const ProjectList = ({ projects }) =>
           </Members>
         </div>
       </Row>
-      <Row mt={'10px'} pl={0}>
-        <TaskBreakdown>
-          Task Breakdown:{' '}
-          {Object.keys(p.tasks).reduce((prev, key) => prev + p.tasks[key], 0) === 0 ? (
-            <NoTasks>There are no tasks for this project yet.</NoTasks>
-          ) : (
-            <Fragment>
-              <Task style={{ backgroundColor: '#dcfbf3', color: '#0e906f' }}>{`${
-                p.tasks.completed
-              } COMPLETED`}</Task>
-              <Task style={{ backgroundColor: '#fbdada', color: '#a71111' }}>{`${
-                p.tasks.failed
-              } FAILED`}</Task>
-              <Task style={{ backgroundColor: '#daecfb', color: '#1163a7' }}>{`${
-                p.tasks.running
-              } RUNNING`}</Task>
-            </Fragment>
-          )}
-        </TaskBreakdown>
-      </Row>
+      {Object.keys(p.tasks).reduce((prev, key) => prev + p.tasks[key], 0) === 0 ? null : (
+        <Row mt={'10px'} pl={0}>
+          <TaskBreakdown>
+            Task Breakdown:{' '}
+            <Task
+              tasks={p.tasks.completed}
+              projectId={p.id}
+              status="COMPLETED"
+              displayStyle={completedTaskStyle}
+            />
+            <Task
+              tasks={p.tasks.failed}
+              projectId={p.id}
+              status="FAILED"
+              displayStyle={failedTaskStyle}
+            />
+            <Task
+              tasks={p.tasks.running}
+              projectId={p.id}
+              status="RUNNING"
+              displayStyle={runningTaskStyle}
+            />
+          </TaskBreakdown>
+        </Row>
+      )}
     </Project>
   ));
 
