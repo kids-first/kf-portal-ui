@@ -96,9 +96,8 @@ const Task = ({ tasks, status, projectId, ...props }) => {
   );
 };
 
-const ProjectList = ({ projects }) => {
-  console.log('projects', projects);
-  return projects.map((p, i) => (
+const ProjectList = ({ projects }) =>
+  projects.map((p, i) => (
     <Project key={i}>
       <Row justifyContent="space-between" pl={0}>
         <Link href={`https://cavatica.sbgenomics.com/u/${p.id}`} iconSize={11}>
@@ -138,6 +137,5 @@ const ProjectList = ({ projects }) => {
       )}
     </Project>
   ));
-};
 
 export default ProjectList;
