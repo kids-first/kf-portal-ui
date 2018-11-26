@@ -39,7 +39,7 @@ const taskStyle = props => css`
   margin-left: 8px;
   font-size: 12px;
   font-family: ${props.theme.fonts.details};
-  padding: 2px 4px;
+  padding: 2px 5px;
   font-weight: 600;
 `;
 
@@ -111,35 +111,31 @@ const ProjectList = ({ projects }) => {
           </Members>
         </div>
       </Row>
-      <Row mt={'10px'} pl={0}>
-        <TaskBreakdown>
-          Task Breakdown:{' '}
-          {Object.keys(p.tasks).reduce((prev, key) => prev + p.tasks[key], 0) === 0 ? (
-            <NoTasks>There are no tasks for this project yet.</NoTasks>
-          ) : (
-            <Fragment>
-              <Task
-                tasks={p.tasks.completed}
-                projectId={p.id}
-                status="COMPLETED"
-                displayStyle={completedTaskStyle}
-              />
-              <Task
-                tasks={p.tasks.failed}
-                projectId={p.id}
-                status="FAILED"
-                displayStyle={failedTaskStyle}
-              />
-              <Task
-                tasks={p.tasks.running}
-                projectId={p.id}
-                status="RUNNING"
-                displayStyle={runningTaskStyle}
-              />
-            </Fragment>
-          )}
-        </TaskBreakdown>
-      </Row>
+      {Object.keys(p.tasks).reduce((prev, key) => prev + p.tasks[key], 0) === 0 ? null : (
+        <Row mt={'10px'} pl={0}>
+          <TaskBreakdown>
+            Task Breakdown:{' '}
+            <Task
+              tasks={p.tasks.completed}
+              projectId={p.id}
+              status="COMPLETED"
+              displayStyle={completedTaskStyle}
+            />
+            <Task
+              tasks={p.tasks.failed}
+              projectId={p.id}
+              status="FAILED"
+              displayStyle={failedTaskStyle}
+            />
+            <Task
+              tasks={p.tasks.running}
+              projectId={p.id}
+              status="RUNNING"
+              displayStyle={runningTaskStyle}
+            />
+          </TaskBreakdown>
+        </Row>
+      )}
     </Project>
   ));
 };
