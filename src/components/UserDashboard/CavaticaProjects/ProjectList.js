@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -33,14 +33,43 @@ const Link = styled(ExternalLink)`
   font-weight: 600;
 `;
 
-const Task = styled('a')`
+const taskStyle = props => css`
   display: inline-block;
   border-radius: 7.5px;
   margin-left: 8px;
   font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.details};
+  font-family: ${props.theme.fonts.details};
   padding: 2px 4px;
   font-weight: 600;
+`;
+
+const completedTaskStyle = props =>
+  css`
+    background-color: #dcfbf3;
+    color: #0e906f;
+  `;
+
+const runningTaskStyle = props =>
+  css`
+    background-color: #daecfb;
+    color: #1163a7;
+  `;
+
+const failedTaskStyle = props =>
+  css`
+    background-color: #fbdada;
+    color: #a71111;
+  `;
+
+const TaskLink = styled('a')`
+  ${taskStyle};
+  ${props => props.displayStyle};
+  text-decoration: none;
+`;
+
+const TaskSpan = styled('span')`
+  ${taskStyle};
+  ${props => props.displayStyle};
 `;
 
 const TaskBreakdown = styled('div')`
@@ -55,8 +84,21 @@ const NoTasks = styled('span')`
   font-weight: normal;
 `;
 
-const ProjectList = ({ projects }) =>
-  projects.map((p, i) => (
+const Task = ({ tasks, status, projectId, ...props }) => {
+  const text = `${tasks} ${status}`;
+
+  return tasks > 0 ? (
+    <TaskLink href={getTaskLink({ project: projectId, status: status })} target="_blank" {...props}>
+      {text}
+    </TaskLink>
+  ) : (
+    <TaskSpan {...props}>{text}</TaskSpan>
+  );
+};
+
+const ProjectList = ({ projects }) => {
+  console.log('projects', projects);
+  return projects.map((p, i) => (
     <Project key={i}>
       <Row justifyContent="space-between" pl={0}>
         <Link href={`https://cavatica.sbgenomics.com/u/${p.id}`} iconSize={11}>
@@ -77,25 +119,29 @@ const ProjectList = ({ projects }) =>
           ) : (
             <Fragment>
               <Task
-                href={getTaskLink({ project: p.id, status: 'COMPLETED' })}
-                target="_blank"
-                style={{ backgroundColor: '#dcfbf3', color: '#0e906f' }}
-              >{`${p.tasks.completed} COMPLETED`}</Task>
+                tasks={p.tasks.completed}
+                projectId={p.id}
+                status="COMPLETED"
+                displayStyle={completedTaskStyle}
+              />
               <Task
-                target="_blank"
-                href={getTaskLink({ project: p.id, status: 'FAILED' })}
-                style={{ backgroundColor: '#fbdada', color: '#a71111' }}
-              >{`${p.tasks.failed} FAILED`}</Task>
+                tasks={p.tasks.failed}
+                projectId={p.id}
+                status="FAILED"
+                displayStyle={failedTaskStyle}
+              />
               <Task
-                target="_blank"
-                href={getTaskLink({ project: p.id, status: 'RUNNING' })}
-                style={{ backgroundColor: '#daecfb', color: '#1163a7' }}
-              >{`${p.tasks.running} RUNNING`}</Task>
+                tasks={p.tasks.running}
+                projectId={p.id}
+                status="RUNNING"
+                displayStyle={runningTaskStyle}
+              />
             </Fragment>
           )}
         </TaskBreakdown>
       </Row>
     </Project>
   ));
+};
 
 export default ProjectList;
