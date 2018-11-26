@@ -16,16 +16,6 @@ import { DashboardCard } from '../styles';
 import QueryBlock from './QueryBlock';
 import CardHeader from 'uikit/Card/CardHeader';
 
-const QueriesHeading = styled('h4')`
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.75;
-  color: ${({ theme }) => theme.secondary};
-  margin-bottom: 7px;
-  margin-top: 0;
-  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-`;
-
 const Container = styled(Column)`
   margin: 0 0 15px 0;
   flex: 3;
@@ -65,17 +55,13 @@ export const MySavedQueries = compose(
             {!queries.length ? (
               <Box mt={2}>
                 <PromptMessageContainer info mb={'8px'}>
-                  <PromptMessageHeading info mb={10}>
-                    You have no saved queries yet.
-                  </PromptMessageHeading>
                   <PromptMessageContent>
                     Explore the
-                    <FileRepositoryLink to="/search/file"> File Repository</FileRepositoryLink> and
-                    start saving queries!
+                    <FileRepositoryLink to="/search/file"> File Repository</FileRepositoryLink> to
+                    save queries!
                   </PromptMessageContent>
                 </PromptMessageContainer>
                 <Box mt={2} mb={2}>
-                  <QueriesHeading>Examples:</QueriesHeading>
                   {exampleQueries.map(q => {
                     q.link = `/search${q.content.longUrl.split('/search')[1]}`;
                     return (
