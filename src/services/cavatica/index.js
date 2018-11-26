@@ -1,5 +1,5 @@
 import ajax from 'services/ajax';
-import { cavaticaApiRoot } from 'common/injectGlobals';
+import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import { chunk as makeChunks } from 'lodash';
 import projectDescriptionPath from './projectDescription.md';
 import { memoize } from 'lodash';
@@ -157,6 +157,10 @@ export const getTasks = async ({ type, project }) => {
     console.warn(error);
   }
   return data;
+};
+
+export const getTaskLink = ({ project, status }) => {
+  return `${cavaticaWebRoot}u/${project}/tasks/#q?page=1&status=${status}`;
 };
 
 /**

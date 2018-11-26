@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
+import { getTaskLink } from 'services/cavatica';
 
 const Project = styled(Column)`
   justify-content: center;
@@ -32,7 +33,7 @@ const Link = styled(ExternalLink)`
   font-weight: 600;
 `;
 
-const Task = styled('div')`
+const Task = styled('a')`
   display: inline-block;
   border-radius: 7.5px;
   margin-left: 8px;
@@ -75,15 +76,21 @@ const ProjectList = ({ projects }) =>
             <NoTasks>There are no tasks for this project yet.</NoTasks>
           ) : (
             <Fragment>
-              <Task style={{ backgroundColor: '#dcfbf3', color: '#0e906f' }}>{`${
-                p.tasks.completed
-              } COMPLETED`}</Task>
-              <Task style={{ backgroundColor: '#fbdada', color: '#a71111' }}>{`${
-                p.tasks.failed
-              } FAILED`}</Task>
-              <Task style={{ backgroundColor: '#daecfb', color: '#1163a7' }}>{`${
-                p.tasks.running
-              } RUNNING`}</Task>
+              <Task
+                href={getTaskLink({ project: p.id, status: 'COMPLETED' })}
+                target="_blank"
+                style={{ backgroundColor: '#dcfbf3', color: '#0e906f' }}
+              >{`${p.tasks.completed} COMPLETED`}</Task>
+              <Task
+                target="_blank"
+                href={getTaskLink({ project: p.id, status: 'FAILED' })}
+                style={{ backgroundColor: '#fbdada', color: '#a71111' }}
+              >{`${p.tasks.failed} FAILED`}</Task>
+              <Task
+                target="_blank"
+                href={getTaskLink({ project: p.id, status: 'RUNNING' })}
+                style={{ backgroundColor: '#daecfb', color: '#1163a7' }}
+              >{`${p.tasks.running} RUNNING`}</Task>
             </Fragment>
           )}
         </TaskBreakdown>
