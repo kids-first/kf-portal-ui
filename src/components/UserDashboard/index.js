@@ -103,7 +103,7 @@ export default compose(
             </DashboardCard>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Research Interests">
+            <DashboardCard title="Members' Research Interests">
               <DataProvider
                 url={`${publicStatsApiRoot}users/interests`}
                 api={api}
