@@ -3,8 +3,13 @@ import { withTheme } from 'emotion-theming';
 import _ from 'lodash';
 
 import { titleCase } from 'common/displayFormatters';
+import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
+
+const ALLOWED_INTERESTS = []
+  .concat(DISEASE_AREAS, STUDY_SHORT_NAMES)
+  .map(interest => interest.toLowerCase());
 
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
@@ -66,7 +71,10 @@ export const StudiesChart = withTheme(({ data, theme }) => {
 
 export const UserInterestsChart = withTheme(({ data, theme }) => {
   // sort by count then alpha, limit to top 10
-  const sortedInterests = _.orderBy(data, ['count', 'name'], ['desc', 'asc'])
+  const filteredInterests = data.filter(interest =>
+    ALLOWED_INTERESTS.includes(interest.name.toLowerCase()),
+  );
+  const sortedInterests = _.orderBy(filteredInterests, ['count', 'name'], ['desc', 'asc'])
     .slice(0, 10)
     .map(interest => ({
       id: titleCase(interest.name),
