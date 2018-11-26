@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
 import { injectState } from 'freactal';
@@ -107,63 +107,45 @@ const Gen3Connected = ({
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       {loading ? (
         <CardContentSpinner />
       ) : (
         <Column>
-          {authorizedStudies ? (
-            !authorizedStudies.length ? (
-              <Box mt={20}>
-                <NoAuthorizedStudiesMessage />
-              </Box>
-            ) : (
-              authorizedStudies.map(({ studyShortName, id: studyId }) => {
-                const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[
-                  studyId
-                ];
-                return (
-                  <Study
-                    key={studyId}
-                    studyId={studyId}
-                    name={studyShortName}
-                    consentCodes={consentCodes}
-                    authorized={authorizedFiles.length}
-                    total={authorizedFiles.length + unAuthorizedFiles.length}
-                    onStudyTotalClick={onStudyTotalClick(studyId)}
-                    onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
-                  />
-                );
-              })
-            )
+          {authorizedStudies && authorizedStudies.length > 0 ? (
+            authorizedStudies.map(({ studyShortName, id: studyId }) => {
+              const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[
+                studyId
+              ];
+              return (
+                <Study
+                  key={studyId}
+                  studyId={studyId}
+                  name={studyShortName}
+                  consentCodes={consentCodes}
+                  authorized={authorizedFiles.length}
+                  total={authorizedFiles.length + unAuthorizedFiles.length}
+                  onStudyTotalClick={onStudyTotalClick(studyId)}
+                  onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
+                />
+              );
+            })
           ) : (
-            <Column>
-              <PromptMessageContainer mb={0} width={'100%'}>
-                <PromptMessageHeading mb={10}>
-                  You are connected to Gen3, but you don’t have access to controlled data yet.
-                </PromptMessageHeading>
-                <PromptMessageContent>
-                  Start applying for access to studies of interest from our{' '}
-                  <ExternalLink
-                    href={'https://kidsfirstdrc.org/support/studies-and-access/'}
-                    hasExternalIcon={false}
-                  >
-                    studies and access page
-                  </ExternalLink>
-                </PromptMessageContent>
-              </PromptMessageContainer>
-              <Info
-                link={{
-                  url:
-                    'https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access',
-                  text: 'applying for data access.',
-                }}
-              />
-            </Column>
+            <Box mt={20}>
+              <Column>
+                <NoAuthorizedStudiesMessage />
+                <Info
+                  link={{
+                    url: `${kfWebRoot}/support/studies-and-access/#applying-for-data-access`,
+                    text: 'applying for data access.',
+                  }}
+                />
+              </Column>{' '}
+            </Box>
           )}
         </Column>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 
