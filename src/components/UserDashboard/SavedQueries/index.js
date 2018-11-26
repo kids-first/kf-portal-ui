@@ -7,7 +7,7 @@ import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
 import { Box, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
-import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
+import { PromptMessageContainer, PromptMessageContent } from '../styles';
 
 import { CardContentSpinner } from '../styles';
 
