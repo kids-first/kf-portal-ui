@@ -10,41 +10,57 @@ class ProgressBar extends Component {
   }
 
   render() {
-    const { percent, width, onHover, onClick, strokeColor, trailColor, style } = this.props;
+    const { percent, width, onHover, onClick, percentColor, trailColor, style } = this.props;
 
-    const pathStyle = {
-      strokeDasharray: '100px, 100px',
-      strokeDashoffset: `${100 - percent}px`,
+    const percentWidth = `calc(100% - ${100 - percent}%)`;
+
+    const svgStyle = {
+      pointerEvents: 'all',
+      cursor: this.state.hover ? 'pointer' : 'default',
+      ...style,
     };
-
-    const center = width / 2;
-    const right = 100 - width / 2;
-    const pathString = `M ${center},${center} L ${right},${center}`;
-    const viewBoxString = `0 0 100 ${width}`;
 
     return (
       <svg
-        viewBox={viewBoxString}
         preserveAspectRatio="none"
-        style={{ pointerEvents: 'all', ...style }}
+        style={svgStyle}
         onClick={onClick}
         onMouseOver={e => this.setState({ hover: true })}
         onMouseLeave={e => this.setState({ hover: false })}
       >
-        <path
-          d={pathString}
-          strokeLinecap={'round'}
-          stroke={trailColor}
-          strokeWidth={width}
-          fillOpacity="0"
-        />
-        <path
-          d={pathString}
-          strokeLinecap={'round'}
-          stroke={strokeColor}
-          strokeWidth={width}
-          fillOpacity="0"
-          style={pathStyle}
+        <defs>
+          <pattern
+            id="lines"
+            width="14.142135623730951"
+            height="14.14213562373095"
+            patternUnits="userSpaceOnUse"
+          >
+            <rect
+              width="14.142135623730951"
+              height="14.14213562373095"
+              fill={percentColor}
+              stroke="rgba(255, 0, 0, 0.1)"
+              strokeWidth="0"
+            />
+            <path
+              d="
+                    M -14.142135623730951 14.14213562373095 L 14.142135623730951 -14.14213562373095
+                    M -14.142135623730951 28.2842712474619 L 28.284271247461902 -14.14213562373095
+                    M 0 28.2842712474619 L 28.284271247461902 0
+                "
+              strokeWidth="4"
+              stroke="#ffffff54"
+              strokeLinecap="square"
+            />
+          </pattern>
+        </defs>
+
+        <rect height={width} width={'100%'} fill={trailColor} rx={10} />
+        <rect
+          height={width}
+          width={percentWidth}
+          fill={this.state.hover ? 'url(#lines)' : percentColor}
+          rx={10}
         />
       </svg>
     );
@@ -53,15 +69,15 @@ class ProgressBar extends Component {
 
 ProgressBar.defaultProps = {
   percent: 0,
-  strokeColor: '#f79122',
+  percentColor: '#f79122',
   trailColor: '#cacbcf',
-  width: 2,
+  width: 20,
   style: {},
 };
 
 ProgressBar.propTypes = {
   percent: PropTypes.number,
-  strokeColor: PropTypes.string,
+  percentColor: PropTypes.string,
   width: PropTypes.number,
 };
 
