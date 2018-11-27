@@ -60,7 +60,11 @@ const Study = ({
       </StudyCount>
     </Row>
     <Codes>Consent Codes: {consentCodes.join(', ')}</Codes>
-    <ProgressBar onClick={onStudyAuthorizedClick} percent={(authorized / total) * 100} />
+    <ProgressBar
+      onClick={onStudyAuthorizedClick}
+      percent={(authorized / total) * 100}
+      height={10}
+    />
   </StudyCol>
 );
 

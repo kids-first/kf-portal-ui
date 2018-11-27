@@ -9,12 +9,12 @@ const FixedHeightWrapper = ({ children }) => (
 
 storiesOf('ChartKit/ProgressBar', module).add('default', () => (
   <FixedHeightWrapper>
-    <ProgressBar style={{ height: 40 }} percent={67} onClick={x => x} />
+    <ProgressBar height={10} percent={67} onClick={x => x} />
   </FixedHeightWrapper>
 ));
 
 storiesOf('ChartKit/ProgressBar', module).add('on click', () => (
   <FixedHeightWrapper>
-    <ProgressBar style={{ height: 40 }} percent={67} onClick={x => alert('Clicked Progress Bar')} />
+    <ProgressBar height={40} percent={67} onClick={x => alert('Clicked Progress Bar')} />
   </FixedHeightWrapper>
 ));

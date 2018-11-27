@@ -10,24 +10,27 @@ class ProgressBar extends Component {
   }
 
   render() {
-    const { percent, width, onClick, percentColor, trailColor, style } = this.props;
+    const { percent, height, onClick, percentColor, trailColor, style } = this.props;
 
     const percentWidth = `calc(100% - ${100 - percent}%)`;
 
     const svgStyle = {
       pointerEvents: 'all',
-      width: '100%',
       cursor: this.state.hover ? 'pointer' : 'default',
+      width: '100%',
+      height: `${height}px`,
       ...style,
     };
+
+    const radius = height / 2;
 
     return (
       <svg
         preserveAspectRatio="none"
         style={svgStyle}
         onClick={onClick}
-        onMouseOver={e => this.setState({ hover: true })}
-        onMouseLeave={e => this.setState({ hover: false })}
+        onMouseOver={() => this.setState({ hover: true })}
+        onMouseLeave={() => this.setState({ hover: false })}
       >
         <defs>
           <pattern
@@ -56,12 +59,11 @@ class ProgressBar extends Component {
           </pattern>
         </defs>
 
-        <rect height={width} width={'100%'} fill={trailColor} rx={10} />
+        <rect width={'100%'} fill={trailColor} rx={radius} />
         <rect
-          height={width}
           width={percentWidth}
           fill={this.state.hover ? 'url(#lines)' : percentColor}
-          rx={10}
+          rx={radius}
         />
       </svg>
     );
@@ -69,17 +71,19 @@ class ProgressBar extends Component {
 }
 
 ProgressBar.defaultProps = {
-  percent: 0,
+  percent: 50,
   percentColor: '#f79122',
   trailColor: '#cacbcf',
-  width: 20,
   style: {},
+  height: 10,
+  onClick: x => x,
 };
 
 ProgressBar.propTypes = {
   percent: PropTypes.number,
   percentColor: PropTypes.string,
-  width: PropTypes.number,
+  height: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 export default ProgressBar;
