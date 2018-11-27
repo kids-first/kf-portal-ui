@@ -30,6 +30,7 @@ const Codes = styled(StudyCount)`
   font-size: 12px;
   font-weight: 600;
   color: #343434;
+  margin-bottom: 5px;
 `;
 
 const NumberLink = styled(ExternalLink)`
