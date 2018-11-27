@@ -10,12 +10,13 @@ class ProgressBar extends Component {
   }
 
   render() {
-    const { percent, width, onHover, onClick, percentColor, trailColor, style } = this.props;
+    const { percent, width, onClick, percentColor, trailColor, style } = this.props;
 
     const percentWidth = `calc(100% - ${100 - percent}%)`;
 
     const svgStyle = {
       pointerEvents: 'all',
+      width: '100%',
       cursor: this.state.hover ? 'pointer' : 'default',
       ...style,
     };
