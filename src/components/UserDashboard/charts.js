@@ -17,6 +17,19 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
+const studiesToolTip = data => {
+  const { familyMembers, probands, name } = data;
+  const participants = familyMembers + probands;
+  return (
+    <div>
+      <div>{name}</div>
+      <div>{`${probands} Probands`}</div>
+      <div>{`${familyMembers} Family Members`}</div>
+      <div>{`${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`}</div>
+    </div>
+  );
+};
+
 const participantTooltip = data => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
@@ -55,7 +68,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       indexBy="label"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
-      tooltipFormatter={participantTooltip}
+      tooltipFormatter={studiesToolTip}
       sortBy={sortDescParticipant}
       tickInterval={4}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
