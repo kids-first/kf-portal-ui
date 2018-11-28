@@ -1,2 +1,2 @@
-export { default } from './HorizontalBar';
-export { default } from './Donut';
+//export { default } from './HorizontalBar';
+export { default } from './ProgressBar';

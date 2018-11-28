@@ -30,6 +30,7 @@ const Codes = styled(StudyCount)`
   font-size: 12px;
   font-weight: 600;
   color: #343434;
+  margin-bottom: 5px;
 `;
 
 const NumberLink = styled(ExternalLink)`
@@ -60,7 +61,11 @@ const Study = ({
       </StudyCount>
     </Row>
     <Codes>Consent Codes: {consentCodes.join(', ')}</Codes>
-    <ProgressBar numerator={authorized} denominator={total} />
+    <ProgressBar
+      onClick={onStudyAuthorizedClick}
+      percent={(authorized / total) * 100}
+      height={10}
+    />
   </StudyCol>
 );
 
