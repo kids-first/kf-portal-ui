@@ -23,8 +23,8 @@ const studiesToolTip = data => {
   return (
     <div>
       <div>{name}</div>
-      <div>{`${probands} Probands`}</div>
-      <div>{`${familyMembers} Family Members`}</div>
+      <div>{`${probands.toLocaleString()} Probands`}</div>
+      <div>{`${familyMembers.toLocaleString()} Family Members`}</div>
       <div>{`${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`}</div>
     </div>
   );
