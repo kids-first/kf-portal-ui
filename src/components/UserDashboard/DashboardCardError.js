@@ -22,7 +22,7 @@ export default () => {
         <PromptMessageContent>
           Try refreshing the page and if the error persists,{' '}
           <ExternalLink href={`${kfWebRoot}/contact/`} hasExternalIcon={false}>
-            contant us
+            contact us
           </ExternalLink>
         </PromptMessageContent>
       </PromptMessageContainer>
