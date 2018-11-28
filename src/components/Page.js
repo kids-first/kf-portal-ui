@@ -9,7 +9,6 @@ import { applyDefaultStyles } from 'uikit/Core';
 const Container = applyDefaultStyles(styled(Column)`
   position: relative;
   height: 100vh;
-  min-width: 1024px;
   width: 100%;
   background-repeat: repeat;
 `);

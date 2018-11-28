@@ -70,7 +70,11 @@ const ShowIf = ({ condition, children, ...rest }) => (
   </div>
 );
 
-export default compose(injectState, withTheme, withApi)(
+export default compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     api,
     sqon,
@@ -122,17 +126,21 @@ export default compose(injectState, withTheme, withApi)(
                 render={({ loading, data }) => {
                   const containerRef = React.createRef();
                   if (data) {
-                    const { __schema: { types } } = data;
+                    const {
+                      __schema: { types },
+                    } = data;
                     const gqlAggregationFields = types.find(
                       ({ name }) => name === `${graphqlField}Aggregations`,
                     ).fields;
                     const extendAggsConfig = config =>
-                      config.filter(({ show }) => show).map(config => ({
-                        ...config,
-                        type: gqlAggregationFields.find(
-                          fileAggField => config.field === fileAggField.name,
-                        ).type.name,
-                      }));
+                      config
+                        .filter(({ show }) => show)
+                        .map(config => ({
+                          ...config,
+                          type: gqlAggregationFields.find(
+                            fileAggField => config.field === fileAggField.name,
+                          ).type.name,
+                        }));
                     const renderAggsConfig = ({ aggConfig, quickSearchFields = [] }) => (
                       <AggregationsList
                         {...{

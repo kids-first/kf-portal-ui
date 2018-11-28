@@ -136,7 +136,9 @@ const MySavedQueries = compose(
               }))
               .slice()
               .sort((a, b) => b.date - a.date)
-              .map(q => <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />)}
+              .map(q => (
+                <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
+              ))}
           </Box>
 
           {!exampleQueries.length ? null : (
