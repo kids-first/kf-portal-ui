@@ -17,6 +17,7 @@ const IndexCircle = styled('div')`
 
 const IndexDots = ({ index, items }) => {
   const dots = [];
+  if (items <= 1) return null;
   for (let i = 0; i < items; i++) {
     dots.push(<IndexCircle key={i} active={i === index} />);
   }
