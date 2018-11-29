@@ -46,7 +46,7 @@ const MultiHeader = ({ headings, children, ...rest }) => (
     <Row>
       {headings.map((heading, i) => (
         <div key={i}>
-          <Title {...rest} ml={i != 0 ? '30px' : 0}>
+          <Title {...rest} ml={i !== 0 ? '30px' : 0}>
             {heading.title}
           </Title>
           {heading.badge !== null ? <Badge>{heading.badge}</Badge> : null}
