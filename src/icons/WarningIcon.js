@@ -12,7 +12,7 @@ export default ({ width = 94, height = 94, fill = '#ff9427', bg = '#fff', ...pro
     <defs />
     <title>icon-warning</title>
     <g id="Layer_1" data-name="Layer 1">
-      <circle fill={bg} class="cls-1" cx="47" cy="47" r="43" />
+      <circle fill={bg} className="cls-1" cx="47" cy="47" r="43" />
       <path
         fill={fill}
         class="cls-2"
