@@ -34,12 +34,6 @@ class Multicard extends Component {
     this.setBadge = this.setBadge.bind(this);
     this.setTitle = this.setTitle.bind(this);
     this.setIndex = this.setIndex.bind(this);
-
-    this.cardState = {
-      setBadge: this.setBadge,
-      setTitle: this.setTitle,
-      setIndex: this.setIndex,
-    };
   }
 
   /*
@@ -83,6 +77,11 @@ class Multicard extends Component {
     const { tabs, inactive, className, scrollable } = this.props;
 
     const activeTab = tabs[contentIndex];
+    const childProps = {
+      setBadge: this.setBadge,
+      setTitle: this.setTitle,
+      setIndex: this.setIndex,
+    };
 
     return (
       <div>
@@ -92,7 +91,7 @@ class Multicard extends Component {
           <CardWrapper className={className} inactive={inactive}>
             <HeaderWrapper inactive={inactive}>
               {activeTab.headerComponent ? (
-                activeTab.headerComponent(this.cardState)
+                activeTab.headerComponent(childProps)
               ) : (
                 <CardHeader title={title} badge={badgeNumber}>
                   {!inactive &&
@@ -107,7 +106,7 @@ class Multicard extends Component {
                 </CardHeader>
               )}
             </HeaderWrapper>
-            <CardContent scrollable={scrollable}>{activeTab.component(this.cardState)}</CardContent>
+            <CardContent scrollable={scrollable}>{activeTab.component(childProps)}</CardContent>
             {inactive ? null : <IndexDots index={contentIndex} items={tabs.length} />}
           </CardWrapper>
         )}
