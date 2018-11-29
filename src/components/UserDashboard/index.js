@@ -9,6 +9,7 @@ import { Row, Col } from 'react-grid-system';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
+import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { withTheme } from 'emotion-theming';
 
 import { StudiesChart, TopDiagnosesChart, UserInterestsChart } from './charts';
@@ -19,7 +20,7 @@ import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 
-import { DashboardCard, CardContentSpinner } from './styles';
+import { DashboardCard, CardContentSpinner, DashboardMulticard } from './styles';
 import { SizeProvider } from 'components/Utils';
 import DashboardCardError from './DashboardCardError';
 
@@ -81,26 +82,47 @@ export default compose(
             <CavaticaProjects />
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Studies">
-              <DataProvider
-                url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
-                api={api}
-                transform={data =>
-                  _(data.studies)
-                    .map(study => ({ ...study, label: _.startCase(study.name) }))
-                    .value()
-                }
-              >
-                {fetchedState => (
-                  <ChartLoadGate
-                    Error={DashboardCardError}
-                    Loader={CardContentSpinner}
-                    fetchedState={fetchedState}
-                    Chart={StudiesChart}
+            <DataProvider
+              url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
+              api={api}
+              transform={data =>
+                _(data.studies)
+                  .map(study => ({ ...study, label: _.startCase(study.name) }))
+                  .value()
+              }
+            >
+              {fetchedState => {
+                console.log('fetch state', fetchedState);
+                const data = fetchedState.data;
+                const studies = data && data.length;
+                const participants = data ? data.familyMembers + data.probands : null;
+
+                return (
+                  <DashboardMulticard
+                    tabs={[
+                      {
+                        headerComponent: cardState => (
+                          <MultiHeader
+                            headings={[
+                              { title: 'Studies', badge: studies },
+                              { title: 'Participants', badge: participants },
+                            ]}
+                          />
+                        ),
+                        component: cardState => (
+                          <ChartLoadGate
+                            Error={DashboardCardError}
+                            Loader={CardContentSpinner}
+                            fetchedState={fetchedState}
+                            Chart={StudiesChart}
+                          />
+                        ),
+                      },
+                    ]}
                   />
-                )}
-              </DataProvider>
-            </DashboardCard>
+                );
+              }}
+            </DataProvider>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
             <DashboardCard title="Member Research Interests">
