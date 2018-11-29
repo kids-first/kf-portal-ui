@@ -77,6 +77,11 @@ class Multicard extends Component {
     const { tabs, inactive, className, scrollable } = this.props;
 
     const activeTab = tabs[contentIndex];
+    const childProps = {
+      setBadge: this.setBadge,
+      setTitle: this.setTitle,
+      setIndex: this.setIndex,
+    };
 
     return (
       <div>
@@ -85,25 +90,23 @@ class Multicard extends Component {
         ) : (
           <CardWrapper className={className} inactive={inactive}>
             <HeaderWrapper inactive={inactive}>
-              <CardHeader title={title} badge={badgeNumber}>
-                {!inactive &&
-                  tabs.map((tab, i) => (
-                    <TabMenu
-                      key={i}
-                      active={i === contentIndex}
-                      onClick={() => this.setIndex(i)}
-                      title={tab.nav}
-                    />
-                  ))}
-              </CardHeader>
+              {activeTab.headerComponent ? (
+                activeTab.headerComponent(childProps)
+              ) : (
+                <CardHeader title={title} badge={badgeNumber}>
+                  {!inactive &&
+                    tabs.map((tab, i) => (
+                      <TabMenu
+                        key={i}
+                        active={i === contentIndex}
+                        onClick={() => this.setIndex(i)}
+                        title={tab.nav}
+                      />
+                    ))}
+                </CardHeader>
+              )}
             </HeaderWrapper>
-            <CardContent scrollable={scrollable}>
-              {activeTab.component({
-                setTitle: this.setTitle,
-                setBadge: this.setBadge,
-                setIndex: this.setIndex,
-              })}
-            </CardContent>
+            <CardContent scrollable={scrollable}>{activeTab.component(childProps)}</CardContent>
             {inactive ? null : <IndexDots index={contentIndex} items={tabs.length} />}
           </CardWrapper>
         )}
