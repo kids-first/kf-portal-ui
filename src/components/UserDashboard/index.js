@@ -92,10 +92,11 @@ export default compose(
               }
             >
               {fetchedState => {
-                console.log('fetch state', fetchedState);
                 const data = fetchedState.data;
                 const studies = data && data.length;
-                const participants = data ? data.familyMembers + data.probands : null;
+                const participants = data
+                  ? data.reduce((prev, el) => prev + (el.familyMembers + el.probands), 0)
+                  : null;
 
                 return (
                   <DashboardMulticard
