@@ -10,6 +10,7 @@ const defaultStyle = {
 const SvgText = ({
   textAnchor = 'start',
   alignmentBaseline = 'middle',
+  dominantBaseline = 'middle', // firefox
   x = '0',
   y = '0',
   style = defaultStyle,
@@ -19,6 +20,7 @@ const SvgText = ({
   <text
     textAnchor={textAnchor}
     alignmentBaseline={alignmentBaseline}
+    dominantBaseline={dominantBaseline}
     x={x}
     y={y}
     style={style}
