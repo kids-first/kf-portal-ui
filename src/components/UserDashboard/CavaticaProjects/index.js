@@ -49,13 +49,12 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       label: JSON.stringify({ projectName: data.projectName }),
     });
   };
-
-  const unsetBadge = cardState => d => {
-    cardState.setBadge(null);
+  const onProjectCreationCanceled = cardProps => data => {
+    cardProps.setIndex(0);
   };
 
-  const tabToCreate = cardState => d => {
-    cardState.setIndex(1);
+  const tabToCreate = cardProps => d => {
+    cardProps.setIndex(1);
   };
 
   return (
@@ -68,11 +67,13 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
               {
                 title: 'Cavatica Projects',
                 nav: 'Projects',
-                component: cardState => (
-                  <CavaticaProvider onData={onCavaticaData(cardState)}>
+                onEnter: cardProps => console.log('Projects Enter', cardProps),
+                onExit: cardProps => console.log('Projects onExit', cardProps),
+                component: cardProps => (
+                  <CavaticaProvider onData={onCavaticaData(cardProps)}>
                     {({ projects, loading }) => (
                       <Connected
-                        tabToCreate={tabToCreate(cardState)}
+                        tabToCreate={tabToCreate(cardProps)}
                         projects={projects}
                         loading={loading}
                       />
@@ -83,16 +84,20 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
               {
                 title: 'Create a Cavatica Project',
                 nav: 'Create',
-                component: cardState => (
+                onEnter: cardProps => {
+                  console.log('Create Enter', cardProps);
+                  cardProps.setBadge(null);
+                },
+                onExit: cardProps => console.log('Create onExit', cardProps),
+                component: cardProps => (
                   <Create
-                    onInit={unsetBadge(cardState)}
-                    onProjectCreated={onProjectCreationComplete(cardState)}
-                    onProjectCreationCancelled={onProjectCreationCanceled(cardState)}
+                    onProjectCreated={onProjectCreationComplete(cardProps)}
+                    onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
                   />
                 ),
               },
             ]
-          : [{ title: 'CAVATICA Projects', component: cardState => <NotConnected /> }]
+          : [{ title: 'CAVATICA Projects', component: cardProps => <NotConnected /> }]
       }
     />
   );

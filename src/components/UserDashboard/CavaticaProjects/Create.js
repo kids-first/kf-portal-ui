@@ -36,8 +36,7 @@ const enhance = compose(
   withState('billingGroup', 'selectBillingGroup', null),
   lifecycle({
     async componentDidMount() {
-      const { setBillingGroups, onInit } = this.props;
-      onInit();
+      const { setBillingGroups } = this.props;
       getBillingGroups().then(bg => setBillingGroups(bg));
     },
   }),

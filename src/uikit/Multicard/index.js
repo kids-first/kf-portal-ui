@@ -26,6 +26,12 @@ class Multicard extends Component {
     this.setBadge = this.setBadge.bind(this);
     this.setTitle = this.setTitle.bind(this);
     this.setIndex = this.setIndex.bind(this);
+
+    this.childProps = {
+      setBadge: this.setBadge,
+      setTitle: this.setTitle,
+      setIndex: this.setIndex,
+    };
   }
 
   setBadge(n) {
@@ -50,9 +56,18 @@ class Multicard extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const previousTabIndex = prevState.currentTabIndex;
+    const currentTabIndex = this.state.currentTabIndex;
+
     // tab has updated
-    if (prevState.currentTabIndex !== this.state.currentTabIndex) {
+    if (previousTabIndex !== currentTabIndex) {
       this.setTitle();
+
+      const tabs = this.props.tabs;
+      const prevTabOnExit = tabs[previousTabIndex].onExit;
+      const currentTabOnEnter = tabs[currentTabIndex].onEnter;
+      if (prevTabOnExit) prevTabOnExit(this.childProps, previousTabIndex, currentTabIndex);
+      if (currentTabOnEnter) currentTabOnEnter(this.childProps, previousTabIndex, currentTabIndex);
     }
   }
 
@@ -62,17 +77,10 @@ class Multicard extends Component {
 
     const activeTab = tabs[currentTabIndex];
 
-    const childProps = {
-      setBadge: this.setBadge,
-      setTitle: this.setTitle,
-      setIndex: this.setIndex,
-    };
-
     const slickSettings = {
       arrows: false,
-      //  onReInit: () => console.log('re init'),
       infinite: false,
-      speed: 500,
+      speed: 380,
       slidesToScroll: 1,
       dots: true,
       dotsClass: 'slick-dots',
@@ -82,8 +90,11 @@ class Multicard extends Component {
         </a>
       ),
       appendDots: dots => <Dots>{dots}</Dots>,
-      afterChange: x => x, //x => this.setState({ currentTabIndex: x }),
-      beforeChange: (current, next) => this.setState({ currentTabIndex: next }),
+      afterChange: x => console.log('chaange ended'), //x => this.setState({ currentTabIndex: x }),
+      beforeChange: (current, next) => {
+        // order is important for tab menu ui update
+        this.setState({ currentTabIndex: next });
+      },
     };
 
     // console.log('active tab', activeTab);
@@ -95,7 +106,7 @@ class Multicard extends Component {
           <CardWrapper className={className} inactive={inactive}>
             <HeaderWrapper inactive={inactive}>
               {activeTab && activeTab.headerComponent ? (
-                activeTab.headerComponent(childProps)
+                activeTab.headerComponent(this.childProps)
               ) : (
                 <CardHeader title={title} badge={badgeNumber}>
                   {!inactive &&
@@ -119,10 +130,9 @@ class Multicard extends Component {
             </HeaderWrapper>
             <CardContent scrollable={scrollable}>
               <Slider ref={slider => (this.slider = slider)} {...slickSettings}>
-                {this.props.tabs.map((tab, i) => tab.component(childProps))}
+                {this.props.tabs.map((tab, i) => tab.component(this.childProps))}
               </Slider>
             </CardContent>
-            {true ? null : <IndexDot index={currentTabIndex} />}
           </CardWrapper>
         )}
       </div>
