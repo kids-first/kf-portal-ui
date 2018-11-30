@@ -68,6 +68,8 @@ class Multicard extends Component {
 
     const slickSettings = {
       dots: false,
+      nextArrow: <span />,
+      prevArrow: <span />,
       infinite: false,
       speed: 500,
       slidesToScroll: 1,
