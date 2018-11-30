@@ -16,7 +16,7 @@ class Multicard extends Component {
 
     this.state = {
       badgeNumber: null,
-      contentIndex: 0,
+      currentTabIndex: 0,
       title: '',
       loading: false,
     };
@@ -31,11 +31,16 @@ class Multicard extends Component {
   }
 
   setIndex(i) {
-    this.setState({ contentIndex: i });
+    //this.setState({ currentTabIndex: i });
+    this.goToSlide(i);
   }
 
-  setTitle(title = this.props.tabs[this.state.contentIndex].title) {
+  setTitle(title = this.props.tabs[this.state.currentTabIndex].title) {
     this.setState({ title });
+  }
+
+  goToSlide(n) {
+    this.slider.slickGoTo(n);
   }
 
   componentDidMount() {
@@ -44,21 +49,33 @@ class Multicard extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     // tab has updated
-    if (prevState.contentIndex !== this.state.contentIndex) {
+    if (prevState.currentTabIndex !== this.state.currentTabIndex) {
       this.setTitle();
     }
   }
 
   render() {
-    const { loading, contentIndex, title, badgeNumber } = this.state;
+    const { loading, currentTabIndex, title, badgeNumber } = this.state;
     const { tabs, inactive, className, scrollable } = this.props;
 
-    const activeTab = tabs[contentIndex];
+    const activeTab = tabs[currentTabIndex];
+
     const childProps = {
       setBadge: this.setBadge,
       setTitle: this.setTitle,
       setIndex: this.setIndex,
     };
+
+    const slickSettings = {
+      dots: false,
+      infinite: false,
+      speed: 500,
+      slidesToScroll: 1,
+      afterChange: x => this.setState({ currentTabIndex: x }),
+      beforeChange: (current, next) => this.setState({ currentTabIndex: next }),
+    };
+
+    console.log('active tab', activeTab);
 
     return (
       <div>
@@ -67,7 +84,7 @@ class Multicard extends Component {
         ) : (
           <CardWrapper className={className} inactive={inactive}>
             <HeaderWrapper inactive={inactive}>
-              {activeTab.headerComponent ? (
+              {activeTab && activeTab.headerComponent ? (
                 activeTab.headerComponent(childProps)
               ) : (
                 <CardHeader title={title} badge={badgeNumber}>
@@ -91,9 +108,11 @@ class Multicard extends Component {
               )}
             </HeaderWrapper>
             <CardContent scrollable={scrollable}>
-              <Slider>{this.props.tabs.map((tab, i) => tab.component(childProps))}</Slider>
+              <Slider ref={slider => (this.slider = slider)} {...slickSettings}>
+                {this.props.tabs.map((tab, i) => tab.component(childProps))}
+              </Slider>
             </CardContent>
-            {inactive ? null : <IndexDots index={contentIndex} items={tabs.length} />}
+            {inactive ? null : <IndexDots index={currentTabIndex} items={tabs.length} />}
           </CardWrapper>
         )}
       </div>
