@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import styled from 'react-emotion';
 
+import Row from 'uikit/Row';
 import CardHeader from 'uikit/Card/CardHeader';
 import CardContent from 'uikit/Card/CardContent';
 import { CardWrapper, HeaderWrapper } from 'uikit/Card/styles';
@@ -67,18 +69,24 @@ class Multicard extends Component {
     };
 
     const slickSettings = {
-      dots: false,
-      nextArrow: <span />,
-      prevArrow: <span />,
+      arrows: false,
+      //  onReInit: () => console.log('re init'),
       infinite: false,
       speed: 500,
       slidesToScroll: 1,
-      afterChange: x => this.setState({ currentTabIndex: x }),
+      dots: true,
+      dotsClass: 'slick-dots',
+      customPaging: i => (
+        <a>
+          <IndexDot active={i === currentTabIndex} />
+        </a>
+      ),
+      appendDots: dots => <Dots>{dots}</Dots>,
+      afterChange: x => x, //x => this.setState({ currentTabIndex: x }),
       beforeChange: (current, next) => this.setState({ currentTabIndex: next }),
     };
 
-    console.log('active tab', activeTab);
-
+    // console.log('active tab', activeTab);
     return (
       <div>
         {loading ? (
@@ -114,7 +122,7 @@ class Multicard extends Component {
                 {this.props.tabs.map((tab, i) => tab.component(childProps))}
               </Slider>
             </CardContent>
-            {inactive ? null : <IndexDots index={currentTabIndex} items={tabs.length} />}
+            {true ? null : <IndexDot index={currentTabIndex} />}
           </CardWrapper>
         )}
       </div>
