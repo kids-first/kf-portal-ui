@@ -20,6 +20,7 @@ import {
 } from 'services/fileAccessControl';
 import Study from './Study';
 import { CardContentSpinner } from '../styles';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const NoAuthorizedStudiesMessage = () => (
   <PromptMessageContainer info mb={'8px'}>
@@ -95,10 +96,22 @@ const Gen3Connected = ({
   }, {});
 
   const onStudyTotalClick = studyId => () => {
+    debugger;
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.dashboard.widgets.authorizedStudies,
+      action: `Studies Total: ${TRACKING_EVENTS.actions.click}`,
+      label: `studyId: ${studyId}`,
+    });
     history.push(`/search/file?sqon=${encodeURI(JSON.stringify(createStudyIdSqon(studyId)))}`);
   };
 
-  const onStudyAuthorizedClick = studyId => () => {
+  const onStudyAuthorizedClick = (studyId, eventOrigin) => {
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.dashboard.widgets.authorizedStudies,
+      action: `${eventOrigin}: ${TRACKING_EVENTS.actions.click}`,
+      label: `studyId: ${studyId}`,
+    });
+
     history.push(
       `/search/file?sqon=${encodeURI(
         JSON.stringify(createAcceptedFilesByUserStudySqon(gen3userDetails)({ studyId })),
@@ -126,7 +139,7 @@ const Gen3Connected = ({
                   authorized={authorizedFiles.length}
                   total={authorizedFiles.length + unAuthorizedFiles.length}
                   onStudyTotalClick={onStudyTotalClick(studyId)}
-                  onStudyAuthorizedClick={onStudyAuthorizedClick(studyId)}
+                  onStudyAuthorizedClick={onStudyAuthorizedClick}
                 />
               );
             })

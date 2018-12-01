@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { trackUserInteraction } from 'services/analyticsTracking';
 
 class ProgressBar extends Component {
   constructor(props) {
@@ -10,7 +11,15 @@ class ProgressBar extends Component {
   }
 
   render() {
-    const { percent, height, onClick, percentColor, trailColor, style } = this.props;
+    const {
+      percent,
+      height,
+      onClick,
+      percentColor,
+      trailColor,
+      style,
+      analyticsTracking,
+    } = this.props;
 
     const percentWidth = `${percent}%`;
 
@@ -29,7 +38,16 @@ class ProgressBar extends Component {
         preserveAspectRatio="none"
         style={svgStyle}
         onClick={onClick}
-        onMouseOver={() => this.setState({ hover: true })}
+        onMouseOver={() => {
+          this.setState({ hover: true });
+          if (analyticsTracking) {
+            trackUserInteraction({
+              category: analyticsTracking.category,
+              action: 'Progress Bar: Hover',
+              label: analyticsTracking.label,
+            });
+          }
+        }}
         onMouseLeave={() => this.setState({ hover: false })}
       >
         <defs>

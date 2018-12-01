@@ -13,6 +13,7 @@ export const TRACKING_EVENTS = {
       profile: 'User Profile',
       dashboard: {
         widgets: {
+          authorizedStudies: 'Autohorized Studies',
           savedQueries: 'User Dashboard: Saved Queries widget',
           _card: 'User Dashboard: Card',
           _multiCard: 'User Dashboard: MultiCard',
