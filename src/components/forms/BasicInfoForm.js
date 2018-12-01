@@ -29,6 +29,7 @@ import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 import { Box } from 'uikit/Core';
 import { WhiteButton } from '../../uikit/Button.js';
+import { FilterInput } from '../../uikit/Input.js';
 
 const labelStyle = `
   font-size: 14px;
@@ -67,6 +68,11 @@ const SearchLocationIcon = styled(SearchIcon)`
   position: absolute;
   top: 8px;
   left: 8px;
+`;
+
+const LocationFieldInput = styled(FilterInput)`
+  width: 90%;
+  padding-left: 34px;
 `;
 
 const AutoCompleteContainer = styled(Column)`
@@ -420,9 +426,8 @@ export default compose(
               {({ getInputProps, getSuggestionItemProps, suggestions, loading, ...rest }) => (
                 <Box position="relative">
                   <SearchLocationIcon fill="#a9adc0" />
-                  <FieldInput
-                    width="90%"
-                    pl="34px"
+                  <LocationFieldInput
+                    LeftIcon={null}
                     name="searchLocation"
                     placeholder="e.g 3401 Civic Center Blvd."
                     {...getInputProps()}

@@ -14,6 +14,7 @@ const colors = {
   backgroundGrey: '#f4f5f8',
   tertiaryBackground: '#edeef1', // light light blue
   lightBlue: '#008199',
+  orange: '#ffaa52',
 
   primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
 
@@ -60,6 +61,19 @@ const colors = {
   successLight: '#e6f3f5', // TODO: confirm this color
   successBackground: '#e6f3f5',
   successBorder: `#009bb8`,
+
+  cardTitle: '#404c9a',
+  defaultBadge: '#404c9a',
+};
+
+export const chartColors = {
+  blue: '#1f9bb6',
+  purple: '#e3429b',
+  red: '#dd1f2a',
+  gridGrey: '#e7e8ec',
+  axisGrey: '#a9acbd',
+  tickTextGrey: '#343434',
+  axisLegend: colors.secondary,
 };
 
 const fonts = {
@@ -539,6 +553,7 @@ const components = {
 };
 
 export default {
+  chartColors,
   ...colors,
   ...components,
   ...mixins,

@@ -21,17 +21,16 @@ const UploadIdsModal = ({
   state: { loggedInUser },
   effects: { addUserSet, unsetModal },
   setSQON,
+  uploadableFields = null,
+  placeholderText,
   ...props
 }) => (
   <MatchBox
     {...props}
     instructionText={
-      <Paragraph>
-        Type or copy-and-paste a list of comma delimited identifiers, or choose a file of
-        identifiers to upload
-      </Paragraph>
+      <Paragraph>Type or copy-and-paste a list of comma delimited identifiers</Paragraph>
     }
-    placeholderText={`e.g. File Id\ne.g. Sample Id\ne.g. Participant Id`}
+    placeholderText={placeholderText}
     entitySelectText={<Paragraph>Select the entity to upload</Paragraph>}
     entitySelectPlaceholder={'Select an Entity'}
     matchedTabTitle={'Matched'}
@@ -41,6 +40,8 @@ const UploadIdsModal = ({
       matchedEntity: <TableHeader>Matched Entity</TableHeader>,
       entityId: <TableHeader>Entity Id</TableHeader>,
     }}
+    uploadableFields={uploadableFields}
+    uploadInstructionText={<Paragraph>Or choose file to upload</Paragraph>}
     browseButtonText={<Trans>Upload csv</Trans>}
     matchHeaderText={
       <H3 mb="0.8em">

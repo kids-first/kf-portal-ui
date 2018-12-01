@@ -4,9 +4,8 @@ import TrashIcon from 'react-icons/lib/fa/trash';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 
-import provideSavedQueries from 'stateProviders/provideSavedQueries';
 import { injectState } from 'freactal';
-
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { Box, Flex, Span, Link } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
@@ -38,14 +37,33 @@ const QueryBlock = compose(injectState, withApi, withTheme)(
     <Query inactive={inactive}>
       <Column width="100%">
         <Row justifyContent="space-between" width="100%">
-          <Link fontSize={1} fontWeight="bold" color={theme.primary} to={q.link}>
+          <Link
+            onClick={() => {
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.user.dashboard.widgets.savedQueries,
+                action: `${TRACKING_EVENTS.actions.click} Saved Query Title`,
+                label: JSON.stringify(q),
+              });
+            }}
+            fontSize={1}
+            fontWeight="bold"
+            color={theme.primary}
+            to={q.link}
+          >
             {q.alias}
           </Link>
           <Box pr={2} pl={2}>
             <Span
               color={theme.primary}
               hover={{ cursor: 'pointer', color: theme.hover }}
-              onClick={() => deleteQuery({ api, queryId: q.id })}
+              onClick={() => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.user.dashboard.widgets.savedQueries,
+                  action: TRACKING_EVENTS.actions.query.delete,
+                  label: JSON.stringify(q),
+                });
+                deleteQuery({ api, queryId: q.id });
+              }}
             >
               <TrashIcon />
             </Span>

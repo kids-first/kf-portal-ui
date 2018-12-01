@@ -45,6 +45,9 @@ export const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 export const usersnapHost = process.env.REACT_APP_USERSNAP_HOST;
 export const usersnapId = process.env.REACT_APP_USERSNAP_ID;
 
+export const hotjarHost = process.env.REACT_APP_HOTJAR_HOST;
+export const hotjarId = process.env.REACT_APP_HOTJAR_ID;
+
 export const gaTrackingID: string = process.env.REACT_APP_GA_TRACKING_ID;
 
 export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
@@ -74,3 +77,6 @@ export const gen3IntegrationRoot: string = process.env.REACT_APP_GEN3_INTEGRATIO
 export const reactApiDataVersionApi: string = process.env.REACT_APP_DATA_VERSION_API || null;
 export const reactApiDataVersionFallback: string =
   process.env.REACT_APP_DATA_VERSION_FALLBACK || '';
+
+// Public Stats
+export const publicStatsApiRoot = process.env.REACT_APP_PUBLIC_STATS_ROOT || '';

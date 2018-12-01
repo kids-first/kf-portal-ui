@@ -15,6 +15,24 @@ export const CLINICAL_FILTERS = [
     active: true,
   },
   {
+    field: 'participants__phenotype__hpo_phenotype_observed_text',
+    type: 'Aggregations',
+    show: true,
+    active: true,
+  },
+  {
+    field: 'participants__phenotype__hpo_phenotype_not_observed',
+    type: 'Aggregations',
+    show: false,
+    active: true,
+  },
+  {
+    field: 'participants__phenotype__hpo_phenotype_observed',
+    type: 'Aggregations',
+    show: false,
+    active: true,
+  },
+  {
     field: 'participants__family__family_compositions__composition',
     show: true,
     active: true,
@@ -671,18 +689,6 @@ export const CLINICAL_FILTERS = [
   {
     field:
       'participants__family__family_compositions__family_members__phenotype__hpo__snomed_phenotype_observed',
-    type: 'Aggregations',
-    show: false,
-    active: true,
-  },
-  {
-    field: 'participants__phenotype__hpo__hpo_phenotype_not_observed',
-    type: 'Aggregations',
-    show: false,
-    active: true,
-  },
-  {
-    field: 'participants__phenotype__hpo__hpo_phenotype_observed',
     type: 'Aggregations',
     show: false,
     active: true,

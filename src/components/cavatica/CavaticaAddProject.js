@@ -5,16 +5,11 @@ import styled from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Input from 'uikit/Input';
-import { ActionButton } from 'uikit/Button';
-import NiceWhiteButton from 'uikit/NiceWhiteButton';
-import { CancelButton } from 'components/Modal/ui';
 import { injectState } from 'freactal';
-import { memoize } from 'services/utils';
-import { createProject, getBillingGroups, getUser } from 'services/cavatica';
+import { getBillingGroups, saveProject } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
-import projectDescriptionPath from './projectDescription.md';
 
 const Container = styled(Row)`
   align-items: center;
@@ -62,33 +57,6 @@ const enhance = compose(
   withState('addingProject', 'setAddingProject', false),
 );
 
-const getProjectDescriptionTemplate = memoize(() =>
-  fetch(projectDescriptionPath).then(res => res.text()),
-);
-
-const saveProject = async ({ projectName, onSuccess }) => {
-  const USER_NAME_TEMPLATE_STRING = '<username>';
-  const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
-  const [billingGroups, descriptionTemplate, { username }] = await Promise.all([
-    getBillingGroups(),
-    getProjectDescriptionTemplate(),
-    getUser(),
-  ]);
-  const projectDescription = descriptionTemplate
-    .split(PROJECT_NAME_TEMPLATE_STRING)
-    .join(projectName)
-    .split(USER_NAME_TEMPLATE_STRING)
-    .join(username);
-  if (billingGroups && billingGroups.length > 0) {
-    const groupId = billingGroups[0].id;
-    createProject({
-      billing_group: groupId,
-      name: projectName,
-      description: projectDescription,
-    }).then(response => onSuccess(response));
-  }
-};
-
 const CavaticaAddProject = ({
   state,
   theme,
@@ -98,47 +66,55 @@ const CavaticaAddProject = ({
   setAddingProject,
   setSelectedProject,
   ...props
-}) => (
-  <Container>
-    {addingProject ? (
-      <Fragment>
-        <AddIcon width={15} height={15} fill={theme.tertiary} />
-        <InputLabel>Create a project</InputLabel>
-        <Input
-          italic
-          flex={1}
-          type="text"
-          placeholder="Enter name of project"
-          value={projectName}
-          onChange={e => setProjectName(e.target.value)}
-        />
-        <LoadingOnClick
-          onClick={async () => {
-            await saveProject({
-              projectName,
-              onSuccess: ({ id }) => {
-                props.onSuccess();
-                setSelectedProject(id);
-              },
-            });
-            setAddingProject(false);
-            setProjectName('');
-          }}
-          render={({ loading, onClick }) => (
-            <TealActionButton disabled={loading} onClick={onClick}>
-              Save
-            </TealActionButton>
-          )}
-        />
-        <WhiteButton onClick={() => setAddingProject(false)}>Cancel</WhiteButton>
-      </Fragment>
-    ) : (
-      <CreateButton onClick={() => setAddingProject(true)}>
-        <AddIcon width={12} height={12} />
-        Create a project
-      </CreateButton>
-    )}
-  </Container>
-);
+}) => {
+  const onSaveButtonClick = async () => {
+    const billingGroups = await getBillingGroups();
+    const billingGroupId = billingGroups[0].id;
+    saveProject({
+      projectName,
+      billingGroupId,
+    }).then(({ id }) => {
+      setAddingProject(false);
+      setProjectName('');
+      setSelectedProject(id);
+      props.onSuccess();
+    });
+  };
+  const onProjectNameChange = e => setProjectName(e.target.value);
+  const onCancelClick = () => setAddingProject(false);
+  const onCreateButtonClick = () => setAddingProject(true);
+  return (
+    <Container>
+      {addingProject ? (
+        <Fragment>
+          <AddIcon width={15} height={15} fill={theme.tertiary} />
+          <InputLabel>Create a project</InputLabel>
+          <Input
+            italic
+            flex={1}
+            type="text"
+            placeholder="Enter name of project"
+            value={projectName}
+            onChange={onProjectNameChange}
+          />
+          <LoadingOnClick
+            onClick={onSaveButtonClick}
+            render={({ loading, onClick }) => (
+              <TealActionButton disabled={loading} onClick={onClick}>
+                Save
+              </TealActionButton>
+            )}
+          />
+          <WhiteButton onClick={onCancelClick}>Cancel</WhiteButton>
+        </Fragment>
+      ) : (
+        <CreateButton onClick={onCreateButtonClick}>
+          <AddIcon width={12} height={12} />
+          Create a project
+        </CreateButton>
+      )}
+    </Container>
+  );
+};
 
 export default enhance(CavaticaAddProject);

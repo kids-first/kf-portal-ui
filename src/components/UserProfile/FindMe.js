@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import { withFormik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { SocialIcon } from 'react-social-icons';
+import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import { withTheme } from 'emotion-theming';
 
 import { kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
@@ -15,7 +16,6 @@ import ExternalLink from 'uikit/ExternalLink';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
-import ErrorIcon from 'icons/ErrorIcon';
 import Tooltip from 'uikit/Tooltip';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -41,7 +41,7 @@ const StyledLabel = styled('label')`
   margin-left: 40px;
 `;
 
-const ClearIcon = styled(ErrorIcon)`
+const ClearIcon = styled(FaTimesCircleO)`
   position: absolute;
   top: 8px;
   right: 0;

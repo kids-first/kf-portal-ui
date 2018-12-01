@@ -6,7 +6,7 @@ import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
-import { Arranger, CurrentSQON, Table, DetectNewVersion } from '@arranger/components/dist/Arranger';
+import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
@@ -31,6 +31,7 @@ import {
   QuerySharingContainer,
   ControlledIcon,
   OpenIcon,
+  TableSpinnerWrapper,
   TableSpinner,
 } from './ui';
 import customTableColumns from './customTableColumns';
@@ -72,7 +73,9 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                 {connectionError ? (
                   `Unable to connect to the file repo, please try again later`
                 ) : (
-                  <TableSpinner />
+                  <TableSpinnerWrapper>
+                    <TableSpinner />
+                  </TableSpinnerWrapper>
                 )}
               </div>
             ) : (
@@ -93,7 +96,6 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                     : url.sqon;
                   return (
                     <React.Fragment>
-                      <DetectNewVersion {...props} />
                       <ArrangerContainer>
                         <AggregationSidebar
                           {...{ ...props, ...url, translateSQONValue }}
@@ -152,6 +154,7 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                               {...props}
                               {...url}
                               customTypes={customTableTypes}
+                              showFilterInput={false}
                               InputComponent={props => (
                                 <FilterInput {...props} LeftIcon={FilterIcon} />
                               )}

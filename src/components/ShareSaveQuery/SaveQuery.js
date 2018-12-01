@@ -6,7 +6,6 @@ import urlJoin from 'url-join';
 import Spinner from 'react-spinkit';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import Tooltip from 'uikit/Tooltip';
-import Heading from 'uikit/Heading';
 import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import theme from 'theme/defaultTheme';
 import { ModalFooter } from 'components/Modal';
@@ -14,9 +13,8 @@ import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
-import { ButtonContainer, CustomLightButton, SaveQueryHeading } from './ui';
+import { ButtonContainer, SaveQueryHeading } from './ui';
 import { WhiteButton } from 'uikit/Button';
-import { FileRepoH3 as H3 } from 'uikit/Headings';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 

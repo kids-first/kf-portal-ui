@@ -21,6 +21,8 @@ const arrangerValueText = css`
 `;
 
 export const ArrangerContainer = styled(Row)`
+  min-height: calc(100vh - 56px);
+
   .ReactTable .rt-thead .rt-th.-sort-desc,
   .ReactTable .rt-thead .rt-td.-sort-desc {
     box-shadow: inset 0 -3px 0 0 rgba(64, 76, 154, 0.7);
@@ -34,6 +36,7 @@ export const ArrangerContainer = styled(Row)`
   .tableToolbar {
     border-left: solid 1px #e0e1e6;
     border-right: solid 1px #e0e1e6;
+    min-height: 55px;
   }
 
   & .tableToolbar {
@@ -56,6 +59,10 @@ export const ArrangerContainer = styled(Row)`
 
   div.sqon-view {
     flex-grow: 1;
+  }
+
+  & .aggregation-card:last-child {
+    margin-bottom: 120px;
   }
 
   & .aggregation-card {
@@ -86,12 +93,9 @@ export const ArrangerContainer = styled(Row)`
 `;
 
 export const TableContainer = styled(Column)`
-  flex-grow: 1;
+  flex: 1 1 auto;
   width: 580px;
   padding: 30px;
-  position: relative;
-  height: 100%;
-  overflow-y: auto;
 `;
 
 export const TableWrapper = styled(Column)`
@@ -124,12 +128,18 @@ export const OpenIcon = () => (
   />
 );
 
+export const TableSpinnerWrapper = styled(Column)`
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
+
 export const TableSpinner = ({ props, style = {} }) => (
   <Spinner
     fadeIn="none"
     name="circle"
     color="#a9adc0"
-    style={{ width: 50, height: 50, ...style }}
+    style={{ width: 50, height: 60, ...style }}
     {...props}
   />
 );

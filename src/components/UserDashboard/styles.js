@@ -1,29 +1,96 @@
-import styled from 'react-emotion';
+import React from 'react';
+import styled, { css } from 'react-emotion';
 
-import { Flex, H3 as H3Core } from 'uikit/Core';
-import Row from 'uikit/Row';
+import Card from 'uikit/Card';
+import { applyDefaultStyles } from 'uikit/Core';
 
-export const H3 = styled(H3Core)`
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: 0.3px;
-  text-align: left;
-  color: ${({ theme }) => theme.primaryHover};
-  margin: 0;
+import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
+import RightIcon from 'react-icons/lib/fa/angle-right';
+import { TealActionButton } from 'uikit/Button';
+
+import Spinner from 'react-spinkit';
+import {
+  PromptMessageContainer as PMCont,
+  PromptMessageHeading as PMHeading,
+  PromptMessageContent as PMContent,
+} from 'uikit/PromptMessage';
+import Multicard from 'uikit/Multicard';
+
+const cardCSS = css`
+  height: 404px;
 `;
 
-export const IntegrationsDiv = styled(Row)`
-  justify-content: space-around;
-  align-items: center;
+export const DashboardCard = styled(Card)`
+  ${cardCSS}
 `;
 
-export const IntegrationsCircleDiv = styled(Flex)`
-  width: 82px;
-  height: 82px;
-  flex: none;
-  border-radius: 100%;
-  background: ${({ theme }) => theme.white};
+export const DashboardMulticard = styled(Multicard)`
+  ${cardCSS}
+`;
+
+const LoadingScreenContainer = styled('div')`
+  height: 100%;
+  width: 100%;
+  display: flex;
   justify-content: center;
-  border: solid 1px ${({ theme }) => theme.greyScale5};
+  align-items: center;
+  opacity: 0.5;
+`;
+export const CardContentSpinner = () => (
+  <LoadingScreenContainer>
+    <Spinner
+      name="circle"
+      style={{
+        width: 50,
+        height: 50,
+      }}
+    />
+  </LoadingScreenContainer>
+);
+
+const Connect = styled(TealActionButton)`
+  height: 37px;
+  padding-right: 21px;
+  padding-left: 21px;
+  font-size: 14px;
+  border-radius: 18px;
+`;
+
+export const ConnectButton = ({ external = true, ...props }) => {
+  const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
+  const RightArrow = applyDefaultStyles(RightIcon);
+
+  return (
+    <Connect {...props} maxWidth={160}>
+      {external ? <ExternalLink size={12} position="relative" right={5} /> : null}
+      Connect
+      <RightArrow size={14} position="relative" left={5} />
+    </Connect>
+  );
+};
+
+export const NoteList = styled('ul')`
+  padding-left: 18px;
+`;
+export const NotePoints = styled('li')`
+  margin-top: 5px;
+`;
+
+export const PromptMessageContainer = styled(PMCont)``;
+
+export const PromptMessageHeading = styled(PMHeading)`
+  font-family: ${({ theme }) => theme.fonts.default};
+  font-weight: 500;
+  font-size: 16px;
+`;
+
+export const PromptMessageContent = styled(PMContent)`
+  font-family: ${({ theme }) => theme.fonts.details};
+  font-size: 14px;
+  line-height: normal;
+`;
+
+export const CardLink = styled('a')`
+  ${({ theme }) => theme.externalLink};
+  text-decoration: underline;
 `;

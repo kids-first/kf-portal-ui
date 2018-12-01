@@ -12,6 +12,7 @@ export const Tag = styled(Box)`
   padding: 0 12px 0 12px;
   margin: 5px;
   color: ${({ theme }) => theme.white};
+  text-transform: capitalize;
   ${({ clickable }) =>
     clickable
       ? css`
