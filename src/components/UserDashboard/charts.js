@@ -67,7 +67,7 @@ const trackBarClick = (trackingEventCategory, barData) => {
   trackUserInteraction({
     category: trackingEventCategory,
     action: `Chart Bar: ${TRACKING_EVENTS.actions.click}`,
-    label: `${barData.indexValue}: ${barData.id} - ${barData.value}`,
+    label: `${barData.indexValue}: ${barData.id}`,
   });
 };
 
@@ -89,7 +89,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       keys={['probands', 'familyMembers']}
       onClick={onClick}
       tooltipFormatter={studiesToolTip}
-      analyticsChartTitle={studiesChartCategory}
+      analyticsTracking={{ category: studiesChartCategory }}
       sortBy={sortDescParticipant}
       tickInterval={4}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
@@ -135,7 +135,6 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
 
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
-    debugger;
     window.location.href = barData.data.url;
   };
 
@@ -147,7 +146,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
       onClick={onClick}
       tooltipFormatter={participantTooltip}
       sortBy={sortDescParticipant}
-      analyticsChartTitle={diagnosesChartCategory}
+      analyticsTracking={{ category: diagnosesChartCategory }}
       tickInterval={4}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
       xTickTextLength={28}

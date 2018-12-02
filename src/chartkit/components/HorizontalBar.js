@@ -58,9 +58,9 @@ class HorizontalBar extends Component {
       const { index, indexValue } = data;
       this.setState({ highlightedIndex: index, highlightedIndexValue: indexValue });
       trackUserInteraction({
-        category: this.props.analyticsChartTitle,
+        category: this.props.analyticsTracking.category,
         action: `Chart Bar: ${TRACKING_EVENTS.actions.hover}`,
-        label: `${data.indexValue}: ${data.id} - ${data.value}`,
+        label: `${data.indexValue}: ${data.id}`,
       });
     }
   }
@@ -215,7 +215,7 @@ HorizontalBar.propTypes = {
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.func,
-  analyticsChartTitle: PropTypes.string,
+  analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
 };
 
 export default HorizontalBar;
