@@ -17,6 +17,9 @@ export const TRACKING_EVENTS = {
       dataTable: 'File Repo: Data Table',
       actionsSidebar: 'File Repo: Actions Sidebar',
     },
+    integration: {
+      cavatica: 'Integration: Cavatica',
+    },
   },
   actions: {
     acceptedTerms: 'Accepted Terms',
