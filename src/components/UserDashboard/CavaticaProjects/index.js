@@ -31,9 +31,23 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
   // leaving this duplication here for now, animation hooks to come
   const onProjectCreationComplete = cardState => data => {
     cardState.setIndex(0);
+    // added project data into the data param,
+    // not sure of future plans for the data param
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.integration.cavatica,
+      action: 'Cavatica Project:  Created',
+      label: data.id,
+    });
   };
   const onProjectCreationCanceled = cardState => data => {
     cardState.setIndex(0);
+    // added project data into the data param,
+    // not sure of future plans for the data param
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.integration.cavatica,
+      action: 'Cavatica Project: Canceled',
+      label: JSON.stringify({ projectName: data.projectName }),
+    });
   };
 
   const unsetBadge = cardState => d => {

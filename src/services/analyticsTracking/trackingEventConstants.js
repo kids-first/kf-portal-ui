@@ -8,6 +8,8 @@ export const TRACKING_EVENTS = {
       dashboard: {
         widgets: {
           savedQueries: 'User Dashboard: Saved Queries widget',
+          _card: 'User Dashboard: Card',
+          _multiCard: 'User Dashboard: MultiCard',
         },
       },
     },
