@@ -8,6 +8,11 @@ import NotConnected from './NotConnected';
 import { DashboardMulticard } from '../styles';
 import CavaticaProvider from './CavaticaProvider';
 import Connected from './Connected';
+import {
+  trackUserInteraction,
+  setUserDimension,
+  TRACKING_EVENTS,
+} from 'services/analyticsTracking';
 
 const isValidKey = key => {
   return key && key.length > 0;
@@ -20,6 +25,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
 
   const onCavaticaData = cardState => projects => {
     cardState.setBadge(projects.length);
+    setUserDimension('dimension6', JSON.stringify(projects));
   };
 
   // leaving this duplication here for now, animation hooks to come
