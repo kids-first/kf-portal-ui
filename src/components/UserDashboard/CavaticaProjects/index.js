@@ -61,7 +61,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                 ),
               },
               {
-                title: 'Create a CAVATICA Project',
+                title: 'Create a Cavatica Project',
                 nav: 'Create',
                 component: cardState => (
                   <Create
