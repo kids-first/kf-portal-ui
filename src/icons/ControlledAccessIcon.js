@@ -10,6 +10,7 @@ export default ({ width = 15, height = 15, fill = '#a9adc0', className = '', ...
     height={height}
   >
     <defs />
+    { props.hideTitle ? null : <title>icon-controlled-access</title> }
     <path
       fill={fill}
       class="cls-1"

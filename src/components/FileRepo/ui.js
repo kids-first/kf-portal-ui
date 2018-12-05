@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Component from 'react-component-component';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 
@@ -10,6 +11,7 @@ import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
 
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
@@ -114,7 +116,36 @@ export const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-export const ControlledIcon = props => <ControlledAccessIcon width={12} height={12} {...props} />;
+
+export const ControlledIcon = withTheme((props) => {
+  const initialState = { mouseIsOver: false };
+  const iconContainerRef = React.createRef();
+
+  const didMount = ({ setState }) => {
+    iconContainerRef.current.addEventListener('mouseenter', e => {
+      setState({ mouseIsOver: true });
+    });
+    iconContainerRef.current.addEventListener('mouseleave', e => {
+      setState({ mouseIsOver: false });
+    });
+  };
+
+  const getFillColor = (state) => {
+    return !state.mouseIsOver
+      ? props.fill || props.theme.primary
+      : props.theme.hover
+  };
+
+  return (<Component initialState={initialState} didMount={didMount}>
+    {({ state }) => (
+      <a href={props.link} ref={iconContainerRef} target={props.target}>
+        <ControlledAccessIcon width={12} height={12} fill={getFillColor(state)} {...props}>
+          {props.children}
+        </ControlledAccessIcon>
+      </a>
+    )}
+  </Component>);
+});
 
 export const OpenIcon = () => (
   <img
