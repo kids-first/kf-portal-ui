@@ -59,11 +59,11 @@ const Create = ({
       selectedBillingGroup,
       billingGroups,
     }).then(({ id }) => {
-      onProjectCreated();
+      onProjectCreated({ projectName, id });
       setAddingProject(false);
       setProjectName('');
     });
-  const onCancelClick = () => onProjectCreationCancelled();
+  const onCancelClick = data => onProjectCreationCancelled(data);
   const onProjectNameChange = e => setProjectName(e.target.value);
   const onBillingGroupSelect = e => selectBillingGroup(e.target.value);
   return (
@@ -80,7 +80,13 @@ const Create = ({
       </BillingGroupSelect>
 
       <Row mt="20px" justifyContent="space-between">
-        <WhiteButton onClick={onCancelClick}>Cancel</WhiteButton>
+        <WhiteButton
+          onClick={() => {
+            onCancelClick({ projectName });
+          }}
+        >
+          Cancel
+        </WhiteButton>
         <LoadingOnClick
           onClick={onSaveButtonClick}
           render={({ loading, onClick }) => (

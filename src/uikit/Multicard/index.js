@@ -7,7 +7,7 @@ import { CardWrapper, HeaderWrapper } from 'uikit/Card/styles';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import TabMenu from './TabMenu';
 import IndexDots from './IndexDots';
-
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 // const AnimatedChild = posed.div({
 //   enter: {
 //     y: 0,
@@ -99,7 +99,14 @@ class Multicard extends Component {
                       <TabMenu
                         key={i}
                         active={i === contentIndex}
-                        onClick={() => this.setIndex(i)}
+                        onClick={() => {
+                          this.setIndex(i);
+                          trackUserInteraction({
+                            category: TRACKING_EVENTS.categories.user.dashboard.widgets._multiCard,
+                            action: `Tab: ${TRACKING_EVENTS.actions.click}`,
+                            label: JSON.stringify({ card: title, tab: tab.nav }),
+                          });
+                        }}
                         title={tab.nav}
                       />
                     ))}
