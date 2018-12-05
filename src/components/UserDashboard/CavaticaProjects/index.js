@@ -86,8 +86,8 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                     ),
                     component: cardProps => (
                       <Create
-                        onProjectCreated={onProjectCreationComplete(cardProps)}
-                        onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+                        onProjectCreated={resetCardIndex(cardProps)}
+                        onProjectCreationCancelled={resetCardIndex(cardProps)}
                       />
                     ),
                   },
