@@ -3,7 +3,7 @@ import Component from 'react-component-component';
 
 import { getProjects as getCavaticaProjects, getMembers, getTasks } from 'services/cavatica';
 
-const CavaticaProvider = ({ children, onData }) => (
+const CavaticaProvider = ({ children }) => (
   <Component
     initialState={{ loading: true, projects: null }}
     didMount={async ({ setState }) => {

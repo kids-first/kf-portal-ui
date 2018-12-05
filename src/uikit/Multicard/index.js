@@ -16,38 +16,27 @@ class Multicard extends Component {
     super(props);
 
     this.state = {
-      badgeNumber: null,
       currentTabIndex: 0,
       title: '',
       loading: false,
     };
 
-    this.setBadge = this.setBadge.bind(this);
     this.setTitle = this.setTitle.bind(this);
     this.setIndex = this.setIndex.bind(this);
 
     this.childProps = {
-      setBadge: this.setBadge,
       setTitle: this.setTitle,
       setIndex: this.setIndex,
     };
   }
 
-  setBadge(n) {
-    if (n !== this.state.badgeNumber) this.setState({ badgeNumber: n });
-  }
-
   setIndex(i) {
     //this.setState({ currentTabIndex: i });
-    this.goToSlide(i);
+    this.slider.slickGoTo(i);
   }
 
   setTitle(title = this.props.tabs[this.state.currentTabIndex].title) {
     this.setState({ title });
-  }
-
-  goToSlide(n) {
-    this.slider.slickGoTo(n);
   }
 
   componentDidMount() {
@@ -71,7 +60,7 @@ class Multicard extends Component {
   }
 
   render() {
-    const { loading, currentTabIndex, title, badgeNumber } = this.state;
+    const { loading, currentTabIndex, title } = this.state;
     const { tabs, inactive, className, scrollable } = this.props;
 
     const activeTab = tabs[currentTabIndex];
@@ -83,9 +72,7 @@ class Multicard extends Component {
       speed: 380,
       slidesToScroll: 1,
       dots: false,
-      afterChange: x => console.log('chaange ended'), //x => this.setState({ currentTabIndex: x }),
       beforeChange: (current, next) => {
-        // order is important for tab menu ui update
         this.setState({ currentTabIndex: next });
       },
     };

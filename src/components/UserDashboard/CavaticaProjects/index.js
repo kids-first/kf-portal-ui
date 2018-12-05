@@ -71,13 +71,16 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                     headerComponent: cardProps => (
                       <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
                     ),
-                    component: cardProps => (
-                      <Connected
-                        tabToCreate={tabToCreate(cardProps)}
-                        projects={projects}
-                        loading={loading}
-                      />
-                    ),
+                    component: cardProps => {
+                      console.log('cardprops', cardProps);
+                      return (
+                        <Connected
+                          tabToCreate={tabToCreate(cardProps)}
+                          projects={projects}
+                          loading={loading}
+                        />
+                      );
+                    },
                   },
                   {
                     nav: 'Create',

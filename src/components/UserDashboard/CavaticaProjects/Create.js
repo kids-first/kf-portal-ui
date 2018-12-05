@@ -31,7 +31,6 @@ const enhance = compose(
   injectState,
   withTheme,
   withState('projectName', 'setProjectName', ''),
-  withState('addingProject', 'setAddingProject', false),
   withState('billingGroups', 'setBillingGroups', []),
   withState('billingGroup', 'selectBillingGroup', null),
   lifecycle({
@@ -45,7 +44,6 @@ const enhance = compose(
 const Create = ({
   projectName,
   setProjectName,
-  setAddingProject,
   billingGroups,
   selectedBillingGroup,
   selectBillingGroup,
@@ -59,7 +57,6 @@ const Create = ({
       billingGroups,
     }).then(({ id }) => {
       onProjectCreated({ projectName, id });
-      setAddingProject(false);
       setProjectName('');
     });
   const onCancelClick = data => onProjectCreationCancelled(data);
