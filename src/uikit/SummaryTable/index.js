@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 
 const Table = styled('table')`
@@ -11,17 +11,26 @@ const TableRow = styled('tr')`
   background-color: ${({ index, theme }) => (index % 2 === 0 ? theme.backgroundGrey : '#fff')};
 `;
 
-const TableCell = styled('td')`
+const cellBase = props => css`
   padding: 12px 7px;
+  size: 13px;
+  text-align: left;
+  vertical-align: top;
 `;
 
-const TableTitle = styled(TableCell)`
-  vertical-align: top;
+const TableCell = styled('td')`
+  ${cellBase};
+  color: ${({ theme }) => theme.greyScale1};
+  font-family: ${({ theme }) => theme.fonts.details};
+  width: 99%;
+`;
+
+const TableTitle = styled('td')`
+  ${cellBase};
+  white-space: nowrap;
   color: ${({ theme }) => theme.secondary};
-  size: 13px;
   font-weight: 600;
   font-family: ${({ theme }) => theme.fonts.default};
-  text-align: left;
   padding-right: 47px;
 `;
 
