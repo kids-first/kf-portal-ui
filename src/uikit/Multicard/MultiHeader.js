@@ -34,27 +34,17 @@ const Badge = applyDefaultStyles(styled('div')`
   padding: 0 0.4em;
 `);
 
-const Header = applyDefaultStyles(styled(Row)`
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-  padding-bottom: 20px;
-`);
-
 const MultiHeader = ({ headings, children, ...rest }) => (
-  <Header>
-    <Row>
-      {headings.map((heading, i) => (
-        <div key={i}>
-          <Title {...rest} ml={i !== 0 ? '30px' : 0}>
-            {heading.title}
-          </Title>
-          {heading.badge !== null ? <Badge>{heading.badge}</Badge> : null}
-        </div>
-      ))}
-    </Row>
-    <Row>{children}</Row>
-  </Header>
+  <Row>
+    {headings.map((heading, i) => (
+      <div key={i}>
+        <Title {...rest} ml={i !== 0 ? '30px' : 0}>
+          {heading.title}
+        </Title>
+        {heading.badge !== null ? <Badge>{heading.badge}</Badge> : null}
+      </div>
+    ))}
+  </Row>
 );
 
 export default MultiHeader;

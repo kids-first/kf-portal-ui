@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
 
 import Row from 'uikit/Row';
 import CardHeader from 'uikit/Card/CardHeader';
@@ -101,25 +100,19 @@ class Multicard extends Component {
               {activeTab && activeTab.headerComponent ? (
                 activeTab.headerComponent(this.childProps)
               ) : (
-                <CardHeader title={title} badge={badgeNumber}>
-                  {!inactive &&
-                    tabs.map((tab, i) => (
-                      <TabMenu
-                        key={i}
-                        active={i === contentIndex}
-                        onClick={() => {
-                          this.setIndex(i);
-                          trackUserInteraction({
-                            category: TRACKING_EVENTS.categories.user.dashboard.widgets._multiCard,
-                            action: `Tab: ${TRACKING_EVENTS.actions.click}`,
-                            label: JSON.stringify({ card: title, tab: tab.nav }),
-                          });
-                        }}
-                        title={tab.nav}
-                      />
-                    ))}
-                </CardHeader>
+                <CardHeader title={title} />
               )}
+              <Row>
+                {!inactive &&
+                  tabs.map((tab, i) => (
+                    <TabMenu
+                      key={i}
+                      active={i === currentTabIndex}
+                      onClick={() => this.setIndex(i)}
+                      title={tab.nav}
+                    />
+                  ))}
+              </Row>
             </HeaderWrapper>
             <CardContent scrollable={scrollable}>
               <Slider ref={slider => (this.slider = slider)} {...slickSettings}>
