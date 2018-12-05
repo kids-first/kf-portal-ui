@@ -78,18 +78,12 @@ class Multicard extends Component {
     const activeTab = tabs[currentTabIndex];
 
     const slickSettings = {
+      draggable: false,
       arrows: false,
       infinite: false,
       speed: 380,
       slidesToScroll: 1,
-      dots: true,
-      dotsClass: 'slick-dots',
-      customPaging: i => (
-        <a>
-          <IndexDot active={i === currentTabIndex} />
-        </a>
-      ),
-      appendDots: dots => <Dots>{dots}</Dots>,
+      dots: false,
       afterChange: x => console.log('chaange ended'), //x => this.setState({ currentTabIndex: x }),
       beforeChange: (current, next) => {
         // order is important for tab menu ui update
@@ -97,7 +91,6 @@ class Multicard extends Component {
       },
     };
 
-    // console.log('active tab', activeTab);
     return (
       <div>
         {loading ? (
@@ -133,6 +126,9 @@ class Multicard extends Component {
                 {this.props.tabs.map((tab, i) => tab.component(this.childProps))}
               </Slider>
             </CardContent>
+            {inactive ? null : (
+              <IndexDots index={currentTabIndex} items={tabs.length} setIndex={this.setIndex} />
+            )}
           </CardWrapper>
         )}
       </div>
