@@ -13,6 +13,20 @@ const HorizontalBarWrapper = styled('div')`
   height: 90%;
 `;
 
+/**
+ * Ref: https://github.com/kids-first/kf-portal-ui/pull/1006
+ * IE, FF and Chrome all deal with svg text alignment differently
+ * Nivo uses alignment-baseline which FF does not support
+ * TextBugWrapper provides FF with correct attribute
+ */
+const TextBugWrapper = styled('div')`
+  width: 100%;
+  height: 100%;
+  & text {
+    dominant-baseline: ${({ baseline }) => baseline};
+  }
+`;
+
 class HorizontalBar extends Component {
   constructor(props) {
     super(props);
@@ -173,13 +187,15 @@ class HorizontalBar extends Component {
     return (
       <HorizontalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <ChartDisplayContainer>
-          {height ? (
-            <ResponsiveBar {...chartData} height={height} />
-          ) : (
-            <ResponsiveBar {...chartData} />
-          )}
-        </ChartDisplayContainer>
+        <TextBugWrapper baseline="text-before-edge">
+          <ChartDisplayContainer>
+            {height ? (
+              <ResponsiveBar {...chartData} height={height} />
+            ) : (
+              <ResponsiveBar {...chartData} />
+            )}
+          </ChartDisplayContainer>
+        </TextBugWrapper>
       </HorizontalBarWrapper>
     );
   }
