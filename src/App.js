@@ -119,8 +119,6 @@ const App = compose(
             })
           }
         />
-        <Route path="/table" exacty render={props => <Page Component={TablePage} />} />
-
         <Route
           path="/dashboard"
           exact
