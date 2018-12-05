@@ -15,6 +15,7 @@ import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
+import TablePage from 'components/TablePage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
@@ -118,6 +119,8 @@ const App = compose(
             })
           }
         />
+        <Route path="/table" exacty render={props => <Page Component={TablePage} />} />
+
         <Route
           path="/dashboard"
           exact
