@@ -123,7 +123,7 @@ class Multicard extends Component {
             </HeaderWrapper>
             <CardContent scrollable={scrollable}>
               <Slider ref={slider => (this.slider = slider)} {...slickSettings}>
-                {this.props.tabs.map((tab, i) => tab.component(this.childProps))}
+                {tabs.map((tab, i) => tab.component(this.childProps))}
               </Slider>
             </CardContent>
             {inactive ? null : (

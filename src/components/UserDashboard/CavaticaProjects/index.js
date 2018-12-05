@@ -58,48 +58,43 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
   };
 
   return (
-    <DashboardMulticard
-      inactive={!isConnected}
-      scrollable={isConnected}
-      tabs={
-        isConnected
-          ? [
-              {
-                title: 'Cavatica Projects',
-                nav: 'Projects',
-                onEnter: cardProps => console.log('Projects Enter', cardProps),
-                onExit: cardProps => console.log('Projects onExit', cardProps),
-                component: cardProps => (
-                  <CavaticaProvider onData={onCavaticaData(cardProps)}>
-                    {({ projects, loading }) => (
+    <CavaticaProvider>
+      {({ projects, loading }) => (
+        <DashboardMulticard
+          inactive={!isConnected}
+          scrollable={isConnected}
+          tabs={
+            isConnected
+              ? [
+                  {
+                    title: 'Cavatica Projects',
+                    nav: 'Projects',
+                    headerComponent: cardProps => null,
+                    component: cardProps => (
                       <Connected
                         tabToCreate={tabToCreate(cardProps)}
                         projects={projects}
                         loading={loading}
                       />
-                    )}
-                  </CavaticaProvider>
-                ),
-              },
-              {
-                title: 'Create a Cavatica Project',
-                nav: 'Create',
-                onEnter: cardProps => {
-                  console.log('Create Enter', cardProps);
-                  cardProps.setBadge(null);
-                },
-                onExit: cardProps => console.log('Create onExit', cardProps),
-                component: cardProps => (
-                  <Create
-                    onProjectCreated={onProjectCreationComplete(cardProps)}
-                    onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
-                  />
-                ),
-              },
-            ]
-          : [{ title: 'CAVATICA Projects', component: cardProps => <NotConnected /> }]
-      }
-    />
+                    ),
+                  },
+                  {
+                    title: 'Create a CAVATICA Project',
+                    nav: 'Create',
+
+                    component: cardProps => (
+                      <Create
+                        onProjectCreated={onProjectCreationComplete(cardProps)}
+                        onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+                      />
+                    ),
+                  },
+                ]
+              : [{ title: 'CAVATICA Projects', component: cardProps => <NotConnected /> }]
+          }
+        />
+      )}
+    </CavaticaProvider>
   );
 });
 

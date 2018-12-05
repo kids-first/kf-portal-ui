@@ -8,7 +8,6 @@ const CavaticaProvider = ({ children, onData }) => (
     initialState={{ loading: true, projects: null }}
     didMount={async ({ setState }) => {
       const projects = await getCavaticaProjects();
-      onData(projects);
 
       const projectList = await Promise.all(
         projects.map(async p => {
