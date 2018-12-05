@@ -95,7 +95,14 @@ class Multicard extends Component {
                     <TabMenu
                       key={i}
                       active={i === currentTabIndex}
-                      onClick={() => this.setIndex(i)}
+                      onClick={() => {
+                        this.setIndex(i);
+                        trackUserInteraction({
+                          category: TRACKING_EVENTS.categories.user.dashboard.widgets._multiCard,
+                          action: `Tab: ${TRACKING_EVENTS.actions.click}`,
+                          label: JSON.stringify({ card: title, tab: tab.nav }),
+                        });
+                      }}
                       title={tab.nav}
                     />
                   ))}

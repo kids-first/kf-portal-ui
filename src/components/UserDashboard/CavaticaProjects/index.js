@@ -8,6 +8,7 @@ import NotConnected from './NotConnected';
 import { DashboardMulticard } from '../styles';
 import CavaticaProvider from './CavaticaProvider';
 import Connected from './Connected';
+import CardHeader from 'uikit/Card/CardHeader';
 import {
   trackUserInteraction,
   setUserDimension,
@@ -21,16 +22,8 @@ const isValidKey = key => {
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
-  console.log('isConnected: ', isConnected);
-
-  const onCavaticaData = cardState => projects => {
-    cardState.setBadge(projects.length);
-    setUserDimension('dimension6', JSON.stringify(projects));
-  };
-
-  // leaving this duplication here for now, animation hooks to come
-  const onProjectCreationComplete = cardState => data => {
-    cardState.setIndex(0);
+  const onProjectCreationComplete = cardProps => data => {
+    cardProps.setIndex(0);
     // added project data into the data param,
     // not sure of future plans for the data param
     trackUserInteraction({
@@ -39,8 +32,9 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       label: data.id,
     });
   };
-  const onProjectCreationCanceled = cardState => data => {
-    cardState.setIndex(0);
+
+  const onProjectCreationCanceled = cardProps => data => {
+    cardProps.setIndex(0);
     // added project data into the data param,
     // not sure of future plans for the data param
     trackUserInteraction({
@@ -49,9 +43,6 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       label: JSON.stringify({ projectName: data.projectName }),
     });
   };
-  const onProjectCreationCanceled = cardProps => data => {
-    cardProps.setIndex(0);
-  };
 
   const tabToCreate = cardProps => d => {
     cardProps.setIndex(1);
@@ -59,46 +50,49 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
 
   return (
     <CavaticaProvider>
-      {({ projects, loading }) => (
-        <DashboardMulticard
-          inactive={!isConnected}
-          scrollable={isConnected}
-          tabs={
-            isConnected
-              ? [
-                  {
-                    nav: 'Projects',
-                    headerComponent: cardProps => (
-                      <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
-                    ),
-                    component: cardProps => {
-                      console.log('cardprops', cardProps);
-                      return (
-                        <Connected
-                          tabToCreate={tabToCreate(cardProps)}
-                          projects={projects}
-                          loading={loading}
-                        />
-                      );
+      {({ projects, loading }) => {
+        setUserDimension('dimension6', JSON.stringify(projects));
+        return (
+          <DashboardMulticard
+            inactive={!isConnected}
+            scrollable={isConnected}
+            tabs={
+              isConnected
+                ? [
+                    {
+                      nav: 'Projects',
+                      headerComponent: cardProps => (
+                        <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
+                      ),
+                      component: cardProps => {
+                        console.log('cardprops', cardProps);
+                        return (
+                          <Connected
+                            tabToCreate={tabToCreate(cardProps)}
+                            projects={projects}
+                            loading={loading}
+                          />
+                        );
+                      },
                     },
-                  },
-                  {
-                    nav: 'Create',
-                    headerComponent: cardProps => (
-                      <CardHeader title="Create a CAVATICA Project" badge={null} />
-                    ),
-                    component: cardProps => (
-                      <Create
-                        onProjectCreated={resetCardIndex(cardProps)}
-                        onProjectCreationCancelled={resetCardIndex(cardProps)}
-                      />
-                    ),
-                  },
-                ]
-              : [{ title: 'CAVATICA Projects', component: cardProps => <NotConnected /> }]
-          }
-        />
-      )}
+                    {
+                      nav: 'Create',
+                      headerComponent: cardProps => (
+                        <CardHeader title="Create a CAVATICA Project" badge={null} />
+                      ),
+                      component: cardProps => (
+                        <Create
+                          onProjectCreated={onProjectCreationComplete(cardProps)}
+                          onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+                        />
+                      ),
+                    },
+                  ]
+                : [{ title: 'CAVATICA Projects', component: cardProps => <NotConnected /> }]
+            }
+          />
+        );
+      }}
     </CavaticaProvider>
   );
 });
