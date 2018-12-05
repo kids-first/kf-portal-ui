@@ -67,9 +67,10 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
             isConnected
               ? [
                   {
-                    title: 'Cavatica Projects',
                     nav: 'Projects',
-                    headerComponent: cardProps => null,
+                    headerComponent: cardProps => (
+                      <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
+                    ),
                     component: cardProps => (
                       <Connected
                         tabToCreate={tabToCreate(cardProps)}
@@ -79,9 +80,10 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                     ),
                   },
                   {
-                    title: 'Create a CAVATICA Project',
                     nav: 'Create',
-
+                    headerComponent: cardProps => (
+                      <CardHeader title="Create a CAVATICA Project" badge={null} />
+                    ),
                     component: cardProps => (
                       <Create
                         onProjectCreated={onProjectCreationComplete(cardProps)}
