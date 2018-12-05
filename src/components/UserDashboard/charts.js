@@ -6,6 +6,7 @@ import { titleCase } from 'common/displayFormatters';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
+import { TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const ALLOWED_INTERESTS = []
   .concat(DISEASE_AREAS, STUDY_SHORT_NAMES)
@@ -95,7 +96,15 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
       value: interest.count,
     }));
 
-  return <Donut data={sortedInterests} colors={[theme.chartColors.red, '#FFF']} />;
+  return (
+    <Donut
+      analyticsTracking={{
+        category: TRACKING_EVENTS.categories.charts.donut.userInterests,
+      }}
+      data={sortedInterests}
+      colors={[theme.chartColors.red, '#FFF']}
+    />
+  );
 });
 
 export const TopDiagnosesChart = withTheme(({ data, theme }) => {

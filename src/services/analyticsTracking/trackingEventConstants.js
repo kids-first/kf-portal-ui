@@ -3,6 +3,12 @@ export const TRACKING_EVENTS = {
     join: 'Join',
     signIn: 'Sign In',
     modals: 'Modals',
+    charts: {
+      donut: {
+        _donut: 'Chart: Donut',
+        userInterests: 'Chart: Donut: User Interests',
+      },
+    },
     user: {
       profile: 'User Profile',
       dashboard: {
