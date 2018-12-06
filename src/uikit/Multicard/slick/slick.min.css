@@ -82,6 +82,7 @@
   display: none;
 } /*# sourceMappingURL=slick.min.css.map */
 
+/* Custom */
 .slick-slider,
 .slick-list,
 .slick-track,
@@ -91,4 +92,8 @@
 
 .slick-slide > div {
   height: 100%;
+}
+
+.card-slick-scrollable .slick-slide > div {
+  overflow-y: auto;
 }

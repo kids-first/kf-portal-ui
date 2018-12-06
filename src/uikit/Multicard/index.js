@@ -75,6 +75,7 @@ class Multicard extends Component {
       beforeChange: (current, next) => {
         this.setState({ currentTabIndex: next });
       },
+      className: scrollable ? 'card-slick-scrollable' : '',
     };
 
     return (
