@@ -38,7 +38,7 @@ const EntityTitle = ({ icon, title, tags = [] }) => (
     <Column style={{ justifyContent: 'center' }}>
       <Title>{title}</Title>
     </Column>
-    {tags ? tags.map(tag => <Chip>{tag}</Chip>) : null}
+    {tags ? tags.map((tag, i) => <Chip key={`${i}${tag}`}>{tag}</Chip>) : null}
   </Row>
 );
 
