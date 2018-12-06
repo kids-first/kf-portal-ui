@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import Row from 'uikit/Row';
 import CardHeader from 'uikit/Card/CardHeader';
@@ -110,7 +110,9 @@ class Multicard extends Component {
             </HeaderWrapper>
             <CardContent scrollable={scrollable}>
               <Slider ref={slider => (this.slider = slider)} {...slickSettings}>
-                {tabs.map((tab, i) => tab.component(this.childProps))}
+                {tabs.map((tab, i) => (
+                  <Fragment key={i}>{tab.component(this.childProps)}</Fragment>
+                ))}
               </Slider>
             </CardContent>
             {inactive ? null : (
