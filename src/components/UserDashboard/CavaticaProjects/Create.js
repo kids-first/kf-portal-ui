@@ -56,8 +56,8 @@ const Create = ({
       selectedBillingGroup,
       billingGroups,
     }).then(({ id }) => {
-      onProjectCreated({ projectName, id });
       setProjectName('');
+      onProjectCreated({ projectName, id });
     });
   const onCancelClick = data => onProjectCreationCancelled(data);
   const onProjectNameChange = e => setProjectName(e.target.value);
@@ -65,7 +65,12 @@ const Create = ({
   return (
     <Column>
       <StyledLabel>Project Name:</StyledLabel>
-      <Input type="text" placeholder="Enter name of project" onChange={onProjectNameChange} />
+      <Input
+        type="text"
+        placeholder="Enter name of project"
+        value={projectName}
+        onChange={onProjectNameChange}
+      />
       <StyledLabel>Billing Group:</StyledLabel>
       <BillingGroupSelect onChange={onBillingGroupSelect}>
         {billingGroups.map((bg, i) => (
