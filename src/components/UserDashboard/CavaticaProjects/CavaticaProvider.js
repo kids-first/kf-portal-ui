@@ -3,36 +3,44 @@ import Component from 'react-component-component';
 
 import { getProjects as getCavaticaProjects, getMembers, getTasks } from 'services/cavatica';
 
-const CavaticaProvider = ({ children }) => (
-  <Component
-    initialState={{ loading: true, projects: null }}
-    didMount={async ({ setState }) => {
-      const projects = await getCavaticaProjects();
+const CavaticaProvider = ({ children }) => {
+  const refresh = ({ setState }) => async () => {
+    setState({ loading: true });
+    const projects = await getCavaticaProjects();
 
-      const projectList = await Promise.all(
-        projects.map(async p => {
-          const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
-            getMembers({ project: p.id }),
-            getTasks({ project: p.id, type: 'COMPLETED' }),
-            getTasks({ project: p.id, type: 'FAILED' }),
-            getTasks({ project: p.id, type: 'RUNNING' }),
-          ]);
+    const projectList = await Promise.all(
+      projects.map(async p => {
+        const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
+          getMembers({ project: p.id }),
+          getTasks({ project: p.id, type: 'COMPLETED' }),
+          getTasks({ project: p.id, type: 'FAILED' }),
+          getTasks({ project: p.id, type: 'RUNNING' }),
+        ]);
 
-          const tasks = {
-            completed: completedTasks.items.length,
-            failed: failedTasks.items.length,
-            running: runningTasks.items.length,
-          };
+        const tasks = {
+          completed: completedTasks.items.length,
+          failed: failedTasks.items.length,
+          running: runningTasks.items.length,
+        };
 
-          return { ...p, members: members.items.length, tasks };
-        }),
-      );
+        return { ...p, members: members.items.length, tasks };
+      }),
+    );
 
-      setState({ projects: projectList, loading: false });
-    }}
-  >
-    {({ state }) => children(state)}
-  </Component>
-);
+    setState({ projects: projectList, loading: false });
+  };
+
+  return (
+    <Component initialState={{ loading: true, projects: null }} didMount={s => refresh(s)()}>
+      {({ state, setState }) =>
+        children({
+          projects: state.projects,
+          loading: state.loading,
+          refresh: refresh({ setState }),
+        })
+      }
+    </Component>
+  );
+};
 
 export default CavaticaProvider;

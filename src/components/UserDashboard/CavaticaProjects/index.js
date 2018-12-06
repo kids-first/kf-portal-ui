@@ -22,7 +22,9 @@ const isValidKey = key => {
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
-  const onProjectCreationComplete = cardProps => data => {
+  const onProjectCreationComplete = (cardProps, refresh) => data => {
+    // refresh cavatica data
+    refresh();
     cardProps.setIndex(0);
     // added project data into the data param,
     // not sure of future plans for the data param
@@ -50,7 +52,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
 
   return (
     <CavaticaProvider>
-      {({ projects, loading }) => {
+      {({ projects, loading, refresh }) => {
         setUserDimension('dimension6', JSON.stringify(projects));
         return (
           <DashboardMulticard
@@ -79,7 +81,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                       ),
                       component: cardProps => (
                         <Create
-                          onProjectCreated={onProjectCreationComplete(cardProps)}
+                          onProjectCreated={onProjectCreationComplete(cardProps, refresh)}
                           onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
                         />
                       ),
