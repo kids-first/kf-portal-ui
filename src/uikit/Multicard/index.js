@@ -10,6 +10,7 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import TabMenu from './TabMenu';
 import IndexDots from './IndexDots';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import SliderStyleWrapper from './SliderStyleWrapper';
 
 class Multicard extends Component {
   constructor(props) {
@@ -79,7 +80,7 @@ class Multicard extends Component {
     };
 
     return (
-      <div>
+      <SliderStyleWrapper>
         {loading ? (
           <LoadingSpinner />
         ) : (
@@ -121,7 +122,7 @@ class Multicard extends Component {
             )}
           </CardWrapper>
         )}
-      </div>
+      </SliderStyleWrapper>
     );
   }
 }
