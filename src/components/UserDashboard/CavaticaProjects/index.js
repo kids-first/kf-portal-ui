@@ -51,7 +51,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
   };
 
   return (
-    <CavaticaProvider>
+    <CavaticaProvider isConnected={isConnected}>
       {({ projects, loading, refresh }) => {
         setUserDimension('dimension6', JSON.stringify(projects));
         return (

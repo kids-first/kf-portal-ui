@@ -3,11 +3,12 @@ import Component from 'react-component-component';
 
 import { getProjects as getCavaticaProjects, getMembers, getTasks } from 'services/cavatica';
 
-const CavaticaProvider = ({ children }) => {
+const CavaticaProvider = ({ children, isConnected }) => {
   const refresh = ({ setState }) => async () => {
+    if (!isConnected) return false;
     setState({ loading: true });
-    const projects = await getCavaticaProjects();
 
+    const projects = await getCavaticaProjects();
     const projectList = await Promise.all(
       projects.map(async p => {
         const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
