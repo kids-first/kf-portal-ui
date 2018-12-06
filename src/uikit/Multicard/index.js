@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react';
+import Slider from 'react-slick';
+
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import Row from 'uikit/Row';
 import CardHeader from 'uikit/Card/CardHeader';
 import CardContent from 'uikit/Card/CardContent';
 import { CardWrapper, HeaderWrapper } from 'uikit/Card/styles';
-import './slick/slick.min.css';
-import Slider from 'react-slick';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+
 import TabMenu from './TabMenu';
 import IndexDots from './IndexDots';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import SliderStyleWrapper from './SliderStyleWrapper';
 
 class Multicard extends Component {
