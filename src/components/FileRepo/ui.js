@@ -116,35 +116,41 @@ export const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-
-export const ControlledIcon = withTheme((props) => {
-  const initialState = { mouseIsOver: false };
-  const iconContainerRef = React.createRef();
-
-  const didMount = ({ setState }) => {
-    iconContainerRef.current.addEventListener('mouseenter', e => {
-      setState({ mouseIsOver: true });
-    });
-    iconContainerRef.current.addEventListener('mouseleave', e => {
-      setState({ mouseIsOver: false });
-    });
+export const ControlledIcon = withTheme(props => {
+  const initialState = {
+    mouseIsOver: false,
   };
 
-  const getFillColor = (state) => {
-    return !state.mouseIsOver
-      ? props.fill || props.theme.primary
-      : props.theme.hover
+  const mouseEnterEvent = ({ setState }) => () => {
+    setState({ mouseIsOver: true });
   };
 
-  return (<Component initialState={initialState} didMount={didMount}>
-    {({ state }) => (
-      <a href={props.link} ref={iconContainerRef} target={props.target}>
-        <ControlledAccessIcon width={12} height={12} fill={getFillColor(state)} {...props}>
-          {props.children}
-        </ControlledAccessIcon>
-      </a>
-    )}
-  </Component>);
+  const mouseLeaveEvent = ({ setState }) => () => {
+    setState({ mouseIsOver: false });
+  };
+
+  const getFillColor = ({ state }) => {
+    return !state.mouseIsOver ? props.fill || props.theme.primary : props.theme.hover;
+  };
+
+  return (
+    <Component initialState={initialState}>
+      {s => (
+        <a href={props.link} target={props.target}>
+          <ControlledAccessIcon
+            width={12}
+            height={12}
+            fill={getFillColor(s)}
+            onMouseEnter={mouseEnterEvent(s)}
+            onMouseLeave={mouseLeaveEvent(s)}
+            {...props}
+          >
+            {props.children}
+          </ControlledAccessIcon>
+        </a>
+      )}
+    </Component>
+  );
 });
 
 export const OpenIcon = () => (

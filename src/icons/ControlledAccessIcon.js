@@ -8,6 +8,7 @@ export default ({ width = 15, height = 15, fill = '#a9adc0', className = '', ...
     viewBox="0 0 56 64.01"
     width={width}
     height={height}
+    {...props}
   >
     <defs />
     {props.hideTitle ? null : <title>icon-controlled-access</title>}
