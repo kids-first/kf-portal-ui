@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, withState } from 'recompose';
+import { compose, lifecycle, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 
@@ -50,11 +50,26 @@ const AddIcon = styled(PlusIcon)`
   fill: ${({ theme }) => theme.tertiary};
 `;
 
+//           # THIS ONE WE FIXIN
+
+const BillingGroupSelect = styled('select')`
+  ${({ theme }) => theme.select};
+  ${({ theme }) => theme.input};
+`;
+
 const enhance = compose(
   injectState,
   withTheme,
   withState('projectName', 'setProjectName', ''),
   withState('addingProject', 'setAddingProject', false),
+  withState('billingGroups', 'setBillingGroups', []),
+  withState('billingGroup', 'selectBillingGroup', null),
+  lifecycle({
+    async componentDidMount() {
+      const { setBillingGroups } = this.props;
+      getBillingGroups().then(bg => setBillingGroups(bg));
+    },
+  }),
 );
 
 const CavaticaAddProject = ({
@@ -65,14 +80,16 @@ const CavaticaAddProject = ({
   addingProject,
   setAddingProject,
   setSelectedProject,
+  billingGroups,
+  selectedBillingGroup,
+  selectBillingGroup,
   ...props
 }) => {
   const onSaveButtonClick = async () => {
-    const billingGroups = await getBillingGroups();
-    const billingGroupId = billingGroups[0].id;
     saveProject({
       projectName,
-      billingGroupId,
+      selectedBillingGroup,
+      billingGroups,
     }).then(({ id }) => {
       setAddingProject(false);
       setProjectName('');
@@ -81,6 +98,7 @@ const CavaticaAddProject = ({
     });
   };
   const onProjectNameChange = e => setProjectName(e.target.value);
+  const onBillingGroupSelect = e => selectBillingGroup(e.target.value);
   const onCancelClick = () => setAddingProject(false);
   const onCreateButtonClick = () => setAddingProject(true);
   return (
@@ -91,12 +109,18 @@ const CavaticaAddProject = ({
           <InputLabel>Create a project</InputLabel>
           <Input
             italic
-            flex={1}
             type="text"
             placeholder="Enter name of project"
             value={projectName}
             onChange={onProjectNameChange}
           />
+          <BillingGroupSelect onChange={onBillingGroupSelect}>
+            {billingGroups.map((bg, i) => (
+              <option key={i} value={bg.id}>
+                {bg.name}
+              </option>
+            ))}
+          </BillingGroupSelect>
           <LoadingOnClick
             onClick={onSaveButtonClick}
             render={({ loading, onClick }) => (
