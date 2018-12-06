@@ -22,9 +22,7 @@ const isValidKey = key => {
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
-  const onProjectCreationComplete = (cardProps, refresh) => data => {
-    // refresh cavatica data
-    refresh();
+  const onProjectCreated = ({ cardProps, refresh }) => data => {
     cardProps.setIndex(0);
     // added project data into the data param,
     // not sure of future plans for the data param
@@ -33,6 +31,9 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
       action: 'Cavatica Project:  Created',
       label: data.id,
     });
+
+    // refresh cavatica data
+    return refresh();
   };
 
   const onProjectCreationCanceled = cardProps => data => {
@@ -81,7 +82,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                       ),
                       component: cardProps => (
                         <Create
-                          onProjectCreated={onProjectCreationComplete(cardProps, refresh)}
+                          onProjectCreated={onProjectCreated({ cardProps, refresh })}
                           onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
                         />
                       ),
