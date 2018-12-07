@@ -1,6 +1,7 @@
 import styled from 'react-emotion';
 
 import { applyDefaultStyles } from 'uikit/Core';
+import Row from 'uikit/Row';
 
 export const CardWrapper = applyDefaultStyles(styled('div')`
   border-radius: 10px;
@@ -12,6 +13,10 @@ export const CardWrapper = applyDefaultStyles(styled('div')`
   border: solid 1px ${({ theme }) => theme.greyScale5};
 `);
 
-export const HeaderWrapper = applyDefaultStyles(styled('div')`
+export const HeaderWrapper = applyDefaultStyles(styled(Row)`
   opacity: ${props => (props.inactive ? 0.5 : 1)};
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
+  padding-bottom: 20px;
 `);

@@ -3,11 +3,19 @@ export const TRACKING_EVENTS = {
     join: 'Join',
     signIn: 'Sign In',
     modals: 'Modals',
+    charts: {
+      donut: {
+        _donut: 'Chart: Donut',
+        userInterests: 'Chart: Donut: User Interests',
+      },
+    },
     user: {
       profile: 'User Profile',
       dashboard: {
         widgets: {
           savedQueries: 'User Dashboard: Saved Queries widget',
+          _card: 'User Dashboard: Card',
+          _multiCard: 'User Dashboard: MultiCard',
         },
       },
     },
@@ -16,6 +24,9 @@ export const TRACKING_EVENTS = {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
       actionsSidebar: 'File Repo: Actions Sidebar',
+    },
+    integration: {
+      cavatica: 'Integration: Cavatica',
     },
   },
   actions: {
