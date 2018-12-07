@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
-import Column from '../Column';
+import Column from 'uikit/Column';
 
 const SecondaryNavTab = ({ name, target, location: { hash } = {} }) => {
   return (

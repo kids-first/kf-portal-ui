@@ -3,8 +3,8 @@ import { compose } from 'recompose';
 import _ from 'lodash';
 
 import styled from 'react-emotion';
-import Row from '../../../uikit/Row';
-import Column from '../../../uikit/Column';
+import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 
 import { withApi } from 'services/api';
 import {
@@ -14,7 +14,7 @@ import {
   EntityContent,
   EntityContentSection,
   EntityContentDivider,
-} from '../';
+} from 'components/EntityPage';
 
 import ArrangerDataProvider from 'components/ArrangerDataProvider';
 import { buildSqonForIds } from 'services/arranger';

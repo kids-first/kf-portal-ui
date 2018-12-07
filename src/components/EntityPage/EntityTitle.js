@@ -2,13 +2,13 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 
-import { applyDefaultStyles } from '../../uikit/Core';
-import Column from '../../uikit/Column';
-import Chip from '../../uikit/Chip';
-import Row from '../../uikit/Row';
-import CircleIcon from '../../uikit/CircleIcon';
-import filesSvg from '../../icons/FileIcon';
-import participantSvg from '../../icons/ParticipantIcon';
+import { applyDefaultStyles } from 'uikit/Core';
+import Column from 'uikit/Column';
+import Chip from 'uikit/Chip';
+import Row from 'uikit/Row';
+import CircleIcon from 'uikit/CircleIcon';
+import filesSvg from 'icons/FileIcon';
+import participantSvg from 'icons/ParticipantIcon';
 
 const Title = applyDefaultStyles(styled('h1')`
   display: flex;

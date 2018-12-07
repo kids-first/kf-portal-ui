@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import styled from 'react-emotion';
-import { Flex } from '../../uikit/Core';
-import Row from '../../uikit/Row';
+import { Flex } from 'uikit/Core';
+import Row from 'uikit/Row';
 
 const TitleBar = styled(Flex)`
   height: 104px;

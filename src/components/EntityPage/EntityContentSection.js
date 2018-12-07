@@ -3,8 +3,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 
-import { applyDefaultStyles } from '../../uikit/Core';
-import Column from '../../uikit/Column';
+import { applyDefaultStyles } from 'uikit/Core';
+import Column from 'uikit/Column';
 
 const Container = styled(Column)`
   padding: 25px 0;

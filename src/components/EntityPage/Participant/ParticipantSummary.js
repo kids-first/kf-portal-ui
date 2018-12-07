@@ -2,8 +2,8 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
-import Row from '../../../uikit/Row';
-import Column from '../../../uikit/Column';
+import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 
 import { EntityContentSection, EntityContentDivider } from '../';
 

@@ -4,8 +4,8 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
 import styled from 'react-emotion';
-import { Flex } from '../../uikit/Core';
-import Row from '../../uikit/Row';
+import { Flex } from 'uikit/Core';
+import Row from 'uikit/Row';
 
 import { withApi } from 'services/api';
 
