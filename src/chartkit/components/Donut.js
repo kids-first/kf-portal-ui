@@ -5,7 +5,8 @@ import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { truncate } from 'lodash';
 
-import { defaultTheme } from '../themes';
+import { defaultTheme } from 'chartkit/themes';
+
 import ChartDisplayContainer from './ChartDisplayContainer';
 import Tooltip from './Tooltip';
 

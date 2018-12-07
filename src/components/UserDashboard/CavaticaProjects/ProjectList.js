@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
@@ -76,12 +76,6 @@ const TaskBreakdown = styled('div')`
   font-size: 12px;
   font-family: ${({ theme }) => theme.fonts.details};
   font-weight: 600;
-`;
-
-const NoTasks = styled('span')`
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-weight: normal;
 `;
 
 const Task = ({ tasks, status, projectId, ...props }) => {
