@@ -92,7 +92,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                 ),
               },
             ]
-          : [{ title: 'CAVATICA Projects', component: cardState => <NotConnected /> }]
+          : [{ title: 'Cavatica Projects', component: cardState => <NotConnected /> }]
       }
     />
   );
