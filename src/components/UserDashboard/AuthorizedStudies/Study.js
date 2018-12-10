@@ -33,7 +33,6 @@ const Codes = styled(StudyCount)`
   margin-bottom: 5px;
 `;
 
-// isn't this an internal link?
 const NumberLink = styled(ExternalLink)`
   text-decoration: underline;
 `;
