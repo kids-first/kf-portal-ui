@@ -96,7 +96,6 @@ const Gen3Connected = ({
   }, {});
 
   const onStudyTotalClick = studyId => () => {
-    debugger;
     trackUserInteraction({
       category: TRACKING_EVENTS.categories.user.dashboard.widgets.authorizedStudies,
       action: `Studies Total: ${TRACKING_EVENTS.actions.click}`,
