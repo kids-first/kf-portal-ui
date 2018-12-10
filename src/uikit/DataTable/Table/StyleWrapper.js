@@ -1,6 +1,7 @@
 import styled from 'react-emotion';
 
 export default styled('div')`
+  ${props => console.log('rpppppops', props)}
   .ReactTable {
     position: relative;
     display: -webkit-box;
@@ -423,6 +424,36 @@ export default styled('div')`
     user-select: none;
   }
 
-  /* Overrides */
+  /**
+   * Default custom 
+   * */
+
+  .ReactTable .rt-table {
+    border: 1px solid #e0e1e6;
+  }
+  .ReactTable .rt-thead {
+    background-color: ${({ theme }) => theme.tertiaryBackground};
+    font-family: ${({ theme }) => theme.fonts.default};
+    color: ${({ theme }) => theme.secondary};
+    font-weight: 600;
+  }
+
+  .ReactTable .rt-td,
+  .rt-th {
+    text-align: left;
+  }
+
+  .ReactTable .rt-td {
+    font-family: ${({ theme }) => theme.fonts.details};
+    color: ${({ theme }) => theme.greyScale1};
+  }
+
+  .ReactTable.-striped .rt-tr.-odd {
+    background-color: ${({ theme }) => theme.backgroundGrey};
+  }
+
+  /** 
+   * Overrides 
+   * */
   ${props => props.styles}
 `;
