@@ -422,4 +422,7 @@ export default styled('div')`
     -ms-user-select: none;
     user-select: none;
   }
+
+  /* Overrides */
+  ${props => props.styles}
 `;

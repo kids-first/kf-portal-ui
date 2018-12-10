@@ -51,11 +51,24 @@ const mockColumns = [
   },
 ];
 
-storiesOf('UIKit/DataTable', module).add('default', () => (
-  <BaseDataTable data={mockData} columns={mockColumns} />
-));
+const CustomComponent = ({ children }) => <a href="https://www.google.ca">{children}</a>;
+
+const customCellMockColumns = Object.assign([], mockColumns, {
+  2: {
+    Header: 'Study Name',
+    accessor: 'studyName',
+    Cell: props => <CustomComponent>{props.value}</CustomComponent>,
+  },
+});
+console.log('custom mock cells', customCellMockColumns);
+
+storiesOf('UIKit/DataTable', module)
+  .add('default', () => <BaseDataTable data={mockData} columns={mockColumns} />)
+  .add('custom cell component', () => (
+    <BaseDataTable data={mockData} columns={customCellMockColumns} />
+  ));
+
 //.add('custom header component', () => null)
-//.add('custom cell component', () => null)
 //.add('search table', () => null);
 //.add('filters', () => null)
 //.add('export', () => null)
