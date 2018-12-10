@@ -31,13 +31,11 @@ const enhance = compose(
   injectState,
   withTheme,
   withState('projectName', 'setProjectName', ''),
-  withState('addingProject', 'setAddingProject', false),
   withState('billingGroups', 'setBillingGroups', []),
   withState('billingGroup', 'selectBillingGroup', null),
   lifecycle({
     async componentDidMount() {
-      const { setBillingGroups, onInit } = this.props;
-      onInit();
+      const { setBillingGroups } = this.props;
       getBillingGroups().then(bg => setBillingGroups(bg));
     },
   }),
@@ -46,7 +44,6 @@ const enhance = compose(
 const Create = ({
   projectName,
   setProjectName,
-  setAddingProject,
   billingGroups,
   selectedBillingGroup,
   selectBillingGroup,
@@ -59,9 +56,8 @@ const Create = ({
       selectedBillingGroup,
       billingGroups,
     }).then(({ id }) => {
-      onProjectCreated({ projectName, id });
-      setAddingProject(false);
       setProjectName('');
+      onProjectCreated({ projectName, id });
     });
   const onCancelClick = data => onProjectCreationCancelled(data);
   const onProjectNameChange = e => setProjectName(e.target.value);
@@ -69,7 +65,12 @@ const Create = ({
   return (
     <Column>
       <StyledLabel>Project Name:</StyledLabel>
-      <Input type="text" placeholder="Enter name of project" onChange={onProjectNameChange} />
+      <Input
+        type="text"
+        placeholder="Enter name of project"
+        value={projectName}
+        onChange={onProjectNameChange}
+      />
       <StyledLabel>Billing Group:</StyledLabel>
       <BillingGroupSelect onChange={onBillingGroupSelect}>
         {billingGroups.map((bg, i) => (

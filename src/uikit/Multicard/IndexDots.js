@@ -13,13 +13,17 @@ const IndexCircle = styled('div')`
   width: 11px;
   background-color: ${props => (props.active ? '#cc3399' : '#a6278f')};
   margin-left: 6px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-const IndexDots = ({ index, items }) => {
+const IndexDots = ({ index, items, setIndex }) => {
   const dots = [];
   if (items <= 1) return null;
   for (let i = 0; i < items; i++) {
-    dots.push(<IndexCircle key={i} active={i === index} />);
+    dots.push(<IndexCircle onClick={() => setIndex(i)} key={i} active={i === index} />);
   }
   return <Dots>{dots}</Dots>;
 };
