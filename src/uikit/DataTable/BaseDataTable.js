@@ -1,5 +1,7 @@
 import React from 'react';
 
-const BaseDataTable = ({}) => <div>Table</div>;
+import Table from './Table';
+
+const BaseDataTable = ({ data, columns }) => <Table data={data} columns={columns} />;
 
 export default BaseDataTable;
