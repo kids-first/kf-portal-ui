@@ -36,6 +36,7 @@ const InputLabel = styled(Row)`
   align-items: center;
   color: ${({ theme }) => theme.tertiary};
   text-transform: uppercase;
+  min-width: 15%;
   &::after {
     margin-left: 13px;
     font-size: 1.5rem;
@@ -47,6 +48,7 @@ const InputLabel = styled(Row)`
 const AddIcon = styled(PlusIcon)`
   margin-top: 1px;
   margin-right: 4px;
+  min-width: 1%;
   fill: ${({ theme }) => theme.tertiary};
 `;
 
