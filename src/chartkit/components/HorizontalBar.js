@@ -57,11 +57,13 @@ class HorizontalBar extends Component {
     if (data) {
       const { index, indexValue } = data;
       this.setState({ highlightedIndex: index, highlightedIndexValue: indexValue });
-      trackUserInteraction({
-        category: this.props.analyticsTracking.category,
-        action: `Chart Bar: ${TRACKING_EVENTS.actions.hover}`,
-        label: `${data.indexValue}: ${data.id}`,
-      });
+      if (this.props.analyticsTracking) {
+        trackUserInteraction({
+          category: this.props.analyticsTracking.category,
+          action: `Chart Bar: ${TRACKING_EVENTS.actions.hover}`,
+          label: `${data.indexValue}: ${data.id}`,
+        });
+      }
     }
   }
 
