@@ -3,6 +3,7 @@ import { compose, withState } from 'recompose';
 
 import Table from './Table';
 import TableToolbar from './TableToolbar';
+import ColumnFilter from './ToolbarButtons/ColumnFilter';
 
 const enhance = compose(
   withState('pageSize', 'setPageSize', 10),
@@ -18,22 +19,27 @@ const BaseDataTable = ({
   pageIndex,
   setPageIndex,
   header = true,
+  config,
 }) => (
   <Fragment>
     {header ? (
       <TableToolbar pageSize={pageSize} page={pageIndex} total={data.length}>
-        <div>filter</div>
+        <ColumnFilter onChange={x => x} columns={config.columns}>
+          Columns
+        </ColumnFilter>
         <div>export</div>
       </TableToolbar>
     ) : null}
     <Table
+      config={config}
       loading={loading}
       data={data}
-      columns={columns}
       onPageChange={pageIndex => setPageIndex(pageIndex)}
       onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
     />
   </Fragment>
 );
+
+BaseDataTable.propTypes = {};
 
 export default enhance(BaseDataTable);
