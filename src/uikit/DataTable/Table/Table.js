@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import { withTheme } from 'emotion-theming';
 
 import StyleWrapper from './StyleWrapper';
+import CustomPagination from '../Pagination';
 
 const Table = withTheme(
   ({ loading, data, columns, onPageChange, onPageSizeChange, styles, striped = false }) => (
@@ -19,6 +20,7 @@ const Table = withTheme(
         resizable={false}
         className={true ? '-striped' : ''}
         minRows={1}
+        PaginationComponent={props => <CustomPagination {...props} />}
       />
     </StyleWrapper>
   ),

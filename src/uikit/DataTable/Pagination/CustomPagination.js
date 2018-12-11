@@ -3,6 +3,8 @@ import classnames from 'classnames';
 import { range } from 'lodash';
 import ReactTablePagination from 'react-table/lib/pagination';
 
+import { Pagination } from './styles';
+
 export default class CustomPagination extends ReactTablePagination {
   onPreviousPageClick = () => {
     const { canPrevious, page } = this.props;
@@ -36,7 +38,6 @@ export default class CustomPagination extends ReactTablePagination {
       pageSize,
       showPageJump,
       onPageSizeChange,
-      className,
       canPrevious,
       canNext,
       maxPagesOptions = 10,
@@ -47,15 +48,7 @@ export default class CustomPagination extends ReactTablePagination {
     );
     const lastPage = Math.floor(Math.min(firstPage + maxPagesOptions, pages));
     return (
-      <div
-        className={classnames(className, '-pagination')}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          ...this.props.paginationStyle,
-        }}
-      >
+      <Pagination className="-pagination">
         {showPageSizeOptions && (
           <span className="select-wrap -pageSizeOptions">
             Show{' '}
@@ -111,7 +104,7 @@ export default class CustomPagination extends ReactTablePagination {
           </span>
         )}
         {!showPageJump && <span className="-currentPage">{page + 1}</span>}
-      </div>
+      </Pagination>
     );
   }
 }
