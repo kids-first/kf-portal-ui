@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import Table from './Table';
 import TableToolbar from './TableToolbar';
 
-const BaseDataTable = ({ header = true, data, columns }) => (
+const BaseDataTable = ({ loading, data, columns, header = true }) => (
   <Fragment>
     {header ? (
       <TableToolbar>
@@ -11,7 +11,7 @@ const BaseDataTable = ({ header = true, data, columns }) => (
         <div>export</div>
       </TableToolbar>
     ) : null}
-    <Table data={data} columns={columns} />
+    <Table loading={loading} data={data} columns={columns} />
   </Fragment>
 );
 

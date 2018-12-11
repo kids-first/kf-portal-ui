@@ -4,9 +4,10 @@ import { withTheme } from 'emotion-theming';
 
 import StyleWrapper from './StyleWrapper';
 
-const Table = withTheme(({ data, columns, styles, striped = false }) => (
+const Table = withTheme(({ loading, data, columns, styles, striped = false }) => (
   <StyleWrapper styles={styles}>
     <ReactTable
+      loading={loading}
       data={data}
       columns={columns}
       sortable={false}
