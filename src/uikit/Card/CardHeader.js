@@ -34,21 +34,11 @@ const Badge = applyDefaultStyles(styled('div')`
   padding: 0 0.4em;
 `);
 
-const Header = applyDefaultStyles(styled(Row)`
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-  padding-bottom: 20px;
-`);
-
 const CardHeader = ({ title, badge = null, children, ...rest }) => (
-  <Header>
-    <Row>
-      <Heading {...rest}>{title}</Heading>
-      {badge !== null ? <Badge>{badge}</Badge> : null}
-    </Row>
-    <Row>{children}</Row>
-  </Header>
+  <Row>
+    <Heading {...rest}>{title}</Heading>
+    {badge !== null ? <Badge>{badge}</Badge> : null}
+  </Row>
 );
 
 export default CardHeader;

@@ -62,32 +62,32 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
             tabs={
               isConnected
                 ? [
-                  {
-                    nav: 'Projects',
-                    headerComponent: cardProps => (
-                      <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
-                    ),
-                    component: cardProps => (
-                      <Connected
-                        tabToCreate={tabToCreate(cardProps)}
-                        projects={projects}
-                        loading={loading}
-                      />
-                    ),
-                  },
-                  {
-                    nav: 'Create',
-                    headerComponent: cardProps => (
-                      <CardHeader title="Create a Cavatica Project" badge={null} />
-                    ),
-                    component: cardProps => (
-                      <Create
-                        onProjectCreated={onProjectCreated({ cardProps, refresh })}
-                        onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
-                      />
-                    ),
-                  },
-                ]
+                    {
+                      nav: 'Projects',
+                      headerComponent: cardProps => (
+                        <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
+                      ),
+                      component: cardProps => (
+                        <Connected
+                          tabToCreate={tabToCreate(cardProps)}
+                          projects={projects}
+                          loading={loading}
+                        />
+                      ),
+                    },
+                    {
+                      nav: 'Create',
+                      headerComponent: cardProps => (
+                        <CardHeader title="Create a Cavatica Project" badge={null} />
+                      ),
+                      component: cardProps => (
+                        <Create
+                          onProjectCreated={onProjectCreated({ cardProps, refresh })}
+                          onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+                        />
+                      ),
+                    },
+                  ]
                 : [{ title: 'Cavatica Projects', component: cardProps => <NotConnected /> }]
             }
           />
