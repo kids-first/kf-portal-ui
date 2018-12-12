@@ -42,7 +42,7 @@ export default class CustomPagination extends ReactTablePagination {
       canNext,
       maxPagesOptions = 10,
     } = this.props;
-    console.log('pagination', this.props);
+
     const firstPage = Math.floor(
       Math.max(Math.min(page - maxPagesOptions / 2, pages - maxPagesOptions), 0),
     );

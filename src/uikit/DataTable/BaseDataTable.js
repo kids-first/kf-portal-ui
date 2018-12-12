@@ -5,33 +5,45 @@ import Table from './Table';
 import TableToolbar from './TableToolbar';
 import ColumnFilter from './ToolbarButtons/ColumnFilter';
 
+import { configureCols } from './utils';
+
 const enhance = compose(
   withState('pageSize', 'setPageSize', 10),
   withState('pageIndex', 'setPageIndex', 0),
+  withState('columns', 'setColumns', props => configureCols(props.columns)),
 );
 
 const BaseDataTable = ({
   loading,
   data,
   columns,
+  setColumns,
   pageSize,
   setPageSize,
   pageIndex,
   setPageIndex,
   header = true,
-  config,
 }) => (
   <Fragment>
     {header ? (
       <TableToolbar pageSize={pageSize} page={pageIndex} total={data.length}>
-        <ColumnFilter onChange={x => x} columns={config.columns}>
+        <ColumnFilter
+          onChange={x => x}
+          columns={columns}
+          onChange={item => {
+            const index = columns.findIndex(e => e.index === item.index);
+            setColumns(
+              columns.map((col, i) => (i === index ? { ...col, ...{ show: !item.show } } : col)),
+            );
+          }}
+        >
           Columns
         </ColumnFilter>
         <div>export</div>
       </TableToolbar>
     ) : null}
     <Table
-      config={config}
+      columns={columns}
       loading={loading}
       data={data}
       onPageChange={pageIndex => setPageIndex(pageIndex)}

@@ -19,13 +19,20 @@ function ArrowIcon({ isOpen }) {
   );
 }
 const ColumnFilter = ({ onChange, columns, children }) => {
-  console.log('col filter', columns);
+  const handleStateChange = changes => {
+    const { isOpen, type } = changes;
+    if (type === Downshift.stateChangeTypes.mouseUp) {
+      this.setState({ isOpen });
+    }
+  };
+
   return (
     <Downshift
       itemToString={item => item.Header}
       aria-label={`Select columns`}
       onChange={onChange}
       selectedItem={columns.filter(col => col.show)}
+      onStateChange={handleStateChange}
     >
       {({ getButtonProps, getItemProps, isOpen, selectedItem }) => (
         <div>
