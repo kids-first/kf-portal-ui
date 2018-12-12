@@ -78,6 +78,17 @@ export const ArrangerContainer = styled(Row)`
       .bucket-link {
         ${arrangerValueText};
         color: ${({ theme }) => theme.greyScale1};
+        input[type=checkbox] {
+          float: left;
+        }
+        .textHighlight, .bucket-count {
+          display: table;
+        }
+      }
+      .bucket-count {
+        display: table;
+        min-width: 50px;
+        text-align: right;
       }
     }
   }
