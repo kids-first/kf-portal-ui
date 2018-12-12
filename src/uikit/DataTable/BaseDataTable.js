@@ -4,8 +4,9 @@ import { compose, withState } from 'recompose';
 import Table from './Table';
 import TableToolbar from './TableToolbar';
 import ColumnFilter from './ToolbarButtons/ColumnFilter';
+import Export from './ToolbarButtons/Export';
 
-import { configureCols } from './utils';
+import { configureCols } from './utils/columns';
 
 const enhance = compose(
   withState('pageSize', 'setPageSize', 10),
@@ -39,7 +40,7 @@ const BaseDataTable = ({
         >
           Columns
         </ColumnFilter>
-        <div>export</div>
+        <Export>export</Export>
       </TableToolbar>
     ) : null}
     <Table
