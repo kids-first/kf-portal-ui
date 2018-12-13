@@ -37,9 +37,8 @@ const BaseDataTable = ({
               columns.map((col, i) => (i === index ? { ...col, ...{ show: !item.show } } : col)),
             );
           }}
-        >
-          Columns
-        </ColumnFilter>
+        />
+
         <Export>export</Export>
       </TableToolbar>
     ) : null}

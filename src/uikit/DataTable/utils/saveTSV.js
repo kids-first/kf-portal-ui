@@ -1,5 +1,3 @@
-import download from './download';
-
 export default async function({ url, files = [], fileName, options = {} }) {
   return download({
     url,

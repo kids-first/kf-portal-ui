@@ -1,12 +1,67 @@
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
+import ChevronIcon from '../../../icons/ChevronIcon';
+import DownloadIcon from '../../../icons/DownloadIcon';
+
+const roundedCornerLeft = props => css`
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+`;
+
+const roundedCornerRight = props =>
+  css`
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  `;
+
+export const ToolbarItem = styled('div')`
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: ${({ theme }) => theme.lightBlue};
+
+  font-size: 12px;
+  font-family: ${({ theme }) => theme.fonts.default};
+  font-weight: 600;
+
+  border: solid 1px ${({ theme }) => theme.borderGrey};
+  padding: 0 10px;
+  background: none;
+
+  ${({ borderRadiusLeft }) => (borderRadiusLeft ? roundedCornerLeft : null)}
+  ${({
+    borderRadiusRight,
+  }) => (borderRadiusRight ? roundedCornerRight : null)}
+`;
 
 export const ToolbarButton = styled('button')`
+  color: ${({ theme }) => theme.lightBlue};
+  font-size: 12px;
+  font-family: ${({ theme }) => theme.fonts.default};
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
   display: flex;
-  cursor: pointer;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const ColumnIcon = styled(ChevronIcon)`
+  color: ${({ theme }) => theme.lightBlue};
+  margin-left: 6px;
+  transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 0)};
+`;
+
+export const FileDownloadIcon = styled(DownloadIcon)`
+  fill: ${({ theme }) => theme.lightBlue};
+  margin-right: 7px;
 `;
 
 export const DropdownHeader = styled('div')`
-  display: inline-block;
   position: relative;
   white-space: nowrap;
 `;

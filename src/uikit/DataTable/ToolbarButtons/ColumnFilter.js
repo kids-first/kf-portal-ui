@@ -1,24 +1,9 @@
 import React from 'react';
 import Downshift from 'downshift';
 
-import { DropdownHeader, ToolbarButton, DropdownContent } from './styles';
+import { ToolbarItem, DropdownContent, ToolbarButton, ColumnIcon } from './styles';
 
-function ArrowIcon({ isOpen }) {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      preserveAspectRatio="none"
-      width={16}
-      fill="transparent"
-      stroke="#979797"
-      strokeWidth="1.1px"
-      transform={isOpen ? 'rotate(180)' : null}
-    >
-      <path d="M1,6 L10,15 L19,6" />
-    </svg>
-  );
-}
-const ColumnFilter = ({ onChange, columns, children }) => {
+const ColumnFilter = ({ onChange, columns, ...props }) => {
   const handleStateChange = changes => {
     const { isOpen, type } = changes;
     if (type === Downshift.stateChangeTypes.mouseUp) {
@@ -35,14 +20,13 @@ const ColumnFilter = ({ onChange, columns, children }) => {
       onStateChange={handleStateChange}
     >
       {({ getButtonProps, getItemProps, isOpen, selectedItem }) => (
-        <div>
-          <DropdownHeader>
+        <div style={{ position: 'relative', whiteSpace: 'nowrap' }}>
+          <ToolbarItem {...props}>
             <ToolbarButton
               aria-label={`Show columns to select`}
               {...getButtonProps({ onClick: this.handleToggleMenu })}
             >
-              {children}
-              <ArrowIcon isOpen={isOpen} />
+              COLUMNS <ColumnIcon isOpen={isOpen} width="9px" height="9px" />
             </ToolbarButton>
             {!isOpen ? null : (
               <DropdownContent>
@@ -63,7 +47,7 @@ const ColumnFilter = ({ onChange, columns, children }) => {
                 ))}
               </DropdownContent>
             )}
-          </DropdownHeader>
+          </ToolbarItem>
         </div>
       )}
     </Downshift>
