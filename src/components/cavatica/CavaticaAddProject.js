@@ -10,6 +10,7 @@ import { getBillingGroups, saveProject } from 'services/cavatica';
 import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
+import Select from 'uikit/Select';
 
 const Container = styled(Row)`
   align-items: center;
@@ -51,8 +52,6 @@ const AddIcon = styled(PlusIcon)`
   min-width: 1%;
   fill: ${({ theme }) => theme.tertiary};
 `;
-
-//           # THIS ONE WE FIXIN
 
 const BillingGroupSelect = styled('select')`
   ${({ theme }) => theme.select};
