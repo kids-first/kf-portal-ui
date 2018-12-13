@@ -12,8 +12,7 @@ class ProgressBar extends Component {
   render() {
     const { percent, height, onClick, percentColor, trailColor, style } = this.props;
 
-    const percentFill = 100 - percent;
-    const percentWidth = `${percentFill}%`;
+    const percentWidth = `${percent}%`;
 
     const svgStyle = {
       pointerEvents: 'all',
