@@ -53,11 +53,6 @@ const AddIcon = styled(PlusIcon)`
   fill: ${({ theme }) => theme.tertiary};
 `;
 
-const BillingGroupSelect = styled('select')`
-  ${({ theme }) => theme.select};
-  ${({ theme }) => theme.input};
-`;
-
 const enhance = compose(
   injectState,
   withTheme,
@@ -115,13 +110,13 @@ const CavaticaAddProject = ({
             value={projectName}
             onChange={onProjectNameChange}
           />
-          <BillingGroupSelect onChange={onBillingGroupSelect}>
+          <Select onChange={onBillingGroupSelect}>
             {billingGroups.map((bg, i) => (
               <option key={i} value={bg.id}>
                 {bg.name}
               </option>
             ))}
-          </BillingGroupSelect>
+          </Select>
           <LoadingOnClick
             onClick={onSaveButtonClick}
             render={({ loading, onClick }) => (
