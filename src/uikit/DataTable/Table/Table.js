@@ -17,7 +17,7 @@ const Table = withTheme(
         onPageSizeChange={onPageSizeChange}
         sortable={false}
         multiSort={false}
-        resizable={false}
+        //resizable={false}
         className={striped ? '-striped' : ''}
         minRows={1}
         PaginationComponent={props => <CustomPagination {...props} />}

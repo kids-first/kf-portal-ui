@@ -52,6 +52,7 @@ export const ToolbarButton = styled('button')`
 
 export const ColumnIcon = styled(ChevronIcon)`
   color: ${({ theme }) => theme.lightBlue};
+  fill: ${({ theme }) => theme.lightBlue};
   margin-left: 6px;
   transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 0)};
 `;

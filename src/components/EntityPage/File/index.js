@@ -19,6 +19,9 @@ import {
 import ArrangerDataProvider from 'components/ArrangerDataProvider';
 import { buildSqonForIds } from 'services/arranger';
 
+import BaseDataTable from 'uikit/DataTable';
+import { mockColumns, mockData } from './mock';
+
 const fileQuery = `query ($sqon: JSON) {
   file {
     hits(filters: $sqon) {
@@ -233,7 +236,7 @@ const FileEntity = ({ api, fileId }) => {
             <EntityTitle
               icon="file"
               title={fileId}
-              tags={file.isLoading ? [] : getTags(file.data)}
+              tags={file.isLoading || true ? [] : getTags(file.data)}
             />
           </EntityTitleBar>
           <EntityActionBar>Share Button</EntityActionBar>
@@ -247,6 +250,11 @@ const FileEntity = ({ api, fileId }) => {
             <EntityContentDivider />
             <EntityContentSection title="Associated Participants/Biospecimens">
               Participant and Biospeciment Table Here
+              <BaseDataTable
+                columns={mockColumns.map(col => ({ ...col, ...{ show: true } }))}
+                loading={false}
+                data={mockData}
+              />
             </EntityContentSection>
             <EntityContentDivider />
             <EntityContentSection title="Associated Experimental Strategies">
