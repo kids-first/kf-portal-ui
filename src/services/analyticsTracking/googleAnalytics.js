@@ -224,7 +224,7 @@ export const trackPageView = (page, options = {}) => {
 };
 
 export const trackExternalLink = url => {
-  ReactGA.outboundLink({ label: url }, () => {});
+  if (url) ReactGA.outboundLink({ label: url }, () => {});
 };
 
 export const trackProfileInteraction = ({ action, value, type }) =>
