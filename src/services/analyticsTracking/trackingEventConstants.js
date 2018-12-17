@@ -8,11 +8,17 @@ export const TRACKING_EVENTS = {
         _donut: 'Chart: Donut',
         userInterests: 'Chart: Donut: User Interests',
       },
+      bar: {
+        _bar: 'Chart: Bar:',
+        studies: 'Chart: Bar: Studies',
+        diagnoses: 'Chart: Bar: Most Frequent Diagnoses',
+      },
     },
     user: {
       profile: 'User Profile',
       dashboard: {
         widgets: {
+          authorizedStudies: 'Autohorized Studies',
           savedQueries: 'User Dashboard: Saved Queries widget',
           _card: 'User Dashboard: Card',
           _multiCard: 'User Dashboard: MultiCard',
@@ -35,6 +41,7 @@ export const TRACKING_EVENTS = {
     completedProfile: 'Completed Profile',
     open: 'Open',
     close: 'Close',
+    hover: 'Hover',
     click: 'Clicked',
     edit: 'Edit',
     scroll: 'Scrolled',

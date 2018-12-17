@@ -78,7 +78,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                     {
                       nav: 'Create',
                       headerComponent: cardProps => (
-                        <CardHeader title="Create a CAVATICA Project" badge={null} />
+                        <CardHeader title="Create a Cavatica Project" badge={null} />
                       ),
                       component: cardProps => (
                         <Create
@@ -88,7 +88,7 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
                       ),
                     },
                   ]
-                : [{ title: 'CAVATICA Projects', component: cardProps => <NotConnected /> }]
+                : [{ title: 'Cavatica Projects', component: cardProps => <NotConnected /> }]
             }
           />
         );

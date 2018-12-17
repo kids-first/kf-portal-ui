@@ -6,7 +6,15 @@ import { titleCase } from 'common/displayFormatters';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
-import { TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const {
+  categories: {
+    charts: {
+      bar: { studies: studiesChartCategory, diagnoses: diagnosesChartCategory },
+    },
+  },
+} = TRACKING_EVENTS;
 
 const ALLOWED_INTERESTS = []
   .concat(DISEASE_AREAS, STUDY_SHORT_NAMES)
@@ -55,13 +63,24 @@ const getFileRepoURL = (field, value) => {
   return x;
 };
 
+const trackBarClick = (trackingEventCategory, barData) => {
+  trackUserInteraction({
+    category: trackingEventCategory,
+    action: `Chart Bar: ${TRACKING_EVENTS.actions.click}`,
+    label: `${barData.indexValue}: ${barData.id}`,
+  });
+};
+
 export const StudiesChart = withTheme(({ data, theme }) => {
   const mergedStudyData = data.map(d => ({
     ...d,
     url: getFileRepoURL(SHORT_NAME_FIELD, d.name),
   }));
 
-  const onClick = barData => (window.location.href = barData.data.url);
+  const onClick = barData => {
+    trackBarClick(studiesChartCategory, barData);
+    window.location.href = barData.data.url;
+  };
 
   return (
     <HorizontalBar
@@ -70,6 +89,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       keys={['probands', 'familyMembers']}
       onClick={onClick}
       tooltipFormatter={studiesToolTip}
+      analyticsTracking={{ category: studiesChartCategory }}
       sortBy={sortDescParticipant}
       tickInterval={4}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
@@ -113,7 +133,10 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
     url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, d.name),
   }));
 
-  const onClick = barData => (window.location.href = barData.data.url);
+  const onClick = barData => {
+    trackBarClick(diagnosesChartCategory, barData);
+    window.location.href = barData.data.url;
+  };
 
   return (
     <HorizontalBar
@@ -123,6 +146,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
       onClick={onClick}
       tooltipFormatter={participantTooltip}
       sortBy={sortDescParticipant}
+      analyticsTracking={{ category: diagnosesChartCategory }}
       tickInterval={4}
       colors={[theme.chartColors.blue, theme.chartColors.purple]}
       xTickTextLength={28}
