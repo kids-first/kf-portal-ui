@@ -352,8 +352,12 @@ export default styled('div')`
       border-right: 1px solid ${({ theme }) => theme.greyScale5};
     }
 
-    .ReactTable.-striped .rt-tr.-odd {
+    .ReactTable.-striped .rt-tr. {
       background-color: ${({ theme }) => theme.backgroundGrey};
+    }
+
+    .ReactTable.-striped .rt-tr.-odd {
+      background-color: white;
     }
 
     .ReactTable .pagination-bottom,
