@@ -353,11 +353,11 @@ export default styled('div')`
     }
 
     .ReactTable.-striped .rt-tr. {
-      background-color: ${({ theme }) => theme.backgroundGrey};
+      background-color: ${({ theme }) => theme.backgroundRowEven};
     }
 
     .ReactTable.-striped .rt-tr.-odd {
-      background-color: white;
+      background-color: ${({ theme }) => theme.backgroundRowOdd};
     }
 
     .ReactTable .pagination-bottom,
