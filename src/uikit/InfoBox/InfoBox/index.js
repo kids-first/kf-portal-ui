@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
+import PropTypes from 'prop-types';
 
 import Column from 'uikit/Column';
 
@@ -12,10 +13,7 @@ const Info = styled(Column)`
   flex-basis: 0;
   flex: 1;
 
-  ${({ styles }) => {
-    console.log('styles', styles);
-    return styles ? styles : null;
-  }}
+  ${({ styles }) => (styles ? styles : null)};
 `;
 
 const Value = styled('div')`
@@ -36,5 +34,10 @@ const InfoBox = ({ value, description, styles }) => (
     <Description>{description}</Description>
   </Info>
 );
+
+InfoBox.propTypes = {
+  value: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
+  description: PropTypes.string.isRequired,
+};
 
 export default InfoBox;
