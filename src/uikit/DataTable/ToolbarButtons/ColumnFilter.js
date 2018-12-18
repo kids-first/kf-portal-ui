@@ -22,10 +22,7 @@ const ColumnFilter = ({ onChange, columns, ...props }) => {
       {({ getButtonProps, getItemProps, isOpen, selectedItem }) => (
         <div style={{ position: 'relative', whiteSpace: 'nowrap' }}>
           <ToolbarItem {...props}>
-            <ToolbarButton
-              aria-label={`Show columns to select`}
-              {...getButtonProps({ onClick: this.handleToggleMenu })}
-            >
+            <ToolbarButton aria-label={`Show columns to select`} {...getButtonProps()}>
               COLUMNS <ColumnIcon isOpen={isOpen} width="9px" height="9px" />
             </ToolbarButton>
             {!isOpen ? null : (

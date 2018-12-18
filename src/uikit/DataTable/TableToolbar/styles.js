@@ -1,7 +1,7 @@
 import styled from 'react-emotion';
 
-import { applyDefaultStyles } from 'uikit/Core';
-import Row from 'uikit/Row';
+import { applyDefaultStyles } from '../../Core';
+import Row from '../../Row';
 
 export const Toolbar = styled(Row)`
   justify-content: space-between;
