@@ -1,3 +1,5 @@
 import InfoBoxRow from './InfoBoxRow';
+import InfoBox from './InfoBox';
 
-export default InfoBoxRow;
+export { InfoBoxRow };
+export default InfoBox;
