@@ -1,3 +1,6 @@
 //import './uikit';
-import './ChartKit';
-import './UIKit';
+import './ChartKit/Donut';
+import './ChartKit/HorizontalBar';
+import './ChartKit/ProgressBar';
+import './UIKit/DataTable';
+import './UIKit/InfoBoxRow';
