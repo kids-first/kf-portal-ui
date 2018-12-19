@@ -210,7 +210,7 @@ const fileQuery = `query ($sqon: JSON) {
   }
 }`;
 
-const summaryTable1Data = data => {
+const filePropertiesSummary = data => {
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
@@ -223,25 +223,22 @@ const summaryTable1Data = data => {
     { title: 'Study:', summary: `${study.short_name}(${study.kf_id})` },
     { title: 'Access:', summary: data.controlled_access ? 'Controlled' : '' },
     { title: 'Consent Codes:', summary: biospecimens.dbgap_consent_code },
+    {
+      title: 'Harmonized Data:',
+      summary: data.is_harmonized ? 'Yes' : 'No',
+    },
+    { title: 'Reference Genome:', summary: data.reference_genome },
+    {
+      title: 'Experimental Strategy:',
+      summary: data.experiment_strategies.map(strategies => <div>{strategies}</div>),
+    },
+    { title: 'Data Type:', summary: data.data_type },
+    { title: 'File Format:', summary: data.file_format },
+    { title: 'Size:', summary: formatToGB(data.size) },
   ];
 };
 
 const formatToGB = size => `${size / 1000000} GB`; // TODO: What size is coming back from API?
-
-const summaryTable2Data = data => [
-  {
-    title: 'Harmonized Data:',
-    summary: data.is_harmonized ? 'Yes' : 'No',
-  },
-  { title: 'Reference Genome:', summary: data.reference_genome },
-  {
-    title: 'Experimental Strategy:',
-    summary: data.experiment_strategies.map(strategies => <div>{strategies}</div>),
-  },
-  { title: 'Data Type:', summary: data.data_type },
-  { title: 'File Format:', summary: data.file_format },
-  { title: 'Size:', summary: formatToGB(data.size) },
-];
 
 const particpantBiospecimenColumns = [
   { Header: 'Participant ID', accessor: 'participant_id' },
@@ -258,9 +255,8 @@ const particpantBiospecimenData = data =>
   _.flattenDeep(
     data.participants.hits.edges.map(nodes => {
       const p = nodes.node;
-      const biospecimens = p.biospecimens.hits.edges;
 
-      return biospecimens.map(bio => {
+      return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
           participant_id: p.kf_id,
@@ -323,52 +319,58 @@ const FileEntity = ({ api, fileId }) => {
       transform={data => _.get(data, 'data.file.hits.edges[0].node')}
     >
       {file => {
-        return file.isLoading ? (
-          <div>Loading</div>
-        ) : (
-          <Container>
-            <EntityTitleBar>
-              <EntityTitle
-                icon="file"
-                title={fileId}
-                tags={file.isLoading || true ? [] : getTags(file.data)}
-              />
-            </EntityTitleBar>
-            <EntityActionBar>Share Button</EntityActionBar>
-            <EntityContent>
-              <EntityContentSection title="File Properties">
-                <Row style={{ width: '100%' }}>
-                  <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
-                    <SummaryTable rows={summaryTable1Data(file.data)} />
-                  </Column>
-                  <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
-                    <SummaryTable rows={summaryTable2Data(file.data)} />
-                  </Column>
-                </Row>
-              </EntityContentSection>
-              <EntityContentDivider />
-              <EntityContentSection title="Associated Participants/Biospecimens">
-                <BaseDataTable
-                  loading={file.isLoading}
-                  data={particpantBiospecimenData(file.data)}
-                  columns={particpantBiospecimenColumns}
+        if (file.isLoading) {
+          return <div>Loading</div>;
+        } else {
+          // split file properties data into two arrays for two tables
+          const fileProperties = filePropertiesSummary(file.data);
+          const [table1, table2] = _.chunk(fileProperties, fileProperties.length / 2);
+
+          return (
+            <Container>
+              <EntityTitleBar>
+                <EntityTitle
+                  icon="file"
+                  title={fileId}
+                  tags={file.isLoading || true ? [] : getTags(file.data)}
                 />
-              </EntityContentSection>
-              <EntityContentDivider />
-              <EntityContentSection title="Associated Experimental Strategies">
-                <BaseDataTable
-                  loading={file.isLoading}
-                  data={experimentalStrategiesData(file.data)}
-                  columns={experimentalStrategiesColumns}
-                />
-              </EntityContentSection>
-              <EntityContentDivider />
-              <EntityContentSection title="Sequencing Read Properties">
-                Read Property Numbers Here
-              </EntityContentSection>
-            </EntityContent>
-          </Container>
-        );
+              </EntityTitleBar>
+              <EntityActionBar>Share Button</EntityActionBar>
+              <EntityContent>
+                <EntityContentSection title="File Properties">
+                  <Row style={{ width: '100%' }}>
+                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
+                      <SummaryTable rows={table1} />
+                    </Column>
+                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
+                      <SummaryTable rows={table2} />
+                    </Column>
+                  </Row>
+                </EntityContentSection>
+                <EntityContentDivider />
+                <EntityContentSection title="Associated Participants/Biospecimens">
+                  <BaseDataTable
+                    loading={file.isLoading}
+                    data={particpantBiospecimenData(file.data)}
+                    columns={particpantBiospecimenColumns}
+                  />
+                </EntityContentSection>
+                <EntityContentDivider />
+                <EntityContentSection title="Associated Experimental Strategies">
+                  <BaseDataTable
+                    loading={file.isLoading}
+                    data={experimentalStrategiesData(file.data)}
+                    columns={experimentalStrategiesColumns}
+                  />
+                </EntityContentSection>
+                <EntityContentDivider />
+                <EntityContentSection title="Sequencing Read Properties">
+                  Read Property Numbers Here
+                </EntityContentSection>
+              </EntityContent>
+            </Container>
+          );
+        }
       }}
     </ArrangerDataProvider>
   );
