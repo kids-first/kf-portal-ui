@@ -334,7 +334,11 @@ const FileEntity = ({ api, fileId }) => {
         } else {
           const data = _.get(file, 'data.hits.edges[0].node');
           const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
-          console.log('kf_id', data);
+
+          // split file properties data into two arrays for two tables
+          const fileProperties = filePropertiesSummary(file.data);
+          const [table1, table2] = [fileProperties.slice(0, 5), fileProperties.slice(5)];
+
           return (
             <Container>
               <EntityTitleBar>
