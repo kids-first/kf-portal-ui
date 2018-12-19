@@ -36,20 +36,23 @@ const TableTitle = styled('td')`
 
 const SummaryTable = ({ rows }) => (
   <Table>
-    {rows.map((row, i) => (
-      <TableRow index={i} key={i}>
-        <TableTitle>{row.title}</TableTitle>
-        <TableCell>{row.summary}</TableCell>
-      </TableRow>
-    ))}
+    <tbody>
+      {rows.map((row, i) => (
+        <TableRow index={i} key={i}>
+          <TableTitle>{row.title}</TableTitle>
+          <TableCell>{row.summary}</TableCell>
+        </TableRow>
+      ))}
+    </tbody>
   </Table>
 );
 
 SummaryTable.propTypes = {
-  rows: PropTypes.shape({
-    title: PropTypes.string,
-    summary: PropTypes.string,
-  }).isRequired,
+  rows: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default SummaryTable;

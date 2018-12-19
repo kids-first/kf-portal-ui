@@ -65,6 +65,10 @@ const colors = {
   cardTitle: '#404c9a',
   defaultBadge: '#404c9a',
   defaultChip: '#404c9a',
+
+  // table
+  backgroundRowOdd: '#f4f5f8',
+  backgroundRowEven: '#fff',
 };
 
 export const chartColors = {
