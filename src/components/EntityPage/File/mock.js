@@ -1,3 +1,11 @@
+export const infoBoxMock = [
+  { value: 340000, description: 'Total Reads' },
+  { value: 477, description: 'Max Insert Size' },
+  { value: 245, description: 'Mean Depth' },
+  { value: 287, description: 'Mean Insert Size' },
+  { value: 304, description: 'Mean Read Length' },
+];
+
 export const mockData = [
   {
     particpantId: 'PT_JPHXHZFZ',

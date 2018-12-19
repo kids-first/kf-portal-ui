@@ -24,7 +24,9 @@ import { buildSqonForIds } from 'services/arranger';
 import ExternalLink from 'uikit/ExternalLink';
 
 import BaseDataTable from 'uikit/DataTable';
-import { mockColumns, mockData } from './mock';
+import { InfoBoxRow } from 'uikit/InfoBox';
+
+import { mockColumns, mockData, infoBoxMock } from './mock';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
@@ -211,7 +213,6 @@ const fileQuery = `query ($sqon: JSON) {
 }`;
 
 const filePropertiesSummary = data => {
-  console.log('filePropertiesSummary', data);
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
@@ -368,7 +369,7 @@ const FileEntity = ({ api, fileId }) => {
                 </EntityContentSection>
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
-                  Read Property Numbers Here
+                  <InfoBoxRow data={infoBoxMock} />
                 </EntityContentSection>
               </EntityContent>
             </Container>
