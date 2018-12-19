@@ -211,13 +211,14 @@ const fileQuery = `query ($sqon: JSON) {
 }`;
 
 const filePropertiesSummary = data => {
+  console.log('filePropertiesSummary', data);
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
   return [
     {
       title: 'External ID:',
-      summary: <ExternalLink href={``}>data.external_id</ExternalLink>,
+      summary: <ExternalLink href={``}>{data.external_id}</ExternalLink>,
     },
     { title: 'Name:', summary: data.file_name },
     { title: 'Study:', summary: `${study.short_name}(${study.kf_id})` },
@@ -321,6 +322,8 @@ const FileEntity = ({ api, fileId }) => {
       {file => {
         if (file.isLoading) {
           return <div>Loading</div>;
+        } else if (!file.data) {
+          return <div>no data</div>;
         } else {
           // split file properties data into two arrays for two tables
           const fileProperties = filePropertiesSummary(file.data);
