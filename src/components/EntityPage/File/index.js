@@ -15,6 +15,7 @@ import {
   EntityContentSection,
   EntityContentDivider,
 } from 'components/EntityPage';
+import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 
 import SummaryTable from 'uikit/SummaryTable';
 
@@ -367,6 +368,7 @@ const FileEntity = ({ api, fileId }) => {
                   kfId={data.kf_id}
                   acl={acl}
                 />
+                <CavaticaCopyButton text="ANALYZE FILE IN CAVATICA" />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">

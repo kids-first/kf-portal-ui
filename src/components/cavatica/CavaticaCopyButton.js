@@ -57,19 +57,20 @@ const showCopyModal = ({ effects, props }) => {
   });
 };
 
-const CavaticaCopyButton = compose(injectState, withTheme)(
-  ({ state, theme, effects, disabled, ...props }) => {
-    const connected = state.integrationTokens[CAVATICA];
-    const clickAction = connected ? showCopyModal : showConnectModal;
-    return (
-      <CavaticaButton disabled={disabled} onClick={() => clickAction({ effects, props })}>
-        <ButtonContent>
-          <CavaticaLogo alt="" src={cavaticaLogo} />
-          Copy files to Cavatica
-        </ButtonContent>
-      </CavaticaButton>
-    );
-  },
-);
+const CavaticaCopyButton = compose(
+  injectState,
+  withTheme,
+)(({ state, theme, effects, disabled, text = 'Copy files to Cavatica', ...props }) => {
+  const connected = state.integrationTokens[CAVATICA];
+  const clickAction = connected ? showCopyModal : showConnectModal;
+  return (
+    <CavaticaButton disabled={disabled} onClick={() => clickAction({ effects, props })}>
+      <ButtonContent>
+        <CavaticaLogo alt="" src={cavaticaLogo} />
+        {text}
+      </ButtonContent>
+    </CavaticaButton>
+  );
+});
 
 export default CavaticaCopyButton;
