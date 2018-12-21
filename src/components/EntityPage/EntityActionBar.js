@@ -24,7 +24,7 @@ const ActionBar = styled(Flex)`
   background-color: ${({ theme }) => theme.white};
 
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   flex-direction: column;
 `;
 
