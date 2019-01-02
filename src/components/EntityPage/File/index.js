@@ -15,7 +15,6 @@ import {
   EntityContentSection,
   EntityContentDivider,
 } from 'components/EntityPage';
-import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 
 import SummaryTable from 'uikit/SummaryTable';
 
@@ -30,6 +29,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { mockColumns, mockData, infoBoxMock } from './mock';
 import Download from './Download';
 
+import CavaticaAnalyse from './CavaticaAnalyse';
 import { mockColumns, mockData } from './mock';
 
 const fileQuery = `query ($sqon: JSON) {
@@ -370,7 +370,7 @@ const FileEntity = ({ api, fileId }) => {
                   kfId={data.kf_id}
                   acl={acl}
                 />
-                <CavaticaCopyButton text="ANALYZE FILE IN CAVATICA" />
+                <CavaticaAnalyse fileId={fileId} />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
