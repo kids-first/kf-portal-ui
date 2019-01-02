@@ -30,6 +30,8 @@ const ActionBar = styled(Flex)`
 
 const ContentContainer = styled(Row)`
   ${({ theme }) => theme.contentContainer};
+  align-items: center;
+  justify-content: flex-end;
   height: 100%;
 `;
 
