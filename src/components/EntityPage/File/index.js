@@ -30,6 +30,8 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { mockColumns, mockData, infoBoxMock } from './mock';
 import Download from './Download';
 
+import { mockColumns, mockData } from './mock';
+
 const fileQuery = `query ($sqon: JSON) {
   file {
     aggregations(filters: $sqon) {
@@ -380,7 +382,32 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentDivider />
                 <EntityContentSection title="Associated Participants/Biospecimens" />
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies" />
+                <EntityContentSection title="Associated Experimental Strategies">
+                  <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
+                    <SummaryTable rows={table1} />
+                  </Column>
+                  <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
+                    <SummaryTable rows={table2} />
+                  </Column>
+                </EntityContentSection>
+                <EntityContentDivider />
+
+                <EntityContentSection title="Associated Participants/Biospecimens">
+                  <BaseDataTable
+                    loading={file.isLoading}
+                    data={particpantBiospecimenData(file.data)}
+                    columns={particpantBiospecimenColumns}
+                  />
+                </EntityContentSection>
+                <EntityContentDivider />
+                <EntityContentSection title="Associated Experimental Strategies">
+                  <BaseDataTable
+                    loading={file.isLoading}
+                    data={experimentalStrategiesData(file.data)}
+                    columns={experimentalStrategiesColumns}
+                  />
+                </EntityContentSection>
+
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
                   <InfoBoxRow data={infoBoxMock} />
