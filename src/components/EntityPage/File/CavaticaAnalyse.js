@@ -20,10 +20,20 @@ const buttonContentStyle = props =>
     }
   `;
 
-export default () => (
+export default ({ fileId }) => (
   <CavaticaCopyButton
     text="ANALYZE FILE IN CAVATICA"
     buttonStyle={buttonStyle}
     buttonContentStyle={buttonContentStyle}
+    selectedTableRows={[fileId]}
+    sqon={{
+      op: 'and',
+      content: [
+        {
+          op: 'in',
+          content: { field: 'kf_id', value: [fileId] },
+        },
+      ],
+    }}
   />
 );
