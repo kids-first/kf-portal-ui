@@ -12,7 +12,6 @@ import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
-import FileRepoSidebar from 'components/FileRepoSidebar';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
@@ -50,7 +49,11 @@ const customTableTypes = {
   ),
 };
 
-const FileRepo = compose(injectState, withTheme, withApi)(
+const FileRepo = compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     state,
     effects,
@@ -120,27 +123,18 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                 });
                               }}
                             />
-                            {url.sqon &&
-                              Object.keys(url.sqon).length > 0 && (
-                                <FileRepoStatsQuery
-                                  {...props}
-                                  {...url}
-                                  render={({ data: stats, loading: disabled }) => (
-                                    <QuerySharingContainer>
-                                      <ShareQuery
-                                        api={props.api}
-                                        {...url}
-                                        {...{ stats, disabled }}
-                                      />
-                                      <SaveQuery
-                                        api={props.api}
-                                        {...url}
-                                        {...{ stats, disabled }}
-                                      />
-                                    </QuerySharingContainer>
-                                  )}
-                                />
-                              )}
+                            {url.sqon && Object.keys(url.sqon).length > 0 && (
+                              <FileRepoStatsQuery
+                                {...props}
+                                {...url}
+                                render={({ data: stats, loading: disabled }) => (
+                                  <QuerySharingContainer>
+                                    <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                    <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                  </QuerySharingContainer>
+                                )}
+                              />
+                            )}
                           </Row>
                           <FileRepoStats
                             {...props}
@@ -201,7 +195,6 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                             />
                           </TableWrapper>
                         </TableContainer>
-                        <FileRepoSidebar {...props} sqon={selectionSQON} />
                       </ArrangerContainer>
                     </React.Fragment>
                   );
