@@ -16,22 +16,27 @@ import {
   EntityContentDivider,
 } from 'components/EntityPage';
 
-import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
-
 import SummaryTable from 'uikit/SummaryTable';
 
 import ArrangerDataProvider from 'components/ArrangerDataProvider';
 import { buildSqonForIds } from 'services/arranger';
 
 import ExternalLink from 'uikit/ExternalLink';
-import DownloadButton from 'uikit/DownloadButton';
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
 
 import { mockColumns, mockData, infoBoxMock } from './mock';
+import Download from './Download';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
+    aggregations(filters: $sqon) {
+      acl {
+        buckets {
+          key
+        }
+      }
+    }
     hits(filters: $sqon) {
       edges {
         node {
@@ -316,12 +321,15 @@ const FileEntity = ({ api, fileId }) => {
       api={api}
       query={fileQuery}
       sqon={buildSqonForIds([fileId])}
-      transform={data => _.get(data, 'data.file.hits.edges[0].node')}
+      transform={data => _.get(data, 'data.file')}
     >
       {file => {
         if (file.isLoading) {
           return <div>Loading</div>;
         } else {
+          const data = _.get(file, 'data.hits.edges[0].node');
+          const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
+
           return (
             <Container>
               <EntityTitleBar>
@@ -332,10 +340,7 @@ const FileEntity = ({ api, fileId }) => {
                 />
               </EntityTitleBar>
               <EntityActionBar>
-                <DownloadFileButton
-                  kfId={file.data.kf_id}
-                  render={props => <DownloadButton {...props} />}
-                />
+                <Download kfId={data.kf_id} acl={acl} />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
