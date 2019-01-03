@@ -24,6 +24,7 @@ import { buildSqonForIds } from 'services/arranger';
 import ExternalLink from 'uikit/ExternalLink';
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { mockColumns, mockData, infoBoxMock } from './mock';
 import Download from './Download';
@@ -340,7 +341,24 @@ const FileEntity = ({ api, fileId }) => {
                 />
               </EntityTitleBar>
               <EntityActionBar>
-                <Download kfId={data.kf_id} acl={acl} />
+                <DownloadFileButton
+                  onSuccess={url => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: 'Download File',
+                      label: url,
+                    });
+                  }}
+                  onError={err => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: 'Download File FAILED',
+                      label: JSON.stringify(err, null, 2),
+                    });
+                  }}
+                  kfId={data.kf_id}
+                  render={props => <DownloadButton {...props} />}
+                />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">

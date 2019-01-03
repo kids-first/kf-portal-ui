@@ -13,7 +13,6 @@ import { GEN3 } from 'common/constants';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { getAppElement } from 'services/globalDomNodes';
 
 const getGen3UUIDs = async kfId => {
@@ -41,6 +40,8 @@ const DownloadFileButton = compose(
     gen3Key = integrationTokens[GEN3],
     api,
     render,
+    onSuccess,
+    onError,
   }) => (
     <LoadingOnClick
       onClick={() =>
@@ -48,11 +49,10 @@ const DownloadFileButton = compose(
           .then(url => {
             const a = document.createElement('a');
             a.href = url;
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-              action: 'Download File',
-              label: url,
-            });
+            if (onSuccess) {
+              onSuccess(url);
+            }
+
             a.download = url.split('/').slice(-1);
             a.style.display = 'none';
 
@@ -63,11 +63,9 @@ const DownloadFileButton = compose(
             appRoot.removeChild(a);
           })
           .catch(err => {
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-              action: 'Download File FAILED',
-              label: 'Your account does not have the required permission to download this file.',
-            });
+            if (onError) {
+              onError(err);
+            }
             setToast({
               id: `${Date.now()}`,
               action: 'error',
