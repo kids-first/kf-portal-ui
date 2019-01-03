@@ -16,13 +16,15 @@ import {
   EntityContentDivider,
 } from 'components/EntityPage';
 
+import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
+
 import SummaryTable from 'uikit/SummaryTable';
 
 import ArrangerDataProvider from 'components/ArrangerDataProvider';
 import { buildSqonForIds } from 'services/arranger';
 
 import ExternalLink from 'uikit/ExternalLink';
-
+import DownloadButton from 'uikit/DownloadButton';
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
 
@@ -39,17 +41,13 @@ const fileQuery = `query ($sqon: JSON) {
           controlled_access
           created_at
           data_type
-          experiment_strategies
           external_id
           file_format
           file_name
-          instrument_models
           is_harmonized
-          is_paired_end
           kf_id
           latest_did
           modified_at
-          platforms
           reference_genome
           size
           participants {
@@ -323,13 +321,7 @@ const FileEntity = ({ api, fileId }) => {
       {file => {
         if (file.isLoading) {
           return <div>Loading</div>;
-        } else if (!file.data) {
-          return <div>no data</div>;
         } else {
-          // split file properties data into two arrays for two tables
-          const fileProperties = filePropertiesSummary(file.data);
-          const [table1, table2] = _.chunk(fileProperties, fileProperties.length / 2);
-
           return (
             <Container>
               <EntityTitleBar>
@@ -339,34 +331,23 @@ const FileEntity = ({ api, fileId }) => {
                   tags={file.isLoading || true ? [] : getTags(file.data)}
                 />
               </EntityTitleBar>
-              <EntityActionBar>Share Button</EntityActionBar>
+              <EntityActionBar>
+                <DownloadFileButton
+                  kfId={file.data.kf_id}
+                  render={props => <DownloadButton {...props} />}
+                />
+              </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
                   <Row style={{ width: '100%' }}>
-                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
-                      <SummaryTable rows={table1} />
-                    </Column>
-                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
-                      <SummaryTable rows={table2} />
-                    </Column>
+                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }} />
+                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }} />
                   </Row>
                 </EntityContentSection>
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Participants/Biospecimens">
-                  <BaseDataTable
-                    loading={file.isLoading}
-                    data={particpantBiospecimenData(file.data)}
-                    columns={particpantBiospecimenColumns}
-                  />
-                </EntityContentSection>
+                <EntityContentSection title="Associated Participants/Biospecimens" />
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies">
-                  <BaseDataTable
-                    loading={file.isLoading}
-                    data={experimentalStrategiesData(file.data)}
-                    columns={experimentalStrategiesColumns}
-                  />
-                </EntityContentSection>
+                <EntityContentSection title="Associated Experimental Strategies" />
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
                   <InfoBoxRow data={infoBoxMock} />
