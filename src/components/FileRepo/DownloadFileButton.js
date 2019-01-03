@@ -28,7 +28,11 @@ const downloadFile = async ({ kfId, api }) => {
   return downloadFileFromGen3({ fileUUID, api });
 };
 
-const DownloadFileButton = compose(injectState, withTheme, withApi)(
+const DownloadFileButton = compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     kfId,
     theme,
@@ -36,6 +40,7 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
     state: { integrationTokens },
     gen3Key = integrationTokens[GEN3],
     api,
+    render,
   }) => (
     <LoadingOnClick
       onClick={() =>
@@ -105,22 +110,26 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
             });
           })
       }
-      render={({ onClick, loading }) => (
-        <IconWithLoading
-          {...{ loading }}
-          spinnerProps={{ color: 'grey' }}
-          Icon={() => (
-            <DownloadIcon
-              {...{ onClick }}
-              width={13}
-              fill={theme.primary}
-              className={css`
-                cursor: pointer;
-              `}
-            />
-          )}
-        />
-      )}
+      render={
+        render
+          ? render
+          : ({ onClick, loading }) => (
+              <IconWithLoading
+                {...{ loading }}
+                spinnerProps={{ color: 'grey' }}
+                Icon={() => (
+                  <DownloadIcon
+                    {...{ onClick }}
+                    width={13}
+                    fill={theme.primary}
+                    className={css`
+                      cursor: pointer;
+                    `}
+                  />
+                )}
+              />
+            )
+      }
     />
   ),
 );
