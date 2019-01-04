@@ -1,6 +1,6 @@
 import styled, { css } from 'react-emotion';
-import ChevronIcon from '../../../icons/ChevronIcon';
-import DownloadIcon from '../../../icons/DownloadIcon';
+import ChevronIcon from 'icons/ChevronIcon';
+import DownloadIcon from 'icons/DownloadIcon';
 
 const roundedCornerLeft = props => css`
   border-top-left-radius: 10px;
