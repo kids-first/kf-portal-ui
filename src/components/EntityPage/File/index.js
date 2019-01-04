@@ -230,7 +230,7 @@ const filePropertiesSummary = data => {
   return [
     {
       title: 'External ID:',
-      summary: <ExternalLink href={``}>{data.external_id}</ExternalLink>,
+      summary: data.external_id,
     },
     { title: 'Name:', summary: data.file_name },
     { title: 'Study:', summary: `${study.short_name}(${study.kf_id})` },
