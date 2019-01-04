@@ -243,7 +243,9 @@ const filePropertiesSummary = data => {
     { title: 'Reference Genome:', summary: data.reference_genome },
     {
       title: 'Experimental Strategy:',
-      summary: data.experiment_strategies.map(strategies => <div>{strategies}</div>),
+      summary: _.get(data, data.experiment_strategies, []).map(strategies => (
+        <div>{strategies}</div>
+      )),
     },
     { title: 'Data Type:', summary: data.data_type },
     { title: 'File Format:', summary: data.file_format },
