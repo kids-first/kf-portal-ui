@@ -65,9 +65,7 @@ const Download = compose(
         href={urlJoin(kfWebRoot, '/support/studies-and-access/#applying-for-data-access')}
       >
         {' '}
-        Apply for access
-        <RotatedChevron fill={theme.primaryLight} />
-        <RotatedChevron fill={theme.primaryLight} transform={'rotate(-90) translate(0 -4)'} />
+        Apply for access &raquo;
       </ExternalLink>
     </ControlledDownload>
   );
