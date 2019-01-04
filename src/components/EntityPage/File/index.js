@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import _ from 'lodash';
+import _, { get } from 'lodash';
 
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
@@ -43,6 +43,19 @@ const fileQuery = `query ($sqon: JSON) {
     hits(filters: $sqon) {
       edges {
         node {
+          sequencing_experiments {
+            hits {
+              edges {
+                node {
+                  max_insert_size
+                  total_reads
+                  mean_depth
+                  mean_insert_size
+                  mean_read_length
+                }
+              }
+            }
+          }
           kf_id
           acl
           availability
@@ -246,9 +259,7 @@ const filePropertiesSummary = data => {
     { title: 'Reference Genome:', summary: data.reference_genome },
     {
       title: 'Experimental Strategy:',
-      summary: _.get(data, data.experiment_strategies, []).map(strategies => (
-        <div>{strategies}</div>
-      )),
+      summary: get(data, data.experiment_strategies, []).map(strategies => <div>{strategies}</div>),
     },
     { title: 'Data Type:', summary: data.data_type },
     { title: 'File Format:', summary: data.file_format },
@@ -311,6 +322,26 @@ const experimentalStrategiesData = () => [
     library_strand: '--',
   },
 ];
+
+const sequencingReadProperties = data => {
+  const experiments = data.sequencing_experiments.hits.edges[0].node; // TODO: could be more?
+
+  const {
+    max_insert_size: maxInsertSize,
+    total_reads: totalReads,
+    mean_depth: meanDepth,
+    mean_insert_size: meanInsertSize,
+    mean_read_length: meanReadLength,
+  } = experiments;
+
+  return [
+    { description: 'Total Reads', value: totalReads },
+    { description: 'Max Insert Size', value: maxInsertSize },
+    { description: 'Mean Depth', value: meanDepth },
+    { description: 'Mean Insert Size', value: meanInsertSize },
+    { description: 'Mean Read Length', value: meanReadLength },
+  ];
+};
 
 const getTags = data => {
   const dataType = data.data_type;
@@ -407,7 +438,7 @@ const FileEntity = ({ api, fileId }) => {
 
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
-                  <InfoBoxRow data={infoBoxMock} />
+                  <InfoBoxRow data={sequencingReadProperties(file.data)} />
                 </EntityContentSection>
               </EntityContent>
             </Container>

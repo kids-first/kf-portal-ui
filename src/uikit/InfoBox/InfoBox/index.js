@@ -30,7 +30,7 @@ const Description = styled('div')`
 
 const InfoBox = ({ value, description, styles }) => (
   <Info styles={styles}>
-    <Value>{value.toLocaleString()}</Value>
+    <Value>{typeof value === 'number' ? value.toLocaleString() : null}</Value>
     <Description>{description}</Description>
   </Info>
 );
