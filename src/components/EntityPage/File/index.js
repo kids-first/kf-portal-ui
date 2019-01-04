@@ -256,7 +256,7 @@ const filePropertiesSummary = data => {
   ];
 };
 
-const formatToGB = size => `${size / 1000000} GB`; // TODO: What size is coming back from API?
+const formatToGB = size => `${(size / 1000000000).toFixed(2)} GB`;
 
 const particpantBiospecimenColumns = [
   { Header: 'Participant ID', accessor: 'participant_id' },
