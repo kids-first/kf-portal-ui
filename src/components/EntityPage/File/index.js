@@ -233,7 +233,10 @@ const filePropertiesSummary = data => {
       summary: data.external_id,
     },
     { title: 'Name:', summary: data.file_name },
-    { title: 'Study:', summary: `${study.short_name}(${study.kf_id})` },
+    {
+      title: 'Study:',
+      summary: <ExternalLink href={null}>{`${study.short_name} (${study.kf_id})`}</ExternalLink>,
+    },
     { title: 'Access:', summary: data.controlled_access ? 'Controlled' : '' },
     { title: 'Consent Codes:', summary: biospecimens.dbgap_consent_code },
     {
