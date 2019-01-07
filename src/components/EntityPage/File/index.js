@@ -58,12 +58,10 @@ const fileQuery = `query ($sqon: JSON) {
           modified_at
           reference_genome
           size
-<<<<<<< HEAD
           instrument_models
           experiment_strategies	
           is_paired_end
           platforms
-=======
           sequencing_experiments {
             hits {
               edges {
@@ -84,7 +82,6 @@ const fileQuery = `query ($sqon: JSON) {
               }
             }
           }
->>>>>>> add experiemtnal strategy data
           participants {
             hits {
               edges {
@@ -98,10 +95,14 @@ const fileQuery = `query ($sqon: JSON) {
                   gender
                   is_proband
                   race
+                  study {
+                    short_name
+                  }
                   biospecimens {
                     hits {
                       edges {
                         node {
+                          kf_id
                           age_at_event_days
                           analyte_type
                           composition
@@ -245,7 +246,19 @@ const fileQuery = `query ($sqon: JSON) {
   }
 }`;
 
-const pickData = (data, valuePath) => _.get(data, valuePath, '--');
+const pickData = (data, valuePath, transform = x => x) => transform(_.get(data, valuePath, '--'));
+
+const formatDate = date => {
+  const now = new Date();
+  const yearDiff = differenceInYears(now, date);
+
+  // get diff in days, only from months and days, not years
+  const dateSameYear = addYears(date, yearDiff);
+  const dayDiff = differenceInDays(now, dateSameYear);
+  return `${yearDiff} years ${dayDiff} days`;
+};
+
+window.formatDate = formatDate;
 
 const filePropertiesSummary = data => {
   if (!data) return [];
@@ -300,13 +313,13 @@ const particpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: p.kf_id,
-          external_id: p.external_id,
-          study_name: '',
-          proband: p.is_proband ? 'Yes' : 'No',
-          biospecimen_id: '--',
-          analyte_type: biospecimen.analyte_type,
-          tissue_type: biospecimen.source_text_tissue_type,
+          participant_id: pickData(p, 'kf_id'),
+          external_id: pickData(p, 'external_id'),
+          study_name: pickData(p, 'study.short_name'),
+          proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
+          biospecimen_id: pickData(biospecimen, 'kf_id'),
+          analyte_type: pickData(biospecimen, 'analyte_type'),
+          tissue_type: pickData(biospecimen, 'source_text_tissue_type'),
           age_at_sample_acquisition: '--',
         };
       });
