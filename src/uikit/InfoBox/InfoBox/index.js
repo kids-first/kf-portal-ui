@@ -26,6 +26,7 @@ const Value = styled('div')`
 const Description = styled('div')`
   font-size: 13px;
   color: ${({ theme }) => theme.greyScale9};
+  text-align: center;
 `;
 
 const InfoBox = ({ value, description, styles }) => (

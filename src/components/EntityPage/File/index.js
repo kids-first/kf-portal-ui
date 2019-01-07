@@ -43,19 +43,6 @@ const fileQuery = `query ($sqon: JSON) {
     hits(filters: $sqon) {
       edges {
         node {
-          sequencing_experiments {
-            hits {
-              edges {
-                node {
-                  max_insert_size
-                  total_reads
-                  mean_depth
-                  mean_insert_size
-                  mean_read_length
-                }
-              }
-            }
-          }
           kf_id
           acl
           availability
@@ -71,10 +58,33 @@ const fileQuery = `query ($sqon: JSON) {
           modified_at
           reference_genome
           size
+<<<<<<< HEAD
           instrument_models
           experiment_strategies	
           is_paired_end
           platforms
+=======
+          sequencing_experiments {
+            hits {
+              edges {
+                node {
+                  max_insert_size
+                  total_reads
+                  mean_depth
+                  mean_insert_size
+                  mean_read_length
+                  experiment_strategy
+                  external_id
+                  experiment_date
+                  instrument_model
+                  platform
+                  library_name
+                  library_strand
+                }
+              }
+            }
+          }
+>>>>>>> add experiemtnal strategy data
           participants {
             hits {
               edges {
@@ -235,6 +245,8 @@ const fileQuery = `query ($sqon: JSON) {
   }
 }`;
 
+const pickData = (data, valuePath) => _.get(data, valuePath, '--');
+
 const filePropertiesSummary = data => {
   if (!data) return [];
   const participants = data.participants.hits.edges[0].node;
@@ -291,7 +303,7 @@ const particpantBiospecimenData = data =>
           participant_id: p.kf_id,
           external_id: p.external_id,
           study_name: '',
-          proband: p.is_proband ? 'Yes' : 'No,',
+          proband: p.is_proband ? 'Yes' : 'No',
           biospecimen_id: '--',
           analyte_type: biospecimen.analyte_type,
           tissue_type: biospecimen.source_text_tissue_type,
@@ -302,7 +314,7 @@ const particpantBiospecimenData = data =>
   );
 
 const experimentalStrategiesColumns = [
-  { Header: 'Experimental Strategy', accessor: 'experimental_strategy' },
+  { Header: 'Experimental Strategy', accessor: 'experiment_strategy' },
   { Header: 'External ID', accessor: 'external_id' },
   { Header: 'Experiment Date', accessor: 'experiment_date' },
   { Header: 'Instrument Model', accessor: 'instrument_model' },
@@ -311,17 +323,19 @@ const experimentalStrategiesColumns = [
   { Header: 'Library Strand', accessor: 'library_strand' },
 ];
 
-const experimentalStrategiesData = () => [
-  {
-    experiment_strategy: '--',
-    external_id: '--',
-    experiment_date: '--',
-    instrument_model: '--',
-    platform: '--',
-    library_name: '--',
-    library_strand: '--',
-  },
-];
+const experimentalStrategiesData = data =>
+  data.sequencing_experiments.hits.edges.map(seq => {
+    const se = seq.node;
+    return {
+      experiment_strategy: pickData(se, 'experiment_strategy'),
+      external_id: pickData(se, 'external_id'),
+      experiment_date: pickData(se, 'experiment_date'),
+      instrument_model: pickData(se, 'instrument_model'),
+      platform: pickData(se, 'platform'),
+      library_name: pickData(se, 'library_name'),
+      library_strand: pickData(se, 'library_strand'),
+    };
+  });
 
 const sequencingReadProperties = data => {
   const experiments = data.sequencing_experiments.hits.edges[0].node; // TODO: could be more?
