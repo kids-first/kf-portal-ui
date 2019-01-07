@@ -1,3 +1,5 @@
+import React from 'react';
+import ExternalLink from 'uikit/ExternalLink';
 import { pickData } from './utils';
 
 export const particpantBiospecimenColumns = [
@@ -19,9 +21,13 @@ export const particpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: pickData(p, 'kf_id'),
+          participant_id: (
+            <ExternalLink hasExternalIcon={false} href="">
+              {pickData(p, 'kf_id')}
+            </ExternalLink>
+          ),
           external_id: pickData(p, 'external_id'),
-          study_name: pickData(p, 'study.short_name'),
+          study_name: <ExternalLink href="">{pickData(p, 'study.short_name')}</ExternalLink>,
           proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
           analyte_type: pickData(biospecimen, 'analyte_type'),
