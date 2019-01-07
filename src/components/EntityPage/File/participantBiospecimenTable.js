@@ -33,7 +33,7 @@ export const particpantBiospecimenData = data =>
           biospecimen_id: pickData(biospecimen, 'kf_id'),
           analyte_type: pickData(biospecimen, 'analyte_type'),
           tissue_type: pickData(biospecimen, 'source_text_tissue_type'),
-          age_at_sample_acquisition: '--',
+          age_at_sample_acquisition: pickData(biospecimen, 'age_at_event_days'),
         };
       });
     }),
