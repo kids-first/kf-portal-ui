@@ -38,7 +38,7 @@ const BaseDataTable = ({
           }}
         />
 
-        <Export>export</Export>
+        <Export {...{ columns, data }}>export</Export>
       </TableToolbar>
     ) : null}
     <Table
