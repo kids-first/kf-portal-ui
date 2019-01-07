@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import _, { get } from 'lodash';
-
 import styled from 'react-emotion';
+
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+import SummaryTable from 'uikit/SummaryTable';
+import BaseDataTable from 'uikit/DataTable';
+import { InfoBoxRow } from 'uikit/InfoBox';
 
-import { withApi } from 'services/api';
 import {
   EntityTitleBar,
   EntityTitle,
@@ -16,20 +18,23 @@ import {
   EntityContentDivider,
 } from 'components/EntityPage';
 
-import SummaryTable from 'uikit/SummaryTable';
-
-import ArrangerDataProvider from 'components/ArrangerDataProvider';
+import { withApi } from 'services/api';
 import { buildSqonForIds } from 'services/arranger';
 
-import ExternalLink from 'uikit/ExternalLink';
-import BaseDataTable from 'uikit/DataTable';
-import { InfoBoxRow } from 'uikit/InfoBox';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import ArrangerDataProvider from 'components/ArrangerDataProvider';
 
-import { mockColumns, mockData, infoBoxMock } from './mock';
-import Download from './Download';
+import {
+  particpantBiospecimenColumns,
+  particpantBiospecimenData,
+} from './participantBiospecimenTable';
 
-import CavaticaAnalyse from './CavaticaAnalyse';
+import {
+  experimentalStrategiesColumns,
+  experimentalStrategiesData,
+} from './experimentalStrategies';
+
+import { filePropertiesSummary } from './fileProperties';
+import { sequencingReadProperties } from './sequencingPropteries';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
@@ -245,130 +250,6 @@ const fileQuery = `query ($sqon: JSON) {
     }
   }
 }`;
-
-const pickData = (data, valuePath, transform = x => x) => transform(_.get(data, valuePath, '--'));
-
-const formatDate = date => {
-  const now = new Date();
-  const yearDiff = differenceInYears(now, date);
-
-  // get diff in days, only from months and days, not years
-  const dateSameYear = addYears(date, yearDiff);
-  const dayDiff = differenceInDays(now, dateSameYear);
-  return `${yearDiff} years ${dayDiff} days`;
-};
-
-window.formatDate = formatDate;
-
-const filePropertiesSummary = data => {
-  if (!data) return [];
-  const participants = data.participants.hits.edges[0].node;
-  const study = participants.study;
-  const biospecimens = participants.biospecimens.hits.edges[0].node;
-  return [
-    {
-      title: 'External ID:',
-      summary: data.external_id,
-    },
-    { title: 'Name:', summary: data.file_name },
-    {
-      title: 'Study:',
-      summary: <ExternalLink href={null}>{`${study.short_name} (${study.kf_id})`}</ExternalLink>,
-    },
-    { title: 'Access:', summary: data.controlled_access ? 'Controlled' : '' },
-    { title: 'Consent Codes:', summary: biospecimens.dbgap_consent_code },
-    {
-      title: 'Harmonized Data:',
-      summary: data.is_harmonized ? 'Yes' : 'No',
-    },
-    { title: 'Reference Genome:', summary: data.reference_genome },
-    {
-      title: 'Experimental Strategy:',
-      summary: get(data, data.experiment_strategies, []).map(strategies => <div>{strategies}</div>),
-    },
-    { title: 'Data Type:', summary: data.data_type },
-    { title: 'File Format:', summary: data.file_format },
-    { title: 'Size:', summary: formatToGB(data.size) },
-  ];
-};
-
-const formatToGB = size => `${(size / 1000000000).toFixed(2)} GB`;
-
-const particpantBiospecimenColumns = [
-  { Header: 'Participant ID', accessor: 'participant_id' },
-  { Header: 'External ID', accessor: 'external_id' },
-  { Header: 'Study Name', accessor: 'study_name' },
-  { Header: 'Proband', accessor: 'proband' },
-  { Header: 'Biospecimen ID', accessor: 'biospecimen_id' },
-  { Header: 'Analyte Type', accessor: 'analyte_type' },
-  { Header: 'Tissue Type', accessor: 'tissue_type' },
-  { Header: 'Age at Sample Acquisition', accessor: 'age_at_sample_acquisition' },
-];
-
-const particpantBiospecimenData = data =>
-  _.flattenDeep(
-    data.participants.hits.edges.map(nodes => {
-      const p = nodes.node;
-
-      return p.biospecimens.hits.edges.map(bio => {
-        const biospecimen = bio.node;
-        return {
-          participant_id: pickData(p, 'kf_id'),
-          external_id: pickData(p, 'external_id'),
-          study_name: pickData(p, 'study.short_name'),
-          proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
-          biospecimen_id: pickData(biospecimen, 'kf_id'),
-          analyte_type: pickData(biospecimen, 'analyte_type'),
-          tissue_type: pickData(biospecimen, 'source_text_tissue_type'),
-          age_at_sample_acquisition: '--',
-        };
-      });
-    }),
-  );
-
-const experimentalStrategiesColumns = [
-  { Header: 'Experimental Strategy', accessor: 'experiment_strategy' },
-  { Header: 'External ID', accessor: 'external_id' },
-  { Header: 'Experiment Date', accessor: 'experiment_date' },
-  { Header: 'Instrument Model', accessor: 'instrument_model' },
-  { Header: 'Platform', accessor: 'platform' },
-  { Header: 'Library Name', accessor: 'library_name' },
-  { Header: 'Library Strand', accessor: 'library_strand' },
-];
-
-const experimentalStrategiesData = data =>
-  data.sequencing_experiments.hits.edges.map(seq => {
-    const se = seq.node;
-    return {
-      experiment_strategy: pickData(se, 'experiment_strategy'),
-      external_id: pickData(se, 'external_id'),
-      experiment_date: pickData(se, 'experiment_date'),
-      instrument_model: pickData(se, 'instrument_model'),
-      platform: pickData(se, 'platform'),
-      library_name: pickData(se, 'library_name'),
-      library_strand: pickData(se, 'library_strand'),
-    };
-  });
-
-const sequencingReadProperties = data => {
-  const experiments = data.sequencing_experiments.hits.edges[0].node; // TODO: could be more?
-
-  const {
-    max_insert_size: maxInsertSize,
-    total_reads: totalReads,
-    mean_depth: meanDepth,
-    mean_insert_size: meanInsertSize,
-    mean_read_length: meanReadLength,
-  } = experiments;
-
-  return [
-    { description: 'Total Reads', value: totalReads },
-    { description: 'Max Insert Size', value: maxInsertSize },
-    { description: 'Mean Depth', value: meanDepth },
-    { description: 'Mean Insert Size', value: meanInsertSize },
-    { description: 'Mean Read Length', value: meanReadLength },
-  ];
-};
 
 const getTags = data => {
   const dataType = data.data_type;
