@@ -23,6 +23,7 @@ const BaseDataTable = ({
   setPageSize,
   pageIndex,
   setPageIndex,
+  downloadName,
   header = true,
 }) => (
   <Fragment>
@@ -38,7 +39,7 @@ const BaseDataTable = ({
           }}
         />
 
-        <Export {...{ columns, data }}>export</Export>
+        <Export {...{ columns, data, downloadName }}>export</Export>
       </TableToolbar>
     ) : null}
     <Table
