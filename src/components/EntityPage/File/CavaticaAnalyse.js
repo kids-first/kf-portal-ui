@@ -7,6 +7,7 @@ const buttonStyle = props =>
   css`
     width: auto;
     height: 27px;
+    margin-right: 10px;
   `;
 
 const buttonContentStyle = props =>

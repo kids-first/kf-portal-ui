@@ -30,7 +30,6 @@ import { mockColumns, mockData, infoBoxMock } from './mock';
 import Download from './Download';
 
 import CavaticaAnalyse from './CavaticaAnalyse';
-import { mockColumns, mockData } from './mock';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
@@ -224,6 +223,7 @@ const fileQuery = `query ($sqon: JSON) {
 }`;
 
 const filePropertiesSummary = data => {
+  if (!data) return [];
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
@@ -339,7 +339,7 @@ const FileEntity = ({ api, fileId }) => {
           const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
 
           // split file properties data into two arrays for two tables
-          const fileProperties = filePropertiesSummary(file.data);
+          const fileProperties = filePropertiesSummary(data);
           const [table1, table2] = [fileProperties.slice(0, 5), fileProperties.slice(5)];
 
           return (
@@ -352,6 +352,7 @@ const FileEntity = ({ api, fileId }) => {
                 />
               </EntityTitleBar>
               <EntityActionBar>
+                <CavaticaAnalyse fileId={fileId} />
                 <Download
                   onSuccess={url => {
                     trackUserInteraction({
@@ -370,7 +371,6 @@ const FileEntity = ({ api, fileId }) => {
                   kfId={data.kf_id}
                   acl={acl}
                 />
-                <CavaticaAnalyse fileId={fileId} />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
@@ -395,7 +395,7 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentSection title="Associated Participants/Biospecimens">
                   <BaseDataTable
                     loading={file.isLoading}
-                    data={particpantBiospecimenData(file.data)}
+                    data={particpantBiospecimenData(data)}
                     columns={particpantBiospecimenColumns}
                   />
                 </EntityContentSection>
