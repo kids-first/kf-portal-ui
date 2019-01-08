@@ -334,7 +334,7 @@ const FileEntity = ({ api, fileId }) => {
         } else {
           const data = _.get(file, 'data.hits.edges[0].node');
           const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
-
+          console.log('kf_id', data);
           return (
             <Container>
               <EntityTitleBar>
@@ -345,7 +345,7 @@ const FileEntity = ({ api, fileId }) => {
                 />
               </EntityTitleBar>
               <EntityActionBar>
-                <DownloadFileButton
+                <Download
                   onSuccess={url => {
                     trackUserInteraction({
                       category: TRACKING_EVENTS.categories.entityPage.file,
@@ -361,7 +361,7 @@ const FileEntity = ({ api, fileId }) => {
                     });
                   }}
                   kfId={data.kf_id}
-                  render={props => <DownloadButton {...props} />}
+                  acl={acl}
                 />
               </EntityActionBar>
               <EntityContent>

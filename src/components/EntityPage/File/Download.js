@@ -51,11 +51,11 @@ const Download = compose(
       setLoading(false);
     },
   }),
-)(({ kfId, acl, loading, projectIds, theme }) => {
+)(({ kfId, acl, loading, projectIds, theme, ...props }) => {
   return loading ? (
     <div>loading</div>
   ) : acl.some(code => projectIds.includes(code)) ? (
-    <DownloadFileButton kfId={kfId} render={props => <DownloadButton {...props} />} />
+    <DownloadFileButton kfId={kfId} render={props => <DownloadButton {...props} />} {...props} />
   ) : (
     <ControlledDownload>
       <ControlledAccessIcon fill="#008199" width={12} height={12} />
