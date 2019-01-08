@@ -375,23 +375,15 @@ const FileEntity = ({ api, fileId }) => {
               <EntityContent>
                 <EntityContentSection title="File Properties">
                   <Row style={{ width: '100%' }}>
-                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }} />
-                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }} />
+                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
+                      <SummaryTable rows={table1} />
+                    </Column>
+                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
+                      <SummaryTable rows={table2} />
+                    </Column>
                   </Row>
                 </EntityContentSection>
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Participants/Biospecimens" />
-                <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies">
-                  <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
-                    <SummaryTable rows={table1} />
-                  </Column>
-                  <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
-                    <SummaryTable rows={table2} />
-                  </Column>
-                </EntityContentSection>
-                <EntityContentDivider />
-
                 <EntityContentSection title="Associated Participants/Biospecimens">
                   <BaseDataTable
                     loading={file.isLoading}
