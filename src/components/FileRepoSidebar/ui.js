@@ -1,13 +1,7 @@
 import React from 'react';
-import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
-import { css } from 'react-emotion';
-import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
-import { TealActionButton } from 'uikit/Button';
 
-import DownloadIcon from 'icons/DownloadIcon';
 import Heading from 'uikit/Heading';
 
 export const Slideable = styled('div')`
@@ -94,35 +88,3 @@ export const DownloadButtonsContainer = styled(Column)`
     width: 100%;
   }
 `;
-
-const StyledActionButton = styled(TealActionButton)`
-  justify-content: flex-start;
-`;
-
-export const DownloadButton = compose(withTheme)(
-  ({
-    onClick,
-    theme,
-    content = () => <Trans>Download</Trans>,
-    buttonRef = React.createRef(),
-    ...rest
-  }) => {
-    return (
-      <StyledActionButton
-        m={'3px'}
-        onClick={onClick}
-        innerRef={ref => {
-          buttonRef.current = ref;
-        }}
-        {...rest}
-      >
-        <DownloadIcon
-          className={css`
-            margin-right: 9px;
-          `}
-        />
-        <span css={theme.uppercase}>{content()}</span>
-      </StyledActionButton>
-    );
-  },
-);

@@ -22,14 +22,22 @@ import ArrangerDataProvider from 'components/ArrangerDataProvider';
 import { buildSqonForIds } from 'services/arranger';
 
 import ExternalLink from 'uikit/ExternalLink';
-
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { mockColumns, mockData, infoBoxMock } from './mock';
+import Download from './Download';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
+    aggregations(filters: $sqon) {
+      acl {
+        buckets {
+          key
+        }
+      }
+    }
     hits(filters: $sqon) {
       edges {
         node {
@@ -39,19 +47,19 @@ const fileQuery = `query ($sqon: JSON) {
           controlled_access
           created_at
           data_type
-          experiment_strategies
           external_id
           file_format
           file_name
-          instrument_models
           is_harmonized
-          is_paired_end
           kf_id
           latest_did
           modified_at
-          platforms
           reference_genome
           size
+          instrument_models
+          experiment_strategies	
+          is_paired_end
+          platforms
           participants {
             hits {
               edges {
@@ -318,18 +326,15 @@ const FileEntity = ({ api, fileId }) => {
       api={api}
       query={fileQuery}
       sqon={buildSqonForIds([fileId])}
-      transform={data => _.get(data, 'data.file.hits.edges[0].node')}
+      transform={data => _.get(data, 'data.file')}
     >
       {file => {
         if (file.isLoading) {
           return <div>Loading</div>;
-        } else if (!file.data) {
-          return <div>no data</div>;
         } else {
-          // split file properties data into two arrays for two tables
-          const fileProperties = filePropertiesSummary(file.data);
-          const [table1, table2] = _.chunk(fileProperties, fileProperties.length / 2);
-
+          const data = _.get(file, 'data.hits.edges[0].node');
+          const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
+          console.log('kf_id', data);
           return (
             <Container>
               <EntityTitleBar>
@@ -339,34 +344,37 @@ const FileEntity = ({ api, fileId }) => {
                   tags={file.isLoading || true ? [] : getTags(file.data)}
                 />
               </EntityTitleBar>
-              <EntityActionBar>Share Button</EntityActionBar>
+              <EntityActionBar>
+                <Download
+                  onSuccess={url => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: 'Download File',
+                      label: url,
+                    });
+                  }}
+                  onError={err => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: 'Download File FAILED',
+                      label: JSON.stringify(err, null, 2),
+                    });
+                  }}
+                  kfId={data.kf_id}
+                  acl={acl}
+                />
+              </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
                   <Row style={{ width: '100%' }}>
-                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
-                      <SummaryTable rows={table1} />
-                    </Column>
-                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
-                      <SummaryTable rows={table2} />
-                    </Column>
+                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }} />
+                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }} />
                   </Row>
                 </EntityContentSection>
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Participants/Biospecimens">
-                  <BaseDataTable
-                    loading={file.isLoading}
-                    data={particpantBiospecimenData(file.data)}
-                    columns={particpantBiospecimenColumns}
-                  />
-                </EntityContentSection>
+                <EntityContentSection title="Associated Participants/Biospecimens" />
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies">
-                  <BaseDataTable
-                    loading={file.isLoading}
-                    data={experimentalStrategiesData(file.data)}
-                    columns={experimentalStrategiesColumns}
-                  />
-                </EntityContentSection>
+                <EntityContentSection title="Associated Experimental Strategies" />
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
                   <InfoBoxRow data={infoBoxMock} />

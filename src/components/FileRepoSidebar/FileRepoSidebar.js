@@ -8,6 +8,7 @@ import { injectState } from 'freactal';
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import { Span } from 'uikit/Core';
+import DownloadButton from 'uikit/DownloadButton';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { downloadBiospecimen } from 'services/downloadData';
@@ -18,7 +19,6 @@ import {
   Content,
   Text,
   Section,
-  DownloadButton,
   DownloadButtonsContainer,
 } from './ui';
 import ClinicalDownloadButton from './ClinicalDownloadButton';
@@ -61,7 +61,10 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
   />
 );
 
-const FileRepoSidebar = compose(withTheme, withState('expanded', 'setExpanded', true))(
+const FileRepoSidebar = compose(
+  withTheme,
+  withState('expanded', 'setExpanded', true),
+)(
   ({
     theme,
     expanded,

@@ -12,77 +12,95 @@ import { ControlledIcon, TableSpinner } from './ui';
 import Row from 'uikit/Row';
 import Tooltip from 'uikit/Tooltip';
 import { arrangerProjectId } from 'common/injectGlobals';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-const DownloadColumnCellContent = compose(withApi, withTheme)(
-  ({ value, api, theme, userProjectIds, loadingGen3User }) => (
-    <Component
-      initialState={{ shouldFetch: true }}
-      didUpdate={({ state, setState, props, prevProps }) => {
-        if (props.value !== prevProps.value) {
-          setState({ shouldFetch: true }, () => {
-            setState({ shouldFetch: false });
-          });
-        }
-      }}
-    >
-      {({ state: { shouldFetch } }) => (
-        <Query
-          renderError
-          api={arrangerGqlRecompose(api, 'TableRowStudyId')}
-          projectId={arrangerProjectId}
-          shouldFetch={shouldFetch}
-          query={`query ($sqon: JSON) {
+const DownloadColumnCellContent = compose(
+  withApi,
+  withTheme,
+)(({ value, api, theme, userProjectIds, loadingGen3User }) => (
+  <Component
+    initialState={{ shouldFetch: true }}
+    didUpdate={({ state, setState, props, prevProps }) => {
+      if (props.value !== prevProps.value) {
+        setState({ shouldFetch: true }, () => {
+          setState({ shouldFetch: false });
+        });
+      }
+    }}
+  >
+    {({ state: { shouldFetch } }) => (
+      <Query
+        renderError
+        api={arrangerGqlRecompose(api, 'TableRowStudyId')}
+        projectId={arrangerProjectId}
+        shouldFetch={shouldFetch}
+        query={`query ($sqon: JSON) {
             file {
               aggregations(filters: $sqon) {
                 acl { buckets { key } }
               }
             }
           }`}
-          variables={{
-            sqon: {
-              op: 'and',
-              content: [
-                {
-                  op: 'in',
-                  content: {
-                    field: 'kf_id',
-                    value: [value],
-                  },
+        variables={{
+          sqon: {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: {
+                  field: 'kf_id',
+                  value: [value],
                 },
-              ],
-            },
-          }}
-          render={({ loading: loadingQuery, data }) => {
-            const acl = (get(data, 'file.aggregations.acl.buckets') || []).map(({ key }) => key);
-            return (
-              <Row center height={'100%'}>
-                {loadingQuery ? (
-                  <TableSpinner style={{ width: 15, height: 15 }} />
-                ) : acl ? (
-                  acl.some(code => userProjectIds.includes(code)) ? (
-                    <DownloadFileButton kfId={value} />
-                  ) : (
-                    <Tooltip
-                      position="bottom"
-                      interactive
-                      html={<Row p={'10px'}>You do not have access to this file.</Row>}
-                    >
-                      <ControlledIcon fill={theme.primary} />
-                    </Tooltip>
-                  )
-                ) : loadingQuery || loadingGen3User ? (
-                  <TableSpinner style={{ width: 15, height: 15 }} />
+              },
+            ],
+          },
+        }}
+        render={({ loading: loadingQuery, data }) => {
+          const acl = (get(data, 'file.aggregations.acl.buckets') || []).map(({ key }) => key);
+          return (
+            <Row center height={'100%'}>
+              {loadingQuery ? (
+                <TableSpinner style={{ width: 15, height: 15 }} />
+              ) : acl ? (
+                acl.some(code => userProjectIds.includes(code)) ? (
+                  <DownloadFileButton
+                    onSuccess={url => {
+                      trackUserInteraction({
+                        category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                        action: 'Download File',
+                        label: url,
+                      });
+                    }}
+                    onError={err => {
+                      trackUserInteraction({
+                        category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+                        action: 'Download File FAILED',
+                        label: JSON.stringify(err, null, 2),
+                      });
+                    }}
+                    kfId={value}
+                  />
                 ) : (
-                  <ControlledIcon fill={theme.primary} />
-                )}
-              </Row>
-            );
-          }}
-        />
-      )}
-    </Component>
-  ),
-);
+                  <Tooltip
+                    position="bottom"
+                    interactive
+                    html={<Row p={'10px'}>You do not have access to this file.</Row>}
+                  >
+                    <ControlledIcon fill={theme.primary} />
+                  </Tooltip>
+                )
+              ) : loadingQuery || loadingGen3User ? (
+                <TableSpinner style={{ width: 15, height: 15 }} />
+              ) : (
+                <ControlledIcon fill={theme.primary} />
+              )}
+            </Row>
+          );
+        }}
+      />
+    )}
+  </Component>
+));
 
 export default ({ theme, userProjectIds, loadingGen3User }) => [
   {
