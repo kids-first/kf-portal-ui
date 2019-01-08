@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import _, { get } from 'lodash';
+import _ from 'lodash';
 import styled from 'react-emotion';
 
 import Row from 'uikit/Row';
@@ -8,6 +8,7 @@ import Column from 'uikit/Column';
 import SummaryTable from 'uikit/SummaryTable';
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import {
   EntityTitleBar,
@@ -34,7 +35,10 @@ import {
 } from './experimentalStrategies';
 
 import { filePropertiesSummary } from './fileProperties';
-import { sequencingReadProperties } from './sequencingPropteries';
+import { sequencingReadProperties } from './sequencingProperties';
+
+import CavaticaAnalyse from './CavaticaAnalyse';
+import Download from './Download';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
@@ -339,14 +343,14 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentSection title="Associated Experimental Strategies">
                   <BaseDataTable
                     loading={file.isLoading}
-                    data={experimentalStrategiesData(file.data)}
+                    data={experimentalStrategiesData(data)}
                     columns={experimentalStrategiesColumns}
                   />
                 </EntityContentSection>
 
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
-                  <InfoBoxRow data={sequencingReadProperties(file.data)} />
+                  <InfoBoxRow data={sequencingReadProperties(data)} />
                 </EntityContentSection>
               </EntityContent>
             </Container>

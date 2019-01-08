@@ -11,7 +11,7 @@ export const particpantBiospecimenColumns = [
   { Header: 'Biospecimen ID', accessor: 'biospecimen_id' },
   { Header: 'Analyte Type', accessor: 'analyte_type' },
   { Header: 'Tissue Type', accessor: 'tissue_type' },
-  { Header: 'Age at Sample Acquisition', accessor: 'age_at_sample_acquisition' },
+  { Header: 'Age at Sample Acquisition', accessor: 'age_at_event_days' },
 ];
 
 export const particpantBiospecimenData = data =>
