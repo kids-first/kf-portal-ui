@@ -56,6 +56,10 @@ const fileQuery = `query ($sqon: JSON) {
           modified_at
           reference_genome
           size
+          instrument_models
+          experiment_strategies	
+          is_paired_end
+          platforms
           participants {
             hits {
               edges {
