@@ -3,8 +3,9 @@ import { ToolbarItem, ToolbarButton, FileDownloadIcon } from './styles';
 import { saveAs } from 'file-saver';
 
 const exportTSV = (data, columns, filename) => {
-  const headers = columns.map(h => h.Header).join('\t');
-  const rows = data.map(d => columns.map(header => d[header.accessor]).join('\t')).join('\n');
+  const visbleCols = columns.filter(c => c.show);
+  const headers = visbleCols.map(h => h.Header).join('\t');
+  const rows = data.map(d => visbleCols.map(header => d[header.accessor]).join('\t')).join('\n');
 
   const blob = new Blob([headers + '\n' + rows], { type: 'data:text/tab-separated-values' });
   saveAs(blob, `${filename}.tsv`);
