@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 const Table = styled('table')`
   border: 1px solid ${({ theme }) => theme.greyScale5};
   width: 100%;
+  border-collapse: collapse;
 `;
 
 const TableRow = styled('tr')`

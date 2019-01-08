@@ -29,10 +29,9 @@ const BaseDataTable = ({
     {header ? (
       <TableToolbar pageSize={pageSize} page={pageIndex} total={data.length}>
         <ColumnFilter
-          onChange={x => x}
           columns={columns}
           onChange={item => {
-            const index = columns.findIndex(e => e.index === item.index);
+            const index = columns.findIndex(c => c.index === item.index);
             setColumns(
               columns.map((col, i) => (i === index ? { ...col, ...{ show: !item.show } } : col)),
             );

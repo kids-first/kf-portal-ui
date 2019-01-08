@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import _ from 'lodash';
-
 import styled from 'react-emotion';
+
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
+import SummaryTable from 'uikit/SummaryTable';
+import BaseDataTable from 'uikit/DataTable';
+import { InfoBoxRow } from 'uikit/InfoBox';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { withApi } from 'services/api';
 import {
   EntityTitleBar,
   EntityTitle,
@@ -16,20 +19,26 @@ import {
   EntityContentDivider,
 } from 'components/EntityPage';
 
-import SummaryTable from 'uikit/SummaryTable';
-
-import ArrangerDataProvider from 'components/ArrangerDataProvider';
+import { withApi } from 'services/api';
 import { buildSqonForIds } from 'services/arranger';
 
-import ExternalLink from 'uikit/ExternalLink';
-import BaseDataTable from 'uikit/DataTable';
-import { InfoBoxRow } from 'uikit/InfoBox';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import ArrangerDataProvider from 'components/ArrangerDataProvider';
 
-import { mockColumns, mockData, infoBoxMock } from './mock';
-import Download from './Download';
+import {
+  particpantBiospecimenColumns,
+  particpantBiospecimenData,
+} from './participantBiospecimenTable';
+
+import {
+  experimentalStrategiesColumns,
+  experimentalStrategiesData,
+} from './experimentalStrategies';
+
+import { filePropertiesSummary } from './fileProperties';
+import { sequencingReadProperties } from './sequencingProperties';
 
 import CavaticaAnalyse from './CavaticaAnalyse';
+import Download from './Download';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
@@ -62,6 +71,26 @@ const fileQuery = `query ($sqon: JSON) {
           experiment_strategies	
           is_paired_end
           platforms
+          sequencing_experiments {
+            hits {
+              edges {
+                node {
+                  max_insert_size
+                  total_reads
+                  mean_depth
+                  mean_insert_size
+                  mean_read_length
+                  experiment_strategy
+                  external_id
+                  experiment_date
+                  instrument_model
+                  platform
+                  library_name
+                  library_strand
+                }
+              }
+            }
+          }
           participants {
             hits {
               edges {
@@ -75,10 +104,14 @@ const fileQuery = `query ($sqon: JSON) {
                   gender
                   is_proband
                   race
+                  study {
+                    short_name
+                  }
                   biospecimens {
                     hits {
                       edges {
                         node {
+                          kf_id
                           age_at_event_days
                           analyte_type
                           composition
@@ -222,91 +255,6 @@ const fileQuery = `query ($sqon: JSON) {
   }
 }`;
 
-const filePropertiesSummary = data => {
-  if (!data) return [];
-  const participants = data.participants.hits.edges[0].node;
-  const study = participants.study;
-  const biospecimens = participants.biospecimens.hits.edges[0].node;
-  return [
-    {
-      title: 'External ID:',
-      summary: <ExternalLink href={``}>{data.external_id}</ExternalLink>,
-    },
-    { title: 'Name:', summary: data.file_name },
-    { title: 'Study:', summary: `${study.short_name}(${study.kf_id})` },
-    { title: 'Access:', summary: data.controlled_access ? 'Controlled' : '' },
-    { title: 'Consent Codes:', summary: biospecimens.dbgap_consent_code },
-    {
-      title: 'Harmonized Data:',
-      summary: data.is_harmonized ? 'Yes' : 'No',
-    },
-    { title: 'Reference Genome:', summary: data.reference_genome },
-    {
-      title: 'Experimental Strategy:',
-      summary: data.experiment_strategies.map(strategies => <div>{strategies}</div>),
-    },
-    { title: 'Data Type:', summary: data.data_type },
-    { title: 'File Format:', summary: data.file_format },
-    { title: 'Size:', summary: formatToGB(data.size) },
-  ];
-};
-
-const formatToGB = size => `${size / 1000000} GB`; // TODO: What size is coming back from API?
-
-const particpantBiospecimenColumns = [
-  { Header: 'Participant ID', accessor: 'participant_id' },
-  { Header: 'External ID', accessor: 'external_id' },
-  { Header: 'Study Name', accessor: 'study_name' },
-  { Header: 'Proband', accessor: 'proband' },
-  { Header: 'Biospecimen ID', accessor: 'biospecimen_id' },
-  { Header: 'Analyte Type', accessor: 'analyte_type' },
-  { Header: 'Tissue Type', accessor: 'tissue_type' },
-  { Header: 'Age at Sample Acquisition', accessor: 'age_at_sample_acquisition' },
-];
-
-const particpantBiospecimenData = data =>
-  _.flattenDeep(
-    data.participants.hits.edges.map(nodes => {
-      const p = nodes.node;
-
-      return p.biospecimens.hits.edges.map(bio => {
-        const biospecimen = bio.node;
-        return {
-          participant_id: p.kf_id,
-          external_id: p.external_id,
-          study_name: '',
-          proband: p.is_proband ? 'Yes' : 'No,',
-          biospecimen_id: '--',
-          analyte_type: biospecimen.analyte_type,
-          tissue_type: biospecimen.source_text_tissue_type,
-          age_at_sample_acquisition: '--',
-        };
-      });
-    }),
-  );
-
-const experimentalStrategiesColumns = [
-  { Header: 'Experimental Strategy', accessor: 'experimental_strategy' },
-  { Header: 'External ID', accessor: 'external_id' },
-  { Header: 'Experiment Date', accessor: 'experiment_date' },
-  { Header: 'Instrument Model', accessor: 'instrument_model' },
-  { Header: 'Platform', accessor: 'platform' },
-  { Header: 'Library Name', accessor: 'library_name' },
-  { Header: 'Library Strand', accessor: 'library_strand' },
-];
-
-const experimentalStrategiesData = () => [
-  {
-    experiment_strategy: '--',
-    external_id: '--',
-    experiment_date: '--',
-    instrument_model: '--',
-    platform: '--',
-    library_name: '--',
-    library_strand: '--',
-  },
-];
-
 const getTags = data => {
   const dataType = data.data_type;
   const experimentalStrategies = Array.from(new Set(_.get(data, 'experiment_strategies', [])));
@@ -395,14 +343,14 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentSection title="Associated Experimental Strategies">
                   <BaseDataTable
                     loading={file.isLoading}
-                    data={experimentalStrategiesData(file.data)}
+                    data={experimentalStrategiesData(data)}
                     columns={experimentalStrategiesColumns}
                   />
                 </EntityContentSection>
 
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
-                  <InfoBoxRow data={infoBoxMock} />
+                  <InfoBoxRow data={sequencingReadProperties(data)} />
                 </EntityContentSection>
               </EntityContent>
             </Container>

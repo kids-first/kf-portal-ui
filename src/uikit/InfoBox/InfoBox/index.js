@@ -26,11 +26,12 @@ const Value = styled('div')`
 const Description = styled('div')`
   font-size: 13px;
   color: ${({ theme }) => theme.greyScale9};
+  text-align: center;
 `;
 
 const InfoBox = ({ value, description, styles }) => (
   <Info styles={styles}>
-    <Value>{value.toLocaleString()}</Value>
+    <Value>{typeof value === 'number' ? value.toLocaleString() : (0.0).toLocaleString()}</Value>
     <Description>{description}</Description>
   </Info>
 );
