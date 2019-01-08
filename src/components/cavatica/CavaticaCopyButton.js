@@ -17,6 +17,8 @@ const CavaticaButton = styled(BigWhiteButton)`
   &:hover {
     background: ${({ theme }) => theme.primary};
   }
+
+  ${({ buttonStyle }) => buttonStyle}
 `;
 
 const ButtonContent = styled(Row)`
@@ -28,6 +30,8 @@ const ButtonContent = styled(Row)`
   padding: 5px 18px 5px 5px;
   text-transform: uppercase;
   font-weight: bold;
+
+  ${({ buttonContentStyle }) => buttonContentStyle}
 `;
 
 const CavaticaLogo = styled('img')`
@@ -57,15 +61,31 @@ const showCopyModal = ({ effects, props }) => {
   });
 };
 
-const CavaticaCopyButton = compose(injectState, withTheme)(
-  ({ state, theme, effects, disabled, ...props }) => {
+const CavaticaCopyButton = compose(
+  injectState,
+  withTheme,
+)(
+  ({
+    state,
+    theme,
+    effects,
+    disabled,
+    text = 'Copy files to Cavatica',
+    buttonStyle,
+    buttonContentStyle,
+    ...props
+  }) => {
     const connected = state.integrationTokens[CAVATICA];
     const clickAction = connected ? showCopyModal : showConnectModal;
     return (
-      <CavaticaButton disabled={disabled} onClick={() => clickAction({ effects, props })}>
-        <ButtonContent>
+      <CavaticaButton
+        disabled={disabled}
+        onClick={() => clickAction({ effects, props })}
+        buttonStyle={buttonStyle}
+      >
+        <ButtonContent buttonContentStyle={buttonContentStyle}>
           <CavaticaLogo alt="" src={cavaticaLogo} />
-          Copy files to Cavatica
+          {text}
         </ButtonContent>
       </CavaticaButton>
     );

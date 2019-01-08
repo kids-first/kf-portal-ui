@@ -29,6 +29,8 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { mockColumns, mockData, infoBoxMock } from './mock';
 import Download from './Download';
 
+import CavaticaAnalyse from './CavaticaAnalyse';
+
 const fileQuery = `query ($sqon: JSON) {
   file {
     aggregations(filters: $sqon) {
@@ -221,6 +223,7 @@ const fileQuery = `query ($sqon: JSON) {
 }`;
 
 const filePropertiesSummary = data => {
+  if (!data) return [];
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
@@ -334,7 +337,11 @@ const FileEntity = ({ api, fileId }) => {
         } else {
           const data = _.get(file, 'data.hits.edges[0].node');
           const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
-          console.log('kf_id', data);
+
+          // split file properties data into two arrays for two tables
+          const fileProperties = filePropertiesSummary(data);
+          const [table1, table2] = [fileProperties.slice(0, 5), fileProperties.slice(5)];
+
           return (
             <Container>
               <EntityTitleBar>
@@ -345,6 +352,7 @@ const FileEntity = ({ api, fileId }) => {
                 />
               </EntityTitleBar>
               <EntityActionBar>
+                <CavaticaAnalyse fileId={fileId} />
                 <Download
                   onSuccess={url => {
                     trackUserInteraction({
@@ -367,14 +375,31 @@ const FileEntity = ({ api, fileId }) => {
               <EntityContent>
                 <EntityContentSection title="File Properties">
                   <Row style={{ width: '100%' }}>
-                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }} />
-                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }} />
+                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
+                      <SummaryTable rows={table1} />
+                    </Column>
+                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
+                      <SummaryTable rows={table2} />
+                    </Column>
                   </Row>
                 </EntityContentSection>
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Participants/Biospecimens" />
+                <EntityContentSection title="Associated Participants/Biospecimens">
+                  <BaseDataTable
+                    loading={file.isLoading}
+                    data={particpantBiospecimenData(data)}
+                    columns={particpantBiospecimenColumns}
+                  />
+                </EntityContentSection>
                 <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies" />
+                <EntityContentSection title="Associated Experimental Strategies">
+                  <BaseDataTable
+                    loading={file.isLoading}
+                    data={experimentalStrategiesData(file.data)}
+                    columns={experimentalStrategiesColumns}
+                  />
+                </EntityContentSection>
+
                 <EntityContentDivider />
                 <EntityContentSection title="Sequencing Read Properties">
                   <InfoBoxRow data={infoBoxMock} />
