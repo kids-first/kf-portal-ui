@@ -7,7 +7,8 @@ import Column from 'uikit/Column';
 const Info = styled(Column)`
   align-items: center;
   justify-content: center;
-  border: 1px solid ${({ theme }) => theme.greyScale5};
+  border-top: 1px solid ${({ theme }) => theme.greyScale5};
+  border-left: 1px solid ${({ theme }) => theme.greyScale5};
   font-family: ${({ theme }) => theme.fonts.default};
   padding: 20px;
   flex-basis: 0;

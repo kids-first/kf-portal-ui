@@ -1,19 +1,24 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import InfoBox from '../InfoBox';
 import { Flex } from 'uikit/Core';
 import { mq } from '../styles';
 
-const infoResp = css({
-  flexDirection: 'column',
-
-  [mq[1]]: {
-    flexDirection: 'row',
-  },
-});
-
 const InfoRow = styled(Flex)`
-  ${infoResp}
+  flex-direction: column;
+  border-right: 1px solid ${({ theme }) => theme.greyScale5};
+  & > div:last-child {
+    border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
+  }
+
+  ${mq[1]} {
+    flex-direction: row;
+    border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
+
+    > div:last-child {
+      border-bottom: none;
+    }
+  }
 `;
 
 const InfoBoxRow = ({ data }) => (
