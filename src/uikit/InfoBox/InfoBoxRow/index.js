@@ -10,9 +10,11 @@ const InfoRow = styled(Flex)`
   & > div:last-child {
     border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
   }
+  margin-bottom: 20px;
 
   ${mq[1]} {
     flex-direction: row;
+    margin-bottom: 0;
     border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
 
     > div:last-child {
