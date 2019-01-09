@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 
 import Column from 'uikit/Column';
@@ -12,8 +12,6 @@ const Info = styled(Column)`
   padding: 20px;
   flex-basis: 0;
   flex: 1;
-
-  ${({ styles }) => (styles ? styles : null)};
 `;
 
 const Value = styled('div')`
@@ -29,8 +27,8 @@ const Description = styled('div')`
   text-align: center;
 `;
 
-const InfoBox = ({ value, description, styles }) => (
-  <Info styles={styles}>
+const InfoBox = ({ value, description }) => (
+  <Info>
     <Value>{typeof value === 'number' ? value.toLocaleString() : (0.0).toLocaleString()}</Value>
     <Description>{description}</Description>
   </Info>

@@ -1,23 +1,27 @@
 import React from 'react';
-import { css } from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import InfoBox from '../InfoBox';
-import Row from 'uikit/Row';
+import { Flex } from 'uikit/Core';
+import { mq } from '../styles';
 
-const collapseBorder = props => css`
-  border-right: none;
+const infoResp = css({
+  flexDirection: 'column',
+
+  [mq[1]]: {
+    flexDirection: 'row',
+  },
+});
+
+const InfoRow = styled(Flex)`
+  ${infoResp}
 `;
 
 const InfoBoxRow = ({ data }) => (
-  <Row>
+  <InfoRow>
     {data.map((d, i) => (
-      <InfoBox
-        key={i}
-        value={d.value}
-        description={d.description}
-        styles={i === data.length - 1 ? null : collapseBorder}
-      />
+      <InfoBox key={i} value={d.value} description={d.description} />
     ))}
-  </Row>
+  </InfoRow>
 );
 
 export default InfoBoxRow;
