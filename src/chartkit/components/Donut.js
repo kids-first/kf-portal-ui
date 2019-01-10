@@ -40,7 +40,7 @@ class Donut extends Component {
       this.setState({ highlightedIndex: index, highlightedIndexValue: value });
     }
     if (data && this.props.analyticsTracking) {
-      const { category, label } = this.props.analyticsTracking;
+      const { category } = this.props.analyticsTracking;
       trackUserInteraction({
         category,
         action: 'Donut Slice: Hover',

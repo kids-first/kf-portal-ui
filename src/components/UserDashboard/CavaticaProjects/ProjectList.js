@@ -79,12 +79,6 @@ const TaskBreakdown = styled('div')`
   font-weight: 600;
 `;
 
-const NoTasks = styled('span')`
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-weight: normal;
-`;
-
 const Task = ({ tasks, status, projectId, ...props }) => {
   const text = `${tasks} ${status}`;
 
