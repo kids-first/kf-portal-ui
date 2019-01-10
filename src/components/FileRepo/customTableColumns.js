@@ -109,9 +109,6 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
     content: {
       accessor: 'kf_id',
       Cell: props => <Link to={`/file/${props.value}`}>{props.value}</Link>,
-      Header: 'File ID',
-      canChangeShow: true,
-      show: true,
       field: 'kf_id',
     },
   },
