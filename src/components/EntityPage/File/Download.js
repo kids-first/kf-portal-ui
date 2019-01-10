@@ -33,10 +33,6 @@ const ControlledDownload = styled(Row)`
   }
 `;
 
-const RotatedChevron = props => (
-  <ChevronIcon transform={'rotate(-90)'} width={8} height={8} {...props} />
-);
-
 const Download = compose(
   withApi,
   withTheme,

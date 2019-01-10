@@ -337,6 +337,7 @@ const FileEntity = ({ api, fileId }) => {
                     loading={file.isLoading}
                     data={particpantBiospecimenData(data)}
                     columns={particpantBiospecimenColumns}
+                    downloadName="participants_biospecimens"
                   />
                 </EntityContentSection>
                 <EntityContentDivider />
@@ -345,6 +346,7 @@ const FileEntity = ({ api, fileId }) => {
                     loading={file.isLoading}
                     data={experimentalStrategiesData(data)}
                     columns={experimentalStrategiesColumns}
+                    downloadName="experimental_strategies"
                   />
                 </EntityContentSection>
 
