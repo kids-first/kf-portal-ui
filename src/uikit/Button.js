@@ -116,10 +116,24 @@ export const TealActionButton = applyDefaultStyles(styled('button')`
     text-decoration: none;
     color: ${({ theme }) => theme.white};
   }
+
+  ${({ disabled }) => (disabled ? DisabledButton : null)}
 `);
 
 export const LargeTealActionButton = styled(TealActionButton)`
   padding: 13px 25px;
   font-size: 14px;
   border-radius: 18px;
+`;
+
+const DisabledButton = ({ theme }) => css`
+  background-color: ${theme.backgroundGrey};
+  color: ${theme.borderGrey};
+  &:disabled img {
+    color: ${theme.borderGrey};
+  }
+  &:hover:disabled {
+    background-color: ${theme.backgroundGrey};
+  }
+  cursor: not-allowed;
 `;

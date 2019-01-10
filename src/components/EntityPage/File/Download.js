@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { compose, withState, lifecycle } from 'recompose';
 import styled from 'react-emotion';
 import urlJoin from 'url-join';
@@ -10,7 +10,6 @@ import ExternalLink from 'uikit/ExternalLink';
 import Row from 'uikit/Row';
 
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
-import ChevronIcon from 'icons/ChevronIcon';
 
 import { kfWebRoot } from 'common/injectGlobals';
 
@@ -32,6 +31,14 @@ const ControlledDownload = styled('div')`
   }
 `;
 
+const StyledDownloadButton = styled(DownloadButton)`
+  height: 27px;
+  padding: 0 13px;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: 600;
+`;
+
 const Download = compose(
   withApi,
   withTheme,
@@ -50,18 +57,31 @@ const Download = compose(
   return loading ? (
     <div>loading</div>
   ) : acl.some(code => projectIds.includes(code)) ? (
-    <DownloadFileButton kfId={kfId} render={props => <DownloadButton {...props} />} {...props} />
+    <DownloadFileButton
+      kfId={kfId}
+      render={props => <StyledDownloadButton {...props} />}
+      {...props}
+    />
   ) : (
-    <ControlledDownload>
-      <ControlledAccessIcon fill="#008199" width={12} height={12} />
-      <LockedText>File is locked. </LockedText>{' '}
-      <ExternalLink
-        hasExternalIcon={false}
-        href={urlJoin(kfWebRoot, '/support/studies-and-access/#applying-for-data-access')}
-      >
-        Apply for access &raquo;
-      </ExternalLink>
-    </ControlledDownload>
+    <Fragment>
+      <DownloadFileButton
+        kfId={kfId}
+        render={props => <StyledDownloadButton {...props} disabled />}
+        {...props}
+      />
+
+      <ControlledDownload>
+        <ControlledAccessIcon fill="#008199" width={12} height={12} />
+        <LockedText>File is locked.</LockedText>
+        <ExternalLink
+          hasExternalIcon={false}
+          href={urlJoin(kfWebRoot, '/support/studies-and-access/#applying-for-data-access')}
+        >
+          {' '}
+          Apply for access &raquo;
+        </ExternalLink>
+      </ControlledDownload>
+    </Fragment>
   );
 });
 

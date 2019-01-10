@@ -16,6 +16,7 @@ const DownloadButton = compose(withTheme)(
     theme,
     content = () => <Trans>Download</Trans>,
     buttonRef = React.createRef(),
+    disabled,
     ...rest
   }) => {
     return (
@@ -25,9 +26,11 @@ const DownloadButton = compose(withTheme)(
         innerRef={ref => {
           buttonRef.current = ref;
         }}
+        disabled={disabled}
         {...rest}
       >
         <DownloadIcon
+          fill={disabled ? theme.borderGrey : 'white'}
           className={css`
             margin-right: 9px;
           `}
