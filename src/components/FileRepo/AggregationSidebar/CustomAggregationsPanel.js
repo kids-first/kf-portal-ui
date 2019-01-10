@@ -156,6 +156,7 @@ export default compose(
                           componentProps: {
                             getTermAggProps: () => ({
                               InputComponent: FilterInput,
+                              headerTitle: '# files',
                             }),
                           },
                           getCustomItems: ({ aggs }) =>
