@@ -65,15 +65,20 @@ const DownloadColumnCellContent = compose(withApi, withTheme)(
                     <Tooltip
                       position="bottom"
                       interactive
-                      html={<Row p={'10px'}>You do not have access to this file.</Row>}
+                      hideTitle
+                      html={<Row p={'10px'}>File is locked. Click the lock to apply for access.</Row>}
                     >
-                      <ControlledIcon fill={theme.primary} />
+                      <ControlledIcon
+                        hideTitle
+                        link="https://kidsfirstdrc.org/support/studies-and-access/#applying-for-data-access"
+                        target="applying-for-data-access"
+                      />
                     </Tooltip>
                   )
                 ) : loadingQuery || loadingGen3User ? (
                   <TableSpinner style={{ width: 15, height: 15 }} />
                 ) : (
-                  <ControlledIcon fill={theme.primary} />
+                  <ControlledIcon hideTitle />
                 )}
               </Row>
             );

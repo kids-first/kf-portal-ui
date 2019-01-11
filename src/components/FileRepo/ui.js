@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Component from 'react-component-component';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 
@@ -10,6 +11,7 @@ import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
 
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
@@ -76,6 +78,17 @@ export const ArrangerContainer = styled(Row)`
       .bucket-link {
         ${arrangerValueText};
         color: ${({ theme }) => theme.greyScale1};
+        input[type=checkbox] {
+          float: left;
+        }
+        .textHighlight, .bucket-count {
+          display: table;
+        }
+      }
+      .bucket-count {
+        display: table;
+        min-width: 50px;
+        text-align: right;
       }
     }
   }
@@ -114,7 +127,42 @@ export const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-export const ControlledIcon = props => <ControlledAccessIcon width={12} height={12} {...props} />;
+export const ControlledIcon = withTheme(props => {
+  const initialState = {
+    mouseIsOver: false,
+  };
+
+  const mouseEnterEvent = ({ setState }) => () => {
+    setState({ mouseIsOver: true });
+  };
+
+  const mouseLeaveEvent = ({ setState }) => () => {
+    setState({ mouseIsOver: false });
+  };
+
+  const getFillColor = ({ state }) => {
+    return !state.mouseIsOver ? props.fill || props.theme.primary : props.theme.hover;
+  };
+
+  return (
+    <Component initialState={initialState}>
+      {s => (
+        <a href={props.link} target={props.target}>
+          <ControlledAccessIcon
+            width={12}
+            height={12}
+            fill={getFillColor(s)}
+            onMouseEnter={mouseEnterEvent(s)}
+            onMouseLeave={mouseLeaveEvent(s)}
+            {...props}
+          >
+            {props.children}
+          </ControlledAccessIcon>
+        </a>
+      )}
+    </Component>
+  );
+});
 
 export const OpenIcon = () => (
   <img

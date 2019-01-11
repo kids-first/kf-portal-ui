@@ -16,7 +16,6 @@ const Wrapper = applyDefaultStyles(styled(Column)`
 const IconWrapper = styled('div')`
   position: relative;
   top: -25px;
-  z-index: 1;
   width: 55px;
   height: 55px;
   border-radius: 50%;

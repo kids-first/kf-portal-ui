@@ -5,6 +5,7 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 import { getTaskLink } from 'services/cavatica';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const Project = styled(Column)`
   justify-content: center;
@@ -94,7 +95,17 @@ const ProjectList = ({ projects }) =>
   projects.map((p, i) => (
     <Project key={i}>
       <Row justifyContent="space-between" pl={0}>
-        <Link href={`https://cavatica.sbgenomics.com/u/${p.id}`} iconSize={11}>
+        <Link
+          onClick={() => {
+            trackUserInteraction({
+              category: TRACKING_EVENTS.categories.integration.cavatica,
+              action: `Project Link ${TRACKING_EVENTS.actions.click}`,
+              label: p.name,
+            });
+          }}
+          href={`https://cavatica.sbgenomics.com/u/${p.id}`}
+          iconSize={11}
+        >
           {p.name}
         </Link>
         <div>
