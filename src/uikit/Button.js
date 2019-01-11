@@ -48,7 +48,6 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
   height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
-  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `;
 
 export default Button;
@@ -116,8 +115,6 @@ export const TealActionButton = applyDefaultStyles(styled('button')`
     text-decoration: none;
     color: ${({ theme }) => theme.white};
   }
-
-  ${({ disabled }) => (disabled ? DisabledButton : null)}
 `);
 
 export const LargeTealActionButton = styled(TealActionButton)`
@@ -126,12 +123,9 @@ export const LargeTealActionButton = styled(TealActionButton)`
   border-radius: 18px;
 `;
 
-const DisabledButton = ({ theme }) => css`
+export const DisabledButton = ({ theme }) => css`
   background-color: ${theme.backgroundGrey};
   color: ${theme.borderGrey};
-  &:disabled img {
-    color: ${theme.borderGrey};
-  }
   &:hover:disabled {
     background-color: ${theme.backgroundGrey};
   }

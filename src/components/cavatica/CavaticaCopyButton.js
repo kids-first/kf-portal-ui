@@ -9,7 +9,8 @@ import { CAVATICA } from 'common/constants';
 import CavaticaConnectModal from './CavaticaConnectModal';
 import CavaticaCopyModal from './CavaticaCopyModal';
 import { BigWhiteButton } from 'uikit/Button';
-import cavaticaLogo from 'assets/logomark-cavatica-mono-white.svg';
+import { DisabledButton } from '../../uikit/Button';
+import CavaticaLogo from 'icons/CavaticaLogo';
 
 const CavaticaButton = styled(BigWhiteButton)`
   background: ${({ theme }) => theme.primaryLight};
@@ -19,6 +20,7 @@ const CavaticaButton = styled(BigWhiteButton)`
   }
 
   ${({ buttonStyle }) => buttonStyle}
+  ${({ disabled }) => (disabled ? DisabledButton : null)}
 `;
 
 const ButtonContent = styled(Row)`
@@ -32,11 +34,8 @@ const ButtonContent = styled(Row)`
   font-weight: bold;
 
   ${({ buttonContentStyle }) => buttonContentStyle}
-`;
-
-const CavaticaLogo = styled('img')`
-  width: 28px;
-  margin-right: 7px;
+  ${({ disabled }) =>
+    disabled ? DisabledButton : null}
 `;
 
 const showConnectModal = ({ effects, props }) => {
@@ -79,12 +78,16 @@ const CavaticaCopyButton = compose(
     const clickAction = connected ? showCopyModal : showConnectModal;
     return (
       <CavaticaButton
+        buttonStyle={buttonStyle}
         disabled={disabled}
         onClick={() => clickAction({ effects, props })}
-        buttonStyle={buttonStyle}
       >
-        <ButtonContent buttonContentStyle={buttonContentStyle}>
-          <CavaticaLogo alt="" src={cavaticaLogo} />
+        <ButtonContent buttonContentStyle={buttonContentStyle} disabled={disabled}>
+          <CavaticaLogo
+            width="28"
+            fill={disabled ? theme.borderGrey : 'white'}
+            style={{ marginRight: '7px' }}
+          />
           {text}
         </ButtonContent>
       </CavaticaButton>
