@@ -6,6 +6,7 @@ import Row from '../../Row';
 export const Toolbar = styled(Row)`
   justify-content: space-between;
   border: 1px solid ${({ theme }) => theme.greyScale5};
+
   padding: 3px 4px;
   align-items: center;
 `;
@@ -17,4 +18,15 @@ export const PaginationStatus = applyDefaultStyles(styled('div')`
   color: ${({ theme }) => theme.greyScale9};
 `);
 
-export const ToolbarGroup = applyDefaultStyles(styled(Row)``);
+export const ToolbarGroup = applyDefaultStyles(styled(Row)`
+  border: 1px solid ${({ theme }) => theme.borderGrey};
+  border-radius: 10px;
+
+  > div {
+    border-right: 1px solid ${({ theme }) => theme.borderGrey};
+  }
+
+  > div:last-child {
+    border: none;
+  }
+`);

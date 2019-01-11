@@ -18,20 +18,7 @@ export const ToolbarItem = styled('div')`
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: ${({ theme }) => theme.lightBlue};
-
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.default};
-  font-weight: 600;
-
-  border: solid 1px ${({ theme }) => theme.borderGrey};
   padding: 0 10px;
-  background: none;
-
-  ${({ borderRadiusLeft }) => (borderRadiusLeft ? roundedCornerLeft : null)}
-  ${({
-    borderRadiusRight,
-  }) => (borderRadiusRight ? roundedCornerRight : null)}
 `;
 
 export const ToolbarButton = styled('button')`

@@ -12,9 +12,9 @@ const exportTSV = (data, columns, filename) => {
 };
 
 const Export = ({ exporter = x => x, data, columns, downloadName, ...props }) => (
-  <ToolbarItem {...props}>
+  <ToolbarItem onClick={() => exportTSV(data, columns, downloadName)} {...props}>
     <FileDownloadIcon width="12" height="12px" fill="#008299" style={{ marginRight: '7px' }} />
-    <ToolbarButton onClick={x => exportTSV(data, columns, downloadName)}>EXPORT</ToolbarButton>
+    <ToolbarButton>EXPORT</ToolbarButton>
   </ToolbarItem>
 );
 
