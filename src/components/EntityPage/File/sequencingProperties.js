@@ -1,4 +1,4 @@
-export const sequencingReadProperties = data => {
+export const toSequencingReadProperties = data => {
   const experiments = data.sequencing_experiments.hits.edges[0].node;
 
   const {

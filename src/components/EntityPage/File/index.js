@@ -26,16 +26,16 @@ import ArrangerDataProvider from 'components/ArrangerDataProvider';
 
 import {
   particpantBiospecimenColumns,
-  particpantBiospecimenData,
+  toParticpantBiospecimenData,
 } from './participantBiospecimenTable';
 
 import {
   experimentalStrategiesColumns,
-  experimentalStrategiesData,
+  toExperimentalStrategiesData,
 } from './experimentalStrategies';
 
-import { filePropertiesSummary } from './fileProperties';
-import { sequencingReadProperties } from './sequencingProperties';
+import { toFilePropertiesSummary } from './fileProperties';
+import { toSequencingReadProperties } from './sequencingProperties';
 
 import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
@@ -290,8 +290,8 @@ const FileEntity = ({ api, fileId }) => {
           const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
 
           // split file properties data into two arrays for two tables
-          const fileProperties = filePropertiesSummary(data);
-          const [table1, table2] = [fileProperties.slice(0, 5), fileProperties.slice(5)];
+          const fileProperties = toFilePropertiesSummary(data);
+          const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(5)];
           const fileType = data.file_format;
 
           return (
@@ -339,7 +339,7 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentSection title="Associated Participants/Biospecimens">
                   <BaseDataTable
                     loading={file.isLoading}
-                    data={particpantBiospecimenData(data)}
+                    data={toParticpantBiospecimenData(data)}
                     columns={particpantBiospecimenColumns}
                     downloadName="participants_biospecimens"
                   />
@@ -348,11 +348,12 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentSection title="Associated Experimental Strategies">
                   <BaseDataTable
                     loading={file.isLoading}
-                    data={experimentalStrategiesData(data)}
+                    data={toExperimentalStrategiesData(data)}
                     columns={experimentalStrategiesColumns}
                     downloadName="experimental_strategies"
                   />
                 </EntityContentSection>
+<<<<<<< HEAD
                 {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
                   <React.Fragment>
                     <EntityContentDivider />
@@ -361,6 +362,13 @@ const FileEntity = ({ api, fileId }) => {
                     </EntityContentSection>
                   </React.Fragment>
                 ) : null}
+=======
+
+                <EntityContentDivider />
+                <EntityContentSection title="Sequencing Read Properties">
+                  <InfoBoxRow data={toSequencingReadProperties(data)} />
+                </EntityContentSection>
+>>>>>>> rename data formatters
               </EntityContent>
             </Container>
           );
