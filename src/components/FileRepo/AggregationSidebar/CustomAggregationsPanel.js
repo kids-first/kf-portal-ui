@@ -97,6 +97,7 @@ export default compose(
   }) => (
     <Component initialState={{ selectedTab: 'CLINICAL' }}>
       {({ state: { selectedTab }, setState }) => (
+        // css rather than conditional rendering to prevent rerender
         <Container style={{ display: hidden ? 'none' : 'block' }}>
           <Tabs
             selectedTab={selectedTab}
