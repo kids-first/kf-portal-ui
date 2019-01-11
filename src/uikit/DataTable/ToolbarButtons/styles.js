@@ -1,17 +1,6 @@
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import ChevronIcon from 'icons/ChevronIcon';
 import DownloadIcon from 'icons/DownloadIcon';
-
-const roundedCornerLeft = props => css`
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-`;
-
-const roundedCornerRight = props =>
-  css`
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  `;
 
 export const ToolbarItem = styled('div')`
   min-height: 30px;

@@ -6,7 +6,7 @@ import Row from '../../Row';
 export const Toolbar = styled(Row)`
   justify-content: space-between;
   border: 1px solid ${({ theme }) => theme.greyScale5};
-
+  border-bottom: none;
   padding: 3px 4px;
   align-items: center;
 `;

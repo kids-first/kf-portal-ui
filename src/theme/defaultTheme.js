@@ -67,8 +67,8 @@ const colors = {
   defaultChip: '#404c9a',
 
   // table
-  backgroundRowOdd: '#f4f5f8',
-  backgroundRowEven: '#fff',
+  backgroundRowOdd: '#fff',
+  backgroundRowEven: '#f4f5f8',
 };
 
 export const chartColors = {
