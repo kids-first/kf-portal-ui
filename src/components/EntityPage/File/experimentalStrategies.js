@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { pickData } from './utils';
 
 export const experimentalStrategiesColumns = [
@@ -16,7 +17,7 @@ export const toExperimentalStrategiesData = data =>
     return {
       experiment_strategy: pickData(se, 'experiment_strategy'),
       external_id: pickData(se, 'external_id'),
-      experiment_date: pickData(se, 'experiment_date'),
+      experiment_date: pickData(se, 'experiment_date', d => format(d, 'YYYY-MM-DD')),
       instrument_model: pickData(se, 'instrument_model'),
       platform: pickData(se, 'platform'),
       library_name: pickData(se, 'library_name'),
