@@ -181,9 +181,8 @@ export const getUserStudyPermission = api => async ({
   return { acceptedStudiesAggs, unacceptedStudiesAggs };
 };
 
-export const checkUserFilePermission = api => async ({ fileId, userId }) => {
+export const checkUserFilePermission = api => async ({ fileId }) => {
   const userDetails = await getGen3User(api);
-  console.log('user details', userDetails);
   const approvedAcls = Object.keys(userDetails.projects);
 
   graphql(api)({
@@ -210,9 +209,8 @@ export const checkUserFilePermission = api => async ({ fileId, userId }) => {
     },
   })
     .then(data => {
-      const acl = (get(data, 'file.aggregations.acl.buckets') || []).map(({ key }) => key);
-      const hasPermission = acl.some(fileAcl => fileAcl.includes(approvedAcls));
-      console.log('ciaran', data, acl, 'approvedacls', approvedAcls, hasPermission);
+      const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
+      return fileAcl.some(fileAcl => approvedAcls.includes(fileAcl));
     })
     .catch(err => {
       console.log('err', err);
