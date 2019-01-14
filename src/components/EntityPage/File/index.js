@@ -40,6 +40,7 @@ import { toSequencingReadProperties } from './sequencingProperties';
 import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
 import ShareButton from 'uikit/ShareButton';
+import { checkUserFilePermission } from 'services/fileAccessControl';
 
 // file types
 const FILE_TYPE_BAM = 'bam';
@@ -47,13 +48,6 @@ const FILE_TYPE_CRAM = 'cram';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
-    aggregations(filters: $sqon) {
-      acl {
-        buckets {
-          key
-        }
-      }
-    }
     hits(filters: $sqon) {
       edges {
         node {
@@ -288,6 +282,8 @@ const FileEntity = ({ api, fileId }) => {
         if (file.isLoading) {
           return <div>Loading</div>;
         } else {
+          const hasFilePermission = checkUserFilePermission(api)({ fileId });
+          console.log('file permission', hasFilePermission);
           const data = _.get(file, 'data.hits.edges[0].node');
           const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
 
