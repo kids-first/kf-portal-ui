@@ -8,8 +8,7 @@ import Row from 'uikit/Row';
 import { CAVATICA } from 'common/constants';
 import CavaticaConnectModal from './CavaticaConnectModal';
 import CavaticaCopyModal from './CavaticaCopyModal';
-import { BigWhiteButton } from 'uikit/Button';
-import { DisabledButton } from '../../uikit/Button';
+import { BigWhiteButton, DisabledButton } from 'uikit/Button';
 import CavaticaLogo from 'icons/CavaticaLogo';
 
 const CavaticaButton = styled(BigWhiteButton)`
@@ -18,24 +17,22 @@ const CavaticaButton = styled(BigWhiteButton)`
   &:hover {
     background: ${({ theme }) => theme.primary};
   }
-
-  ${({ buttonStyle }) => buttonStyle}
-  ${({ disabled }) => (disabled ? DisabledButton : null)}
-`;
-
-const ButtonContent = styled(Row)`
-  ${({ theme }) => theme.center};
+  text-transform: uppercase;
+  font-weight: bold;
   color: ${({ theme }) => theme.white};
   text-align: center;
   font-size: 13px;
   letter-spacing: 0.2px;
-  padding: 5px 18px 5px 5px;
-  text-transform: uppercase;
-  font-weight: bold;
 
-  ${({ buttonContentStyle }) => buttonContentStyle}
+  ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
   ${({ disabled }) =>
     disabled ? DisabledButton : null}
+`;
+
+const ButtonContent = styled(Row)`
+  ${({ theme }) => theme.center};
+  padding: 5px 18px 5px 5px;
+  ${({ buttonContentStyle }) => (buttonContentStyle ? buttonContentStyle : null)}
 `;
 
 const showConnectModal = ({ effects, props }) => {
@@ -69,20 +66,20 @@ const CavaticaCopyButton = compose(
     theme,
     effects,
     disabled,
-    text = 'Copy files to Cavatica',
     buttonStyle,
     buttonContentStyle,
+    text = 'Copy files to Cavatica',
     ...props
   }) => {
     const connected = state.integrationTokens[CAVATICA];
     const clickAction = connected ? showCopyModal : showConnectModal;
     return (
       <CavaticaButton
+        onClick={() => clickAction({ effects, props })}
         buttonStyle={buttonStyle}
         disabled={disabled}
-        onClick={() => clickAction({ effects, props })}
       >
-        <ButtonContent buttonContentStyle={buttonContentStyle} disabled={disabled}>
+        <ButtonContent buttonContentStyle={buttonContentStyle}>
           <CavaticaLogo
             width="28"
             fill={disabled ? theme.borderGrey : 'white'}
