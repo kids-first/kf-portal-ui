@@ -1,6 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
-
+import { pickData } from './utils';
 import { formatToGB } from './utils';
 
 import ExternalLink from 'uikit/ExternalLink';
@@ -11,30 +10,32 @@ export const toFilePropertiesSummary = data => {
   const biospecimens = participants.biospecimens.hits.edges[0].node;
 
   return [
-    { title: 'Kids First ID:', summary: data.kf_id },
+    { title: 'Kids First ID:', summary: pickData(data, 'kf_id') },
 
-    { title: 'Name:', summary: data.file_name },
+    { title: 'Name:', summary: pickData(data, 'file_name') },
     {
       title: 'Study:',
       summary: <ExternalLink href={null}>{`${study.short_name} (${study.kf_id})`}</ExternalLink>,
     },
-    { title: 'Access:', summary: data.controlled_access ? 'Controlled' : '' },
-    { title: 'Consent Codes:', summary: biospecimens.dbgap_consent_code },
+    { title: 'Access:', summary: data.controlled_access ? 'Controlled' : 'Open' },
+    { title: 'Consent Codes:', summary: pickData(biospecimens, 'dbgap_consent_code') },
     {
       title: 'External ID:',
-      summary: data.external_id,
+      summary: pickData(data, 'external_id'),
     },
     {
       title: 'Harmonized Data:',
       summary: data.is_harmonized ? 'Yes' : 'No',
     },
-    { title: 'Reference Genome:', summary: data.reference_genome },
+    { title: 'Reference Genome:', summary: pickData(data, 'reference_genome') },
     {
       title: 'Experimental Strategy:',
-      summary: get(data, data.experiment_strategies, []).map(strategies => <div>{strategies}</div>),
+      summary: pickData(data, data.experiment_strategies, d =>
+        d.map(strategies => <div>{strategies}</div>),
+      ),
     },
-    { title: 'Data Type:', summary: data.data_type },
-    { title: 'File Format:', summary: data.file_format },
-    { title: 'Size:', summary: formatToGB(data.size) },
+    { title: 'Data Type:', summary: pickData(data, 'data_type') },
+    { title: 'File Format:', summary: pickData(data, 'file_format') },
+    { title: 'Size:', summary: pickData(data, 'size', d => formatToGB(data.size)) },
   ];
 };

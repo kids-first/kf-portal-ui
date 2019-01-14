@@ -11,7 +11,7 @@ export const particpantBiospecimenColumns = [
   { Header: 'Biospecimen ID', accessor: 'biospecimen_id' },
   { Header: 'Analyte Type', accessor: 'analyte_type' },
   { Header: 'Tissue Type', accessor: 'tissue_type' },
-  { Header: 'Age at Sample Acquisition', accessor: 'age_at_event_days' },
+  { Header: 'Age at Sample Acquisition', accessor: 'age_at_sample_acquisition' },
 ];
 
 export const toParticpantBiospecimenData = data =>
@@ -22,13 +22,15 @@ export const toParticpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: (
+          participant_id: pickData(p, 'kf_id', d => (
             <ExternalLink hasExternalIcon={false} href="">
-              {pickData(p, 'kf_id')}
+              {d}
             </ExternalLink>
-          ),
+          )),
           external_id: pickData(p, 'external_id'),
-          study_name: <ExternalLink href="">{pickData(p, 'study.short_name')}</ExternalLink>,
+          study_name: pickData(p, 'study.short_name', d => (
+            <ExternalLink href="">{d}</ExternalLink>
+          )),
           proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
           analyte_type: pickData(biospecimen, 'analyte_type'),
