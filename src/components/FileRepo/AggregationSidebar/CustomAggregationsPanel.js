@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -45,9 +45,14 @@ const Tabs = ({ selectedTab, onTabSelect, options }) => (
   </TabsRow>
 );
 
-const Wrapper = styled('div')`
+const AggsListWrapper = styled('div')`
   position: relative;
   flex: 1 1 auto;
+  height: 100%;
+`;
+
+const Container = styled('div')`
+  height: 100%;
 `;
 
 const Scroll = styled('div')`
@@ -87,11 +92,13 @@ export default compose(
     theme,
     state,
     effects,
+    hidden = false,
     ...props
   }) => (
     <Component initialState={{ selectedTab: 'CLINICAL' }}>
       {({ state: { selectedTab }, setState }) => (
-        <Fragment>
+        // css rather than conditional rendering to prevent rerender
+        <Container style={{ display: hidden ? 'none' : 'block' }}>
           <Tabs
             selectedTab={selectedTab}
             options={[
@@ -100,7 +107,7 @@ export default compose(
             ]}
             onTabSelect={({ id }) => setState({ selectedTab: id })}
           />
-          <Wrapper>
+          <AggsListWrapper>
             <Scroll>
               <Query
                 renderError
@@ -156,7 +163,6 @@ export default compose(
                           componentProps: {
                             getTermAggProps: () => ({
                               InputComponent: FilterInput,
-                              headerTitle: '# files',
                             }),
                           },
                           getCustomItems: ({ aggs }) =>
@@ -239,8 +245,8 @@ export default compose(
                 }}
               />
             </Scroll>
-          </Wrapper>
-        </Fragment>
+          </AggsListWrapper>
+        </Container>
       )}
     </Component>
   ),

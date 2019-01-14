@@ -61,10 +61,6 @@ const CollapsibleAggregationWrapper = styled(AggregationWrapper)`
   overflow: hidden;
 `;
 
-const CollapsibleCustomAggregationsPanel = styled(CustomAggregationsPanel)`
-  display: ${({ expanded }) => (expanded ? `block` : `none`)};
-`;
-
 const AggregationSidebar = compose(
   injectState,
   withTheme,
@@ -146,32 +142,31 @@ const AggregationSidebar = compose(
               />
             )}
           </AggregationHeader>
-          {expanded ? (
-            <CollapsibleCustomAggregationsPanel
-              {...{
-                ...props,
-                state,
-                effects,
-                setSQON,
-                containerRef: aggregationsWrapperRef,
-                translateSQONValue,
-                onValueChange: ({ active, field, value }) => {
-                  if (active) {
-                    trackFileRepoInteraction({
-                      category: TRACKING_EVENTS.categories.fileRepo.filters,
-                      action: 'Filter Selected',
-                      label: { type: 'filter', value, field },
-                    });
-                  }
-                },
-                componentProps: {
-                  getTermAggProps: () => ({
-                    InputComponent: FilterInput,
-                  }),
-                },
-              }}
-            />
-          ) : null}
+          <CustomAggregationsPanel
+            {...{
+              ...props,
+              hidden: !expanded,
+              state,
+              effects,
+              setSQON,
+              containerRef: aggregationsWrapperRef,
+              translateSQONValue,
+              onValueChange: ({ active, field, value }) => {
+                if (active) {
+                  trackFileRepoInteraction({
+                    category: TRACKING_EVENTS.categories.fileRepo.filters,
+                    action: 'Filter Selected',
+                    label: { type: 'filter', value, field },
+                  });
+                }
+              },
+              componentProps: {
+                getTermAggProps: () => ({
+                  InputComponent: FilterInput,
+                }),
+              },
+            }}
+          />
         </CollapsibleAggregationWrapper>
       )}
     </ScrollbarSize>
