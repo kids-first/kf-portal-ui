@@ -338,7 +338,15 @@ export default styled('div')`
       background-color: ${({ theme }) => theme.tertiaryBackground};
       font-family: ${({ theme }) => theme.fonts.default};
       color: ${({ theme }) => theme.secondary};
+      border-color: ${({ theme }) => theme.greyScale5};
       font-weight: 600;
+    }
+
+    .ReactTable .rt-thead .rt-th {
+      border-color: ${({ theme }) => theme.greyScale5};
+      border-bottom: none;
+      padding: 10px 10px;
+      background-color: ${({ theme }) => theme.tertiaryBackground};
     }
 
     .ReactTable .rt-td,
@@ -350,9 +358,10 @@ export default styled('div')`
       font-family: ${({ theme }) => theme.fonts.details};
       color: ${({ theme }) => theme.greyScale1};
       border-right: 1px solid ${({ theme }) => theme.greyScale5};
+      padding: 10px 10px;
     }
 
-    .ReactTable.-striped .rt-tr. {
+    .ReactTable.-striped .rt-tr {
       background-color: ${({ theme }) => theme.backgroundRowEven};
     }
 

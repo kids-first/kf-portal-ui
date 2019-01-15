@@ -1,37 +1,13 @@
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import ChevronIcon from 'icons/ChevronIcon';
 import DownloadIcon from 'icons/DownloadIcon';
-
-const roundedCornerLeft = props => css`
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-`;
-
-const roundedCornerRight = props =>
-  css`
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  `;
 
 export const ToolbarItem = styled('div')`
   min-height: 30px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  color: ${({ theme }) => theme.lightBlue};
-
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.default};
-  font-weight: 600;
-
-  border: solid 1px ${({ theme }) => theme.borderGrey};
   padding: 0 10px;
-  background: none;
-
-  ${({ borderRadiusLeft }) => (borderRadiusLeft ? roundedCornerLeft : null)}
-  ${({
-    borderRadiusRight,
-  }) => (borderRadiusRight ? roundedCornerRight : null)}
 `;
 
 export const ToolbarButton = styled('button')`

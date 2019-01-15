@@ -17,16 +17,15 @@ import { kfWebRoot } from 'common/injectGlobals';
 import { getUser } from 'services/gen3';
 import { withApi } from 'services/api';
 
-const LockedText = styled('div')`
+const LockedText = styled('span')`
   margin-left: 8px;
   margin-right: 1px;
 `;
 
-const ControlledDownload = styled(Row)`
+const ControlledDownload = styled('div')`
   color: ${({ theme }) => theme.lightBlue};
   font-size: 14px;
   font-weight: 500;
-  align-items: center;
 
   a {
     color: ${({ theme }) => theme.primaryLight};
@@ -55,12 +54,11 @@ const Download = compose(
   ) : (
     <ControlledDownload>
       <ControlledAccessIcon fill="#008199" width={12} height={12} />
-      <LockedText>File is locked.</LockedText>
+      <LockedText>File is locked. </LockedText>{' '}
       <ExternalLink
         hasExternalIcon={false}
         href={urlJoin(kfWebRoot, '/support/studies-and-access/#applying-for-data-access')}
       >
-        {' '}
         Apply for access &raquo;
       </ExternalLink>
     </ControlledDownload>
