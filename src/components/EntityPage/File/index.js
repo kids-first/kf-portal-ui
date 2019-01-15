@@ -73,7 +73,7 @@ const fileQuery = `query ($sqon: JSON) {
           reference_genome
           size
           instrument_models
-          experiment_strategies	
+          experiment_strategies 
           is_paired_end
           platforms
           sequencing_experiments {
