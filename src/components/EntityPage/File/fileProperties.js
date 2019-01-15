@@ -31,7 +31,7 @@ export const toFilePropertiesSummary = data => {
     {
       title: 'Experimental Strategy:',
       summary: pickData(data, data.experiment_strategies, d =>
-        d.map(strategies => <div>{strategies}</div>),
+        d.map((strategies, i) => <div key={i}>{strategies}</div>),
       ),
     },
     { title: 'Data Type:', summary: pickData(data, 'data_type') },
