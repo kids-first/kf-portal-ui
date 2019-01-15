@@ -353,22 +353,14 @@ const FileEntity = ({ api, fileId }) => {
                     downloadName="experimental_strategies"
                   />
                 </EntityContentSection>
-<<<<<<< HEAD
                 {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
                   <React.Fragment>
                     <EntityContentDivider />
                     <EntityContentSection title="Sequencing Read Properties">
-                      <InfoBoxRow data={sequencingReadProperties(data)} />
+                      <InfoBoxRow data={toSequencingReadProperties(data)} />
                     </EntityContentSection>
                   </React.Fragment>
                 ) : null}
-=======
-
-                <EntityContentDivider />
-                <EntityContentSection title="Sequencing Read Properties">
-                  <InfoBoxRow data={toSequencingReadProperties(data)} />
-                </EntityContentSection>
->>>>>>> rename data formatters
               </EntityContent>
             </Container>
           );
