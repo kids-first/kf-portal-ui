@@ -10,6 +10,7 @@ import { withApi } from 'services/api';
 import DownloadIcon from 'icons/DownloadIcon';
 import { ControlledIcon, TableSpinner } from './ui';
 import Row from 'uikit/Row';
+import { Link } from 'uikit/Core';
 import Tooltip from 'uikit/Tooltip';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -103,6 +104,14 @@ const DownloadColumnCellContent = compose(
 ));
 
 export default ({ theme, userProjectIds, loadingGen3User }) => [
+  {
+    index: 0,
+    content: {
+      accessor: 'kf_id',
+      Cell: props => <Link to={`/file/${props.value}`}>{props.value}</Link>,
+      field: 'kf_id',
+    },
+  },
   {
     index: 13,
     content: {

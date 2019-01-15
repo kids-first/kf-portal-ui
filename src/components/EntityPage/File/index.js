@@ -40,6 +40,9 @@ import { sequencingReadProperties } from './sequencingProperties';
 import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
 
+const FILE_TYPE_BAM = 'bam';
+const FILE_TYPE_CRAM = 'cram';
+
 const fileQuery = `query ($sqon: JSON) {
   file {
     aggregations(filters: $sqon) {
@@ -289,6 +292,7 @@ const FileEntity = ({ api, fileId }) => {
           // split file properties data into two arrays for two tables
           const fileProperties = filePropertiesSummary(data);
           const [table1, table2] = [fileProperties.slice(0, 5), fileProperties.slice(5)];
+          const fileType = data.file_format;
 
           return (
             <Container>
@@ -349,11 +353,14 @@ const FileEntity = ({ api, fileId }) => {
                     downloadName="experimental_strategies"
                   />
                 </EntityContentSection>
-
-                <EntityContentDivider />
-                <EntityContentSection title="Sequencing Read Properties">
-                  <InfoBoxRow data={sequencingReadProperties(data)} />
-                </EntityContentSection>
+                {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
+                  <React.Fragment>
+                    <EntityContentDivider />
+                    <EntityContentSection title="Sequencing Read Properties">
+                      <InfoBoxRow data={sequencingReadProperties(data)} />
+                    </EntityContentSection>
+                  </React.Fragment>
+                ) : null}
               </EntityContent>
             </Container>
           );
