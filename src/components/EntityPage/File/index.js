@@ -39,6 +39,7 @@ import { sequencingReadProperties } from './sequencingProperties';
 
 import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
+import ShareButton from 'uikit/ShareButton';
 
 const fileQuery = `query ($sqon: JSON) {
   file {
@@ -319,6 +320,7 @@ const FileEntity = ({ api, fileId }) => {
                   kfId={data.kf_id}
                   acl={acl}
                 />
+                <ShareButton link={window.location.href} />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
