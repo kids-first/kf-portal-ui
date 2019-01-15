@@ -300,7 +300,7 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityTitle
                   icon="file"
                   title={fileId}
-                  tags={file.isLoading || true ? [] : getTags(file.data)}
+                  tags={file.isLoading ? [] : getTags(data)}
                 />
               </EntityTitleBar>
               <EntityActionBar>
