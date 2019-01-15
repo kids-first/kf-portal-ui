@@ -341,6 +341,10 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentDivider />
                 <EntityContentSection title="Associated Participants/Biospecimens">
                   <BaseDataTable
+                    analyticsTracking={{
+                      title: 'Associated Participants/Biospecimens',
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                    }}
                     loading={file.isLoading}
                     data={toParticpantBiospecimenData(data)}
                     columns={particpantBiospecimenColumns}
@@ -350,6 +354,10 @@ const FileEntity = ({ api, fileId }) => {
                 <EntityContentDivider />
                 <EntityContentSection title="Associated Experimental Strategies">
                   <BaseDataTable
+                    analyticsTracking={{
+                      title: 'Associated Experimental Strategies',
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                    }}
                     loading={file.isLoading}
                     data={toExperimentalStrategiesData(data)}
                     columns={experimentalStrategiesColumns}
