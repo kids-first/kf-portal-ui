@@ -5,15 +5,14 @@ import { formatToGB } from './utils';
 
 import ExternalLink from 'uikit/ExternalLink';
 
-export const filePropertiesSummary = data => {
+export const toFilePropertiesSummary = data => {
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
+
   return [
-    {
-      title: 'External ID:',
-      summary: data.external_id,
-    },
+    { title: 'Kids First ID:', summary: data.kf_id },
+
     { title: 'Name:', summary: data.file_name },
     {
       title: 'Study:',
@@ -21,6 +20,10 @@ export const filePropertiesSummary = data => {
     },
     { title: 'Access:', summary: data.controlled_access ? 'Controlled' : '' },
     { title: 'Consent Codes:', summary: biospecimens.dbgap_consent_code },
+    {
+      title: 'External ID:',
+      summary: data.external_id,
+    },
     {
       title: 'Harmonized Data:',
       summary: data.is_harmonized ? 'Yes' : 'No',

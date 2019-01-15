@@ -10,7 +10,7 @@ export const experimentalStrategiesColumns = [
   { Header: 'Library Strand', accessor: 'library_strand' },
 ];
 
-export const experimentalStrategiesData = data =>
+export const toExperimentalStrategiesData = data =>
   data.sequencing_experiments.hits.edges.map(seq => {
     const se = seq.node;
     return {

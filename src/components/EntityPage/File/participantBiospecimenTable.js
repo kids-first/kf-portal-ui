@@ -14,7 +14,7 @@ export const particpantBiospecimenColumns = [
   { Header: 'Age at Sample Acquisition', accessor: 'age_at_event_days' },
 ];
 
-export const particpantBiospecimenData = data =>
+export const toParticpantBiospecimenData = data =>
   _.flattenDeep(
     data.participants.hits.edges.map(nodes => {
       const p = nodes.node;
