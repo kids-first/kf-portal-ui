@@ -281,8 +281,8 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
       if (file.isLoading || isPageLoading) {
         return <div>Loading</div>;
       } else {
+        console.log('file', hasFilePermission);
         const data = _.get(file, 'data.hits.edges[0].node');
-        const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
 
           // split file properties data into two arrays for two tables
           const fileProperties = toFilePropertiesSummary(data);
@@ -295,7 +295,7 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
               <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
             </EntityTitleBar>
             <EntityActionBar>
-              <CavaticaAnalyse fileId={fileId} />
+              <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
               <Download
                 onSuccess={url => {
                   trackUserInteraction({
@@ -312,7 +312,7 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
                   });
                 }}
                 kfId={data.kf_id}
-                acl={acl}
+                disabled={!hasFilePermission}
               />
                               <ShareButton link={window.location.href} />
 

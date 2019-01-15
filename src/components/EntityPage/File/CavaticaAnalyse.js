@@ -17,7 +17,7 @@ const buttonContentStyle = props =>
     }
   `;
 
-export default ({ fileId }) => (
+export default ({ fileId, disabled }) => (
   <CavaticaCopyButton
     text="ANALYZE FILE IN CAVATICA"
     buttonStyle={buttonStyle}
@@ -32,6 +32,6 @@ export default ({ fileId }) => (
         },
       ],
     }}
-    disabled
+    disabled={disabled}
   />
 );
