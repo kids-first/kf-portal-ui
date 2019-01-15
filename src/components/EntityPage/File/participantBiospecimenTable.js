@@ -24,7 +24,30 @@ export const toParticpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: pickData(p, 'kf_id'),
+          participant_id: (
+            <Link
+              to={
+                `/search/file?sqon=` +
+                encodeURIComponent(
+                  `{"op":"and","content":[{"op":"in","content":{"field":"participants.kf_id","value":["${pickData(
+                    p,
+                    'kf_id',
+                  )}"]}}]}`,
+                )
+              }
+              onClick={e => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.entityPage.file,
+                  action:
+                    TRACKING_EVENTS.actions.click +
+                    `: Associated Participants/Biospecimens: Participant ID`,
+                  label: pickData(p, 'kf_id'),
+                });
+              }}
+            >
+              {pickData(p, 'kf_id')}
+            </Link>
+          ),
           external_id: pickData(p, 'external_id'),
           study_name: pickData(p, 'study.short_name', d => (
             <Link
