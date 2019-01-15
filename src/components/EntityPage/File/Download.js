@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, withState, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import styled from 'react-emotion';
 import urlJoin from 'url-join';
 import { withTheme } from 'emotion-theming';
@@ -13,7 +13,6 @@ import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 
 import { kfWebRoot } from 'common/injectGlobals';
 
-import { getUser } from 'services/gen3';
 import { withApi } from 'services/api';
 
 const LockedText = styled('span')`
@@ -42,27 +41,8 @@ const StyledDownloadButton = styled(DownloadButton)`
 const Download = compose(
   withApi,
   withTheme,
-  withState('loading', 'setLoading', true),
-  withState('projectIds', 'setProjectIds', []),
-  lifecycle({
-    async componentDidMount() {
-      const { api, setProjectIds, setLoading } = this.props;
-      const userDetails = await getUser(api);
-      const userProjectIds = userDetails ? Object.keys(userDetails.projects) : [];
-      setProjectIds(userProjectIds);
-      setLoading(false);
-    },
-  }),
-)(({ kfId, acl, loading, projectIds, theme, ...props }) => {
-  return loading ? (
-    <div>loading</div>
-  ) : acl.some(code => projectIds.includes(code)) ? (
-    <DownloadFileButton
-      kfId={kfId}
-      render={props => <StyledDownloadButton {...props} />}
-      {...props}
-    />
-  ) : (
+)(({ kfId, theme, disabled, ...props }) =>
+  disabled ? (
     <Fragment>
       <DownloadFileButton
         kfId={kfId}
@@ -82,7 +62,13 @@ const Download = compose(
         </ExternalLink>
       </ControlledDownload>
     </Fragment>
-  );
-});
+  ) : (
+    <DownloadFileButton
+      kfId={kfId}
+      render={props => <StyledDownloadButton {...props} />}
+      {...props}
+    />
+  ),
+);
 
 export default Download;
