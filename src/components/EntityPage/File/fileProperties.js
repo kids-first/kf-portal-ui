@@ -36,6 +36,6 @@ export const toFilePropertiesSummary = data => {
     },
     { title: 'Data Type:', summary: pickData(data, 'data_type') },
     { title: 'File Format:', summary: pickData(data, 'file_format') },
-    { title: 'Size:', summary: pickData(data, 'size', d => formatToGB(data.size)) },
+    { title: 'Size:', summary: pickData(data, 'size', size => formatToGB(size)) },
   ];
 };
