@@ -185,7 +185,7 @@ export const checkUserFilePermission = api => async ({ fileId }) => {
   const userDetails = await getGen3User(api);
   const approvedAcls = Object.keys(userDetails.projects);
 
-  graphql(api)({
+  return graphql(api)({
     query: `query ($sqon: JSON) {
       file {
         aggregations(filters: $sqon) {

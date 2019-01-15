@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose } from 'recompose';
+import { compose, lifecycle, withState } from 'recompose';
 import _ from 'lodash';
 import styled from 'react-emotion';
 
@@ -270,59 +270,81 @@ const Container = styled(Column)`
   align-items: center;
 `;
 
-const FileEntity = ({ api, fileId }) => {
-  return (
-    <ArrangerDataProvider
-      api={api}
-      query={fileQuery}
-      sqon={buildSqonForIds([fileId])}
-      transform={data => _.get(data, 'data.file')}
-    >
-      {file => {
-        if (file.isLoading) {
-          return <div>Loading</div>;
-        } else {
-          const hasFilePermission = checkUserFilePermission(api)({ fileId });
-          console.log('file permission', hasFilePermission);
-          const data = _.get(file, 'data.hits.edges[0].node');
-          const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
+const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
+  <ArrangerDataProvider
+    api={api}
+    query={fileQuery}
+    sqon={buildSqonForIds([fileId])}
+    transform={data => _.get(data, 'data.file')}
+  >
+    {file => {
+      if (file.isLoading || isPageLoading) {
+        return <div>Loading</div>;
+      } else {
+        const data = _.get(file, 'data.hits.edges[0].node');
+        const acl = (_.get(file, 'data.aggregations.acl.buckets') || []).map(({ key }) => key);
 
           // split file properties data into two arrays for two tables
           const fileProperties = toFilePropertiesSummary(data);
           const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(6)];
           const fileType = data.file_format;
 
-          return (
-            <Container>
-              <EntityTitleBar>
-                <EntityTitle
-                  icon="file"
-                  title={fileId}
-                  tags={file.isLoading ? [] : getTags(data)}
+        return (
+          <Container>
+            <EntityTitleBar>
+              <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
+            </EntityTitleBar>
+            <EntityActionBar>
+              <CavaticaAnalyse fileId={fileId} />
+              <Download
+                onSuccess={url => {
+                  trackUserInteraction({
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                    action: 'Download File',
+                    label: url,
+                  });
+                }}
+                onError={err => {
+                  trackUserInteraction({
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                    action: 'Download File FAILED',
+                    label: JSON.stringify(err, null, 2),
+                  });
+                }}
+                kfId={data.kf_id}
+                acl={acl}
+              />
+                              <ShareButton link={window.location.href} />
+
+            </EntityActionBar>
+            <EntityContent>
+              <EntityContentSection title="File Properties">
+                <Row style={{ width: '100%' }}>
+                  <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
+                    <SummaryTable rows={table1} />
+                  </Column>
+                  <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
+                    <SummaryTable rows={table2} />
+                  </Column>
+                </Row>
+              </EntityContentSection>
+              <EntityContentDivider />
+              <EntityContentSection title="Associated Participants/Biospecimens">
+                <BaseDataTable
+                  loading={file.isLoading}
+                  data={toParticpantBiospecimenData(data)}
+                  columns={particpantBiospecimenColumns}
+                  downloadName="participants_biospecimens"
                 />
-              </EntityTitleBar>
-              <EntityActionBar>
-                <CavaticaAnalyse fileId={fileId} />
-                <Download
-                  onSuccess={url => {
-                    trackUserInteraction({
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                      action: 'Download File',
-                      label: url,
-                    });
-                  }}
-                  onError={err => {
-                    trackUserInteraction({
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                      action: 'Download File FAILED',
-                      label: JSON.stringify(err, null, 2),
-                    });
-                  }}
-                  kfId={data.kf_id}
-                  acl={acl}
+              </EntityContentSection>
+              <EntityContentDivider />
+              <EntityContentSection title="Associated Experimental Strategies">
+                <BaseDataTable
+                  loading={file.isLoading}
+                  data={toExperimentalStrategiesData(data)}
+                  columns={experimentalStrategiesColumns}
+                  downloadName="experimental_strategies"
                 />
-                <ShareButton link={window.location.href} />
-              </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
                   <Row style={{ width: '100%' }}>
@@ -377,6 +399,18 @@ const FileEntity = ({ api, fileId }) => {
   );
 };
 
-const enhance = compose(withApi);
+const enhance = compose(
+  withApi,
+  withState('isPageLoading', 'setPageLoading', true),
+  withState('hasFilePermission', 'setUserFilePermission', 'aa'),
+  lifecycle({
+    async componentDidMount() {
+      const { api, fileId, setPageLoading, setUserFilePermission } = this.props;
+      const hasFilePermission = await checkUserFilePermission(api)({ fileId });
+      setUserFilePermission(hasFilePermission);
+      setPageLoading(false);
+    },
+  }),
+);
 
 export default enhance(FileEntity);
