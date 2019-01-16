@@ -191,3 +191,45 @@ export const TableSpinner = ({ props, style = {} }) => (
     {...props}
   />
 );
+
+
+
+
+import { compose } from 'recompose';
+import { Trans } from 'react-i18next';
+import { TealActionButton } from 'uikit/Button';
+
+import DownloadIcon from 'icons/DownloadIcon';
+
+const StyledActionButton = styled(TealActionButton)`
+  justify-content: flex-start;
+`;
+
+export const DownloadButton = compose(withTheme)(
+  ({
+     onClick,
+     theme,
+     content = () => <Trans>Download</Trans>,
+     buttonRef = React.createRef(),
+     ...rest
+   }) => {
+    return (
+      <StyledActionButton
+        m={'3px'}
+        onClick={onClick}
+        innerRef={ref => {
+          buttonRef.current = ref;
+        }}
+        {...rest}
+      >
+        <DownloadIcon
+          className={css`
+            margin-right: 9px;
+          `}
+        />
+        <span css={theme.uppercase}>{content()}</span>
+      </StyledActionButton>
+    );
+  },
+);
+
