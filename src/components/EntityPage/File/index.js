@@ -41,6 +41,7 @@ import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
 import ShareButton from 'uikit/ShareButton';
 
+// file types
 const FILE_TYPE_BAM = 'bam';
 const FILE_TYPE_CRAM = 'cram';
 
