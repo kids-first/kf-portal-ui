@@ -23,11 +23,12 @@ const BaseDataTable = ({
   setPageSize,
   pageIndex,
   setPageIndex,
+  customHeaderContent = null,
   header = true,
 }) => (
   <Fragment>
     {header ? (
-      <TableToolbar pageSize={pageSize} page={pageIndex} total={data.length}>
+      <TableToolbar pageSize={pageSize} page={pageIndex} total={data.length} customHeaderContent>
         <ColumnFilter
           onChange={x => x}
           columns={columns}

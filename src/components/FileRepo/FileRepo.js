@@ -6,6 +6,10 @@ import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
+import Tooltip from 'uikit/Tooltip';
+import CavaticaAnalyzeButton from './CavaticaAnalyzeButton';
+import DownloadButton from './DownloadButton';
+
 import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
@@ -49,6 +53,27 @@ const customTableTypes = {
   ),
 };
 
+const generateHeaderContent = (props, analyzedButtonDisabled, downloadButtonDisabled) => {
+  const analyzeButton = (<Tooltip
+      position="top"
+      hideTitle
+      html={<Row p={'10px'}>{analyzedButtonDisabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
+    >
+      <CavaticaAnalyzeButton disabled={analyzedButtonDisabled} {...props} />
+    </Tooltip>);
+
+  let downloadButton = <DownloadButton disabled={downloadButtonDisabled} {...props} />
+  if (downloadButtonDisabled) {
+    downloadButton = (<Tooltip
+        position="top"
+        hideTitle
+        html={<Row p={'10px'}>Please select files in the table for this action.</Row>}
+    >{downloadButton}</Tooltip>);
+  }
+
+  return (<Row right>{analyzeButton}{downloadButton}</Row>);
+}
+
 const FileRepo = compose(
   injectState,
   withTheme,
@@ -77,7 +102,7 @@ const FileRepo = compose(
                   `Unable to connect to the file repo, please try again later`
                 ) : (
                   <TableSpinnerWrapper>
-                    <TableSpinner />
+                    <TableSpinner/>
                   </TableSpinnerWrapper>
                 )}
               </div>
@@ -98,7 +123,7 @@ const FileRepo = compose(
                       })
                     : url.sqon;
                   return (
-                    <React.Fragment>
+                    <React.Fragment >
                       <ArrangerContainer>
                         <AggregationSidebar
                           {...{ ...props, ...url, translateSQONValue }}
@@ -128,7 +153,7 @@ const FileRepo = compose(
                                 {...props}
                                 {...url}
                                 render={({ data: stats, loading: disabled }) => (
-                                  <QuerySharingContainer>
+                                  <QuerySharingContainer QuerySharingContainer={('<div>FileRepoStatsQuery</div>')}>
                                     <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
                                     <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
                                   </QuerySharingContainer>
@@ -147,6 +172,7 @@ const FileRepo = compose(
                             <Table
                               {...props}
                               {...url}
+                              customHeaderContent={generateHeaderContent(props, false, false)}
                               customTypes={customTableTypes}
                               showFilterInput={false}
                               InputComponent={props => (
