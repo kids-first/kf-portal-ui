@@ -5,7 +5,7 @@ import Table from './Table';
 import TableToolbar from './TableToolbar';
 import ColumnFilter from './ToolbarButtons/ColumnFilter';
 import Export from './ToolbarButtons/Export';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from './utils/columns';
 
 const enhance = compose(

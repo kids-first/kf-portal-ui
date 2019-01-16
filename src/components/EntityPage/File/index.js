@@ -283,10 +283,10 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
       } else {
         const data = _.get(file, 'data.hits.edges[0].node');
 
-          // split file properties data into two arrays for two tables
-          const fileProperties = toFilePropertiesSummary(data);
-          const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(6)];
-          const fileType = data.file_format;
+        // split file properties data into two arrays for two tables
+        const fileProperties = toFilePropertiesSummary(data);
+        const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(6)];
+        const fileType = data.file_format;
 
         return (
           <Container>
@@ -313,9 +313,9 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
                 kfId={data.kf_id}
                 disabled={!hasFilePermission}
               />
-                              <ShareButton link={window.location.href} />
-
+              <ShareButton link={window.location.href} />
             </EntityActionBar>
+
             <EntityContent>
               <EntityContentSection title="File Properties">
                 <Row style={{ width: '100%' }}>
@@ -330,6 +330,10 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
               <EntityContentDivider />
               <EntityContentSection title="Associated Participants/Biospecimens">
                 <BaseDataTable
+                  analyticsTracking={{
+                    title: 'Associated Participants/Biospecimens',
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                  }}
                   loading={file.isLoading}
                   data={toParticpantBiospecimenData(data)}
                   columns={particpantBiospecimenColumns}
@@ -339,64 +343,31 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
               <EntityContentDivider />
               <EntityContentSection title="Associated Experimental Strategies">
                 <BaseDataTable
+                  analyticsTracking={{
+                    title: 'Associated Experimental Strategies',
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                  }}
                   loading={file.isLoading}
                   data={toExperimentalStrategiesData(data)}
                   columns={experimentalStrategiesColumns}
                   downloadName="experimental_strategies"
                 />
-              <EntityContent>
-                <EntityContentSection title="File Properties">
-                  <Row style={{ width: '100%' }}>
-                    <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
-                      <SummaryTable rows={table1} />
-                    </Column>
-                    <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
-                      <SummaryTable rows={table2} />
-                    </Column>
-                  </Row>
-                </EntityContentSection>
-                <EntityContentDivider />
-                <EntityContentSection title="Associated Participants/Biospecimens">
-                  <BaseDataTable
-                    analyticsTracking={{
-                      title: 'Associated Participants/Biospecimens',
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                    }}
-                    loading={file.isLoading}
-                    data={toParticpantBiospecimenData(data)}
-                    columns={particpantBiospecimenColumns}
-                    downloadName="participants_biospecimens"
-                  />
-                </EntityContentSection>
-                <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies">
-                  <BaseDataTable
-                    analyticsTracking={{
-                      title: 'Associated Experimental Strategies',
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                    }}
-                    loading={file.isLoading}
-                    data={toExperimentalStrategiesData(data)}
-                    columns={experimentalStrategiesColumns}
-                    downloadName="experimental_strategies"
-                  />
-                </EntityContentSection>
-                {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
-                  <React.Fragment>
-                    <EntityContentDivider />
-                    <EntityContentSection title="Sequencing Read Properties">
-                      <InfoBoxRow data={toSequencingReadProperties(data)} />
-                    </EntityContentSection>
-                  </React.Fragment>
-                ) : null}
-              </EntityContent>
-            </Container>
-          );
-        }
-      }}
-    </ArrangerDataProvider>
-  );
-};
+              </EntityContentSection>
+              {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
+                <React.Fragment>
+                  <EntityContentDivider />
+                  <EntityContentSection title="Sequencing Read Properties">
+                    <InfoBoxRow data={toSequencingReadProperties(data)} />
+                  </EntityContentSection>
+                </React.Fragment>
+              ) : null}
+            </EntityContent>
+          </Container>
+        );
+      }
+    }}
+  </ArrangerDataProvider>
+);
 
 const enhance = compose(
   withApi,

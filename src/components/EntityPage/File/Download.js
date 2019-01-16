@@ -7,7 +7,6 @@ import { withTheme } from 'emotion-theming';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import DownloadButton from 'uikit/DownloadButton';
 import ExternalLink from 'uikit/ExternalLink';
-import Row from 'uikit/Row';
 
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
 
