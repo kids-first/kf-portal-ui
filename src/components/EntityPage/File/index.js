@@ -39,6 +39,7 @@ import { toSequencingReadProperties } from './sequencingProperties';
 
 import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
+import ShareButton from 'uikit/ShareButton';
 
 const FILE_TYPE_BAM = 'bam';
 const FILE_TYPE_CRAM = 'cram';
@@ -323,6 +324,7 @@ const FileEntity = ({ api, fileId }) => {
                   kfId={data.kf_id}
                   acl={acl}
                 />
+                <ShareButton link={window.location.href} />
               </EntityActionBar>
               <EntityContent>
                 <EntityContentSection title="File Properties">
