@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import InfoBox from '../InfoBox';
 import { Flex } from 'uikit/Core';
-import { mq } from '../styles';
+import { mq } from 'uikit/BreakpointHelper';
 
 const InfoRow = styled(Flex)`
   flex-direction: column;
