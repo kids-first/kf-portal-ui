@@ -203,6 +203,12 @@ import DownloadIcon from 'icons/DownloadIcon';
 
 const StyledActionButton = styled(TealActionButton)`
   justify-content: flex-start;
+  color: ${({ theme, disabled }) => (disabled ? theme.white : 'auto')};
+  background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.lightBlue)};
+  width: 100%;
+  &:hover {
+    background-color: ${({ theme, disabled }) => disabled ? theme.greyScale8 : theme.tertiary};
+  }
 `;
 
 export const DownloadButton = compose(withTheme)(
