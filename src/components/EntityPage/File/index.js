@@ -291,7 +291,7 @@ const FileEntity = ({ api, fileId }) => {
 
           // split file properties data into two arrays for two tables
           const fileProperties = toFilePropertiesSummary(data);
-          const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(5)];
+          const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(6)];
           const fileType = data.file_format;
 
           return (
