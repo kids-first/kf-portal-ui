@@ -347,6 +347,7 @@ export default styled('div')`
       border-bottom: none;
       padding: 10px 10px;
       background-color: ${({ theme }) => theme.tertiaryBackground};
+      z-index: 0;
     }
 
     .ReactTable .rt-td,
