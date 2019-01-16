@@ -1,52 +1,48 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
+import Row from 'uikit/Row';
 
-const Table = styled('table')`
-  border: 1px solid ${({ theme }) => theme.greyScale5};
-  width: 100%;
-  border-collapse: collapse;
+const SummaryTableWrapper = styled('div')``;
+const SummaryRow = styled(Row)`
+  background-color: ${({ index, theme }) => (index % 2 === 0 ? theme.backgroundGrey : '#fff')}
+  justify-content: space-between;
 `;
 
-const TableRow = styled('tr')`
-  background-color: ${({ index, theme }) => (index % 2 === 0 ? theme.backgroundGrey : '#fff')};
-`;
-
-const cellBase = props => css`
+const cell = props => css`
   padding: 7px 12px;
   font-size: 13px;
   text-align: left;
-  vertical-align: top;
 `;
 
-const TableCell = styled('td')`
-  ${cellBase};
+const SummaryContent = styled('div')`
+  ${cell};
   color: ${({ theme }) => theme.greyScale1};
   font-family: ${({ theme }) => theme.fonts.details};
-  width: 99%;
+  margin-right: 40px;
 `;
 
-const TableTitle = styled('td')`
-  ${cellBase};
-  white-space: nowrap;
+const SummaryTitle = styled('div')`
+  ${cell};
   color: ${({ theme }) => theme.secondary};
   font-weight: 600;
   font-family: ${({ theme }) => theme.fonts.default};
   padding-right: 47px;
+  max-width: 150px;
 `;
 
-const SummaryTable = ({ rows }) => (
-  <Table>
-    <tbody>
+const SummaryTable = ({ rows }) => {
+  return (
+    <SummaryTableWrapper>
       {rows.map((row, i) => (
-        <TableRow index={i} key={i}>
-          <TableTitle>{row.title}</TableTitle>
-          <TableCell>{row.summary}</TableCell>
-        </TableRow>
+        <SummaryRow index={i} key={i}>
+          <SummaryTitle>{row.title}</SummaryTitle>
+          <SummaryContent>{row.summary}</SummaryContent>
+        </SummaryRow>
       ))}
-    </tbody>
-  </Table>
-);
+    </SummaryTableWrapper>
+  );
+};
 
 SummaryTable.propTypes = {
   rows: PropTypes.arrayOf(
