@@ -123,7 +123,7 @@ export const LargeTealActionButton = styled(TealActionButton)`
   border-radius: 18px;
 `;
 
-export const DisabledButton = ({ theme }) => css`
+export const disabledButtonStyles = ({ theme }) => css`
   background-color: ${theme.backgroundGrey};
   color: ${theme.borderGrey};
   &:hover:disabled {
