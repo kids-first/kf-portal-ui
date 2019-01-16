@@ -5,11 +5,11 @@ import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TealActionButton } from 'uikit/Button';
-import { DisabledButton } from './Button';
+import { disabledButtonStyles } from './Button';
 
 const StyledActionButton = styled(TealActionButton)`
   justify-content: flex-start;
-  ${({ disabled }) => (disabled ? DisabledButton : null)}
+  ${({ disabled }) => (disabled ? disabledButtonStyles : null)}
 `;
 
 const DownloadButton = compose(withTheme)(

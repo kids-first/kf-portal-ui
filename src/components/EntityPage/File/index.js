@@ -281,7 +281,6 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
       if (file.isLoading || isPageLoading) {
         return <div>Loading</div>;
       } else {
-        console.log('file', hasFilePermission);
         const data = _.get(file, 'data.hits.edges[0].node');
 
           // split file properties data into two arrays for two tables
@@ -402,7 +401,7 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
 const enhance = compose(
   withApi,
   withState('isPageLoading', 'setPageLoading', true),
-  withState('hasFilePermission', 'setUserFilePermission', 'aa'),
+  withState('hasFilePermission', 'setUserFilePermission', null),
   lifecycle({
     async componentDidMount() {
       const { api, fileId, setPageLoading, setUserFilePermission } = this.props;

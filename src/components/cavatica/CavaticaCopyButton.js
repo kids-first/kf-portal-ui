@@ -8,7 +8,7 @@ import Row from 'uikit/Row';
 import { CAVATICA } from 'common/constants';
 import CavaticaConnectModal from './CavaticaConnectModal';
 import CavaticaCopyModal from './CavaticaCopyModal';
-import { BigWhiteButton, DisabledButton } from 'uikit/Button';
+import { BigWhiteButton, disabledButtonStyles } from 'uikit/Button';
 import CavaticaLogo from 'icons/CavaticaLogo';
 
 const CavaticaButton = styled(BigWhiteButton)`
@@ -26,7 +26,7 @@ const CavaticaButton = styled(BigWhiteButton)`
 
   ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
   ${({ disabled }) =>
-    disabled ? DisabledButton : null}
+    disabled ? disabledButtonStyles : null}
 `;
 
 const ButtonContent = styled(Row)`
