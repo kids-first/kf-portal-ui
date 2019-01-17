@@ -53,12 +53,9 @@ const customTableTypes = {
   ),
 };
 
-const generateHeaderContent = (props) => {
-
-  console.log('***** ');
-  console.log(props);
-
+const generateHeaderContent = (props, sqon) => {
   props.disabled = props.selectedTableRows == 0;
+  props.sqon = sqon;
   const cavaticaButton = (<Tooltip
       position="top"
       hideTitle
@@ -66,13 +63,6 @@ const generateHeaderContent = (props) => {
     >
       <CavaticCopyButton {...props} />
     </Tooltip>);
-
-  /*
-              <FileManifestsDownloadButton {...props} />
-              <BioSpecimentDownloadButton {...props} />
-              <ClinicalDownloadButton {...props} />
-   */
-
 
   let downloadButton = (<DownloadButton {...props} />);
   if (props.disabled) {
@@ -183,7 +173,7 @@ const FileRepo = compose(
                             <Table
                               {...props}
                               {...url}
-                              customHeaderContent={generateHeaderContent(props, state)}
+                              customHeaderContent={generateHeaderContent(props, selectionSQON)}
                               customTypes={customTableTypes}
                               showFilterInput={false}
                               InputComponent={props => (
