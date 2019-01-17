@@ -283,9 +283,6 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
       } else {
         const data = _.get(file, 'data.hits.edges[0].node');
 
-        // split file properties data into two arrays for two tables
-        const fileProperties = toFilePropertiesSummary(data);
-        const [table1, table2] = [fileProperties.slice(0, 6), fileProperties.slice(6)];
         const fileType = data.file_format;
 
         return (
