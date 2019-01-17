@@ -54,7 +54,7 @@ const customTableTypes = {
 };
 
 const generateHeaderContent = (props, sqon) => {
-  props.disabled = props.selectedTableRows == 0;
+  props.disabled = false; //props.selectedTableRows == 0; @NOTE Keep functionality for next iteration of the ticket
   props.sqon = sqon;
   const cavaticaButton = (<Tooltip
       position="top"
