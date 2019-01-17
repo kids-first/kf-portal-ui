@@ -7,7 +7,7 @@ import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
 import Tooltip from 'uikit/Tooltip';
-import CavaticaAnalyzeButton from './CavaticaAnalyzeButton';
+import CavaticCopyButton from 'components/cavatica/CavaticaCopyButton';
 import DownloadButton from './DownloadButton';
 
 import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
@@ -53,25 +53,36 @@ const customTableTypes = {
   ),
 };
 
-const generateHeaderContent = (props, analyzedButtonDisabled, downloadButtonDisabled) => {
-  const analyzeButton = (<Tooltip
+const generateHeaderContent = (props) => {
+
+  console.log('***** ');
+  console.log(props);
+
+  props.disabled = props.selectedTableRows == 0;
+  const cavaticaButton = (<Tooltip
       position="top"
       hideTitle
-      html={<Row p={'10px'}>{analyzedButtonDisabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
+      html={<Row p={'10px'}>{props.disabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
     >
-      <CavaticaAnalyzeButton disabled={analyzedButtonDisabled} {...props} />
+      <CavaticCopyButton {...props} />
     </Tooltip>);
 
-  let downloadButton = <DownloadButton disabled={downloadButtonDisabled} {...props} />
-  if (downloadButtonDisabled) {
+  /*
+              <FileManifestsDownloadButton {...props} />
+              <BioSpecimentDownloadButton {...props} />
+              <ClinicalDownloadButton {...props} />
+   */
+
+
+  let downloadButton = (<DownloadButton {...props} />);
+  if (props.disabled) {
     downloadButton = (<Tooltip
         position="top"
         hideTitle
         html={<Row p={'10px'}>Please select files in the table for this action.</Row>}
     >{downloadButton}</Tooltip>);
   }
-
-  return (<Row right>{analyzeButton}{downloadButton}</Row>);
+  return (<Row right>{cavaticaButton}{downloadButton}</Row>);
 }
 
 const FileRepo = compose(
@@ -172,7 +183,7 @@ const FileRepo = compose(
                             <Table
                               {...props}
                               {...url}
-                              customHeaderContent={generateHeaderContent(props, false, false)}
+                              customHeaderContent={generateHeaderContent(props, state)}
                               customTypes={customTableTypes}
                               showFilterInput={false}
                               InputComponent={props => (
