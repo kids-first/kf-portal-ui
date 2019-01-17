@@ -12,22 +12,24 @@ import { BigWhiteButton } from 'uikit/Button';
 import cavaticaLogo from 'assets/logomark-cavatica-mono-white.svg';
 
 const CavaticaButton = styled(BigWhiteButton)`
-  background: ${({ theme }) => theme.primaryLight};
+  background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.primary)};
   width: 100%;
   &:hover {
-    background: ${({ theme }) => theme.primary};
+    background-color: ${({ theme, disabled }) => disabled ? theme.greyScale8 : theme.primaryLight};
   }
+  opacity: 100;
+  margin-top: 3px;
 `;
 
 const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
   color: ${({ theme }) => theme.white};
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.2px;
-  padding: 5px 18px 5px 5px;
+  padding: 3px;
   text-transform: uppercase;
-  font-weight: bold;
+  padding-right: 6px;
 `;
 
 const CavaticaLogo = styled('img')`
@@ -58,14 +60,14 @@ const showCopyModal = ({ effects, props }) => {
 };
 
 const CavaticaCopyButton = compose(injectState, withTheme)(
-  ({ state, theme, effects, disabled, ...props }) => {
+  ({ state, theme, effects, ...props }) => {
     const connected = state.integrationTokens[CAVATICA];
     const clickAction = connected ? showCopyModal : showConnectModal;
     return (
-      <CavaticaButton disabled={disabled} onClick={() => clickAction({ effects, props })}>
+      <CavaticaButton disabled={props.disabled} onClick={() => clickAction({ effects, props })}>
         <ButtonContent>
           <CavaticaLogo alt="" src={cavaticaLogo} />
-          Copy files to Cavatica
+          analyze in Cavatica
         </ButtonContent>
       </CavaticaButton>
     );
