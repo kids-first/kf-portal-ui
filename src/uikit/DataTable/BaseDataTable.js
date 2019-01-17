@@ -5,7 +5,7 @@ import Table from './Table';
 import TableToolbar from './TableToolbar';
 import ColumnFilter from './ToolbarButtons/ColumnFilter';
 import Export from './ToolbarButtons/Export';
-
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { configureCols } from './utils/columns';
 
 const enhance = compose(
@@ -25,6 +25,7 @@ const BaseDataTable = ({
   setPageIndex,
   downloadName,
   header = true,
+  analyticsTracking,
 }) => (
   <Fragment>
     {header ? (
@@ -33,9 +34,21 @@ const BaseDataTable = ({
           columns={columns}
           onChange={item => {
             const index = columns.findIndex(c => c.index === item.index);
-            setColumns(
-              columns.map((col, i) => (i === index ? { ...col, ...{ show: !item.show } } : col)),
+            const cols = columns.map((col, i) =>
+              i === index ? { ...col, ...{ show: !item.show } } : col,
             );
+            const colActedUpon = cols[index];
+            if (analyticsTracking) {
+              trackUserInteraction({
+                category: analyticsTracking.category,
+                action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
+                  colActedUpon.show ? 'show' : 'hide'
+                }`,
+                label: colActedUpon.Header,
+              });
+            }
+
+            setColumns(cols);
           }}
         />
 

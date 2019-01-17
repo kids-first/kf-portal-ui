@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
-import ExternalLink from 'uikit/ExternalLink';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { Link } from 'react-router-dom';
 import { pickData } from './utils';
 
 export const particpantBiospecimenColumns = [
@@ -22,14 +23,38 @@ export const toParticpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: pickData(p, 'kf_id', d => (
-            <ExternalLink hasExternalIcon={false} href="">
-              {d}
-            </ExternalLink>
+          participant_id: pickData(p, 'kf_id', kfId => (
+            <Link
+              to={''}
+              onClick={e => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.entityPage.file,
+                  action:
+                    TRACKING_EVENTS.actions.click +
+                    `: Associated Participants/Biospecimens: Participant ID`,
+                  label: kfId,
+                });
+              }}
+            >
+              {kfId}
+            </Link>
           )),
           external_id: pickData(p, 'external_id'),
-          study_name: pickData(p, 'study.short_name', d => (
-            <ExternalLink href="">{d}</ExternalLink>
+          study_name: pickData(p, 'study.short_name', studyShortName => (
+            <Link
+              to={''}
+              onClick={e => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.entityPage.file,
+                  action:
+                    TRACKING_EVENTS.actions.click +
+                    `: Associated Participants/Biospecimens: Study Name`,
+                  label: studyShortName,
+                });
+              }}
+            >
+              {studyShortName}
+            </Link>
           )),
           proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
