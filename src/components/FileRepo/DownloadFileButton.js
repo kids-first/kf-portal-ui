@@ -15,6 +15,9 @@ import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { getAppElement } from 'services/globalDomNodes';
+import { DownloadButton } from '../FileRepoSidebar/ui';
+import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
+import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 const getGen3UUIDs = async kfId => {
   const fileData = await getFilesById({ ids: [kfId], fields: ['latest_did'] });
@@ -27,6 +30,43 @@ const downloadFile = async ({ kfId, api }) => {
   if (!fileUUID) throw new Error('Error retrieving File ID for the selected Row.');
   return downloadFileFromGen3({ fileUUID, api });
 };
+
+/*
+const FileManifestsDownloadButton = compose(injectState)(({ effects: { setModal }, ...props }) => (
+  <DownloadButton
+    content={() => <Trans>Manifest</Trans>}
+    onClick={() =>
+      setModal({
+        title: 'Download Manifest',
+        component: <FamilyManifestModal {...props} />,
+      })
+    }
+    {...props}
+  />
+));
+
+const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
+  <ColumnsState
+    projectId={projectId}
+    graphqlField="participant"
+    render={({ state }) => (
+      <DownloadButton
+        content={() => <Trans>BioSpecimen</Trans>}
+        onClick={() => {
+          let downloadConfig = { sqon, columns: state.columns };
+          trackUserInteraction({
+            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+            action: TRACKING_EVENTS.actions.download.report,
+            label: 'Biospecimen',
+          });
+          const downloader = downloadBiospecimen(downloadConfig);
+          return downloader();
+        }}
+        {...props}
+      />
+    )}
+  />
+);*/
 
 const DownloadFileButton = compose(injectState, withTheme, withApi)(
   ({

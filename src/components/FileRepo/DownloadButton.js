@@ -11,10 +11,11 @@ import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 import Row from 'uikit/Row';
 import { DropdownOptionsContainer } from 'uikit/Dropdown';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadData';
+import { clinicalDataParticipants, clinicalDataFamily, downloadBiospecimen } from 'services/downloadData';
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
+import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
@@ -112,7 +113,18 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
   return downloader();
 };
 
-export default compose(withApi, injectState)(props => {
+const biospecimenDownloader = ({ api, sqon, columnState }) => async () => {
+  let downloadConfig = { sqon, columns: columnState.columns };
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+    action: TRACKING_EVENTS.actions.download.report,
+    label: 'Biospecimen',
+  });
+  const downloader = downloadBiospecimen(downloadConfig);
+  return downloader();
+};
+
+export default compose(withApi, injectState)(({ effects: { setModal }, ...props }) => {
   const { api, sqon, projectId } = props;
   return (
     <ColumnsState
@@ -121,6 +133,7 @@ export default compose(withApi, injectState)(props => {
       render={({ state: columnState }) => {
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
+        const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState });
         return (
           <div style={{position: 'relative'}}>
           <Component initialState={{ isDownloading: false }}>
@@ -178,14 +191,27 @@ export default compose(withApi, injectState)(props => {
                             )
                           }
                         />
-
-                        <OptionRow>
+                        <OptionRow
+                          onMouseDown={() => {
+                            setDownloadingState({ isDownloading: true });
+                            biospecimenDownload().then(() => {
+                              setDropdownVisibility(false);
+                              setDownloadingState({ isDownloading: false });
+                            });
+                          }}
+                        >
                           Biospecimen Data
                         </OptionRow>
-                        <OptionRow>
+                        <OptionRow
+                          onMouseDown={() => {
+                            setModal({
+                              title: 'Download Manifest',
+                              component: <FamilyManifestModal {...props} />,
+                            })
+                          }}
+                        >
                           File Manifest
                         </OptionRow>
-
                       </StyledDropdownOptionsContainer>
                     ) : null}
                   </Fragment>
