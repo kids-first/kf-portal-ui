@@ -18,14 +18,7 @@ export const toFilePropertiesSummary = data => {
       title: 'Study:',
       summary: (
         <Link
-          to={
-            `/search/file?sqon=` +
-            encodeURIComponent(
-              `{"op":"and","content":[{"op":"in","content":{"field":"participants.study.short_name","value":["${
-                study.short_name
-              }"]}}]}`,
-            )
-          }
+          to={''}
           onClick={e => {
             trackUserInteraction({
               category: TRACKING_EVENTS.categories.entityPage.file,

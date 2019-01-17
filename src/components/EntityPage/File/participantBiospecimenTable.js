@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-// import ExternalLink from 'uikit/ExternalLink';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { Link } from 'react-router-dom';
 import { pickData } from './utils';
@@ -24,55 +23,39 @@ export const toParticpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: (
+          participant_id: pickData(p, 'kf_id', kfId => (
             <Link
-              to={
-                `/search/file?sqon=` +
-                encodeURIComponent(
-                  `{"op":"and","content":[{"op":"in","content":{"field":"participants.kf_id","value":["${pickData(
-                    p,
-                    'kf_id',
-                  )}"]}}]}`,
-                )
-              }
+              to={''}
               onClick={e => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
                   action:
                     TRACKING_EVENTS.actions.click +
                     `: Associated Participants/Biospecimens: Participant ID`,
-                  label: pickData(p, 'kf_id'),
+                  label: kfId,
                 });
               }}
             >
-              {pickData(p, 'kf_id')}
+              {kfId}
             </Link>
-          ),
+          )),
           external_id: pickData(p, 'external_id'),
-          study_name: pickData(p, 'study.short_name', d => (
+          study_name: pickData(p, 'study.short_name', studyShortName => (
             <Link
-              to={
-                `/search/file?sqon=` +
-                encodeURIComponent(
-                  `{"op":"and","content":[{"op":"in","content":{"field":"participants.study.short_name","value":["${pickData(
-                    p,
-                    'study.short_name',
-                  )}"]}}]}`,
-                )
-              }
+              to={''}
               onClick={e => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
                   action:
                     TRACKING_EVENTS.actions.click +
                     `: Associated Participants/Biospecimens: Study Name`,
-                  label: pickData(p, 'study.short_name'),
+                  label: studyShortName,
                 });
               }}
             >
-              {d}
+              {studyShortName}
             </Link>
-          ),
+          )),
           proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
           analyte_type: pickData(biospecimen, 'analyte_type'),
