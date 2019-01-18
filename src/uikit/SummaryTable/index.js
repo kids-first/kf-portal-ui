@@ -1,23 +1,24 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Row from 'uikit/Row';
 import { mq } from 'uikit/BreakpointHelper';
 import Column from '../Column';
 
 const SummaryTableWrapper = styled('div')`
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
   border: 1px solid ${({ theme }) => theme.greyScale5};
 
   > div {
     border: none;
-    margin-bottom: 1px;
+    margin-bottom: 5px;
   }
 
   ${mq[1]} {
-    display: flex;
     flex-direction: row;
     border: none;
 
@@ -45,6 +46,8 @@ const cell = props => css`
   padding: 7px 12px;
   font-size: 13px;
   text-align: left;
+  flex: 0 1 50%;
+  min-width: 50%;
 `;
 
 const SummaryTitle = styled('div')`
@@ -53,12 +56,16 @@ const SummaryTitle = styled('div')`
   font-weight: 600;
   font-family: ${({ theme }) => theme.fonts.default};
   padding-right: 0;
+  min-width: 200px;
 `;
 
 const SummaryContent = styled('div')`
   ${cell};
   color: ${({ theme }) => theme.greyScale1};
   font-family: ${({ theme }) => theme.fonts.details};
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 `;
 
 const SummaryTable = ({ rows, maxRows = 6 }) => {
@@ -90,8 +97,3 @@ SummaryTable.propTypes = {
 };
 
 export default SummaryTable;
-
-/**
- *  
-              
- */
