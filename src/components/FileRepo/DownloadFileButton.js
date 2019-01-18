@@ -28,42 +28,6 @@ const downloadFile = async ({ kfId, api }) => {
   return downloadFileFromGen3({ fileUUID, api });
 };
 
-const FileManifestsDownloadButton = compose(injectState)(({ effects: { setModal }, ...props }) => (
-  <DownloadButton
-    content={() => <Trans>Manifest</Trans>}
-    onClick={() =>
-      setModal({
-        title: 'Download Manifest',
-        component: <FamilyManifestModal {...props} />,
-      })
-    }
-    {...props}
-  />
-));
-
-const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
-  <ColumnsState
-    projectId={projectId}
-    graphqlField="participant"
-    render={({ state }) => (
-      <DownloadButton
-        content={() => <Trans>BioSpecimen</Trans>}
-        onClick={() => {
-          let downloadConfig = { sqon, columns: state.columns };
-          trackUserInteraction({
-            category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-            action: TRACKING_EVENTS.actions.download.report,
-            label: 'Biospecimen',
-          });
-          const downloader = downloadBiospecimen(downloadConfig);
-          return downloader();
-        }}
-        {...props}
-      />
-    )}
-  />
-);
-
 const DownloadFileButton = compose(injectState, withTheme, withApi)(
   ({
     kfId,
