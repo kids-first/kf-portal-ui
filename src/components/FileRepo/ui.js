@@ -17,7 +17,6 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
 
-
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
 `;

@@ -103,7 +103,7 @@ const FileRepo = compose(
                   `Unable to connect to the file repo, please try again later`
                 ) : (
                   <TableSpinnerWrapper>
-                    <TableSpinner/>
+                    <TableSpinner />
                   </TableSpinnerWrapper>
                 )}
               </div>
@@ -124,7 +124,7 @@ const FileRepo = compose(
                       })
                     : url.sqon;
                   return (
-                    <React.Fragment >
+                    <React.Fragment>
                       <ArrangerContainer>
                         <AggregationSidebar
                           {...{ ...props, ...url, translateSQONValue }}
