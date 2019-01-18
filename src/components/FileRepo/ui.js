@@ -2,6 +2,8 @@ import * as React from 'react';
 import Component from 'react-component-component';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
+import { compose } from 'recompose';
+import { Trans } from 'react-i18next';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
@@ -10,8 +12,11 @@ import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
+import { TealActionButton } from 'uikit/Button';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
+import DownloadIcon from 'icons/DownloadIcon';
+
 
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
@@ -191,15 +196,6 @@ export const TableSpinner = ({ props, style = {} }) => (
     {...props}
   />
 );
-
-
-
-
-import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
-import { TealActionButton } from 'uikit/Button';
-
-import DownloadIcon from 'icons/DownloadIcon';
 
 const StyledActionButton = styled(TealActionButton)`
   justify-content: flex-start;
