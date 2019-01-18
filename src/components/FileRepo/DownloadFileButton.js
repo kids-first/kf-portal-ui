@@ -15,9 +15,6 @@ import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { getAppElement } from 'services/globalDomNodes';
-import { DownloadButton } from '../FileRepoSidebar/ui';
-import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
-import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 const getGen3UUIDs = async kfId => {
   const fileData = await getFilesById({ ids: [kfId], fields: ['latest_did'] });
@@ -31,7 +28,6 @@ const downloadFile = async ({ kfId, api }) => {
   return downloadFileFromGen3({ fileUUID, api });
 };
 
-/*
 const FileManifestsDownloadButton = compose(injectState)(({ effects: { setModal }, ...props }) => (
   <DownloadButton
     content={() => <Trans>Manifest</Trans>}
@@ -66,7 +62,7 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
       />
     )}
   />
-);*/
+);
 
 const DownloadFileButton = compose(injectState, withTheme, withApi)(
   ({
