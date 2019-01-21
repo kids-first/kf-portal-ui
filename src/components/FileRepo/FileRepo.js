@@ -53,27 +53,25 @@ const customTableTypes = {
   ),
 };
 
-const generateHeaderContent = (props, sqon) => {
-  props.disabled = false; //props.selectedTableRows == 0; @NOTE Keep functionality for next iteration of the ticket
-  props.sqon = sqon;
-  const cavaticaButton = (<Tooltip
+const TableHeaderContent = (props, sqon, disabled) => { return (
+  <Row right>
+    <Tooltip
       position="top"
       hideTitle
       html={<Row p={'10px'}>{props.disabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
     >
       <CavaticaCopyButton {...props} />
-    </Tooltip>);
-
-  let downloadButton = (<DownloadButton {...props} />);
-  if (props.disabled) {
-    downloadButton = (<Tooltip
-        position="top"
-        hideTitle
-        html={<Row p={'10px'}>Please select files in the table for this action.</Row>}
-    >{downloadButton}</Tooltip>);
-  }
-  return (<Row right>{cavaticaButton}{downloadButton}</Row>);
-}
+    </Tooltip>
+    {disabled ? (<Tooltip
+      position="top"
+      hideTitle
+      html={<Row>Please select files in the table for this action.</Row>}
+      >
+        <DownloadButton {...props} />
+      </Tooltip>)
+      : <DownloadButton {...props} />}
+  </Row>
+)}
 
 const FileRepo = compose(
   injectState,
@@ -173,7 +171,7 @@ const FileRepo = compose(
                             <Table
                               {...props}
                               {...url}
-                              customHeaderContent={generateHeaderContent(props, selectionSQON)}
+                              customHeaderContent={<TableHeaderContent {...props} sqon={selectionSQON} disabled={false} />}
                               customTypes={customTableTypes}
                               showFilterInput={false}
                               InputComponent={props => (
