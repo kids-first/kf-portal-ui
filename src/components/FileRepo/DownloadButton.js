@@ -16,6 +16,7 @@ import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
+import Tooltip from 'uikit/Tooltip';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;

@@ -154,7 +154,7 @@ const FileRepo = compose(
                                 {...props}
                                 {...url}
                                 render={({ data: stats, loading: disabled }) => (
-                                  <QuerySharingContainer QuerySharingContainer={('<div>FileRepoStatsQuery</div>')}>
+                                  <QuerySharingContainer>
                                     <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
                                     <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
                                   </QuerySharingContainer>
