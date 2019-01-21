@@ -62,7 +62,7 @@ const SummaryContent = styled('div')`
   min-width: 100px;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  padding-left: 45px;
+  padding-left: 10%;
 `;
 
 class SummaryTable extends React.Component {
