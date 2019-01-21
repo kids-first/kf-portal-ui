@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
-import _ from 'lodash';
 import styled, { css } from 'react-emotion';
-
+import _ from 'lodash';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import SummaryTable from 'uikit/SummaryTable';
@@ -315,13 +314,12 @@ const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
 
             <EntityContent>
               <EntityContentSection title="File Properties">
-                <Row style={{ width: '100%' }}>
-                  <Column style={{ flex: 1, paddingRight: 15, border: 1 }}>
-                    <SummaryTable rows={table1} />
-                  </Column>
-                  <Column style={{ flex: 1, paddingLeft: 15, border: 1 }}>
-                    <SummaryTable rows={table2} />
-                  </Column>
+                <Row
+                  className={css`
+                    width: '100%';
+                  `}
+                >
+                  <SummaryTable rows={toFilePropertiesSummary(data)} rowMax={6} />
                 </Row>
               </EntityContentSection>
               <EntityContentDivider />
