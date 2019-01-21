@@ -7,13 +7,12 @@ import Column from 'uikit/Column';
 const Info = styled(Column)`
   align-items: center;
   justify-content: center;
-  border: 1px solid ${({ theme }) => theme.greyScale5};
+  border-top: 1px solid ${({ theme }) => theme.greyScale5};
+  border-left: 1px solid ${({ theme }) => theme.greyScale5};
   font-family: ${({ theme }) => theme.fonts.default};
   padding: 20px;
   flex-basis: 0;
   flex: 1;
-
-  ${({ styles }) => (styles ? styles : null)};
 `;
 
 const Value = styled('div')`
@@ -29,8 +28,8 @@ const Description = styled('div')`
   text-align: center;
 `;
 
-const InfoBox = ({ value, description, styles }) => (
-  <Info styles={styles}>
+const InfoBox = ({ value, description }) => (
+  <Info>
     <Value>{typeof value === 'number' ? value.toLocaleString() : (0.0).toLocaleString()}</Value>
     <Description>{description}</Description>
   </Info>

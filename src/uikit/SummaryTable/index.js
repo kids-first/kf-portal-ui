@@ -1,51 +1,47 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import PropTypes from 'prop-types';
+import { mq } from 'uikit/BreakpointHelper';
+import { Visible } from 'react-grid-system';
+import Tables from './Tables';
 
-const Table = styled('table')`
-  border: 1px solid ${({ theme }) => theme.greyScale5};
+const SummaryTableWrapper = styled('div')`
+  height: 100%;
   width: 100%;
-  border-collapse: collapse;
-`;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${({ theme }) => theme.greyScale5};
 
-const TableRow = styled('tr')`
-  background-color: ${({ index, theme }) => (index % 2 === 0 ? theme.backgroundGrey : '#fff')};
-`;
+  > div {
+    border: none;
+    margin-bottom: 5px;
+  }
 
-const cellBase = props => css`
-  padding: 7px 12px;
-  font-size: 13px;
-  text-align: left;
-  vertical-align: top;
-`;
+  ${mq[1]} {
+    flex-direction: row;
+    border: none;
 
-const TableCell = styled('td')`
-  ${cellBase};
-  color: ${({ theme }) => theme.greyScale1};
-  font-family: ${({ theme }) => theme.fonts.details};
-  width: 99%;
-`;
+    > div {
+      border: 1px solid ${({ theme }) => theme.greyScale5};
+      margin-right: 20px;
+      align-self: flex-start;
+    }
 
-const TableTitle = styled('td')`
-  ${cellBase};
-  white-space: nowrap;
-  color: ${({ theme }) => theme.secondary};
-  font-weight: 600;
-  font-family: ${({ theme }) => theme.fonts.default};
-  padding-right: 47px;
+    > div:last-child {
+      margin-right: 0;
+    }
+  }
 `;
 
 const SummaryTable = ({ rows }) => (
-  <Table>
-    <tbody>
-      {rows.map((row, i) => (
-        <TableRow index={i} key={i}>
-          <TableTitle>{row.title}</TableTitle>
-          <TableCell>{row.summary}</TableCell>
-        </TableRow>
-      ))}
-    </tbody>
-  </Table>
+  <SummaryTableWrapper>
+    <Visible xs sm>
+      <Tables rows={rows} amount={1} />
+    </Visible>
+    <Visible md lg xl>
+      <Tables rows={rows} amount={2} />
+    </Visible>
+  </SummaryTableWrapper>
 );
 
 SummaryTable.propTypes = {
