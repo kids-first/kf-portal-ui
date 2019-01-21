@@ -7,7 +7,7 @@ import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
 import Tooltip from 'uikit/Tooltip';
-import CavaticCopyButton from 'components/cavatica/CavaticaCopyButton';
+import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import DownloadButton from './DownloadButton';
 
 import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
@@ -61,7 +61,7 @@ const generateHeaderContent = (props, sqon) => {
       hideTitle
       html={<Row p={'10px'}>{props.disabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
     >
-      <CavaticCopyButton {...props} />
+      <CavaticaCopyButton {...props} />
     </Tooltip>);
 
   let downloadButton = (<DownloadButton {...props} />);
