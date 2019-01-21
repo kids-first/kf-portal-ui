@@ -11,7 +11,11 @@ import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 import Row from 'uikit/Row';
 import { DropdownOptionsContainer } from 'uikit/Dropdown';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { clinicalDataParticipants, clinicalDataFamily, downloadBiospecimen } from 'services/downloadData';
+import {
+  clinicalDataParticipants,
+  clinicalDataFamily,
+  downloadBiospecimen,
+} from 'services/downloadData';
 import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
@@ -124,7 +128,10 @@ const biospecimenDownloader = ({ api, sqon, columnState }) => async () => {
   return downloader();
 };
 
-export default compose(withApi, injectState)(({ effects: { setModal }, ...props }) => {
+export default compose(
+  withApi,
+  injectState,
+)(({ effects: { setModal }, ...props }) => {
   const { api, sqon, projectId } = props;
   return (
     <ColumnsState
@@ -135,90 +142,95 @@ export default compose(withApi, injectState)(({ effects: { setModal }, ...props 
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState });
         return (
-          <div style={{position: 'relative', marginLeft: '15px'}}>
-          <Component initialState={{ isDownloading: false }}>
-            {({ state: { isDownloading }, setState: setDownloadingState }) => (
-              <DropDownState
-                render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
-                  <Fragment>
-                    <DownloadButton
-                      content={() => <Trans>Download</Trans>}
-                      onBlur={async e => {
-                        if (!isDownloading) {
-                          setDropdownVisibility(false);
-                        }
-                      }}
-                      onClick={() => {
-                        toggleDropdown();
-                      }}
-                      {...props}
-                    />
-                    {isDropdownVisible ? (
-                      <StyledDropdownOptionsContainer hideTip>
-                        <OptionRow
-                          onMouseDown={() => {
-                            setDownloadingState({ isDownloading: true });
-                            participantDownload().then(() => {
-                              setDropdownVisibility(false);
-                              setDownloadingState({ isDownloading: false });
-                            });
-                          }}
-                        >
-                          Clinical Data: Participants only
-                        </OptionRow>
-                        <FamilyDownloadAvailabilityProvider
-                          sqon={sqon}
-                          render={({ available, isLoading }) =>
-                            available ? (
-                              <OptionRow
-                                onMouseDown={() => {
-                                  setDownloadingState({ isDownloading: true });
-                                  participantAndFamilyDownload().then(() => {
-                                    setDropdownVisibility(false);
-                                    setDownloadingState({ isDownloading: false });
-                                  });
-                                }}
-                              >
-                                Clinical Data: Participant & Family Members
-                              </OptionRow>
-                            ) : (
-                              <OptionRow disabled>
-                                Clinical Data: Participant & Family Members
-                                {isLoading ? null : (
-                                  <Tooltip>No file was found for family members</Tooltip>
-                                )}
-                              </OptionRow>
-                            )
+          <div style={{ position: 'relative', marginLeft: '15px' }}>
+            <Component initialState={{ isDownloading: false }}>
+              {({ state: { isDownloading }, setState: setDownloadingState }) => (
+                <DropDownState
+                  render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
+                    <Fragment>
+                      <DownloadButton
+                        content={() => <Trans>Download</Trans>}
+                        onBlur={async e => {
+                          if (!isDownloading) {
+                            setDropdownVisibility(false);
                           }
-                        />
-                        <OptionRow
-                          onMouseDown={() => {
-                            setDownloadingState({ isDownloading: true });
-                            biospecimenDownload().then(() => {
-                              setDropdownVisibility(false);
-                              setDownloadingState({ isDownloading: false });
-                            });
-                          }}
-                        >
-                          Biospecimen Data
-                        </OptionRow>
-                        <OptionRow
-                          onMouseDown={() => {
-                            setModal({
-                              title: 'Download Manifest',
-                              component: <FamilyManifestModal {...props} />,
-                            })
-                          }}
-                        >
-                          File Manifest
-                        </OptionRow>
-                      </StyledDropdownOptionsContainer>
-                    ) : null}
-                  </Fragment>
-                )}
-              />
-            )}
-          </Component>
+                        }}
+                        onClick={() => {
+                          toggleDropdown();
+                        }}
+                        {...props}
+                      />
+                      {isDropdownVisible ? (
+                        <StyledDropdownOptionsContainer hideTip>
+                          <OptionRow
+                            onMouseDown={() => {
+                              setDownloadingState({ isDownloading: true });
+                              participantDownload().then(() => {
+                                setDropdownVisibility(false);
+                                setDownloadingState({ isDownloading: false });
+                              });
+                            }}
+                          >
+                            Clinical Data: Participants only
+                          </OptionRow>
+                          <FamilyDownloadAvailabilityProvider
+                            sqon={sqon}
+                            render={({ available, isLoading }) =>
+                              available ? (
+                                <OptionRow
+                                  onMouseDown={() => {
+                                    setDownloadingState({ isDownloading: true });
+                                    participantAndFamilyDownload().then(() => {
+                                      setDropdownVisibility(false);
+                                      setDownloadingState({ isDownloading: false });
+                                    });
+                                  }}
+                                >
+                                  Clinical Data: Participant & Family Members
+                                </OptionRow>
+                              ) : (
+                                <OptionRow disabled>
+                                  <Tooltip
+                                    html={
+                                      isLoading
+                                        ? 'Calculating...'
+                                        : 'No file was found for family members'
+                                    }
+                                  >
+                                    Clinical Data: Participant & Family Members
+                                  </Tooltip>
+                                </OptionRow>
+                              )
+                            }
+                          />
+                          <OptionRow
+                            onMouseDown={() => {
+                              setDownloadingState({ isDownloading: true });
+                              biospecimenDownload().then(() => {
+                                setDropdownVisibility(false);
+                                setDownloadingState({ isDownloading: false });
+                              });
+                            }}
+                          >
+                            Biospecimen Data
+                          </OptionRow>
+                          <OptionRow
+                            onMouseDown={() => {
+                              setModal({
+                                title: 'Download Manifest',
+                                component: <FamilyManifestModal {...props} />,
+                              });
+                            }}
+                          >
+                            File Manifest
+                          </OptionRow>
+                        </StyledDropdownOptionsContainer>
+                      ) : null}
+                    </Fragment>
+                  )}
+                />
+              )}
+            </Component>
           </div>
         );
       }}
