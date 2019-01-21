@@ -25,15 +25,15 @@ const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
   color: ${({ theme }) => theme.white};
   text-align: center;
-  font-size: 12px;
-  letter-spacing: 0.2px;
+  font-size: 11px;
+  font-weight: 500;
   padding: 3px;
   text-transform: uppercase;
   padding-right: 6px;
 `;
 
 const CavaticaLogo = styled('img')`
-  width: 28px;
+  width: 18px;
   margin-right: 7px;
 `;
 

@@ -204,6 +204,9 @@ const StyledActionButton = styled(TealActionButton)`
   &:hover {
     background-color: ${({ theme, disabled }) => disabled ? theme.greyScale8 : theme.tertiary};
   }
+  padding: 4px 10px 4px 10px;
+  margin-top: 3px;
+  font-size: 11px;
 `;
 
 export const DownloadButton = compose(withTheme)(
@@ -216,7 +219,6 @@ export const DownloadButton = compose(withTheme)(
    }) => {
     return (
       <StyledActionButton
-        m={'3px'}
         onClick={onClick}
         innerRef={ref => {
           buttonRef.current = ref;

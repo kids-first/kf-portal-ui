@@ -21,14 +21,13 @@ import Tooltip from 'uikit/Tooltip';
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
   width: 300px;
-  border-radius: 7px;
-  top: 37px;
+  top: 28px;
   left: 4px;
 `;
 
 const OptionRow = styled(Row)`
-  padding: 10px;
-  font-size: 12px;
+  padding: 5px;
+  font-size: 10px;
   color: ${({ theme, disabled }) => (disabled ? theme.greyScale1 : 'auto')};
   background: ${({ theme, disabled }) => (disabled ? theme.greyScale10 : theme.white)};
   border-top: solid 1px ${({ theme }) => theme.borderGrey};
@@ -136,7 +135,7 @@ export default compose(withApi, injectState)(({ effects: { setModal }, ...props 
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState });
         return (
-          <div style={{position: 'relative'}}>
+          <div style={{position: 'relative', marginLeft: '15px'}}>
           <Component initialState={{ isDownloading: false }}>
             {({ state: { isDownloading }, setState: setDownloadingState }) => (
               <DropDownState
