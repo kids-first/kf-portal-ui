@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 
 import Column from 'uikit/Column';

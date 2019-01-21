@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import _ from 'lodash';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
