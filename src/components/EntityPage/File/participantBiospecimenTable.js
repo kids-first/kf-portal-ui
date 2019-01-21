@@ -1,8 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { Link } from 'react-router-dom';
 import { pickData } from './utils';
+import { kfWebRoot } from 'common/injectGlobals';
+import { ExternalLink } from 'uikit/Core';
 
 export const particpantBiospecimenColumns = [
   { Header: 'Participant ID', accessor: 'participant_id' },
@@ -23,26 +24,11 @@ export const toParticpantBiospecimenData = data =>
       return p.biospecimens.hits.edges.map(bio => {
         const biospecimen = bio.node;
         return {
-          participant_id: pickData(p, 'kf_id', kfId => (
-            <Link
-              to={''}
-              onClick={e => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.entityPage.file,
-                  action:
-                    TRACKING_EVENTS.actions.click +
-                    `: Associated Participants/Biospecimens: Participant ID`,
-                  label: kfId,
-                });
-              }}
-            >
-              {kfId}
-            </Link>
-          )),
+          participant_id: pickData(p, 'kf_id'),
           external_id: pickData(p, 'external_id'),
           study_name: pickData(p, 'study.short_name', studyShortName => (
-            <Link
-              to={''}
+            <ExternalLink
+              href={`${kfWebRoot}/support/studies-and-access`}
               onClick={e => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
@@ -54,7 +40,7 @@ export const toParticpantBiospecimenData = data =>
               }}
             >
               {studyShortName}
-            </Link>
+            </ExternalLink>
           )),
           proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
