@@ -191,10 +191,11 @@ export default compose(
                                 </OptionRow>
                               ) : (
                                 <OptionRow disabled>
-                                  Clinical Data: Participant & Family Members
-                                  {isLoading ? null : (
-                                    <Tooltip>No file was found for family members</Tooltip>
-                                  )}
+                                  <Tooltip
+                                    html={isLoading ? '' : 'No file was found for family members'}
+                                  >
+                                    Clinical Data: Participant & Family Members
+                                  </Tooltip>
                                 </OptionRow>
                               )
                             }
