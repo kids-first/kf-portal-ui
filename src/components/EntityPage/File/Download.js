@@ -1,5 +1,5 @@
-import React from 'react';
-import { compose, withState, lifecycle } from 'recompose';
+import React, { Fragment } from 'react';
+import { compose } from 'recompose';
 import styled from 'react-emotion';
 import urlJoin from 'url-join';
 import { withTheme } from 'emotion-theming';
@@ -7,14 +7,11 @@ import { withTheme } from 'emotion-theming';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import DownloadButton from 'uikit/DownloadButton';
 import ExternalLink from 'uikit/ExternalLink';
-import Row from 'uikit/Row';
 
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
-import ChevronIcon from 'icons/ChevronIcon';
 
 import { kfWebRoot } from 'common/injectGlobals';
 
-import { getUser } from 'services/gen3';
 import { withApi } from 'services/api';
 
 const LockedText = styled('span')`
@@ -32,37 +29,45 @@ const ControlledDownload = styled('div')`
   }
 `;
 
+const StyledDownloadButton = styled(DownloadButton)`
+  height: 27px;
+  padding: 0 13px;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: 600;
+`;
+
 const Download = compose(
   withApi,
   withTheme,
-  withState('loading', 'setLoading', true),
-  withState('projectIds', 'setProjectIds', []),
-  lifecycle({
-    async componentDidMount() {
-      const { api, setProjectIds, setLoading } = this.props;
-      const userDetails = await getUser(api);
-      const userProjectIds = userDetails ? Object.keys(userDetails.projects) : [];
-      setProjectIds(userProjectIds);
-      setLoading(false);
-    },
-  }),
-)(({ kfId, acl, loading, projectIds, theme, ...props }) => {
-  return loading ? (
-    <div>loading</div>
-  ) : acl.some(code => projectIds.includes(code)) ? (
-    <DownloadFileButton kfId={kfId} render={props => <DownloadButton {...props} />} {...props} />
+)(({ kfId, theme, disabled, ...props }) =>
+  disabled ? (
+    <Fragment>
+      <DownloadFileButton
+        kfId={kfId}
+        render={props => <StyledDownloadButton {...props} disabled />}
+        {...props}
+      />
+
+      <ControlledDownload>
+        <ControlledAccessIcon fill="#008199" width={12} height={12} />
+        <LockedText>File is locked.</LockedText>
+        <ExternalLink
+          hasExternalIcon={false}
+          href={urlJoin(kfWebRoot, '/support/studies-and-access/#applying-for-data-access')}
+        >
+          {' '}
+          Apply for access &raquo;
+        </ExternalLink>
+      </ControlledDownload>
+    </Fragment>
   ) : (
-    <ControlledDownload>
-      <ControlledAccessIcon fill="#008199" width={12} height={12} />
-      <LockedText>File is locked. </LockedText>{' '}
-      <ExternalLink
-        hasExternalIcon={false}
-        href={urlJoin(kfWebRoot, '/support/studies-and-access/#applying-for-data-access')}
-      >
-        Apply for access &raquo;
-      </ExternalLink>
-    </ControlledDownload>
-  );
-});
+    <DownloadFileButton
+      kfId={kfId}
+      render={props => <StyledDownloadButton {...props} />}
+      {...props}
+    />
+  ),
+);
 
 export default Download;

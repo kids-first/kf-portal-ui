@@ -5,9 +5,11 @@ import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TealActionButton } from 'uikit/Button';
+import { disabledButtonStyles } from './Button';
 
 const StyledActionButton = styled(TealActionButton)`
   justify-content: flex-start;
+  ${({ disabled }) => (disabled ? disabledButtonStyles : null)}
 `;
 
 const DownloadButton = compose(withTheme)(
@@ -16,6 +18,7 @@ const DownloadButton = compose(withTheme)(
     theme,
     content = () => <Trans>Download</Trans>,
     buttonRef = React.createRef(),
+    disabled,
     ...rest
   }) => {
     return (
@@ -25,9 +28,11 @@ const DownloadButton = compose(withTheme)(
         innerRef={ref => {
           buttonRef.current = ref;
         }}
+        disabled={disabled}
         {...rest}
       >
         <DownloadIcon
+          fill={disabled ? theme.borderGrey : 'white'}
           className={css`
             margin-right: 9px;
           `}
