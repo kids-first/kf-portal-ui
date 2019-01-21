@@ -55,24 +55,34 @@ const customTableTypes = {
 
 const TableHeaderContent = ({ sqon, disabled, ...props }) => {
   return (
-  <Row right>
-    <Tooltip
-      position="top"
-      hideTitle
-      html={<Row p={'10px'}>{disabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
-    >
-      <CavaticaCopyButton sqon={sqon} {...props} />
-    </Tooltip>
-    {disabled ? (<Tooltip
-      position="top"
-      hideTitle
-      html={<Row>Please select files in the table for this action.</Row>}
+    <Row right>
+      <Tooltip
+        position="top"
+        hideTitle
+        html={
+          <Row p={'10px'}>
+            {disabled
+              ? 'Please select files in the table for this action.'
+              : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}
+          </Row>
+        }
       >
+        <CavaticaCopyButton sqon={sqon} {...props} />
+      </Tooltip>
+      {disabled ? (
+        <Tooltip
+          position="top"
+          hideTitle
+          html={<Row>Please select files in the table for this action.</Row>}
+        >
+          <DownloadButton sqon={sqon} {...props} />
+        </Tooltip>
+      ) : (
         <DownloadButton sqon={sqon} {...props} />
-      </Tooltip>)
-      : <DownloadButton sqon={sqon} {...props} />}
-  </Row>
-)};
+      )}
+    </Row>
+  );
+};
 
 const FileRepo = compose(
   injectState,
@@ -172,7 +182,13 @@ const FileRepo = compose(
                             <Table
                               {...props}
                               {...url}
-                              customHeaderContent={<TableHeaderContent {...props} sqon={selectionSQON} disabled={false} />}
+                              customHeaderContent={
+                                <TableHeaderContent
+                                  {...props}
+                                  sqon={selectionSQON}
+                                  disabled={false}
+                                />
+                              }
                               customTypes={customTableTypes}
                               showFilterInput={false}
                               InputComponent={props => (
