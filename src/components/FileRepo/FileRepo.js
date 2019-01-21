@@ -53,25 +53,26 @@ const customTableTypes = {
   ),
 };
 
-const TableHeaderContent = (props, sqon, disabled) => { return (
+const TableHeaderContent = ({ sqon, disabled, ...props }) => {
+  return (
   <Row right>
     <Tooltip
       position="top"
       hideTitle
-      html={<Row p={'10px'}>{props.disabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
+      html={<Row p={'10px'}>{disabled ? 'Please select files in the table for this action.' : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}</Row>}
     >
-      <CavaticaCopyButton {...props} />
+      <CavaticaCopyButton sqon={sqon} {...props} />
     </Tooltip>
     {disabled ? (<Tooltip
       position="top"
       hideTitle
       html={<Row>Please select files in the table for this action.</Row>}
       >
-        <DownloadButton {...props} />
+        <DownloadButton sqon={sqon} {...props} />
       </Tooltip>)
-      : <DownloadButton {...props} />}
+      : <DownloadButton sqon={sqon} {...props} />}
   </Row>
-)}
+)};
 
 const FileRepo = compose(
   injectState,
