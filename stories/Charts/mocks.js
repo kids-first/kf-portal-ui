@@ -17,7 +17,7 @@ export const demographicPiesMock = {
     },
     {
       "id": "hol",
-      "label": "Not Hispanic or Latino",
+      "label": "Hispanic or Latino",
       "value": 25
     },
   ],
