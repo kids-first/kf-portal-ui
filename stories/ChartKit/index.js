@@ -1,2 +1,5 @@
+// @TODO File import issues Commented ou for now
 //export { default } from './HorizontalBar';
-export { default } from './ProgressBar';
+
+// @TODO  File import issues due to analytics code bundled into the ProgressBar component
+//export { default } from './ProgressBar';
