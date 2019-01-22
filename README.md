@@ -50,14 +50,18 @@ Copy `.env.schema` to `.env.local` and configure it with appropriate endpoints.
 
 - ### Component Development
 
-  To facilitate parallel development of independent components, [Storybook](https://github.com/storybooks/storybook) is utilized.
+  To facilitate parallel development of independent components, [Storybook](https://github.com/storybooks/storybook)(a sandboxed environment for development) is utilized.
   To start a local storybook session:
 
-  - run the command `npm run storybook`
+  - Run the command `npm run storybook`
   - A storybook should be available at `localhost:9001`
+  - All stories live under `/stories`, these should only be used for development and demonstrations of components. Imports should only be made from `/src` to `/stories`, never the other way around.
   - ## Setting up environment variables:
-    All environemnt variables that are exposed to Storybook should be prefixed with `"STORYBOOK_"`.
-    Example: the environment variable `REACT_APP_ARRANGER_API` would be `STORYBOOK_ARRANGER_API`
+    - `NODE_PATH=src/` is required for storybook build to allow absolute references in `src` to resolve properly. This also allows stories to import modules from `src` with absolute references, with `src` being the root directory.
+    - All environemnt variables required to run the portal should be exposed to Storybook using the prefix `"STORYBOOK_"`.
+      Example: the environment variable `REACT_APP_ARRANGER_API` would be `STORYBOOK_ARRANGER_API`
+    - Some UI components may require interactions with APIs guarded by [EGO](https://github.com/overture-stack/ego). To enable these components to access these APIs, an ego jwt must be provided in the `Storybook ego login` story, available once a Storybook instance is running.
+    - For an example story, please refer to `/Users/mha/repos/kf-portal-ui/stories/CohortBuilder/index.js`
 
 ### Acknowledgement
 
