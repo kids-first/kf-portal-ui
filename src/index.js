@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import 'index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -9,7 +10,6 @@ import { initAnalyticsTracking } from 'services/analyticsTracking';
 import { init as initUsersnap } from 'services/usersnap';
 import { maintenanceMode } from 'common/injectGlobals';
 import MaintenancePage from './MaintenancePage';
-
 import './i18n';
 
 initAnalyticsTracking();
