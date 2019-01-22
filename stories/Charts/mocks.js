@@ -44,7 +44,7 @@ export const demographicPiesMock = {
     },
     {
       "id": "duoplus",
-      "label": "Duo Plus",
+      "label": "Duo+",
       "value": 100,
     },
     {
