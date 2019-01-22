@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
+// import ProgressBar from '/src/chartkit/components/ProgressBar';
 import ProgressBar from '../../src/chartkit/components/ProgressBar';
 
 const FixedHeightWrapper = ({ children }) => (
