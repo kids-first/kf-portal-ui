@@ -1,4 +1,4 @@
 import './StorybookLogin';
 import './uikit';
-// import './ChartKit';
+import './ChartKit';
 import './CohortBuilder';
