@@ -7,6 +7,7 @@ import Row from 'uikit/Row';
 import ViewLink from 'uikit/ViewLink';
 import styled from 'react-emotion';
 import { H2 } from 'uikit/Headings';
+import Table from './Table';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -45,7 +46,7 @@ const Results = ({ activeView, setActiveView }) => (
         </ViewLink>
       </ViewLinks>
     </ContentBar>
-    <ActiveView>{activeView === SUMMARY ? <Summary /> : <div>Tabele</div>}</ActiveView>
+    <ActiveView>{activeView === SUMMARY ? <Summary /> : <Table />}</ActiveView>
   </React.Fragment>
 );
 
