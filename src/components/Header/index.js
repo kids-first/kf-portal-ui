@@ -63,11 +63,6 @@ const Header = ({
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to={`/cohort-builder`}>
-                      <DatabaseIcon /> <Trans>Explore Data</Trans>
-                    </NavLink>
-                  </li>
-                  <li>
                     <NavLink currentPathName={currentPathName} to={`/search/file`}>
                       <DatabaseIcon /> <Trans>File Repository</Trans>
                     </NavLink>
