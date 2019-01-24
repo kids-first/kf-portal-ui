@@ -4,8 +4,10 @@ import Column from 'uikit/Column';
 import Categories from './Categories';
 import ContentSection from './ContentSection';
 import ContentBar from './ContentBar';
+import Summary from './Summary';
 
 const Container = styled(Column)`
+flex: 1
   flex-direction: column;
   height: 100%;
   width: 100%;
@@ -37,8 +39,8 @@ const CohortBuilder = () => (
         <div>Summary View</div>
         <div>Table View</div>
       </div>
+      <Summary />
     </ContentSection>
-    <CohortResults />
   </Container>
 );
 
