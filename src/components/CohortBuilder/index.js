@@ -6,12 +6,14 @@ import ContentSection from './ContentSection';
 import ContentBar from './ContentBar';
 import Summary from './Summary';
 
-const Container = styled(Column)`
-flex: 1
+const Container = styled('div')`
+  flex: 1;
   flex-direction: column;
+  display: flex;
   height: 100%;
   width: 100%;
   align-items: center;
+  background-color: #f4f5f8;
 `;
 
 const CohortBuilder = () => (
@@ -30,15 +32,17 @@ const CohortBuilder = () => (
       <Categories />
     </ContentSection>
     <ContentSection>
-      <div>
-        <h2>Cohort Results</h2>
-        <div>23232 Participants</div>
-        <div> View 24242,222 Files</div>
-      </div>
-      <div>
-        <div>Summary View</div>
-        <div>Table View</div>
-      </div>
+      <ContentBar>
+        <div>
+          <h2>Cohort Results</h2>
+          <div>23232 Participants</div>
+          <div> View 24242,222 Files</div>
+        </div>
+        <div>
+          <div>Summary View</div>
+          <div>Table View</div>
+        </div>
+      </ContentBar>
       <Summary />
     </ContentSection>
   </Container>
