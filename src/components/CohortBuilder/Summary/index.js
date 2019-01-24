@@ -5,7 +5,6 @@ import { demographicPiesMock } from './pie';
 import Card from 'uikit/Card';
 
 const CardGrid = styled('div')`
-  padding: 0 30px;
   width: 100%;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
