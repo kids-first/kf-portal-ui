@@ -9,8 +9,9 @@ import Row from 'uikit/Row';
 const Container = styled(Row)`
   height: 72px;
   width: 100%;
-  border-left: 1px solid #d4d6dd
+  border-left: 1px solid #d4d6dd;
   border-bottom: 1px solid #d4d6dd;
+  background-color: white;
 `;
 
 const Categories = () => (
