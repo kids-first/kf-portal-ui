@@ -146,4 +146,9 @@ const Header = ({
   );
 };
 
-export default compose(injectState, withTheme, withRouter, withApi)(Header);
+export default compose(
+  injectState,
+  withTheme,
+  withRouter,
+  withApi,
+)(Header);
