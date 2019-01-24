@@ -3,7 +3,7 @@ import styled from 'react-emotion';
 import Categories from './Categories';
 import ContentSection from './ContentSection';
 import ContentBar from './ContentBar';
-import Summary from './Summary';
+import Results from './Results';
 
 const Container = styled('div')`
   flex: 1;
@@ -30,20 +30,8 @@ const CohortBuilder = () => (
       </ContentBar>
       <Categories />
     </ContentSection>
-    <ContentSection>
-      <ContentBar>
-        <div>
-          <h2>Cohort Results</h2>
-          <div>23232 Participants</div>
-          <div> View 24242,222 Files</div>
-        </div>
-        <div>
-          <div>Summary View</div>
-          <div>Table View</div>
-        </div>
-      </ContentBar>
-      <Summary />
-    </ContentSection>
+
+    <Results />
   </Container>
 );
 
