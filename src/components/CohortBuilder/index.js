@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'react-emotion';
-import Column from 'uikit/Column';
 import Categories from './Categories';
 import ContentSection from './ContentSection';
 import ContentBar from './ContentBar';

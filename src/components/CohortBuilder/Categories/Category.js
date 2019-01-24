@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
-import { inherits } from 'util';
 
 const Container = styled(Column)`
   flex: 1;
