@@ -31,6 +31,7 @@ import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { Gen3AuthRedirect } from 'services/gen3';
+import CohortBuilder from 'components/CohortBuilder';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -90,6 +91,19 @@ const App = compose(
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
+        <Route
+          path="/cohort-builder"
+          exact
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              Component: CohortBuilder,
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
         <Route
           path="/search/:index"
           exact
