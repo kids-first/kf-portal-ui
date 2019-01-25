@@ -8,7 +8,7 @@ const Container = styled(Column)`
   justify-content: center;
   align-items: center;
   border-right: 1px solid #d4d6dd;
-  border-top: 1px solid ${({ color }) => (color ? color : 'inherit')};
+  border-top: 4px solid ${({ color }) => (color ? color : 'inherit')};
 `;
 
 const Title = styled('h3')`
@@ -20,7 +20,7 @@ const Title = styled('h3')`
 `;
 
 const Category = ({ title, color }) => (
-  <Container>
+  <Container color={color}>
     <Title> {title}</Title>
   </Container>
 );

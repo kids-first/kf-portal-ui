@@ -17,13 +17,13 @@ const Container = styled(Row)`
 const Categories = () => (
   <Container>
     <Search />
-    <Category title="Quick Filters" color={''} />
-    <Category title="Study" color={''} />
-    <Category title="Demographic" color={''} />
-    <Category title="Clinical" color={''} />
-    <Category title="Biospecimens" color={''} />
-    <Category title="Available Data" color={''} />
-    <Category title="Upload IDs" color={''} />
+    <Category title="Quick Filters" color="#404c9a" />
+    <Category title="Study" color="#dd1f2a" />
+    <Category title="Demographic" color="#e53a95" />
+    <Category title="Clinical" color="#00aceb" />
+    <Category title="Biospecimens" color="#f79122" />
+    <Category title="Available Data" color="#009bba" />
+    <Category title="Upload IDs" color="#edb500" />
   </Container>
 );
 

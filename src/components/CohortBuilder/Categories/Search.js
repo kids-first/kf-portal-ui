@@ -6,7 +6,7 @@ const Container = styled(Column)`
   width: 250px;
   justify-content: center;
   align-items: center;
-  border-top: 2px solid blue;
+  border-top: 4px solid #8f97d1;
   border-right: 1px solid #d4d6dd;
 `;
 
