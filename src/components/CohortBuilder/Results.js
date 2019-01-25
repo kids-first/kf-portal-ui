@@ -8,6 +8,7 @@ import ViewLink from 'uikit/ViewLink';
 import styled from 'react-emotion';
 import { H2 } from 'uikit/Headings';
 import Table from './Table';
+import SummaryIcon from 'icons/AllAppsMenuIcon';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -33,15 +34,17 @@ const Results = ({ activeView, setActiveView }) => (
   <React.Fragment>
     <ContentBar>
       <Left>
-        <Heading>Cohort Results</Heading>
+        <Heading>All data</Heading>
         <div>23232 Participants</div>
         <div> View 24242,222 Files</div>
       </Left>
       <ViewLinks>
         <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
+          <SummaryIcon marginRight={5} />
           Summary View
         </ViewLink>
         <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
+          <SummaryIcon marginRight={5} />
           Table View
         </ViewLink>
       </ViewLinks>
