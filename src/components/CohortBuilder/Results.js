@@ -9,6 +9,7 @@ import styled from 'react-emotion';
 import { H2 } from 'uikit/Headings';
 import Table from './Table';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
+import TableViewIcon from 'icons/TableViewIcon';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -44,7 +45,7 @@ const Results = ({ activeView, setActiveView }) => (
           Summary View
         </ViewLink>
         <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
-          <SummaryIcon marginRight={5} />
+          <TableViewIcon marginRight={5} />
           Table View
         </ViewLink>
       </ViewLinks>
