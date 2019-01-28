@@ -31,13 +31,26 @@ const ActiveView = styled('div')`
   padding: 0 30px;
 `;
 
+const SubHeading = styled('h3')`
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 600)};
+  font-family: ${({ theme }) => theme.default};
+  font-size: 16px;
+  color: ${({ color }) => (color ? color : '#2b388f')};
+
+  padding: 0 3px;
+  margin: 0;
+`;
+
 const Results = ({ activeView, setActiveView }) => (
   <React.Fragment>
     <ContentBar>
       <Left>
         <Heading>All data</Heading>
-        <div>23232 Participants</div>
-        <div> View 24242,222 Files</div>
+        <SubHeading>{Number(1314154).toLocaleString()} Participants</SubHeading>
+        <SubHeading color="#a6278f">
+          {' '}
+          {`View ${Number(24242222).toLocaleString()} Files`}
+        </SubHeading>
       </Left>
       <ViewLinks>
         <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
