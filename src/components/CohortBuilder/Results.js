@@ -12,6 +12,7 @@ import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import FilesIcon from 'icons/FilesIcon';
+import DoubleChevronRightIcon from 'icons/DoubleChevronRightIcon';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -22,10 +23,13 @@ const ViewLinks = styled(Row)`
   }
 `;
 
-const Left = styled(Row)``;
+const Left = styled(Row)`
+  align-items: center;
+`;
 
 const Heading = styled(H2)`
   color: #2b388f;
+  margin-right: 20px;
 `;
 
 const ActiveView = styled('div')`
@@ -38,7 +42,6 @@ const SubHeading = styled('h3')`
   font-family: ${({ theme }) => theme.default};
   font-size: 16px;
   color: ${({ color }) => (color ? color : '#2b388f')};
-
   padding: 0 3px;
   margin: 0;
 `;
@@ -48,13 +51,17 @@ const Results = ({ activeView, setActiveView }) => (
     <ContentBar>
       <Left>
         <Heading>All data</Heading>
-        <SubHeading>
-          <DemographicIcon />
-          {Number(1314154).toLocaleString()} Participants
-        </SubHeading>
-        <SubHeading color="#a6278f">
-          <FilesIcon /> {`View ${Number(24242222).toLocaleString()} Files`}
-        </SubHeading>
+
+        <DemographicIcon />
+        <SubHeading>{Number(1314).toLocaleString()} Participants</SubHeading>
+
+        <FilesIcon />
+        <SubHeading color="#a6278f">{`View ${Number(2422).toLocaleString()} Files`}</SubHeading>
+        <DoubleChevronRightIcon
+          fill="#a6278f"
+          height={7}
+          style={{ position: 'relative', top: '1px', left: '2px' }}
+        />
       </Left>
       <ViewLinks>
         <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
