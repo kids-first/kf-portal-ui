@@ -10,6 +10,7 @@ import { H2 } from 'uikit/Headings';
 import Table from './Table';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
+import DemographicIcon from 'icons/DemographicIcon';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -46,7 +47,10 @@ const Results = ({ activeView, setActiveView }) => (
     <ContentBar>
       <Left>
         <Heading>All data</Heading>
-        <SubHeading>{Number(1314154).toLocaleString()} Participants</SubHeading>
+        <SubHeading>
+          <DemographicIcon />
+          {Number(1314154).toLocaleString()} Participants
+        </SubHeading>
         <SubHeading color="#a6278f">
           {' '}
           {`View ${Number(24242222).toLocaleString()} Files`}
