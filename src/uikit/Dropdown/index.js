@@ -14,6 +14,7 @@ function Dropdown({
   className,
   children,
   align = 'right',
+  showArrow = true,
   ItemWrapperComponent = ItemWrapper,
   ContainerComponent = DropdownContainer,
   OptionsContainerComponent = DropdownOptionsContainer,
@@ -32,7 +33,7 @@ function Dropdown({
           >
             <LabelContainer isOpen={isOpen} onClick={onToggle || toggleMenu}>
               {children}
-              <DropdownArrow isOpen={isOpen} />
+              {showArrow ? <DropdownArrow isOpen={isOpen} /> : null}
             </LabelContainer>
             {!isOpen ? null : (
               <OptionsContainerComponent align={align}>
