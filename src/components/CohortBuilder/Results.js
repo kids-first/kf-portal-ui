@@ -11,6 +11,7 @@ import Table from './Table';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
+import FilesIcon from 'icons/FilesIcon';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -52,8 +53,7 @@ const Results = ({ activeView, setActiveView }) => (
           {Number(1314154).toLocaleString()} Participants
         </SubHeading>
         <SubHeading color="#a6278f">
-          {' '}
-          {`View ${Number(24242222).toLocaleString()} Files`}
+          <FilesIcon /> {`View ${Number(24242222).toLocaleString()} Files`}
         </SubHeading>
       </Left>
       <ViewLinks>
