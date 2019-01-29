@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
+import { compose, withState } from 'recompose';
 import { items } from './mocks';
+import { withDropdownMultiPane, withDropdownState } from '../../../uikit/Dropdown';
 
 const Container = styled(Column)`
   flex: 1;
@@ -55,18 +57,65 @@ const Title = styled('h3')`
   color: ${({ theme }) => theme.filterPurple};
 `;
 
-const Category = ({ title, color }) => (
-  <Dropdown
-    items={items.map((item, i) => (
-      <div>{item.name}</div>
-    ))}
-    ContainerComponent={Container}
-    OptionsContainerComponent={Options}
-    ItemWrapperComponent={ItemWrapper}
-    showArrow={false}
-  >
-    <Title> {title}</Title>
-  </Dropdown>
+const FilterCont = styled('div')`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  cursor: pointer;
+  text-align: left;
+`;
+
+const Filter = ({ onCancel, onBack, onApply }) => (
+  <FilterCont>
+    <button onClick={onCancel}>cancel</button>
+    <button onClick={onBack}>back</button>
+    <button onClick={onApply}>apply</button>
+  </FilterCont>
+);
+
+const Category = ({
+  title,
+  color,
+  toggleDropdown,
+  isDropdownVisible,
+  toggleExpanded,
+  toggleExpandedDropdown,
+  setActiveIndex,
+  activeIndex,
+  setExpanded,
+  showExpanded,
+}) => (
+  <React.Fragment>
+    <Dropdown
+      {...{
+        multiLevel: true,
+        isOpen: isDropdownVisible,
+        onToggle: toggleDropdown,
+        setActiveIndex,
+        activeIndex,
+        setExpanded,
+        showExpanded,
+        showArrow: false,
+        items: items.map((item, i) => <div>{item.name}</div>),
+        expandedItems: items.map((item, i) => (
+          <Filter
+            onCancel={toggleExpandedDropdown}
+            onBack={toggleExpanded}
+            onApply={toggleExpandedDropdown}
+          >
+            Expanded {i}
+          </Filter>
+        )),
+        ContainerComponent: Container,
+        OptionsContainerComponent: Options,
+        ItemWrapperComponent: ItemWrapper,
+      }}
+    >
+      <Title> {title}</Title>
+    </Dropdown>
+  </React.Fragment>
 );
 
 Category.propTypes = {
@@ -74,4 +123,4 @@ Category.propTypes = {
   // /color: PropTypes.string.isRequired,
 };
 
-export default Category;
+export default compose(withDropdownMultiPane)(Category);
