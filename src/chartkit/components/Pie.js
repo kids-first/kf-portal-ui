@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'react-emotion';
 import { ResponsivePie } from '@nivo/pie';
+
+const PieWrapper = styled('div')`
+  height: 100%;
+  display: block;
+  text-align: center;
+`;
+
+const PieTitle = styled('div')`
+  font-size: 14px;
+  margin-left: -14px;
+  font-weight: 600;
+  color: #404c9a;
+  margin-bottom: 5px;
+`;
+
 
 class Pie extends Component {
   constructor(props, defaultProps) {
@@ -10,7 +26,10 @@ class Pie extends Component {
 
   render() {
     return (
-      <ResponsivePie {...this.props} />
+     <PieWrapper style={this.props.style}>
+       {this.props.title ? <PieTitle>{this.props.title}</PieTitle> : null }
+       <ResponsivePie {...this.props} />
+     </PieWrapper>
     );
   }
 }

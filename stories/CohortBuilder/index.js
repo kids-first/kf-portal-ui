@@ -1,10 +1,42 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import CohortBuilder from 'components/CohortBuilder';
+
+import { ThemeProvider } from 'emotion-theming';
+import { AppContainer } from 'react-hot-loader';
+import theme from 'theme/defaultTheme';
+import { initializeApi, ApiContext } from 'services/api';
+import { logoutAll } from 'services/login';
+import { EGO_JWT_KEY } from 'common/constants';
+
+/**
+ * TODO: move this out of this file
+ */
+const EnvironmentContainer = ({ children }) => (
+  <ApiContext.Provider
+    value={initializeApi({
+      onUnauthorized: response => {
+        if (localStorage[EGO_JWT_KEY]) {
+          localStorage.removeItem(EGO_JWT_KEY);
+          logoutAll().then(() => {
+            window.location.reload();
+          });
+        }
+      },
+    })}
+  >
+    <ThemeProvider theme={theme}>
+      <AppContainer>{children}</AppContainer>
+    </ThemeProvider>
+  </ApiContext.Provider>
+);
 
 storiesOf('CohortBuilder', module)
-  .add('Page Layout', () => {
-    return <div>Add the index of the cohort builder here</div>;
-  })
+  .add('Page Layout', () => (
+    <EnvironmentContainer>
+      <CohortBuilder />
+    </EnvironmentContainer>
+  ))
   .add('Menu Bar', () => {
     return <div>Add menu bar component here</div>;
   })

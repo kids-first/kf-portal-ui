@@ -87,53 +87,52 @@ const Header = ({
 
               <AppsMenu />
 
-              {loggedInUser &&
-                canSeeProtectedRoutes && (
-                  <Dropdown
-                    align="left"
-                    isOpen={isDropdownVisible}
-                    onToggle={toggleDropdown}
-                    onOuterClick={() => setDropdownVisibility(false)}
-                    items={[
-                      <DropdownLink
-                        onClick={toggleDropdown}
-                        to={`/user/${loggedInUser.egoId}#aboutMe`}
-                      >
-                        <Trans>My Profile</Trans>
-                      </DropdownLink>,
-                      <DropdownLink
-                        onClick={toggleDropdown}
-                        to={`/user/${loggedInUser.egoId}#settings`}
-                      >
-                        Settings
-                      </DropdownLink>,
-                      <DropdownLink
-                        to={`/dashboard`}
-                        separated
-                        onClick={e => {
-                          e.preventDefault();
-                          toggleDropdown();
-                          uiLogout({
-                            history,
-                            setToken,
-                            setUser,
-                            clearIntegrationTokens,
-                            api,
-                          });
-                        }}
-                      >
-                        <Trans>Logout</Trans>
-                      </DropdownLink>,
-                    ]}
-                    ItemWrapperComponent={props => <Fragment {...props} />}
-                    ContainerComponent={NavbarDropdownWrapper}
-                    OptionsContainerComponent={NavbarDropdownOptionsContainer}
-                    LabelContainer={MenuLabelContainer}
-                  >
-                    <NavigationGravatar email={loggedInUser.email || ''} size={39} />
-                    <DropdownRow>{loggedInUser.firstName}</DropdownRow>
-                  </Dropdown>
-                )}
+              {loggedInUser && canSeeProtectedRoutes && (
+                <Dropdown
+                  align="left"
+                  isOpen={isDropdownVisible}
+                  onToggle={toggleDropdown}
+                  onOuterClick={() => setDropdownVisibility(false)}
+                  items={[
+                    <DropdownLink
+                      onClick={toggleDropdown}
+                      to={`/user/${loggedInUser.egoId}#aboutMe`}
+                    >
+                      <Trans>My Profile</Trans>
+                    </DropdownLink>,
+                    <DropdownLink
+                      onClick={toggleDropdown}
+                      to={`/user/${loggedInUser.egoId}#settings`}
+                    >
+                      Settings
+                    </DropdownLink>,
+                    <DropdownLink
+                      to={`/dashboard`}
+                      separated
+                      onClick={e => {
+                        e.preventDefault();
+                        toggleDropdown();
+                        uiLogout({
+                          history,
+                          setToken,
+                          setUser,
+                          clearIntegrationTokens,
+                          api,
+                        });
+                      }}
+                    >
+                      <Trans>Logout</Trans>
+                    </DropdownLink>,
+                  ]}
+                  ItemWrapperComponent={props => <Fragment {...props} />}
+                  ContainerComponent={NavbarDropdownWrapper}
+                  OptionsContainerComponent={NavbarDropdownOptionsContainer}
+                  LabelContainer={MenuLabelContainer}
+                >
+                  <NavigationGravatar email={loggedInUser.email || ''} size={39} />
+                  <DropdownRow>{loggedInUser.firstName}</DropdownRow>
+                </Dropdown>
+              )}
             </NavBarList>
           </HeaderContent>
         </HeaderContainer>
@@ -142,4 +141,9 @@ const Header = ({
   );
 };
 
-export default compose(injectState, withTheme, withRouter, withApi)(Header);
+export default compose(
+  injectState,
+  withTheme,
+  withRouter,
+  withApi,
+)(Header);
