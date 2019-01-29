@@ -48,7 +48,7 @@ Pie.defaultProps = {
   innerRadius: 0,
   cornerRadius: 0,
   padAngle: 0,
-  borderWidth: 1,
+  borderWidth: 0,
   borderColor: 'inherit:darker(0.5)',
   colorBy: 'id',
   isInteractive: true,
