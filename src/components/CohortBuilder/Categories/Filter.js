@@ -16,6 +16,7 @@ const FilterCont = styled('div')`
   box-shadow: 0 0 5.9px 0.1px #bbbbbb;
   border: 1px solid #e0e1e6;
   z-index: 1;
+  min-width: 315px;
 `;
 
 const Header = styled('div')`

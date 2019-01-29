@@ -8,6 +8,7 @@ const CRow = styled(Row)`
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  min-width: 282px;
 `;
 
 const CategoryRow = ({ active, title }) => (
