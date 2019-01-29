@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import tinygradient from 'tinygradient';
 import { ResponsivePie } from '@nivo/pie';
 
 const PieWrapper = styled('div')`
@@ -25,10 +26,17 @@ class Pie extends Component {
   }
 
   render() {
+    const gradient = tinygradient(...this.props.colors).rgb(this.props.data.length + 1);
+    const colorData = this.props.data.map((d, i) => ({
+      ...d,
+      color: gradient[i].toHexString(),
+      index: i,
+    }));
+
     return (
      <PieWrapper style={this.props.style}>
        {this.props.title ? <PieTitle>{this.props.title}</PieTitle> : null }
-       <ResponsivePie {...this.props} />
+       <ResponsivePie {...this.props} data={colorData} colorBy={data => data.color} />
      </PieWrapper>
     );
   }
@@ -58,9 +66,6 @@ Pie.defaultProps = {
 
 Pie.propTypes = {
   isInteractive: PropTypes.bool,
-  colors: PropTypes.oneOf([
-    'purples', 'blues', 'oranges', 'red_purple'
-  ]),
   onClick: PropTypes.func,
 };
 

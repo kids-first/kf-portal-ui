@@ -93,9 +93,9 @@ export const largeNumberMock = _.map(randomMock, d => ({
 export const demographicPiesMock = {
   ethnicity: [
     {
-      "id": "nhok",
-      "label": "Not Hispanic or Latino",
-      "value": 20
+      "id": "unknown",
+      "label": "Reported Unknown",
+      "value": 100
     },
     {
       "id": "notreported",
@@ -103,14 +103,14 @@ export const demographicPiesMock = {
       "value": 50
     },
     {
-      "id": "unknown",
-      "label": "Reported Unknown",
-      "value": 100
-    },
-    {
       "id": "hol",
       "label": "Hispanic or Latino",
       "value": 25
+    },
+    {
+      "id": "nhok",
+      "label": "Not Hispanic or Latino",
+      "value": 20
     },
   ],
   familyComposition: [
@@ -169,6 +169,21 @@ export const demographicPiesMock = {
   ],
   race: [
     {
+      "id": "morethanone",
+      "label": "More Than One Race",
+      "value": 100,
+    },
+    {
+      "id": "nativeb",
+      "label": "American Indian or Alaska Native ",
+      "value": 50,
+    },
+    {
+      "id": "black",
+      "label": "Black or African American",
+      "value": 50,
+    },
+    {
       "id": "white",
       "label": "White",
       "value": 50,
@@ -197,21 +212,6 @@ export const demographicPiesMock = {
       "id": "notreported",
       "label": "Not Reported",
       "value": 5,
-    },
-    {
-      "id": "nativeb",
-      "label": "American Indian or Alaska Native ",
-      "value": 50,
-    },
-    {
-      "id": "black",
-      "label": "Black or African American",
-      "value": 50,
-    },
-    {
-      "id": "morethanone",
-      "label": "More Than One Race",
-      "value": 100,
     },
   ],
 };
