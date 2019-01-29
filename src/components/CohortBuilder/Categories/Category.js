@@ -58,8 +58,13 @@ const Title = styled('h3')`
   color: ${({ theme }) => theme.filterPurple};
 `;
 
+const CategoryButton = styled(Column)`
+  align-items: center;
+`;
+
 const Category = ({
   title,
+  children,
   color,
   toggleDropdown,
   isDropdownVisible,
@@ -101,7 +106,10 @@ const Category = ({
         ItemWrapperComponent: ItemWrapper,
       }}
     >
-      <Title> {title}</Title>
+      <CategoryButton>
+        {children}
+        <Title> {title}</Title>
+      </CategoryButton>
     </Dropdown>
   </React.Fragment>
 );
