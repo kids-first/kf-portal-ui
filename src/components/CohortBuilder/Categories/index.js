@@ -10,9 +10,9 @@ import Category from './Category';
 import Row from 'uikit/Row';
 import QuickFilterIcon from 'icons/QuickFilterIcon';
 import StudyIcon from 'icons/StudyIcon';
-import BiospecimenIcon from '../../../icons/BiospecimenIcon';
-import ClinicalIcon from '../../../icons/ClinicalIcon';
-import UploadIcon from '../../../icons/UploadIcon';
+import BiospecimenIcon from 'icons/BiospecimenIcon';
+import ClinicalIcon from 'icons/ClinicalIcon';
+import UploadIcon from 'icons/UploadIcon';
 
 const Container = styled(Row)`
   height: 72px;
