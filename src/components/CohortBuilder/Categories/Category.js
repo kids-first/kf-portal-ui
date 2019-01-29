@@ -80,6 +80,7 @@ const Category = ({
   color,
   toggleDropdown,
   isDropdownVisible,
+  setDropdownVisibility,
   toggleExpanded,
   toggleExpandedDropdown,
   setActiveIndex,
@@ -91,6 +92,7 @@ const Category = ({
     <Dropdown
       {...{
         multiLevel: true,
+        onOuterClick: () => setDropdownVisibility(false),
         isOpen: isDropdownVisible,
         onToggle: toggleDropdown,
         setActiveIndex,
