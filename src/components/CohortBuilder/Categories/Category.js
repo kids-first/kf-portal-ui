@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import { items } from './mocks';
-import { withDropdownMultiPane, withDropdownState } from '../../../uikit/Dropdown';
+import { withDropdownMultiPane } from 'uikit/Dropdown';
+import Filter from './Filter';
 
 const Container = styled(Column)`
   flex: 1;
@@ -57,24 +58,6 @@ const Title = styled('h3')`
   color: ${({ theme }) => theme.filterPurple};
 `;
 
-const FilterCont = styled('div')`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 0;
-  top: 100%;
-  cursor: pointer;
-  text-align: left;
-`;
-
-const Filter = ({ onCancel, onBack, onApply }) => (
-  <FilterCont>
-    <button onClick={onCancel}>cancel</button>
-    <button onClick={onBack}>back</button>
-    <button onClick={onApply}>apply</button>
-  </FilterCont>
-);
-
 const Category = ({
   title,
   color,
@@ -92,7 +75,10 @@ const Category = ({
     <Dropdown
       {...{
         multiLevel: true,
-        onOuterClick: () => setDropdownVisibility(false),
+        onOuterClick: () => {
+          setExpanded(false);
+          setDropdownVisibility(false);
+        },
         isOpen: isDropdownVisible,
         onToggle: toggleDropdown,
         setActiveIndex,
@@ -107,7 +93,7 @@ const Category = ({
             onBack={toggleExpanded}
             onApply={toggleExpandedDropdown}
           >
-            Expanded {i}
+            {item.expanded}
           </Filter>
         )),
         ContainerComponent: Container,
