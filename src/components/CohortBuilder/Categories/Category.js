@@ -7,6 +7,7 @@ import { compose } from 'recompose';
 import { items } from './mocks';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
+import CategoryRow from './CategoryRow';
 
 const Container = styled(Column)`
   flex: 1;
@@ -21,8 +22,6 @@ const Container = styled(Column)`
   white-space: nowrap;
   z-index: auto;
 `;
-
-const Label = styled('div')``;
 
 const Options = styled('div')`
   display: flex;
@@ -91,7 +90,7 @@ const Category = ({
         setExpanded,
         showExpanded,
         showArrow: false,
-        items: items.map((item, i) => <div>{item.name}</div>),
+        items: items.map((item, i) => <CategoryRow active={true} title={item.name} />),
         expandedItems: items.map((item, i) => (
           <Filter
             onCancel={toggleExpandedDropdown}
