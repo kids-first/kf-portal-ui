@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { ResponsivePie } from '@nivo/pie';
+import Tooltip from './Tooltip';
 
 const PieWrapper = styled('div')`
   height: 100%;
@@ -18,6 +19,12 @@ const PieTitle = styled('div')`
   margin-bottom: 5px;
 `;
 
+const PieTooltip = ({ id, value, label }) => (
+  <Tooltip key={id}>
+    <div>{label || id}</div>
+    <div>{`${value} Members`}</div>
+  </Tooltip>
+);
 
 class Pie extends Component {
   constructor(props, defaultProps) {
@@ -61,6 +68,7 @@ Pie.defaultProps = {
   colorBy: 'id',
   isInteractive: true,
   colors: 'greys',
+  tooltip: PieTooltip,
   onClick: x => x,
 };
 

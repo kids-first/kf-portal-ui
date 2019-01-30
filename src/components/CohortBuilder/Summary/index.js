@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import Pie from 'chartkit/components/Pie';
 
-import { demographicPiesMock } from './pie';
+import { demographicPiesMock } from './mock';
 import Card from 'uikit/Card';
 import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
