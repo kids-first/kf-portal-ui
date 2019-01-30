@@ -2,10 +2,19 @@ import React from 'react';
 import styled from 'react-emotion';
 import Pie from 'chartkit/components/Pie';
 
-import { demographicPiesMock } from './mock';
+import { demographicPiesMock, topDiagnosesBarMock } from './mock';
 import Card from 'uikit/Card';
 import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
+
+import theme from 'theme/defaultTheme';
+import HorizontalBar from 'chartkit/components/HorizontalBar';
+
+const participantTooltip = data => {
+  const participants = data.familyMembers + data.probands;
+  return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
+};
+
 
 const CardSlot = styled(Card)`
   height: 305px;
@@ -41,10 +50,24 @@ const Summary = () => (
         </Col>
         <Col sm={12} md={md} lg={lg}>
           <CardSlot title="Most Frequent Diagnoses">
+            <HorizontalBar style={{maxWidth: '100px'}}
+              data={topDiagnosesBarMock}
+              indexBy="label"
+              keys={['probands', 'familyMembers']}
+              tooltipFormatter={participantTooltip}
+              sortByValue={true}
+              tickInterval={4}
+              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              xTickTextLength={28}
+              legends={[
+                { title: 'Probands', color: theme.chartColors.blue },
+                { title: 'Family Members', color: theme.chartColors.purple },
+              ]}
+              padding={0.4}
+            />
           </CardSlot>
         </Col>
         <Col sm={12} md={md} lg={lg}>
-          {/* colors={['#ffffff', '#000000']}  */}
           <CardSlotPies>
             <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Gender"} data={demographicPiesMock.gender} colors={['#F79122','#FFFFFF']} />
             <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Ethnicity"} data={demographicPiesMock.ethnicity} colors={['#2B388F','#FFFFFF']} />
