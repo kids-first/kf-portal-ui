@@ -53,7 +53,7 @@ const Filter = ({ children, onCancel, onBack, onApply }) => (
     <Content>{children}</Content>
     <Footer>
       <WButton onClick={onCancel}>Cancel</WButton>
-      <TealButton onClick={onApply} mx={5} my={5}>
+      <TealButton onClick={onApply}>
         Apply
       </TealButton>
     </Footer>
