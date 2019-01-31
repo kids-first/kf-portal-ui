@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import Column from 'uikit/Column';
+import { withTheme } from 'emotion-theming';
+import {compose} from 'recompose';
 import Search from './Search';
 import Category from './Category';
 import Row from 'uikit/Row';
@@ -14,17 +14,16 @@ const Container = styled(Row)`
   background-color: white;
 `;
 
-const Categories = () => (
+const Categories = ({theme}) => 
   <Container>
     <Search />
-    <Category title="Quick Filters" color="#404c9a" />
-    <Category title="Study" color="#dd1f2a" />
-    <Category title="Demographic" color="#e53a95" />
-    <Category title="Clinical" color="#00aceb" />
-    <Category title="Biospecimens" color="#f79122" />
-    <Category title="Available Data" color="#009bba" />
-    <Category title="Upload IDs" color="#edb500" />
+    <Category title="Quick Filters" color={theme.filterPurple} />
+    <Category title="Study" color={theme.studyRed} />
+    <Category title="Demographic" color={theme.demographicPurple} />
+    <Category title="Clinical" color={theme.clinicalBlue} />
+    <Category title="Biospecimens" color={theme.biospecimenOrange} />
+    <Category title="Available Data" color={theme.dataBlue} />
+    <Category title="Upload IDs" color={theme.uploadYellow} />
   </Container>
-);
 
-export default Categories;
+export default compose(withTheme)(Categories);
