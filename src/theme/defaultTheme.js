@@ -69,7 +69,7 @@ const colors = {
 export const chartColors = {
   lightblue: '#00ACEB',
   darkblue: '#2b388f',
-  purplish: '#A6278F',
+  lightpurple: '#A6278F',
   orange: '#F79122',
   red: '#dd1f2a',
   blue: '#1f9bb6',

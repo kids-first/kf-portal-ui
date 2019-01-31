@@ -78,7 +78,7 @@ const Summary = compose(withTheme)(
           <Pie style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }} title={"Ethnicity"}
                data={demographicPiesMock.ethnicity} colors={[theme.chartColors.darkblue, '#FFFFFF']}/>
           <Pie style={{ height: '42%', width: '50%' }} title={"Race"} data={demographicPiesMock.race}
-               colors={[theme.chartColors.purplish, '#FFFFFF']}/>
+               colors={[theme.chartColors.lightpurple, '#FFFFFF']}/>
           <Pie style={{ height: '42%', width: '50%' }} title={"Family Composition"}
                data={demographicPiesMock.familyComposition} colors={[theme.chartColors.lightblue, '#FFFFFF']}/>
         </CardSlotPies>
