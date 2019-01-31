@@ -5,6 +5,7 @@ import { TealActionButton, WhiteButton } from 'uikit/Button';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 
 const FilterCont = styled('div')`
+  color: black;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -53,9 +54,7 @@ const Filter = ({ children, onCancel, onBack, onApply }) => (
     <Content>{children}</Content>
     <Footer>
       <WButton onClick={onCancel}>Cancel</WButton>
-      <TealButton onClick={onApply}>
-        Apply
-      </TealButton>
+      <TealButton onClick={onApply}>Apply</TealButton>
     </Footer>
   </FilterCont>
 );
