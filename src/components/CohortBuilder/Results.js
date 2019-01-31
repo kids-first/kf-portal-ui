@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose, withState } from 'recompose';
-import ContentSection from './ContentSection';
+import { withTheme } from 'emotion-theming';
 import ContentBar from './ContentBar';
 import Summary from './Summary';
 import Row from 'uikit/Row';
@@ -28,7 +28,7 @@ const Left = styled(Row)`
 `;
 
 const Heading = styled(H2)`
-  color: #2b388f;
+  color: ${theme.secondary};
   margin-right: 20px;
 `;
 
@@ -41,12 +41,12 @@ const SubHeading = styled('h3')`
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 600)};
   font-family: ${({ theme }) => theme.default};
   font-size: 16px;
-  color: ${({ color }) => (color ? color : '#2b388f')};
+  color: ${({ color, theme }) => (color ? color : theme.secondary)};
   padding: 0 3px;
   margin: 0;
 `;
 
-const Results = ({ activeView, setActiveView }) => (
+const Results = ({ activeView, setActiveView, theme }) => (
   <React.Fragment>
     <ContentBar>
       <Left>
@@ -56,9 +56,9 @@ const Results = ({ activeView, setActiveView }) => (
         <SubHeading>{Number(1314).toLocaleString()} Participants</SubHeading>
 
         <FilesIcon />
-        <SubHeading color="#a6278f">{`View ${Number(2422).toLocaleString()} Files`}</SubHeading>
+        <SubHeading color={theme.purple}>{`View ${Number(2422).toLocaleString()} Files`}</SubHeading>
         <DoubleChevronRightIcon
-          fill="#a6278f"
+          fill={theme.purple}
           height={7}
           style={{ position: 'relative', top: '1px', left: '2px' }}
         />
@@ -78,4 +78,4 @@ const Results = ({ activeView, setActiveView }) => (
   </React.Fragment>
 );
 
-export default compose(withState('activeView', 'setActiveView', SUMMARY))(Results);
+export default compose(withTheme, withState('activeView', 'setActiveView', SUMMARY))(Results);
