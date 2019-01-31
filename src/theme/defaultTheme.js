@@ -75,7 +75,8 @@ const colors = {
   clinicalBlue: '#00aceb',
   biospecimenOrange: '#f79122',
   dataBlue: '#009bba',
-  uploadYellow: '#edb500'
+  uploadYellow: '#edb500',
+  borderPurple: '#cc3399'
 
 };
 

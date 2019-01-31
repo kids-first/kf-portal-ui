@@ -8,7 +8,7 @@ const Link = styled(Row)`
   font-size: 14px;
   font-weight: 500;
   color: #cc3399;
-  border-bottom: ${({ active }) => (active ? '2px solid #cc3399' : null)};
+  border-bottom: ${({ active, theme }) => (active ? `2px solid ${theme.borderPurple}` : null)};
   align-items: center;
   justify-content: center;
 

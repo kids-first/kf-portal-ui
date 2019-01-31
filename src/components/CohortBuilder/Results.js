@@ -28,7 +28,7 @@ const Left = styled(Row)`
 `;
 
 const Heading = styled(H2)`
-  color: ${theme.secondary};
+  color: ${({theme}) => theme.secondary};
   margin-right: 20px;
 `;
 
