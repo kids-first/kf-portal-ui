@@ -7,7 +7,7 @@ const Container = styled(Column)`
   flex: 1;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #d4d6dd;
+  border-right: 1px solid ${({theme}) => theme.greyScale8};
   border-top: 4px solid ${({ color }) => (color ? color : 'inherit')};
 `;
 
@@ -16,7 +16,7 @@ const Title = styled('h3')`
   font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #404c9a;
+  color: ${({theme}) => theme.filterPurple};
 `;
 
 const Category = ({ title, color }) => (
