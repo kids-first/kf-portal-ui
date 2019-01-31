@@ -69,10 +69,10 @@ const Summary = () => (
         </Col>
         <Col sm={12} md={md} lg={lg}>
           <CardSlotPies>
-            <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Gender"} data={demographicPiesMock.gender} colors={['#F79122','#FFFFFF']} />
-            <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Ethnicity"} data={demographicPiesMock.ethnicity} colors={['#2B388F','#FFFFFF']} />
-            <Pie style={{height: '42%', width: '50%'}} title={"Race"} data={demographicPiesMock.race} colors={['#A6278F','#FFFFFF']} />
-            <Pie style={{height: '42%', width: '50%'}} title={"Family Composition"} data={demographicPiesMock.familyComposition} colors={['#00ACEB','#FFFFFF']} />
+            <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Gender"} data={demographicPiesMock.gender} colors={[theme.chartColors.orange,'#FFFFFF']} />
+            <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Ethnicity"} data={demographicPiesMock.ethnicity} colors={[theme.chartColors.darkblue,'#FFFFFF']} />
+            <Pie style={{height: '42%', width: '50%'}} title={"Race"} data={demographicPiesMock.race} colors={[theme.chartColors.purplish,'#FFFFFF']} />
+            <Pie style={{height: '42%', width: '50%'}} title={"Family Composition"} data={demographicPiesMock.familyComposition} colors={[theme.chartColors.lightblue,'#FFFFFF']} />
           </CardSlotPies>
         </Col>
         <Col sm={12} md={md} lg={lg}>
