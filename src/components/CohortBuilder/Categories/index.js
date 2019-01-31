@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import Column from 'uikit/Column';
+import { withTheme } from 'emotion-theming';
+import {compose} from 'recompose';
 import Search from './Search';
 import Category from './Category';
 import Row from 'uikit/Row';
@@ -9,22 +9,21 @@ import Row from 'uikit/Row';
 const Container = styled(Row)`
   height: 72px;
   width: 100%;
-  border-left: 1px solid #d4d6dd;
-  border-bottom: 1px solid #d4d6dd;
+  border-left: 1px solid ${({theme}) => theme.greyScale8};
+  border-bottom: 1px solid ${({theme}) => theme.greyScale8};
   background-color: white;
 `;
 
-const Categories = () => (
+const Categories = ({theme}) => 
   <Container>
     <Search />
-    <Category title="Quick Filters" color={''} />
-    <Category title="Study" color={''} />
-    <Category title="Demographic" color={''} />
-    <Category title="Clinical" color={''} />
-    <Category title="Biospecimens" color={''} />
-    <Category title="Available Data" color={''} />
-    <Category title="Upload IDs" color={''} />
+    <Category title="Quick Filters" color={theme.filterPurple} />
+    <Category title="Study" color={theme.studyRed} />
+    <Category title="Demographic" color={theme.demographicPurple} />
+    <Category title="Clinical" color={theme.clinicalBlue} />
+    <Category title="Biospecimens" color={theme.biospecimenOrange} />
+    <Category title="Available Data" color={theme.dataBlue} />
+    <Category title="Upload IDs" color={theme.uploadYellow} />
   </Container>
-);
 
-export default Categories;
+export default compose(withTheme)(Categories);
