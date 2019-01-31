@@ -8,7 +8,6 @@ import { items } from './mocks';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
 import CategoryRow from './CategoryRow';
-import { union } from 'lodash';
 
 const Container = styled(Column)`
   flex: 1;
@@ -75,8 +74,6 @@ const Category = ({
   activeIndex,
   setExpanded,
   showExpanded,
-  setAppliedFilters,
-  appliedFilters,
 }) => (
   <React.Fragment>
     <Dropdown
@@ -94,7 +91,7 @@ const Category = ({
         showExpanded,
         showArrow: false,
         items: items.map((item, i) => (
-          <CategoryRow active={appliedFilters.includes(i)} title={item.name} />
+          <CategoryRow active={true} title={item.name} />
         )),
         expandedItems: items.map((item, i) => (
           <Filter
@@ -102,10 +99,7 @@ const Category = ({
             onBack={toggleExpanded}
             onApply={active => {
               toggleExpanded();
-              const newAppliedFilters = active
-                ? union([i], appliedFilters)
-                : appliedFilters.filter(af => af != i);
-              setAppliedFilters(newAppliedFilters);
+           
             }}
           >
             {item.expanded}
@@ -131,5 +125,4 @@ Category.propTypes = {
 
 export default compose(
   withDropdownMultiPane,
-  compose(withState('appliedFilters', 'setAppliedFilters', [])),
 )(Category);
