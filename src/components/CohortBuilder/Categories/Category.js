@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import { items } from './mocks';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
@@ -13,11 +13,8 @@ const Container = styled(Column)`
   flex: 1;
   justify-content: center;
   align-items: center;
-  <<<<<<<HEAD
   border-right: 1px solid ${({ theme }) => theme.greyScale8};
-  border-top: 4px solid ${({ color }) => (color ? color : 'inherit')};
-  =======border-right: 1px solid #d4d6dd;
-  border-top: 1px solid ${({ color }) => (color ? color : 'white')};
+  border-top: 4px solid ${({ color }) => (color ? color : 'white')};
   position: relative;
   white-space: nowrap;
   z-index: auto;
@@ -46,7 +43,6 @@ const ItemWrapper = styled('div')`
   font-size: 12px;
   color: #343434;
   font-weight: 500;
->>>>>>> add basic category layout using Dropdown
 `;
 
 const Title = styled('h3')`
@@ -74,8 +70,10 @@ const Category = ({
   activeIndex,
   setExpanded,
   showExpanded,
-}) => (
-  <React.Fragment>
+}) => {
+  const DropdownCont = ({ children }) => <Container color={color}>{children}</Container>;
+
+  return (
     <Dropdown
       {...{
         multiLevel: true,
@@ -102,7 +100,7 @@ const Category = ({
             {item.expanded}
           </Filter>
         )),
-        ContainerComponent: Container,
+        ContainerComponent: DropdownCont,
         OptionsContainerComponent: Options,
         ItemWrapperComponent: ItemWrapper,
       }}
@@ -112,12 +110,12 @@ const Category = ({
         <Title> {title}</Title>
       </CategoryButton>
     </Dropdown>
-  </React.Fragment>
-);
+  );
+};
 
 Category.propTypes = {
   title: PropTypes.string.isRequired,
-  // /color: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default compose(withDropdownMultiPane)(Category);
