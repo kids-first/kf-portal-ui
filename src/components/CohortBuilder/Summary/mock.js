@@ -1,3 +1,59 @@
+export const topDiagnosesBarMock = [
+  {
+    "id": "1",
+    "label": "Disease or Disorder",
+    "familyMembers": 50,
+    "probands": 50,
+  },  {
+    "id": "2",
+    "label": "Medulloblastoma",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "3",
+    "label": "Epilepsy",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "4",
+    "label": "Nervous System Disorder",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "5",
+    "label": "Adolescent Idiopathic Sco...",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "6",
+    "label": "Congenital Diaphragmatic ...",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "7",
+    "label": "Low Grade Glioma",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "8",
+    "label": "Cleft Lip Palate",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+  {
+    "id": "9",
+    "label": "Ewing Sarcoma",
+    "familyMembers": 50,
+    "probands": 50,
+  },
+];
+
 export const demographicPiesMock = {
   ethnicity: [
     {
