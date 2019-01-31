@@ -71,7 +71,11 @@ const Category = ({
   setExpanded,
   showExpanded,
 }) => {
-  const DropdownCont = ({ children }) => <Container color={color}>{children}</Container>;
+  const DropdownCont = ({ children, ...props }) => (
+    <Container color={color} {...props}>
+      {children}
+    </Container>
+  );
 
   return (
     <Dropdown
