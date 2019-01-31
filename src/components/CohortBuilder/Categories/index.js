@@ -11,6 +11,7 @@ import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
 import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
+import DemographicIcon from 'icons/DemographicIcon';
 
 const Container = styled(Row)`
   height: 72px;
@@ -29,7 +30,9 @@ const Categories = ({ theme }) => (
     <Category title="Study" color={theme.studyRed}>
       <StudyIcon fill={theme.studyRed} />
     </Category>
-    <Category title="Demographic" color={theme.demographicPurple} />
+    <Category title="Demographic" color={theme.demographicPurple}>
+      <DemographicIcon fill={theme.demographicPurple} />
+    </Category>
     <Category title="Clinical" color={theme.clinicalBlue}>
       <ClinicalIcon fill={theme.clinicalBlue} />
     </Category>
