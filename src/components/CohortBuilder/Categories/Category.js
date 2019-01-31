@@ -90,16 +90,13 @@ const Category = ({
         setExpanded,
         showExpanded,
         showArrow: false,
-        items: items.map((item, i) => (
-          <CategoryRow active={true} title={item.name} />
-        )),
+        items: items.map((item, i) => <CategoryRow active={true} title={item.name} />),
         expandedItems: items.map((item, i) => (
           <Filter
             onCancel={toggleExpandedDropdown}
             onBack={toggleExpanded}
             onApply={active => {
               toggleExpanded();
-           
             }}
           >
             {item.expanded}
@@ -123,6 +120,4 @@ Category.propTypes = {
   // /color: PropTypes.string.isRequired,
 };
 
-export default compose(
-  withDropdownMultiPane,
-)(Category);
+export default compose(withDropdownMultiPane)(Category);

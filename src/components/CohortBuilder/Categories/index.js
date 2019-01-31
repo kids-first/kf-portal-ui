@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'react-emotion';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { withTheme } from 'emotion-theming';
 import {compose} from 'recompose';
 =======
 >>>>>>> add icons
+=======
+import { withTheme } from 'emotion-theming';
+import { compose } from 'recompose';
+>>>>>>> use existing icon and add theme
 import Search from './Search';
 import Category from './Category';
 import Row from 'uikit/Row';
@@ -13,6 +18,7 @@ import StudyIcon from 'icons/StudyIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
 import UploadIcon from 'icons/UploadIcon';
+import FileIcon from 'icons/FileIcon';
 
 const Container = styled(Row)`
   height: 72px;
@@ -22,7 +28,8 @@ const Container = styled(Row)`
   background-color: white;
 `;
 
-const Categories = ({theme}) => 
+
+const Categories = ({ theme }) => (
   <Container>
     <Search />
     <Category title="Quick Filters" color={theme.filterPurple} />
@@ -45,7 +52,9 @@ const Categories = ({theme}) =>
     <Category title="Biospecimens" color={''}>
       <BiospecimenIcon fill="#f79122" />
     </Category>
-    <Category title="Available Data" color={''} />
+    <Category title="Available Data" color={''}>
+      <FileIcon width={11} height={14} fill="#009bba" />
+    </Category>
     <Category title="Upload IDs" color={''}>
       <UploadIcon fill="#edb500" />
     </Category>
