@@ -38,7 +38,7 @@ const FullWidthWhite = styled('div')`
 
 const CohortBuilder = () => (
   <SQONProvider>
-    {({ sqon }) => (
+    {({ state, setState }) => (
       <Container>
         <ContentBar>
           <Left>
@@ -51,11 +51,11 @@ const CohortBuilder = () => (
           </Right>
         </ContentBar>
         <FullWidthWhite>
-          <Categories {...{ sqon }} />
-          <Queries {...{ sqon }} />
+          <Categories />
+          <Queries {...{ state, setState }} />
         </FullWidthWhite>
 
-        <Results {...{ sqon }} />
+        <Results />
       </Container>
     )}
   </SQONProvider>
