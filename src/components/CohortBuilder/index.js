@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Categories from './Categories';
-import ContentSection from './ContentSection';
 import ContentBar from './ContentBar';
 import Results from './Results';
 import { H1 } from 'uikit/Headings';
-import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import Queries from './Queries';
+import SQONProvider from './SQONProvider';
 
 const Container = styled('div')`
   flex: 1;
@@ -38,24 +37,28 @@ const FullWidthWhite = styled('div')`
 `;
 
 const CohortBuilder = () => (
-  <Container>
-    <ContentBar>
-      <Left>
-        <Heading>Explore Data</Heading>
-        <div>Load a Virtual Study</div>
-      </Left>
-      <Right>
-        <button>Save virtual study</button>
-        <button>Share</button>
-      </Right>
-    </ContentBar>
-    <FullWidthWhite>
-      <Categories />
-      <Queries />
-    </FullWidthWhite>
+  <SQONProvider>
+    {({ state, setState }) => (
+      <Container>
+        <ContentBar>
+          <Left>
+            <Heading>Explore Data</Heading>
+            <div>Load a Virtual Study</div>
+          </Left>
+          <Right>
+            <button>Save virtual study</button>
+            <button>Share</button>
+          </Right>
+        </ContentBar>
+        <FullWidthWhite>
+          <Categories />
+          <Queries {...{ state, setState }} />
+        </FullWidthWhite>
 
-    <Results />
-  </Container>
+        <Results />
+      </Container>
+    )}
+  </SQONProvider>
 );
 
 export default CohortBuilder;
