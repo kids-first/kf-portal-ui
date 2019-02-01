@@ -12,12 +12,12 @@ const CardSlot = styled(Card)`
 `;
 
 const CardSlotPies = styled(CardWrapper)`
-    height: 305px;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px 10px;
+  height: 305px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 10px;
 `;
 
 const LongCard = styled(Card)`
@@ -32,33 +32,48 @@ const Summary = () => (
     <Col sm={12} md={9} lg={9}>
       <Row nogutter>
         <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Overall Survival">
-          </CardSlot>
+          <CardSlot title="Overall Survival" />
         </Col>
         <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Studies">
-          </CardSlot>
+          <CardSlot title="Studies" />
         </Col>
         <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Most Frequent Diagnoses">
-          </CardSlot>
+          <CardSlot title="Most Frequent Diagnoses" />
         </Col>
         <Col sm={12} md={md} lg={lg}>
           {/* colors={['#ffffff', '#000000']}  */}
           <CardSlotPies>
-            <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Gender"} data={demographicPiesMock.gender} colors={['#F79122','#FFFFFF']} />
-            <Pie style={{height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px'}} title={"Ethnicity"} data={demographicPiesMock.ethnicity} colors={['#2B388F','#FFFFFF']} />
-            <Pie style={{height: '42%', width: '50%'}} title={"Race"} data={demographicPiesMock.race} colors={['#A6278F','#FFFFFF']} />
-            <Pie style={{height: '42%', width: '50%'}} title={"Family Composition"} data={demographicPiesMock.familyComposition} colors={['#00ACEB','#FFFFFF']} />
+            <Pie
+              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+              title={'Gender'}
+              data={demographicPiesMock.gender}
+              colors={['#F79122', '#FFFFFF']}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+              title={'Ethnicity'}
+              data={demographicPiesMock.ethnicity}
+              colors={['#2B388F', '#FFFFFF']}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%' }}
+              title={'Race'}
+              data={demographicPiesMock.race}
+              colors={['#A6278F', '#FFFFFF']}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%' }}
+              title={'Family Composition'}
+              data={demographicPiesMock.familyComposition}
+              colors={['#00ACEB', '#FFFFFF']}
+            />
           </CardSlotPies>
         </Col>
         <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="File Breakdown">
-          </CardSlot>
+          <CardSlot title="File Breakdown" />
         </Col>
         <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Age at Diagnosis">
-          </CardSlot>
+          <CardSlot title="Age at Diagnosis" />
         </Col>
       </Row>
     </Col>
