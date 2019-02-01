@@ -41,10 +41,10 @@ class Pie extends Component {
     }));
 
     return (
-     <PieWrapper style={this.props.style}>
-       {this.props.title ? <PieTitle>{this.props.title}</PieTitle> : null }
-       <ResponsivePie {...this.props} data={colorData} colorBy={data => data.color} />
-     </PieWrapper>
+      <PieWrapper style={this.props.style}>
+        {this.props.title ? <PieTitle>{this.props.title}</PieTitle> : null}
+        <ResponsivePie {...this.props} data={colorData} colorBy={data => data.color} />
+      </PieWrapper>
     );
   }
 }

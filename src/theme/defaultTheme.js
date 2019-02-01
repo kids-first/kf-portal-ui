@@ -69,15 +69,14 @@ const colors = {
   /**
    * Cohort Builder
    */
-  filterPurple: '#404c9a', 
+  filterPurple: '#404c9a',
   studyRed: '#dd1f2a',
   demographicPurple: '#e53a95',
   clinicalBlue: '#00aceb',
   biospecimenOrange: '#f79122',
   dataBlue: '#009bba',
   uploadYellow: '#edb500',
-  borderPurple: '#cc3399'
-
+  borderPurple: '#cc3399',
 };
 
 export const chartColors = {

@@ -28,7 +28,7 @@ const Left = styled(Row)`
 `;
 
 const Heading = styled(H2)`
-  color: ${({theme}) => theme.secondary};
+  color: ${({ theme }) => theme.secondary};
   margin-right: 20px;
 `;
 
@@ -56,7 +56,9 @@ const Results = ({ activeView, setActiveView, theme }) => (
         <SubHeading>{Number(1314).toLocaleString()} Participants</SubHeading>
 
         <FilesIcon />
-        <SubHeading color={theme.purple}>{`View ${Number(2422).toLocaleString()} Files`}</SubHeading>
+        <SubHeading color={theme.purple}>{`View ${Number(
+          2422,
+        ).toLocaleString()} Files`}</SubHeading>
         <DoubleChevronRightIcon
           fill={theme.purple}
           height={7}
@@ -78,4 +80,7 @@ const Results = ({ activeView, setActiveView, theme }) => (
   </React.Fragment>
 );
 
-export default compose(withTheme, withState('activeView', 'setActiveView', SUMMARY))(Results);
+export default compose(
+  withTheme,
+  withState('activeView', 'setActiveView', SUMMARY),
+)(Results);
