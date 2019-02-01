@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { pickData } from './utils';
 import { formatToGB } from './utils';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -9,6 +10,18 @@ export const toFilePropertiesSummary = data => {
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
+
+  // it could have been easier (see below), but `data.experiment_strategies` is sometimes empty,
+  //  even if data.sequencing_experiments.hits.edges is ont empty for the given file 😕
+  // const experimentalStrategies =
+  //   _.uniq(_.get(data, 'experiment_strategies').filter(datum => !!datum)).join(', ') || '--';
+
+  const experimentalStrategies =
+    _.uniq(
+      data.sequencing_experiments.hits.edges
+        .filter(edge => edge.node && edge.node.experiment_strategy)
+        .map(edge => edge.node.experiment_strategy),
+    ).join(', ') || '--';
 
   return [
     { title: 'Kids First ID:', summary: pickData(data, 'kf_id') },
@@ -42,9 +55,7 @@ export const toFilePropertiesSummary = data => {
     { title: 'Reference Genome:', summary: pickData(data, 'reference_genome') },
     {
       title: 'Experimental Strategy:',
-      summary: pickData(data, data.experiment_strategies, d =>
-        d.map((strategies, i) => <div key={i}>{strategies}</div>),
-      ),
+      summary: experimentalStrategies,
     },
     { title: 'Data Type:', summary: pickData(data, 'data_type') },
     { title: 'File Format:', summary: pickData(data, 'file_format') },
