@@ -72,7 +72,7 @@ const Category = ({
   showExpanded,
 }) => {
   const DropdownCont = ({ children, ...props }) => (
-    <Container color={color} {...props}>
+    <Container {...props} color={color}>
       {children}
     </Container>
   );
