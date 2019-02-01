@@ -42,7 +42,7 @@ const CohortBuilder = () => (
     <ContentBar>
       <Left>
         <Heading>Explore Data</Heading>
-        <Dropdown>Load a Virtual Study</Dropdown>
+        <div>Load a Virtual Study</div>
       </Left>
       <Right>
         <button>Save virtual study</button>
