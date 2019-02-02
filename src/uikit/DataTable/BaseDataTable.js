@@ -14,9 +14,26 @@ const enhance = compose(
   withState('columns', 'setColumns', props => configureCols(props.columns)),
 );
 
+const applyTransforms = (data, transforms) =>
+  data.map(datum =>
+    Object.keys(transforms)
+      .map(key => ({
+        field: key,
+        value: transforms[key](datum[key]),
+      }))
+      .reduce(
+        (prev, curr) => {
+          prev[curr.field] = curr.value;
+          return prev;
+        },
+        { ...datum },
+      ),
+  );
+
 const BaseDataTable = ({
   loading,
   data,
+  transforms = {},
   columns,
   setColumns,
   pageSize,
@@ -58,7 +75,7 @@ const BaseDataTable = ({
     <Table
       columns={columns}
       loading={loading}
-      data={data}
+      data={applyTransforms(data, transforms)}
       onPageChange={pageIndex => setPageIndex(pageIndex)}
       onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
     />

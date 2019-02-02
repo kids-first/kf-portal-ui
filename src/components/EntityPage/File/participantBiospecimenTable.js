@@ -1,9 +1,5 @@
-import React from 'react';
 import _ from 'lodash';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { pickData } from './utils';
-import { kfWebRoot } from 'common/injectGlobals';
-import { ExternalLink } from 'uikit/Core';
 
 export const particpantBiospecimenColumns = [
   { Header: 'Participant ID', accessor: 'participant_id' },
@@ -26,22 +22,7 @@ export const toParticpantBiospecimenData = data =>
         return {
           participant_id: pickData(p, 'kf_id'),
           external_id: pickData(p, 'external_id'),
-          study_name: pickData(p, 'study.short_name', studyShortName => (
-            <ExternalLink
-              href={`${kfWebRoot}/support/studies-and-access`}
-              onClick={e => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.entityPage.file,
-                  action:
-                    TRACKING_EVENTS.actions.click +
-                    `: Associated Participants/Biospecimens: Study Name`,
-                  label: studyShortName,
-                });
-              }}
-            >
-              {studyShortName}
-            </ExternalLink>
-          )),
+          study_name: pickData(p, 'study.short_name'),
           proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
           analyte_type: pickData(biospecimen, 'analyte_type'),
