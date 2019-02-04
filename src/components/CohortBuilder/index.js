@@ -7,6 +7,7 @@ import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
 import Queries from './Queries';
 import SQONProvider from './SQONProvider';
+import { withRouter } from 'react-router-dom';
 
 const Container = styled('div')`
   flex: 1;
@@ -75,4 +76,4 @@ const CohortBuilder = () => (
   </SQONProvider>
 );
 
-export default CohortBuilder;
+export default withRouter(CohortBuilder);

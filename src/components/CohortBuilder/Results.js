@@ -11,7 +11,7 @@ import Table from './Table';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
-import FilesIcon from 'icons/FilesIcon';
+import { Link } from 'react-router-dom';
 import DoubleChevronRightIcon from 'icons/DoubleChevronRightIcon';
 
 const SUMMARY = 'summary';
@@ -46,6 +46,10 @@ const SubHeading = styled('h3')`
   margin: 0;
 `;
 
+const PurpleLink = styled(Link)`
+  color: ${({ theme }) => theme.purple};
+`;
+
 const Results = ({ activeView, setActiveView, theme, sqon }) => (
   <React.Fragment>
     <ContentBar>
@@ -53,17 +57,11 @@ const Results = ({ activeView, setActiveView, theme, sqon }) => (
         <Heading>All data</Heading>
 
         <DemographicIcon />
-        <SubHeading>{Number(1314).toLocaleString()} Participants</SubHeading>
+        <SubHeading>{Number(1314).toLocaleString()} Participants with </SubHeading>
 
-        <FilesIcon />
-        <SubHeading color={theme.purple}>{`View ${Number(
-          2422,
-        ).toLocaleString()} Files`}</SubHeading>
-        <DoubleChevronRightIcon
-          fill={theme.purple}
-          height={7}
-          style={{ position: 'relative', top: '1px', left: '2px' }}
-        />
+        <PurpleLink to="">
+          <SubHeading color={theme.purple}>{`${Number(2422).toLocaleString()} Files`}</SubHeading>
+        </PurpleLink>
       </Left>
       <ViewLinks>
         <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
