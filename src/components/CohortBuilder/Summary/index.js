@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'react-emotion';
-import Pie from 'chartkit/components/Pie';
+import { compose } from 'recompose';
 
+import Pie from 'chartkit/components/Pie';
 import { demographicPiesMock } from './mock';
 import Card from 'uikit/Card';
 import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
+import { withTheme } from 'emotion-theming';
 
 const CardSlot = styled(Card)`
   height: 305px;
@@ -27,7 +29,9 @@ const LongCard = styled(Card)`
 const md = 4;
 const lg = 4;
 
-const Summary = () => (
+const enhance = compose(withTheme);
+
+const Summary = ({ theme }) => (
   <Row nogutter>
     <Col sm={12} md={9} lg={9}>
       <Row nogutter>
@@ -41,31 +45,30 @@ const Summary = () => (
           <CardSlot title="Most Frequent Diagnoses" />
         </Col>
         <Col sm={12} md={md} lg={lg}>
-          {/* colors={['#ffffff', '#000000']}  */}
           <CardSlotPies>
             <Pie
               style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
               title={'Gender'}
               data={demographicPiesMock.gender}
-              colors={['#F79122', '#FFFFFF']}
+              colors={[theme.chartColors.orange, '#FFFFFF']}
             />
             <Pie
               style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
               title={'Ethnicity'}
               data={demographicPiesMock.ethnicity}
-              colors={['#2B388F', '#FFFFFF']}
+              colors={[theme.chartColors.darkblue, '#FFFFFF']}
             />
             <Pie
               style={{ height: '42%', width: '50%' }}
               title={'Race'}
               data={demographicPiesMock.race}
-              colors={['#A6278F', '#FFFFFF']}
+              colors={[theme.chartColors.purple, '#FFFFFF']}
             />
             <Pie
               style={{ height: '42%', width: '50%' }}
               title={'Family Composition'}
               data={demographicPiesMock.familyComposition}
-              colors={['#00ACEB', '#FFFFFF']}
+              colors={[theme.chartColors.lightblue, '#FFFFFF']}
             />
           </CardSlotPies>
         </Col>
@@ -83,4 +86,4 @@ const Summary = () => (
   </Row>
 );
 
-export default Summary;
+export default enhance(Summary);
