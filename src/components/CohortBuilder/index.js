@@ -38,7 +38,13 @@ const FullWidthWhite = styled('div')`
 
 const CohortBuilder = () => (
   <SQONProvider>
-    {({ state, setState }) => (
+    {({
+      sqons: syntheticSqons,
+      activeIndex: activeSqonIndex,
+      setActiveSqonIndex,
+      setSqons,
+      getActiveExecutableSqon,
+    }) => (
       <Container>
         <ContentBar>
           <Left>
@@ -52,10 +58,18 @@ const CohortBuilder = () => (
         </ContentBar>
         <FullWidthWhite>
           <Categories />
-          <Queries {...{ state, setState }} />
+          <Queries
+            syntheticSqons={syntheticSqons}
+            activeSqonIndex={activeSqonIndex}
+            onChange={({ newSyntheticSqons }) => {
+              setSqons(newSyntheticSqons);
+            }}
+            onActiveSqonSelect={({ index }) => {
+              setActiveSqonIndex(index);
+            }}
+          />
         </FullWidthWhite>
-
-        <Results />
+        <Results sqon={getActiveExecutableSqon()} />
       </Container>
     )}
   </SQONProvider>
