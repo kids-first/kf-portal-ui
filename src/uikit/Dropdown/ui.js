@@ -82,3 +82,5 @@ export const DropdownArrowIcon = styled(ChevronIcon)`
     fill: '#e83a9c';
   }
 `;
+
+export const DropdownExpandedContainer = styled('div')``;
