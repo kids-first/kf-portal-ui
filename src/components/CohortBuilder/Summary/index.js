@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'react-emotion';
-import Pie from 'chartkit/components/Pie';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
 
 import { demographicPiesMock, topDiagnosesBarMock, studiesBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
-
-import { withTheme } from 'emotion-theming';
+import Pie from 'chartkit/components/Pie';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import { compose } from 'recompose';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -56,13 +55,15 @@ const LongCard = styled(Card)`
 const md = 4;
 const lg = 4;
 
+const enhance = compose(withTheme);
+
 const multiHeader = (
   <MultiHeader
     headings={[{ title: 'Studies', badge: 7 }, { title: 'Participants', badge: 6155 }]}
   />
 );
 
-const Summary = compose(withTheme)(({ theme }) => (
+const Summary = ({ theme }) => (
   <Row nogutter>
     <Col sm={12} md={9} lg={9}>
       <Row nogutter>
@@ -148,6 +149,6 @@ const Summary = compose(withTheme)(({ theme }) => (
       <LongCard title="Phenotypes">Long Card</LongCard>
     </Col>
   </Row>
-));
+);
 
-export default Summary;
+export default enhance(Summary);

@@ -19,17 +19,40 @@ const PieTitle = styled('div')`
   margin-bottom: 5px;
 `;
 
+const StyleTooltip = styled('Tooltip')`
+  text-align: left;
+  justify: left;
+  font-size: 12px;
+  color: #2b388f;
+`;
+
 const PieTooltip = ({ id, value, label }) => (
-  <Tooltip key={id}>
+  <StyleTooltip key={id}>
     <div>{label || id}</div>
-    <div>{`${value} Members`}</div>
-  </Tooltip>
+    <div>{`${value} Participants`}</div>
+  </StyleTooltip>
 );
 
 class Pie extends Component {
   constructor(props, defaultProps) {
     super(props, defaultProps);
-    this.state = {};
+    this.state = {
+      highlightedIndex: null,
+    };
+
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+  }
+
+  onMouseEnter(data, e) {
+    if (data) {
+      const { index } = data;
+      this.setState({ highlightedIndex: index });
+    }
+  }
+
+  onMouseLeave(data, e) {
+    this.setState({ highlightedIndex: null });
   }
 
   render() {
@@ -43,7 +66,14 @@ class Pie extends Component {
     return (
       <PieWrapper style={this.props.style}>
         {this.props.title ? <PieTitle>{this.props.title}</PieTitle> : null}
-        <ResponsivePie {...this.props} data={colorData} colorBy={data => data.color} />
+        <ResponsivePie
+          {...this.props}
+          data={colorData}
+          colorBy={data => data.color}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          fill={[{ match: x => x.data.index === this.state.highlightedIndex, id: 'lines' }]}
+        />
       </PieWrapper>
     );
   }
@@ -70,6 +100,17 @@ Pie.defaultProps = {
   colors: 'greys',
   tooltip: PieTooltip,
   onClick: x => x,
+  defs: [
+    {
+      id: 'lines',
+      type: 'patternLines',
+      background: 'inherit',
+      color: '#ffffff54',
+      rotation: -45,
+      lineWidth: 4,
+      spacing: 10,
+    },
+  ],
 };
 
 Pie.propTypes = {
