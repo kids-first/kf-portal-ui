@@ -43,7 +43,6 @@ const ItemWrapper = styled('div')`
   font-size: 12px;
   color: #343434;
   font-weight: 500;
->>>>>>> 53be2c1397f94f51878971172c673ed4f75cb4d5
 `;
 
 const Title = styled('h3')`
