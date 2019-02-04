@@ -46,7 +46,7 @@ const SubHeading = styled('h3')`
   margin: 0;
 `;
 
-const Results = ({ activeView, setActiveView, theme }) => (
+const Results = ({ activeView, setActiveView, theme, sqon }) => (
   <React.Fragment>
     <ContentBar>
       <Left>
@@ -76,7 +76,7 @@ const Results = ({ activeView, setActiveView, theme }) => (
         </ViewLink>
       </ViewLinks>
     </ContentBar>
-    <ActiveView>{activeView === SUMMARY ? <Summary /> : <Table />}</ActiveView>
+    <ActiveView>{activeView === SUMMARY ? <Summary sqon={sqon} /> : <Table />}</ActiveView>
   </React.Fragment>
 );
 

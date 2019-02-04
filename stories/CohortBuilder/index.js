@@ -6,8 +6,6 @@ import { ThemeProvider } from 'emotion-theming';
 import { AppContainer } from 'react-hot-loader';
 import theme from 'theme/defaultTheme';
 import { initializeApi, ApiContext } from 'services/api';
-import { logoutAll } from 'services/login';
-import { EGO_JWT_KEY } from 'common/constants';
 
 /**
  * TODO: move this out of this file
@@ -15,13 +13,11 @@ import { EGO_JWT_KEY } from 'common/constants';
 const EnvironmentContainer = ({ children }) => (
   <ApiContext.Provider
     value={initializeApi({
+      defaultHeaders: {
+        authorization: `Bearer ${localStorage.EGO_JWT}`,
+      },
       onUnauthorized: response => {
-        if (localStorage[EGO_JWT_KEY]) {
-          localStorage.removeItem(EGO_JWT_KEY);
-          logoutAll().then(() => {
-            window.location.reload();
-          });
-        }
+        console.log('[unauthorized]: please put your ego token in the Login story ');
       },
     })}
   >

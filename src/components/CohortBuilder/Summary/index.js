@@ -63,7 +63,7 @@ const multiHeader = (
   />
 );
 
-const Summary = ({ theme }) => (
+const Summary = ({ theme, sqon }) => (
   <Row nogutter>
     <Col sm={12} md={9} lg={9}>
       <Row nogutter>
@@ -146,7 +146,9 @@ const Summary = ({ theme }) => (
       </Row>
     </Col>
     <Col sm={12} md={3} lg={3}>
-      <LongCard title="Phenotypes">Long Card</LongCard>
+      <LongCard title="Phenotypes">
+        <pre>{JSON.stringify(sqon, null, 2)}</pre>
+      </LongCard>
     </Col>
   </Row>
 );
