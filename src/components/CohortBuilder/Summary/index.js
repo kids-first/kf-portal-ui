@@ -35,7 +35,7 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
-const CardSlot = styled(Card)`
+const SmallCard = styled(Card)`
   height: 305px;
 `;
 
@@ -43,8 +43,18 @@ const LongCard = styled(Card)`
   height: 100%;
 `;
 
-const md = 4;
-const lg = 4;
+const CardSlotPies = styled(CardWrapper)`
+  height: 305px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 10px;
+`;
+
+const PaddedColumn = styled(Col)`
+  padding: 4px !important;
+`;
 
 const enhance = compose(
   withApi,
@@ -66,10 +76,10 @@ const Summary = ({ theme, sqon, api }) => (
         <Row nogutter>
           <Col sm={12} md={9} lg={9}>
             <Row nogutter>
-              <Col sm={12} md={md} lg={lg}>
+              <PaddedColumn sm={12} md={12} lg={3}>
                 <CardSlot title="Overall Survival" />
-              </Col>
-              <Col sm={12} md={md} lg={lg}>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={12} lg={3}>
                 <CardSlot title={multiHeader}>
                   <HorizontalBar
                     data={studiesBarMock}
@@ -87,8 +97,8 @@ const Summary = ({ theme, sqon, api }) => (
                     padding={0.5}
                   />
                 </CardSlot>
-              </Col>
-              <Col sm={12} md={md} lg={lg}>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={12} lg={3}>
                 <CardSlot title="Most Frequent Diagnoses">
                   <HorizontalBar
                     style={{ maxWidth: '100px' }}
@@ -107,23 +117,23 @@ const Summary = ({ theme, sqon, api }) => (
                     padding={0.5}
                   />
                 </CardSlot>
-              </Col>
-              <Col sm={12} md={md} lg={lg}>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={12} lg={3}>
                 <DemographicChart data={data} />
-              </Col>
-              <Col sm={12} md={md} lg={lg}>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={12} lg={3}>
                 <CardSlot title="File Breakdown" />
-              </Col>
-              <Col sm={12} md={md} lg={lg}>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={12} lg={3}>
                 <CardSlot title="Age at Diagnosis" />
-              </Col>
+              </PaddedColumn>
             </Row>
           </Col>
-          <Col sm={12} md={3} lg={3}>
+          <PaddedColumn sm={12} md={12} lg={3}>
             <LongCard title="Phenotypes">
               <pre>{JSON.stringify(sqon, null, 2)}</pre>
             </LongCard>
-          </Col>
+          </PaddedColumn>
         </Row>
       );
     }}
