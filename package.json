@@ -87,6 +87,7 @@
     "prettier": "^1.10.2",
     "react-app-rewire-emotion": "^4.0.0",
     "react-app-rewired": "^1.4.1",
+    "storybook-react-router": "^1.0.2",
     "vinyl-fs": "^3.0.2"
   },
   "prettier": {
