@@ -12,7 +12,6 @@ import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { Link } from 'react-router-dom';
-import DoubleChevronRightIcon from 'icons/DoubleChevronRightIcon';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -23,7 +22,7 @@ const ViewLinks = styled(Row)`
   }
 `;
 
-const Left = styled(Row)`
+const Detail = styled(Row)`
   align-items: center;
 `;
 
@@ -34,7 +33,7 @@ const Heading = styled(H2)`
 
 const ActiveView = styled('div')`
   width: 100%;
-  padding: 0 30px;
+  padding: 0 26px 36px 26px;
 `;
 
 const SubHeading = styled('h3')`
@@ -53,7 +52,7 @@ const PurpleLink = styled(Link)`
 const Results = ({ activeView, setActiveView, theme, sqon }) => (
   <React.Fragment>
     <ContentBar>
-      <Left>
+      <Detail>
         <Heading>All data</Heading>
 
         <DemographicIcon />
@@ -62,7 +61,7 @@ const Results = ({ activeView, setActiveView, theme, sqon }) => (
         <PurpleLink to="">
           <SubHeading color={theme.purple}>{`${Number(2422).toLocaleString()} Files`}</SubHeading>
         </PurpleLink>
-      </Left>
+      </Detail>
       <ViewLinks>
         <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
           <SummaryIcon marginRight={5} />

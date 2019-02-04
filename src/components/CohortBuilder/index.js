@@ -21,15 +21,8 @@ const Container = styled('div')`
 
 const Heading = styled(H1)`
   color: #2b388f;
+  margin-right: 20px;
 `;
-
-const Left = styled(Row)`
-  h1 {
-    margin-right: 20px;
-  }
-`;
-
-const Right = styled(Row)``;
 
 const FullWidthWhite = styled('div')`
   width: 100%;
@@ -48,14 +41,14 @@ const CohortBuilder = () => (
     }) => (
       <Container>
         <ContentBar>
-          <Left>
+          <Row>
             <Heading>Explore Data</Heading>
             <div>Load a Virtual Study</div>
-          </Left>
-          <Right>
+          </Row>
+          <Row>
             <button>Save virtual study</button>
             <button>Share</button>
-          </Right>
+          </Row>
         </ContentBar>
         <FullWidthWhite>
           <Categories />
