@@ -182,7 +182,13 @@ export const getUserStudyPermission = api => async ({
 };
 
 export const checkUserFilePermission = api => async ({ fileId }) => {
-  const userDetails = await getGen3User(api);
+  let userDetails;
+  try {
+    userDetails = await getGen3User(api);
+  } catch (err) {
+    return Promise.resolve(false);
+  }
+
   const approvedAcls = Object.keys(userDetails.projects);
 
   return graphql(api)({
