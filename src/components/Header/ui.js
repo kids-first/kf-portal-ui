@@ -84,7 +84,7 @@ export const DropdownExternalLink = applyDefaultStyles(styled(ExternalLink)`
 
 export const HeaderContainer = styled('div')`
   background: ${({ theme }) => theme.white};
-  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
+  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.lighterShadow};
   flex: none;
   z-index: 1;
 `;
