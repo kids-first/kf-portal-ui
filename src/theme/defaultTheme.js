@@ -15,6 +15,7 @@ const colors = {
   tertiaryBackground: '#edeef1', // light light blue
   lightBlue: '#008199',
   orange: '#ffaa52',
+  purple: '#a6278f',
 
   primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
 
@@ -64,14 +65,28 @@ const colors = {
 
   cardTitle: '#404c9a',
   defaultBadge: '#404c9a',
+
+  /**
+   * Cohort Builder
+   */
+  filterPurple: '#404c9a',
+  studyRed: '#dd1f2a',
+  demographicPurple: '#e53a95',
+  clinicalBlue: '#00aceb',
+  biospecimenOrange: '#f79122',
+  dataBlue: '#009bba',
+  uploadYellow: '#edb500',
+  borderPurple: '#cc3399',
 };
 
 export const chartColors = {
   lightblue: '#00ACEB',
   darkblue: '#2b388f',
-  purple: '#A6278F',
+  lightpurple: '#A6278F',
   orange: '#F79122',
   red: '#dd1f2a',
+  blue: '#1f9bb6',
+  purple: '#e3429b',
   gridGrey: '#e7e8ec',
   axisGrey: '#a9acbd',
   tickTextGrey: '#343434',

@@ -1,3 +1,105 @@
+export const studiesBarMock = [
+  {
+    id: '1',
+    label: 'Orofacial Cleft European ...',
+    probands: 415,
+    familyMembers: 830,
+  },
+  {
+    id: '2',
+    label: 'Ewing Sarcoma Genetic Risk',
+    probands: 485,
+    familyMembers: 718,
+  },
+  {
+    id: '3',
+    label: 'Pediatric Brain Tumors CBTTC',
+    probands: 1024,
+    familyMembers: 0,
+  },
+  {
+    id: '4',
+    label: 'Syndromic Cranial Dysinne...',
+    probands: 270,
+    familyMembers: 629,
+  },
+  {
+    id: '5',
+    label: 'Congenital Heart Defects',
+    probands: 297,
+    familyMembers: 593,
+  },
+  {
+    id: '6',
+    label: 'Congenital Diaphragmatic ...',
+    probands: 198,
+    familyMembers: 396,
+  },
+  {
+    id: '7',
+    label: 'Adolescent Idiopathic Sco...',
+    probands: 73,
+    familyMembers: 227,
+  },
+];
+
+export const topDiagnosesBarMock = [
+  {
+    id: '1',
+    label: 'Disease or Disorder',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '2',
+    label: 'Medulloblastoma',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '3',
+    label: 'Epilepsy',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '4',
+    label: 'Nervous System Disorder',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '5',
+    label: 'Adolescent Idiopathic Sco...',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '6',
+    label: 'Congenital Diaphragmatic ...',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '7',
+    label: 'Low Grade Glioma',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '8',
+    label: 'Cleft Lip Palate',
+    familyMembers: 50,
+    probands: 50,
+  },
+  {
+    id: '9',
+    label: 'Ewing Sarcoma',
+    familyMembers: 50,
+    probands: 50,
+  },
+];
+
 export const demographicPiesMock = {
   ethnicity: [
     {
