@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { BaseSvg } from 'icons';
 
 /*
 export default ({ width = 94, height = 94, fill = '#a9adc0', ...props }) => {
@@ -16,7 +16,6 @@ export default ({ width = 94, height = 94, fill = '#a9adc0', ...props }) => {
   );
 };
 */
-import { BaseSvg } from 'icons';
 
 export default ({ width = 94, height = 94, fill = '#fff', ...props }) =>
   BaseSvg({
