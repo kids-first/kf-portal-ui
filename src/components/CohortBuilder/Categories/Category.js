@@ -17,7 +17,7 @@ const Container = styled(Column)`
   border-top: 4px solid ${({ color }) => (color ? color : 'white')};
   position: relative;
   white-space: nowrap;
-  z-index: auto;
+  z-index: 1;
 `;
 
 const Options = styled('div')`
