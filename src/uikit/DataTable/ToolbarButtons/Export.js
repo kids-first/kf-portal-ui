@@ -4,9 +4,9 @@ import { saveAs } from 'file-saver';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const exportTSV = (data, columns, filename) => {
-  const visbleCols = columns.filter(c => c.show);
-  const headers = visbleCols.map(h => h.Header).join('\t');
-  const rows = data.map(d => visbleCols.map(header => d[header.accessor]).join('\t')).join('\n');
+  const visibleCols = columns.filter(c => c.show);
+  const headers = visibleCols.map(h => h.Header).join('\t');
+  const rows = data.map(d => visibleCols.map(header => d[header.accessor]).join('\t')).join('\n');
 
   const blob = new Blob([headers + '\n' + rows], { type: 'data:text/tab-separated-values' });
   trackUserInteraction({
