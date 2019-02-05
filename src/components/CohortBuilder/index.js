@@ -28,6 +28,7 @@ const FullWidthWhite = styled('div')`
   width: 100%;
   background: white;
   padding: 0 30px 30px 30px;
+  margin-top: 21px;
 `;
 
 const CohortBuilder = () => (

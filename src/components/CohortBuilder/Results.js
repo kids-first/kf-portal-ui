@@ -34,6 +34,7 @@ const Heading = styled(H2)`
 const ActiveView = styled('div')`
   width: 100%;
   padding: 0 26px 36px 26px;
+  margin-top: 19px;
 `;
 
 const SubHeading = styled('h3')`
