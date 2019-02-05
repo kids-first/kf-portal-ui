@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import styled, { css } from 'react-emotion';
+import { withTheme } from 'emotion-theming';
 import _ from 'lodash';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -8,6 +9,7 @@ import SummaryTable from 'uikit/SummaryTable';
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
 import ExternalLink from 'uikit/ExternalLink';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { kfWebRoot } from 'common/injectGlobals';
 
@@ -271,117 +273,127 @@ const Container = styled(Column)`
   align-items: center;
 `;
 
-const FileEntity = ({ api, fileId, isPageLoading, hasFilePermission }) => (
-  <ArrangerDataProvider
-    api={api}
-    query={fileQuery}
-    sqon={buildSqonForIds([fileId])}
-    transform={data => _.get(data, 'data.file')}
-  >
-    {file => {
-      if (file.isLoading || isPageLoading) {
-        return <div>Loading</div>;
-      } else {
-        const data = _.get(file, 'data.hits.edges[0].node');
+const FileEntity = compose(withTheme)(
+  ({ api, fileId, isPageLoading, hasFilePermission, theme }) => (
+    <ArrangerDataProvider
+      api={api}
+      query={fileQuery}
+      sqon={buildSqonForIds([fileId])}
+      transform={data => _.get(data, 'data.file')}
+    >
+      {file => {
+        if (file.isLoading || isPageLoading) {
+          return (
+            <div className={theme.fillCenter} style={{ marginTop: '31px' }}>
+              <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+            </div>
+          );
+        } else {
+          const data = _.get(file, 'data.hits.edges[0].node');
 
-        const fileType = data.file_format;
+          const fileType = data.file_format;
 
-        return (
-          <Container>
-            <EntityTitleBar>
-              <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
-            </EntityTitleBar>
-            <EntityActionBar>
-              <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
-              <Download
-                onSuccess={url => {
-                  trackUserInteraction({
-                    category: TRACKING_EVENTS.categories.entityPage.file,
-                    action: 'Download File',
-                    label: url,
-                  });
-                }}
-                onError={err => {
-                  trackUserInteraction({
-                    category: TRACKING_EVENTS.categories.entityPage.file,
-                    action: 'Download File FAILED',
-                    label: JSON.stringify(err, null, 2),
-                  });
-                }}
-                kfId={data.kf_id}
-                disabled={!hasFilePermission}
-              />
-              <ShareButton link={window.location.href} />
-            </EntityActionBar>
-
-            <EntityContent>
-              <EntityContentSection title="File Properties">
-                <Row
-                  className={css`
-                    width: '100%';
-                  `}
-                >
-                  <SummaryTable rows={toFilePropertiesSummary(data)} rowMax={6} />
-                </Row>
-              </EntityContentSection>
-              <EntityContentDivider />
-              <EntityContentSection title="Associated Participants/Biospecimens">
-                <BaseDataTable
-                  analyticsTracking={{
-                    title: 'Associated Participants/Biospecimens',
-                    category: TRACKING_EVENTS.categories.entityPage.file,
-                  }}
-                  loading={file.isLoading}
-                  data={toParticpantBiospecimenData(data)}
-                  transforms={{
-                    study_name: studyShortName => (
-                      <ExternalLink
-                        href={`${kfWebRoot}/support/studies-and-access`}
-                        onClick={e => {
-                          trackUserInteraction({
-                            category: TRACKING_EVENTS.categories.entityPage.file,
-                            action:
-                              TRACKING_EVENTS.actions.click +
-                              `: Associated Participants/Biospecimens: Study Name`,
-                            label: studyShortName,
-                          });
-                        }}
-                      >
-                        {studyShortName}
-                      </ExternalLink>
-                    ),
-                  }}
-                  columns={particpantBiospecimenColumns}
-                  downloadName="participants_biospecimens"
+          return (
+            <Container>
+              <EntityTitleBar>
+                <EntityTitle
+                  icon="file"
+                  title={fileId}
+                  tags={file.isLoading ? [] : getTags(data)}
                 />
-              </EntityContentSection>
-              <EntityContentDivider />
-              <EntityContentSection title="Associated Experimental Strategies">
-                <BaseDataTable
-                  analyticsTracking={{
-                    title: 'Associated Experimental Strategies',
-                    category: TRACKING_EVENTS.categories.entityPage.file,
+              </EntityTitleBar>
+              <EntityActionBar>
+                <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
+                <Download
+                  onSuccess={url => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: 'Download File',
+                      label: url,
+                    });
                   }}
-                  loading={file.isLoading}
-                  data={toExperimentalStrategiesData(data)}
-                  columns={experimentalStrategiesColumns}
-                  downloadName="experimental_strategies"
+                  onError={err => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: 'Download File FAILED',
+                      label: JSON.stringify(err, null, 2),
+                    });
+                  }}
+                  kfId={data.kf_id}
+                  disabled={!hasFilePermission}
                 />
-              </EntityContentSection>
-              {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
-                <React.Fragment>
-                  <EntityContentDivider />
-                  <EntityContentSection title="Sequencing Read Properties">
-                    <InfoBoxRow data={toSequencingReadProperties(data)} />
-                  </EntityContentSection>
-                </React.Fragment>
-              ) : null}
-            </EntityContent>
-          </Container>
-        );
-      }
-    }}
-  </ArrangerDataProvider>
+                <ShareButton link={window.location.href} />
+              </EntityActionBar>
+
+              <EntityContent>
+                <EntityContentSection title="File Properties">
+                  <Row
+                    className={css`
+                      width: '100%';
+                    `}
+                  >
+                    <SummaryTable rows={toFilePropertiesSummary(data)} rowMax={6} />
+                  </Row>
+                </EntityContentSection>
+                <EntityContentDivider />
+                <EntityContentSection title="Associated Participants/Biospecimens">
+                  <BaseDataTable
+                    analyticsTracking={{
+                      title: 'Associated Participants/Biospecimens',
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                    }}
+                    loading={file.isLoading}
+                    data={toParticpantBiospecimenData(data)}
+                    transforms={{
+                      study_name: studyShortName => (
+                        <ExternalLink
+                          href={`${kfWebRoot}/support/studies-and-access`}
+                          onClick={e => {
+                            trackUserInteraction({
+                              category: TRACKING_EVENTS.categories.entityPage.file,
+                              action:
+                                TRACKING_EVENTS.actions.click +
+                                `: Associated Participants/Biospecimens: Study Name`,
+                              label: studyShortName,
+                            });
+                          }}
+                        >
+                          {studyShortName}
+                        </ExternalLink>
+                      ),
+                    }}
+                    columns={particpantBiospecimenColumns}
+                    downloadName="participants_biospecimens"
+                  />
+                </EntityContentSection>
+                <EntityContentDivider />
+                <EntityContentSection title="Associated Experimental Strategies">
+                  <BaseDataTable
+                    analyticsTracking={{
+                      title: 'Associated Experimental Strategies',
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                    }}
+                    loading={file.isLoading}
+                    data={toExperimentalStrategiesData(data)}
+                    columns={experimentalStrategiesColumns}
+                    downloadName="experimental_strategies"
+                  />
+                </EntityContentSection>
+                {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
+                  <React.Fragment>
+                    <EntityContentDivider />
+                    <EntityContentSection title="Sequencing Read Properties">
+                      <InfoBoxRow data={toSequencingReadProperties(data)} />
+                    </EntityContentSection>
+                  </React.Fragment>
+                ) : null}
+              </EntityContent>
+            </Container>
+          );
+        }
+      }}
+    </ArrangerDataProvider>
+  ),
 );
 
 const enhance = compose(

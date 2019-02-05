@@ -40,6 +40,7 @@ const colors = {
 
   shadow: 'rgba(0, 0, 0, 0.5)',
   lightShadow: '#a0a0a3',
+  lighterShadow: '#bbbbbb',
 
   // error
   errorDark: '#d8202f', //red
