@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { ResponsivePie } from '@nivo/pie';
-import Tooltip from './Tooltip';
 
 const PieWrapper = styled('div')`
   height: 100%;
