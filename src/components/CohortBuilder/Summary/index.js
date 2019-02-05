@@ -67,6 +67,7 @@ const multiHeader = (
   />
 );
 
+<<<<<<< HEAD
 const Summary = ({ theme, sqon, api }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
     {({ loading, data }) => {
@@ -138,6 +139,94 @@ const Summary = ({ theme, sqon, api }) => (
       );
     }}
   </QueriesResolver>
+=======
+const Summary = ({ theme }) => (
+  <Row nogutter>
+    <Col sm={12} md={12} lg={9}>
+      <Row nogutter>
+        <PaddedColumn sm={12} md={md} lg={lg}>
+          <SmallCard title="Overall Survival" />
+        </PaddedColumn>
+        <PaddedColumn sm={12} md={md} lg={lg}>
+          <SmallCard title={multiHeader}>
+            <HorizontalBar
+              data={studiesBarMock}
+              indexBy="label"
+              keys={['probands', 'familyMembers']}
+              tooltipFormatter={studiesToolTip}
+              sortBy={sortDescParticipant}
+              tickInterval={4}
+              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              xTickTextLength={28}
+              legends={[
+                { title: 'Probands', color: theme.chartColors.blue },
+                { title: 'Family Members', color: theme.chartColors.purple },
+              ]}
+              padding={0.5}
+            />
+          </SmallCard>
+        </PaddedColumn>
+        <PaddedColumn sm={12} md={md} lg={lg}>
+          <SmallCard title="Most Frequent Diagnoses">
+            <HorizontalBar
+              style={{ maxWidth: '100px' }}
+              data={topDiagnosesBarMock}
+              indexBy="label"
+              keys={['probands', 'familyMembers']}
+              tooltipFormatter={mostFrequentDiagnosisTooltip}
+              sortByValue={true}
+              tickInterval={4}
+              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              xTickTextLength={28}
+              legends={[
+                { title: 'Probands', color: theme.chartColors.blue },
+                { title: 'Family Members', color: theme.chartColors.purple },
+              ]}
+              padding={0.5}
+            />
+          </SmallCard>
+        </PaddedColumn>
+        <PaddedColumn sm={12} md={md} lg={lg}>
+          <CardSlotPies>
+            <Pie
+              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+              title={'Gender'}
+              data={demographicPiesMock.gender}
+              colors={[theme.chartColors.orange, '#FFFFFF']}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+              title={'Ethnicity'}
+              data={demographicPiesMock.ethnicity}
+              colors={[theme.chartColors.darkblue, '#FFFFFF']}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%' }}
+              title={'Race'}
+              data={demographicPiesMock.race}
+              colors={[theme.chartColors.lightpurple, '#FFFFFF']}
+            />
+            <Pie
+              style={{ height: '42%', width: '50%' }}
+              title={'Family Composition'}
+              data={demographicPiesMock.familyComposition}
+              colors={[theme.chartColors.lightblue, '#FFFFFF']}
+            />
+          </CardSlotPies>
+        </PaddedColumn>
+        <PaddedColumn sm={12} md={md} lg={lg}>
+          <SmallCard title="File Breakdown" />
+        </PaddedColumn>
+        <PaddedColumn sm={12} md={md} lg={lg}>
+          <SmallCard title="Age at Diagnosis" />
+        </PaddedColumn>
+      </Row>
+    </Col>
+    <PaddedColumn sm={12} md={12} lg={3}>
+      <LongCard title="Phenotypes">Long Card</LongCard>
+    </PaddedColumn>
+  </Row>
+>>>>>>> cleanup and rebase
 );
 
 export default enhance(Summary);
