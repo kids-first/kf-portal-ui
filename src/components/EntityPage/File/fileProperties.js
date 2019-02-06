@@ -3,18 +3,14 @@ import _ from 'lodash';
 import { pickData } from './utils';
 import { formatToGB } from './utils';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { kfWebRoot } from 'common/injectGlobals';
 
-import { Link } from 'react-router-dom';
+import ExternalLink from 'uikit/ExternalLink';
 
 export const toFilePropertiesSummary = data => {
   const participants = data.participants.hits.edges[0].node;
   const study = participants.study;
   const biospecimens = participants.biospecimens.hits.edges[0].node;
-
-  // it could have been easier (see below), but `data.experiment_strategies` is sometimes empty,
-  //  even if data.sequencing_experiments.hits.edges is ont empty for the given file 😕
-  // const experimentalStrategies =
-  //   _.uniq(_.get(data, 'experiment_strategies').filter(datum => !!datum)).join(', ') || '--';
 
   const experimentalStrategies =
     _.uniq(
@@ -30,8 +26,8 @@ export const toFilePropertiesSummary = data => {
     {
       title: 'Study:',
       summary: (
-        <Link
-          to={''}
+        <ExternalLink
+          href={`${kfWebRoot}/support/studies-and-access`}
           onClick={e => {
             trackUserInteraction({
               category: TRACKING_EVENTS.categories.entityPage.file,
@@ -39,7 +35,9 @@ export const toFilePropertiesSummary = data => {
               label: `${study.short_name} (${study.kf_id})`,
             });
           }}
-        >{`${study.short_name} (${study.kf_id})`}</Link>
+        >
+          {`${study.short_name} (${study.kf_id})`}
+        </ExternalLink>
       ),
     },
     { title: 'Access:', summary: data.controlled_access ? 'Controlled' : 'Open' },
