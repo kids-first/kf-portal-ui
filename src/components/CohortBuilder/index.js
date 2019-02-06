@@ -39,34 +39,37 @@ const CohortBuilder = () => (
       setActiveSqonIndex,
       setSqons,
       getActiveExecutableSqon,
-    }) => (
-      <Container>
-        <ContentBar>
-          <Row>
-            <Heading>Explore Data</Heading>
-            <div>Load a Virtual Study</div>
-          </Row>
-          <Row>
-            <button>Save virtual study</button>
-            <button>Share</button>
-          </Row>
-        </ContentBar>
-        <FullWidthWhite>
-          <Categories />
-          <Queries
-            syntheticSqons={syntheticSqons}
-            activeSqonIndex={activeSqonIndex}
-            onChange={({ newSyntheticSqons }) => {
-              setSqons(newSyntheticSqons);
-            }}
-            onActiveSqonSelect={({ index }) => {
-              setActiveSqonIndex(index);
-            }}
-          />
-        </FullWidthWhite>
-        <Results sqon={getActiveExecutableSqon()} />
-      </Container>
-    )}
+    }) => {
+      const executableSqon = getActiveExecutableSqon();
+      return (
+        <Container>
+          <ContentBar>
+            <Row>
+              <Heading>Explore Data</Heading>
+              <div>Load a Virtual Study</div>
+            </Row>
+            <Row>
+              <button>Save virtual study</button>
+              <button>Share</button>
+            </Row>
+          </ContentBar>
+          <FullWidthWhite>
+            <Categories />
+            <Queries
+              syntheticSqons={syntheticSqons}
+              activeSqonIndex={activeSqonIndex}
+              onChange={({ newSyntheticSqons }) => {
+                setSqons(newSyntheticSqons);
+              }}
+              onActiveSqonSelect={({ index }) => {
+                setActiveSqonIndex(index);
+              }}
+            />
+          </FullWidthWhite>
+          <Results sqon={executableSqon} />
+        </Container>
+      );
+    }}
   </SQONProvider>
 );
 

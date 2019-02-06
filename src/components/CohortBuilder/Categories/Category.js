@@ -4,7 +4,6 @@ import styled from 'react-emotion';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
 import { compose } from 'recompose';
-import { items } from './mocks';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
 import CategoryRow from './CategoryRow';
@@ -57,27 +56,26 @@ const CategoryButton = styled(Column)`
   align-items: center;
 `;
 
-const Category = ({
-  title,
-  children,
-  color,
-  toggleDropdown,
-  isDropdownVisible,
-  setDropdownVisibility,
-  toggleExpanded,
-  toggleExpandedDropdown,
-  setActiveIndex,
-  activeIndex,
-  setExpanded,
-  showExpanded,
-}) => {
-  const DropdownCont = ({ children, ...props }) => (
-    <Container {...props} color={color}>
-      {children}
-    </Container>
-  );
-
-  return (
+const Category = compose(withDropdownMultiPane)(
+  ({
+    title,
+    children,
+    color,
+    toggleDropdown,
+    isDropdownVisible,
+    setDropdownVisibility,
+    toggleExpanded,
+    toggleExpandedDropdown,
+    setActiveIndex,
+    activeIndex,
+    setExpanded,
+    showExpanded,
+    fields,
+    sqon = {
+      op: 'and',
+      content: [],
+    },
+  }) => (
     <Dropdown
       {...{
         multiLevel: true,
@@ -92,19 +90,26 @@ const Category = ({
         setExpanded,
         showExpanded,
         showArrow: false,
-        items: items.map((item, i) => <CategoryRow active={true} title={item.name} />),
-        expandedItems: items.map((item, i) => (
+        items: (fields || []).map((item, i) => <CategoryRow active={true} title={item} />),
+        expandedItems: (fields || []).map((field, i) => (
           <Filter
-            onCancel={toggleExpandedDropdown}
-            onBack={toggleExpanded}
-            onApply={active => {
+            initialSqon={sqon}
+            onSubmit={sqon => {
+              console.log('yo: ', sqon);
               toggleExpanded();
             }}
-          >
-            {item.expanded}
-          </Filter>
+            onBack={toggleExpanded}
+            onCancel={toggleExpandedDropdown}
+            field={field}
+            arrangerProjectId={'nov_30_1'}
+            arrangerProjectIndex={'participant'}
+          />
         )),
-        ContainerComponent: DropdownCont,
+        ContainerComponent: ({ children, ...props }) => (
+          <Container {...props} color={color}>
+            {children}
+          </Container>
+        ),
         OptionsContainerComponent: Options,
         ItemWrapperComponent: ItemWrapper,
       }}
@@ -114,12 +119,13 @@ const Category = ({
         <Title> {title}</Title>
       </CategoryButton>
     </Dropdown>
-  );
-};
+  ),
+);
 
 Category.propTypes = {
   title: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default compose(withDropdownMultiPane)(Category);
+export default Category;

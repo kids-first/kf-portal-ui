@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
+import FieldFilter from '@arranger/components/dist/AdvancedSqonBuilder/filterComponents';
+import { withApi } from 'services/api';
+
 import { TealActionButton, WhiteButton } from 'uikit/Button';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 
@@ -11,7 +14,7 @@ const FilterCont = styled('div')`
   position: absolute;
   left: 0;
   top: 100%;
-  cursor: pointer;
+  cursor: default;
   text-align: left;
   border-radius: 5px;
   box-shadow: 0 0 5.9px 0.1px #bbbbbb;
@@ -28,6 +31,15 @@ const Header = styled('div')`
 const Content = styled('div')`
   flex: 1;
   background-color: white;
+  display: flex;
+  justify-content: center;
+  &.filterContainer {
+    border: none;
+    box-shadow: none;
+    margin: 0px;
+    width: 100%;
+    border-radius: 0px;
+  }
 `;
 
 const Footer = styled(Row)`
@@ -43,20 +55,47 @@ const TealButton = styled(TealActionButton)`
   margin: 5px;
 `;
 
-const Filter = ({ children, onCancel, onBack, onApply }) => (
-  <FilterCont>
-    <Header>
-      <WButton onClick={onBack}>
-        <LeftIcon />
-        Back
-      </WButton>
-    </Header>
-    <Content>{children}</Content>
-    <Footer>
-      <WButton onClick={onCancel}>Cancel</WButton>
-      <TealButton onClick={onApply}>Apply</TealButton>
-    </Footer>
-  </FilterCont>
+/**
+ * Some inversion of control going on here through the `ContainerComponent` prop
+ */
+const Filter = withApi(
+  ({
+    api,
+    initialSqon,
+    onSubmit,
+    onCancel,
+    onBack,
+    field,
+    arrangerProjectId = arrangerProjectId,
+    arrangerProjectIndex = 'participant',
+  }) => (
+    <FieldFilter
+      sqonPath={[0]}
+      initialSqon={initialSqon}
+      onSubmit={onSubmit}
+      onCancel={onCancel}
+      fieldDisplayNameMap={{}}
+      api={api}
+      field={field}
+      arrangerProjectId={arrangerProjectId}
+      arrangerProjectIndex={arrangerProjectIndex}
+      ContainerComponent={({ children, onSubmit: onSqonSubmit, onCancel }) => (
+        <FilterCont>
+          <Header>
+            <WButton onClick={onBack}>
+              <LeftIcon />
+              Back
+            </WButton>
+          </Header>
+          <Content className="filterContainer">{children}</Content>
+          <Footer>
+            <WButton onClick={onCancel}>Cancel</WButton>
+            <TealButton onClick={onSqonSubmit}>Apply</TealButton>
+          </Footer>
+        </FilterCont>
+      )}
+    />
+  ),
 );
 
 export default Filter;

@@ -10,14 +10,7 @@ const MOCK_INITIAL_SQONS = [
         op: 'in',
         content: {
           field: 'kf_id',
-          value: ['GF_YE6G3H03', 'GF_41B47P7R'],
-        },
-      },
-      {
-        op: 'not-in',
-        content: {
-          field: 'kf_id',
-          value: ['GF_QMB8N50A', 'GF_AZ326B9H'],
+          value: ['PT_1NTSYZ98'],
         },
       },
     ],
