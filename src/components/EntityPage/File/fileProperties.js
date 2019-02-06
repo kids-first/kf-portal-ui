@@ -32,7 +32,7 @@ export const toFilePropertiesSummary = data => {
             trackUserInteraction({
               category: TRACKING_EVENTS.categories.entityPage.file,
               action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-              label: `study.short_name (${study.kf_id})`,
+              label: `${study.short_name} (${study.kf_id})`,
             });
           }}
         >
