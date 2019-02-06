@@ -3,7 +3,7 @@ import { differenceInYears, differenceInDays, addYears } from 'date-fns';
 
 export const pickData = (data, valuePath, transform = x => x) => {
   const selectedData = _.get(data, valuePath, null);
-  return selectedData ? transform(selectedData) : '--';
+  return selectedData === null ? '--' : transform(selectedData);
 };
 
 export const formatDate = date => {

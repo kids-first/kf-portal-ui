@@ -23,7 +23,7 @@ export const toParticpantBiospecimenData = data =>
           participant_id: pickData(p, 'kf_id'),
           external_id: pickData(p, 'external_id'),
           study_name: pickData(p, 'study.short_name'),
-          proband: pickData(p, 'is_proband', val => (typeof val === 'boolean' ? 'Yes' : 'No')),
+          proband: pickData(p, 'is_proband', val => (Boolean(val) ? 'Yes' : 'No')),
           biospecimen_id: pickData(biospecimen, 'kf_id'),
           analyte_type: pickData(biospecimen, 'analyte_type'),
           tissue_type: pickData(biospecimen, 'source_text_tissue_type'),
