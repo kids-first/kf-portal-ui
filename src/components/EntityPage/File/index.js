@@ -8,8 +8,11 @@ import Column from 'uikit/Column';
 import SummaryTable from 'uikit/SummaryTable';
 import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
+import ExternalLink from 'uikit/ExternalLink';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { kfWebRoot } from 'common/injectGlobals';
+
 import {
   EntityTitleBar,
   EntityTitle,
@@ -341,6 +344,24 @@ const FileEntity = compose(withTheme)(
                     }}
                     loading={file.isLoading}
                     data={toParticpantBiospecimenData(data)}
+                    transforms={{
+                      study_name: studyShortName => (
+                        <ExternalLink
+                          href={`${kfWebRoot}/support/studies-and-access`}
+                          onClick={e => {
+                            trackUserInteraction({
+                              category: TRACKING_EVENTS.categories.entityPage.file,
+                              action:
+                                TRACKING_EVENTS.actions.click +
+                                `: Associated Participants/Biospecimens: Study Name`,
+                              label: studyShortName,
+                            });
+                          }}
+                        >
+                          {studyShortName}
+                        </ExternalLink>
+                      ),
+                    }}
                     columns={particpantBiospecimenColumns}
                     downloadName="participants_biospecimens"
                   />
