@@ -38,7 +38,7 @@ import {
 } from './experimentalStrategies';
 
 import { toFilePropertiesSummary } from './fileProperties';
-import { toSequencingReadProperties } from './sequencingProperties';
+import { hasSequencingReadProperties, toSequencingReadProperties } from './sequencingProperties';
 
 import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
@@ -288,109 +288,111 @@ const FileEntity = compose(withTheme)(
               <LoadingSpinner color={theme.greyScale11} size={'50px'} />
             </div>
           );
-        } else {
-          const data = _.get(file, 'data.hits.edges[0].node');
-
-          const fileType = data.file_format;
-
-          return (
-            <Container>
-              <EntityTitleBar>
-                <EntityTitle
-                  icon="file"
-                  title={fileId}
-                  tags={file.isLoading ? [] : getTags(data)}
-                />
-              </EntityTitleBar>
-              <EntityActionBar>
-                <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
-                <Download
-                  onSuccess={url => {
-                    trackUserInteraction({
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                      action: 'Download File',
-                      label: url,
-                    });
-                  }}
-                  onError={err => {
-                    trackUserInteraction({
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                      action: 'Download File FAILED',
-                      label: JSON.stringify(err, null, 2),
-                    });
-                  }}
-                  kfId={data.kf_id}
-                  disabled={!hasFilePermission}
-                />
-                <ShareButton link={window.location.href} />
-              </EntityActionBar>
-
-              <EntityContent>
-                <EntityContentSection title="File Properties">
-                  <Row
-                    className={css`
-                      width: '100%';
-                    `}
-                  >
-                    <SummaryTable rows={toFilePropertiesSummary(data)} rowMax={6} />
-                  </Row>
-                </EntityContentSection>
-                <EntityContentDivider />
-                <EntityContentSection title="Associated Participants/Biospecimens">
-                  <BaseDataTable
-                    analyticsTracking={{
-                      title: 'Associated Participants/Biospecimens',
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                    }}
-                    loading={file.isLoading}
-                    data={toParticpantBiospecimenData(data)}
-                    transforms={{
-                      study_name: studyShortName => (
-                        <ExternalLink
-                          href={`${kfWebRoot}/support/studies-and-access`}
-                          onClick={e => {
-                            trackUserInteraction({
-                              category: TRACKING_EVENTS.categories.entityPage.file,
-                              action:
-                                TRACKING_EVENTS.actions.click +
-                                `: Associated Participants/Biospecimens: Study Name`,
-                              label: studyShortName,
-                            });
-                          }}
-                        >
-                          {studyShortName}
-                        </ExternalLink>
-                      ),
-                    }}
-                    columns={particpantBiospecimenColumns}
-                    downloadName="participants_biospecimens"
-                  />
-                </EntityContentSection>
-                <EntityContentDivider />
-                <EntityContentSection title="Associated Experimental Strategies">
-                  <BaseDataTable
-                    analyticsTracking={{
-                      title: 'Associated Experimental Strategies',
-                      category: TRACKING_EVENTS.categories.entityPage.file,
-                    }}
-                    loading={file.isLoading}
-                    data={toExperimentalStrategiesData(data)}
-                    columns={experimentalStrategiesColumns}
-                    downloadName="experimental_strategies"
-                  />
-                </EntityContentSection>
-                {fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM ? (
-                  <React.Fragment>
-                    <EntityContentDivider />
-                    <EntityContentSection title="Sequencing Read Properties">
-                      <InfoBoxRow data={toSequencingReadProperties(data)} />
-                    </EntityContentSection>
-                  </React.Fragment>
-                ) : null}
-              </EntityContent>
-            </Container>
-          );
         }
+
+        const data = _.get(file, 'data.hits.edges[0].node');
+        const fileType = data.file_format;
+
+        return (
+          <Container>
+            <EntityTitleBar>
+              <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
+            </EntityTitleBar>
+            <EntityActionBar>
+              <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
+              <Download
+                onSuccess={url => {
+                  trackUserInteraction({
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                    action: 'Download File',
+                    label: url,
+                  });
+                }}
+                onError={err => {
+                  trackUserInteraction({
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                    action: 'Download File FAILED',
+                    label: JSON.stringify(err, null, 2),
+                  });
+                }}
+                kfId={data.kf_id}
+                disabled={!hasFilePermission}
+              />
+              <ShareButton link={window.location.href} />
+            </EntityActionBar>
+
+            <EntityContent>
+              <EntityContentSection title="File Properties">
+                <Row
+                  className={css`
+                    width: '100%';
+                  `}
+                >
+                  <SummaryTable rows={toFilePropertiesSummary(data)} rowMax={6} />
+                </Row>
+              </EntityContentSection>
+              <EntityContentDivider />
+              <EntityContentSection title="Associated Participants/Biospecimens">
+                <BaseDataTable
+                  analyticsTracking={{
+                    title: 'Associated Participants/Biospecimens',
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                  }}
+                  loading={file.isLoading}
+                  data={toParticpantBiospecimenData(data)}
+                  transforms={{
+                    study_name: studyShortName => (
+                      <ExternalLink
+                        href={`${kfWebRoot}/support/studies-and-access`}
+                        onClick={e => {
+                          trackUserInteraction({
+                            category: TRACKING_EVENTS.categories.entityPage.file,
+                            action:
+                              TRACKING_EVENTS.actions.click +
+                              `: Associated Participants/Biospecimens: Study Name`,
+                            label: studyShortName,
+                          });
+                        }}
+                      >
+                        {studyShortName}
+                      </ExternalLink>
+                    ),
+                  }}
+                  columns={particpantBiospecimenColumns}
+                  downloadName="participants_biospecimens"
+                />
+              </EntityContentSection>
+
+              {hasSequencingReadProperties(data) ? (
+                <React.Fragment>
+                  <EntityContentDivider />
+                  <EntityContentSection title="Associated Experimental Strategies">
+                    <BaseDataTable
+                      analyticsTracking={{
+                        title: 'Associated Experimental Strategies',
+                        category: TRACKING_EVENTS.categories.entityPage.file,
+                      }}
+                      loading={file.isLoading}
+                      data={toExperimentalStrategiesData(data)}
+                      columns={experimentalStrategiesColumns}
+                      downloadName="experimental_strategies"
+                    />
+                  </EntityContentSection>
+                </React.Fragment>
+              ) : null}
+
+              {(fileType === FILE_TYPE_CRAM || fileType === FILE_TYPE_BAM) &&
+              hasSequencingReadProperties(data) ? (
+                <React.Fragment>
+                  <EntityContentDivider />
+                  <EntityContentSection title="Sequencing Read Properties">
+                    <InfoBoxRow data={toSequencingReadProperties(data)} />
+                  </EntityContentSection>
+                </React.Fragment>
+              ) : null}
+            </EntityContent>
+          </Container>
+        );
       }}
     </ArrangerDataProvider>
   ),
