@@ -37,6 +37,9 @@ const sortDescParticipant = (a, b) => {
 
 const CardSlot = styled(Card)`
   height: 305px;
+  & div {
+    overflow: visible;
+  }
 `;
 
 const CardSlotPies = styled(CardWrapper)`
@@ -85,14 +88,12 @@ const Summary = ({ theme, sqon }) => (
                 { title: 'Probands', color: theme.chartColors.blue },
                 { title: 'Family Members', color: theme.chartColors.purple },
               ]}
-              padding={0.5}
             />
           </CardSlot>
         </Col>
         <Col sm={12} md={md} lg={lg}>
           <CardSlot title="Most Frequent Diagnoses">
             <HorizontalBar
-              style={{ maxWidth: '100px' }}
               data={topDiagnosesBarMock}
               indexBy="label"
               keys={['probands', 'familyMembers']}
@@ -105,7 +106,7 @@ const Summary = ({ theme, sqon }) => (
                 { title: 'Probands', color: theme.chartColors.blue },
                 { title: 'Family Members', color: theme.chartColors.purple },
               ]}
-              padding={0.5}
+              padding={0.33}
             />
           </CardSlot>
         </Col>

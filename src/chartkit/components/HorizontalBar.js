@@ -11,7 +11,8 @@ import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const HorizontalBarWrapper = styled('div')`
-  height: 90%;
+  height: 100%;
+  width: 100%;
 `;
 
 /**
@@ -23,6 +24,8 @@ const HorizontalBarWrapper = styled('div')`
 const TextBugWrapper = styled('div')`
   width: 100%;
   height: 100%;
+  position: relative;
+  top: -10px;
   & text {
     dominant-baseline: ${({ baseline }) => baseline};
   }
@@ -52,7 +55,8 @@ class HorizontalBar extends Component {
   }
 
   onMouseEnter(data, e) {
-    e.target.style.cursor = 'pointer';
+    //@NOTE Re-enable once graph is clickable
+    //e.target.style.cursor = 'pointer';
 
     if (data) {
       const { index, indexValue } = data;
@@ -134,8 +138,8 @@ class HorizontalBar extends Component {
       onClick: this.onClick,
       margin: {
         top: 0,
-        right: 8,
-        bottom: 70,
+        right: 10,
+        bottom: 60,
         left: 160,
       },
       padding: this.props.padding ? this.props.padding : 0.3,
