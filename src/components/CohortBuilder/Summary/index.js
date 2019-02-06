@@ -85,6 +85,7 @@ const Summary = ({ theme, sqon }) => (
             <HorizontalBar
               data={studiesBarMock}
               indexBy="label"
+              keys={['probands', 'familyMembers']}
               tooltipFormatter={studiesToolTip}
               sortBy={sortDescParticipant}
               tickInterval={4}
