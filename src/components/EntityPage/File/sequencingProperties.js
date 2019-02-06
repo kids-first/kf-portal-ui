@@ -1,5 +1,13 @@
+import _ from 'lodash';
+
+export const hasSequencingReadProperties = data => {
+  return _.get(data, 'sequencing_experiments.hits.edges[0].node', null) !== null;
+};
+
 export const toSequencingReadProperties = data => {
-  const experiments = data.sequencing_experiments.hits.edges[0].node;
+  const experiments = _.get(data, 'sequencing_experiments.hits.edges[0].node');
+
+  if (!experiments) return [];
 
   const {
     max_insert_size: maxInsertSize,

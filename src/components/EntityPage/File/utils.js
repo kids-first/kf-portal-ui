@@ -1,9 +1,12 @@
 import _ from 'lodash';
 import { differenceInYears, differenceInDays, addYears } from 'date-fns';
 
-export const pickData = (data, valuePath, transform = x => x) => {
+export const pickData = (data, valuePath, transform) => {
   const selectedData = _.get(data, valuePath, null);
-  return selectedData ? transform(selectedData) : '--';
+  if (transform) {
+    return transform(selectedData);
+  }
+  return selectedData === null ? '--' : selectedData;
 };
 
 export const formatDate = date => {
