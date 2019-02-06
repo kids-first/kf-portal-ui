@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-
 import { demographicPiesMock, topDiagnosesBarMock, studiesBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
@@ -10,6 +9,7 @@ import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
 import Pie from 'chartkit/components/Pie';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
+import DataProvider from '../DataProvider';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
