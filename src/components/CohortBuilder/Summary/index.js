@@ -44,6 +44,9 @@ const sortDescParticipant = (a, b) => {
 
 const CardSlot = styled(Card)`
   height: 305px;
+  & div {
+    overflow: visible;
+  }
 `;
 
 const LongCard = styled(Card)`

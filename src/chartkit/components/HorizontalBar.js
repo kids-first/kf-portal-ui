@@ -12,7 +12,8 @@ import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const HorizontalBarWrapper = styled('div')`
-  height: 90%;
+  height: 100%;
+  width: 100%;
 `;
 
 class HorizontalBar extends Component {
@@ -121,8 +122,8 @@ class HorizontalBar extends Component {
       onClick: this.onClick,
       margin: {
         top: 0,
-        right: 8,
-        bottom: 70,
+        right: 10,
+        bottom: 60,
         left: 160,
       },
       padding: this.props.padding ? this.props.padding : 0.3,
