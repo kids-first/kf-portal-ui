@@ -99,7 +99,11 @@ export const demographicQuery = ({ sqon }) => ({
         label: key,
         value: ethnicity[key],
       })),
-      familyComposition: familyComposition,
+      familyComposition: Object.keys(familyComposition).map(key => ({
+        id: keyToId(key),
+        label: key,
+        value: familyComposition[key],
+      })),
     };
   },
 });
