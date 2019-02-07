@@ -2,20 +2,19 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-
 import {
-  demographicPiesMock,
   topDiagnosesBarMock,
   studiesBarMock,
   ageAtDiagnosisBarMock,
 } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
-import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
-import Pie from 'chartkit/components/Pie';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import VerticalBar from 'chartkit/components/VerticalBar';
+import QueriesResolver from '../QueriesResolver';
+import { withApi } from 'services/api';
+import DemographicChart, { demographicQuery } from './DemographicChart';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -49,23 +48,21 @@ const CardSlot = styled(Card)`
   height: 305px;
 `;
 
-const CardSlotPies = styled(CardWrapper)`
-  height: 305px;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px 10px;
-`;
-
 const LongCard = styled(Card)`
   height: 100%;
 `;
 
-const md = 4;
+const PaddedColumn = styled(Col)`
+  padding: 4px !important;
+`;
+
+const md = 6;
 const lg = 4;
 
-const enhance = compose(withTheme);
+const enhance = compose(
+  withApi,
+  withTheme,
+);
 
 const multiHeader = (
   <MultiHeader
@@ -73,103 +70,86 @@ const multiHeader = (
   />
 );
 
-const Summary = ({ theme, sqon }) => (
-  <Row nogutter>
-    <Col sm={12} md={9} lg={9}>
-      <Row nogutter>
-        <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Overall Survival" />
-        </Col>
-        <Col sm={12} md={md} lg={lg}>
-          <CardSlot title={multiHeader}>
-            <HorizontalBar
-              data={studiesBarMock}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={studiesToolTip}
-              sortBy={sortDescParticipant}
-              tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Family Members', color: theme.chartColors.purple },
-              ]}
-              padding={0.5}
-            />
-          </CardSlot>
-        </Col>
-        <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Most Frequent Diagnoses">
-            <HorizontalBar
-              style={{ maxWidth: '100px' }}
-              data={topDiagnosesBarMock}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={mostFrequentDiagnosisTooltip}
-              sortByValue={true}
-              tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Family Members', color: theme.chartColors.purple },
-              ]}
-              padding={0.5}
-            />
-          </CardSlot>
-        </Col>
-        <Col sm={12} md={md} lg={lg}>
-          <CardSlotPies>
-            <Pie
-              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-              title={'Gender'}
-              data={demographicPiesMock.gender}
-              colors={[theme.chartColors.orange, '#FFFFFF']}
-            />
-            <Pie
-              style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-              title={'Ethnicity'}
-              data={demographicPiesMock.ethnicity}
-              colors={[theme.chartColors.darkblue, '#FFFFFF']}
-            />
-            <Pie
-              style={{ height: '42%', width: '50%' }}
-              title={'Race'}
-              data={demographicPiesMock.race}
-              colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-            />
-            <Pie
-              style={{ height: '42%', width: '50%' }}
-              title={'Family Composition'}
-              data={demographicPiesMock.familyComposition}
-              colors={[theme.chartColors.lightblue, '#FFFFFF']}
-            />
-          </CardSlotPies>
-        </Col>
-        <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="File Breakdown" />
-        </Col>
-        <Col sm={12} md={md} lg={lg}>
-          <CardSlot title="Age at Diagnosis">
-            <VerticalBar
-              data={ageAtDiagnosisBarMock}
-              indexBy="label"
-              tooltipFormatter={ageAtDiagnosisTooltip}
-              sortByValue={true}
-              height={225}
-              colors={[theme.chartColors.lightblue]}
-            />
-          </CardSlot>
-        </Col>
-      </Row>
-    </Col>
-    <Col sm={12} md={3} lg={3}>
-      <LongCard title="Phenotypes">
-        <pre>{JSON.stringify(sqon, null, 2)}</pre>
-      </LongCard>
-    </Col>
-  </Row>
+const Summary = ({ theme, sqon, api }) => (
+  <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
+    {({ loading, data }) => {
+      return loading || !data ? (
+        <div> loading</div>
+      ) : (
+        <Row nogutter>
+          <Col sm={12} md={12} lg={9}>
+            <Row nogutter>
+              <PaddedColumn sm={12} md={md} lg={lg}>
+                <CardSlot title="Overall Survival" />
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={md} lg={lg}>
+                <CardSlot title={multiHeader}>
+                  <HorizontalBar
+                    data={studiesBarMock}
+                    indexBy="label"
+                    keys={['probands', 'familyMembers']}
+                    tooltipFormatter={studiesToolTip}
+                    sortBy={sortDescParticipant}
+                    tickInterval={4}
+                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                    xTickTextLength={28}
+                    legends={[
+                      { title: 'Probands', color: theme.chartColors.blue },
+                      { title: 'Family Members', color: theme.chartColors.purple },
+                    ]}
+                    padding={0.5}
+                  />
+                </CardSlot>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={md} lg={lg}>
+                <CardSlot title="Most Frequent Diagnoses">
+                  <HorizontalBar
+                    style={{ maxWidth: '100px' }}
+                    data={topDiagnosesBarMock}
+                    indexBy="label"
+                    keys={['probands', 'familyMembers']}
+                    tooltipFormatter={mostFrequentDiagnosisTooltip}
+                    sortByValue={true}
+                    tickInterval={4}
+                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                    xTickTextLength={28}
+                    legends={[
+                      { title: 'Probands', color: theme.chartColors.blue },
+                      { title: 'Family Members', color: theme.chartColors.purple },
+                    ]}
+                    padding={0.5}
+                  />
+                </CardSlot>
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={md} lg={lg}>
+                <DemographicChart data={data} />
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={md} lg={lg}>
+                <CardSlot title="File Breakdown" />
+              </PaddedColumn>
+              <PaddedColumn sm={12} md={md} lg={lg}>
+                <CardSlot title="Age at Diagnosis">
+                  <VerticalBar
+                    data={ageAtDiagnosisBarMock}
+                    indexBy="label"
+                    tooltipFormatter={ageAtDiagnosisTooltip}
+                    sortByValue={true}
+                    height={225}
+                    colors={[theme.chartColors.lightblue]}
+                 />
+                </CardSlot>
+              </PaddedColumn>
+            </Row>
+          </Col>
+          <PaddedColumn sm={12} md={12} lg={3}>
+            <LongCard title="Phenotypes">
+              <pre>{JSON.stringify(sqon, null, 2)}</pre>
+            </LongCard>
+          </PaddedColumn>
+        </Row>
+      );
+    }}
+  </QueriesResolver>
 );
 
 export default enhance(Summary);
