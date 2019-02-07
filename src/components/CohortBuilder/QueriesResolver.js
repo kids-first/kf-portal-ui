@@ -1,19 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Component from 'react-component-component';
-import graphql from 'services/arranger';
+import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
+import urlJoin from 'url-join';
 
 const QueriesResolver = ({ children, queries, api }) => (
   <Component
     initialState={{ data: null, isLoading: true, error: null }}
     didMount={({ setState }) => {
-      const { query, variables, transform = x => x } = queries[0];
+      const body = JSON.stringify(
+        queries.map(q => ({
+          query: q.query,
+          variables: q.variables,
+        })),
+      );
 
-      graphql(api)({
-        query,
-        variables,
+      api({
+        method: 'POST',
+        url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`),
+        body,
       })
-        .then(data => transform(data))
+        .then(data =>
+          data.map((d, i) => {
+            const transform = queries[i].transform;
+            return transform ? transform(d) : d;
+          }),
+        )
         .then(data => setState({ data: data, isLoading: false }))
         .catch(err => setState({ isLoading: false, error: err }));
     }}

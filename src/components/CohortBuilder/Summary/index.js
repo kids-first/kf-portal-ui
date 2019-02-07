@@ -72,10 +72,14 @@ const multiHeader = (
 );
 
 const Summary = ({ theme, sqon, api }) => (
-  <QueriesResolver api={api} queries={[demographicQuery(sqon)]}>
+  <QueriesResolver api={api} queries={[demographicQuery(sqon), demographicQuery(sqon)]}>
     {({ loading, data }) => {
-      return loading || !data ? (
-        <div> loading</div>
+      const [demographicData] = data || [];
+
+      return loading ? (
+        <div>loading</div>
+      ) : !data ? (
+        <div>no data</div>
       ) : (
         <Row nogutter>
           <Col sm={12} md={12} lg={9}>
