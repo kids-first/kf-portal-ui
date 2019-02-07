@@ -19,10 +19,9 @@ const ActionBar = styled(Flex)`
   height: 62px;
   width: 100%;
 
-  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.lighterShadow};
+  box-shadow: 0 4.9px 4.9px -4.9px ${({ theme }) => theme.lighterShadow};
   border: solid 1px ${({ theme }) => theme.greyScale5};
   background-color: ${({ theme }) => theme.white};
-  z-index: -1;
 
   align-items: center;
   justify-content: flex-end;
