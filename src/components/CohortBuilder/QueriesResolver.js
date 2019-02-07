@@ -8,7 +8,7 @@ const QueriesResolver = ({ children, queries, api }) => (
     initialState={{ data: null, isLoading: true, error: null }}
     didMount={({ setState }) => {
       const { query, variables, transform = x => x } = queries[0];
-      console.log('query', query, 'variables', variables);
+
       graphql(api)({
         query,
         variables,
