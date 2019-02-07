@@ -55,8 +55,7 @@ class HorizontalBar extends Component {
   }
 
   onMouseEnter(data, e) {
-    //@NOTE Re-enable once graph is clickable
-    //e.target.style.cursor = 'pointer';
+    e.target.style.cursor = 'pointer';
 
     if (data) {
       const { index, indexValue } = data;
