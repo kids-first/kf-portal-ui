@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { demographicPiesMock, topDiagnosesBarMock, studiesBarMock } from './mock';
+import { topDiagnosesBarMock, studiesBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { Col, Row } from 'react-grid-system';
