@@ -1,3 +1,35 @@
+export const ageAtDiagnosisBarMock = [
+  {
+    id: '1',
+    label: 'Newborn',
+    value: 20,
+  },
+  {
+    id: '2',
+    label: '1-5',
+    value: 8,
+  },
+  {
+    id: '3',
+    label: '5-10',
+    value: 9,
+  },
+  {
+    label: '10-15',
+    value: 2,
+  },
+  {
+    id: '5',
+    label: '15-18',
+    value: 5,
+  },
+  {
+    id: '6',
+    label: 'Adult',
+    value: 1,
+  },
+];
+
 export const studiesBarMock = [
   {
     id: '1',

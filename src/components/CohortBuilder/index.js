@@ -7,6 +7,7 @@ import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
 import Queries from './Queries';
 import SQONProvider from './SQONProvider';
+import { withRouter } from 'react-router-dom';
 
 const Container = styled('div')`
   flex: 1;
@@ -20,20 +21,14 @@ const Container = styled('div')`
 
 const Heading = styled(H1)`
   color: #2b388f;
+  margin-right: 20px;
 `;
-
-const Left = styled(Row)`
-  h1 {
-    margin-right: 20px;
-  }
-`;
-
-const Right = styled(Row)``;
 
 const FullWidthWhite = styled('div')`
   width: 100%;
   background: white;
   padding: 0 30px 30px 30px;
+  margin-top: 21px;
 `;
 
 const CohortBuilder = () => (
@@ -47,14 +42,14 @@ const CohortBuilder = () => (
     }) => (
       <Container>
         <ContentBar>
-          <Left>
+          <Row>
             <Heading>Explore Data</Heading>
             <div>Load a Virtual Study</div>
-          </Left>
-          <Right>
+          </Row>
+          <Row>
             <button>Save virtual study</button>
             <button>Share</button>
-          </Right>
+          </Row>
         </ContentBar>
         <FullWidthWhite>
           <Categories />
@@ -75,4 +70,4 @@ const CohortBuilder = () => (
   </SQONProvider>
 );
 
-export default CohortBuilder;
+export default withRouter(CohortBuilder);
