@@ -58,9 +58,12 @@ const multiHeader = (
 );
 
 const Summary = ({ theme, sqon, api }) => (
-  <QueriesResolver api={api} queries={[demographicQuery({ ...{ sqon } })]}>
-    {({ loading, results }) => {
-      return (
+  <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
+    {({ loading, data }) => {
+      console.log('results', data);
+      return loading || !data ? (
+        <div> loading</div>
+      ) : (
         <Row nogutter>
           <Col sm={12} md={9} lg={9}>
             <Row nogutter>
@@ -107,7 +110,7 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </Col>
               <Col sm={12} md={md} lg={lg}>
-                <DemographicChart data={demographicPiesMock} />
+                <DemographicChart data={data || demographicPiesMock} />
               </Col>
               <Col sm={12} md={md} lg={lg}>
                 <CardSlot title="File Breakdown" />

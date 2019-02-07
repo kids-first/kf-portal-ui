@@ -13,16 +13,19 @@ const QueriesResolver = ({ children, queries, api }) => (
         query,
         variables,
       })
-        .then(data => {
-          console.log('data', data);
-          return data;
-        })
         .then(data => transform(data))
+        .then(d => {
+          console.log('transform', d);
+          return d;
+        })
         .then(data => setState({ data: data, isLoading: false }))
         .catch(err => setState({ isLoading: false, error: err }));
     }}
   >
-    {({ state }) => children(state)}
+    {({ state }) => {
+      console.log('state', state);
+      return children(state);
+    }}
   </Component>
 );
 
@@ -33,7 +36,7 @@ QueriesResolver.propTypes = {
   queries: PropTypes.arrayOf(
     PropTypes.shape({
       query: PropTypes.string.isRequired,
-      variables: PropTypes.string.isRequired,
+      variables: PropTypes.isRequired,
       transform: PropTypes.func,
     }),
   ).isRequired,
