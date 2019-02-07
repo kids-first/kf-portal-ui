@@ -52,13 +52,39 @@ class QueriesResolver extends Component {
   memoFetchData = memoize(this.fetchData);
 
   render() {
-<<<<<<< HEAD
     return this.props.children({ ...this.state, ...this.props });
-=======
-    return <div>{this.props.children({ ...this.state, ...this.props })}</div>;
->>>>>>> change QueryResolver to class
   }
 }
+
+const QueriesResolver = ({ children, queries, api }) => (
+  <Component
+    initialState={{ data: null, isLoading: true, error: null }}
+    didMount={({ setState }) => {
+      const body = JSON.stringify(
+        queries.map(q => ({
+          query: q.query,
+          variables: q.variables,
+        })),
+      );
+
+      api({
+        method: 'POST',
+        url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`),
+        body,
+      })
+        .then(data =>
+          data.map((d, i) => {
+            const transform = queries[i].transform;
+            return transform ? transform(d) : d;
+          }),
+        )
+        .then(data => setState({ data: data, isLoading: false }))
+        .catch(err => setState({ isLoading: false, error: err }));
+    }}
+  >
+    {({ state }) => children(state)}
+  </Component>
+);
 
 export default QueriesResolver;
 
