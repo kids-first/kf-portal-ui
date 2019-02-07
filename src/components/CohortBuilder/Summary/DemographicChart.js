@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import _, { get, countBy, replace, camelCase } from 'lodash';
+import { get, countBy, camelCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 import { CardWrapper } from 'uikit/Card/styles';
 
@@ -35,13 +35,13 @@ const DemographicChart = ({ data, theme }) => (
       data={data.race}
       colors={[theme.chartColors.lightpurple, '#FFFFFF']}
     />
-    {/*
+
     <Pie
       style={{ height: '42%', width: '50%' }}
       title={'Family Composition'}
       data={data.familyComposition}
       colors={[theme.chartColors.lightblue, '#FFFFFF']}
-    />*/}
+    />
   </CardSlotPies>
 );
 
@@ -79,6 +79,10 @@ export const demographicQuery = ({ sqon }) => ({
     const ethnicity = countBy(vals, v => v.ethnicity);
     const race = countBy(vals, v => v.race);
 
+    const familyComposition = countBy(vals, v =>
+      get(v, 'family.family_compositions.hits.edges[0].node.composition'),
+    );
+
     return {
       race: Object.keys(race).map(key => ({
         id: keyToId(key),
@@ -95,6 +99,7 @@ export const demographicQuery = ({ sqon }) => ({
         label: key,
         value: ethnicity[key],
       })),
+      familyComposition: familyComposition,
     };
   },
 });

@@ -14,18 +14,11 @@ const QueriesResolver = ({ children, queries, api }) => (
         variables,
       })
         .then(data => transform(data))
-        .then(d => {
-          console.log('transform', d);
-          return d;
-        })
         .then(data => setState({ data: data, isLoading: false }))
         .catch(err => setState({ isLoading: false, error: err }));
     }}
   >
-    {({ state }) => {
-      console.log('state', state);
-      return children(state);
-    }}
+    {({ state }) => children(state)}
   </Component>
 );
 

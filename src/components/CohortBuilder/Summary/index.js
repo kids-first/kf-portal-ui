@@ -60,7 +60,6 @@ const multiHeader = (
 const Summary = ({ theme, sqon, api }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
     {({ loading, data }) => {
-      console.log('results', data);
       return loading || !data ? (
         <div> loading</div>
       ) : (
@@ -110,7 +109,7 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </Col>
               <Col sm={12} md={md} lg={lg}>
-                <DemographicChart data={data || demographicPiesMock} />
+                <DemographicChart data={data} />
               </Col>
               <Col sm={12} md={md} lg={lg}>
                 <CardSlot title="File Breakdown" />
