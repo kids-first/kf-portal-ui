@@ -72,7 +72,7 @@ const multiHeader = (
 );
 
 const Summary = ({ theme, sqon, api }) => (
-  <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
+  <QueriesResolver api={api} queries={[demographicQuery(sqon)]}>
     {({ loading, data }) => {
       return loading || !data ? (
         <div> loading</div>
