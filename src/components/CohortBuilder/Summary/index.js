@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { topDiagnosesBarMock, studiesBarMock } from './mock';
+
+import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
+import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
+import VerticalBar from 'chartkit/components/VerticalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
@@ -14,6 +17,10 @@ import DemographicChart, { demographicQuery } from './DemographicChart';
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
+};
+
+const ageAtDiagnosisTooltip = data => {
+  return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
 const studiesToolTip = data => {
@@ -119,7 +126,16 @@ const Summary = ({ theme, sqon, api }) => (
                 <CardSlot title="File Breakdown" />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="Age at Diagnosis" />
+                <CardSlot title="Age at Diagnosis">
+                  <VerticalBar
+                    data={ageAtDiagnosisBarMock}
+                    indexBy="label"
+                    tooltipFormatter={ageAtDiagnosisTooltip}
+                    sortByValue={true}
+                    height={225}
+                    colors={[theme.chartColors.lightblue]}
+                  />
+                </CardSlot>
               </PaddedColumn>
             </Row>
           </Col>

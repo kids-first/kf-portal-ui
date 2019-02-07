@@ -11,11 +11,11 @@ import { TextBugWrapper } from '../styles';
 import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-const HorizontalBarWrapper = styled('div')`
+const VerticalBarWrapper = styled('div')`
   height: 90%;
 `;
 
-class HorizontalBar extends Component {
+class VerticalBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,7 +55,6 @@ class HorizontalBar extends Component {
   }
 
   onMouseLeave(data, e) {
-    //   e.target.style.cursor = 'default';
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
@@ -77,7 +76,7 @@ class HorizontalBar extends Component {
 
     const text = truncateText(value, xTickTextLength);
 
-    const xOffset = 160;
+    const xOffset = 25;
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
@@ -120,10 +119,10 @@ class HorizontalBar extends Component {
       onMouseLeave: this.onMouseLeave,
       onClick: this.onClick,
       margin: {
-        top: 0,
-        right: 8,
-        bottom: 70,
-        left: 160,
+        top: 20,
+        right: 0,
+        bottom: 50,
+        left: 50,
       },
       padding: this.props.padding ? this.props.padding : 0.3,
       colors: colors,
@@ -144,30 +143,35 @@ class HorizontalBar extends Component {
           id: 'lines',
         },
       ],
-      colorBy: 'id',
-      layout: 'horizontal',
+      colorBy: 'label',
+      layout: 'vertical',
       borderColor: 'inherit:darker(1.6)',
+      axisTop: null,
+      axisRight: null,
       axisBottom: {
         format: v => v.toLocaleString(),
         orient: 'bottom',
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: '# Participants',
+        legend: 'Age at Diagnosis (years)',
         legendPosition: 'middle',
-        legendOffset: 38,
+        legendOffset: 35,
         tickValues: this.tickValues,
       },
       axisLeft: {
+        legend: '# Participants',
+        legendPosition: 'middle',
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
+        legendOffset: -42,
         renderTick: this.renderAxisLeftTick,
       },
-      enableGridX: true,
+      enableGridX: false,
       gridXValues: undefined,
       maxValue: this.maxValue,
-      enableGridY: false,
+      enableGridY: true,
       enableLabel: false,
       labelSkipWidth: 12,
       labelSkipHeight: 12,
@@ -181,7 +185,7 @@ class HorizontalBar extends Component {
     };
 
     return (
-      <HorizontalBarWrapper>
+      <VerticalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
         <TextBugWrapper baseline="text-before-edge">
           <ChartDisplayContainer>
@@ -192,12 +196,12 @@ class HorizontalBar extends Component {
             )}
           </ChartDisplayContainer>
         </TextBugWrapper>
-      </HorizontalBarWrapper>
+      </VerticalBarWrapper>
     );
   }
 }
 
-HorizontalBar.propTypes = {
+VerticalBar.propTypes = {
   maxValue: PropTypes.number,
   tickValues: PropTypes.arrayOf(PropTypes.number),
   data: PropTypes.array,
@@ -207,4 +211,4 @@ HorizontalBar.propTypes = {
   analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
 };
 
-export default HorizontalBar;
+export default VerticalBar;
