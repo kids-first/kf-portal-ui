@@ -5,7 +5,8 @@ import ContentBar from './ContentBar';
 import Results from './Results';
 import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
-import Queries from './Queries';
+import { isReference } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
+import SqonBuilder from './Queries';
 import SQONProvider from './SQONProvider';
 import { withRouter } from 'react-router-dom';
 
@@ -31,6 +32,18 @@ const FullWidthWhite = styled('div')`
   margin-top: 21px;
 `;
 
+const mergeSqonIntoIndex = ({ syntheticSqons, newSqon, index }) =>
+  syntheticSqons.map((currentSqon, i) =>
+    i === index
+      ? {
+          ...currentSqon,
+          content: newSqon.content.map((newContent, _i) =>
+            isReference(currentSqon.content[_i]) ? currentSqon.content[_i] : newContent,
+          ),
+        }
+      : currentSqon,
+  );
+
 const CohortBuilder = () => (
   <SQONProvider>
     {({
@@ -41,6 +54,21 @@ const CohortBuilder = () => (
       getActiveExecutableSqon,
     }) => {
       const executableSqon = getActiveExecutableSqon();
+      const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
+        setSqons(newSyntheticSqons);
+      };
+      const sqonBuilderActiveSqonSelect = ({ index }) => {
+        setActiveSqonIndex(index);
+      };
+      const categoriesSqonUpdate = newSqon => {
+        setSqons(
+          mergeSqonIntoIndex({
+            syntheticSqons,
+            newSqon,
+            index: activeSqonIndex,
+          }),
+        );
+      };
       return (
         <Container>
           <ContentBar>
@@ -54,16 +82,12 @@ const CohortBuilder = () => (
             </Row>
           </ContentBar>
           <FullWidthWhite>
-            <Categories />
-            <Queries
+            <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
+            <SqonBuilder
               syntheticSqons={syntheticSqons}
               activeSqonIndex={activeSqonIndex}
-              onChange={({ newSyntheticSqons }) => {
-                setSqons(newSyntheticSqons);
-              }}
-              onActiveSqonSelect={({ index }) => {
-                setActiveSqonIndex(index);
-              }}
+              onChange={sqonBuilderSqonsChange}
+              onActiveSqonSelect={sqonBuilderActiveSqonSelect}
             />
           </FullWidthWhite>
           <Results sqon={executableSqon} />

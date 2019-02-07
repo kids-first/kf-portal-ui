@@ -71,10 +71,8 @@ const Category = compose(withDropdownMultiPane)(
     setExpanded,
     showExpanded,
     fields,
-    sqon = {
-      op: 'and',
-      content: [],
-    },
+    sqon,
+    onSqonUpdate,
   }) => (
     <Dropdown
       {...{
@@ -95,7 +93,7 @@ const Category = compose(withDropdownMultiPane)(
           <Filter
             initialSqon={sqon}
             onSubmit={sqon => {
-              console.log('yo: ', sqon);
+              onSqonUpdate(sqon);
               toggleExpanded();
             }}
             onBack={toggleExpanded}

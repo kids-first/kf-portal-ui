@@ -62,23 +62,31 @@ const CATEGORY_FIELDS = {
   ],
 };
 
-const Categories = ({ theme, sqon }) => (
+const Categories = ({ theme, sqon, onSqonUpdate }) => (
   <Container>
     <Search />
     <Category
       title="Quick Filters"
       sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
       fields={CATEGORY_FIELDS.quickSearch}
       color={theme.filterPurple}
     >
       <QuickFilterIcon fill={theme.filterPurple} />
     </Category>
-    <Category title="Study" sqon={sqon} fields={CATEGORY_FIELDS.study} color={theme.studyRed}>
+    <Category
+      title="Study"
+      sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
+      fields={CATEGORY_FIELDS.study}
+      color={theme.studyRed}
+    >
       <StudyIcon fill={theme.studyRed} />
     </Category>
     <Category
       title="Demographic"
       sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
       fields={CATEGORY_FIELDS.demographic}
       color={theme.demographicPurple}
     >
@@ -87,6 +95,7 @@ const Categories = ({ theme, sqon }) => (
     <Category
       title="Clinical"
       sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
       fields={CATEGORY_FIELDS.clinical}
       color={theme.clinicalBlue}
     >
@@ -95,6 +104,7 @@ const Categories = ({ theme, sqon }) => (
     <Category
       title="Biospecimens"
       sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
       fields={CATEGORY_FIELDS.biospecimen}
       color={theme.biospecimenOrange}
     >
@@ -103,6 +113,7 @@ const Categories = ({ theme, sqon }) => (
     <Category
       title="Available Data"
       sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
       fields={CATEGORY_FIELDS.availableData}
       color={theme.dataBlue}
     >
