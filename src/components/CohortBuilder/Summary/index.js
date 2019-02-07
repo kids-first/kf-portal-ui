@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import {
-  topDiagnosesBarMock,
-  studiesBarMock,
-  ageAtDiagnosisBarMock,
-} from './mock';
+
+import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
+import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import VerticalBar from 'chartkit/components/VerticalBar';
@@ -136,7 +134,7 @@ const Summary = ({ theme, sqon, api }) => (
                     sortByValue={true}
                     height={225}
                     colors={[theme.chartColors.lightblue]}
-                 />
+                  />
                 </CardSlot>
               </PaddedColumn>
             </Row>
