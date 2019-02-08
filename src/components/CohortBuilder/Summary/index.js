@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-
+import LoadingSpinner from 'uikit/LoadingSpinner';
 import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
@@ -76,9 +76,13 @@ const Summary = ({ theme, sqon, api }) => (
       const [demographicData] = data || [];
 
       return isLoading ? (
-        <div>loading</div>
+        <Row nogutter>
+          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
+            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+          </div>
+        </Row>
       ) : !data ? (
-        <div>no data</div>
+        <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
           <Col sm={12} md={12} lg={9}>
