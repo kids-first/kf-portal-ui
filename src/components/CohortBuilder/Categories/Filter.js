@@ -37,9 +37,9 @@ const Filter = withApi(
         if (loading) {
           return <div>loading</div>;
         }
-        const { type } = extendedMapping[0] || {}; // assume extendedMapping[0] since `field` is provided to ExtendedMappingProvider
+        const { type } = extendedMapping[0] || {}; // assume extendedMapping[0] since `field` is provided to ExtendedMappingProvider.
         const contentWithField = initialSqon.content.find(content => {
-          if (isReference(content)) {
+          if (!isReference(content)) {
             const {
               content: { field: _field },
             } = content;

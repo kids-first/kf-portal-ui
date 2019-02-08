@@ -5,7 +5,6 @@ import ContentBar from './ContentBar';
 import Results from './Results';
 import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
-import { isReference } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 import SqonBuilder from './Queries';
 import SQONProvider from './SQONProvider';
 import { withRouter } from 'react-router-dom';
@@ -32,18 +31,6 @@ const FullWidthWhite = styled('div')`
   margin-top: 21px;
 `;
 
-const mergeSqonIntoIndex = ({ syntheticSqons, newSqon, index }) =>
-  syntheticSqons.map((currentSqon, i) =>
-    i === index
-      ? {
-          ...currentSqon,
-          content: newSqon.content.map((newContent, _i) =>
-            isReference(currentSqon.content[_i]) ? currentSqon.content[_i] : newContent,
-          ),
-        }
-      : currentSqon,
-  );
-
 const CohortBuilder = () => (
   <SQONProvider>
     {({
@@ -52,6 +39,7 @@ const CohortBuilder = () => (
       setActiveSqonIndex,
       setSqons,
       getActiveExecutableSqon,
+      mergeSqonToActiveIndex,
     }) => {
       const executableSqon = getActiveExecutableSqon();
       const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
@@ -61,13 +49,7 @@ const CohortBuilder = () => (
         setActiveSqonIndex(index);
       };
       const categoriesSqonUpdate = newSqon => {
-        setSqons(
-          mergeSqonIntoIndex({
-            syntheticSqons,
-            newSqon,
-            index: activeSqonIndex,
-          }),
-        );
+        mergeSqonToActiveIndex(newSqon);
       };
       return (
         <Container>

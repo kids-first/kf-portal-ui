@@ -32,6 +32,7 @@ const StyledFieldFilterContainer = styled(FieldFilterContainer)`
 const SqonBuilder = withApi(({ api, ...rest }) => {
   const onSqonRemoveClick = ({ indexToRemove, dependentIndices }) => {
     if (dependentIndices.length) {
+      // temporary demo until design is available
       return window.confirm(
         `
 Are you sure you want to remove query #${indexToRemove} ? 
