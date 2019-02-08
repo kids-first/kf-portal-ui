@@ -32,10 +32,7 @@ const SQONProvider = ({ children }) => {
       ),
     );
   const getActiveExecutableSqon = s => () =>
-    resolveSyntheticSqon(s.state.sqons)(s.state.sqons[s.state.activeIndex]) || {
-      op: 'and',
-      content: [],
-    };
+    resolveSyntheticSqon(s.state.sqons)(s.state.sqons[s.state.activeIndex]);
   return (
     <Component initialState={initialState}>
       {s => {

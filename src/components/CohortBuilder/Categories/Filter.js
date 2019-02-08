@@ -9,7 +9,6 @@ import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
 import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 /**
- * Some inversion of control going on here through the `ContainerComponent` prop.
  * This compoponent also assumes we are only modifying the first level of sqon
  */
 const Filter = withApi(
