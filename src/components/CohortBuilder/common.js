@@ -59,8 +59,9 @@ export const FieldFilterContainer = ({
   onCancel,
   onBack,
   showHeader = true,
+  className = '',
 }) => (
-  <FilterCont>
+  <FilterCont className={className}>
     {showHeader && (
       <Header>
         <WButton onClick={onBack}>

@@ -21,6 +21,11 @@ const SqonBuilderContainer = styled('div')`
   }
 `;
 
+const StyledFieldFilterContainer = styled(FieldFilterContainer)`
+  left: auto;
+  right: 0px;
+`;
+
 /**
  * this component should mimic the AdvancedSqonBuilder's API directly
  **/
@@ -53,7 +58,7 @@ const SqonBuilder = withApi(({ api, ...rest }) => {
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
               getSqonDeleteConfirmation={onSqonRemoveClick}
               FieldOpModifierContainer={props => (
-                <FieldFilterContainer showHeader={false} {...props} />
+                <StyledFieldFilterContainer showHeader={false} {...props} />
               )}
               fieldDisplayNameMap={extendedMappingToDisplayNameMap(extendedMapping)}
               {...rest}
