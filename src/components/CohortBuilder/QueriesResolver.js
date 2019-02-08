@@ -19,6 +19,8 @@ class QueriesResolver extends Component {
   }
 
   fetchQuery = () => {
+    this.setState({ isLoading: true });
+
     const { queries, api } = this.props;
 
     const body = JSON.stringify(

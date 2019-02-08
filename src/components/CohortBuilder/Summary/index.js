@@ -6,7 +6,6 @@ import { withTheme } from 'emotion-theming';
 import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
-import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import VerticalBar from 'chartkit/components/VerticalBar';
@@ -73,10 +72,10 @@ const multiHeader = (
 
 const Summary = ({ theme, sqon, api }) => (
   <QueriesResolver api={api} queries={[demographicQuery(sqon), demographicQuery(sqon)]}>
-    {({ loading, data }) => {
+    {({ isLoading, data }) => {
       const [demographicData] = data || [];
 
-      return loading ? (
+      return isLoading ? (
         <div>loading</div>
       ) : !data ? (
         <div>no data</div>
