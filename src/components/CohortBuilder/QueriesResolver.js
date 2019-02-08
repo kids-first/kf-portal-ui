@@ -52,7 +52,11 @@ class QueriesResolver extends Component {
   memoFetchData = memoize(this.fetchData);
 
   render() {
+<<<<<<< HEAD
     return this.props.children({ ...this.state, ...this.props });
+=======
+    return <div>{this.props.children({ ...this.state, ...this.props })}</div>;
+>>>>>>> change QueryResolver to class
   }
 }
 
