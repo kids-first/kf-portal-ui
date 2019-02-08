@@ -127,7 +127,7 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <DemographicChart data={data} />
+                <DemographicChart data={demographicData} />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title="File Breakdown" />
