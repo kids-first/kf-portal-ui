@@ -33,7 +33,11 @@ const SqonBuilder = withApi(({ api, ...rest }) => {
   const ARRANGER_API_PARTICIPANT_INDEX_NAME = 'participant';
   const onSqonRemoveClick = ({ indexToRemove, dependentIndices }) => {
     if (dependentIndices.length) {
-      return window.confirm(`Are you sure you want to remove query #${indexToRemove} ?`)
+      return window.confirm(
+        `
+Are you sure you want to remove query #${indexToRemove} ? 
+The queries ${dependentIndices.map(i => `#${i}`).join(', ')} depend on it`,
+      )
         ? Promise.resolve()
         : Promise.reject();
     } else {
