@@ -77,3 +77,5 @@ export const FieldFilterContainer = ({
     </Footer>
   </FilterCont>
 );
+
+export const ARRANGER_API_PARTICIPANT_INDEX_NAME = 'participant';

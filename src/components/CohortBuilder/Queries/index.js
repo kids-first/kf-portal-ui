@@ -6,7 +6,7 @@ import AdvancedSqonBuilder from '@arranger/components/dist/AdvancedSqonBuilder';
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 import { withApi } from 'services/api';
 import { arrangerProjectId } from 'common/injectGlobals';
-import { FieldFilterContainer } from '../common';
+import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
   extendedMapping.reduce((acc, { field, displayName }) => {
@@ -30,7 +30,6 @@ const StyledFieldFilterContainer = styled(FieldFilterContainer)`
  * this component should mimic the AdvancedSqonBuilder's API directly
  **/
 const SqonBuilder = withApi(({ api, ...rest }) => {
-  const ARRANGER_API_PARTICIPANT_INDEX_NAME = 'participant';
   const onSqonRemoveClick = ({ indexToRemove, dependentIndices }) => {
     if (dependentIndices.length) {
       return window.confirm(
@@ -44,6 +43,7 @@ The queries ${dependentIndices.map(i => `#${i}`).join(', ')} depend on it`,
       return Promise.resolve();
     }
   };
+  console.log('ARRANGER_API_PARTICIPANT_INDEX_NAME: ', ARRANGER_API_PARTICIPANT_INDEX_NAME);
   return (
     <SqonBuilderContainer>
       <ExtendedMappingProvider

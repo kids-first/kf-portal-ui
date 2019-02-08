@@ -119,7 +119,9 @@ const Categories = ({ theme, sqon, onSqonUpdate }) => (
     >
       <FileIcon width={11} height={14} fill={theme.dataBlue} />
     </Category>
-    <Category title="Upload IDs" color={theme.uploadYellow}>
+
+    {/* the below is not actually a Category */}
+    <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
       <UploadIcon fill={theme.uploadYellow} />
     </Category>
   </Container>
