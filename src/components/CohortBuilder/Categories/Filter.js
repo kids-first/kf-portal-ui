@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import FieldFilter from '@arranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
@@ -18,9 +19,9 @@ const Filter = withApi(
       op: 'and',
       content: [],
     },
-    onSubmit,
-    onCancel,
-    onBack,
+    onSubmit = () => {},
+    onCancel = () => {},
+    onBack = () => {},
     field,
     arrangerProjectId = ARRANGER_PROJECT_ID,
     arrangerProjectIndex = ARRANGER_API_PARTICIPANT_INDEX_NAME,
@@ -32,7 +33,11 @@ const Filter = withApi(
       field={field}
       useCache={true}
     >
-      {({ extendedMapping }) => {
+      {({ extendedMapping, loading }) => {
+        if (loading) {
+          return <div>loading</div>;
+        }
+        const { type } = extendedMapping[0] || {}; // assume extendedMapping[0] since `field` is provided to ExtendedMappingProvider
         const contentWithField = initialSqon.content.find(content => {
           if (isReference(content)) {
             const {
@@ -55,7 +60,7 @@ const Filter = withApi(
             : [
                 ...initialSqon.content,
                 {
-                  op: 'in',
+                  op: ['id', 'keyword', 'boolean'].includes(type) ? 'in' : 'between',
                   content: {
                     field,
                     value: [],
@@ -88,5 +93,18 @@ const Filter = withApi(
     </ExtendedMappingProvider>
   ),
 );
+
+Filter.proptype = {
+  initialSqon: PropTypes.shape({
+    op: PropTypes.string,
+    content: PropTypes.array,
+  }),
+  onSubmit: PropTypes.func,
+  onCancel: PropTypes.func,
+  onBack: PropTypes.func,
+  field: PropTypes.string.required,
+  arrangerProjectId: PropTypes.string,
+  arrangerProjectIndex: PropTypes.string,
+};
 
 export default Filter;

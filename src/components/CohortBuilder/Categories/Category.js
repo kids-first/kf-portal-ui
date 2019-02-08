@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+
+import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
 import { compose } from 'recompose';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
 import CategoryRow from './CategoryRow';
+import { arrangerProjectId } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 const Container = styled(Column)`
   flex: 1;
@@ -56,6 +61,23 @@ const CategoryButton = styled(Column)`
   align-items: center;
 `;
 
+const Row = compose(withApi)(({ api, field, active }) => (
+  <ExtendedMappingProvider
+    api={api}
+    projectId={arrangerProjectId}
+    graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+    field={field}
+    useCache={true}
+  >
+    {({ extendedMapping = [] }) => (
+      <CategoryRow
+        active={active}
+        title={extendedMapping[0] ? extendedMapping[0].displayName : field}
+      />
+    )}
+  </ExtendedMappingProvider>
+));
+
 const Category = compose(withDropdownMultiPane)(
   ({
     title,
@@ -71,53 +93,62 @@ const Category = compose(withDropdownMultiPane)(
     setExpanded,
     showExpanded,
     fields,
-    sqon,
+    sqon = {
+      op: 'and',
+      content: [],
+    },
     onSqonUpdate,
-  }) => (
-    <Dropdown
-      {...{
-        multiLevel: true,
-        onOuterClick: () => {
-          setExpanded(false);
-          setDropdownVisibility(false);
-        },
-        isOpen: isDropdownVisible,
-        onToggle: toggleDropdown,
-        setActiveIndex,
-        activeIndex,
-        setExpanded,
-        showExpanded,
-        showArrow: false,
-        items: (fields || []).map((item, i) => <CategoryRow active={true} title={item} />),
-        expandedItems: (fields || []).map((field, i) => (
-          <Filter
-            initialSqon={sqon}
-            onSubmit={sqon => {
-              onSqonUpdate(sqon);
-              toggleExpanded();
-            }}
-            onBack={toggleExpanded}
-            onCancel={toggleExpandedDropdown}
-            field={field}
-            arrangerProjectId={'nov_30_1'}
-            arrangerProjectIndex={'participant'}
-          />
-        )),
-        ContainerComponent: ({ children, ...props }) => (
-          <Container {...props} color={color}>
-            {children}
-          </Container>
-        ),
-        OptionsContainerComponent: Options,
-        ItemWrapperComponent: ItemWrapper,
-      }}
-    >
-      <CategoryButton>
-        {children}
-        <Title> {title}</Title>
-      </CategoryButton>
-    </Dropdown>
-  ),
+  }) => {
+    const isFieldInSqon = fieldId =>
+      sqon.content.some(({ content: { field } }) => field === fieldId);
+    return (
+      <Dropdown
+        {...{
+          multiLevel: true,
+          onOuterClick: () => {
+            setExpanded(false);
+            setDropdownVisibility(false);
+          },
+          isOpen: isDropdownVisible,
+          onToggle: toggleDropdown,
+          setActiveIndex,
+          activeIndex,
+          setExpanded,
+          showExpanded,
+          showArrow: false,
+          items: (fields || []).map((field, i) => (
+            <Row active={isFieldInSqon(field)} field={field} />
+          )),
+          expandedItems: (fields || []).map((field, i) => (
+            <Filter
+              initialSqon={sqon}
+              onSubmit={sqon => {
+                onSqonUpdate(sqon);
+                toggleExpanded();
+              }}
+              onBack={toggleExpanded}
+              onCancel={toggleExpandedDropdown}
+              field={field}
+              arrangerProjectId={arrangerProjectId}
+              arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+            />
+          )),
+          ContainerComponent: ({ children, ...props }) => (
+            <Container {...props} color={color}>
+              {children}
+            </Container>
+          ),
+          OptionsContainerComponent: Options,
+          ItemWrapperComponent: ItemWrapper,
+        }}
+      >
+        <CategoryButton>
+          {children}
+          <Title> {title}</Title>
+        </CategoryButton>
+      </Dropdown>
+    );
+  },
 );
 
 Category.propTypes = {

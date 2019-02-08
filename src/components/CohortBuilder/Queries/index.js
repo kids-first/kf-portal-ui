@@ -43,7 +43,6 @@ The queries ${dependentIndices.map(i => `#${i}`).join(', ')} depend on it`,
       return Promise.resolve();
     }
   };
-  console.log('ARRANGER_API_PARTICIPANT_INDEX_NAME: ', ARRANGER_API_PARTICIPANT_INDEX_NAME);
   return (
     <SqonBuilderContainer>
       <ExtendedMappingProvider
