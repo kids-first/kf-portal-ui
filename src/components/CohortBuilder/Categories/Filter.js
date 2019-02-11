@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
+
 import FieldFilter from '@arranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import { withApi } from 'services/api';
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
@@ -11,9 +15,13 @@ import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../co
 /**
  * This compoponent also assumes we are only modifying the first level of sqon
  */
-const Filter = withApi(
+const Filter = compose(
+  withApi,
+  withTheme,
+)(
   ({
     api,
+    theme,
     initialSqon = {
       op: 'and',
       content: [],
@@ -34,7 +42,11 @@ const Filter = withApi(
     >
       {({ extendedMapping, loading }) => {
         if (loading) {
-          return <div>loading</div>;
+          return (
+            <FieldFilterContainer applyEnabled={false} onCancel={onCancel} onBack={onBack}>
+              <LoadingSpinner color={theme.greyScale11} size={'30px'} />
+            </FieldFilterContainer>
+          );
         }
         const { type } = extendedMapping[0] || {}; // assume extendedMapping[0] since `field` is provided to ExtendedMappingProvider.
         const contentWithField = initialSqon.content.find(content => {

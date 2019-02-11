@@ -58,6 +58,7 @@ export const FieldFilterContainer = ({
   onSubmit: onSqonSubmit,
   onCancel,
   onBack,
+  applyEnabled = true,
   showHeader = true,
   className = '',
 }) => (
@@ -73,7 +74,9 @@ export const FieldFilterContainer = ({
     <Content className="filterContainer">{children}</Content>
     <Footer>
       <WButton onClick={onCancel}>Cancel</WButton>
-      <TealButton onClick={onSqonSubmit}>Apply</TealButton>
+      <TealButton disabled={!applyEnabled} onClick={onSqonSubmit}>
+        Apply
+      </TealButton>
     </Footer>
   </FilterCont>
 );
