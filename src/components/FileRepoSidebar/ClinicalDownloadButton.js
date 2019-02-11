@@ -12,7 +12,7 @@ import Row from 'uikit/Row';
 import { DropdownOptionsContainer } from 'uikit/Dropdown';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { clinicalDataParticipants, clinicalDataFamily } from 'services/downloadData';
-import { DownloadButton } from './ui';
+import DownloadButton from 'uikit/DownloadButton';
 import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
 
@@ -119,7 +119,10 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
   return downloader();
 };
 
-export default compose(withApi, injectState)(props => {
+export default compose(
+  withApi,
+  injectState,
+)(props => {
   const { api, sqon, projectId } = props;
   return (
     <ColumnsState

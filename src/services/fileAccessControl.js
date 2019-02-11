@@ -1,4 +1,5 @@
 // @ts-check
+import { get } from 'lodash';
 import { getUser as getGen3User } from 'services/gen3';
 import { graphql } from 'services/arranger';
 
@@ -178,4 +179,47 @@ export const getUserStudyPermission = api => async ({
   ]);
 
   return { acceptedStudiesAggs, unacceptedStudiesAggs };
+};
+
+export const checkUserFilePermission = api => async ({ fileId }) => {
+  let userDetails;
+  try {
+    userDetails = await getGen3User(api);
+  } catch (err) {
+    return Promise.resolve(false);
+  }
+
+  const approvedAcls = Object.keys(userDetails.projects);
+
+  return graphql(api)({
+    query: `query ($sqon: JSON) {
+      file {
+        aggregations(filters: $sqon) {
+          acl { buckets { key } }
+        }
+      }
+    }`,
+    variables: {
+      sqon: {
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: {
+              field: 'kf_id',
+              value: [fileId],
+            },
+          },
+        ],
+      },
+    },
+  })
+    .then(data => {
+      const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
+      return fileAcl.some(fileAcl => approvedAcls.includes(fileAcl));
+    })
+    .catch(err => {
+      console.log('err', err);
+      return false;
+    });
 };

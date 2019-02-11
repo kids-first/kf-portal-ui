@@ -8,33 +8,34 @@ import Row from 'uikit/Row';
 import { CAVATICA } from 'common/constants';
 import CavaticaConnectModal from './CavaticaConnectModal';
 import CavaticaCopyModal from './CavaticaCopyModal';
-import { BigWhiteButton } from 'uikit/Button';
-import cavaticaLogo from 'assets/logomark-cavatica-mono-white.svg';
+import { BigWhiteButton, disabledButtonStyles } from 'uikit/Button';
+import CavaticaLogo from 'icons/CavaticaLogo';
 
 const CavaticaButton = styled(BigWhiteButton)`
   background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.primary)};
   width: 100%;
   &:hover {
-    background-color: ${({ theme, disabled }) => disabled ? theme.greyScale8 : theme.primaryLight};
+    background-color: ${({ theme, disabled }) =>
+      disabled ? theme.greyScale8 : theme.primaryLight};
   }
-  opacity: 100;
-  margin-top: 3px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: ${({ theme }) => theme.white};
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+
+  ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
+  ${({ disabled }) =>
+    disabled ? disabledButtonStyles : null}
 `;
 
 const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
-  color: ${({ theme }) => theme.white};
-  text-align: center;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px;
-  text-transform: uppercase;
-  padding-right: 6px;
-`;
-
-const CavaticaLogo = styled('img')`
-  width: 18px;
-  margin-right: 7px;
+  padding: 0 5px;
+  & img {
+    width: 20px;
+  }
 `;
 
 const showConnectModal = ({ effects, props }) => {
@@ -59,15 +60,35 @@ const showCopyModal = ({ effects, props }) => {
   });
 };
 
-const CavaticaCopyButton = compose(injectState, withTheme)(
-  ({ state, theme, effects, ...props }) => {
+const CavaticaCopyButton = compose(
+  injectState,
+  withTheme,
+)(
+  ({
+    state,
+    theme,
+    effects,
+    disabled,
+    buttonStyle,
+    buttonContentStyle,
+    text = 'Analyze in Cavatica',
+    ...props
+  }) => {
     const connected = state.integrationTokens[CAVATICA];
     const clickAction = connected ? showCopyModal : showConnectModal;
     return (
-      <CavaticaButton disabled={props.disabled} onClick={() => clickAction({ effects, props })}>
-        <ButtonContent>
-          <CavaticaLogo alt="" src={cavaticaLogo} />
-          analyze in Cavatica
+      <CavaticaButton
+        onClick={() => clickAction({ effects, props })}
+        buttonStyle={buttonStyle}
+        disabled={disabled}
+      >
+        <ButtonContent buttonContentStyle={buttonContentStyle}>
+          <CavaticaLogo
+            width="28"
+            fill={disabled ? theme.borderGrey : 'white'}
+            style={{ marginRight: '7px' }}
+          />
+          {text}
         </ButtonContent>
       </CavaticaButton>
     );
