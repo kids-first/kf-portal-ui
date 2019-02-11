@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/portal_logo.png" alt="Kids First Portal">
+  <img src="docs/portal.svg" alt="Kids First Portal" width="660px">
 </p>
 
 <p align="center">
