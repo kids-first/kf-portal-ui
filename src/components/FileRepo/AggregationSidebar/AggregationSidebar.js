@@ -61,10 +61,6 @@ const CollapsibleAggregationWrapper = styled(AggregationWrapper)`
   overflow: hidden;
 `;
 
-const CollapsibleCustomAggregationsPanel = styled(CustomAggregationsPanel)`
-  display: ${({ expanded }) => (expanded ? `block` : `none`)};
-`;
-
 const AggregationSidebar = compose(
   injectState,
   withTheme,
@@ -147,7 +143,7 @@ const AggregationSidebar = compose(
             )}
           </AggregationHeader>
           {expanded ? (
-            <CollapsibleCustomAggregationsPanel
+            <CustomAggregationsPanel
               {...{
                 ...props,
                 state,
