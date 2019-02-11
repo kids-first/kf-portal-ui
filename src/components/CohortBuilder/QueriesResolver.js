@@ -46,7 +46,7 @@ class QueriesResolver extends Component {
   };
 
   render() {
-    return <div>{this.props.children({ ...this.state, ...this.props })}</div>;
+    return this.props.children({ ...this.state, ...this.props });
   }
 }
 
