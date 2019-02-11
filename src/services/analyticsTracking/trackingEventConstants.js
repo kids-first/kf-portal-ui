@@ -25,7 +25,10 @@ export const TRACKING_EVENTS = {
         },
       },
     },
-
+    entityPage: {
+      file: 'Entity Page: File',
+      participant: 'Entity Page: Participant',
+    },
     fileRepo: {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',

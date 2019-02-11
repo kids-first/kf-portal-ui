@@ -1,14 +1,13 @@
-
 import React from 'react';
 import Spinner from 'react-spinkit';
 import Column from './Column';
 
-const LoadingSpinner = ({ size = '11px' }) => (
+const LoadingSpinner = ({ size = '11px', color = 'black' }) => (
   <Column center={true}>
     <Spinner
       fadeIn="none"
       name="circle"
-      color="black"
+      color={color}
       style={{
         width: size,
         height: size,
