@@ -12,10 +12,11 @@ import { BigWhiteButton, disabledButtonStyles } from 'uikit/Button';
 import CavaticaLogo from 'icons/CavaticaLogo';
 
 const CavaticaButton = styled(BigWhiteButton)`
-  background: ${({ theme }) => theme.primaryLight};
+  background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.primary)};
   width: 100%;
   &:hover {
-    background: ${({ theme }) => theme.primary};
+    background-color: ${({ theme, disabled }) =>
+      disabled ? theme.greyScale8 : theme.primaryLight};
   }
   text-transform: uppercase;
   font-weight: bold;
@@ -23,6 +24,7 @@ const CavaticaButton = styled(BigWhiteButton)`
   text-align: center;
   font-size: 13px;
   letter-spacing: 0.2px;
+
   ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
   ${({ disabled }) =>
     disabled ? disabledButtonStyles : null}
@@ -30,8 +32,10 @@ const CavaticaButton = styled(BigWhiteButton)`
 
 const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
-  padding: 5px 18px 5px 5px;
-  ${({ buttonContentStyle }) => (buttonContentStyle ? buttonContentStyle : null)}
+  padding: 0 5px;
+  & img {
+    width: 20px;
+  }
 `;
 
 const showConnectModal = ({ effects, props }) => {
@@ -67,7 +71,7 @@ const CavaticaCopyButton = compose(
     disabled,
     buttonStyle,
     buttonContentStyle,
-    text = 'Copy files to Cavatica',
+    text = 'Analyze in Cavatica',
     ...props
   }) => {
     const connected = state.integrationTokens[CAVATICA];

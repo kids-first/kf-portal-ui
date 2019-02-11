@@ -25,7 +25,7 @@ import Tooltip from 'uikit/Tooltip';
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
   width: 300px;
-  top: 28px;
+  top: 32px;
   left: 4px;
 `;
 

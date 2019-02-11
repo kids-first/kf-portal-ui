@@ -36,6 +36,7 @@ import {
   OpenIcon,
   TableSpinnerWrapper,
   TableSpinner,
+  cavaticaCopyButtonStyle,
 } from './ui';
 import customTableColumns from './customTableColumns';
 
@@ -67,7 +68,12 @@ const TableHeaderContent = ({ sqon, disabled, ...props }) => {
           </Row>
         }
       >
-        <CavaticaCopyButton sqon={sqon} {...props} />
+        <CavaticaCopyButton
+          sqon={sqon}
+          {...props}
+          buttonStyle={cavaticaCopyButtonStyle}
+          buttonContentStyle={false}
+        />
       </Tooltip>
       {disabled ? (
         <Tooltip

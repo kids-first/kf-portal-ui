@@ -82,10 +82,11 @@ export const ArrangerContainer = styled(Row)`
       .bucket-link {
         ${arrangerValueText};
         color: ${({ theme }) => theme.greyScale1};
-        input[type=checkbox] {
+        input[type='checkbox'] {
           float: left;
         }
-        .textHighlight, .bucket-count {
+        .textHighlight,
+        .bucket-count {
           display: table;
         }
       }
@@ -202,21 +203,31 @@ const StyledActionButton = styled(TealActionButton)`
   background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.lightBlue)};
   width: 100%;
   &:hover {
-    background-color: ${({ theme, disabled }) => disabled ? theme.greyScale8 : theme.tertiary};
+    background-color: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.tertiary)};
   }
-  padding: 4px 10px 4px 10px;
+  padding: 0px 10px;
   margin-top: 3px;
   font-size: 11px;
 `;
 
+export const cavaticaCopyButtonStyle = props => css`
+  justify-content: flex-start;
+  margin-top: 3px;
+  font-size: 11px;
+
+  & img {
+    width: 20px;
+  }
+`;
+
 export const DownloadButton = compose(withTheme)(
   ({
-     onClick,
-     theme,
-     content = () => <Trans>Download</Trans>,
-     buttonRef = React.createRef(),
-     ...rest
-   }) => {
+    onClick,
+    theme,
+    content = () => <Trans>Download</Trans>,
+    buttonRef = React.createRef(),
+    ...rest
+  }) => {
     return (
       <StyledActionButton
         onClick={onClick}
@@ -227,6 +238,7 @@ export const DownloadButton = compose(withTheme)(
       >
         <DownloadIcon
           className={css`
+            height: 28px;
             margin-right: 9px;
           `}
         />
@@ -235,4 +247,3 @@ export const DownloadButton = compose(withTheme)(
     );
   },
 );
-
