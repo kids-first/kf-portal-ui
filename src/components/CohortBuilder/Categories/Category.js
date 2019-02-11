@@ -9,7 +9,7 @@ import Dropdown from 'uikit/Dropdown';
 import { compose } from 'recompose';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
-import CategoryRow from './CategoryRow';
+import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
@@ -61,7 +61,7 @@ const CategoryButton = styled(Column)`
   align-items: center;
 `;
 
-const Row = compose(withApi)(({ api, field, active }) => (
+const CategoryRow = compose(withApi)(({ api, field, active }) => (
   <ExtendedMappingProvider
     api={api}
     projectId={arrangerProjectId}
@@ -70,7 +70,7 @@ const Row = compose(withApi)(({ api, field, active }) => (
     useCache={true}
   >
     {({ extendedMapping = [] }) => (
-      <CategoryRow
+      <CategoryRowDisplay
         active={active}
         title={extendedMapping[0] ? extendedMapping[0].displayName : field}
       />
@@ -117,7 +117,7 @@ const Category = compose(withDropdownMultiPane)(
           showExpanded,
           showArrow: false,
           items: (fields || []).map((field, i) => (
-            <Row active={isFieldInSqon(field)} field={field} />
+            <CategoryRow active={isFieldInSqon(field)} field={field} />
           )),
           expandedItems: (fields || []).map((field, i) => (
             <Filter
