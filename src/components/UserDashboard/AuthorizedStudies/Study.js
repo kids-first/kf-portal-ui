@@ -39,6 +39,7 @@ const NumberLink = styled(ExternalLink)`
 
 const Study = ({
   name,
+  studyId,
   consentCodes = [],
   total,
   authorized,
@@ -50,7 +51,12 @@ const Study = ({
       <Name>{name}</Name>
       <StudyCount>
         Authorized:{' '}
-        <NumberLink onClick={onStudyAuthorizedClick} hasExternalIcon={false}>
+        <NumberLink
+          onClick={() => {
+            onStudyAuthorizedClick(studyId, 'NumberLink');
+          }}
+          hasExternalIcon={false}
+        >
           {authorized.toLocaleString()}
         </NumberLink>
         {' / '}
@@ -62,7 +68,10 @@ const Study = ({
     </Row>
     <Codes>Consent Codes: {consentCodes.join(', ')}</Codes>
     <ProgressBar
-      onClick={onStudyAuthorizedClick}
+      analyticsTracking={{ category: `Authorized Studies`, label: `studyId: ${studyId}` }}
+      onClick={() => {
+        onStudyAuthorizedClick(studyId, 'ProgressBar');
+      }}
       percent={(authorized / total) * 100}
       height={10}
     />

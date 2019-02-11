@@ -23,7 +23,6 @@ const CavaticaButton = styled(BigWhiteButton)`
   text-align: center;
   font-size: 13px;
   letter-spacing: 0.2px;
-
   ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
   ${({ disabled }) =>
     disabled ? disabledButtonStyles : null}

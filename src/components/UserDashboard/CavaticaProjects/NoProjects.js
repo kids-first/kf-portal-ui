@@ -16,12 +16,12 @@ const NoProjects = ({ tabToCreate }) => (
   <Column>
     <PromptMessageContainer mb={0} width={'100%'}>
       <PromptMessageHeading mb={10}>
-        You are connected to CAVATICA, but you don’t have any projects yet.
+        You are connected to Cavatica, but you don’t have any projects yet.
       </PromptMessageHeading>
       <PromptMessageContent>
         <NoteList>
           <NotePoints>
-            <CardLink onClick={tabToCreate}>Create a CAVATICA Project</CardLink> easily from the
+            <CardLink onClick={tabToCreate}>Create a Cavatica Project</CardLink> easily from the
             portal.
           </NotePoints>
           <NotePoints>
@@ -30,7 +30,7 @@ const NoProjects = ({ tabToCreate }) => (
               href={'https://cavatica.sbgenomics.com/public/controlled-projects#q'}
               hasExternalIcon={false}
             >
-              CAVATICA public controlled projects
+              Cavatica public controlled projects
             </ExternalLink>
           </NotePoints>
         </NoteList>
@@ -39,7 +39,7 @@ const NoProjects = ({ tabToCreate }) => (
     <Info
       link={{
         url: 'https://kidsfirstdrc.org/support/analyze-data/',
-        text: 'CAVATICA compute cloud platform',
+        text: 'Cavatica compute cloud platform',
       }}
     />
   </Column>

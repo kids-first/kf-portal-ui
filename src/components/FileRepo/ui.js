@@ -1,6 +1,9 @@
 import * as React from 'react';
+import Component from 'react-component-component';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
+import { compose } from 'recompose';
+import { Trans } from 'react-i18next';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 import '@arranger/components/public/themeStyles/beagle/beagle.css';
@@ -9,7 +12,10 @@ import '@arranger/components/public/themeStyles/beagle/beagle.css';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import ControlledAccessIcon from 'icons/ControlledAccessIcon';
+import { TealActionButton } from 'uikit/Button';
 import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
+import DownloadIcon from 'icons/DownloadIcon';
 
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
@@ -76,6 +82,17 @@ export const ArrangerContainer = styled(Row)`
       .bucket-link {
         ${arrangerValueText};
         color: ${({ theme }) => theme.greyScale1};
+        input[type=checkbox] {
+          float: left;
+        }
+        .textHighlight, .bucket-count {
+          display: table;
+        }
+      }
+      .bucket-count {
+        display: table;
+        min-width: 50px;
+        text-align: right;
       }
     }
   }
@@ -114,7 +131,42 @@ export const QuerySharingContainer = styled(Row)`
   background: ${({ theme }) => theme.backgroundGrey};
 `;
 
-export const ControlledIcon = props => <ControlledAccessIcon width={12} height={12} {...props} />;
+export const ControlledIcon = withTheme(props => {
+  const initialState = {
+    mouseIsOver: false,
+  };
+
+  const mouseEnterEvent = ({ setState }) => () => {
+    setState({ mouseIsOver: true });
+  };
+
+  const mouseLeaveEvent = ({ setState }) => () => {
+    setState({ mouseIsOver: false });
+  };
+
+  const getFillColor = ({ state }) => {
+    return !state.mouseIsOver ? props.fill || props.theme.primary : props.theme.hover;
+  };
+
+  return (
+    <Component initialState={initialState}>
+      {s => (
+        <a href={props.link} target={props.target}>
+          <ControlledAccessIcon
+            width={12}
+            height={12}
+            fill={getFillColor(s)}
+            onMouseEnter={mouseEnterEvent(s)}
+            onMouseLeave={mouseLeaveEvent(s)}
+            {...props}
+          >
+            {props.children}
+          </ControlledAccessIcon>
+        </a>
+      )}
+    </Component>
+  );
+});
 
 export const OpenIcon = () => (
   <img
@@ -143,3 +195,44 @@ export const TableSpinner = ({ props, style = {} }) => (
     {...props}
   />
 );
+
+const StyledActionButton = styled(TealActionButton)`
+  justify-content: flex-start;
+  color: ${({ theme, disabled }) => (disabled ? theme.white : 'auto')};
+  background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.lightBlue)};
+  width: 100%;
+  &:hover {
+    background-color: ${({ theme, disabled }) => disabled ? theme.greyScale8 : theme.tertiary};
+  }
+  padding: 4px 10px 4px 10px;
+  margin-top: 3px;
+  font-size: 11px;
+`;
+
+export const DownloadButton = compose(withTheme)(
+  ({
+     onClick,
+     theme,
+     content = () => <Trans>Download</Trans>,
+     buttonRef = React.createRef(),
+     ...rest
+   }) => {
+    return (
+      <StyledActionButton
+        onClick={onClick}
+        innerRef={ref => {
+          buttonRef.current = ref;
+        }}
+        {...rest}
+      >
+        <DownloadIcon
+          className={css`
+            margin-right: 9px;
+          `}
+        />
+        <span css={theme.uppercase}>{content()}</span>
+      </StyledActionButton>
+    );
+  },
+);
+

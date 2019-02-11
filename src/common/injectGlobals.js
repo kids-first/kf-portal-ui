@@ -1,7 +1,9 @@
-import 'index.css';
 import queryString from 'querystring';
 
-localStorage.setItem('debug', process.env.REACT_APP_DEBUG || ''); // manually set because CRA doesn't allow arbitrary env variable names.
+const getApplicationEnvVar = envVarName =>
+  process.env[`REACT_APP_${envVarName}`] || process.env[`STORYBOOK_${envVarName}`];
+
+localStorage.setItem('debug', getApplicationEnvVar('DEBUG') || ''); // manually set because CRA doesn't allow arbitrary env variable names.
 const debug = require('debug');
 global.log = debug('app');
 
@@ -13,70 +15,73 @@ if (egoApiOverride) {
 }
 export const devDebug = process.env.NODE_ENV === 'development';
 
-export const egoApiRoot: string = egoApiOverride || process.env.REACT_APP_EGO_API || '';
+export const egoApiRoot: string = egoApiOverride || getApplicationEnvVar('EGO_API') || '';
 
 const personaApiOverride = qs.PERSONA_API;
 if (personaApiOverride) {
   global.log('warning: using persona api override');
 }
 
-export const shortUrlApi = process.env.REACT_APP_SHORTURL_API;
-export const shortUrlResolveRoot = process.env.REACT_APP_SHORTURL_RESOLVE_ROOT;
+export const shortUrlApi = getApplicationEnvVar('SHORTURL_API');
+export const shortUrlResolveRoot = getApplicationEnvVar('SHORTURL_RESOLVE_ROOT');
 
-export const arrangerApiRoot = process.env.REACT_APP_ARRANGER_API;
+export const arrangerApiRoot = getApplicationEnvVar('ARRANGER_API');
 
-export const arrangerProjectId = process.env.REACT_APP_PROJECT_ID;
+export const arrangerProjectId = getApplicationEnvVar('PROJECT_ID');
 
-export const personaApiRoot: string = personaApiOverride || process.env.REACT_APP_PERSONA_API || '';
-export const secretStorageApiRoot: string = process.env.REACT_APP_SECRETS_API;
+export const personaApiRoot: string =
+  personaApiOverride || getApplicationEnvVar('PERSONA_API') || '';
+export const secretStorageApiRoot: string = getApplicationEnvVar('SECRETS_API');
 
-export const cavaticaApiRoot: string = process.env.REACT_APP_CAVATICA_API;
-export const cavaticaWebRoot: string = process.env.REACT_APP_CAVATICA_WEB;
-export const cavaticaWebRegistrationRoot: string = process.env.REACT_APP_CAVATICA_WEB_REGISTRATION;
+export const cavaticaApiRoot: string = getApplicationEnvVar('CAVATICA_API');
+export const cavaticaWebRoot: string = getApplicationEnvVar('CAVATICA_WEB');
+export const cavaticaWebRegistrationRoot: string = getApplicationEnvVar(
+  'CAVATICA_WEB_REGISTRATION',
+);
 
-export const gen3ApiRoot: string = process.env.REACT_APP_GEN3_API;
-export const gen3WebRoot: string = process.env.REACT_APP_GEN3_WEB || 'http://www.gen3.org/';
+export const gen3ApiRoot: string = getApplicationEnvVar('GEN3_API');
+export const gen3WebRoot: string = getApplicationEnvVar('GEN3_WEB') || 'http://www.gen3.org/';
 
-export const googleAppId = process.env.REACT_APP_GOOGLE_APP_ID;
-export const facebookAppId = process.env.REACT_APP_FACEBOOK_APP_ID;
-export const egoAppId = process.env.REACT_APP_EGO_APP_ID;
-export const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
+export const googleAppId = getApplicationEnvVar('GOOGLE_APP_ID');
+export const facebookAppId = getApplicationEnvVar('FACEBOOK_APP_ID');
+export const egoAppId = getApplicationEnvVar('EGO_APP_ID');
+export const googleMapsKey = getApplicationEnvVar('GOOGLE_MAPS_KEY');
 
-export const usersnapHost = process.env.REACT_APP_USERSNAP_HOST;
-export const usersnapId = process.env.REACT_APP_USERSNAP_ID;
+export const usersnapHost = getApplicationEnvVar('USERSNAP_HOST');
+export const usersnapId = getApplicationEnvVar('USERSNAP_ID');
 
-export const hotjarHost = process.env.REACT_APP_HOTJAR_HOST;
-export const hotjarId = process.env.REACT_APP_HOTJAR_ID;
+export const hotjarHost = getApplicationEnvVar('HOTJAR_HOST');
+export const hotjarId = getApplicationEnvVar('HOTJAR_ID');
 
-export const gaTrackingID: string = process.env.REACT_APP_GA_TRACKING_ID;
+export const gaTrackingID: string = getApplicationEnvVar('GA_TRACKING_ID');
 
-export const defaultRedirectUri = process.env.REACT_APP_DEFAULT_REDIRECT_URI || '';
+export const defaultRedirectUri = getApplicationEnvVar('DEFAULT_REDIRECT_URI') || '';
 
-export const allRedirectUris = (process.env.REACT_APP_LOGIN_REDIRECT_NOT_REQUIRED || '')
+export const allRedirectUris = (getApplicationEnvVar('LOGIN_REDIRECT_NOT_REQUIRED') || '')
   .split(',')
   .concat(defaultRedirectUri)
   .filter(Boolean);
 
-export const requireLogin = process.env.REACT_APP_REQUIRE_LOGIN === 'true';
+export const requireLogin = getApplicationEnvVar('REQUIRE_LOGIN') === 'true';
 
-export const kfWebRoot: string = process.env.REACT_APP_KF_WEB_ROOT;
-export const kfFacebook: string = process.env.REACT_APP_KF_FACEBOOK;
-export const kfTwitter: string = process.env.REACT_APP_KF_TWITTER;
-export const kfGithub: string = process.env.REACT_APP_KF_GITHUB;
-export const kfMailchimpList: string = process.env.REACT_APP_KF_MAILCHIMP_LIST;
+export const kfWebRoot: string = getApplicationEnvVar('KF_WEB_ROOT');
+export const kfFacebook: string = getApplicationEnvVar('KF_FACEBOOK');
+export const kfTwitter: string = getApplicationEnvVar('KF_TWITTER');
+export const kfGithub: string = getApplicationEnvVar('KF_GITHUB');
+export const kfMailchimpList: string = getApplicationEnvVar('KF_MAILCHIMP_LIST');
 
-export const cookiesDomain: string = process.env.REACT_APP_COOKIES_DOMAIN;
-export const maintenanceMode: Boolean = process.env.REACT_APP_MAINTENANCE_MODE === 'true';
+export const cookiesDomain: string = getApplicationEnvVar('COOKIES_DOMAIN');
+export const maintenanceMode: Boolean = getApplicationEnvVar('MAINTENANCE_MODE') === 'true';
 export const oauthRedirectUrl: string = encodeURIComponent(
-  process.env.REACT_APP_OAUTH_REDIRECT_URL || `${window.location.origin}/oauth_redirect/`,
+  getApplicationEnvVar('OAUTH_REDIRECT_URL') || `${window.location.origin}/oauth_redirect/`,
 );
 export const gen3OauthRedirect: string = encodeURIComponent(
   `${window.location.origin}/gen3_redirect/`,
 );
-export const gen3IntegrationRoot: string = process.env.REACT_APP_GEN3_INTEGRATION_ROOT || '';
-export const reactApiDataVersionApi: string = process.env.REACT_APP_DATA_VERSION_API || null;
+export const gen3IntegrationRoot: string = getApplicationEnvVar('GEN3_INTEGRATION_ROOT') || '';
+export const reactApiDataVersionApi: string = getApplicationEnvVar('DATA_VERSION_API') || null;
 export const reactApiDataVersionFallback: string =
-  process.env.REACT_APP_DATA_VERSION_FALLBACK || '';
+  getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';
 
 // Public Stats
-export const publicStatsApiRoot = process.env.REACT_APP_PUBLIC_STATS_ROOT || '';
+export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
