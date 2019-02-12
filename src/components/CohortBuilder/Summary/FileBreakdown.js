@@ -3,6 +3,8 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 
+import BaseDataTable from 'uikit/DataTable';
+
 import { UserIntegrationsWrapper, IntegrationTable } from '../../UserProfile/UserIntegrations/ui';
 import { TableHeader, TableRow } from 'uikit/Table';
 
@@ -22,11 +24,25 @@ const FileBreakdownTableBody = styled('tbody')`
     font-size: 11px;
     border-top: none;
     border-bottom: none;
-    padding: 4px;
+    padding: 8px 4px;
     & a {
       color: ${({ theme }) => theme.hover};
       text-decoration: underline;
     }
+  }
+  & tr:after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 1) 90%
+    );
+    width: 100%;
+    height: 2em;
   }
   & tr:nth-child(odd) td {
     background: '#FFFFFF';
@@ -43,7 +59,8 @@ const FileBreakdownTableFooter = styled(TableRow)`
     border-bottom: none;
     text-align: right;
     padding-right: 0;
-    padding-top: 7px;
+    padding-top: 10px;
+    padding-bottom: 30px;
     font-size: 11px;
     & a {
       color: ${({ theme }) => theme.hover};
@@ -51,6 +68,14 @@ const FileBreakdownTableFooter = styled(TableRow)`
     }
   }
 `;
+
+const FileBreakdownB = ({ data, theme }) => (
+  <BaseDataTable
+    header={null}
+    columns={['Data Type', 'Experimental Strategy', 'Files']}
+    data={data}
+  />
+);
 
 const FileBreakdown = ({ data, theme }) => (
   <FileBreakdownWrapper>
@@ -82,4 +107,4 @@ const FileBreakdown = ({ data, theme }) => (
   </FileBreakdownWrapper>
 );
 
-export default compose(withTheme)(FileBreakdown);
+export default compose(withTheme)(FileBreakdownB);
