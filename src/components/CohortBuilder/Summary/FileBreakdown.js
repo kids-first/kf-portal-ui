@@ -72,7 +72,11 @@ const FileBreakdownTableFooter = styled(TableRow)`
 const FileBreakdownB = ({ data, theme }) => (
   <BaseDataTable
     header={null}
-    columns={['Data Type', 'Experimental Strategy', 'Files']}
+    columns={[
+      { Header: 'Data Type', accessor: 'dataType' },
+      { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
+      { Header: 'Files', accessor: 'files' },
+    ]}
     data={data}
   />
 );
