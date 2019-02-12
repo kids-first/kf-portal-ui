@@ -23,6 +23,11 @@ const TableFooter = styled('div')`
   }
 `;
 
+const FilesColumn = styled('span')`
+  color: ${({ theme }) => theme.hover};
+  text-decoration: underline;
+`;
+
 const sumTotalFilesInData = dataset => {
   return dataset.reduce(function(accumulator, datum) {
     return accumulator + parseInt(datum.files);
@@ -39,6 +44,11 @@ const FileBreakdownB = ({ data }) => (
         { Header: 'Files', accessor: 'files' },
       ]}
       data={data}
+      transforms={{
+        files: studyShortName => (
+          <FilesColumn>{Number(studyShortName).toLocaleString()} files</FilesColumn>
+        ),
+      }}
     />
     <TableFooter>
       <b>Total:</b> <a>{Number(sumTotalFilesInData(data)).toLocaleString()} files</a>
