@@ -1,4 +1,4 @@
-import { BaseSvg } from 'icons';
+import { BaseSvg } from './index';
 
 export default ({ fill = '#fff', width = 13, ...props }) =>
   BaseSvg({
