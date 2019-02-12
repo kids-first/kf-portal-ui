@@ -33,7 +33,6 @@ const Detail = styled(Row)`
 
 const Heading = styled(H2)`
   color: ${({ theme }) => theme.secondary};
-  margin-right: 20px;
 `;
 
 const ActiveView = styled('div')`
@@ -54,7 +53,12 @@ const SubHeading = styled('h3')`
 const PurpleLink = styled(Link)`
   color: ${({ theme }) => theme.purple};
 `;
-
+const ResultsHeading = styled('div')`
+  display: flex;
+  padding: 0 20px 3px 0;
+  border-right: 1px solid ${({ theme }) => theme.greyScale11};
+  margin-right: 14px;
+`;
 const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
   <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
@@ -72,7 +76,16 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
         <React.Fragment>
           <ContentBar>
             <Detail>
-              <Heading>All data</Heading>
+              <ResultsHeading>
+                {!sqon ? (
+                  <Heading>All Data</Heading>
+                ) : (
+                  <React.Fragment>
+                    <Heading>Cohort Results</Heading>
+                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex}</SubHeading>
+                  </React.Fragment>
+                )}
+              </ResultsHeading>{' '}
               <DemographicIcon />
               <SubHeading>
                 {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
