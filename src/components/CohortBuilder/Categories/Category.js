@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+
+import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
 import { compose } from 'recompose';
-import { items } from './mocks';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
-import CategoryRow from './CategoryRow';
+import CategoryRowDisplay from './CategoryRowDisplay';
+import { arrangerProjectId } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 const Container = styled(Column)`
   flex: 1;
@@ -57,69 +61,100 @@ const CategoryButton = styled(Column)`
   align-items: center;
 `;
 
-const Category = ({
-  title,
-  children,
-  color,
-  toggleDropdown,
-  isDropdownVisible,
-  setDropdownVisibility,
-  toggleExpanded,
-  toggleExpandedDropdown,
-  setActiveIndex,
-  activeIndex,
-  setExpanded,
-  showExpanded,
-}) => {
-  const DropdownCont = ({ children, ...props }) => (
-    <Container {...props} color={color}>
-      {children}
-    </Container>
-  );
+const CategoryRow = compose(withApi)(({ api, field, active }) => (
+  <ExtendedMappingProvider
+    api={api}
+    projectId={arrangerProjectId}
+    graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+    field={field}
+    useCache={true}
+  >
+    {({ extendedMapping = [] }) => (
+      <CategoryRowDisplay
+        active={active}
+        title={extendedMapping[0] ? extendedMapping[0].displayName : field}
+      />
+    )}
+  </ExtendedMappingProvider>
+));
 
-  return (
-    <Dropdown
-      {...{
-        multiLevel: true,
-        onOuterClick: () => {
-          setExpanded(false);
-          setDropdownVisibility(false);
-        },
-        isOpen: isDropdownVisible,
-        onToggle: toggleDropdown,
-        setActiveIndex,
-        activeIndex,
-        setExpanded,
-        showExpanded,
-        showArrow: false,
-        items: items.map((item, i) => <CategoryRow active={true} title={item.name} />),
-        expandedItems: items.map((item, i) => (
-          <Filter
-            onCancel={toggleExpandedDropdown}
-            onBack={toggleExpanded}
-            onApply={active => {
-              toggleExpanded();
-            }}
-          >
-            {item.expanded}
-          </Filter>
-        )),
-        ContainerComponent: DropdownCont,
-        OptionsContainerComponent: Options,
-        ItemWrapperComponent: ItemWrapper,
-      }}
-    >
-      <CategoryButton>
-        {children}
-        <Title> {title}</Title>
-      </CategoryButton>
-    </Dropdown>
-  );
-};
+const Category = compose(withDropdownMultiPane)(
+  ({
+    title,
+    children,
+    color,
+    toggleDropdown,
+    isDropdownVisible,
+    setDropdownVisibility,
+    toggleExpanded,
+    toggleExpandedDropdown,
+    setActiveIndex,
+    activeIndex,
+    setExpanded,
+    showExpanded,
+    fields,
+    sqon = {
+      op: 'and',
+      content: [],
+    },
+    onSqonUpdate,
+  }) => {
+    const isFieldInSqon = fieldId =>
+      sqon.content.some(({ content: { field } }) => field === fieldId);
+    return (
+      <Dropdown
+        {...{
+          multiLevel: true,
+          onOuterClick: () => {
+            setExpanded(false);
+            setDropdownVisibility(false);
+          },
+          isOpen: isDropdownVisible,
+          onToggle: toggleDropdown,
+          setActiveIndex,
+          activeIndex,
+          setExpanded,
+          showExpanded,
+          showArrow: false,
+          items: (fields || []).map((field, i) => (
+            <CategoryRow active={isFieldInSqon(field)} field={field} />
+          )),
+          expandedItems: (fields || []).map((field, i) => (
+            <Filter
+              initialSqon={sqon}
+              onSubmit={sqon => {
+                onSqonUpdate(sqon);
+                toggleExpanded();
+              }}
+              onBack={toggleExpanded}
+              onCancel={toggleExpandedDropdown}
+              field={field}
+              arrangerProjectId={arrangerProjectId}
+              arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+            />
+          )),
+          ContainerComponent: ({ children, ...props }) => (
+            <Container {...props} color={color}>
+              {children}
+            </Container>
+          ),
+          OptionsContainerComponent: Options,
+          ItemWrapperComponent: ItemWrapper,
+        }}
+      >
+        <CategoryButton>
+          {children}
+          <Title> {title}</Title>
+        </CategoryButton>
+      </Dropdown>
+    );
+  },
+);
 
 Category.propTypes = {
   title: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
+  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default compose(withDropdownMultiPane)(Category);
+export default Category;

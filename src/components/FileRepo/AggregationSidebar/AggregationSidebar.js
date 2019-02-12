@@ -142,31 +142,32 @@ const AggregationSidebar = compose(
               />
             )}
           </AggregationHeader>
-          <CustomAggregationsPanel
-            {...{
-              ...props,
-              hidden: !expanded,
-              state,
-              effects,
-              setSQON,
-              containerRef: aggregationsWrapperRef,
-              translateSQONValue,
-              onValueChange: ({ active, field, value }) => {
-                if (active) {
-                  trackFileRepoInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.filters,
-                    action: 'Filter Selected',
-                    label: { type: 'filter', value, field },
-                  });
-                }
-              },
-              componentProps: {
-                getTermAggProps: () => ({
-                  InputComponent: FilterInput,
-                }),
-              },
-            }}
-          />
+          {expanded ? (
+            <CustomAggregationsPanel
+              {...{
+                ...props,
+                state,
+                effects,
+                setSQON,
+                containerRef: aggregationsWrapperRef,
+                translateSQONValue,
+                onValueChange: ({ active, field, value }) => {
+                  if (active) {
+                    trackFileRepoInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.filters,
+                      action: 'Filter Selected',
+                      label: { type: 'filter', value, field },
+                    });
+                  }
+                },
+                componentProps: {
+                  getTermAggProps: () => ({
+                    InputComponent: FilterInput,
+                  }),
+                },
+              }}
+            />
+          ) : null}
         </CollapsibleAggregationWrapper>
       )}
     </ScrollbarSize>

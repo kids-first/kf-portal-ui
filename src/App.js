@@ -15,6 +15,8 @@ import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
+import FileEntity from './components/EntityPage/File';
+import ParticipantEntity from './components/EntityPage/Participant';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
@@ -90,6 +92,34 @@ const App = compose(
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
+        <Route
+          path="/file/:fileId"
+          exact
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              Component: FileEntity,
+              loggedInUser,
+              fileId: props.match.params.fileId,
+              ...props,
+            })
+          }
+        />
+        <Route
+          path="/participant/:participantId"
+          exact
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              Component: ParticipantEntity,
+              loggedInUser,
+              participantId: props.match.params.participantId,
+              ...props,
+            })
+          }
+        />
         <Route
           path="/search/:index"
           exact

@@ -10,9 +10,16 @@ export const graphql = (api, queryName = '') => body =>
 export const arrangerGqlRecompose = (api, queryName = '') => ({ body, ...rest }) =>
   graphql(api, queryName)({ ...body, ...rest });
 
-const buildFileQuery = ({ fields, first = null }) => {
+export const buildFileQuery = ({ fields, first = null }) => {
   const firstString = first === null ? '' : `, first:${first}`;
   return `query ($sqon: JSON) {file {hits(filters: $sqon${firstString}) {total, edges {node {${fields.reduce(
+    (a, b) => a + ' ' + b,
+  )}}}}}}`;
+};
+
+export const buildParticipantQuery = ({ fields, first = null }) => {
+  const firstString = first === null ? '' : `, first:${first}`;
+  return `query ($sqon: JSON) {participant {hits(filters: $sqon${firstString}) {total, edges {node {${fields.reduce(
     (a, b) => a + ' ' + b,
   )}}}}}}`;
 };
@@ -66,3 +73,26 @@ export const getFilesByQuery = async ({ sqon, fields, api }) => {
   return edges;
 };
 export default graphql;
+
+export const getParticipantById = async ({ ids, fields, api }) => {
+  const query = buildFileQuery({ fields, first: ids.length });
+  const sqon = {
+    op: 'and',
+    content: [{ op: 'in', content: { field: '_id', value: ids } }],
+  };
+  const body = { query, variables: { sqon } };
+
+  let edges;
+  try {
+    const { data } = await graphql(api)(body);
+    edges = extractHits(data).edges;
+  } catch (error) {
+    console.warn(error);
+  }
+  return edges;
+};
+
+export const buildSqonForIds = ids => ({
+  op: 'and',
+  content: [{ op: 'in', content: { field: '_id', value: ids } }],
+});

@@ -5,7 +5,7 @@ import ContentBar from './ContentBar';
 import Results from './Results';
 import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
-import Queries from './Queries';
+import SqonBuilder from './Queries';
 import SQONProvider from './SQONProvider';
 import { withRouter } from 'react-router-dom';
 
@@ -39,34 +39,43 @@ const CohortBuilder = () => (
       setActiveSqonIndex,
       setSqons,
       getActiveExecutableSqon,
-    }) => (
-      <Container>
-        <ContentBar>
-          <Row>
-            <Heading>Explore Data</Heading>
-            <div>Load a Virtual Study</div>
-          </Row>
-          <Row>
-            <button>Save virtual study</button>
-            <button>Share</button>
-          </Row>
-        </ContentBar>
-        <FullWidthWhite>
-          <Categories />
-          <Queries
-            syntheticSqons={syntheticSqons}
-            activeSqonIndex={activeSqonIndex}
-            onChange={({ newSyntheticSqons }) => {
-              setSqons(newSyntheticSqons);
-            }}
-            onActiveSqonSelect={({ index }) => {
-              setActiveSqonIndex(index);
-            }}
-          />
-        </FullWidthWhite>
-        <Results sqon={getActiveExecutableSqon()} />
-      </Container>
-    )}
+      mergeSqonToActiveIndex,
+    }) => {
+      const executableSqon = getActiveExecutableSqon();
+      const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
+        setSqons(newSyntheticSqons);
+      };
+      const sqonBuilderActiveSqonSelect = ({ index }) => {
+        setActiveSqonIndex(index);
+      };
+      const categoriesSqonUpdate = newSqon => {
+        mergeSqonToActiveIndex(newSqon);
+      };
+      return (
+        <Container>
+          <ContentBar>
+            <Row>
+              <Heading>Explore Data</Heading>
+              <div>Load a Virtual Study</div>
+            </Row>
+            <Row>
+              <button>Save virtual study</button>
+              <button>Share</button>
+            </Row>
+          </ContentBar>
+          <FullWidthWhite>
+            <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
+            <SqonBuilder
+              syntheticSqons={syntheticSqons}
+              activeSqonIndex={activeSqonIndex}
+              onChange={sqonBuilderSqonsChange}
+              onActiveSqonSelect={sqonBuilderActiveSqonSelect}
+            />
+          </FullWidthWhite>
+          <Results sqon={executableSqon} />
+        </Container>
+      );
+    }}
   </SQONProvider>
 );
 
