@@ -97,12 +97,18 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
               </PurpleLink>
             </Detail>
             <ViewLinks>
-              <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
-                <SummaryIcon marginRight={5} />
+              <ViewLink
+                onClick={() => setActiveView(SUMMARY)}
+                active={activeView === SUMMARY}
+                Icon={SummaryIcon}
+              >
                 Summary View
               </ViewLink>
-              <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
-                <TableViewIcon marginRight={5} />
+              <ViewLink
+                onClick={() => setActiveView(TABLE)}
+                active={activeView === TABLE}
+                Icon={TableViewIcon}
+              >
                 Table View
               </ViewLink>
             </ViewLinks>
