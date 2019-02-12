@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@arranger/components": "1.0.5-8",
+    "@arranger/components": "1.0.5-11",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",
