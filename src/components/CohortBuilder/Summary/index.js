@@ -61,7 +61,7 @@ const CardSlotOverflowVisible = styled(Card)`
 
 const CardSlotOverflowScroll = styled(Card)`
   height: 305px;
-  & div {
+  & div:first-child {
     overflow: scroll;
   }
 `;
