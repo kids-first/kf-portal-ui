@@ -59,13 +59,6 @@ const CardSlotOverflowVisible = styled(Card)`
   }
 `;
 
-const CardSlotOverflowScroll = styled(Card)`
-  height: 305px;
-  & div:first-child {
-    overflow: scroll;
-  }
-`;
-
 const LongCard = styled(Card)`
   height: 100%;
 `;
@@ -140,9 +133,9 @@ const Summary = ({ theme, sqon, api }) => (
                 <DemographicChart data={data} />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlotOverflowScroll title="File Breakdown">
+                <CardSlot scrollable={true} title="File Breakdown">
                   <FileBreakdown data={fileBreakdownMock} />
-                </CardSlotOverflowScroll>
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
