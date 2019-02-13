@@ -91,7 +91,9 @@ const Summary = ({ theme, sqon, api }) => (
           <Col sm={12} md={12} lg={9}>
             <Row nogutter>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="Overall Survival" />
+                <CardSlot scrollable={true} title="File Breakdown">
+                  <FileBreakdown data={fileBreakdownMock} />
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlotOverflowVisible title={multiHeader}>
@@ -133,9 +135,7 @@ const Summary = ({ theme, sqon, api }) => (
                 <DemographicChart data={data} />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot scrollable={true} title="File Breakdown">
-                  <FileBreakdown data={fileBreakdownMock} />
-                </CardSlot>
+                <CardSlot title="Overall Survival" />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">

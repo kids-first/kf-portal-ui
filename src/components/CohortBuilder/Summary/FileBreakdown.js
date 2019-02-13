@@ -12,18 +12,23 @@ const FileBreakdownWrapper = styled('div')`
 
 const TableFooter = styled('div')`
   text-align: right;
-  padding-right: 0;
-  padding-top: 10px;
-  padding-bottom: 30px;
+  padding-top: 13px;
   font-size: 11px;
+  font-weight: bold;
   color: ${({ theme }) => theme.secondary};
   & a {
+    font-weight: normal;
     color: ${({ theme }) => theme.hover};
     text-decoration: underline;
+    margin-left: 5px;
   }
 `;
 
-const FilesColumn = styled('span')`
+const Column = styled('span')`
+  font-size: 11px;
+`;
+
+const FilesColumn = styled(Column)`
   color: ${({ theme }) => theme.hover};
   text-decoration: underline;
 `;
@@ -34,7 +39,7 @@ const sumTotalFilesInData = dataset => {
   }, 0);
 };
 
-const FileBreakdownB = ({ data }) => (
+const FileBreakdown = ({ data }) => (
   <FileBreakdownWrapper>
     <BaseDataTable
       header={null}
@@ -45,15 +50,21 @@ const FileBreakdownB = ({ data }) => (
       ]}
       data={data}
       transforms={{
-        files: studyShortName => (
-          <FilesColumn>{Number(studyShortName).toLocaleString()} files</FilesColumn>
+        dataType: dataType => <Column>{dataType}</Column>,
+        experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+        files: fileCount => (
+          <FilesColumn>
+            {' '}
+            <a href="/search/file">{Number(fileCount).toLocaleString()} files</a>
+          </FilesColumn>
         ),
       }}
     />
     <TableFooter>
-      <b>Total:</b> <a>{Number(sumTotalFilesInData(data)).toLocaleString()} files</a>
+      Total:
+      <a href="/search/file">{Number(sumTotalFilesInData(data)).toLocaleString()} files</a>
     </TableFooter>
   </FileBreakdownWrapper>
 );
 
-export default compose(withTheme)(FileBreakdownB);
+export default compose(withTheme)(FileBreakdown);
