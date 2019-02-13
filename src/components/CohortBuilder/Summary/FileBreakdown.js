@@ -34,37 +34,77 @@ const FilesColumn = styled(Column)`
 `;
 
 const sumTotalFilesInData = dataset => {
-  return dataset.reduce(function(accumulator, datum) {
+  return dataset.reduce((accumulator, datum) => {
     return accumulator + parseInt(datum.files);
   }, 0);
 };
 
-const FileBreakdown = ({ data }) => (
-  <FileBreakdownWrapper>
-    <BaseDataTable
-      header={null}
-      columns={[
-        { Header: 'Data Type', accessor: 'dataType' },
-        { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
-        { Header: 'Files', accessor: 'files' },
-      ]}
-      data={data}
-      transforms={{
-        dataType: dataType => <Column>{dataType}</Column>,
-        experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
-        files: fileCount => (
-          <FilesColumn>
-            {' '}
-            <a href="/search/file">{Number(fileCount).toLocaleString()} files</a>
-          </FilesColumn>
-        ),
-      }}
-    />
-    <TableFooter>
-      Total:
-      <a href="/search/file">{Number(sumTotalFilesInData(data)).toLocaleString()} files</a>
-    </TableFooter>
-  </FileBreakdownWrapper>
-);
+const generateFileRepositoryUrl = (dataType, experimentalStrategy) => {
+  return (
+    '/search/file?sqon=' +
+    encodeURI(
+      JSON.stringify({
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: {
+              field: 'data_type',
+              value: [dataType],
+            },
+          },
+          {
+            op: 'in',
+            content: {
+              field: 'sequencing_experiments.experiment_strategy',
+              value: [experimentalStrategy],
+            },
+          },
+        ],
+      }),
+    )
+  );
+};
+
+const localizeFileQuantity = quantity => {
+  return `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
+};
+
+const generateFileColumnContents = dataset => {
+  return dataset.map(datum => {
+    datum.fileLink = (
+      <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
+        {localizeFileQuantity(datum.files)}
+      </a>
+    );
+    return datum;
+  });
+};
+
+const FileBreakdown = ({ data }) => {
+  const finalData = generateFileColumnContents(data);
+  return (
+    <FileBreakdownWrapper>
+      <BaseDataTable
+        header={null}
+        columns={[
+          { Header: 'Data Type', accessor: 'dataType' },
+          { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
+          { Header: 'Files', accessor: 'fileLink' },
+        ]}
+        data={finalData}
+        transforms={{
+          dataType: dataType => <Column>{dataType}</Column>,
+          experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+          fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+        }}
+      />
+      <TableFooter>
+        Total:
+        <a href="/search/file">{localizeFileQuantity(sumTotalFilesInData(finalData))}</a>
+      </TableFooter>
+    </FileBreakdownWrapper>
+  );
+};
 
 export default compose(withTheme)(FileBreakdown);
