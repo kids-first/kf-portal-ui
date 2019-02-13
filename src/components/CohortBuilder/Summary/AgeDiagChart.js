@@ -23,21 +23,12 @@ export const ageDiagQuery = sqon => ({
     participant {
       aggregations(filters: $sqon) {
         diagnoses__age_at_event_days {
-          newborn: histogram(interval: 10){
+          histogram(interval: 1){
             buckets {
               doc_count
-              key
-              key_as_string
+              key    
             }
-          }
-          
-          adult:histogram(interval: 5){
-            buckets {
-              doc_count
-              key
-              key_as_string
-            }
-          }
+          } 
         }
       
       } 

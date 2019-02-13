@@ -154,7 +154,7 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
-                  <AgeDiagChart />
+                  <AgeDiagChart data={ageAtDiagnosisBarMock} />
                 </CardSlot>
               </PaddedColumn>
             </Row>
