@@ -9,11 +9,26 @@ import BaseDataTable from 'uikit/DataTable';
 import QueriesResolver from '../QueriesResolver';
 
 const participantsTableViewColumns = [
-  { Header: 'Participant ID', accessor: 'participantID' },
+  { Header: 'Participant ID', accessor: 'participantId' },
   { Header: 'Study Name', accessor: 'studyName' },
   { Header: 'Proband', accessor: 'isProband' },
   { Header: 'Vital Status', accessor: 'vitalStatus' },
+  { Header: 'Diagnosis Category', accessor: 'diagnosisCategories' },
+  { Header: 'Diagnosis', accessor: 'diagnosis' },
+  { Header: 'Age at Diagnosis', accessor: 'ageAtDiagnosis' },
+  { Header: 'Gender', accessor: 'gender' },
+  { Header: 'Family ID', accessor: 'familyId' },
+  { Header: 'Family Composition', accessor: 'familyCompositions' },
+  { Header: 'Files', accessor: 'filesCount' },
 ];
+
+const stringListView = data => (
+  <div>
+    {data.map((datum, index) => (
+      <div key={index}>{datum}</div>
+    ))}
+  </div>
+);
 
 const enhance = compose(
   withApi,
@@ -24,14 +39,21 @@ const Table = ({ theme, sqon, api }) => {
   return (
     <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
       {({ isLoading, data, error }) => {
-        if (isLoading || !data) {
-          return (
-            <div>{`isLoading: ${isLoading}, data: ${data}, data.length: ${(data && data.length) ||
-              0}, error: ${error}`}</div>
-          );
-        }
+        const formatters = {
+          diagnosisCategories: stringListView,
+          diagnosis: stringListView,
+          ageAtDiagnosis: stringListView,
+          familyCompositions: stringListView,
+        };
 
-        return <BaseDataTable columns={participantsTableViewColumns} data={data} />;
+          return (
+          <BaseDataTable
+            columns={participantsTableViewColumns}
+            data={data || []} // ¯\_(ツ)_/¯
+            transforms={formatters}
+            loading={isLoading}
+          />
+          );
       }}
     </QueriesResolver>
   );

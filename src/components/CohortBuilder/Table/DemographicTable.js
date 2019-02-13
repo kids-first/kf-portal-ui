@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, uniq } from 'lodash';
 
 export const demographicQuery = ({ sqon }) => ({
   query: `query ($sqon: JSON) {
@@ -53,12 +53,35 @@ export const demographicQuery = ({ sqon }) => ({
   variables: sqon,
   transform: data => {
     const participants = get(data, 'data.participant.hits.edges');
-    const vals = participants.map(p => p.node);
-    return vals.map(datum => ({
-      participantID: get(datum, 'kf_id'),
-      studyName: get(datum, 'study.short_name'),
-      isProband: get(datum, 'is_proband', false) ? 'Yes' : 'No',
-      vitalStatus: get(datum, 'outcome.vital_status'),
-    }));
+    const nodes = participants.map(p => p.node);
+
+    return nodes.map(node => {
+      const diagnosisCategories = uniq(
+        get(node, 'diagnoses.hits.edges', []).map(edge => get(edge, 'node.diagnosis_category')),
+      );
+      const diagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
+        get(edge, 'node.diagnosis'),
+      );
+      const ageAtDiagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
+        get(edge, 'node.age_at_event_days'),
+      );
+      const familyCompositions = get(node, 'family.family_compositions.hits.edges', []).map(edge =>
+        get(edge, 'node.composition'),
+      );
+
+      return {
+        participantId: get(node, 'kf_id'),
+        studyName: get(node, 'study.short_name'),
+        isProband: get(node, 'is_proband', false) ? 'Yes' : 'No',
+        vitalStatus: get(node, 'outcome.vital_status'),
+        diagnosisCategories,
+        diagnosis,
+        ageAtDiagnosis,
+        gender: get(node, 'gender'),
+        familyId: get(node, 'family.family_id'),
+        familyCompositions,
+        filesCount: get(node, 'files.hits.total'),
+      };
+    });
   },
 });
