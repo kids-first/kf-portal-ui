@@ -7,7 +7,6 @@ import BaseDataTable from 'uikit/DataTable';
 
 const FileBreakdownWrapper = styled('div')`
   margin-top: 10px;
-  width: 100%;
 `;
 
 const TableFooter = styled('div')`
