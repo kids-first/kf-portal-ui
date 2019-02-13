@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-
+import LoadingSpinner from 'uikit/LoadingSpinner';
 import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
-import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import VerticalBar from 'chartkit/components/VerticalBar';
@@ -72,10 +71,18 @@ const multiHeader = (
 );
 
 const Summary = ({ theme, sqon, api }) => (
-  <QueriesResolver api={api} sqon={sqon} queries={[demographicQuery({ ...{ sqon } })]}>
-    {({ loading, data }) => {
-      return loading || !data ? (
-        <div> loading</div>
+  <QueriesResolver api={api} queries={[demographicQuery(sqon), demographicQuery(sqon)]}>
+    {({ isLoading, data }) => {
+      const [demographicData] = data || [];
+
+      return isLoading ? (
+        <Row nogutter>
+          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
+            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+          </div>
+        </Row>
+      ) : !data ? (
+        <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
           <Col sm={12} md={12} lg={9}>
@@ -123,7 +130,7 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <DemographicChart data={data} />
+                <DemographicChart data={demographicData} />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title="File Breakdown" />
