@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { compose, withState } from 'recompose';
+import PropTypes from 'prop-types';
 
 import Table from './Table';
 import TableToolbar from './TableToolbar';
@@ -82,6 +83,11 @@ const BaseDataTable = ({
   </Fragment>
 );
 
-BaseDataTable.propTypes = {};
+BaseDataTable.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({ Header: PropTypes.string.isRequired, accessor: PropTypes.string.isRequired }),
+  ).isRequired,
+  data: PropTypes.array.isRequired,
+};
 
 export default enhance(BaseDataTable);

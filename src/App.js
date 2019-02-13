@@ -17,6 +17,7 @@ import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
 import FileEntity from './components/EntityPage/File';
 import ParticipantEntity from './components/EntityPage/Participant';
+import CohortBuilder from './components/CohortBuilder';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';

@@ -74,7 +74,9 @@ const Results = ({ activeView, setActiveView, theme, sqon }) => (
         </ViewLink>
       </ViewLinks>
     </ContentBar>
-    <ActiveView>{activeView === SUMMARY ? <Summary sqon={sqon} /> : <Table />}</ActiveView>
+    <ActiveView>
+      {activeView === SUMMARY ? <Summary sqon={sqon} /> : <Table sqon={sqon} />}
+    </ActiveView>
   </React.Fragment>
 );
 
