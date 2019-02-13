@@ -39,9 +39,11 @@ const sumTotalFilesInData = dataset => {
   }, 0);
 };
 
+const SEARCH_FILE_RELATIVE_URL = '/search/file';
+
 const generateFileRepositoryUrl = (dataType, experimentalStrategy) => {
   return (
-    '/search/file?sqon=' +
+    `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
     encodeURI(
       JSON.stringify({
         op: 'and',
@@ -101,7 +103,9 @@ const FileBreakdown = ({ data }) => {
       />
       <TableFooter>
         Total:
-        <a href="/search/file">{localizeFileQuantity(sumTotalFilesInData(finalData))}</a>
+        <a href={SEARCH_FILE_RELATIVE_URL}>
+          {localizeFileQuantity(sumTotalFilesInData(finalData))}
+        </a>
       </TableFooter>
     </FileBreakdownWrapper>
   );
