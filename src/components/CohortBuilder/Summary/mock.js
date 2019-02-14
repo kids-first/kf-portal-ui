@@ -257,3 +257,64 @@ export const demographicPiesMock = {
     },
   ],
 };
+
+export const survivalPlotMock = {
+  donors: [
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 6,
+      survivalEstimate: 1,
+      submitter_id: 'PT_FCS416QR',
+      id: '2c30dc20-18a8-44f9-ab10-558c1e5634dc',
+    },
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 14,
+      survivalEstimate: 1,
+      submitter_id: 'PT_ARN1D5B8',
+      id: '26a12266-c6d8-42f9-bd4e-5093d827ac9a',
+    },
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 16,
+      survivalEstimate: 0.95,
+      submitter_id: 'PT_TQPMJMDF',
+      id: '01240896-3f3f-4bf9-9799-55c87bfacf36',
+    },
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 28,
+      survivalEstimate: 0.82,
+      submitter_id: 'PT_5HYPY6F9',
+      id: '6fa41234-9077-4d05-a295-6820f3bedf5b',
+    },
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 32,
+      survivalEstimate: 0.7,
+      submitter_id: 'PT_BADD0N51',
+      id: 'c46971a1-cbac-425d-bac2-f4142c92522e',
+    },
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 44,
+      survivalEstimate: 0.44,
+      submitter_id: 'PT_GJYKSGM5',
+      id: 'c46971a1-cbac-425d-bac2-f4142c92522e',
+    },
+    {
+      project_id: 'Congenital Diaphragmatic Hernia',
+      censored: true,
+      time: 62,
+      survivalEstimate: 0.32,
+      submitter_id: 'PT_1KYPR4ZK',
+      id: 'c46971a1-cbac-425d-bac2-f4142c92522e',
+    },
+  ],
+};

@@ -3,7 +3,12 @@ import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
-import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
+import {
+  topDiagnosesBarMock,
+  studiesBarMock,
+  ageAtDiagnosisBarMock,
+  survivalPlotMock,
+} from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { CardWrapper } from 'uikit/Card/styles';
@@ -13,6 +18,7 @@ import VerticalBar from 'chartkit/components/VerticalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
+import SurvivalChart from './SurvivalChart';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -81,7 +87,9 @@ const Summary = ({ theme, sqon, api }) => (
           <Col sm={12} md={12} lg={9}>
             <Row nogutter>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="Overall Survival" />
+                <CardSlot title="Overall Survival">
+                  <SurvivalChart data={survivalPlotMock} />
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title={multiHeader}>
