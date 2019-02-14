@@ -1,6 +1,6 @@
 import { get, uniq } from 'lodash';
 
-export const demographicQuery = ({ sqon }) => ({
+export const participantsQuery = ({ sqon }) => ({
   query: `query ($sqon: JSON) {
     participant {
       hits(filters: $sqon) {

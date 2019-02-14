@@ -7,7 +7,7 @@ import Row from 'uikit/Row';
 import ViewLink from 'uikit/ViewLink';
 import styled from 'react-emotion';
 import { H2 } from 'uikit/Headings';
-import Table from './Table';
+import ParticipantsTableView from './Table';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
@@ -75,7 +75,7 @@ const Results = ({ activeView, setActiveView, theme, sqon }) => (
       </ViewLinks>
     </ContentBar>
     <ActiveView>
-      {activeView === SUMMARY ? <Summary sqon={sqon} /> : <Table sqon={sqon} />}
+      {activeView === SUMMARY ? <Summary sqon={sqon} /> : <ParticipantsTableView sqon={sqon} />}
     </ActiveView>
   </React.Fragment>
 );
