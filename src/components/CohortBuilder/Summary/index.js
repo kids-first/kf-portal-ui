@@ -85,7 +85,7 @@ const multiHeader = (
 const Summary = ({ theme, sqon, api }) => (
   <QueriesResolver api={api} queries={[demographicQuery(sqon), ageDiagQuery(sqon)]}>
     {({ isLoading, data }) => {
-      const [demographicData] = data || [];
+      const [demographicData, ageDiagData] = data || [];
 
       return isLoading ? (
         <Row nogutter>
@@ -154,7 +154,7 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
-                  <AgeDiagChart data={ageAtDiagnosisBarMock} />
+                  <AgeDiagChart data={ageDiagData} />
                 </CardSlot>
               </PaddedColumn>
             </Row>
