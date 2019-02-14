@@ -45,7 +45,7 @@ const DemographicChart = ({ data, theme }) => (
   </CardSlotPies>
 );
 
-export const demographicQuery = ({ sqon }) => ({
+export const demographicQuery = sqon => ({
   query: `query ($sqon: JSON) {
     participant {
       hits(filters: $sqon) {
