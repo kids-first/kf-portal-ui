@@ -13,18 +13,16 @@ const enhance = compose(
   withTheme,
 );
 
-const ParticipantsTableView = ({ sqon, api }) => {
-  return (
-    <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery({ ...{ sqon } })]}>
-      {({ isLoading, data, error }) =>
-        error ? (
-          <div>{`${error.name} - ${error.message}`}</div>
-        ) : (
-          <ParticipantsTable data={data} isLoading={isLoading} />
-        )
-      }
-    </QueriesResolver>
-  );
-};
+const ParticipantsTableView = ({ sqon, api }) => (
+  <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery({ ...{ sqon } })]}>
+    {({ isLoading, data, error }) =>
+      error ? (
+        <div>{`${error.name} - ${error.message}`}</div>
+      ) : (
+        <ParticipantsTable data={data ? data[0] : null} isLoading={isLoading} />
+      )
+    }
+  </QueriesResolver>
+);
 
 export default enhance(ParticipantsTableView);
