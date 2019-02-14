@@ -73,12 +73,14 @@ const localizeFileQuantity = quantity => {
 
 const generateFileColumnContents = dataset => {
   return dataset.map(datum => {
-    datum.fileLink = (
-      <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
-        {localizeFileQuantity(datum.files)}
-      </a>
-    );
-    return datum;
+    return {
+      ...datum,
+      fileLink: (
+        <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
+          {localizeFileQuantity(datum.files)}
+        </a>
+      ),
+    };
   });
 };
 
