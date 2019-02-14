@@ -5,35 +5,23 @@ import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock, survivalPlotMock } from './mock';
 import Card from 'uikit/Card';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
+import MultiHeader from 'uikit/Multicard/MultiHeader';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
+import StudiesChart, { studiesQuery } from './StudiesChart';
 
-const studiesToolTip = data => {
-  const { familyMembers, probands, name } = data;
-  const participants = familyMembers + probands;
-  return (
-    <div>
-      <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Probands`}</div>
-      <div>{`${familyMembers.toLocaleString()} Family Members`}</div>
-      <div>{`${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`}</div>
-    </div>
-  );
+const ageAtDiagnosisTooltip = data => {
+  return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
-const sortDescParticipant = (a, b) => {
-  const aTotal = a.probands + a.familyMembers;
-  const bTotal = b.probands + b.familyMembers;
-  return aTotal <= bTotal ? -1 : 1;
-};
+const multiHeader = <MultiHeader headings={[{ title: 'Studies', badge: 7 }]} />;
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -79,17 +67,10 @@ const defaultSqon = {
   op: 'and',
   content: [],
 };
-
-const multiHeader = (
-  <MultiHeader
-    headings={[{ title: 'Studies', badge: 7 }, { title: 'Participants', badge: 6155 }]}
-  />
-);
-
 const Summary = ({ theme, sqon = defaultSqon, api }) => (
   <QueriesResolver
     api={api}
-    queries={[demographicQuery(sqon), ageDiagQuery(sqon), diagnosesQuery(sqon)]}
+    queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
   >
     {({ isLoading, data }) => {
       const [demographicData, ageDiagData, topDiagnosesData] = data || [];
@@ -113,22 +94,7 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot title={multiHeader}>
-                  <BarChartContainer>
-                    <HorizontalBar
-                      data={studiesBarMock}
-                      indexBy="label"
-                      keys={['probands', 'familyMembers']}
-                      tooltipFormatter={studiesToolTip}
-                      sortBy={sortDescParticipant}
-                      tickInterval={4}
-                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                      xTickTextLength={28}
-                      legends={[
-                        { title: 'Probands', color: theme.chartColors.blue },
-                        { title: 'Family Members', color: theme.chartColors.purple },
-                      ]}
-                    />
-                  </BarChartContainer>
+                  <StudiesChart data={studiesBarMock} />
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
