@@ -4,6 +4,13 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { topDiagnosesBarMock, studiesBarMock, ageAtDiagnosisBarMock } from './mock';
+
+import {
+  topDiagnosesBarMock,
+  studiesBarMock,
+  ageAtDiagnosisBarMock,
+  fileBreakdownMock,
+} from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { Col, Row } from 'react-grid-system';
@@ -12,6 +19,7 @@ import VerticalBar from 'chartkit/components/VerticalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
+import FileBreakdown from './FileBreakdown';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -42,6 +50,10 @@ const sortDescParticipant = (a, b) => {
 };
 
 const CardSlot = styled(Card)`
+  height: 305px;
+`;
+
+const CardSlotOverflowVisible = styled(Card)`
   height: 305px;
   & div {
     overflow: visible;
@@ -88,10 +100,12 @@ const Summary = ({ theme, sqon, api }) => (
           <Col sm={12} md={12} lg={9}>
             <Row nogutter>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="Overall Survival" />
+                <CardSlot scrollable={true} title="File Breakdown">
+                  <FileBreakdown data={fileBreakdownMock} />
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title={multiHeader}>
+                <CardSlotOverflowVisible title={multiHeader}>
                   <HorizontalBar
                     data={studiesBarMock}
                     indexBy="label"
@@ -105,14 +119,12 @@ const Summary = ({ theme, sqon, api }) => (
                       { title: 'Probands', color: theme.chartColors.blue },
                       { title: 'Family Members', color: theme.chartColors.purple },
                     ]}
-                    padding={0.5}
                   />
-                </CardSlot>
+                </CardSlotOverflowVisible>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="Most Frequent Diagnoses">
+                <CardSlotOverflowVisible title="Most Frequent Diagnoses">
                   <HorizontalBar
-                    style={{ maxWidth: '100px' }}
                     data={topDiagnosesBarMock}
                     indexBy="label"
                     keys={['probands', 'familyMembers']}
@@ -125,15 +137,14 @@ const Summary = ({ theme, sqon, api }) => (
                       { title: 'Probands', color: theme.chartColors.blue },
                       { title: 'Family Members', color: theme.chartColors.purple },
                     ]}
-                    padding={0.5}
                   />
-                </CardSlot>
+                </CardSlotOverflowVisible>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <DemographicChart data={demographicData} />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="File Breakdown" />
+                <CardSlot title="Overall Survival" />
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
