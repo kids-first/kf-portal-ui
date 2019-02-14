@@ -49,7 +49,7 @@ const Table = ({ theme, sqon, api }) => {
           return (
           <BaseDataTable
             columns={participantsTableViewColumns}
-            data={data || []} // ¯\_(ツ)_/¯
+            data={data}
             transforms={formatters}
             loading={isLoading}
           />
