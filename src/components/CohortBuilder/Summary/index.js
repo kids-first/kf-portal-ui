@@ -101,14 +101,14 @@ const Summary = ({ theme, sqon, api }) => (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col sm={12} md={12} lg={12} xl={9}>
+          <Col xl={9}>
             <Row nogutter>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot scrollable={true} title="File Breakdown">
                   <FileBreakdown data={fileBreakdownMock} />
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title={multiHeader}>
                   <BarChartContainer>
                     <HorizontalBar
@@ -128,7 +128,7 @@ const Summary = ({ theme, sqon, api }) => (
                   </BarChartContainer>
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Most Frequent Diagnoses">
                   <BarChartContainer>
                     <HorizontalBar
@@ -148,15 +148,15 @@ const Summary = ({ theme, sqon, api }) => (
                   </BarChartContainer>
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot showHeader={false}>
                   <DemographicChart data={demographicData} />
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Overall Survival" />
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
                   <VerticalBar
                     data={ageAtDiagnosisBarMock}
@@ -170,7 +170,7 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
             </Row>
           </Col>
-          <PaddedColumn sm={12} md={12} lg={12} xl={3}>
+          <PaddedColumn xl={3}>
             <LongCardContainerRow nogutter>
               <LongCard title="Phenotypes">
                 <pre>{JSON.stringify(sqon, null, 2)}</pre>
