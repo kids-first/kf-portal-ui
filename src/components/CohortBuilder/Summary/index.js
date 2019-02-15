@@ -48,23 +48,28 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
+const BarChartContainer = styled('div')`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+`;
+
 const CardSlot = styled(Card)`
   height: 305px;
 `;
 
-const CardSlotOverflowVisible = styled(Card)`
-  height: 305px;
-  & div {
-    overflow: visible;
-  }
+const PaddedColumn = styled(Col)`
+  padding: 4px !important;
 `;
 
 const LongCard = styled(Card)`
-  height: 100%;
+  width: 100%;
 `;
 
-const PaddedColumn = styled(Col)`
-  padding: 4px !important;
+const LongCardContainerRow = styled(Row)`
+  height: 100%;
 `;
 
 const md = 6;
@@ -96,56 +101,62 @@ const Summary = ({ theme, sqon, api }) => (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col sm={12} md={12} lg={9}>
+          <Col xl={9}>
             <Row nogutter>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot scrollable={true} title="File Breakdown">
                   <FileBreakdown data={fileBreakdownMock} />
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlotOverflowVisible title={multiHeader}>
-                  <HorizontalBar
-                    data={studiesBarMock}
-                    indexBy="label"
-                    keys={['probands', 'familyMembers']}
-                    tooltipFormatter={studiesToolTip}
-                    sortBy={sortDescParticipant}
-                    tickInterval={4}
-                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                    xTickTextLength={28}
-                    legends={[
-                      { title: 'Probands', color: theme.chartColors.blue },
-                      { title: 'Family Members', color: theme.chartColors.purple },
-                    ]}
-                  />
-                </CardSlotOverflowVisible>
+              <PaddedColumn md={md} lg={lg}>
+                <CardSlot title={multiHeader}>
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={studiesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={studiesToolTip}
+                      sortBy={sortDescParticipant}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlotOverflowVisible title="Most Frequent Diagnoses">
-                  <HorizontalBar
-                    data={topDiagnosesBarMock}
-                    indexBy="label"
-                    keys={['probands', 'familyMembers']}
-                    tooltipFormatter={mostFrequentDiagnosisTooltip}
-                    sortByValue={true}
-                    tickInterval={4}
-                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                    xTickTextLength={28}
-                    legends={[
-                      { title: 'Probands', color: theme.chartColors.blue },
-                      { title: 'Family Members', color: theme.chartColors.purple },
-                    ]}
-                  />
-                </CardSlotOverflowVisible>
+              <PaddedColumn md={md} lg={lg}>
+                <CardSlot title="Most Frequent Diagnoses">
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={topDiagnosesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={mostFrequentDiagnosisTooltip}
+                      sortByValue={true}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
-                <DemographicChart data={demographicData} />
+              <PaddedColumn md={md} lg={lg}>
+                <CardSlot showHeader={false}>
+                  <DemographicChart data={demographicData} />
+                </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Overall Survival" />
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
                   <VerticalBar
                     data={ageAtDiagnosisBarMock}
@@ -159,10 +170,12 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
             </Row>
           </Col>
-          <PaddedColumn sm={12} md={12} lg={3}>
-            <LongCard title="Phenotypes">
-              <pre>{JSON.stringify(sqon, null, 2)}</pre>
-            </LongCard>
+          <PaddedColumn xl={3}>
+            <LongCardContainerRow nogutter>
+              <LongCard title="Phenotypes">
+                <pre>{JSON.stringify(sqon, null, 2)}</pre>
+              </LongCard>
+            </LongCardContainerRow>
           </PaddedColumn>
         </Row>
       );

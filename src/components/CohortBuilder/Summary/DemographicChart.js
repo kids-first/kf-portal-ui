@@ -5,19 +5,21 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { get, countBy, camelCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
-import { CardWrapper } from 'uikit/Card/styles';
 
-const CardSlotPies = styled(CardWrapper)`
-  height: 305px;
+const PieChartContainer = styled('div')`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px 10px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
 `;
 
 const DemographicChart = ({ data, theme }) => (
-  <CardSlotPies>
+  <PieChartContainer>
     <Pie
       style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
       title={'Gender'}
@@ -43,7 +45,7 @@ const DemographicChart = ({ data, theme }) => (
       data={data.familyComposition}
       colors={[theme.chartColors.lightblue, '#FFFFFF']}
     />
-  </CardSlotPies>
+  </PieChartContainer>
 );
 
 export const demographicQuery = sqon => ({

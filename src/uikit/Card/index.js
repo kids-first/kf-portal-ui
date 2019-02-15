@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import CardContent from './CardContent';
 import CardHeader from './CardHeader';
@@ -12,15 +13,27 @@ const Card = ({
   scrollable,
   title,
   inactive = false,
+  showHeader = true,
 }) => {
   const DefaultHeader = <CardHeader title={title} />;
 
   return (
     <CardWrapper className={className} inactive={inactive}>
-      <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>
+      {showHeader && <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>}
       <Content scrollable={scrollable}>{children}</Content>
     </CardWrapper>
   );
+};
+
+Card.propTypes = {
+  Header: PropTypes.node,
+  Content: PropTypes.func,
+  children: PropTypes.node,
+  className: PropTypes.string,
+  scrollable: PropTypes.bool,
+  title: PropTypes.node,
+  inactive: PropTypes.bool,
+  showHeader: PropTypes.bool,
 };
 
 export default Card;
