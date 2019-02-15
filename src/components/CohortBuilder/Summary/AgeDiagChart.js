@@ -2,6 +2,7 @@ import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { get, inRange } from 'lodash';
+import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 
 const ageAtDiagnosisTooltip = data => {
@@ -20,23 +21,23 @@ const AgeDiagChart = ({ data, theme }) => (
 );
 
 export const ageDiagQuery = sqon => ({
-  query: `query($sqon:JSON) {
-    participant {
-      aggregations(filters: $sqon) {
-        diagnoses__age_at_event_days {
-          histogram(interval: 1){
-            buckets {
-              doc_count
-              key    
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        aggregations(filters: $sqon) {
+          diagnoses__age_at_event_days {
+            histogram(interval: 365) {
+              buckets {
+                doc_count
+                key
+              }
             }
-          } 
+          }
         }
-      
-      } 
+      }
     }
-  }
   `,
-  variables: sqon,
+  variables: { sqon },
   transform: data => {
     const buckets = get(
       data,
