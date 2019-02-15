@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { get, inRange } from 'lodash';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 
@@ -48,32 +48,22 @@ export const ageDiagQuery = sqon => ({
     const reducer = (prev, current) => prev + current.doc_count;
 
     // Newborn
-    const aggNewborn = buckets.filter(b => inRange(Number(b.key), 0, 365)).reduce(reducer, 0);
+    const aggNewborn = buckets.slice(0, 1).reduce(reducer, 0);
 
     // 1 - 5 Years
-    const fiveYears = 365 * 5 + 1;
-    const agg1to5 = buckets.filter(b => inRange(Number(b.key), 365, fiveYears)).reduce(reducer, 0);
+    const agg1to5 = buckets.slice(1, 6).reduce(reducer, 0);
 
     // 5 - 10 Years
-    const tenYears = 365 * 10 + 1;
-    const agg5to10 = buckets
-      .filter(b => inRange(Number(b.key), fiveYears, tenYears))
-      .reduce(reducer, 0);
+    const agg5to10 = buckets.slice(6, 11).reduce(reducer, 0);
 
     // 10 - 15 Years
-    const fifteenYears = 365 * 15 + 1;
-    const agg10to15 = buckets
-      .filter(b => inRange(Number(b.key), tenYears, fifteenYears))
-      .reduce(reducer, 0);
+    const agg10to15 = buckets.slice(11, 16).reduce(reducer, 0);
 
     // 15 - 18 Years
-    const eighteenYears = 365 * 18 + 1;
-    const agg15to18 = buckets
-      .filter(b => inRange(Number(b.key), fifteenYears, eighteenYears))
-      .reduce(reducer, 0);
+    const agg15to18 = buckets.slice(16, 19).reduce(reducer, 0);
 
     // Adult
-    const aggAdult = buckets.filter(b => inRange(Number(b.key), eighteenYears)).reduce(reducer, 0);
+    const aggAdult = buckets.slice(19).reduce(reducer, 0);
 
     return [
       {
