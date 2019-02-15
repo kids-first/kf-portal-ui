@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get } from 'lodash';
+import gql from 'graphql-tag';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -42,19 +43,21 @@ const StudiesChart = ({ data, theme }) => (
 );
 
 export const studiesQuery = sqon => ({
-  query: `query ($sqon: JSON) {
-    participant {
-      aggregations(filters: $sqon) {
-        study__name{
-           buckets {
-            doc_count
-            key
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        aggregations(filters: $sqon) {
+          study__name {
+            buckets {
+              doc_count
+              key
+            }
           }
         }
       }
     }
-  }`,
-  variables: sqon,
+  `,
+  variables: { sqon },
   transform: data => {
     const buckets = get(data, 'data.participant.aggregations.study__name.buckets');
 
