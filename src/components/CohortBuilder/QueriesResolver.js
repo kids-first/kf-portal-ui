@@ -1,26 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Component from 'react-component-component';
-import graphql from 'services/arranger';
+import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
+import urlJoin from 'url-join';
+import { isEqual } from 'lodash';
 
-const QueriesResolver = ({ children, queries, api }) => (
-  <Component
-    initialState={{ data: null, isLoading: true, error: null }}
-    didMount={({ setState }) => {
-      const { query, variables, transform = x => x } = queries[0];
+class QueriesResolver extends Component {
+  state = { data: null, isLoading: true, error: null };
 
-      graphql(api)({
-        query,
-        variables,
-      })
-        .then(data => transform(data))
-        .then(data => setState({ data: data, isLoading: false }))
-        .catch(err => setState({ isLoading: false, error: err }));
-    }}
-  >
-    {({ state }) => children(state)}
-  </Component>
-);
+  componentDidMount() {
+    this.fetchQuery();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.queries, prevProps.queries)) {
+      this.fetchQuery();
+    }
+  }
+
+  fetchQuery = () => {
+    this.setState({ isLoading: true });
+
+    const { queries, api } = this.props;
+
+    const body = JSON.stringify(
+      queries.map(q => ({
+        query: q.query,
+        variables: q.variables,
+      })),
+    );
+
+    api({
+      method: 'POST',
+      url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`),
+      body,
+    })
+      .then(data =>
+        data.map((d, i) => {
+          const transform = queries[i].transform;
+          return transform ? transform(d) : d;
+        }),
+      )
+      .then(data => this.setState({ data: data, isLoading: false }))
+      .catch(err => this.setState({ isLoading: false, error: err }));
+  };
+
+  render() {
+    return this.props.children({ ...this.state, ...this.props });
+  }
+}
 
 export default QueriesResolver;
 
