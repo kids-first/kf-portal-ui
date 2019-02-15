@@ -60,12 +60,16 @@ const CardSlot = styled(Card)`
   height: 305px;
 `;
 
-const LongCard = styled(Card)`
-  height: 100%;
-`;
-
 const PaddedColumn = styled(Col)`
   padding: 4px !important;
+`;
+
+const LongCard = styled(Card)`
+  width: 100%;
+`;
+
+const LongCardContainerRow = styled(Row)`
+  height: 100%;
 `;
 
 const md = 6;
@@ -167,9 +171,11 @@ const Summary = ({ theme, sqon, api }) => (
             </Row>
           </Col>
           <PaddedColumn sm={12} md={12} lg={12} xl={3}>
-            <LongCard title="Phenotypes">
-              <pre>{JSON.stringify(sqon, null, 2)}</pre>
-            </LongCard>
+            <LongCardContainerRow nogutter>
+              <LongCard title="Phenotypes">
+                <pre>{JSON.stringify(sqon, null, 2)}</pre>
+              </LongCard>
+            </LongCardContainerRow>
           </PaddedColumn>
         </Row>
       );
