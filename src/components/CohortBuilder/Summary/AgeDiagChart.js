@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { get } from 'lodash';
+import { get, sumBy } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 
@@ -44,26 +44,27 @@ export const ageDiagQuery = sqon => ({
       'data.participant.aggregations.diagnoses__age_at_event_days.histogram.buckets',
     );
 
-    // NB: intervals are in days
-    const reducer = (prev, current) => prev + current.doc_count;
+    // Intervals are in years returned as ordered array
+
+    const sum = buckets => sumBy(buckets, 'doc_count');
 
     // Newborn
-    const aggNewborn = buckets.slice(0, 1).reduce(reducer, 0);
+    const aggNewborn = sum(buckets.slice(0, 1));
 
     // 1 - 5 Years
-    const agg1to5 = buckets.slice(1, 6).reduce(reducer, 0);
+    const agg1to5 = sum(buckets.slice(1, 6));
 
     // 5 - 10 Years
-    const agg5to10 = buckets.slice(6, 11).reduce(reducer, 0);
+    const agg5to10 = sum(buckets.slice(6, 11));
 
     // 10 - 15 Years
-    const agg10to15 = buckets.slice(11, 16).reduce(reducer, 0);
+    const agg10to15 = sum(buckets.slice(11, 16));
 
     // 15 - 18 Years
-    const agg15to18 = buckets.slice(16, 19).reduce(reducer, 0);
+    const agg15to18 = sum(buckets.slice(16, 19));
 
     // Adult
-    const aggAdult = buckets.slice(19).reduce(reducer, 0);
+    const aggAdult = sum(buckets.slice(19));
 
     return [
       {
