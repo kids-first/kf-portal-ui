@@ -44,16 +44,23 @@ const StudiesChart = ({ data, theme }) => (
 
 export const studiesQuery = sqon => ({
   query: gql`
-    query($sqon: JSON) {
-      participant {
-        aggregations(filters: $sqon) {
-          study__name {
-            buckets {
-              doc_count
-              key
-            }
-          }
+    fragment bucketsAgg on Aggregations {
+      study__name {
+        buckets {
+          key
+          doc_count
         }
+      }
+    }
+
+    query($sqon: JSON) {
+      probandAgg: aggregations(
+        filters: {
+          op: "and"
+          content: [$sqon, { op: "in", content: { field: "proband", value: ["true"] } }]
+        }
+      ) {
+        ...bucketsAgg
       }
     }
   `,
