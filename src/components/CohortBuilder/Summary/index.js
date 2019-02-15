@@ -48,15 +48,16 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
-const CardSlot = styled(Card)`
-  height: 305px;
+const BarChartContainer = styled('div')`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 20px;
 `;
 
-const CardSlotOverflowVisible = styled(Card)`
+const CardSlot = styled(Card)`
   height: 305px;
-  & div {
-    overflow: visible;
-  }
 `;
 
 const LongCard = styled(Card)`
@@ -96,7 +97,7 @@ const Summary = ({ theme, sqon, api }) => (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col sm={12} md={12} lg={9}>
+          <Col sm={12} md={12} lg={12} xl={9}>
             <Row nogutter>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot scrollable={true} title="File Breakdown">
@@ -104,40 +105,44 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlotOverflowVisible title={multiHeader}>
-                  <HorizontalBar
-                    data={studiesBarMock}
-                    indexBy="label"
-                    keys={['probands', 'familyMembers']}
-                    tooltipFormatter={studiesToolTip}
-                    sortBy={sortDescParticipant}
-                    tickInterval={4}
-                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                    xTickTextLength={28}
-                    legends={[
-                      { title: 'Probands', color: theme.chartColors.blue },
-                      { title: 'Family Members', color: theme.chartColors.purple },
-                    ]}
-                  />
-                </CardSlotOverflowVisible>
+                <CardSlot title={multiHeader}>
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={studiesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={studiesToolTip}
+                      sortBy={sortDescParticipant}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlotOverflowVisible title="Most Frequent Diagnoses">
-                  <HorizontalBar
-                    data={topDiagnosesBarMock}
-                    indexBy="label"
-                    keys={['probands', 'familyMembers']}
-                    tooltipFormatter={mostFrequentDiagnosisTooltip}
-                    sortByValue={true}
-                    tickInterval={4}
-                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                    xTickTextLength={28}
-                    legends={[
-                      { title: 'Probands', color: theme.chartColors.blue },
-                      { title: 'Family Members', color: theme.chartColors.purple },
-                    ]}
-                  />
-                </CardSlotOverflowVisible>
+                <CardSlot title="Most Frequent Diagnoses">
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={topDiagnosesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={mostFrequentDiagnosisTooltip}
+                      sortByValue={true}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <DemographicChart data={demographicData} />
@@ -159,7 +164,7 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
             </Row>
           </Col>
-          <PaddedColumn sm={12} md={12} lg={3}>
+          <PaddedColumn sm={12} md={12} lg={12} xl={3}>
             <LongCard title="Phenotypes">
               <pre>{JSON.stringify(sqon, null, 2)}</pre>
             </LongCard>
