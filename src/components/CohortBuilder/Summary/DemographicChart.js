@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import { get, countBy, camelCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 
-const Container = styled('div')`
+const PieChartContainer = styled('div')`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -18,7 +18,7 @@ const Container = styled('div')`
 `;
 
 const DemographicChart = ({ data, theme }) => (
-  <Container>
+  <PieChartContainer>
     <Pie
       style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
       title={'Gender'}
@@ -44,7 +44,7 @@ const DemographicChart = ({ data, theme }) => (
       data={data.familyComposition}
       colors={[theme.chartColors.lightblue, '#FFFFFF']}
     />
-  </Container>
+  </PieChartContainer>
 );
 
 export const demographicQuery = sqon => ({
