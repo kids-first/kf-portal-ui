@@ -12,12 +12,13 @@ const Card = ({
   scrollable,
   title,
   inactive = false,
+  showHeader = true,
 }) => {
   const DefaultHeader = <CardHeader title={title} />;
 
   return (
     <CardWrapper className={className} inactive={inactive}>
-      <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>
+      {showHeader && <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>}
       <Content scrollable={scrollable}>{children}</Content>
     </CardWrapper>
   );

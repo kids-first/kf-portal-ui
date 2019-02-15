@@ -145,7 +145,9 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
-                <DemographicChart data={demographicData} />
+                <CardSlot showHeader={false}>
+                  <DemographicChart data={demographicData} />
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn sm={12} md={md} lg={lg}>
                 <CardSlot title="Overall Survival" />
