@@ -1,4 +1,5 @@
 import React from 'react';
+import gql from 'graphql-tag';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
@@ -46,64 +47,48 @@ const DemographicChart = ({ data, theme }) => (
 );
 
 export const demographicQuery = sqon => ({
-  query: `query ($sqon: JSON) {
-    participant {
-      hits(filters: $sqon) {
-        edges {
-          node {
-            race
-            ethnicity
-            gender
-            family {
-              family_compositions {
-                hits {
-                  edges {
-                    node {
-                      composition
-                    }
-                  }
-                }
-              }
-            }
+  query: gql`
+    fragment bucketsAgg on Aggregations {
+      buckets {
+        key
+        doc_count
+      }
+    }
+    query($sqon: JSON) {
+      participant {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+          gender {
+            ...bucketsAgg
+          }
+          ethnicity {
+            ...bucketsAgg
+          }
+          race {
+            ...bucketsAgg
+          }
+          family__family_compositions__composition {
+            ...bucketsAgg
           }
         }
       }
     }
-  }`,
-  variables: sqon,
+  `,
+  variables: { sqon },
   transform: data => {
-    const participants = get(data, 'data.participant.hits.edges');
-
-    const vals = participants.map(p => p.node);
-    const gender = countBy(vals, v => v.gender);
-    const ethnicity = countBy(vals, v => v.ethnicity);
-    const race = countBy(vals, v => v.race);
-
-    const familyComposition = countBy(vals, v =>
-      get(v, 'family.family_compositions.hits.edges[0].node.composition'),
-    );
-
+    const toChartData = ({ key, doc_count }) => ({
+      id: keyToId(key),
+      label: key,
+      value: doc_count,
+    });
     return {
-      race: Object.keys(race).map(key => ({
-        id: keyToId(key),
-        label: key,
-        value: race[key],
-      })),
-      gender: Object.keys(gender).map(key => ({
-        id: keyToId(key),
-        label: key,
-        value: gender[key],
-      })),
-      ethnicity: Object.keys(ethnicity).map(key => ({
-        id: keyToId(key),
-        label: key,
-        value: ethnicity[key],
-      })),
-      familyComposition: Object.keys(familyComposition).map(key => ({
-        id: keyToId(key),
-        label: key,
-        value: familyComposition[key],
-      })),
+      race: get(data, 'data.participant.aggregations.race.buckets', []).map(toChartData),
+      gender: get(data, 'data.participant.aggregations.gender.buckets', []).map(toChartData),
+      ethnicity: get(data, 'data.participant.aggregations.ethnicity.buckets', []).map(toChartData),
+      familyComposition: get(
+        data,
+        'data.participant.aggregations.family__family_compositions__composition.buckets',
+        [],
+      ).map(toChartData),
     };
   },
 });
