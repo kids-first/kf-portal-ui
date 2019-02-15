@@ -81,12 +81,13 @@ export const demographicQuery = sqon => ({
       value: doc_count,
     });
     return {
-      race: get(data, 'data.participant.aggregations.race.buckets').map(toChartData),
-      gender: get(data, 'data.participant.aggregations.gender.buckets').map(toChartData),
-      ethnicity: get(data, 'data.participant.aggregations.ethnicity.buckets').map(toChartData),
+      race: get(data, 'data.participant.aggregations.race.buckets', []).map(toChartData),
+      gender: get(data, 'data.participant.aggregations.gender.buckets', []).map(toChartData),
+      ethnicity: get(data, 'data.participant.aggregations.ethnicity.buckets', []).map(toChartData),
       familyComposition: get(
         data,
         'data.participant.aggregations.family__family_compositions__composition.buckets',
+        [],
       ).map(toChartData),
     };
   },
