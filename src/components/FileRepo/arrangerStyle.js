@@ -198,7 +198,6 @@ export default () => css`
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
   }
 
   .showMore-wrapper.more::before {
