@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose, withState } from 'recompose';
 import BaseDataTable from 'uikit/DataTable';
-import ViewLink from 'uikit/ViewLink';
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
