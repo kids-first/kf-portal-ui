@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
 import { withApi } from 'services/api';
+import PromptMessage from 'uikit/PromptMessage';
 import { participantsQuery } from './queries';
 
 import QueriesResolver from '../QueriesResolver';
@@ -17,7 +18,11 @@ const ParticipantsTableView = ({ sqon, api }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery({ ...{ sqon } })]}>
     {({ isLoading, data, error }) =>
       error ? (
-        <div>{`${error.name} - ${error.message}`}</div>
+        <PromptMessage
+          heading={error.name}
+          content={error.message + (error.stack ? error.stack : '')}
+          error={true}
+        />
       ) : (
         <ParticipantsTable data={data ? data[0] : null} isLoading={isLoading} />
       )
