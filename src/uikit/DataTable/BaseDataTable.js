@@ -85,7 +85,11 @@ const BaseDataTable = ({
 
 BaseDataTable.propTypes = {
   columns: PropTypes.arrayOf(
-    PropTypes.shape({ Header: PropTypes.string.isRequired, accessor: PropTypes.string.isRequired }),
+    PropTypes.shape({
+      Header: PropTypes.string.isRequired,
+      accessor: PropTypes.string.isRequired,
+      Cell: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]),
+    }),
   ).isRequired,
   data: PropTypes.array.isRequired,
 };
