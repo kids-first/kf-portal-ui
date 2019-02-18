@@ -1,4 +1,4 @@
-import { get, uniq } from 'lodash';
+import { get } from 'lodash';
 
 export const participantsQuery = ({ sqon }) => ({
   query: `query ($sqon: JSON) {
@@ -56,8 +56,8 @@ export const participantsQuery = ({ sqon }) => ({
     const nodes = participants.map(p => p.node);
 
     return nodes.map(node => {
-      const diagnosisCategories = uniq(
-        get(node, 'diagnoses.hits.edges', []).map(edge => get(edge, 'node.diagnosis_category')),
+      const diagnosisCategories = get(node, 'diagnoses.hits.edges', []).map(edge =>
+        get(edge, 'node.diagnosis_category'),
       );
       const diagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
         get(edge, 'node.diagnosis'),
