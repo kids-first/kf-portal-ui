@@ -3,11 +3,11 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
 import { withApi } from 'services/api';
-import PromptMessage from 'uikit/PromptMessage';
 import { participantsQuery } from './queries';
 
 import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
+import TableErrorView from './TableErrorView';
 
 const enhance = compose(
   withApi,
@@ -18,11 +18,7 @@ const ParticipantsTableView = ({ sqon, api }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery({ ...{ sqon } })]}>
     {({ isLoading, data, error }) =>
       error ? (
-        <PromptMessage
-          heading={error.name}
-          content={error.message + (error.stack ? error.stack : '')}
-          error={true}
-        />
+        <TableErrorView error={error} />
       ) : (
         <ParticipantsTable data={data ? data[0] : null} isLoading={isLoading} />
       )
