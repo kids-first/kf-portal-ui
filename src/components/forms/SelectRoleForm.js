@@ -83,6 +83,7 @@ export const enhance = compose(
           roles: [],
           acceptedKfOptIn: false,
           acceptedNihOptIn: false,
+          acceptedGabriellaMillerKfOptIn: false,
         },
       },
     }) => ({
@@ -92,6 +93,7 @@ export const enhance = compose(
       roles: (loggedInUser.roles && loggedInUser.roles[0]) || '',
       acceptedKfOptIn: loggedInUser.acceptedKfOptIn || false,
       acceptedNihOptIn: loggedInUser.acceptedNihOptIn || false,
+      acceptedGabriellaMillerKfOptIn: loggedInUser.acceptedGabriellaMillerKfOptIn || false,
     }),
     isInitialValid: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
@@ -141,6 +143,7 @@ export const enhance = compose(
           roles: [values.roles],
           acceptedKfOptIn: !!values.acceptedKfOptIn,
           acceptedNihOptIn: !!values.acceptedNihOptIn,
+          acceptedGabriellaMillerKfOptIn: !!values.acceptedGabriellaMillerKfOptIn,
         },
       }).then(
         async profile => {
@@ -283,6 +286,24 @@ export default enhance(
                 <Trans>
                   I would like to receive updates from the NIH Kids First program including funding
                   updates and news about the program.
+                </Trans>
+              </Paragraph>
+            </CheckboxLabel>
+          </Row>
+          <Row mt={2} pb={2}>
+            <Field
+              type="checkbox"
+              value={values.acceptedGabriellaMillerKfOptIn}
+              checked={values.acceptedGabriellaMillerKfOptIn}
+              id="acceptedGabriellaMillerKfOptIn"
+              name="acceptedGabriellaMillerKfOptIn"
+            />
+            <CheckboxLabel htmlFor="acceptedGabriellaMillerKfOptIn">
+              <Paragraph lineHeight="26px" fontSize="14px">
+                <Trans>
+                  The Gabriella Miller Kids First Data Resource Center is constantly improving
+                  the availability and quality of new datasets added to the Data Resource Portal.
+                  Sign up below to opt-in to receive updates and announcements when new datasets are available in the Portal.
                 </Trans>
               </Paragraph>
             </CheckboxLabel>
