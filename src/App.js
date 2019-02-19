@@ -32,7 +32,7 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { Gen3AuthRedirect } from 'services/gen3';
+import { Gen3Redirect, DcfRedirect } from 'services/fence/redirect';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -193,7 +193,8 @@ const App = compose(
             />
           )}
         />
-        <Route path="/gen3_redirect" exact render={Gen3AuthRedirect} />
+        <Route path="/gen3_redirect" exact render={Gen3Redirect} />
+        <Route path="/dcf_redirect" exact render={DcfRedirect} />
         <Route path="/error" exact render={props => <Error {...props} />} />
         <Redirect from="*" to="/dashboard" />
       </Switch>

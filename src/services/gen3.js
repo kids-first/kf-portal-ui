@@ -1,6 +1,13 @@
 // @ts-check
 import * as React from 'react';
-import { gen3OauthRedirect, gen3IntegrationRoot } from 'common/injectGlobals';
+import {
+  gen3OauthRedirect,
+  gen3IntegrationRoot,
+  gen3ApiRoot,
+  dcfOauthRedirect,
+  dcfIntegrationRoot,
+  dcfApiRoot,
+} from 'common/injectGlobals';
 import jwtDecode from 'jwt-decode';
 import Component from 'react-component-component';
 import { withApi } from 'services/api';
@@ -8,14 +15,17 @@ import { setUserDimension } from 'services/analyticsTracking';
 import { uniq } from 'lodash';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { gen3ApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
 
-const AUTHORIZE_URL = `${gen3ApiRoot}user/oauth2/authorize`;
-const CLIENT_URL = `${`${gen3IntegrationRoot}/auth-client`}`;
-const TOKEN_URL = `${`${gen3IntegrationRoot}/token`}`;
-const REFRESH_URL = `${`${gen3IntegrationRoot}/refresh`}`;
-const REDIRECT_URI = gen3OauthRedirect;
+// const AUTHORIZE_URL = `${gen3ApiRoot}user/oauth2/authorize`;
+// const CLIENT_URL = `${`${gen3IntegrationRoot}/auth-client?fence=dcf`}`;
+// const TOKEN_URL = `${`${gen3IntegrationRoot}/token?fence=dcf`}`;
+// const REFRESH_URL = `${`${gen3IntegrationRoot}/refresh?fence=dcf`}`;
+const AUTHORIZE_URL = `${dcfApiRoot}user/oauth2/authorize`;
+const CLIENT_URL = `${`${dcfIntegrationRoot}/auth-client?fence=dcf`}`;
+const TOKEN_URL = `${`${dcfIntegrationRoot}/token?fence=dcf`}`;
+const REFRESH_URL = `${`${dcfIntegrationRoot}/refresh?fence=dcf`}`;
+const REDIRECT_URI = dcfOauthRedirect;
 const RESPONSE_TYPE = 'code';
 
 // This component gets rendered on a new window just to write token to key manager. No need to render anything
@@ -26,24 +36,29 @@ export const Gen3AuthRedirect = compose(
   <Component
     didMount={() => {
       const code = new URLSearchParams(window.location.search).get('code');
-      const egoJwt = localStorage.getItem(EGO_JWT_KEY);
+      const egoJwt =
+        'eyJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1NTAwODU4NDQsImV4cCI6MTU1MDE3MjI0NCwic3ViIjoiYjgyY2E1MDQtZGIxZi00MjU0LTk4YWMtOWJkZjY3ZDFhZWEyIiwiaXNzIjoiZWdvIiwiYXVkIjpbXSwianRpIjoiNDA5ZTg5Y2MtNTAwOC00NTIyLTkwMTQtZmI1NDNiMmI1ODg1IiwiY29udGV4dCI6eyJ1c2VyIjp7Im5hbWUiOiJqb25ldWJhbmtAZ21haWwuY29tIiwiZW1haWwiOiJqb25ldWJhbmtAZ21haWwuY29tIiwic3RhdHVzIjoiQXBwcm92ZWQiLCJmaXJzdE5hbWUiOiJKb24iLCJsYXN0TmFtZSI6IkV1YmFuayIsImNyZWF0ZWRBdCI6MTUzMTQ0MDAwMDAwMCwibGFzdExvZ2luIjoxNTUwMDg1ODQ0MjAzLCJwcmVmZXJyZWRMYW5ndWFnZSI6bnVsbCwiZ3JvdXBzIjpbXSwicm9sZXMiOlsiQURNSU4iXSwicGVybWlzc2lvbnMiOltdfX19.NwBKd2EUgM98t0Ul34izpYy8IzDW2Z2Jh5aNPnRoqBScxpoY0Dw9RSc5A46S2ycCn_QtlOeeW1uotm3DkJWIz-0G6OJyXBfAEIfkqwrE4IWiyzO89XeR8UTAC6Z_zQ594aPzkRD5Ntcp4jy9vBzEJh6xudeEAeN1GCyD0pJ88M8JaEj8GWZFcMKYnvsNNZWD9LrJmU5mkXq8LEbWuf4LsxWYKmPArUCoQQnFsXGXUtcik0SZLHZF2VsqhEyfHnp2Ig7D6Z-Ct9OTXc8HOaLf-5OY7Sq5UEoK7kp4PGG6oUEVr5zS1dRc6JauyClJX_nR7MGjV35j9uxuTj3FId4UTg';
+      //localStorage.getItem(EGO_JWT_KEY);
+      console.log(`code: ${code}`);
+      console.log(`jwt: ${egoJwt}`);
+
       if (code && egoJwt) {
         api({
-          url: `${TOKEN_URL}/?code=${code}`,
+          url: `${TOKEN_URL}&code=${code}`,
           method: 'POST',
           headers: {
             Authorization: `Bearer ${egoJwt}`,
           },
         })
           .then(result => {
-            window.close();
+            // window.close();
           })
           .catch(err => {
             window.alert('Something went wrong, please refresh your window and try again.');
-            window.close();
+            // window.close();
           });
       } else {
-        window.close();
+        // window.close();
       }
     }}
   />
@@ -62,6 +77,7 @@ fetch(CLIENT_URL)
 export const connectGen3 = api => {
   const { client_id, scope } = state;
   const url = `${AUTHORIZE_URL}?client_id=${client_id}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${REDIRECT_URI}`;
+  console.log(url);
   const authWindow = window.open(url);
   return new Promise((resolve, reject) => {
     const interval = setInterval(() => {

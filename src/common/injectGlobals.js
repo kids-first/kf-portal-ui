@@ -87,6 +87,10 @@ export const dcfOauthRedirect: string = encodeURIComponent(
 );
 export const dcfIntegrationRoot: string = getApplicationEnvVar('DCF_INTEGRATION_ROOT') || '';
 
+export const fenceAuthClientUri = getApplicationEnvVar('FENCE_AUTH_CLIENT_URI') || '';
+export const fenceRefreshUri = getApplicationEnvVar('FENCE_REFRESH_URI') || '';
+export const fenceTokensUri = getApplicationEnvVar('FENCE_TOKENS_URI') || '';
+
 export const reactApiDataVersionApi: string = getApplicationEnvVar('DATA_VERSION_API') || null;
 export const reactApiDataVersionFallback: string =
   getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';
