@@ -53,7 +53,7 @@ class QueriesResolver extends Component {
 export default QueriesResolver;
 
 QueriesResolver.propTypes = {
-  api: PropTypes.isRequired,
+  api: PropTypes.func.isRequired,
   queries: PropTypes.arrayOf(
     PropTypes.shape({
       query: PropTypes.string.isRequired,

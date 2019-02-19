@@ -72,12 +72,13 @@ const participantsTableViewColumns = [
   { Header: 'Files', accessor: 'filesCount', Cell: ({ value: nbFiles }) => `${nbFiles} Files` },
 ];
 
-const ParticipantsTable = ({ data = [], isLoading }) => (
+const ParticipantsTable = ({ data = [], isLoading = false }) => (
   <BaseDataTable columns={participantsTableViewColumns} data={data} loading={isLoading} />
 );
 
 ParticipantsTable.propTypes = {
   data: PropTypes.array,
+  isLoading: PropTypes.bool,
 };
 
 export default ParticipantsTable;
