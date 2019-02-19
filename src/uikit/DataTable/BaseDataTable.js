@@ -44,6 +44,7 @@ const BaseDataTable = ({
   downloadName,
   header = true,
   analyticsTracking,
+  className = '',
 }) => (
   <Fragment>
     {header ? (
@@ -79,6 +80,7 @@ const BaseDataTable = ({
       data={applyTransforms(data || [], transforms)}
       onPageChange={pageIndex => setPageIndex(pageIndex)}
       onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
+      className={className}
     />
   </Fragment>
 );

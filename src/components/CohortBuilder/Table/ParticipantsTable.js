@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import { compose, withState } from 'recompose';
+import { css } from 'emotion';
+import { withTheme } from 'emotion-theming';
+
 import FileIcon from 'icons/FileIcon';
 import BaseDataTable from 'uikit/DataTable';
 import { Link } from 'uikit/Core';
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
-
   // Display a fourth row when there is exactly 4 rows.
   // Collapsing a single don't save any space.
   const displayedRowCount = collapsed ? (data.length === 4 ? 4 : 3) : data.length;
   const displayMoreButton = data.length > 4;
   return (
-    <div>
+    <React.Fragment>
       {data.slice(0, displayedRowCount).map((datum, index) => (
         <div key={index}>
           {datum === null
@@ -29,30 +30,15 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? ' More' : 'Less'}
+            {collapsed ? `${data.length - displayedRowCount} more` : 'Less'}
           </div>
         </div>
       ) : null}
-    </div>
+    </React.Fragment>
   );
 });
 
-const StyledCollapsibleMultiLineCell = styled(CollapsibleMultiLineCell)`
-  padding-bottom: 5px;
-  font-family: Montserrat;
-  font-size: 14px;
-  font-weight: 500;
-  color: #cc3399;
-  border-bottom: ${({ active, theme }) => (active ? `2px solid ${theme.borderPurple}` : null)};
-  align-items: center;
-  justify-content: left;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const NbFilesCell = ({ value: nbFiles, row }) => {
+const NbFilesCell = withTheme(({ value: nbFiles, row, theme }) => {
   const encodedSqon = encodeURI(
     JSON.stringify(
       {
@@ -71,14 +57,14 @@ const NbFilesCell = ({ value: nbFiles, row }) => {
       0,
     ),
   );
-  
+
   return (
-    <Link to={`/search/file?sqon=${encodedSqon}`}>
-      <FileIcon width={8} height={13} fill={'#a9adc0'} />
+    <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
+      <FileIcon width={8} height={13} fill={theme.greyScale11} />
       {`${nbFiles} Files`}
     </Link>
   );
-};
+});
 
 const participantsTableViewColumns = [
   { Header: 'Participant ID', accessor: 'participantId' },
@@ -88,22 +74,34 @@ const participantsTableViewColumns = [
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
-    Cell: StyledCollapsibleMultiLineCell,
+    Cell: CollapsibleMultiLineCell,
   },
-  { Header: 'Diagnosis', accessor: 'diagnosis', Cell: StyledCollapsibleMultiLineCell },
-  { Header: 'Age at Diagnosis', accessor: 'ageAtDiagnosis', Cell: StyledCollapsibleMultiLineCell },
+  { Header: 'Diagnosis', accessor: 'diagnosis', Cell: CollapsibleMultiLineCell },
+  { Header: 'Age at Diagnosis', accessor: 'ageAtDiagnosis', Cell: CollapsibleMultiLineCell },
   { Header: 'Gender', accessor: 'gender' },
   { Header: 'Family ID', accessor: 'familyId' },
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
-    Cell: StyledCollapsibleMultiLineCell,
+    Cell: CollapsibleMultiLineCell,
   },
   { Header: 'Files', accessor: 'filesCount', Cell: NbFilesCell },
 ];
 
+const cssClass = css({
+  '.nbFilesLink img': {
+    top: '2px',
+    position: 'relative',
+  },
+});
+
 const ParticipantsTable = ({ data = [], isLoading = false }) => (
-  <BaseDataTable columns={participantsTableViewColumns} data={data} loading={isLoading} />
+  <BaseDataTable
+    columns={participantsTableViewColumns}
+    data={data}
+    loading={isLoading}
+    className={`${cssClass}`}
+  />
 );
 
 ParticipantsTable.propTypes = {

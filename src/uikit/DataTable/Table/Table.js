@@ -6,7 +6,16 @@ import StyleWrapper from './StyleWrapper';
 import CustomPagination from '../Pagination';
 
 const Table = withTheme(
-  ({ loading, data, columns, onPageChange, onPageSizeChange, styles, striped = true }) => (
+  ({
+    loading,
+    data,
+    columns,
+    onPageChange,
+    onPageSizeChange,
+    styles,
+    striped = true,
+    className = '',
+  }) => (
     <StyleWrapper styles={styles}>
       <ReactTable
         loading={loading}
@@ -18,7 +27,7 @@ const Table = withTheme(
         sortable={false}
         multiSort={false}
         //resizable={false}
-        className={striped ? '-striped' : ''}
+        className={`${className} ${striped ? '-striped' : ''}`}
         minRows={1}
         PaginationComponent={props => <CustomPagination {...props} />}
       />
