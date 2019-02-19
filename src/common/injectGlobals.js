@@ -39,8 +39,10 @@ export const cavaticaWebRegistrationRoot: string = getApplicationEnvVar(
   'CAVATICA_WEB_REGISTRATION',
 );
 
-export const gen3ApiRoot: string = getApplicationEnvVar('GEN3_API');
-export const gen3WebRoot: string = getApplicationEnvVar('GEN3_WEB') || 'http://www.gen3.org/';
+export const gen3ApiRoot = getApplicationEnvVar('GEN3_API');
+export const gen3WebRoot = getApplicationEnvVar('GEN3_WEB') || 'http://www.gen3.org/';
+export const dcfApiRoot = getApplicationEnvVar('DCF_API');
+export const dcfWebRoot = getApplicationEnvVar('DCF_WEB') || 'https://dcf.gen3.org/';
 
 export const googleAppId = getApplicationEnvVar('GOOGLE_APP_ID');
 export const facebookAppId = getApplicationEnvVar('FACEBOOK_APP_ID');
@@ -79,6 +81,12 @@ export const gen3OauthRedirect: string = encodeURIComponent(
   `${window.location.origin}/gen3_redirect/`,
 );
 export const gen3IntegrationRoot: string = getApplicationEnvVar('GEN3_INTEGRATION_ROOT') || '';
+
+export const dcfOauthRedirect: string = encodeURIComponent(
+  `${window.location.origin}/dcf_redirect/`,
+);
+export const dcfIntegrationRoot: string = getApplicationEnvVar('DCF_INTEGRATION_ROOT') || '';
+
 export const reactApiDataVersionApi: string = getApplicationEnvVar('DATA_VERSION_API') || null;
 export const reactApiDataVersionFallback: string =
   getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';
