@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-export const participantsQuery = ({ sqon }) => ({
+export const participantsQuery = sqon => ({
   query: `query ($sqon: JSON) {
     participant {
       hits(filters: $sqon) {
@@ -50,7 +50,7 @@ export const participantsQuery = ({ sqon }) => ({
       }
     }
   }`,
-  variables: sqon,
+  variables: { sqon },
   transform: data => {
     const participants = get(data, 'data.participant.hits.edges');
     const nodes = participants.map(p => p.node);
