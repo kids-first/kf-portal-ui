@@ -30,14 +30,26 @@ import { connectGen3, getAccessToken } from 'services/gen3';
 import { withApi } from 'services/api';
 import { Gen3UserProvider } from 'services/gen3';
 
-import gen3Logo from 'assets/logo-gen3-data-commons.svg';
+import gen3Logo from 'assets/logo-gen3.svg';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import { CAVATICA, GEN3 } from 'common/constants';
-import { UserIntegrationsWrapper, IntegrationTable, PencilIcon, XIcon, ConnectedText } from './ui';
+import { PencilIcon, XIcon } from './ui';
 import StackIcon from 'icons/StackIcon';
 import styled from 'react-emotion';
 import { applyDefaultStyles } from 'uikit/Core';
 import { WhiteButton, LargeTealActionButton } from 'uikit/Button';
+
+export const IntegrationTable = styled('table')`
+  td,
+  th {
+    border: 1px solid ${({ theme }) => theme.greyScale5};
+  }
+  & thead {
+    background: ${({ theme }) => theme.greyScale6};
+    color: ${({ theme }) => theme.secondary};
+    text-align: left;
+  }
+`;
 
 export const LoadingSpinner = ({ width = 11, height = 11 }) => (
   <Spinner
@@ -130,7 +142,7 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
     <Column>
       <Div color={theme.active} p={10}>
         <CheckIcon size={20} />
-        <ConnectedText> Connected</ConnectedText>
+        <span> Connected</span>
       </Div>
       <Row>
         <ConnectedButton action="edit" type="Cavatica" onClick={onEdit}>
@@ -155,6 +167,25 @@ const cavaticaStatus = ({ theme, onEdit, onRemove }) => {
 export const isValidKey = key => {
   return key && key.length > 0;
 };
+
+const UserIntegrationsWrapper = styled('div')`
+  table {
+    border-collapse: collapse;
+  }
+
+  span.integrationHeader {
+    font-weight: bold;
+  }
+  .integrationCell {
+  }
+
+  .right {
+    text-align: right;
+  }
+  .connectedButton {
+    ${({ theme }) => theme.hollowButton};
+  }
+`;
 
 const UserIntegrations = withApi(
   ({ state: { integrationTokens, loggedInUser }, effects, theme, api, ...props }) => {
