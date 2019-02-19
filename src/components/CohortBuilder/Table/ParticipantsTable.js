@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose, withState } from 'recompose';
+import FileIcon from 'icons/FileIcon';
 import BaseDataTable from 'uikit/DataTable';
 import { Link } from 'uikit/Core';
 
@@ -70,7 +71,13 @@ const NbFilesCell = ({ value: nbFiles, row }) => {
       0,
     ),
   );
-  return <Link to={`/search/file?sqon=${encodedSqon}`}>{`${nbFiles} Files`}</Link>;
+  
+  return (
+    <Link to={`/search/file?sqon=${encodedSqon}`}>
+      <FileIcon width={8} height={13} fill={'#a9adc0'} />
+      {`${nbFiles} Files`}
+    </Link>
+  );
 };
 
 const participantsTableViewColumns = [
