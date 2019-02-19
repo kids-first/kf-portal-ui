@@ -8,6 +8,7 @@ import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
 import styled from 'react-emotion';
+import { Trans } from 'react-i18next';
 
 import { LoadingSpinner } from './UserIntegrations';
 import Row from 'uikit/Row';
@@ -80,15 +81,18 @@ const sqonForStudy = studyId => ({
   ],
 });
 
-const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
-  ({ projectIds, api, theme, history }) => (
-    <Query
-      renderError
-      api={arrangerGqlRecompose(api)}
-      projectId={arrangerProjectId}
-      name={`gen3ItemQuery`}
-      shouldFetch={true}
-      query={`
+const Gen3ProjectList = compose(
+  withApi,
+  withTheme,
+  withHistory,
+)(({ projectIds, api, theme, history }) => (
+  <Query
+    renderError
+    api={arrangerGqlRecompose(api)}
+    projectId={arrangerProjectId}
+    name={`gen3ItemQuery`}
+    shouldFetch={true}
+    query={`
         query (${projectIds.map(id => `$${toGqlString(id)}_sqon: JSON`).join(', ')}){
           file {${projectIds
             .map(
@@ -105,62 +109,59 @@ const Gen3ProjectList = compose(withApi, withTheme, withHistory)(
           }
         }
       `}
-      variables={projectIds.reduce(
-        (acc, id) => ({
-          ...acc,
-          [`${toGqlString(id)}_sqon`]: sqonForStudy(id),
-        }),
-        {},
-      )}
-      render={({ loading, data }) => {
-        const aggregations = get(data, 'file');
-        return aggregations ? (
-          projectIds
-            .filter(id =>
-              get(
-                aggregations,
-                `${toGqlString(id)}.participants__study__short_name.buckets.length`,
-              ),
-            )
-            .map(id => {
-              const studyNameBuckets = get(
-                aggregations,
-                `${toGqlString(id)}.participants__study__short_name.buckets`,
-              );
-              const studyName = studyNameBuckets[0];
-              const sqon = sqonForStudy(id);
-              return (
-                <ItemRowContainer>
-                  <Column justifyContent="center" p={15}>
-                    <StackIcon width={20} />
-                  </Column>
-                  <Column flex={1} justifyContent="center" pr={10}>
-                    <Span>
-                      <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
+    variables={projectIds.reduce(
+      (acc, id) => ({
+        ...acc,
+        [`${toGqlString(id)}_sqon`]: sqonForStudy(id),
+      }),
+      {},
+    )}
+    render={({ loading, data }) => {
+      const aggregations = get(data, 'file');
+      return aggregations ? (
+        projectIds
+          .filter(id =>
+            get(aggregations, `${toGqlString(id)}.participants__study__short_name.buckets.length`),
+          )
+          .map(id => {
+            const studyNameBuckets = get(
+              aggregations,
+              `${toGqlString(id)}.participants__study__short_name.buckets`,
+            );
+            const studyName = studyNameBuckets[0];
+            const sqon = sqonForStudy(id);
+            return (
+              <ItemRowContainer>
+                <Column justifyContent="center" p={15}>
+                  <StackIcon width={20} />
+                </Column>
+                <Column flex={1} justifyContent="center" pr={10}>
+                  <Span>
+                    <strong>{studyName ? `${studyName.key} ` : ''}</strong>({id})
+                  </Span>
+                </Column>
+                <Column justifyContent="center">
+                  <ExternalLink hasExternalIcon={false}>
+                    <Span
+                      onClick={() =>
+                        history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
+                      }
+                    >
+                      {' '}
+                      <Trans>View data files</Trans>
+                      <RightChevron width={10} fill={theme.primary} />
                     </Span>
-                  </Column>
-                  <Column justifyContent="center">
-                    <ExternalLink hasExternalIcon={false}>
-                      <Span
-                        onClick={() =>
-                          history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
-                        }
-                      >
-                        {' '}
-                        View data files <RightChevron width={10} fill={theme.primary} />
-                      </Span>
-                    </ExternalLink>
-                  </Column>
-                </ItemRowContainer>
-              );
-            })
-        ) : (
-          <Spinner />
-        );
-      }}
-    />
-  ),
-);
+                  </ExternalLink>
+                </Column>
+              </ItemRowContainer>
+            );
+          })
+      ) : (
+        <Spinner />
+      );
+    }}
+  />
+));
 
 const Gen3ConnectionDetails = ({
   state,
@@ -192,8 +193,7 @@ const Gen3ConnectionDetails = ({
           <Row>
             <PromptMessageContainer warning mb={0} width={'100%'}>
               <Span className="title" fontWeight={'bold'}>
-                {' '}
-                You do not have access to any study
+                <Trans>You do not have access to any studies.</Trans>
               </Span>
             </PromptMessageContainer>
           </Row>
