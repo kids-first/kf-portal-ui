@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose, withState } from 'recompose';
 import BaseDataTable from 'uikit/DataTable';
+import { Link } from 'uikit/Core';
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
@@ -50,6 +51,28 @@ const StyledCollapsibleMultiLineCell = styled(CollapsibleMultiLineCell)`
   }
 `;
 
+const NbFilesCell = ({ value: nbFiles, row }) => {
+  const encodedSqon = encodeURI(
+    JSON.stringify(
+      {
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: {
+              field: 'participants.kf_id',
+              value: [row.participantId],
+            },
+          },
+        ],
+      },
+      null,
+      0,
+    ),
+  );
+  return <Link to={`/search/file?sqon=${encodedSqon}`}>{`${nbFiles} Files`}</Link>;
+};
+
 const participantsTableViewColumns = [
   { Header: 'Participant ID', accessor: 'participantId' },
   { Header: 'Study Name', accessor: 'studyName' },
@@ -69,7 +92,7 @@ const participantsTableViewColumns = [
     accessor: 'familyCompositions',
     Cell: StyledCollapsibleMultiLineCell,
   },
-  { Header: 'Files', accessor: 'filesCount', Cell: ({ value: nbFiles }) => `${nbFiles} Files` },
+  { Header: 'Files', accessor: 'filesCount', Cell: NbFilesCell },
 ];
 
 const ParticipantsTable = ({ data = [], isLoading = false }) => (
