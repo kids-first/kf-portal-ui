@@ -4,16 +4,9 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
-import {
-  topDiagnosesBarMock,
-  studiesBarMock,
-  ageAtDiagnosisBarMock,
-  fileBreakdownMock,
-  survivalPlotMock,
-} from './mock';
+import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock, survivalPlotMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
-import { CardWrapper } from 'uikit/Card/styles';
 import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import VerticalBar from 'chartkit/components/VerticalBar';
@@ -21,7 +14,6 @@ import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
-import SurvivalChart from './SurvivalChart';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -77,7 +69,6 @@ const PaddedColumn = styled(Col)`
 
 const LongCard = styled(Card)`
   width: 100%;
-  height: 100%;
 `;
 
 const LongCardContainerRow = styled(Row)`
@@ -99,9 +90,9 @@ const multiHeader = (
 );
 
 const Summary = ({ theme, sqon, api }) => (
-  <QueriesResolver api={api} queries={[demographicQuery(sqon), demographicQuery(sqon)]}>
+  <QueriesResolver api={api} queries={[demographicQuery(sqon), ageDiagQuery(sqon)]}>
     {({ isLoading, data }) => {
-      const [demographicData] = data || [];
+      const [demographicData, ageDiagData] = data || [];
 
       return isLoading ? (
         <Row nogutter>
@@ -121,40 +112,44 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlotOverflowVisible title={multiHeader}>
-                  <HorizontalBar
-                    data={studiesBarMock}
-                    indexBy="label"
-                    keys={['probands', 'familyMembers']}
-                    tooltipFormatter={studiesToolTip}
-                    sortBy={sortDescParticipant}
-                    tickInterval={4}
-                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                    xTickTextLength={28}
-                    legends={[
-                      { title: 'Probands', color: theme.chartColors.blue },
-                      { title: 'Family Members', color: theme.chartColors.purple },
-                    ]}
-                  />
-                </CardSlotOverflowVisible>
+                <CardSlot title={multiHeader}>
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={studiesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={studiesToolTip}
+                      sortBy={sortDescParticipant}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlotOverflowVisible title="Most Frequent Diagnoses">
-                  <HorizontalBar
-                    data={topDiagnosesBarMock}
-                    indexBy="label"
-                    keys={['probands', 'familyMembers']}
-                    tooltipFormatter={mostFrequentDiagnosisTooltip}
-                    sortByValue={true}
-                    tickInterval={4}
-                    colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                    xTickTextLength={28}
-                    legends={[
-                      { title: 'Probands', color: theme.chartColors.blue },
-                      { title: 'Family Members', color: theme.chartColors.purple },
-                    ]}
-                  />
-                </CardSlotOverflowVisible>
+                <CardSlot title="Most Frequent Diagnoses">
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={topDiagnosesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={mostFrequentDiagnosisTooltip}
+                      sortByValue={true}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot showHeader={false}>
@@ -168,14 +163,7 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
-                  <VerticalBar
-                    data={ageAtDiagnosisBarMock}
-                    indexBy="label"
-                    tooltipFormatter={ageAtDiagnosisTooltip}
-                    sortByValue={true}
-                    height={225}
-                    colors={[theme.chartColors.lightblue]}
-                  />
+                  <AgeDiagChart data={ageDiagData} />
                 </CardSlot>
               </PaddedColumn>
             </Row>

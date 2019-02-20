@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { get, countBy, camelCase } from 'lodash';
+import { get, camelCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 
 const PieChartContainer = styled('div')`

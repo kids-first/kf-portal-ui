@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { compose, withState } from 'recompose';
+import PropTypes from 'prop-types';
 
 import Table from './Table';
 import TableToolbar from './TableToolbar';
@@ -32,7 +33,7 @@ const applyTransforms = (data, transforms) =>
 
 const BaseDataTable = ({
   loading,
-  data,
+  data = [],
   transforms = {},
   columns,
   setColumns,
@@ -43,10 +44,11 @@ const BaseDataTable = ({
   downloadName,
   header = true,
   analyticsTracking,
+  className = '',
 }) => (
   <Fragment>
     {header ? (
-      <TableToolbar pageSize={pageSize} page={pageIndex} total={data.length}>
+      <TableToolbar pageSize={pageSize} page={pageIndex} total={data ? data.length : 0}>
         <ColumnFilter
           columns={columns}
           onChange={item => {
@@ -69,19 +71,29 @@ const BaseDataTable = ({
           }}
         />
 
-        <Export {...{ columns, data, downloadName }}>export</Export>
+        <Export {...{ columns, data: data || [], downloadName }}>export</Export>
       </TableToolbar>
     ) : null}
     <Table
       columns={columns}
       loading={loading}
-      data={applyTransforms(data, transforms)}
+      data={applyTransforms(data || [], transforms)}
       onPageChange={pageIndex => setPageIndex(pageIndex)}
       onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
+      className={className}
     />
   </Fragment>
 );
 
-BaseDataTable.propTypes = {};
+BaseDataTable.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      Header: PropTypes.string.isRequired,
+      accessor: PropTypes.string.isRequired,
+      Cell: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]),
+    }),
+  ).isRequired,
+  data: PropTypes.array.isRequired,
+};
 
 export default enhance(BaseDataTable);
