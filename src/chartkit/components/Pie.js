@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { ResponsivePie } from '@nivo/pie';
+import Tooltip from './Tooltip';
 
 const PieWrapper = styled('div')`
   height: 100%;
@@ -18,7 +19,7 @@ const PieTitle = styled('div')`
   margin-bottom: 5px;
 `;
 
-const StyleTooltip = styled('Tooltip')`
+const StyleTooltip = styled(Tooltip)`
   text-align: left;
   justify: left;
   font-size: 12px;

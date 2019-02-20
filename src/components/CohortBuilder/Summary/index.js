@@ -51,23 +51,37 @@ const sortDescParticipant = (a, b) => {
   return aTotal <= bTotal ? -1 : 1;
 };
 
+const BarChartContainer = styled('div')`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+`;
+
 const CardSlot = styled(Card)`
   height: 305px;
 `;
 
 const CardSlotOverflowVisible = styled(Card)`
   height: 305px;
+  min-height: 305px;
   & div {
     overflow: visible;
   }
 `;
 
+const PaddedColumn = styled(Col)`
+  padding: 4px !important;
+`;
+
 const LongCard = styled(Card)`
+  width: 100%;
   height: 100%;
 `;
 
-const PaddedColumn = styled(Col)`
-  padding: 4px !important;
+const LongCardContainerRow = styled(Row)`
+  height: 100%;
 `;
 
 const md = 6;
@@ -99,14 +113,14 @@ const Summary = ({ theme, sqon, api }) => (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col sm={12} md={12} lg={9}>
+          <Col xl={9}>
             <Row nogutter>
-              <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot title="Overall Survival">
-                  <SurvivalChart data={survivalPlotMock} />
+              <PaddedColumn md={md} lg={lg}>
+                <CardSlot scrollable={true} title="File Breakdown">
+                  <FileBreakdown data={fileBreakdownMock} />
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlotOverflowVisible title={multiHeader}>
                   <HorizontalBar
                     data={studiesBarMock}
@@ -124,7 +138,7 @@ const Summary = ({ theme, sqon, api }) => (
                   />
                 </CardSlotOverflowVisible>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlotOverflowVisible title="Most Frequent Diagnoses">
                   <HorizontalBar
                     data={topDiagnosesBarMock}
@@ -142,15 +156,17 @@ const Summary = ({ theme, sqon, api }) => (
                   />
                 </CardSlotOverflowVisible>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
-                <DemographicChart data={demographicData} />
-              </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
-                <CardSlot scrollable={true} title="File Breakdown">
-                  <FileBreakdown data={fileBreakdownMock} />
+              <PaddedColumn md={md} lg={lg}>
+                <CardSlot showHeader={false}>
+                  <DemographicChart data={demographicData} />
                 </CardSlot>
               </PaddedColumn>
-              <PaddedColumn sm={12} md={md} lg={lg}>
+              <PaddedColumn md={md} lg={lg}>
+                <CardSlotOverflowVisible title="Overall Survival">
+                  <SurvivalChart data={survivalPlotMock} />
+                </CardSlotOverflowVisible>
+              </PaddedColumn>
+              <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
                   <VerticalBar
                     data={ageAtDiagnosisBarMock}
@@ -164,10 +180,12 @@ const Summary = ({ theme, sqon, api }) => (
               </PaddedColumn>
             </Row>
           </Col>
-          <PaddedColumn sm={12} md={12} lg={3}>
-            <LongCard title="Phenotypes">
-              <pre>{JSON.stringify(sqon, null, 2)}</pre>
-            </LongCard>
+          <PaddedColumn xl={3}>
+            <LongCardContainerRow nogutter>
+              <LongCard title="Phenotypes">
+                <pre>{JSON.stringify(sqon, null, 2)}</pre>
+              </LongCard>
+            </LongCardContainerRow>
           </PaddedColumn>
         </Row>
       );

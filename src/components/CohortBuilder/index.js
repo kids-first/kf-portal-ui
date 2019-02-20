@@ -5,7 +5,7 @@ import ContentBar from './ContentBar';
 import Results from './Results';
 import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
-import SqonBuilder from './Queries';
+import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import { withRouter } from 'react-router-dom';
 

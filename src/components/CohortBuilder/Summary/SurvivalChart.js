@@ -40,7 +40,6 @@ function isElementFullScreen(element) {
   );
 }
 
-// @NOTE Because @oncojs/react-survivalplot uses deprecated React.PropTypes
 class SurvivalPlot extends React.Component {
   state = {
     xDomain: undefined,
@@ -64,12 +63,6 @@ class SurvivalPlot extends React.Component {
   static defaultProps = {
     palette: ['#1880b2', '#c20127', '#00005d', 'purple'],
     censoredStatuses: ['alive'],
-    margins: {
-      top: 10,
-      right: 0,
-      bottom: 46,
-      left: 60,
-    },
     onMouseEnterDonors(event, donors) {
       console.log({
         donors: donors.map(donor => ({
@@ -85,7 +78,7 @@ class SurvivalPlot extends React.Component {
       console.log('onClickDonor');
     },
     xAxisLabel: 'Survival Rate',
-    yAxisLabel: 'Duration (days)',
+    yAxisLabel: 'Duration (years)',
   };
 
   stateStack = [];
@@ -119,9 +112,9 @@ class SurvivalPlot extends React.Component {
           disabledDataSets: state.disabledDataSets,
           palette: this.props.palette,
           xDomain: state.xDomain,
-          xAxisLabel: 'Duration (days)',
           yAxisLabel: 'Survival Rate',
-          height: isElementFullScreen(container) ? window.innerHeight - 100 : 0,
+          xAxisLabel: 'Duration (years)',
+          height: isElementFullScreen(container) ? window.innerHeight - 100 : 205,
           getSetSymbol: this.props.getSetSymbol,
           onMouseEnterDonor:
             this.props.onMouseEnterDonor && this.props.onMouseEnterDonor.bind(this),
@@ -135,10 +128,10 @@ class SurvivalPlot extends React.Component {
           onClickDonors: this.props.onClickDonors,
           onDomainChange: newXDomain => this.updateState({ xDomain: newXDomain }),
           margins: {
-            top: 20,
+            top: 15,
             right: 20,
-            bottom: 46,
-            left: 60,
+            bottom: 50,
+            left: 42,
           },
         },
         params,
@@ -151,6 +144,17 @@ class SurvivalPlot extends React.Component {
   }
 }
 
+const SurvivalChartHeader = styled('div')`
+  margin-top: -10px;
+  padding: 4px 0 4px 8px;
+  background-color: #eee;
+  font-size: 11px;
+  max-width: 280px;
+  & a {
+    color: ${({ theme }) => theme.chartColors.blue};
+  }
+`;
+
 const StyledSurvivalPlot = styled(SurvivalPlot)`
   .axis line,
   .axis path {
@@ -160,83 +164,45 @@ const StyledSurvivalPlot = styled(SurvivalPlot)`
   }
   .axis .tick text {
     fill: #888;
-    font-size: 1.5ex;
+    font-size: 10px;
+    padding-bottom: 10px;
   }
   .axis .axis-label {
-    color: #6b6262;
-    font-size: 1.2rem;
-    fill: #6b6262;
+    font-size: 12px;
     font-weight: 500;
+    fill: ${({ theme }) => theme.secondary};
+  }
+  text.axis-label {
+    text-anchor: middle !important;
+  }
+  .axis:first-child .axis-label {
+    transform: translateY(7px);
+  }
+  .axis:nth-child(2) .axis-label {
+    transform: rotate(-90deg) translatex(0px) translatey(8px);
   }
   .line {
     fill: none;
     stroke-width: 1.5px;
   }
-  .serie .point {
-    r: 3;
-    -webkit-transition: all 0.1s;
-    -o-transition: all 0.1s;
-    transition: all 0.1s;
-    cursor: pointer;
-    stroke-width: none;
-  }
-  .serie .point:active,
-  .serie .point:hover {
-    r: 5;
-  }
-  .serie .point[status='alive'] {
-    opacity: 0.5;
-  }
-  .serie .point[status='deceased'] {
-    opacity: 0;
-    -webkit-transition: r 0.3s, opacity 0.3s;
-    -o-transition: r 0.3s, opacity 0.3s;
-    transition: r 0.3s, opacity 0.3s;
-    r: 5;
-  }
-  .serie .point[status='deceased']:active,
-  .serie .point[status='deceased']:hover {
-    opacity: 1;
-    r: 2;
-  }
-  .serie .point-line {
-    cursor: pointer;
-  }
-  .serie .point-line[status='deceased'] {
-    opacity: 0;
-  }
-  .brush .extent {
-    stroke: #fff;
-    fill: #edf8ff;
-    shape-rendering: crispEdges;
-    pointer-events: none;
-  }
-  .exported-svg-class div {
-    position: static !important;
-    display: block !important;
-  }
-  .facet-container {
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    padding: 10px;
-  }
-  .facet-container h2 {
-    margin-top: 5px;
-  }
-  .facet-container + .facet-container {
-    margin-top: 20px;
-  }
 `;
 
+//     transform: translatey(7px);
+
 class SurvivalChart extends React.Component {
-  state = {
-    tooltip: {
-      donor: {},
-      x: 0,
-      y: 0,
-      isVisible: false,
-    },
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      tooltip: {
+        donor: {},
+        x: 0,
+        y: 0,
+        isVisible: false,
+      },
+    };
+    this.handleMouseEnterDonors = this.handleMouseEnterDonors.bind(this);
+    this.handleMouseLeaveDonors = this.handleMouseLeaveDonors.bind(this);
+  }
 
   handleMouseEnterDonors = (event, donors) => {
     this.setState({
@@ -261,17 +227,29 @@ class SurvivalChart extends React.Component {
 
   render() {
     const tooltip = this.state.tooltip;
+
+    console.log(tooltip);
+
     const donor = tooltip.donor;
     const tooltipStyle = {
+      border: '2px solid #CCC',
+      borderRadius: '10px',
+      backgroundColor: '#FFF',
       position: 'absolute',
-      top: tooltip.y,
-      left: tooltip.x,
+      top: 70,
+      right: 20,
+      left: 20,
+      padding: '4px',
       display: tooltip.isVisible ? 'block' : 'none',
       pointerEvents: 'none',
+      fontSize: '10px',
     };
+
     return (
       <SurvivalChartWrapper>
-        <div>Applicable survival data for 35 Participants</div>
+        <SurvivalChartHeader>
+          Applicable survival data for <a>35 Participants</a>
+        </SurvivalChartHeader>
         <StyledSurvivalPlot
           dataSets={formatDataset(this.props.data)}
           onMouseEnterDonors={this.handleMouseEnterDonors}
@@ -279,7 +257,7 @@ class SurvivalChart extends React.Component {
         />
         <div style={tooltipStyle}>
           <strong>{donor.id}</strong>
-          <div>: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
+          <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
           {donor.isCensored ? (
             <div>Censored Survival Time: {donor.time} days (censored)</div>
           ) : (
