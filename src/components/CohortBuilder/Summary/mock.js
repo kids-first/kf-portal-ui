@@ -1,3 +1,67 @@
+export const fileBreakdownMock = [
+  {
+    id: '1',
+    dataType: 'Operation Reports',
+    experimentalStrategy: 'Clinical',
+    files: 1091,
+  },
+  {
+    id: '2',
+    dataType: 'MRI Scans',
+    experimentalStrategy: 'Clinical',
+    files: 10,
+  },
+  {
+    id: '3',
+    dataType: 'Unaligned Reads',
+    experimentalStrategy: 'miRNA-Seq',
+    files: 22,
+  },
+  {
+    id: '4',
+    dataType: 'Aligned Reads',
+    experimentalStrategy: 'RNA-Sqr',
+    files: 2192,
+  },
+  {
+    id: '5',
+    dataType: 'Unaligned Reads',
+    experimentalStrategy: 'RNA-Sqr',
+    files: 192,
+  },
+
+  {
+    id: '1',
+    dataType: 'Operation Reports',
+    experimentalStrategy: 'Clinical',
+    files: 1091,
+  },
+  {
+    id: '2',
+    dataType: 'MRI Scans',
+    experimentalStrategy: 'Clinical',
+    files: 10,
+  },
+  {
+    id: '3',
+    dataType: 'Unaligned Reads',
+    experimentalStrategy: 'miRNA-Seq',
+    files: 22,
+  },
+  {
+    id: '4',
+    dataType: 'Aligned Reads',
+    experimentalStrategy: 'RNA-Sqr',
+    files: 2192,
+  },
+  {
+    id: '5',
+    dataType: 'Unaligned Reads',
+    experimentalStrategy: 'RNA-Sqr',
+    files: 192,
+  },
+];
+
 export const ageAtDiagnosisBarMock = [
   {
     id: '1',

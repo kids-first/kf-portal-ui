@@ -7,8 +7,19 @@ const TooltipContianer = styled('div')`
   font-size: 12px;
 `;
 
-const Tooltip = ({ id, value, index, color, data, children = null, formatter = v => v }) => (
-  <TooltipContianer keys={index}>{children ? children : formatter(data)}</TooltipContianer>
+const Tooltip = ({
+  className,
+  id,
+  value,
+  index,
+  color,
+  data,
+  children = null,
+  formatter = v => v,
+}) => (
+  <TooltipContianer className={className} keys={index}>
+    {children ? children : formatter(data)}
+  </TooltipContianer>
 );
 
 export default Tooltip;
