@@ -11,7 +11,7 @@ import { fenceTokensUri } from 'common/injectGlobals';
  * The code query param is sent to the Fence Token endpoint to request a token pair.
  */
 
-const FenceRedirectTemplate = compose(withApi)(({ api, fence }) => (
+export default compose(withApi)(({ api, fence }) => (
   <Component
     didMount={() => {
       const code = new URLSearchParams(window.location.search).get('code');
@@ -28,18 +28,15 @@ const FenceRedirectTemplate = compose(withApi)(({ api, fence }) => (
           },
         })
           .then(result => {
-            // window.close();
+            window.close();
           })
           .catch(err => {
             window.alert('Something went wrong, please refresh your window and try again.');
-            // window.close();
+            window.close();
           });
       } else {
-        // window.close();
+        window.close();
       }
     }}
   />
 ));
-
-export const Gen3Redirect = () => <FenceRedirectTemplate fence="gen3" />;
-export const DcfRedirect = () => <FenceRedirectTemplate fence="dcf" />;
