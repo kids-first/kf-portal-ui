@@ -17,6 +17,7 @@ import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
 import FileEntity from './components/EntityPage/File';
 import ParticipantEntity from './components/EntityPage/Participant';
+import CohortBuilder from './components/CohortBuilder';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
@@ -92,6 +93,21 @@ const App = compose(
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
+        <Route
+          path="/explore/:index"
+          exact
+          render={props =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: CohortBuilder,
+              WrapperPage: FixedFooterPage,
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
+        />
         <Route
           path="/file/:fileId"
           exact

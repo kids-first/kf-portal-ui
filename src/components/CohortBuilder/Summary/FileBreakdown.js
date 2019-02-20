@@ -34,7 +34,7 @@ const FilesColumn = styled(Column)`
 
 const sumTotalFilesInData = dataset => {
   return dataset.reduce((accumulator, datum) => {
-    return accumulator + parseInt(datum.files);
+    return accumulator + parseInt(datum.files, 10);
   }, 0);
 };
 

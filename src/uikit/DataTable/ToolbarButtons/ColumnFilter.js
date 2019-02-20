@@ -7,10 +7,14 @@ class ColumnFilter extends Component {
 
   // keep dropdown open for multi select, close on click away
   handleStateChange = changes => {
-    const { type } = changes;
-    this.setState({
-      isOpen: type === Downshift.stateChangeTypes.mouseUp ? false : true,
-    });
+    const { type, isOpen } = changes;
+    if (typeof isOpen !== 'undefined' && type === Downshift.stateChangeTypes.clickButton) {
+      this.setState({ isOpen });
+    }
+  };
+
+  handleClose = () => {
+    this.setState({ isOpen: false });
   };
 
   render() {
@@ -22,6 +26,7 @@ class ColumnFilter extends Component {
         onChange={onChange}
         selectedItem={columns.filter(col => col.show)}
         onStateChange={this.handleStateChange}
+        onOuterClick={this.handleClose}
         isOpen={this.state.isOpen}
       >
         {({ getButtonProps, getItemProps, isOpen, selectedItem }) => (

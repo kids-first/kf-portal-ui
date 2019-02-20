@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import Component from 'react-component-component';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
@@ -6,7 +5,7 @@ import urlJoin from 'url-join';
 import { isEqual, memoize } from 'lodash';
 
 class QueriesResolver extends Component {
-  state = { data: null, isLoading: true, error: null };
+  state = { data: [], isLoading: true, error: null };
 
   componentDidMount() {
     this.update();
@@ -59,12 +58,12 @@ class QueriesResolver extends Component {
 export default QueriesResolver;
 
 QueriesResolver.propTypes = {
-  api: PropTypes.isRequired,
+  api: PropTypes.func.isRequired,
   useCache: PropTypes.boolean,
   queries: PropTypes.arrayOf(
     PropTypes.shape({
       query: PropTypes.string.isRequired,
-      variables: PropTypes.isRequired,
+      variables: PropTypes.object.isRequired,
       transform: PropTypes.func,
     }),
   ).isRequired,

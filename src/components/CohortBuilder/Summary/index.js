@@ -4,12 +4,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
-import {
-  topDiagnosesBarMock,
-  studiesBarMock,
-  ageAtDiagnosisBarMock,
-  fileBreakdownMock,
-} from './mock';
+import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { Col, Row } from 'react-grid-system';

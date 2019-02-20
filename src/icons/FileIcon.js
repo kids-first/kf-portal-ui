@@ -14,6 +14,6 @@ export default ({ width = 94, height = 94, fill = '#fff', ...props }) =>
       />
     </svg>`,
     width: `${width}px`,
-    height: `${width}px`,
+    height: `${height}px`,
     ...props,
   });
