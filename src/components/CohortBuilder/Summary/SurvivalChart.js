@@ -149,7 +149,6 @@ const SurvivalChartHeader = styled('div')`
   padding: 4px 0 4px 8px;
   background-color: #eee;
   font-size: 11px;
-  max-width: 280px;
   & a {
     color: ${({ theme }) => theme.chartColors.blue};
   }
