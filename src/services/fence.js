@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { uniq } from 'lodash';
-import { DCF, GEN3 } from 'common/constants';
+import { FENCES } from 'common/constants';
 
 import {
   fenceAuthClientUri,
@@ -17,7 +17,6 @@ const RESPONSE_TYPE = 'code';
 // Fetch all fence auth_client details on page load for pages needing the fence API.
 //  When connecting to a fence, the window.open call has to happen in the same synchronus callstack
 //  as the event handler, so client_id and redirect_uri must be available at all times.
-const FENCES = [GEN3, DCF];
 const PROVIDERS = {
   gen3: { fenceUri: gen3ApiRoot },
   dcf: { fenceUri: dcfApiRoot },
