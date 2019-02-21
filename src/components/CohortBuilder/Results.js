@@ -58,6 +58,8 @@ const PurpleLink = styled(Link)`
 const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
+      const cohortData = data[0];
+      const cohortIsEmpty = true; //cohortData.participantCount === 0 || cohortData.filesCount === 0;
       return isLoading ? (
         <Row nogutter>
           <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
@@ -73,7 +75,7 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
               <Heading>All data</Heading>
               <DemographicIcon />
               <SubHeading>
-                {Number(data[0].participantCount).toLocaleString()} Participants with{' '}
+                {Number(cohortData.participantCount).toLocaleString()} Participants with{' '}
               </SubHeading>
               <PurpleLink to="">
                 <SubHeading color={theme.purple}>{`${Number(
@@ -94,86 +96,16 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
           </ContentBar>
           <ActiveView>
             {activeView === SUMMARY ? (
-              <Summary sqon={sqon} />
+              <Summary sqon={!cohortIsEmpty ? sqon : null} />
             ) : (
-              <ParticipantsTableView sqon={sqon} />
+              <ParticipantsTableView sqon={!cohortIsEmpty ? sqon : null} />
             )}
           </ActiveView>
         </React.Fragment>
       );
-
-      {
-        /*
-      error ? (
-        <TableErrorView error={error} />
-      ) : (
-        <React.Fragment>
-          <ContentBar>
-            <Detail>
-              <Heading>All data</Heading>
-              <DemographicIcon />
-              <SubHeading>{Number(1314).toLocaleString()} Participants with </SubHeading>
-              <PurpleLink to="">
-                <SubHeading color={theme.purple}>{`${Number(
-                  2422,
-                ).toLocaleString()} Files`}</SubHeading>
-              </PurpleLink>
-            </Detail>
-            <ViewLinks>
-              <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
-                <SummaryIcon marginRight={5} />
-                Summary View
-              </ViewLink>
-              <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
-                <TableViewIcon marginRight={5} />
-                Table View
-              </ViewLink>
-            </ViewLinks>
-          </ContentBar>
-          <ActiveView>
-            {activeView === SUMMARY ? (
-              <Summary sqon={sqon} />
-            ) : (
-              <ParticipantsTableView sqon={sqon} />
-            )}
-          </ActiveView>
-        </React.Fragment>
-
-        */
-      }
     }}
   </QueriesResolver>
 );
-
-/*
-const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
-  <React.Fragment>
-    <ContentBar>
-      <Detail>
-        <Heading>All data</Heading>
-        <DemographicIcon />
-        <SubHeading>{Number(1314).toLocaleString()} Participants with </SubHeading>
-        <PurpleLink to="">
-          <SubHeading color={theme.purple}>{`${Number(2422).toLocaleString()} Files`}</SubHeading>
-        </PurpleLink>
-      </Detail>
-      <ViewLinks>
-        <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
-          <SummaryIcon marginRight={5} />
-          Summary View
-        </ViewLink>
-        <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
-          <TableViewIcon marginRight={5} />
-          Table View
-        </ViewLink>
-      </ViewLinks>
-    </ContentBar>
-    <ActiveView>
-      {activeView === SUMMARY ? <Summary sqon={sqon} /> : <ParticipantsTableView sqon={sqon} />}
-    </ActiveView>
-  </React.Fragment>
-);
-*/
 
 export default compose(
   withTheme,
