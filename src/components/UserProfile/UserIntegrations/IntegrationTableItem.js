@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
+
+import CheckCircleIcon from 'icons/CheckCircleIcon';
 
 const Row = styled('tr')`
   td {
@@ -16,12 +17,29 @@ const Row = styled('tr')`
       justify-content: center;
     }
   }
+
+  td.checkmark {
+    padding: 0px;
+    width: 44px;
+
+    div {
+      display: flex;
+      align-items: center;
+    }
+
+    svg {
+      flex: 1;
+    }
+  }
+
   td.logo {
-    width: 180px;
+    padding: 0px;
+    width: 136px;
 
     img {
-      max-height: 38px;
-      max-width: 148px;
+      max-height: 48px;
+      max-width: 136px;
+      object-fit: contain;
     }
   }
 
@@ -32,9 +50,12 @@ const Row = styled('tr')`
   }
 `;
 
-export default ({ logo, description, actions, ...props }) => {
+export default ({ connected = false, logo, description, actions, ...props }) => {
   return (
-    <Row>
+    <Row {...props}>
+      <td className="checkmark">
+        <div>{connected ? <CheckCircleIcon height={23} /> : null}</div>
+      </td>
       <td className="logo">
         <div className="wrapper">{logo}</div>
       </td>

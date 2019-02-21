@@ -1,15 +1,19 @@
 import * as React from 'react';
+
+import { injectState } from 'freactal';
 import styled from 'react-emotion';
+import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import Pencil from 'react-icons/lib/fa/pencil';
-import View from 'react-icons/lib/fa/eye';
+import RightIcon from 'react-icons/lib/fa/angle-right';
 import X from 'react-icons/lib/fa/close';
 import { Trans } from 'react-i18next';
+import { compose } from 'recompose';
 
 import { ActionButton, WhiteButton } from 'uikit/Button';
 import { applyDefaultStyles, Span } from 'uikit/Core';
 import StackIcon from 'icons/StackIcon';
-import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
-import RightIcon from 'react-icons/lib/fa/angle-right';
+
+import { withApi } from 'services/api';
 
 /* === ConnectButton === */
 const ConnectButtonWrapper = styled(ActionButton)`
@@ -19,14 +23,17 @@ const ConnectButtonWrapper = styled(ActionButton)`
 const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
 const RightArrow = applyDefaultStyles(RightIcon);
 
-export const ConnectButton = ({ text = 'Connect', ...props }) => {
+export const ConnectButton = compose(
+  withApi,
+  injectState,
+)(({ text = 'Connect', doConnect, api, effects, ...props }) => {
   return (
     <ConnectButtonWrapper {...props} maxWidth={160}>
       <ExternalLink size={14} position="relative" right={4} /> <Trans>{text}</Trans>
       <RightArrow size={14} position="relative" left={4} />
     </ConnectButtonWrapper>
   );
-};
+});
 
 const connectedButtonCommonStyles = `
   padding: 0px 10px;
@@ -56,32 +63,31 @@ export const AuthorizedStudiesButton = ({ text = 'Authorized Studies', ...props 
   );
 };
 
-/* === DisconnectButton === */
-const DisconnectButtonWrapper = styled(WhiteButton)`
+const WhiteButtonWrapper = styled(WhiteButton)`
   ${connectedButtonCommonStyles}
 `;
 
-export const DisconnectButton = ({ text = 'Disconnect', ...props }) => {
+/* === EditButton === */
+
+export const EditButton = ({ text = 'Edit', ...props }) => {
   return (
-    <DisconnectButtonWrapper {...props}>
-      <XIcon />
+    <WhiteButtonWrapper {...props}>
+      <PencilIcon />
       {text}
-    </DisconnectButtonWrapper>
+    </WhiteButtonWrapper>
   );
 };
 
-export const LoadingSpinner = ({ width = 11, height = 11 }) => (
-  <Spinner
-    fadeIn="none"
-    name="circle"
-    color="black"
-    style={{
-      width,
-      height,
-    }}
-  />
-);
+/* === DisconnectButton === */
+
+export const DisconnectButton = ({ text = 'Disconnect', ...props }) => {
+  return (
+    <WhiteButtonWrapper {...props}>
+      <XIcon />
+      {text}
+    </WhiteButtonWrapper>
+  );
+};
 
 export const PencilIcon = props => <Pencil className={'icon'} {...props} />;
-export const ViewIcon = props => <View className={'icon'} {...props} />;
 export const XIcon = props => <X className={'icon'} {...props} />;

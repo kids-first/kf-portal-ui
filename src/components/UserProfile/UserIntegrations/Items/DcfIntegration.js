@@ -1,26 +1,21 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 
-import IntegrationTableItem from '../IntegrationTableItem';
-import { withTheme } from 'emotion-theming';
-
-import { Span, Paragraph, Div } from 'uikit/Core';
+import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceIntegrationItem';
 import ExternalLink from 'uikit/ExternalLink';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 
+import { DCF } from 'common/constants';
 import dcfLogo from 'assets/logo-dcf.png';
 import { dcfWebRoot } from 'common/injectGlobals';
-import { ConnectButton } from 'components/UserProfile/UserIntegrations/ui';
-
-const actions = () => {
-  return <ConnectButton onClick={() => alert('Placeholder! Not Connecting!')} />;
-};
 
 const description = () => {
   return (
     <span>
-      Access controlled data by connecting your account to the{' '}
-      <ExternalLink href={dcfWebRoot}>Data Commons Framework (DCF)</ExternalLink> using your NIH
-      login credentials.
+      <Trans>Access controlled data by connecting your account to the</Trans>
+      <ExternalLink href={dcfWebRoot}>
+        <Trans>Data Commons Framework (DCF)</Trans>
+      </ExternalLink>{' '}
+      <Trans>using your NIH login credentials.</Trans>
     </span>
   );
 };
@@ -30,5 +25,6 @@ const logo = () => {
 };
 
 export default ({ ...props }) => {
-  return <IntegrationTableItem logo={logo()} description={description()} actions={actions()} />;
+  const itemProps = { fence: DCF, logo, description, ...props };
+  return <FenceIntegrationItem {...itemProps} />;
 };
