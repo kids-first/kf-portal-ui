@@ -12,6 +12,11 @@ import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { Link } from 'react-router-dom';
+import { withApi } from 'services/api';
+import QueriesResolver from './QueriesResolver';
+import { cohortResults } from './ParticipantsTableView/queries';
+import TableErrorView from './ParticipantsTableView/TableErrorView';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -50,15 +55,104 @@ const PurpleLink = styled(Link)`
   color: ${({ theme }) => theme.purple};
 `;
 
-const Results = ({ activeView, setActiveView, theme, sqon }) => (
+const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
+  <QueriesResolver api={api} sqon={sqon} queries={[cohortResults(sqon)]}>
+    {({ isLoading, data, error }) => {
+      return isLoading ? (
+        <Row nogutter>
+          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
+            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+          </div>
+        </Row>
+      ) : error ? (
+        <TableErrorView error={error} />
+      ) : (
+        <React.Fragment>
+          <ContentBar>
+            <Detail>
+              <Heading>All data</Heading>
+              <DemographicIcon />
+              <SubHeading>
+                {Number(data[0].participantCount).toLocaleString()} Participants with{' '}
+              </SubHeading>
+              <PurpleLink to="">
+                <SubHeading color={theme.purple}>{`${Number(
+                  data[0].filesCount,
+                ).toLocaleString()} Files`}</SubHeading>
+              </PurpleLink>
+            </Detail>
+            <ViewLinks>
+              <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
+                <SummaryIcon marginRight={5} />
+                Summary View
+              </ViewLink>
+              <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
+                <TableViewIcon marginRight={5} />
+                Table View
+              </ViewLink>
+            </ViewLinks>
+          </ContentBar>
+          <ActiveView>
+            {activeView === SUMMARY ? (
+              <Summary sqon={sqon} />
+            ) : (
+              <ParticipantsTableView sqon={sqon} />
+            )}
+          </ActiveView>
+        </React.Fragment>
+      );
+
+      {
+        /*
+      error ? (
+        <TableErrorView error={error} />
+      ) : (
+        <React.Fragment>
+          <ContentBar>
+            <Detail>
+              <Heading>All data</Heading>
+              <DemographicIcon />
+              <SubHeading>{Number(1314).toLocaleString()} Participants with </SubHeading>
+              <PurpleLink to="">
+                <SubHeading color={theme.purple}>{`${Number(
+                  2422,
+                ).toLocaleString()} Files`}</SubHeading>
+              </PurpleLink>
+            </Detail>
+            <ViewLinks>
+              <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
+                <SummaryIcon marginRight={5} />
+                Summary View
+              </ViewLink>
+              <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
+                <TableViewIcon marginRight={5} />
+                Table View
+              </ViewLink>
+            </ViewLinks>
+          </ContentBar>
+          <ActiveView>
+            {activeView === SUMMARY ? (
+              <Summary sqon={sqon} />
+            ) : (
+              <ParticipantsTableView sqon={sqon} />
+            )}
+          </ActiveView>
+        </React.Fragment>
+
+        */
+      }
+    }}
+  </QueriesResolver>
+);
+
+/*
+const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
   <React.Fragment>
     <ContentBar>
       <Detail>
         <Heading>All data</Heading>
-
         <DemographicIcon />
         <SubHeading>{Number(1314).toLocaleString()} Participants with </SubHeading>
-
         <PurpleLink to="">
           <SubHeading color={theme.purple}>{`${Number(2422).toLocaleString()} Files`}</SubHeading>
         </PurpleLink>
@@ -79,8 +173,10 @@ const Results = ({ activeView, setActiveView, theme, sqon }) => (
     </ActiveView>
   </React.Fragment>
 );
+*/
 
 export default compose(
   withTheme,
+  withApi,
   withState('activeView', 'setActiveView', SUMMARY),
 )(Results);
