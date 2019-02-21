@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { connectGen3, getAccessToken } from 'services/gen3';
-import { Gen3UserProvider } from 'services/gen3';
+import { fenceConnect, getAccessToken } from 'services/fence';
+import FenceUserProvider from 'components/Fence/FenceUserProvider';
 import CardHeader from 'uikit/Card/CardHeader';
 import DownloadController from 'icons/DownloadController';
 
@@ -36,7 +36,8 @@ const AuthorizedStudies = compose(
 
       return (
         <DashboardCard Header={Header} inactive={!state.connected} scrollable={state.connected}>
-          <Gen3UserProvider
+          <FenceUserProvider
+            fence={GEN3}
             render={({ gen3User, loading: loadingGen3User, refresh }) =>
               loadingGen3User ? (
                 <CardContentSpinner />
@@ -68,8 +69,8 @@ const AuthorizedStudies = compose(
                           action: TRACKING_EVENTS.actions.integration.init,
                           label: TRACKING_EVENTS.labels.gen3,
                         });
-                        connectGen3(api)
-                          .then(() => getAccessToken(api))
+                        fenceConnect(api, GEN3)
+                          .then(() => getAccessToken(api, GEN3))
                           .then(token => {
                             console.log('token', token);
                             effects.setIntegrationToken(GEN3, token);

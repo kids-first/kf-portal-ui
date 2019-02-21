@@ -9,7 +9,8 @@ import { Box } from 'uikit/Core';
 
 import { withApi } from 'services/api';
 import { withHistory } from 'services/history';
-import { getUser as getGen3User } from 'services/gen3';
+import { getFenceUser } from 'services/fence';
+import { GEN3 } from 'common/constants';
 
 import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import Info from '../Info';
@@ -60,7 +61,7 @@ const enhance = compose(
 
       const [{ acceptedStudiesAggs, unacceptedStudiesAggs }, gen3User] = await Promise.all([
         getUserStudyPermission(api)({}),
-        getGen3User(api),
+        getFenceUser(api, GEN3),
       ]);
 
       setAuthorizedStudies(acceptedStudiesAggs);

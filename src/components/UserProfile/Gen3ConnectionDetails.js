@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 
-import { getUser as getGen3User, getStudyIds } from 'services/gen3';
+import { getFenceUser, getStudyIds } from 'services/fence';
+import { GEN3 } from 'common/constants';
 import { css } from 'emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -61,7 +62,7 @@ const enhance = compose(
     async componentDidMount() {
       const { setUserDetails, api, setLoading } = this.props;
       setLoading(true);
-      let userDetails = await getGen3User(api);
+      let userDetails = await getFenceUser(api, GEN3);
       setLoading(false);
       setUserDetails(userDetails);
     },
