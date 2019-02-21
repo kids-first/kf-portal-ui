@@ -1,6 +1,7 @@
 // @ts-check
 import { get } from 'lodash';
-import { getUser as getGen3User } from 'services/gen3';
+import { getFenceUser } from 'services/fence';
+import { GEN3 } from 'common/constants';
 import { graphql } from 'services/arranger';
 
 const getStudyIdsFromSqon = api => ({ sqon }) =>
@@ -116,7 +117,7 @@ export const getUserStudyPermission = api => async ({
     content: [],
   },
 } = {}) => {
-  const userDetails = await getGen3User(api);
+  const userDetails = await getFenceUser(api, GEN3);
   const approvedAcls = Object.keys(userDetails.projects).sort();
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
@@ -184,7 +185,7 @@ export const getUserStudyPermission = api => async ({
 export const checkUserFilePermission = api => async ({ fileId }) => {
   let userDetails;
   try {
-    userDetails = await getGen3User(api);
+    userDetails = await getFenceUser(api, GEN3);
   } catch (err) {
     return Promise.resolve(false);
   }
