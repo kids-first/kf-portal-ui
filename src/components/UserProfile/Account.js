@@ -4,7 +4,6 @@ import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 
 import { CardHeader } from './ui';
-import UserIntegrations from './UserIntegrations';
 import IntegrationTable from './UserIntegrations/IntegrationTable';
 import Gen3Integration from './UserIntegrations/Items/Gen3Integration';
 import DcfIntegration from './UserIntegrations/Items/DcfIntegration';
@@ -15,11 +14,6 @@ import { Box } from 'uikit/Core';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Input from 'uikit/Input';
-
-import ExternalLink from 'uikit/ExternalLink';
-import { Span, Paragraph, Div } from 'uikit/Core';
-import gen3Logo from 'assets/logo-gen3.svg';
-import { cavaticaWebRoot, gen3WebRoot } from 'common/injectGlobals';
 
 const SettingsSection = x => <Column justifyContent="stretch" w="100%" pb={4} {...x} />;
 
