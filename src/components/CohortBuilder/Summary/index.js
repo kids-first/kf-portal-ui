@@ -16,10 +16,8 @@ import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
-
-const ageAtDiagnosisTooltip = data => {
-  return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
-};
+import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
+import SurvivalChart from './SurvivalChart';
 
 const multiHeader = <MultiHeader headings={[{ title: 'Studies', badge: 7 }]} />;
 
