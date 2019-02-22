@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
-import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock } from './mock';
+import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock, survivalPlotMock } from './mock';
 import Card from 'uikit/Card';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { Col, Row } from 'react-grid-system';
@@ -14,6 +14,7 @@ import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
+import SurvivalChart from './SurvivalChart';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -49,6 +50,14 @@ const BarChartContainer = styled('div')`
 
 const CardSlot = styled(Card)`
   height: 305px;
+`;
+
+const CardSlotOverflowVisible = styled(Card)`
+  height: 305px;
+  min-height: 305px;
+  & div {
+    overflow: visible;
+  }
 `;
 
 const PaddedColumn = styled(Col)`
@@ -145,7 +154,9 @@ const Summary = ({ theme, sqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot title="Overall Survival" />
+                <CardSlotOverflowVisible title="Overall Survival">
+                  <SurvivalChart data={survivalPlotMock} />
+                </CardSlotOverflowVisible>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot title="Age at Diagnosis">
