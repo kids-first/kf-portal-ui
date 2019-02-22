@@ -30,6 +30,18 @@ const sortDescParticipant = (a, b) => {
 const toSingleStudyQueries = ({ studies, sqon }) =>
   studies.map(studyName => ({
     query: gql`
+    fragment bucketsAgg on Aggregations {
+      study__short_name {
+        buckets {
+          key
+        }
+      }
+      kf_id {
+        buckets {
+          key
+        }
+      }
+    }
         query($sqon: JSON) {
           participant {
             familyMembers: aggregations(
@@ -103,7 +115,7 @@ const defaultSqon = {
 };
 
 const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (
-  <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
+  <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon: defaultSqon })}>
     {({ isLoading, data }) => {
       console.log('isLoading', isLoading, 'data', data);
       return isLoading ? (

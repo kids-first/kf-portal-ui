@@ -95,6 +95,6 @@ export const demographicQuery = sqon => ({
   },
 });
 
-const keyToId = key => camelCase(key);
+const keyToId = key => (key.includes('+') ? camelCase(key.replace('+', 'plus')) : camelCase(key));
 
 export default compose(withTheme)(DemographicChart);
