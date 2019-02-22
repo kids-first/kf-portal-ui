@@ -73,7 +73,7 @@ const CohortBuilder = () => (
               onActiveSqonSelect={sqonBuilderActiveSqonSelect}
             />
           </FullWidthWhite>
-          <Results sqon={executableSqon} />
+          <Results sqon={executableSqon} activeSqonIndex={activeSqonIndex} />
         </Container>
       );
     }}
