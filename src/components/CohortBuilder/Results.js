@@ -16,6 +16,10 @@ import { withApi } from 'services/api';
 import QueriesResolver from './QueriesResolver';
 import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
+import QueriesResolver from './QueriesResolver';
+import gql from 'graphql-tag';
+import { withApi } from 'services/api';
+import { size, get } from 'lodash';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const SUMMARY = 'summary';
@@ -59,6 +63,7 @@ const ResultsHeading = styled('div')`
   border-right: 1px solid ${({ theme }) => theme.greyScale11};
   margin-right: 14px;
 `;
+
 const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
   <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
