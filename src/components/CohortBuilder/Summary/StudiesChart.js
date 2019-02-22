@@ -30,18 +30,6 @@ const sortDescParticipant = (a, b) => {
 const toSingleStudyQueries = ({ studies, sqon }) =>
   studies.map(studyName => ({
     query: gql`
-    fragment bucketsAgg on Aggregations {
-      study__short_name {
-        buckets {
-          key
-        }
-      }
-      kf_id {
-        buckets {
-          key
-        }
-      }
-    }
         query($sqon: JSON) {
           participant {
             familyMembers: aggregations(
@@ -50,7 +38,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
                 op: "and"
                 content: [
                   $sqon
-                  { op: "in", content: { field: "study.name", value: ["${studyName}"] } }
+                  { op: "in", content: { field: "study.short_name", value: ["${studyName}"] } }
                   { op: "in", content: { field: "is_proband", value: ["false"] } }
                 ]
               }
@@ -72,7 +60,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
                 op: "and"
                 content: [
                   $sqon
-                  { op: "in", content: { field: "study.name", value: ["${studyName}"] } }
+                  { op: "in", content: { field: "study.short_name", value: ["${studyName}"] } }
                   { op: "in", content: { field: "is_proband", value: ["true"] } }
                 ]
               }
@@ -95,7 +83,11 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     variables: { sqon },
 
     transform: data => {
-      const label = get(data, 'data.participant.familyMembers.study__short_name.buckets[0]', '');
+      const label = get(
+        data,
+        'data.participant.familyMembers.study__short_name.buckets[0].key',
+        '',
+      );
       const familyMembers = size(get(data, 'data.participant.familyMembers.kf_id.buckets'));
       const probands = size(get(data, 'data.participant.proband.kf_id.buckets'));
       const studyData = {
@@ -108,10 +100,8 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
   }));
 
 const defaultSqon = {
-  sqon: {
-    op: 'and',
-    content: [],
-  },
+  op: 'and',
+  content: [],
 };
 
 const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (

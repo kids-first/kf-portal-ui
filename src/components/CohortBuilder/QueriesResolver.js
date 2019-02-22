@@ -27,7 +27,7 @@ class QueriesResolver extends Component {
         variables: q.variables,
       })),
     );
-    console.log('body', body);
+
     try {
       const data = useCache ? await this.memoFetchData(body) : await this.fetchData(body);
       this.setState({ data: data, isLoading: false });
