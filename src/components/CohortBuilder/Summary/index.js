@@ -73,7 +73,7 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
     queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
   >
     {({ isLoading, data }) => {
-      const [demographicData, ageDiagData, topDiagnosesData] = data || [];
+      const [demographicData, ageDiagData, studiesData, topDiagnosesData] = data || [];
 
       return isLoading ? (
         <Row nogutter>
@@ -94,7 +94,7 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot title={multiHeader}>
-                  <StudiesChart data={studiesBarMock} />
+                  <StudiesChart studies={studiesData} sqon={sqon} />
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
