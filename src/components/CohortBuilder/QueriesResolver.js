@@ -62,7 +62,7 @@ QueriesResolver.propTypes = {
   useCache: PropTypes.boolean,
   queries: PropTypes.arrayOf(
     PropTypes.shape({
-      query: PropTypes.object.isRequired,
+      query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
       variables: PropTypes.object.isRequired,
       transform: PropTypes.func,
     }),
