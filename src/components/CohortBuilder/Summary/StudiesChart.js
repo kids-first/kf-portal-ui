@@ -5,6 +5,7 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get, size } from 'lodash';
 import gql from 'graphql-tag';
 import { withApi } from 'services/api';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
 
 const studiesToolTip = data => {
@@ -27,11 +28,8 @@ const sortDescParticipant = (a, b) => {
 };
 
 const toSingleStudyQueries = ({ studies, sqon }) =>
-  studies.map(studyName => {
-    console.log('study', studyName);
-
-    return {
-      query: gql`
+  studies.map(studyName => ({
+    query: gql`
         query($sqon: JSON) {
           participant {
             familyMembers: aggregations(
@@ -82,21 +80,20 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
         }
       `,
 
-      variables: { sqon },
+    variables: { sqon },
 
-      transform: data => {
-        const label = get(data, 'data.participant.familyMembers.study__short_name.buckets[0]', '');
-        const familyMembers = size(get(data, 'data.participant.familyMembers.kf_id.buckets'));
-        const probands = size(get(data, 'data.participant.proband.kf_id.buckets'));
-        const studyData = {
-          label,
-          familyMembers,
-          probands,
-        };
-        return studyData;
-      },
-    };
-  });
+    transform: data => {
+      const label = get(data, 'data.participant.familyMembers.study__short_name.buckets[0]', '');
+      const familyMembers = size(get(data, 'data.participant.familyMembers.kf_id.buckets'));
+      const probands = size(get(data, 'data.participant.proband.kf_id.buckets'));
+      const studyData = {
+        label,
+        familyMembers,
+        probands,
+      };
+      return studyData;
+    },
+  }));
 
 const defaultSqon = {
   sqon: {
@@ -110,9 +107,9 @@ const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (
     {({ isLoading, data }) => {
       console.log('isLoading', isLoading, 'data', data);
       return isLoading ? (
-        <div>Loading</div>
+        <LoadingSpinner color={theme.greyScale11} size={'50px'} />
       ) : !data ? (
-        <div>no data</div>
+        <div>No data</div>
       ) : (
         <HorizontalBar
           data={data.filter(d => d.label).map((d, i) => ({ ...d, id: i }))}
