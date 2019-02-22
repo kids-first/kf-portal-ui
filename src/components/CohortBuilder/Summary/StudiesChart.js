@@ -85,7 +85,6 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
       variables: { sqon },
 
       transform: data => {
-        console.log('transforming studies', data);
         const label = get(data, 'data.participant.familyMembers.study__short_name.buckets[0]', '');
         const familyMembers = size(get(data, 'data.participant.familyMembers.kf_id.buckets'));
         const probands = size(get(data, 'data.participant.proband.kf_id.buckets'));
@@ -94,7 +93,6 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
           familyMembers,
           probands,
         };
-        console.log('study data', studyData);
         return studyData;
       },
     };
@@ -117,7 +115,7 @@ const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (
         <div>no data</div>
       ) : (
         <HorizontalBar
-          data={data.map((d, i) => ({ ...d, id: i }))}
+          data={data.filter(d => d.label).map((d, i) => ({ ...d, id: i }))}
           indexBy="label"
           keys={['probands', 'familyMembers']}
           tooltipFormatter={studiesToolTip}
