@@ -28,7 +28,7 @@ const sortDescParticipant = (a, b) => {
 };
 
 const toSingleStudyQueries = ({ studies, sqon }) =>
-  studies.map(studyName => ({
+  studies.map(studyShortName => ({
     query: gql`
         query($sqon: JSON) {
           participant {
@@ -38,16 +38,12 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
                 op: "and"
                 content: [
                   $sqon
-                  { op: "in", content: { field: "study.short_name", value: ["${studyName}"] } }
+                  { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
                   { op: "in", content: { field: "is_proband", value: ["false"] } }
                 ]
               }
             ) {
-              study__short_name {
-                buckets {
-                  key
-                }
-              }
+    
               kf_id {
                 buckets {
                   key
@@ -60,16 +56,12 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
                 op: "and"
                 content: [
                   $sqon
-                  { op: "in", content: { field: "study.short_name", value: ["${studyName}"] } }
+                  { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
                   { op: "in", content: { field: "is_proband", value: ["true"] } }
                 ]
               }
             ) {
-              study__short_name {
-                buckets {
-                  key
-                }
-              }
+     
               kf_id {
                 buckets {
                   key
@@ -83,15 +75,12 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     variables: { sqon },
 
     transform: data => {
-      const label = get(
-        data,
-        'data.participant.familyMembers.study__short_name.buckets[0].key',
-        '',
-      );
+      console.log('indivudla query data', data);
+
       const familyMembers = size(get(data, 'data.participant.familyMembers.kf_id.buckets'));
       const probands = size(get(data, 'data.participant.proband.kf_id.buckets'));
       const studyData = {
-        label,
+        label: studyShortName,
         familyMembers,
         probands,
       };
@@ -105,7 +94,7 @@ const defaultSqon = {
 };
 
 const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (
-  <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon: defaultSqon })}>
+  <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
     {({ isLoading, data }) => {
       console.log('isLoading', isLoading, 'data', data);
       return isLoading ? (
@@ -114,7 +103,7 @@ const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (
         <div>No data</div>
       ) : (
         <HorizontalBar
-          data={data.filter(d => d.label).map((d, i) => ({ ...d, id: i }))}
+          data={data.map((d, i) => ({ ...d, id: i }))}
           indexBy="label"
           keys={['probands', 'familyMembers']}
           tooltipFormatter={studiesToolTip}
