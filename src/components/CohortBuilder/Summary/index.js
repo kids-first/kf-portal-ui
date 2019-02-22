@@ -9,7 +9,6 @@ import { Col, Row } from 'react-grid-system';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
@@ -18,8 +17,6 @@ import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
-
-const multiHeader = <MultiHeader headings={[{ title: 'Studies', badge: 7 }]} />;
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -91,9 +88,7 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot title={multiHeader}>
-                  <StudiesChart studies={studiesData} sqon={sqon} />
-                </CardSlot>
+                <StudiesChart studies={studies} sqon={sqon} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <DiagnosesChart
