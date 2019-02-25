@@ -83,7 +83,7 @@ export const enhance = compose(
           roles: [],
           acceptedKfOptIn: false,
           acceptedNihOptIn: false,
-          acceptedGabriellaMillerKfOptIn: false,
+          acceptedDatasetSubscriptionKfOptIn: false,
         },
       },
     }) => ({
@@ -93,7 +93,7 @@ export const enhance = compose(
       roles: (loggedInUser.roles && loggedInUser.roles[0]) || '',
       acceptedKfOptIn: loggedInUser.acceptedKfOptIn || false,
       acceptedNihOptIn: loggedInUser.acceptedNihOptIn || false,
-      acceptedGabriellaMillerKfOptIn: loggedInUser.acceptedGabriellaMillerKfOptIn || false,
+      acceptedDatasetSubscriptionKfOptIn: loggedInUser.acceptedDatasetSubscriptionKfOptIn || false,
     }),
     isInitialValid: ({
       state: { loggedInUser = { firstName: '', lastName: '', email: '', roles: [] } },
@@ -143,7 +143,7 @@ export const enhance = compose(
           roles: [values.roles],
           acceptedKfOptIn: !!values.acceptedKfOptIn,
           acceptedNihOptIn: !!values.acceptedNihOptIn,
-          acceptedGabriellaMillerKfOptIn: !!values.acceptedGabriellaMillerKfOptIn,
+          acceptedDatasetSubscriptionKfOptIn: !!values.acceptedDatasetSubscriptionKfOptIn,
         },
       }).then(
         async profile => {
@@ -290,15 +290,15 @@ export default enhance(
               </Paragraph>
             </CheckboxLabel>
           </Row>
-          <Row mt={2} pb={2}>
+          <Row mt={2}>
             <Field
               type="checkbox"
-              value={values.acceptedGabriellaMillerKfOptIn}
-              checked={values.acceptedGabriellaMillerKfOptIn}
-              id="acceptedGabriellaMillerKfOptIn"
-              name="acceptedGabriellaMillerKfOptIn"
+              value={values.acceptedDatasetSubscriptionKfOptIn}
+              checked={values.acceptedDatasetSubscriptionKfOptIn}
+              id="acceptedDatasetSubscriptionKfOptIn"
+              name="acceptedDatasetSubscriptionKfOptIn"
             />
-            <CheckboxLabel htmlFor="acceptedGabriellaMillerKfOptIn">
+            <CheckboxLabel htmlFor="acceptedDatasetSubscriptionKfOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
                 <Trans>
                   The Gabriella Miller Kids First Data Resource Center is constantly improving
