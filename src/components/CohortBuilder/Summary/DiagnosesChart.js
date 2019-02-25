@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { BarChartContainer, CardSlot } from './index';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
-import _, { take, get, startCase } from 'lodash';
+import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
@@ -108,7 +108,11 @@ export const diagnosesQuery = sqon => ({
   variables: { sqon },
   transform: data => {
     const buckets = get(data, 'data.participant.aggregations.diagnoses__diagnosis.buckets');
-    return take(buckets, 10).map(diag => diag.key);
+    return _(buckets)
+      .orderBy(bucket => bucket.doc_count, 'desc')
+      .take(10)
+      .map(diag => diag.key)
+      .value();
   },
 });
 
