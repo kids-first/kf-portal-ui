@@ -1,12 +1,13 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { BarChartContainer } from './index';
+import { BarChartContainer, CardSlot } from './index';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
-import { take, get, camelCase, orderBy } from 'lodash';
+import _, { take, get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -17,9 +18,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   topDiagnoses.map(diagnosis => ({
     query: gql`query ($sqon: JSON) {
       participant {
-        familyMembers: aggregations(
-          aggregations_filter_themselves: true,
-                    filters: {op: "and", content: [$sqon, {op: "in", content: {field: "diagnoses.diagnosis", value: ["${diagnosis}"]}}, {op: "in", content: {field: "is_proband", value: ["false"]}}]}) {
+        familyMembers: aggregations(aggregations_filter_themselves: true, filters: {op: "and", content: [$sqon, {op: "in", content: {field: "diagnoses.diagnosis", value: ["${diagnosis}"]}}, {op: "in", content: {field: "is_proband", value: ["false"]}}]}) {
           diagnoses__diagnosis {
             buckets {
               doc_count
@@ -27,8 +26,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
             }
           }
         }
-        proband: aggregations(              aggregations_filter_themselves: true
-,          filters: {op: "and", content: [$sqon, {op: "in", content: {field: "diagnoses.diagnosis", value: ["${diagnosis}"]}}, {op: "in", content: {field: "is_proband", value: ["true"]}}]}) {
+        proband: aggregations(aggregations_filter_themselves: true, filters: {op: "and", content: [$sqon, {op: "in", content: {field: "diagnoses.diagnosis", value: ["${diagnosis}"]}}, {op: "in", content: {field: "is_proband", value: ["true"]}}]}) {
           diagnoses__diagnosis {
             buckets {
               doc_count
@@ -40,59 +38,51 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }
     `,
     variables: { sqon },
-    transform: data => {
-      console.log('single diag data', data, topDiagnoses);
-
-      return {
-        label: camelCase(diagnosis),
-        probands: get(
-          data,
-          'data.participant.familyMembers.diagnoses__diagnosis.buckets[0].doc_count',
-          0,
-        ),
-        familyMembers: get(
-          data,
-          'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count',
-          0,
-        ),
-      };
-    },
+    transform: data => ({
+      label: startCase(diagnosis),
+      probands: get(
+        data,
+        'data.participant.familyMembers.diagnoses__diagnosis.buckets[0].doc_count',
+        0,
+      ),
+      familyMembers: get(
+        data,
+        'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count',
+        0,
+      ),
+    }),
   }));
 
 const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleDiagQueries({ topDiagnoses, sqon })}>
-    {({ isLoading, data }) => {
-      console.log(
-        'bar chart data',
-        data,
-        isLoading,
-        _(data)
-          .orderBy(d => d.probands + d.familyMembers, 'desc')
-          .map((d, i) => ({ ...d, id: i }))
-          .value(),
-      );
-      return !isLoading && data ? (
-        <BarChartContainer>
-          <HorizontalBar
-            data={_(data)
-              .sortBy(d => d.probands + d.familyMembers)
-              .map((d, i) => ({ ...d, id: i }))
-              .value()}
-            indexBy="label"
-            keys={['probands', 'familyMembers']}
-            tooltipFormatter={mostFrequentDiagnosisTooltip}
-            sortByValue={true}
-            tickInterval={4}
-            colors={[theme.chartColors.blue, theme.chartColors.purple]}
-            xTickTextLength={28}
-            legends={[
-              { title: 'Probands', color: theme.chartColors.blue },
-              { title: 'Family Members', color: theme.chartColors.purple },
-            ]}
-          />
-        </BarChartContainer>
-      ) : null;
-    }}
+    {({ isLoading, data }) => (
+      <CardSlot title="Most Frequent Diagnoses">
+        {isLoading ? (
+          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+        ) : !data ? (
+          <div>No data</div>
+        ) : (
+          <BarChartContainer>
+            <HorizontalBar
+              data={_(data)
+                .sortBy(d => d.probands + d.familyMembers)
+                .map((d, i) => ({ ...d, id: i }))
+                .value()}
+              indexBy="label"
+              keys={['probands', 'familyMembers']}
+              tooltipFormatter={mostFrequentDiagnosisTooltip}
+              tickInterval={4}
+              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              xTickTextLength={28}
+              legends={[
+                { title: 'Probands', color: theme.chartColors.blue },
+                { title: 'Family Members', color: theme.chartColors.purple },
+              ]}
+            />
+          </BarChartContainer>
+        )}
+      </CardSlot>
+    )}
   </QueriesResolver>
 );
 
@@ -118,27 +108,10 @@ export const diagnosesQuery = sqon => ({
   variables: { sqon },
   transform: data => {
     const buckets = get(data, 'data.participant.aggregations.diagnoses__diagnosis.buckets');
-    const topDiagnoses = take(buckets, 10).map(diag => diag.key);
-    console.log('First Step', data, buckets, topDiagnoses);
-    return topDiagnoses;
+    return take(buckets, 10).map(diag => diag.key);
   },
 });
 
-/**
- *     id: '1',
-    label: 'Disease or Disorder',
-    familyMembers: 50,
-    probands: 50,
-
-    low grade glioma
-
-
-    {/*  <QueriesResolver api={api} queries={toSingleDiagQueries({ topDiagnoses, sqon })}>
-    {({ isLoading, data }) => {
-      console.log('bar chart data', data);
-      return !isLoading && data ? (
-       
- */
 export default compose(
   withApi,
   withTheme,

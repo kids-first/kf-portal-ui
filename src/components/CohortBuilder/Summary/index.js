@@ -43,7 +43,7 @@ export const BarChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const CardSlot = styled(Card)`
+export const CardSlot = styled(Card)`
   height: 305px;
 `;
 
@@ -92,7 +92,6 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
     queries={[demographicQuery(sqon), ageDiagQuery(sqon), diagnosesQuery(sqon)]}
   >
     {({ isLoading, data }) => {
-      console.log('all chart data', data);
       const [demographicData, ageDiagData, topDiagnosesData] = data || [];
 
       return isLoading ? (
@@ -133,13 +132,11 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot title="Most Frequent Diagnoses">
-                  <DiagnosesChart
-                    data={topDiagnosesBarMock}
-                    sqon={sqon}
-                    topDiagnoses={topDiagnosesData}
-                  />
-                </CardSlot>
+                <DiagnosesChart
+                  data={topDiagnosesBarMock}
+                  sqon={sqon}
+                  topDiagnoses={topDiagnosesData}
+                />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot showHeader={false}>
