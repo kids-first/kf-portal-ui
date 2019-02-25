@@ -15,6 +15,8 @@ import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 
+import EmptyCohortOverlay from './../EmptyCohortOverlay';
+
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
@@ -92,6 +94,7 @@ const Summary = ({ theme, sqon, api }) => (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
+          {!sqon ? <EmptyCohortOverlay /> : null}
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={md} lg={lg}>

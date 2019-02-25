@@ -58,8 +58,8 @@ const PurpleLink = styled(Link)`
 const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
-      const cohortData = data[0];
-      const cohortIsEmpty = true; //cohortData.participantCount === 0 || cohortData.filesCount === 0;
+      const cohortIsEmpty =
+        !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
       return isLoading ? (
         <Row nogutter>
           <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
@@ -75,11 +75,11 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
               <Heading>All data</Heading>
               <DemographicIcon />
               <SubHeading>
-                {Number(cohortData.participantCount).toLocaleString()} Participants with{' '}
+                {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
               </SubHeading>
               <PurpleLink to="">
                 <SubHeading color={theme.purple}>{`${Number(
-                  data[0].filesCount,
+                  data[0].filesCount || 0,
                 ).toLocaleString()} Files`}</SubHeading>
               </PurpleLink>
             </Detail>
