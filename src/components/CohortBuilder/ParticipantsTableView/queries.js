@@ -1,5 +1,40 @@
 import { get } from 'lodash';
 
+export const cohortResults = sqon => ({
+  query: `query ($sqon: JSON) {
+    participant {
+      hits(filters: $sqon) {
+        edges {
+          node {
+            kf_id
+            files {
+              hits {
+                total
+              }
+            }
+          }
+        }
+      }
+    }
+  }`,
+  variables: { sqon },
+  transform: data => {
+    const participants = get(data, 'data.participant.hits.edges');
+    const nodes = participants.map(p => p.node);
+    return nodes.reduce(
+      (nodeSum, node) => {
+        nodeSum.participantCount++;
+        nodeSum.filesCount += get(node, 'files.hits.total');
+        return nodeSum;
+      },
+      {
+        participantCount: 0,
+        filesCount: 0,
+      },
+    );
+  },
+});
+
 export const participantsQuery = sqon => ({
   query: `query ($sqon: JSON) {
     participant {

@@ -13,6 +13,7 @@ import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
+import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 
@@ -104,6 +105,7 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
+          {!sqon ? <EmptyCohortOverlay /> : null}
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={md} lg={lg}>
