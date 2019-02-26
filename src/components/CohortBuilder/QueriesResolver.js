@@ -19,7 +19,6 @@ class QueriesResolver extends Component {
   }
 
   update = async () => {
-    this.setState({ isLoading: true });
     const { queries, useCache = true } = this.props;
     const body = JSON.stringify(
       queries.map(q => ({
@@ -29,6 +28,9 @@ class QueriesResolver extends Component {
     );
 
     try {
+      if (!useCache) {
+        this.setState({ isLoading: true });
+      }
       const data = useCache ? await this.memoFetchData(body) : await this.fetchData(body);
       this.setState({ data: data, isLoading: false });
     } catch (err) {
