@@ -23,7 +23,7 @@ class QueriesResolver extends Component {
     const { queries, useCache = true } = this.props;
     const body = JSON.stringify(
       queries.map(q => ({
-        query: print(q.query),
+        query: typeof q.query === 'string' ? q.query : print(q.query),
         variables: q.variables,
       })),
     );
