@@ -3,38 +3,18 @@ import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock, survivalPlotMock } from './mock';
+import { fileBreakdownMock, survivalPlotMock } from './mock';
 import Card from 'uikit/Card';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
 import { Col, Row } from 'react-grid-system';
-import HorizontalBar from 'chartkit/components/HorizontalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
+import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
+import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
-import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
-
-const studiesToolTip = data => {
-  const { familyMembers, probands, name } = data;
-  const participants = familyMembers + probands;
-  return (
-    <div>
-      <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Probands`}</div>
-      <div>{`${familyMembers.toLocaleString()} Family Members`}</div>
-      <div>{`${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`}</div>
-    </div>
-  );
-};
-
-const sortDescParticipant = (a, b) => {
-  const aTotal = a.probands + a.familyMembers;
-  const bTotal = b.probands + b.familyMembers;
-  return aTotal <= bTotal ? -1 : 1;
-};
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -76,24 +56,20 @@ const enhance = compose(
   withTheme,
 );
 
-const defaultSqon = {
-  op: 'and',
-  content: [],
-};
-
-const multiHeader = (
-  <MultiHeader
-    headings={[{ title: 'Studies', badge: 7 }, { title: 'Participants', badge: 6155 }]}
-  />
-);
-
-const Summary = ({ theme, sqon = defaultSqon, api }) => (
+const Summary = ({
+  theme,
+  sqon = {
+    op: 'and',
+    content: [],
+  },
+  api,
+}) => (
   <QueriesResolver
     api={api}
-    queries={[demographicQuery(sqon), ageDiagQuery(sqon), diagnosesQuery(sqon)]}
+    queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
   >
     {({ isLoading, data }) => {
-      const [demographicData, ageDiagData, topDiagnosesData] = data || [];
+      const [demographicData, ageDiagData, studiesData, topDiagnosesData] = data || [];
 
       return isLoading ? (
         <Row nogutter>
@@ -114,31 +90,10 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot title={multiHeader}>
-                  <BarChartContainer>
-                    <HorizontalBar
-                      data={studiesBarMock}
-                      indexBy="label"
-                      keys={['probands', 'familyMembers']}
-                      tooltipFormatter={studiesToolTip}
-                      sortBy={sortDescParticipant}
-                      tickInterval={4}
-                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                      xTickTextLength={28}
-                      legends={[
-                        { title: 'Probands', color: theme.chartColors.blue },
-                        { title: 'Family Members', color: theme.chartColors.purple },
-                      ]}
-                    />
-                  </BarChartContainer>
-                </CardSlot>
+                <StudiesChart studies={studiesData} sqon={sqon} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <DiagnosesChart
-                  data={topDiagnosesBarMock}
-                  sqon={sqon}
-                  topDiagnoses={topDiagnosesData}
-                />
+                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot showHeader={false}>
