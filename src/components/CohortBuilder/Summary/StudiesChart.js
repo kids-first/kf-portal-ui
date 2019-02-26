@@ -26,7 +26,7 @@ const studiesToolTip = data => {
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
   const bTotal = b.probands + b.familyMembers;
-  return aTotal <= bTotal ? -1 : 1;
+  return aTotal - bTotal;
 };
 
 const toSingleStudyQueries = ({ studies, sqon }) =>
