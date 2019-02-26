@@ -79,12 +79,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     }),
   }));
 
-const defaultSqon = {
-  op: 'and',
-  content: [],
-};
-
-const StudiesChart = ({ studies, sqon = defaultSqon, theme, api }) => (
+const StudiesChart = ({ studies, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
     {({ isLoading, data }) => (
       <CardSlot

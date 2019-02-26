@@ -3,16 +3,13 @@ import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import { topDiagnosesBarMock, studiesBarMock, fileBreakdownMock, survivalPlotMock } from './mock';
+import { fileBreakdownMock, survivalPlotMock } from './mock';
 import Card from 'uikit/Card';
 import { Col, Row } from 'react-grid-system';
-import HorizontalBar from 'chartkit/components/HorizontalBar';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
 import FileBreakdown from './FileBreakdown';
-import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
-import SurvivalChart from './SurvivalChart';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
@@ -58,11 +55,14 @@ const enhance = compose(
   withTheme,
 );
 
-const defaultSqon = {
-  op: 'and',
-  content: [],
-};
-const Summary = ({ theme, sqon = defaultSqon, api }) => (
+const Summary = ({
+  theme,
+  sqon = {
+    op: 'and',
+    content: [],
+  },
+  api,
+}) => (
   <QueriesResolver
     api={api}
     queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
@@ -88,14 +88,10 @@ const Summary = ({ theme, sqon = defaultSqon, api }) => (
                 </CardSlot>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <StudiesChart studies={studies} sqon={sqon} />
+                <StudiesChart studies={studiesData} sqon={sqon} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <DiagnosesChart
-                  data={topDiagnosesBarMock}
-                  sqon={sqon}
-                  topDiagnoses={topDiagnosesData}
-                />
+                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlot showHeader={false}>
