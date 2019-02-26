@@ -4,14 +4,12 @@ export const cohortResults = sqon => ({
   query: `query ($sqon: JSON) {
     participant {
       hits(filters: $sqon) {
-        edges {
-          node {
-            kf_id
-            files {
-              hits {
-                total
-              }
-            }
+        total
+      }
+      aggregations(filters: $sqon) {
+        files__kf_id {
+          buckets {
+            key
           }
         }
       }
@@ -19,19 +17,12 @@ export const cohortResults = sqon => ({
   }`,
   variables: { sqon },
   transform: data => {
-    const participants = get(data, 'data.participant.hits.edges');
-    const nodes = participants.map(p => p.node);
-    return nodes.reduce(
-      (nodeSum, node) => {
-        nodeSum.participantCount++;
-        nodeSum.filesCount += get(node, 'files.hits.total');
-        return nodeSum;
-      },
-      {
-        participantCount: 0,
-        filesCount: 0,
-      },
-    );
+    const participants = get(data, 'data.participant.hits.total', 0);
+    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).length;
+    return {
+      participantCount: participants,
+      filesCount: files,
+    };
   },
 });
 
