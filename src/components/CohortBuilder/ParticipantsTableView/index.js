@@ -17,8 +17,8 @@ const enhance = compose(
 );
 
 const ParticipantsTableView = ({ sqon, api }) => (
-  <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon)]}>
-    {({ isLoading, data, error, sqon }) =>
+  <QueriesResolver api={api} queries={[participantsQuery(sqon)]}>
+    {({ isLoading, data, error }) =>
       error ? (
         <TableErrorView error={error} />
       ) : (

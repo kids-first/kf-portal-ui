@@ -63,8 +63,8 @@ export const participantsQuery = sqon => ({
               }
             }
             gender
+            family_id
             family {
-              family_id
               family_compositions {
                 hits {
                   edges {
@@ -113,7 +113,7 @@ export const participantsQuery = sqon => ({
         diagnosis,
         ageAtDiagnosis,
         gender: get(node, 'gender'),
-        familyId: get(node, 'family.family_id'),
+        familyId: get(node, 'family_id'),
         familyCompositions,
         filesCount: get(node, 'files.hits.total'),
       };

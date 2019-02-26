@@ -56,7 +56,7 @@ const PurpleLink = styled(Link)`
 `;
 
 const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
-  <QueriesResolver api={api} sqon={sqon} queries={[cohortResults(sqon)]}>
+  <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
         !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
