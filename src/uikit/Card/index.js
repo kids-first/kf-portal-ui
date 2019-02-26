@@ -9,17 +9,22 @@ const Card = ({
   Header,
   Content = CardContent,
   children,
-  className,
+  cardWrapperStyle,
   scrollable,
   title,
   inactive = false,
   showHeader = true,
+  headerWrapperStyle,
 }) => {
   const DefaultHeader = <CardHeader title={title} />;
 
   return (
-    <CardWrapper className={className} inactive={inactive}>
-      {showHeader && <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>}
+    <CardWrapper cardWrapperStyle={cardWrapperStyle} inactive={inactive}>
+      {showHeader && (
+        <HeaderWrapper headerWrapperStyle={headerWrapperStyle} inactive={inactive}>
+          {Header || DefaultHeader}
+        </HeaderWrapper>
+      )}
       <Content scrollable={scrollable}>{children}</Content>
     </CardWrapper>
   );
@@ -29,7 +34,6 @@ Card.propTypes = {
   Header: PropTypes.node,
   Content: PropTypes.func,
   children: PropTypes.node,
-  className: PropTypes.string,
   scrollable: PropTypes.bool,
   title: PropTypes.node,
   inactive: PropTypes.bool,

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
@@ -15,6 +15,7 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
+import CardHeader from '../../../uikit/Card/CardHeader';
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -24,8 +25,8 @@ export const BarChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-export const CardSlot = styled(Card)`
-  height: 305px;
+const CardSlot = styled(Card)`
+  ${mediumCard}
 `;
 
 const CardSlotOverflowVisible = styled(Card)`
@@ -47,6 +48,36 @@ const LongCard = styled(Card)`
 const LongCardContainerRow = styled(Row)`
   height: 100%;
 `;
+
+const longCard = props =>
+  css`
+    width: 100%;
+  `;
+const mediumCard = props =>
+  css`
+    height: 305px;
+    padding: 15px 20px;
+  `;
+
+const headerWrapperStyle = props => css`
+  padding-bottom: 10px;
+`;
+
+const headingStyle = props =>
+  css`
+    font-size: 16px;
+  `;
+
+export const CohortCard = ({ title, children, long = false, ...props }) => (
+  <Card
+    cardWrapperStyle={long ? longCard : mediumCard}
+    headerWrapperStyle={headerWrapperStyle}
+    Header={<CardHeader title={title} headingStyle={headingStyle} />}
+    {...props}
+  >
+    {children}
+  </Card>
+);
 
 const md = 6;
 const lg = 4;
@@ -85,38 +116,83 @@ const Summary = ({
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot scrollable={true} title="File Breakdown">
+                <CohortCard scrollable={true} title="File Breakdown">
                   <FileBreakdown data={fileBreakdownMock} />
-                </CardSlot>
+                </CohortCard>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
+<<<<<<< HEAD
                 <StudiesChart studies={studiesData} sqon={sqon} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
+=======
+                <CohortCard title={multiHeader}>
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={studiesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={studiesToolTip}
+                      sortBy={sortDescParticipant}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CohortCard>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot showHeader={false}>
+                <CohortCard title="Most Frequent Diagnoses">
+                  <BarChartContainer>
+                    <HorizontalBar
+                      data={topDiagnosesBarMock}
+                      indexBy="label"
+                      keys={['probands', 'familyMembers']}
+                      tooltipFormatter={mostFrequentDiagnosisTooltip}
+                      sortByValue={true}
+                      tickInterval={4}
+                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                      xTickTextLength={28}
+                      legends={[
+                        { title: 'Probands', color: theme.chartColors.blue },
+                        { title: 'Family Members', color: theme.chartColors.purple },
+                      ]}
+                    />
+                  </BarChartContainer>
+                </CohortCard>
+>>>>>>> make card style overridable
+              </PaddedColumn>
+              <PaddedColumn md={md} lg={lg}>
+                <CohortCard showHeader={false}>
                   <DemographicChart data={demographicData} />
-                </CardSlot>
+                </CohortCard>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
+<<<<<<< HEAD
                 <CardSlotOverflowVisible title="Overall Survival">
                   <SurvivalChart data={survivalPlotMock} />
                 </CardSlotOverflowVisible>
+=======
+                <CohortCard title="Overall Survival" />
+>>>>>>> make card style overridable
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot title="Age at Diagnosis">
+                <CohortCard title="Age at Diagnosis">
                   <AgeDiagChart data={ageDiagData} />
-                </CardSlot>
+                </CohortCard>
               </PaddedColumn>
             </Row>
           </Col>
           <PaddedColumn xl={3}>
             <LongCardContainerRow nogutter>
-              <LongCard title="Phenotypes">
+              <CohortCard long title="Phenotypes">
                 <pre>{JSON.stringify(sqon, null, 2)}</pre>
-              </LongCard>
+              </CohortCard>
             </LongCardContainerRow>
           </PaddedColumn>
         </Row>

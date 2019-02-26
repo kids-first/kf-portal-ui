@@ -11,6 +11,8 @@ export const CardWrapper = applyDefaultStyles(styled('div')`
   display: flex;
   flex-direction: column;
   border: solid 1px ${({ theme }) => theme.greyScale5};
+
+  ${props => props.cardWrapperStyle}
 `);
 
 export const HeaderWrapper = applyDefaultStyles(styled(Row)`
@@ -19,4 +21,6 @@ export const HeaderWrapper = applyDefaultStyles(styled(Row)`
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
   padding-bottom: 20px;
+
+  ${props => props.headerWrapperStyle}
 `);
