@@ -16,28 +16,49 @@ const mostFrequentDiagnosisTooltip = data => {
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   topDiagnoses.map(diagnosis => ({
-    query: gql`query ($sqon: JSON) {
-      participant {
-        familyMembers: aggregations(aggregations_filter_themselves: true, filters: {op: "and", content: [$sqon, {op: "in", content: {field: "diagnoses.diagnosis", value: ["${diagnosis}"]}}, {op: "in", content: {field: "is_proband", value: ["false"]}}]}) {
-          diagnoses__diagnosis {
-            buckets {
-              doc_count
-              key
+    query: gql`
+      query($sqon: JSON, $diagnosis: String) {
+        participant {
+          familyMembers: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
+                { op: "in", content: { field: "is_proband", value: ["false"] } }
+              ]
+            }
+          ) {
+            diagnoses__diagnosis {
+              buckets {
+                doc_count
+                key
+              }
             }
           }
-        }
-        proband: aggregations(aggregations_filter_themselves: true, filters: {op: "and", content: [$sqon, {op: "in", content: {field: "diagnoses.diagnosis", value: ["${diagnosis}"]}}, {op: "in", content: {field: "is_proband", value: ["true"]}}]}) {
-          diagnoses__diagnosis {
-            buckets {
-              doc_count
-              key
+          proband: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
+                { op: "in", content: { field: "is_proband", value: ["true"] } }
+              ]
+            }
+          ) {
+            diagnoses__diagnosis {
+              buckets {
+                doc_count
+                key
+              }
             }
           }
         }
       }
-    }
     `,
-    variables: { sqon },
+    variables: { sqon, diagnosis },
     transform: data => ({
       label: startCase(diagnosis),
       probands: get(
