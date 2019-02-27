@@ -18,11 +18,6 @@ import { PaddedColumn, CohortCard, LongCardContainerRow, CardSlotOverflowVisible
 const md = 6;
 const lg = 4;
 
-const enhance = compose(
-  withApi,
-  withTheme,
-);
-
 const Summary = ({
   theme,
   sqon = {
@@ -78,4 +73,7 @@ const Summary = ({
   </QueriesResolver>
 );
 
-export default enhance(Summary);
+export default compose(
+  withApi,
+  withTheme,
+)(Summary);
