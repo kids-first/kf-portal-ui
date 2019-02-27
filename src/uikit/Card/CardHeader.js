@@ -12,8 +12,6 @@ const Heading = applyDefaultStyles(styled('h2')`
   text-align: left;
   color: ${({ theme }) => theme.cardTitle};
   margin: 0;
-
-  ${props => props.headingStyle}
 `);
 
 const Badge = applyDefaultStyles(styled('div')`

@@ -83,11 +83,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
     {({ isLoading, data }) => (
       <PaddedColumn md={spacing.md} lg={spacing.lg}>
-        <CohortCard
-          title={
-            <MultiHeader headings={[{ title: 'Studies', badge: data ? data.length : null }]} />
-          }
-        >
+        <CohortCard title="Studies" badge={data ? data.length : null}>
           {isLoading ? (
             <LoadingSpinner color={theme.greyScale11} size={'50px'} />
           ) : !data ? (

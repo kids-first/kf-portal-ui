@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import CardContent from './CardContent';
 import CardHeader from './CardHeader';
-import { CardWrapper, HeaderWrapper } from './styles';
+import { CardWrapper as CWrapper, HeaderWrapper as HWrapper } from './styles';
 
 const Card = ({
   Header,
@@ -14,18 +14,16 @@ const Card = ({
   title,
   inactive = false,
   showHeader = true,
-  headerWrapperStyle,
+  HeaderWrapper = HWrapper,
+  CardWrapper = CWrapper,
   className,
+  badge,
 }) => {
-  const DefaultHeader = <CardHeader title={title} />;
+  const DefaultHeader = <CardHeader title={title} badge={badge} />;
 
   return (
-    <CardWrapper className={className} cardWrapperStyle={cardWrapperStyle} inactive={inactive}>
-      {showHeader && (
-        <HeaderWrapper headerWrapperStyle={headerWrapperStyle} inactive={inactive}>
-          {Header || DefaultHeader}
-        </HeaderWrapper>
-      )}
+    <CardWrapper className={className} inactive={inactive}>
+      {showHeader && <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>}
       <Content scrollable={scrollable}>{children}</Content>
     </CardWrapper>
   );
