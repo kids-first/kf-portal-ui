@@ -53,6 +53,7 @@ const SubHeading = styled('h3')`
 const PurpleLink = styled(Link)`
   color: ${({ theme }) => theme.purple};
 `;
+
 const ResultsHeading = styled('div')`
   display: flex;
   padding: 0 20px 3px 0;

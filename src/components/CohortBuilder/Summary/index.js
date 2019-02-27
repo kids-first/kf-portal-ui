@@ -1,10 +1,8 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { fileBreakdownMock, survivalPlotMock } from './mock';
-import Card from 'uikit/Card';
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
@@ -15,69 +13,7 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
-import CardHeader from '../../../uikit/Card/CardHeader';
-
-export const BarChartContainer = styled('div')`
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-`;
-
-export const CardSlot = styled(Card)`
-  ${mediumCard}
-`;
-
-const CardSlotOverflowVisible = styled(Card)`
-  height: 305px;
-  min-height: 305px;
-  & div {
-    overflow: visible;
-  }
-`;
-
-const PaddedColumn = styled(Col)`
-  padding: 4px !important;
-`;
-
-const LongCard = styled(Card)`
-  width: 100%;
-`;
-
-const LongCardContainerRow = styled(Row)`
-  height: 100%;
-`;
-
-const longCard = props =>
-  css`
-    width: 100%;
-  `;
-const mediumCard = props =>
-  css`
-    height: 305px;
-    padding: 15px 20px;
-  `;
-
-const headerWrapperStyle = props => css`
-  padding-bottom: 10px;
-`;
-
-const headingStyle = props =>
-  css`
-    font-size: 16px;
-  `;
-
-export const CohortCard = ({ title, children, long = false, ...props }) => (
-  <Card
-    cardWrapperStyle={long ? longCard : mediumCard}
-    headerWrapperStyle={headerWrapperStyle}
-    Header={<CardHeader title={title} headingStyle={headingStyle} />}
-    {...props}
-  >
-    {children}
-  </Card>
-);
+import { PaddedColumn, CohortCard, LongCardContainerRow, CardSlotOverflowVisible } from './ui';
 
 const md = 6;
 const lg = 4;
@@ -116,9 +52,7 @@ const Summary = ({
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={md} lg={lg}>
-                <CohortCard scrollable={true} title="File Breakdown">
-                  <FileBreakdown data={fileBreakdownMock} />
-                </CohortCard>
+                <FileBreakdown data={fileBreakdownMock} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} />
@@ -127,9 +61,7 @@ const Summary = ({
                 <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CohortCard showHeader={false}>
-                  <DemographicChart data={demographicData} />
-                </CohortCard>
+                <DemographicChart data={demographicData} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CardSlotOverflowVisible title="Overall Survival">
@@ -137,9 +69,7 @@ const Summary = ({
                 </CardSlotOverflowVisible>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-                <CohortCard title="Age at Diagnosis">
-                  <AgeDiagChart data={ageDiagData} />
-                </CohortCard>
+                <AgeDiagChart data={ageDiagData} />
               </PaddedColumn>
             </Row>
           </Col>

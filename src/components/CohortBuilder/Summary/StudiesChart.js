@@ -8,7 +8,7 @@ import { withApi } from 'services/api';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CardSlot } from './index';
+import { CardSlot, CohortCard } from './ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -82,7 +82,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
 const StudiesChart = ({ studies, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
     {({ isLoading, data }) => (
-      <CardSlot
+      <CohortCard
         title={<MultiHeader headings={[{ title: 'Studies', badge: data ? data.length : null }]} />}
       >
         {isLoading ? (
@@ -106,7 +106,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
             padding={0.5}
           />
         )}
-      </CardSlot>
+      </CohortCard>
     )}
   </QueriesResolver>
 );
