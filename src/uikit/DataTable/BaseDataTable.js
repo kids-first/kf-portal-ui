@@ -75,7 +75,7 @@ BaseDataTable.propTypes = {
     PropTypes.shape({
       Header: PropTypes.string.isRequired,
       accessor: PropTypes.string.isRequired,
-      Cell: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.element]),
+      Cell: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     }),
   ).isRequired,
   data: PropTypes.array.isRequired,

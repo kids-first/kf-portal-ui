@@ -38,33 +38,35 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   );
 });
 
-const NbFilesCell = withTheme(({ value: nbFiles, row, theme }) => {
-  const encodedSqon = encodeURI(
-    JSON.stringify(
-      {
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: {
-              field: 'participants.kf_id',
-              value: [row.participantId],
+const NbFilesCell = compose(
+  withTheme(({ value: nbFiles, row, theme }) => {
+    const encodedSqon = encodeURI(
+      JSON.stringify(
+        {
+          op: 'and',
+          content: [
+            {
+              op: 'in',
+              content: {
+                field: 'participants.kf_id',
+                value: [row.participantId],
+              },
             },
-          },
-        ],
-      },
-      null,
-      0,
-    ),
-  );
+          ],
+        },
+        null,
+        0,
+      ),
+    );
 
-  return (
-    <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
-      <FileIcon width={8} height={13} fill={theme.greyScale11} />
-      {`${nbFiles} Files`}
-    </Link>
-  );
-});
+    return (
+      <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
+        <FileIcon width={8} height={13} fill={theme.greyScale11} />
+        {`${nbFiles} Files`}
+      </Link>
+    );
+  }),
+);
 
 const participantsTableViewColumns = [
   { Header: 'Participant ID', accessor: 'participantId' },
@@ -74,18 +76,26 @@ const participantsTableViewColumns = [
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
-    Cell: CollapsibleMultiLineCell,
+    Cell: props => <CollapsibleMultiLineCell {...props} />,
   },
-  { Header: 'Diagnosis', accessor: 'diagnosis', Cell: CollapsibleMultiLineCell },
-  { Header: 'Age at Diagnosis', accessor: 'ageAtDiagnosis', Cell: CollapsibleMultiLineCell },
+  {
+    Header: 'Diagnosis',
+    accessor: 'diagnosis',
+    Cell: props => <CollapsibleMultiLineCell {...props} />,
+  },
+  {
+    Header: 'Age at Diagnosis',
+    accessor: 'ageAtDiagnosis',
+    Cell: props => <CollapsibleMultiLineCell {...props} />,
+  },
   { Header: 'Gender', accessor: 'gender' },
   { Header: 'Family ID', accessor: 'familyId' },
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
-    Cell: CollapsibleMultiLineCell,
+    Cell: props => <CollapsibleMultiLineCell {...props} />,
   },
-  { Header: 'Files', accessor: 'filesCount', Cell: NbFilesCell },
+  { Header: 'Files', accessor: 'filesCount', Cell: props => <NbFilesCell {...props} /> },
 ];
 
 const cssClass = css({
