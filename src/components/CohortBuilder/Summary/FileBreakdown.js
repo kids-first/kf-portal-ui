@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { CohortCard } from './ui';
+import { CohortCard, PaddedColumn, spacing } from './ui';
 import BaseDataTable from 'uikit/DataTable';
 
 const FileBreakdownWrapper = styled('div')`
@@ -87,30 +87,32 @@ const generateFileColumnContents = dataset => {
 const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
   return (
-    <CohortCard scrollable={true} title="File Breakdown">
-      <FileBreakdownWrapper>
-        <BaseDataTable
-          header={null}
-          columns={[
-            { Header: 'Data Type', accessor: 'dataType' },
-            { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
-            { Header: 'Files', accessor: 'fileLink' },
-          ]}
-          data={finalData}
-          transforms={{
-            dataType: dataType => <Column>{dataType}</Column>,
-            experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
-            fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-          }}
-        />
-        <TableFooter>
-          Total:
-          <a href={SEARCH_FILE_RELATIVE_URL}>
-            {localizeFileQuantity(sumTotalFilesInData(finalData))}
-          </a>
-        </TableFooter>
-      </FileBreakdownWrapper>
-    </CohortCard>
+    <PaddedColumn md={spacing.md} lg={spacing.lg}>
+      <CohortCard scrollable={true} title="File Breakdown">
+        <FileBreakdownWrapper>
+          <BaseDataTable
+            header={null}
+            columns={[
+              { Header: 'Data Type', accessor: 'dataType' },
+              { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
+              { Header: 'Files', accessor: 'fileLink' },
+            ]}
+            data={finalData}
+            transforms={{
+              dataType: dataType => <Column>{dataType}</Column>,
+              experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+              fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+            }}
+          />
+          <TableFooter>
+            Total:
+            <a href={SEARCH_FILE_RELATIVE_URL}>
+              {localizeFileQuantity(sumTotalFilesInData(finalData))}
+            </a>
+          </TableFooter>
+        </FileBreakdownWrapper>
+      </CohortCard>
+    </PaddedColumn>
   );
 };
 

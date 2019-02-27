@@ -8,7 +8,7 @@ import { withApi } from 'services/api';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CardSlot, CohortCard } from './ui';
+import { PaddedColumn, CohortCard, spacing } from './ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -82,31 +82,35 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
 const StudiesChart = ({ studies, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
     {({ isLoading, data }) => (
-      <CohortCard
-        title={<MultiHeader headings={[{ title: 'Studies', badge: data ? data.length : null }]} />}
-      >
-        {isLoading ? (
-          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-        ) : !data ? (
-          <div>No data</div>
-        ) : (
-          <HorizontalBar
-            data={data.map((d, i) => ({ ...d, id: i }))}
-            indexBy="label"
-            keys={['probands', 'familyMembers']}
-            tooltipFormatter={studiesToolTip}
-            sortBy={sortDescParticipant}
-            tickInterval={4}
-            colors={[theme.chartColors.blue, theme.chartColors.purple]}
-            xTickTextLength={28}
-            legends={[
-              { title: 'Probands', color: theme.chartColors.blue },
-              { title: 'Family Members', color: theme.chartColors.purple },
-            ]}
-            padding={0.5}
-          />
-        )}
-      </CohortCard>
+      <PaddedColumn md={spacing.md} lg={spacing.lg}>
+        <CohortCard
+          title={
+            <MultiHeader headings={[{ title: 'Studies', badge: data ? data.length : null }]} />
+          }
+        >
+          {isLoading ? (
+            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+          ) : !data ? (
+            <div>No data</div>
+          ) : (
+            <HorizontalBar
+              data={data.map((d, i) => ({ ...d, id: i }))}
+              indexBy="label"
+              keys={['probands', 'familyMembers']}
+              tooltipFormatter={studiesToolTip}
+              sortBy={sortDescParticipant}
+              tickInterval={4}
+              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              xTickTextLength={28}
+              legends={[
+                { title: 'Probands', color: theme.chartColors.blue },
+                { title: 'Family Members', color: theme.chartColors.purple },
+              ]}
+              padding={0.5}
+            />
+          )}
+        </CohortCard>
+      </PaddedColumn>
     )}
   </QueriesResolver>
 );

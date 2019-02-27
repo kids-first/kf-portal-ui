@@ -51,26 +51,18 @@ const Summary = ({
           {!sqon ? <EmptyCohortOverlay /> : null}
           <Col xl={9}>
             <Row nogutter>
+              <FileBreakdown data={fileBreakdownMock} />
+              <StudiesChart studies={studiesData} sqon={sqon} />
+              <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
+              <DemographicChart data={demographicData} />
+
               <PaddedColumn md={md} lg={lg}>
-                <FileBreakdown data={fileBreakdownMock} />
-              </PaddedColumn>
-              <PaddedColumn md={md} lg={lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} />
-              </PaddedColumn>
-              <PaddedColumn md={md} lg={lg}>
-                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
-              </PaddedColumn>
-              <PaddedColumn md={md} lg={lg}>
-                <DemographicChart data={demographicData} />
-              </PaddedColumn>
-              <PaddedColumn md={md} lg={lg}>
-                <CardSlotOverflowVisible title="Overall Survival">
+                <CohortCard title="Overall Survival">
                   <SurvivalChart data={survivalPlotMock} />
-                </CardSlotOverflowVisible>
+                </CohortCard>
               </PaddedColumn>
-              <PaddedColumn md={md} lg={lg}>
-                <AgeDiagChart data={ageDiagData} />
-              </PaddedColumn>
+
+              <AgeDiagChart data={ageDiagData} />
             </Row>
           </Col>
           <PaddedColumn xl={3}>

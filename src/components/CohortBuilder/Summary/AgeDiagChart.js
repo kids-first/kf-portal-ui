@@ -4,23 +4,25 @@ import { withTheme } from 'emotion-theming';
 import { get, sumBy } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
-import { CohortCard } from './ui';
+import { CohortCard, PaddedColumn, spacing } from './ui';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
 const AgeDiagChart = ({ data, theme }) => (
-  <CohortCard title="Age at Diagnosis">
-    <VerticalBar
-      data={data}
-      indexBy="label"
-      tooltipFormatter={ageAtDiagnosisTooltip}
-      sortByValue={true}
-      height={225}
-      colors={[theme.chartColors.lightblue]}
-    />
-  </CohortCard>
+  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+    <CohortCard title="Age at Diagnosis">
+      <VerticalBar
+        data={data}
+        indexBy="label"
+        tooltipFormatter={ageAtDiagnosisTooltip}
+        sortByValue={true}
+        height={225}
+        colors={[theme.chartColors.lightblue]}
+      />
+    </CohortCard>
+  </PaddedColumn>
 );
 
 export const ageDiagQuery = sqon => ({

@@ -2,8 +2,12 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import Card from 'uikit/Card';
 import { Col, Row } from 'react-grid-system';
-
 import CardHeader from '../../../uikit/Card/CardHeader';
+
+export const spacing = {
+  md: 6,
+  lg: 4,
+};
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -15,14 +19,6 @@ export const BarChartContainer = styled('div')`
 
 export const CardSlot = styled(Card)`
   ${mediumCard}
-`;
-
-export const CardSlotOverflowVisible = styled(Card)`
-  height: 305px;
-  min-height: 305px;
-  & div {
-    overflow: visible;
-  }
 `;
 
 export const PaddedColumn = styled(Col)`
@@ -44,6 +40,7 @@ const longCard = props =>
 const mediumCard = props =>
   css`
     height: 305px;
+    min-height: 305px;
     padding: 15px 20px;
   `;
 
