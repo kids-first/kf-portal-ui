@@ -14,7 +14,7 @@ const Container = applyDefaultStyles(styled(Column)`
 `);
 
 const FloatFooterPageContentWrapper = styled('div')`
-  height: 100%;
+  height: 960px;
   overflow-y: auto;
 `;
 
@@ -24,7 +24,7 @@ const FloatFooterPageComponentWrapper = styled('div')`
 `;
 
 const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
-  <Container>
+  < Container >
     <Head />
     <FloatFooterPageContentWrapper>
       <FloatFooterPageComponentWrapper>
@@ -32,13 +32,15 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
       </FloatFooterPageComponentWrapper>
       <Foot />
     </FloatFooterPageContentWrapper>
-  </Container>
+  </Container >
 );
 
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   <Container height="auto">
     <Head />
-    <Component {...props} />
+    <FloatFooterPageContentWrapper>
+      <Component {...props} />
+    </FloatFooterPageContentWrapper>
     <Foot />
   </Container>
 );
