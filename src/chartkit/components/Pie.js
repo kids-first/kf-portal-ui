@@ -56,7 +56,7 @@ class Pie extends Component {
   }
 
   render() {
-    const gradient = tinygradient(...this.props.colors).rgb(this.props.data.length + 1);
+    const gradient = tinygradient(...this.props.colors).rgb(this.props.data.length + 2); // .rgb expects a value > 2
     const colorData = this.props.data.map((d, i) => ({
       ...d,
       color: gradient[i].toHexString(),
