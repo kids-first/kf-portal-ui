@@ -15,11 +15,12 @@ const Card = ({
   inactive = false,
   showHeader = true,
   headerWrapperStyle,
+  className,
 }) => {
   const DefaultHeader = <CardHeader title={title} />;
 
   return (
-    <CardWrapper cardWrapperStyle={cardWrapperStyle} inactive={inactive}>
+    <CardWrapper className={className} cardWrapperStyle={cardWrapperStyle} inactive={inactive}>
       {showHeader && (
         <HeaderWrapper headerWrapperStyle={headerWrapperStyle} inactive={inactive}>
           {Header || DefaultHeader}
