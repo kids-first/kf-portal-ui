@@ -24,14 +24,12 @@ class HorizontalBar extends Component {
       highlightedIndexValue: null,
     };
 
-    const { data, sortBy, tickInterval } = props;
+    const { tickInterval } = props;
 
     // const maxValue = getChartMaxValue(data, keys);
     this.maxValue = tickInterval ? this.maxValue : 'auto';
 
     this.tickValues = tickInterval;
-
-    this.data = data.filter(x => x).sort(sortBy);
 
     this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -83,7 +81,7 @@ class HorizontalBar extends Component {
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
     const onLabelClick = tick => {
-      const data = this.data.find(d => d.label === tick.value);
+      const data = this.props.data.find(d => d.label === tick.value);
       if (data) {
         onClick({ data });
       }
@@ -111,10 +109,19 @@ class HorizontalBar extends Component {
   }
 
   render() {
-    const { keys, colors, legends, indexBy = 'id', height, tooltipFormatter } = this.props;
+    const {
+      data = [],
+      sortBy = () => 1,
+      keys,
+      colors,
+      legends,
+      indexBy = 'id',
+      height,
+      tooltipFormatter,
+    } = this.props;
 
     const chartData = {
-      data: this.data,
+      data: data.filter(x => x).sort(sortBy),
       keys: keys,
       indexBy: indexBy,
       onMouseEnter: this.onMouseEnter,
