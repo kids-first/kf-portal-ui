@@ -25,7 +25,7 @@ export const BarChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const CardSlot = styled(Card)`
+export const CardSlot = styled(Card)`
   ${mediumCard}
 `;
 
@@ -121,51 +121,10 @@ const Summary = ({
                 </CohortCard>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-<<<<<<< HEAD
                 <StudiesChart studies={studiesData} sqon={sqon} />
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
-=======
-                <CohortCard title={multiHeader}>
-                  <BarChartContainer>
-                    <HorizontalBar
-                      data={studiesBarMock}
-                      indexBy="label"
-                      keys={['probands', 'familyMembers']}
-                      tooltipFormatter={studiesToolTip}
-                      sortBy={sortDescParticipant}
-                      tickInterval={4}
-                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                      xTickTextLength={28}
-                      legends={[
-                        { title: 'Probands', color: theme.chartColors.blue },
-                        { title: 'Family Members', color: theme.chartColors.purple },
-                      ]}
-                    />
-                  </BarChartContainer>
-                </CohortCard>
-              </PaddedColumn>
-              <PaddedColumn md={md} lg={lg}>
-                <CohortCard title="Most Frequent Diagnoses">
-                  <BarChartContainer>
-                    <HorizontalBar
-                      data={topDiagnosesBarMock}
-                      indexBy="label"
-                      keys={['probands', 'familyMembers']}
-                      tooltipFormatter={mostFrequentDiagnosisTooltip}
-                      sortByValue={true}
-                      tickInterval={4}
-                      colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                      xTickTextLength={28}
-                      legends={[
-                        { title: 'Probands', color: theme.chartColors.blue },
-                        { title: 'Family Members', color: theme.chartColors.purple },
-                      ]}
-                    />
-                  </BarChartContainer>
-                </CohortCard>
->>>>>>> make card style overridable
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CohortCard showHeader={false}>
@@ -173,13 +132,9 @@ const Summary = ({
                 </CohortCard>
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
-<<<<<<< HEAD
                 <CardSlotOverflowVisible title="Overall Survival">
                   <SurvivalChart data={survivalPlotMock} />
                 </CardSlotOverflowVisible>
-=======
-                <CohortCard title="Overall Survival" />
->>>>>>> make card style overridable
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <CohortCard title="Age at Diagnosis">
