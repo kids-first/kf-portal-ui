@@ -8,28 +8,13 @@ import ColumnFilter from './ToolbarButtons/ColumnFilter';
 import Export from './ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from './utils/columns';
+import applyTransforms from './utils/applyTransforms';
 
 const enhance = compose(
   withState('pageSize', 'setPageSize', 10),
   withState('pageIndex', 'setPageIndex', 0),
   withState('columns', 'setColumns', props => configureCols(props.columns)),
 );
-
-const applyTransforms = (data, transforms) =>
-  data.map(datum =>
-    Object.keys(transforms)
-      .map(key => ({
-        field: key,
-        value: transforms[key](datum[key]),
-      }))
-      .reduce(
-        (prev, curr) => {
-          prev[curr.field] = curr.value;
-          return prev;
-        },
-        { ...datum },
-      ),
-  );
 
 const BaseDataTable = ({
   loading,

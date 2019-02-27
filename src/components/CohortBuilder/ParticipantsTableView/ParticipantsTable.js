@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 
 import FileIcon from 'icons/FileIcon';
-import BaseDataTable from 'uikit/DataTable';
+import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
@@ -95,18 +95,23 @@ const cssClass = css({
   },
 });
 
-const ParticipantsTable = ({ data = [], isLoading = false }) => (
-  <BaseDataTable
+const ParticipantsTable = ({ loading, data, dataTotalCount, onFetchData }) => (
+  <ControlledDataTable
     columns={participantsTableViewColumns}
     data={data}
-    loading={isLoading}
+    loading={loading}
     className={`${cssClass}`}
+    onFetchData={onFetchData}
+    dataTotalCount={dataTotalCount}
+    downloadName={'participant-table'}
   />
 );
 
 ParticipantsTable.propTypes = {
-  data: PropTypes.array,
-  isLoading: PropTypes.bool,
+  loading: PropTypes.bool.isRequired,
+  data: PropTypes.array.isRequired,
+  dataTotalCount: PropTypes.number.isRequired,
+  onFetchData: PropTypes.func.isRequired,
 };
 
 export default ParticipantsTable;
