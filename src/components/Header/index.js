@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
+import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
+import ExploreDataIcon from 'icons/ExploreDataIcon';
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
@@ -28,6 +30,12 @@ import {
   MenuLabelContainer,
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
+
+const ExploreDataIconStyled = styled(ExploreDataIcon)`
+  top: 3px;
+  position: relative;
+  fill: currentColor;
+`;
 
 const Header = ({
   state: { loggedInUser },
@@ -64,7 +72,7 @@ const Header = ({
                   </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to="/explore/participant">
-                      <HouseIcon /> <Trans>Explore Data</Trans>
+                      <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
                     </NavLink>
                   </li>
                   <li>

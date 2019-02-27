@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import isEqual from 'lodash.isequal';
 import defaults from 'lodash.defaults';
-import { renderPlot } from '@oncojs/survivalplot/index.js';
+import { renderPlot } from '@oncojs/survivalplot/index.dist';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;

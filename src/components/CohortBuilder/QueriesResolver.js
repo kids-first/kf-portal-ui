@@ -3,6 +3,7 @@ import Component from 'react-component-component';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import { isEqual, memoize } from 'lodash';
+import { print } from 'graphql/language/printer';
 
 class QueriesResolver extends Component {
   state = { data: [], isLoading: true, error: null };
@@ -18,15 +19,18 @@ class QueriesResolver extends Component {
   }
 
   update = async () => {
-    this.setState({ isLoading: true });
     const { queries, useCache = true } = this.props;
     const body = JSON.stringify(
       queries.map(q => ({
-        query: q.query,
+        query: typeof q.query === 'string' ? q.query : print(q.query),
         variables: q.variables,
       })),
     );
+
     try {
+      if (!useCache) {
+        this.setState({ isLoading: true });
+      }
       const data = useCache ? await this.memoFetchData(body) : await this.fetchData(body);
       this.setState({ data: data, isLoading: false });
     } catch (err) {
@@ -62,7 +66,7 @@ QueriesResolver.propTypes = {
   useCache: PropTypes.boolean,
   queries: PropTypes.arrayOf(
     PropTypes.shape({
-      query: PropTypes.string.isRequired,
+      query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
       variables: PropTypes.object.isRequired,
       transform: PropTypes.func,
     }),
