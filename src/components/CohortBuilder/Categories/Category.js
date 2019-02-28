@@ -43,7 +43,7 @@ const Options = styled('div')`
 
 const ItemWrapper = styled('div')`
   display: flex;
-  padding: 17px 10px 17px 23px;
+  padding: 5px 10px 5px 23px;
   font-size: 12px;
   color: #343434;
   font-weight: 500;
