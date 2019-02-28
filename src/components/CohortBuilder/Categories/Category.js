@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
-
 import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
@@ -47,9 +46,14 @@ const ItemWrapper = styled('div')`
   font-size: 12px;
   color: #343434;
   font-weight: 500;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.backgroundGrey};
+  }
 `;
 
 const Title = styled('h3')`
+  margin: 7px 0 0 0;
   text-align: center;
   font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
   font-size: 13px;
@@ -59,6 +63,21 @@ const Title = styled('h3')`
 
 const CategoryButton = styled(Column)`
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.backgroundGrey};
+  }
+
+  ${({ isDropdownVisible, theme }) =>
+    isDropdownVisible
+      ? css`
+          background-color: ${theme.backgroundGrey};
+          box-shadow: 0 0 5.9px 0.1px ${theme.lighterShadow};
+        `
+      : null}
 `;
 
 const CategoryRow = compose(withApi)(({ api, field, active }) => (
@@ -142,7 +161,7 @@ const Category = compose(withDropdownMultiPane)(
           ItemWrapperComponent: ItemWrapper,
         }}
       >
-        <CategoryButton>
+        <CategoryButton isDropdownVisible={isDropdownVisible}>
           {children}
           <Title> {title}</Title>
         </CategoryButton>
