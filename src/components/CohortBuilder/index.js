@@ -17,6 +17,7 @@ const Container = styled('div')`
   width: 100%;
   align-items: center;
   background-color: #f4f5f8;
+  min-height: 960px;
 `;
 
 const Heading = styled(H1)`
