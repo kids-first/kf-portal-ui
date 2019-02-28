@@ -13,7 +13,8 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
-import { PaddedColumn, CohortCard, LongCardContainerRow } from './ui';
+import { PaddedColumn, CohortCard } from './ui';
+import PhenotypeBreakdown from './PhenotypeBreakdown';
 
 const md = 6;
 const lg = 4;
@@ -60,11 +61,7 @@ const Summary = ({
               <AgeDiagChart data={ageDiagData} />
             </Row>
           </Col>
-          <PaddedColumn xl={3}>
-            <CohortCard long title="Phenotypes">
-              <pre>{JSON.stringify(sqon, null, 2)}</pre>
-            </CohortCard>
-          </PaddedColumn>
+          <PhenotypeBreakdown sqon={sqon} />
         </Row>
       );
     }}

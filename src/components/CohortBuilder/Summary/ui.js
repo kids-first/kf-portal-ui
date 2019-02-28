@@ -8,6 +8,7 @@ import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
 export const spacing = {
   md: 6,
   lg: 4,
+  xl: 3,
 };
 
 export const BarChartContainer = styled('div')`
@@ -17,8 +18,6 @@ export const BarChartContainer = styled('div')`
   top: 0px;
   bottom: 0px;
 `;
-
-export const CardSlot = MediumCard;
 
 export const PaddedColumn = styled(Col)`
   padding: 4px !important;
