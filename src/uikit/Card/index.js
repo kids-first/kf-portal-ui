@@ -9,7 +9,6 @@ const Card = ({
   Header,
   Content = CardContent,
   children,
-  cardWrapperStyle,
   scrollable,
   title,
   inactive = false,

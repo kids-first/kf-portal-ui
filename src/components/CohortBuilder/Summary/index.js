@@ -13,11 +13,7 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
-import { PaddedColumn, CohortCard } from './ui';
 import PhenotypeBreakdown from './PhenotypeBreakdown';
-
-const md = 6;
-const lg = 4;
 
 const Summary = ({
   theme,
@@ -51,13 +47,7 @@ const Summary = ({
               <StudiesChart studies={studiesData} sqon={sqon} />
               <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
               <DemographicChart data={demographicData} />
-
-              <PaddedColumn md={md} lg={lg}>
-                <CohortCard title="Overall Survival">
-                  <SurvivalChart data={survivalPlotMock} />
-                </CohortCard>
-              </PaddedColumn>
-
+              <SurvivalChart data={survivalPlotMock} />
               <AgeDiagChart data={ageDiagData} />
             </Row>
           </Col>

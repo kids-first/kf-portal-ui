@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Card from 'uikit/Card';
-import { Col, Row } from 'react-grid-system';
+import { Col } from 'react-grid-system';
 import CardHeader, { Badge } from 'uikit/Card/CardHeader';
 import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
 
