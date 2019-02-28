@@ -8,6 +8,10 @@ import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 
+const SelectionCell = ({ value: checked, onRowSelected, row }) => (
+  <input type="checkbox" checked={checked} onChange={() => onRowSelected(row, !checked)} />
+);
+
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
   // Display a fourth row when there is exactly 4 rows.
@@ -68,7 +72,13 @@ const NbFilesCell = compose(
   }),
 );
 
-const participantsTableViewColumns = [
+const participantsTableViewColumns = onRowSelected => [
+  {
+    Header: '',
+    accessor: 'selected',
+    filterable: false,
+    Cell: props => <SelectionCell {...props} onRowSelected={onRowSelected} />,
+  },
   { Header: 'Participant ID', accessor: 'participantId' },
   { Header: 'Study Name', accessor: 'studyName' },
   { Header: 'Proband', accessor: 'isProband' },
@@ -105,9 +115,9 @@ const cssClass = css({
   },
 });
 
-const ParticipantsTable = ({ loading, data, dataTotalCount, onFetchData }) => (
+const ParticipantsTable = ({ loading, data, dataTotalCount, onFetchData, onRowSelected }) => (
   <ControlledDataTable
-    columns={participantsTableViewColumns}
+    columns={participantsTableViewColumns(onRowSelected)}
     data={data}
     loading={loading}
     className={`${cssClass}`}
@@ -122,6 +132,7 @@ ParticipantsTable.propTypes = {
   data: PropTypes.array.isRequired,
   dataTotalCount: PropTypes.number.isRequired,
   onFetchData: PropTypes.func.isRequired,
+  onRowSelected: PropTypes.func.isRequired,
 };
 
 export default ParticipantsTable;

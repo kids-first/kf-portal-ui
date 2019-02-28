@@ -59,7 +59,7 @@ class ControlledDataTable extends Component {
                     label: colActedUpon.Header,
                   });
                 }
-                this.setState({ columns: configureCols(cols) });
+                this.setState({ columns: cols });
               }}
             />
 

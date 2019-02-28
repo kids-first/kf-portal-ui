@@ -16,29 +16,59 @@ const enhance = compose(
   withTheme,
   withState('pageSize', 'setPageSize', 10),
   withState('pageIndex', 'setPageIndex', 0),
+  withState('selectedRows', 'setSelectedRows', []),
 );
 
-const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, setPageSize }) => (
-  <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
-    {({ isLoading, data, error }) =>
-      error ? (
-        <TableErrorView error={error} />
-      ) : (
-        <React.Fragment>
-          {!sqon ? <EmptyCohortOverlay /> : null}
-          <ParticipantsTable
-            loading={isLoading}
-            data={data[0] ? data[0].nodes : []}
-            dataTotalCount={data[0] ? data[0].total : 0}
-            onFetchData={({ page, pageSize }) => {
-              setPageIndex(page);
-              setPageSize(pageSize);
-            }}
-          />
-        </React.Fragment>
-      )
-    }
-  </QueriesResolver>
-);
+const ParticipantsTableView = ({
+  sqon,
+  api,
+  pageIndex,
+  pageSize,
+  setPageIndex,
+  setPageSize,
+  selectedRows,
+  setSelectedRows,
+}) => {
+  return (
+    <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
+      {({ isLoading, data, error }) => {
+        if (error) {
+          return <TableErrorView error={error} />;
+        }
+
+        const isRowSelected = node => selectedRows.some(row => row === node.participantId);
+
+        const dataWithRowSelection = data[0]
+          ? data[0].nodes.map(node => ({ ...node, selected: isRowSelected(node) }))
+          : [];
+
+        return (
+          <React.Fragment>
+            {!sqon ? <EmptyCohortOverlay /> : null}
+            {
+              <ParticipantsTable
+                loading={isLoading}
+                data={dataWithRowSelection}
+                dataTotalCount={data[0] ? data[0].total : 0}
+                onFetchData={({ page, pageSize }) => {
+                  setPageIndex(page);
+                  setPageSize(pageSize);
+                }}
+                onRowSelected={(row, checked) => {
+                  const rowId = row.participantId;
+                  if (checked) {
+                    setSelectedRows(s => s.concat(rowId));
+                    return;
+                  }
+                  setSelectedRows(s => s.filter(row => row !== rowId));
+                }}
+              />
+            }
+          </React.Fragment>
+        );
+      }}
+    </QueriesResolver>
+  );
+};
 
 export default enhance(ParticipantsTableView);
