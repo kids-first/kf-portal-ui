@@ -63,7 +63,7 @@ export default QueriesResolver;
 
 QueriesResolver.propTypes = {
   api: PropTypes.func.isRequired,
-  useCache: PropTypes.boolean,
+  useCache: PropTypes.bool,
   queries: PropTypes.arrayOf(
     PropTypes.shape({
       query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
