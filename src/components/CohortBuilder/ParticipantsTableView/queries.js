@@ -55,7 +55,6 @@ export const participantsQuery = (sqon, pageSize = 20, pageIndex = 0) => ({
   transform: data => {
     const participants = get(data, 'data.participant.hits.edges');
     const total = get(data, 'data.participant.hits.total');
-    console.log(`total ${total}`);
     const nodes = participants.map(p => p.node);
 
     return {
