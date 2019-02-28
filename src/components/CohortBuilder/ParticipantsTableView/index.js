@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose } from 'recompose';
+import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
 import { withApi } from 'services/api';
@@ -14,17 +14,27 @@ import EmptyCohortOverlay from './../EmptyCohortOverlay';
 const enhance = compose(
   withApi,
   withTheme,
+  withState('pageSize', 'setPageSize', 10),
+  withState('pageIndex', 'setPageIndex', 0),
 );
 
-const ParticipantsTableView = ({ sqon, api }) => (
-  <QueriesResolver api={api} queries={[participantsQuery(sqon)]}>
+const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, setPageSize }) => (
+  <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
     {({ isLoading, data, error }) =>
       error ? (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
           {!sqon ? <EmptyCohortOverlay /> : null}
-          <ParticipantsTable data={data ? data[0] : null} isLoading={isLoading} />
+          <ParticipantsTable
+            loading={isLoading}
+            data={data[0] ? data[0].nodes : []}
+            dataTotalCount={data[0] ? data[0].total : 0}
+            onFetchData={({ page, pageSize }) => {
+              setPageIndex(page);
+              setPageSize(pageSize);
+            }}
+          />
         </React.Fragment>
       )
     }
