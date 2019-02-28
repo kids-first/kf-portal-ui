@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import Card from 'uikit/Card';
 import { Col, Row } from 'react-grid-system';
-import CardHeader from 'uikit/Card/CardHeader';
+import CardHeader, { Badge } from 'uikit/Card/CardHeader';
 import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
 
 export const spacing = {
@@ -44,6 +44,11 @@ const CohortHeaderWrapper = styled(HeaderWrapper)`
 
 const CohortCardHeader = styled(CardHeader)`
   font-size: 16px;
+
+  ${Badge} {
+    line-height: 20px;
+    height: 20px;
+  }
 `;
 
 export const CohortCard = ({ title, badge, children, long = false, ...props }) => (
