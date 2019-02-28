@@ -24,12 +24,9 @@ export const PaddedColumn = styled(Col)`
   padding: 4px !important;
 `;
 
-export const LongCardContainerRow = styled(Row)`
-  height: 100%;
-`;
-
 const LongCard = styled(CardWrapper)`
   width: 100%;
+  height: 100%;
 `;
 
 const MediumCard = styled(CardWrapper)`

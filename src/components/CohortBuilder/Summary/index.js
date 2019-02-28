@@ -61,11 +61,9 @@ const Summary = ({
             </Row>
           </Col>
           <PaddedColumn xl={3}>
-            <LongCardContainerRow nogutter>
-              <CohortCard long title="Phenotypes">
-                <pre>{JSON.stringify(sqon, null, 2)}</pre>
-              </CohortCard>
-            </LongCardContainerRow>
+            <CohortCard long title="Phenotypes">
+              <pre>{JSON.stringify(sqon, null, 2)}</pre>
+            </CohortCard>
           </PaddedColumn>
         </Row>
       );
