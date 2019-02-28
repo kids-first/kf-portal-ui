@@ -48,6 +48,7 @@ const CohortCardHeader = styled(CardHeader)`
   ${Badge} {
     line-height: 20px;
     height: 20px;
+    min-width: 20px;
   }
 `;
 
