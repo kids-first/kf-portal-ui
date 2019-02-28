@@ -39,7 +39,7 @@ const MediumCard = styled(CardWrapper)`
 `;
 
 const CohortHeaderWrapper = styled(HeaderWrapper)`
-  padding-bottom: 10px;
+  padding-bottom: 12px;
 `;
 
 const CohortCardHeader = styled(CardHeader)`

@@ -61,6 +61,10 @@ const ResultsHeading = styled('div')`
   margin-right: 14px;
 `;
 
+const Content = styled(ContentBar)`
+  padding: 0 30px 0 34px;
+`;
+
 const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
   <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
@@ -76,7 +80,7 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
-          <ContentBar>
+          <Content>
             <Detail>
               <ResultsHeading>
                 {!sqon ? (
@@ -114,7 +118,7 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
                 Table View
               </ViewLink>
             </ViewLinks>
-          </ContentBar>
+          </Content>
           <ActiveView>
             {activeView === SUMMARY ? (
               <Summary sqon={!cohortIsEmpty ? sqon : null} />
