@@ -1,57 +1,60 @@
 import { get } from 'lodash';
+import gql from 'graphql-tag';
 
 export const participantsQuery = (sqon, pageSize = 20, pageIndex = 0) => ({
-  query: `query ($sqon: JSON) {
-    participant {
-      hits(first:${pageSize} offset:${pageSize * pageIndex} filters: $sqon) {
-        total
-        edges {
-          node {
-            kf_id
-            study {
-              name
-              short_name
-            }
-            is_proband
-            outcome {
-              vital_status
-            }
-            diagnosis_category
-            diagnoses{
-              hits {
-                edges {
-                  node {
-                    age_at_event_days
-                    diagnosis
-                    diagnosis_category
-                  }
-                }
+  query: gql`
+    query($sqon: JSON, $pageSize: Int, $offset: Int) {
+      participant {
+        hits(first: $pageSize, offset: $offset, filters: $sqon) {
+          total
+          edges {
+            node {
+              kf_id
+              study {
+                name
+                short_name
               }
-            }
-            gender
-            family_id
-            family {
-              family_compositions {
+              is_proband
+              outcome {
+                vital_status
+              }
+              diagnosis_category
+              diagnoses {
                 hits {
                   edges {
                     node {
-                      composition
+                      age_at_event_days
+                      diagnosis
+                      diagnosis_category
                     }
                   }
                 }
               }
-            }
-            files {
-              hits{
-                total
+              gender
+              family_id
+              family {
+                family_compositions {
+                  hits {
+                    edges {
+                      node {
+                        composition
+                      }
+                    }
+                  }
+                }
+              }
+              files {
+                hits {
+                  total
+                }
               }
             }
           }
         }
       }
     }
-  }`,
-  variables: { sqon },
+  `,
+  variables: { sqon, pageSize, offset: pageSize * pageIndex },
   transform: data => {
     const participants = get(data, 'data.participant.hits.edges');
     const total = get(data, 'data.participant.hits.total');
