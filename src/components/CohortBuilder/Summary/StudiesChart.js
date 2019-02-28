@@ -5,7 +5,6 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get, size } from 'lodash';
 import gql from 'graphql-tag';
 import { withApi } from 'services/api';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
 import { PaddedColumn, CohortCard, spacing } from './ui';

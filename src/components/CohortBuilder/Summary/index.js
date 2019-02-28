@@ -13,7 +13,7 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import EmptyCohortOverlay from './../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
-import { PaddedColumn, CohortCard, LongCardContainerRow, CardSlotOverflowVisible } from './ui';
+import { PaddedColumn, CohortCard, LongCardContainerRow } from './ui';
 
 const md = 6;
 const lg = 4;
