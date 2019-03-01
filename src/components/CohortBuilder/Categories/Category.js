@@ -11,8 +11,6 @@ import Filter from './Filter';
 import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-import { withSize } from 'react-sizeme';
-import { setSqonAtPath } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 
 const Container = styled(Column)`
   flex: 1;
