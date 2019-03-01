@@ -97,6 +97,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     accessor: 'selected',
     filterable: false,
     sortable: false,
+    skipExport: true,
   },
   { Header: 'Participant ID', accessor: 'participantId' },
   { Header: 'Study Name', accessor: 'studyName' },
@@ -138,7 +139,7 @@ class ParticipantsTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      shownColumns: configureCols(
+      columns: configureCols(
         participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected),
       ),
     };
@@ -150,47 +151,45 @@ class ParticipantsTable extends Component {
       data,
       dataTotalCount,
       onFetchData,
-      onRowSelected,
-      onAllRowsSelected,
       analyticsTracking = null,
       downloadName = 'data',
     } = this.props;
-    const { shownColumns } = this.state;
-
-    const allColumns = participantsTableViewColumns(onRowSelected, onAllRowsSelected);
+    const { columns } = this.state;
 
     return (
       <Fragment>
         <Toolbar>
-          <ToolbarGroup>
-            <Fragment />
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <ColumnFilter
-              columns={allColumns}
-              onChange={item => {
-                const index = allColumns.findIndex(c => c.index === item.index);
-                const cols = allColumns.map((col, i) =>
-                  i === index ? { ...col, ...{ show: !item.show } } : col,
-                );
-                const colActedUpon = cols[index];
-                if (analyticsTracking) {
-                  trackUserInteraction({
-                    category: analyticsTracking.category,
-                    action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                      colActedUpon.show ? 'show' : 'hide'
-                    }`,
-                    label: colActedUpon.Header,
-                  });
-                }
-                this.setState({ shownColumns: cols });
-              }}
-            />
-            <Export {...{ shownColumns, data: data || [], downloadName }}>export</Export>
-          </ToolbarGroup>
+          <Fragment>
+            <ToolbarGroup>
+              <Fragment />
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <ColumnFilter
+                columns={columns}
+                onChange={item => {
+                  const index = columns.findIndex(c => c.index === item.index);
+                  const cols = columns.map((col, i) =>
+                    i === index ? { ...col, ...{ show: !item.show } } : col,
+                  );
+                  const colActedUpon = cols[index];
+                  if (analyticsTracking) {
+                    trackUserInteraction({
+                      category: analyticsTracking.category,
+                      action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
+                        colActedUpon.show ? 'show' : 'hide'
+                      }`,
+                      label: colActedUpon.Header,
+                    });
+                  }
+                  this.setState({ columns: cols });
+                }}
+              />
+              <Export {...{ columns, data: data || [], downloadName }}>export</Export>
+            </ToolbarGroup>
+          </Fragment>
         </Toolbar>
         <ControlledDataTable
-          columns={shownColumns}
+          columns={columns}
           data={data}
           loading={loading}
           className={`${cssClass}`}

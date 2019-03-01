@@ -42,7 +42,7 @@ class ColumnFilter extends Component {
                     .map((item, index) => (
                       <div
                         className="dropDownContentElement"
-                        key={item.index}
+                        key={`col_${index}`}
                         {...getItemProps({ item, index })}
                       >
                         {item.Header}
