@@ -99,5 +99,102 @@ const FileBreakdown = ({ data }) => {
     </CohortCard>
   );
 };
+export const fileBreakdownQuery = sqon => ({
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        aggregations(filters: $sqon) {
+          files__data_type {
+            buckets {
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: { sqon },
+  transform: types =>
+    get(data, 'data.participant.aggregations.file__data_type.buckets', []).map(types => types.key),
+});
+
+const toSingleStratQuery = ({ fileDataTypes, sqon }) =>
+  dataTypes.map(type => ({
+    query: gql`
+      query($sqon: JSON) {
+        participant {
+          familyMembers: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
+                { op: "in", content: { field: "is_proband", value: ["false"] } }
+              ]
+            }
+          ) {
+            kf_id {
+              buckets {
+                key
+              }
+            }
+          }
+          proband: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
+                { op: "in", content: { field: "is_proband", value: ["true"] } }
+              ]
+            }
+          ) {
+            kf_id {
+              buckets {
+                key
+              }
+            }
+          }
+        }
+      }
+    `,
+    variables: { sqon },
+    transform: data => ({
+      label: studyShortName,
+      familyMembers: size(get(data, 'data.participant.familyMembers.kf_id.buckets')),
+      probands: size(get(data, 'data.participant.proband.kf_id.buckets')),
+    }),
+  }));
+
+const FileBreakdown = ({ fileDataTypes, sqon, api }) => (
+  <QueriesResolver api={api} queries={toSingleStratQueries({ fileDataTypes, sqon })}>
+    {({ data, isLoading }) => (
+      <FileBreakdownWrapper>
+        <BaseDataTable
+          header={null}
+          columns={[
+            { Header: 'Data Type', accessor: 'dataType' },
+            { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
+            { Header: 'Files', accessor: 'fileLink' },
+          ]}
+          data={finalData}
+          transforms={{
+            dataType: dataType => <Column>{dataType}</Column>,
+            experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+            fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+          }}
+        />
+        <TableFooter>
+          Total:
+          <a href={SEARCH_FILE_RELATIVE_URL}>
+            {localizeFileQuantity(sumTotalFilesInData(finalData))}
+          </a>
+        </TableFooter>
+      </FileBreakdownWrapper>
+    )}
+  </QueriesResolver>
+);
 
 export default compose(withTheme)(FileBreakdown);

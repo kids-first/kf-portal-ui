@@ -7,7 +7,7 @@ import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
-import FileBreakdown from './FileBreakdown';
+import FileBreakdown, { fileBreakdownQuery } from './FileBreakdown';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
@@ -35,10 +35,17 @@ const Summary = ({
   <QueriesResolver
     name="GQL_SUMMARY_CHARTS"
     api={api}
-    queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
+    queries={[
+      demographicQuery(sqon),
+      ageDiagQuery(sqon),
+      studiesQuery(sqon),
+      diagnosesQuery(sqon),
+      fileBreakdownQuery(sqon),
+    ]}
   >
     {({ isLoading, data }) => {
-      const [demographicData, ageDiagData, studiesData, topDiagnosesData] = data || [];
+      const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
+        data || [];
 
       return isLoading ? (
         <Row nogutter>
