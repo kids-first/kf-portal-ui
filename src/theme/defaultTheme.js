@@ -78,6 +78,7 @@ const colors = {
   dataBlue: '#009bba',
   uploadYellow: '#edb500',
   borderPurple: '#cc3399',
+  linkPurple: '#cc3399',
   defaultChip: '#404c9a',
 
   // table

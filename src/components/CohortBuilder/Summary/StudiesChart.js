@@ -5,10 +5,9 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get, size } from 'lodash';
 import gql from 'graphql-tag';
 import { withApi } from 'services/api';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CardSlot } from './index';
+import { CohortCard } from './ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -82,9 +81,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
 const StudiesChart = ({ studies, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
     {({ isLoading, data }) => (
-      <CardSlot
-        title={<MultiHeader headings={[{ title: 'Studies', badge: data ? data.length : null }]} />}
-      >
+      <CohortCard title="Studies" badge={data ? data.length : null}>
         {isLoading ? (
           <LoadingSpinner color={theme.greyScale11} size={'50px'} />
         ) : !data ? (
@@ -106,7 +103,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
             padding={0.5}
           />
         )}
-      </CardSlot>
+      </CohortCard>
     )}
   </QueriesResolver>
 );
