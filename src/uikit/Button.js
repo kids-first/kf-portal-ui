@@ -55,7 +55,7 @@ export default Button;
 const BaseButtonWithIcon = ({ theme, disabled }) => css`
   color: ${theme.white};
   text-align: center;
-  cursor: ${disabled => (disabled ? 'default' : 'pointer')};
+  cursor: ${disabled ? 'default' : 'pointer'};
   display: flex;
   align-items: center;
   justify-content: center;
