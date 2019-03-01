@@ -49,24 +49,11 @@ const ClearAllModalContent = ({ onConfirmed }) => (
 /**
  * this component should mimic the AdvancedSqonBuilder's API directly
  **/
+
 const SqonBuilder = compose(
   withApi,
   injectState,
 )(({ api, onChange, state, effects, ...rest }) => {
-  const onSqonRemoveClick = ({ indexToRemove, dependentIndices }) => {
-    if (dependentIndices.length) {
-      // temporary demo until design is available
-      return window.confirm(
-        `
-Are you sure you want to remove query #${indexToRemove} ? 
-The queries ${dependentIndices.map(i => `#${i}`).join(', ')} depend on it`,
-      )
-        ? Promise.resolve()
-        : Promise.reject();
-    } else {
-      return Promise.resolve();
-    }
-  };
   const handleAction = async action => {
     if (action.eventKey === 'CLEAR_ALL') {
       effects.setModal({
@@ -105,7 +92,6 @@ The queries ${dependentIndices.map(i => `#${i}`).join(', ')} depend on it`,
               api={api}
               arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-              getSqonDeleteConfirmation={onSqonRemoveClick}
               FieldOpModifierContainer={props => (
                 <StyledFieldFilterContainer showHeader={false} {...props} />
               )}
