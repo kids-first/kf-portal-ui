@@ -8,7 +8,6 @@ import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import { PaddedColumn, spacing } from './ui';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -78,34 +77,32 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
 const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleDiagQueries({ topDiagnoses, sqon })}>
     {({ isLoading, data }) => (
-      <PaddedColumn md={spacing.md} lg={spacing.lg}>
-        <CohortCard title="Most Frequent Diagnoses">
-          {isLoading ? (
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          ) : !data ? (
-            <div>No data</div>
-          ) : (
-            <BarChartContainer>
-              <HorizontalBar
-                data={_(data)
-                  .sortBy(d => d.probands + d.familyMembers)
-                  .map((d, i) => ({ ...d, id: i }))
-                  .value()}
-                indexBy="label"
-                keys={['probands', 'familyMembers']}
-                tooltipFormatter={mostFrequentDiagnosisTooltip}
-                tickInterval={4}
-                colors={[theme.chartColors.blue, theme.chartColors.purple]}
-                xTickTextLength={28}
-                legends={[
-                  { title: 'Probands', color: theme.chartColors.blue },
-                  { title: 'Family Members', color: theme.chartColors.purple },
-                ]}
-              />
-            </BarChartContainer>
-          )}
-        </CohortCard>
-      </PaddedColumn>
+      <CohortCard title="Most Frequent Diagnoses">
+        {isLoading ? (
+          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+        ) : !data ? (
+          <div>No data</div>
+        ) : (
+          <BarChartContainer>
+            <HorizontalBar
+              data={_(data)
+                .sortBy(d => d.probands + d.familyMembers)
+                .map((d, i) => ({ ...d, id: i }))
+                .value()}
+              indexBy="label"
+              keys={['probands', 'familyMembers']}
+              tooltipFormatter={mostFrequentDiagnosisTooltip}
+              tickInterval={4}
+              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              xTickTextLength={28}
+              legends={[
+                { title: 'Probands', color: theme.chartColors.blue },
+                { title: 'Family Members', color: theme.chartColors.purple },
+              ]}
+            />
+          </BarChartContainer>
+        )}
+      </CohortCard>
     )}
   </QueriesResolver>
 );

@@ -11,9 +11,20 @@ import FileBreakdown from './FileBreakdown';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
-import EmptyCohortOverlay from './../EmptyCohortOverlay';
+import EmptyCohortOverlay from '../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
 import PhenotypeBreakdown from './PhenotypeBreakdown';
+import styled from 'react-emotion';
+
+const PaddedColumn = styled(Col)`
+  padding: 4px !important;
+`;
+
+const spacing = {
+  md: 6,
+  lg: 4,
+  xl: 3,
+};
 
 const Summary = ({
   theme,
@@ -43,15 +54,29 @@ const Summary = ({
           {!sqon ? <EmptyCohortOverlay /> : null}
           <Col xl={9}>
             <Row nogutter>
-              <FileBreakdown data={fileBreakdownMock} />
-              <StudiesChart studies={studiesData} sqon={sqon} />
-              <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
-              <DemographicChart data={demographicData} />
-              <SurvivalChart data={survivalPlotMock} />
-              <AgeDiagChart data={ageDiagData} />
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <FileBreakdown data={fileBreakdownMock} />
+              </PaddedColumn>
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <StudiesChart studies={studiesData} sqon={sqon} />
+              </PaddedColumn>
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
+              </PaddedColumn>
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <DemographicChart data={demographicData} />
+              </PaddedColumn>
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <SurvivalChart data={survivalPlotMock} />
+              </PaddedColumn>{' '}
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <AgeDiagChart data={ageDiagData} />
+              </PaddedColumn>
             </Row>
           </Col>
-          <PhenotypeBreakdown sqon={sqon} />
+          <PaddedColumn xl={spacing.xl}>
+            <PhenotypeBreakdown sqon={sqon} />
+          </PaddedColumn>
         </Row>
       );
     }}

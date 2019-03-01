@@ -1,15 +1,8 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Card from 'uikit/Card';
-import { Col } from 'react-grid-system';
 import CardHeader, { Badge } from 'uikit/Card/CardHeader';
 import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
-
-export const spacing = {
-  md: 6,
-  lg: 4,
-  xl: 3,
-};
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -17,10 +10,6 @@ export const BarChartContainer = styled('div')`
   right: 0px;
   top: 0px;
   bottom: 0px;
-`;
-
-export const PaddedColumn = styled(Col)`
-  padding: 4px !important;
 `;
 
 const LongCard = styled(CardWrapper)`
