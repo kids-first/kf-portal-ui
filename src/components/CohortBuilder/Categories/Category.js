@@ -5,12 +5,14 @@ import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMap
 import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
-import { compose } from 'recompose';
+import { compose, lifecycle, withState, withProps } from 'recompose';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
 import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { withSize } from 'react-sizeme';
+import { setSqonAtPath } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 
 const Container = styled(Column)`
   flex: 1;
@@ -23,11 +25,41 @@ const Container = styled(Column)`
   z-index: 1;
 `;
 
+/**
+ * Flip dropdown side on smaller screens
+ */
+const OptionsWrapper = compose(
+  withState('shouldFlip', 'setShouldFlip', false),
+  withProps(() => ({
+    dropdownRef: React.createRef(),
+  })),
+  lifecycle({
+    componentDidMount() {
+      const { dropdownRef, setShouldFlip } = this.props;
+      const boundingRect = dropdownRef.current.getBoundingClientRect();
+      const shouldFlip = boundingRect.x + boundingRect.width > window.innerWidth;
+      setShouldFlip(shouldFlip);
+    },
+  }),
+)(({ children, dropdownRef: optionsRef, shouldFlip }) => (
+  <Options innerRef={optionsRef} shouldFlip={shouldFlip}>
+    {children}
+  </Options>
+));
+
 const Options = styled('div')`
+  ${({ shouldFlip }) =>
+    shouldFlip
+      ? css`
+          right: 0;
+        `
+      : css`
+          left: 0;
+        `};
+
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 0;
   top: 100%;
   cursor: pointer;
   text-align: left;
@@ -157,8 +189,8 @@ const Category = compose(withDropdownMultiPane)(
               {children}
             </Container>
           ),
-          OptionsContainerComponent: Options,
           ItemWrapperComponent: ItemWrapper,
+          OptionsContainerComponent: OptionsWrapper,
         }}
       >
         <CategoryButton isDropdownVisible={isDropdownVisible}>
