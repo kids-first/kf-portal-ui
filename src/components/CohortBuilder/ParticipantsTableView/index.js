@@ -54,6 +54,7 @@ const ParticipantsTableView = ({
                 loading={isLoading}
                 data={dataWithRowSelection}
                 dataTotalCount={data[0] ? data[0].total : 0}
+                downloadName={'participant-table'}
                 onFetchData={({ page, pageSize }) => {
                   setPageIndex(page);
                   setPageSize(pageSize);

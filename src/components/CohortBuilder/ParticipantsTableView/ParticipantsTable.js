@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 import { css } from 'emotion';
@@ -7,6 +7,11 @@ import { withTheme } from 'emotion-theming';
 import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
+import { Toolbar, ToolbarGroup } from 'uikit/DataTable/TableToolbar/styles';
+import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
+import Export from 'uikit/DataTable/ToolbarButtons/Export';
+import { trackUserInteraction } from 'services/analyticsTracking';
+import { configureCols } from 'uikit/DataTable/utils/columns';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -129,24 +134,73 @@ const cssClass = css({
   },
 });
 
-const ParticipantsTable = ({
-  loading,
-  data,
-  dataTotalCount,
-  onFetchData,
-  onRowSelected,
-  onAllRowsSelected,
-}) => (
-  <ControlledDataTable
-    columns={participantsTableViewColumns(onRowSelected, onAllRowsSelected)}
-    data={data}
-    loading={loading}
-    className={`${cssClass}`}
-    onFetchData={onFetchData}
-    dataTotalCount={dataTotalCount}
-    downloadName={'participant-table'}
-  />
-);
+class ParticipantsTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shownColumns: configureCols(
+        participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected),
+      ),
+    };
+  }
+
+  render() {
+    const {
+      loading,
+      data,
+      dataTotalCount,
+      onFetchData,
+      onRowSelected,
+      onAllRowsSelected,
+      analyticsTracking = null,
+      downloadName = 'data',
+    } = this.props;
+    const { shownColumns } = this.state;
+
+    const allColumns = participantsTableViewColumns(onRowSelected, onAllRowsSelected);
+
+    return (
+      <Fragment>
+        <Toolbar>
+          <ToolbarGroup>
+            <Fragment />
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <ColumnFilter
+              columns={allColumns}
+              onChange={item => {
+                const index = allColumns.findIndex(c => c.index === item.index);
+                const cols = allColumns.map((col, i) =>
+                  i === index ? { ...col, ...{ show: !item.show } } : col,
+                );
+                const colActedUpon = cols[index];
+                if (analyticsTracking) {
+                  trackUserInteraction({
+                    category: analyticsTracking.category,
+                    action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
+                      colActedUpon.show ? 'show' : 'hide'
+                    }`,
+                    label: colActedUpon.Header,
+                  });
+                }
+                this.setState({ shownColumns: cols });
+              }}
+            />
+            <Export {...{ shownColumns, data: data || [], downloadName }}>export</Export>
+          </ToolbarGroup>
+        </Toolbar>
+        <ControlledDataTable
+          columns={shownColumns}
+          data={data}
+          loading={loading}
+          className={`${cssClass}`}
+          onFetchData={onFetchData}
+          dataTotalCount={dataTotalCount}
+        />
+      </Fragment>
+    );
+  }
+}
 
 ParticipantsTable.propTypes = {
   loading: PropTypes.bool.isRequired,
@@ -155,6 +209,11 @@ ParticipantsTable.propTypes = {
   onFetchData: PropTypes.func.isRequired,
   onRowSelected: PropTypes.func.isRequired,
   onAllRowsSelected: PropTypes.func.isRequired,
+  analyticsTracking: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }),
+  downloadName: PropTypes.string,
 };
 
 export default ParticipantsTable;
