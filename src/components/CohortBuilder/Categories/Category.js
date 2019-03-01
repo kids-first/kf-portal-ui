@@ -31,17 +31,17 @@ const Container = styled(Column)`
 const OptionsWrapper = compose(
   withState('shouldFlip', 'setShouldFlip', false),
   withProps(() => ({
-    dropdownRef: React.createRef(),
+    optionsRef: React.createRef(),
   })),
   lifecycle({
     componentDidMount() {
-      const { dropdownRef, setShouldFlip } = this.props;
-      const boundingRect = dropdownRef.current.getBoundingClientRect();
+      const { optionsRef, setShouldFlip } = this.props;
+      const boundingRect = optionsRef.current.getBoundingClientRect();
       const shouldFlip = boundingRect.x + boundingRect.width > window.innerWidth;
       setShouldFlip(shouldFlip);
     },
   }),
-)(({ children, dropdownRef: optionsRef, shouldFlip }) => (
+)(({ children, optionsRef, shouldFlip }) => (
   <Options innerRef={optionsRef} shouldFlip={shouldFlip}>
     {children}
   </Options>
