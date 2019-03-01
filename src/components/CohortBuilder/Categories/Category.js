@@ -162,8 +162,11 @@ const Category = compose(withDropdownMultiPane)(
         }}
       >
         <CategoryButton isDropdownVisible={isDropdownVisible}>
-          {children}
-          <Title> {title}</Title>
+          <Column alignItems="center">
+            {' '}
+            {children}
+            <Title> {title}</Title>
+          </Column>
         </CategoryButton>
       </Dropdown>
     );
