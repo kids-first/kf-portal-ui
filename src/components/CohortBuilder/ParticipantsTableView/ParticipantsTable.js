@@ -8,9 +8,22 @@ import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 
-const SelectionCell = ({ value: checked, onRowSelected, row }) => (
-  <input type="checkbox" checked={checked} onChange={() => onRowSelected(row, !checked)} />
-);
+const SelectionCell = ({ value: checked, onCellSelected, row }) => {
+  if (row === undefined) {
+    // header row
+    return (
+      <input
+        type="checkbox"
+        onChange={evt => {
+          onCellSelected(evt.currentTarget.checked);
+        }}
+      />
+    );
+  }
+  return (
+    <input type="checkbox" checked={!!checked} onChange={() => onCellSelected(!checked, row)} />
+  );
+};
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
@@ -72,12 +85,13 @@ const NbFilesCell = compose(
   }),
 );
 
-const participantsTableViewColumns = onRowSelected => [
+const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
   {
-    Header: '',
+    Header: props => <SelectionCell {...props} onCellSelected={onAllRowsSelected} />,
+    Cell: props => <SelectionCell {...props} onCellSelected={onRowSelected} />,
     accessor: 'selected',
     filterable: false,
-    Cell: props => <SelectionCell {...props} onRowSelected={onRowSelected} />,
+    sortable: false,
   },
   { Header: 'Participant ID', accessor: 'participantId' },
   { Header: 'Study Name', accessor: 'studyName' },
@@ -115,9 +129,16 @@ const cssClass = css({
   },
 });
 
-const ParticipantsTable = ({ loading, data, dataTotalCount, onFetchData, onRowSelected }) => (
+const ParticipantsTable = ({
+  loading,
+  data,
+  dataTotalCount,
+  onFetchData,
+  onRowSelected,
+  onAllRowsSelected,
+}) => (
   <ControlledDataTable
-    columns={participantsTableViewColumns(onRowSelected)}
+    columns={participantsTableViewColumns(onRowSelected, onAllRowsSelected)}
     data={data}
     loading={loading}
     className={`${cssClass}`}
@@ -133,6 +154,7 @@ ParticipantsTable.propTypes = {
   dataTotalCount: PropTypes.number.isRequired,
   onFetchData: PropTypes.func.isRequired,
   onRowSelected: PropTypes.func.isRequired,
+  onAllRowsSelected: PropTypes.func.isRequired,
 };
 
 export default ParticipantsTable;

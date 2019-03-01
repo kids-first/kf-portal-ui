@@ -97,7 +97,7 @@ ControlledDataTable.propTypes = {
   loading: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
-      Header: PropTypes.string.isRequired,
+      Header: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
       accessor: PropTypes.string.isRequired,
       Cell: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     }),

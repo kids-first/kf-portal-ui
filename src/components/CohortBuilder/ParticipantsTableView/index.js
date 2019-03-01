@@ -17,6 +17,7 @@ const enhance = compose(
   withState('pageSize', 'setPageSize', 10),
   withState('pageIndex', 'setPageIndex', 0),
   withState('selectedRows', 'setSelectedRows', []),
+  withState('allRowsSelected', 'setAllRowsSelected', false),
 );
 
 const ParticipantsTableView = ({
@@ -28,6 +29,8 @@ const ParticipantsTableView = ({
   setPageSize,
   selectedRows,
   setSelectedRows,
+  allRowsSelected,
+  setAllRowsSelected,
 }) => {
   return (
     <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
@@ -36,7 +39,8 @@ const ParticipantsTableView = ({
           return <TableErrorView error={error} />;
         }
 
-        const isRowSelected = node => selectedRows.some(row => row === node.participantId);
+        const isRowSelected = node =>
+          allRowsSelected || selectedRows.some(row => row === node.participantId);
 
         const dataWithRowSelection = data[0]
           ? data[0].nodes.map(node => ({ ...node, selected: isRowSelected(node) }))
@@ -54,13 +58,19 @@ const ParticipantsTableView = ({
                   setPageIndex(page);
                   setPageSize(pageSize);
                 }}
-                onRowSelected={(row, checked) => {
+                onRowSelected={(checked, row) => {
                   const rowId = row.participantId;
                   if (checked) {
                     setSelectedRows(s => s.concat(rowId));
                     return;
                   }
                   setSelectedRows(s => s.filter(row => row !== rowId));
+                }}
+                onAllRowsSelected={checked => {
+                  // don't keep individual rows selected when "select all" is checked
+                  //  to avoid having them selected after "unselect all"
+                  setAllRowsSelected(s => checked);
+                  setSelectedRows(s => []);
                 }}
               />
             }
