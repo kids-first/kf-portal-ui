@@ -19,61 +19,52 @@ const FilesColumn = styled(Column)`
   text-decoration: underline;
 `;
 
-const sumTotalFilesInData = dataset => {
-  return dataset.reduce((accumulator, datum) => {
-    return accumulator + parseInt(datum.files, 10);
-  }, 0);
-};
+const sumTotalFilesInData = dataset =>
+  dataset.reduce((accumulator, datum) => accumulator + parseInt(datum.files, 10), 0);
 
 const SEARCH_FILE_RELATIVE_URL = '/search/file';
 
-const generateFileRepositoryUrl = (dataType, experimentalStrategy) => {
-  return (
-    `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
-    encodeURI(
-      JSON.stringify({
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: {
-              field: 'data_type',
-              value: [dataType],
-            },
+const generateFileRepositoryUrl = (dataType, experimentalStrategy) =>
+  `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
+  encodeURI(
+    JSON.stringify({
+      op: 'and',
+      content: [
+        {
+          op: 'in',
+          content: {
+            field: 'data_type',
+            value: [dataType],
           },
-          {
-            op: 'in',
-            content: {
-              field: 'sequencing_experiments.experiment_strategy',
-              value: [experimentalStrategy],
-            },
+        },
+        {
+          op: 'in',
+          content: {
+            field: 'sequencing_experiments.experiment_strategy',
+            value: [experimentalStrategy],
           },
-        ],
-      }),
-    )
+        },
+      ],
+    }),
   );
-};
 
-const localizeFileQuantity = quantity => {
-  return `${Number(quantity).toLocaleString()}`;
-};
+const localizeFileQuantity = quantity =>
+  `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
 
-const generateFileColumnContents = dataset => {
-  return dataset.map(datum => {
-    return {
-      ...datum,
-      fileLink: (
-        <Link to={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
-          {localizeFileQuantity(datum.files)}
-        </Link>
-      ),
-    };
-  });
-};
+const generateFileColumnContents = dataset =>
+  dataset.map(datum => ({
+    ...datum,
+    fileLink: (
+      <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
+        {localizeFileQuantity(datum.files)}
+      </a>
+    ),
+  }));
 
 const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
   const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
+
   return (
     <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
       <BaseDataTable
