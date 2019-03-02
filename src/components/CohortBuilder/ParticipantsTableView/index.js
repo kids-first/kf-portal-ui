@@ -18,14 +18,22 @@ const enhance = compose(
   withState('pageIndex', 'setPageIndex', 0),
 );
 
-const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, setPageSize }) => (
+const ParticipantsTableView = ({
+  sqon,
+  api,
+  pageIndex,
+  pageSize,
+  setPageIndex,
+  setPageSize,
+  noData = false,
+}) => (
   <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
     {({ isLoading, data, error }) =>
       error ? (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
-          {!sqon ? <EmptyCohortOverlay /> : null}
+          {noData ? <EmptyCohortOverlay /> : null}
           <ParticipantsTable
             loading={isLoading}
             data={data[0] ? data[0].nodes : []}

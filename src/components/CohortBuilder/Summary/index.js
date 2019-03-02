@@ -32,6 +32,7 @@ const Summary = ({
     op: 'and',
     content: [],
   },
+  noData = false,
   api,
 }) => (
   <QueriesResolver
@@ -51,7 +52,7 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          {!sqon ? <EmptyCohortOverlay /> : null}
+          {noData ? <EmptyCohortOverlay /> : null}
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
