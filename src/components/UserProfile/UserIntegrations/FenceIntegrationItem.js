@@ -35,7 +35,7 @@ const Actions = enhanceActions(
       <LoadingSpinner heihgt={48} />
     ) : connected ? (
       <Row>
-        <AuthorizedStudiesButton onClick={() => viewDetails({ effects })} />
+        <AuthorizedStudiesButton onClick={() => viewDetails({ fence, effects })} />
         <DisconnectButton
           style={{ marginLeft: 10 }}
           onClick={() => disconnect({ fence, api, setLoading, refresh, effects })}
