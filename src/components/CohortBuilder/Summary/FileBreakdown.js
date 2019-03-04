@@ -158,9 +158,19 @@ const toSingleStratQueries = ({ fileDataTypes, sqon }) =>
         [],
       );
       const total = expStratBuckets.reduce((acc, bucket) => acc + bucket.doc_count, 0);
-      console.log('total', total, 'data', data);
-      //return !expStrat.key.equals('__missing__') ?
+      console.log('datatype', dataType, 'total', total, 'data', data);
+      // individual rows for each data type / experimental strategy combination
       return data;
+
+      /**
+       * 
+       *   {
+    id: '4',
+    dataType: 'Aligned Reads',
+    experimentalStrategy: 'RNA-Sqr',
+    files: 2192,
+  },
+       */
     },
   }));
 
