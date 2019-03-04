@@ -7,11 +7,11 @@ import BaseDataTable from 'uikit/DataTable';
 import { Link } from 'uikit/Core';
 import gql from 'graphql-tag';
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import QueriesResolver from '../QueriesResolver';
 import BaseDataTable from 'uikit/DataTable';
 import { get } from 'lodash';
-import { CardSlot } from './index';
-import { withApi } from '../../../services/api';
+import { CardSlot } from '../index';
+import { withApi } from '../../../../services/api';
+import QueryResolver from './QueryResolver';
 
 const columnStyles = {
   margin: '-10px 0',
@@ -125,57 +125,8 @@ export const fileBreakdownQuery = sqon => ({
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
-const toSingleStratQueries = ({ fileDataTypes, sqon }) =>
-  fileDataTypes.map(dataType => ({
-    query: gql`
-      query($sqon: JSON, $dataType: String) {
-        participant {
-          aggregations(
-            aggregations_filter_themselves: true
-            filters: {
-              op: "and"
-              content: [
-                $sqon
-                { op: "in", content: { field: "files.data_type", value: [$dataType] } }
-              ]
-            }
-          ) {
-            files__experiment_strategies {
-              buckets {
-                doc_count
-                key
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: { sqon, dataType },
-    transform: data => {
-      const expStratBuckets = get(
-        data,
-        'data.participant.aggregations.files__experiment_strategies.buckets',
-        [],
-      );
-      const total = expStratBuckets.reduce((acc, bucket) => acc + bucket.doc_count, 0);
-      console.log('datatype', dataType, 'total', total, 'data', data);
-      // individual rows for each data type / experimental strategy combination
-      return data;
-
-      /**
-       * 
-       *   {
-    id: '4',
-    dataType: 'Aligned Reads',
-    experimentalStrategy: 'RNA-Sqr',
-    files: 2192,
-  },
-       */
-    },
-  }));
-
-const FileBreakdown = ({ fileDataTypes, sqon, api, theme }) => (
-  <QueriesResolver api={api} queries={toSingleStratQueries({ fileDataTypes, sqon })}>
+const FileBreakdown = ({ fileDataTypes, sqon, theme }) => (
+  <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => (
       <CardSlot scrollable={true} title="File Breakdown">
         {isLoading ? (
@@ -188,7 +139,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, api, theme }) => (
               header={null}
               columns={[
                 { Header: 'Data Type', accessor: 'dataType' },
-                { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
+                { Header: 'Experimental Strategy', accessor: 'expStrat' },
                 { Header: 'Files', accessor: 'fileLink' },
               ]}
               data={generateFileColumnContents(data)}
@@ -210,7 +161,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, api, theme }) => (
         )}
       </CardSlot>
     )}
-  </QueriesResolver>
+  </QueryResolver>
 );
 
 export default compose(

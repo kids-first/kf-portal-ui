@@ -3,6 +3,8 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { fileBreakdownMock, survivalPlotMock } from './mock';
+import { survivalPlotMock } from './mock';
+import Card from 'uikit/Card';
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
