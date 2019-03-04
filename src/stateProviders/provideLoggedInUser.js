@@ -37,6 +37,7 @@ export default provideState({
     integrationTokens: {},
     acceptedKfOptIn: false,
     acceptedNihOptIn: false,
+    acceptedDatasetSubscriptionKfOptIn: false,
   }),
   effects: {
     initialize: effects => state => {
