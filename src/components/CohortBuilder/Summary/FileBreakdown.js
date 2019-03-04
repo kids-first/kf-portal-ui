@@ -4,24 +4,26 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 
 import BaseDataTable from 'uikit/DataTable';
+import { CardSlot } from './index';
+import MultiHeader from 'uikit/Multicard/MultiHeader';
 
 const FileBreakdownWrapper = styled('div')`
-  margin-top: 10px;
+  // margin-top: 10px;
 `;
 
-const TableFooter = styled('div')`
-  text-align: right;
-  padding-top: 13px;
-  font-size: 11px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
-  & a {
-    font-weight: normal;
-    color: ${({ theme }) => theme.hover};
-    text-decoration: underline;
-    margin-left: 5px;
-  }
-`;
+// const TableFooter = styled('div')`
+//   text-align: right;
+//   padding-top: 13px;
+//   font-size: 11px;
+//   font-weight: bold;
+//   color: ${({ theme }) => theme.secondary};
+//   & a {
+//     font-weight: normal;
+//     color: ${({ theme }) => theme.hover};
+//     text-decoration: underline;
+//     margin-left: 5px;
+//   }
+// `;
 
 const Column = styled('span')`
   font-size: 11px;
@@ -68,7 +70,8 @@ const generateFileRepositoryUrl = (dataType, experimentalStrategy) => {
 };
 
 const localizeFileQuantity = quantity => {
-  return `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
+  // return `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
+  return `${Number(quantity).toLocaleString()}`;
 };
 
 const generateFileColumnContents = dataset => {
@@ -86,28 +89,46 @@ const generateFileColumnContents = dataset => {
 
 const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
+  const number = localizeFileQuantity(sumTotalFilesInData(finalData));
   return (
     <FileBreakdownWrapper>
-      <BaseDataTable
-        header={null}
-        columns={[
-          { Header: 'Data Type', accessor: 'dataType' },
-          { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
-          { Header: 'Files', accessor: 'fileLink' },
-        ]}
-        data={finalData}
-        transforms={{
-          dataType: dataType => <Column>{dataType}</Column>,
-          experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
-          fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-        }}
-      />
-      <TableFooter>
-        Total:
-        <a href={SEARCH_FILE_RELATIVE_URL}>
-          {localizeFileQuantity(sumTotalFilesInData(finalData))}
-        </a>
-      </TableFooter>
+      <CardSlot
+        scrollable={true}
+        title={
+          <MultiHeader
+            headings={[{ title: 'Available Data File', badge: number ? number : null }]}
+          />
+        }
+      >
+        <BaseDataTable
+          header={null}
+          columns={[
+            {
+              Header: 'Data Type',
+              accessor: 'dataType',
+              minWidth: 75,
+              style: { marginTop: '-2%', marginBottom: '-2%' },
+            },
+            {
+              Header: 'Experimental Strategy',
+              accessor: 'experimentalStrategy',
+              style: { marginTop: '-2%', marginBottom: '-2%' },
+            },
+            {
+              Header: 'Files',
+              accessor: 'fileLink',
+              minWidth: 40,
+              style: { marginTop: '-2%', marginBottom: '-2%' },
+            },
+          ]}
+          data={finalData}
+          transforms={{
+            dataType: dataType => <Column>{dataType}</Column>,
+            experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+            fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+          }}
+        />
+      </CardSlot>
     </FileBreakdownWrapper>
   );
 };

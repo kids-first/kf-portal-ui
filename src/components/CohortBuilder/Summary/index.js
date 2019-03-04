@@ -85,9 +85,9 @@ const Summary = ({
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={md} lg={lg}>
-                <CardSlot scrollable={true} title="File Breakdown">
-                  <FileBreakdown data={fileBreakdownMock} />
-                </CardSlot>
+                {/* <CardSlot scrollable={true} title="Available Data File"> */}
+                <FileBreakdown data={fileBreakdownMock} />
+                {/* </CardSlot> */}
               </PaddedColumn>
               <PaddedColumn md={md} lg={lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} />
