@@ -5,6 +5,13 @@ import { compose } from 'recompose';
 import { CohortCard } from './ui';
 import BaseDataTable from 'uikit/DataTable';
 import { Link } from 'uikit/Core';
+import gql from 'graphql-tag';
+import LoadingSpinner from 'uikit/LoadingSpinner';
+import QueriesResolver from '../QueriesResolver';
+import BaseDataTable from 'uikit/DataTable';
+import { get } from 'lodash';
+import { CardSlot } from './index';
+import { withApi } from '../../../services/api';
 
 const columnStyles = {
   margin: '-10px 0',
@@ -114,45 +121,28 @@ export const fileBreakdownQuery = sqon => ({
     }
   `,
   variables: { sqon },
-  transform: types =>
-    get(data, 'data.participant.aggregations.file__data_type.buckets', []).map(types => types.key),
+  transform: data =>
+    get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
-const toSingleStratQuery = ({ fileDataTypes, sqon }) =>
-  dataTypes.map(type => ({
+const toSingleStratQueries = ({ fileDataTypes, sqon }) =>
+  fileDataTypes.map(dataType => ({
     query: gql`
-      query($sqon: JSON) {
+      query($sqon: JSON, $dataType: String) {
         participant {
-          familyMembers: aggregations(
+          aggregations(
             aggregations_filter_themselves: true
             filters: {
               op: "and"
               content: [
                 $sqon
-                { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
-                { op: "in", content: { field: "is_proband", value: ["false"] } }
+                { op: "in", content: { field: "files.data_type", value: [$dataType] } }
               ]
             }
           ) {
-            kf_id {
+            files__experiment_strategies {
               buckets {
-                key
-              }
-            }
-          }
-          proband: aggregations(
-            aggregations_filter_themselves: true
-            filters: {
-              op: "and"
-              content: [
-                $sqon
-                { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
-                { op: "in", content: { field: "is_proband", value: ["true"] } }
-              ]
-            }
-          ) {
-            kf_id {
-              buckets {
+                doc_count
                 key
               }
             }
@@ -160,41 +150,60 @@ const toSingleStratQuery = ({ fileDataTypes, sqon }) =>
         }
       }
     `,
-    variables: { sqon },
-    transform: data => ({
-      label: studyShortName,
-      familyMembers: size(get(data, 'data.participant.familyMembers.kf_id.buckets')),
-      probands: size(get(data, 'data.participant.proband.kf_id.buckets')),
-    }),
+    variables: { sqon, dataType },
+    transform: data => {
+      const expStratBuckets = get(
+        data,
+        'data.participant.aggregations.files__experiment_strategies.buckets',
+        [],
+      );
+      const total = expStratBuckets.reduce((acc, bucket) => acc + bucket.doc_count, 0);
+      console.log('total', total, 'data', data);
+      //return !expStrat.key.equals('__missing__') ?
+      return data;
+    },
   }));
 
-const FileBreakdown = ({ fileDataTypes, sqon, api }) => (
+const FileBreakdown = ({ fileDataTypes, sqon, api, theme }) => (
   <QueriesResolver api={api} queries={toSingleStratQueries({ fileDataTypes, sqon })}>
     {({ data, isLoading }) => (
-      <FileBreakdownWrapper>
-        <BaseDataTable
-          header={null}
-          columns={[
-            { Header: 'Data Type', accessor: 'dataType' },
-            { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
-            { Header: 'Files', accessor: 'fileLink' },
-          ]}
-          data={finalData}
-          transforms={{
-            dataType: dataType => <Column>{dataType}</Column>,
-            experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
-            fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-          }}
-        />
-        <TableFooter>
-          Total:
-          <a href={SEARCH_FILE_RELATIVE_URL}>
-            {localizeFileQuantity(sumTotalFilesInData(finalData))}
-          </a>
-        </TableFooter>
-      </FileBreakdownWrapper>
+      <CardSlot scrollable={true} title="File Breakdown">
+        {isLoading ? (
+          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+        ) : !data ? (
+          <div>No data</div>
+        ) : (
+          <FileBreakdownWrapper>
+            <BaseDataTable
+              header={null}
+              columns={[
+                { Header: 'Data Type', accessor: 'dataType' },
+                { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
+                { Header: 'Files', accessor: 'fileLink' },
+              ]}
+              data={generateFileColumnContents(data)}
+              transforms={{
+                dataType: dataType => <Column>{dataType}</Column>,
+                experimentalStrategy: experimentalStrategy => (
+                  <Column>{experimentalStrategy}</Column>
+                ),
+                fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+              }}
+            />
+            <TableFooter>
+              Total:
+              <a href={SEARCH_FILE_RELATIVE_URL}>
+                {localizeFileQuantity(sumTotalFilesInData(data))}
+              </a>
+            </TableFooter>
+          </FileBreakdownWrapper>
+        )}
+      </CardSlot>
     )}
   </QueriesResolver>
 );
 
-export default compose(withTheme)(FileBreakdown);
+export default compose(
+  withTheme,
+  withApi,
+)(FileBreakdown);

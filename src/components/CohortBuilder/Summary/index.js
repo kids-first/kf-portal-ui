@@ -46,7 +46,7 @@ const Summary = ({
     {({ isLoading, data }) => {
       const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
         data || [];
-
+      console.log('ciaran', data);
       return isLoading ? (
         <Row nogutter>
           <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
