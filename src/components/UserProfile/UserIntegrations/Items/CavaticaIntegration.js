@@ -70,7 +70,7 @@ const description = () => {
     <span>
       <Trans>
         Analyze data quickly by connecting your account to the cloud compute environment,
-      </Trans>
+      </Trans>{' '}
       <ExternalLink href={cavaticaWebRoot}>
         <Trans>Cavatica</Trans>
       </ExternalLink>

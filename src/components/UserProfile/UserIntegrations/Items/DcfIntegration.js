@@ -11,7 +11,7 @@ import { dcfWebRoot } from 'common/injectGlobals';
 const description = () => {
   return (
     <span>
-      <Trans>Access controlled data by connecting your account to the</Trans>
+      <Trans>Access controlled data by connecting your account to the</Trans>{' '}
       <ExternalLink href={dcfWebRoot}>
         <Trans>Data Commons Framework (DCF)</Trans>
       </ExternalLink>{' '}
