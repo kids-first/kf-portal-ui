@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { BarChartContainer, CardSlot } from './index';
+import { BarChartContainer, CohortCard } from './ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
@@ -77,7 +77,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
 const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
   <QueriesResolver api={api} queries={toSingleDiagQueries({ topDiagnoses, sqon })}>
     {({ isLoading, data }) => (
-      <CardSlot title="Most Frequent Diagnoses">
+      <CohortCard title="Most Frequent Diagnoses">
         {isLoading ? (
           <LoadingSpinner color={theme.greyScale11} size={'50px'} />
         ) : !data ? (
@@ -102,7 +102,7 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
             />
           </BarChartContainer>
         )}
-      </CardSlot>
+      </CohortCard>
     )}
   </QueriesResolver>
 );

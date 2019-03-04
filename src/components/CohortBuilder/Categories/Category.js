@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
-
 import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
-import { compose } from 'recompose';
+import { compose, lifecycle, withState, withProps } from 'recompose';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
 import CategoryRowDisplay from './CategoryRowDisplay';
@@ -24,11 +23,41 @@ const Container = styled(Column)`
   z-index: 1;
 `;
 
+/**
+ * Flip dropdown side on smaller screens
+ */
+const OptionsWrapper = compose(
+  withState('shouldFlip', 'setShouldFlip', false),
+  withProps(() => ({
+    optionsRef: React.createRef(),
+  })),
+  lifecycle({
+    componentDidMount() {
+      const { optionsRef, setShouldFlip } = this.props;
+      const boundingRect = optionsRef.current.getBoundingClientRect();
+      const shouldFlip = boundingRect.x + boundingRect.width > window.innerWidth;
+      setShouldFlip(shouldFlip);
+    },
+  }),
+)(({ children, optionsRef, shouldFlip }) => (
+  <Options innerRef={optionsRef} shouldFlip={shouldFlip}>
+    {children}
+  </Options>
+));
+
 const Options = styled('div')`
+  ${({ shouldFlip }) =>
+    shouldFlip
+      ? css`
+          right: 0;
+        `
+      : css`
+          left: 0;
+        `};
+
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 0;
   top: 100%;
   cursor: pointer;
   text-align: left;
@@ -43,13 +72,18 @@ const Options = styled('div')`
 
 const ItemWrapper = styled('div')`
   display: flex;
-  padding: 17px 10px 17px 23px;
+  padding: 5px 10px 5px 23px;
   font-size: 12px;
   color: #343434;
   font-weight: 500;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.backgroundGrey};
+  }
 `;
 
 const Title = styled('h3')`
+  margin: 7px 0 0 0;
   text-align: center;
   font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
   font-size: 13px;
@@ -59,6 +93,21 @@ const Title = styled('h3')`
 
 const CategoryButton = styled(Column)`
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.backgroundGrey};
+  }
+
+  ${({ isDropdownVisible, theme }) =>
+    isDropdownVisible
+      ? css`
+          background-color: ${theme.backgroundGrey};
+          box-shadow: 0 0 5.9px 0.1px ${theme.lighterShadow};
+        `
+      : null}
 `;
 
 const CategoryRow = compose(withApi)(({ api, field, active }) => (
@@ -138,13 +187,16 @@ const Category = compose(withDropdownMultiPane)(
               {children}
             </Container>
           ),
-          OptionsContainerComponent: Options,
           ItemWrapperComponent: ItemWrapper,
+          OptionsContainerComponent: OptionsWrapper,
         }}
       >
-        <CategoryButton>
-          {children}
-          <Title> {title}</Title>
+        <CategoryButton isDropdownVisible={isDropdownVisible}>
+          <Column alignItems="center">
+            {' '}
+            {children}
+            <Title> {title}</Title>
+          </Column>
         </CategoryButton>
       </Dropdown>
     );

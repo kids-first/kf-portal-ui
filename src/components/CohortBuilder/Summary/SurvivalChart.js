@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import isEqual from 'lodash.isequal';
 import defaults from 'lodash.defaults';
 import { renderPlot } from '@oncojs/survivalplot/index.dist';
+import { CohortCard } from './ui';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -245,25 +246,27 @@ class SurvivalChart extends React.Component {
     };
 
     return (
-      <SurvivalChartWrapper>
-        <SurvivalChartHeader>
-          Applicable survival data for <a>35 Participants</a>
-        </SurvivalChartHeader>
-        <StyledSurvivalPlot
-          dataSets={formatDataset(this.props.data)}
-          onMouseEnterDonors={this.handleMouseEnterDonors}
-          onMouseLeaveDonors={this.handleMouseLeaveDonors}
-        />
-        <div style={tooltipStyle}>
-          <strong>{donor.id}</strong>
-          <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
-          {donor.isCensored ? (
-            <div>Censored Survival Time: {donor.time} days (censored)</div>
-          ) : (
-            <div>Survival Time: {donor.time} days </div>
-          )}
-        </div>
-      </SurvivalChartWrapper>
+      <CohortCard title="Overall Survival">
+        <SurvivalChartWrapper>
+          <SurvivalChartHeader>
+            Applicable survival data for <a>35 Participants</a>
+          </SurvivalChartHeader>
+          <StyledSurvivalPlot
+            dataSets={formatDataset(this.props.data)}
+            onMouseEnterDonors={this.handleMouseEnterDonors}
+            onMouseLeaveDonors={this.handleMouseLeaveDonors}
+          />
+          <div style={tooltipStyle}>
+            <strong>{donor.id}</strong>
+            <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
+            {donor.isCensored ? (
+              <div>Censored Survival Time: {donor.time} days (censored)</div>
+            ) : (
+              <div>Survival Time: {donor.time} days </div>
+            )}
+          </div>
+        </SurvivalChartWrapper>
+      </CohortCard>
     );
   }
 }

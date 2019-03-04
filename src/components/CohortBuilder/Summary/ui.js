@@ -1,0 +1,49 @@
+import React from 'react';
+import styled from 'react-emotion';
+import Card from 'uikit/Card';
+import CardHeader, { Badge } from 'uikit/Card/CardHeader';
+import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
+
+export const BarChartContainer = styled('div')`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+`;
+
+const LongCard = styled(CardWrapper)`
+  width: 100%;
+  height: 100%;
+`;
+
+const MediumCard = styled(CardWrapper)`
+  height: 305px;
+  min-height: 305px;
+  padding: 15px 20px;
+`;
+
+const CohortHeaderWrapper = styled(HeaderWrapper)`
+  padding-bottom: 12px;
+`;
+
+const CohortCardHeader = styled(CardHeader)`
+  font-size: 16px;
+
+  ${Badge} {
+    line-height: 20px;
+    height: 20px;
+    min-width: 20px;
+  }
+`;
+
+export const CohortCard = ({ title, badge, children, long = false, ...props }) => (
+  <Card
+    CardWrapper={long ? LongCard : MediumCard}
+    HeaderWrapper={CohortHeaderWrapper}
+    Header={<CohortCardHeader title={title} badge={badge} />}
+    {...props}
+  >
+    {children}
+  </Card>
+);

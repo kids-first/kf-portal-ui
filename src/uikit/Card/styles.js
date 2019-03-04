@@ -11,6 +11,8 @@ export const CardWrapper = applyDefaultStyles(styled('div')`
   display: flex;
   flex-direction: column;
   border: solid 1px ${({ theme }) => theme.greyScale5};
+
+  ${props => props.cardWrapperStyle}
 `);
 
 export const HeaderWrapper = applyDefaultStyles(styled(Row)`
