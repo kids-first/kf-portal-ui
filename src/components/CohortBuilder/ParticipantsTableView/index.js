@@ -9,8 +9,6 @@ import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
 import TableErrorView from './TableErrorView';
 
-import EmptyCohortOverlay from './../EmptyCohortOverlay';
-
 const enhance = compose(
   withApi,
   withTheme,
@@ -18,22 +16,13 @@ const enhance = compose(
   withState('pageIndex', 'setPageIndex', 0),
 );
 
-const ParticipantsTableView = ({
-  sqon,
-  api,
-  pageIndex,
-  pageSize,
-  setPageIndex,
-  setPageSize,
-  noData = false,
-}) => (
+const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, setPageSize }) => (
   <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
     {({ isLoading, data, error }) =>
       error ? (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
-          {noData ? <EmptyCohortOverlay /> : null}
           <ParticipantsTable
             loading={isLoading}
             data={data[0] ? data[0].nodes : []}

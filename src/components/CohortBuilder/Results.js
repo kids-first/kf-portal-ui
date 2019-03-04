@@ -17,6 +17,7 @@ import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import EmptyCohortOverlay from './EmptyCohortOverlay';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -39,6 +40,7 @@ const ActiveView = styled('div')`
   width: 100%;
   padding: 0 26px 36px 26px;
   margin-top: 19px;
+  position: relative;
 `;
 
 const SubHeading = styled('h3')`
@@ -120,10 +122,11 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
             </ViewLinks>
           </Content>
           <ActiveView>
+            {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
             {activeView === SUMMARY ? (
-              <Summary sqon={sqon} noData={cohortIsEmpty} />
+              <Summary sqon={sqon} />
             ) : (
-              <ParticipantsTableView sqon={sqon} noData={cohortIsEmpty} />
+              <ParticipantsTableView sqon={sqon} />
             )}
           </ActiveView>
         </React.Fragment>
