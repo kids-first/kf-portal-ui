@@ -11,7 +11,6 @@ import FileBreakdown from './FileBreakdown';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
-import EmptyCohortOverlay from '../EmptyCohortOverlay';
 import SurvivalChart from './SurvivalChart';
 import PhenotypeBreakdown from './PhenotypeBreakdown';
 import styled from 'react-emotion';
@@ -51,7 +50,6 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          {!sqon ? <EmptyCohortOverlay /> : null}
           <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
