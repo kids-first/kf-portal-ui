@@ -17,6 +17,7 @@ const Container = styled('div')`
   width: 100%;
   align-items: center;
   background-color: #f4f5f8;
+  min-height: 960px;
 `;
 
 const Heading = styled(H1)`
@@ -29,6 +30,10 @@ const FullWidthWhite = styled('div')`
   background: white;
   padding: 0 30px 30px 30px;
   margin-top: 21px;
+`;
+
+const Content = styled(ContentBar)`
+  padding: 0 20px 0 32px;
 `;
 
 const CohortBuilder = () => (
@@ -53,7 +58,7 @@ const CohortBuilder = () => (
       };
       return (
         <Container>
-          <ContentBar>
+          <Content>
             <Row>
               <Heading>Explore Data</Heading>
               <div>Load a Virtual Study</div>
@@ -62,7 +67,7 @@ const CohortBuilder = () => (
               <button>Save virtual study</button>
               <button>Share</button>
             </Row>
-          </ContentBar>
+          </Content>
           <FullWidthWhite>
             <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
             <SqonBuilder
@@ -72,7 +77,7 @@ const CohortBuilder = () => (
               onActiveSqonSelect={sqonBuilderActiveSqonSelect}
             />
           </FullWidthWhite>
-          <Results sqon={executableSqon} />
+          <Results sqon={executableSqon} activeSqonIndex={activeSqonIndex} />
         </Container>
       );
     }}

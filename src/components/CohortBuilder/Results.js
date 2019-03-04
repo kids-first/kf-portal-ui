@@ -13,9 +13,9 @@ import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { Link } from 'react-router-dom';
 import { withApi } from 'services/api';
-import QueriesResolver from './QueriesResolver';
 import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
+import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const SUMMARY = 'summary';
@@ -33,7 +33,6 @@ const Detail = styled(Row)`
 
 const Heading = styled(H2)`
   color: ${({ theme }) => theme.secondary};
-  margin-right: 20px;
 `;
 
 const ActiveView = styled('div')`
@@ -55,7 +54,18 @@ const PurpleLink = styled(Link)`
   color: ${({ theme }) => theme.purple};
 `;
 
-const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
+const ResultsHeading = styled('div')`
+  display: flex;
+  padding: 0 20px 3px 0;
+  border-right: 1px solid ${({ theme }) => theme.greyScale11};
+  margin-right: 14px;
+`;
+
+const Content = styled(ContentBar)`
+  padding: 0 30px 0 34px;
+`;
+
+const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
   <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
@@ -70,9 +80,18 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
-          <ContentBar>
+          <Content>
             <Detail>
-              <Heading>All data</Heading>
+              <ResultsHeading>
+                {!sqon ? (
+                  <Heading>All Data</Heading>
+                ) : (
+                  <React.Fragment>
+                    <Heading>Cohort Results</Heading>
+                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex}</SubHeading>
+                  </React.Fragment>
+                )}
+              </ResultsHeading>{' '}
               <DemographicIcon />
               <SubHeading>
                 {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
@@ -84,16 +103,22 @@ const Results = ({ activeView, setActiveView, theme, sqon, api }) => (
               </PurpleLink>
             </Detail>
             <ViewLinks>
-              <ViewLink onClick={() => setActiveView(SUMMARY)} active={activeView === SUMMARY}>
-                <SummaryIcon marginRight={5} />
+              <ViewLink
+                onClick={() => setActiveView(SUMMARY)}
+                active={activeView === SUMMARY}
+                Icon={SummaryIcon}
+              >
                 Summary View
               </ViewLink>
-              <ViewLink onClick={() => setActiveView(TABLE)} active={activeView === TABLE}>
-                <TableViewIcon marginRight={5} />
+              <ViewLink
+                onClick={() => setActiveView(TABLE)}
+                active={activeView === TABLE}
+                Icon={TableViewIcon}
+              >
                 Table View
               </ViewLink>
             </ViewLinks>
-          </ContentBar>
+          </Content>
           <ActiveView>
             {activeView === SUMMARY ? (
               <Summary sqon={!cohortIsEmpty ? sqon : null} />
