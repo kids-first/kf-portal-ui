@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-
+import { CohortCard } from './ui';
 import BaseDataTable from 'uikit/DataTable';
-import { CardSlot } from './index';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 
 const FileBreakdownWrapper = styled('div')``;
@@ -78,15 +77,15 @@ const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
   const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
   return (
-    <FileBreakdownWrapper>
-      <CardSlot
-        scrollable={true}
-        title={
-          <MultiHeader
-            headings={[{ title: 'Available Data', badge: filesTotal ? filesTotal : null }]}
-          />
-        }
-      >
+    <CohortCard
+      scrollable={true}
+      title={
+        <MultiHeader
+          headings={[{ title: 'Available Data', badge: filesTotal ? filesTotal : null }]}
+        />
+      }
+    >
+      <FileBreakdownWrapper>
         <BaseDataTable
           header={null}
           columns={[
@@ -116,8 +115,8 @@ const FileBreakdown = ({ data }) => {
             fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
           }}
         />
-      </CardSlot>
-    </FileBreakdownWrapper>
+      </FileBreakdownWrapper>
+    </CohortCard>
   );
 };
 

@@ -99,7 +99,7 @@ const Categories = ({ theme, sqon, onSqonUpdate }) => (
       fields={CATEGORY_FIELDS.clinical}
       color={theme.clinicalBlue}
     >
-      <ClinicalIcon fill={theme.clinicalBlue} />
+      <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
     </Category>
     <Category
       title="Biospecimens"
