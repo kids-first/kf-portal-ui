@@ -7,23 +7,11 @@ import BaseDataTable from 'uikit/DataTable';
 import { CardSlot } from './index';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
 
-const FileBreakdownWrapper = styled('div')`
-  // margin-top: 10px;
-`;
+const FileBreakdownWrapper = styled('div')``;
 
-// const TableFooter = styled('div')`
-//   text-align: right;
-//   padding-top: 13px;
-//   font-size: 11px;
-//   font-weight: bold;
-//   color: ${({ theme }) => theme.secondary};
-//   & a {
-//     font-weight: normal;
-//     color: ${({ theme }) => theme.hover};
-//     text-decoration: underline;
-//     margin-left: 5px;
-//   }
-// `;
+const columnStyles = {
+  margin: '-2% 0',
+};
 
 const Column = styled('span')`
   font-size: 11px;
@@ -70,7 +58,6 @@ const generateFileRepositoryUrl = (dataType, experimentalStrategy) => {
 };
 
 const localizeFileQuantity = quantity => {
-  // return `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
   return `${Number(quantity).toLocaleString()}`;
 };
 
@@ -89,14 +76,14 @@ const generateFileColumnContents = dataset => {
 
 const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
-  const number = localizeFileQuantity(sumTotalFilesInData(finalData));
+  const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
   return (
     <FileBreakdownWrapper>
       <CardSlot
         scrollable={true}
         title={
           <MultiHeader
-            headings={[{ title: 'Available Data File', badge: number ? number : null }]}
+            headings={[{ title: 'Available Data', badge: filesTotal ? filesTotal : null }]}
           />
         }
       >
@@ -107,20 +94,21 @@ const FileBreakdown = ({ data }) => {
               Header: 'Data Type',
               accessor: 'dataType',
               minWidth: 75,
-              style: { marginTop: '-2%', marginBottom: '-2%' },
+              style: columnStyles,
             },
             {
               Header: 'Experimental Strategy',
               accessor: 'experimentalStrategy',
-              style: { marginTop: '-2%', marginBottom: '-2%' },
+              style: columnStyles,
             },
             {
               Header: 'Files',
               accessor: 'fileLink',
               minWidth: 40,
-              style: { marginTop: '-2%', marginBottom: '-2%' },
+              style: columnStyles,
             },
           ]}
+          className="-striped -highlight"
           data={finalData}
           transforms={{
             dataType: dataType => <Column>{dataType}</Column>,
