@@ -88,8 +88,8 @@ export const createStudyIdSqon = studyId => ({
   ],
 });
 
-export const createAcceptedFilesByUserStudySqon = gen3User => ({ sqon, studyId }) => {
-  const approvedAcls = Object.keys(gen3User.projects).sort();
+export const createAcceptedFilesByUserStudySqon = fenceUser => ({ sqon, studyId }) => {
+  const approvedAcls = fenceUser ? Object.keys(fenceUser.projects).sort() : [];
   return {
     op: 'and',
     content: [
@@ -99,8 +99,8 @@ export const createAcceptedFilesByUserStudySqon = gen3User => ({ sqon, studyId }
     ],
   };
 };
-export const createUnacceptedFilesByUserStudySqon = gen3User => ({ studyId, sqon }) => {
-  const approvedAcls = Object.keys(gen3User.projects).sort();
+export const createUnacceptedFilesByUserStudySqon = fenceUser => ({ studyId, sqon }) => {
+  const approvedAcls = fenceUser ? Object.keys(fenceUser.projects).sort() : [];
   return {
     op: 'and',
     content: [
@@ -111,13 +111,13 @@ export const createUnacceptedFilesByUserStudySqon = gen3User => ({ studyId, sqon
   };
 };
 
-export const getUserStudyPermission = api => async ({
+export const getUserStudyPermission = (api, fence) => async ({
   sqon = {
     op: 'and',
     content: [],
   },
 } = {}) => {
-  const userDetails = await getFenceUser(api, GEN3);
+  const userDetails = await getFenceUser(api, fence);
   const approvedAcls = Object.keys(userDetails.projects).sort();
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
