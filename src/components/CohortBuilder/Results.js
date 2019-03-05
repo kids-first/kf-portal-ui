@@ -18,6 +18,7 @@ import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
+import { isEmpty } from 'lodash';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -85,12 +86,12 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
           <Content>
             <Detail>
               <ResultsHeading>
-                {!sqon ? (
+                {!sqon || isEmpty(sqon.content) ? (
                   <Heading>All Data</Heading>
                 ) : (
                   <React.Fragment>
                     <Heading>Cohort Results</Heading>
-                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex}</SubHeading>
+                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex + 1}</SubHeading>
                   </React.Fragment>
                 )}
               </ResultsHeading>{' '}
