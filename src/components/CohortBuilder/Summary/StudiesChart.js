@@ -4,7 +4,6 @@ import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get, size } from 'lodash';
 import gql from 'graphql-tag';
-import styled from 'react-emotion';
 
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
