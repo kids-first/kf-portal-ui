@@ -4,6 +4,7 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { CohortCard } from './ui';
 import BaseDataTable from 'uikit/DataTable';
+import { Link } from 'uikit/Core';
 
 const FileBreakdownWrapper = styled('div')``;
 
@@ -18,11 +19,6 @@ const Column = styled('span')`
 const FilesColumn = styled(Column)`
   color: ${({ theme }) => theme.hover};
   text-decoration: underline;
-  &:hover {
-    a {
-      color: ${({ theme }) => theme.highlight};
-    }
-  }
 `;
 
 const sumTotalFilesInData = dataset => {
@@ -69,9 +65,9 @@ const generateFileColumnContents = dataset => {
     return {
       ...datum,
       fileLink: (
-        <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
+        <Link to={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
           {localizeFileQuantity(datum.files)}
-        </a>
+        </Link>
       ),
     };
   });
