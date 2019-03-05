@@ -5,18 +5,33 @@ import {
   isReference,
 } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 
-const MOCK_INITIAL_SQONS = [
-  {
-    op: 'and',
-    content: [],
-  },
-];
+const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
 
 const SQONProvider = ({ children }) => {
-  const initialState = { sqons: MOCK_INITIAL_SQONS, activeIndex: 0 };
+  const initialState = {
+    sqons: [
+      {
+        op: 'and',
+        content: [],
+      },
+    ],
+    activeIndex: 0,
+  };
+  const didMount = s => {
+    if (localStorage[COHORT_BUILDER_FILTER_STATE]) {
+      const localState = JSON.parse(localStorage[COHORT_BUILDER_FILTER_STATE]);
+      s.setState({
+        sqons: localState.sqons,
+        activeIndex: localState.activeIndex,
+      });
+    }
+  };
+  const didUpdate = s => {
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(s.state));
+  };
+
   const setActiveSqonIndex = s => index => s.setState({ activeIndex: index });
   const setSqons = s => (sqons = s.state.sqons) => s.setState({ sqons });
-
   // takes care of putting a new sqon into place while preserving references
   const mergeSqonToActiveIndex = s => newSqon =>
     setSqons(s)(
@@ -33,8 +48,9 @@ const SQONProvider = ({ children }) => {
     );
   const getActiveExecutableSqon = s => () =>
     resolveSyntheticSqon(s.state.sqons)(s.state.sqons[s.state.activeIndex]);
+
   return (
-    <Component initialState={initialState}>
+    <Component initialState={initialState} didMount={didMount} didUpdate={didUpdate}>
       {s => {
         const {
           state: { sqons, activeIndex },
