@@ -4,24 +4,13 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { CohortCard } from './ui';
 import BaseDataTable from 'uikit/DataTable';
+import { Link } from 'uikit/Core';
 
-const FileBreakdownWrapper = styled('div')`
-  margin-top: 10px;
-`;
+const FileBreakdownWrapper = styled('div')``;
 
-const TableFooter = styled('div')`
-  text-align: right;
-  padding-top: 13px;
-  font-size: 11px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
-  & a {
-    font-weight: normal;
-    color: ${({ theme }) => theme.hover};
-    text-decoration: underline;
-    margin-left: 5px;
-  }
-`;
+const columnStyles = {
+  margin: '-10px 0',
+};
 
 const Column = styled('span')`
   font-size: 11px;
@@ -68,7 +57,7 @@ const generateFileRepositoryUrl = (dataType, experimentalStrategy) => {
 };
 
 const localizeFileQuantity = quantity => {
-  return `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
+  return `${Number(quantity).toLocaleString()}`;
 };
 
 const generateFileColumnContents = dataset => {
@@ -76,9 +65,9 @@ const generateFileColumnContents = dataset => {
     return {
       ...datum,
       fileLink: (
-        <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
+        <Link to={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
           {localizeFileQuantity(datum.files)}
-        </a>
+        </Link>
       ),
     };
   });
@@ -86,16 +75,32 @@ const generateFileColumnContents = dataset => {
 
 const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
+  const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
   return (
-    <CohortCard scrollable={true} title="File Breakdown">
+    <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
       <FileBreakdownWrapper>
         <BaseDataTable
           header={null}
           columns={[
-            { Header: 'Data Type', accessor: 'dataType' },
-            { Header: 'Experimental Strategy', accessor: 'experimentalStrategy' },
-            { Header: 'Files', accessor: 'fileLink' },
+            {
+              Header: 'Data Type',
+              accessor: 'dataType',
+              minWidth: 75,
+              style: columnStyles,
+            },
+            {
+              Header: 'Experimental Strategy',
+              accessor: 'experimentalStrategy',
+              style: columnStyles,
+            },
+            {
+              Header: 'Files',
+              accessor: 'fileLink',
+              minWidth: 40,
+              style: columnStyles,
+            },
           ]}
+          className="-highlight"
           data={finalData}
           transforms={{
             dataType: dataType => <Column>{dataType}</Column>,
@@ -103,12 +108,6 @@ const FileBreakdown = ({ data }) => {
             fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
           }}
         />
-        <TableFooter>
-          Total:
-          <a href={SEARCH_FILE_RELATIVE_URL}>
-            {localizeFileQuantity(sumTotalFilesInData(finalData))}
-          </a>
-        </TableFooter>
       </FileBreakdownWrapper>
     </CohortCard>
   );
