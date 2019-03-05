@@ -6,8 +6,6 @@ import { CohortCard } from './ui';
 import BaseDataTable from 'uikit/DataTable';
 import { Link } from 'uikit/Core';
 
-const FileBreakdownWrapper = styled('div')``;
-
 const columnStyles = {
   margin: '-10px 0',
 };
@@ -78,37 +76,35 @@ const FileBreakdown = ({ data }) => {
   const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
   return (
     <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
-      <FileBreakdownWrapper>
-        <BaseDataTable
-          header={null}
-          columns={[
-            {
-              Header: 'Data Type',
-              accessor: 'dataType',
-              minWidth: 75,
-              style: columnStyles,
-            },
-            {
-              Header: 'Experimental Strategy',
-              accessor: 'experimentalStrategy',
-              style: columnStyles,
-            },
-            {
-              Header: 'Files',
-              accessor: 'fileLink',
-              minWidth: 40,
-              style: columnStyles,
-            },
-          ]}
-          className="-highlight"
-          data={finalData}
-          transforms={{
-            dataType: dataType => <Column>{dataType}</Column>,
-            experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
-            fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-          }}
-        />
-      </FileBreakdownWrapper>
+      <BaseDataTable
+        header={null}
+        columns={[
+          {
+            Header: 'Data Type',
+            accessor: 'dataType',
+            minWidth: 75,
+            style: columnStyles,
+          },
+          {
+            Header: 'Experimental Strategy',
+            accessor: 'experimentalStrategy',
+            style: columnStyles,
+          },
+          {
+            Header: 'Files',
+            accessor: 'fileLink',
+            minWidth: 40,
+            style: columnStyles,
+          },
+        ]}
+        className="-highlight"
+        data={finalData}
+        transforms={{
+          dataType: dataType => <Column>{dataType}</Column>,
+          experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+          fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+        }}
+      />
     </CohortCard>
   );
 };
