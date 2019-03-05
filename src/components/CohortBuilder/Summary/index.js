@@ -12,7 +12,6 @@ import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
-import PhenotypeBreakdown from './PhenotypeBreakdown';
 import styled from 'react-emotion';
 
 const PaddedColumn = styled(Col)`
@@ -72,9 +71,9 @@ const Summary = ({
               </PaddedColumn>
             </Row>
           </Col>
-          <PaddedColumn xl={spacing.xl}>
+          {/* <PaddedColumn xl={spacing.xl}>
             <PhenotypeBreakdown sqon={sqon} />
-          </PaddedColumn>
+          </PaddedColumn> */}
         </Row>
       );
     }}
