@@ -4,12 +4,11 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { CohortCard } from './ui';
 import BaseDataTable from 'uikit/DataTable';
-import MultiHeader from 'uikit/Multicard/MultiHeader';
 
 const FileBreakdownWrapper = styled('div')``;
 
 const columnStyles = {
-  margin: '-2% 0',
+  margin: '-10px 0',
 };
 
 const Column = styled('span')`
@@ -19,6 +18,11 @@ const Column = styled('span')`
 const FilesColumn = styled(Column)`
   color: ${({ theme }) => theme.hover};
   text-decoration: underline;
+  &:hover {
+    a {
+      color: ${({ theme }) => theme.highlight};
+    }
+  }
 `;
 
 const sumTotalFilesInData = dataset => {
@@ -77,14 +81,7 @@ const FileBreakdown = ({ data }) => {
   const finalData = generateFileColumnContents(data);
   const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
   return (
-    <CohortCard
-      scrollable={true}
-      title={
-        <MultiHeader
-          headings={[{ title: 'Available Data', badge: filesTotal ? filesTotal : null }]}
-        />
-      }
-    >
+    <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
       <FileBreakdownWrapper>
         <BaseDataTable
           header={null}
@@ -107,7 +104,7 @@ const FileBreakdown = ({ data }) => {
               style: columnStyles,
             },
           ]}
-          className="-striped -highlight"
+          className="-highlight"
           data={finalData}
           transforms={{
             dataType: dataType => <Column>{dataType}</Column>,
