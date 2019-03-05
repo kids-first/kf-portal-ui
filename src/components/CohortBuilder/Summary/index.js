@@ -51,7 +51,7 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col xl={12}>
+          <Col xl={9}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <FileBreakdown data={fileBreakdownMock} />
@@ -73,9 +73,9 @@ const Summary = ({
               </PaddedColumn>
             </Row>
           </Col>
-          {/* <PaddedColumn xl={spacing.xl}>
+          <PaddedColumn xl={spacing.xl}>
             <PhenotypeBreakdown sqon={sqon} />
-          </PaddedColumn> */}
+          </PaddedColumn>
         </Row>
       );
     }}
