@@ -176,7 +176,7 @@ class ParticipantsTable extends Component {
                 {/* Download */}
                 <RemoveFromCohortButton
                   onClick={() => handleRemoveFromCohort()}
-                  disabled={selectedRowsCount === 0}
+                  disabled={allRowsSelected || selectedRows.length === 0}
                 />
                 {selectedRowsCount > 0 ? (
                   <ToolbarSelectionCount>
