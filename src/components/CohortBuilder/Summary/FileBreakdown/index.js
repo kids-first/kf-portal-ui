@@ -62,7 +62,7 @@ const generateFileColumnContents = dataset =>
   dataset.map(datum => ({
     ...datum,
     fileLink: (
-      <a href={generateFileRepositoryUrl(datum.dataType, datum.experimentalStrategy)}>
+      <a href={generateFileRepositoryUrl(datum.dataType, datum.expStrat)}>
         {localizeFileQuantity(datum.files)}
       </a>
     ),

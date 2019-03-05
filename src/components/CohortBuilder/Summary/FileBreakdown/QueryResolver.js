@@ -11,7 +11,7 @@ import { get } from 'lodash';
  * - Get total file counts for each combination of file data type / experimental strategy (rows)
  */
 const EMTPY_EXP = '__missing__';
-const toFileBreakdownQueries = ({ sqon, dataType, expStrat }) => ({
+const toFileBreakdownQueries = ({ sqon, dataType, expStrat, participants }) => ({
   query: gql`
     query($sqon: JSON, $dataType: String, $expStrat: String) {
       participant {
@@ -44,6 +44,7 @@ const toFileBreakdownQueries = ({ sqon, dataType, expStrat }) => ({
       dataType,
       expStrat: expStrat === EMTPY_EXP ? '' : expStrat,
       files,
+      participants,
     };
     console.log('joined data query', data, row);
     return row;
@@ -71,6 +72,11 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) => {
                 key
               }
             }
+            kf_id {
+              buckets {
+                key
+              }
+            }
           }
         }
       }
@@ -83,8 +89,13 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) => {
         'data.participant.aggregations.files__experiment_strategies.buckets',
         [],
       );
+      const participants = get(data, 'data.participant.aggregations.kf_id.buckets', []).map(
+        b => b.key,
+      );
+
+      console.log('participants', participants);
       const fileBreakdownQueries = expStratBuckets.map(strategy =>
-        toFileBreakdownQueries({ sqon, dataType, expStrat: strategy.key }),
+        toFileBreakdownQueries({ sqon, dataType, expStrat: strategy.key, participants }),
       );
 
       console.log('fileBreakdownQueries strat', fileBreakdownQueries);
