@@ -17,7 +17,12 @@ const enhance = compose(
 );
 
 const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, setPageSize }) => (
-  <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
+  <QueriesResolver
+    name="GQL_PARTICIPANTS_TABLE"
+    api={api}
+    sqon={sqon}
+    queries={[participantsQuery(sqon, pageSize, pageIndex)]}
+  >
     {({ isLoading, data, error }) =>
       error ? (
         <TableErrorView error={error} />

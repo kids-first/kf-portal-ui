@@ -34,6 +34,7 @@ const Summary = ({
   api,
 }) => (
   <QueriesResolver
+    name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
   >

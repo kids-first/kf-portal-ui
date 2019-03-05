@@ -69,7 +69,7 @@ const Content = styled(ContentBar)`
 `;
 
 const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
-  <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
+  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
         !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
