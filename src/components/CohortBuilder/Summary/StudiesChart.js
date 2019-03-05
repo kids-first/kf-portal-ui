@@ -113,9 +113,9 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
 
 export const studiesQuery = sqon => ({
   query: gql`
-    query {
+    query($sqon: JSON) {
       participant {
-        aggregations {
+        aggregations(filters: $sqon) {
           study__short_name {
             buckets {
               key
