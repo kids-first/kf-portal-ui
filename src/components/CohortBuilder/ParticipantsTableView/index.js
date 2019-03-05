@@ -73,6 +73,20 @@ const ParticipantsTableView = ({
                   setAllRowsSelected(s => checked);
                   setSelectedRows(s => []);
                 }}
+                onClearSelected={() => {
+                  setAllRowsSelected(s => false);
+                  setSelectedRows(s => []);
+                }}
+                onRemoveFromCohort={() => {
+                  // TODO JB - remove the selected participants from the cohort
+                  console.log('onRemoveFromCohort', selectedRows);
+
+                  // clear selection
+                  setAllRowsSelected(s => false);
+                  setSelectedRows(s => []);
+                }}
+                selectedRows={selectedRows}
+                allRowsSelected={allRowsSelected}
               />
             }
           </React.Fragment>

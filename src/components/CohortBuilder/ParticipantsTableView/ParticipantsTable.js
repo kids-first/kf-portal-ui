@@ -7,11 +7,12 @@ import { withTheme } from 'emotion-theming';
 import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
-import { Toolbar, ToolbarGroup } from 'uikit/DataTable/TableToolbar/styles';
+import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
+import RemoveFromCohortButton from './RemoveFromCohortButton';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -151,17 +152,46 @@ class ParticipantsTable extends Component {
       data,
       dataTotalCount,
       onFetchData,
+      onClearSelected,
+      onRemoveFromCohort,
       analyticsTracking = null,
       downloadName = 'data',
+      selectedRows,
+      allRowsSelected,
     } = this.props;
     const { columns } = this.state;
+    const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
+
+    const handleRemoveFromCohort = () => {
+      onRemoveFromCohort();
+    };
 
     return (
       <Fragment>
         <Toolbar>
           <Fragment>
-            <ToolbarGroup>
-              <Fragment />
+            <ToolbarGroup borderless>
+              <Fragment>
+                {/* Analyze in Cavatica */}
+                {/* Download */}
+                <RemoveFromCohortButton
+                  onClick={() => handleRemoveFromCohort()}
+                  disabled={selectedRowsCount === 0}
+                />
+                {selectedRowsCount > 0 ? (
+                  <ToolbarSelectionCount>
+                    <Fragment>
+                      <span>{selectedRowsCount}</span>
+                      <span>{`\u00A0participant${
+                        selectedRowsCount > 1 ? 's are' : ' is'
+                      } selected\u00A0`}</span>
+                      <button onClick={evt => onClearSelected()} className="clearSelection">
+                        {'clear selection'}
+                      </button>
+                    </Fragment>
+                  </ToolbarSelectionCount>
+                ) : null}
+              </Fragment>
             </ToolbarGroup>
             <ToolbarGroup>
               <ColumnFilter
@@ -208,11 +238,15 @@ ParticipantsTable.propTypes = {
   onFetchData: PropTypes.func.isRequired,
   onRowSelected: PropTypes.func.isRequired,
   onAllRowsSelected: PropTypes.func.isRequired,
+  onClearSelected: PropTypes.func.isRequired,
   analyticsTracking: PropTypes.shape({
     category: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
   }),
   downloadName: PropTypes.string,
+  selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+  allRowsSelected: PropTypes.bool.isRequired,
+  onRemoveFromCohort: PropTypes.func.isRequired,
 };
 
 export default ParticipantsTable;
