@@ -17,6 +17,8 @@ import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import EmptyCohortOverlay from './EmptyCohortOverlay';
+import { isEmpty } from 'lodash';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -39,6 +41,7 @@ const ActiveView = styled('div')`
   width: 100%;
   padding: 0 26px 36px 26px;
   margin-top: 19px;
+  position: relative;
 `;
 
 const SubHeading = styled('h3')`
@@ -83,12 +86,12 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
           <Content>
             <Detail>
               <ResultsHeading>
-                {!sqon ? (
+                {!sqon || isEmpty(sqon.content) ? (
                   <Heading>All Data</Heading>
                 ) : (
                   <React.Fragment>
                     <Heading>Cohort Results</Heading>
-                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex}</SubHeading>
+                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex + 1}</SubHeading>
                   </React.Fragment>
                 )}
               </ResultsHeading>{' '}
@@ -120,10 +123,11 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
             </ViewLinks>
           </Content>
           <ActiveView>
+            {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
             {activeView === SUMMARY ? (
-              <Summary sqon={!cohortIsEmpty ? sqon : null} />
+              <Summary sqon={sqon} />
             ) : (
-              <ParticipantsTableView sqon={!cohortIsEmpty ? sqon : null} />
+              <ParticipantsTableView sqon={sqon} />
             )}
           </ActiveView>
         </React.Fragment>
