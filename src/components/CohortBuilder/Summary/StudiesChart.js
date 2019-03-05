@@ -80,7 +80,11 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
   }));
 
 const StudiesChart = ({ studies, sqon, theme, api }) => (
-  <QueriesResolver api={api} queries={toSingleStudyQueries({ studies, sqon })}>
+  <QueriesResolver
+    name="GQL_STUDIES_CHART"
+    api={api}
+    queries={toSingleStudyQueries({ studies, sqon })}
+  >
     {({ isLoading, data }) => (
       <CohortCard title="Studies" badge={data ? data.length : null}>
         {isLoading ? (

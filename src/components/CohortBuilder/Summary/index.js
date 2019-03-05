@@ -34,6 +34,7 @@ const Summary = ({
   api,
 }) => (
   <QueriesResolver
+    name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[demographicQuery(sqon), ageDiagQuery(sqon), studiesQuery(sqon), diagnosesQuery(sqon)]}
   >
@@ -50,7 +51,7 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col xl={9}>
+          <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <FileBreakdown data={fileBreakdownMock} />
@@ -72,9 +73,9 @@ const Summary = ({
               </PaddedColumn>
             </Row>
           </Col>
-          <PaddedColumn xl={spacing.xl}>
+          {/* <PaddedColumn xl={spacing.xl}>
             <PhenotypeBreakdown sqon={sqon} />
-          </PaddedColumn>
+          </PaddedColumn> */}
         </Row>
       );
     }}

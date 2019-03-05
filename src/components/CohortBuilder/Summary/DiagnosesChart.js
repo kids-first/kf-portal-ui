@@ -75,7 +75,11 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
   }));
 
 const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
-  <QueriesResolver api={api} queries={toSingleDiagQueries({ topDiagnoses, sqon })}>
+  <QueriesResolver
+    name="GQL_DIAGNOSIS_CHART"
+    api={api}
+    queries={toSingleDiagQueries({ topDiagnoses, sqon })}
+  >
     {({ isLoading, data }) => (
       <CohortCard title="Most Frequent Diagnoses">
         {isLoading ? (

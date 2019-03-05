@@ -25,7 +25,7 @@ const CATEGORY_FIELDS = {
   quickSearch: [
     'available_data_types',
     'diagnosis.diagnosis',
-    'particpant.diagnosis_category',
+    'diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'study.short_name',
   ],
