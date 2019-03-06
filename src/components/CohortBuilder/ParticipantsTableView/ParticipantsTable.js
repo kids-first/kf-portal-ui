@@ -99,6 +99,8 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     filterable: false,
     sortable: false,
     skipExport: true,
+    resizable: false,
+    minWidth: 33,
   },
   { Header: 'Participant ID', accessor: 'participantId' },
   { Header: 'Study Name', accessor: 'studyName' },
