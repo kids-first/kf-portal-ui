@@ -8,7 +8,7 @@ const StyleOverlay = styled('div')`
   width: 100vw;
   height: 100%;
   left: 0;
-  z-index: 1001;
+  z-index: 101;
   display: flex;
   justify-content: center;
 `;
@@ -24,11 +24,12 @@ const StyleMessage = styled('div')`
   max-height: fit-content;
   font-size: 14px;
   font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
+  height: 50px;
 `;
 
 const EmptyCohortOverlay = withTheme(({ theme }) => (
   <StyleOverlay>
-    <StyleMessage>There are 0 participants for this cohort.</StyleMessage>
+    <StyleMessage>There are no participants for this cohort.</StyleMessage>
   </StyleOverlay>
 ));
 
