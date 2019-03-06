@@ -2,9 +2,20 @@ import PropTypes from 'prop-types';
 import Component from 'react-component-component';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
-import { isEqual, memoize } from 'lodash';
+import { isEqual } from 'lodash';
 import { print } from 'graphql/language/printer';
 
+/**
+ * NOTE: this component pulls from a singleton queryCacheMap for its caching,
+ * so every instantiation of this component access the same global cache.
+ * This allows caching to persist throughout application lifecycle, but limits
+ * the use of this component to only read-only data that are not expected to
+ * change, which is enough for the usecase in CohortBuilder.
+ * If future requirement changes, queryCacheMap can be replaced with a hook in
+ * a global state store for better abstraction; but at that point, a full blown
+ * Graphql client such as Apollo might be a better consideration.
+ */
+const queryCacheMap = {};
 class QueriesResolver extends Component {
   state = { data: [], isLoading: true, error: null };
 
@@ -31,7 +42,7 @@ class QueriesResolver extends Component {
       if (!useCache) {
         this.setState({ isLoading: true });
       }
-      const data = useCache ? await this.memoFetchData(body) : await this.fetchData(body);
+      const data = useCache ? await this.cachedFetchData(body) : await this.fetchData(body);
       this.setState({ data: data, isLoading: false });
     } catch (err) {
       this.setState({ isLoading: false, error: err });
@@ -40,7 +51,7 @@ class QueriesResolver extends Component {
 
   fetchData = body => {
     const { queries, api, name = '' } = this.props;
-    return api({
+    queryCacheMap[body] = api({
       method: 'POST',
       url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql/${name}`),
       body,
@@ -50,9 +61,10 @@ class QueriesResolver extends Component {
         return transform ? transform(d) : d;
       }),
     );
+    return queryCacheMap[body];
   };
 
-  memoFetchData = memoize(this.fetchData);
+  cachedFetchData = body => queryCacheMap[body] || this.fetchData(body);
 
   render() {
     return this.props.children({ ...this.state });
