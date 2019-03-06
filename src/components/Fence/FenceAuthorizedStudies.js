@@ -126,6 +126,7 @@ const FenceProjectList = compose(
             const studyNameBuckets = get(
               aggregations,
               `${toGqlString(id)}.participants__study__short_name.buckets`,
+              [],
             );
             const studyName = studyNameBuckets[0];
             const sqon = sqonForStudy(id);
