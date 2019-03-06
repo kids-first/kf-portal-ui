@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
@@ -22,10 +23,11 @@ const enhance = compose(
 
 const ParticipantsTableView = ({
   sqon,
+  onRemoveFromCohort,
   api,
   pageIndex,
-  pageSize,
   setPageIndex,
+  pageSize,
   setPageSize,
   selectedRows,
   setSelectedRows,
@@ -33,7 +35,7 @@ const ParticipantsTableView = ({
   setAllRowsSelected,
 }) => {
   return (
-    <QueriesResolver api={api} sqon={sqon} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
+    <QueriesResolver api={api} queries={[participantsQuery(sqon, pageSize, pageIndex)]}>
       {({ isLoading, data, error }) => {
         if (error) {
           return <TableErrorView error={error} />;
@@ -78,9 +80,8 @@ const ParticipantsTableView = ({
                   setSelectedRows(s => []);
                 }}
                 onRemoveFromCohort={() => {
-                  // TODO JB - remove the selected participants from the cohort
-                  console.log('onRemoveFromCohort', selectedRows);
-
+                  // remove the selected participants from the cohort
+                  onRemoveFromCohort(selectedRows);
                   // clear selection
                   setAllRowsSelected(s => false);
                   setSelectedRows(s => []);
@@ -94,6 +95,11 @@ const ParticipantsTableView = ({
       }}
     </QueriesResolver>
   );
+};
+
+ParticipantsTableView.propTypes = {
+  sqon: PropTypes.object.isRequired,
+  onRemoveFromCohort: PropTypes.func.isRequired,
 };
 
 export default enhance(ParticipantsTableView);

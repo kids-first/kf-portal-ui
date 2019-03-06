@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import ContentBar from './ContentBar';
@@ -65,7 +66,15 @@ const Content = styled(ContentBar)`
   padding: 0 30px 0 34px;
 `;
 
-const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
+const Results = ({
+  activeView,
+  activeSqonIndex,
+  setActiveView,
+  theme,
+  sqon,
+  onRemoveFromCohort,
+  api,
+}) => (
   <QueriesResolver api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
@@ -123,7 +132,10 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
             {activeView === SUMMARY ? (
               <Summary sqon={!cohortIsEmpty ? sqon : null} />
             ) : (
-              <ParticipantsTableView sqon={!cohortIsEmpty ? sqon : null} />
+              <ParticipantsTableView
+                sqon={!cohortIsEmpty ? sqon : null}
+                onRemoveFromCohort={onRemoveFromCohort}
+              />
             )}
           </ActiveView>
         </React.Fragment>
@@ -131,6 +143,12 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
     }}
   </QueriesResolver>
 );
+
+QueriesResolver.propTypes = {
+  activeSqonIndex: PropTypes.number.isRequired,
+  sqon: PropTypes.object.isRequired,
+  onRemoveFromCohort: PropTypes.func.isRequired,
+};
 
 export default compose(
   withTheme,
