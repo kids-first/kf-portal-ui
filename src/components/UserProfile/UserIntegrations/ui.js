@@ -26,9 +26,9 @@ const RightArrow = applyDefaultStyles(RightIcon);
 export const ConnectButton = compose(
   withApi,
   injectState,
-)(({ text = 'Connect', doConnect, api, effects, ...props }) => {
+)(({ text = 'Connect', doConnect, api, effects }) => {
   return (
-    <ConnectButtonWrapper {...props} maxWidth={160}>
+    <ConnectButtonWrapper maxWidth={160}>
       <ExternalLink size={14} position="relative" right={4} /> <Trans>{text}</Trans>
       <RightArrow size={14} position="relative" left={4} />
     </ConnectButtonWrapper>
@@ -52,9 +52,9 @@ const StudiesButtonWrapper = styled(ActionButton)`
 `;
 const Stack = applyDefaultStyles(StackIcon);
 
-export const AuthorizedStudiesButton = ({ text = 'Authorized Studies', ...props }) => {
+export const AuthorizedStudiesButton = ({ text = 'Authorized Studies' }) => {
   return (
-    <StudiesButtonWrapper {...props}>
+    <StudiesButtonWrapper>
       <Span mr={`5px`} mt={`5px`}>
         <Stack height={15} />
       </Span>
@@ -65,14 +65,17 @@ export const AuthorizedStudiesButton = ({ text = 'Authorized Studies', ...props 
 
 const WhiteButtonWrapper = styled(WhiteButton)`
   ${connectedButtonCommonStyles}
+  line-height: 1.86;
 `;
 
 /* === EditButton === */
 
-export const EditButton = ({ text = 'Edit', ...props }) => {
+export const EditButton = ({ text = 'Edit' }) => {
   return (
-    <WhiteButtonWrapper {...props}>
-      <PencilIcon />
+    <WhiteButtonWrapper>
+      <Span mr={`0px`} mb={`3px`} mt={`2px`}>
+        <PencilIcon height={15} />
+      </Span>
       {text}
     </WhiteButtonWrapper>
   );
