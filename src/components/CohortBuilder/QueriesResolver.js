@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import Component from 'react-component-component';
+import tq from 'task-queue';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import { isEqual } from 'lodash';
@@ -18,8 +19,10 @@ import { print } from 'graphql/language/printer';
 const queryCacheMap = {};
 class QueriesResolver extends Component {
   state = { data: [], isLoading: true, error: null };
+  taskQueue = tq.Queue({ capacity: 100, concurrency: 1 });
 
   componentDidMount() {
+    this.taskQueue.start();
     this.update();
   }
 
@@ -29,25 +32,28 @@ class QueriesResolver extends Component {
     }
   }
 
-  update = async () => {
-    const { queries = [], useCache = true } = this.props;
-    const body = JSON.stringify(
-      queries.map(q => ({
-        query: typeof q.query === 'string' ? q.query : print(q.query),
-        variables: q.variables,
-      })),
+  update = () =>
+    this.taskQueue.enqueue(
+      () =>
+        new Promise(async resolve => {
+          const { queries = [], useCache = true } = this.props;
+          const body = JSON.stringify(
+            queries.map(q => ({
+              query: typeof q.query === 'string' ? q.query : print(q.query),
+              variables: q.variables,
+            })),
+          );
+          try {
+            if (!useCache) {
+              this.setState({ isLoading: true });
+            }
+            const data = useCache ? await this.cachedFetchData(body) : await this.fetchData(body);
+            this.setState({ data: data, isLoading: false }, resolve);
+          } catch (err) {
+            this.setState({ isLoading: false, error: err }, resolve);
+          }
+        }),
     );
-
-    try {
-      if (!useCache) {
-        this.setState({ isLoading: true });
-      }
-      const data = useCache ? await this.cachedFetchData(body) : await this.fetchData(body);
-      this.setState({ data: data, isLoading: false });
-    } catch (err) {
-      this.setState({ isLoading: false, error: err });
-    }
-  };
 
   fetchData = body => {
     const { queries, api, name = '' } = this.props;
