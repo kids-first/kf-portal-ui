@@ -32,7 +32,7 @@ const enhanceActions = compose(
 const Actions = enhanceActions(
   ({ fence, api, effects, loading, setLoading, refresh, connected }) => {
     return loading ? (
-      <LoadingSpinner heihgt={48} />
+      <LoadingSpinner height={48} />
     ) : connected ? (
       <Row>
         <AuthorizedStudiesButton onClick={() => viewDetails({ fence, effects })} />
