@@ -100,7 +100,6 @@ const App = compose(
             forceSelectRole({
               isLoadingUser,
               Component: CohortBuilder,
-              WrapperPage: FixedFooterPage,
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,

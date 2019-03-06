@@ -16,14 +16,8 @@ import graphql from 'services/arranger';
 import { withApi } from 'services/api';
 
 const Container = styled('div')`
-  flex: 1;
-  flex-direction: column;
-  display: flex;
-  height: 100%;
   width: 100%;
-  align-items: center;
-  background-color: #f4f5f8;
-  min-height: 960px;
+  background-color: ${({ theme }) => theme.backgroundGrey};
 `;
 
 const Heading = styled(H1)`

@@ -19,7 +19,7 @@ class QueriesResolver extends Component {
   }
 
   update = async () => {
-    const { queries, useCache = true } = this.props;
+    const { queries = [], useCache = true } = this.props;
     const body = JSON.stringify(
       queries.map(q => ({
         query: typeof q.query === 'string' ? q.query : print(q.query),
@@ -39,10 +39,10 @@ class QueriesResolver extends Component {
   };
 
   fetchData = body => {
-    const { queries, api } = this.props;
+    const { queries, api, name = '' } = this.props;
     return api({
       method: 'POST',
-      url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql`),
+      url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql/${name}`),
       body,
     }).then(data =>
       data.map((d, i) => {
@@ -64,6 +64,7 @@ export default QueriesResolver;
 QueriesResolver.propTypes = {
   api: PropTypes.func.isRequired,
   useCache: PropTypes.bool,
+  name: PropTypes.string,
   queries: PropTypes.arrayOf(
     PropTypes.shape({
       query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
