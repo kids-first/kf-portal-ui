@@ -10,6 +10,6 @@ const Container = styled(Column)`
   border-right: 1px solid #d4d6dd;
 `;
 
-const Search = () => <Container> Search</Container>;
+const SearchAll = ({}) => <Container> Search</Container>;
 
-export default Search;
+export default SearchAll;
