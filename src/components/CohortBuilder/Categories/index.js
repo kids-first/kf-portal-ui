@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import SearchAll from './SearchAll';
+import SearchAll from '../SearchAll';
 import Category from './Category';
 import Row from 'uikit/Row';
 import QuickFilterIcon from 'icons/QuickFilterIcon';
@@ -64,7 +64,7 @@ const CATEGORY_FIELDS = {
 
 const Categories = ({ theme, sqon, onSqonUpdate }) => (
   <Container>
-    <SearchAll />
+    <SearchAll title={'Search all filters'} color={theme.filterViolet} />
     <Category
       title="Quick Filters"
       sqon={sqon}
