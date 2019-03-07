@@ -37,23 +37,19 @@ const toFileBreakdownQueries = ({ sqon, dataType, expStrat, participants }) => (
   `,
   variables: { sqon, dataType, expStrat },
   transform: data => {
-    console.log('file breakdown', data);
     const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).length;
 
-    const row = {
+    return {
       dataType,
       expStrat,
       files,
       participants,
     };
-    console.log('joined data query', data, row);
-    return row;
   },
 });
 
-const toExpStratQueries = ({ fileDataTypes, sqon }) => {
-  console.log('toExpStratQueries', fileDataTypes, sqon);
-  return fileDataTypes.map(dataType => ({
+const toExpStratQueries = ({ fileDataTypes, sqon }) =>
+  fileDataTypes.map(dataType => ({
     query: gql`
       query($sqon: JSON, $dataType: String) {
         participant {
@@ -83,43 +79,40 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) => {
     `,
     variables: { sqon, dataType },
     transform: data => {
-      console.log('to single strat', dataType, data);
+      /**
+       * Return complete file breakdown queries
+       * - each combination of file data type and file experimental strategy
+       */
       const expStratBuckets = get(
         data,
         'data.participant.aggregations.files__experiment_strategies.buckets',
         [],
       );
+
       const participants = get(data, 'data.participant.aggregations.kf_id.buckets', []).map(
         b => b.key,
       );
 
-      console.log('participants', participants);
       const fileBreakdownQueries = expStratBuckets.map(strategy =>
         toFileBreakdownQueries({ sqon, dataType, expStrat: strategy.key, participants }),
       );
 
-      console.log('fileBreakdownQueries strat', fileBreakdownQueries);
       return fileBreakdownQueries;
     },
   }));
-};
 
-const QueryResolver = ({ data, isLoading, api, sqon, children }) =>
-  isLoading ? (
-    <div>loading</div>
-  ) : (
-    <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes: data, sqon })}>
-      {({ data: fileBreakdownQueries, isLoading }) => {
-        console.log('1st', fileBreakdownQueries.flat(), isLoading);
-        return isLoading ? (
-          <div>loading</div>
-        ) : (
-          <QueriesResolver api={api} queries={fileBreakdownQueries.flat()}>
-            {children}
-          </QueriesResolver>
-        );
-      }}
-    </QueriesResolver>
-  );
+const QueryResolver = ({ data, api, sqon, children }) => (
+  <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes: data, sqon })}>
+    {({ data: fileBreakdownQueries, isLoading }) => {
+      return isLoading ? (
+        <div>loading</div>
+      ) : (
+        <QueriesResolver api={api} queries={fileBreakdownQueries.flat()}>
+          {children}
+        </QueriesResolver>
+      );
+    }}
+  </QueriesResolver>
+);
 
 export default withApi(QueryResolver);

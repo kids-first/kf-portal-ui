@@ -46,7 +46,7 @@ const Summary = ({
     {({ isLoading, data }) => {
       const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
         data || [];
-      console.log('ciaran', data);
+      console.log('Summary Index', data);
       return isLoading ? (
         <Row nogutter>
           <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
@@ -60,7 +60,7 @@ const Summary = ({
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown data={fileDataTypes} />
+                <FileBreakdown fileDataTypes={fileDataTypes} sqon={sqon} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} />

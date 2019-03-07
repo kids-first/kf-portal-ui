@@ -45,6 +45,7 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
       { op: 'in', content: { field: 'files.data_type', value: [`${dataType}`] } },
     ],
   };
+
   const participantSet = await saveSet({
     type: 'participant',
     sqon: sqon || {},
@@ -52,7 +53,8 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
     path: 'kf_id',
     api: graphql(api),
   });
-  const setId = participantSet.data.saveSet.setId;
+
+  const setId = get(participantSet, 'participantSet.data.saveSet.setId');
 
   console.log('generate file repo url', participantSet, setId);
   const fileRepoLink =
@@ -93,45 +95,6 @@ const generateFileColumnContents = (dataset, state, api) =>
     ),
   }));
 
-const FileBreakdownTable = ({ data }) => {
-  const finalData = generateFileColumnContents(data);
-  const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
-
-  return (
-    <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
-      <BaseDataTable
-        header={null}
-        columns={[
-          {
-            Header: 'Data Type',
-            accessor: 'dataType',
-            minWidth: 75,
-            style: columnStyles,
-          },
-          {
-            Header: 'Experimental Strategy',
-            accessor: 'experimentalStrategy',
-            style: columnStyles,
-          },
-          {
-            Header: 'Files',
-            accessor: 'fileLink',
-            minWidth: 40,
-            style: columnStyles,
-          },
-        ]}
-        className="-highlight"
-        data={finalData}
-        transforms={{
-          dataType: dataType => <Column>{dataType}</Column>,
-          experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
-          fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-        }}
-      />
-    </CohortCard>
-  );
-};
-
 export const fileBreakdownQuery = sqon => ({
   query: gql`
     query($sqon: JSON) {
@@ -153,17 +116,48 @@ export const fileBreakdownQuery = sqon => ({
 
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
-    {({ data, isLoading }) => (
-      <CohortCard scrollable={true} title="File Breakdown">
-        {isLoading ? (
-          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-        ) : !data ? (
-          <div>No data</div>
-        ) : (
-          <FileBreakdownTable data={data} />
-        )}
-      </CohortCard>
-    )}
+    {({ data, isLoading }) => {
+      const finalData = isLoading ? null : generateFileColumnContents(data);
+      const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
+
+      return isLoading ? (
+        <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+      ) : !data ? (
+        <div>No data</div>
+      ) : (
+        <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
+          <BaseDataTable
+            header={null}
+            columns={[
+              {
+                Header: 'Data Type',
+                accessor: 'dataType',
+                minWidth: 75,
+                style: columnStyles,
+              },
+              {
+                Header: 'Experimental Strategy',
+                accessor: 'experimentalStrategy',
+                style: columnStyles,
+              },
+              {
+                Header: 'Files',
+                accessor: 'fileLink',
+                minWidth: 40,
+                style: columnStyles,
+              },
+            ]}
+            className="-highlight"
+            data={finalData}
+            transforms={{
+              dataType: dataType => <Column>{dataType}</Column>,
+              experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+              fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+            }}
+          />
+        </CohortCard>
+      );
+    }}
   </QueryResolver>
 );
 
