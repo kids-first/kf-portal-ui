@@ -14,6 +14,8 @@ import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 
+const EXP_MISSING = '__missing__';
+
 const columnStyles = {
   margin: '-10px 0',
 };
@@ -77,8 +79,7 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
   return fileRepoLink;
 };
 
-const localizeFileQuantity = quantity =>
-  `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
+const localizeFileQuantity = quantity => `${Number(quantity).toLocaleString()}`;
 
 const generateFileColumnContents = (dataset, state, api) =>
   dataset.map(datum => ({
@@ -123,7 +124,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => {
       const finalData = isLoading ? null : generateFileColumnContents(data);
-      const filesTotal = isLoading ? null : sumTotalFilesInData(finalData).toLocaleString();
+      const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
 
       return isLoading ? (
         <LoadingSpinner color={theme.greyScale11} size={'50px'} />
@@ -156,7 +157,9 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
             data={finalData}
             transforms={{
               dataType: dataType => <Column>{dataType}</Column>,
-              experimentalStrategy: experimentalStrategy => <Column>{experimentalStrategy}</Column>,
+              experimentalStrategy: experimentalStrategy => (
+                <Column>{experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}</Column>
+              ),
               fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
             }}
           />
