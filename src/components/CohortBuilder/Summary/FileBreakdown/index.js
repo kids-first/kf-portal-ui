@@ -34,12 +34,11 @@ const sumTotalFilesInData = dataset =>
 
 const SEARCH_FILE_RELATIVE_URL = '/search/file';
 
-const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, api) => {
-  console.log('generate!!!', user, sqon);
-
+const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, api, origSqon) => {
   const sqon = {
     op: 'and',
     content: [
+      origSqon,
       {
         op: 'in',
         content: { field: 'files.experiment_strategies', value: [`${experimentalStrategy}`] },
@@ -58,43 +57,43 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
 
   const setId = get(participantSet, 'data.saveSet.setId');
 
-  const fileRepoLink =
-    `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
-    encodeURI(
-      JSON.stringify({
-        op: 'and',
-        content: [
-          {
-            op: 'in',
-            content: {
-              field: 'kf_id',
-              value: `set_id:${setId}`,
-            },
-          },
-        ],
-      }),
-    );
+  const fileSqon = {
+    op: 'and',
+    content: [
+      {
+        op: 'in',
+        content: {
+          field: 'participants.kf_id',
+          value: `set_id:${setId}`,
+        },
+      },
+    ],
+  };
+
+  const fileRepoLink = `${SEARCH_FILE_RELATIVE_URL}?sqon=` + encodeURI(JSON.stringify(fileSqon));
 
   return fileRepoLink;
 };
 
 const localizeFileQuantity = quantity => `${Number(quantity).toLocaleString()}`;
 
-const generateFileColumnContents = (dataset, state, api) =>
+const generateFileColumnContents = (dataset, state, api, sqon) =>
   dataset.map(datum => ({
     ...datum,
     fileLink: (
       <LinkWithLoader
-        getLink={async () =>
+        getLink={async e =>
           await generateFileRepositoryUrl(
             datum.dataType,
             datum.experimentalStrategy,
             state.loggedInUser,
             api,
+            sqon,
           )
         }
-        title={localizeFileQuantity(datum.files)}
-      />
+      >
+        {localizeFileQuantity(datum.files)}
+      </LinkWithLoader>
     ),
   }));
 
@@ -120,7 +119,7 @@ export const fileBreakdownQuery = sqon => ({
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => {
-      const finalData = isLoading ? null : generateFileColumnContents(data, state, api);
+      const finalData = isLoading ? null : generateFileColumnContents(data, state, api, sqon);
       const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
 
       return isLoading ? (
@@ -130,6 +129,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
       ) : (
         <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
           <BaseDataTable
+            showPagination={false}
             header={null}
             columns={[
               {
@@ -152,6 +152,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
             ]}
             className="-highlight"
             data={finalData}
+            pageSize={finalData.length}
             transforms={{
               dataType: dataType => <Column>{dataType}</Column>,
               experimentalStrategy: experimentalStrategy => (

@@ -10,7 +10,7 @@ import { get } from 'lodash';
  * - Get all Experimental Strategies
  * - Get total file counts for each combination of file data type / experimental strategy (rows)
  */
-const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy, participants }) => ({
+const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
   query: gql`
     query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
       participant {
@@ -69,11 +69,6 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
                 key
               }
             }
-            kf_id {
-              buckets {
-                key
-              }
-            }
           }
         }
       }
@@ -90,16 +85,11 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
         [],
       );
 
-      const participants = get(data, 'data.participant.aggregations.kf_id.buckets', []).map(
-        b => b.key,
-      );
-
       const fileBreakdownQueries = expStratBuckets.map(strategy =>
         toFileBreakdownQueries({
           sqon,
           dataType,
           experimentalStrategy: strategy.key,
-          participants,
         }),
       );
 
@@ -109,15 +99,15 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
 
 const QueryResolver = ({ data, api, sqon, children }) => (
   <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes: data, sqon })}>
-    {({ data: fileBreakdownQueries, isLoading }) => {
-      return isLoading ? (
+    {({ data: fileBreakdownQueries, isLoading }) =>
+      isLoading ? (
         <div>loading</div>
       ) : (
         <QueriesResolver api={api} queries={fileBreakdownQueries.flat()}>
           {children}
         </QueriesResolver>
-      );
-    }}
+      )
+    }
   </QueriesResolver>
 );
 
