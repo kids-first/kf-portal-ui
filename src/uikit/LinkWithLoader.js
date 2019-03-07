@@ -2,6 +2,7 @@ import React from 'react';
 import Component from 'react-component-component';
 import { Link, withRouter } from 'react-router-dom';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import PropTypes from 'prop-types';
 
 /**
  * Purpose is to create a link and navigate to it when you need it async
@@ -25,6 +26,10 @@ const LinkWithLoader = ({ getLink, children, history }) => (
   </Component>
 );
 
-LinkWithLoader.PropTypes = {};
+LinkWithLoader.propTypes = {
+  getLink: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+  history: PropTypes.object.isRequired,
+};
 
 export default withRouter(LinkWithLoader);
