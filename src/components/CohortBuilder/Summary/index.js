@@ -2,9 +2,7 @@ import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import { fileBreakdownMock, survivalPlotMock } from './mock';
 import { survivalPlotMock } from './mock';
-import Card from 'uikit/Card';
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
@@ -62,7 +60,7 @@ const Summary = ({
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown data={fileBreakdownMock} />
+                <FileBreakdown data={fileDataTypes} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} />

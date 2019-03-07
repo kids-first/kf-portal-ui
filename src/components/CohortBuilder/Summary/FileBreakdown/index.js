@@ -2,14 +2,12 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { CohortCard } from './ui';
-import BaseDataTable from 'uikit/DataTable';
+import { CohortCard } from '../ui';
 import { Link } from 'uikit/Core';
 import gql from 'graphql-tag';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import BaseDataTable from 'uikit/DataTable';
 import { get } from 'lodash';
-import { CardSlot } from '../index';
 import { withApi } from '../../../../services/api';
 import QueryResolver from './QueryResolver';
 import saveSet from '@arranger/components/dist/utils/saveSet';
@@ -95,7 +93,7 @@ const generateFileColumnContents = (dataset, state, api) =>
     ),
   }));
 
-const FileBreakdown = ({ data }) => {
+const FileBreakdownTable = ({ data }) => {
   const finalData = generateFileColumnContents(data);
   const filesTotal = localizeFileQuantity(sumTotalFilesInData(finalData));
 
@@ -133,6 +131,7 @@ const FileBreakdown = ({ data }) => {
     </CohortCard>
   );
 };
+
 export const fileBreakdownQuery = sqon => ({
   query: gql`
     query($sqon: JSON) {
@@ -155,38 +154,15 @@ export const fileBreakdownQuery = sqon => ({
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => (
-      <CardSlot scrollable={true} title="File Breakdown">
+      <CohortCard scrollable={true} title="File Breakdown">
         {isLoading ? (
           <LoadingSpinner color={theme.greyScale11} size={'50px'} />
         ) : !data ? (
           <div>No data</div>
         ) : (
-          <FileBreakdownWrapper>
-            <BaseDataTable
-              header={null}
-              columns={[
-                { Header: 'Data Type', accessor: 'dataType' },
-                { Header: 'Experimental Strategy', accessor: 'expStrat' },
-                { Header: 'Files', accessor: 'fileLink' },
-              ]}
-              data={generateFileColumnContents(data, state, api)}
-              transforms={{
-                dataType: dataType => <Column>{dataType}</Column>,
-                experimentalStrategy: experimentalStrategy => (
-                  <Column>{experimentalStrategy}</Column>
-                ),
-                fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-              }}
-            />
-            <TableFooter>
-              Total:
-              <a href={SEARCH_FILE_RELATIVE_URL}>
-                {localizeFileQuantity(sumTotalFilesInData(data))}
-              </a>
-            </TableFooter>
-          </FileBreakdownWrapper>
+          <FileBreakdownTable data={data} />
         )}
-      </CardSlot>
+      </CohortCard>
     )}
   </QueryResolver>
 );
