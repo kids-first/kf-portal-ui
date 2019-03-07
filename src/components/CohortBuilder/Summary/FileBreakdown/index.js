@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { CohortCard } from '../ui';
-import { Link } from 'uikit/Core';
 import gql from 'graphql-tag';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import BaseDataTable from 'uikit/DataTable';
@@ -13,6 +12,7 @@ import QueryResolver from './QueryResolver';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
+import LinkWithLoader from 'uikit/LinkWithLoader';
 
 const EXP_MISSING = '__missing__';
 
@@ -84,22 +84,17 @@ const generateFileColumnContents = (dataset, state, api) =>
   dataset.map(datum => ({
     ...datum,
     fileLink: (
-      <a
-        onClick={async () => {
-          console.log('Genereate file repo link', this.props);
-
-          const url = await generateFileRepositoryUrl(
+      <LinkWithLoader
+        getLink={async () =>
+          await generateFileRepositoryUrl(
             datum.dataType,
             datum.experimentalStrategy,
             state.loggedInUser,
             api,
-          );
-
-          console.log('url', url);
-        }}
-      >
-        {localizeFileQuantity(datum.files)}
-      </a>
+          )
+        }
+        title={localizeFileQuantity(datum.files)}
+      />
     ),
   }));
 
