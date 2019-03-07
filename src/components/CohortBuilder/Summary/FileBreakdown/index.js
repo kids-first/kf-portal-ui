@@ -87,7 +87,12 @@ const generateFileColumnContents = (dataset, state, api) =>
       <a
         href=""
         onClick={() =>
-          generateFileRepositoryUrl(datum.dataType, datum.expStrat, state.loggedInUser, api)
+          generateFileRepositoryUrl(
+            datum.dataType,
+            datum.experimentalStrategy,
+            state.loggedInUser,
+            api,
+          )
         }
       >
         {localizeFileQuantity(datum.files)}
@@ -118,7 +123,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => {
       const finalData = isLoading ? null : generateFileColumnContents(data);
-      const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
+      const filesTotal = isLoading ? null : sumTotalFilesInData(finalData).toLocaleString();
 
       return isLoading ? (
         <LoadingSpinner color={theme.greyScale11} size={'50px'} />

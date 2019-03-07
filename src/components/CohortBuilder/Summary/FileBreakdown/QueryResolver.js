@@ -11,16 +11,19 @@ import { get } from 'lodash';
  * - Get total file counts for each combination of file data type / experimental strategy (rows)
  */
 const EMTPY_EXP = '__missing__';
-const toFileBreakdownQueries = ({ sqon, dataType, expStrat, participants }) => ({
+const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy, participants }) => ({
   query: gql`
-    query($sqon: JSON, $dataType: String, $expStrat: String) {
+    query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
       participant {
         aggregations(
           filters: {
             op: "and"
             content: [
               $sqon
-              { op: "in", content: { field: "files.experiment_strategies", value: [$expStrat] } }
+              {
+                op: "in"
+                content: { field: "files.experiment_strategies", value: [$experimentalStrategy] }
+              }
               { op: "in", content: { field: "files.data_type", value: [$dataType] } }
             ]
           }
@@ -35,13 +38,13 @@ const toFileBreakdownQueries = ({ sqon, dataType, expStrat, participants }) => (
       }
     }
   `,
-  variables: { sqon, dataType, expStrat },
+  variables: { sqon, dataType, experimentalStrategy },
   transform: data => {
     const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).length;
 
     return {
       dataType,
-      expStrat,
+      experimentalStrategy,
       files,
       participants,
     };
@@ -94,7 +97,12 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
       );
 
       const fileBreakdownQueries = expStratBuckets.map(strategy =>
-        toFileBreakdownQueries({ sqon, dataType, expStrat: strategy.key, participants }),
+        toFileBreakdownQueries({
+          sqon,
+          dataType,
+          experimentalStrategy: strategy.key,
+          participants,
+        }),
       );
 
       return fileBreakdownQueries;
