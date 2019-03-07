@@ -6,16 +6,13 @@
   overflow: hidden;
 }
 
-.search-all-filter .query-content {
+/***** INPUT FIELD *****/
+.query-content {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-/***** INPUT FIELD *****/
-.query-content {
   border-radius: 2px;
   border: solid 1px black;
   padding: 5px;
@@ -76,13 +73,4 @@
   background-color: lightgrey;
   border-top: 1px solid lightgrey;
   padding: 8px;
-}
-
-.results-section.results-footer button {
-}
-
-.results-section.results-footer button.cancel {
-}
-
-.results-section.results-footer button.apply {
 }

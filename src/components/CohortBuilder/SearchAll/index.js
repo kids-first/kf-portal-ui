@@ -41,6 +41,13 @@ const QueryContainer = styled(Column)`
     border-radius: 10px;
     border: solid 2px ${({ theme }) => theme.greyScale8};
 
+    & input {
+      font-family: ${({ theme }) => theme.fonts.details};
+      font-weight: bold;
+      font-size: 14px;
+      color: ${({ theme }) => theme.greyScale1};
+    }
+
     &:hover {
       box-shadow: 0 0 10px skyblue;
     }
@@ -48,6 +55,10 @@ const QueryContainer = styled(Column)`
 
   .input-icon {
     color: ${({ theme }) => theme.greyScale11};
+
+    &.icon-right {
+      color: ${({ theme }) => theme.greyScale1};
+    }
   }
 `;
 
@@ -60,7 +71,7 @@ const ResultsContainer = styled('div')`
 
   border: 1px solid ${({ theme }) => theme.greyScale5};
   border-radius: 5px;
-  box-shadow: ${({ theme }) => theme.card['box-shadow']};
+  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.lighterShadow};
   background-color: white;
   padding: 0;
 
@@ -75,7 +86,7 @@ const ResultsContainer = styled('div')`
       font-family: ${({ theme }) => theme.fonts.details};
       font-style: italic;
       font-size: 12px;
-      color: ${({ theme }) => theme.card.color};
+      color: ${({ theme }) => theme.greyScale1};
       width: 100%;
       border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
     }
@@ -90,20 +101,12 @@ const ResultsContainer = styled('div')`
   }
 `;
 
-// TODO JB
-// - fix styles
-// - ref: rename title => placeholder
-// - ref: extract query to component
-// - ref: extract result to component
-// -
-
 class SearchAll extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: '',
       isOpen: false,
-      resultsCount: 0,
     };
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleClearQuery = this.handleClearQuery.bind(this);
@@ -126,7 +129,8 @@ class SearchAll extends React.Component {
 
   render() {
     const { color, title } = this.props;
-    const { value, isOpen, resultsCount } = this.state;
+    const { value, isOpen } = this.state;
+    const resultsCount = 0;
 
     return (
       <SearchAllContainer className="search-all-filter">
@@ -155,7 +159,7 @@ class SearchAll extends React.Component {
             <div className="results-section results-body" />
             <div className="results-section results-footer">
               <WhiteButton onClick={this.handleClearQuery}>Cancel</WhiteButton>
-              <TealActionButton disabled={false} onClick={() => {}}>
+              <TealActionButton disabled={false} onClick={() => alert('to do')}>
                 Apply
               </TealActionButton>
             </div>
