@@ -119,7 +119,7 @@ export const studiesQuery = sqon => ({
   query: gql`
     query($sqon: JSON) {
       participant {
-        aggregations(filters: $sqon) {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           study__short_name {
             buckets {
               key
