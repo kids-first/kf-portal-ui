@@ -42,7 +42,7 @@ const toFileBreakdownQueries = ({ sqon, dataType, expStrat, participants }) => (
 
     const row = {
       dataType,
-      expStrat: expStrat === EMTPY_EXP ? '' : expStrat,
+      expStrat,
       files,
       participants,
     };

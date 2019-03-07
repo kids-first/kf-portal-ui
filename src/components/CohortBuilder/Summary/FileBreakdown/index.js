@@ -12,6 +12,9 @@ import { get } from 'lodash';
 import { CardSlot } from '../index';
 import { withApi } from '../../../../services/api';
 import QueryResolver from './QueryResolver';
+import saveSet from '@arranger/components/dist/utils/saveSet';
+import { injectState } from 'freactal';
+import graphql from 'services/arranger';
 
 const columnStyles = {
   margin: '-10px 0',
@@ -31,38 +34,62 @@ const sumTotalFilesInData = dataset =>
 
 const SEARCH_FILE_RELATIVE_URL = '/search/file';
 
-const generateFileRepositoryUrl = (dataType, experimentalStrategy) =>
-  `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
-  encodeURI(
-    JSON.stringify({
-      op: 'and',
-      content: [
-        {
-          op: 'in',
-          content: {
-            field: 'data_type',
-            value: [dataType],
+const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, api) => {
+  console.log('generate!!!', user, sqon);
+
+  const sqon = {
+    op: 'and',
+    content: [
+      {
+        op: 'in',
+        content: { field: 'files.experiment_strategies', value: [`${experimentalStrategy}`] },
+      },
+      { op: 'in', content: { field: 'files.data_type', value: [`${dataType}`] } },
+    ],
+  };
+  const participantSet = await saveSet({
+    type: 'participant',
+    sqon: sqon || {},
+    userId: user.egoId,
+    path: 'kf_id',
+    api: graphql(api),
+  });
+  const setId = participantSet.data.saveSet.setId;
+
+  console.log('generate file repo url', participantSet, setId);
+  const fileRepoLink =
+    `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
+    encodeURI(
+      JSON.stringify({
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: {
+              field: 'kf_id',
+              value: `set_id:${setId}`,
+            },
           },
-        },
-        {
-          op: 'in',
-          content: {
-            field: 'sequencing_experiments.experiment_strategy',
-            value: [experimentalStrategy],
-          },
-        },
-      ],
-    }),
-  );
+        ],
+      }),
+    );
+  console.log('file rpeo link', fileRepoLink);
+  return fileRepoLink;
+};
 
 const localizeFileQuantity = quantity =>
   `${Number(quantity).toLocaleString()} file${quantity > 1 ? 's' : ''}`;
 
-const generateFileColumnContents = dataset =>
+const generateFileColumnContents = (dataset, state, api) =>
   dataset.map(datum => ({
     ...datum,
     fileLink: (
-      <a href={generateFileRepositoryUrl(datum.dataType, datum.expStrat)}>
+      <a
+        href=""
+        onClick={() =>
+          generateFileRepositoryUrl(datum.dataType, datum.expStrat, state.loggedInUser, api)
+        }
+      >
         {localizeFileQuantity(datum.files)}
       </a>
     ),
@@ -125,7 +152,7 @@ export const fileBreakdownQuery = sqon => ({
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
-const FileBreakdown = ({ fileDataTypes, sqon, theme }) => (
+const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => (
       <CardSlot scrollable={true} title="File Breakdown">
@@ -142,7 +169,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme }) => (
                 { Header: 'Experimental Strategy', accessor: 'expStrat' },
                 { Header: 'Files', accessor: 'fileLink' },
               ]}
-              data={generateFileColumnContents(data)}
+              data={generateFileColumnContents(data, state, api)}
               transforms={{
                 dataType: dataType => <Column>{dataType}</Column>,
                 experimentalStrategy: experimentalStrategy => (
@@ -167,4 +194,5 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme }) => (
 export default compose(
   withTheme,
   withApi,
+  injectState,
 )(FileBreakdown);
