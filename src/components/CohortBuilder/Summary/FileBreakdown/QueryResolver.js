@@ -10,7 +10,6 @@ import { get } from 'lodash';
  * - Get all Experimental Strategies
  * - Get total file counts for each combination of file data type / experimental strategy (rows)
  */
-const EMTPY_EXP = '__missing__';
 const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy, participants }) => ({
   query: gql`
     query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
@@ -46,7 +45,6 @@ const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy, particip
       dataType,
       experimentalStrategy,
       files,
-      participants,
     };
   },
 });

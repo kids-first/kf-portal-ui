@@ -56,9 +56,8 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
     api: graphql(api),
   });
 
-  const setId = get(participantSet, 'participantSet.data.saveSet.setId');
+  const setId = get(participantSet, 'data.saveSet.setId');
 
-  console.log('generate file repo url', participantSet, setId);
   const fileRepoLink =
     `${SEARCH_FILE_RELATIVE_URL}?sqon=` +
     encodeURI(
@@ -75,7 +74,7 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
         ],
       }),
     );
-  console.log('file rpeo link', fileRepoLink);
+
   return fileRepoLink;
 };
 
@@ -86,15 +85,18 @@ const generateFileColumnContents = (dataset, state, api) =>
     ...datum,
     fileLink: (
       <a
-        href=""
-        onClick={() =>
-          generateFileRepositoryUrl(
+        onClick={async () => {
+          console.log('Genereate file repo link', this.props);
+
+          const url = await generateFileRepositoryUrl(
             datum.dataType,
             datum.experimentalStrategy,
             state.loggedInUser,
             api,
-          )
-        }
+          );
+
+          console.log('url', url);
+        }}
       >
         {localizeFileQuantity(datum.files)}
       </a>
@@ -123,7 +125,7 @@ export const fileBreakdownQuery = sqon => ({
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <QueryResolver sqon={sqon} data={fileDataTypes}>
     {({ data, isLoading }) => {
-      const finalData = isLoading ? null : generateFileColumnContents(data);
+      const finalData = isLoading ? null : generateFileColumnContents(data, state, api);
       const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
 
       return isLoading ? (
