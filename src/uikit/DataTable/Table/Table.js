@@ -7,6 +7,7 @@ import CustomPagination from '../Pagination';
 
 const Table = withTheme(
   ({
+    showPagination,
     loading,
     data,
     columns,
@@ -18,6 +19,7 @@ const Table = withTheme(
   }) => (
     <StyleWrapper styles={styles}>
       <ReactTable
+        showPagination={showPagination}
         loading={loading}
         data={data}
         columns={columns}
