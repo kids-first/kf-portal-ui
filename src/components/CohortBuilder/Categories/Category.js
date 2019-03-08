@@ -174,6 +174,7 @@ const Category = compose(withDropdownMultiPane)(
               onSubmit={sqon => {
                 onSqonUpdate(sqon);
                 toggleExpanded();
+                setDropdownVisibility(false);
               }}
               onBack={toggleExpanded}
               onCancel={toggleExpandedDropdown}
