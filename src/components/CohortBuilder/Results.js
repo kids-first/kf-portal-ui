@@ -19,6 +19,7 @@ import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
 import { isEmpty } from 'lodash';
+import LinkWithLoader from 'uikit/LinkWithLoader';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -99,11 +100,12 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
               <SubHeading>
                 {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
               </SubHeading>
-              <PurpleLink to="">
+              <LinkWithLoader>
+                {' '}
                 <SubHeading color={theme.purple}>{`${Number(
                   data[0].filesCount || 0,
                 ).toLocaleString()} Files`}</SubHeading>
-              </PurpleLink>
+              </LinkWithLoader>
             </Detail>
             <ViewLinks>
               <ViewLink
