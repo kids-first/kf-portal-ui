@@ -29,7 +29,6 @@ const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, s
       error ? (
         <TableErrorView error={error} />
       ) : (
-        // <React.Fragment>
         <Card>
           <ParticipantsTable
             loading={isLoading}
@@ -41,7 +40,6 @@ const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, s
             }}
           />
         </Card>
-        // </React.Fragment>
       )
     }
   </QueriesResolver>
