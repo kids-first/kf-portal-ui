@@ -7,6 +7,7 @@ import CustomPagination from '../Pagination';
 
 const Table = withTheme(
   ({
+    showPagination,
     loading,
     data,
     columns,
@@ -18,10 +19,11 @@ const Table = withTheme(
   }) => (
     <StyleWrapper styles={styles}>
       <ReactTable
+        showPagination={showPagination}
         loading={loading}
         data={data}
         columns={columns}
-        showPagination={data.length > 10}
+        // showPagination={data.length > 10}
         onPageChange={onPageChange}
         onPageSizeChange={onPageSizeChange}
         sortable={false}
