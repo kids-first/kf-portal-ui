@@ -97,8 +97,8 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
     },
   }));
 
-const QueryResolver = ({ data, api, sqon, children }) => (
-  <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes: data, sqon })}>
+const FileBreakdownQueryResolver = ({ fileDataTypes, api, sqon, children }) => (
+  <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes, sqon })}>
     {({ data: fileBreakdownQueries, isLoading }) =>
       isLoading ? (
         <div>loading</div>
@@ -111,4 +111,4 @@ const QueryResolver = ({ data, api, sqon, children }) => (
   </QueriesResolver>
 );
 
-export default withApi(QueryResolver);
+export default withApi(FileBreakdownQueryResolver);

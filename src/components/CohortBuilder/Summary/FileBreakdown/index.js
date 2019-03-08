@@ -7,8 +7,8 @@ import gql from 'graphql-tag';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import BaseDataTable from 'uikit/DataTable';
 import { get } from 'lodash';
-import { withApi } from '../../../../services/api';
-import QueryResolver from './QueryResolver';
+import { withApi } from 'services/api';
+import FileBreakdownQueryResolver from './FileBreakdownQueryResolver';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
@@ -117,7 +117,7 @@ export const fileBreakdownQuery = sqon => ({
 });
 
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
-  <QueryResolver sqon={sqon} data={fileDataTypes}>
+  <FileBreakdownQueryResolver sqon={sqon} fileDataTypes={fileDataTypes}>
     {({ data, isLoading }) => {
       const finalData = isLoading ? null : generateFileColumnContents(data, state, api, sqon);
       const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
@@ -164,7 +164,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
         </CohortCard>
       );
     }}
-  </QueryResolver>
+  </FileBreakdownQueryResolver>
 );
 
 export default compose(
