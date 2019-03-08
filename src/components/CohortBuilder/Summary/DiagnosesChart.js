@@ -9,26 +9,9 @@ import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
-/*
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
-};*/
-// TODO REMOVE THIS !!!
-const mostFrequentDiagnosisTooltip = data => {
-  const { familyMembers, probands, name } = data;
-  console.log('fam jam', familyMembers, 'bands on the run', probands, name);
-  const participants = familyMembers + probands;
-  return (
-    <div>
-      <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Proband${probands !== 1 ? 's' : ''}`}</div>
-      <div>{`${familyMembers.toLocaleString()} Family Member${
-        familyMembers !== 1 ? 's' : ''
-      }`}</div>
-      <div>{`${participants.toLocaleString()} Participant${participants !== 1 ? 's' : ''}`}</div>
-    </div>
-  );
 };
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
