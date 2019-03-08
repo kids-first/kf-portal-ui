@@ -55,14 +55,10 @@ const cohortChartColors = {
 };
 
 export const getCohortBarColors = data => {
-  console.log('get cohort colors', data, cohortChartColors);
   const hasProbands = data.some(d => d.probands !== 0);
   const hasFamilyMembers = data.some(d => d.familyMembers !== 0);
   const colors = [];
   if (hasProbands) colors.push(cohortChartColors.proband);
   if (hasFamilyMembers) colors.push(cohortChartColors.familyMembers);
-  console.log('Colors', colors);
   return colors;
 };
-
-export const getCohortLegends = data => null;

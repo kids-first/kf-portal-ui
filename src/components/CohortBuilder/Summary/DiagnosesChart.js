@@ -78,16 +78,12 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     variables: { sqon, diagnosis },
     transform: data => ({
       label: startCase(diagnosis),
-      probands: get(
+      familyMembers: get(
         data,
         'data.participant.familyMembers.diagnoses__diagnosis.buckets[0].doc_count',
         0,
       ),
-      familyMembers: get(
-        data,
-        'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count',
-        0,
-      ),
+      probands: get(data, 'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count', 0),
     }),
   }));
 
