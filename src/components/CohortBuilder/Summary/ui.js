@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import Card from 'uikit/Card';
 import CardHeader, { Badge } from 'uikit/Card/CardHeader';
 import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
+import { chartColors } from 'theme/defaultTheme';
 
 export const BarChartContainer = styled('div')`
   position: absolute;
@@ -47,3 +48,21 @@ export const CohortCard = ({ title, badge, children, long = false, ...props }) =
     {children}
   </Card>
 );
+
+const cohortChartColors = {
+  proband: chartColors.blue,
+  familyMembers: chartColors.purple,
+};
+
+export const getCohortBarColors = data => {
+  console.log('get cohort colors', data, cohortChartColors);
+  const hasProbands = data.some(d => d.probands !== 0);
+  const hasFamilyMembers = data.some(d => d.familyMembers !== 0);
+  const colors = [];
+  if (hasProbands) colors.push(cohortChartColors.proband);
+  if (hasFamilyMembers) colors.push(cohortChartColors.familyMembers);
+  console.log('Colors', colors);
+  return colors;
+};
+
+export const getCohortLegends = data => null;

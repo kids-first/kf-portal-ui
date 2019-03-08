@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CohortCard, BarChartContainer } from './ui';
+import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -100,7 +100,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
               tooltipFormatter={studiesToolTip}
               sortBy={sortDescParticipant}
               tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              colors={getCohortBarColors(data)}
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },

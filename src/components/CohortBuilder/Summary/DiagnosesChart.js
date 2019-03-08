@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { BarChartContainer, CohortCard } from './ui';
+import { BarChartContainer, CohortCard, getCohortBarColors } from './ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
@@ -9,9 +9,24 @@ import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
+/*
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
+};*/
+// TODO REMOVE THIS !!!
+const mostFrequentDiagnosisTooltip = data => {
+  const { familyMembers, probands, name } = data;
+  console.log('fam jam', familyMembers, 'bands on the run', probands, name);
+  const participants = familyMembers + probands;
+  return (
+    <div>
+      <div>{name}</div>
+      <div>{`${probands.toLocaleString()} Proband${participants !== 1 ? 's' : ''}`}</div>
+      <div>{`${familyMembers.toLocaleString()} Family Member${participants !== 1 ? 's' : ''}`}</div>
+      <div>{`${participants.toLocaleString()} Participant${participants !== 1 ? 's' : ''}`}</div>
+    </div>
+  );
 };
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
@@ -97,7 +112,7 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
               keys={['probands', 'familyMembers']}
               tooltipFormatter={mostFrequentDiagnosisTooltip}
               tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              colors={getCohortBarColors(data)}
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
