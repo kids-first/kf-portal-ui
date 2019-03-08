@@ -9,6 +9,8 @@ import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
 import TableErrorView from './TableErrorView';
 
+import Card from 'uikit/Card';
+
 const enhance = compose(
   withApi,
   withTheme,
@@ -27,7 +29,8 @@ const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, s
       error ? (
         <TableErrorView error={error} />
       ) : (
-        <React.Fragment>
+        // <React.Fragment>
+        <Card>
           <ParticipantsTable
             loading={isLoading}
             data={data[0] ? data[0].nodes : []}
@@ -37,7 +40,8 @@ const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, s
               setPageSize(pageSize);
             }}
           />
-        </React.Fragment>
+        </Card>
+        // </React.Fragment>
       )
     }
   </QueriesResolver>
