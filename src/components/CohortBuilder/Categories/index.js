@@ -24,9 +24,9 @@ const Container = styled(Row)`
 const CATEGORY_FIELDS = {
   quickSearch: [
     'available_data_types',
-    'diagnosis.diagnosis',
+    'diagnoses.diagnosis',
     'is_proband',
-    'particpant.diagnosis_category',
+    'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'study.short_name',
   ],
@@ -58,7 +58,7 @@ const CATEGORY_FIELDS = {
   ],
   availableData: [
     'available_data_types',
-    'files.experiment_strategy',
+    'files.experiment_strategies',
     'family.family_compositions.available_data_types',
   ],
 };
