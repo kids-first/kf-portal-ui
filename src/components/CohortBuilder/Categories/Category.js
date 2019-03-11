@@ -20,7 +20,7 @@ const Container = styled(Column)`
   border-top: 4px solid ${({ color }) => (color ? color : 'white')};
   position: relative;
   white-space: nowrap;
-  z-index: 1000;
+  z-index: 1;
 `;
 
 /**

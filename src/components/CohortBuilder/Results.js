@@ -123,12 +123,12 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
             </ViewLinks>
           </Content>
           <ActiveView>
-            {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
             {activeView === SUMMARY ? (
               <Summary sqon={sqon} />
             ) : (
               <ParticipantsTableView sqon={sqon} />
             )}
+            {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </ActiveView>
         </React.Fragment>
       );

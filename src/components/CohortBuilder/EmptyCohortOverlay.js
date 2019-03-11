@@ -8,14 +8,13 @@ const StyleOverlay = styled('div')`
   width: 100vw;
   height: 100%;
   left: 0;
-  z-index: 101;
+  top: 0px;
   display: flex;
   justify-content: center;
 `;
 
 const StyleMessage = styled('div')`
   margin-top: 100px;
-  z-index: 1002;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 15px 35px;
