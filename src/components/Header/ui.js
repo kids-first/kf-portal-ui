@@ -86,7 +86,7 @@ export const HeaderContainer = styled('div')`
   background: ${({ theme }) => theme.white};
   box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.lighterShadow};
   flex: none;
-  z-index: 2000;
+  z-index: 2;
 `;
 
 export const GradientAccent = styled('div')`
