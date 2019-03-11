@@ -5,13 +5,13 @@ import ContentBar from './ContentBar';
 import Summary from './Summary';
 import Row from 'uikit/Row';
 import ViewLink from 'uikit/ViewLink';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { H2 } from 'uikit/Headings';
 import ParticipantsTableView from './ParticipantsTableView';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
-import { Link } from 'react-router-dom';
+import { Link } from 'uikit/Core';
 import { withApi } from 'services/api';
 import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
@@ -45,17 +45,28 @@ const ActiveView = styled('div')`
   position: relative;
 `;
 
+const SubHeadingStyle = props => {
+  const { fontWeight, theme } = props;
+  return css`
+    font-weight: ${fontWeight ? fontWeight : 600};
+    font-family: ${theme.default};
+    font-size: 16px;
+    padding: 0 3px;
+    margin: 0;
+  `;
+};
+
 const SubHeading = styled('h3')`
-  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 600)};
-  font-family: ${({ theme }) => theme.default};
-  font-size: 16px;
+${SubHeadingStyle}
   color: ${({ color, theme }) => (color ? color : theme.secondary)};
-  padding: 0 3px;
-  margin: 0;
 `;
 
-const PurpleLink = styled(Link)`
+const PurpleLinkWithLoader = styled(LinkWithLoader)`
+  ${SubHeadingStyle};
   color: ${({ theme }) => theme.purple};
+  &:hover {
+    color: ${({ theme }) => theme.linkPurple};
+  }
 `;
 
 const ResultsHeading = styled('div')`
@@ -100,12 +111,9 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
               <SubHeading>
                 {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
               </SubHeading>
-              <LinkWithLoader>
-                {' '}
-                <SubHeading color={theme.purple}>{`${Number(
-                  data[0].filesCount || 0,
-                ).toLocaleString()} Files`}</SubHeading>
-              </LinkWithLoader>
+              <PurpleLinkWithLoader>
+                {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
+              </PurpleLinkWithLoader>
             </Detail>
             <ViewLinks>
               <ViewLink
