@@ -145,7 +145,7 @@ const Results = ({
   </QueriesResolver>
 );
 
-QueriesResolver.propTypes = {
+Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
   sqon: PropTypes.object.isRequired,
   onRemoveFromCohort: PropTypes.func.isRequired,

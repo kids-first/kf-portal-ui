@@ -61,7 +61,7 @@ const CohortBuilder = ({ api, state: { loggedInUser } }) => (
         saveSet({
           type: 'participant',
           sqon: {
-            op: 'in',
+            op: 'not-in',
             content: {
               field: 'kf_id',
               value: participantIds,
@@ -77,16 +77,11 @@ const CohortBuilder = ({ api, state: { loggedInUser } }) => (
               content: [
                 activeSqonIndex,
                 {
-                  op: 'not',
-                  content: [
-                    {
-                      op: 'in',
-                      content: {
-                        field: 'kf_id',
-                        value: [`set_id:${data.saveSet.setId}`],
-                      },
-                    },
-                  ],
+                  op: 'in',
+                  content: {
+                    field: 'kf_id',
+                    value: [`set_id:${data.saveSet.setId}`],
+                  },
                 },
               ],
             };
