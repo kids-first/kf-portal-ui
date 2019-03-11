@@ -24,8 +24,9 @@ const Container = styled(Row)`
 const CATEGORY_FIELDS = {
   quickSearch: [
     'available_data_types',
-    'diagnosis.diagnosis',
-    'particpant.diagnosis_category',
+    'diagnoses.diagnosis',
+    'is_proband',
+    'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'study.short_name',
   ],
@@ -34,17 +35,17 @@ const CATEGORY_FIELDS = {
   clinical: [
     'affected_status',
     'diagnoses.age_at_event_days',
-    'outcome.age_at_event_days',
-    'phenotype.age_at_event_days',
-    'phenotypes.ancestral_hpo_ids',
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
-    'family.family_compositions.composition',
-    'family.family_compositions.shared_phenotype_ids',
-    'outcome.is_disease_related',
-    'phenotype.hpo_phenotype_observed_text',
     'diagnoses.source_text_tumor_location',
+    'family.family_compositions.composition',
+    'family.family_compositions.shared_hpo_ids',
+    'outcome.age_at_event_days',
+    'outcome.disease_related',
     'outcome.vital_status',
+    'phenotype.age_at_event_days',
+    'phenotype.hpo_phenotype_observed_text',
+    'phenotypes.ancestral_hpo_ids',
   ],
   biospecimen: [
     'biospecimens.age_at_event_days',
@@ -57,7 +58,7 @@ const CATEGORY_FIELDS = {
   ],
   availableData: [
     'available_data_types',
-    'files.experiment_strategy',
+    'files.experiment_strategies',
     'family.family_compositions.available_data_types',
   ],
 };

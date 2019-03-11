@@ -10,6 +10,8 @@ import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
 import TableErrorView from './TableErrorView';
 
+import Card from 'uikit/Card';
+
 const enhance = compose(
   withApi,
   withTheme,
@@ -40,7 +42,11 @@ const ParticipantsTableView = ({
     >
       {({ isLoading, data, error }) => {
         if (error) {
-          return <TableErrorView error={error} />;
+          return (
+            <Card>
+              <TableErrorView error={error} />
+            </Card>
+          );
         }
 
         const isRowSelected = node =>
@@ -51,43 +57,45 @@ const ParticipantsTableView = ({
           : [];
 
         return (
-          <ParticipantsTable
-            loading={isLoading}
-            data={dataWithRowSelection}
-            dataTotalCount={data[0] ? data[0].total : 0}
-            downloadName={'participant-table'}
-            onFetchData={({ page, pageSize }) => {
-              setPageIndex(page);
-              setPageSize(pageSize);
-            }}
-            onRowSelected={(checked, row) => {
-              const rowId = row.participantId;
-              if (checked) {
-                setSelectedRows(s => s.concat(rowId));
-                return;
-              }
-              setSelectedRows(s => s.filter(row => row !== rowId));
-            }}
-            onAllRowsSelected={checked => {
-              // don't keep individual rows selected when "select all" is checked
-              //  to avoid having them selected after "unselect all"
-              setAllRowsSelected(s => checked);
-              setSelectedRows(s => []);
-            }}
-            onClearSelected={() => {
-              setAllRowsSelected(s => false);
-              setSelectedRows(s => []);
-            }}
-            onRemoveFromCohort={() => {
-              // remove the selected participants from the cohort
-              onRemoveFromCohort(selectedRows);
-              // clear selection
-              setAllRowsSelected(s => false);
-              setSelectedRows(s => []);
-            }}
-            selectedRows={selectedRows}
-            allRowsSelected={allRowsSelected}
-          />
+          <Card>
+            <ParticipantsTable
+              loading={isLoading}
+              data={dataWithRowSelection}
+              dataTotalCount={data[0] ? data[0].total : 0}
+              downloadName={'participant-table'}
+              onFetchData={({ page, pageSize }) => {
+                setPageIndex(page);
+                setPageSize(pageSize);
+              }}
+              onRowSelected={(checked, row) => {
+                const rowId = row.participantId;
+                if (checked) {
+                  setSelectedRows(s => s.concat(rowId));
+                  return;
+                }
+                setSelectedRows(s => s.filter(row => row !== rowId));
+              }}
+              onAllRowsSelected={checked => {
+                // don't keep individual rows selected when "select all" is checked
+                //  to avoid having them selected after "unselect all"
+                setAllRowsSelected(s => checked);
+                setSelectedRows(s => []);
+              }}
+              onClearSelected={() => {
+                setAllRowsSelected(s => false);
+                setSelectedRows(s => []);
+              }}
+              onRemoveFromCohort={() => {
+                // remove the selected participants from the cohort
+                onRemoveFromCohort(selectedRows);
+                // clear selection
+                setAllRowsSelected(s => false);
+                setSelectedRows(s => []);
+              }}
+              selectedRows={selectedRows}
+              allRowsSelected={allRowsSelected}
+            />
+          </Card>
         );
       }}
     </QueriesResolver>
