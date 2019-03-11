@@ -24,9 +24,9 @@ const Container = styled(Row)`
 const CATEGORY_FIELDS = {
   quickSearch: [
     'available_data_types',
-    'diagnosis.diagnosis',
+    'diagnoses.diagnosis',
     'is_proband',
-    'particpant.diagnosis_category',
+    'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'study.short_name',
   ],
@@ -39,9 +39,9 @@ const CATEGORY_FIELDS = {
     'diagnoses.diagnosis_category',
     'diagnoses.source_text_tumor_location',
     'family.family_compositions.composition',
-    'family.family_compositions.shared_phenotype_ids',
+    'family.family_compositions.shared_hpo_ids',
     'outcome.age_at_event_days',
-    'outcome.is_disease_related',
+    'outcome.disease_related',
     'outcome.vital_status',
     'phenotype.age_at_event_days',
     'phenotype.hpo_phenotype_observed_text',
@@ -58,7 +58,7 @@ const CATEGORY_FIELDS = {
   ],
   availableData: [
     'available_data_types',
-    'files.experiment_strategy',
+    'files.experiment_strategies',
     'family.family_compositions.available_data_types',
   ],
 };
