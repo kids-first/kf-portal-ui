@@ -69,6 +69,7 @@ const CohortBuilder = () => (
               activeSqonIndex={activeSqonIndex}
               onChange={sqonBuilderSqonsChange}
               onActiveSqonSelect={sqonBuilderActiveSqonSelect}
+              emptyEntryMessage="Use the filters above to build a query"
             />
           </FullWidthWhite>
           <Results sqon={executableSqon} activeSqonIndex={activeSqonIndex} />
