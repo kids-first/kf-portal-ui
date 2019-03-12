@@ -94,7 +94,7 @@ const App = compose(
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
         <Route
-          path="/explore/:index"
+          path="/cohort"
           exact
           render={props =>
             forceSelectRole({

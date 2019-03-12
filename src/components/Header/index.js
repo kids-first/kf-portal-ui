@@ -71,7 +71,7 @@ const Header = ({
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to="/explore/participant">
+                    <NavLink currentPathName={currentPathName} to="/cohort">
                       <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
                     </NavLink>
                   </li>
