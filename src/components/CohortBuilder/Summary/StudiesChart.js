@@ -32,46 +32,46 @@ const sortDescParticipant = (a, b) => {
 const toSingleStudyQueries = ({ studies, sqon }) =>
   studies.map(studyShortName => ({
     query: gql`
-        query($sqon: JSON) {
-          participant {
-            familyMembers: aggregations(
-              aggregations_filter_themselves: true
-              filters: {
-                op: "and"
-                content: [
-                  $sqon
-                  { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
-                  { op: "in", content: { field: "is_proband", value: ["false"] } }
-                ]
-              }
-            ) {
-              kf_id {
-                buckets {
-                  key
-                }
+      query($sqon: JSON, $studyShortName: String) {
+        participant {
+          familyMembers: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
+                { op: "in", content: { field: "is_proband", value: ["false"] } }
+              ]
+            }
+          ) {
+            kf_id {
+              buckets {
+                key
               }
             }
-            proband: aggregations(
-              aggregations_filter_themselves: true
-              filters: {
-                op: "and"
-                content: [
-                  $sqon
-                  { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
-                  { op: "in", content: { field: "is_proband", value: ["true"] } }
-                ]
-              }
-            ) {
-              kf_id {
-                buckets {
-                  key
-                }
+          }
+          proband: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
+                { op: "in", content: { field: "is_proband", value: ["true"] } }
+              ]
+            }
+          ) {
+            kf_id {
+              buckets {
+                key
               }
             }
           }
         }
-      `,
-    variables: { sqon },
+      }
+    `,
+    variables: { sqon, studyShortName },
     transform: data => ({
       label: studyShortName,
       familyMembers: size(get(data, 'data.participant.familyMembers.kf_id.buckets')),
