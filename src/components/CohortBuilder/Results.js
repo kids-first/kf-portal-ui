@@ -11,7 +11,6 @@ import ParticipantsTableView from './ParticipantsTableView';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
-import { Link } from 'uikit/Core';
 import { withApi } from 'services/api';
 import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
@@ -20,6 +19,11 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
 import { isEmpty } from 'lodash';
 import LinkWithLoader from 'uikit/LinkWithLoader';
+import { createFileRepoLink } from './util';
+import { injectState } from 'freactal';
+import saveSet from '@arranger/components/dist/utils/saveSet';
+import graphql from 'services/arranger';
+import { get } from 'lodash';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -80,7 +84,47 @@ const Content = styled(ContentBar)`
   padding: 0 30px 0 34px;
 `;
 
-const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
+const generateAllFilesLink = async (user, api, files) => {
+  console.log('generate all files link', user, api, files);
+  const sqon = {
+    op: 'and',
+    content: [
+      {
+        op: 'in',
+        content: { field: 'kf_id', value: files },
+      },
+    ],
+  };
+
+  const participantSet = await saveSet({
+    type: 'file',
+    sqon: sqon || {},
+    userId: user.egoId,
+    path: 'kf_id',
+    api: graphql(api),
+  });
+
+  const setId = get(participantSet, 'data.saveSet.setId');
+
+  const fileSqon = {
+    op: 'and',
+    content: [
+      {
+        op: 'in',
+        content: {
+          field: 'participants.kf_id',
+          value: `set_id:${setId}`,
+        },
+      },
+    ],
+  };
+
+  const fileRepoLink = createFileRepoLink(fileSqon);
+  console.log('file repo link', fileRepoLink);
+  return fileRepoLink;
+};
+
+const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api, state }) => (
   <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
@@ -111,7 +155,9 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
               <SubHeading>
                 {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
               </SubHeading>
-              <PurpleLinkWithLoader>
+              <PurpleLinkWithLoader
+                getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
+              >
                 {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
               </PurpleLinkWithLoader>
             </Detail>
@@ -149,5 +195,6 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
 export default compose(
   withTheme,
   withApi,
+  injectState,
   withState('activeView', 'setActiveView', SUMMARY),
 )(Results);
