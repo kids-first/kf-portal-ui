@@ -93,32 +93,3 @@ export const participantsQuery = (sqon, pageSize = 20, pageIndex = 0) => ({
     };
   },
 });
-
-export const cohortResults = sqon => ({
-  query: `query ($sqon: JSON) {
-    participant {
-      hits(filters: $sqon) {
-        total
-      }
-      aggregations(filters: $sqon) {
-        files__kf_id {
-          buckets {
-            key
-          }
-        }
-      }
-    }
-  }`,
-  variables: { sqon },
-  transform: data => {
-    const participants = get(data, 'data.participant.hits.total', 0);
-    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
-      b => b.key,
-    );
-    return {
-      files,
-      participantCount: participants,
-      filesCount: files.length,
-    };
-  },
-});

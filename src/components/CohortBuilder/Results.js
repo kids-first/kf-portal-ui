@@ -12,7 +12,6 @@ import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { withApi } from 'services/api';
-import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
@@ -95,7 +94,7 @@ const generateAllFilesLink = async (user, api, files) => {
     ],
   };
 
-  const participantSet = await saveSet({
+  const fileSet = await saveSet({
     type: 'file',
     sqon: sqon || {},
     userId: user.egoId,
@@ -103,7 +102,7 @@ const generateAllFilesLink = async (user, api, files) => {
     api: graphql(api),
   });
 
-  const setId = get(participantSet, 'data.saveSet.setId');
+  const setId = get(fileSet, 'data.saveSet.setId');
 
   const fileSqon = {
     op: 'and',
@@ -122,8 +121,37 @@ const generateAllFilesLink = async (user, api, files) => {
   return fileRepoLink;
 };
 
+const cohortResultsQuery = sqon => ({
+  query: `query ($sqon: JSON) {
+    participant {
+      hits(filters: $sqon) {
+        total
+      }
+      aggregations(filters: $sqon) {
+        files__kf_id {
+          buckets {
+            key
+          }
+        }
+      }
+    }
+  }`,
+  variables: { sqon },
+  transform: data => {
+    const participants = get(data, 'data.participant.hits.total', 0);
+    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
+      b => b.key,
+    );
+    return {
+      files,
+      participantCount: participants,
+      filesCount: files.length,
+    };
+  },
+});
+
 const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api, state }) => (
-  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResults(sqon)]}>
+  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
         !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
