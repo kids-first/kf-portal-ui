@@ -93,7 +93,7 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
               keys={['probands', 'familyMembers']}
               tooltipFormatter={mostFrequentDiagnosisTooltip}
               tickInterval={4}
-              colors={getCohortBarColors(data)}
+              colors={getCohortBarColors(data, theme)}
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
