@@ -115,7 +115,6 @@ export const cohortResults = sqon => ({
     const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
       b => b.key,
     );
-    console.log('files', files);
     return {
       files,
       participantCount: participants,

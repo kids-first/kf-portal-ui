@@ -85,7 +85,6 @@ const Content = styled(ContentBar)`
 `;
 
 const generateAllFilesLink = async (user, api, files) => {
-  console.log('generate all files link', user, api, files);
   const sqon = {
     op: 'and',
     content: [
@@ -112,7 +111,7 @@ const generateAllFilesLink = async (user, api, files) => {
       {
         op: 'in',
         content: {
-          field: 'participants.kf_id',
+          field: 'kf_id',
           value: `set_id:${setId}`,
         },
       },
@@ -120,7 +119,6 @@ const generateAllFilesLink = async (user, api, files) => {
   };
 
   const fileRepoLink = createFileRepoLink(fileSqon);
-  console.log('file repo link', fileRepoLink);
   return fileRepoLink;
 };
 
