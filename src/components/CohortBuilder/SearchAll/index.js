@@ -1,10 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import SearchIcon from 'react-icons/lib/fa/search';
+import { compose } from 'recompose';
+
+import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+import TextHighlight from '@arranger/components/dist/TextHighlight';
+
+import { withApi } from 'services/api';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import Column from 'uikit/Column';
 import { TealActionButton, WhiteButton } from 'uikit/Button';
-import PropTypes from 'prop-types';
+import { arrangerProjectId } from 'common/injectGlobals';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+
+import QueriesResolver from '../QueriesResolver';
+import { searchAllFieldsQuery } from './queries';
 
 import './SearchAll.css';
 
@@ -91,9 +102,6 @@ const ResultsContainer = styled('div')`
       border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
     }
 
-    .results-body {
-    }
-
     .results-footer {
       background-color: ${({ theme }) => theme.greyScale5};
       border-top: 1px solid ${({ theme }) => theme.greyScale5};
@@ -101,83 +109,179 @@ const ResultsContainer = styled('div')`
   }
 `;
 
+const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
+
 class SearchAll extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      query: '',
       isOpen: false,
     };
     this.handleQueryChange = this.handleQueryChange.bind(this);
     this.handleClearQuery = this.handleClearQuery.bind(this);
+    this.renderQueryResults = this.renderQueryResults.bind(this);
   }
 
-  setValue(value) {
+  setQuery(query) {
     this.setState({
-      value,
-      isOpen: value !== '',
+      query,
+      isOpen: query !== '',
     });
   }
 
   handleQueryChange(evt) {
-    this.setValue(evt.currentTarget.value);
+    this.setQuery(evt.currentTarget.value);
   }
 
   handleClearQuery() {
-    this.setValue('');
+    this.setQuery('');
+  }
+
+  renderQueryResults(detailedFields) {
+    const { query } = this.state;
+    return detailedFields.map(field => {
+      const filteredBuckets = field.buckets.filter(
+        ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
+      );
+
+      if (filteredBuckets.length === 0) {
+        return null;
+      }
+
+      return (
+        <div key={`${field.name}`} className="result-category">
+          <div className="category-name">{field.displayName}</div>
+          {filteredBuckets.map(({ value, docCount }) => (
+            <div className="result-item">
+              <input type="checkbox" checked={false} className="selection" />
+              <TextHighlight content={value} highlightText={query} />
+              <span className="doc-count">{docCount}</span>
+            </div>
+          ))}
+        </div>
+      );
+    });
   }
 
   render() {
-    const { color, title } = this.props;
-    const { value, isOpen } = this.state;
+    const { api, sqon, color, title, fields } = this.props;
+    const { query, isOpen } = this.state;
     const resultsCount = 0;
 
     return (
-      <SearchAllContainer className="search-all-filter">
-        <QueryContainer borderColor={color} className="query-container">
-          <div className="query-content">
-            <span className={'input-icon icon-left'}>
-              <SearchIcon />
-            </span>
-            <input
-              type="text"
-              value={value}
-              onChange={this.handleQueryChange}
-              aria-label={title}
-              placeholder={title}
-            />
-            {value && (
-              <span className={'input-icon icon-right'}>
-                <FaTimesCircleO onClick={this.handleClearQuery} />
-              </span>
-            )}
-          </div>
-        </QueryContainer>
-        <ResultsContainer className={`results-container${isOpen ? ' open' : ''}`}>
-          <div className="results-content">
-            <div className="results-section results-header">{`${resultsCount.toLocaleString()} results found`}</div>
-            <div className="results-section results-body" />
-            <div className="results-section results-footer">
-              <WhiteButton onClick={this.handleClearQuery}>Cancel</WhiteButton>
-              <TealActionButton disabled={false} onClick={() => alert('to do')}>
-                Apply
-              </TealActionButton>
-            </div>
-          </div>
-        </ResultsContainer>
-      </SearchAllContainer>
+      // Extract the metadata & data fetching to a component
+      // Also, wrap in a multiplexer :p
+      <ExtendedMappingProvider
+        api={api}
+        projectId={arrangerProjectId}
+        graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+        useCache={true}
+      >
+        {({ loading: extendedMappingIsLoading, extendedMapping }) => {
+          // TODO JB - perf
+          const filteredExtendedMapping = (extendedMapping || [])
+            // only keep the fields we're interested in
+            .filter(emf => fields.some(field => field === emf.field));
+
+          return (
+            <QueriesResolver
+              name="GQL_PARTICIPANTS_TABLE"
+              api={api}
+              sqon={sqon}
+              queries={[searchAllFieldsQuery(sqon, fields)]}
+            >
+              {({ isLoading, data, error }) => {
+                if (error) {
+                  console.error(error);
+                  // TODO JB : proper error handling
+                  return 'ERROR';
+                }
+
+                if (extendedMappingIsLoading || isLoading) {
+                  // TODO JB : put some pretty loader here
+                  return 'LOADING';
+                }
+
+                const aggFields = data[0];
+                const detailedFields = fields
+                  .map(fieldName => {
+                    const aggField = aggFields[toGqlFieldPath(fieldName)];
+                    if (!aggField) {
+                      console.log(`[SearchAll] Field ${fieldName} metadata could not be found`);
+                      return null;
+                    }
+                    const fieldExtendedMapping = filteredExtendedMapping.find(
+                      fem => fem.field === fieldName,
+                    );
+                    return {
+                      name: fieldName,
+                      displayName: fieldExtendedMapping.displayName,
+                      buckets: aggField.buckets.map(b => ({
+                        value: b.key,
+                        docCount: b['doc_count'],
+                      })),
+                    };
+                  })
+                  .filter(f => f !== null);
+
+                return (
+                  <SearchAllContainer className="search-all-filter">
+                    <QueryContainer borderColor={color} className="query-container">
+                      <div className="query-content">
+                        <span className={'input-icon icon-left'}>
+                          <SearchIcon />
+                        </span>
+                        <input
+                          type="text"
+                          value={query}
+                          onChange={this.handleQueryChange}
+                          aria-label={title}
+                          placeholder={title}
+                        />
+                        {query && (
+                          <span className={'input-icon icon-right'}>
+                            <FaTimesCircleO onClick={this.handleClearQuery} />
+                          </span>
+                        )}
+                      </div>
+                    </QueryContainer>
+                    <ResultsContainer className={`results-container${isOpen ? ' open' : ''}`}>
+                      <div className="results-content">
+                        <div className="results-section results-header">{`${resultsCount.toLocaleString()} results found`}</div>
+                        <div className="results-section results-body">
+                          {isLoading ? null : this.renderQueryResults(detailedFields)}
+                        </div>
+                        <div className="results-section results-footer">
+                          <WhiteButton onClick={this.handleClearQuery}>Cancel</WhiteButton>
+                          <TealActionButton disabled={false} onClick={() => alert('to do')}>
+                            Apply
+                          </TealActionButton>
+                        </div>
+                      </div>
+                    </ResultsContainer>
+                  </SearchAllContainer>
+                );
+              }}
+            </QueriesResolver>
+          );
+        }}
+      </ExtendedMappingProvider>
     );
   }
 }
 
 SearchAll.defaultProps = {
+  sqon: {},
   color: 'white',
   title: 'search',
 };
 
 SearchAll.propTypes = {
+  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  sqon: PropTypes.object, //.isRequired,
   color: PropTypes.string,
   title: PropTypes.string,
 };
 
-export default SearchAll;
+export default compose(withApi)(SearchAll);

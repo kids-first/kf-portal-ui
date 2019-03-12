@@ -22,9 +22,11 @@ const Container = styled(Row)`
 `;
 
 const CATEGORY_FIELDS = {
+  // Results in the Search All will appear in that order.
+  searchAll: ['diagnoses.diagnosis', 'diagnoses.diagnosis_category', 'study.short_name'],
   quickSearch: [
     'available_data_types',
-    'diagnosis.diagnosis',
+    'diagnoses.diagnosis',
     'particpant.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'study.short_name',
@@ -64,7 +66,12 @@ const CATEGORY_FIELDS = {
 
 const Categories = ({ theme, sqon, onSqonUpdate }) => (
   <Container>
-    <SearchAll title={'Search all filters'} color={theme.filterViolet} />
+    <SearchAll
+      sqon={sqon}
+      title={'Search all filters'}
+      color={theme.filterViolet}
+      fields={CATEGORY_FIELDS.searchAll}
+    />
     <Category
       title="Quick Filters"
       sqon={sqon}
