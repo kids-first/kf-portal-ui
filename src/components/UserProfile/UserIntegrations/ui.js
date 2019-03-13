@@ -26,9 +26,9 @@ const RightArrow = applyDefaultStyles(RightIcon);
 export const ConnectButton = compose(
   withApi,
   injectState,
-)(({ text = 'Connect', doConnect, api, effects }) => {
+)(({ text = 'Connect', doConnect, api, effects, ...props }) => {
   return (
-    <ConnectButtonWrapper maxWidth={160}>
+    <ConnectButtonWrapper maxWidth={160} {...props}>
       <ExternalLink size={14} position="relative" right={4} /> <Trans>{text}</Trans>
       <RightArrow size={14} position="relative" left={4} />
     </ConnectButtonWrapper>
@@ -52,9 +52,9 @@ const StudiesButtonWrapper = styled(ActionButton)`
 `;
 const Stack = applyDefaultStyles(StackIcon);
 
-export const AuthorizedStudiesButton = ({ text = 'Authorized Studies' }) => {
+export const AuthorizedStudiesButton = ({ text = 'Authorized Studies', ...props }) => {
   return (
-    <StudiesButtonWrapper>
+    <StudiesButtonWrapper {...props}>
       <Span mr={`5px`} mt={`5px`}>
         <Stack height={15} />
       </Span>
@@ -70,9 +70,9 @@ const WhiteButtonWrapper = styled(WhiteButton)`
 
 /* === EditButton === */
 
-export const EditButton = ({ text = 'Edit' }) => {
+export const EditButton = ({ text = 'Edit', ...props }) => {
   return (
-    <WhiteButtonWrapper>
+    <WhiteButtonWrapper {...props}>
       <Span mr={`0px`} mb={`3px`} mt={`2px`}>
         <PencilIcon height={15} />
       </Span>
