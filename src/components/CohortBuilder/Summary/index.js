@@ -48,13 +48,7 @@ const Summary = ({
       //  data || [];
       const [studiesData] = data || [];
       console.log('data', data);
-      return isLoading ? (
-        <Row nogutter>
-          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          </div>
-        </Row>
-      ) : !data ? (
+      return !data ? (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
@@ -65,7 +59,7 @@ const Summary = ({
               </PaddedColumn>
       */}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} />
+                <StudiesChart studies={studiesData} sqon={sqon} isLoadingSummary={isLoading} />
               </PaddedColumn>
               {/*<PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />

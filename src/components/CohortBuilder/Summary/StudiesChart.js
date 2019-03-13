@@ -79,41 +79,46 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     }),
   }));
 
-const StudiesChart = ({ studies, sqon, theme, api }) => (
-  <QueriesResolver
-    name="GQL_STUDIES_CHART"
-    api={api}
-    queries={toSingleStudyQueries({ studies, sqon })}
-  >
-    {({ isLoading, data }) => (
-      <CohortCard title="Studies" badge={data ? data.length : null}>
-        {isLoading ? (
-          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-        ) : !data ? (
-          <div>No data</div>
-        ) : (
-          <BarChartContainer>
-            <HorizontalBar
-              data={data.map((d, i) => ({ ...d, id: i }))}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={studiesToolTip}
-              sortBy={sortDescParticipant}
-              tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Family Members', color: theme.chartColors.purple },
-              ]}
-              padding={0.5}
-            />
-          </BarChartContainer>
-        )}
-      </CohortCard>
-    )}
-  </QueriesResolver>
-);
+const StudiesChart = ({ studies, sqon, theme, api, isLoadingSummary }) =>
+  isLoadingSummary ? (
+    <CohortCard title="Studies">
+      <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+    </CohortCard>
+  ) : (
+    <QueriesResolver
+      name="GQL_STUDIES_CHART"
+      api={api}
+      queries={isLoadingSummary ? [] : toSingleStudyQueries({ studies, sqon })}
+    >
+      {({ isLoading, data }) => (
+        <CohortCard title="Studies" badge={data ? data.length : null}>
+          {isLoading ? (
+            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+          ) : !data ? (
+            <div>No data</div>
+          ) : (
+            <BarChartContainer>
+              <HorizontalBar
+                data={data.map((d, i) => ({ ...d, id: i }))}
+                indexBy="label"
+                keys={['probands', 'familyMembers']}
+                tooltipFormatter={studiesToolTip}
+                sortBy={sortDescParticipant}
+                tickInterval={4}
+                colors={[theme.chartColors.blue, theme.chartColors.purple]}
+                xTickTextLength={28}
+                legends={[
+                  { title: 'Probands', color: theme.chartColors.blue },
+                  { title: 'Family Members', color: theme.chartColors.purple },
+                ]}
+                padding={0.5}
+              />
+            </BarChartContainer>
+          )}
+        </CohortCard>
+      )}
+    </QueriesResolver>
+  );
 
 export const studiesQuery = sqon => ({
   query: gql`
