@@ -57,24 +57,38 @@ const CohortBuilder = () => (
       const onVirtualStudySelectChange = e => {
         onVirtualStudySelect(e.target.value);
       };
+      const onSaveClick = refetchVirtualStudies => () => {
+        refetchVirtualStudies();
+      };
       return (
         <VirtualStudyListProvider>
-          {({ virtualStudies, refetch: refetchVirtualStudies }) => (
+          {({
+            virtualStudies,
+            refetch: refetchVirtualStudies,
+            loading: loadingVirtualStudyList,
+          }) => (
             <Container>
               <Content>
                 <Row>
                   <Heading>Explore Data</Heading>
                   <select value={selectedVirtualStudy} onChange={onVirtualStudySelectChange}>
+                    <option value="" disabled selected>
+                      Load a Virtual Study
+                    </option>
                     {virtualStudies.map(({ id, name }) => (
                       <option value={id} key={id}>
                         {name}
                       </option>
                     ))}
                   </select>
-                  <div>Load a Virtual Study</div>
                 </Row>
                 <Row>
-                  <button>Save virtual study</button>
+                  <button
+                    disabled={loadingVirtualStudyList}
+                    onClick={onSaveClick(refetchVirtualStudies)}
+                  >
+                    {!loadingVirtualStudyList ? 'Save virtual study' : '...LOADING'}
+                  </button>
                   <button>Share</button>
                 </Row>
               </Content>

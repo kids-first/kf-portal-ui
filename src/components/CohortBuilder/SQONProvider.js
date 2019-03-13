@@ -65,9 +65,9 @@ const SQONProvider = compose(
   withApi,
   withRouter,
 )(({ api, history, children }) => {
-  const { id: virtualStudyId } = parseQueryString(history.location.search);
   const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-  const initializeState = () => ({
+  const { id: virtualStudyId } = parseQueryString(history.location.search);
+  const initialState = {
     sqons: [
       {
         op: 'and',
@@ -75,7 +75,7 @@ const SQONProvider = compose(
       },
     ],
     activeIndex: 0,
-  });
+  };
   const didMount = s => {
     const savedLocalState = localStorage[COHORT_BUILDER_FILTER_STATE];
     if (virtualStudyId) {
@@ -105,14 +105,13 @@ const SQONProvider = compose(
     );
   };
 
-  const syncWithHistory = s => virtualStudyId => {
-    return getVirtualStudy(api)(virtualStudyId).then(vs => {
-      s.setState({
+  const syncWithHistory = ({ setState }) => virtualStudyId =>
+    getVirtualStudy(api)(virtualStudyId).then(vs => {
+      setState({
         sqons: vs.sqons,
         activeIndex: vs.activeIndex,
       });
     });
-  };
 
   /**
    * utilities for children
@@ -146,7 +145,7 @@ const SQONProvider = compose(
   return (
     <Component
       virtualStudyId={virtualStudyId}
-      initialState={initializeState()}
+      initialState={initialState}
       didMount={didMount}
       didUpdate={didUpdate}
     >
