@@ -13,6 +13,7 @@ import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';
+import { createFileRepoLink } from '../../util';
 
 const EXP_MISSING = '__missing__';
 
@@ -31,8 +32,6 @@ const FilesColumn = styled(Column)`
 
 const sumTotalFilesInData = dataset =>
   dataset.reduce((accumulator, datum) => accumulator + parseInt(datum.files, 10), 0);
-
-const SEARCH_FILE_RELATIVE_URL = '/search/file';
 
 const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, api, origSqon) => {
   const sqon = {
@@ -70,8 +69,7 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
     ],
   };
 
-  const fileRepoLink = `${SEARCH_FILE_RELATIVE_URL}?sqon=` + encodeURI(JSON.stringify(fileSqon));
-
+  const fileRepoLink = createFileRepoLink(fileSqon);
   return fileRepoLink;
 };
 

@@ -5,20 +5,24 @@ import ContentBar from './ContentBar';
 import Summary from './Summary';
 import Row from 'uikit/Row';
 import ViewLink from 'uikit/ViewLink';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { H2 } from 'uikit/Headings';
 import ParticipantsTableView from './ParticipantsTableView';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
-import { Link } from 'react-router-dom';
 import { withApi } from 'services/api';
-import { cohortResults } from './ParticipantsTableView/queries';
 import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
 import { isEmpty } from 'lodash';
+import LinkWithLoader from 'uikit/LinkWithLoader';
+import { createFileRepoLink } from './util';
+import { injectState } from 'freactal';
+import saveSet from '@arranger/components/dist/utils/saveSet';
+import graphql from 'services/arranger';
+import { get } from 'lodash';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -44,17 +48,28 @@ const ActiveView = styled('div')`
   position: relative;
 `;
 
+const SubHeadingStyle = props => {
+  const { fontWeight, theme } = props;
+  return css`
+    font-weight: ${fontWeight ? fontWeight : 600};
+    font-family: ${theme.default};
+    font-size: 16px;
+    padding: 0 3px;
+    margin: 0;
+  `;
+};
+
 const SubHeading = styled('h3')`
-  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 600)};
-  font-family: ${({ theme }) => theme.default};
-  font-size: 16px;
+${SubHeadingStyle}
   color: ${({ color, theme }) => (color ? color : theme.secondary)};
-  padding: 0 3px;
-  margin: 0;
 `;
 
-const PurpleLink = styled(Link)`
+const PurpleLinkWithLoader = styled(LinkWithLoader)`
+  ${SubHeadingStyle};
   color: ${({ theme }) => theme.purple};
+  &:hover {
+    color: ${({ theme }) => theme.linkPurple};
+  }
 `;
 
 const ResultsHeading = styled('div')`
@@ -68,8 +83,75 @@ const Content = styled(ContentBar)`
   padding: 0 30px 0 34px;
 `;
 
-const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
-  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResults(sqon)]}>
+const generateAllFilesLink = async (user, api, files) => {
+  const sqon = {
+    op: 'and',
+    content: [
+      {
+        op: 'in',
+        content: { field: 'kf_id', value: files },
+      },
+    ],
+  };
+
+  const fileSet = await saveSet({
+    type: 'file',
+    sqon: sqon || {},
+    userId: user.egoId,
+    path: 'kf_id',
+    api: graphql(api),
+  });
+
+  const setId = get(fileSet, 'data.saveSet.setId');
+
+  const fileSqon = {
+    op: 'and',
+    content: [
+      {
+        op: 'in',
+        content: {
+          field: 'kf_id',
+          value: `set_id:${setId}`,
+        },
+      },
+    ],
+  };
+
+  const fileRepoLink = createFileRepoLink(fileSqon);
+  return fileRepoLink;
+};
+
+const cohortResultsQuery = sqon => ({
+  query: `query ($sqon: JSON) {
+    participant {
+      hits(filters: $sqon) {
+        total
+      }
+      aggregations(filters: $sqon) {
+        files__kf_id {
+          buckets {
+            key
+          }
+        }
+      }
+    }
+  }`,
+  variables: { sqon },
+  transform: data => {
+    const participants = get(data, 'data.participant.hits.total', 0);
+    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
+      b => b.key,
+    );
+    return {
+      files,
+      participantCount: participants,
+      filesCount: files.length,
+    };
+  },
+});
+
+const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api, state }) => (
+  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
         !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
@@ -99,11 +181,11 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
               <SubHeading>
                 {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
               </SubHeading>
-              <PurpleLink to="">
-                <SubHeading color={theme.purple}>{`${Number(
-                  data[0].filesCount || 0,
-                ).toLocaleString()} Files`}</SubHeading>
-              </PurpleLink>
+              <PurpleLinkWithLoader
+                getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
+              >
+                {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
+              </PurpleLinkWithLoader>
             </Detail>
             <ViewLinks>
               <ViewLink
@@ -139,5 +221,6 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
 export default compose(
   withTheme,
   withApi,
+  injectState,
   withState('activeView', 'setActiveView', SUMMARY),
 )(Results);
