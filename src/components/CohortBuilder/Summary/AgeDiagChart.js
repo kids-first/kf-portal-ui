@@ -4,7 +4,7 @@ import { withTheme } from 'emotion-theming';
 import { get, sumBy } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
-import { CohortCard } from './ui';
+import { CohortCard } from '../ui';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;

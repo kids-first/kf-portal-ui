@@ -4,11 +4,11 @@ import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get, size } from 'lodash';
 import gql from 'graphql-tag';
-
+import LoaderCard from '../LoaderCard';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CohortCard, BarChartContainer } from './ui';
+import { CohortCard, BarChartContainer } from '../ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -81,14 +81,12 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
 
 const StudiesChart = ({ studies, sqon, theme, api, isLoadingSummary }) =>
   isLoadingSummary ? (
-    <CohortCard title="Studies">
-      <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-    </CohortCard>
+    <LoaderCard title="Studies" />
   ) : (
     <QueriesResolver
       name="GQL_STUDIES_CHART"
       api={api}
-      queries={isLoadingSummary ? [] : toSingleStudyQueries({ studies, sqon })}
+      queries={toSingleStudyQueries({ studies, sqon })}
     >
       {({ isLoading, data }) => (
         <CohortCard title="Studies" badge={data ? data.length : null}>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { CohortCard } from '../ui';
+import { CohortCard } from '../../ui';
 import gql from 'graphql-tag';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import BaseDataTable from 'uikit/DataTable';
@@ -13,6 +13,7 @@ import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';
+import LoaderCard from '../../LoaderCard';
 
 const EXP_MISSING = '__missing__';
 
@@ -116,56 +117,65 @@ export const fileBreakdownQuery = sqon => ({
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
-const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
-  <FileBreakdownQueryResolver sqon={sqon} fileDataTypes={fileDataTypes}>
-    {({ data, isLoading }) => {
-      const finalData = isLoading ? null : generateFileColumnContents(data, state, api, sqon);
-      const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
+const FileBreakdown = ({ fileDataTypes, sqon, state, api, isLoadingSummary }) =>
+  isLoadingSummary ? (
+    <LoaderCard title="Available Data" />
+  ) : (
+    <FileBreakdownQueryResolver sqon={sqon} fileDataTypes={fileDataTypes}>
+      {({ data, isLoading }) => {
+        const finalData = isLoading ? null : generateFileColumnContents(data, state, api, sqon);
+        const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
 
-      return isLoading ? (
-        <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-      ) : !data ? (
-        <div>No data</div>
-      ) : (
-        <CohortCard scrollable={true} title="Available Data" badge={filesTotal ? filesTotal : null}>
-          <BaseDataTable
-            showPagination={false}
-            header={null}
-            columns={[
-              {
-                Header: 'Data Type',
-                accessor: 'dataType',
-                minWidth: 75,
-                style: columnStyles,
-              },
-              {
-                Header: 'Experimental Strategy',
-                accessor: 'experimentalStrategy',
-                style: columnStyles,
-              },
-              {
-                Header: 'Files',
-                accessor: 'fileLink',
-                minWidth: 40,
-                style: columnStyles,
-              },
-            ]}
-            className="-highlight"
-            data={finalData}
-            pageSize={finalData.length}
-            transforms={{
-              dataType: dataType => <Column>{dataType}</Column>,
-              experimentalStrategy: experimentalStrategy => (
-                <Column>{experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}</Column>
-              ),
-              fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-            }}
-          />
-        </CohortCard>
-      );
-    }}
-  </FileBreakdownQueryResolver>
-);
+        return isLoading ? (
+          <LoaderCard title="Available Data" />
+        ) : !data ? (
+          <div>No data</div>
+        ) : (
+          <CohortCard
+            scrollable={true}
+            title="Available Data"
+            badge={filesTotal ? filesTotal : null}
+          >
+            <BaseDataTable
+              showPagination={false}
+              header={null}
+              columns={[
+                {
+                  Header: 'Data Type',
+                  accessor: 'dataType',
+                  minWidth: 75,
+                  style: columnStyles,
+                },
+                {
+                  Header: 'Experimental Strategy',
+                  accessor: 'experimentalStrategy',
+                  style: columnStyles,
+                },
+                {
+                  Header: 'Files',
+                  accessor: 'fileLink',
+                  minWidth: 40,
+                  style: columnStyles,
+                },
+              ]}
+              className="-highlight"
+              data={finalData}
+              pageSize={finalData.length}
+              transforms={{
+                dataType: dataType => <Column>{dataType}</Column>,
+                experimentalStrategy: experimentalStrategy => (
+                  <Column>
+                    {experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}
+                  </Column>
+                ),
+                fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+              }}
+            />
+          </CohortCard>
+        );
+      }}
+    </FileBreakdownQueryResolver>
+  );
 
 export default compose(
   withTheme,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { BarChartContainer, CohortCard } from './ui';
+import { BarChartContainer, CohortCard } from '../ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';

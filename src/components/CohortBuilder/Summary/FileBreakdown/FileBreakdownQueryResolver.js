@@ -3,6 +3,7 @@ import { withApi } from 'services/api';
 import QueriesResolver from '../../QueriesResolver';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
+import LoaderCard from '../../LoaderCard';
 
 /**
  * Queries:
@@ -97,11 +98,11 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
     },
   }));
 
-const FileBreakdownQueryResolver = ({ fileDataTypes, api, sqon, children }) => (
+const FileBreakdownQueryResolver = ({ fileDataTypes, api, sqon, children, isLoadingSummary }) => (
   <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes, sqon })}>
     {({ data: fileBreakdownQueries, isLoading }) =>
-      isLoading ? (
-        <div>loading</div>
+      isLoading || isLoadingSummary ? (
+        <LoaderCard title="Available Data" />
       ) : (
         <QueriesResolver api={api} queries={fileBreakdownQueries.flat()}>
           {children}

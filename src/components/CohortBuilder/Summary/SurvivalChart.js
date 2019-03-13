@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import isEqual from 'lodash.isequal';
 import defaults from 'lodash.defaults';
 import { renderPlot } from '@oncojs/survivalplot/index.dist';
-import { CohortCard } from './ui';
+import { CohortCard } from '../ui';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;

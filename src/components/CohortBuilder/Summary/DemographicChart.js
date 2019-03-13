@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { get, camelCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
-import { CohortCard } from './ui';
+import { CohortCard } from '../ui';
 
 const PieChartContainer = styled('div')`
   display: flex;
