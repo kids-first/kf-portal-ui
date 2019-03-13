@@ -39,14 +39,14 @@ const Summary = ({
       // demographicQuery(sqon),
       // ageDiagQuery(sqon),
       studiesQuery(sqon),
-      // diagnosesQuery(sqon),
       fileBreakdownQuery(sqon),
+      diagnosesQuery(sqon),
     ]}
   >
     {({ isLoading, data }) => {
       //const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
       //  data || [];
-      const [studiesData, fileDataTypes] = data || [];
+      const [studiesData, fileDataTypes, topDiagnosesData] = data || [];
       console.log('data', data);
       return !data ? (
         <Row nogutter> no data</Row>
@@ -64,9 +64,14 @@ const Summary = ({
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} isLoadingSummary={isLoading} />
               </PaddedColumn>
-              {/*<PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <DiagnosesChart
+                  sqon={sqon}
+                  topDiagnoses={topDiagnosesData}
+                  isLoadingSummary={isLoading}
+                />
               </PaddedColumn>
+              {/*
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <DemographicChart data={demographicData} />
               </PaddedColumn>
