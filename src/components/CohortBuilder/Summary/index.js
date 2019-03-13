@@ -36,18 +36,17 @@ const Summary = ({
     name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[
-      // ageDiagQuery(sqon),
       studiesQuery(sqon),
       fileBreakdownQuery(sqon),
       diagnosesQuery(sqon),
       demographicQuery(sqon),
+      ageDiagQuery(sqon),
     ]}
   >
     {({ isLoading, data }) => {
-      //const [, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
-      //  data || [];
-      const [studiesData, fileDataTypes, topDiagnosesData, demographicData] = data || [];
-      console.log('data', data);
+      const [studiesData, fileDataTypes, topDiagnosesData, demographicData, ageDiagData] =
+        data || [];
+
       return !data ? (
         <Row nogutter> no data</Row>
       ) : (
@@ -71,16 +70,15 @@ const Summary = ({
                   isLoadingSummary={isLoading}
                 />
               </PaddedColumn>
-
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <DemographicChart data={demographicData} isLoadingSummary={isLoading} />
               </PaddedColumn>
-              {/*<PaddedColumn md={spacing.md} lg={spacing.lg}>
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <SurvivalChart data={survivalPlotMock} />
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <AgeDiagChart data={ageDiagData} />
-    </PaddedColumn>*/}
+                <AgeDiagChart data={ageDiagData} isLoadingSummary={isLoading} />
+              </PaddedColumn>
             </Row>
           </Col>
           {/* <PaddedColumn xl={spacing.xl}>
