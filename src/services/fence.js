@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import { uniq } from 'lodash';
-import { FENCES } from 'common/constants';
+import { FENCES, GEN3, DCF } from 'common/constants';
 
 import {
   fenceAuthClientUri,
@@ -11,8 +11,20 @@ import {
 } from 'common/injectGlobals';
 import { setUserDimension } from 'services/analyticsTracking';
 
-const SCOPE = 'openid+data+user';
 const RESPONSE_TYPE = 'code';
+
+const GEN3_SCOPE = 'openid+data+user';
+const DCF_SCOPE = 'openid+user';
+const getScope = fence => {
+  switch (fence) {
+    case GEN3:
+      return GEN3_SCOPE;
+    case DCF:
+      return DCF_SCOPE;
+    default:
+      return '';
+  }
+};
 
 // Fetch all fence auth_client details on page load for pages needing the fence API.
 //  When connecting to a fence, the window.open call has to happen in the same synchronus callstack
@@ -39,7 +51,8 @@ FENCES.forEach(fence => {
  */
 export const fenceConnect = (api, fence) => {
   const { clientId, redirectUri, fenceUri } = PROVIDERS[fence];
-  const url = `${fenceUri}user/oauth2/authorize?client_id=${clientId}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&redirect_uri=${redirectUri}`;
+  const scope = getScope(fence);
+  const url = `${fenceUri}user/oauth2/authorize?client_id=${clientId}&response_type=${RESPONSE_TYPE}&scope=${scope}&redirect_uri=${redirectUri}`;
   const authWindow = window.open(url);
   return new Promise((resolve, reject) => {
     const interval = setInterval(() => {
@@ -91,14 +104,19 @@ export const getAccessToken = async (api, fence) => {
   return exp * 1000 > Date.now() ? currentToken : await getRefreshedToken(api, fence);
 };
 
+export const convertTokenToUser = accessToken => {
+  const {
+    context: { user },
+  } = jwtDecode(accessToken);
+  return user;
+};
+
 /*
  * Get User
  */
 export const getFenceUser = async (api, fence) => {
   let accessToken = await getAccessToken(api, fence);
-  const {
-    context: { user },
-  } = jwtDecode(accessToken);
+  const user = convertTokenToUser(accessToken);
   // track how many projects a use has access to
   // dimensionr in GA is "authorizedStudies"
   setUserDimension('dimension5', user.projects);
