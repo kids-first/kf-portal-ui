@@ -36,17 +36,18 @@ const Summary = ({
     name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[
-      demographicQuery(sqon),
-      ageDiagQuery(sqon),
+      // demographicQuery(sqon),
+      // ageDiagQuery(sqon),
       studiesQuery(sqon),
-      diagnosesQuery(sqon),
-      fileBreakdownQuery(sqon),
+      // diagnosesQuery(sqon),
+      // fileBreakdownQuery(sqon),
     ]}
   >
     {({ isLoading, data }) => {
-      const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
-        data || [];
-
+      //const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
+      //  data || [];
+      const [studiesData] = data || [];
+      console.log('data', data);
       return isLoading ? (
         <Row nogutter>
           <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
@@ -59,13 +60,14 @@ const Summary = ({
         <Row nogutter>
           <Col xl={12}>
             <Row nogutter>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+              {/*<PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <FileBreakdown fileDataTypes={fileDataTypes} sqon={sqon} />
               </PaddedColumn>
+      */}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} />
               </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+              {/*<PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
@@ -76,7 +78,7 @@ const Summary = ({
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <AgeDiagChart data={ageDiagData} />
-              </PaddedColumn>
+    </PaddedColumn>*/}
             </Row>
           </Col>
           {/* <PaddedColumn xl={spacing.xl}>

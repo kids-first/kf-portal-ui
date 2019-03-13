@@ -18,7 +18,7 @@ import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
-import { isEmpty } from 'lodash';
+import { isEmpty, get } from 'lodash';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -71,15 +71,14 @@ const Content = styled(ContentBar)`
 const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api }) => (
   <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResults(sqon)]}>
     {({ isLoading, data, error }) => {
+      console.log('result queries', data, data[0]);
+      const resultsData = data[0];
+      const participantCount = get(resultsData, 'participantCount', null);
+      const filesCount = get(resultsData, 'filesCount', null);
       const cohortIsEmpty =
-        !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
-      return isLoading ? (
-        <Row nogutter>
-          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          </div>
-        </Row>
-      ) : error ? (
+        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+
+      return error ? (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
@@ -97,11 +96,11 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api 
               </ResultsHeading>{' '}
               <DemographicIcon />
               <SubHeading>
-                {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
+                {Number(participantCount || 0).toLocaleString()} Participants with{' '}
               </SubHeading>
               <PurpleLink to="">
                 <SubHeading color={theme.purple}>{`${Number(
-                  data[0].filesCount || 0,
+                  filesCount || 0,
                 ).toLocaleString()} Files`}</SubHeading>
               </PurpleLink>
             </Detail>
