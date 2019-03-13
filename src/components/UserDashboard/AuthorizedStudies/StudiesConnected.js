@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 import styled from 'react-emotion';
 
 import { injectState } from 'freactal';
@@ -9,18 +9,15 @@ import { Box, Link } from 'uikit/Core';
 
 import { withApi } from 'services/api';
 import { withHistory } from 'services/history';
-import { FENCES, GEN3, DCF } from 'common/constants';
 
 import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import Info from '../Info';
-import {
-  getUserStudyPermission,
-  createStudyIdSqon,
-  createAcceptedFilesByUserStudySqon,
-} from 'services/fileAccessControl';
+import { createStudyIdSqon, createAcceptedFilesByUserStudySqon } from 'services/fileAccessControl';
 import Study from './Study';
 import { CardContentSpinner } from '../styles';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+import { isEmpty } from 'lodash';
 
 const InternalLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
@@ -61,20 +58,19 @@ const renderNoAuthorizedStudies = ({ loggedInUser }) => (
 );
 
 const renderAuthorizedStudies = ({
-  authorizedStudies,
-  unauthorizedStudies,
+  fenceAuthStudies,
+  fenceNonAuthStudies,
   fenceConnections,
   history,
 }) => {
-  console.log(fenceConnections[GEN3]);
   const userConsentCodes = Object.keys(fenceConnections).reduce(
     (output, key) => output.concat(Object.keys(fenceConnections[key].projects || {})),
     [],
   );
 
-  const combinedStudyData = authorizedStudies.reduce((acc, authorizedStudy) => {
+  const combinedStudyData = fenceAuthStudies.reduce((acc, authorizedStudy) => {
     const unAuthorizedFiles = (
-      unauthorizedStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }
+      fenceNonAuthStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }
     ).files;
     return {
       ...acc,
@@ -104,12 +100,14 @@ const renderAuthorizedStudies = ({
 
     history.push(
       `/search/file?sqon=${encodeURI(
-        JSON.stringify(createAcceptedFilesByUserStudySqon(gen3userDetails)({ studyId })),
+        JSON.stringify(
+          createAcceptedFilesByUserStudySqon(fenceAuthStudies.map(study => study.id))({ studyId }),
+        ),
       )}`,
     );
   };
 
-  return authorizedStudies.map(({ studyShortName, id: studyId }) => {
+  return fenceAuthStudies.map(({ studyShortName, id: studyId }) => {
     const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[studyId];
     return (
       <Study
@@ -129,55 +127,42 @@ const renderAuthorizedStudies = ({
 const enhance = compose(
   injectState,
   withHistory,
-  withState('authorizedStudies', 'setAuthorizedStudies', []),
-  withState('unauthorizedStudies', 'setUnauthorizedStudies', []),
   withApi,
   lifecycle({
     async componentDidMount() {
-      const { api, setAuthorizedStudies, setUnauthorizedStudies, setBadge } = this.props;
-
-      this.props.effects.fetchFenceStudies({ api }).then(() => {
-        const authStudies = FENCES.reduce(
-          (output, fence) =>
-            this.props.state.fenceStudies[fence] &&
-            _.isArray(this.props.state.fenceStudies[fence].authorizedStudies)
-              ? output.concat(this.props.state.fenceStudies[fence].authorizedStudies)
-              : output,
-          [],
-        );
-        const unauthStudies = Object.keys(this.props.state.fenceStudies).reduce(
-          (output, key) =>
-            _.isArray(this.props.state.fenceStudies[key].unauthorizedStudies)
-              ? output.concat(this.props.state.fenceStudies[key].unauthorizedStudies)
-              : output,
-          [],
-        );
-        setAuthorizedStudies(authStudies);
-        setUnauthorizedStudies(unauthStudies);
-        setBadge(authStudies.length);
-      });
+      const {
+        api,
+        effects,
+        state: { fenceConnections, fenceStudiesInitialized },
+      } = this.props;
+      !isEmpty(fenceConnections) &&
+        !fenceStudiesInitialized &&
+        effects.fetchFenceStudies({ api, fenceConnections });
     },
   }),
 );
 
 const StudiesConnected = enhance(
   ({
-    state: { loggedInUser, fetchingFenceStudies, fenceConnections, fenceStudies },
+    state: {
+      loggedInUser,
+      fenceStudiesInitialized,
+      fenceConnections,
+      fenceAuthStudies,
+      fenceNonAuthStudies,
+    },
     history,
-    authorizedStudies = [],
-    unauthorizedStudies = [],
-    loading,
   }) => {
     return (
       <Fragment>
-        {fetchingFenceStudies ? (
+        {!fenceStudiesInitialized ? (
           <CardContentSpinner />
         ) : (
           <Column>
-            {authorizedStudies && authorizedStudies.length > 0
+            {fenceAuthStudies && fenceAuthStudies.length > 0
               ? renderAuthorizedStudies({
-                  authorizedStudies,
-                  unauthorizedStudies,
+                  fenceAuthStudies,
+                  fenceNonAuthStudies,
                   fenceConnections,
                   history,
                 })

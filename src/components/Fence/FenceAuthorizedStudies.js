@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import { compose } from 'recompose';
 
-import { getFenceUser, getStudyIds } from 'services/fence';
+import { getStudyIds } from 'services/fence';
 import { css } from 'emotion';
-import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import Query from '@arranger/components/dist/Query';
@@ -48,23 +47,6 @@ const Spinner = () => (
   <Row justifyContent={'center'}>
     <LoadingSpinner width={20} height={20} />
   </Row>
-);
-
-const enhance = compose(
-  injectState,
-  withTheme,
-  withState('userDetails', 'setUserDetails', {}),
-  withState('loading', 'setLoading', false),
-  withApi,
-  lifecycle({
-    async componentDidMount() {
-      const { setUserDetails, api, setLoading, fence } = this.props;
-      setLoading(true);
-      let userDetails = await getFenceUser(api, fence);
-      setLoading(false);
-      setUserDetails(userDetails);
-    },
-  }),
 );
 
 const sqonForStudy = studyId => ({
@@ -147,8 +129,7 @@ const FenceProjectList = compose(
                         history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
                       }
                     >
-                      {' '}
-                      <Trans>View data files</Trans>
+                      <Trans>View data files</Trans>{' '}
                       <RightChevron width={10} fill={theme.primary} />
                     </Span>
                   </ExternalLink>
@@ -163,22 +144,11 @@ const FenceProjectList = compose(
   />
 ));
 
-const FenceAuthorizedStudies = ({
-  fence,
-  state,
-  effects,
-  theme,
-  userDetails,
-  setUserDetails,
-  loading,
-  ...props
-}) => (
-  <div css={styles}>
-    {loading ? (
-      <Spinner />
-    ) : (
+const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
+  return (
+    <div css={styles}>
       <Column>
-        {userDetails.projects && Object.keys(userDetails.projects).length ? (
+        {fenceUser && fenceUser.projects && Object.keys(fenceUser.projects).length ? (
           <Fragment>
             <Row my={10}>
               <Span className="title" fontWeight={'bold'}>
@@ -187,7 +157,7 @@ const FenceAuthorizedStudies = ({
               </Span>
             </Row>
             <Column pl={15}>
-              <FenceProjectList projectIds={getStudyIds(userDetails, fence)} />
+              <FenceProjectList projectIds={getStudyIds(fenceUser, fence)} />
             </Column>
           </Fragment>
         ) : (
@@ -200,8 +170,8 @@ const FenceAuthorizedStudies = ({
           </Row>
         )}
       </Column>
-    )}
-  </div>
-);
+    </div>
+  );
+};
 
-export default enhance(FenceAuthorizedStudies);
+export default FenceAuthorizedStudies;

@@ -1,15 +1,22 @@
 import React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
+import { flatMap } from 'lodash';
 
 import { Trans } from 'react-i18next';
 
 import IntegrationTableItem from 'components/UserProfile/UserIntegrations/IntegrationTableItem';
 import Row from 'uikit/Row';
 
-import { fenceConnect, getAccessToken, deleteFenceTokens } from 'services/fence';
+import { get } from 'lodash';
+
+import {
+  fenceConnect,
+  getAccessToken,
+  deleteFenceTokens,
+  convertTokenToUser,
+} from 'services/fence';
 import FenceAuthorizedStudies from 'components/Fence/FenceAuthorizedStudies';
-import FenceUserProvider from 'components/Fence/FenceUserProvider';
 import { withApi } from 'services/api';
 
 import {
@@ -30,19 +37,32 @@ const enhanceActions = compose(
 );
 
 const Actions = enhanceActions(
-  ({ fence, api, effects, loading, setLoading, refresh, connected }) => {
+  ({
+    fence,
+    state: { fenceStudies, fenceConnections },
+    api,
+    effects,
+    loading,
+    setConnecting,
+    connected,
+  }) => {
     return loading ? (
       <LoadingSpinner height={48} />
     ) : connected ? (
       <Row>
-        <AuthorizedStudiesButton onClick={() => viewDetails({ fence, effects })} />
+        {flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)}
+        <AuthorizedStudiesButton
+          onClick={() =>
+            viewDetails({ fence, fenceUser: get(fenceConnections, fence, {}), effects })
+          }
+        />
         <DisconnectButton
           style={{ marginLeft: 10 }}
-          onClick={() => disconnect({ fence, api, setLoading, refresh, effects })}
+          onClick={() => disconnect({ fence, api, setConnecting, effects })}
         />
       </Row>
     ) : (
-      <ConnectButton onClick={() => connect({ fence, api, setLoading, refresh, effects })} />
+      <ConnectButton onClick={() => connect({ fence, api, setConnecting, effects })} />
     );
   },
 );
@@ -51,27 +71,28 @@ const actions = ({ ...props }) => {
   return <Actions {...props} />;
 };
 
-const viewDetails = ({ fence, effects }) =>
+const viewDetails = ({ fence, fenceUser, effects }) =>
   effects.setModal({
     title: 'Authorized Studies',
     component: (
       <FenceAuthorizedStudies
         fence={fence}
+        fenceUser={fenceUser}
         onComplete={effects.unsetModal}
         onCancel={effects.unsetModal}
       />
     ),
   });
 
-const disconnect = async ({ fence, api, setLoading, refresh, effects }) => {
-  setLoading(true);
+const disconnect = async ({ fence, api, setConnecting, effects }) => {
+  setConnecting(true);
   await deleteFenceTokens(api, fence);
-  effects.setIntegrationToken(fence, null);
-  refresh();
-  setLoading(false);
+  await effects.setIntegrationToken(fence, null);
+  await effects.removeFenceConnection(fence);
+  setConnecting(false);
 };
 
-const connect = ({ fence, api, setLoading, refresh, effects }) => {
+const connect = ({ fence, api, setConnecting, effects }) => {
   analyticsTrigger({
     property: 'portal',
     type: 'recording',
@@ -79,13 +100,14 @@ const connect = ({ fence, api, setLoading, refresh, effects }) => {
     action: TRACKING_EVENTS.actions.integration.init,
     label: TRACKING_EVENTS.labels.gen3,
   });
-  setLoading(true);
+  setConnecting(true);
   fenceConnect(api, fence)
     .then(() => getAccessToken(api, fence))
     .then(token => {
       effects.setIntegrationToken(fence, token);
-      refresh();
-      setLoading(false);
+      const details = convertTokenToUser(token);
+      effects.addFenceConnection({ fence, details });
+      setConnecting(false);
       effects.setToast({
         id: `${Date.now()}`,
         action: 'success',
@@ -103,7 +125,7 @@ const connect = ({ fence, api, setLoading, refresh, effects }) => {
     })
     .catch(err => {
       console.log('err: ', err);
-      setLoading(false);
+      setConnecting(false);
       trackUserInteraction({
         category: TRACKING_EVENTS.categories.user.profile,
         action: TRACKING_EVENTS.actions.integration.failed,
@@ -112,29 +134,31 @@ const connect = ({ fence, api, setLoading, refresh, effects }) => {
     });
 };
 
-const enhance = compose(withState('loading', 'setLoading', false));
+const enhance = compose(
+  injectState,
+  withState('connecting', 'setConnecting', false),
+);
 
 export default enhance(
-  ({ fence, logo = () => null, description = () => null, loading, setLoading, ...props }) => {
-    const FenceTableItem = ({ connected, loading, setLoading, refresh, ...props }) => (
+  ({
+    fence,
+    logo = () => null,
+    description = () => null,
+    fenceUser,
+    state: { fenceConnectionsInitialized, fenceConnections },
+    connecting,
+    setConnecting,
+    ...props
+  }) => {
+    const connected = !!get(fenceConnections, fence, false);
+    const loading = !fenceConnectionsInitialized || connecting;
+    return (
       <IntegrationTableItem
         connected={connected}
         logo={logo()}
         description={description()}
-        actions={actions({ fence, connected, loading, setLoading, refresh })}
+        actions={actions({ fence, connected, loading, setConnecting })}
         {...props}
-      />
-    );
-
-    return (
-      <FenceUserProvider
-        fence={fence}
-        render={({ fenceUser, loading: fenceLoading, refresh }) => {
-          const connected = !!fenceUser;
-          const combinedLoading = loading || fenceLoading;
-          const itemProps = { connected, loading: combinedLoading, setLoading, refresh, ...props };
-          return <FenceTableItem {...itemProps} />;
-        }}
       />
     );
   },

@@ -1,28 +1,67 @@
 import { provideState, update } from 'freactal';
-import _ from 'lodash';
 
 import { getFenceUser } from 'services/fence';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 import { FENCES } from 'common/constants';
+import { omit, flatMap, isEmpty } from 'lodash';
 
 export default provideState({
   initialState: props => ({
-    fetchingFenceConnections: false,
+    fenceConnectionsInitialized: false,
     fenceConnections: {},
 
-    fetchingFenceStudies: false,
+    fenceStudiesInitialized: false,
     fenceStudies: {},
   }),
+  computed: {
+    fenceAuthStudies: ({ fenceStudies }) =>
+      !isEmpty(fenceStudies) &&
+      flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies),
+    fenceNonAuthStudies: ({ fenceStudies }) =>
+      !isEmpty(fenceStudies) &&
+      flatMap(Object.values(fenceStudies), studies => studies.unauthorizedStudies),
+  },
   effects: {
-    setFetchingFenceConnections: update((state, fetchingFenceConnections) => ({
-      fetchingFenceConnections,
+    setFenceConnectionsInitialized: update(state => ({
+      fenceConnectionsInitialized: true,
     })),
-    setFetchingFenceStudies: update((state, fetchingFenceStudies) => ({ fetchingFenceStudies })),
+
+    clearFenceConnections: update((state, fence) => ({
+      fenceConnections: {},
+      fenceStudies: {},
+    })),
     addFenceConnection: update((state, { fence, details }) => {
       return {
         fenceConnections: { ...state.fenceConnections, [fence]: details },
       };
     }),
+    removeFenceConnection: update((state, fence) => ({
+      fenceConnections: omit(state.fenceConnections, fence),
+      fenceStudies: omit(state.fenceStudies, fence),
+      fenceStudiesInitialized: false,
+    })),
+    fetchFenceConnections: (effects, { api }) => {
+      const fenceConnectionsFetchArray = FENCES.map(fence =>
+        getFenceUser(api, fence)
+          .then(details => {
+            effects.addFenceConnection({ fence, details });
+          })
+          .catch(err => console.log(`Error fetching fence connection for '${fence}': ${err}`)),
+      );
+
+      return Promise.all(fenceConnectionsFetchArray).then(() => {
+        effects.setFenceConnectionsInitialized();
+        effects.setFenceStudiesInitialized(false);
+      });
+    },
+
+    setFenceStudiesInitialized: update((state, initialized) => ({
+      fenceStudiesInitialized: initialized,
+    })),
+    clearFenceStudies: update(state => ({
+      fenceStudies: {},
+      fenceStudiesInitialized: false,
+    })),
     addFenceStudies: update(
       (state, fence, { authorizedStudies = [], unauthorizedStudies = [] }) => ({
         fenceStudies: {
@@ -31,31 +70,10 @@ export default provideState({
         },
       }),
     ),
-    removeFenceConnection: update((state, fence) => ({
-      fenceConnections: _.omit(state.fenceConnections, fence),
-      fenceStudies: _.omit(state.fenceStudies, fence),
-    })),
-
-    fetchFenceConnections: (effects, { api }) => {
-      return effects.setFetchingFenceConnections(true).then(() => {
-        const fenceConnectionsFetchArray = FENCES.map(fence =>
-          getFenceUser(api, fence)
-            .then(details => {
-              effects.addFenceConnection({ fence, details });
-            })
-            .catch(err => console.log(`Error fetching fence connection for '${fence}': ${err}`)),
-        );
-
-        return Promise.all(fenceConnectionsFetchArray).then(values =>
-          effects.setFetchingFenceConnections(false),
-        );
-      });
-    },
-
-    fetchFenceStudies: (effects, { api }) => {
-      return effects.setFetchingFenceStudies(true).then(() => {
-        const fenceStudiesFetchArray = FENCES.map(fence =>
-          getUserStudyPermission(api, fence)({})
+    fetchFenceStudies: (effects, { api, fenceConnections }) => {
+      effects.clearFenceStudies().then(() => {
+        const fenceStudiesFetchArray = Object.keys(fenceConnections).map(fence =>
+          getUserStudyPermission(api, { [fence]: fenceConnections[fence] })({})
             .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) => {
               effects.addFenceStudies(fence, {
                 authorizedStudies: acceptedStudiesAggs,
@@ -66,8 +84,7 @@ export default provideState({
         );
 
         return Promise.all(fenceStudiesFetchArray).then(values => {
-          console.log('ALL DONE');
-          effects.setFetchingFenceStudies(false);
+          effects.setFenceStudiesInitialized(true);
         });
       });
     },

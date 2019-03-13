@@ -52,7 +52,7 @@ const Row = styled('tr')`
 
 export default ({ connected = false, logo, description, actions, ...props }) => {
   return (
-    <Row {...props}>
+    <Row>
       <td className="checkmark">
         <div>{connected ? <CheckCircleIcon height={23} /> : null}</div>
       </td>

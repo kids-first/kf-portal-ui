@@ -1,7 +1,5 @@
-// @ts-check
-import { get } from 'lodash';
+import { get, isObject } from 'lodash';
 import { getFenceUser } from 'services/fence';
-import { GEN3 } from 'common/constants';
 import { graphql } from 'services/arranger';
 
 const getStudyIdsFromSqon = api => ({ sqon }) =>
@@ -88,8 +86,8 @@ export const createStudyIdSqon = studyId => ({
   ],
 });
 
-export const createAcceptedFilesByUserStudySqon = fenceUser => ({ sqon, studyId }) => {
-  const approvedAcls = fenceUser ? Object.keys(fenceUser.projects).sort() : [];
+export const createAcceptedFilesByUserStudySqon = projects => ({ sqon, studyId }) => {
+  const approvedAcls = projects.sort();
   return {
     op: 'and',
     content: [
@@ -99,8 +97,8 @@ export const createAcceptedFilesByUserStudySqon = fenceUser => ({ sqon, studyId 
     ],
   };
 };
-export const createUnacceptedFilesByUserStudySqon = fenceUser => ({ studyId, sqon }) => {
-  const approvedAcls = fenceUser ? Object.keys(fenceUser.projects).sort() : [];
+const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => {
+  const approvedAcls = projects.sort();
   return {
     op: 'and',
     content: [
@@ -111,14 +109,18 @@ export const createUnacceptedFilesByUserStudySqon = fenceUser => ({ studyId, sqo
   };
 };
 
-export const getUserStudyPermission = (api, fence) => async ({
+export const getUserStudyPermission = (api, fenceConnections) => async ({
   sqon = {
     op: 'and',
     content: [],
   },
 } = {}) => {
-  const userDetails = await getFenceUser(api, fence);
-  const approvedAcls = Object.keys(userDetails.projects).sort();
+  const projects = [];
+  Object.values(fenceConnections).forEach(fenceUser => {
+    if (isObject(fenceUser.projects)) projects.push(...Object.keys(fenceUser.projects));
+  });
+
+  const approvedAcls = projects.sort();
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
@@ -161,7 +163,7 @@ export const getUserStudyPermission = (api, fence) => async ({
   const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
     getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
       acceptedStudyIds.reduce((acc, id) => {
-        acc[`${id}_sqon`] = createAcceptedFilesByUserStudySqon(userDetails)({
+        acc[`${id}_sqon`] = createAcceptedFilesByUserStudySqon(projects)({
           studyId: id,
           sqon,
         });
@@ -170,7 +172,7 @@ export const getUserStudyPermission = (api, fence) => async ({
     ),
     getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
       unacceptedStudyIds.reduce((acc, id) => {
-        acc[`${id}_sqon`] = createUnacceptedFilesByUserStudySqon(userDetails)({
+        acc[`${id}_sqon`] = createUnacceptedFilesByUserStudySqon(projects)({
           studyId: id,
           sqon,
         });
@@ -182,10 +184,10 @@ export const getUserStudyPermission = (api, fence) => async ({
   return { acceptedStudiesAggs, unacceptedStudiesAggs };
 };
 
-export const checkUserFilePermission = api => async ({ fileId }) => {
+export const checkUserFilePermission = api => async ({ fileId, fence }) => {
   let userDetails;
   try {
-    userDetails = await getFenceUser(api, GEN3);
+    userDetails = await getFenceUser(api, fence);
   } catch (err) {
     return Promise.resolve(false);
   }
