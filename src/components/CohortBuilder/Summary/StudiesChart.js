@@ -88,13 +88,13 @@ const StudiesChart = ({ studies, sqon, theme, api, isLoadingSummary }) =>
       api={api}
       queries={toSingleStudyQueries({ studies, sqon })}
     >
-      {({ isLoading, data }) => (
-        <CohortCard title="Studies" badge={data ? data.length : null}>
-          {isLoading ? (
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          ) : !data ? (
-            <div>No data</div>
-          ) : (
+      {({ isLoading, data }) =>
+        isLoading ? (
+          <LoaderCard title="Studies" />
+        ) : !data ? (
+          <div>No data</div>
+        ) : (
+          <CohortCard title="Studies" badge={data ? data.length : null}>
             <BarChartContainer>
               <HorizontalBar
                 data={data.map((d, i) => ({ ...d, id: i }))}
@@ -112,9 +112,9 @@ const StudiesChart = ({ studies, sqon, theme, api, isLoadingSummary }) =>
                 padding={0.5}
               />
             </BarChartContainer>
-          )}
-        </CohortCard>
-      )}
+          </CohortCard>
+        )
+      }
     </QueriesResolver>
   );
 

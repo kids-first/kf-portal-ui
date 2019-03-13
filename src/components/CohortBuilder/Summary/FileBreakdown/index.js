@@ -4,7 +4,6 @@ import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { CohortCard } from '../../ui';
 import gql from 'graphql-tag';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import BaseDataTable from 'uikit/DataTable';
 import { get } from 'lodash';
 import { withApi } from 'services/api';

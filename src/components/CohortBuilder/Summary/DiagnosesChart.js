@@ -7,7 +7,6 @@ import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import LoaderCard from '../LoaderCard';
 
 const mostFrequentDiagnosisTooltip = data => {
@@ -84,13 +83,13 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoadingSummary }) =>
       api={api}
       queries={toSingleDiagQueries({ topDiagnoses, sqon })}
     >
-      {({ isLoading, data }) => (
-        <CohortCard title="Most Frequent Diagnoses">
-          {isLoading ? (
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          ) : !data ? (
-            <div>No data</div>
-          ) : (
+      {({ isLoading, data }) =>
+        isLoading ? (
+          <LoaderCard title="Most Frequent Diagnoses" />
+        ) : !data ? (
+          <div>No data</div>
+        ) : (
+          <CohortCard title="Most Frequent Diagnoses">
             <BarChartContainer>
               <HorizontalBar
                 data={_(data)
@@ -109,9 +108,9 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoadingSummary }) =>
                 ]}
               />
             </BarChartContainer>
-          )}
-        </CohortCard>
-      )}
+          </CohortCard>
+        )
+      }
     </QueriesResolver>
   );
 
