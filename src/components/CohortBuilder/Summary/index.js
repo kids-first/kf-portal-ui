@@ -36,17 +36,17 @@ const Summary = ({
     name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[
-      // demographicQuery(sqon),
       // ageDiagQuery(sqon),
       studiesQuery(sqon),
       fileBreakdownQuery(sqon),
       diagnosesQuery(sqon),
+      demographicQuery(sqon),
     ]}
   >
     {({ isLoading, data }) => {
-      //const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
+      //const [, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
       //  data || [];
-      const [studiesData, fileDataTypes, topDiagnosesData] = data || [];
+      const [studiesData, fileDataTypes, topDiagnosesData, demographicData] = data || [];
       console.log('data', data);
       return !data ? (
         <Row nogutter> no data</Row>
@@ -71,11 +71,11 @@ const Summary = ({
                   isLoadingSummary={isLoading}
                 />
               </PaddedColumn>
-              {/*
+
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DemographicChart data={demographicData} />
+                <DemographicChart data={demographicData} isLoadingSummary={isLoading} />
               </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+              {/*<PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <SurvivalChart data={survivalPlotMock} />
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>

@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import { get, camelCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 import { CohortCard } from '../ui';
+import LoaderCard from '../LoaderCard';
 
 const PieChartContainer = styled('div')`
   display: flex;
@@ -19,37 +20,40 @@ const PieChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const DemographicChart = ({ data, theme }) => (
-  <CohortCard showHeader={false}>
-    <PieChartContainer>
-      <Pie
-        style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-        title={'Gender'}
-        data={data.gender}
-        colors={[theme.chartColors.orange, '#FFFFFF']}
-      />
-      <Pie
-        style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-        title={'Ethnicity'}
-        data={data.ethnicity}
-        colors={[theme.chartColors.darkblue, '#FFFFFF']}
-      />
-      <Pie
-        style={{ height: '42%', width: '50%' }}
-        title={'Race'}
-        data={data.race}
-        colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-      />
+const DemographicChart = ({ data, theme, isLoadingSummary }) =>
+  isLoadingSummary ? (
+    <LoaderCard showHeader={false} />
+  ) : (
+    <CohortCard showHeader={false}>
+      <PieChartContainer>
+        <Pie
+          style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+          title={'Gender'}
+          data={data.gender}
+          colors={[theme.chartColors.orange, '#FFFFFF']}
+        />
+        <Pie
+          style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+          title={'Ethnicity'}
+          data={data.ethnicity}
+          colors={[theme.chartColors.darkblue, '#FFFFFF']}
+        />
+        <Pie
+          style={{ height: '42%', width: '50%' }}
+          title={'Race'}
+          data={data.race}
+          colors={[theme.chartColors.lightpurple, '#FFFFFF']}
+        />
 
-      <Pie
-        style={{ height: '42%', width: '50%' }}
-        title={'Family Composition'}
-        data={data.familyComposition}
-        colors={[theme.chartColors.lightblue, '#FFFFFF']}
-      />
-    </PieChartContainer>
-  </CohortCard>
-);
+        <Pie
+          style={{ height: '42%', width: '50%' }}
+          title={'Family Composition'}
+          data={data.familyComposition}
+          colors={[theme.chartColors.lightblue, '#FFFFFF']}
+        />
+      </PieChartContainer>
+    </CohortCard>
+  );
 
 export const demographicQuery = sqon => ({
   query: gql`
