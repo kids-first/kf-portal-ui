@@ -8,6 +8,7 @@
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",
     "@oncojs/survivalplot": "^0.7.2",
+    "auto-bind": "^2.0.0",
     "axios": "^0.17.0",
     "babel-plugin-emotion": "^9.0.0",
     "babel-runtime": "^6.26.0",

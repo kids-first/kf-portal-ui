@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import SearchIcon from 'react-icons/lib/fa/search';
 import { compose } from 'recompose';
+import { withTheme } from 'emotion-theming';
+import autobind from 'auto-bind';
 
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 import TextHighlight from '@arranger/components/dist/TextHighlight';
@@ -11,6 +13,7 @@ import { withApi } from 'services/api';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import Column from 'uikit/Column';
 import { TealActionButton, WhiteButton } from 'uikit/Button';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
@@ -111,22 +114,42 @@ const ResultsContainer = styled('div')`
 
 const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
 
+const initializeSelection = (fields, sqon) => {
+  return fields.reduce((acc, field) => {
+    acc[field] = [];
+    return acc;
+  }, {});
+};
+
 class SearchAll extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       query: '',
+      selections: initializeSelection(props.fields, props.sqon),
       isOpen: false,
     };
-    this.handleQueryChange = this.handleQueryChange.bind(this);
-    this.handleClearQuery = this.handleClearQuery.bind(this);
-    this.renderQueryResults = this.renderQueryResults.bind(this);
+    autobind(this);
+  }
+
+  close() {
+    this.setState({
+      query: '',
+      isOpen: false,
+      selections: {},
+    });
   }
 
   setQuery(query) {
+    const { isOpen } = this.state;
+    const { fields, sqon } = this.props;
+    const selections =
+      !isOpen && query.length > 0 ? initializeSelection(fields, sqon) : this.state.selections;
+
     this.setState({
       query,
       isOpen: query !== '',
+      selections,
     });
   }
 
@@ -135,12 +158,62 @@ class SearchAll extends React.Component {
   }
 
   handleClearQuery() {
+    this.close();
+  }
+
+  handleSelectionChange(field, value, evt) {
+    const checked = evt.currentTarget.checked;
+    const oldValues = this.state.selections[field.name];
+    const index = oldValues.indexOf(value);
+
+    let fieldSelection = [];
+    if (checked && index === -1) {
+      fieldSelection = oldValues.concat(value);
+    }
+
+    if (!checked && index > -1) {
+      fieldSelection = fieldSelection.concat(oldValues.slice(0, index), oldValues.slice(index + 1));
+    }
+
+    this.setState({
+      selections: {
+        ...this.state.selections,
+        [field.name]: fieldSelection,
+      },
+    });
+  }
+
+  handleApplyFilter(evt) {
+    const { sqon, fields, onSqonUpdate } = this.props;
+    const { selections } = this.state;
+
+    const newSqonGroup = fields
+      .filter(fieldName => selections[fieldName].length > 0)
+      .map(fieldName => ({
+        op: 'in',
+        content: {
+          field: fieldName,
+          value: [...selections[fieldName]],
+        },
+      }));
     this.setQuery('');
+
+    const newSqon = {
+      op: 'and',
+      content: newSqonGroup,
+    };
+    onSqonUpdate(newSqon);
+
+    this.close();
   }
 
   renderQueryResults(detailedFields) {
-    const { query } = this.state;
+    const { query, isOpen } = this.state;
     return detailedFields.map(field => {
+      if (!isOpen) {
+        return null;
+      }
+
       const filteredBuckets = field.buckets.filter(
         ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
       );
@@ -153,8 +226,13 @@ class SearchAll extends React.Component {
         <div key={`${field.name}`} className="result-category">
           <div className="category-name">{field.displayName}</div>
           {filteredBuckets.map(({ value, docCount }) => (
-            <div className="result-item">
-              <input type="checkbox" checked={false} className="selection" />
+            <div className="result-item" key={`result-item_${value}`}>
+              <input
+                type="checkbox"
+                checked={this.state.selections[field.name].indexOf(value) > -1}
+                className="selection"
+                onChange={this.handleSelectionChange.bind(this, field, value)}
+              />
               <TextHighlight content={value} highlightText={query} />
               <span className="doc-count">{docCount}</span>
             </div>
@@ -165,7 +243,7 @@ class SearchAll extends React.Component {
   }
 
   render() {
-    const { api, sqon, color, title, fields } = this.props;
+    const { api, sqon, color, title, fields, theme } = this.props;
     const { query, isOpen } = this.state;
     const resultsCount = 0;
 
@@ -199,8 +277,7 @@ class SearchAll extends React.Component {
                 }
 
                 if (extendedMappingIsLoading || isLoading) {
-                  // TODO JB : put some pretty loader here
-                  return 'LOADING';
+                  return <LoadingSpinner color={theme.greyScale11} size={'30px'} />;
                 }
 
                 const aggFields = data[0];
@@ -250,11 +327,11 @@ class SearchAll extends React.Component {
                       <div className="results-content">
                         <div className="results-section results-header">{`${resultsCount.toLocaleString()} results found`}</div>
                         <div className="results-section results-body">
-                          {isLoading ? null : this.renderQueryResults(detailedFields)}
+                          {isLoading || !isOpen ? null : this.renderQueryResults(detailedFields)}
                         </div>
                         <div className="results-section results-footer">
                           <WhiteButton onClick={this.handleClearQuery}>Cancel</WhiteButton>
-                          <TealActionButton disabled={false} onClick={() => alert('to do')}>
+                          <TealActionButton disabled={false} onClick={this.handleApplyFilter}>
                             Apply
                           </TealActionButton>
                         </div>
@@ -272,16 +349,18 @@ class SearchAll extends React.Component {
 }
 
 SearchAll.defaultProps = {
-  sqon: {},
   color: 'white',
   title: 'search',
 };
 
 SearchAll.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sqon: PropTypes.object, //.isRequired,
+  sqon: PropTypes.object.isRequired,
   color: PropTypes.string,
   title: PropTypes.string,
 };
 
-export default compose(withApi)(SearchAll);
+export default compose(
+  withApi,
+  withTheme,
+)(SearchAll);

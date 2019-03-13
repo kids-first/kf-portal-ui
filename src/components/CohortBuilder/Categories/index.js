@@ -67,10 +67,11 @@ const CATEGORY_FIELDS = {
 const Categories = ({ theme, sqon, onSqonUpdate }) => (
   <Container>
     <SearchAll
-      sqon={sqon}
       title={'Search all filters'}
-      color={theme.filterViolet}
+      sqon={sqon}
+      onSqonUpdate={onSqonUpdate}
       fields={CATEGORY_FIELDS.searchAll}
+      color={theme.filterViolet}
     />
     <Category
       title="Quick Filters"
