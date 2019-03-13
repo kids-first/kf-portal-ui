@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CohortCard, BarChartContainer } from './ui';
+import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -16,8 +16,10 @@ const studiesToolTip = data => {
   return (
     <div>
       <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Proband${participants !== 1 ? 's' : ''}`}</div>
-      <div>{`${familyMembers.toLocaleString()} Family Member${participants !== 1 ? 's' : ''}`}</div>
+      <div>{`${probands.toLocaleString()} Proband${probands !== 1 ? 's' : ''}`}</div>
+      <div>{`${familyMembers.toLocaleString()} Family Member${
+        familyMembers !== 1 ? 's' : ''
+      }`}</div>
       <div>{`${participants.toLocaleString()} Participant${participants !== 1 ? 's' : ''}`}</div>
     </div>
   );
@@ -100,7 +102,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
               tooltipFormatter={studiesToolTip}
               sortBy={sortDescParticipant}
               tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              colors={getCohortBarColors(data, theme)}
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
