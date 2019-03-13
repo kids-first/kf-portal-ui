@@ -115,8 +115,15 @@ const ResultsContainer = styled('div')`
 const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
 
 const initializeSelection = (fields, sqon) => {
+  const initialValues = sqon.content.reduce((acc, op) => {
+    if (op.op === 'in') {
+      acc[op.content.field] = op.content.value;
+    }
+    return acc;
+  }, {});
+
   return fields.reduce((acc, field) => {
-    acc[field] = [];
+    acc[field] = initialValues[field] ? [...initialValues[field]] : [];
     return acc;
   }, {});
 };
@@ -187,21 +194,27 @@ class SearchAll extends React.Component {
     const { sqon, fields, onSqonUpdate } = this.props;
     const { selections } = this.state;
 
-    const newSqonGroup = fields
-      .filter(fieldName => selections[fieldName].length > 0)
-      .map(fieldName => ({
-        op: 'in',
-        content: {
-          field: fieldName,
-          value: [...selections[fieldName]],
-        },
-      }));
-    this.setQuery('');
+    const newSqonPerField = fields
+      .filter(field => selections[field].length > 0)
+      .reduce(
+        (acc, field) =>
+          acc.concat({
+            op: 'in',
+            content: {
+              field,
+              value: [...selections[field]],
+            },
+          }),
+        [],
+      );
 
     const newSqon = {
-      op: 'and',
-      content: newSqonGroup,
+      op: sqon.op,
+      content: sqon.content
+        .filter(op => op.op !== 'in' || !selections[op.content.field])
+        .concat(newSqonPerField),
     };
+
     onSqonUpdate(newSqon);
 
     this.close();
