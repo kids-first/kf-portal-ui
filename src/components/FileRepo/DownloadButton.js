@@ -138,6 +138,7 @@ export default compose(
       projectId={projectId}
       graphqlField="participant"
       render={({ state: columnState }) => {
+        columnState.columns = props.columnState;
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState });

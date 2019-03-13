@@ -14,6 +14,9 @@ import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
 import RemoveFromCohortButton from './RemoveFromCohortButton';
 
+import DownloadButton from 'components/FileRepo/DownloadButton';
+import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
+
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
     // header row
@@ -102,33 +105,42 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     resizable: false,
     minWidth: 33,
   },
-  { Header: 'Participant ID', accessor: 'participantId' },
-  { Header: 'Study Name', accessor: 'studyName' },
-  { Header: 'Proband', accessor: 'isProband' },
-  { Header: 'Vital Status', accessor: 'vitalStatus' },
+  { Header: 'Participant ID', accessor: 'participantId', field: 'kf_id' },
+  { Header: 'Study Name', accessor: 'studyName', filed: 'study.name' },
+  { Header: 'Proband', accessor: 'isProband', field: 'is_proband' },
+  { Header: 'Vital Status', accessor: 'vitalStatus', field: 'vital_status' },
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'diagnoses.diagnosis_category',
   },
   {
     Header: 'Diagnosis',
     accessor: 'diagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'diagnoses.diagnosis',
   },
   {
     Header: 'Age at Diagnosis',
     accessor: 'ageAtDiagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'diagnoses.age_at_event_days',
   },
-  { Header: 'Gender', accessor: 'gender' },
-  { Header: 'Family ID', accessor: 'familyId' },
+  { Header: 'Gender', accessor: 'gender', field: 'gender' },
+  { Header: 'Family ID', accessor: 'familyId', field: 'family.family_id' },
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'family.family_compositions',
   },
-  { Header: 'Files', accessor: 'filesCount', Cell: props => <NbFilesCell {...props} /> },
+  {
+    Header: 'Files',
+    accessor: 'filesCount',
+    Cell: props => <NbFilesCell {...props} />,
+    field: 'files',
+  },
 ];
 
 const cssClass = css({
@@ -168,6 +180,18 @@ class ParticipantsTable extends Component {
       onRemoveFromCohort();
     };
 
+    const selectionSQON = this.props.selectedRows.length
+      ? replaceSQON({
+          op: 'and',
+          content: [
+            {
+              op: 'in',
+              content: { field: 'participants.kf_id', value: this.props.selectedRows },
+            },
+          ],
+        })
+      : 'url.sqon';
+
     return (
       <Fragment>
         <Toolbar>
@@ -195,6 +219,7 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
+            <DownloadButton sqon={selectionSQON} {...this.props} {...{ columnState: columns }} />
             <ToolbarGroup>
               <ColumnFilter
                 columns={columns}
