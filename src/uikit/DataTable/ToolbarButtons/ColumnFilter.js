@@ -37,21 +37,23 @@ class ColumnFilter extends Component {
               </ToolbarButton>
               {!isOpen ? null : (
                 <DropdownContent>
-                  {columns.map((item, index) => (
-                    <div
-                      className="dropDownContentElement"
-                      key={item.index}
-                      {...getItemProps({ item, index })}
-                    >
-                      {item.Header}
-                      <input
-                        readOnly
-                        type="checkbox"
-                        checked={selectedItem.indexOf(item) > -1}
-                        aria-label={`Select column ${item.Header}`}
-                      />
-                    </div>
-                  ))}
+                  {columns
+                    .filter(col => (col.filterable === false ? false : true))
+                    .map((item, index) => (
+                      <div
+                        className="dropDownContentElement"
+                        key={`col_${index}`}
+                        {...getItemProps({ item, index })}
+                      >
+                        {item.Header}
+                        <input
+                          readOnly
+                          type="checkbox"
+                          checked={selectedItem.indexOf(item) > -1}
+                          aria-label={`Select column ${item.Header}`}
+                        />
+                      </div>
+                    ))}
                 </DropdownContent>
               )}
             </ToolbarItem>

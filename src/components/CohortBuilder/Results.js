@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import ContentBar from './ContentBar';
@@ -150,7 +151,16 @@ const cohortResultsQuery = sqon => ({
   },
 });
 
-const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api, state }) => (
+const Results = ({
+  activeView,
+  activeSqonIndex,
+  setActiveView,
+  theme,
+  sqon,
+  api,
+  state,
+  onRemoveFromCohort,
+}) => (
   <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       const cohortIsEmpty =
@@ -208,7 +218,7 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api,
             {activeView === SUMMARY ? (
               <Summary sqon={sqon} />
             ) : (
-              <ParticipantsTableView sqon={sqon} />
+              <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
             )}
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </ActiveView>
@@ -217,6 +227,12 @@ const Results = ({ activeView, activeSqonIndex, setActiveView, theme, sqon, api,
     }}
   </QueriesResolver>
 );
+
+Results.propTypes = {
+  activeSqonIndex: PropTypes.number.isRequired,
+  sqon: PropTypes.object.isRequired,
+  onRemoveFromCohort: PropTypes.func.isRequired,
+};
 
 export default compose(
   withTheme,
