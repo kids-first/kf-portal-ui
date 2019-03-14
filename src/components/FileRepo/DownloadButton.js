@@ -108,6 +108,7 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
     },
     columns: columnState.columns,
   };
+
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
@@ -138,7 +139,9 @@ export default compose(
       projectId={projectId}
       graphqlField="participant"
       render={({ state: columnState }) => {
-        columnState.columns = props.columnState;
+        if (!props.isFileRepo) {
+          columnState.columns = props.columnState;
+        }
         const participantDownload = participantDownloader({ api, sqon, columnState });
         const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
         const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState });

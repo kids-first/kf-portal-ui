@@ -219,7 +219,12 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
-            <DownloadButton sqon={selectionSQON} {...this.props} {...{ columnState: columns }} />
+            <DownloadButton
+              sqon={selectionSQON}
+              {...this.props}
+              {...{ columnState: columns }}
+              isFileRepo={false}
+            />
             <ToolbarGroup>
               <ColumnFilter
                 columns={columns}
