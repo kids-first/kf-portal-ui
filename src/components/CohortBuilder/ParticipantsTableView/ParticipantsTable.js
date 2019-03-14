@@ -7,7 +7,12 @@ import { withTheme } from 'emotion-theming';
 import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
-import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
+import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarSelectionCount,
+  ToolbarDownload,
+} from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
@@ -16,6 +21,7 @@ import RemoveFromCohortButton from './RemoveFromCohortButton';
 
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -175,6 +181,7 @@ class ParticipantsTable extends Component {
     } = this.props;
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
+    const projectId = arrangerProjectId;
 
     const handleRemoveFromCohort = () => {
       onRemoveFromCohort();
@@ -190,7 +197,7 @@ class ParticipantsTable extends Component {
             },
           ],
         })
-      : 'url.sqon';
+      : undefined;
 
     return (
       <Fragment>
@@ -219,12 +226,15 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
-            <DownloadButton
-              sqon={selectionSQON}
-              {...this.props}
-              {...{ columnState: columns }}
-              isFileRepo={false}
-            />
+            <ToolbarDownload>
+              <DownloadButton
+                sqon={selectionSQON}
+                {...this.props}
+                {...{ columnState: columns }}
+                isFileRepo={false}
+                projectId={projectId}
+              />
+            </ToolbarDownload>
             <ToolbarGroup>
               <ColumnFilter
                 columns={columns}
