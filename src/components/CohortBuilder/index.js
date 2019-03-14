@@ -119,6 +119,7 @@ const CohortBuilder = ({ api, state: { loggedInUser } }) => (
               activeSqonIndex={activeSqonIndex}
               onChange={sqonBuilderSqonsChange}
               onActiveSqonSelect={sqonBuilderActiveSqonSelect}
+              emptyEntryMessage="Use the filters above to build a query"
             />
           </FullWidthWhite>
           <Results

@@ -64,20 +64,9 @@ class SurvivalPlot extends React.Component {
   static defaultProps = {
     palette: ['#1880b2', '#c20127', '#00005d', 'purple'],
     censoredStatuses: ['alive'],
-    onMouseEnterDonors(event, donors) {
-      console.log({
-        donors: donors.map(donor => ({
-          ...donor,
-          isCensored: this.props.censoredStatuses.indexOf(donor.status) >= 0,
-        })),
-      });
-    },
-    onMouseLeaveDonors() {
-      console.log('onMouseLeaveDonor');
-    },
-    onClickDonors(e, donors) {
-      console.log('onClickDonor');
-    },
+    onMouseEnterDonors(event, donors) {},
+    onMouseLeaveDonors() {},
+    onClickDonors(e, donors) {},
     xAxisLabel: 'Survival Rate',
     yAxisLabel: 'Duration (years)',
   };
@@ -227,8 +216,6 @@ class SurvivalChart extends React.Component {
 
   render() {
     const tooltip = this.state.tooltip;
-
-    console.log(tooltip);
 
     const donor = tooltip.donor;
     const tooltipStyle = {

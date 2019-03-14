@@ -98,12 +98,20 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
   }));
 
 const FileBreakdownQueryResolver = ({ fileDataTypes, api, sqon, children }) => (
-  <QueriesResolver api={api} queries={toExpStratQueries({ fileDataTypes, sqon })}>
+  <QueriesResolver
+    name="GQL_FILE_BREAKDOWN_1"
+    api={api}
+    queries={toExpStratQueries({ fileDataTypes, sqon })}
+  >
     {({ data: fileBreakdownQueries, isLoading }) =>
       isLoading ? (
         <div>loading</div>
       ) : (
-        <QueriesResolver api={api} queries={fileBreakdownQueries.flat()}>
+        <QueriesResolver
+          name="GQL_FILE_BREAKDOWN_2"
+          api={api}
+          queries={fileBreakdownQueries.flat()}
+        >
           {children}
         </QueriesResolver>
       )

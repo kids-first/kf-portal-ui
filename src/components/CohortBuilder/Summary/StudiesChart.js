@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import { withApi } from 'services/api';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
-import { CohortCard, BarChartContainer } from './ui';
+import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -16,8 +16,10 @@ const studiesToolTip = data => {
   return (
     <div>
       <div>{name}</div>
-      <div>{`${probands.toLocaleString()} Proband${participants !== 1 ? 's' : ''}`}</div>
-      <div>{`${familyMembers.toLocaleString()} Family Member${participants !== 1 ? 's' : ''}`}</div>
+      <div>{`${probands.toLocaleString()} Proband${probands !== 1 ? 's' : ''}`}</div>
+      <div>{`${familyMembers.toLocaleString()} Family Member${
+        familyMembers !== 1 ? 's' : ''
+      }`}</div>
       <div>{`${participants.toLocaleString()} Participant${participants !== 1 ? 's' : ''}`}</div>
     </div>
   );
@@ -32,46 +34,46 @@ const sortDescParticipant = (a, b) => {
 const toSingleStudyQueries = ({ studies, sqon }) =>
   studies.map(studyShortName => ({
     query: gql`
-        query($sqon: JSON) {
-          participant {
-            familyMembers: aggregations(
-              aggregations_filter_themselves: true
-              filters: {
-                op: "and"
-                content: [
-                  $sqon
-                  { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
-                  { op: "in", content: { field: "is_proband", value: ["false"] } }
-                ]
-              }
-            ) {
-              kf_id {
-                buckets {
-                  key
-                }
+      query($sqon: JSON, $studyShortName: String) {
+        participant {
+          familyMembers: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
+                { op: "in", content: { field: "is_proband", value: ["false"] } }
+              ]
+            }
+          ) {
+            kf_id {
+              buckets {
+                key
               }
             }
-            proband: aggregations(
-              aggregations_filter_themselves: true
-              filters: {
-                op: "and"
-                content: [
-                  $sqon
-                  { op: "in", content: { field: "study.short_name", value: ["${studyShortName}"] } }
-                  { op: "in", content: { field: "is_proband", value: ["true"] } }
-                ]
-              }
-            ) {
-              kf_id {
-                buckets {
-                  key
-                }
+          }
+          proband: aggregations(
+            aggregations_filter_themselves: true
+            filters: {
+              op: "and"
+              content: [
+                $sqon
+                { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
+                { op: "in", content: { field: "is_proband", value: ["true"] } }
+              ]
+            }
+          ) {
+            kf_id {
+              buckets {
+                key
               }
             }
           }
         }
-      `,
-    variables: { sqon },
+      }
+    `,
+    variables: { sqon, studyShortName },
     transform: data => ({
       label: studyShortName,
       familyMembers: size(get(data, 'data.participant.familyMembers.kf_id.buckets')),
@@ -100,7 +102,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
               tooltipFormatter={studiesToolTip}
               sortBy={sortDescParticipant}
               tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              colors={getCohortBarColors(data, theme)}
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
@@ -119,7 +121,7 @@ export const studiesQuery = sqon => ({
   query: gql`
     query($sqon: JSON) {
       participant {
-        aggregations(filters: $sqon) {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           study__short_name {
             buckets {
               key

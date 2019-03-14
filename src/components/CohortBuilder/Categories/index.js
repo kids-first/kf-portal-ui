@@ -22,12 +22,13 @@ const Container = styled(Row)`
 `;
 
 const CATEGORY_FIELDS = {
+//Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.  Check fields on display to make sure they are in alphabetical order. 
   quickSearch: [
     'available_data_types',
     'diagnoses.diagnosis',
-    'is_proband',
     'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
+    'is_proband',
     'study.short_name',
   ],
   study: ['study.data_access_authority', 'is_proband', 'study.short_name'],
@@ -35,24 +36,24 @@ const CATEGORY_FIELDS = {
   clinical: [
     'affected_status',
     'diagnoses.age_at_event_days',
+    'outcome.age_at_event_days',
+    'phenotype.age_at_event_days',
+    'phenotype.ancestral_hpo_ids',
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
-    'diagnoses.source_text_tumor_location',
     'family.family_compositions.composition',
     'family.family_compositions.shared_hpo_ids',
-    'outcome.age_at_event_days',
     'outcome.disease_related',
-    'outcome.vital_status',
-    'phenotype.age_at_event_days',
     'phenotype.hpo_phenotype_observed_text',
-    'phenotypes.ancestral_hpo_ids',
+    'diagnoses.source_text_tumor_location',
+    'outcome.vital_status',
   ],
   biospecimen: [
     'biospecimens.age_at_event_days',
     'biospecimens.analyte_type',
-    'biospecimens.ncit_id_anatomical_site',
     'biospecimens.composition',
     'biospecimens.method_of_sample_procurement',
+    'biospecimens.ncit_id_anatomical_site',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
   ],
@@ -60,6 +61,7 @@ const CATEGORY_FIELDS = {
     'available_data_types',
     'files.experiment_strategies',
     'family.family_compositions.available_data_types',
+
   ],
 };
 
