@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 
-import TextHighlight from '@arranger/components/dist/TextHighlight';
 import { TealActionButton, WhiteButton } from 'uikit/Button';
+
+import QueryResultsBody from './QueryResultsBody';
 
 const ResultsContainer = styled('div')`
   position: absolute;
@@ -41,53 +42,13 @@ const ResultsContainer = styled('div')`
   }
 `;
 
-const filterFields = (detailedFields, query) => {
-  return detailedFields
-    .map(field => {
-      const filteredBuckets = field.buckets.filter(
-        ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
-      );
-      return {
-        ...field,
-        buckets: filteredBuckets,
-      };
-    })
-    .filter(field => field.buckets.length > 0);
-};
-
-const QueryResultsBody = ({ filteredFields, query, selections, onSelectionChange }) => {
-  // that query yields no results
-  if (filteredFields.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="results-section results-body">
-      {filteredFields.map(field => (
-        <div key={`${field.name}`} className="result-category">
-          <div className="category-name">{field.displayName}</div>
-          {field.buckets.map(({ value, docCount }) => (
-            <div className="result-item" key={`result-item_${value}`}>
-              <input
-                type="checkbox"
-                checked={selections[field.name].indexOf(value) > -1}
-                className="selection"
-                onChange={evt => {
-                  onSelectionChange(evt, field, value);
-                }}
-              />
-              <TextHighlight content={value} highlightText={query} />
-              <span className="doc-count">{docCount}</span>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
+const countResults = filteredFields => {
+  const totalResults = filteredFields.reduce((sum, field) => sum + field.buckets.length, 0);
+  return `${totalResults.toLocaleString()} result${totalResults === 1 ? '' : 's'} found`;
 };
 
 const QueryResults = props => {
-  const { query, isLoading, onApplyFilter, onClearQuery, detailedFields } = props;
+  const { query, isLoading, onApplyFilter, onClearQuery, filteredFields } = props;
   const isOpen = query !== '';
 
   if (!isOpen) {
@@ -95,24 +56,13 @@ const QueryResults = props => {
   }
 
   // TODO handle loading state correctly
-  if (isLoading) {
-    return null;
-  }
-
-  // filter both the fields and their buckets
-  //  to keep only the field values matching the query
-  const filteredFields = filterFields(detailedFields, query);
-
-  // TODO extract results count
-  const totalResults = filteredFields.reduce((sum, field) => sum + field.buckets.length, 0);
+  const header = isLoading ? 'Searching...' : countResults(filteredFields);
 
   return (
     <ResultsContainer className={`results-container ${isOpen ? 'open' : ''}`}>
       <div className="results-content">
-        <div className="results-section results-header">{`${totalResults.toLocaleString()} result${
-          totalResults === 1 ? '' : 's'
-        } found`}</div>
-        <QueryResultsBody filteredFields={filteredFields} {...props} />
+        <div className="results-section results-header">{header}</div>
+        <QueryResultsBody {...props} />
         <div className="results-section results-footer">
           <WhiteButton onClick={onClearQuery}>Cancel</WhiteButton>
           <TealActionButton disabled={false} onClick={onApplyFilter}>
@@ -125,7 +75,16 @@ const QueryResults = props => {
 };
 
 QueryResults.propTypes = {
-  detailedFields: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filteredFields: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      displayName: PropTypes.string,
+      buckets: PropTypes.shape({
+        value: PropTypes.string.isRequired,
+        docCount: PropTypes.number.isRequired,
+      }).isRequired,
+    }),
+  ).isRequired,
   query: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   selections: PropTypes.object.isRequired,

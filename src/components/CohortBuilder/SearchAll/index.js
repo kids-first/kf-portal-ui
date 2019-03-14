@@ -91,6 +91,20 @@ const initializeSelection = (fields, sqon) => {
   }, {});
 };
 
+const filterFields = (detailedFields, query) => {
+  return detailedFields
+    .map(field => {
+      const filteredBuckets = field.buckets.filter(
+        ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
+      );
+      return {
+        ...field,
+        buckets: filteredBuckets,
+      };
+    })
+    .filter(field => field.buckets.length > 0);
+};
+
 class SearchAll extends React.Component {
   constructor(props) {
     super(props);
@@ -242,6 +256,10 @@ class SearchAll extends React.Component {
                   })
                   .filter(f => f !== null);
 
+                // filter both the fields and their buckets
+                //  to keep only the field values matching the query
+                const filteredFields = filterFields(detailedFields, query);
+
                 return (
                   <SearchAllContainer className="search-all-filter">
                     <QueryContainer borderColor={color} className="query-container">
@@ -266,7 +284,7 @@ class SearchAll extends React.Component {
                     <QueryResults
                       query={query}
                       isLoading={isLoading}
-                      detailedFields={detailedFields}
+                      filteredFields={filteredFields}
                       selections={selections}
                       onSelectionChange={this.handleSelectionChange}
                       onApplyFilter={this.handleApplyFilter}
