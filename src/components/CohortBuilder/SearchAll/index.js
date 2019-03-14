@@ -7,18 +7,17 @@ import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind';
 
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
-import TextHighlight from '@arranger/components/dist/TextHighlight';
 
 import { withApi } from 'services/api';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import Column from 'uikit/Column';
-import { TealActionButton, WhiteButton } from 'uikit/Button';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 import QueriesResolver from '../QueriesResolver';
 import { searchAllFieldsQuery } from './queries';
+import QueryResults from './QueryResults';
 
 import './SearchAll.css';
 
@@ -72,42 +71,6 @@ const QueryContainer = styled(Column)`
 
     &.icon-right {
       color: ${({ theme }) => theme.greyScale1};
-    }
-  }
-`;
-
-const ResultsContainer = styled('div')`
-  position: absolute;
-  display: none;
-
-  top: 100%;
-  width: 100%;
-
-  border: 1px solid ${({ theme }) => theme.greyScale5};
-  border-radius: 5px;
-  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.lighterShadow};
-  background-color: white;
-  padding: 0;
-
-  &.open {
-    display: block;
-  }
-
-  .results-content {
-    padding: 0;
-
-    .results-header {
-      font-family: ${({ theme }) => theme.fonts.details};
-      font-style: italic;
-      font-size: 12px;
-      color: ${({ theme }) => theme.greyScale1};
-      width: 100%;
-      border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-    }
-
-    .results-footer {
-      background-color: ${({ theme }) => theme.greyScale5};
-      border-top: 1px solid ${({ theme }) => theme.greyScale5};
     }
   }
 `;
@@ -168,7 +131,7 @@ class SearchAll extends React.Component {
     this.close();
   }
 
-  handleSelectionChange(field, value, evt) {
+  handleSelectionChange(evt, field, value) {
     const checked = evt.currentTarget.checked;
     const oldValues = this.state.selections[field.name];
     const index = oldValues.indexOf(value);
@@ -190,7 +153,7 @@ class SearchAll extends React.Component {
     });
   }
 
-  handleApplyFilter(evt) {
+  handleApplyFilter() {
     const { sqon, fields, onSqonUpdate } = this.props;
     const { selections } = this.state;
 
@@ -220,45 +183,9 @@ class SearchAll extends React.Component {
     this.close();
   }
 
-  renderQueryResults(detailedFields) {
-    const { query, isOpen } = this.state;
-    return detailedFields.map(field => {
-      if (!isOpen) {
-        return null;
-      }
-
-      const filteredBuckets = field.buckets.filter(
-        ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
-      );
-
-      if (filteredBuckets.length === 0) {
-        return null;
-      }
-
-      return (
-        <div key={`${field.name}`} className="result-category">
-          <div className="category-name">{field.displayName}</div>
-          {filteredBuckets.map(({ value, docCount }) => (
-            <div className="result-item" key={`result-item_${value}`}>
-              <input
-                type="checkbox"
-                checked={this.state.selections[field.name].indexOf(value) > -1}
-                className="selection"
-                onChange={this.handleSelectionChange.bind(this, field, value)}
-              />
-              <TextHighlight content={value} highlightText={query} />
-              <span className="doc-count">{docCount}</span>
-            </div>
-          ))}
-        </div>
-      );
-    });
-  }
-
   render() {
     const { api, sqon, color, title, fields, theme } = this.props;
-    const { query, isOpen } = this.state;
-    const resultsCount = 0;
+    const { query, selections } = this.state;
 
     return (
       // Extract the metadata & data fetching to a component
@@ -336,20 +263,15 @@ class SearchAll extends React.Component {
                         )}
                       </div>
                     </QueryContainer>
-                    <ResultsContainer className={`results-container${isOpen ? ' open' : ''}`}>
-                      <div className="results-content">
-                        <div className="results-section results-header">{`${resultsCount.toLocaleString()} results found`}</div>
-                        <div className="results-section results-body">
-                          {isLoading || !isOpen ? null : this.renderQueryResults(detailedFields)}
-                        </div>
-                        <div className="results-section results-footer">
-                          <WhiteButton onClick={this.handleClearQuery}>Cancel</WhiteButton>
-                          <TealActionButton disabled={false} onClick={this.handleApplyFilter}>
-                            Apply
-                          </TealActionButton>
-                        </div>
-                      </div>
-                    </ResultsContainer>
+                    <QueryResults
+                      query={query}
+                      isLoading={isLoading}
+                      detailedFields={detailedFields}
+                      selections={selections}
+                      onSelectionChange={this.handleSelectionChange}
+                      onApplyFilter={this.handleApplyFilter}
+                      onClearQuery={this.handleClearQuery}
+                    />
                   </SearchAllContainer>
                 );
               }}
