@@ -50,7 +50,11 @@ const CohortBuilder = compose(
   injectState,
 )(({ api, state: { loggedInUser }, effects }) => (
   <VirtualStudyListProvider>
-    {({ virtualStudies, refetch: refetchVirtualStudies, loading: loadingVirtualStudyList }) => (
+    {({
+      virtualStudies = [],
+      refetch: refetchVirtualStudies,
+      loading: loadingVirtualStudyList,
+    }) => (
       <SQONProvider>
         {({
           sqons: syntheticSqons,
@@ -154,17 +158,21 @@ const CohortBuilder = compose(
               <Content>
                 <Row>
                   <Heading>Explore Data</Heading>
-                  <select value={selectedVirtualStudy} onChange={onVirtualStudySelectChange}>
-                    <option value="" disabled selected>
-                      Load a Virtual Study
-                    </option>
-                    {virtualStudies
-                      ? virtualStudies.map(({ id, name }) => (
-                          <option value={id} key={id}>
-                            {name}
-                          </option>
-                        ))
-                      : null}
+                  <select
+                    value={selectedVirtualStudy}
+                    onChange={onVirtualStudySelectChange}
+                    disabled={!virtualStudies.length}
+                  >
+                    {!virtualStudies.length && (
+                      <option value="" disabled selected>
+                        Load a Virtual Study
+                      </option>
+                    )}
+                    {virtualStudies.map(({ id, name }) => (
+                      <option value={id} key={id}>
+                        {name}
+                      </option>
+                    ))}
                   </select>
                 </Row>
                 <Row>
