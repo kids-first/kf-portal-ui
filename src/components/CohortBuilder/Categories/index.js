@@ -9,7 +9,7 @@ import QuickFilterIcon from 'icons/QuickFilterIcon';
 import StudyIcon from 'icons/StudyIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
-import UploadIcon from 'icons/UploadIcon';
+// import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 
@@ -122,10 +122,11 @@ const Categories = ({ theme, sqon, onSqonUpdate }) => (
     >
       <FileIcon width={11} height={14} fill={theme.dataBlue} />
     </Category>
-  /* {the below is not actually a Category }
-     <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
-       <UploadIcon fill={theme.uploadYellow} />
-     </Category> */
+    //
+    // {/* the below is not actually a Category */}
+    // <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
+    //   <UploadIcon fill={theme.uploadYellow} />
+    // </Category>
   </Container>
 );
 
