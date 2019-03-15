@@ -101,6 +101,14 @@ const SQONProvider = compose(
     });
   };
 
+  const setVirtualStudy = s => id => {
+    history.replace({
+      ...history.location,
+      search: stringify({ id }),
+    });
+    syncWithHistory(s);
+  };
+
   return (
     <Component
       virtualStudyId={virtualStudyId}
@@ -121,6 +129,7 @@ const SQONProvider = compose(
           mergeSqonToActiveIndex: mergeSqonToActiveIndex(s),
           selectedVirtualStudy: virtualStudyId,
           onVirtualStudySelect: onVirtualStudySelect(history),
+          setVirtualStudy: setVirtualStudy(s),
         });
       }}
     </Component>

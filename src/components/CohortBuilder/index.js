@@ -7,8 +7,10 @@ import urlJoin from 'url-join';
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';
 import Component from 'react-component-component';
+import { css } from 'emotion';
 
 import { H1 } from 'uikit/Headings';
+import Input from 'uikit/Input';
 import Row from 'uikit/Row';
 import Categories from './Categories';
 import ContentBar from './ContentBar';
@@ -18,6 +20,7 @@ import SQONProvider from './SQONProvider';
 import VirtualStudyListProvider, { getSavedVirtualStudyNames } from './VirtualStudyListProvider';
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
+import { ModalContentSection } from './common';
 
 const Container = styled('div')`
   width: 100%;
@@ -90,32 +93,50 @@ const createNewVirtualStudy = async ({ virtualStudy, loggedInUser, api, name }) 
       `),
     },
   });
+  return id;
+};
+
+const SaveVirtualStudiesModalContent = ({ onSubmit, submitDisabled }) => {
+  const initialState = { name: '' };
+  const onDataChange = s => e => s.setState({ name: e.target.value });
+  const submitHandler = s => () => onSubmit({ studyName: s.state.name });
+  return (
+    <Component initialState={initialState}>
+      {s => (
+        <React.Fragment>
+          <ModalContentSection>
+            You are saving this page of results with the current configuration of queries.
+          </ModalContentSection>
+          <ModalContentSection>
+            <strong>Virtual Study name: *</strong>
+            <span>
+              <Input value={s.state.name} onChange={onDataChange(s)} />
+            </span>
+          </ModalContentSection>
+          <ModalFooter
+            handleSubmit={submitHandler(s)}
+            submitText={'Save'}
+            submitDisabled={submitDisabled}
+          />
+        </React.Fragment>
+      )}
+    </Component>
+  );
 };
 
 const promptForStudiesData = ({ effects }) => {
   return new Promise((resolve, reject) => {
     effects.setModal({
-      title: 'How to Connect to Cavatica',
+      title: 'Save as Virtual Study',
+      classNames: {
+        modal: css`
+          max-width: 800px;
+        `,
+      },
       component: (
-        <Component initialState={{ name: '' }}>
-          {({ state, setState }) => {
-            return (
-              <React.Fragment>
-                <input value={state.name} onChange={e => setState({ name: e.target.value })} />
-                <ModalFooter
-                  {...{
-                    handleSubmit: async () => {
-                      resolve({ name: state.name });
-                      effects.unsetModal();
-                    },
-                    submitText: 'Save',
-                    // submitDisabled: invalidToken || !isValidKey(cavaticaKey),
-                  }}
-                />
-              </React.Fragment>
-            );
-          }}
-        </Component>
+        <SaveVirtualStudiesModalContent
+          onSubmit={({ studyName }) => resolve({ name: studyName })}
+        />
       ),
     });
   });
@@ -137,6 +158,7 @@ const CohortBuilder = compose(
           mergeSqonToActiveIndex,
           selectedVirtualStudy,
           onVirtualStudySelect,
+          setVirtualStudy,
         }) => {
           const executableSqon = getActiveExecutableSqon();
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
@@ -151,20 +173,19 @@ const CohortBuilder = compose(
           const onVirtualStudySelectChange = e => {
             onVirtualStudySelect(e.target.value);
           };
-          const onSaveClick = () => {
-            promptForStudiesData({ effects })
-              .then(({ name }) =>
-                createNewVirtualStudy({
-                  api,
-                  loggedInUser,
-                  virtualStudy: {
-                    sqons: syntheticSqons,
-                    activeIndex: activeSqonIndex,
-                  },
-                  name,
-                }),
-              )
-              .then(refetchVirtualStudies);
+          const onSaveClick = async () => {
+            const { name } = await promptForStudiesData({ effects });
+            const newStudyId = await createNewVirtualStudy({
+              api,
+              loggedInUser,
+              virtualStudy: {
+                sqons: syntheticSqons,
+                activeIndex: activeSqonIndex,
+              },
+              name,
+            });
+            await refetchVirtualStudies();
+            setVirtualStudy(newStudyId);
           };
 
           return (
