@@ -8,6 +8,23 @@ import urlJoin from 'url-join';
 import { withApi } from 'services/api';
 import { personaApiRoot } from 'common/injectGlobals';
 
+export const getSavedVirtualStudyNames = async api =>
+  api({
+    url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_SAVED_VIRTUAL_STUDIES'),
+    body: {
+      query: print(gql`
+        {
+          self {
+            virtualStudies {
+              id
+              name
+            }
+          }
+        }
+      `),
+    },
+  });
+
 export default compose(withApi)(({ api, onUpdate = () => {}, children }) => {
   const initialState = {
     loading: true,
@@ -31,22 +48,6 @@ export default compose(withApi)(({ api, onUpdate = () => {}, children }) => {
         }),
     );
   };
-  const getSavedVirtualStudyNames = async api =>
-    api({
-      url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_SAVED_VIRTUAL_STUDIES'),
-      body: {
-        query: print(gql`
-          {
-            self {
-              virtualStudies {
-                id
-                name
-              }
-            }
-          }
-        `),
-      },
-    });
   return (
     <Component initialState={initialState} didMount={didMount}>
       {s =>

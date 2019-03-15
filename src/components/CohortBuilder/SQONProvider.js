@@ -2,63 +2,22 @@ import React from 'react';
 import Component from 'react-component-component';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import urlJoin from 'url-join';
 import {
   resolveSyntheticSqon,
   isReference,
 } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
 import { parse as parseQueryString, stringify } from 'query-string';
-import { withApi } from 'services/api';
 
-const getVirtualStudy = api => id => {
-  const mocks = {
-    yo: {
-      activeIndex: 0,
-      sqons: [
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'kf_id',
-                value: [],
-              },
-            },
-          ],
-        },
-      ],
-    },
-    ya: {
-      activeIndex: 1,
-      sqons: [
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'kf_id',
-                value: [],
-              },
-            },
-          ],
-        },
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'kf_id',
-                value: [],
-              },
-            },
-          ],
-        },
-      ],
-    },
-  };
-  return Promise.resolve(mocks[id]);
+import { withApi } from 'services/api';
+import { shortUrlApi } from 'common/injectGlobals';
+
+const getVirtualStudy = api => async id => {
+  const { content } = await api({
+    method: 'GET',
+    url: urlJoin(shortUrlApi, id),
+  });
+  return content;
 };
 
 const SQONProvider = compose(
