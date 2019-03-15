@@ -8,6 +8,7 @@ import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { withApi } from 'services/api';
 import { H1 } from 'uikit/Headings';
+import { WhiteButton, TealActionButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
 import Categories from './Categories';
 import ContentBar from './ContentBar';
@@ -17,6 +18,7 @@ import SQONProvider from './SQONProvider';
 import VirtualStudyListProvider from './VirtualStudyListProvider';
 import SaveVirtualStudiesModalContent from './SaveVirtualStudiesModalContent';
 import { createNewVirtualStudy } from './util';
+import SaveIcon from 'icons/SaveIcon';
 
 const Container = styled('div')`
   width: 100%;
@@ -37,6 +39,10 @@ const FullWidthWhite = styled('div')`
 
 const Content = styled(ContentBar)`
   padding: 0 20px 0 32px;
+`;
+
+const SaveButtonText = styled('span')`
+  margin-left: 5px;
 `;
 
 const CohortBuilder = compose(
@@ -162,10 +168,17 @@ const CohortBuilder = compose(
                   </select>
                 </Row>
                 <Row>
-                  <button disabled={loadingVirtualStudyList} onClick={onSaveClick}>
-                    {!loadingVirtualStudyList ? 'Save virtual study' : '...LOADING'}
-                  </button>
-                  <button>Share</button>
+                  <TealActionButton
+                    mr={'10px'}
+                    disabled={loadingVirtualStudyList}
+                    onClick={onSaveClick}
+                  >
+                    <span>
+                      <SaveIcon height={10} width={10} fill={'white'} />
+                    </span>
+                    <SaveButtonText>Save virtual study</SaveButtonText>
+                  </TealActionButton>
+                  <WhiteButton>Share</WhiteButton>
                 </Row>
               </Content>
               <FullWidthWhite>

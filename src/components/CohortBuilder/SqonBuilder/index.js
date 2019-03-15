@@ -24,6 +24,8 @@ const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
 );
 
 const SqonBuilderContainer = styled('div')`
+  margin-top: 20px;
+  border: solid 1px ${({ theme }) => theme.greyScale4};
   > .sqonBuilder .sqonEntry .actionButtonsContainer {
     box-sizing: border-box;
   }

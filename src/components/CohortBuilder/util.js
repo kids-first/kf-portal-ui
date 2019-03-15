@@ -27,7 +27,7 @@ export const createNewVirtualStudy = async ({ virtualStudy, loggedInUser, api, n
       self: { virtualStudies: currentVirtualStudies },
     },
   } = await getSavedVirtualStudyNames(api);
-  const egoId = (loggedInUser || {}).egoId;
+  const { egoId } = loggedInUser;
   const { id } = await api({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
@@ -44,18 +44,18 @@ export const createNewVirtualStudy = async ({ virtualStudy, loggedInUser, api, n
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
     body: {
       variables: {
-        virtualStudies: [...currentVirtualStudies, { id, name }],
         egoId,
+        virtualStudies: [...currentVirtualStudies, { id, name }],
+        personaRecordId: loggedInUser._id,
       },
       query: print(gql`
-        mutation($virtualStudies: [UserModelUserModelVirtualStudiesInput], $egoId: String) {
+        mutation(
+          $virtualStudies: [UserModelUserModelVirtualStudiesInput]
+          $egoId: String
+          $personaRecordId: MongoID!
+        ) {
           userUpdate(
-            record: {
-              _id: "5c7480da9af7f706f2608d8c"
-              egoId: $egoId
-              firstName: "MINH"
-              virtualStudies: $virtualStudies
-            }
+            record: { egoId: $egoId, virtualStudies: $virtualStudies, _id: $personaRecordId }
           ) {
             record {
               firstName
