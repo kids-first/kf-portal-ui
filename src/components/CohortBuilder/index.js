@@ -84,11 +84,12 @@ const CohortBuilder = compose(
             const newStudyId = await createNewVirtualStudy({
               api,
               loggedInUser,
-              virtualStudy: {
+              sqonsState: {
                 sqons: syntheticSqons,
                 activeIndex: activeSqonIndex,
               },
               name: studyName,
+              description: '',
             });
             await refetchVirtualStudies();
             setVirtualStudy(newStudyId);

@@ -20,8 +20,14 @@ export const getSavedVirtualStudyNames = async api =>
     },
   });
 
-export const createNewVirtualStudy = async ({ virtualStudy, loggedInUser, api, name }) => {
-  const { sqons, activeIndex } = virtualStudy;
+export const createNewVirtualStudy = async ({
+  sqonsState,
+  loggedInUser,
+  api,
+  name,
+  description = '',
+}) => {
+  const { sqons, activeIndex } = sqonsState;
   const {
     data: {
       self: { virtualStudies: currentVirtualStudies },
