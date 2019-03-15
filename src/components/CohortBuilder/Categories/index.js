@@ -22,7 +22,7 @@ const Container = styled(Row)`
 `;
 
 const CATEGORY_FIELDS = {
-//Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.  Check fields on display to make sure they are in alphabetical order. 
+//Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.  Check fields on display to make sure they are in alphabetical order.
   quickSearch: [
     'available_data_types',
     'diagnoses.diagnosis',
@@ -123,10 +123,10 @@ const Categories = ({ theme, sqon, onSqonUpdate }) => (
       <FileIcon width={11} height={14} fill={theme.dataBlue} />
     </Category>
 
-    {/* the below is not actually a Category */}
-    <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
-      <UploadIcon fill={theme.uploadYellow} />
-    </Category>
+  //  {/* the below is not actually a Category */}
+  //  <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
+  //    <UploadIcon fill={theme.uploadYellow} />
+  //  </Category>
   </Container>
 );
 
