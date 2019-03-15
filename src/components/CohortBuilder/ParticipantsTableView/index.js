@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
@@ -16,33 +17,94 @@ const enhance = compose(
   withTheme,
   withState('pageSize', 'setPageSize', 10),
   withState('pageIndex', 'setPageIndex', 0),
+  withState('selectedRows', 'setSelectedRows', []),
+  withState('allRowsSelected', 'setAllRowsSelected', false),
 );
 
-const ParticipantsTableView = ({ sqon, api, pageIndex, pageSize, setPageIndex, setPageSize }) => (
-  <QueriesResolver
-    name="GQL_PARTICIPANTS_TABLE"
-    api={api}
-    sqon={sqon}
-    queries={[participantsQuery(sqon, pageSize, pageIndex)]}
-  >
-    {({ isLoading, data, error }) =>
-      error ? (
-        <TableErrorView error={error} />
-      ) : (
-        <Card>
-          <ParticipantsTable
-            loading={isLoading}
-            data={data[0] ? data[0].nodes : []}
-            dataTotalCount={data[0] ? data[0].total : 0}
-            onFetchData={({ page, pageSize }) => {
-              setPageIndex(page);
-              setPageSize(pageSize);
-            }}
-          />
-        </Card>
-      )
-    }
-  </QueriesResolver>
-);
+const ParticipantsTableView = ({
+  sqon,
+  onRemoveFromCohort,
+  api,
+  pageIndex,
+  setPageIndex,
+  pageSize,
+  setPageSize,
+  selectedRows,
+  setSelectedRows,
+  allRowsSelected,
+  setAllRowsSelected,
+}) => {
+  return (
+    <QueriesResolver
+      name="GQL_PARTICIPANTS_TABLE"
+      api={api}
+      queries={[participantsQuery(sqon, pageSize, pageIndex)]}
+    >
+      {({ isLoading, data, error }) => {
+        if (error) {
+          return (
+            <Card>
+              <TableErrorView error={error} />
+            </Card>
+          );
+        }
+
+        const isRowSelected = node =>
+          allRowsSelected || selectedRows.some(row => row === node.participantId);
+
+        const dataWithRowSelection = data[0]
+          ? data[0].nodes.map(node => ({ ...node, selected: isRowSelected(node) }))
+          : [];
+
+        return (
+          <Card>
+            <ParticipantsTable
+              loading={isLoading}
+              data={dataWithRowSelection}
+              dataTotalCount={data[0] ? data[0].total : 0}
+              downloadName={'participant-table'}
+              onFetchData={({ page, pageSize }) => {
+                setPageIndex(page);
+                setPageSize(pageSize);
+              }}
+              onRowSelected={(checked, row) => {
+                const rowId = row.participantId;
+                if (checked) {
+                  setSelectedRows(s => s.concat(rowId));
+                  return;
+                }
+                setSelectedRows(s => s.filter(row => row !== rowId));
+              }}
+              onAllRowsSelected={checked => {
+                // don't keep individual rows selected when "select all" is checked
+                //  to avoid having them selected after "unselect all"
+                setAllRowsSelected(s => checked);
+                setSelectedRows(s => []);
+              }}
+              onClearSelected={() => {
+                setAllRowsSelected(s => false);
+                setSelectedRows(s => []);
+              }}
+              onRemoveFromCohort={() => {
+                // remove the selected participants from the cohort
+                onRemoveFromCohort(selectedRows);
+                // clear selection
+                setAllRowsSelected(s => false);
+                setSelectedRows(s => []);
+              }}
+              selectedRows={selectedRows}
+              allRowsSelected={allRowsSelected}
+            />
+          </Card>
+        );
+      }}
+    </QueriesResolver>
+  );
+};
+
+ParticipantsTableView.propTypes = {
+  sqon: PropTypes.object.isRequired,
+  onRemoveFromCohort: PropTypes.func.isRequired,
+};
 
 export default enhance(ParticipantsTableView);

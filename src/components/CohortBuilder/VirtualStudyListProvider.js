@@ -3,7 +3,7 @@ import Component from 'react-component-component';
 import { compose } from 'recompose';
 
 import { withApi } from 'services/api';
-import { getSavedVirtualStudyNames } from './utils';
+import { getSavedVirtualStudyNames } from './util';
 
 export default compose(withApi)(({ api, onUpdate = () => {}, children }) => {
   const initialState = {

@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { withApi } from 'services/api';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 
+import saveSet from '@arranger/components/dist/utils/saveSet';
+import graphql from 'services/arranger';
+import { withApi } from 'services/api';
 import { H1 } from 'uikit/Headings';
 import Row from 'uikit/Row';
 import Categories from './Categories';
@@ -14,7 +16,7 @@ import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import VirtualStudyListProvider from './VirtualStudyListProvider';
 import SaveVirtualStudiesModalContent from './SaveVirtualStudiesModalContent';
-import { createNewVirtualStudy } from './utils';
+import { createNewVirtualStudy } from './util';
 
 const Container = styled('div')`
   width: 100%;
@@ -98,6 +100,49 @@ const CohortBuilder = compose(
             });
           };
 
+          const createNewSqonExcludingParticipants = participantIds => {
+            saveSet({
+              type: 'participant',
+              sqon: {
+                op: 'and',
+                content: [
+                  {
+                    op: 'in',
+                    content: {
+                      field: 'kf_id',
+                      value: participantIds,
+                    },
+                  },
+                ],
+              },
+              userId: loggedInUser.egoId,
+              path: 'kf_id',
+              api: graphql(api),
+            })
+              .then(({ data }) => {
+                const newSqon = {
+                  op: 'and',
+                  content: [
+                    activeSqonIndex,
+                    {
+                      op: 'not-in',
+                      content: {
+                        field: 'kf_id',
+                        value: [`set_id:${data.saveSet.setId}`],
+                      },
+                    },
+                  ],
+                };
+                const newSqons = [...syntheticSqons, newSqon];
+                setSqons(newSqons);
+                return newSqons.length - 1;
+              })
+              .then(newSqonIndex => {
+                setActiveSqonIndex(newSqonIndex);
+              })
+              .catch(console.error);
+          };
+
           return (
             <Container>
               <Content>
@@ -133,7 +178,11 @@ const CohortBuilder = compose(
                   emptyEntryMessage="Use the filters above to build a query"
                 />
               </FullWidthWhite>
-              <Results sqon={executableSqon} activeSqonIndex={activeSqonIndex} />
+              <Results
+                sqon={executableSqon}
+                activeSqonIndex={activeSqonIndex}
+                onRemoveFromCohort={createNewSqonExcludingParticipants}
+              />
             </Container>
           );
         }}

@@ -1,17 +1,18 @@
 import React from 'react';
 import Component from 'react-component-component';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import PropTypes from 'prop-types';
-
+import { Link } from './Core';
 /**
  * Purpose is to create a link and navigate to it when you need it async
  * eg. dynamically generating a link that takes time because of requesting data
  */
-const LinkWithLoader = ({ getLink, children, history }) => (
+const LinkWithLoader = ({ getLink, children, history, className }) => (
   <Component initialState={{ isLoading: false }}>
     {({ state, setState }) => (
       <Link
+        className={className}
         to=""
         onClick={async e => {
           e.preventDefault();
