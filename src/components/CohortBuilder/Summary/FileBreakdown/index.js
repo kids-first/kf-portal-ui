@@ -114,9 +114,18 @@ export const fileBreakdownQuery = sqon => ({
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
+const compareElement = (a, b) => {
+  const dataTypeA = a.dataType.toUpperCase();
+  const dataTypeB = b.dataType.toUpperCase();
+  if (dataTypeA > dataTypeB) return 1;
+  if (dataTypeB > dataTypeA) return -1;
+  return 0;
+};
+
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <FileBreakdownQueryResolver sqon={sqon} fileDataTypes={fileDataTypes}>
     {({ data, isLoading }) => {
+      data = data.sort(compareElement);
       const finalData = isLoading ? null : generateFileColumnContents(data, state, api, sqon);
       const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
 
