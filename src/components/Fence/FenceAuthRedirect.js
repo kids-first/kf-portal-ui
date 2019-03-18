@@ -45,6 +45,7 @@ export default compose(withApi)(({ api, fence }) => (
           display: 'flex',
           height: '100%',
           width: '100%',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
         }}
