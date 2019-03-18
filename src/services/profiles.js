@@ -37,6 +37,7 @@ const DEFAULT_FIELDS = `
   interests
   acceptedKfOptIn
   acceptedNihOptIn
+  acceptedDatasetSubscriptionKfOptIn
   sets {
     name
     size
@@ -80,7 +81,6 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
       `,
     },
   });
-
   return record;
 };
 

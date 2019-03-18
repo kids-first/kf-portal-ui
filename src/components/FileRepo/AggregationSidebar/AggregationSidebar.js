@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
-import { compose } from 'recompose';
+import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
@@ -16,7 +16,8 @@ import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
 import { FileRepoH2 as H2 } from 'uikit/Headings';
 import { TealActionButton } from 'uikit/Button';
-import Heading from 'uikit/Heading';
+import LeftChevron from 'icons/DoubleChevronLeftIcon';
+import RightChevron from 'icons/DoubleChevronRightIcon';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 // import arrangerStyle from 'components/FileRepo/arrangerStyle';
@@ -35,21 +36,37 @@ const AggregationWrapper = styled(Column)`
 
 const AggregationHeader = styled('div')`
   display: flex;
-  padding: 15px 7px 15px 12px;
   align-items: center;
+  padding: 15px 7px 15px 12px;
 `;
 
-const AggregationTitle = styled(Heading)`
-  flex-grow: 1;
-  margin-bottom: 0px;
-  font-size: 18px;
+const OpenActionChevron = styled(RightChevron)`
+  margin-top: 10px;
+  min-width: 14px;
 `;
 
-const Controls = styled(Column)`
-  flex: 0 0 auto;
+const CloseActionChevron = styled(LeftChevron)`
+  margin-left: auto;
 `;
 
-const AggregationSidebar = compose(injectState, withTheme, withApi)(
+const BrowseAllButton = styled(TealActionButton)`
+  margin-left: 10px;
+`;
+
+const CollapsibleAggregationWrapper = styled(AggregationWrapper)`
+  transition: all 0.25s;
+  min-width: 37px;
+  flex: inherit;
+  width: ${({ expanded }) => (expanded ? `100%` : `0%`)} !important;
+  overflow: hidden;
+`;
+
+const AggregationSidebar = compose(
+  injectState,
+  withTheme,
+  withApi,
+  withState('expanded', 'setExpanded', true),
+)(
   ({
     api,
     state,
@@ -59,19 +76,20 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
     translateSQONValue,
     trackFileRepoInteraction,
     aggregationsWrapperRef = React.createRef(),
+    expanded,
+    setExpanded,
+    test = 1000,
     ...props
   }) => (
     <ScrollbarSize>
       {({ scrollbarWidth }) => (
-        <AggregationWrapper {...{ scrollbarWidth, innerRef: aggregationsWrapperRef }}>
-          <Controls>
-            <AggregationHeader>
-              <AggregationTitle>
-                <H2>
-                  <Trans>Filters</Trans>
-                </H2>
-              </AggregationTitle>
-              <TealActionButton
+        <CollapsibleAggregationWrapper
+          {...{ scrollbarWidth, expanded, innerRef: aggregationsWrapperRef }}
+        >
+          <AggregationHeader>
+            {expanded ? <H2>Filter</H2> : null}
+            {expanded ? (
+              <BrowseAllButton
                 onClick={() =>
                   effects.setModal({
                     title: 'All Filters',
@@ -107,35 +125,50 @@ const AggregationSidebar = compose(injectState, withTheme, withApi)(
                   })
                 }
               >
-                <Trans>All Filters</Trans>
-              </TealActionButton>
-            </AggregationHeader>
-          </Controls>
-          <CustomAggregationsPanel
-            {...{
-              ...props,
-              state,
-              effects,
-              setSQON,
-              containerRef: aggregationsWrapperRef,
-              translateSQONValue,
-              onValueChange: ({ active, field, value }) => {
-                if (active) {
-                  trackFileRepoInteraction({
-                    category: TRACKING_EVENTS.categories.fileRepo.filters,
-                    action: 'Filter Selected',
-                    label: { type: 'filter', value, field },
-                  });
-                }
-              },
-              componentProps: {
-                getTermAggProps: () => ({
-                  InputComponent: FilterInput,
-                }),
-              },
-            }}
-          />
-        </AggregationWrapper>
+                <Trans>Browse All</Trans>
+              </BrowseAllButton>
+            ) : null}
+            {!expanded ? (
+              <OpenActionChevron
+                width={14}
+                onClick={() => setExpanded(!expanded)}
+                fill={theme.secondary}
+              />
+            ) : (
+              <CloseActionChevron
+                onClick={() => setExpanded(!expanded)}
+                width={14}
+                fill={theme.secondary}
+              />
+            )}
+          </AggregationHeader>
+          {expanded ? (
+            <CustomAggregationsPanel
+              {...{
+                ...props,
+                state,
+                effects,
+                setSQON,
+                containerRef: aggregationsWrapperRef,
+                translateSQONValue,
+                onValueChange: ({ active, field, value }) => {
+                  if (active) {
+                    trackFileRepoInteraction({
+                      category: TRACKING_EVENTS.categories.fileRepo.filters,
+                      action: 'Filter Selected',
+                      label: { type: 'filter', value, field },
+                    });
+                  }
+                },
+                componentProps: {
+                  getTermAggProps: () => ({
+                    InputComponent: FilterInput,
+                  }),
+                },
+              }}
+            />
+          ) : null}
+        </CollapsibleAggregationWrapper>
       )}
     </ScrollbarSize>
   ),

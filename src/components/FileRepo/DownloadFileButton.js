@@ -13,7 +13,6 @@ import { GEN3 } from 'common/constants';
 import { downloadFileFromGen3 } from 'services/gen3';
 import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { getAppElement } from 'services/globalDomNodes';
 
 const getGen3UUIDs = async kfId => {
@@ -28,7 +27,11 @@ const downloadFile = async ({ kfId, api }) => {
   return downloadFileFromGen3({ fileUUID, api });
 };
 
-const DownloadFileButton = compose(injectState, withTheme, withApi)(
+const DownloadFileButton = compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     kfId,
     theme,
@@ -36,6 +39,9 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
     state: { integrationTokens },
     gen3Key = integrationTokens[GEN3],
     api,
+    render,
+    onSuccess,
+    onError,
   }) => (
     <LoadingOnClick
       onClick={() =>
@@ -43,11 +49,10 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
           .then(url => {
             const a = document.createElement('a');
             a.href = url;
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-              action: 'Download File',
-              label: url,
-            });
+            if (onSuccess) {
+              onSuccess(url);
+            }
+
             a.download = url.split('/').slice(-1);
             a.style.display = 'none';
 
@@ -58,11 +63,9 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
             appRoot.removeChild(a);
           })
           .catch(err => {
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-              action: 'Download File FAILED',
-              label: 'Your account does not have the required permission to download this file.',
-            });
+            if (onError) {
+              onError(err);
+            }
             setToast({
               id: `${Date.now()}`,
               action: 'error',
@@ -105,22 +108,26 @@ const DownloadFileButton = compose(injectState, withTheme, withApi)(
             });
           })
       }
-      render={({ onClick, loading }) => (
-        <IconWithLoading
-          {...{ loading }}
-          spinnerProps={{ color: 'grey' }}
-          Icon={() => (
-            <DownloadIcon
-              {...{ onClick }}
-              width={13}
-              fill={theme.primary}
-              className={css`
-                cursor: pointer;
-              `}
-            />
-          )}
-        />
-      )}
+      render={
+        render
+          ? render
+          : ({ onClick, loading }) => (
+              <IconWithLoading
+                {...{ loading }}
+                spinnerProps={{ color: 'grey' }}
+                Icon={() => (
+                  <DownloadIcon
+                    {...{ onClick }}
+                    width={13}
+                    fill={theme.primary}
+                    className={css`
+                      cursor: pointer;
+                    `}
+                  />
+                )}
+              />
+            )
+      }
     />
   ),
 );

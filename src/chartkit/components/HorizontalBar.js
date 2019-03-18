@@ -8,9 +8,24 @@ import Legend from './Legend';
 import Tooltip from './Tooltip';
 import { truncateText } from '../utils';
 import ChartDisplayContainer from './ChartDisplayContainer';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const HorizontalBarWrapper = styled('div')`
   height: 90%;
+`;
+
+/**
+ * Ref: https://github.com/kids-first/kf-portal-ui/pull/1006
+ * IE, FF and Chrome all deal with svg text alignment differently
+ * Nivo uses alignment-baseline which FF does not support
+ * TextBugWrapper provides FF with correct attribute
+ */
+const TextBugWrapper = styled('div')`
+  width: 100%;
+  height: 100%;
+  & text {
+    dominant-baseline: ${({ baseline }) => baseline};
+  }
 `;
 
 class HorizontalBar extends Component {
@@ -38,9 +53,17 @@ class HorizontalBar extends Component {
 
   onMouseEnter(data, e) {
     e.target.style.cursor = 'pointer';
+
     if (data) {
       const { index, indexValue } = data;
       this.setState({ highlightedIndex: index, highlightedIndexValue: indexValue });
+      if (this.props.analyticsTracking) {
+        trackUserInteraction({
+          category: this.props.analyticsTracking.category,
+          action: `Chart Bar: ${TRACKING_EVENTS.actions.hover}`,
+          label: `${data.indexValue}: ${data.id}`,
+        });
+      }
     }
   }
 
@@ -173,13 +196,15 @@ class HorizontalBar extends Component {
     return (
       <HorizontalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <ChartDisplayContainer>
-          {height ? (
-            <ResponsiveBar {...chartData} height={height} />
-          ) : (
-            <ResponsiveBar {...chartData} />
-          )}
-        </ChartDisplayContainer>
+        <TextBugWrapper baseline="text-before-edge">
+          <ChartDisplayContainer>
+            {height ? (
+              <ResponsiveBar {...chartData} height={height} />
+            ) : (
+              <ResponsiveBar {...chartData} />
+            )}
+          </ChartDisplayContainer>
+        </TextBugWrapper>
       </HorizontalBarWrapper>
     );
   }
@@ -192,6 +217,7 @@ HorizontalBar.propTypes = {
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.func,
+  analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
 };
 
 export default HorizontalBar;

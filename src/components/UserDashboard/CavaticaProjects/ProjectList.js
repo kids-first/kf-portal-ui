@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 import { getTaskLink } from 'services/cavatica';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const Project = styled(Column)`
   justify-content: center;
@@ -78,12 +79,6 @@ const TaskBreakdown = styled('div')`
   font-weight: 600;
 `;
 
-const NoTasks = styled('span')`
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-weight: normal;
-`;
-
 const Task = ({ tasks, status, projectId, ...props }) => {
   const text = `${tasks} ${status}`;
 
@@ -100,7 +95,17 @@ const ProjectList = ({ projects }) =>
   projects.map((p, i) => (
     <Project key={i}>
       <Row justifyContent="space-between" pl={0}>
-        <Link href={`https://cavatica.sbgenomics.com/u/${p.id}`} iconSize={11}>
+        <Link
+          onClick={() => {
+            trackUserInteraction({
+              category: TRACKING_EVENTS.categories.integration.cavatica,
+              action: `Project Link ${TRACKING_EVENTS.actions.click}`,
+              label: p.name,
+            });
+          }}
+          href={`https://cavatica.sbgenomics.com/u/${p.id}`}
+          iconSize={11}
+        >
           {p.name}
         </Link>
         <div>

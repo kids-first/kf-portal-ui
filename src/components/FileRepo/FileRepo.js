@@ -6,13 +6,16 @@ import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
+import Tooltip from 'uikit/Tooltip';
+import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
+import DownloadButton from './DownloadButton';
+
 import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
-import FileRepoSidebar from 'components/FileRepoSidebar';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
@@ -33,6 +36,7 @@ import {
   OpenIcon,
   TableSpinnerWrapper,
   TableSpinner,
+  cavaticaCopyButtonStyle,
 } from './ui';
 import customTableColumns from './customTableColumns';
 
@@ -50,7 +54,47 @@ const customTableTypes = {
   ),
 };
 
-const FileRepo = compose(injectState, withTheme, withApi)(
+const TableHeaderContent = ({ sqon, disabled, ...props }) => {
+  return (
+    <Row right>
+      <Tooltip
+        position="top"
+        hideTitle
+        html={
+          <Row p={'10px'}>
+            {disabled
+              ? 'Please select files in the table for this action.'
+              : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}
+          </Row>
+        }
+      >
+        <CavaticaCopyButton
+          sqon={sqon}
+          {...props}
+          buttonStyle={cavaticaCopyButtonStyle}
+          buttonContentStyle={false}
+        />
+      </Tooltip>
+      {disabled ? (
+        <Tooltip
+          position="top"
+          hideTitle
+          html={<Row>Please select files in the table for this action.</Row>}
+        >
+          <DownloadButton sqon={sqon} {...props} />
+        </Tooltip>
+      ) : (
+        <DownloadButton sqon={sqon} {...props} />
+      )}
+    </Row>
+  );
+};
+
+const FileRepo = compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     state,
     effects,
@@ -120,27 +164,18 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                                 });
                               }}
                             />
-                            {url.sqon &&
-                              Object.keys(url.sqon).length > 0 && (
-                                <FileRepoStatsQuery
-                                  {...props}
-                                  {...url}
-                                  render={({ data: stats, loading: disabled }) => (
-                                    <QuerySharingContainer>
-                                      <ShareQuery
-                                        api={props.api}
-                                        {...url}
-                                        {...{ stats, disabled }}
-                                      />
-                                      <SaveQuery
-                                        api={props.api}
-                                        {...url}
-                                        {...{ stats, disabled }}
-                                      />
-                                    </QuerySharingContainer>
-                                  )}
-                                />
-                              )}
+                            {url.sqon && Object.keys(url.sqon).length > 0 && (
+                              <FileRepoStatsQuery
+                                {...props}
+                                {...url}
+                                render={({ data: stats, loading: disabled }) => (
+                                  <QuerySharingContainer>
+                                    <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                    <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                  </QuerySharingContainer>
+                                )}
+                              />
+                            )}
                           </Row>
                           <FileRepoStats
                             {...props}
@@ -153,6 +188,13 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                             <Table
                               {...props}
                               {...url}
+                              customHeaderContent={
+                                <TableHeaderContent
+                                  {...props}
+                                  sqon={selectionSQON}
+                                  disabled={false}
+                                />
+                              }
                               customTypes={customTableTypes}
                               showFilterInput={false}
                               InputComponent={props => (
@@ -201,7 +243,6 @@ const FileRepo = compose(injectState, withTheme, withApi)(
                             />
                           </TableWrapper>
                         </TableContainer>
-                        <FileRepoSidebar {...props} sqon={selectionSQON} />
                       </ArrangerContainer>
                     </React.Fragment>
                   );

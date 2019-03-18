@@ -48,7 +48,6 @@ export const BigWhiteButton = styled(BigWhiteButtonBase)`
   height: auto;
   padding-top: 0px;
   padding-bottom: 0px;
-  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `;
 
 export default Button;
@@ -122,4 +121,13 @@ export const LargeTealActionButton = styled(TealActionButton)`
   padding: 13px 25px;
   font-size: 14px;
   border-radius: 18px;
+`;
+
+export const disabledButtonStyles = ({ theme }) => css`
+  background-color: ${theme.backgroundGrey};
+  color: ${theme.borderGrey};
+  &:hover:disabled {
+    background-color: ${theme.backgroundGrey};
+  }
+  cursor: not-allowed;
 `;

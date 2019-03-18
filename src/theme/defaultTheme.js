@@ -40,6 +40,7 @@ const colors = {
 
   shadow: 'rgba(0, 0, 0, 0.5)',
   lightShadow: '#a0a0a3',
+  lighterShadow: '#bbbbbb',
 
   // error
   errorDark: '#d8202f', //red
@@ -64,6 +65,11 @@ const colors = {
 
   cardTitle: '#404c9a',
   defaultBadge: '#404c9a',
+  defaultChip: '#404c9a',
+
+  // table
+  backgroundRowOdd: '#fff',
+  backgroundRowEven: '#f4f5f8',
 };
 
 export const chartColors = {
@@ -87,6 +93,11 @@ const mixins = {
     background-color: ${colors.primaryHover};
     border: solid 2px ${colors.borderGrey};
     color: ${colors.white};
+  `,
+
+  contentContainer: css`
+    width: 76%;
+    max-width: 1400px;
   `,
 };
 
@@ -450,9 +461,12 @@ const components = {
     border-left: 1px solid ${colors.greyScale5};
 
     li {
+      height: 100%;
+      display: flex;
       box-sizing: content-box;
       border-right: 1px solid ${colors.greyScale5};
       a {
+        height: 100%;
         display: block;
         font-size: 16px;
         line-height: 1.86;
@@ -461,7 +475,6 @@ const components = {
         color: ${colors.primary};
         font-weight: 500;
         padding: 10px 40px;
-        border-bottom: 5px solid transparent;
         text-decoration: none;
       }
 

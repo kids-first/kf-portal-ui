@@ -17,6 +17,7 @@ let GAState = {
   userRoles: null, //string
   clientId: null, //string
   egoGroups: null, // array?,
+  cavaticaProjects: null,
 };
 let timingsStorage = window.localStorage;
 
@@ -57,6 +58,7 @@ const setUserDimensions = (userId, role, groups) => {
     // ReactGA.set({ egoGroup: role || GAState.userRoles[0] });
     ReactGA.set({ dimension4: _groups });
   }
+  // dimension6 is userCavaticaProjects
 };
 
 export const addStateInfo = obj => merge(GAState, obj);
@@ -222,7 +224,7 @@ export const trackPageView = (page, options = {}) => {
 };
 
 export const trackExternalLink = url => {
-  ReactGA.outboundLink({ label: url }, () => {});
+  if (url) ReactGA.outboundLink({ label: url }, () => {});
 };
 
 export const trackProfileInteraction = ({ action, value, type }) =>

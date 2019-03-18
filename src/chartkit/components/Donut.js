@@ -5,9 +5,11 @@ import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { truncate } from 'lodash';
 
-import { defaultTheme } from '../themes';
+import { defaultTheme } from 'chartkit/themes';
+
 import ChartDisplayContainer from './ChartDisplayContainer';
 import Tooltip from './Tooltip';
+import { trackUserInteraction } from 'services/analyticsTracking';
 
 const DonutWrapper = styled('div')`
   height: 100%;
@@ -37,6 +39,14 @@ class Donut extends Component {
     if (data) {
       const { index, value } = data;
       this.setState({ highlightedIndex: index, highlightedIndexValue: value });
+    }
+    if (data && this.props.analyticsTracking) {
+      const { category } = this.props.analyticsTracking;
+      trackUserInteraction({
+        category,
+        action: 'Donut Slice: Hover',
+        label: data.label,
+      });
     }
   }
 

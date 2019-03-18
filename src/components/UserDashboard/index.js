@@ -102,7 +102,7 @@ export default compose(
                   <DashboardMulticard
                     tabs={[
                       {
-                        headerComponent: cardState => (
+                        headerComponent: cardProps => (
                           <MultiHeader
                             headings={[
                               { title: 'Studies', badge: studies },
@@ -110,7 +110,7 @@ export default compose(
                             ]}
                           />
                         ),
-                        component: cardState => (
+                        component: cardProps => (
                           <ChartLoadGate
                             Error={DashboardCardError}
                             Loader={CardContentSpinner}
