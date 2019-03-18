@@ -50,7 +50,6 @@ const Actions = enhanceActions(
       <LoadingSpinner height={48} />
     ) : connected ? (
       <Row>
-        {flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)}
         <AuthorizedStudiesButton
           onClick={() =>
             viewDetails({ fence, fenceUser: get(fenceConnections, fence, {}), effects })
