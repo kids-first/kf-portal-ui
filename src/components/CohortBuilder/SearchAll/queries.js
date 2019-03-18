@@ -19,5 +19,10 @@ export const searchAllFieldsQuery = (sqon, searchFields) => ({
     }
   `,
   variables: { sqon },
-  transform: data => get(data, 'data.participant.aggregations'),
+  transform: data => {
+    if (data.errors) {
+      return { errors: data.errors };
+    }
+    return get(data, 'data.participant.aggregations');
+  },
 });

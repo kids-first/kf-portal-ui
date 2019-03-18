@@ -226,9 +226,15 @@ class SearchAll extends React.Component {
             >
               {({ isLoading, data, error }) => {
                 if (error) {
-                  console.error(error);
+                  console.error('HTTP error encountered', error);
                   // TODO JB : proper error handling
                   return 'ERROR';
+                }
+
+                if (data && data[0] && data[0].errors) {
+                  console.error('server-side error encountered', data[0].errors);
+                  // TODO JB : proper error handling
+                  return 'ERRORS';
                 }
 
                 if (extendedMappingIsLoading || isLoading) {
