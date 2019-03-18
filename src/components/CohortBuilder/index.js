@@ -7,6 +7,7 @@ import { css } from 'emotion';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { withApi } from 'services/api';
+import { createNewVirtualStudy } from 'services/virtualStudies';
 import { H1 } from 'uikit/Headings';
 import { WhiteButton, TealActionButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
@@ -17,7 +18,6 @@ import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import VirtualStudyListProvider from './VirtualStudyListProvider';
 import SaveVirtualStudiesModalContent from './SaveVirtualStudiesModalContent';
-import { createNewVirtualStudy } from './util';
 import SaveIcon from 'icons/SaveIcon';
 
 const Container = styled('div')`

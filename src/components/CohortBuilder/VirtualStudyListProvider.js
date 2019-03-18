@@ -2,8 +2,8 @@ import React from 'react';
 import Component from 'react-component-component';
 import { compose } from 'recompose';
 
+import { getSavedVirtualStudyNames } from 'services/virtualStudies';
 import { withApi } from 'services/api';
-import { getSavedVirtualStudyNames } from './util';
 
 export default compose(withApi)(({ api, onUpdate = () => {}, children }) => {
   const initialState = {
