@@ -69,20 +69,22 @@ const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon
   );
 });
 
-const participantDownloader = ({ api, sqon, columnState }) => async () => {
+const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
   const { participantIds } = await familyMemberAndParticipantIds({
     api,
     sqon,
+    isFileRepo,
   });
   let downloadConfig = {
     sqon: {
       op: 'in',
       content: {
-        field: 'participants.kf_id',
+        field: isFileRepo ? 'participants.kf_id' : 'kf_id',
         value: participantIds,
       },
     },
     columns: columnState.columns,
+    isFileRepo: isFileRepo,
   };
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
@@ -93,20 +95,22 @@ const participantDownloader = ({ api, sqon, columnState }) => async () => {
   return downloader();
 };
 
-const familyDownloader = ({ api, sqon, columnState }) => async () => {
+const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
   const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
     api,
     sqon,
+    isFileRepo,
   });
   let downloadConfig = {
     sqon: {
       op: 'in',
       content: {
-        field: 'participants.kf_id',
+        field: isFileRepo ? 'participants.kf_id' : 'kf_id',
         value: uniq([...familyMemberIds, ...participantIds]),
       },
     },
     columns: columnState.columns,
+    isFileRepo: isFileRepo,
   };
 
   trackUserInteraction({
@@ -118,8 +122,8 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
   return downloader();
 };
 
-const biospecimenDownloader = ({ api, sqon, columnState }) => async () => {
-  let downloadConfig = { sqon, columns: columnState.columns };
+const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+  let downloadConfig = { sqon, columns: columnState.columns, isFileRepo };
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
@@ -133,18 +137,20 @@ export default compose(
   withApi,
   injectState,
 )(({ effects: { setModal }, ...props }) => {
-  const { api, sqon, projectId } = props;
+  const { api, sqon, projectId, isFileRepo } = props;
   return (
     <ColumnsState
       projectId={projectId}
       graphqlField="participant"
       render={({ state: columnState }) => {
-        if (!props.isFileRepo) {
-          columnState.columns = props.columnState;
-        }
-        const participantDownload = participantDownloader({ api, sqon, columnState });
-        const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
-        const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState });
+        const participantDownload = participantDownloader({ api, sqon, columnState, isFileRepo });
+        const participantAndFamilyDownload = familyDownloader({
+          api,
+          sqon,
+          columnState,
+          isFileRepo,
+        });
+        const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState, isFileRepo });
         return (
           <div style={{ position: 'relative', marginLeft: '15px' }}>
             <Component initialState={{ isDownloading: false }}>

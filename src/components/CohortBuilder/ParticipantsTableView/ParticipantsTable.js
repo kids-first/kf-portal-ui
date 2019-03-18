@@ -111,10 +111,10 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     resizable: false,
     minWidth: 33,
   },
-  { Header: 'Participant ID', accessor: 'participantId', field: 'kf_id' },
-  { Header: 'Study Name', accessor: 'studyName', filed: 'study.name' },
-  { Header: 'Proband', accessor: 'isProband', field: 'is_proband' },
-  { Header: 'Vital Status', accessor: 'vitalStatus', field: 'vital_status' },
+  { Header: 'Participant ID', accessor: 'participantId' },
+  { Header: 'Study Name', accessor: 'studyName' },
+  { Header: 'Proband', accessor: 'isProband' },
+  { Header: 'Vital Status', accessor: 'vitalStatus' },
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
@@ -193,7 +193,7 @@ class ParticipantsTable extends Component {
           content: [
             {
               op: 'in',
-              content: { field: 'participants.kf_id', value: this.props.selectedRows },
+              content: { field: 'kf_id', value: this.props.selectedRows },
             },
           ],
         })
@@ -230,7 +230,6 @@ class ParticipantsTable extends Component {
               <DownloadButton
                 sqon={selectionSQON}
                 {...this.props}
-                {...{ columnState: columns }}
                 isFileRepo={false}
                 projectId={projectId}
               />

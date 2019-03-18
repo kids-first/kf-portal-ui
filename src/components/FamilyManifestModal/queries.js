@@ -30,9 +30,10 @@ export const participantsFilesCountAndSize = async ({ api, sqon }) => {
   };
 };
 
-export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
+export const familyMemberAndParticipantIds = async ({ api, sqon, isFileRepo }) => {
   const response = await graphql(api)({
-    query: `
+    query: isFileRepo
+      ? `
         query familyMemberAndParticipantData($sqon: JSON) {
           file {
             aggregations(filters: $sqon) {
@@ -51,14 +52,40 @@ export const familyMemberAndParticipantIds = async ({ api, sqon }) => {
             }
           }
         }
-      `,
+      `
+      : `
+      query familyMemberAndParticipantData($sqon: JSON) {
+        participant {
+          aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+            kf_id {
+              buckets {
+                doc_count
+                key
+              }
+            }
+            family__family_compositions__family_members__kf_id {
+              buckets {
+                doc_count
+                key
+              }
+            }
+          }
+        }
+      }
+    `,
     variables: { sqon },
   });
   const extractResults = path => get(response, path, []).map(b => b.key);
   const familyMemberIds = extractResults(
-    'data.file.aggregations.participants__family__family_compositions__family_members__kf_id.buckets',
+    isFileRepo
+      ? 'data.file.aggregations.participants__family__family_compositions__family_members__kf_id.buckets'
+      : 'data.participant.aggregations.family__family_compositions__family_members__kf_id.buckets',
   );
-  const participantIds = extractResults('data.file.aggregations.participants__kf_id.buckets');
+  const participantIds = extractResults(
+    isFileRepo
+      ? 'data.file.aggregations.participants__kf_id.buckets'
+      : 'data.participant.aggregations.kf_id.buckets',
+  );
   return {
     familyMemberIds,
     participantIds,

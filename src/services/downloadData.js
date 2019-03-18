@@ -6,6 +6,48 @@ import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
 const downloadUrl = urlJoin(arrangerApiRoot, `${arrangerProjectId}/download`);
 
+const findColumnsByField_Participants = [
+  'kf_id',
+  'study.name',
+  'is_proband',
+  'outcome.vital_status',
+  'diagnoses.diagnosis_category',
+  'diagnoses.diagnosis',
+  'diagnoses.age_at_event_days',
+  'gender',
+  'family.family_id',
+  'family.family_compositions',
+  'files_Count',
+];
+
+const findColumnsByField_File = [
+  'kf_id',
+  'external_id',
+  'family.father_id',
+  'family.mother_id',
+  'family.family_id',
+  'family.external_id',
+  'is_proband',
+  'study.name',
+  'study.external_id',
+  'gender',
+  'race',
+  'ethnicity',
+  'phenotype.hpo_phenotype_observed',
+  'phenotype.hpo_phenotype_not_observed',
+  'diagnoses.diagnosis',
+  'diagnoses.external_id',
+  'diagnoses.age_at_event_days',
+  'diagnoses.diagnosis_category',
+  'diagnoses.icd_id_diagnosis',
+  'diagnoses.mondo_id_diagnosis',
+  'diagnoses.ncit_id_diagnosis',
+  'diagnoses.source_text_diagnosis',
+  'diagnoses.source_text_tumor_location',
+  'diagnoses.spatial_scriptor',
+  'diagnoses.uberon_id_tumor_location',
+];
+
 function hackCrossIndex(value, key) {
   if (!key && process.env.NODE_ENV !== 'production') {
     console.warn('This code should removed when cross index searching is implemented');
@@ -27,8 +69,8 @@ function hackCrossIndex(value, key) {
 }
 
 function findColumnsByField(fields, columns) {
-  const columnConfigs = fields.map(
-    field => (typeof field === 'string' ? columns.find(column => column.field === field) : field),
+  const columnConfigs = fields.map(field =>
+    typeof field === 'string' ? columns.find(column => column.field === field) : field,
   );
 
   const missingColumns = columnConfigs.map((c, i) => (c ? false : fields[i])).filter(Boolean);
@@ -84,49 +126,22 @@ export const fileManifestParticipantsOnly = getManifestDownload('participant');
 
 export const fileManifestParticipantsAndFamily = getManifestDownload('participant-family');
 
-const getClinicalDownload = type => ({ sqon, columns }) => () =>
+const getClinicalDownload = type => ({ sqon, columns, isFileRepo }) => () =>
   saveTSV({
     url: downloadUrl,
     files: [
       {
         fileName: format(new Date(), `[${type}_clinical_]YYYYMMDD[.tsv]`),
-        sqon: hackCrossIndex(sqon),
+        sqon: isFileRepo ? hackCrossIndex(sqon) : sqon,
         index: 'participant',
         sort: [
           { field: 'family_id', order: 'asc' },
           { field: 'kf_id', order: 'asc' },
           { field: 'diagnoses.age_at_event_days', order: 'desc' },
         ],
-        columns: findColumnsByField(
-          [
-            'kf_id',
-            'external_id',
-            'family.father_id',
-            'family.mother_id',
-            'family.family_id',
-            'family.external_id',
-            'is_proband',
-            'study.name',
-            'study.external_id',
-            'gender',
-            'race',
-            'ethnicity',
-            'phenotype.hpo_phenotype_observed',
-            'phenotype.hpo_phenotype_not_observed',
-            'diagnoses.diagnosis',
-            'diagnoses.external_id',
-            'diagnoses.age_at_event_days',
-            'diagnoses.diagnosis_category',
-            'diagnoses.icd_id_diagnosis',
-            'diagnoses.mondo_id_diagnosis',
-            'diagnoses.ncit_id_diagnosis',
-            'diagnoses.source_text_diagnosis',
-            'diagnoses.source_text_tumor_location',
-            'diagnoses.spatial_scriptor',
-            'diagnoses.uberon_id_tumor_location',
-          ],
-          columns,
-        ),
+        columns: isFileRepo
+          ? findColumnsByField(findColumnsByField_File, columns)
+          : findColumnsByField(findColumnsByField_Participants, columns),
       },
     ],
   });
@@ -135,13 +150,13 @@ export const clinicalDataParticipants = getClinicalDownload('participant');
 
 export const clinicalDataFamily = getClinicalDownload('participant-and-family');
 
-export const downloadBiospecimen = ({ sqon, columns }) => () =>
+export const downloadBiospecimen = ({ sqon, columns, isFileRepo }) => () =>
   saveTSV({
     url: downloadUrl,
     files: [
       {
         fileName: format(new Date(), '[participants_biospecimen_]YYYYMMDD[.tsv]'),
-        sqon: hackCrossIndex(sqon),
+        sqon: isFileRepo ? hackCrossIndex(sqon) : sqon,
         index: 'participant',
         uniqueBy: 'biospecimens.hits.edges[].node.kf_id',
         columns: findColumnsByField(

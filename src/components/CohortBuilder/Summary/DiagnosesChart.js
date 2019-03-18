@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { BarChartContainer, CohortCard } from './ui';
+import { BarChartContainer, CohortCard, getCohortBarColors } from './ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
@@ -61,16 +61,12 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     variables: { sqon, diagnosis },
     transform: data => ({
       label: startCase(diagnosis),
-      probands: get(
+      familyMembers: get(
         data,
         'data.participant.familyMembers.diagnoses__diagnosis.buckets[0].doc_count',
         0,
       ),
-      familyMembers: get(
-        data,
-        'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count',
-        0,
-      ),
+      probands: get(data, 'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count', 0),
     }),
   }));
 
@@ -97,7 +93,7 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
               keys={['probands', 'familyMembers']}
               tooltipFormatter={mostFrequentDiagnosisTooltip}
               tickInterval={4}
-              colors={[theme.chartColors.blue, theme.chartColors.purple]}
+              colors={getCohortBarColors(data, theme)}
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },

@@ -1,5 +1,5 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import Component from 'react-component-component';
 import tq from 'task-queue';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
@@ -17,7 +17,7 @@ import { print } from 'graphql/language/printer';
  * Graphql client such as Apollo might be a better consideration.
  */
 const queryCacheMap = {};
-class QueriesResolver extends Component {
+class QueriesResolver extends React.Component {
   state = { data: [], isLoading: true, error: null };
   taskQueue = tq.Queue({ capacity: 100, concurrency: 1 });
 
