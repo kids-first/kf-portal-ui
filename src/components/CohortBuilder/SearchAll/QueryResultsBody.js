@@ -51,10 +51,12 @@ QueryResultsBody.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       displayName: PropTypes.string,
-      buckets: PropTypes.shape({
-        value: PropTypes.string.isRequired,
-        docCount: PropTypes.number.isRequired,
-      }).isRequired,
+      buckets: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string.isRequired,
+          docCount: PropTypes.number.isRequired,
+        }),
+      ).isRequired,
     }),
   ).isRequired,
   query: PropTypes.string.isRequired,

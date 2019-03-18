@@ -77,9 +77,11 @@ const QueryContainer = styled(Column)`
 
 const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
 
+const OP_TO_USE = 'any';
+
 const initializeSelection = (fields, sqon) => {
   const initialValues = sqon.content.reduce((acc, op) => {
-    if (op.op === 'in') {
+    if (op.op === OP_TO_USE) {
       acc[op.content.field] = op.content.value;
     }
     return acc;
@@ -176,7 +178,7 @@ class SearchAll extends React.Component {
       .reduce(
         (acc, field) =>
           acc.concat({
-            op: 'in',
+            op: OP_TO_USE,
             content: {
               field,
               value: [...selections[field]],
@@ -188,7 +190,7 @@ class SearchAll extends React.Component {
     const newSqon = {
       op: sqon.op,
       content: sqon.content
-        .filter(op => op.op !== 'in' || !selections[op.content.field])
+        .filter(op => op.op !== OP_TO_USE || !selections[op.content.field])
         .concat(newSqonPerField),
     };
 
@@ -203,7 +205,6 @@ class SearchAll extends React.Component {
 
     return (
       // Extract the metadata & data fetching to a component
-      // Also, wrap in a multiplexer :p
       <ExtendedMappingProvider
         api={api}
         projectId={arrangerProjectId}
@@ -239,12 +240,22 @@ class SearchAll extends React.Component {
                   .map(fieldName => {
                     const aggField = aggFields[toGqlFieldPath(fieldName)];
                     if (!aggField) {
-                      console.log(`[SearchAll] Field ${fieldName} metadata could not be found`);
+                      console.log(
+                        `[SearchAll] Field ${fieldName} aggregated data could not be found`,
+                      );
                       return null;
                     }
+
                     const fieldExtendedMapping = filteredExtendedMapping.find(
                       fem => fem.field === fieldName,
                     );
+                    if (!fieldExtendedMapping) {
+                      console.log(
+                        `[SearchAll] Field ${fieldName} extended mapping could not be found`,
+                      );
+                      return null;
+                    }
+
                     return {
                       name: fieldName,
                       displayName: fieldExtendedMapping.displayName,

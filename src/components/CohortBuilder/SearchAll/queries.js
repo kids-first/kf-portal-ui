@@ -1,16 +1,12 @@
 import { get } from 'lodash';
 import gql from 'graphql-tag';
 
-// TODO JB not too sure about the naming of the function...
 const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
 
 const getBuckets = searchFields =>
-  searchFields.map(toGqlFieldPath).reduce(
-    (acc, gqlFieldName) =>
-      `${acc}
-      ${gqlFieldName} { buckets { doc_count key } }`,
-    '',
-  );
+  searchFields
+    .map(toGqlFieldPath)
+    .reduce((acc, gqlFieldName) => `${acc} ${gqlFieldName} { buckets { doc_count key } }`, '');
 
 export const searchAllFieldsQuery = (sqon, searchFields) => ({
   query: gql`

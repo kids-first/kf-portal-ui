@@ -23,7 +23,27 @@ const Container = styled(Row)`
 
 const CATEGORY_FIELDS = {
   // Results in the Search All will appear in that order.
-  searchAll: ['diagnoses.diagnosis', 'diagnoses.diagnosis_category', 'study.short_name'],
+  searchAll: [
+    // Study
+    'study.data_access_authority',
+    'study.short_name',
+
+    // Demographic
+    'ethnicity',
+    'gender',
+    'race',
+
+    // Clinical
+    'affected_status',
+    'diagnoses.diagnosis',
+    'diagnoses.diagnosis_category',
+    'family.family_compositions.composition',
+    'outcome.disease_related',
+    'diagnoses.source_text_tumor_location',
+
+    // Available Data
+    'available_data_types',
+  ],
   quickSearch: [
     'available_data_types',
     'diagnoses.diagnosis',
@@ -38,12 +58,12 @@ const CATEGORY_FIELDS = {
     'diagnoses.age_at_event_days',
     'outcome.age_at_event_days',
     'phenotype.age_at_event_days',
-    'phenotypes.ancestral_hpo_ids',
+    'phenotype.ancestral_hpo_ids',
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
     'family.family_compositions.composition',
     'family.family_compositions.shared_phenotype_ids',
-    'outcome.is_disease_related',
+    'outcome.disease_related',
     'phenotype.hpo_phenotype_observed_text',
     'diagnoses.source_text_tumor_location',
     'outcome.vital_status',
