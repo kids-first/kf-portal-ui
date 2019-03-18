@@ -48,7 +48,7 @@ export const CardContentSpinner = () => (
   </LoadingScreenContainer>
 );
 
-const Connect = styled(TealActionButton)`
+export const CardActionButton = styled(TealActionButton)`
   height: 37px;
   padding-right: 21px;
   padding-left: 21px;
@@ -61,11 +61,11 @@ export const ConnectButton = ({ external = true, ...props }) => {
   const RightArrow = applyDefaultStyles(RightIcon);
 
   return (
-    <Connect {...props} maxWidth={160}>
+    <CardActionButton {...props} maxWidth={160}>
       {external ? <ExternalLink size={12} position="relative" right={5} /> : null}
       Connect
       <RightArrow size={14} position="relative" left={5} />
-    </Connect>
+    </CardActionButton>
   );
 };
 

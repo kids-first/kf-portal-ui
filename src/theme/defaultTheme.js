@@ -230,7 +230,6 @@ const components = {
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     color: #fff;
     padding: 0px 16px;
     line-height: 1.86;
@@ -261,7 +260,6 @@ const components = {
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     background-color: '#fff';
     color: ${colors.tertiary};
     padding: 6px 16px;

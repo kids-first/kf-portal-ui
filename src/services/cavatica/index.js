@@ -271,3 +271,7 @@ export const saveProject = async ({ projectName, billingGroupId }) => {
     description: projectDescription,
   });
 };
+
+export const isValidKey = key => {
+  return key && key.length > 0;
+};
