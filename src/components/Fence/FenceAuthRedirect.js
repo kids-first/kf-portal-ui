@@ -38,5 +38,20 @@ export default compose(withApi)(({ api, fence }) => (
         window.close();
       }
     }}
-  />
+  >
+    {() => (
+      <div
+        style={{
+          display: 'flex',
+          height: '100%',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <strong>Please wait while you are redirected.</strong>
+        <strong>Do not close or refresh your browser.</strong>
+      </div>
+    )}
+  </Component>
 ));
