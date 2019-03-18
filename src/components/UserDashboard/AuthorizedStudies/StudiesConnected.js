@@ -159,7 +159,7 @@ const StudiesConnected = enhance(
           <CardContentSpinner />
         ) : (
           <Column>
-            {fenceAuthStudies && fenceAuthStudies.length > 0
+            {!isEmpty(fenceAuthStudies) > 0
               ? renderAuthorizedStudies({
                   fenceAuthStudies,
                   fenceNonAuthStudies,

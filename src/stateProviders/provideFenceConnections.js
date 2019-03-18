@@ -15,11 +15,13 @@ export default provideState({
   }),
   computed: {
     fenceAuthStudies: ({ fenceStudies }) =>
-      !isEmpty(fenceStudies) &&
-      flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies),
+      !isEmpty(fenceStudies)
+        ? flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)
+        : [],
     fenceNonAuthStudies: ({ fenceStudies }) =>
-      !isEmpty(fenceStudies) &&
-      flatMap(Object.values(fenceStudies), studies => studies.unauthorizedStudies),
+      !isEmpty(fenceStudies)
+        ? flatMap(Object.values(fenceStudies), studies => studies.unauthorizedStudies)
+        : [],
   },
   effects: {
     setFenceConnectionsInitialized: update(state => ({
