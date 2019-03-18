@@ -2,7 +2,6 @@ import React from 'react';
 import Component from 'react-component-component';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import urlJoin from 'url-join';
 import {
   resolveSyntheticSqon,
   isReference,
@@ -10,15 +9,7 @@ import {
 import { parse as parseQueryString, stringify } from 'query-string';
 
 import { withApi } from 'services/api';
-import { shortUrlApi } from 'common/injectGlobals';
-
-const getVirtualStudy = api => async id => {
-  const { content } = await api({
-    method: 'GET',
-    url: urlJoin(shortUrlApi, id),
-  });
-  return content;
-};
+import { getVirtualStudy } from 'services/virtualStudies';
 
 const SQONProvider = compose(
   withApi,
@@ -65,10 +56,10 @@ const SQONProvider = compose(
   };
 
   const syncWithHistory = ({ setState }) => virtualStudyId =>
-    getVirtualStudy(api)(virtualStudyId).then(vs => {
+    getVirtualStudy(api)(virtualStudyId).then(({ content, uid }) => {
       setState({
-        sqons: vs.sqons,
-        activeIndex: vs.activeIndex,
+        sqons: content.sqons,
+        activeIndex: content.activeIndex,
       });
     });
 

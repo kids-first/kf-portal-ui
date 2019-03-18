@@ -43,6 +43,7 @@ export const createNewVirtualStudy = async ({
       content: {
         sqons,
         activeIndex,
+        description,
       },
     }),
   });
@@ -77,4 +78,12 @@ export const createNewVirtualStudy = async ({
     },
   });
   return id;
+};
+
+export const getVirtualStudy = api => async id => {
+  const data = await api({
+    method: 'GET',
+    url: urlJoin(shortUrlApi, id),
+  });
+  return data;
 };
