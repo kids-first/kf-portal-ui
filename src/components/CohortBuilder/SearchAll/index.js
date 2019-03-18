@@ -5,6 +5,7 @@ import SearchIcon from 'react-icons/lib/fa/search';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
+import memoizeOne from 'memoize-one';
 
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
@@ -77,7 +78,7 @@ const QueryContainer = styled(Column)`
 
 const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
 
-const OP_TO_USE = 'any';
+const OP_TO_USE = 'in';
 
 const initializeSelection = (fields, sqon) => {
   const initialValues = sqon.content.reduce((acc, op) => {
@@ -93,7 +94,7 @@ const initializeSelection = (fields, sqon) => {
   }, {});
 };
 
-const filterFields = (detailedFields, query) => {
+const filterFields = (query, detailedFields) => {
   return detailedFields
     .map(field => {
       const filteredBuckets = field.buckets.filter(
@@ -106,6 +107,46 @@ const filterFields = (detailedFields, query) => {
     })
     .filter(field => field.buckets.length > 0);
 };
+
+const filterExtendedMapping = memoizeOne((fields, extendedMapping) => {
+  return (extendedMapping || []).filter(emf => fields.some(field => field === emf.field));
+});
+
+const getFieldsDetails = memoizeOne((fields, aggFieldsValues, extendedMapping) => {
+  // only keep the fields we're interested in
+  const filteredExtendedMapping = filterExtendedMapping(fields, extendedMapping);
+
+  // map the values to an object convenient to the render
+  return fields
+    .map(fieldName => {
+      const aggField = aggFieldsValues[toGqlFieldPath(fieldName)];
+      if (!aggField) {
+        console.log(`[SearchAll] Field ${fieldName} aggregated data could not be found`);
+        return null;
+      }
+
+      const fieldExtendedMapping = filteredExtendedMapping.find(fem => fem.field === fieldName);
+      if (!fieldExtendedMapping) {
+        console.log(`[SearchAll] Field ${fieldName} extended mapping could not be found`);
+        return null;
+      }
+
+      return {
+        name: fieldName,
+        displayName: fieldExtendedMapping.displayName,
+        buckets: aggField.buckets.map(b => ({
+          value: b.key,
+          docCount: b['doc_count'],
+        })),
+      };
+    })
+    .filter(f => f !== null);
+});
+
+const getFilteredFields = memoizeOne((query, fields, aggFieldsValues, extendedMapping) => {
+  const detailedFields = getFieldsDetails(fields, aggFieldsValues, extendedMapping);
+  return filterFields(query, detailedFields);
+});
 
 class SearchAll extends React.Component {
   constructor(props) {
@@ -212,11 +253,6 @@ class SearchAll extends React.Component {
         useCache={true}
       >
         {({ loading: extendedMappingIsLoading, extendedMapping }) => {
-          // TODO JB - perf
-          const filteredExtendedMapping = (extendedMapping || [])
-            // only keep the fields we're interested in
-            .filter(emf => fields.some(field => field === emf.field));
-
           return (
             <QueriesResolver
               name="GQL_PARTICIPANTS_TABLE"
@@ -226,56 +262,22 @@ class SearchAll extends React.Component {
             >
               {({ isLoading, data, error }) => {
                 if (error) {
-                  console.error('HTTP error encountered', error);
-                  // TODO JB : proper error handling
-                  return 'ERROR';
+                  console.error('[SearchAll] HTTP error encountered', error);
+                  return null;
                 }
 
                 if (data && data[0] && data[0].errors) {
-                  console.error('server-side error encountered', data[0].errors);
-                  // TODO JB : proper error handling
-                  return 'ERRORS';
+                  console.error('[SearchAll] server-side error encountered', data[0].errors);
+                  return null;
                 }
 
                 if (extendedMappingIsLoading || isLoading) {
                   return <LoadingSpinner color={theme.greyScale11} size={'30px'} />;
                 }
 
-                const aggFields = data[0];
-                const detailedFields = fields
-                  .map(fieldName => {
-                    const aggField = aggFields[toGqlFieldPath(fieldName)];
-                    if (!aggField) {
-                      console.log(
-                        `[SearchAll] Field ${fieldName} aggregated data could not be found`,
-                      );
-                      return null;
-                    }
-
-                    const fieldExtendedMapping = filteredExtendedMapping.find(
-                      fem => fem.field === fieldName,
-                    );
-                    if (!fieldExtendedMapping) {
-                      console.log(
-                        `[SearchAll] Field ${fieldName} extended mapping could not be found`,
-                      );
-                      return null;
-                    }
-
-                    return {
-                      name: fieldName,
-                      displayName: fieldExtendedMapping.displayName,
-                      buckets: aggField.buckets.map(b => ({
-                        value: b.key,
-                        docCount: b['doc_count'],
-                      })),
-                    };
-                  })
-                  .filter(f => f !== null);
-
                 // filter both the fields and their buckets
                 //  to keep only the field values matching the query
-                const filteredFields = filterFields(detailedFields, query);
+                const filteredFields = getFilteredFields(query, fields, data[0], extendedMapping);
 
                 return (
                   <SearchAllContainer className="search-all-filter">
