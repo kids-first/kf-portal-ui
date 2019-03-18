@@ -66,6 +66,7 @@ const CohortBuilder = compose(
           selectedVirtualStudy,
           onVirtualStudySelect,
           setVirtualStudy,
+          isOwner,
         }) => {
           const executableSqon = getActiveExecutableSqon();
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {

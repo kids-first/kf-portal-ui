@@ -1,6 +1,7 @@
 import React from 'react';
 import Component from 'react-component-component';
 import { withRouter } from 'react-router-dom';
+import { injectState } from 'freactal';
 import { compose } from 'recompose';
 import {
   resolveSyntheticSqon,
@@ -14,7 +15,8 @@ import { getVirtualStudy } from 'services/virtualStudies';
 const SQONProvider = compose(
   withApi,
   withRouter,
-)(({ api, history, children }) => {
+  injectState,
+)(({ api, history, children, state: { loggedInUser } }) => {
   const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
   const { id: virtualStudyId } = parseQueryString(history.location.search);
   const initialState = {
@@ -25,6 +27,7 @@ const SQONProvider = compose(
       },
     ],
     activeIndex: 0,
+    uid: null,
   };
   const didMount = s => {
     const savedLocalState = localStorage[COHORT_BUILDER_FILTER_STATE];
@@ -60,6 +63,7 @@ const SQONProvider = compose(
       setState({
         sqons: content.sqons,
         activeIndex: content.activeIndex,
+        uid,
       });
     });
 
@@ -109,7 +113,7 @@ const SQONProvider = compose(
     >
       {s => {
         const {
-          state: { sqons, activeIndex },
+          state: { sqons, activeIndex, uid },
         } = s;
         return children({
           sqons,
@@ -121,6 +125,7 @@ const SQONProvider = compose(
           selectedVirtualStudy: virtualStudyId,
           onVirtualStudySelect: onVirtualStudySelect(history),
           setVirtualStudy: setVirtualStudy(s),
+          isOwner: uid === loggedInUser.egoId,
         });
       }}
     </Component>
