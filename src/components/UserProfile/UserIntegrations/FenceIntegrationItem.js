@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
-import { flatMap } from 'lodash';
 
 import { Trans } from 'react-i18next';
 
