@@ -4,7 +4,7 @@ import styled from 'react-emotion';
 import SearchIcon from 'react-icons/lib/fa/search';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import autobind from 'auto-bind';
+import autobind from 'auto-bind-es5';
 
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
