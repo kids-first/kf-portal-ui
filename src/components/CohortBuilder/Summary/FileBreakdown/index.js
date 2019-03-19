@@ -114,7 +114,7 @@ export const fileBreakdownQuery = sqon => ({
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
-const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, parentIsLoading }) => (
+const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isParentLoading }) => (
   <QueriesResolver
     name="GQL_FILE_BREAKDOWN_1"
     api={api}
@@ -136,7 +136,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, parentIsLoading
               scrollable={true}
               title="Available Data"
               badge={filesTotal ? filesTotal : null}
-              loading={parentIsLoading || isLoadingFileQueries || isLoading}
+              loading={isParentLoading || isLoadingFileQueries || isLoading}
             >
               {!data ? (
                 <div>No data</div>

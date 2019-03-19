@@ -69,14 +69,14 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }),
   }));
 
-const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
+const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isParentLoading }) => (
   <QueriesResolver
     name="GQL_DIAGNOSIS_CHART"
     api={api}
     queries={toSingleDiagQueries({ topDiagnoses, sqon })}
   >
     {({ isLoading, data }) => (
-      <CohortCard title="Most Frequent Diagnoses" loading={isLoading}>
+      <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
         {!data ? (
           <div>No data</div>
         ) : (
