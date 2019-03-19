@@ -6,6 +6,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
+import { debounce } from 'lodash';
 
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
@@ -153,15 +154,18 @@ class SearchAll extends React.Component {
     super(props);
     this.state = {
       query: '',
+      debouncedQuery: '',
       selections: initializeSelection(props.fields, props.sqon),
       isOpen: false,
     };
     autobind(this);
+    this.setQueryDebounced = debounce(this.setQueryDebounced, 1000);
   }
 
   close() {
     this.setState({
       query: '',
+      debouncedQuery: '',
       isOpen: false,
       selections: {},
     });
@@ -178,6 +182,15 @@ class SearchAll extends React.Component {
       isOpen: query !== '',
       selections,
     });
+
+    this.setQueryDebounced({
+      debouncedQuery: query,
+      isOpen: query !== '',
+    });
+  }
+
+  setQueryDebounced(state) {
+    this.setState(state);
   }
 
   handleQueryChange(evt) {
@@ -242,7 +255,7 @@ class SearchAll extends React.Component {
 
   render() {
     const { api, sqon, color, title, fields, theme } = this.props;
-    const { query, selections } = this.state;
+    const { query, debouncedQuery, selections } = this.state;
 
     return (
       // Extract the metadata & data fetching to a component
@@ -277,7 +290,12 @@ class SearchAll extends React.Component {
 
                 // filter both the fields and their buckets
                 //  to keep only the field values matching the query
-                const filteredFields = getFilteredFields(query, fields, data[0], extendedMapping);
+                const filteredFields = getFilteredFields(
+                  debouncedQuery,
+                  fields,
+                  data[0],
+                  extendedMapping,
+                );
 
                 return (
                   <SearchAllContainer className="search-all-filter">
@@ -301,7 +319,7 @@ class SearchAll extends React.Component {
                       </div>
                     </QueryContainer>
                     <QueryResults
-                      query={query}
+                      query={debouncedQuery}
                       isLoading={isLoading}
                       filteredFields={filteredFields}
                       selections={selections}
