@@ -161,7 +161,7 @@ class SearchAll extends React.Component {
       isOpen: false,
     };
     autobind(this);
-    this.setQueryDebounced = debounce(this.setQueryDebounced, 1000);
+    this.setQueryDebounced = debounce(this.setQueryDebounced, 200);
   }
 
   close() {

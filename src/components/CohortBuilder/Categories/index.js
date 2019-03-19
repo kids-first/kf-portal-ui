@@ -10,7 +10,6 @@ import QuickFilterIcon from 'icons/QuickFilterIcon';
 import StudyIcon from 'icons/StudyIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
-import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 
@@ -62,8 +61,8 @@ const CATEGORY_FIELDS = {
     'available_data_types',
     'diagnoses.diagnosis',
     // TODO - test both, see which one is the good one
-    'particpant.diagnosis_category',
-    // 'diagnoses.diagnosis_category',
+    // 'particpant.diagnosis_category',
+    'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'is_proband',
     'study.short_name',
@@ -203,11 +202,6 @@ class Categories extends React.Component {
         >
           <FileIcon width={11} height={14} fill={theme.dataBlue} />
         </Category>
-
-    {/* the below is not actually a Category */}
-    <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
-      <UploadIcon fill={theme.uploadYellow} />
-    </Category>
       </Container>
     );
   }
