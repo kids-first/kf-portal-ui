@@ -42,7 +42,7 @@ const Summary = ({
       fileBreakdownQuery(sqon),
     ]}
   >
-    {({ isLoading, data }) => {
+    {({ isLoading, data = null }) => {
       const [
         demographicData = [],
         ageDiagData = [],
