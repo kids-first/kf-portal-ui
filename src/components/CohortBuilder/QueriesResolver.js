@@ -32,29 +32,33 @@ class QueriesResolver extends React.Component {
     }
   }
 
-  update = () =>
-    this.taskQueue.enqueue(
-      () =>
-        new Promise(async resolve => {
-          const { queries = [], useCache = true } = this.props;
-          if (queries.length === 0) return resolve();
-          const body = JSON.stringify(
-            queries.map(q => ({
-              query: typeof q.query === 'string' ? q.query : print(q.query),
-              variables: q.variables,
-            })),
-          );
-          try {
-            if (!useCache) {
-              this.setState({ isLoading: true });
-            }
-            const data = useCache ? await this.cachedFetchData(body) : await this.fetchData(body);
-            this.setState({ data: data, isLoading: false }, resolve);
-          } catch (err) {
-            this.setState({ isLoading: false, error: err }, resolve);
-          }
-        }),
-    );
+  update = () => {
+    const { queries = [], useCache = true } = this.props;
+    queries.length !== 0
+      ? this.taskQueue.enqueue(
+          () =>
+            new Promise(async resolve => {
+              const body = JSON.stringify(
+                queries.map(q => ({
+                  query: typeof q.query === 'string' ? q.query : print(q.query),
+                  variables: q.variables,
+                })),
+              );
+              try {
+                if (!useCache) {
+                  this.setState({ isLoading: true });
+                }
+                const data = useCache
+                  ? await this.cachedFetchData(body)
+                  : await this.fetchData(body);
+                this.setState({ data: data, isLoading: false }, resolve);
+              } catch (err) {
+                this.setState({ isLoading: false, error: err }, resolve);
+              }
+            }),
+        )
+      : null;
+  };
 
   fetchData = body => {
     const { queries, api, name = '' } = this.props;
