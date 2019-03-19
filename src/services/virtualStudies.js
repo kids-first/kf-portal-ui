@@ -41,7 +41,7 @@ export const createNewVirtualStudy = async ({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
       userid: egoId,
-      alias: 'test',
+      alias: name,
       sharedPublicly: false,
       content: {
         sqons,
