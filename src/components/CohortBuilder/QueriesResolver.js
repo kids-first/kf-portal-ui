@@ -37,6 +37,7 @@ class QueriesResolver extends React.Component {
       () =>
         new Promise(async resolve => {
           const { queries = [], useCache = true } = this.props;
+          if (queries.length === 0) return resolve();
           const body = JSON.stringify(
             queries.map(q => ({
               query: typeof q.query === 'string' ? q.query : print(q.query),
