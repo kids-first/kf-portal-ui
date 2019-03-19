@@ -82,6 +82,9 @@ const CohortBuilder = compose(
             onVirtualStudySelect(e.target.value);
           };
           const saveStudy = async studyName => {
+            if (!(studyName || '').length) {
+              throw new Error('Study name cannot be empty');
+            }
             const newStudyId = await createNewVirtualStudy({
               api,
               loggedInUser,

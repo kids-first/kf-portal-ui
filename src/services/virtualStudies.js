@@ -28,7 +28,7 @@ export const createNewVirtualStudy = async ({
   description = '',
 }) => {
   if (!name.length) {
-    throw 'Study must have name';
+    throw new Error('Study must have name');
   }
   const { sqons, activeIndex } = sqonsState;
   const {
