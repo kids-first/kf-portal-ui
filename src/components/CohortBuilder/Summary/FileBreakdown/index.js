@@ -6,7 +6,7 @@ import { CohortCard } from '../ui';
 import gql from 'graphql-tag';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import BaseDataTable from 'uikit/DataTable';
-import { get } from 'lodash';
+import { get, sortBy } from 'lodash';
 import { withApi } from 'services/api';
 import FileBreakdownQueryResolver from './FileBreakdownQueryResolver';
 import saveSet from '@arranger/components/dist/utils/saveSet';
@@ -117,7 +117,8 @@ export const fileBreakdownQuery = sqon => ({
 const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api }) => (
   <FileBreakdownQueryResolver sqon={sqon} fileDataTypes={fileDataTypes}>
     {({ data, isLoading }) => {
-      const finalData = isLoading ? null : generateFileColumnContents(data, state, api, sqon);
+      const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
+      const finalData = isLoading ? null : generateFileColumnContents(sortedData, state, api, sqon);
       const filesTotal = isLoading ? null : localizeFileQuantity(sumTotalFilesInData(finalData));
 
       return isLoading ? (
