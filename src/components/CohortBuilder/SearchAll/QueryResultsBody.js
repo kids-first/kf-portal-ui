@@ -12,17 +12,30 @@ const QueryResultsBody = ({
   isLoading,
   theme,
   onSelectionChange,
+  onSearchField,
 }) => {
   // that query yields no results
   if (filteredFields.length === 0) {
     return null;
   }
 
+  const handleFieldNameClicked = evt => {
+    const field = filteredFields[evt.currentTarget.dataset.index];
+    if (field && field.matchByDisplayName) {
+      onSearchField(field.name);
+    }
+  };
+
   return (
     <div className="results-section results-body">
-      {filteredFields.map(field => (
-        <div key={`${field.name}`} className="result-category">
-          <div className="category-name">{field.displayName}</div>
+      {filteredFields.map((field, i) => (
+        <div
+          key={`${field.name}`}
+          className={`result-category ${field.matchByDisplayName ? 'match' : ''}`}
+        >
+          <div className="category-name" data-index={i} onClick={handleFieldNameClicked}>
+            <TextHighlight content={field.displayName} highlightText={query} />
+          </div>
           {field.buckets.map(({ value, docCount }) => (
             <div className="result-item" key={`result-item_${value}`}>
               <input
@@ -49,19 +62,21 @@ const QueryResultsBody = ({
 QueryResultsBody.propTypes = {
   filteredFields: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
-      displayName: PropTypes.string,
+      name: PropTypes.string.isRequired,
+      displayName: PropTypes.string.isRequired,
+      matchByDisplayName: PropTypes.bool.isRequired,
       buckets: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string.isRequired,
           docCount: PropTypes.number.isRequired,
         }),
-      ).isRequired,
+      ),
     }),
   ).isRequired,
   query: PropTypes.string.isRequired,
   selections: PropTypes.object.isRequired,
   onSelectionChange: PropTypes.func.isRequired,
+  onSearchField: PropTypes.func.isRequired,
 };
 
 export default withTheme(QueryResultsBody);

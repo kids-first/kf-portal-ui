@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
+import autobind from 'auto-bind-es5';
 import SearchAll from '../SearchAll';
 import Category from './Category';
 import Row from 'uikit/Row';
@@ -28,6 +29,7 @@ const CATEGORY_FIELDS = {
   searchAll: [
     // Study
     'study.data_access_authority',
+    'is_proband',
     'study.short_name',
 
     // Demographic
@@ -101,75 +103,114 @@ const CATEGORY_FIELDS = {
   ],
 };
 
-const Categories = ({ theme, sqon, onSqonUpdate }) => (
-  <Container>
-    <SearchAll
-      title={'Search all filters'}
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.searchAll}
-      color={theme.filterViolet}
-    />
-    <Category
-      title="Quick Filters"
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.quickSearch}
-      color={theme.filterPurple}
-    >
-      <QuickFilterIcon fill={theme.filterPurple} />
-    </Category>
-    <Category
-      title="Study"
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.study}
-      color={theme.studyRed}
-    >
-      <StudyIcon fill={theme.studyRed} />
-    </Category>
-    <Category
-      title="Demographic"
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.demographic}
-      color={theme.demographicPurple}
-    >
-      <DemographicIcon fill={theme.demographicPurple} />
-    </Category>
-    <Category
-      title="Clinical"
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.clinical}
-      color={theme.clinicalBlue}
-    >
-      <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
-    </Category>
-    <Category
-      title="Biospecimens"
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.biospecimen}
-      color={theme.biospecimenOrange}
-    >
-      <BiospecimenIcon fill={theme.biospecimenOrange} />
-    </Category>
-    <Category
-      title="Available Data"
-      sqon={sqon}
-      onSqonUpdate={onSqonUpdate}
-      fields={CATEGORY_FIELDS.availableData}
-      color={theme.dataBlue}
-    >
-      <FileIcon width={11} height={14} fill={theme.dataBlue} />
-    </Category>
+class Categories extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentSearchField: '',
+    };
+    autobind(this);
+  }
+
+  handleSqonUpdate(...args) {
+    this.setState({ currentSearchField: '' });
+    this.props.onSqonUpdate(...args);
+  }
+
+  handleSearchField(fieldName) {
+    this.setState({ currentSearchField: fieldName });
+  }
+
+  handleCategoryClose() {
+    this.setState({ currentSearchField: '' });
+  }
+
+  render() {
+    const { theme, sqon } = this.props;
+    const { currentSearchField } = this.state;
+
+    return (
+      <Container>
+        <SearchAll
+          title={'Search all filters'}
+          sqon={sqon}
+          onSearchField={this.handleSearchField}
+          onSqonUpdate={this.handleSqonUpdate}
+          fields={CATEGORY_FIELDS.searchAll}
+          color={theme.filterViolet}
+        />
+        <Category
+          title="Quick Filters"
+          sqon={sqon}
+          onSqonUpdate={this.handleSqonUpdate}
+          fields={CATEGORY_FIELDS.quickSearch}
+          color={theme.filterPurple}
+        >
+          <QuickFilterIcon fill={theme.filterPurple} />
+        </Category>
+        <Category
+          title="Study"
+          sqon={sqon}
+          onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
+          fields={CATEGORY_FIELDS.study}
+          currentSearchField={currentSearchField}
+          color={theme.studyRed}
+        >
+          <StudyIcon fill={theme.studyRed} />
+        </Category>
+        <Category
+          title="Demographic"
+          sqon={sqon}
+          onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
+          fields={CATEGORY_FIELDS.demographic}
+          currentSearchField={currentSearchField}
+          color={theme.demographicPurple}
+        >
+          <DemographicIcon fill={theme.demographicPurple} />
+        </Category>
+        <Category
+          title="Clinical"
+          sqon={sqon}
+          onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
+          fields={CATEGORY_FIELDS.clinical}
+          currentSearchField={currentSearchField}
+          color={theme.clinicalBlue}
+        >
+          <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
+        </Category>
+        <Category
+          title="Biospecimens"
+          sqon={sqon}
+          onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
+          fields={CATEGORY_FIELDS.biospecimen}
+          currentSearchField={currentSearchField}
+          color={theme.biospecimenOrange}
+        >
+          <BiospecimenIcon fill={theme.biospecimenOrange} />
+        </Category>
+        <Category
+          title="Available Data"
+          sqon={sqon}
+          onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
+          fields={CATEGORY_FIELDS.availableData}
+          currentSearchField={currentSearchField}
+          color={theme.dataBlue}
+        >
+          <FileIcon width={11} height={14} fill={theme.dataBlue} />
+        </Category>
 
     {/* the below is not actually a Category */}
     <Category title="Upload IDs" color={theme.uploadYellow} fields={[]}>
       <UploadIcon fill={theme.uploadYellow} />
     </Category>
-  </Container>
-);
+      </Container>
+    );
+  }
+}
 
 export default compose(withTheme)(Categories);

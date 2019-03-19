@@ -98,15 +98,17 @@ const initializeSelection = (fields, sqon) => {
 const filterFields = (query, detailedFields) => {
   return detailedFields
     .map(field => {
+      const matchByDisplayName = field.displayName.toLowerCase().indexOf(query.toLowerCase()) > -1;
       const filteredBuckets = field.buckets.filter(
         ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
       );
       return {
         ...field,
+        matchByDisplayName,
         buckets: filteredBuckets,
       };
     })
-    .filter(field => field.buckets.length > 0);
+    .filter(field => field.matchByDisplayName || field.buckets.length > 0);
 };
 
 const filterExtendedMapping = memoizeOne((fields, extendedMapping) => {
@@ -253,6 +255,11 @@ class SearchAll extends React.Component {
     this.close();
   }
 
+  handleSearchByField(fieldName) {
+    this.props.onSearchField(fieldName, this.state.selections[fieldName]);
+    this.close();
+  }
+
   render() {
     const { api, sqon, color, title, fields, theme } = this.props;
     const { query, debouncedQuery, selections } = this.state;
@@ -290,12 +297,9 @@ class SearchAll extends React.Component {
 
                 // filter both the fields and their buckets
                 //  to keep only the field values matching the query
-                const filteredFields = getFilteredFields(
-                  debouncedQuery,
-                  fields,
-                  data[0],
-                  extendedMapping,
-                );
+                const filteredFields = debouncedQuery
+                  ? getFilteredFields(debouncedQuery, fields, data[0], extendedMapping)
+                  : [];
 
                 return (
                   <SearchAllContainer className="search-all-filter">
@@ -326,6 +330,7 @@ class SearchAll extends React.Component {
                       onSelectionChange={this.handleSelectionChange}
                       onApplyFilter={this.handleApplyFilter}
                       onClearQuery={this.handleClearQuery}
+                      onSearchField={this.handleSearchByField}
                     />
                   </SearchAllContainer>
                 );
@@ -345,6 +350,7 @@ SearchAll.defaultProps = {
 
 SearchAll.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onSearchField: PropTypes.func.isRequired,
   sqon: PropTypes.object.isRequired,
   color: PropTypes.string,
   title: PropTypes.string,

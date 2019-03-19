@@ -43,7 +43,10 @@ const ResultsContainer = styled('div')`
 `;
 
 const countResults = filteredFields => {
-  const totalResults = filteredFields.reduce((sum, field) => sum + field.buckets.length, 0);
+  const totalResults = filteredFields.reduce(
+    (sum, field) => sum + field.buckets.length + (field.matchByDisplayName ? 1 : 0),
+    0,
+  );
   return `${totalResults.toLocaleString()} result${totalResults === 1 ? '' : 's'} found`;
 };
 
@@ -76,8 +79,9 @@ const QueryResults = props => {
 QueryResults.propTypes = {
   filteredFields: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
-      displayName: PropTypes.string,
+      name: PropTypes.string.isRequired,
+      displayName: PropTypes.string.isRequired,
+      matchByDisplayName: PropTypes.bool.isRequired,
       buckets: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string.isRequired,
@@ -92,6 +96,7 @@ QueryResults.propTypes = {
   onSelectionChange: PropTypes.func.isRequired,
   onApplyFilter: PropTypes.func.isRequired,
   onClearQuery: PropTypes.func.isRequired,
+  onSearchField: PropTypes.func.isRequired,
 };
 
 export default QueryResults;

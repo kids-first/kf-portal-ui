@@ -107,6 +107,12 @@
   padding-bottom: 9px;
 }
 
+.results-section.results-body .result-category.match .category-name {
+  color: #a6278f;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .results-section.results-body .result-item {
   font-family: OpenSans;
   font-size: 11px;
