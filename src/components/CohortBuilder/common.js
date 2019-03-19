@@ -19,6 +19,10 @@ const FilterCont = styled('div')`
   border: 1px solid #e0e1e6;
   z-index: 1;
   min-width: 315px;
+
+  input[type='number'] {
+    padding: 0 7px;
+  }
 `;
 
 const Header = styled('div')`
