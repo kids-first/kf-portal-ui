@@ -47,6 +47,19 @@ const ActiveView = styled('div')`
   padding: 0 26px 36px 26px;
   margin-top: 19px;
   position: relative;
+
+  ${({ activeView }) =>
+    activeView === SUMMARY
+      ? css`
+          > div:nth-child(2) {
+            display: none !important;
+          }
+        `
+      : css`
+          > div:first-child {
+            display: none !important;
+          }
+        `}
 `;
 
 const SubHeadingStyle = props => {
@@ -214,12 +227,9 @@ const Results = ({
               </ViewLink>
             </ViewLinks>
           </Content>
-          <ActiveView>
-            {activeView === SUMMARY ? (
-              <Summary sqon={sqon} />
-            ) : (
-              <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
-            )}
+          <ActiveView activeView={activeView}>
+            <Summary sqon={sqon} />
+            <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </ActiveView>
         </React.Fragment>
