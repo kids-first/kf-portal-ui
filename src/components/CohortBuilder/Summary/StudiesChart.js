@@ -86,7 +86,11 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
     queries={toSingleStudyQueries({ studies, sqon })}
   >
     {({ isLoading, data }) => (
-      <CohortCard title="Studies" badge={data ? data.length : null} loading={isLoading}>
+      <CohortCard
+        title="Studies"
+        badge={data && !isLoading ? data.length : null}
+        loading={isLoading}
+      >
         {!data ? (
           <div>No data</div>
         ) : (
