@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import { survivalPlotMock } from './mock';
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';

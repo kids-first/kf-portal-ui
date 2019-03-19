@@ -7,7 +7,6 @@ import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;

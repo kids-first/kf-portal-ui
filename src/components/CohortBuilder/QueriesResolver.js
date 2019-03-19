@@ -34,7 +34,7 @@ class QueriesResolver extends React.Component {
 
   update = () => {
     const { queries = [], useCache = true } = this.props;
-    queries.length !== 0
+    return queries.length !== 0
       ? this.taskQueue.enqueue(
           () =>
             new Promise(async resolve => {
