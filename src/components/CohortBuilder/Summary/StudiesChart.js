@@ -79,7 +79,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     }),
   }));
 
-const StudiesChart = ({ studies, sqon, theme, api, isParentLoading }) => (
+const StudiesChart = ({ studies, sqon, theme, api, isLoading: isParentLoading }) => (
   <QueriesResolver
     name="GQL_STUDIES_CHART"
     api={api}

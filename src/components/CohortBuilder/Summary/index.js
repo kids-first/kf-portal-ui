@@ -58,30 +58,22 @@ const Summary = ({
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown
-                  fileDataTypes={fileDataTypes}
-                  sqon={sqon}
-                  isParentLoading={isLoading}
-                />
+                <FileBreakdown fileDataTypes={fileDataTypes} sqon={sqon} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} isParentLoading={isLoading} />
+                <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DiagnosesChart
-                  sqon={sqon}
-                  topDiagnoses={topDiagnosesData}
-                  isParentLoading={isLoading}
-                />
+                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DemographicChart data={demographicData} isParentLoading={isLoading} />
+                <DemographicChart data={demographicData} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart data={survivalPlotMock} isParentLoading={isLoading} />
+                <SurvivalChart data={survivalPlotMock} isLoading={isLoading} />
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <AgeDiagChart data={ageDiagData} isParentLoading={isLoading} />
+                <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
               </PaddedColumn>
             </Row>
           </Col>

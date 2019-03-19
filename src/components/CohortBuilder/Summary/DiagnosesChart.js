@@ -69,7 +69,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }),
   }));
 
-const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isParentLoading }) => (
+const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoading }) => (
   <QueriesResolver
     name="GQL_DIAGNOSIS_CHART"
     api={api}

@@ -19,7 +19,7 @@ const PieChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const DemographicChart = ({ data, theme, isParentLoading }) => (
+const DemographicChart = ({ data, theme, isLoading: isParentLoading }) => (
   <CohortCard showHeader={false} loading={isParentLoading}>
     <PieChartContainer>
       <Pie
