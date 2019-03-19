@@ -3,13 +3,16 @@ import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
+import { withRouter } from 'react-router-dom';
+import urlJoin from 'url-join';
 
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { withApi } from 'services/api';
 import { createNewVirtualStudy } from 'services/virtualStudies';
 import { H1 } from 'uikit/Headings';
-import { WhiteButton, TealActionButton } from 'uikit/Button.js';
+import Tooltip from 'uikit/Tooltip';
+import { TealActionButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
 import Categories from './Categories';
 import ContentBar from './ContentBar';
@@ -19,6 +22,7 @@ import SQONProvider from './SQONProvider';
 import VirtualStudyListProvider from './VirtualStudyListProvider';
 import SaveVirtualStudiesModalContent from './SaveVirtualStudiesModalContent';
 import SaveIcon from 'icons/SaveIcon';
+import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 
 const Container = styled('div')`
   width: 100%;
@@ -48,7 +52,8 @@ const SaveButtonText = styled('span')`
 const CohortBuilder = compose(
   withApi,
   injectState,
-)(({ api, state: { loggedInUser }, effects }) => (
+  withRouter,
+)(({ api, state: { loggedInUser }, effects, history }) => (
   <VirtualStudyListProvider>
     {({
       virtualStudies = [],
@@ -158,6 +163,13 @@ const CohortBuilder = compose(
               .catch(console.error);
           };
 
+          const sharingEnabled = isOwner && !!selectedVirtualStudy;
+          const getSharableUrl = ({ id }) =>
+            urlJoin(
+              window.location.origin,
+              history.createHref({ ...history.location, search: `id=${id}` }),
+            );
+
           return (
             <Container>
               <Content>
@@ -189,7 +201,16 @@ const CohortBuilder = compose(
                     </span>
                     <SaveButtonText>Save virtual study</SaveButtonText>
                   </TealActionButton>
-                  <WhiteButton>Share</WhiteButton>
+                  {sharingEnabled ? (
+                    <ShareQuery
+                      getSharableUrl={getSharableUrl}
+                      handleShare={() => Promise.resolve({ id: selectedVirtualStudy })}
+                    />
+                  ) : (
+                    <Tooltip html={<div>please save first</div>}>
+                      <ShareQuery disabled />
+                    </Tooltip>
+                  )}
                 </Row>
               </Content>
               <FullWidthWhite>
