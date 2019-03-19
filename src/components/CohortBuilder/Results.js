@@ -207,6 +207,7 @@ const Results = ({
                     {Number(participantCount || 0).toLocaleString()} Participants with{' '}
                   </SubHeading>
                   <PurpleLinkWithLoader
+                    replaceText={false}
                     getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
                   >
                     {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
