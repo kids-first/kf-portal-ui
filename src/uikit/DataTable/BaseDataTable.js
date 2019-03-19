@@ -11,7 +11,7 @@ import { configureCols } from './utils/columns';
 import applyTransforms from './utils/applyTransforms';
 
 const enhance = compose(
-  withState('pageSize', 'setPageSize', 10),
+  withState('pageSize', 'setPageSize', props => (props.showPagination ? 10 : props.data.length)),
   withState('pageIndex', 'setPageIndex', 0),
   withState('columns', 'setColumns', props => configureCols(props.columns)),
 );
@@ -30,6 +30,7 @@ const BaseDataTable = ({
   header = true,
   analyticsTracking,
   className = '',
+  showPagination,
 }) => (
   <Fragment>
     {header ? (
@@ -60,6 +61,7 @@ const BaseDataTable = ({
       </TableToolbar>
     ) : null}
     <Table
+      showPagination={showPagination}
       columns={columns}
       loading={loading}
       data={applyTransforms(data || [], transforms)}
