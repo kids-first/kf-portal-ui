@@ -35,11 +35,21 @@ const CATEGORY_FIELDS = {
 
     // Clinical
     'affected_status',
+    // 'diagnoses.age_at_event_days',
+    // 'outcome.age_at_event_days',
+    // 'phenotype.age_at_event_days',
+    // 'phenotype.ancestral_hpo_ids',
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
     'family.family_compositions.composition',
+    // "Cannot query field "family__family_compositions__shared_phenotype_ids" on type "participantAggregations". Did you mean "family__family_compositions__shared_hpo_ids", "family__family_compositions__available_data_types", "family__family_compositions__composition", "family__family_compositions__family_members__kf_id", or "family__family_compositions__family_members__race"?"
+    // 'family.family_compositions.shared_phenotype_ids',
+    // "Cannot query field "outcome__is_disease_related" on type "participantAggregations". Did you mean "outcome__disease_related", "outcome__external_id", or "outcome__vital_status"?"
     'outcome.disease_related',
+    // 'phenotype.hpo_phenotype_observed_text',
     'diagnoses.source_text_tumor_location',
+    // "Invalid pivot field "outcome", not a nested field"
+    // 'outcome.vital_status',
 
     // Available Data
     'available_data_types',
