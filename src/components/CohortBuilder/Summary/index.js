@@ -44,38 +44,45 @@ const Summary = ({
     ]}
   >
     {({ isLoading, data }) => {
-      const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
-        data || [];
+      const [
+        demographicData = [],
+        ageDiagData = [],
+        studiesData = [],
+        topDiagnosesData = [],
+        fileDataTypes = [],
+      ] = data;
 
-      return isLoading ? (
-        <Row nogutter>
-          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          </div>
-        </Row>
-      ) : !data ? (
+      return !data ? (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown fileDataTypes={fileDataTypes} sqon={sqon} />
+                <FileBreakdown
+                  fileDataTypes={fileDataTypes}
+                  sqon={sqon}
+                  parentIsLoading={isLoading}
+                />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} />
+                <StudiesChart studies={studiesData} sqon={sqon} parentIsLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
+                <DiagnosesChart
+                  sqon={sqon}
+                  topDiagnoses={topDiagnosesData}
+                  parentIsLoading={isLoading}
+                />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DemographicChart data={demographicData} />
+                <DemographicChart data={demographicData} parentIsLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart data={survivalPlotMock} />
+                <SurvivalChart data={survivalPlotMock} parentIsLoading={isLoading} />
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <AgeDiagChart data={ageDiagData} />
+                <AgeDiagChart data={ageDiagData} parentIsLoading={isLoading} />
               </PaddedColumn>
             </Row>
           </Col>

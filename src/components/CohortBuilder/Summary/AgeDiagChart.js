@@ -10,8 +10,8 @@ const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
-const AgeDiagChart = ({ data, theme }) => (
-  <CohortCard title="Age at Diagnosis">
+const AgeDiagChart = ({ data, theme, parentIsLoading }) => (
+  <CohortCard title="Age at Diagnosis" loading={parentIsLoading}>
     <VerticalBar
       data={data}
       indexBy="label"

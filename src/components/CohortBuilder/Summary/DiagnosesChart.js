@@ -77,10 +77,8 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api }) => (
     queries={toSingleDiagQueries({ topDiagnoses, sqon })}
   >
     {({ isLoading, data }) => (
-      <CohortCard title="Most Frequent Diagnoses">
-        {isLoading ? (
-          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-        ) : !data ? (
+      <CohortCard title="Most Frequent Diagnoses" loading={isLoading}>
+        {!data ? (
           <div>No data</div>
         ) : (
           <BarChartContainer>

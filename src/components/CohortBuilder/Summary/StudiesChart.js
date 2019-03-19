@@ -88,10 +88,8 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
     queries={toSingleStudyQueries({ studies, sqon })}
   >
     {({ isLoading, data }) => (
-      <CohortCard title="Studies" badge={data ? data.length : null}>
-        {isLoading ? (
-          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-        ) : !data ? (
+      <CohortCard title="Studies" badge={data ? data.length : null} loading={isLoading}>
+        {!data ? (
           <div>No data</div>
         ) : (
           <BarChartContainer>
