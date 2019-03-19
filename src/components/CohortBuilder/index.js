@@ -71,7 +71,6 @@ const CohortBuilder = compose(
           selectedVirtualStudy,
           onVirtualStudySelect,
           setVirtualStudy,
-          isOwner,
         }) => {
           const executableSqon = getActiveExecutableSqon();
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
@@ -163,7 +162,7 @@ const CohortBuilder = compose(
               .catch(console.error);
           };
 
-          const sharingEnabled = isOwner && !!selectedVirtualStudy;
+          const sharingEnabled = !!selectedVirtualStudy;
           const getSharableUrl = ({ id }) =>
             urlJoin(
               window.location.origin,
@@ -207,7 +206,7 @@ const CohortBuilder = compose(
                       handleShare={() => Promise.resolve({ id: selectedVirtualStudy })}
                     />
                   ) : (
-                    <Tooltip html={<div>please save first</div>}>
+                    <Tooltip html={<div>Please save this study to enable sharing</div>}>
                       <ShareQuery disabled />
                     </Tooltip>
                   )}
