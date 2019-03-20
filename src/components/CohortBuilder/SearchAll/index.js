@@ -51,6 +51,7 @@ const QueryContainer = styled(Column)`
   border-top: 4px solid ${({ borderColor }) => borderColor};
   border-right: 1px solid ${({ theme }) => theme.greyScale8};
   padding: 7px;
+  width: 100%;
 
   .query-content {
     border-radius: 10px;
