@@ -7,7 +7,7 @@ import { css } from 'emotion';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { withApi } from 'services/api';
-import { createNewVirtualStudy, updateVirtualStudy } from 'services/virtualStudies';
+import { createNewVirtualStudy } from 'services/virtualStudies';
 import { H1 } from 'uikit/Headings';
 import { WhiteButton, TealActionButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
@@ -85,7 +85,7 @@ const CohortBuilder = compose(
             if (!(studyName || '').length) {
               throw new Error('Study name cannot be empty');
             }
-            const { id: newStudyId } = await createNewVirtualStudy({
+            const newStudyId = await createNewVirtualStudy({
               api,
               loggedInUser,
               sqonsState: {
@@ -100,30 +100,19 @@ const CohortBuilder = compose(
           };
 
           const onSaveClick = () => {
-            if (!isOwner) {
-              effects.setModal({
-                title: 'Save as Virtual Study',
-                classNames: {
-                  modal: css`
-                    max-width: 800px;
-                  `,
-                },
-                component: (
-                  <SaveVirtualStudiesModalContent
-                    onSubmit={({ studyName }) => saveStudy(studyName)}
-                  />
-                ),
-              });
-            } else {
-              updateVirtualStudy({
-                id: selectedVirtualStudy,
-                api,
-                sqonsState: {
-                  sqons: syntheticSqons,
-                  activeIndex: activeSqonIndex,
-                },
-              });
-            }
+            effects.setModal({
+              title: 'Save as Virtual Study',
+              classNames: {
+                modal: css`
+                  max-width: 800px;
+                `,
+              },
+              component: (
+                <SaveVirtualStudiesModalContent
+                  onSubmit={({ studyName }) => saveStudy(studyName)}
+                />
+              ),
+            });
           };
 
           const createNewSqonExcludingParticipants = participantIds => {
