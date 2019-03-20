@@ -163,13 +163,11 @@ const CohortBuilder = compose(
           };
 
           const sharingEnabled = !!selectedVirtualStudy;
-          const getSharableUrl = ({ id }) => {
-            console.log('id: ', id);
-            return urlJoin(
+          const getSharableUrl = ({ id }) =>
+            urlJoin(
               window.location.origin,
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
-          };
 
           return (
             <Container>
