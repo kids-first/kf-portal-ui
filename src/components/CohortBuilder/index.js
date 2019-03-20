@@ -11,6 +11,7 @@ import graphql from 'services/arranger';
 import { withApi } from 'services/api';
 import { createNewVirtualStudy } from 'services/virtualStudies';
 import { H1 } from 'uikit/Headings';
+
 import Tooltip from 'uikit/Tooltip';
 import { TealActionButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
@@ -71,6 +72,7 @@ const CohortBuilder = compose(
           selectedVirtualStudy,
           onVirtualStudySelect,
           setVirtualStudy,
+          isOwner,
         }) => {
           const executableSqon = getActiveExecutableSqon();
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
@@ -161,7 +163,6 @@ const CohortBuilder = compose(
               })
               .catch(console.error);
           };
-
           const sharingEnabled = !!selectedVirtualStudy;
           const getSharableUrl = ({ id }) =>
             urlJoin(
@@ -234,5 +235,4 @@ const CohortBuilder = compose(
     )}
   </VirtualStudyListProvider>
 ));
-
 export default CohortBuilder;
