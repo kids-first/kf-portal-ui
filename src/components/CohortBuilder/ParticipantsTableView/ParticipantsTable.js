@@ -20,7 +20,6 @@ import { configureCols } from 'uikit/DataTable/utils/columns';
 import RemoveFromCohortButton from './RemoveFromCohortButton';
 
 import DownloadButton from 'components/FileRepo/DownloadButton';
-import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 import { arrangerProjectId } from 'common/injectGlobals';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
@@ -188,7 +187,7 @@ class ParticipantsTable extends Component {
     };
 
     const selectionSQON = this.props.selectedRows.length
-      ? replaceSQON({
+      ? {
           op: 'and',
           content: [
             {
@@ -196,7 +195,7 @@ class ParticipantsTable extends Component {
               content: { field: 'kf_id', value: this.props.selectedRows },
             },
           ],
-        })
+        }
       : undefined;
 
     return (
