@@ -19,8 +19,8 @@ const PieChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const DemographicChart = ({ data, theme }) => (
-  <CohortCard showHeader={false}>
+const DemographicChart = ({ data, theme, isLoading: isParentLoading }) => (
+  <CohortCard showHeader={false} loading={isParentLoading}>
     <PieChartContainer>
       <Pie
         style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}

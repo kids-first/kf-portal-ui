@@ -47,6 +47,19 @@ const ActiveView = styled('div')`
   padding: 0 26px 36px 26px;
   margin-top: 19px;
   position: relative;
+
+  ${({ activeView }) =>
+    activeView === SUMMARY
+      ? css`
+          > div:nth-child(2) {
+            display: none !important;
+          }
+        `
+      : css`
+          > div:first-child {
+            display: none !important;
+          }
+        `}
 `;
 
 const SubHeadingStyle = props => {
@@ -163,15 +176,13 @@ const Results = ({
 }) => (
   <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
+      const resultsData = data[0];
+      const participantCount = get(resultsData, 'participantCount', null);
+      const filesCount = get(resultsData, 'filesCount', null);
       const cohortIsEmpty =
-        !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
-      return isLoading ? (
-        <Row nogutter>
-          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          </div>
-        </Row>
-      ) : error ? (
+        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+
+      return error ? (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
@@ -187,15 +198,21 @@ const Results = ({
                   </React.Fragment>
                 )}
               </ResultsHeading>{' '}
-              <DemographicIcon />
-              <SubHeading>
-                {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
-              </SubHeading>
-              <PurpleLinkWithLoader
-                getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
-              >
-                {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
-              </PurpleLinkWithLoader>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <React.Fragment>
+                  <DemographicIcon />
+                  <SubHeading>
+                    {Number(participantCount || 0).toLocaleString()} Participants with{' '}
+                  </SubHeading>
+                  <PurpleLinkWithLoader
+                    getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
+                  >
+                    {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
+                  </PurpleLinkWithLoader>
+                </React.Fragment>
+              )}
             </Detail>
             <ViewLinks>
               <ViewLink
@@ -214,12 +231,9 @@ const Results = ({
               </ViewLink>
             </ViewLinks>
           </Content>
-          <ActiveView>
-            {activeView === SUMMARY ? (
-              <Summary sqon={sqon} />
-            ) : (
-              <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
-            )}
+          <ActiveView activeView={activeView}>
+            <Summary sqon={sqon} />
+            <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </ActiveView>
         </React.Fragment>

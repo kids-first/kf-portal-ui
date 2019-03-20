@@ -1,6 +1,3 @@
-import React from 'react';
-import { withApi } from 'services/api';
-import QueriesResolver from '../../QueriesResolver';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 
@@ -49,7 +46,7 @@ const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
   },
 });
 
-const toExpStratQueries = ({ fileDataTypes, sqon }) =>
+export const toExpStratQueries = ({ fileDataTypes, sqon }) =>
   fileDataTypes.map(dataType => ({
     query: gql`
       query($sqon: JSON, $dataType: String) {
@@ -96,27 +93,3 @@ const toExpStratQueries = ({ fileDataTypes, sqon }) =>
       return fileBreakdownQueries;
     },
   }));
-
-const FileBreakdownQueryResolver = ({ fileDataTypes, api, sqon, children }) => (
-  <QueriesResolver
-    name="GQL_FILE_BREAKDOWN_1"
-    api={api}
-    queries={toExpStratQueries({ fileDataTypes, sqon })}
-  >
-    {({ data: fileBreakdownQueries, isLoading }) =>
-      isLoading ? (
-        <div>loading</div>
-      ) : (
-        <QueriesResolver
-          name="GQL_FILE_BREAKDOWN_2"
-          api={api}
-          queries={fileBreakdownQueries.flat()}
-        >
-          {children}
-        </QueriesResolver>
-      )
-    }
-  </QueriesResolver>
-);
-
-export default withApi(FileBreakdownQueryResolver);
