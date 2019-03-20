@@ -37,7 +37,7 @@ export const createNewVirtualStudy = async ({
     },
   } = await getSavedVirtualStudyNames(api);
   const { egoId } = loggedInUser;
-  const { id } = await api({
+  const newVirtualStudy = await api({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
       userid: egoId,
@@ -50,6 +50,7 @@ export const createNewVirtualStudy = async ({
       },
     }),
   });
+  const { id } = newVirtualStudy;
   await api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
     body: {
@@ -80,7 +81,7 @@ export const createNewVirtualStudy = async ({
       `),
     },
   });
-  return id;
+  return newVirtualStudy;
 };
 
 export const getVirtualStudy = api => async id => {
@@ -89,4 +90,22 @@ export const getVirtualStudy = api => async id => {
     url: urlJoin(shortUrlApi, id),
   });
   return data;
+};
+
+export const updateVirtualStudy = async ({ id, sqonsState, api, name, description }) => {
+  const { sqons, activeIndex } = sqonsState;
+  const existingVirtualStudy = await getVirtualStudy(api)(id);
+  return await api({
+    method: 'PUT',
+    url: urlJoin(shortUrlApi, id),
+    body: JSON.stringify({
+      alias: name || existingVirtualStudy.alias,
+      sharedPublicly: existingVirtualStudy.sharedPublicly,
+      content: {
+        sqons: sqons || existingVirtualStudy.content.sqons,
+        activeIndex: activeIndex || existingVirtualStudy.content.activeIndex,
+        description: description || existingVirtualStudy.content.description,
+      },
+    }),
+  });
 };
