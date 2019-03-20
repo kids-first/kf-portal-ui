@@ -85,15 +85,28 @@ export const demographicQuery = sqon => ({
       label: key,
       value: doc_count,
     });
+    const DATA_MISSING = '__missing__';
+
     return {
-      race: get(data, 'data.participant.aggregations.race.buckets', []).map(toChartData),
-      gender: get(data, 'data.participant.aggregations.gender.buckets', []).map(toChartData),
-      ethnicity: get(data, 'data.participant.aggregations.ethnicity.buckets', []).map(toChartData),
+      race: get(data, 'data.participant.aggregations.race.buckets', [])
+        .filter(b => b.key !== DATA_MISSING)
+        .map(toChartData),
+
+      gender: get(data, 'data.participant.aggregations.gender.buckets', [])
+        .filter(b => b.key !== DATA_MISSING)
+        .map(toChartData),
+
+      ethnicity: get(data, 'data.participant.aggregations.ethnicity.buckets', [])
+        .filter(b => b.key !== DATA_MISSING)
+        .map(toChartData),
+
       familyComposition: get(
         data,
         'data.participant.aggregations.family__family_compositions__composition.buckets',
         [],
-      ).map(toChartData),
+      )
+        .filter(b => b.key !== DATA_MISSING)
+        .map(toChartData),
     };
   },
 });
