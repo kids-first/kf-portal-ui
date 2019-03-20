@@ -82,7 +82,6 @@ export const demographicQuery = sqon => ({
   transform: data => {
     const toChartData = ({ key, doc_count }) => {
       const dataKey = keyToDisplay(key === DATA_MISSING ? 'No Data' : key);
-      console.log('key', key);
       return {
         id: dataKey,
         label: dataKey,
