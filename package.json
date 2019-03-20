@@ -32,6 +32,7 @@
     "i18next-xhr-backend": "^1.5.1",
     "import": "0.0.6",
     "js-cookie": "^2.2.0",
+    "json-stringify-deterministic": "^1.0.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.5",
     "md5": "^2.2.1",

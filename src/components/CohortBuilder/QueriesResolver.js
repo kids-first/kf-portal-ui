@@ -5,6 +5,7 @@ import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import { isEqual } from 'lodash';
 import { print } from 'graphql/language/printer';
+import stringify from 'json-stringify-deterministic';
 
 /**
  * NOTE: this component pulls from a singleton queryCacheMap for its caching,
@@ -38,7 +39,7 @@ class QueriesResolver extends React.Component {
       ? this.taskQueue.enqueue(
           () =>
             new Promise(async resolve => {
-              const body = JSON.stringify(
+              const body = stringify(
                 queries.map(q => ({
                   query: typeof q.query === 'string' ? q.query : print(q.query),
                   variables: q.variables,
