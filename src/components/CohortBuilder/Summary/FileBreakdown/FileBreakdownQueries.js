@@ -18,7 +18,10 @@ const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
               $sqon
               {
                 op: "in"
-                content: { field: "files.experiment_strategies", value: [$experimentalStrategy] }
+                content: {
+                  field: "files.sequencing_experiments.experiment_strategy"
+                  value: [$experimentalStrategy]
+                }
               }
               { op: "in", content: { field: "files.data_type", value: [$dataType] } }
             ]
@@ -61,7 +64,7 @@ export const toExpStratQueries = ({ fileDataTypes, sqon }) =>
               ]
             }
           ) {
-            files__experiment_strategies {
+            files__sequencing_experiments__experiment_strategy {
               buckets {
                 key
               }
@@ -78,7 +81,7 @@ export const toExpStratQueries = ({ fileDataTypes, sqon }) =>
        */
       const expStratBuckets = get(
         data,
-        'data.participant.aggregations.files__experiment_strategies.buckets',
+        'data.participant.aggregations.files__sequencing_experiments__experiment_strategy.buckets',
         [],
       );
 

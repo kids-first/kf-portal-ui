@@ -97,7 +97,7 @@ const CATEGORY_FIELDS = {
   ],
   availableData: [
     'available_data_types',
-    'files.experiment_strategies',
+    'files.sequencing_experiments.experiment_strategy',
     'family.family_compositions.available_data_types',
   ],
 };
