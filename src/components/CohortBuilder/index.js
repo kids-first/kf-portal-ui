@@ -89,7 +89,7 @@ const CohortBuilder = compose(
             if (!(studyName || '').length) {
               throw new Error('Study name cannot be empty');
             }
-            const newStudyId = await createNewVirtualStudy({
+            const { id: newStudyId } = await createNewVirtualStudy({
               api,
               loggedInUser,
               sqonsState: {
@@ -163,11 +163,13 @@ const CohortBuilder = compose(
           };
 
           const sharingEnabled = !!selectedVirtualStudy;
-          const getSharableUrl = ({ id }) =>
-            urlJoin(
+          const getSharableUrl = ({ id }) => {
+            console.log('id: ', id);
+            return urlJoin(
               window.location.origin,
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
+          };
 
           return (
             <Container>
