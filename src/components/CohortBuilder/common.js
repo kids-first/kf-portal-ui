@@ -30,6 +30,7 @@ const FilterCont = styled('div')`
 const Header = styled('div')`
   background-color: white;
   border-bottom: 1px solid #d4d6dd;
+  padding: 5px;
 `;
 
 const Content = styled('div')`
@@ -49,14 +50,7 @@ const Content = styled('div')`
 const Footer = styled(Row)`
   justify-content: space-between;
   background-color: #e0e1e6;
-`;
-
-const WButton = styled(WhiteButton)`
-  margin: 5px;
-`;
-
-const TealButton = styled(TealActionButton)`
-  margin: 5px;
+  padding: 5px;
 `;
 
 export const FieldFilterContainer = ({
@@ -71,18 +65,18 @@ export const FieldFilterContainer = ({
   <FilterCont className={className}>
     {showHeader && (
       <Header>
-        <WButton onClick={onBack}>
+        <WhiteButton onClick={onBack}>
           <LeftIcon />
           Back
-        </WButton>
+        </WhiteButton>
       </Header>
     )}
     <Content className="filterContainer">{children}</Content>
     <Footer>
-      <WButton onClick={onCancel}>Cancel</WButton>
-      <TealButton disabled={!applyEnabled} onClick={onSqonSubmit}>
+      <WhiteButton onClick={onCancel}>Cancel</WhiteButton>
+      <TealActionButton disabled={!applyEnabled} onClick={onSqonSubmit}>
         Apply
-      </TealButton>
+      </TealActionButton>
     </Footer>
   </FilterCont>
 );
