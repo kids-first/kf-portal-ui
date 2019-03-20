@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import ContentBar from './ContentBar';
@@ -136,20 +137,22 @@ const generateAllFilesLink = async (user, api, files) => {
 };
 
 const cohortResultsQuery = sqon => ({
-  query: `query ($sqon: JSON) {
-    participant {
-      hits(filters: $sqon) {
-        total
-      }
-      aggregations(filters: $sqon) {
-        files__kf_id {
-          buckets {
-            key
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        hits(filters: $sqon) {
+          total
+        }
+        aggregations(filters: $sqon) {
+          files__kf_id {
+            buckets {
+              key
+            }
           }
         }
       }
     }
-  }`,
+  `,
   variables: { sqon },
   transform: data => {
     const participants = get(data, 'data.participant.hits.total', 0);

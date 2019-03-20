@@ -9,9 +9,12 @@ import AdvancedSqonBuilder from '@arranger/components/dist/AdvancedSqonBuilder';
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 import { withApi } from 'services/api';
 import { arrangerProjectId } from 'common/injectGlobals';
-import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import {
+  FieldFilterContainer,
+  ModalContentSection,
+  ARRANGER_API_PARTICIPANT_INDEX_NAME,
+} from '../common';
 import { ModalFooter } from 'components/Modal';
-import { Div } from 'uikit/Core';
 
 const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
   extendedMapping.reduce((acc, { field, displayName }) => {
@@ -21,6 +24,8 @@ const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
 );
 
 const SqonBuilderContainer = styled('div')`
+  margin-top: 20px;
+  border: solid 1px ${({ theme }) => theme.greyScale4};
   > .sqonBuilder .sqonEntry .actionButtonsContainer {
     box-sizing: border-box;
   }
@@ -31,17 +36,12 @@ const StyledFieldFilterContainer = styled(FieldFilterContainer)`
   right: 0px;
 `;
 
-const ModalContent = styled(Div)`
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
-
 const ClearAllModalContent = ({ onConfirmed }) => (
   <React.Fragment>
-    <ModalContent>
-      <ModalContent>Are you sure you want to delete all queries?</ModalContent>
-      <ModalContent>This action cannot be undone.</ModalContent>
-    </ModalContent>
+    <ModalContentSection>
+      <ModalContentSection>Are you sure you want to delete all queries?</ModalContentSection>
+      <ModalContentSection>This action cannot be undone.</ModalContentSection>
+    </ModalContentSection>
     <ModalFooter submitText="DELETE" handleSubmit={onConfirmed} />
   </React.Fragment>
 );

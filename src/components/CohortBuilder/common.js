@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
+import { Div } from 'uikit/Core';
 
 import { TealActionButton, WhiteButton } from 'uikit/Button';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
+
+export const ModalContentSection = styled(Div)`
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
 
 const FilterCont = styled('div')`
   color: black;
