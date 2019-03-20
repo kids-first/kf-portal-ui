@@ -30,7 +30,6 @@ const SearchAllContainer = styled('div')`
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 100%;
   z-index: 1;
 
   .query-container {
