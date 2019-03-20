@@ -224,16 +224,18 @@ export default compose(
                           >
                             Biospecimen Data
                           </OptionRow>
-                          <OptionRow
-                            onMouseDown={() => {
-                              setModal({
-                                title: 'Download Manifest',
-                                component: <FamilyManifestModal {...props} />,
-                              });
-                            }}
-                          >
-                            File Manifest
-                          </OptionRow>
+                          {isFileRepo && (
+                            <OptionRow
+                              onMouseDown={() => {
+                                setModal({
+                                  title: 'Download Manifest',
+                                  component: <FamilyManifestModal {...props} />,
+                                });
+                              }}
+                            >
+                              File Manifest
+                            </OptionRow>
+                          )}
                         </StyledDropdownOptionsContainer>
                       ) : null}
                     </Fragment>

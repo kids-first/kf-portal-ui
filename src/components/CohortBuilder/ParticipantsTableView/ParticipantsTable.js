@@ -196,7 +196,7 @@ class ParticipantsTable extends Component {
             },
           ],
         }
-      : undefined;
+      : this.props.sqon;
 
     return (
       <Fragment>
