@@ -59,6 +59,7 @@ const ParticipantsTableView = ({
         return (
           <Card>
             <ParticipantsTable
+              sqon={sqon}
               loading={isLoading}
               data={dataWithRowSelection}
               dataTotalCount={data[0] ? data[0].total : 0}

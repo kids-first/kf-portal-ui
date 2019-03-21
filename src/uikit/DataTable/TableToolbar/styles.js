@@ -60,3 +60,9 @@ export const ToolbarSelectionCount = styled('div')`
     color: ${({ theme }) => theme.highlight};
   }
 `;
+
+export const ToolbarDownload = styled('div')`
+  position: absolute;
+  right: 220px;
+  padding-bottom: 4px;
+`;

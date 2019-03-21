@@ -7,12 +7,20 @@ import { withTheme } from 'emotion-theming';
 import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
-import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
+import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarSelectionCount,
+  ToolbarDownload,
+} from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
 import RemoveFromCohortButton from './RemoveFromCohortButton';
+
+import DownloadButton from 'components/FileRepo/DownloadButton';
+import { arrangerProjectId } from 'common/injectGlobals';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -110,25 +118,34 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'diagnoses.diagnosis_category',
   },
   {
     Header: 'Diagnosis',
     accessor: 'diagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'diagnoses.diagnosis',
   },
   {
     Header: 'Age at Diagnosis',
     accessor: 'ageAtDiagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'diagnoses.age_at_event_days',
   },
-  { Header: 'Gender', accessor: 'gender' },
-  { Header: 'Family ID', accessor: 'familyId' },
+  { Header: 'Gender', accessor: 'gender', field: 'gender' },
+  { Header: 'Family ID', accessor: 'familyId', field: 'family.family_id' },
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
+    field: 'family.family_compositions',
   },
-  { Header: 'Files', accessor: 'filesCount', Cell: props => <NbFilesCell {...props} /> },
+  {
+    Header: 'Files',
+    accessor: 'filesCount',
+    Cell: props => <NbFilesCell {...props} />,
+    field: 'files',
+  },
 ];
 
 const cssClass = css({
@@ -142,6 +159,12 @@ const cssClass = css({
 });
 
 class ParticipantsTable extends Component {
+  static defaultProps = {
+    sqon: {
+      op: 'and',
+      content: [],
+    },
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -163,13 +186,22 @@ class ParticipantsTable extends Component {
       downloadName = 'data',
       selectedRows,
       allRowsSelected,
+      sqon,
     } = this.props;
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
+    const projectId = arrangerProjectId;
 
     const handleRemoveFromCohort = () => {
       onRemoveFromCohort();
     };
+
+    const selectionSQON = this.props.selectedRows.length
+      ? {
+          op: 'and',
+          content: [{ op: 'in', content: { field: 'kf_id', value: this.props.selectedRows } }],
+        }
+      : sqon;
 
     return (
       <Fragment>
@@ -198,6 +230,14 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
+            <ToolbarDownload>
+              <DownloadButton
+                sqon={selectionSQON}
+                {...this.props}
+                isFileRepo={false}
+                projectId={projectId}
+              />
+            </ToolbarDownload>
             <ToolbarGroup>
               <ColumnFilter
                 columns={columns}

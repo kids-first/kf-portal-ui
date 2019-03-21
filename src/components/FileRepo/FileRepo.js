@@ -83,10 +83,10 @@ const TableHeaderContent = ({ sqon, disabled, ...props }) => {
           hideTitle
           html={<Row>Please select files in the table for this action.</Row>}
         >
-          <DownloadButton sqon={sqon} {...props} />
+          <DownloadButton sqon={sqon} {...props} isFileRepo={true} />
         </Tooltip>
       ) : (
-        <DownloadButton sqon={sqon} {...props} />
+        <DownloadButton sqon={sqon} {...props} isFileRepo={true} />
       )}
     </Row>
   );
