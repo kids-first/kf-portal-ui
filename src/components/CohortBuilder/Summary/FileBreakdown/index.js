@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import { CohortCard } from '../ui';
 import gql from 'graphql-tag';
 import BaseDataTable from 'uikit/DataTable';
-import { get, sortBy } from 'lodash';
+import { get, sortBy, sumBy } from 'lodash';
 import { withApi } from 'services/api';
 import { toExpStratQueries } from './FileBreakdownQueries';
 import saveSet from '@arranger/components/dist/utils/saveSet';
@@ -30,67 +30,45 @@ const FilesColumn = styled(Column)`
   text-decoration: underline;
 `;
 
-const sumTotalFilesInData = dataset =>
-  dataset.reduce((accumulator, datum) => accumulator + parseInt(datum.files, 10), 0);
-
-const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, api, origSqon) => {
-  const sqon = {
-    op: 'and',
-    content: [
-      origSqon,
-      {
-        op: 'in',
-        content: { field: 'files.experiment_strategies', value: [`${experimentalStrategy}`] },
-      },
-      { op: 'in', content: { field: 'files.data_type', value: [`${dataType}`] } },
-    ],
-  };
-
-  const participantSet = await saveSet({
-    type: 'participant',
-    sqon: sqon || {},
+const generateFileRepositoryUrl = async ({ fileBuckets, user, api }) => {
+  const fileIds = fileBuckets.map(({ key }) => key);
+  const fileSet = await saveSet({
+    type: 'file',
+    sqon: { op: 'and', content: [{ op: 'in', content: { field: 'kf_id', value: fileIds } }] },
     userId: user.egoId,
     path: 'kf_id',
     api: graphql(api),
   });
 
-  const setId = get(participantSet, 'data.saveSet.setId');
+  const setId = get(fileSet, 'data.saveSet.setId');
 
-  const fileSqon = {
+  const fileRepoLink = createFileRepoLink({
     op: 'and',
     content: [
       {
         op: 'in',
         content: {
-          field: 'participants.kf_id',
+          field: 'kf_id',
           value: `set_id:${setId}`,
         },
       },
     ],
-  };
-
-  const fileRepoLink = createFileRepoLink(fileSqon);
+  });
   return fileRepoLink;
 };
 
 const localizeFileQuantity = quantity => `${Number(quantity).toLocaleString()}`;
 
-const generateFileColumnContents = (dataset, state, api, sqon) =>
-  dataset.map(datum => ({
-    ...datum,
+const generateFileColumnContents = (dataset, loggedInUser, api, sqon) =>
+  dataset.map(entry => ({
+    ...entry,
     fileLink: (
       <LinkWithLoader
         getLink={async e =>
-          await generateFileRepositoryUrl(
-            datum.dataType,
-            datum.experimentalStrategy,
-            state.loggedInUser,
-            api,
-            sqon,
-          )
+          await generateFileRepositoryUrl({ fileBuckets: entry.files, user: loggedInUser, api })
         }
       >
-        {localizeFileQuantity(datum.files)}
+        {localizeFileQuantity(entry.filesCount)}
       </LinkWithLoader>
     ),
   }));
@@ -114,7 +92,13 @@ export const fileBreakdownQuery = sqon => ({
     get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
 });
 
-const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isLoading: isParentLoading }) => (
+const FileBreakdown = ({
+  fileDataTypes,
+  sqon,
+  state: { loggedInUser },
+  api,
+  isLoading: isParentLoading,
+}) => (
   <QueriesResolver
     name="GQL_FILE_BREAKDOWN_1"
     api={api}
@@ -124,18 +108,18 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isLoading: isPa
       <QueriesResolver name="GQL_FILE_BREAKDOWN_2" api={api} queries={fileBreakdownQueries.flat()}>
         {({ data, isLoading }) => {
           const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
-          const finalData = isLoading
+          const tableEntries = isLoading
             ? null
-            : generateFileColumnContents(sortedData, state, api, sqon);
-          const filesTotal = isLoading
-            ? null
-            : localizeFileQuantity(sumTotalFilesInData(finalData));
+            : generateFileColumnContents(sortedData, loggedInUser, api, sqon);
+          const filesTotal = localizeFileQuantity(
+            sumBy(tableEntries, ({ filesCount }) => filesCount),
+          );
 
           return (
             <CohortCard
               scrollable={true}
               title="Available Data"
-              badge={filesTotal ? filesTotal : null}
+              badge={isLoading ? null : filesTotal}
               loading={isParentLoading || isLoadingFileQueries || isLoading}
             >
               {!data ? (
@@ -156,15 +140,10 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isLoading: isPa
                       accessor: 'experimentalStrategy',
                       style: columnStyles,
                     },
-                    {
-                      Header: 'Files',
-                      accessor: 'fileLink',
-                      minWidth: 40,
-                      style: columnStyles,
-                    },
+                    { Header: 'Files', accessor: 'fileLink', minWidth: 40, style: columnStyles },
                   ]}
                   className="-highlight"
-                  data={finalData}
+                  data={tableEntries}
                   transforms={{
                     dataType: dataType => <Column>{dataType}</Column>,
                     experimentalStrategy: experimentalStrategy => (
