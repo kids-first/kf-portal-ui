@@ -28,12 +28,6 @@ const FileRepositoryLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
 `;
 
-/**
- * This is a stop-gap solution until Riff supports tags to support
- * server-side differentiation between entity types
- */
-const isSavedQuery = q => !!q.content.Files;
-
 export const MySavedQueries = compose(
   provideSavedQueries,
   injectState,
@@ -50,8 +44,7 @@ export const MySavedQueries = compose(
     api,
     theme,
   }) => {
-    const savedQueries = queries.filter(isSavedQuery);
-    const Header = <CardHeader title="Saved Queries" badge={savedQueries.length} />;
+    const Header = <CardHeader title="Saved Queries" badge={queries.length} />;
     return (
       <DashboardCard Header={Header} scrollable>
         {loadingQueries ? (
@@ -68,19 +61,22 @@ export const MySavedQueries = compose(
                   </PromptMessageContent>
                 </PromptMessageContainer>
                 <Box mt={2} mb={2}>
-                  {exampleQueries.filter(isSavedQuery).map(q => (
-                    <QueryBlock
-                      key={q.id}
-                      query={q}
-                      inactive={deletingIds.includes(q.id)}
-                      savedTime={false}
-                    />
-                  ))}
+                  {exampleQueries.map(q => {
+                    q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+                    return (
+                      <QueryBlock
+                        key={q.id}
+                        query={q}
+                        inactive={deletingIds.includes(q.id)}
+                        savedTime={false}
+                      />
+                    );
+                  })}
                 </Box>
               </Box>
             ) : (
               <Box mt={2} mb={2}>
-                {savedQueries
+                {queries
                   .filter(q => q.alias)
                   .map(q => ({
                     ...q,
