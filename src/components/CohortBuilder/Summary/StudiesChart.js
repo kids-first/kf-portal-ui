@@ -41,7 +41,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
               content: [
                 $sqon
                 { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
-                { op: "in", content: { field: "is_proband", value: ["false"] } }
+                { op: "in", content: { field: "is_proband", value: ["false", "__missing__"] } }
               ]
             }
           ) {
@@ -106,7 +106,7 @@ const StudiesChart = ({ studies, sqon, theme, api, isLoading: isParentLoading })
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Family Members', color: theme.chartColors.purple },
+                { title: 'Other Participants', color: theme.chartColors.purple },
               ]}
               padding={0.5}
             />
