@@ -71,9 +71,12 @@ export const ROLES = [
   },
 ];
 
+export const DCF = 'dcf';
 export const GEN3 = 'gen3';
+export const FENCES = [GEN3, DCF];
+
 export const CAVATICA = 'cavatica';
-export const SERVICES = [GEN3, CAVATICA];
+export const SERVICES = [...FENCES, CAVATICA];
 
 export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';

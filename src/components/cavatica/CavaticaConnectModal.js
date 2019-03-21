@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { isValidKey } from 'components/UserProfile/UserIntegrations';
+import { isValidKey } from 'services/cavatica';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
@@ -89,7 +89,7 @@ const CavaticaConnectModal = withTheme(
             <div className="stepText">
               <Paragraph>
                 If you don't have one, please{' '}
-                <ExternalLink href={`${cavaticaWebRegistrationRoot}/auth/register`}>
+                <ExternalLink href={`${cavaticaWebRegistrationRoot}`}>
                   register for a Cavatica Account <RightArrows />
                 </ExternalLink>
               </Paragraph>
@@ -104,7 +104,8 @@ const CavaticaConnectModal = withTheme(
                 You will need to retrieve your authentication token from the Cavatica{' '}
                 <ExternalLink href={`${cavaticaWebRoot}/developer#token`}>
                   Developer Dashboard
-                </ExternalLink>. From the Dashboard, click on the "Auth Token" tab.
+                </ExternalLink>
+                . From the Dashboard, click on the "Auth Token" tab.
               </Paragraph>
             </div>
             <DemoImage src={step2Screenshot} alt="Screenshot of Cavatica's Developer Den" />

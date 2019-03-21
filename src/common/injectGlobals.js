@@ -39,9 +39,6 @@ export const cavaticaWebRegistrationRoot: string = getApplicationEnvVar(
   'CAVATICA_WEB_REGISTRATION',
 );
 
-export const gen3ApiRoot: string = getApplicationEnvVar('GEN3_API');
-export const gen3WebRoot: string = getApplicationEnvVar('GEN3_WEB') || 'http://www.gen3.org/';
-
 export const googleAppId = getApplicationEnvVar('GOOGLE_APP_ID');
 export const facebookAppId = getApplicationEnvVar('FACEBOOK_APP_ID');
 export const egoAppId = getApplicationEnvVar('EGO_APP_ID');
@@ -75,10 +72,19 @@ export const maintenanceMode: Boolean = getApplicationEnvVar('MAINTENANCE_MODE')
 export const oauthRedirectUrl: string = encodeURIComponent(
   getApplicationEnvVar('OAUTH_REDIRECT_URL') || `${window.location.origin}/oauth_redirect/`,
 );
-export const gen3OauthRedirect: string = encodeURIComponent(
-  `${window.location.origin}/gen3_redirect/`,
-);
-export const gen3IntegrationRoot: string = getApplicationEnvVar('GEN3_INTEGRATION_ROOT') || '';
+
+export const gen3ApiRoot = getApplicationEnvVar('GEN3_API');
+export const gen3WebRoot = getApplicationEnvVar('GEN3_WEB') || 'http://www.gen3.org/';
+export const gen3OauthRedirect = encodeURIComponent(`${window.location.origin}/gen3_redirect/`);
+
+export const dcfApiRoot = getApplicationEnvVar('DCF_API');
+export const dcfWebRoot = getApplicationEnvVar('DCF_WEB') || 'https://dcf.gen3.org/';
+export const dcfOauthRedirect = encodeURIComponent(`${window.location.origin}/dcf_redirect/`);
+
+export const fenceAuthClientUri = getApplicationEnvVar('FENCE_AUTH_CLIENT_URI') || '';
+export const fenceRefreshUri = getApplicationEnvVar('FENCE_REFRESH_URI') || '';
+export const fenceTokensUri = getApplicationEnvVar('FENCE_TOKENS_URI') || '';
+
 export const reactApiDataVersionApi: string = getApplicationEnvVar('DATA_VERSION_API') || null;
 export const reactApiDataVersionFallback: string =
   getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';

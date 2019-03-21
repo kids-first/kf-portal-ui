@@ -27,7 +27,13 @@ export default provideState({
         )
         .then(value => state => {
           effects.setLoading(false);
-          const queries = (value || []).filter(q => !q.content.example);
+          const queries = (value || [])
+            .filter(q => !q.content.example)
+            /**
+             * The following filter is a stop-gap solution until Riff supports
+             * tags for server-side differentiation between entity types
+             */
+            .filter(q => !!q.content.Files);
           const exampleQueries = (value || []).filter(q => q.content.example);
           return { ...state, queries, exampleQueries };
         });
