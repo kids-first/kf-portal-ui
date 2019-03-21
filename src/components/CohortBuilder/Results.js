@@ -25,6 +25,7 @@ import { injectState } from 'freactal';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { get } from 'lodash';
+import { Link } from 'react-router-dom';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -75,16 +76,25 @@ const SubHeadingStyle = props => {
 };
 
 const SubHeading = styled('h3')`
-${SubHeadingStyle}
+  ${SubHeadingStyle};
   color: ${({ color, theme }) => (color ? color : theme.secondary)};
 `;
 
-const PurpleLinkWithLoader = styled(LinkWithLoader)`
-  ${SubHeadingStyle};
-  color: ${({ theme }) => theme.purple};
+const purpleLinkStyle = props => css`
+  color: ${props.theme.purple};
   &:hover {
-    color: ${({ theme }) => theme.linkPurple};
+    color: ${props.theme.linkPurple};
   }
+`;
+
+const PurpleLinkWithLoader = styled(LinkWithLoader)`
+  ${purpleLinkStyle};
+  ${SubHeadingStyle};
+`;
+
+const PurpleLink = styled(Link)`
+  ${purpleLinkStyle};
+  ${SubHeadingStyle};
 `;
 
 const ResultsHeading = styled('div')`
@@ -185,6 +195,10 @@ const Results = ({
       const cohortIsEmpty =
         (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
 
+      const filesCountHeading = resultsData
+        ? `${Number(data[0].filesCount || 0).toLocaleString()} Files`
+        : '';
+
       return error ? (
         <TableErrorView error={error} />
       ) : (
@@ -209,12 +223,16 @@ const Results = ({
                   <SubHeading>
                     {Number(participantCount || 0).toLocaleString()} Participants with{' '}
                   </SubHeading>
-                  <PurpleLinkWithLoader
-                    replaceText={false}
-                    getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
-                  >
-                    {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
-                  </PurpleLinkWithLoader>
+                  {isEmpty(sqon.content) ? (
+                    <PurpleLink to="/search/file">{filesCountHeading}</PurpleLink>
+                  ) : (
+                    <PurpleLinkWithLoader
+                      replaceText={false}
+                      getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
+                    >
+                      {filesCountHeading}
+                    </PurpleLinkWithLoader>
+                  )}
                 </React.Fragment>
               )}
             </Detail>
