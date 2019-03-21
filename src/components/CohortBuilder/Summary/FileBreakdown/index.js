@@ -121,18 +121,18 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isLoading: isPa
       <QueriesResolver name="GQL_FILE_BREAKDOWN_2" api={api} queries={fileBreakdownQueries.flat()}>
         {({ data, isLoading }) => {
           const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
-          const finalData = isLoading
+          const tableEntries = isLoading
             ? null
             : generateFileColumnContents(sortedData, state, api, sqon);
-          const filesTotal = isLoading
-            ? null
-            : localizeFileQuantity(sumBy(finalData, ({ filesCount }) => filesCount));
+          const filesTotal = localizeFileQuantity(
+            sumBy(tableEntries, ({ filesCount }) => filesCount),
+          );
 
           return (
             <CohortCard
               scrollable={true}
               title="Available Data"
-              badge={filesTotal ? filesTotal : null}
+              badge={isLoading ? null : filesTotal}
               loading={isParentLoading || isLoadingFileQueries || isLoading}
             >
               {!data ? (
@@ -153,15 +153,10 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isLoading: isPa
                       accessor: 'experimentalStrategy',
                       style: columnStyles,
                     },
-                    {
-                      Header: 'Files',
-                      accessor: 'fileLink',
-                      minWidth: 40,
-                      style: columnStyles,
-                    },
+                    { Header: 'Files', accessor: 'fileLink', minWidth: 40, style: columnStyles },
                   ]}
                   className="-highlight"
-                  data={finalData}
+                  data={tableEntries}
                   transforms={{
                     dataType: dataType => <Column>{dataType}</Column>,
                     experimentalStrategy: experimentalStrategy => (
