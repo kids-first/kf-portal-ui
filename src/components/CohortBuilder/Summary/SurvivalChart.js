@@ -233,7 +233,7 @@ class SurvivalChart extends React.Component {
     };
 
     return (
-      <CohortCard title="Overall Survival">
+      <CohortCard title="Overall Survival" loading={this.props.isLoading}>
         <SurvivalChartWrapper>
           <SurvivalChartHeader>
             Applicable survival data for <a>35 Participants</a>

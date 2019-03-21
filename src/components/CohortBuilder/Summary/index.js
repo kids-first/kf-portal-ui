@@ -1,13 +1,12 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import { survivalPlotMock } from './mock';
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
-import FileBreakdown, { fileBreakdownQuery } from './FileBreakdown';
+import FileBreakdown, { dataTypesExpStratPairsQuery } from './FileBreakdown';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
@@ -40,42 +39,45 @@ const Summary = ({
       ageDiagQuery(sqon),
       studiesQuery(sqon),
       diagnosesQuery(sqon),
-      fileBreakdownQuery(sqon),
+      dataTypesExpStratPairsQuery(sqon),
     ]}
   >
-    {({ isLoading, data }) => {
-      const [demographicData, ageDiagData, studiesData, topDiagnosesData, fileDataTypes] =
-        data || [];
+    {({ isLoading, data = null }) => {
+      const [
+        demographicData = [],
+        ageDiagData = [],
+        studiesData = [],
+        topDiagnosesData = [],
+        dataTypesExpStratPairs = [],
+      ] = data;
 
-      return isLoading ? (
-        <Row nogutter>
-          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          </div>
-        </Row>
-      ) : !data ? (
+      return !data ? (
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown fileDataTypes={fileDataTypes} sqon={sqon} />
+                <FileBreakdown
+                  sqon={sqon}
+                  isLoading={isLoading}
+                  dataTypesExpStratPairs={dataTypesExpStratPairs}
+                />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} />
+                <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} />
+                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DemographicChart data={demographicData} />
+                <DemographicChart data={demographicData} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart data={survivalPlotMock} />
+                <SurvivalChart data={survivalPlotMock} isLoading={isLoading} />
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <AgeDiagChart data={ageDiagData} />
+                <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
               </PaddedColumn>
             </Row>
           </Col>

@@ -70,6 +70,7 @@ const colors = {
   /**
    * Cohort Builder
    */
+  filterViolet: '#8f97d1',
   filterPurple: '#404c9a',
   studyRed: '#dd1f2a',
   demographicPurple: '#e53a95',
@@ -248,7 +249,6 @@ const components = {
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     color: #fff;
     padding: 0px 16px;
     line-height: 1.86;
@@ -279,7 +279,6 @@ const components = {
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     background-color: '#fff';
     color: ${colors.tertiary};
     padding: 6px 16px;
@@ -312,7 +311,7 @@ const components = {
     background-color: #ffffff;
     padding: 30px;
     box-shadow: 0 0 4.9px 0.1px #bbbbbb;
-    border: solid 1px #e0e1e6;
+    border: solid 1px ${colors.greyScale5};
     color: ${colors.greyScale1};
   `,
   profileH3: css`

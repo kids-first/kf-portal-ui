@@ -153,6 +153,9 @@ const cssClass = css({
     top: '2px',
     position: 'relative',
   },
+  'div.rt-noData': {
+    display: 'none !important',
+  },
 });
 
 class ParticipantsTable extends Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default ({ fill = '#a9adc0', ...props }) => (
+export default ({ fill = '#ffffff', ...props }) => (
   <svg
     id="studies_grey"
     data-name="studies grey"

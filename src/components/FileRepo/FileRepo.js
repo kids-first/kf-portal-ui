@@ -19,7 +19,8 @@ import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
-import { Gen3UserProvider } from 'services/gen3';
+import FenceUserProvider from 'components/Fence/FenceUserProvider';
+import { GEN3 } from 'common/constants';
 import DownloadIcon from 'icons/DownloadIcon';
 import translateSQON from 'common/translateSQONValue';
 import { arrangerProjectId } from 'common/injectGlobals';
@@ -37,6 +38,7 @@ import {
   TableSpinnerWrapper,
   TableSpinner,
   cavaticaCopyButtonStyle,
+  SaveShareButtonContainer,
 } from './ui';
 import customTableColumns from './customTableColumns';
 
@@ -170,8 +172,20 @@ const FileRepo = compose(
                                 {...url}
                                 render={({ data: stats, loading: disabled }) => (
                                   <QuerySharingContainer>
-                                    <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
-                                    <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                    <SaveShareButtonContainer>
+                                      <ShareQuery
+                                        api={props.api}
+                                        {...url}
+                                        {...{ stats, disabled }}
+                                      />
+                                    </SaveShareButtonContainer>
+                                    <SaveShareButtonContainer>
+                                      <SaveQuery
+                                        api={props.api}
+                                        {...url}
+                                        {...{ stats, disabled }}
+                                      />
+                                    </SaveShareButtonContainer>
                                   </QuerySharingContainer>
                                 )}
                               />
@@ -257,7 +271,9 @@ const FileRepo = compose(
 );
 
 export default props => (
-  <Gen3UserProvider
+  //Only has Gen3 integration, needs to be refactored to have all data repository integrations
+  <FenceUserProvider
+    fence={GEN3}
     render={({ loading: loadingGen3User, gen3User }) => (
       <FileRepo {...{ ...props, loadingGen3User, gen3User }} />
     )}

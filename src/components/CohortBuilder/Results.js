@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import ContentBar from './ContentBar';
@@ -24,6 +25,7 @@ import { injectState } from 'freactal';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { get } from 'lodash';
+import { Link } from 'react-router-dom';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -47,6 +49,19 @@ const ActiveView = styled('div')`
   padding: 0 26px 36px 26px;
   margin-top: 19px;
   position: relative;
+
+  ${({ activeView }) =>
+    activeView === SUMMARY
+      ? css`
+          > div:nth-child(2) {
+            display: none !important;
+          }
+        `
+      : css`
+          > div:first-child {
+            display: none !important;
+          }
+        `}
 `;
 
 const SubHeadingStyle = props => {
@@ -61,16 +76,25 @@ const SubHeadingStyle = props => {
 };
 
 const SubHeading = styled('h3')`
-${SubHeadingStyle}
+  ${SubHeadingStyle};
   color: ${({ color, theme }) => (color ? color : theme.secondary)};
 `;
 
-const PurpleLinkWithLoader = styled(LinkWithLoader)`
-  ${SubHeadingStyle};
-  color: ${({ theme }) => theme.purple};
+const purpleLinkStyle = props => css`
+  color: ${props.theme.purple};
   &:hover {
-    color: ${({ theme }) => theme.linkPurple};
+    color: ${props.theme.linkPurple};
   }
+`;
+
+const PurpleLinkWithLoader = styled(LinkWithLoader)`
+  ${purpleLinkStyle};
+  ${SubHeadingStyle};
+`;
+
+const PurpleLink = styled(Link)`
+  ${purpleLinkStyle};
+  ${SubHeadingStyle};
 `;
 
 const ResultsHeading = styled('div')`
@@ -123,20 +147,22 @@ const generateAllFilesLink = async (user, api, files) => {
 };
 
 const cohortResultsQuery = sqon => ({
-  query: `query ($sqon: JSON) {
-    participant {
-      hits(filters: $sqon) {
-        total
-      }
-      aggregations(filters: $sqon) {
-        files__kf_id {
-          buckets {
-            key
+  query: gql`
+    query($sqon: JSON) {
+      participant {
+        hits(filters: $sqon) {
+          total
+        }
+        aggregations(filters: $sqon) {
+          files__kf_id {
+            buckets {
+              key
+            }
           }
         }
       }
     }
-  }`,
+  `,
   variables: { sqon },
   transform: data => {
     const participants = get(data, 'data.participant.hits.total', 0);
@@ -163,15 +189,17 @@ const Results = ({
 }) => (
   <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
+      const resultsData = data[0];
+      const participantCount = get(resultsData, 'participantCount', null);
+      const filesCount = get(resultsData, 'filesCount', null);
       const cohortIsEmpty =
-        !data[0] || (data[0].participantCount === 0 || data[0].filesCount === 0);
-      return isLoading ? (
-        <Row nogutter>
-          <div className={theme.fillCenter} style={{ marginTop: '30px' }}>
-            <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-          </div>
-        </Row>
-      ) : error ? (
+        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+
+      const filesCountHeading = resultsData
+        ? `${Number(data[0].filesCount || 0).toLocaleString()} Files`
+        : '';
+
+      return error ? (
         <TableErrorView error={error} />
       ) : (
         <React.Fragment>
@@ -187,15 +215,26 @@ const Results = ({
                   </React.Fragment>
                 )}
               </ResultsHeading>{' '}
-              <DemographicIcon />
-              <SubHeading>
-                {Number(data[0].participantCount || 0).toLocaleString()} Participants with{' '}
-              </SubHeading>
-              <PurpleLinkWithLoader
-                getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
-              >
-                {`${Number(data[0].filesCount || 0).toLocaleString()} Files`}
-              </PurpleLinkWithLoader>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <React.Fragment>
+                  <DemographicIcon />
+                  <SubHeading>
+                    {Number(participantCount || 0).toLocaleString()} Participants with{' '}
+                  </SubHeading>
+                  {isEmpty(sqon.content) ? (
+                    <PurpleLink to="/search/file">{filesCountHeading}</PurpleLink>
+                  ) : (
+                    <PurpleLinkWithLoader
+                      replaceText={false}
+                      getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
+                    >
+                      {filesCountHeading}
+                    </PurpleLinkWithLoader>
+                  )}
+                </React.Fragment>
+              )}
             </Detail>
             <ViewLinks>
               <ViewLink
@@ -214,12 +253,9 @@ const Results = ({
               </ViewLink>
             </ViewLinks>
           </Content>
-          <ActiveView>
-            {activeView === SUMMARY ? (
-              <Summary sqon={sqon} />
-            ) : (
-              <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
-            )}
+          <ActiveView activeView={activeView}>
+            <Summary sqon={sqon} />
+            <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </ActiveView>
         </React.Fragment>

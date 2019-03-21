@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
+import { Div } from 'uikit/Core';
 
 import { TealActionButton, WhiteButton } from 'uikit/Button';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
+
+export const ModalContentSection = styled(Div)`
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
 
 const FilterCont = styled('div')`
   color: black;
@@ -19,11 +25,16 @@ const FilterCont = styled('div')`
   border: 1px solid #e0e1e6;
   z-index: 1;
   min-width: 315px;
+
+  input[type='number'] {
+    padding: 0 7px;
+  }
 `;
 
 const Header = styled('div')`
   background-color: white;
   border-bottom: 1px solid #d4d6dd;
+  padding: 5px;
 `;
 
 const Content = styled('div')`
@@ -43,14 +54,7 @@ const Content = styled('div')`
 const Footer = styled(Row)`
   justify-content: space-between;
   background-color: #e0e1e6;
-`;
-
-const WButton = styled(WhiteButton)`
-  margin: 5px;
-`;
-
-const TealButton = styled(TealActionButton)`
-  margin: 5px;
+  padding: 5px;
 `;
 
 export const FieldFilterContainer = ({
@@ -65,18 +69,18 @@ export const FieldFilterContainer = ({
   <FilterCont className={className}>
     {showHeader && (
       <Header>
-        <WButton onClick={onBack}>
+        <WhiteButton onClick={onBack}>
           <LeftIcon />
           Back
-        </WButton>
+        </WhiteButton>
       </Header>
     )}
     <Content className="filterContainer">{children}</Content>
     <Footer>
-      <WButton onClick={onCancel}>Cancel</WButton>
-      <TealButton disabled={!applyEnabled} onClick={onSqonSubmit}>
+      <WhiteButton onClick={onCancel}>Cancel</WhiteButton>
+      <TealActionButton disabled={!applyEnabled} onClick={onSqonSubmit}>
         Apply
-      </TealButton>
+      </TealActionButton>
     </Footer>
   </FilterCont>
 );
