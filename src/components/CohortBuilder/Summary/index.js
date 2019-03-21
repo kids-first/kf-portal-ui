@@ -6,7 +6,7 @@ import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
-import FileBreakdown, { fileBreakdownQuery } from './FileBreakdown';
+import FileBreakdown, { dataTypesExpStratPairsQuery } from './FileBreakdown';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
@@ -39,7 +39,7 @@ const Summary = ({
       ageDiagQuery(sqon),
       studiesQuery(sqon),
       diagnosesQuery(sqon),
-      fileBreakdownQuery(sqon),
+      dataTypesExpStratPairsQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
@@ -48,7 +48,7 @@ const Summary = ({
         ageDiagData = [],
         studiesData = [],
         topDiagnosesData = [],
-        fileDataTypes = [],
+        dataTypesExpStratPairs = [],
       ] = data;
 
       return !data ? (
@@ -58,7 +58,11 @@ const Summary = ({
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown fileDataTypes={fileDataTypes} sqon={sqon} isLoading={isLoading} />
+                <FileBreakdown
+                  sqon={sqon}
+                  isLoading={isLoading}
+                  dataTypesExpStratPairs={dataTypesExpStratPairs}
+                />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
