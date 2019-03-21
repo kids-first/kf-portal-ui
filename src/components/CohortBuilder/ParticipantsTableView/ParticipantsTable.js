@@ -159,6 +159,12 @@ const cssClass = css({
 });
 
 class ParticipantsTable extends Component {
+  static defaultProps = {
+    sqon: {
+      op: 'and',
+      content: [],
+    },
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -180,6 +186,7 @@ class ParticipantsTable extends Component {
       downloadName = 'data',
       selectedRows,
       allRowsSelected,
+      sqon,
     } = this.props;
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
@@ -192,14 +199,9 @@ class ParticipantsTable extends Component {
     const selectionSQON = this.props.selectedRows.length
       ? {
           op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: { field: 'kf_id', value: this.props.selectedRows },
-            },
-          ],
+          content: [{ op: 'in', content: { field: 'kf_id', value: this.props.selectedRows } }],
         }
-      : this.props.sqon;
+      : sqon;
 
     return (
       <Fragment>
