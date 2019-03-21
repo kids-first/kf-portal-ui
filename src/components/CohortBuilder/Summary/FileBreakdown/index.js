@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import { CohortCard } from '../ui';
 import gql from 'graphql-tag';
 import BaseDataTable from 'uikit/DataTable';
-import { get, sortBy } from 'lodash';
+import { get, sortBy, sumBy } from 'lodash';
 import { withApi } from 'services/api';
 import { toExpStratQueries } from './FileBreakdownQueries';
 import saveSet from '@arranger/components/dist/utils/saveSet';
@@ -29,9 +29,6 @@ const FilesColumn = styled(Column)`
   color: ${({ theme }) => theme.hover};
   text-decoration: underline;
 `;
-
-const sumTotalFilesInData = dataset =>
-  dataset.reduce((accumulator, datum) => accumulator + parseInt(datum.files, 10), 0);
 
 const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, api, origSqon) => {
   const sqon = {
@@ -76,21 +73,21 @@ const generateFileRepositoryUrl = async (dataType, experimentalStrategy, user, a
 const localizeFileQuantity = quantity => `${Number(quantity).toLocaleString()}`;
 
 const generateFileColumnContents = (dataset, state, api, sqon) =>
-  dataset.map(datum => ({
-    ...datum,
+  dataset.map(entry => ({
+    ...entry,
     fileLink: (
       <LinkWithLoader
         getLink={async e =>
           await generateFileRepositoryUrl(
-            datum.dataType,
-            datum.experimentalStrategy,
+            entry.dataType,
+            entry.experimentalStrategy,
             state.loggedInUser,
             api,
             sqon,
           )
         }
       >
-        {localizeFileQuantity(datum.files)}
+        {localizeFileQuantity(entry.filesCount)}
       </LinkWithLoader>
     ),
   }));
@@ -129,7 +126,7 @@ const FileBreakdown = ({ fileDataTypes, sqon, theme, state, api, isLoading: isPa
             : generateFileColumnContents(sortedData, state, api, sqon);
           const filesTotal = isLoading
             ? null
-            : localizeFileQuantity(sumTotalFilesInData(finalData));
+            : localizeFileQuantity(sumBy(finalData, ({ filesCount }) => filesCount));
 
           return (
             <CohortCard

@@ -39,13 +39,9 @@ const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
   `,
   variables: { sqon, dataType, experimentalStrategy },
   transform: data => {
-    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).length;
+    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []);
 
-    return {
-      dataType,
-      experimentalStrategy,
-      files,
-    };
+    return { dataType, experimentalStrategy, files, filesCount: files.length };
   },
 });
 
