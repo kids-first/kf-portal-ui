@@ -45,14 +45,12 @@ const CATEGORY_FIELDS = {
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
     'family.family_compositions.composition',
-    // "Cannot query field "family__family_compositions__shared_phenotype_ids" on type "participantAggregations". Did you mean "family__family_compositions__shared_hpo_ids", "family__family_compositions__available_data_types", "family__family_compositions__composition", "family__family_compositions__family_members__kf_id", or "family__family_compositions__family_members__race"?"
-    // 'family.family_compositions.shared_phenotype_ids',
+    'family.family_compositions.shared_hpo_ids',
     // "Cannot query field "outcome__is_disease_related" on type "participantAggregations". Did you mean "outcome__disease_related", "outcome__external_id", or "outcome__vital_status"?"
     'outcome.disease_related',
     // 'phenotype.hpo_phenotype_observed_text',
     'diagnoses.source_text_tumor_location',
-    // "Invalid pivot field "outcome", not a nested field"
-    // 'outcome.vital_status',
+    'outcome.vital_status',
 
     // Available Data
     'available_data_types',
@@ -60,8 +58,6 @@ const CATEGORY_FIELDS = {
   quickSearch: [
     'available_data_types',
     'diagnoses.diagnosis',
-    // TODO - test both, see which one is the good one
-    // 'particpant.diagnosis_category',
     'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_observed_text',
     'is_proband',
@@ -78,9 +74,7 @@ const CATEGORY_FIELDS = {
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
     'family.family_compositions.composition',
-    // TODO - test both, see which one is the good one
-    'family.family_compositions.shared_phenotype_ids',
-    // 'family.family_compositions.shared_hpo_ids',
+    'family.family_compositions.shared_hpo_ids',
     'outcome.disease_related',
     'phenotype.hpo_phenotype_observed_text',
     'diagnoses.source_text_tumor_location',
