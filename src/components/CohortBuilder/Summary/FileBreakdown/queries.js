@@ -1,46 +1,6 @@
 import gql from 'graphql-tag';
 import { get, flatten } from 'lodash';
 
-export const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
-  query: gql`
-    query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
-      participant {
-        aggregations(
-          aggregations_filter_themselves: true
-          include_missing: true
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              {
-                op: "in"
-                content: {
-                  field: "files.sequencing_experiments.experiment_strategy"
-                  value: [$experimentalStrategy]
-                }
-              }
-              { op: "in", content: { field: "files.data_type", value: [$dataType] } }
-            ]
-          }
-        ) {
-          files__kf_id {
-            buckets {
-              doc_count
-              key
-            }
-          }
-        }
-      }
-    }
-  `,
-  variables: { sqon, dataType, experimentalStrategy },
-  transform: data => {
-    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []);
-
-    return { dataType, experimentalStrategy, files, filesCount: files.length };
-  },
-});
-
 export const dataTypesExpStratPairsQuery = sqon => ({
   query: gql`
     query FileBreakdownQuery($sqon: JSON) {
@@ -81,5 +41,45 @@ export const dataTypesExpStratPairsQuery = sqon => ({
       ),
     );
     return pairs;
+  },
+});
+
+export const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
+  query: gql`
+    query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
+      participant {
+        aggregations(
+          aggregations_filter_themselves: true
+          include_missing: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              {
+                op: "in"
+                content: {
+                  field: "files.sequencing_experiments.experiment_strategy"
+                  value: [$experimentalStrategy]
+                }
+              }
+              { op: "in", content: { field: "files.data_type", value: [$dataType] } }
+            ]
+          }
+        ) {
+          files__kf_id {
+            buckets {
+              doc_count
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: { sqon, dataType, experimentalStrategy },
+  transform: data => {
+    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []);
+
+    return { dataType, experimentalStrategy, files, filesCount: files.length };
   },
 });
