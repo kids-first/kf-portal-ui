@@ -58,7 +58,7 @@ const generateFileRepositoryUrl = async ({ fileBuckets, user, api }) => {
 
 const localizeFileQuantity = quantity => `${Number(quantity).toLocaleString()}`;
 
-const generateFileColumnContents = (dataset, loggedInUser, api, sqon) =>
+const generateFileColumnContents = (dataset, loggedInUser, api) =>
   dataset.map(entry => ({
     ...entry,
     fileLink: (
@@ -82,13 +82,13 @@ const FileBreakdown = ({
   <QueriesResolver
     name="GQL_FILE_BREAKDOWN_1"
     api={api}
-    queries={dataTypesExpStratPairs.map(pair => toFileBreakdownQueries({ ...pair, sqon }))}
+    queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
   >
     {({ data, isLoading }) => {
       const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
       const tableEntries = isLoading
         ? null
-        : generateFileColumnContents(sortedData, loggedInUser, api, sqon);
+        : generateFileColumnContents(sortedData, loggedInUser, api);
       const filesTotal = localizeFileQuantity(sumBy(tableEntries, ({ filesCount }) => filesCount));
 
       return (

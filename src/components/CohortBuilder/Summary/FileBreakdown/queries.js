@@ -44,7 +44,7 @@ export const dataTypesExpStratPairsQuery = sqon => ({
   },
 });
 
-export const toFileBreakdownQueries = ({ sqon, dataType, experimentalStrategy }) => ({
+export const toFileBreakdownQueries = sqon => ({ dataType, experimentalStrategy }) => ({
   query: gql`
     query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
       participant {
