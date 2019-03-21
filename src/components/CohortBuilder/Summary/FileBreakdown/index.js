@@ -3,16 +3,15 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { CohortCard } from '../ui';
-import gql from 'graphql-tag';
 import BaseDataTable from 'uikit/DataTable';
 import { get, sortBy, sumBy } from 'lodash';
 import { withApi } from 'services/api';
-import { toExpStratQueries } from './FileBreakdownQueries';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';
 import { createFileRepoLink } from '../../util';
+import { toFileBreakdownQueries } from './queries';
 import QueriesResolver from '../../QueriesResolver';
 
 const EXP_MISSING = '__missing__';
@@ -59,7 +58,7 @@ const generateFileRepositoryUrl = async ({ fileBuckets, user, api }) => {
 
 const localizeFileQuantity = quantity => `${Number(quantity).toLocaleString()}`;
 
-const generateFileColumnContents = (dataset, loggedInUser, api, sqon) =>
+const generateFileColumnContents = (dataset, loggedInUser, api) =>
   dataset.map(entry => ({
     ...entry,
     fileLink: (
@@ -73,27 +72,8 @@ const generateFileColumnContents = (dataset, loggedInUser, api, sqon) =>
     ),
   }));
 
-export const fileBreakdownQuery = sqon => ({
-  query: gql`
-    query($sqon: JSON) {
-      participant {
-        aggregations(filters: $sqon) {
-          files__data_type {
-            buckets {
-              key
-            }
-          }
-        }
-      }
-    }
-  `,
-  variables: { sqon },
-  transform: data =>
-    get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(types => types.key),
-});
-
 const FileBreakdown = ({
-  fileDataTypes,
+  dataTypesExpStratPairs,
   sqon,
   state: { loggedInUser },
   api,
@@ -102,66 +82,62 @@ const FileBreakdown = ({
   <QueriesResolver
     name="GQL_FILE_BREAKDOWN_1"
     api={api}
-    queries={toExpStratQueries({ fileDataTypes, sqon })}
+    queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
   >
-    {({ data: fileBreakdownQueries, isLoading: isLoadingFileQueries }) => (
-      <QueriesResolver name="GQL_FILE_BREAKDOWN_2" api={api} queries={fileBreakdownQueries.flat()}>
-        {({ data, isLoading }) => {
-          const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
-          const tableEntries = isLoading
-            ? null
-            : generateFileColumnContents(sortedData, loggedInUser, api, sqon);
-          const filesTotal = localizeFileQuantity(
-            sumBy(tableEntries, ({ filesCount }) => filesCount),
-          );
+    {({ data, isLoading }) => {
+      const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
+      const tableEntries = isLoading
+        ? null
+        : generateFileColumnContents(sortedData, loggedInUser, api);
+      const filesTotal = localizeFileQuantity(sumBy(tableEntries, ({ filesCount }) => filesCount));
 
-          return (
-            <CohortCard
-              scrollable={true}
-              title="Available Data"
-              badge={isLoading ? null : filesTotal}
-              loading={isParentLoading || isLoadingFileQueries || isLoading}
-            >
-              {!data ? (
-                <div>No data</div>
-              ) : (
-                <BaseDataTable
-                  showPagination={false}
-                  header={null}
-                  columns={[
-                    {
-                      Header: 'Data Type',
-                      accessor: 'dataType',
-                      minWidth: 75,
-                      style: columnStyles,
-                    },
-                    {
-                      Header: 'Experimental Strategy',
-                      accessor: 'experimentalStrategy',
-                      style: columnStyles,
-                    },
-                    { Header: 'Files', accessor: 'fileLink', minWidth: 40, style: columnStyles },
-                  ]}
-                  className="-highlight"
-                  data={tableEntries}
-                  transforms={{
-                    dataType: dataType => <Column>{dataType}</Column>,
-                    experimentalStrategy: experimentalStrategy => (
-                      <Column>
-                        {experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}
-                      </Column>
-                    ),
-                    fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-                  }}
-                />
-              )}
-            </CohortCard>
-          );
-        }}
-      </QueriesResolver>
-    )}
+      return (
+        <CohortCard
+          scrollable={true}
+          title="Available Data"
+          badge={isLoading ? null : filesTotal}
+          loading={isParentLoading || isLoading}
+        >
+          {!data ? (
+            <div>No data</div>
+          ) : (
+            <BaseDataTable
+              showPagination={false}
+              header={null}
+              columns={[
+                {
+                  Header: 'Data Type',
+                  accessor: 'dataType',
+                  minWidth: 75,
+                  style: columnStyles,
+                },
+                {
+                  Header: 'Experimental Strategy',
+                  accessor: 'experimentalStrategy',
+                  style: columnStyles,
+                },
+                { Header: 'Files', accessor: 'fileLink', minWidth: 40, style: columnStyles },
+              ]}
+              className="-highlight"
+              data={tableEntries}
+              transforms={{
+                dataType: dataType => <Column>{dataType}</Column>,
+                experimentalStrategy: experimentalStrategy => (
+                  <Column>
+                    {experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}
+                  </Column>
+                ),
+                fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
+              }}
+            />
+          )}
+        </CohortCard>
+      );
+    }}
   </QueriesResolver>
 );
+
+export { dataTypesExpStratPairsQuery } from './queries';
 
 export default compose(
   withTheme,
