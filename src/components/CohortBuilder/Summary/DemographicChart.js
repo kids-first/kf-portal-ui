@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { get, camelCase } from 'lodash';
+import { get, startCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 import { CohortCard } from './ui';
 
@@ -80,15 +80,24 @@ export const demographicQuery = sqon => ({
   `,
   variables: { sqon },
   transform: data => {
-    const toChartData = ({ key, doc_count }) => ({
-      id: keyToId(key),
-      label: key,
-      value: doc_count,
-    });
+    const toChartData = ({ key, doc_count }) => {
+      const dataKey = keyToDisplay(key === DATA_MISSING ? 'No Data' : key);
+      return {
+        id: dataKey,
+        label: dataKey,
+        value: doc_count,
+      };
+    };
+
+    const DATA_MISSING = '__missing__';
+
     return {
       race: get(data, 'data.participant.aggregations.race.buckets', []).map(toChartData),
+
       gender: get(data, 'data.participant.aggregations.gender.buckets', []).map(toChartData),
+
       ethnicity: get(data, 'data.participant.aggregations.ethnicity.buckets', []).map(toChartData),
+
       familyComposition: get(
         data,
         'data.participant.aggregations.family__family_compositions__composition.buckets',
@@ -98,6 +107,7 @@ export const demographicQuery = sqon => ({
   },
 });
 
-const keyToId = key => (key.includes('+') ? camelCase(key.replace('+', 'plus')) : camelCase(key));
+const keyToDisplay = key =>
+  key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
 
 export default compose(withTheme)(DemographicChart);
