@@ -25,7 +25,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               content: [
                 $sqon
                 { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
-                { op: "in", content: { field: "is_proband", value: ["false"] } }
+                { op: "in", content: { field: "is_proband", value: ["false", "__missing__"] } }
               ]
             }
           ) {
@@ -94,7 +94,7 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoa
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Family Members', color: theme.chartColors.purple },
+                { title: 'Other Participants', color: theme.chartColors.purple },
               ]}
             />
           </BarChartContainer>
