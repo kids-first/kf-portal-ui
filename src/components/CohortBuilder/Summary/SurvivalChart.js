@@ -198,7 +198,6 @@ class SurvivalChart extends React.Component {
     this.handleMouseLeaveDonors = this.handleMouseLeaveDonors.bind(this);
   }
 
-  // Fix problem where fetches are loaded into state in the wrong order due to slow running large queries
   queryCacheMap = {};
   cachedFetch = () => {
     const { api, sqon } = this.props;
@@ -217,6 +216,9 @@ class SurvivalChart extends React.Component {
     });
   };
 
+  // The fetchCount is incremented with every fetch
+  //   Checking the fetchCount before setting the fetched data into state
+  //   prevents a slow running query loading over a more recent query
   fetchCount = 0;
   updateData = () => {
     const checkCount = ++this.fetchCount;
