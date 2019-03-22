@@ -105,7 +105,7 @@ class SurvivalPlot extends React.Component {
           palette: this.props.palette,
           xDomain: state.xDomain,
           yAxisLabel: 'Survival Rate',
-          xAxisLabel: 'Duration (years)',
+          xAxisLabel: 'Duration (days)',
           height: isElementFullScreen(container) ? window.innerHeight - 100 : 205,
           getSetSymbol: this.props.getSetSymbol,
           onMouseEnterDonor:
