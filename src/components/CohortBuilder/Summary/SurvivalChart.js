@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import isEqual from 'lodash.isequal';
-import defaults from 'lodash.defaults';
+import { isEqual, defaults, get, has } from 'lodash';
 import { renderPlot } from '@oncojs/survivalplot/index.dist';
 import { CohortCard } from './ui';
+import { withApi } from 'services/api';
+import { fetchSurvivalData } from 'services/arranger';
+import md5 from 'md5';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -18,15 +19,15 @@ const formatDataset = data => {
       meta: {
         id: '38144623-cbef-435f-9627-e13df0a6ba35',
         state: 'FINISHED',
-        count: 37,
+        count: get(data, 'donors.length', 0),
         name: 'PAEN-IT',
         description: '',
         type: 'DONOR',
         version: 2,
-        timestamp: 1501702607577,
+        timestamp: Date.now(),
         subtype: 'NORMAL',
       },
-      donors: data.donors,
+      donors: get(data, 'donors', []),
     },
   ];
 };
@@ -59,6 +60,7 @@ class SurvivalPlot extends React.Component {
     xAxisLabel: PropTypes.string,
     yAxisLabel: PropTypes.string,
     getSetSymbol: PropTypes.func,
+    sqon: PropTypes.object,
   };
 
   static defaultProps = {
@@ -68,7 +70,7 @@ class SurvivalPlot extends React.Component {
     onMouseLeaveDonors() {},
     onClickDonors(e, donors) {},
     xAxisLabel: 'Survival Rate',
-    yAxisLabel: 'Duration (years)',
+    yAxisLabel: 'Duration (days)',
   };
 
   stateStack = [];
@@ -181,6 +183,7 @@ const StyledSurvivalPlot = styled(SurvivalPlot)`
 class SurvivalChart extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       tooltip: {
         donor: {},
@@ -188,9 +191,58 @@ class SurvivalChart extends React.Component {
         y: 0,
         isVisible: false,
       },
+      isLoading: true,
+      data: {},
     };
     this.handleMouseEnterDonors = this.handleMouseEnterDonors.bind(this);
     this.handleMouseLeaveDonors = this.handleMouseLeaveDonors.bind(this);
+  }
+
+  // Fix problem where fetches are loaded into state in the wrong order due to slow running large queries
+  queryCacheMap = {};
+  cachedFetch = () => {
+    const { api, sqon } = this.props;
+    const hash = md5(JSON.stringify(sqon));
+    return new Promise((resolve, reject) => {
+      if (has(this.queryCacheMap, hash)) {
+        resolve(this.queryCacheMap[hash]);
+      } else {
+        fetchSurvivalData(api)(sqon)
+          .then(data => {
+            this.queryCacheMap[hash] = data;
+            resolve(data);
+          })
+          .catch(err => reject(err));
+      }
+    });
+  };
+
+  fetchCount = 0;
+  updateData = () => {
+    const checkCount = ++this.fetchCount;
+
+    this.cachedFetch()
+      .then(data => {
+        if (this.fetchCount === checkCount) {
+          this.setState({ data, isLoading: false });
+        }
+      })
+      .catch(err => {
+        console.log(`Error fetching survival data: ${err}`);
+        this.setState({ data: {}, isLoading: false });
+      });
+  };
+
+  componentDidMount() {
+    this.setState({ isLoading: true });
+    this.updateData();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.sqon, prevProps.sqon)) {
+      this.setState({ isLoading: true });
+      this.updateData();
+    }
   }
 
   handleMouseEnterDonors = (event, donors) => {
@@ -233,13 +285,14 @@ class SurvivalChart extends React.Component {
     };
 
     return (
-      <CohortCard title="Overall Survival" loading={this.props.isLoading}>
+      <CohortCard title="Overall Survival" loading={this.state.isLoading}>
         <SurvivalChartWrapper>
           <SurvivalChartHeader>
-            Applicable survival data for <a>35 Participants</a>
+            Applicable survival data for{' '}
+            <a>{get(this.state.data, 'donors.length', 0)} Participants</a>
           </SurvivalChartHeader>
           <StyledSurvivalPlot
-            dataSets={formatDataset(this.props.data)}
+            dataSets={formatDataset(this.state.data)}
             onMouseEnterDonors={this.handleMouseEnterDonors}
             onMouseLeaveDonors={this.handleMouseLeaveDonors}
           />
@@ -258,4 +311,4 @@ class SurvivalChart extends React.Component {
   }
 }
 
-export default compose(withTheme)(SurvivalChart);
+export default compose(withApi)(SurvivalChart);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { survivalPlotMock } from './mock';
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
@@ -74,7 +73,7 @@ const Summary = ({
                 <DemographicChart data={demographicData} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart data={survivalPlotMock} isLoading={isLoading} />
+                <SurvivalChart sqon={sqon} />
               </PaddedColumn>{' '}
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
