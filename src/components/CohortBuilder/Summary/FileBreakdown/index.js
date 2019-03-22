@@ -94,7 +94,7 @@ const FileBreakdown = ({
       return (
         <CohortCard
           scrollable={true}
-          title="Available Data"
+          title="Available Data Files"
           badge={isLoading ? null : filesTotal}
           loading={isParentLoading || isLoading}
         >
