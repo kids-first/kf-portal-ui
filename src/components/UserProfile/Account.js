@@ -49,7 +49,7 @@ export default compose(
         </Row>
       </Column>
     </SettingsSection>
-
+    Email Address test: 
     <SettingsSection>
       <CardHeader mt="22px" mb="31px">
         <Trans>Data Repository Integrations</Trans>
