@@ -153,9 +153,18 @@ const cssClass = css({
     top: '2px',
     position: 'relative',
   },
+  'div.rt-noData': {
+    display: 'none !important',
+  },
 });
 
 class ParticipantsTable extends Component {
+  static defaultProps = {
+    sqon: {
+      op: 'and',
+      content: [],
+    },
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -177,6 +186,7 @@ class ParticipantsTable extends Component {
       downloadName = 'data',
       selectedRows,
       allRowsSelected,
+      sqon,
     } = this.props;
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
@@ -185,18 +195,6 @@ class ParticipantsTable extends Component {
     const handleRemoveFromCohort = () => {
       onRemoveFromCohort();
     };
-
-    const selectionSQON = this.props.selectedRows.length
-      ? {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: { field: 'kf_id', value: this.props.selectedRows },
-            },
-          ],
-        }
-      : this.props.sqon;
 
     return (
       <Fragment>
@@ -227,7 +225,7 @@ class ParticipantsTable extends Component {
             </ToolbarGroup>
             <ToolbarDownload>
               <DownloadButton
-                sqon={selectionSQON}
+                sqon={sqon}
                 {...this.props}
                 isFileRepo={false}
                 projectId={projectId}

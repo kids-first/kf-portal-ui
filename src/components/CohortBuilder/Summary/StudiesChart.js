@@ -4,9 +4,7 @@ import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import { get, size } from 'lodash';
 import gql from 'graphql-tag';
-
 import { withApi } from 'services/api';
-import LoadingSpinner from 'uikit/LoadingSpinner';
 import QueriesResolver from '../QueriesResolver';
 import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 
@@ -43,7 +41,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
               content: [
                 $sqon
                 { op: "in", content: { field: "study.short_name", value: [$studyShortName] } }
-                { op: "in", content: { field: "is_proband", value: ["false"] } }
+                { op: "in", content: { field: "is_proband", value: ["false", "__missing__"] } }
               ]
             }
           ) {
@@ -81,17 +79,19 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     }),
   }));
 
-const StudiesChart = ({ studies, sqon, theme, api }) => (
+const StudiesChart = ({ studies, sqon, theme, api, isLoading: isParentLoading }) => (
   <QueriesResolver
     name="GQL_STUDIES_CHART"
     api={api}
     queries={toSingleStudyQueries({ studies, sqon })}
   >
     {({ isLoading, data }) => (
-      <CohortCard title="Studies" badge={data ? data.length : null}>
-        {isLoading ? (
-          <LoadingSpinner color={theme.greyScale11} size={'50px'} />
-        ) : !data ? (
+      <CohortCard
+        title="Studies"
+        badge={data && !isLoading ? data.length : null}
+        loading={isLoading || isParentLoading}
+      >
+        {!data ? (
           <div>No data</div>
         ) : (
           <BarChartContainer>
@@ -106,7 +106,7 @@ const StudiesChart = ({ studies, sqon, theme, api }) => (
               xTickTextLength={28}
               legends={[
                 { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Family Members', color: theme.chartColors.purple },
+                { title: 'Other Participants', color: theme.chartColors.purple },
               ]}
               padding={0.5}
             />

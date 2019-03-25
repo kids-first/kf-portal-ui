@@ -14,7 +14,6 @@ import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
-import { ButtonContainer } from './ui';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
@@ -48,136 +47,136 @@ export default injectState(
   class extends React.Component {
     state = { link: null, copied: false, error: null, open: false };
 
-    share = () => {
-      let { stats, sqon, api, state: { loggedInUser } } = this.props;
-      shortenApi({ stats, sqon, loggedInUser, api, sharedPublicly: true })
-        .then(data => {
-          this.setState({
-            link: urlJoin(shortUrlResolveRoot, data.id),
-          });
-        })
-        .catch(error => {
-          this.setState({ error: true });
+    share = async () => {
+      let {
+        stats,
+        sqon,
+        api,
+        state: { loggedInUser },
+        getSharableUrl,
+        handleShare,
+      } = this.props;
+      try {
+        const data = await (handleShare
+          ? handleShare()
+          : shortenApi({ stats, sqon, loggedInUser, api, sharedPublicly: true }));
+        this.setState({
+          link: getSharableUrl
+            ? getSharableUrl({ id: data.id })
+            : urlJoin(shortUrlResolveRoot, data.id),
         });
+      } catch (error) {
+        this.setState({ error: true });
+      }
     };
 
     render() {
       const { disabled } = this.props;
       return (
-        <ButtonContainer>
-          <WhiteButton
-            disabled={disabled}
-            onClick={
-              disabled
-                ? () => {}
-                : () => {
-                    this.setState({ open: true });
-                    this.share();
-                  }
+        <WhiteButton
+          disabled={disabled}
+          onClick={
+            disabled
+              ? () => {}
+              : () => {
+                  this.setState({ open: true });
+                  this.share();
+                }
+          }
+        >
+          <Tooltip
+            position="bottom"
+            open={this.state.open}
+            onRequestClose={() => {
+              this.setState({ open: false });
+              // after fadeout transition finishes, clear copy state
+              setTimeout(() => this.setState({ copied: false }), 1000);
+            }}
+            interactive
+            html={
+              <div
+                css={`
+                  width: 200px;
+                `}
+              >
+                {!this.state.link ? (
+                  <ItemRow
+                    css={`
+                      justify-content: center;
+                    `}
+                  >
+                    {this.state.error ? (
+                      <Trans>Sorry something went wrong.</Trans>
+                    ) : (
+                      <Spinner
+                        fadeIn="none"
+                        name="circle"
+                        color="purple"
+                        style={{
+                          width: 15,
+                          height: 15,
+                          marginRight: 9,
+                        }}
+                      />
+                    )}
+                  </ItemRow>
+                ) : (
+                  <React.Fragment>
+                    <ItemRow>
+                      <CopyToClipboard
+                        text={this.state.link}
+                        onCopy={() => {
+                          this.setState({ copied: true });
+                          trackQueryShare('copied');
+                        }}
+                      >
+                        <span>
+                          <Bubble>
+                            <ChainIcon />
+                          </Bubble>
+                          <span>
+                            {this.state.copied ? (
+                              <Trans>Copied!</Trans>
+                            ) : (
+                              <Trans>copy short URL</Trans>
+                            )}
+                          </span>
+                        </span>
+                      </CopyToClipboard>
+                    </ItemRow>
+                    <ItemRow onClick={() => trackQueryShare('Facebook')}>
+                      <FacebookShareButton url={this.state.link} quote="Kids First File Repo Query">
+                        <Bubble>
+                          <FBIcon />
+                        </Bubble>
+                        <Trans>share on facebook</Trans>
+                      </FacebookShareButton>
+                    </ItemRow>
+                    <ItemRow onClick={() => trackQueryShare('Twitter')}>
+                      <Bubble>
+                        <TwitterIcon />
+                      </Bubble>
+                      <TwitterShareButton title="Kids First File Repo Query" url={this.state.link}>
+                        <Trans>share on twitter</Trans>
+                      </TwitterShareButton>
+                    </ItemRow>
+                    <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
+                      <LinkedinShareButton title="Kids First File Repo Query" url={this.state.link}>
+                        <Bubble>
+                          <LIIcon />
+                        </Bubble>
+                        <Trans>share on linkedin</Trans>
+                      </LinkedinShareButton>
+                    </ItemRow>
+                  </React.Fragment>
+                )}
+              </div>
             }
           >
-            <Tooltip
-              position="bottom"
-              open={this.state.open}
-              onRequestClose={() => {
-                this.setState({ open: false });
-                // after fadeout transition finishes, clear copy state
-                setTimeout(() => this.setState({ copied: false }), 1000);
-              }}
-              interactive
-              html={
-                <div
-                  css={`
-                    width: 200px;
-                  `}
-                >
-                  {!this.state.link ? (
-                    <ItemRow
-                      css={`
-                        justify-content: center;
-                      `}
-                    >
-                      {this.state.error ? (
-                        <Trans>Sorry something went wrong.</Trans>
-                      ) : (
-                        <Spinner
-                          fadeIn="none"
-                          name="circle"
-                          color="purple"
-                          style={{
-                            width: 15,
-                            height: 15,
-                            marginRight: 9,
-                          }}
-                        />
-                      )}
-                    </ItemRow>
-                  ) : (
-                    <React.Fragment>
-                      <ItemRow>
-                        <CopyToClipboard
-                          text={this.state.link}
-                          onCopy={() => {
-                            this.setState({ copied: true });
-                            trackQueryShare('copied');
-                          }}
-                        >
-                          <span>
-                            <Bubble>
-                              <ChainIcon />
-                            </Bubble>
-                            <span>
-                              {this.state.copied ? (
-                                <Trans>Copied!</Trans>
-                              ) : (
-                                <Trans>copy short URL</Trans>
-                              )}
-                            </span>
-                          </span>
-                        </CopyToClipboard>
-                      </ItemRow>
-                      <ItemRow onClick={() => trackQueryShare('Facebook')}>
-                        <FacebookShareButton
-                          url={this.state.link}
-                          quote="Kids First File Repo Query"
-                        >
-                          <Bubble>
-                            <FBIcon />
-                          </Bubble>
-                          <Trans>share on facebook</Trans>
-                        </FacebookShareButton>
-                      </ItemRow>
-                      <ItemRow onClick={() => trackQueryShare('Twitter')}>
-                        <Bubble>
-                          <TwitterIcon />
-                        </Bubble>
-                        <TwitterShareButton
-                          title="Kids First File Repo Query"
-                          url={this.state.link}
-                        >
-                          <Trans>share on twitter</Trans>
-                        </TwitterShareButton>
-                      </ItemRow>
-                      <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
-                        <LinkedinShareButton
-                          title="Kids First File Repo Query"
-                          url={this.state.link}
-                        >
-                          <Bubble>
-                            <LIIcon />
-                          </Bubble>
-                          <Trans>share on linkedin</Trans>
-                        </LinkedinShareButton>
-                      </ItemRow>
-                    </React.Fragment>
-                  )}
-                </div>
-              }
-            >
-              <ShareIcon />&nbsp;<Trans>share</Trans>
-            </Tooltip>
-          </WhiteButton>
-        </ButtonContainer>
+            <ShareIcon />
+            &nbsp;<Trans>share</Trans>
+          </Tooltip>
+        </WhiteButton>
       );
     }
   },

@@ -6,20 +6,6 @@ import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
 const downloadUrl = urlJoin(arrangerApiRoot, `${arrangerProjectId}/download`);
 
-const findColumnsByField_Participants = [
-  'kf_id',
-  'study.name',
-  'is_proband',
-  'outcome.vital_status',
-  'diagnoses.diagnosis_category',
-  'diagnoses.diagnosis',
-  'diagnoses.age_at_event_days',
-  'gender',
-  'family.family_id',
-  'family.family_compositions',
-  'files_Count',
-];
-
 const findColumnsByField_File = [
   'kf_id',
   'external_id',
@@ -139,9 +125,7 @@ const getClinicalDownload = type => ({ sqon, columns, isFileRepo }) => () =>
           { field: 'kf_id', order: 'asc' },
           { field: 'diagnoses.age_at_event_days', order: 'desc' },
         ],
-        columns: isFileRepo
-          ? findColumnsByField(findColumnsByField_File, columns)
-          : findColumnsByField(findColumnsByField_Participants, columns),
+        columns: findColumnsByField(findColumnsByField_File, columns),
       },
     ],
   });

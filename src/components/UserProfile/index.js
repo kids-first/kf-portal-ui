@@ -53,8 +53,15 @@ export default compose(
   withState('profile', 'setProfile', {}),
   withTheme,
   lifecycle({
-    async componentDidMount(): void {
-      const { state: { loggedInUser }, match: { params: { egoId } }, setProfile, api } = this.props;
+    async componentDidMount() {
+      const {
+        state: { loggedInUser },
+        match: {
+          params: { egoId },
+        },
+        setProfile,
+        api,
+      } = this.props;
       loggedInUser && egoId === loggedInUser.egoId
         ? setProfile(loggedInUser)
         : setProfile(await getProfile(api)());
@@ -68,7 +75,14 @@ export default compose(
   }),
   withPropsOnChange(
     ['match'],
-    async ({ match: { params: { egoId } }, setProfile, state: { loggedInUser }, api }) => ({
+    async ({
+      match: {
+        params: { egoId },
+      },
+      setProfile,
+      state: { loggedInUser },
+      api,
+    }) => ({
       notUsed:
         loggedInUser && egoId === loggedInUser.egoId
           ? setProfile(loggedInUser)
@@ -187,7 +201,8 @@ export default compose(
               padding-top: 21px;
             `}
           >
-            Complete your profile for a more personalized<br />
+            Complete your profile for a more personalized
+            <br />
             experience and to help encourage collaboration!
           </div>
         </div>

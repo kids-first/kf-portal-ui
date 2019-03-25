@@ -8,21 +8,28 @@ import { Link } from './Core';
  * Purpose is to create a link and navigate to it when you need it async
  * eg. dynamically generating a link that takes time because of requesting data
  */
-const LinkWithLoader = ({ getLink, children, history, className }) => (
+const LinkWithLoader = ({ getLink, children, history, className, replaceText = true }) => (
   <Component initialState={{ isLoading: false }}>
     {({ state, setState }) => (
-      <Link
-        className={className}
-        to=""
-        onClick={async e => {
-          e.preventDefault();
-          setState({ isLoading: true });
-          const url = await getLink();
-          history.push(url);
-        }}
-      >
-        {state.isLoading ? <LoadingSpinner size="11px" center={false} /> : children}
-      </Link>
+      <React.Fragment>
+        <Link
+          className={className}
+          to=""
+          onClick={async e => {
+            e.preventDefault();
+            setState({ isLoading: true });
+            const url = await getLink();
+            history.push(url);
+          }}
+        >
+          {state.isLoading && replaceText ? (
+            <LoadingSpinner size="11px" center={false} />
+          ) : (
+            children
+          )}
+        </Link>
+        {state.isLoading && !replaceText ? <LoadingSpinner size="11px" center={false} /> : null}
+      </React.Fragment>
     )}
   </Component>
 );

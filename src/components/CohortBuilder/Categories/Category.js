@@ -127,7 +127,21 @@ const CategoryRow = compose(withApi)(({ api, field, active }) => (
   </ExtendedMappingProvider>
 ));
 
-const Category = compose(withDropdownMultiPane)(
+const noop = () => {};
+
+const Category = compose(
+  withDropdownMultiPane,
+  withProps(({ fields, currentSearchField = '' }) => {
+    const index = fields.indexOf(currentSearchField);
+    return index > -1
+      ? {
+          showExpanded: true,
+          activeIndex: index,
+          isDropdownVisible: true,
+        }
+      : {};
+  }),
+)(
   ({
     title,
     children,
@@ -146,7 +160,8 @@ const Category = compose(withDropdownMultiPane)(
       op: 'and',
       content: [],
     },
-    onSqonUpdate,
+    onSqonUpdate = noop,
+    onClose = noop,
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
@@ -157,6 +172,7 @@ const Category = compose(withDropdownMultiPane)(
           onOuterClick: () => {
             setExpanded(false);
             setDropdownVisibility(false);
+            onClose();
           },
           isOpen: isDropdownVisible,
           onToggle: toggleDropdown,
@@ -175,9 +191,16 @@ const Category = compose(withDropdownMultiPane)(
                 onSqonUpdate(sqon);
                 toggleExpanded();
                 setDropdownVisibility(false);
+                onClose();
               }}
-              onBack={toggleExpanded}
-              onCancel={toggleExpandedDropdown}
+              onBack={() => {
+                toggleExpanded();
+                onClose();
+              }}
+              onCancel={() => {
+                toggleExpandedDropdown();
+                onClose();
+              }}
               field={field}
               arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
@@ -207,7 +230,11 @@ const Category = compose(withDropdownMultiPane)(
 Category.propTypes = {
   title: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
+  sqon: PropTypes.object.isRequired,
   fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currentSearchField: PropTypes.string,
+  onClose: PropTypes.func,
+  onSqonUpdate: PropTypes.func,
 };
 
 export default Category;
