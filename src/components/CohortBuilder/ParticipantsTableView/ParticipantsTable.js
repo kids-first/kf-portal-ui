@@ -203,13 +203,6 @@ class ParticipantsTable extends Component {
       onRemoveFromCohort();
     };
 
-    const selectionSQON = this.props.selectedRows.length
-      ? {
-          op: 'and',
-          content: [{ op: 'in', content: { field: 'kf_id', value: this.props.selectedRows } }],
-        }
-      : sqon;
-
     return (
       <Fragment>
         <Toolbar>
@@ -239,7 +232,7 @@ class ParticipantsTable extends Component {
             </ToolbarGroup>
             <ToolbarDownload>
               <DownloadButton
-                sqon={selectionSQON}
+                sqon={sqon}
                 {...this.props}
                 isFileRepo={false}
                 projectId={projectId}

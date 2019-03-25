@@ -56,10 +56,17 @@ const ParticipantsTableView = ({
           ? data[0].nodes.map(node => ({ ...node, selected: isRowSelected(node) }))
           : [];
 
+        const selectionSQON = selectedRows.length
+          ? {
+              op: 'and',
+              content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
+            }
+          : sqon;
+
         return (
           <Card>
             <ParticipantsTable
-              sqon={sqon}
+              sqon={selectionSQON}
               loading={isLoading}
               data={dataWithRowSelection}
               dataTotalCount={data[0] ? data[0].total : 0}
