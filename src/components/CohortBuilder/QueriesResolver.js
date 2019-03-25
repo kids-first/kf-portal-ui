@@ -24,7 +24,6 @@ class QueriesResolver extends React.Component {
     queries: [],
   };
   state = { data: [], isLoading: true, error: null };
-  updateCount = 0;
 
   componentDidMount() {
     this.update();
@@ -36,6 +35,10 @@ class QueriesResolver extends React.Component {
     }
   }
 
+  // The fetchCount is incremented with every fetch
+  // Checking the fetchCount before setting the fetched data into state
+  // prevents a slow running query loading over a more recent query
+  updateCount = 0;
   update = async () => {
     const { queries, useCache, switchLoadingState } = this.props;
     const checkCount = ++this.updateCount;
