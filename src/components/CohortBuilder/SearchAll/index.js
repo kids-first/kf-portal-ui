@@ -7,7 +7,6 @@ import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
 import { debounce } from 'lodash';
-import Dropdown from 'uikit/Dropdown';
 
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
@@ -24,17 +23,6 @@ import QueryResults from './QueryResults';
 
 import './SearchAll.css';
 import Downshift from 'downshift';
-
-const Container = styled(Column)`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  border-right: 1px solid ${({ theme }) => theme.greyScale8};
-  border-top: 4px solid ${({ color }) => (color ? color : 'white')};
-  position: relative;
-  white-space: nowrap;
-  z-index: 1;
-`;
 
 const SearchAllContainer = styled('div')`
   display: flex;
