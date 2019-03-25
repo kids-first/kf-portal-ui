@@ -38,15 +38,17 @@ const QueryResultsBody = ({
           </div>
           {field.buckets.map(({ value, docCount }) => (
             <div className="result-item" key={`result-item_${value}`}>
-              <input
-                type="checkbox"
-                checked={selections[field.name].indexOf(value) > -1}
-                className="selection"
-                onChange={evt => {
-                  onSelectionChange(evt, field, value);
-                }}
-              />
-              <TextHighlight content={value} highlightText={query} />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selections[field.name].indexOf(value) > -1}
+                  className="selection"
+                  onChange={evt => {
+                    onSelectionChange(evt, field, value);
+                  }}
+                />
+                <TextHighlight content={value} highlightText={query} />
+              </label>
               <span className="doc-count">{docCount}</span>
             </div>
           ))}
