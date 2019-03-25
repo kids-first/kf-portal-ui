@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import tq from 'task-queue';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import { isEqual } from 'lodash';
@@ -18,11 +17,15 @@ import { print } from 'graphql/language/printer';
  */
 const queryCacheMap = {};
 class QueriesResolver extends React.Component {
+  static defaultProps = {
+    switchLoadingState: false,
+    useCache: true,
+    name: 'GQL_QUERIES_RESOLVER',
+    queries: [],
+  };
   state = { data: [], isLoading: true, error: null };
-  taskQueue = tq.Queue({ capacity: 100, concurrency: 1 });
 
   componentDidMount() {
-    this.taskQueue.start();
     this.update();
   }
 
@@ -32,36 +35,38 @@ class QueriesResolver extends React.Component {
     }
   }
 
-  update = () => {
-    const { queries = [], useCache = true } = this.props;
-    return queries.length !== 0
-      ? this.taskQueue.enqueue(
-          () =>
-            new Promise(async resolve => {
-              const body = JSON.stringify(
-                queries.map(q => ({
-                  query: typeof q.query === 'string' ? q.query : print(q.query),
-                  variables: q.variables,
-                })),
-              );
-              try {
-                if (!useCache) {
-                  this.setState({ isLoading: true });
-                }
-                const data = useCache
-                  ? await this.cachedFetchData(body)
-                  : await this.fetchData(body);
-                this.setState({ data: data, isLoading: false }, resolve);
-              } catch (err) {
-                this.setState({ isLoading: false, error: err }, resolve);
-              }
-            }),
-        )
-      : null;
+  // The updateCount is incremented with every update
+  // Checking the updateCount before setting the updated data into state
+  // prevents a slow running query loading over a more recent query
+  updateCount = 0;
+  update = async () => {
+    const { queries, useCache, switchLoadingState } = this.props;
+    const checkCount = ++this.updateCount;
+    if (queries.length !== 0) {
+      const body = JSON.stringify(
+        queries.map(q => ({
+          query: typeof q.query === 'string' ? q.query : print(q.query),
+          variables: q.variables,
+        })),
+      );
+      try {
+        if (switchLoadingState) {
+          this.setState({ isLoading: true });
+        }
+        const data = useCache ? await this.cachedFetchData(body) : await this.fetchData(body);
+        if (this.updateCount === checkCount) {
+          this.setState({ data: data, isLoading: false });
+        }
+      } catch (err) {
+        if (this.updateCount === checkCount) {
+          this.setState({ isLoading: false, error: err });
+        }
+      }
+    }
   };
 
   fetchData = body => {
-    const { queries, api, name = '' } = this.props;
+    const { queries, api, name } = this.props;
     queryCacheMap[body] = api({
       method: 'POST',
       url: urlJoin(arrangerApiRoot, `/${arrangerProjectId}/graphql/${name}`),
@@ -85,6 +90,7 @@ class QueriesResolver extends React.Component {
 export default QueriesResolver;
 
 QueriesResolver.propTypes = {
+  switchLoadingState: PropTypes.bool,
   api: PropTypes.func.isRequired,
   useCache: PropTypes.bool,
   name: PropTypes.string,
