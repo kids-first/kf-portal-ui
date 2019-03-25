@@ -15,6 +15,7 @@ import {
   ARRANGER_API_PARTICIPANT_INDEX_NAME,
 } from '../common';
 import { ModalFooter } from 'components/Modal';
+import './SqonBuilder.css';
 
 const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
   extendedMapping.reduce((acc, { field, displayName }) => {
