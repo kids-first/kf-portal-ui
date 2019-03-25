@@ -140,7 +140,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     field: 'diagnoses.age_at_event_days',
   },
   { Header: 'Gender', accessor: 'gender', field: 'gender' },
-  { Header: 'Family ID', accessor: 'familyId', field: 'family.family_id' },
+  { Header: 'Family ID', accessor: 'familyId', field: 'family_id' },
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
