@@ -92,7 +92,14 @@ const NbFilesCell = compose(
 
     return (
       <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
-        <FileIcon width={8} height={13} fill={theme.greyScale11} />
+        <FileIcon
+          className={css`
+            margin-right: 5px;
+          `}
+          width={8}
+          height={13}
+          fill={theme.greyScale11}
+        />
         {`${nbFiles} Files`}
       </Link>
     );
