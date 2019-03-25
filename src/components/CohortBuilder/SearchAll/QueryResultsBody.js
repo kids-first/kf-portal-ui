@@ -31,7 +31,9 @@ const QueryResultsBody = ({
       {filteredFields.map((field, i) => (
         <div
           key={`${field.name}`}
-          className={`result-category ${field.matchByDisplayName ? 'match' : ''}`}
+          className={`result-category ${field.matchByDisplayName ? 'match' : ''} ${
+            filteredFields.length - 1 === i ? 'last' : ''
+          }`}
         >
           <div className="category-name" data-index={i} onClick={handleFieldNameClicked}>
             <TextHighlight content={field.displayName} highlightText={query} />
