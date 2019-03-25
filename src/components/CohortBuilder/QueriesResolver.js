@@ -35,8 +35,8 @@ class QueriesResolver extends React.Component {
     }
   }
 
-  // The updateCount is incremented with every fetch
-  // Checking the updateCount before setting the fetched data into state
+  // The updateCount is incremented with every update
+  // Checking the updateCount before setting the updated data into state
   // prevents a slow running query loading over a more recent query
   updateCount = 0;
   update = async () => {
