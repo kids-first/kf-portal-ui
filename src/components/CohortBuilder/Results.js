@@ -153,7 +153,7 @@ const cohortResultsQuery = sqon => ({
         hits(filters: $sqon) {
           total
         }
-        aggregations(filters: $sqon) {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           files__kf_id {
             buckets {
               key
