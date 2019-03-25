@@ -27,7 +27,7 @@ export const ageDiagQuery = sqon => ({
   query: gql`
     query($sqon: JSON) {
       participant {
-        aggregations(filters: $sqon) {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           diagnoses__age_at_event_days {
             histogram(interval: 365) {
               buckets {
@@ -70,37 +70,12 @@ export const ageDiagQuery = sqon => ({
     const aggAdult = sum(buckets.slice(19));
 
     return [
-      {
-        id: 'aggNewborn',
-        label: 'Newborn',
-        value: aggNewborn,
-      },
-
-      {
-        id: 'agg5to10',
-        label: '1 - 5',
-        value: agg1to5,
-      },
-      {
-        id: 'agg5to10',
-        label: '5 - 10',
-        value: agg5to10,
-      },
-      {
-        id: 'agg10to15',
-        label: '10 - 15',
-        value: agg10to15,
-      },
-      {
-        id: 'agg15to18',
-        label: '15 - 18',
-        value: agg15to18,
-      },
-      {
-        id: 'aggAdult',
-        label: 'Adult',
-        value: aggAdult,
-      },
+      { id: 'aggNewborn', label: 'Newborn', value: aggNewborn },
+      { id: 'agg5to10', label: '1 - 5', value: agg1to5 },
+      { id: 'agg5to10', label: '5 - 10', value: agg5to10 },
+      { id: 'agg10to15', label: '10 - 15', value: agg10to15 },
+      { id: 'agg15to18', label: '15 - 18', value: agg15to18 },
+      { id: 'aggAdult', label: 'Adult', value: aggAdult },
     ];
   },
 });

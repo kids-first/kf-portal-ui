@@ -112,7 +112,7 @@ export const diagnosesQuery = sqon => ({
   query: gql`
     query($sqon: JSON) {
       participant {
-        aggregations(filters: $sqon) {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           diagnoses__diagnosis {
             buckets {
               doc_count
