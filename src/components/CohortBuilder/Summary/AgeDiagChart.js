@@ -24,58 +24,140 @@ const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
 );
 
 export const ageDiagQuery = sqon => ({
+  variables: { sqon },
   query: gql`
+    fragment bucketsAgg on Aggregations {
+      buckets {
+        key
+        doc_count
+      }
+    }
     query($sqon: JSON) {
       participant {
-        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+        # embeds additional filter on the provided sqon to create the ranges.
+        # diagnoses.age_at_event_days values are indays, converted from year
+        _0to1: aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              { op: "<=", content: { field: "diagnoses.age_at_event_days", value: [364] } }
+            ]
+          }
+        ) {
           diagnoses__age_at_event_days {
             histogram(interval: 365) {
-              buckets {
-                doc_count
-                key
+              ...bucketsAgg
+            }
+          }
+        }
+        _1to5: aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              {
+                op: "between"
+                content: { field: "diagnoses.age_at_event_days", value: [365, 1094] }
               }
+            ]
+          }
+        ) {
+          diagnoses__age_at_event_days {
+            histogram(interval: 365) {
+              ...bucketsAgg
+            }
+          }
+        }
+        _5to10: aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              {
+                op: "between"
+                content: { field: "diagnoses.age_at_event_days", value: [1095, 3649] }
+              }
+            ]
+          }
+        ) {
+          diagnoses__age_at_event_days {
+            histogram(interval: 365) {
+              ...bucketsAgg
+            }
+          }
+        }
+        _10to15: aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              {
+                op: "between"
+                content: { field: "diagnoses.age_at_event_days", value: [3650, 5474] }
+              }
+            ]
+          }
+        ) {
+          diagnoses__age_at_event_days {
+            histogram(interval: 365) {
+              ...bucketsAgg
+            }
+          }
+        }
+        _15to18: aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              {
+                op: "between"
+                content: { field: "diagnoses.age_at_event_days", value: [5475, 6569] }
+              }
+            ]
+          }
+        ) {
+          diagnoses__age_at_event_days {
+            histogram(interval: 365) {
+              ...bucketsAgg
+            }
+          }
+        }
+        _18plus: aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [
+              $sqon
+              { op: ">=", content: { field: "diagnoses.age_at_event_days", value: [6570] } }
+            ]
+          }
+        ) {
+          diagnoses__age_at_event_days {
+            histogram(interval: 365) {
+              ...bucketsAgg
             }
           }
         }
       }
     }
   `,
-  variables: { sqon },
-  transform: data => {
-    const buckets = get(
-      data,
-      'data.participant.aggregations.diagnoses__age_at_event_days.histogram.buckets',
-    );
-
-    // Intervals are in years returned as ordered array
-
-    const sum = buckets => sumBy(buckets, 'doc_count');
-
-    // Newborn
-    const aggNewborn = sum(buckets.slice(0, 1));
-
-    // 1 - 5 Years
-    const agg1to5 = sum(buckets.slice(1, 6));
-
-    // 5 - 10 Years
-    const agg5to10 = sum(buckets.slice(6, 11));
-
-    // 10 - 15 Years
-    const agg10to15 = sum(buckets.slice(11, 16));
-
-    // 15 - 18 Years
-    const agg15to18 = sum(buckets.slice(16, 19));
-
-    // Adult
-    const aggAdult = sum(buckets.slice(19));
+  transform: ({ data }) => {
+    const getTotalDocCount = agg =>
+      sumBy(get(agg, 'diagnoses__age_at_event_days.histogram.buckets'), 'doc_count');
 
     return [
-      { id: 'aggNewborn', label: 'Newborn', value: aggNewborn },
-      { id: 'agg5to10', label: '1 - 5', value: agg1to5 },
-      { id: 'agg5to10', label: '5 - 10', value: agg5to10 },
-      { id: 'agg10to15', label: '10 - 15', value: agg10to15 },
-      { id: 'agg15to18', label: '15 - 18', value: agg15to18 },
-      { id: 'aggAdult', label: 'Adult', value: aggAdult },
+      { id: 'aggNewborn', label: 'Newborn', value: getTotalDocCount(data.participant._0to1) },
+      { id: 'agg5to10', label: '1 - 5', value: getTotalDocCount(data.participant._1to5) },
+      { id: 'agg5to10', label: '5 - 10', value: getTotalDocCount(data.participant._5to10) },
+      { id: 'agg10to15', label: '10 - 15', value: getTotalDocCount(data.participant._10to15) },
+      { id: 'agg15to18', label: '15 - 18', value: getTotalDocCount(data.participant._15to18) },
+      { id: 'aggAdult', label: 'Adult', value: getTotalDocCount(data.participant._18plus) },
     ];
   },
 });
