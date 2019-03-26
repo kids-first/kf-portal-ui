@@ -96,6 +96,7 @@ const StudiesChart = ({ studies, sqon, theme, api, isLoading: isParentLoading })
         ) : (
           <BarChartContainer>
             <HorizontalBar
+              showCursor={false}
               data={data.map((d, i) => ({ ...d, id: i }))}
               indexBy="label"
               keys={['probands', 'familyMembers']}

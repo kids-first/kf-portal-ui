@@ -37,7 +37,10 @@ class VerticalBar extends Component {
   }
 
   onMouseEnter(data, e) {
-    e.target.style.cursor = 'pointer';
+    const { showCursor = true } = this.props;
+    if (showCursor) {
+      e.target.style.cursor = 'pointer';
+    }
 
     if (data) {
       const { index, indexValue } = data;
