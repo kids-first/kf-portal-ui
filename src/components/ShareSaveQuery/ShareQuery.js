@@ -145,7 +145,7 @@ export default injectState(
                       </CopyToClipboard>
                     </ItemRow>
                     <ItemRow onClick={() => trackQueryShare('Facebook')}>
-                      <FacebookShareButton url={this.state.link} quote="Kids First File Repo Query">
+                      <FacebookShareButton url={this.state.link} quote="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research.">
                         <Bubble>
                           <FBIcon />
                         </Bubble>
@@ -156,12 +156,12 @@ export default injectState(
                       <Bubble>
                         <TwitterIcon />
                       </Bubble>
-                      <TwitterShareButton title="Kids First File Repo Query" url={this.state.link}>
+                      <TwitterShareButton title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research." url={this.state.link}>
                         <Trans>share on twitter</Trans>
                       </TwitterShareButton>
                     </ItemRow>
                     <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
-                      <LinkedinShareButton title="Kids First File Repo Query" url={this.state.link}>
+                      <LinkedinShareButton title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research." url={this.state.link}>
                         <Bubble>
                           <LIIcon />
                         </Bubble>
