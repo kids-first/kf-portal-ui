@@ -28,6 +28,7 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
     return (
       <input
         type="checkbox"
+        checked={!!checked}
         onChange={evt => {
           onCellSelected(evt.currentTarget.checked);
         }}
@@ -106,9 +107,17 @@ const NbFilesCell = compose(
   }),
 );
 
-const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
+const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
-    Header: props => <SelectionCell {...props} onCellSelected={onAllRowsSelected} />,
+    Header: props => {
+      return (
+        <SelectionCell
+          {...props}
+          value={dirtyHack.allRowsSelected}
+          onCellSelected={onAllRowsSelected}
+        />
+      );
+    },
     Cell: props => <SelectionCell {...props} onCellSelected={onRowSelected} />,
     accessor: 'selected',
     filterable: false,
@@ -174,9 +183,11 @@ class ParticipantsTable extends Component {
   };
   constructor(props) {
     super(props);
+    // TODO clean that once react-table is updated.
+    this.dirtyHack = { allRowsSelected: props.allRowsSelected };
     this.state = {
       columns: configureCols(
-        participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected),
+        participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected, this.dirtyHack),
       ),
     };
   }
@@ -195,6 +206,8 @@ class ParticipantsTable extends Component {
       allRowsSelected,
       sqon,
     } = this.props;
+    // I know. Sometimes, you gotta do what you gotta do.
+    this.dirtyHack.allRowsSelected = allRowsSelected;
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
     const projectId = arrangerProjectId;
