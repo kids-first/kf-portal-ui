@@ -17,7 +17,7 @@ import QueriesResolver from '../../QueriesResolver';
 const EXP_MISSING = '__missing__';
 
 const columnStyles = {
-  margin: '-10px 0',
+  padding: '5px 10px',
 };
 
 const Column = styled('span')`
