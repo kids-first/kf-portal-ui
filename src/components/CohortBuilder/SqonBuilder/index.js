@@ -29,6 +29,14 @@ const SqonBuilderContainer = styled('div')`
   > .sqonBuilder .sqonEntry .actionButtonsContainer {
     box-sizing: border-box;
   }
+
+  .sqonBuilder .sqonListActionButton {
+    background-color: transparent;
+  }
+
+  .sqonBuilder .actionHeaderContainer button {
+    background-color: transparent;
+  }
 `;
 
 const StyledFieldFilterContainer = styled(FieldFilterContainer)`
