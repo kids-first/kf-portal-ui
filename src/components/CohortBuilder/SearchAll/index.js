@@ -20,9 +20,19 @@ import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import QueriesResolver from '../QueriesResolver';
 import { searchAllFieldsQuery } from './queries';
 import QueryResults from './QueryResults';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import './SearchAll.css';
 import Downshift from 'downshift';
+
+const trackCohortBuilderAction = ({ action, label, category }) => {
+
+  trackUserInteraction({
+    category: category || TRACKING_EVENTS.categories.cohortBuilder,
+    action,
+    label,
+  });
+};
 
 const SearchAllContainer = styled('div')`
   display: flex;
@@ -194,6 +204,12 @@ class SearchAll extends React.Component {
   }
 
   setQueryDebounced(state) {
+    trackCohortBuilderAction({
+      category: TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters,
+      action: `${TRACKING_EVENTS.actions.search} All Filters`,
+      label: state.debouncedQuery,
+    });
+
     this.setState(state);
   }
 
