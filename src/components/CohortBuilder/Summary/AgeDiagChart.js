@@ -22,20 +22,21 @@ const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
     />
   </CohortCard>
 );
-
 export const ageDiagQuery = sqon => ({
   variables: { sqon },
   query: gql`
-    fragment bucketsAgg on Aggregations {
-      buckets {
-        key
-        doc_count
+    fragment histogramAgg on NumericAggregations {
+      histogram(interval: 365) {
+        buckets {
+          key
+          doc_count
+        }
       }
     }
+    # embeds additional filter on the provided sqon to create the ranges.
+    # diagnoses.age_at_event_days values are indays, converted from year
     query($sqon: JSON) {
       participant {
-        # embeds additional filter on the provided sqon to create the ranges.
-        # diagnoses.age_at_event_days values are indays, converted from year
         _0to1: aggregations(
           aggregations_filter_themselves: true
           filters: {
@@ -47,9 +48,7 @@ export const ageDiagQuery = sqon => ({
           }
         ) {
           diagnoses__age_at_event_days {
-            histogram(interval: 365) {
-              ...bucketsAgg
-            }
+            ...histogramAgg
           }
         }
         _1to5: aggregations(
@@ -66,9 +65,7 @@ export const ageDiagQuery = sqon => ({
           }
         ) {
           diagnoses__age_at_event_days {
-            histogram(interval: 365) {
-              ...bucketsAgg
-            }
+            ...histogramAgg
           }
         }
         _5to10: aggregations(
@@ -85,9 +82,7 @@ export const ageDiagQuery = sqon => ({
           }
         ) {
           diagnoses__age_at_event_days {
-            histogram(interval: 365) {
-              ...bucketsAgg
-            }
+            ...histogramAgg
           }
         }
         _10to15: aggregations(
@@ -104,9 +99,7 @@ export const ageDiagQuery = sqon => ({
           }
         ) {
           diagnoses__age_at_event_days {
-            histogram(interval: 365) {
-              ...bucketsAgg
-            }
+            ...histogramAgg
           }
         }
         _15to18: aggregations(
@@ -123,9 +116,7 @@ export const ageDiagQuery = sqon => ({
           }
         ) {
           diagnoses__age_at_event_days {
-            histogram(interval: 365) {
-              ...bucketsAgg
-            }
+            ...histogramAgg
           }
         }
         _18plus: aggregations(
@@ -139,9 +130,7 @@ export const ageDiagQuery = sqon => ({
           }
         ) {
           diagnoses__age_at_event_days {
-            histogram(interval: 365) {
-              ...bucketsAgg
-            }
+            ...histogramAgg
           }
         }
       }
