@@ -24,6 +24,7 @@ const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
 );
 
 export const ageDiagQuery = sqon => ({
+  variables: { sqon },
   query: gql`
     fragment bucketsAgg on Aggregations {
       buckets {
@@ -146,7 +147,6 @@ export const ageDiagQuery = sqon => ({
       }
     }
   `,
-  variables: { sqon },
   transform: ({ data }) => {
     const getTotalDocCount = agg =>
       sumBy(get(agg, 'diagnoses__age_at_event_days.histogram.buckets'), 'doc_count');
