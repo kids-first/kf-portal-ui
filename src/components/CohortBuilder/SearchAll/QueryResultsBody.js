@@ -31,22 +31,26 @@ const QueryResultsBody = ({
       {filteredFields.map((field, i) => (
         <div
           key={`${field.name}`}
-          className={`result-category ${field.matchByDisplayName ? 'match' : ''}`}
+          className={`result-category ${field.matchByDisplayName ? 'match' : ''} ${
+            filteredFields.length - 1 === i ? 'last' : ''
+          }`}
         >
           <div className="category-name" data-index={i} onClick={handleFieldNameClicked}>
             <TextHighlight content={field.displayName} highlightText={query} />
           </div>
           {field.buckets.map(({ value, docCount }) => (
             <div className="result-item" key={`result-item_${value}`}>
-              <input
-                type="checkbox"
-                checked={selections[field.name].indexOf(value) > -1}
-                className="selection"
-                onChange={evt => {
-                  onSelectionChange(evt, field, value);
-                }}
-              />
-              <TextHighlight content={value} highlightText={query} />
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selections[field.name].indexOf(value) > -1}
+                  className="selection"
+                  onChange={evt => {
+                    onSelectionChange(evt, field, value);
+                  }}
+                />
+                <TextHighlight content={value} highlightText={query} />
+              </label>
               <span className="doc-count">{docCount}</span>
             </div>
           ))}

@@ -22,6 +22,7 @@ import { searchAllFieldsQuery } from './queries';
 import QueryResults from './QueryResults';
 
 import './SearchAll.css';
+import Downshift from 'downshift';
 
 const SearchAllContainer = styled('div')`
   display: flex;
@@ -263,7 +264,7 @@ class SearchAll extends React.Component {
 
   render() {
     const { api, sqon, color, title, fields, theme } = this.props;
-    const { query, debouncedQuery, selections } = this.state;
+    const { query, debouncedQuery, selections, isOpen } = this.state;
 
     return (
       // Extract the metadata & data fetching to a component
@@ -303,37 +304,46 @@ class SearchAll extends React.Component {
                   : [];
 
                 return (
-                  <SearchAllContainer className="search-all-filter">
-                    <QueryContainer borderColor={color} className="query-container">
-                      <div className="query-content">
-                        <span className={'input-icon icon-left'}>
-                          <SearchIcon />
-                        </span>
-                        <input
-                          type="text"
-                          value={query}
-                          onChange={this.handleQueryChange}
-                          aria-label={title}
-                          placeholder={title}
-                        />
-                        {query && (
-                          <span className={'input-icon icon-right'}>
-                            <FaTimesCircleO onClick={this.handleClearQuery} />
-                          </span>
-                        )}
-                      </div>
-                    </QueryContainer>
-                    <QueryResults
-                      query={debouncedQuery}
-                      isLoading={isLoading}
-                      filteredFields={filteredFields}
-                      selections={selections}
-                      onSelectionChange={this.handleSelectionChange}
-                      onApplyFilter={this.handleApplyFilter}
-                      onClearQuery={this.handleClearQuery}
-                      onSearchField={this.handleSearchByField}
-                    />
-                  </SearchAllContainer>
+                  <Downshift isOpen={isOpen} onOuterClick={() => this.setState({ isOpen: false })}>
+                    {({ getRootProps, isOpen }) => (
+                      <SearchAllContainer
+                        className="search-all-filter"
+                        {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
+                      >
+                        <QueryContainer borderColor={color} className="query-container">
+                          <div className="query-content">
+                            <span className={'input-icon icon-left'}>
+                              <SearchIcon />
+                            </span>
+                            <input
+                              type="text"
+                              value={query}
+                              onChange={this.handleQueryChange}
+                              aria-label={title}
+                              placeholder={title}
+                            />
+                            {query && (
+                              <span className={'input-icon icon-right'}>
+                                <FaTimesCircleO onClick={this.handleClearQuery} />
+                              </span>
+                            )}
+                          </div>
+                        </QueryContainer>
+                        {isOpen ? (
+                          <QueryResults
+                            query={debouncedQuery}
+                            isLoading={isLoading}
+                            filteredFields={filteredFields}
+                            selections={selections}
+                            onSelectionChange={this.handleSelectionChange}
+                            onApplyFilter={this.handleApplyFilter}
+                            onClearQuery={this.handleClearQuery}
+                            onSearchField={this.handleSearchByField}
+                          />
+                        ) : null}
+                      </SearchAllContainer>
+                    )}
+                  </Downshift>
                 );
               }}
             </QueriesResolver>
