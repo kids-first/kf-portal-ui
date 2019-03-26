@@ -15,7 +15,6 @@ import {
   ARRANGER_API_PARTICIPANT_INDEX_NAME,
 } from '../common';
 import { ModalFooter } from 'components/Modal';
-import './SqonBuilder.css';
 
 const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
   extendedMapping.reduce((acc, { field, displayName }) => {
@@ -29,6 +28,14 @@ const SqonBuilderContainer = styled('div')`
   border: solid 1px ${({ theme }) => theme.greyScale4};
   > .sqonBuilder .sqonEntry .actionButtonsContainer {
     box-sizing: border-box;
+  }
+
+  .sqonBuilder .sqonListActionButton {
+    background-color: transparent;
+  }
+
+  .sqonBuilder .actionHeaderContainer button {
+    background-color: transparent;
   }
 `;
 
