@@ -204,7 +204,7 @@ export default compose(
                                     html={
                                       isLoading
                                         ? 'Calculating...'
-                                        : 'No file was found for family members'
+                                        : 'No report available for additional family members.'
                                     }
                                   >
                                     Clinical Data: Participant & Family Members

@@ -190,7 +190,7 @@ export default compose(
                               <OptionRow disabled>
                                 Participant and family
                                 {isLoading ? null : (
-                                  <Tooltip>No file was found for family members</Tooltip>
+                                  <Tooltip>No report available for additional family members.</Tooltip>
                                 )}
                               </OptionRow>
                             )
