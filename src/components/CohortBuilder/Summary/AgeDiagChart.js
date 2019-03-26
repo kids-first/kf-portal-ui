@@ -59,7 +59,7 @@ export const ageDiagQuery = sqon => ({
               $sqon
               {
                 op: "between"
-                content: { field: "diagnoses.age_at_event_days", value: [365, 1094] }
+                content: { field: "diagnoses.age_at_event_days", value: [365, 1824] }
               }
             ]
           }
@@ -76,7 +76,7 @@ export const ageDiagQuery = sqon => ({
               $sqon
               {
                 op: "between"
-                content: { field: "diagnoses.age_at_event_days", value: [1095, 3649] }
+                content: { field: "diagnoses.age_at_event_days", value: [1825, 3649] }
               }
             ]
           }
