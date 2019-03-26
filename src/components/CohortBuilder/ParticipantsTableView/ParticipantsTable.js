@@ -134,7 +134,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected) => [
     field: 'diagnoses.diagnosis',
   },
   {
-    Header: 'Age at Diagnosis',
+    Header: 'Age at Diagnosis (days)',
     accessor: 'ageAtDiagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.age_at_event_days',
