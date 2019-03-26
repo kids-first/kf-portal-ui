@@ -14,7 +14,7 @@ const StyledWhiteButton = styled(BigWhiteButton)`
   &[disabled],
   &.disabled {
     color: ${({ theme }) => theme.greyScale11};
-    backgroud-color: ${({ theme }) => theme.backgroundGrey};
+    background-color: ${({ theme }) => theme.backgroundGrey};
     border-color: ${({ theme }) => theme.borderGrey};
   }
 

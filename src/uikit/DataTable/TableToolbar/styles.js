@@ -38,7 +38,6 @@ export const ToolbarGroup = applyDefaultStyles(
 export const ToolbarSelectionCount = styled('div')`
   color: ${({ theme }) => theme.greyScale9};
 
-  min-height: 30px;
   display: flex;
   align-items: center;
   padding: 0 10px;
