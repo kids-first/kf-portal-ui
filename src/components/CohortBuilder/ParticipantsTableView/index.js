@@ -12,6 +12,8 @@ import TableErrorView from './TableErrorView';
 
 import Card from 'uikit/Card';
 
+import { SORTABLE_FIELDS_MAPPING } from './queries';
+
 const enhance = compose(
   withApi,
   withTheme,
@@ -19,6 +21,7 @@ const enhance = compose(
   withState('pageIndex', 'setPageIndex', 0),
   withState('selectedRows', 'setSelectedRows', []),
   withState('allRowsSelected', 'setAllRowsSelected', false),
+  withState('sort', 'setSort', []),
 );
 
 const ParticipantsTableView = ({
@@ -33,12 +36,14 @@ const ParticipantsTableView = ({
   setSelectedRows,
   allRowsSelected,
   setAllRowsSelected,
+  sort,
+  setSort,
 }) => {
   return (
     <QueriesResolver
       name="GQL_PARTICIPANTS_TABLE"
       api={api}
-      queries={[participantsQuery(sqon, pageSize, pageIndex)]}
+      queries={[participantsQuery(sqon, sort, pageSize, pageIndex)]}
     >
       {({ isLoading, data, error }) => {
         if (error) {
@@ -71,9 +76,16 @@ const ParticipantsTableView = ({
               data={dataWithRowSelection}
               dataTotalCount={data[0] ? data[0].total : 0}
               downloadName={'participant-table'}
-              onFetchData={({ page, pageSize }) => {
+              onFetchData={({ page, pageSize, sorted }) => {
+                const sorting = sorted
+                  .filter(s => SORTABLE_FIELDS_MAPPING.has(s.id))
+                  .map(s => ({
+                    field: SORTABLE_FIELDS_MAPPING.get(s.id),
+                    order: s.desc ? 'desc' : 'asc',
+                  }));
                 setPageIndex(page);
                 setPageSize(pageSize);
+                setSort(sorting);
               }}
               onRowSelected={(checked, row) => {
                 const rowId = row.participantId;
