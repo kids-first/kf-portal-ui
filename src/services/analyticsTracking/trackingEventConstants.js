@@ -41,7 +41,7 @@ export const TRACKING_EVENTS = {
         clinicalFilters: "Cohort Builder: Filters - Clinical",
         biospecimensFilters: "Cohort Builder: Filters - Biospecimens",
         availableDataFilters: "Cohort Builder: Filters - Available Data",
-      } 
+      }
     },
     fileRepo: {
       filters: 'File Repo: Filters',
