@@ -11,7 +11,8 @@ const ResultsContainer = styled('div')`
   display: none;
 
   top: 100%;
-  width: 100%;
+  width: 270px;
+  left: 0px;
 
   border: 1px solid ${({ theme }) => theme.greyScale5};
   border-radius: 5px;
