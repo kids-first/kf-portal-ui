@@ -20,7 +20,7 @@ export const config = [
   },
   {
     label: 'Participants',
-    field: 'kf_id',
+    field: 'participants.kf_id',
     icon: (
       <img
         src={require('../assets/icon-participants.svg')}
