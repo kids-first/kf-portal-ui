@@ -4,7 +4,7 @@ import { get, flatten } from 'lodash';
 export const toFileSqon = participantSqon => {
   const { content } = participantSqon;
   const FILE_PREFIX = 'files';
-  const PARTICIPANT_PREFIC = 'participants';
+  const PARTICIPANT_PREFIX = 'participants';
   if (Array.isArray(content)) {
     return { ...participantSqon, content: content.map(toFileSqon) };
   } else {
@@ -12,7 +12,7 @@ export const toFileSqon = participantSqon => {
     const transposedFieldName =
       field.indexOf(`${FILE_PREFIX}.`) === 0
         ? field.split(`${FILE_PREFIX}.`).join('')
-        : `${PARTICIPANT_PREFIC}.${field}`;
+        : `${PARTICIPANT_PREFIX}.${field}`;
     return { ...participantSqon, content: { ...content, field: transposedFieldName } };
   }
 };
