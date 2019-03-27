@@ -251,6 +251,25 @@ class SearchAll extends React.Component {
         [field.name]: fieldSelection,
       },
     });
+
+    let keyedBuckets = mapKeys(field.buckets, (v, k) => v.value)
+    let bucket = field.buckets[Object.keys(keyedBuckets).indexOf(value)]
+    const { displayName, name } = field;
+
+    trackCohortBuilderAction({
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
+      action: `${TRACKING_EVENTS.actions.filter} Selected`,
+      label: {
+        type: 'filter',
+        field: {
+          displayName,
+          name,
+          bucket
+        },
+        value
+      }
+    })
+
   }
 
   handleApplyFilter() {
