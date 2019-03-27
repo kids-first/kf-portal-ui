@@ -28,11 +28,13 @@ import Downshift from 'downshift';
 const trackCohortBuilderAction = ({ action, label, category }) => {
 
   trackUserInteraction({
-    category: category || TRACKING_EVENTS.categories.cohortBuilder,
+    category: category || TRACKING_EVENTS.categories.cohortBuilder._cohortBuilder,
     action,
-    label,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label })
   });
 };
+
+
 
 const SearchAllContainer = styled('div')`
   display: flex;
@@ -218,7 +220,15 @@ class SearchAll extends React.Component {
   }
 
   handleClearQuery() {
+    const { debouncedQuery } = this.state;
+
     this.close();
+
+    trackCohortBuilderAction({
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
+      action: TRACKING_EVENTS.actions.clear,
+      label: debouncedQuery,
+    });
   }
 
   handleSelectionChange(evt, field, value) {
