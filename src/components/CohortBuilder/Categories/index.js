@@ -58,13 +58,13 @@ const CATEGORY_FIELDS = {
     // "Cannot query field "buckets" on type "NumericAggregations"."
     // 'biospecimens.age_at_event_days',
     'biospecimens.analyte_type',
+    'biospecimens.source_text_anatomical_site',
+    'biospecimens.ncit_id_anatomical_site',
     'biospecimens.composition',
     'biospecimens.method_of_sample_procurement',
-    'biospecimens.ncit_id_anatomical_site',
+    'biospecimens.source_text_tissue_type',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
-    'biospecimens.source_text_anatomical_site',
-    'biospecimens.source_text_tissue_type',
 
     // Available Data
     'available_data_types',
@@ -99,13 +99,14 @@ const CATEGORY_FIELDS = {
   biospecimen: [
     'biospecimens.age_at_event_days',
     'biospecimens.analyte_type',
+    'biospecimens.source_text_anatomical_site',
+    'biospecimens.ncit_id_anatomical_site',
     'biospecimens.composition',
     'biospecimens.method_of_sample_procurement',
-    'biospecimens.ncit_id_anatomical_site',
+    'biospecimens.source_text_tissue_type',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
-    'biospecimens.source_text_anatomical_site',
-    'biospecimens.source_text_tissue_type',
+
   ],
   availableData: [
     'available_data_types',
