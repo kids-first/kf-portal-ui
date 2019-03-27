@@ -86,6 +86,9 @@ export const TRACKING_EVENTS = {
       disconnected: 'Integration Connection DISCONNECTED',
       failed: 'Integration Connection FAILED',
     },
+    search: 'Search',
+    clear: 'Clear',
+    apply: 'Apply',
   },
   labels: {
     joinProcess: 'Join Process',
