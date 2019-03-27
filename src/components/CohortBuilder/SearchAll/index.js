@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
-import { debounce, isObject, mapKeys, transform, isEqual } from 'lodash';
+import { debounce, isObject, mapKeys } from 'lodash';
 import {SQONdiff} from '../../Utils'
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
