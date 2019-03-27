@@ -42,7 +42,7 @@ class QueriesResolver extends React.Component {
   update = async () => {
     const { queries, useCache, switchLoadingState } = this.props;
     const checkCount = ++this.updateCount;
-    if (queries.length !== 0) {
+    if (queries.length) {
       const body = JSON.stringify(
         queries.map(q => ({
           query: typeof q.query === 'string' ? q.query : print(q.query),
@@ -62,6 +62,8 @@ class QueriesResolver extends React.Component {
           this.setState({ isLoading: false, error: err });
         }
       }
+    } else {
+      this.setState({ isLoading: false, data: [] });
     }
   };
 
