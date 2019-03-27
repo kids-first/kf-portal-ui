@@ -73,21 +73,21 @@ const generateFileColumnContents = (dataset, loggedInUser, api) =>
     ),
   }));
 
-const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, sqon }) => (
+const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, participantSqon }) => (
   <QueriesResolver
     name="GQL_FILE_BREAKDOWN_1"
     api={api}
     queries={_(dataTypesExpStratPairs)
       .uniqBy('dataType')
       .map('dataType')
-      .map(toFileIdsByDataTypeQuery(sqon))
+      .map(toFileIdsByDataTypeQuery({ participantSqon }))
       .value()}
   >
     {({ data: dataTypeFileIdBuckets, isLoading: isQuery1Loading }) => (
       <QueriesResolver
         name="GQL_FILE_BREAKDOWN_2"
         api={api}
-        queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
+        queries={dataTypesExpStratPairs.map(toFileBreakdownQueries({ participantSqon }))}
       >
         {({ data: dataWithExperimentalStrategyFilter, isLoading }) => {
           const dataWithoutExperimentalStrategy = dataTypeFileIdBuckets.map(
@@ -129,7 +129,7 @@ const FileBreakdown = ({
   api,
   isLoading: isParentLoading,
 }) => (
-  <DataProvider dataTypesExpStratPairs={dataTypesExpStratPairs} sqon={sqon}>
+  <DataProvider dataTypesExpStratPairs={dataTypesExpStratPairs} participantSqon={sqon}>
     {({ data, isLoading }) => {
       const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
       const tableEntries = isLoading
