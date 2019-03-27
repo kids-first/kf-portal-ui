@@ -33,6 +33,14 @@ const Container = styled('div')`
 const Heading = styled(H1)`
   color: #2b388f;
   margin-right: 20px;
+
+  &:after {
+    content: 'beta';
+    vertical-align: super;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
 `;
 
 const FullWidthWhite = styled('div')`
