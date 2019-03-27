@@ -207,6 +207,7 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.availableData}
           currentSearchField={currentSearchField}
           color={theme.dataBlue}
+          isAvailableDataCategory={true}
         >
           <FileIcon width={11} height={14} fill={theme.dataBlue} />
         </Category>

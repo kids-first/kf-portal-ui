@@ -30,6 +30,7 @@ const Dropdown = ({
   onToggle = x => x,
   setActiveIndex,
   activeIndex,
+  isAvailableDataCategory,
   ...rest
 }) => (
   <Downshift {...rest}>
@@ -48,7 +49,7 @@ const Dropdown = ({
           {!isOpen ? null : (
             <OptionsContainerComponent align={align}>
               {showExpanded && multiLevel ? (
-                <ItemExpandedWrapperComponent>
+                <ItemExpandedWrapperComponent isAvailableDataCategory={isAvailableDataCategory}>
                   {expandedItems[activeIndex]}
                 </ItemExpandedWrapperComponent>
               ) : (

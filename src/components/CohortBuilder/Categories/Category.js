@@ -162,6 +162,7 @@ const Category = compose(
     },
     onSqonUpdate = noop,
     onClose = noop,
+    isAvailableDataCategory,
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
@@ -213,6 +214,7 @@ const Category = compose(
           ),
           ItemWrapperComponent: ItemWrapper,
           OptionsContainerComponent: OptionsWrapper,
+          isAvailableDataCategory,
         }}
       >
         <CategoryButton isDropdownVisible={isDropdownVisible}>

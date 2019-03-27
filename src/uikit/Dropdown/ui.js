@@ -84,4 +84,7 @@ export const DropdownArrowIcon = styled(ChevronIcon)`
   }
 `;
 
-export const DropdownExpandedContainer = styled('div')``;
+export const DropdownExpandedContainer = styled('div')`
+  position: fixed;
+  right: ${({ isAvailableDataCategory }) => (isAvailableDataCategory === true ? '360px' : 'auto')};
+`;
