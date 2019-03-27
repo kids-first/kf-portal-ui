@@ -37,6 +37,16 @@ const ExploreDataIconStyled = styled(ExploreDataIcon)`
   fill: currentColor;
 `;
 
+const BetaNavLink = styled(NavLink)`
+  &:after {
+    content: 'beta';
+    vertical-align: super;
+    font-size: 9px;
+    text-transform: uppercase;
+    padding-left: 3px;
+  }
+`;
+
 const Header = ({
   state: { loggedInUser },
   effects: { setUser, setToken, clearIntegrationTokens },
@@ -71,9 +81,9 @@ const Header = ({
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to="/virtualStudies">
+                    <BetaNavLink currentPathName={currentPathName} to="/virtualStudies">
                       <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
-                    </NavLink>
+                    </BetaNavLink>
                   </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to={`/search/file`}>
