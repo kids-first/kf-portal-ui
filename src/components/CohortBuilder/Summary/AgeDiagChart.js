@@ -13,6 +13,7 @@ const ageAtDiagnosisTooltip = data => {
 const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
   <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
     <VerticalBar
+      showCursor={false}
       data={data}
       indexBy="label"
       tooltipFormatter={ageAtDiagnosisTooltip}

@@ -82,6 +82,7 @@ const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoa
         ) : (
           <BarChartContainer>
             <HorizontalBar
+              showCursor={false}
               data={_(data)
                 .sortBy(d => d.probands + d.familyMembers)
                 .map((d, i) => ({ ...d, id: i }))
