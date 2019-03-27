@@ -38,22 +38,36 @@ const CATEGORY_FIELDS = {
 
     // Clinical
     'affected_status',
+    // "Cannot query field "buckets" on type "NumericAggregations"."
     // 'diagnoses.age_at_event_days',
+    // "Cannot query field "buckets" on type "NumericAggregations"."
     // 'outcome.age_at_event_days',
+    // "Cannot query field "buckets" on type "NumericAggregations"."
     // 'phenotype.age_at_event_days',
-    // 'phenotype.ancestral_hpo_ids',
+    'phenotype.ancestral_hpo_ids',
     'diagnoses.diagnosis',
     'diagnoses.diagnosis_category',
     'family.family_compositions.composition',
     'family.family_compositions.shared_hpo_ids',
-    // "Cannot query field "outcome__is_disease_related" on type "participantAggregations". Did you mean "outcome__disease_related", "outcome__external_id", or "outcome__vital_status"?"
     'outcome.disease_related',
-    // 'phenotype.hpo_phenotype_observed_text',
+    'phenotype.hpo_phenotype_observed_text',
     'diagnoses.source_text_tumor_location',
     'outcome.vital_status',
 
+    // Biospecimen
+    // "Cannot query field "buckets" on type "NumericAggregations"."
+    // 'biospecimens.age_at_event_days',
+    'biospecimens.analyte_type',
+    'biospecimens.composition',
+    'biospecimens.method_of_sample_procurement',
+    'biospecimens.ncit_id_anatomical_site',
+    'biospecimens.ncit_id_tissue_type',
+    'biospecimens.source_text_tumor_descriptor',
+
     // Available Data
     'available_data_types',
+    'files.sequencing_experiments.experiment_strategy',
+    'family.family_compositions.available_data_types',
   ],
   quickSearch: [
     'available_data_types',
