@@ -20,6 +20,7 @@ const Dropdown = ({
   multiLevel = false,
   expandedItems,
   showExpanded,
+  showExpandedItem,
   setExpanded,
   ItemWrapperComponent = ItemWrapper,
   ContainerComponent = DropdownContainer,
@@ -59,6 +60,7 @@ const Dropdown = ({
                       key: i,
                     })}
                     onClick={() => {
+                      showExpandedItem( getItemProps({item, key: i}) )
                       if (multiLevel) {
                         setActiveIndex(i);
                         setExpanded(!showExpanded);
