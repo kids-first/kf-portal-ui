@@ -15,9 +15,6 @@ const FilterCont = styled('div')`
   color: black;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  left: 0;
-  top: 100%;
   cursor: default;
   text-align: left;
   border-radius: 5px;
