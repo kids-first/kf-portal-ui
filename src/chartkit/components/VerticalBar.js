@@ -38,7 +38,7 @@ class VerticalBar extends Component {
 
   onMouseEnter(data, e) {
     const { showCursor = true } = this.props;
-    e.target.style.cursor = showCursor ? 'hand' : 'pointer';
+    e.target.style.cursor = showCursor ? 'pointer' : 'default';
 
     if (data) {
       const { index, indexValue } = data;
@@ -54,8 +54,11 @@ class VerticalBar extends Component {
   }
 
   onMouseLeave(data, e) {
+    const target = e ? e.target : false;
+    if (target) {
+      target.style.cursor = 'default';
+    }
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
-    e.target.style.cursor = 'pointer';
   }
 
   onClick(data) {

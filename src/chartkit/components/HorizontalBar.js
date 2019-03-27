@@ -39,9 +39,7 @@ class HorizontalBar extends Component {
 
   onMouseEnter(data, e) {
     const { showCursor = true } = this.props;
-    if (showCursor) {
-      e.target.style.cursor = 'pointer';
-    }
+    e.target.style.cursor = showCursor ? 'pointer' : 'default';
 
     if (data) {
       const { index, indexValue } = data;
@@ -57,7 +55,10 @@ class HorizontalBar extends Component {
   }
 
   onMouseLeave(data, e) {
-    //   e.target.style.cursor = 'default';
+    const target = e ? e.target : false;
+    if (target) {
+      target.style.cursor = 'default';
+    }
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
