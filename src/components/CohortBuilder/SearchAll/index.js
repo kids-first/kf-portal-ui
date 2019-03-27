@@ -300,6 +300,15 @@ class SearchAll extends React.Component {
     onSqonUpdate(newSqon);
 
     this.close();
+    /**
+     * trakcs both the added SQON and the final result/composite sqon
+     * after the new filters are applied 
+     */
+    trackCohortBuilderAction({
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
+      action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+      label: {added_sqon: SQONdiff(newSqon, sqon), result_sqon: newSqon},
+    });
   }
 
   handleSearchByField(fieldName) {
