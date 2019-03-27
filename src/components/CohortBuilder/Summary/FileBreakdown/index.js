@@ -2,16 +2,17 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
+import _, { get, sortBy, sumBy, differenceBy } from 'lodash';
+
 import { CohortCard } from '../ui';
 import BaseDataTable from 'uikit/DataTable';
-import { get, sortBy, sumBy } from 'lodash';
 import { withApi } from 'services/api';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';
 import { createFileRepoLink } from '../../util';
-import { toFileBreakdownQueries } from './queries';
+import { toFileBreakdownQueries, toFileIdsByDataTypeQuery } from './queries';
 import QueriesResolver from '../../QueriesResolver';
 
 const EXP_MISSING = '__missing__';
@@ -72,6 +73,55 @@ const generateFileColumnContents = (dataset, loggedInUser, api) =>
     ),
   }));
 
+const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, participantSqon }) => (
+  <QueriesResolver
+    name="GQL_FILE_BREAKDOWN_1"
+    api={api}
+    queries={_(dataTypesExpStratPairs)
+      .uniqBy('dataType')
+      .map('dataType')
+      .map(toFileIdsByDataTypeQuery({ participantSqon }))
+      .value()}
+  >
+    {({ data: dataTypeFileIdBuckets, isLoading: isQuery1Loading }) => (
+      <QueriesResolver
+        name="GQL_FILE_BREAKDOWN_2"
+        api={api}
+        queries={dataTypesExpStratPairs.map(toFileBreakdownQueries({ participantSqon }))}
+      >
+        {({ data: dataWithExperimentalStrategyFilter, isLoading }) => {
+          const dataWithoutExperimentalStrategy = dataTypeFileIdBuckets.map(
+            ({ dataType, fileIdBuckets }) => {
+              const fileIdsWithExperimentalStrategy = _(dataWithExperimentalStrategyFilter)
+                .filter(({ dataType: _dt }) => _dt === dataType)
+                .map(({ files }) => files)
+                .flatten()
+                .value();
+              const filesWithoutExperimentalStrategy = differenceBy(
+                fileIdBuckets,
+                fileIdsWithExperimentalStrategy,
+                'key',
+              );
+              return {
+                dataType,
+                experimentalStrategy: '--',
+                files: filesWithoutExperimentalStrategy,
+                filesCount: filesWithoutExperimentalStrategy.length,
+              };
+            },
+          );
+          return children({
+            data: dataWithExperimentalStrategyFilter
+              .concat(dataWithoutExperimentalStrategy)
+              .filter(({ filesCount }) => !!filesCount),
+            isLoading: isLoading || isQuery1Loading,
+          });
+        }}
+      </QueriesResolver>
+    )}
+  </QueriesResolver>
+));
+
 const FileBreakdown = ({
   dataTypesExpStratPairs,
   sqon,
@@ -79,11 +129,7 @@ const FileBreakdown = ({
   api,
   isLoading: isParentLoading,
 }) => (
-  <QueriesResolver
-    name="GQL_FILE_BREAKDOWN_1"
-    api={api}
-    queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
-  >
+  <DataProvider dataTypesExpStratPairs={dataTypesExpStratPairs} participantSqon={sqon}>
     {({ data, isLoading }) => {
       const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
       const tableEntries = isLoading
@@ -134,7 +180,7 @@ const FileBreakdown = ({
         </CohortCard>
       );
     }}
-  </QueriesResolver>
+  </DataProvider>
 );
 
 export { dataTypesExpStratPairsQuery } from './queries';
