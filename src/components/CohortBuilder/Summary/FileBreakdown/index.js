@@ -112,9 +112,6 @@ const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, sqon }) =
         queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
       >
         {({ data: dataWithExperimentalStrategyFilter, isLoading }) => {
-          console.log('================');
-          console.log('dataTpeFileIdBuckets: ', dataTypeFileIdBuckets);
-          console.log('data: ', dataWithExperimentalStrategyFilter);
           const dataWithoutExperimentalStrategy = dataTypeFileIdBuckets.map(
             ({ dataType, fileIdBuckets }) => {
               const fileIdsWithExperimentalStrategy = _(dataWithExperimentalStrategyFilter)
