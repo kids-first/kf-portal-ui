@@ -194,8 +194,6 @@ class SurvivalChart extends React.Component {
       isLoading: true,
       data: {},
     };
-    this.handleMouseEnterDonors = this.handleMouseEnterDonors.bind(this);
-    this.handleMouseLeaveDonors = this.handleMouseLeaveDonors.bind(this);
   }
 
   queryCacheMap = {};
@@ -248,6 +246,7 @@ class SurvivalChart extends React.Component {
   }
 
   handleMouseEnterDonors = (event, donors) => {
+    console.log('handleMouseEnterDonors');
     this.setState({
       tooltip: {
         ...this.state.tooltip,
@@ -260,6 +259,7 @@ class SurvivalChart extends React.Component {
   };
 
   handleMouseLeaveDonors = () => {
+    console.log('handleMouseLeaveDonors');
     this.setState({
       tooltip: {
         ...this.state.tooltip,
