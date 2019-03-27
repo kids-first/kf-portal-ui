@@ -6,8 +6,8 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
-import { debounce } from 'lodash';
-
+import { debounce, isObject, mapKeys, transform, isEqual } from 'lodash';
+import {SQONdiff} from '../../Utils'
 import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
 import { withApi } from 'services/api';
@@ -206,13 +206,13 @@ class SearchAll extends React.Component {
   }
 
   setQueryDebounced(state) {
+    this.setState(state);
+
     trackCohortBuilderAction({
-      category: TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters,
-      action: `${TRACKING_EVENTS.actions.search} All Filters`,
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
+      action: state.debouncedQuery !== '' ? TRACKING_EVENTS.actions.search : TRACKING_EVENTS.actions.clear,
       label: state.debouncedQuery,
     });
-
-    this.setState(state);
   }
 
   handleQueryChange(evt) {
