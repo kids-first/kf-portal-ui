@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import _, { get, sortBy, sumBy, uniqBy, differenceBy } from 'lodash';
-import gql from 'graphql-tag';
+import _, { get, sortBy, sumBy, differenceBy } from 'lodash';
 
 import { CohortCard } from '../ui';
 import BaseDataTable from 'uikit/DataTable';
@@ -13,7 +12,7 @@ import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';
 import { createFileRepoLink } from '../../util';
-import { toFileBreakdownQueries, toFileSqon } from './queries';
+import { toFileBreakdownQueries, toFileIdsByDataTypeQuery } from './queries';
 import QueriesResolver from '../../QueriesResolver';
 
 const EXP_MISSING = '__missing__';
@@ -78,34 +77,13 @@ const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, sqon }) =
   <QueriesResolver
     name="GQL_FILE_BREAKDOWN_1"
     api={api}
-    queries={uniqBy(dataTypesExpStratPairs, 'dataType').map(({ dataType }) => ({
-      query: gql`
-        query($sqon: JSON, $dataType: String) {
-          file {
-            aggregations(
-              aggregations_filter_themselves: true
-              filters: {
-                op: "and"
-                content: [$sqon, { op: "in", content: { field: "data_type", value: [$dataType] } }]
-              }
-            ) {
-              kf_id {
-                buckets {
-                  key
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: { dataType, sqon: toFileSqon(sqon) },
-      transform: ({ data }) => {
-        const fileIdBuckets = get(data, 'file.aggregations.kf_id.buckets', []);
-        return { dataType, fileIdBuckets };
-      },
-    }))}
+    queries={_(dataTypesExpStratPairs)
+      .uniqBy('dataType')
+      .map('dataType')
+      .map(toFileIdsByDataTypeQuery(sqon))
+      .value()}
   >
-    {({ data: dataTypeFileIdBuckets, isLoading: isLoadingStuff }) => (
+    {({ data: dataTypeFileIdBuckets, isLoading: isQuery1Loading }) => (
       <QueriesResolver
         name="GQL_FILE_BREAKDOWN_2"
         api={api}
@@ -136,7 +114,7 @@ const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, sqon }) =
             data: dataWithExperimentalStrategyFilter
               .concat(dataWithoutExperimentalStrategy)
               .filter(({ filesCount }) => !!filesCount),
-            isLoading: isLoading || isLoadingStuff,
+            isLoading: isLoading || isQuery1Loading,
           });
         }}
       </QueriesResolver>

@@ -60,6 +60,33 @@ export const dataTypesExpStratPairsQuery = participantSqon => ({
   },
 });
 
+export const toFileIdsByDataTypeQuery = sqon => dataType => ({
+  query: gql`
+    query($sqon: JSON, $dataType: String) {
+      file {
+        aggregations(
+          aggregations_filter_themselves: true
+          filters: {
+            op: "and"
+            content: [$sqon, { op: "in", content: { field: "data_type", value: [$dataType] } }]
+          }
+        ) {
+          kf_id {
+            buckets {
+              key
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: { dataType, sqon: toFileSqon(sqon) },
+  transform: ({ data }) => {
+    const fileIdBuckets = get(data, 'file.aggregations.kf_id.buckets', []);
+    return { dataType, fileIdBuckets };
+  },
+});
+
 export const toFileBreakdownQueries = participantSqon => ({ dataType, experimentalStrategy }) => ({
   query: gql`
     query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
