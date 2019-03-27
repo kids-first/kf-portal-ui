@@ -2,16 +2,18 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
+import _, { get, sortBy, sumBy, uniqBy, differenceBy } from 'lodash';
+import gql from 'graphql-tag';
+
 import { CohortCard } from '../ui';
 import BaseDataTable from 'uikit/DataTable';
-import { get, sortBy, sumBy } from 'lodash';
 import { withApi } from 'services/api';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';
 import { createFileRepoLink } from '../../util';
-import { toFileBreakdownQueries } from './queries';
+import { toFileBreakdownQueries, toFileSqon } from './queries';
 import QueriesResolver from '../../QueriesResolver';
 
 const EXP_MISSING = '__missing__';
@@ -72,6 +74,79 @@ const generateFileColumnContents = (dataset, loggedInUser, api) =>
     ),
   }));
 
+const DataProvider = withApi(({ api, children, dataTypesExpStratPairs, sqon }) => (
+  <QueriesResolver
+    name="GQL_FILE_BREAKDOWN_1"
+    api={api}
+    queries={uniqBy(dataTypesExpStratPairs, 'dataType').map(({ dataType }) => ({
+      query: gql`
+        query($sqon: JSON, $dataType: String) {
+          file {
+            aggregations(
+              aggregations_filter_themselves: true
+              filters: {
+                op: "and"
+                content: [$sqon, { op: "in", content: { field: "data_type", value: [$dataType] } }]
+              }
+            ) {
+              kf_id {
+                buckets {
+                  key
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: { dataType, sqon: toFileSqon(sqon) },
+      transform: ({ data }) => {
+        const fileIdBuckets = get(data, 'file.aggregations.kf_id.buckets', []);
+        return { dataType, fileIdBuckets };
+      },
+    }))}
+  >
+    {({ data: dataTypeFileIdBuckets, isLoading: isLoadingStuff }) => (
+      <QueriesResolver
+        name="GQL_FILE_BREAKDOWN_2"
+        api={api}
+        queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
+      >
+        {({ data: dataWithExperimentalStrategyFilter, isLoading }) => {
+          console.log('================');
+          console.log('dataTpeFileIdBuckets: ', dataTypeFileIdBuckets);
+          console.log('data: ', dataWithExperimentalStrategyFilter);
+          const dataWithoutExperimentalStrategy = dataTypeFileIdBuckets.map(
+            ({ dataType, fileIdBuckets }) => {
+              const fileIdsWithExperimentalStrategy = _(dataWithExperimentalStrategyFilter)
+                .filter(({ dataType: _dt }) => _dt === dataType)
+                .map(({ files }) => files)
+                .flatten()
+                .value();
+              const filesWithoutExperimentalStrategy = differenceBy(
+                fileIdBuckets,
+                fileIdsWithExperimentalStrategy,
+                'key',
+              );
+              return {
+                dataType,
+                experimentalStrategy: '--',
+                files: filesWithoutExperimentalStrategy,
+                filesCount: filesWithoutExperimentalStrategy.length,
+              };
+            },
+          );
+          return children({
+            data: dataWithExperimentalStrategyFilter
+              .concat(dataWithoutExperimentalStrategy)
+              .filter(({ filesCount }) => !!filesCount),
+            isLoading: isLoading || isLoadingStuff,
+          });
+        }}
+      </QueriesResolver>
+    )}
+  </QueriesResolver>
+));
+
 const FileBreakdown = ({
   dataTypesExpStratPairs,
   sqon,
@@ -79,11 +154,7 @@ const FileBreakdown = ({
   api,
   isLoading: isParentLoading,
 }) => (
-  <QueriesResolver
-    name="GQL_FILE_BREAKDOWN_1"
-    api={api}
-    queries={dataTypesExpStratPairs.map(toFileBreakdownQueries(sqon))}
-  >
+  <DataProvider dataTypesExpStratPairs={dataTypesExpStratPairs} sqon={sqon}>
     {({ data, isLoading }) => {
       const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
       const tableEntries = isLoading
@@ -134,7 +205,7 @@ const FileBreakdown = ({
         </CohortCard>
       );
     }}
-  </QueriesResolver>
+  </DataProvider>
 );
 
 export { dataTypesExpStratPairsQuery } from './queries';

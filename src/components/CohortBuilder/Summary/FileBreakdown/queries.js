@@ -1,17 +1,33 @@
 import gql from 'graphql-tag';
 import { get, flatten } from 'lodash';
 
-export const dataTypesExpStratPairsQuery = sqon => ({
+export const toFileSqon = participantSqon => {
+  const { content } = participantSqon;
+  const FILE_PREFIX = 'files';
+  const PARTICIPANT_PREFIC = 'participants';
+  if (Array.isArray(content)) {
+    return { ...participantSqon, content: content.map(toFileSqon) };
+  } else {
+    const { field } = content;
+    const transposedFieldName =
+      field.indexOf(`${FILE_PREFIX}.`) === 0
+        ? field.split(`${FILE_PREFIX}.`).join('')
+        : `${PARTICIPANT_PREFIC}.${field}`;
+    return { ...participantSqon, content: { ...content, field: transposedFieldName } };
+  }
+};
+
+export const dataTypesExpStratPairsQuery = participantSqon => ({
   query: gql`
     query FileBreakdownQuery($sqon: JSON) {
-      participant {
+      file {
         aggregations(aggregations_filter_themselves: true, include_missing: true, filters: $sqon) {
-          files__sequencing_experiments__experiment_strategy {
+          sequencing_experiments__experiment_strategy {
             buckets {
               key
             }
           }
-          files__data_type {
+          data_type {
             buckets {
               key
             }
@@ -20,15 +36,15 @@ export const dataTypesExpStratPairsQuery = sqon => ({
       }
     }
   `,
-  variables: { sqon },
+  variables: { sqon: toFileSqon(participantSqon) },
   transform: data => {
     const experimentStrategies = get(
       data,
-      'data.participant.aggregations.files__sequencing_experiments__experiment_strategy.buckets',
+      'data.file.aggregations.sequencing_experiments__experiment_strategy.buckets',
       [],
     ).map(bucket => bucket.key);
 
-    const dataTypes = get(data, 'data.participant.aggregations.files__data_type.buckets').map(
+    const dataTypes = get(data, 'data.file.aggregations.data_type.buckets').map(
       bucket => bucket.key,
     );
 
@@ -44,10 +60,10 @@ export const dataTypesExpStratPairsQuery = sqon => ({
   },
 });
 
-export const toFileBreakdownQueries = sqon => ({ dataType, experimentalStrategy }) => ({
+export const toFileBreakdownQueries = participantSqon => ({ dataType, experimentalStrategy }) => ({
   query: gql`
     query($sqon: JSON, $dataType: String, $experimentalStrategy: String) {
-      participant {
+      file {
         aggregations(
           aggregations_filter_themselves: true
           include_missing: true
@@ -58,17 +74,16 @@ export const toFileBreakdownQueries = sqon => ({ dataType, experimentalStrategy 
               {
                 op: "in"
                 content: {
-                  field: "files.sequencing_experiments.experiment_strategy"
+                  field: "sequencing_experiments.experiment_strategy"
                   value: [$experimentalStrategy]
                 }
               }
-              { op: "in", content: { field: "files.data_type", value: [$dataType] } }
+              { op: "in", content: { field: "data_type", value: [$dataType] } }
             ]
           }
         ) {
-          files__kf_id {
+          kf_id {
             buckets {
-              doc_count
               key
             }
           }
@@ -76,9 +91,9 @@ export const toFileBreakdownQueries = sqon => ({ dataType, experimentalStrategy 
       }
     }
   `,
-  variables: { sqon, dataType, experimentalStrategy },
+  variables: { sqon: toFileSqon(participantSqon), dataType, experimentalStrategy },
   transform: data => {
-    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []);
+    const files = get(data, 'data.file.aggregations.kf_id.buckets', []);
 
     return { dataType, experimentalStrategy, files, filesCount: files.length };
   },
