@@ -21,6 +21,7 @@ import RemoveFromCohortButton from './RemoveFromCohortButton';
 
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
+import { SORTABLE_FIELDS_MAPPING } from './queries';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -188,6 +189,10 @@ class ParticipantsTable extends Component {
     this.state = {
       columns: configureCols(
         participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected, this.dirtyHack),
+      ).map(field =>
+        field.sortable !== false && SORTABLE_FIELDS_MAPPING.has(field.accessor)
+          ? { ...field, sortable: true }
+          : { ...field, sortable: false },
       ),
     };
   }

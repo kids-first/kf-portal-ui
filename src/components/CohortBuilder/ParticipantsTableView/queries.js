@@ -1,11 +1,20 @@
 import { get } from 'lodash';
 import gql from 'graphql-tag';
 
-export const participantsQuery = (sqon, pageSize = 20, pageIndex = 0) => ({
+export const SORTABLE_FIELDS_MAPPING = new Map([
+  ['participantId', 'kf_id'],
+  ['studyName', 'study.short_name'],
+  ['isProband', 'is_proband'],
+  ['vitalStatus', 'outcome.vital_status'],
+  ['gender', 'gender'],
+  ['familyId', 'family_id'],
+]);
+
+export const participantsQuery = (sqon, sort, pageSize = 20, pageIndex = 0) => ({
   query: gql`
-    query($sqon: JSON, $pageSize: Int, $offset: Int) {
+    query($sqon: JSON, $pageSize: Int, $offset: Int, $sort: [Sort]) {
       participant {
-        hits(first: $pageSize, offset: $offset, filters: $sqon) {
+        hits(first: $pageSize, offset: $offset, filters: $sqon, sort: $sort) {
           total
           edges {
             node {
@@ -54,7 +63,7 @@ export const participantsQuery = (sqon, pageSize = 20, pageIndex = 0) => ({
       }
     }
   `,
-  variables: { sqon, pageSize, offset: pageSize * pageIndex },
+  variables: { sqon, pageSize, offset: pageSize * pageIndex, sort },
   transform: data => {
     const participants = get(data, 'data.participant.hits.edges');
     const total = get(data, 'data.participant.hits.total');
