@@ -35,6 +35,9 @@ export const TRACKING_EVENTS = {
       dataTable: 'File Repo: Data Table',
       actionsSidebar: 'File Repo: Actions Sidebar',
     },
+    cohortBuilder:{
+      'sqonBuilder':"Cohort Builder: SQON Builder"
+    },
     integration: {
       cavatica: 'Integration: Cavatica',
     },
