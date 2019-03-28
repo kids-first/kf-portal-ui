@@ -24,6 +24,7 @@ class ControlledDataTable extends Component {
       transforms = [],
       className = '',
       columns,
+      striped = true,
     } = this.props;
     const { pageSize } = this.state;
     const totalRows = dataTotalCount > -1 ? dataTotalCount : data ? data.length : 0;
@@ -46,7 +47,7 @@ class ControlledDataTable extends Component {
             onFetchData(state);
           }}
           PaginationComponent={CustomPagination}
-          className={className}
+          className={`${className} ${striped ? '-striped' : ''}`}
           minRows={1} // hide empty rows
         />
       </StyleWrapper>
