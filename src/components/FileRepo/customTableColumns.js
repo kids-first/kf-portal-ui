@@ -18,7 +18,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 const DownloadColumnCellContent = compose(
   withApi,
   withTheme,
-)(({ value, api, theme, userProjectIds, loadingGen3User }) => (
+)(({ value, api, theme, userProjectIds, fenceStudiesInitialized }) => (
   <Component
     initialState={{ shouldFetch: true }}
     didUpdate={({ state, setState, props, prevProps }) => {
@@ -90,7 +90,7 @@ const DownloadColumnCellContent = compose(
                     <ControlledIcon fill={theme.primary} />
                   </Tooltip>
                 )
-              ) : loadingQuery || loadingGen3User ? (
+              ) : loadingQuery || fetchedFenceStudies ? (
                 <TableSpinner style={{ width: 15, height: 15 }} />
               ) : (
                 <ControlledIcon fill={theme.primary} />
@@ -103,7 +103,7 @@ const DownloadColumnCellContent = compose(
   </Component>
 ));
 
-export default ({ theme, userProjectIds, loadingGen3User }) => [
+export default ({ theme, userProjectIds, fenceStudiesInitialized }) => [
   {
     index: 0,
     content: {
@@ -121,7 +121,7 @@ export default ({ theme, userProjectIds, loadingGen3User }) => [
         <DownloadColumnCellContent
           {...props}
           userProjectIds={userProjectIds}
-          loadingGen3User={loadingGen3User}
+          fenceStudiesInitialized={fenceStudiesInitialized}
         />
       ),
       width: 40,
