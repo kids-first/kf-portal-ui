@@ -8,6 +8,7 @@ import { CohortCard } from './ui';
 import { withApi } from 'services/api';
 import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
+import CardContent from 'uikit/Card/CardContent';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -136,6 +137,10 @@ class SurvivalPlot extends React.Component {
   }
 }
 
+const SurvivalCardContent = styled(CardContent)`
+  overflow: visible;
+`;
+
 const SurvivalChartHeader = styled('div')`
   margin-top: -10px;
   padding: 4px 0 4px 8px;
@@ -247,7 +252,6 @@ class SurvivalChart extends React.Component {
   }
 
   handleMouseEnterDonors = (event, donors) => {
-    console.log('event', event);
     this.setState(prevState => ({
       tooltip: {
         ...prevState.tooltip,
@@ -283,7 +287,11 @@ class SurvivalChart extends React.Component {
     };
 
     return (
-      <CohortCard title="Overall Survival" loading={this.state.isLoading}>
+      <CohortCard
+        Content={SurvivalCardContent}
+        title="Overall Survival"
+        loading={this.state.isLoading}
+      >
         <SurvivalChartWrapper>
           <SurvivalChartHeader>
             Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
