@@ -206,8 +206,9 @@ class SurvivalChart extends React.Component {
       } else {
         fetchSurvivalData(api)(sqon)
           .then(data => {
-            this.queryCacheMap[hash] = data;
-            resolve(data);
+            const formattedData = formatDataset(data);
+            this.queryCacheMap[hash] = formattedData;
+            resolve(formattedData);
           })
           .catch(err => reject(err));
       }
