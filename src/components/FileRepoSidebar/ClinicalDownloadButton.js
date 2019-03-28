@@ -71,10 +71,11 @@ const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon
   );
 });
 
-const participantDownloader = ({ api, sqon, columnState }) => async () => {
+const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
   const { participantIds } = await familyMemberAndParticipantIds({
     api,
     sqon,
+    isFileRepo,
   });
   let downloadConfig = {
     sqon: {
@@ -85,6 +86,7 @@ const participantDownloader = ({ api, sqon, columnState }) => async () => {
       },
     },
     columns: columnState.columns,
+    isFileRepo: isFileRepo,
   };
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
@@ -95,10 +97,11 @@ const participantDownloader = ({ api, sqon, columnState }) => async () => {
   return downloader();
 };
 
-const familyDownloader = ({ api, sqon, columnState }) => async () => {
+const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
   const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
     api,
     sqon,
+    isFileRepo,
   });
   let downloadConfig = {
     sqon: {
@@ -109,6 +112,7 @@ const familyDownloader = ({ api, sqon, columnState }) => async () => {
       },
     },
     columns: columnState.columns,
+    isFileRepo: isFileRepo,
   };
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
@@ -123,14 +127,19 @@ export default compose(
   withApi,
   injectState,
 )(props => {
-  const { api, sqon, projectId } = props;
+  const { api, sqon, projectId, isFileRepo } = props;
   return (
     <ColumnsState
       projectId={projectId}
       graphqlField="participant"
       render={({ state: columnState }) => {
-        const participantDownload = participantDownloader({ api, sqon, columnState });
-        const participantAndFamilyDownload = familyDownloader({ api, sqon, columnState });
+        const participantDownload = participantDownloader({ api, sqon, columnState, isFileRepo });
+        const participantAndFamilyDownload = familyDownloader({
+          api,
+          sqon,
+          columnState,
+          isFileRepo,
+        });
         return (
           <Component initialState={{ isDownloading: false }}>
             {({ state: { isDownloading }, setState: setDownloadingState }) => (
@@ -181,7 +190,7 @@ export default compose(
                               <OptionRow disabled>
                                 Participant and family
                                 {isLoading ? null : (
-                                  <Tooltip>No file was found for family members</Tooltip>
+                                  <Tooltip>No report available for additional family members.</Tooltip>
                                 )}
                               </OptionRow>
                             )

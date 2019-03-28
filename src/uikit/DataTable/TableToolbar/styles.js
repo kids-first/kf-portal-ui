@@ -18,15 +18,50 @@ export const PaginationStatus = applyDefaultStyles(styled('div')`
   color: ${({ theme }) => theme.greyScale9};
 `);
 
-export const ToolbarGroup = applyDefaultStyles(styled(Row)`
-  border: 1px solid ${({ theme }) => theme.borderGrey};
-  border-radius: 10px;
+export const ToolbarGroup = applyDefaultStyles(
+  styled(Row)`
+    border: 1px solid ${({ theme }) => theme.borderGrey};
+    border-radius: 10px;
 
-  > div {
-    border-right: 1px solid ${({ theme }) => theme.borderGrey};
-  }
+    > div {
+      border-right: 1px solid ${({ theme }) => theme.borderGrey};
+    }
 
-  > div:last-child {
+    ${({ borderless = false }) => (borderless ? 'border: none;' : '')};
+
+    > div:last-child {
+      border: none;
+    }
+  `,
+);
+
+export const ToolbarSelectionCount = styled('div')`
+  color: ${({ theme }) => theme.greyScale9};
+
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border: none;
+
+  .clearSelection {
+    font-family: ${({ theme }) => theme.fonts.details};
+    color: ${({ theme }) => theme.primary};
     border: none;
+    background: transparent;
+    text-decoration: underline;
+    cursor: pointer;
   }
-`);
+  .clearSelection:hover,
+  .clearSelection:visited {
+    color: ${({ theme }) => theme.hover};
+  }
+  .clearSelection:active {
+    color: ${({ theme }) => theme.highlight};
+  }
+`;
+
+export const ToolbarDownload = styled('div')`
+  position: absolute;
+  right: 220px;
+  padding-bottom: 4px;
+`;

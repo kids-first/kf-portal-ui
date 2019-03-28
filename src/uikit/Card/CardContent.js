@@ -32,7 +32,7 @@ const isScrolledToBottom = domElement => {
   return scrollTop + offsetHeight >= scrollHeight;
 };
 
-const CardContent = ({ children, scrollable = false, showsContentFader = true }) => {
+const CardContent = ({ children, scrollable = false, showsContentFader = true, className }) => {
   const initialState = { isAtBottom: !scrollable };
   const scrollContainerRef = React.createRef();
   const didMount = ({ setState }) => {
@@ -43,7 +43,7 @@ const CardContent = ({ children, scrollable = false, showsContentFader = true })
   return (
     <Component initialState={initialState} didMount={didMount}>
       {({ state }) => (
-        <Content>
+        <Content className={className}>
           <ScrollContainer innerRef={scrollContainerRef} scrollable={scrollable}>
             {children}
           </ScrollContainer>

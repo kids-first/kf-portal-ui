@@ -7,25 +7,13 @@ import { defaultTheme } from '../themes';
 import Legend from './Legend';
 import Tooltip from './Tooltip';
 import { truncateText } from '../utils';
+import { TextBugWrapper } from '../styles';
 import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const HorizontalBarWrapper = styled('div')`
-  height: 90%;
-`;
-
-/**
- * Ref: https://github.com/kids-first/kf-portal-ui/pull/1006
- * IE, FF and Chrome all deal with svg text alignment differently
- * Nivo uses alignment-baseline which FF does not support
- * TextBugWrapper provides FF with correct attribute
- */
-const TextBugWrapper = styled('div')`
-  width: 100%;
   height: 100%;
-  & text {
-    dominant-baseline: ${({ baseline }) => baseline};
-  }
+  width: 100%;
 `;
 
 class HorizontalBar extends Component {
@@ -36,14 +24,12 @@ class HorizontalBar extends Component {
       highlightedIndexValue: null,
     };
 
-    const { data, sortBy, tickInterval } = props;
+    const { tickInterval } = props;
 
     // const maxValue = getChartMaxValue(data, keys);
     this.maxValue = tickInterval ? this.maxValue : 'auto';
 
     this.tickValues = tickInterval;
-
-    this.data = data.filter(x => x).sort(sortBy);
 
     this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -52,7 +38,8 @@ class HorizontalBar extends Component {
   }
 
   onMouseEnter(data, e) {
-    e.target.style.cursor = 'pointer';
+    const { showCursor = true } = this.props;
+    e.target.style.cursor = showCursor ? 'pointer' : 'default';
 
     if (data) {
       const { index, indexValue } = data;
@@ -68,7 +55,10 @@ class HorizontalBar extends Component {
   }
 
   onMouseLeave(data, e) {
-    //   e.target.style.cursor = 'default';
+    const target = e ? e.target : false;
+    if (target) {
+      target.style.cursor = 'default';
+    }
     this.setState({ highlightedIndex: null, highlightedIndexValue: null });
   }
 
@@ -95,7 +85,7 @@ class HorizontalBar extends Component {
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
     const onLabelClick = tick => {
-      const data = this.data.find(d => d.label === tick.value);
+      const data = this.props.data.find(d => d.label === tick.value);
       if (data) {
         onClick({ data });
       }
@@ -123,10 +113,19 @@ class HorizontalBar extends Component {
   }
 
   render() {
-    const { keys, colors, legends, indexBy = 'id', height, tooltipFormatter } = this.props;
+    const {
+      data = [],
+      sortBy = () => 1,
+      keys,
+      colors,
+      legends,
+      indexBy = 'id',
+      height,
+      tooltipFormatter,
+    } = this.props;
 
     const chartData = {
-      data: this.data,
+      data: data.filter(x => x).sort(sortBy),
       keys: keys,
       indexBy: indexBy,
       onMouseEnter: this.onMouseEnter,
@@ -134,8 +133,8 @@ class HorizontalBar extends Component {
       onClick: this.onClick,
       margin: {
         top: 0,
-        right: 8,
-        bottom: 70,
+        right: 10,
+        bottom: 60,
         left: 160,
       },
       padding: this.props.padding ? this.props.padding : 0.3,

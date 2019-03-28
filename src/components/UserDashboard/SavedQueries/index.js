@@ -77,7 +77,7 @@ export const MySavedQueries = compose(
             ) : (
               <Box mt={2} mb={2}>
                 {queries
-                  .filter(q => q.alias)
+                  .filter(q => q.alias && q.content.Files)
                   .map(q => ({
                     ...q,
                     date: Number(new Date(q.creationDate)),

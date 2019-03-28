@@ -38,6 +38,7 @@ import {
   TableSpinnerWrapper,
   TableSpinner,
   cavaticaCopyButtonStyle,
+  SaveShareButtonContainer,
 } from './ui';
 import customTableColumns from './customTableColumns';
 
@@ -82,10 +83,10 @@ const TableHeaderContent = ({ sqon, disabled, ...props }) => {
           hideTitle
           html={<Row>Please select files in the table for this action.</Row>}
         >
-          <DownloadButton sqon={sqon} {...props} />
+          <DownloadButton sqon={sqon} {...props} isFileRepo={true} />
         </Tooltip>
       ) : (
-        <DownloadButton sqon={sqon} {...props} />
+        <DownloadButton sqon={sqon} {...props} isFileRepo={true} />
       )}
     </Row>
   );
@@ -171,8 +172,20 @@ const FileRepo = compose(
                                 {...url}
                                 render={({ data: stats, loading: disabled }) => (
                                   <QuerySharingContainer>
-                                    <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
-                                    <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                    <SaveShareButtonContainer>
+                                      <ShareQuery
+                                        api={props.api}
+                                        {...url}
+                                        {...{ stats, disabled }}
+                                      />
+                                    </SaveShareButtonContainer>
+                                    <SaveShareButtonContainer>
+                                      <SaveQuery
+                                        api={props.api}
+                                        {...url}
+                                        {...{ stats, disabled }}
+                                      />
+                                    </SaveShareButtonContainer>
                                   </QuerySharingContainer>
                                 )}
                               />
