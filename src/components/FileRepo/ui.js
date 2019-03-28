@@ -26,6 +26,11 @@ const arrangerValueText = css`
   font-size: 13px;
 `;
 
+export const SaveShareButtonContainer = styled(Row)`
+  ${({ theme }) => theme.center};
+  padding: 10px 5px;
+`;
+
 export const ArrangerContainer = styled(Row)`
   min-height: calc(100vh - 56px);
 

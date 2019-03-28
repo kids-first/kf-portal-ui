@@ -25,6 +25,7 @@ export const DropdownLabelContainer = styled(Row)`
   cursor: pointer;
   flex-grow: 1;
   height: 100%;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
 `;
@@ -82,3 +83,5 @@ export const DropdownArrowIcon = styled(ChevronIcon)`
     fill: '#e83a9c';
   }
 `;
+
+export const DropdownExpandedContainer = styled('div')``;

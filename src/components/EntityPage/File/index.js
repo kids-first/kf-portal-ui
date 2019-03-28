@@ -12,6 +12,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { kfWebRoot } from 'common/injectGlobals';
+import { GEN3 } from 'common/constants';
 
 import {
   EntityTitleBar,
@@ -69,10 +70,6 @@ const fileQuery = `query ($sqon: JSON) {
           modified_at
           reference_genome
           size
-          instrument_models
-          experiment_strategies 
-          is_paired_end
-          platforms
           sequencing_experiments {
             hits {
               edges {
@@ -405,7 +402,8 @@ const enhance = compose(
   lifecycle({
     async componentDidMount() {
       const { api, fileId, setPageLoading, setUserFilePermission } = this.props;
-      const hasFilePermission = await checkUserFilePermission(api)({ fileId });
+      // TODO: Need to update this to check all fences
+      const hasFilePermission = await checkUserFilePermission(api)({ fileId, fence: GEN3 });
       setUserFilePermission(hasFilePermission);
       setPageLoading(false);
     },

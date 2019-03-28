@@ -36,7 +36,7 @@ const InfoBox = ({ value, description }) => (
 );
 
 InfoBox.propTypes = {
-  value: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   description: PropTypes.string.isRequired,
 };
 

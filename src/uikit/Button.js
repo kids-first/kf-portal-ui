@@ -55,7 +55,7 @@ export default Button;
 const BaseButtonWithIcon = ({ theme, disabled }) => css`
   color: ${theme.white};
   text-align: center;
-  cursor: ${disabled => (disabled ? 'default' : 'pointer')};
+  cursor: ${disabled ? 'default' : 'pointer'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,6 +68,15 @@ const BaseButtonWithIcon = ({ theme, disabled }) => css`
   padding: 8px 10px;
   border-radius: 15px;
   box-shadow: none;
+`;
+
+export const disabledButtonStyles = ({ theme }) => css`
+  background-color: ${theme.backgroundGrey};
+  color: ${theme.borderGrey};
+  &:hover:disabled {
+    background-color: ${theme.backgroundGrey};
+  }
+  cursor: not-allowed;
 `;
 
 export const WhiteButton = applyDefaultStyles(styled('button')`
@@ -98,6 +107,9 @@ export const WhiteButton = applyDefaultStyles(styled('button')`
       color: ${({ theme }) => theme.white};
     }
   }
+  &:disabled {
+    ${disabledButtonStyles}
+  }
 `);
 
 export const TealActionButton = applyDefaultStyles(styled('button')`
@@ -121,13 +133,4 @@ export const LargeTealActionButton = styled(TealActionButton)`
   padding: 13px 25px;
   font-size: 14px;
   border-radius: 18px;
-`;
-
-export const disabledButtonStyles = ({ theme }) => css`
-  background-color: ${theme.backgroundGrey};
-  color: ${theme.borderGrey};
-  &:hover:disabled {
-    background-color: ${theme.backgroundGrey};
-  }
-  cursor: not-allowed;
 `;

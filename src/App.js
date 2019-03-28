@@ -17,6 +17,7 @@ import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
 import FileEntity from './components/EntityPage/File';
 import ParticipantEntity from './components/EntityPage/Participant';
+import CohortBuilder from './components/CohortBuilder';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
@@ -24,6 +25,7 @@ import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import { isAdminToken, validateJWT } from 'components/Login';
+import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
 import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
@@ -32,7 +34,7 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { Gen3AuthRedirect } from 'services/gen3';
+import { DCF, GEN3 } from 'common/constants';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -92,6 +94,20 @@ const App = compose(
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
+        <Route
+          path="/virtualStudies"
+          exact
+          render={props =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: CohortBuilder,
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
+        />
         <Route
           path="/file/:fileId"
           exact
@@ -193,7 +209,8 @@ const App = compose(
             />
           )}
         />
-        <Route path="/gen3_redirect" exact render={Gen3AuthRedirect} />
+        <Route path="/gen3_redirect" exact render={props => <FenceAuthRedirect fence={GEN3} />} />
+        <Route path="/dcf_redirect" exact render={props => <FenceAuthRedirect fence={DCF} />} />
         <Route path="/error" exact render={props => <Error {...props} />} />
         <Redirect from="*" to="/dashboard" />
       </Switch>

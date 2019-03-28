@@ -38,7 +38,7 @@ const FileManifestsDownloadButton = compose(injectState)(({ effects: { setModal 
   />
 ));
 
-const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
+const BioSpecimentDownloadButton = ({ sqon, projectId, isFileRepo, ...props }) => (
   <ColumnsState
     projectId={projectId}
     graphqlField="participant"
@@ -46,7 +46,7 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, ...props }) => (
       <DownloadButton
         content={() => <Trans>BioSpecimen</Trans>}
         onClick={() => {
-          let downloadConfig = { sqon, columns: state.columns };
+          let downloadConfig = { sqon, columns: state.columns, isFileRepo };
           trackUserInteraction({
             category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
             action: TRACKING_EVENTS.actions.download.report,
@@ -110,8 +110,8 @@ const FileRepoSidebar = compose(
             </H3>
             <DownloadButtonsContainer>
               <FileManifestsDownloadButton {...props} />
-              <BioSpecimentDownloadButton {...props} />
-              <ClinicalDownloadButton {...props} />
+              <BioSpecimentDownloadButton {...props} isFileRepo={true} />
+              <ClinicalDownloadButton {...props} isFileRepo={true} />
             </DownloadButtonsContainer>
           </Section>
         </Content>

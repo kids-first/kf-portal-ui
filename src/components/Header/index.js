@@ -6,6 +6,8 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
+// import styled from 'react-emotion';
+// import ExploreDataIcon from 'icons/ExploreDataIcon';
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
@@ -28,6 +30,26 @@ import {
   MenuLabelContainer,
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
+
+/**
+ * These comments are taken out for now in preparation for cohort builder release
+ */
+
+// const ExploreDataIconStyled = styled(ExploreDataIcon)`
+//   top: 3px;
+//   position: relative;
+//   fill: currentColor;
+// `;
+
+// const BetaNavLink = styled(NavLink)`
+//   &:after {
+//     content: 'beta';
+//     vertical-align: super;
+//     font-size: 9px;
+//     text-transform: uppercase;
+//     padding-left: 3px;
+//   }
+// `;
 
 const Header = ({
   state: { loggedInUser },
@@ -62,6 +84,11 @@ const Header = ({
                       <HouseIcon /> <Trans>Dashboard</Trans>
                     </NavLink>
                   </li>
+                  {/* <li>
+                    <BetaNavLink currentPathName={currentPathName} to="/virtualStudies">
+                      <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
+                    </BetaNavLink>
+                  </li> */}
                   <li>
                     <NavLink currentPathName={currentPathName} to={`/search/file`}>
                       <DatabaseIcon /> <Trans>File Repository</Trans>
@@ -87,53 +114,52 @@ const Header = ({
 
               <AppsMenu />
 
-              {loggedInUser &&
-                canSeeProtectedRoutes && (
-                  <Dropdown
-                    align="left"
-                    isOpen={isDropdownVisible}
-                    onToggle={toggleDropdown}
-                    onOuterClick={() => setDropdownVisibility(false)}
-                    items={[
-                      <DropdownLink
-                        onClick={toggleDropdown}
-                        to={`/user/${loggedInUser.egoId}#aboutMe`}
-                      >
-                        <Trans>My Profile</Trans>
-                      </DropdownLink>,
-                      <DropdownLink
-                        onClick={toggleDropdown}
-                        to={`/user/${loggedInUser.egoId}#settings`}
-                      >
-                        Settings
-                      </DropdownLink>,
-                      <DropdownLink
-                        to={`/dashboard`}
-                        separated
-                        onClick={e => {
-                          e.preventDefault();
-                          toggleDropdown();
-                          uiLogout({
-                            history,
-                            setToken,
-                            setUser,
-                            clearIntegrationTokens,
-                            api,
-                          });
-                        }}
-                      >
-                        <Trans>Logout</Trans>
-                      </DropdownLink>,
-                    ]}
-                    ItemWrapperComponent={props => <Fragment {...props} />}
-                    ContainerComponent={NavbarDropdownWrapper}
-                    OptionsContainerComponent={NavbarDropdownOptionsContainer}
-                    LabelContainer={MenuLabelContainer}
-                  >
-                    <NavigationGravatar email={loggedInUser.email || ''} size={39} />
-                    <DropdownRow>{loggedInUser.firstName}</DropdownRow>
-                  </Dropdown>
-                )}
+              {loggedInUser && canSeeProtectedRoutes && (
+                <Dropdown
+                  align="left"
+                  isOpen={isDropdownVisible}
+                  onToggle={toggleDropdown}
+                  onOuterClick={() => setDropdownVisibility(false)}
+                  items={[
+                    <DropdownLink
+                      onClick={toggleDropdown}
+                      to={`/user/${loggedInUser.egoId}#aboutMe`}
+                    >
+                      <Trans>My Profile</Trans>
+                    </DropdownLink>,
+                    <DropdownLink
+                      onClick={toggleDropdown}
+                      to={`/user/${loggedInUser.egoId}#settings`}
+                    >
+                      Settings
+                    </DropdownLink>,
+                    <DropdownLink
+                      to={`/dashboard`}
+                      separated
+                      onClick={e => {
+                        e.preventDefault();
+                        toggleDropdown();
+                        uiLogout({
+                          history,
+                          setToken,
+                          setUser,
+                          clearIntegrationTokens,
+                          api,
+                        });
+                      }}
+                    >
+                      <Trans>Logout</Trans>
+                    </DropdownLink>,
+                  ]}
+                  ItemWrapperComponent={props => <Fragment {...props} />}
+                  ContainerComponent={NavbarDropdownWrapper}
+                  OptionsContainerComponent={NavbarDropdownOptionsContainer}
+                  LabelContainer={MenuLabelContainer}
+                >
+                  <NavigationGravatar email={loggedInUser.email || ''} size={39} />
+                  <DropdownRow>{loggedInUser.firstName}</DropdownRow>
+                </Dropdown>
+              )}
             </NavBarList>
           </HeaderContent>
         </HeaderContainer>
@@ -142,4 +168,9 @@ const Header = ({
   );
 };
 
-export default compose(injectState, withTheme, withRouter, withApi)(Header);
+export default compose(
+  injectState,
+  withTheme,
+  withRouter,
+  withApi,
+)(Header);

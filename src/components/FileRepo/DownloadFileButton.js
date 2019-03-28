@@ -10,7 +10,7 @@ import DownloadIcon from 'icons/DownloadIcon';
 import LoadingOnClick from 'components/LoadingOnClick';
 
 import { GEN3 } from 'common/constants';
-import { downloadFileFromGen3 } from 'services/gen3';
+import { downloadFileFromFence } from 'services/fence';
 import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
 import { getAppElement } from 'services/globalDomNodes';
@@ -20,11 +20,12 @@ const getGen3UUIDs = async kfId => {
   return fileData.map(file => file.node.latest_did);
 };
 
+//TODO: Needs to be made aware of multiple data repositories, only downloads from Gen3 right now.
 const downloadFile = async ({ kfId, api }) => {
   let files = await getGen3UUIDs(kfId);
   let fileUUID = files && files.length > 0 ? files[0] : null;
   if (!fileUUID) throw new Error('Error retrieving File ID for the selected Row.');
-  return downloadFileFromGen3({ fileUUID, api });
+  return downloadFileFromFence({ fileUUID, api, GEN3 });
 };
 
 const DownloadFileButton = compose(

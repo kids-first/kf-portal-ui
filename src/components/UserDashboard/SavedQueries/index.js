@@ -25,7 +25,6 @@ const Container = styled(Column)`
 `;
 
 const FileRepositoryLink = styled(Link)`
-  text-decoration: none;
   color: ${({ theme }) => theme.primary};
 `;
 
@@ -56,8 +55,8 @@ export const MySavedQueries = compose(
               <Box mt={2}>
                 <PromptMessageContainer info mb={'8px'}>
                   <PromptMessageContent>
-                    Explore the
-                    <FileRepositoryLink to="/search/file"> File Repository</FileRepositoryLink> to
+                    Explore the{' '}
+                    <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink> to
                     save queries!
                   </PromptMessageContent>
                 </PromptMessageContainer>
@@ -78,7 +77,7 @@ export const MySavedQueries = compose(
             ) : (
               <Box mt={2} mb={2}>
                 {queries
-                  .filter(q => q.alias)
+                  .filter(q => q.alias && q.content.Files)
                   .map(q => ({
                     ...q,
                     date: Number(new Date(q.creationDate)),

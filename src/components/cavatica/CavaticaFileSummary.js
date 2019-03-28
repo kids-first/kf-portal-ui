@@ -21,18 +21,24 @@ const enhance = compose(
   lifecycle({
     async componentDidMount() {
       const {
-        setAuthorizedFiles,
-        setUnauthorizedFiles,
-        setFileStudyData,
-        setFileAuthInitialized,
-      } = this.props.effects;
-      const { api } = this.props;
+        api,
+        state: { fenceConnections },
+        effects: {
+          setAuthorizedFiles,
+          setUnauthorizedFiles,
+          setFileStudyData,
+          setFileAuthInitialized,
+        },
+      } = this.props;
       const sqon = this.props.sqon || {
         op: 'and',
         content: [],
       };
 
-      const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(api)({
+      const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(
+        api,
+        fenceConnections,
+      )({
         sqon,
       });
 

@@ -1,6 +1,7 @@
 import ajax from 'services/ajax';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
+import { flatten, get } from 'lodash';
 
 export const graphql = (api, queryName = '') => body =>
   api
@@ -96,3 +97,20 @@ export const buildSqonForIds = ids => ({
   op: 'and',
   content: [{ op: 'in', content: { field: '_id', value: ids } }],
 });
+
+export const fetchSurvivalData = api => sqon => {
+  const body = { project: arrangerProjectId, sqon };
+  return api({ endpoint: `/survival`, body }).then(response => {
+    const donors = flatten(
+      response.data.map(group =>
+        group.donors.map(donor => ({
+          id: get(donor, 'meta.id', ''),
+          time: donor.time,
+          survivalEstimate: group.cumulativeSurvival,
+          censored: donor.censored,
+        })),
+      ),
+    );
+    return { donors };
+  });
+};

@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import Dropdown from 'uikit/Dropdown';
 import { Trans } from 'react-i18next';
-import { compose, withState, withHandlers } from 'recompose';
 import {
   NavbarDropdownWrapper,
   NavbarKidsFirstDropdown,
@@ -16,15 +15,7 @@ import AllAppsPortalIcon from 'icons/AllAppsPortalIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
 import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
 import { hocToRenderProps } from 'services/utils';
-
-const withDropdownState = compose(
-  withState('isDropdownVisible', 'setDropdownVisibility', false),
-  withHandlers({
-    toggleDropdown: ({ isDropdownVisible, setDropdownVisibility }) => e => {
-      setDropdownVisibility(!isDropdownVisible);
-    },
-  }),
-);
+import { withDropdownState } from 'uikit/Dropdown/';
 
 export const DropDownState = hocToRenderProps(withDropdownState);
 
@@ -98,7 +89,7 @@ export default () => (
         LabelContainer={MenuLabelContainer}
       >
         <DropdownRow height="55px" alignItems="center">
-          <AllAppsMenuIcon width="14px" height="14px" />
+          <AllAppsMenuIcon width="14" height="14" />
           Resources
         </DropdownRow>
       </Dropdown>
