@@ -197,7 +197,7 @@ class SurvivalChart extends React.Component {
         isVisible: false,
       },
       isLoading: true,
-      data: {},
+      data: [],
     };
   }
 
@@ -235,7 +235,8 @@ class SurvivalChart extends React.Component {
       })
       .catch(err => {
         console.log(`Error fetching survival data: ${err}`);
-        this.setState({ data: {}, isLoading: false });
+        this.setState({ data: [], isLoading: false });
+        // should be an error state, but for now /survival endpoint not handling [] well
       });
   };
 
@@ -270,7 +271,7 @@ class SurvivalChart extends React.Component {
   };
 
   render() {
-    const { tooltip, data } = this.state;
+    const { tooltip, data = [] } = this.state;
 
     const donor = tooltip.donor;
     const tooltipStyle = {
