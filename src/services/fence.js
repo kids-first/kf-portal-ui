@@ -117,9 +117,6 @@ export const convertTokenToUser = accessToken => {
 export const getFenceUser = async (api, fence) => {
   let accessToken = await getAccessToken(api, fence);
   const user = convertTokenToUser(accessToken);
-  // track how many projects a use has access to
-  // dimensionr in GA is "authorizedStudies"
-  setUserDimension('dimension5', user.projects);
   return user;
 };
 
@@ -127,8 +124,6 @@ export const getFenceUser = async (api, fence) => {
  * Delete Tokens (Disconnect)
  */
 export const deleteFenceTokens = async (api, fence) => {
-  // reset authorized studies tracking
-  setUserDimension('dimension5', 'none');
   await api({
     method: 'DELETE',
     url: `${fenceTokensUri}?fence=${fence}`,

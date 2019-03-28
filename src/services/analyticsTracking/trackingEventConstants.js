@@ -40,6 +40,8 @@ export const TRACKING_EVENTS = {
     },
     integration: {
       cavatica: 'Integration: Cavatica',
+      gen3: 'Integration: Gen3',
+      dcf: 'Integration: DCF',
     },
   },
   actions: {
@@ -71,12 +73,14 @@ export const TRACKING_EVENTS = {
     integration: {
       init: 'Integration Connection INIT',
       connected: 'Integration Connection SUCCESS',
+      disconnected: 'Integration Connection DISCONNECTED',
       failed: 'Integration Connection FAILED',
     },
   },
   labels: {
     joinProcess: 'Join Process',
     gen3: 'Gen3',
+    dcf: 'DCF',
     cavatica: 'Cavatica',
   },
   timings: {
