@@ -46,8 +46,21 @@ const Heading = styled(H1)`
 const FullWidthWhite = styled('div')`
   width: 100%;
   background: white;
-  padding: 0 30px 30px 30px;
   margin-top: 21px;
+`;
+
+const CategoriesContainer = styled('div')`
+  padding-left: 30px;
+  padding-right: 30px;
+`;
+
+const SqonBuilderContainer = styled('div')`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top: solid 1px rgb(212, 214, 221);
+  box-shadow: 0 3px 5px -3px ${({ theme }) => theme.lighterShadow};
 `;
 
 const Content = styled(ContentBar)`
@@ -222,14 +235,18 @@ const CohortBuilder = compose(
                 </Row>
               </Content>
               <FullWidthWhite>
-                <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
-                <SqonBuilder
-                  syntheticSqons={syntheticSqons}
-                  activeSqonIndex={activeSqonIndex}
-                  onChange={sqonBuilderSqonsChange}
-                  onActiveSqonSelect={sqonBuilderActiveSqonSelect}
-                  emptyEntryMessage="Use the filters above to build a query"
-                />
+                <CategoriesContainer>
+                  <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
+                </CategoriesContainer>
+                <SqonBuilderContainer>
+                  <SqonBuilder
+                    syntheticSqons={syntheticSqons}
+                    activeSqonIndex={activeSqonIndex}
+                    onChange={sqonBuilderSqonsChange}
+                    onActiveSqonSelect={sqonBuilderActiveSqonSelect}
+                    emptyEntryMessage="Use the filters above to build a query"
+                  />
+                </SqonBuilderContainer>
               </FullWidthWhite>
               <Results
                 sqon={executableSqon}
