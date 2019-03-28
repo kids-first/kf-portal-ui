@@ -37,7 +37,6 @@ const submitCavaticaToken = async ({
 }) => {
   await setSecret({ service: CAVATICA, secret: token });
   const userData = await getCavaticaUser(token);
-
   if (userData) {
     setIntegrationToken(CAVATICA, JSON.stringify(userData));
     trackUserInteraction({
@@ -130,13 +129,14 @@ const CavaticaConnectModal = withTheme(
               name="cavatica"
               placeholder="Cavatica Key"
               onChange={e => {
-                setCavaticaKey(e.target.value);
-                setInvalidToken(false);
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.user.profile,
-                  action: TRACKING_EVENTS.actions.integration.udpatedCreds,
+                  action: "Integration Credentials Updated ",
                   label: TRACKING_EVENTS.labels.cavatica,
                 });
+                setCavaticaKey(e.target.value);
+                setInvalidToken(false);
+                
               }}
             />
             <FormErrorMessage id="cavaticaTokenErrorMsg">
