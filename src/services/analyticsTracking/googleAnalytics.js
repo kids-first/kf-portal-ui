@@ -1,6 +1,5 @@
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug } from 'common/injectGlobals';
-import { addInfo as addUserSnapInfo } from '../usersnap';
 import history from '../history';
 import { merge, isObject } from 'lodash';
 import { TRACKING_EVENTS } from './trackingEventConstants';
@@ -26,7 +25,6 @@ export const initGATracking = () => {
   ReactGA.ga(function(tracker) {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
-    addUserSnapInfo({ gaClientId: clientId });
 
     // GA Custom Dimension:index 3: clientId
     // ReactGA.set({ clientId: GAState.clientId });
