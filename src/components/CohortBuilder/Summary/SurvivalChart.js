@@ -275,13 +275,12 @@ class SurvivalChart extends React.Component {
       pointerEvents: 'none',
       fontSize: '10px',
     };
-
+    console.log('data', data);
     return (
       <CohortCard title="Overall Survival" loading={this.state.isLoading}>
         <SurvivalChartWrapper>
           <SurvivalChartHeader>
-            Applicable survival data for ``
-            <a>{get(data, 'donors.length', 0)} Participants</a>
+            Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
           </SurvivalChartHeader>
           <StyledSurvivalPlot
             dataSets={data}
