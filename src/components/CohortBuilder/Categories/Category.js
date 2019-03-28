@@ -8,6 +8,7 @@ import Dropdown from 'uikit/Dropdown';
 import { compose, lifecycle, withState, withProps } from 'recompose';
 import { withDropdownMultiPane } from 'uikit/Dropdown';
 import Filter from './Filter';
+import {SQONdiff} from '../../Utils'
 import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
@@ -174,6 +175,8 @@ const Category = compose(
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
+     let currentSQON = sqon;
+     
     return (
       <Dropdown
         {...{
@@ -204,6 +207,12 @@ const Category = compose(
             <Filter
               initialSqon={sqon}
               onSubmit={sqon => {
+                let addedSQON = SQONdiff(sqon, currentSQON);
+                trackCategoryAction({
+                  category: title, 
+                  action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,  
+                  label: JSON.stringify({added_sqon: addedSQON, result_sqon: sqon})
+                })
                 onSqonUpdate(sqon);
                 toggleExpanded();
                 setDropdownVisibility(false);
