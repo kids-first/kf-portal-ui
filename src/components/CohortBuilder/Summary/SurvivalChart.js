@@ -8,6 +8,7 @@ import { CohortCard } from './ui';
 import { withApi } from 'services/api';
 import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
+import CardContent from 'uikit/Card/CardContent';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -136,6 +137,10 @@ class SurvivalPlot extends React.Component {
   }
 }
 
+const SurvivalCardContent = styled(CardContent)`
+  overflow: visible;
+`;
+
 const SurvivalChartHeader = styled('div')`
   margin-top: -10px;
   padding: 4px 0 4px 8px;
@@ -194,8 +199,6 @@ class SurvivalChart extends React.Component {
       isLoading: true,
       data: {},
     };
-    this.handleMouseEnterDonors = this.handleMouseEnterDonors.bind(this);
-    this.handleMouseLeaveDonors = this.handleMouseLeaveDonors.bind(this);
   }
 
   queryCacheMap = {};
@@ -208,8 +211,9 @@ class SurvivalChart extends React.Component {
       } else {
         fetchSurvivalData(api)(sqon)
           .then(data => {
-            this.queryCacheMap[hash] = data;
-            resolve(data);
+            const formattedData = formatDataset(data);
+            this.queryCacheMap[hash] = formattedData;
+            resolve(formattedData);
           })
           .catch(err => reject(err));
       }
@@ -248,28 +252,25 @@ class SurvivalChart extends React.Component {
   }
 
   handleMouseEnterDonors = (event, donors) => {
-    this.setState({
+    this.setState(prevState => ({
       tooltip: {
-        ...this.state.tooltip,
+        ...prevState.tooltip,
         isVisible: true,
         donor: donors[0],
-        x: event.x,
-        y: event.y,
+        x: event.offsetX,
+        y: event.offsetY,
       },
-    });
+    }));
   };
 
-  handleMouseLeaveDonors = () => {
-    this.setState({
-      tooltip: {
-        ...this.state.tooltip,
-        isVisible: false,
-      },
-    });
+  handleMouseLeaveDonors = (event, donors) => {
+    this.setState(prevState => ({
+      tooltip: { ...prevState.tooltip, isVisible: false },
+    }));
   };
 
   render() {
-    const tooltip = this.state.tooltip;
+    const { tooltip, data } = this.state;
 
     const donor = tooltip.donor;
     const tooltipStyle = {
@@ -277,9 +278,8 @@ class SurvivalChart extends React.Component {
       borderRadius: '10px',
       backgroundColor: '#FFF',
       position: 'absolute',
-      top: 70,
-      right: 20,
-      left: 20,
+      top: tooltip.y - 32,
+      left: tooltip.x - 50,
       padding: '4px',
       display: tooltip.isVisible ? 'block' : 'none',
       pointerEvents: 'none',
@@ -287,16 +287,19 @@ class SurvivalChart extends React.Component {
     };
 
     return (
-      <CohortCard title="Overall Survival" loading={this.state.isLoading}>
+      <CohortCard
+        Content={SurvivalCardContent}
+        title="Overall Survival"
+        loading={this.state.isLoading}
+      >
         <SurvivalChartWrapper>
           <SurvivalChartHeader>
-            Applicable survival data for{' '}
-            <a>{get(this.state.data, 'donors.length', 0)} Participants</a>
+            Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
           </SurvivalChartHeader>
           <StyledSurvivalPlot
-            dataSets={formatDataset(this.state.data)}
-            onMouseEnterDonors={this.handleMouseEnterDonors}
+            dataSets={data}
             onMouseLeaveDonors={this.handleMouseLeaveDonors}
+            onMouseEnterDonors={this.handleMouseEnterDonors}
           />
           <div style={tooltipStyle}>
             <strong>{donor.id}</strong>
