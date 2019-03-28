@@ -247,8 +247,15 @@ class SurvivalChart extends React.Component {
   }
 
   handleMouseEnterDonors = (event, donors) => {
+    console.log('event', event);
     this.setState(prevState => ({
-      tooltip: { ...prevState.tooltip, isVisible: true, donor: donors[0] },
+      tooltip: {
+        ...prevState.tooltip,
+        isVisible: true,
+        donor: donors[0],
+        x: event.offsetX,
+        y: event.offsetY,
+      },
     }));
   };
 
@@ -267,9 +274,8 @@ class SurvivalChart extends React.Component {
       borderRadius: '10px',
       backgroundColor: '#FFF',
       position: 'absolute',
-      top: 70,
-      right: 20,
-      left: 20,
+      top: tooltip.y - 32,
+      left: tooltip.x - 50,
       padding: '4px',
       display: tooltip.isVisible ? 'block' : 'none',
       pointerEvents: 'none',
