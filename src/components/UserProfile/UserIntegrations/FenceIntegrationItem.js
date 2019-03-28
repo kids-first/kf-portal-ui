@@ -27,8 +27,35 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import {
   trackUserInteraction,
   analyticsTrigger,
+  setUserDimension,
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
+
+const trackFenceAction = ({fence, fenceDetails, category, action, label}) =>{
+  if(fence){
+  let gaDimension = null
+
+  switch(fence){
+    case 'gen3':
+      // authorizedStudies
+      gaDimension = '5'
+      break;
+    case 'cavatica':
+     // userCavaticaProjects
+      gaDimension = '6'
+       break;
+    case 'dcf':
+      // userDCFdetails
+      gaDimension = '7'
+      break;
+  }
+
+   setUserDimension(`dimension${gaDimension}`, fenceDetails)
+  }
+
+   trackUserInteraction({category, action, label})
+}
+
 
 const enhanceActions = compose(
   withApi,
@@ -87,16 +114,24 @@ const disconnect = async ({ fence, api, setConnecting, effects }) => {
   await deleteFenceTokens(api, fence);
   await effects.setIntegrationToken(fence, null);
   await effects.removeFenceConnection(fence);
+  trackFenceAction({
+        fence, 
+        fenceDetails: '',
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: TRACKING_EVENTS.actions.integration.disconnected,
+        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence}
+   )
   setConnecting(false);
 };
 
 const connect = ({ fence, api, setConnecting, effects }) => {
+
   analyticsTrigger({
     property: 'portal',
     type: 'recording',
     uiArea: TRACKING_EVENTS.categories.user.profile,
     action: TRACKING_EVENTS.actions.integration.init,
-    label: TRACKING_EVENTS.labels.gen3,
+    label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
   });
   setConnecting(true);
   fenceConnect(api, fence)
@@ -115,19 +150,21 @@ const connect = ({ fence, api, setConnecting, effects }) => {
           </Row>
         ),
       });
-      trackUserInteraction({
+      trackFenceAction({
+        fence, 
+        fenceDetails: JSON.stringify(details) , 
         category: TRACKING_EVENTS.categories.user.profile,
         action: TRACKING_EVENTS.actions.integration.connected,
-        label: TRACKING_EVENTS.labels.gen3,
-      });
+        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence}
+      )
     })
     .catch(err => {
       console.log('err: ', err);
       setConnecting(false);
-      trackUserInteraction({
+      trackFenceAction({
         category: TRACKING_EVENTS.categories.user.profile,
         action: TRACKING_EVENTS.actions.integration.failed,
-        label: TRACKING_EVENTS.labels.gen3,
+        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
       });
     });
 };
