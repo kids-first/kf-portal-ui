@@ -48,6 +48,8 @@ const trackFenceAction = ({fence, fenceDetails, category, action, label}) =>{
       // userDCFdetails
       gaDimension = '7'
       break;
+     default:
+       break;
   }
 
    setUserDimension(`dimension${gaDimension}`, fenceDetails)
