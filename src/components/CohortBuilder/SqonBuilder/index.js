@@ -23,8 +23,7 @@ const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
   }, {}),
 );
 
-const SqonBuilderContainer = styled('div')`
-  margin-top: 20px;
+const Container = styled('div')`
   border: solid 1px ${({ theme }) => theme.greyScale4};
   > .sqonBuilder .sqonEntry .actionButtonsContainer {
     box-sizing: border-box;
@@ -85,7 +84,7 @@ const SqonBuilder = compose(
     }
   };
   return (
-    <SqonBuilderContainer>
+    <Container>
       <ExtendedMappingProvider
         api={api}
         projectId={arrangerProjectId}
@@ -110,7 +109,7 @@ const SqonBuilder = compose(
           )
         }
       </ExtendedMappingProvider>
-    </SqonBuilderContainer>
+    </Container>
   );
 });
 

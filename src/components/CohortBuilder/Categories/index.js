@@ -17,7 +17,6 @@ const Container = styled(Row)`
   height: 72px;
   width: 100%;
   border-left: 1px solid ${({ theme }) => theme.greyScale8};
-  border-bottom: 1px solid ${({ theme }) => theme.greyScale8};
   background-color: white;
 `;
 
