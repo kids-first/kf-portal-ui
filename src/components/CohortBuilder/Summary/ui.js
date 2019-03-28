@@ -12,7 +12,7 @@ export const BarChartContainer = styled('div')`
   left: 0px;
   right: 0px;
   top: 0px;
-  bottom: 20px;
+  bottom: 40px;
 `;
 
 const LongCard = styled(CardWrapper)`
