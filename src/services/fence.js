@@ -9,7 +9,6 @@ import {
   gen3ApiRoot,
   dcfApiRoot,
 } from 'common/injectGlobals';
-import { setUserDimension } from 'services/analyticsTracking';
 
 const RESPONSE_TYPE = 'code';
 
