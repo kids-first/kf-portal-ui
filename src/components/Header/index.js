@@ -80,11 +80,11 @@ const Header = ({
                       <HouseIcon /> <Trans>Dashboard</Trans>
                     </NavLink>
                   </li>
-                  <li>
+                  {/* <li>
                     <BetaNavLink currentPathName={currentPathName} to="/virtualStudies">
                       <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
                     </BetaNavLink>
-                  </li>
+                  </li> */}
                   <li>
                     <NavLink currentPathName={currentPathName} to={`/search/file`}>
                       <DatabaseIcon /> <Trans>File Repository</Trans>
