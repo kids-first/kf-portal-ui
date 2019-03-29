@@ -55,6 +55,12 @@ export default compose(
         <Trans>Data Repository Integrations</Trans>
       </CardHeader>
 
+      <Trans>The Kids First DRC provides the ability to integrate across different data repositories for pediatric research. By connecting to each integration (powered by</Trans>{' '}
+      <ExternalLink href={gen3WebRoot}>
+        <Trans>GEN3 Data Commons</Trans>
+      </ExternalLink>{' '}
+      <Trans>),you will immediately have the ability to analyze the data available from these repositories in Cavatica through this portal. Please remember that it is your responsibility to follow any data use limitations with controlled access data.</Trans>
+
       <IntegrationTable>
         <Gen3Integration />
         <DcfIntegration />
