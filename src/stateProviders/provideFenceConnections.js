@@ -49,19 +49,23 @@ export default provideState({
       const fenceConnectionsFetchArray = FENCES.map(fence =>
         getFenceUser(api, fence)
           .then(details => {
-            effects.addFenceConnection({
-              fence,
-              details,
-            });
+            effects
+              .addFenceConnection({
+                fence,
+                details,
+              })
+              .catch(err => console.log(`Error updating fence connection for ${fence}`));
             // Now we also need to get studies for this fence
             return getUserStudyPermission(api, {
               [fence]: details,
             })({})
               .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) =>
-                effects.addFenceStudies(fence, {
-                  authorizedStudies: acceptedStudiesAggs,
-                  unauthorizedStudies: unacceptedStudiesAggs,
-                }),
+                effects
+                  .addFenceStudies(fence, {
+                    authorizedStudies: acceptedStudiesAggs,
+                    unauthorizedStudies: unacceptedStudiesAggs,
+                  })
+                  .catch(err => console.log(`Error updating fence studies for ${fence}`)),
               )
               .catch(err => console.log(`Error fetching fence studies for '${fence}': ${err}`));
           })
