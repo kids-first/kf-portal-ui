@@ -5,7 +5,7 @@ import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceI
 import ExternalLink from 'uikit/ExternalLink';
 
 import { DCF } from 'common/constants';
-import dcfLogo from 'assets/logo-dcf-2.png';
+import dcfLogo from 'assets/logo-dcf-2.svg';
 import { dcfWebRoot } from 'common/injectGlobals';
 
 const description = () => {
