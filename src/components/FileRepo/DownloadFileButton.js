@@ -39,7 +39,6 @@ const DownloadFileButton = compose(
     theme,
     effects: { setToast },
     state: { integrationTokens },
-    gen3Key = integrationTokens[GEN3],
     api,
     render,
     onSuccess,
@@ -47,7 +46,7 @@ const DownloadFileButton = compose(
   }) => (
     <LoadingOnClick
       onClick={() =>
-        downloadFile({ kfId, api })
+        downloadFile({ kfId, fence, api })
           .then(url => {
             const a = document.createElement('a');
             a.href = url;
