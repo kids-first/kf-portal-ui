@@ -11,7 +11,7 @@ import { dcfWebRoot } from 'common/injectGlobals';
 const description = () => {
   return (
     <span>
-      <Trans>Access select NCI controlled access data by connecting your account using your NIH login credentials.</Trans>
+      <Trans>Access select NCI controlled data by connecting your account using your NIH login credentials.</Trans>
     </span>
   );
 };

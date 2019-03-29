@@ -12,7 +12,7 @@ import { gen3WebRoot } from 'common/injectGlobals';
 const description = () => {
   return (
     <span>
-      <Trans>Access all released Kids First controlled access data by connecting your account using your NIH login credentials.</Trans>
+      <Trans>Access all released Kids First controlled data by connecting your account using your NIH login credentials.</Trans>
     </span>
   );
 };
