@@ -13,6 +13,7 @@ import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';
+// import { COHORT_BUILDER_PATH } from 'common/constants';
 import { withApi } from 'services/api';
 import {
   NavLink,
@@ -85,7 +86,7 @@ const Header = ({
                     </NavLink>
                   </li>
                   {/* <li>
-                    <BetaNavLink currentPathName={currentPathName} to="/virtualStudies">
+                    <BetaNavLink currentPathName={currentPathName} to={COHORT_BUILDER_PATH}>
                       <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
                     </BetaNavLink>
                   </li> */}
@@ -139,13 +140,7 @@ const Header = ({
                       onClick={e => {
                         e.preventDefault();
                         toggleDropdown();
-                        uiLogout({
-                          history,
-                          setToken,
-                          setUser,
-                          clearIntegrationTokens,
-                          api,
-                        });
+                        uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
                       }}
                     >
                       <Trans>Logout</Trans>
