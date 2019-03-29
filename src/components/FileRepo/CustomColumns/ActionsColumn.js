@@ -8,18 +8,31 @@ import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import { arrangerGqlRecompose, MISSING_DATA } from 'services/arranger';
 import { withApi } from 'services/api';
 import { ControlledIcon, TableSpinner } from '../ui';
+import DownloadIcon from 'icons/DownloadIcon';
 import Row from 'uikit/Row';
+import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { DCF } from 'common/constants';
 
 const enhance = compose(
   withApi,
   withTheme,
 );
 
-const ActionItems = ({ acl, value, fence, userAvailableStudies, theme }) =>
-  acl && fence && acl.some(code => userAvailableStudies.includes(code)) ? (
+const FenceDownloadButton = ({ fence, kfId, theme }) =>
+  // DCF files currently aren't available to download, so we show tooltip and grey out button
+  fence === DCF ? (
+    <Tooltip
+      position="bottom"
+      interactive
+      html={<Row p={'10px'}>This file is not available for download.</Row>}
+    >
+      <DownloadIcon fill={theme.greyScale11} />
+    </Tooltip>
+  ) : (
+    // All other fences are good to go!
     <DownloadFileButton
       onSuccess={url => {
         trackUserInteraction({
@@ -35,18 +48,31 @@ const ActionItems = ({ acl, value, fence, userAvailableStudies, theme }) =>
           label: JSON.stringify(err, null, 2),
         });
       }}
-      kfId={value}
+      kfId={kfId}
       fence={fence}
     />
-  ) : (
-    <Tooltip
-      position="bottom"
-      interactive
-      html={<Row p={'10px'}>You do not have access to this file.</Row>}
-    >
-      <ControlledIcon fill={theme.primary} />
-    </Tooltip>
   );
+
+const ActionItems = ({ acl, value, fence, userAvailableStudies, theme }) => {
+  const hasAccess = acl && fence && acl.some(code => userAvailableStudies.includes(code));
+  return (
+    <React.Fragment>
+      <Column style={{ flex: 1, alignItems: 'center' }}>
+        {hasAccess ? (
+          <FenceDownloadButton fence={fence} kfId={value} theme={theme} />
+        ) : (
+          <Tooltip
+            position="bottom"
+            interactive
+            html={<Row p={'10px'}>You do not have access to this file.</Row>}
+          >
+            <ControlledIcon fill={theme.lightBlue} />
+          </Tooltip>
+        )}
+      </Column>
+    </React.Fragment>
+  );
+};
 
 const ActionsColumn = ({ value, api, theme, fenceStudies }) => (
   <Component
