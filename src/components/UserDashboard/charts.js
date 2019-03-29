@@ -33,7 +33,7 @@ const studiesToolTip = data => {
     <div>
       <div>{name}</div>
       <div>{`${probands.toLocaleString()} Probands`}</div>
-      <div>{`${familyMembers.toLocaleString()} Family Members`}</div>
+      <div>{`${familyMembers.toLocaleString()} Other Participants`}</div>
       <div>{`${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`}</div>
     </div>
   );
@@ -96,7 +96,7 @@ export const StudiesChart = withTheme(({ data, theme }) => {
       xTickTextLength={28}
       legends={[
         { title: 'Probands', color: theme.chartColors.blue },
-        { title: 'Family Members', color: theme.chartColors.purple },
+        { title: 'Other Participants', color: theme.chartColors.purple },
       ]}
       padding={0.7}
     />
