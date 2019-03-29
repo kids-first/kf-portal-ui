@@ -19,9 +19,9 @@ export const toFileSqon = participantSqon => {
 
 export const dataTypesExpStratPairsQuery = participantSqon => ({
   query: gql`
-    query FileBreakdownQuery($sqon: JSON) {
+    query FileBreakdownQuery {
       file {
-        aggregations(aggregations_filter_themselves: true, include_missing: true, filters: $sqon) {
+        aggregations(aggregations_filter_themselves: true, include_missing: true) {
           sequencing_experiments__experiment_strategy {
             buckets {
               key
@@ -36,7 +36,7 @@ export const dataTypesExpStratPairsQuery = participantSqon => ({
       }
     }
   `,
-  variables: { sqon: toFileSqon(participantSqon) },
+  variables: {},
   transform: data => {
     const experimentStrategies = get(
       data,
