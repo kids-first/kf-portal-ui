@@ -197,10 +197,10 @@ const CohortBuilder = compose(
               <StylePromptMessage
                 content={
                   <div>
-                    In Explore Data, you can build your own virtual study of multiple cohorts. Query
-                    participant variables including demographic, clinical, and data categories. You
-                    may experience some bugs. Feedback is welcome! Simply click the feedback button
-                    in the bottom right corner and provide us with your thoughts.
+                    <strong>BETA RELEASE: </strong>Use the cohort builder to create virtual studies.
+                    You can query participant variables including demographic, clinical, and data
+                    categories. It's in progress, so you may experience some bugs. To give feedback,
+                    click the button in the bottom right corner. All feedback is welcome!
                   </div>
                 }
               />
