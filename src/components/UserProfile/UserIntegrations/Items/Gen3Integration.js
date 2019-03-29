@@ -6,7 +6,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceIntegrationItem';
 
 import { GEN3 } from 'common/constants';
-import gen3Logo from 'assets/logo-gen3.svg';
+import gen3Logo from 'assets/logo-gen3-kf-data-catalog.svg';
 import { gen3WebRoot } from 'common/injectGlobals';
 
 const description = () => {
