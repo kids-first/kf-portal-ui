@@ -65,10 +65,10 @@ const fileQuery = `query ($sqon: JSON) {
           file_format
           file_name
           is_harmonized
-          kf_id
           latest_did
           modified_at
           reference_genome
+          repository
           size
           sequencing_experiments {
             hits {
@@ -313,6 +313,7 @@ const FileEntity = compose(withTheme)(
                   });
                 }}
                 kfId={data.kf_id}
+                fence={data.repository}
                 disabled={!hasFilePermission}
               />
               <ShareButton link={window.location.href} />
