@@ -3,6 +3,8 @@ import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import { flatten, get } from 'lodash';
 
+export const MISSING_DATA = '__missing__';
+
 export const graphql = (api, queryName = '') => body =>
   api
     ? api({ endpoint: `/${arrangerProjectId}/graphql/${queryName}`, body })
