@@ -2,6 +2,7 @@ import urlJoin from 'url-join';
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 export const getSavedVirtualStudyNames = async api =>
   api({
@@ -37,6 +38,7 @@ export const createNewVirtualStudy = async ({
     },
   } = await getSavedVirtualStudyNames(api);
   const { egoId } = loggedInUser;
+  
   const newVirtualStudy = await api({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
@@ -81,6 +83,11 @@ export const createNewVirtualStudy = async ({
       `),
     },
   });
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.virtualStudies, 
+    action: TRACKING_EVENTS.actions.save,
+    label: JSON.stringify(newVirtualStudy)
+  });
   return newVirtualStudy;
 };
 
@@ -95,7 +102,7 @@ export const getVirtualStudy = api => async id => {
 export const updateVirtualStudy = async ({ id, sqonsState, api, name, description }) => {
   const { sqons, activeIndex } = sqonsState;
   const existingVirtualStudy = await getVirtualStudy(api)(id);
-  return await api({
+  const updatedStudy = await api({
     method: 'PUT',
     url: urlJoin(shortUrlApi, id),
     body: JSON.stringify({
@@ -108,4 +115,11 @@ export const updateVirtualStudy = async ({ id, sqonsState, api, name, descriptio
       },
     }),
   });
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.virtualStudies, 
+    action: TRACKING_EVENTS.actions.edit,
+    label: JSON.stringify(updatedStudy)
+  });
+
+  return updatedStudy;
 };

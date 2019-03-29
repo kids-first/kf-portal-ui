@@ -29,6 +29,7 @@ export const TRACKING_EVENTS = {
       file: 'Entity Page: File',
       participant: 'Entity Page: Participant',
     },
+    virtualStudies: "Virtual Studies",
     fileRepo: {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
