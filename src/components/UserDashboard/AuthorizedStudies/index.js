@@ -11,6 +11,7 @@ import DownloadController from 'icons/DownloadController';
 
 import { withApi } from 'services/api';
 import StudiesConnected from './StudiesConnected';
+import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
 import AccessGate from '../../AccessGate';
 import { DashboardCard, CardContentSpinner } from '../styles';
@@ -23,17 +24,7 @@ const AuthorizedStudies = compose(
   withApi,
   injectState,
   withTheme,
-  lifecycle({
-    async componentDidMount() {
-      const {
-        effects,
-        api,
-        state: { fenceConnectionsInitialized },
-      } = this.props;
-      // Only fetch connections once - don't fetch if we've done it previously
-      !fenceConnectionsInitialized && effects.fetchFenceConnections({ api });
-    },
-  }),
+  fenceConnectionInitializeHoc,
 )(
   ({
     state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },

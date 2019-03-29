@@ -36,15 +36,7 @@ const enhanceActions = compose(
 );
 
 const Actions = enhanceActions(
-  ({
-    fence,
-    state: { fenceStudies, fenceConnections },
-    api,
-    effects,
-    loading,
-    setConnecting,
-    connected,
-  }) => {
+  ({ fence, state: { fenceConnections }, api, effects, loading, setConnecting, connected }) => {
     return loading ? (
       <LoadingSpinner height={48} />
     ) : connected ? (
