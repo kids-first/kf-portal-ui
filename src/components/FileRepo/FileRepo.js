@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { isObject, isEmpty } from 'lodash';
+import { isObject } from 'lodash';
 import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
@@ -19,7 +19,6 @@ import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
-import { DCF, GEN3 } from 'common/constants';
 import DownloadIcon from 'icons/DownloadIcon';
 import translateSQON from 'common/translateSQONValue';
 import { arrangerProjectId } from 'common/injectGlobals';
@@ -91,12 +90,6 @@ const TableHeaderContent = ({ sqon, disabled, ...props }) => {
   );
 };
 
-const updateStudies = ({ effects, api, fenceConnections, fenceStudiesInitialized }) => {
-  if (!isEmpty(fenceConnections) && !fenceStudiesInitialized) {
-    effects.fetchFenceStudies({ api, fenceConnections });
-  }
-};
-
 const enhance = compose(
   injectState,
   withTheme,
@@ -106,22 +99,12 @@ const enhance = compose(
       const {
         effects,
         api,
-        state: { fenceConnections, fenceConnectionsInitialized, fenceStudiesInitialized },
+        state: { fenceConnectionsInitialized },
       } = this.props;
       // Only fetch connections once - don't fetch if we've done it previously
       if (!fenceConnectionsInitialized) {
         effects.fetchFenceConnections({ api });
-      } else {
-        updateStudies({ effects, api, fenceConnections, fenceStudiesInitialized });
       }
-    },
-    componentDidUpdate() {
-      const {
-        effects,
-        api,
-        state: { fenceConnections, fenceStudiesInitialized },
-      } = this.props;
-      updateStudies({ effects, api, fenceConnections, fenceStudiesInitialized });
     },
   }),
 );
@@ -237,7 +220,7 @@ const FileRepo = ({
                             customColumns={customTableColumns({
                               theme,
                               userProjectIds,
-                              fenceStudiesInitialized: state.fenceStudiesInitialized,
+                              fenceStudies: state.fenceStudies,
                             })}
                             filterInputPlaceholder={'Filter table'}
                             columnDropdownText="Columns"
@@ -288,15 +271,5 @@ const FileRepo = ({
     )}
   />
 );
-
-// export default props => (
-//   //Only has Gen3 integration, needs to be refactored to have all data repository integrations
-//   <FenceUserProvider
-//     fence={GEN3}
-//     render={({ loading: loadingGen3User, gen3User }) => (
-//       <FileRepo {...{ ...props, loadingGen3User, gen3User }} />
-//     )}
-//   />
-// );
 
 export default enhance(FileRepo);

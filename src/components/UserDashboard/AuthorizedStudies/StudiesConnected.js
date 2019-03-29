@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import styled from 'react-emotion';
 
 import { injectState } from 'freactal';
@@ -14,7 +14,6 @@ import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } fr
 import Info from '../Info';
 import { createStudyIdSqon, createAcceptedFilesByUserStudySqon } from 'services/fileAccessControl';
 import Study from './Study';
-import { CardContentSpinner } from '../styles';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { isEmpty } from 'lodash';
@@ -128,47 +127,25 @@ const enhance = compose(
   injectState,
   withHistory,
   withApi,
-  lifecycle({
-    async componentDidMount() {
-      const {
-        api,
-        effects,
-        state: { fenceConnections, fenceStudiesInitialized },
-      } = this.props;
-      !isEmpty(fenceConnections) &&
-        !fenceStudiesInitialized &&
-        effects.fetchFenceStudies({ api, fenceConnections });
-    },
-  }),
 );
 
 const StudiesConnected = enhance(
   ({
-    state: {
-      loggedInUser,
-      fenceStudiesInitialized,
-      fenceConnections,
-      fenceAuthStudies,
-      fenceNonAuthStudies,
-    },
+    state: { loggedInUser, fenceConnections, fenceAuthStudies, fenceNonAuthStudies },
     history,
   }) => {
     return (
       <Fragment>
-        {!fenceStudiesInitialized ? (
-          <CardContentSpinner />
-        ) : (
-          <Column>
-            {!isEmpty(fenceAuthStudies) > 0
-              ? renderAuthorizedStudies({
-                  fenceAuthStudies,
-                  fenceNonAuthStudies,
-                  fenceConnections,
-                  history,
-                })
-              : renderNoAuthorizedStudies({ loggedInUser })}
-          </Column>
-        )}
+        <Column>
+          {!isEmpty(fenceAuthStudies) > 0
+            ? renderAuthorizedStudies({
+                fenceAuthStudies,
+                fenceNonAuthStudies,
+                fenceConnections,
+                history,
+              })
+            : renderNoAuthorizedStudies({ loggedInUser })}
+        </Column>
       </Fragment>
     );
   },

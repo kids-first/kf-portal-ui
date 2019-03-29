@@ -36,13 +36,7 @@ const AuthorizedStudies = compose(
   }),
 )(
   ({
-    state: {
-      loggedInUser,
-      fenceConnectionsInitialized,
-      fenceStudiesInitialized,
-      fenceConnections,
-      fenceAuthStudies,
-    },
+    state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
     effects,
     theme,
     api,
@@ -52,7 +46,7 @@ const AuthorizedStudies = compose(
       <CardHeader title="Authorized Studies" badge={fenceAuthStudies.length || null} />
     );
 
-    const inactive = !(fenceConnectionsInitialized || fenceStudiesInitialized);
+    const inactive = !fenceConnectionsInitialized;
     return (
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
