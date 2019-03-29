@@ -85,6 +85,8 @@ export const UI_VERSION = packageJson.version;
 
 export const EGO_JWT_KEY = 'EGO_JWT';
 
+export const COHORT_BUILDER_PATH = '/explore';
+
 export const DISEASE_AREAS = [
   'Patients With Both Childhood Cancer And Birth Defects',
   'Childhood Cancer',
