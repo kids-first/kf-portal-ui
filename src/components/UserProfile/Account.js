@@ -55,9 +55,6 @@ export default compose(
         <Trans>Data Repository Integrations</Trans>
       </CardHeader>
 
-      <Trans>The Kids First DRC provides the ability to integrate different data repositories. By connecting to each integration (powered by Gen3), you will immediately have the ability to analyze controlled datasets.
-      Please remember that it is your responsibility to follow any data use limitations that apply to controlled data.</Trans>
-
       <IntegrationTable>
         <Gen3Integration />
         <DcfIntegration />
