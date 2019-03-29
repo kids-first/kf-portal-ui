@@ -67,7 +67,8 @@ export default provideState({
           })
           .catch(err => console.log(`Error fetching fence connection for '${fence}': ${err}`)),
       );
-      return Promise.all(fenceConnectionsFetchArray).then(fenceConnections => {
+
+      return Promise.all(fenceConnectionsFetchArray).then(() => {
         effects.setFenceConnectionsInitialized();
         effects.setFenceStudiesInitialized(false);
       });
