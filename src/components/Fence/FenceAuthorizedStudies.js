@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 
-import { getStudyIds } from 'services/fence';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
+import { get } from 'lodash';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Row from 'uikit/Row';
@@ -60,50 +60,39 @@ const sqonForStudy = studyId => ({
 });
 
 const FenceProjectList = compose(
-  withApi,
   withTheme,
   withHistory,
   injectState,
   fenceConnectionInitializeHoc,
-)(
-  ({
-    projectIds,
-    api,
-    theme,
-    history,
-    state: { fenceAuthStudies, fenceConnectionsInitialized },
-  }) => {
-    return !fenceConnectionsInitialized ? (
-      <Spinner />
-    ) : (
-      fenceAuthStudies.map(({ id, studyShortName }) => {
-        const sqon = sqonForStudy(id);
-        return (
-          <ItemRowContainer>
-            <Column justifyContent="center" p={15}>
-              <StackIcon width={20} />
-            </Column>
-            <Column flex={1} justifyContent="center" pr={10}>
-              <Span>
-                <strong>{studyShortName}</strong>({` ${id}`})
+)(({ fence, theme, history, state: { fenceStudies, fenceConnectionsInitialized } }) =>
+  !fenceConnectionsInitialized ? (
+    <Spinner />
+  ) : (
+    get(fenceStudies, `${fence}.authorizedStudies`, []).map(({ id, studyShortName }) => {
+      const sqon = sqonForStudy(id);
+      return (
+        <ItemRowContainer>
+          <Column justifyContent="center" p={15}>
+            <StackIcon width={20} />
+          </Column>
+          <Column flex={1} justifyContent="center" pr={10}>
+            <Span>
+              <strong>{studyShortName}</strong>({` ${id}`})
+            </Span>
+          </Column>
+          <Column justifyContent="center">
+            <ExternalLink hasExternalIcon={false}>
+              <Span
+                onClick={() => history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)}
+              >
+                <Trans>View data files</Trans> <RightChevron width={10} fill={theme.primary} />
               </Span>
-            </Column>
-            <Column justifyContent="center">
-              <ExternalLink hasExternalIcon={false}>
-                <Span
-                  onClick={() =>
-                    history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)
-                  }
-                >
-                  <Trans>View data files</Trans> <RightChevron width={10} fill={theme.primary} />
-                </Span>
-              </ExternalLink>
-            </Column>
-          </ItemRowContainer>
-        );
-      })
-    );
-  },
+            </ExternalLink>
+          </Column>
+        </ItemRowContainer>
+      );
+    })
+  ),
 );
 
 const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
@@ -119,7 +108,7 @@ const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
               </Span>
             </Row>
             <Column pl={15}>
-              <FenceProjectList projectIds={getStudyIds(fenceUser, fence)} />
+              <FenceProjectList fence={fence} />
             </Column>
           </Fragment>
         ) : (

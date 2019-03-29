@@ -70,7 +70,6 @@ export default provideState({
       return Promise.all(fenceConnectionsFetchArray).then(fenceConnections => {
         effects.setFenceConnectionsInitialized();
         effects.setFenceStudiesInitialized(false);
-        return effects.fetchFenceStudies({ api, fenceConnections });
       });
     },
 
