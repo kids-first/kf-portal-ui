@@ -26,6 +26,7 @@ import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
 import Row from 'uikit/Row';
+import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import {
   ArrangerContainer,
   TableContainer,
@@ -94,19 +95,7 @@ const enhance = compose(
   injectState,
   withTheme,
   withApi,
-  lifecycle({
-    componentDidMount() {
-      const {
-        effects,
-        api,
-        state: { fenceConnectionsInitialized },
-      } = this.props;
-      // Only fetch connections once - don't fetch if we've done it previously
-      if (!fenceConnectionsInitialized) {
-        effects.fetchFenceConnections({ api });
-      }
-    },
-  }),
+  fenceConnectionInitializeHoc,
 );
 
 const FileRepo = ({
