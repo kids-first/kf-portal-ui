@@ -23,9 +23,9 @@ const getGen3UUIDs = async kfId => {
 //TODO: Needs to be made aware of multiple data repositories, only downloads from Gen3 right now.
 const downloadFile = async ({ kfId, api }) => {
   let files = await getGen3UUIDs(kfId);
-  let fileUUID = files && files.length > 0 ? files[0] : null;
-  if (!fileUUID) throw new Error('Error retrieving File ID for the selected Row.');
-  return downloadFileFromFence({ fileUUID, api, GEN3 });
+  let fileUuid = files && files.length > 0 ? files[0] : null;
+  if (!fileUuid) throw new Error('Error retrieving File ID for the selected Row.');
+  return await downloadFileFromFence({ fileUuid, api, fence: GEN3 });
 };
 
 const DownloadFileButton = compose(
@@ -35,6 +35,7 @@ const DownloadFileButton = compose(
 )(
   ({
     kfId,
+    fence,
     theme,
     effects: { setToast },
     state: { integrationTokens },
@@ -120,7 +121,7 @@ const DownloadFileButton = compose(
                   <DownloadIcon
                     {...{ onClick }}
                     width={13}
-                    fill={theme.primary}
+                    fill={theme.lightBlue}
                     className={css`
                       cursor: pointer;
                     `}

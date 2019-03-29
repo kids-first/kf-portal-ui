@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
@@ -11,6 +11,7 @@ import DownloadController from 'icons/DownloadController';
 
 import { withApi } from 'services/api';
 import StudiesConnected from './StudiesConnected';
+import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
 import AccessGate from '../../AccessGate';
 import { DashboardCard, CardContentSpinner } from '../styles';
@@ -23,26 +24,10 @@ const AuthorizedStudies = compose(
   withApi,
   injectState,
   withTheme,
-  lifecycle({
-    async componentDidMount() {
-      const {
-        effects,
-        api,
-        state: { fenceConnectionsInitialized },
-      } = this.props;
-      // Only fetch connections once - don't fetch if we've done it previously
-      !fenceConnectionsInitialized && effects.fetchFenceConnections({ api });
-    },
-  }),
+  fenceConnectionInitializeHoc,
 )(
   ({
-    state: {
-      loggedInUser,
-      fenceConnectionsInitialized,
-      fenceStudiesInitialized,
-      fenceConnections,
-      fenceAuthStudies,
-    },
+    state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
     effects,
     theme,
     api,
@@ -52,7 +37,7 @@ const AuthorizedStudies = compose(
       <CardHeader title="Authorized Studies" badge={fenceAuthStudies.length || null} />
     );
 
-    const inactive = !(fenceConnectionsInitialized || fenceStudiesInitialized);
+    const inactive = !fenceConnectionsInitialized;
     return (
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (

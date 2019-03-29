@@ -1,9 +1,12 @@
 import { provideState, update } from 'freactal';
+import { compose, lifecycle } from 'recompose';
+import { injectState } from 'freactal';
 
 import { getFenceUser } from 'services/fence';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 import { FENCES } from 'common/constants';
 import { omit, flatMap, isEmpty } from 'lodash';
+import { withApi } from 'services/api';
 
 export default provideState({
   initialState: props => ({
@@ -46,7 +49,25 @@ export default provideState({
       const fenceConnectionsFetchArray = FENCES.map(fence =>
         getFenceUser(api, fence)
           .then(details => {
-            effects.addFenceConnection({ fence, details });
+            effects
+              .addFenceConnection({
+                fence,
+                details,
+              })
+              .catch(err => console.log(`Error updating fence connection for ${fence}`));
+            // Now we also need to get studies for this fence
+            return getUserStudyPermission(api, {
+              [fence]: details,
+            })({})
+              .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) =>
+                effects
+                  .addFenceStudies(fence, {
+                    authorizedStudies: acceptedStudiesAggs,
+                    unauthorizedStudies: unacceptedStudiesAggs,
+                  })
+                  .catch(err => console.log(`Error updating fence studies for ${fence}`)),
+              )
+              .catch(err => console.log(`Error fetching fence studies for '${fence}': ${err}`));
           })
           .catch(err => console.log(`Error fetching fence connection for '${fence}': ${err}`)),
       );
@@ -92,3 +113,20 @@ export default provideState({
     },
   },
 });
+
+export const fenceConnectionInitializeHoc = Component =>
+  compose(
+    injectState,
+    withApi,
+    lifecycle({
+      async componentDidMount() {
+        const {
+          effects,
+          api,
+          state: { fenceConnectionsInitialized },
+        } = this.props;
+        // Only fetch connections once - don't fetch if we've done it previously
+        if (!fenceConnectionsInitialized) effects.fetchFenceConnections({ api });
+      },
+    }),
+  )(Component);
