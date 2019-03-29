@@ -121,7 +121,7 @@ const DownloadFileButton = compose(
                   <DownloadIcon
                     {...{ onClick }}
                     width={13}
-                    fill={theme.primary}
+                    fill={theme.lightBlue}
                     className={css`
                       cursor: pointer;
                     `}
