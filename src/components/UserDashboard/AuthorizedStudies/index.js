@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';

@@ -17,7 +17,6 @@ import { PromptMessageContainer } from 'uikit/PromptMessage';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
-import { withApi } from 'services/api';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
 const styles = css`

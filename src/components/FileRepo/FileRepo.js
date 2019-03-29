@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { isObject } from 'lodash';

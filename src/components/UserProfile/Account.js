@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState, lifecycle } from 'recompose';
+import { compose, withState } from 'recompose';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 
