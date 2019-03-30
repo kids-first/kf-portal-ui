@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 
 import { cavaticaWebRoot } from 'common/injectGlobals';
-import { GEN3 } from 'common/constants';
+import { FENCES } from 'common/constants';
 import { Link, withRouter } from 'react-router-dom';
 import ExternalLink from 'uikit/ExternalLink';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
@@ -17,14 +17,13 @@ import { withApi } from 'services/api';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 
 import { convertFenceUuids, copyFiles as copyCavaticaFiles } from 'services/cavatica';
-import { getFilesById } from 'services/arranger';
-import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
+import provideCavaticaFileAuthorizations from 'stateProviders/provideCavaticaFileAuthorizations';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { Paragraph } from 'uikit/Core';
 
 const enhance = compose(
-  provideGen3FileAuthorizations,
+  provideCavaticaFileAuthorizations,
   injectState,
   withTheme,
   withRouter,
@@ -39,16 +38,16 @@ const enhance = compose(
       if (!ids || ids.length === 0) {
         ids = await graphql(api)({
           query: `query ($sqon: JSON){
-            file {
-              aggregations(filters: $sqon) {
-                kf_id {
-                  buckets {
-                    key
+              file {
+                aggregations(filters: $sqon) {
+                  kf_id {
+                    buckets {
+                      key
+                    }
                   }
                 }
               }
-            }
-          }`,
+            }`,
           variables: {
             sqon,
           },
@@ -61,24 +60,29 @@ const enhance = compose(
   }),
 );
 
-const getGen3UUIDs = async arrangerIds => {
-  const fileData = await getFilesById({
-    ids: arrangerIds,
-    fields: ['uuid'],
-  });
-  return fileData.map(file => file.node.uuid);
-};
-
 const copyToProject = async ({ selectedFiles, selectedProject }) => {
-  // Convert Fence UUIDs (latest_did) to CavaticaIds
-  const conversionResponse = await convertFenceUuids({ ids: selectedFiles, fence: GEN3 });
-  const cavaticaIds = conversionResponse.map(item => item.id);
+  const promises = [];
 
-  // Copy Files
-  return await copyCavaticaFiles({
-    project: selectedProject,
-    ids: cavaticaIds,
+  // Make a request to get cavaticaIds forEach repository, stick it in our promises list
+  //  Don't do the async await in the forEach loop...
+  Object.keys(selectedFiles).forEach(fence => {
+    if (FENCES.includes(fence) && selectedFiles[fence] && selectedFiles[fence].length > 0) {
+      // Convert KF_IDs to CavaticaIds
+      const promise = convertFenceUuids({
+        ids: selectedFiles[fence],
+        fence: fence,
+      }).then(response =>
+        // Then Copy to Cavatica
+        copyCavaticaFiles({
+          project: selectedProject,
+          ids: [...response.map(item => item.id)],
+        }),
+      );
+      promises.push(promise);
+    }
   });
+
+  return await Promise.all(promises);
 };
 
 const SuccessToastComponent = ({ theme, selectedProjectData }) => (
@@ -163,9 +167,9 @@ const CavaticaCopyModal = ({
   ...props
 }) => {
   const unauthFilesWarning = state.unauthorizedFiles && state.unauthorizedFiles > 0;
-  const gen3Connected = true && state.integrationTokens[GEN3];
+  const hasFenceConnection = Object.keys(state.fenceConnections).length > 0;
   const isFilesSelected = filesSelected && filesSelected.length > 0;
-  const showWarning = unauthFilesWarning || !gen3Connected;
+  const showWarning = unauthFilesWarning || !hasFenceConnection;
   return (
     <div css={styles(theme)}>
       {showWarning && (
@@ -184,7 +188,7 @@ const CavaticaCopyModal = ({
               You are attempting to copy files that you are not authorized to access.
             </span>
           )}
-          {!gen3Connected && (
+          {!hasFenceConnection && (
             <Paragraph>
               Please{' '}
               <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
@@ -195,7 +199,7 @@ const CavaticaCopyModal = ({
           )}
         </ModalWarning>
       )}
-      {gen3Connected && isFilesSelected && (
+      {hasFenceConnection && isFilesSelected && (
         <div className="content">
           <CavaticaFileSummary filesSelected={filesSelected} {...props} />
         </div>
@@ -216,12 +220,10 @@ const CavaticaCopyModal = ({
         {...{
           handleSubmit: async () => {
             try {
-              const uuids = gen3Connected
-                ? state.authorizedFiles
-                : await getGen3UUIDs(filesSelected);
+              const uuids = state.authorizedFilesCombined;
               await copyToProject({
                 selectedProject: selectedProjectData.id,
-                selectedFiles: uuids,
+                selectedFiles: state.authorizedFiles,
               });
               setToast({
                 id: `${Date.now()}`,
@@ -249,11 +251,12 @@ const CavaticaCopyModal = ({
             //Enabled if project selected AND (we have authorized files OR no gen3 connection but files are selected)
             !(
               selectedProjectData &&
-              ((state.authorizedFiles && state.authorizedFiles.length > 0) ||
-                (!gen3Connected && isFilesSelected))
+              (state.authorizedFilesCombined.length > 0 || (!hasFenceConnection && isFilesSelected))
             ),
-          submitText: gen3Connected
-            ? `Copy ${state.authorizedFiles ? state.authorizedFiles.length : 0} files`.toUpperCase()
+          submitText: hasFenceConnection
+            ? `Copy ${
+                state.authorizedFiles ? state.authorizedFilesCombined.length : 0
+              } files`.toUpperCase()
             : `Copy Authorized`.toUpperCase(),
         }}
       />
