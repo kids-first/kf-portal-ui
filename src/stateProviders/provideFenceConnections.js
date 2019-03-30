@@ -23,7 +23,11 @@ export default provideState({
         : [],
     fenceNonAuthStudies: ({ fenceStudies }) =>
       !isEmpty(fenceStudies)
-        ? flatMap(Object.values(fenceStudies), studies => studies.unauthorizedStudies)
+        ? _(fenceStudies)
+            .values()
+            .flatMap(studies => studies.unauthorizedStudies)
+            .uniqBy('id')
+            .value()
         : [],
     fenceAuthFiles: ({ fenceStudies }) =>
       _(fenceStudies)
@@ -45,7 +49,10 @@ export default provideState({
           });
           return acc;
         }, []);
-      return _.differenceBy(unAuth, fenceAuthFiles, 'fileExternalId');
+      return _(unAuth)
+        .uniqBy('fileExternalId')
+        .differenceBy(fenceAuthFiles, 'fileExternalId')
+        .value();
     },
   },
   effects: {
