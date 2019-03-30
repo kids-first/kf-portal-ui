@@ -9,6 +9,8 @@ import { withApi } from 'services/api';
 import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
 import CardContent from 'uikit/Card/CardContent';
+import { SizeProvider } from 'components/Utils';
+import PromptMessage from 'uikit/PromptMessage';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -183,8 +185,6 @@ const StyledSurvivalPlot = styled(SurvivalPlot)`
   }
 `;
 
-//     transform: translatey(7px);
-
 class SurvivalChart extends React.Component {
   constructor(props) {
     super(props);
@@ -288,33 +288,46 @@ class SurvivalChart extends React.Component {
     };
 
     return (
-      <CohortCard
-        Content={SurvivalCardContent}
-        title="Overall Survival"
-        loading={this.state.isLoading}
-      >
-        <SurvivalChartWrapper>
-          <SurvivalChartHeader>
-            Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
-          </SurvivalChartHeader>
-          <StyledSurvivalPlot
-            dataSets={data}
-            onMouseLeaveDonors={this.handleMouseLeaveDonors}
-            onMouseEnterDonors={this.handleMouseEnterDonors}
-          />
-          <div style={tooltipStyle}>
-            <strong>{donor.id}</strong>
-            <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
-            {donor.isCensored ? (
-              <div>Censored Survival Time: {donor.time} days (censored)</div>
-            ) : (
-              <div>Survival Time: {donor.time} days </div>
-            )}
-          </div>
-        </SurvivalChartWrapper>
-      </CohortCard>
+      <SizeProvider>
+        {({ size }) => (
+          <CohortCard
+            Content={SurvivalCardContent}
+            title="Overall Survival"
+            loading={this.state.isLoading}
+          >
+            <SurvivalChartWrapper>
+              <SurvivalChartHeader>
+                Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
+              </SurvivalChartHeader>
+
+              <StyledSurvivalPlot
+                size={size}
+                dataSets={data}
+                onMouseLeaveDonors={this.handleMouseLeaveDonors}
+                onMouseEnterDonors={this.handleMouseEnterDonors}
+              />
+
+              <div style={tooltipStyle}>
+                <strong>{donor.id}</strong>
+                <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
+                {donor.isCensored ? (
+                  <div>Censored Survival Time: {donor.time} days (censored)</div>
+                ) : (
+                  <div>Survival Time: {donor.time} days </div>
+                )}
+              </div>
+            </SurvivalChartWrapper>
+          </CohortCard>
+        )}
+      </SizeProvider>
     );
   }
 }
 
-export default compose(withApi)(SurvivalChart);
+// export default compose(withApi)(SurvivalChart);
+
+export default () => (
+  <CohortCard Content={SurvivalCardContent} title="Overall Survival">
+    <PromptMessage heading={'BETA'} content={<div>Visualization coming soon</div>} />
+  </CohortCard>
+);

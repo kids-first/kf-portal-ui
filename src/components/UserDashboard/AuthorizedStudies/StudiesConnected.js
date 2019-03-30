@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import styled from 'react-emotion';
 
 import { injectState } from 'freactal';
@@ -14,10 +14,9 @@ import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } fr
 import Info from '../Info';
 import { createStudyIdSqon, createAcceptedFilesByUserStudySqon } from 'services/fileAccessControl';
 import Study from './Study';
-import { CardContentSpinner } from '../styles';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { isEmpty } from 'lodash';
+import _ from 'lodash';
 
 const InternalLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
@@ -58,6 +57,9 @@ const renderNoAuthorizedStudies = ({ loggedInUser }) => (
 );
 
 const renderAuthorizedStudies = ({
+  fenceAuthFiles,
+  fenceNonAuthFiles,
+
   fenceAuthStudies,
   fenceNonAuthStudies,
   fenceConnections,
@@ -67,6 +69,13 @@ const renderAuthorizedStudies = ({
     (output, key) => output.concat(Object.keys(fenceConnections[key].projects || {})),
     [],
   );
+
+  const authStudies = _(fenceAuthFiles)
+    .groupBy('studyId')
+    .value();
+  const unauthedStudies = _(fenceNonAuthFiles)
+    .groupBy('studyId')
+    .value();
 
   const combinedStudyData = fenceAuthStudies.reduce((acc, authorizedStudy) => {
     const unAuthorizedFiles = (
@@ -97,18 +106,18 @@ const renderAuthorizedStudies = ({
       action: `${eventOrigin}: ${TRACKING_EVENTS.actions.click}`,
       label: `studyId: ${studyId}`,
     });
-
+    const { consentCodes } = combinedStudyData[studyId];
     history.push(
       `/search/file?sqon=${encodeURI(
-        JSON.stringify(
-          createAcceptedFilesByUserStudySqon(fenceAuthStudies.map(study => study.id))({ studyId }),
-        ),
+        JSON.stringify(createAcceptedFilesByUserStudySqon(consentCodes)({ studyId })),
       )}`,
     );
   };
 
   return fenceAuthStudies.map(({ studyShortName, id: studyId }) => {
-    const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[studyId];
+    const { consentCodes } = combinedStudyData[studyId];
+    const authorizedFiles = _.get(authStudies, studyId, []);
+    const unauthorizedFiles = _.get(unauthedStudies, studyId, []);
     return (
       <Study
         key={studyId}
@@ -116,7 +125,7 @@ const renderAuthorizedStudies = ({
         name={studyShortName}
         consentCodes={consentCodes}
         authorized={authorizedFiles.length}
-        total={authorizedFiles.length + unAuthorizedFiles.length}
+        total={authorizedFiles.length + unauthorizedFiles.length}
         onStudyTotalClick={onStudyTotalClick(studyId)}
         onStudyAuthorizedClick={onStudyAuthorizedClick}
       />
@@ -128,47 +137,35 @@ const enhance = compose(
   injectState,
   withHistory,
   withApi,
-  lifecycle({
-    async componentDidMount() {
-      const {
-        api,
-        effects,
-        state: { fenceConnections, fenceStudiesInitialized },
-      } = this.props;
-      !isEmpty(fenceConnections) &&
-        !fenceStudiesInitialized &&
-        effects.fetchFenceStudies({ api, fenceConnections });
-    },
-  }),
 );
 
 const StudiesConnected = enhance(
   ({
     state: {
       loggedInUser,
-      fenceStudiesInitialized,
       fenceConnections,
       fenceAuthStudies,
       fenceNonAuthStudies,
+      fenceAuthFiles,
+      fenceNonAuthFiles,
     },
     history,
   }) => {
     return (
       <Fragment>
-        {!fenceStudiesInitialized ? (
-          <CardContentSpinner />
-        ) : (
-          <Column>
-            {!isEmpty(fenceAuthStudies) > 0
-              ? renderAuthorizedStudies({
-                  fenceAuthStudies,
-                  fenceNonAuthStudies,
-                  fenceConnections,
-                  history,
-                })
-              : renderNoAuthorizedStudies({ loggedInUser })}
-          </Column>
-        )}
+        <Column>
+          {!_.isEmpty(fenceAuthStudies) > 0
+            ? renderAuthorizedStudies({
+                fenceAuthFiles,
+                fenceNonAuthFiles,
+
+                fenceAuthStudies,
+                fenceNonAuthStudies,
+                fenceConnections,
+                history,
+              })
+            : renderNoAuthorizedStudies({ loggedInUser })}
+        </Column>
       </Fragment>
     );
   },

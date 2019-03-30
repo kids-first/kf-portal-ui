@@ -40,11 +40,12 @@ const StyledDownloadButton = styled(DownloadButton)`
 const Download = compose(
   withApi,
   withTheme,
-)(({ kfId, theme, disabled, ...props }) =>
+)(({ kfId, fence, theme, disabled, ...props }) =>
   disabled ? (
     <Fragment>
       <DownloadFileButton
         kfId={kfId}
+        fence={fence}
         render={props => <StyledDownloadButton {...props} disabled />}
         {...props}
       />
@@ -64,6 +65,7 @@ const Download = compose(
   ) : (
     <DownloadFileButton
       kfId={kfId}
+      fence={fence}
       render={props => <StyledDownloadButton {...props} />}
       {...props}
     />

@@ -24,6 +24,7 @@ import VirtualStudyListProvider from './VirtualStudyListProvider';
 import SaveVirtualStudiesModalContent from './SaveVirtualStudiesModalContent';
 import SaveIcon from 'icons/SaveIcon';
 import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import PromptMessage from 'uikit/PromptMessage';
 
 const Container = styled('div')`
   width: 100%;
@@ -49,11 +50,6 @@ const FullWidthWhite = styled('div')`
   margin-top: 21px;
 `;
 
-const CategoriesContainer = styled('div')`
-  padding-left: 30px;
-  padding-right: 30px;
-`;
-
 const SqonBuilderContainer = styled('div')`
   padding-top: 20px;
   padding-bottom: 20px;
@@ -64,7 +60,12 @@ const SqonBuilderContainer = styled('div')`
 `;
 
 const Content = styled(ContentBar)`
-  padding: 0 20px 0 32px;
+  padding-left: 30px;
+  padding-right: 30px;
+`;
+
+const StylePromptMessage = styled(PromptMessage)`
+  width: 100%;
 `;
 
 const SaveButtonText = styled('span')`
@@ -193,6 +194,16 @@ const CohortBuilder = compose(
 
           return (
             <Container>
+              <StylePromptMessage
+                content={
+                  <div>
+                    <strong>BETA RELEASE: </strong>Use the cohort builder to create virtual studies.
+                    You can query participant variables including demographic, clinical, and data
+                    categories. It's in progress, so you may experience some bugs. To give feedback,
+                    click the button in the bottom right corner. All feedback is welcome!
+                  </div>
+                }
+              />
               <Content>
                 <Row>
                   <Heading>Explore Data</Heading>
@@ -235,9 +246,9 @@ const CohortBuilder = compose(
                 </Row>
               </Content>
               <FullWidthWhite>
-                <CategoriesContainer>
+                <Content>
                   <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
-                </CategoriesContainer>
+                </Content>
                 <SqonBuilderContainer>
                   <SqonBuilder
                     syntheticSqons={syntheticSqons}

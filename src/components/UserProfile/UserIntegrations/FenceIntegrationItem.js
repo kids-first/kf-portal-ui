@@ -36,15 +36,7 @@ const enhanceActions = compose(
 );
 
 const Actions = enhanceActions(
-  ({
-    fence,
-    state: { fenceStudies, fenceConnections },
-    api,
-    effects,
-    loading,
-    setConnecting,
-    connected,
-  }) => {
+  ({ fence, state: { fenceConnections }, api, effects, loading, setConnecting, connected }) => {
     return loading ? (
       <LoadingSpinner height={48} />
     ) : connected ? (
@@ -105,6 +97,7 @@ const connect = ({ fence, api, setConnecting, effects }) => {
       effects.setIntegrationToken(fence, token);
       const details = convertTokenToUser(token);
       effects.addFenceConnection({ fence, details });
+      effects.fetchFenceStudies({ api, fence, details });
       setConnecting(false);
       effects.setToast({
         id: `${Date.now()}`,

@@ -34,7 +34,7 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { DCF, GEN3 } from 'common/constants';
+import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -95,7 +95,7 @@ const App = compose(
         <Route path="/auth-redirect" exact component={AuthRedirect} />
         <Route path="/redirected" exact component={() => null} />
         <Route
-          path="/virtualStudies"
+          path={COHORT_BUILDER_PATH}
           exact
           render={props =>
             forceSelectRole({

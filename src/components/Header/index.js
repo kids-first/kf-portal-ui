@@ -6,13 +6,14 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
-// import styled from 'react-emotion';
-// import ExploreDataIcon from 'icons/ExploreDataIcon';
+import styled from 'react-emotion';
+import ExploreDataIcon from 'icons/ExploreDataIcon';
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';
+import { COHORT_BUILDER_PATH } from 'common/constants';
 import { withApi } from 'services/api';
 import {
   NavLink,
@@ -31,25 +32,21 @@ import {
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
 
-/**
- * These comments are taken out for now in preparation for cohort builder release
- */
+const ExploreDataIconStyled = styled(ExploreDataIcon)`
+  top: 3px;
+  position: relative;
+  fill: currentColor;
+`;
 
-// const ExploreDataIconStyled = styled(ExploreDataIcon)`
-//   top: 3px;
-//   position: relative;
-//   fill: currentColor;
-// `;
-
-// const BetaNavLink = styled(NavLink)`
-//   &:after {
-//     content: 'beta';
-//     vertical-align: super;
-//     font-size: 9px;
-//     text-transform: uppercase;
-//     padding-left: 3px;
-//   }
-// `;
+const BetaNavLink = styled(NavLink)`
+  &:after {
+    content: 'beta';
+    vertical-align: super;
+    font-size: 9px;
+    text-transform: uppercase;
+    padding-left: 3px;
+  }
+`;
 
 const Header = ({
   state: { loggedInUser },
@@ -84,11 +81,11 @@ const Header = ({
                       <HouseIcon /> <Trans>Dashboard</Trans>
                     </NavLink>
                   </li>
-                  {/* <li>
-                    <BetaNavLink currentPathName={currentPathName} to="/virtualStudies">
+                  <li>
+                    <BetaNavLink currentPathName={currentPathName} to={COHORT_BUILDER_PATH}>
                       <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
                     </BetaNavLink>
-                  </li> */}
+                  </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to={`/search/file`}>
                       <DatabaseIcon /> <Trans>File Repository</Trans>
@@ -139,13 +136,7 @@ const Header = ({
                       onClick={e => {
                         e.preventDefault();
                         toggleDropdown();
-                        uiLogout({
-                          history,
-                          setToken,
-                          setUser,
-                          clearIntegrationTokens,
-                          api,
-                        });
+                        uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
                       }}
                     >
                       <Trans>Logout</Trans>
