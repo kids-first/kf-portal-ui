@@ -7,6 +7,7 @@ import { getUserStudyPermission } from 'services/fileAccessControl';
 import { FENCES } from 'common/constants';
 import { omit, flatMap, isEmpty } from 'lodash';
 import { withApi } from 'services/api';
+import { flatten } from 'lodash';
 
 export default provideState({
   initialState: props => ({
@@ -17,6 +18,10 @@ export default provideState({
     fenceStudies: {},
   }),
   computed: {
+    fenceAcls: ({ fenceConnections }) =>
+      flatten(
+        Object.keys(fenceConnections).map(fence => Object.keys(fenceConnections[fence].projects)),
+      ),
     fenceAuthStudies: ({ fenceStudies }) =>
       !isEmpty(fenceStudies)
         ? flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)
