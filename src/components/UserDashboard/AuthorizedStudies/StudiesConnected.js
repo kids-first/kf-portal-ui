@@ -16,7 +16,7 @@ import { createStudyIdSqon, createAcceptedFilesByUserStudySqon } from 'services/
 import Study from './Study';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { isEmpty } from 'lodash';
+import _, { isEmpty } from 'lodash';
 
 const InternalLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
@@ -57,6 +57,9 @@ const renderNoAuthorizedStudies = ({ loggedInUser }) => (
 );
 
 const renderAuthorizedStudies = ({
+  fenceAuthFiles,
+  fenceNonAuthFiles,
+
   fenceAuthStudies,
   fenceNonAuthStudies,
   fenceConnections,
@@ -66,6 +69,13 @@ const renderAuthorizedStudies = ({
     (output, key) => output.concat(Object.keys(fenceConnections[key].projects || {})),
     [],
   );
+
+  const authStudies = _(fenceAuthFiles)
+    .groupBy('studyId')
+    .value();
+  const unauthedStudies = _(fenceNonAuthFiles)
+    .groupBy('studyId')
+    .value();
 
   const combinedStudyData = fenceAuthStudies.reduce((acc, authorizedStudy) => {
     const unAuthorizedFiles = (
@@ -105,15 +115,15 @@ const renderAuthorizedStudies = ({
   };
 
   return fenceAuthStudies.map(({ studyShortName, id: studyId }) => {
-    const { authorizedFiles, unAuthorizedFiles, consentCodes } = combinedStudyData[studyId];
+    const { consentCodes } = combinedStudyData[studyId];
     return (
       <Study
         key={studyId}
         studyId={studyId}
         name={studyShortName}
         consentCodes={consentCodes}
-        authorized={authorizedFiles.length}
-        total={authorizedFiles.length + unAuthorizedFiles.length}
+        authorized={_.get(authStudies, studyId, []).length}
+        total={_.get(authStudies, studyId, []).length + _.get(unauthedStudies, studyId, []).length}
         onStudyTotalClick={onStudyTotalClick(studyId)}
         onStudyAuthorizedClick={onStudyAuthorizedClick}
       />
@@ -129,7 +139,14 @@ const enhance = compose(
 
 const StudiesConnected = enhance(
   ({
-    state: { loggedInUser, fenceConnections, fenceAuthStudies, fenceNonAuthStudies },
+    state: {
+      loggedInUser,
+      fenceConnections,
+      fenceAuthStudies,
+      fenceNonAuthStudies,
+      fenceAuthFiles,
+      fenceNonAuthFiles,
+    },
     history,
   }) => {
     return (
@@ -137,6 +154,9 @@ const StudiesConnected = enhance(
         <Column>
           {!isEmpty(fenceAuthStudies) > 0
             ? renderAuthorizedStudies({
+                fenceAuthFiles,
+                fenceNonAuthFiles,
+
                 fenceAuthStudies,
                 fenceNonAuthStudies,
                 fenceConnections,

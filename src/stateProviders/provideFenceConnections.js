@@ -25,6 +25,28 @@ export default provideState({
       !isEmpty(fenceStudies)
         ? flatMap(Object.values(fenceStudies), studies => studies.unauthorizedStudies)
         : [],
+    fenceAuthFiles: ({ fenceStudies }) =>
+      _(fenceStudies)
+        .map('authorizedStudies')
+        .flatten()
+        .reduce((acc, { id: studyId, files, studyName, studyShortName }) => {
+          files.forEach(({ key }) => {
+            acc.push({ fileExternalId: key, studyId, studyName, studyShortName });
+          });
+          return acc;
+        }, []),
+    fenceNonAuthFiles: ({ fenceStudies, fenceAuthFiles }) => {
+      const unAuth = _(fenceStudies)
+        .map('unauthorizedStudies')
+        .flatten()
+        .reduce((acc, { id: studyId, files, studyName, studyShortName }) => {
+          files.forEach(({ key }) => {
+            acc.push({ fileExternalId: key, studyId, studyName, studyShortName });
+          });
+          return acc;
+        }, []);
+      return _.differenceBy(unAuth, fenceAuthFiles, 'fileExternalId');
+    },
   },
   effects: {
     setFenceConnectionsInitialized: update(state => ({
@@ -73,23 +95,26 @@ export default provideState({
       fenceStudiesInitialized: false,
     })),
     addFenceStudies: update(
-      (state, fence, { authorizedStudies = [], unauthorizedStudies = [] }) => ({
-        fenceStudies: {
-          ...state.fenceStudies,
-          [fence]: { authorizedStudies, unauthorizedStudies },
-        },
-      }),
+      (state, fence, { authorizedStudies = [], unauthorizedStudies = [] }) => {
+        console.log('addFenceStudies: ', authorizedStudies, unauthorizedStudies);
+        return {
+          fenceStudies: {
+            ...state.fenceStudies,
+            [fence]: { authorizedStudies, unauthorizedStudies },
+          },
+        };
+      },
     ),
     fetchFenceStudies: (effects, { api, fence, details }) => {
       return getUserStudyPermission(api, {
         [fence]: details,
       })({})
-        .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) =>
-          effects.addFenceStudies(fence, {
+        .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) => {
+          return effects.addFenceStudies(fence, {
             authorizedStudies: acceptedStudiesAggs,
             unauthorizedStudies: unacceptedStudiesAggs,
-          }),
-        )
+          });
+        })
         .catch(err => console.log(`Error fetching fence studies for '${fence}': ${err}`));
     },
   },
