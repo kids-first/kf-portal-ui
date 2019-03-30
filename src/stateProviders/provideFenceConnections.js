@@ -1,11 +1,11 @@
 import { provideState, update } from 'freactal';
 import { compose, lifecycle } from 'recompose';
 import { injectState } from 'freactal';
+import _ from 'lodash';
 
 import { getFenceUser } from 'services/fence';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 import { FENCES } from 'common/constants';
-import { omit, flatMap, isEmpty } from 'lodash';
 import { withApi } from 'services/api';
 
 export default provideState({
@@ -32,11 +32,11 @@ export default provideState({
   }),
   computed: {
     fenceAuthStudies: ({ fenceStudies }) =>
-      !isEmpty(fenceStudies)
-        ? flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)
+      !_.isEmpty(fenceStudies)
+        ? _.flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)
         : [],
     fenceNonAuthStudies: ({ fenceStudies }) =>
-      !isEmpty(fenceStudies)
+      !_.isEmpty(fenceStudies)
         ? _(fenceStudies)
             .values()
             .flatMap(studies => studies.unauthorizedStudies)
@@ -104,8 +104,8 @@ export default provideState({
       };
     }),
     removeFenceConnection: update((state, fence) => ({
-      fenceConnections: omit(state.fenceConnections, fence),
-      fenceStudies: omit(state.fenceStudies, fence),
+      fenceConnections: _.omit(state.fenceConnections, fence),
+      fenceStudies: _.omit(state.fenceStudies, fence),
       fenceStudiesInitialized: false,
     })),
     fetchFenceConnections: (effects, { api }) => {
