@@ -10,6 +10,7 @@ import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
 import CardContent from 'uikit/Card/CardContent';
 import { SizeProvider } from 'components/Utils';
+import PromptMessage from 'uikit/PromptMessage';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -323,4 +324,10 @@ class SurvivalChart extends React.Component {
   }
 }
 
-export default compose(withApi)(SurvivalChart);
+// export default compose(withApi)(SurvivalChart);
+
+export default () => (
+  <CohortCard Content={SurvivalCardContent} title="Overall Survival">
+    <PromptMessage heading={'BETA'} content={<div>Visualization coming soon</div>} />
+  </CohortCard>
+);
