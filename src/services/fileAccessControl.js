@@ -1,4 +1,4 @@
-import { get, isObject } from 'lodash';
+import _, { get, isObject } from 'lodash';
 import { getFenceUser } from 'services/fence';
 import { graphql } from 'services/arranger';
 
@@ -113,10 +113,12 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
     content: [],
   },
 } = {}) => {
-  const projects = [];
-  Object.values(fenceConnections).forEach(fenceUser => {
-    if (isObject(fenceUser.projects)) projects.push(...Object.keys(fenceUser.projects));
-  });
+  const projects = _(fenceConnections)
+    .values()
+    .filter(({ fenceUser }) => isObject(fenceUser))
+    .map(({ projects }) => _.keys(projects))
+    .flatten()
+    .value();
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
