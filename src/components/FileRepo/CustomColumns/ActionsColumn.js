@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Component from 'react-component-component';
-import { get } from 'lodash';
+import { get, intersection } from 'lodash';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import Query from '@arranger/components/dist/Query';
@@ -53,8 +53,7 @@ const FenceDownloadButton = ({ fence, kfId, theme }) =>
     />
   );
 
-const ActionItems = ({ acl, value, fence, userAvailableStudies, theme }) => {
-  const hasAccess = acl && fence && acl.some(code => userAvailableStudies.includes(code));
+const ActionItems = ({ value, fence, hasAccess, theme }) => {
   return (
     <React.Fragment>
       <Column style={{ flex: 1, alignItems: 'center' }}>
@@ -74,7 +73,7 @@ const ActionItems = ({ acl, value, fence, userAvailableStudies, theme }) => {
   );
 };
 
-const ActionsColumn = ({ value, api, theme, fenceStudies }) => (
+const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
   <Component
     initialState={{ shouldFetch: true }}
     didUpdate={({ state, setState, props, prevProps }) => {
@@ -121,22 +120,13 @@ const ActionsColumn = ({ value, api, theme, fenceStudies }) => (
           const file = get(data, 'file.hits.edges[0].node', {});
           const acl = file.acl || [];
           const repository = file.repository;
-          const userAvailableStudies =
-            (repository &&
-              get(fenceStudies, `${repository}.authorizedStudies`, []).map(study => study.id)) ||
-            [];
+          const hasAccess = intersection(fenceAcls, acl).length > 0;
           return (
             <Row center height={'100%'}>
               {loadingQuery ? (
                 <TableSpinner style={{ width: 15, height: 15 }} />
               ) : (
-                <ActionItems
-                  acl={acl}
-                  value={value}
-                  fence={repository}
-                  userAvailableStudies={userAvailableStudies}
-                  theme={theme}
-                />
+                <ActionItems value={value} fence={repository} hasAccess={hasAccess} theme={theme} />
               )}
             </Row>
           );

@@ -209,7 +209,7 @@ const FileRepo = ({
                             customColumns={customTableColumns({
                               theme,
                               userProjectIds,
-                              fenceStudies: state.fenceStudies,
+                              fenceAcls: state.fenceAcls,
                             })}
                             filterInputPlaceholder={'Filter table'}
                             columnDropdownText="Columns"
