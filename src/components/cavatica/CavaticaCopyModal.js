@@ -16,7 +16,7 @@ import { withApi } from 'services/api';
 
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 
-import { convertGen3FileIds, copyFiles as copyCavaticaFiles } from 'services/cavatica';
+import { convertFenceUuids, copyFiles as copyCavaticaFiles } from 'services/cavatica';
 import { getFilesById } from 'services/arranger';
 import provideGen3FileAuthorizations from 'stateProviders/provideGen3FileAuthorizations';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -70,8 +70,8 @@ const getGen3UUIDs = async arrangerIds => {
 };
 
 const copyToProject = async ({ selectedFiles, selectedProject }) => {
-  // Convert Gen3 UUIDs to CavaticaIds
-  const conversionResponse = await convertGen3FileIds({ ids: selectedFiles });
+  // Convert Fence UUIDs (latest_did) to CavaticaIds
+  const conversionResponse = await convertFenceUuids({ ids: selectedFiles, fence: GEN3 });
   const cavaticaIds = conversionResponse.map(item => item.id);
 
   // Copy Files
