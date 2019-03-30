@@ -102,25 +102,23 @@ export default provideState({
       fenceStudiesInitialized: false,
     })),
     addFenceStudies: update(
-      (state, fence, { authorizedStudies = [], unauthorizedStudies = [] }) => {
-        return {
-          fenceStudies: {
-            ...state.fenceStudies,
-            [fence]: { authorizedStudies, unauthorizedStudies },
-          },
-        };
-      },
+      (state, fence, { authorizedStudies = [], unauthorizedStudies = [] }) => ({
+        fenceStudies: {
+          ...state.fenceStudies,
+          [fence]: { authorizedStudies, unauthorizedStudies },
+        },
+      }),
     ),
     fetchFenceStudies: (effects, { api, fence, details }) => {
       return getUserStudyPermission(api, {
         [fence]: details,
       })({})
-        .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) => {
-          return effects.addFenceStudies(fence, {
+        .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) =>
+          effects.addFenceStudies(fence, {
             authorizedStudies: acceptedStudiesAggs,
             unauthorizedStudies: unacceptedStudiesAggs,
-          });
-        })
+          }),
+        )
         .catch(err => console.log(`Error fetching fence studies for '${fence}': ${err}`));
     },
   },
