@@ -97,6 +97,7 @@ const connect = ({ fence, api, setConnecting, effects }) => {
       effects.setIntegrationToken(fence, token);
       const details = convertTokenToUser(token);
       effects.addFenceConnection({ fence, details });
+      effects.fetchFenceStudies({ api, fence, details });
       setConnecting(false);
       effects.setToast({
         id: `${Date.now()}`,
