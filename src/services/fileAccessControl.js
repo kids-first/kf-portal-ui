@@ -115,7 +115,7 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
 } = {}) => {
   const projects = _(fenceConnections)
     .values()
-    .filter(({ fenceUser }) => isObject(fenceUser))
+    .filter(fenceUser => isObject(fenceUser.projects))
     .map(({ projects }) => _.keys(projects))
     .flatten()
     .value();
