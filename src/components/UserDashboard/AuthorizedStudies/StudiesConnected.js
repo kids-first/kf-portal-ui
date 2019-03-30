@@ -96,12 +96,10 @@ const renderAuthorizedStudies = ({
       action: `${eventOrigin}: ${TRACKING_EVENTS.actions.click}`,
       label: `studyId: ${studyId}`,
     });
-
+    const { consentCodes } = combinedStudyData[studyId];
     history.push(
       `/search/file?sqon=${encodeURI(
-        JSON.stringify(
-          createAcceptedFilesByUserStudySqon(fenceAuthStudies.map(study => study.id))({ studyId }),
-        ),
+        JSON.stringify(createAcceptedFilesByUserStudySqon(consentCodes)({ studyId })),
       )}`,
     );
   };
