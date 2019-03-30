@@ -15,6 +15,20 @@ export default provideState({
 
     fenceStudiesInitialized: false,
     fenceStudies: {},
+    /**
+     * fenceStudies: {
+     *  [fence: string]: {
+     *    authorizedStudies: Array<{
+     *      {
+     *        id: string,
+     *        files: Array<{ key: string }>
+     *        studyName: string,
+     *        studyShortName: string,
+     *      }
+     *    }>
+     *  }
+     * }
+     */
   }),
   computed: {
     fenceAuthStudies: ({ fenceStudies }) =>
@@ -23,8 +37,57 @@ export default provideState({
         : [],
     fenceNonAuthStudies: ({ fenceStudies }) =>
       !isEmpty(fenceStudies)
-        ? flatMap(Object.values(fenceStudies), studies => studies.unauthorizedStudies)
+        ? _(fenceStudies)
+            .values()
+            .flatMap(studies => studies.unauthorizedStudies)
+            .uniqBy('id')
+            .value()
         : [],
+    fenceAuthFiles: ({ fenceStudies }) => {
+      /**
+       * basically takes authorizedStudies from fenceStudies and produces
+       * a flat list of studies in the format { fileExternalId, studyId, studyName, studyShortName}
+       */
+      return _(fenceStudies)
+        .map('authorizedStudies')
+        .flatten()
+        .reduce((acc, { id: studyId, files, studyName, studyShortName }) => {
+          files.forEach(({ key }) => {
+            acc.push({
+              fileExternalId: key,
+              studyId,
+              studyName,
+              studyShortName,
+            });
+          });
+          return acc;
+        }, []);
+    },
+    fenceNonAuthFiles: ({ fenceStudies, fenceAuthFiles }) => {
+      /**
+       * same as fenceAuthFiles but with unauthorizedStudies, then find the difference
+       * to fenceAuthFiles because a study may be authorized in one repo and not the other
+       * so may result in duplicate
+       */
+      const unAuth = _(fenceStudies)
+        .map('unauthorizedStudies')
+        .flatten()
+        .reduce((acc, { id: studyId, files, studyName, studyShortName }) => {
+          files.forEach(({ key }) => {
+            acc.push({
+              fileExternalId: key,
+              studyId,
+              studyName,
+              studyShortName,
+            });
+          });
+          return acc;
+        }, []);
+      return _(unAuth)
+        .uniqBy('fileExternalId')
+        .differenceBy(fenceAuthFiles, 'fileExternalId')
+        .value();
+    },
   },
   effects: {
     setFenceConnectionsInitialized: update(state => ({

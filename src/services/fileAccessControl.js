@@ -1,4 +1,4 @@
-import { get, isObject } from 'lodash';
+import _ from 'lodash';
 import { getFenceUser } from 'services/fence';
 import { graphql } from 'services/arranger';
 
@@ -87,23 +87,21 @@ export const createStudyIdSqon = studyId => ({
 });
 
 export const createAcceptedFilesByUserStudySqon = projects => ({ sqon, studyId }) => {
-  const approvedAcls = projects.sort();
   return {
     op: 'and',
     content: [
       ...(sqon ? sqon.content : []),
-      { op: 'in', content: { field: 'acl', value: approvedAcls } },
+      { op: 'in', content: { field: 'acl', value: projects } },
       { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
     ],
   };
 };
 const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => {
-  const approvedAcls = projects.sort();
   return {
     op: 'and',
     content: [
       ...(sqon ? sqon.content : []),
-      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: approvedAcls } }] },
+      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: projects } }] },
       { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
     ],
   };
@@ -115,12 +113,12 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
     content: [],
   },
 } = {}) => {
-  const projects = [];
-  Object.values(fenceConnections).forEach(fenceUser => {
-    if (isObject(fenceUser.projects)) projects.push(...Object.keys(fenceUser.projects));
-  });
-
-  const approvedAcls = projects.sort();
+  const projects = _(fenceConnections)
+    .values()
+    .filter(fenceUser => _.isObject(fenceUser.projects))
+    .map(({ projects }) => _.keys(projects))
+    .flatten()
+    .value();
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
@@ -132,7 +130,7 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
             op: 'in',
             content: {
               field: 'acl',
-              value: approvedAcls,
+              value: projects,
             },
           },
         ],
@@ -150,7 +148,7 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
                 op: 'in',
                 content: {
                   field: 'acl',
-                  value: approvedAcls,
+                  value: projects,
                 },
               },
             ],
@@ -218,7 +216,7 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
     },
   })
     .then(data => {
-      const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
+      const fileAcl = _.get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
       return fileAcl.some(fileAcl => approvedAcls.includes(fileAcl));
     })
     .catch(err => {
