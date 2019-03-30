@@ -103,7 +103,6 @@ export default provideState({
     })),
     addFenceStudies: update(
       (state, fence, { authorizedStudies = [], unauthorizedStudies = [] }) => {
-        console.log('addFenceStudies: ', authorizedStudies, unauthorizedStudies);
         return {
           fenceStudies: {
             ...state.fenceStudies,
