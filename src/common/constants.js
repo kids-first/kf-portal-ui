@@ -78,6 +78,11 @@ export const FENCES = [GEN3, DCF];
 export const CAVATICA = 'cavatica';
 export const SERVICES = [...FENCES, CAVATICA];
 
+export const CAVATICA_DATASET_MAPPING = {
+  DCF: 'sevenbridges/target',
+  GEN3: 'sevenbridges/kids-first',
+};
+
 export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';
 
