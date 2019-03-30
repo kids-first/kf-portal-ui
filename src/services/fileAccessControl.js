@@ -87,23 +87,21 @@ export const createStudyIdSqon = studyId => ({
 });
 
 export const createAcceptedFilesByUserStudySqon = projects => ({ sqon, studyId }) => {
-  const approvedAcls = projects.sort();
   return {
     op: 'and',
     content: [
       ...(sqon ? sqon.content : []),
-      { op: 'in', content: { field: 'acl', value: approvedAcls } },
+      { op: 'in', content: { field: 'acl', value: projects } },
       { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
     ],
   };
 };
 const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => {
-  const approvedAcls = projects.sort();
   return {
     op: 'and',
     content: [
       ...(sqon ? sqon.content : []),
-      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: approvedAcls } }] },
+      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: projects } }] },
       { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
     ],
   };
@@ -120,8 +118,6 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
     if (isObject(fenceUser.projects)) projects.push(...Object.keys(fenceUser.projects));
   });
 
-  const approvedAcls = projects.sort();
-
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
       sqon: {
@@ -132,7 +128,7 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
             op: 'in',
             content: {
               field: 'acl',
-              value: approvedAcls,
+              value: projects,
             },
           },
         ],
@@ -150,7 +146,7 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
                 op: 'in',
                 content: {
                   field: 'acl',
-                  value: approvedAcls,
+                  value: projects,
                 },
               },
             ],
