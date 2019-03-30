@@ -88,6 +88,7 @@ export const createStudyIdSqon = studyId => ({
 
 export const createAcceptedFilesByUserStudySqon = projects => ({ sqon, studyId }) => {
   const approvedAcls = projects.sort();
+  console.log('approvedAcls: ', approvedAcls);
   return {
     op: 'and',
     content: [
