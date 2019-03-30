@@ -116,14 +116,16 @@ const renderAuthorizedStudies = ({
 
   return fenceAuthStudies.map(({ studyShortName, id: studyId }) => {
     const { consentCodes } = combinedStudyData[studyId];
+    const authorizedFiles = _.get(authStudies, studyId, []);
+    const unauthorizedFiles = _.get(unauthedStudies, studyId, []);
     return (
       <Study
         key={studyId}
         studyId={studyId}
         name={studyShortName}
         consentCodes={consentCodes}
-        authorized={_.get(authStudies, studyId, []).length}
-        total={_.get(authStudies, studyId, []).length + _.get(unauthedStudies, studyId, []).length}
+        authorized={authorizedFiles.length}
+        total={authorizedFiles.length + unauthorizedFiles.length}
         onStudyTotalClick={onStudyTotalClick(studyId)}
         onStudyAuthorizedClick={onStudyAuthorizedClick}
       />
