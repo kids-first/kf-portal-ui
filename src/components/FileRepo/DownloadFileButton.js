@@ -32,105 +32,93 @@ const DownloadFileButton = compose(
   injectState,
   withTheme,
   withApi,
-)(
-  ({
-    kfId,
-    fence,
-    theme,
-    effects: { setToast },
-    state: { integrationTokens },
-    api,
-    render,
-    onSuccess,
-    onError,
-  }) => (
-    <LoadingOnClick
-      onClick={() =>
-        downloadFile({ kfId, fence, api })
-          .then(url => {
-            const a = document.createElement('a');
-            a.href = url;
-            if (onSuccess) {
-              onSuccess(url);
-            }
+)(({ kfId, fence, theme, effects: { setToast }, api, render, onSuccess, onError }) => (
+  <LoadingOnClick
+    onClick={() =>
+      downloadFile({ kfId, fence, api })
+        .then(url => {
+          const a = document.createElement('a');
+          a.href = url;
+          if (onSuccess) {
+            onSuccess(url);
+          }
 
-            a.download = url.split('/').slice(-1);
-            a.style.display = 'none';
+          a.download = url.split('/').slice(-1);
+          a.style.display = 'none';
 
-            // firefox would not trigger download unless the element is present in the dom
-            const appRoot = getAppElement();
-            appRoot.appendChild(a);
-            a.click();
-            appRoot.removeChild(a);
-          })
-          .catch(err => {
-            if (onError) {
-              onError(err);
-            }
-            setToast({
-              id: `${Date.now()}`,
-              action: 'error',
-              component: (
+          // firefox would not trigger download unless the element is present in the dom
+          const appRoot = getAppElement();
+          appRoot.appendChild(a);
+          a.click();
+          appRoot.removeChild(a);
+        })
+        .catch(err => {
+          if (onError) {
+            onError(err);
+          }
+          setToast({
+            id: `${Date.now()}`,
+            action: 'error',
+            component: (
+              <div
+                css={`
+                  display: flex;
+                `}
+              >
                 <div
                   css={`
                     display: flex;
+                    flex-direction: column;
                   `}
                 >
                   <div
                     css={`
-                      display: flex;
-                      flex-direction: column;
+                      font-size: 16px;
                     `}
                   >
-                    <div
-                      css={`
-                        font-size: 16px;
-                      `}
-                    >
-                      <Trans>Failed!</Trans>
-                    </div>
-                    <Trans>Unable to download file</Trans>
-                    <div
-                      css={`
-                        color: 'red';
-                        margin-bottom: 20px;
-                        padding: 20px;
-                      `}
-                    >
-                      <span>
-                        <Trans i18nKey="fileRepoSidebar.missingDownloadPermissions">
-                          Your account does not have the required permission to download this file.
-                        </Trans>
-                      </span>
-                    </div>
+                    <Trans>Failed!</Trans>
+                  </div>
+                  <Trans>Unable to download file</Trans>
+                  <div
+                    css={`
+                      color: 'red';
+                      margin-bottom: 20px;
+                      padding: 20px;
+                    `}
+                  >
+                    <span>
+                      <Trans i18nKey="fileRepoSidebar.missingDownloadPermissions">
+                        Your account does not have the required permission to download this file.
+                      </Trans>
+                    </span>
                   </div>
                 </div>
-              ),
-            });
-          })
-      }
-      render={
-        render
-          ? render
-          : ({ onClick, loading }) => (
-              <IconWithLoading
-                {...{ loading }}
-                spinnerProps={{ color: 'grey' }}
-                Icon={() => (
-                  <DownloadIcon
-                    {...{ onClick }}
-                    width={13}
-                    fill={theme.lightBlue}
-                    className={css`
-                      cursor: pointer;
-                    `}
-                  />
-                )}
-              />
-            )
-      }
-    />
-  ),
-);
+              </div>
+            ),
+          });
+        })
+    }
+    render={
+      render
+        ? render
+        : ({ onClick, loading }) => (
+            <IconWithLoading
+              {...{ loading }}
+              spinnerProps={{ color: 'grey' }}
+              Icon={() => (
+                <DownloadIcon
+                  {...{ onClick }}
+                  width={13}
+                  fill={theme.lightBlue}
+                  className={css`
+                    cursor: pointer;
+                  `}
+                />
+              )}
+            />
+          )
+    }
+  />
+));
 
 export default DownloadFileButton;

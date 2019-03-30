@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ActionsColumn, FileIdColumn } from './CustomColumns';
 import DownloadIcon from 'icons/DownloadIcon';
 
-export default ({ theme, fenceStudies }) => [
+export default ({ theme, fenceAcls }) => [
   {
     index: 0,
     content: {
@@ -16,7 +16,7 @@ export default ({ theme, fenceStudies }) => [
     content: {
       accessor: 'kf_id',
       Header: () => <DownloadIcon width={13} fill={theme.filterPurple} />,
-      Cell: props => <ActionsColumn {...props} fenceStudies={fenceStudies} />,
+      Cell: props => <ActionsColumn {...props} fenceAcls={fenceAcls} />,
       width: 40,
       sortable: false,
       resizable: false,

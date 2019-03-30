@@ -139,7 +139,7 @@ export const deleteFenceTokens = async (api, fence) => {
  * Download File From a Fence Data Repository
  */
 export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
-  let accessToken = await getAccessToken(api);
+  let accessToken = await getAccessToken(api, fence);
   const { fenceUri } = PROVIDERS[fence];
   const { url } = await fetch(`${fenceUri}user/data/download/${fileUuid}`, {
     headers: {
