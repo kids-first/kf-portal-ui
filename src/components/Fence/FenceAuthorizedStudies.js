@@ -76,7 +76,7 @@ const FenceProjectList = compose(
           </Column>
           <Column flex={1} justifyContent="center" pr={10}>
             <Span>
-              <strong>{studyShortName}</strong>({` ${id}`})
+              <strong>{studyShortName}</strong> ({`${id}`})
             </Span>
           </Column>
           <Column justifyContent="center">
