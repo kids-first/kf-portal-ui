@@ -16,7 +16,7 @@ import { createStudyIdSqon, createAcceptedFilesByUserStudySqon } from 'services/
 import Study from './Study';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import _, { isEmpty } from 'lodash';
+import _ from 'lodash';
 
 const InternalLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
@@ -154,7 +154,7 @@ const StudiesConnected = enhance(
     return (
       <Fragment>
         <Column>
-          {!isEmpty(fenceAuthStudies) > 0
+          {!_.isEmpty(fenceAuthStudies) > 0
             ? renderAuthorizedStudies({
                 fenceAuthFiles,
                 fenceNonAuthFiles,

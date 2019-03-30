@@ -1,4 +1,4 @@
-import _, { get, isObject } from 'lodash';
+import _ from 'lodash';
 import { getFenceUser } from 'services/fence';
 import { graphql } from 'services/arranger';
 
@@ -115,7 +115,7 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
 } = {}) => {
   const projects = _(fenceConnections)
     .values()
-    .filter(fenceUser => isObject(fenceUser.projects))
+    .filter(fenceUser => _.isObject(fenceUser.projects))
     .map(({ projects }) => _.keys(projects))
     .flatten()
     .value();
@@ -216,7 +216,7 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
     },
   })
     .then(data => {
-      const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
+      const fileAcl = _.get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
       return fileAcl.some(fileAcl => approvedAcls.includes(fileAcl));
     })
     .catch(err => {
