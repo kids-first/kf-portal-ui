@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { isValidKey } from 'components/UserProfile/UserIntegrations';
+import { isValidKey } from 'services/cavatica';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';

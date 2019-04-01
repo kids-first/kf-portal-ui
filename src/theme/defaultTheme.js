@@ -15,6 +15,7 @@ const colors = {
   tertiaryBackground: '#edeef1', // light light blue
   lightBlue: '#008199',
   orange: '#ffaa52',
+  purple: '#a6278f',
 
   primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
 
@@ -65,6 +66,20 @@ const colors = {
 
   cardTitle: '#404c9a',
   defaultBadge: '#404c9a',
+
+  /**
+   * Cohort Builder
+   */
+  filterViolet: '#8f97d1',
+  filterPurple: '#404c9a',
+  studyRed: '#dd1f2a',
+  demographicPurple: '#e53a95',
+  clinicalBlue: '#00aceb',
+  biospecimenOrange: '#f79122',
+  dataBlue: '#009bba',
+  uploadYellow: '#edb500',
+  borderPurple: '#cc3399',
+  linkPurple: '#cc3399',
   defaultChip: '#404c9a',
 
   // table
@@ -73,9 +88,13 @@ const colors = {
 };
 
 export const chartColors = {
+  lightblue: '#00ACEB',
+  darkblue: '#2b388f',
+  lightpurple: '#A6278F',
+  orange: '#F79122',
+  red: '#dd1f2a',
   blue: '#1f9bb6',
   purple: '#e3429b',
-  red: '#dd1f2a',
   gridGrey: '#e7e8ec',
   axisGrey: '#a9acbd',
   tickTextGrey: '#343434',
@@ -230,7 +249,6 @@ const components = {
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     color: #fff;
     padding: 0px 16px;
     line-height: 1.86;
@@ -261,7 +279,6 @@ const components = {
     border: 0;
     background: none;
     box-shadow: none;
-    border-radius: 0px;
     background-color: '#fff';
     color: ${colors.tertiary};
     padding: 6px 16px;
@@ -294,7 +311,7 @@ const components = {
     background-color: #ffffff;
     padding: 30px;
     box-shadow: 0 0 4.9px 0.1px #bbbbbb;
-    border: solid 1px #e0e1e6;
+    border: solid 1px ${colors.greyScale5};
     color: ${colors.greyScale1};
   `,
   profileH3: css`

@@ -25,8 +25,8 @@ import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
 import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
-import { GEN3, CAVATICA, GOOGLE, FACEBOOK, LOGIN_ERROR_DETAILS } from 'common/constants';
-import { getAccessToken } from 'services/gen3';
+import { FENCES, CAVATICA, GOOGLE, FACEBOOK, LOGIN_ERROR_DETAILS } from 'common/constants';
+import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
 
 export const isAdminToken = ({ validatedPayload }) => {
@@ -94,14 +94,16 @@ export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
     });
 
   // Get Gen3 Secret here
-  getAccessToken(api)
-    .then(key => {
-      setIntegrationToken(GEN3, key);
-    })
-    .catch(res => {
-      console.error('Error getting Gen3 API Key');
-      console.error(res);
-    });
+  FENCES.forEach(fence => {
+    getAccessToken(api, fence)
+      .then(key => {
+        setIntegrationToken(fence, key);
+      })
+      .catch(res => {
+        console.error('Error getting Gen3 API Key');
+        console.error(res);
+      });
+  });
 };
 
 const LoginContainer = styled(Column)`
@@ -137,7 +139,11 @@ class Component extends React.Component<any, any> {
   };
 
   handleToken = async ({ provider, handler, token }) => {
-    const { api, onFinish, effects: { setToken, setUser, setIntegrationToken } } = this.props;
+    const {
+      api,
+      onFinish,
+      effects: { setToken, setUser, setIntegrationToken },
+    } = this.props;
 
     const response = await handler(token).catch(error => {
       if (error.message === 'Network Error') {
@@ -157,7 +163,9 @@ class Component extends React.Component<any, any> {
   };
 
   trackUserSignIn = label => {
-    let { location: { pathname } } = this.props;
+    let {
+      location: { pathname },
+    } = this.props;
     let actionType =
       pathname === '/join' ? TRACKING_EVENTS.categories.join : TRACKING_EVENTS.categories.signIn;
     trackUserInteraction({
@@ -264,4 +272,8 @@ class Component extends React.Component<any, any> {
   }
 }
 
-export default compose(injectState, withRouter, withApi)(Component);
+export default compose(
+  injectState,
+  withRouter,
+  withApi,
+)(Component);

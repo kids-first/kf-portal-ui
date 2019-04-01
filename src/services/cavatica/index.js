@@ -3,6 +3,7 @@ import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import { chunk as makeChunks } from 'lodash';
 import projectDescriptionPath from './projectDescription.md';
 import { memoize } from 'lodash';
+import { CAVATICA_DATASET_MAPPING } from 'common/constants';
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -173,7 +174,7 @@ export const getTaskLink = ({ project, status }) => {
  *      "name": "HG00235.mapped.SOLID.bfast.GBR.exome.20110411.bam.bas"
  *    }
  */
-export const convertGen3FileIds = async ({ ids }) => {
+export const convertFenceUuids = async ({ ids, fence }) => {
   let items = [];
 
   /* ABOUT THE CHUNKS:
@@ -189,7 +190,8 @@ export const convertGen3FileIds = async ({ ids }) => {
         method: 'POST',
         body: {
           type: 'dataset',
-          dataset: 'sevenbridges/kids-first',
+          // The dataset to use if fence dependent, we keep a listing of them in common/constants
+          dataset: CAVATICA_DATASET_MAPPING[fence],
           items: chunk.map(id => {
             return {
               id,
@@ -210,7 +212,7 @@ export const convertGen3FileIds = async ({ ids }) => {
 };
 
 /**
- * Requires Cavatica File IDs as returned from convertGen3FileIds
+ * Requires Cavatica File IDs as returned from convertFenceUuids
  *
  * project is the project id, not name (ie. userId/projectName)
  * ids is an array of strings of the ids to copy
@@ -238,8 +240,6 @@ export const copyFiles = async ({ project, ids }) => {
   }
   return data;
 };
-
-//jonqa01/public-housing
 
 /**
  * Fetches the content of the markdown template. Memoizes the result
@@ -270,4 +270,8 @@ export const saveProject = async ({ projectName, billingGroupId }) => {
     name: projectName,
     description: projectDescription,
   });
+};
+
+export const isValidKey = key => {
+  return key && key.length > 0;
 };

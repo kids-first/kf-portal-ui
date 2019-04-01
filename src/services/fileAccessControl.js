@@ -1,6 +1,5 @@
-// @ts-check
-import { get } from 'lodash';
-import { getUser as getGen3User } from 'services/gen3';
+import _ from 'lodash';
+import { getFenceUser } from 'services/fence';
 import { graphql } from 'services/arranger';
 
 const getStudyIdsFromSqon = api => ({ sqon }) =>
@@ -87,37 +86,39 @@ export const createStudyIdSqon = studyId => ({
   ],
 });
 
-export const createAcceptedFilesByUserStudySqon = gen3User => ({ sqon, studyId }) => {
-  const approvedAcls = Object.keys(gen3User.projects).sort();
+export const createAcceptedFilesByUserStudySqon = projects => ({ sqon, studyId }) => {
   return {
     op: 'and',
     content: [
       ...(sqon ? sqon.content : []),
-      { op: 'in', content: { field: 'acl', value: approvedAcls } },
+      { op: 'in', content: { field: 'acl', value: projects } },
       { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
     ],
   };
 };
-export const createUnacceptedFilesByUserStudySqon = gen3User => ({ studyId, sqon }) => {
-  const approvedAcls = Object.keys(gen3User.projects).sort();
+const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => {
   return {
     op: 'and',
     content: [
       ...(sqon ? sqon.content : []),
-      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: approvedAcls } }] },
+      { op: 'not', content: [{ op: 'in', content: { field: 'acl', value: projects } }] },
       { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } },
     ],
   };
 };
 
-export const getUserStudyPermission = api => async ({
+export const getUserStudyPermission = (api, fenceConnections) => async ({
   sqon = {
     op: 'and',
     content: [],
   },
 } = {}) => {
-  const userDetails = await getGen3User(api);
-  const approvedAcls = Object.keys(userDetails.projects).sort();
+  const projects = _(fenceConnections)
+    .values()
+    .filter(fenceUser => _.isObject(fenceUser.projects))
+    .map(({ projects }) => _.keys(projects))
+    .flatten()
+    .value();
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
@@ -129,7 +130,7 @@ export const getUserStudyPermission = api => async ({
             op: 'in',
             content: {
               field: 'acl',
-              value: approvedAcls,
+              value: projects,
             },
           },
         ],
@@ -147,7 +148,7 @@ export const getUserStudyPermission = api => async ({
                 op: 'in',
                 content: {
                   field: 'acl',
-                  value: approvedAcls,
+                  value: projects,
                 },
               },
             ],
@@ -160,7 +161,7 @@ export const getUserStudyPermission = api => async ({
   const [acceptedStudiesAggs, unacceptedStudiesAggs] = await Promise.all([
     getStudiesAggregationsFromSqon(api)(acceptedStudyIds)(
       acceptedStudyIds.reduce((acc, id) => {
-        acc[`${id}_sqon`] = createAcceptedFilesByUserStudySqon(userDetails)({
+        acc[`${id}_sqon`] = createAcceptedFilesByUserStudySqon(projects)({
           studyId: id,
           sqon,
         });
@@ -169,7 +170,7 @@ export const getUserStudyPermission = api => async ({
     ),
     getStudiesAggregationsFromSqon(api)(unacceptedStudyIds)(
       unacceptedStudyIds.reduce((acc, id) => {
-        acc[`${id}_sqon`] = createUnacceptedFilesByUserStudySqon(userDetails)({
+        acc[`${id}_sqon`] = createUnacceptedFilesByUserStudySqon(projects)({
           studyId: id,
           sqon,
         });
@@ -181,10 +182,10 @@ export const getUserStudyPermission = api => async ({
   return { acceptedStudiesAggs, unacceptedStudiesAggs };
 };
 
-export const checkUserFilePermission = api => async ({ fileId }) => {
+export const checkUserFilePermission = api => async ({ fileId, fence }) => {
   let userDetails;
   try {
-    userDetails = await getGen3User(api);
+    userDetails = await getFenceUser(api, fence);
   } catch (err) {
     return Promise.resolve(false);
   }
@@ -215,7 +216,7 @@ export const checkUserFilePermission = api => async ({ fileId }) => {
     },
   })
     .then(data => {
-      const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
+      const fileAcl = _.get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
       return fileAcl.some(fileAcl => approvedAcls.includes(fileAcl));
     })
     .catch(err => {

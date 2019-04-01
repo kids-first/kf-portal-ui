@@ -13,6 +13,8 @@ import Spinner from 'react-spinkit';
 import { withApi } from 'services/api';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 
+import { FENCES } from 'common/constants';
+
 const enhance = compose(
   injectState,
   withTheme,
@@ -21,31 +23,27 @@ const enhance = compose(
   lifecycle({
     async componentDidMount() {
       const {
-        setAuthorizedFiles,
-        setUnauthorizedFiles,
-        setFileStudyData,
-        setFileAuthInitialized,
-      } = this.props.effects;
-      const { api } = this.props;
+        api,
+        state: { fenceConnections },
+        effects: {
+          setAuthorizedFiles,
+          setUnauthorizedFiles,
+          setFileStudyData,
+          setFileAuthInitialized,
+        },
+      } = this.props;
       const sqon = this.props.sqon || {
         op: 'and',
         content: [],
       };
 
-      const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(api)({
+      // Get the Study Permission breakdown directly for FileStudyData and UnauthorizedFiles
+      const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(
+        api,
+        fenceConnections,
+      )({
         sqon,
       });
-
-      setAuthorizedFiles(
-        acceptedStudiesAggs
-          .reduce((acc, study) => [...acc, ...study.files], [])
-          .map(({ key }) => key),
-      );
-      setUnauthorizedFiles(
-        unacceptedStudiesAggs
-          .reduce((acc, study) => [...acc, ...study.files], [])
-          .map(({ key }) => key),
-      );
       setFileStudyData({
         authorized: acceptedStudiesAggs
           .map(({ id, files, studyName }) => ({
@@ -69,6 +67,45 @@ const enhance = compose(
           {},
         ),
       });
+
+      setUnauthorizedFiles(
+        unacceptedStudiesAggs
+          .reduce((acc, study) => [...acc, ...study.files], [])
+          .map(({ key }) => key),
+      );
+
+      // Authorized files needs to be broken down by repository, so lets dig deeper
+      const authFiles = {};
+      const fencePromises = [];
+      FENCES.forEach(fence => {
+        const fenceSqon = {
+          op: 'and',
+          content: [
+            sqon,
+            {
+              op: 'in',
+              content: {
+                field: 'repository',
+                value: [fence],
+              },
+            },
+          ],
+        };
+        const promise = getUserStudyPermission(api, fenceConnections)({
+          sqon: fenceSqon,
+        }).then(response => {
+          authFiles[fence] = response.acceptedStudiesAggs
+            .reduce((acc, study) => [...acc, ...study.files], [])
+            .map(({ key }) => key);
+          return true;
+        });
+
+        fencePromises.push(promise);
+      });
+
+      await Promise.all(fencePromises);
+      await setAuthorizedFiles(authFiles);
+
       setFileAuthInitialized(true);
     },
   }),
@@ -161,7 +198,7 @@ const CavaticaFileSummary = ({
 }) => {
   const showUnauth = !!(state.unauthorizedFiles && state.unauthorizedFiles.length > 0);
   const showAuth =
-    state.authorizedFiles !== null && (state.authorizedFiles.length > 0 || showUnauth);
+    state.authorizedFiles !== null && (state.authorizedFilesCombined.length > 0 || showUnauth);
   return (
     <div>
       <span css={theme.modalHeader}>File Summary:</span>
@@ -188,7 +225,7 @@ const CavaticaFileSummary = ({
                 </div>
                 <div className="summaryValue">
                   <CheckIcon className="icon" width={18} height={18} fill={theme.active} />
-                  <span className="number">{state.authorizedFiles.length}</span>
+                  <span className="number">{state.authorizedFilesCombined.length}</span>
                   <span className="text">Files</span>
                 </div>
               </div>
