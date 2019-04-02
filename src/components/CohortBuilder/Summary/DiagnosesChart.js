@@ -69,41 +69,49 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }),
   }));
 
-const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoading }) => (
-  <QueriesResolver
-    name="GQL_DIAGNOSIS_CHART"
-    api={api}
-    queries={toSingleDiagQueries({ topDiagnoses, sqon })}
-  >
-    {({ isLoading, data }) => (
-      <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
-        {!data ? (
-          <div>No data</div>
-        ) : (
-          <BarChartContainer>
-            <HorizontalBar
-              showCursor={false}
-              data={_(data)
-                .sortBy(d => d.probands + d.familyMembers)
-                .map((d, i) => ({ ...d, id: i }))
-                .value()}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={mostFrequentDiagnosisTooltip}
-              tickInterval={4}
-              colors={getCohortBarColors(data, theme)}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Other Participants', color: theme.chartColors.purple },
-              ]}
-            />
-          </BarChartContainer>
-        )}
-      </CohortCard>
-    )}
-  </QueriesResolver>
-);
+const DiagnosesChart = ({
+  topDiagnoses,
+  sqon,
+  theme,
+  api,
+  isLoading: isParentLoading,
+  analyticsTracking
+}) => (
+    <QueriesResolver
+      name="GQL_DIAGNOSIS_CHART"
+      api={api}
+      queries={toSingleDiagQueries({ topDiagnoses, sqon })}
+    >
+      {({ isLoading, data }) => (
+        <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
+          {!data ? (
+            <div>No data</div>
+          ) : (
+              <BarChartContainer>
+                <HorizontalBar
+                  showCursor={false}
+                  data={_(data)
+                    .sortBy(d => d.probands + d.familyMembers)
+                    .map((d, i) => ({ ...d, id: i }))
+                    .value()}
+                  indexBy="label"
+                  keys={['probands', 'familyMembers']}
+                  tooltipFormatter={mostFrequentDiagnosisTooltip}
+                  tickInterval={4}
+                  colors={getCohortBarColors(data, theme)}
+                  xTickTextLength={28}
+                  legends={[
+                    { title: 'Probands', color: theme.chartColors.blue },
+                    { title: 'Other Participants', color: theme.chartColors.purple },
+                  ]}
+                  analyticsTracking={analyticsTracking}
+                />
+              </BarChartContainer>
+            )}
+        </CohortCard>
+      )}
+    </QueriesResolver>
+  );
 
 /**
  * Get the top 10 diagnoses overall

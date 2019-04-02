@@ -8,8 +8,9 @@ import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
 import CardContent from 'uikit/Card/CardContent';
 import { SizeProvider } from 'components/Utils';
-import { compose } from 'recompose';
-import { withApi } from 'services/api';
+import PromptMessage from 'uikit/PromptMessage';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { isObject } from 'lodash';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -68,9 +69,9 @@ class SurvivalPlot extends React.Component {
   static defaultProps = {
     palette: ['#1880b2', '#c20127', '#00005d', 'purple'],
     censoredStatuses: ['alive'],
-    onMouseEnterDonors(event, donors) {},
-    onMouseLeaveDonors() {},
-    onClickDonors(e, donors) {},
+    onMouseEnterDonors(event, donors) { },
+    onMouseLeaveDonors() { },
+    onClickDonors(e, donors) { },
     xAxisLabel: 'Survival Rate',
     yAxisLabel: 'Duration (days)',
   };
@@ -261,6 +262,15 @@ export class SurvivalChart extends React.Component {
         y: event.offsetY,
       },
     }));
+
+    if (this.props.analyticsTracking) {
+      const label = { donors };
+      trackUserInteraction({
+        category: `${this.props.analyticsTracking.category}: ${this.props.analyticsTracking.subcategory}`,
+        action: `Chart Plot: ${TRACKING_EVENTS.actions.hover}`,
+        ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+      })
+    }
   };
 
   handleMouseLeaveDonors = (event, donors) => {
@@ -312,8 +322,8 @@ export class SurvivalChart extends React.Component {
                 {donor.isCensored ? (
                   <div>Censored Survival Time: {donor.time} days (censored)</div>
                 ) : (
-                  <div>Survival Time: {donor.time} days </div>
-                )}
+                    <div>Survival Time: {donor.time} days </div>
+                  )}
               </div>
             </SurvivalChartWrapper>
           </CohortCard>

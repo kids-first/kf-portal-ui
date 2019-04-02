@@ -24,10 +24,26 @@ import { createFileRepoLink } from './util';
 import { injectState } from 'freactal';
 import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
-import { get } from 'lodash';
+import { get, isObject } from 'lodash';
 import { Link } from 'react-router-dom';
 import FilesIcon from 'icons/FilesIcon';
 import familyMembers from 'assets/icon-families-grey.svg';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const {
+  categories: {
+    cohortBuilder: { results },
+  },
+  actions,
+} = TRACKING_EVENTS;
+
+const trackResultsAction = ({ category, subcategory, action, label }) => {
+  trackUserInteraction({
+    category: category || `${results._cohortBuilderResults}: ${subcategory}`,
+    action: action || actions.click,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
+};
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -225,15 +241,11 @@ const Results = ({
       const resultsData = data[0];
       const participantCount = get(resultsData, 'participantCount', null);
       const filesCount = get(resultsData, 'filesCount', null);
-      const familiesCount = get(resultsData, 'familiesCount', null);
       const cohortIsEmpty =
-        (!isLoading && !resultsData) ||
-        participantCount === 0 ||
-        filesCount === 0 ||
-        familiesCount === 0;
+        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
 
       const filesCountHeading = resultsData
-        ? `${Number(data[0].filesCount || 0).toLocaleString()}`
+        ? `${Number(data[0].filesCount || 0).toLocaleString()} Files`
         : '';
 
       return error ? (
@@ -243,7 +255,7 @@ const Results = ({
           <Content>
             <Detail>
               <ResultsHeading>
-                {isEmpty(sqon.content) ? (
+                {!sqon || isEmpty(sqon.content) ? (
                   <Heading>All Data</Heading>
                 ) : (
                   <React.Fragment>
@@ -255,54 +267,54 @@ const Results = ({
               {isLoading ? (
                 <LoadingSpinner />
               ) : (
-                <div className={`${summaryStyle}`}>
-                  <div className={`${summaryEntityStyle}`}>
-                    <SubHeading>
-                      <DemographicIcon />
-                      {Number(participantCount || 0).toLocaleString()} Participants
-                    </SubHeading>
-                  </div>
-                  <div className={`${summaryEntityStyle}`}>
-                    <SubHeading>
-                      <img src={familyMembers} alt="" height="13px" />{' '}
-                      {Number(familiesCount || 0).toLocaleString()} Families
-                    </SubHeading>
-                  </div>
-                  <div className={`${summaryEntityStyle}`}>
-                    <SubHeading>
-                      <div className={`${summaryFilesStyle}`}>
-                        <div>
-                          <FilesIcon />
-                          {isEmpty(sqon.content) ? (
-                            <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
-                          ) : (
-                            <PurpleLinkWithLoader
-                              replaceText={false}
-                              getLink={() =>
-                                generateAllFilesLink(state.loggedInUser, api, data[0].files)
-                              }
-                            >
-                              {filesCountHeading}
-                            </PurpleLinkWithLoader>
-                          )}
-                        </div>
-                        <div>Files</div>
-                      </div>
-                    </SubHeading>
-                  </div>
-                </div>
+                <React.Fragment>
+                  <DemographicIcon />
+                  <SubHeading>
+                    {Number(participantCount || 0).toLocaleString()} Participants with{' '}
+                  </SubHeading>
+                  {isEmpty(sqon.content) ? (
+                    <PurpleLink
+                      to="/search/file"
+                      onClick={() => trackResultsAction({ subcategory: 'All Files', label: sqon })}
+                    >
+                      {filesCountHeading}
+                    </PurpleLink>
+                  ) : (
+                    <PurpleLinkWithLoader
+                      replaceText={false}
+                      getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
+                      onClick={() =>
+                        trackResultsAction({ subcategory: 'Filtered Files', label: sqon })
+                      }
+                    >
+                      {filesCountHeading}
+                    </PurpleLinkWithLoader>
+                  )}
+                </React.Fragment>
               )}
             </Detail>
             <ViewLinks>
               <ViewLink
-                onClick={() => setActiveView(SUMMARY)}
+                onClick={() => {
+                  setActiveView(SUMMARY);
+                  trackResultsAction({
+                    category: results.summaryView,
+                    label: sqon,
+                  });
+                }}
                 active={activeView === SUMMARY}
                 Icon={SummaryIcon}
               >
                 Summary View
               </ViewLink>
               <ViewLink
-                onClick={() => setActiveView(TABLE)}
+                onClick={() => {
+                  setActiveView(TABLE);
+                  trackResultsAction({
+                    category: results.tableView,
+                    label: sqon,
+                  });
+                }}
                 active={activeView === TABLE}
                 Icon={TableViewIcon}
               >

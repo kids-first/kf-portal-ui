@@ -10,7 +10,7 @@ const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
-const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
+const AgeDiagChart = ({ data, theme, isLoading: isParentLoading, analyticsTracking }) => (
   <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
     <VerticalBar
       showCursor={false}
@@ -20,6 +20,7 @@ const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
       sortByValue={true}
       height={225}
       colors={[theme.chartColors.lightblue]}
+      analyticsTracking={analyticsTracking}
     />
   </CohortCard>
 );

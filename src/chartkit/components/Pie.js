@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { ResponsivePie } from '@nivo/pie';
 import Tooltip from './Tooltip';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const PieWrapper = styled('div')`
   height: 100%;
@@ -46,8 +47,15 @@ class Pie extends Component {
 
   onMouseEnter(data, e) {
     if (data) {
-      const { index } = data;
-      this.setState({ highlightedIndex: index });
+      const { id, index, value } = data;
+      this.setState({ highlightedIndex: index, highlightedId: id });
+      if (this.props.analyticsTracking) {
+        trackUserInteraction({
+          category: this.props.analyticsTracking.category,
+          action: `Chart Pie: ${TRACKING_EVENTS.actions.hover}`,
+          label: JSON.stringify({ id, value }),
+        })
+      }
     }
   }
 

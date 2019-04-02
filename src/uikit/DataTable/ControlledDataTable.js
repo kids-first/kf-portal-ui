@@ -6,6 +6,17 @@ import StyleWrapper from './Table/StyleWrapper';
 import CustomPagination from './Pagination';
 import applyTransforms from './utils/applyTransforms';
 
+import { isObject } from 'lodash';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const trackDataTableInteraction = ({ category, action, label }) => {
+  trackUserInteraction({
+    category,
+    action,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
+};
+
 class ControlledDataTable extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +36,7 @@ class ControlledDataTable extends Component {
       className = '',
       columns,
       striped = true,
+      tableViewTracking,
     } = this.props;
     const { pageSize } = this.state;
     const totalRows = dataTotalCount > -1 ? dataTotalCount : data ? data.length : 0;
@@ -46,19 +58,39 @@ class ControlledDataTable extends Component {
             });
             onFetchData(state);
           }}
+          onPageSizeChange={pageSize => {
+            if (tableViewTracking) {
+              trackDataTableInteraction({
+                category: `${tableViewTracking}: Pages: Page Size`,
+                action: TRACKING_EVENTS.actions.change,
+                label: pageSize.toString(),
+              });
+            }
+          }}
           PaginationComponent={CustomPagination}
+          onPageChange={page => {
+            if (tableViewTracking) {
+              trackDataTableInteraction({
+                category: `${tableViewTracking}: Pages: Pagination`,
+                action: TRACKING_EVENTS.actions.change,
+                label: (page + 1).toString(),
+              });
+            }
+          }}
           className={`${className} ${striped ? '-striped' : ''}`}
           minRows={1} // hide empty rows
-          getTrProps={(state, rowInfo) => {
-            if (rowInfo && rowInfo.row) {
-              return {
-                style: {
-                  background: rowInfo.row.selected ? '#edf9fe' : '',
-                },
-              };
-            } else {
-              return {};
-            }
+          getTheadThProps={(state, rowInfo, column, instance) => {
+            return {
+              onClick: evt => {
+                if (tableViewTracking) {
+                  trackDataTableInteraction({
+                    category: `${tableViewTracking}: Columns`,
+                    action: TRACKING_EVENTS.actions.click,
+                    label: column.Header,
+                  });
+                }
+              },
+            };
           }}
         />
       </StyleWrapper>
@@ -80,6 +112,7 @@ ControlledDataTable.propTypes = {
   onFetchData: PropTypes.func.isRequired,
   transforms: PropTypes.arrayOf(PropTypes.func),
   className: PropTypes.string,
+  tableViewTracking: PropTypes.string,
 };
 
 export default ControlledDataTable;

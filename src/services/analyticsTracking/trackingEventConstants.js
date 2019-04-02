@@ -29,7 +29,14 @@ export const TRACKING_EVENTS = {
       file: 'Entity Page: File',
       participant: 'Entity Page: Participant',
     },
-    virtualStudies: "Virtual Studies",
+    cohortBuilder: {
+      _cohortBuilder: 'Cohort Builder',
+      results: {
+        _cohortBuilderResults: 'Cohort Builder: Results',
+        summaryView: 'Cohort Builder: Summary View',
+        tableView: 'Cohort Builder: Table View',
+      },
+    },
     fileRepo: {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
@@ -56,6 +63,11 @@ export const TRACKING_EVENTS = {
     scroll: 'Scrolled',
     save: 'Save',
     filter: 'Filter',
+    check: 'Check',
+    uncheck: 'Uncheck',
+    clear: 'Clear',
+    delete: 'Delete',
+    change: 'Change',
     copy: {
       toCavatica: 'Copied Files to Cavatica Project',
     },

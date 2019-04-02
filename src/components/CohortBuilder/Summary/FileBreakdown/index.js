@@ -15,6 +15,17 @@ import { createFileRepoLink } from '../../util';
 import { toFileBreakdownQueries, toFileIdsByDataTypeQuery } from './queries';
 import QueriesResolver from '../../QueriesResolver';
 
+import { isObject } from 'lodash';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const trackFilesSummaryAction = ({ category, action, label }) => {
+  trackUserInteraction({
+    category,
+    action: action || TRACKING_EVENTS.actions.click,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label })
+  });
+};
+
 const EXP_MISSING = '__missing__';
 
 const columnStyles = {
@@ -128,60 +139,71 @@ const FileBreakdown = ({
   state: { loggedInUser },
   api,
   isLoading: isParentLoading,
+  analyticsTracking
 }) => (
-  <DataProvider dataTypesExpStratPairs={dataTypesExpStratPairs} participantSqon={sqon}>
-    {({ data, isLoading }) => {
-      const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
-      const tableEntries = isLoading
-        ? null
-        : generateFileColumnContents(sortedData, loggedInUser, api);
-      const filesTotal = localizeFileQuantity(sumBy(tableEntries, ({ filesCount }) => filesCount));
+    <DataProvider dataTypesExpStratPairs={dataTypesExpStratPairs} participantSqon={sqon}>
+      {({ data, isLoading }) => {
+        const sortedData = sortBy(data, ({ dataType }) => dataType.toUpperCase());
+        const tableEntries = isLoading
+          ? null
+          : generateFileColumnContents(sortedData, loggedInUser, api);
+        const filesTotal = localizeFileQuantity(sumBy(tableEntries, ({ filesCount }) => filesCount));
 
-      return (
-        <CohortCard
-          scrollable={true}
-          title="Available Data Files"
-          badge={isLoading ? null : filesTotal}
-          loading={isParentLoading || isLoading}
-        >
-          {!data ? (
-            <div>No data</div>
-          ) : (
-            <BaseDataTable
-              showPagination={false}
-              header={null}
-              columns={[
-                {
-                  Header: 'Data Type',
-                  accessor: 'dataType',
-                  minWidth: 75,
-                  style: columnStyles,
-                },
-                {
-                  Header: 'Experimental Strategy',
-                  accessor: 'experimentalStrategy',
-                  style: columnStyles,
-                },
-                { Header: 'Files', accessor: 'fileLink', minWidth: 40, style: columnStyles },
-              ]}
-              className="-highlight"
-              data={tableEntries}
-              transforms={{
-                dataType: dataType => <Column>{dataType}</Column>,
-                experimentalStrategy: experimentalStrategy => (
-                  <Column>
-                    {experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}
-                  </Column>
-                ),
-                fileLink: fileLink => <FilesColumn>{fileLink}</FilesColumn>,
-              }}
-            />
-          )}
-        </CohortCard>
-      );
-    }}
-  </DataProvider>
-);
+        return (
+          <CohortCard
+            scrollable={true}
+            title="Available Data Files"
+            badge={isLoading ? null : filesTotal}
+            loading={isParentLoading || isLoading}
+          >
+            {!data ? (
+              <div>No data</div>
+            ) : (
+                <BaseDataTable
+                  showPagination={false}
+                  header={null}
+                  columns={[
+                    {
+                      Header: 'Data Type',
+                      accessor: 'dataType',
+                      minWidth: 75,
+                      style: columnStyles,
+                    },
+                    {
+                      Header: 'Experimental Strategy',
+                      accessor: 'experimentalStrategy',
+                      style: columnStyles,
+                    },
+                    { Header: 'Files', accessor: 'fileLink', minWidth: 40, style: columnStyles },
+                  ]}
+                  className="-highlight"
+                  data={tableEntries}
+                  transforms={{
+                    dataType: dataType => <Column>{dataType}</Column>,
+                    experimentalStrategy: experimentalStrategy => (
+                      <Column>
+                        {experimentalStrategy === EXP_MISSING ? '' : experimentalStrategy}
+                      </Column>
+                    ),
+                    fileLink: fileLink => (
+                      <FilesColumn
+                        onClick={() => trackFilesSummaryAction({
+                          category: `${analyticsTracking.category}: ${analyticsTracking.subcategory}`,
+                          label: sqon,
+                        })}
+                      >
+                        {fileLink}
+                      </FilesColumn>
+                    ),
+                  }}
+                  analyticsTracking={analyticsTracking}
+                />
+              )}
+          </CohortCard>
+        );
+      }}
+    </DataProvider>
+  );
 
 export { dataTypesExpStratPairsQuery } from './queries';
 

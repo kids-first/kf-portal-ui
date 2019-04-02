@@ -19,37 +19,45 @@ const PieChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const DemographicChart = ({ data, theme, isLoading: isParentLoading }) => (
-  <CohortCard showHeader={false} loading={isParentLoading}>
-    <PieChartContainer>
-      <Pie
-        style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-        title={'Gender'}
-        data={data.gender}
-        colors={[theme.chartColors.orange, '#FFFFFF']}
-      />
-      <Pie
-        style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-        title={'Ethnicity'}
-        data={data.ethnicity}
-        colors={[theme.chartColors.darkblue, '#FFFFFF']}
-      />
-      <Pie
-        style={{ height: '42%', width: '50%' }}
-        title={'Race'}
-        data={data.race}
-        colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-      />
-
-      <Pie
-        style={{ height: '42%', width: '50%' }}
-        title={'Family Composition'}
-        data={data.familyComposition}
-        colors={[theme.chartColors.lightblue, '#FFFFFF']}
-      />
-    </PieChartContainer>
-  </CohortCard>
-);
+const DemographicChart = ({
+  data,
+  theme,
+  isLoading: isParentLoading,
+  analyticsTracking: { category, subcategory }
+}) => (
+    <CohortCard showHeader={false} loading={isParentLoading}>
+      <PieChartContainer>
+        <Pie
+          style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+          title={'Gender'}
+          data={data.gender}
+          colors={[theme.chartColors.orange, '#FFFFFF']}
+          analyticsTracking={{ category: `${category}: ${subcategory}: Gender` }}
+        />
+        <Pie
+          style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+          title={'Ethnicity'}
+          data={data.ethnicity}
+          colors={[theme.chartColors.darkblue, '#FFFFFF']}
+          analyticsTracking={{ category: `${category}: ${subcategory}: Ethnicity` }}
+        />
+        <Pie
+          style={{ height: '42%', width: '50%' }}
+          title={'Race'}
+          data={data.race}
+          colors={[theme.chartColors.lightpurple, '#FFFFFF']}
+          analyticsTracking={{ category: `${category}: ${subcategory}: Race` }}
+        />
+        <Pie
+          style={{ height: '42%', width: '50%' }}
+          title={'Family Composition'}
+          data={data.familyComposition}
+          colors={[theme.chartColors.lightblue, '#FFFFFF']}
+          analyticsTracking={{ category: `${category}: ${subcategory}: Family Composition` }}
+        />
+      </PieChartContainer>
+    </CohortCard>
+  );
 
 export const demographicQuery = sqon => ({
   query: gql`

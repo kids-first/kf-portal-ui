@@ -21,6 +21,15 @@ import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 import Tooltip from 'uikit/Tooltip';
+import { isObject } from 'lodash';
+
+const trackDownloadInteraction = ({ category, action, label }) => {
+  trackUserInteraction({
+    category: category || TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
+    action: action || TRACKING_EVENTS.actions.download.report,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
+};
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
@@ -69,7 +78,7 @@ const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon
   );
 });
 
-const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+const participantDownloader = ({ api, sqon, columnState, isFileRepo, tableViewTracking }) => async () => {
   const { participantIds } = await familyMemberAndParticipantIds({
     api,
     sqon,
@@ -86,16 +95,19 @@ const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
     columns: columnState.columns,
     isFileRepo: isFileRepo,
   };
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-    action: TRACKING_EVENTS.actions.download.report,
-    label: 'Clinical (Participant)',
-  });
+  if (tableViewTracking) {
+    trackDownloadInteraction({
+      category: `${tableViewTracking}: Headers: Download`,
+      action: TRACKING_EVENTS.actions.click,
+      label: 'Clinical (Participant)',
+    })
+  }
+  trackDownloadInteraction({ label: 'Clinical (Participant)' });
   const downloader = clinicalDataParticipants(downloadConfig);
   return downloader();
 };
 
-const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+const familyDownloader = ({ api, sqon, columnState, isFileRepo, tableViewTracking }) => async () => {
   const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
     api,
     sqon,
@@ -112,23 +124,28 @@ const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () =>
     columns: columnState.columns,
     isFileRepo: isFileRepo,
   };
-
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-    action: TRACKING_EVENTS.actions.download.report,
-    label: 'Clinical (Participant and family)',
-  });
+  if (tableViewTracking) {
+    trackDownloadInteraction({
+      category: `${tableViewTracking}: Headers: Download`,
+      action: TRACKING_EVENTS.actions.click,
+      label: 'Clinical (Participant and family)',
+    })
+  }
+  trackDownloadInteraction({ label: 'Clinical (Participant and family)' });
   const downloader = clinicalDataFamily(downloadConfig);
   return downloader();
 };
 
-const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo, tableViewTracking }) => async () => {
   let downloadConfig = { sqon, columns: columnState.columns, isFileRepo };
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-    action: TRACKING_EVENTS.actions.download.report,
-    label: 'Biospecimen',
-  });
+  if (tableViewTracking) {
+    trackDownloadInteraction({
+      category: `${tableViewTracking}: Headers: Download`,
+      action: TRACKING_EVENTS.actions.click,
+      label: 'Biospecimen',
+    })
+  }
+  trackDownloadInteraction({ label: 'Biospecimen' });
   const downloader = downloadBiospecimen(downloadConfig);
   return downloader();
 };
@@ -137,20 +154,34 @@ export default compose(
   withApi,
   injectState,
 )(({ effects: { setModal }, ...props }) => {
-  const { api, sqon, projectId, isFileRepo } = props;
+  const { api, sqon, projectId, isFileRepo, tableViewTracking } = props;
   return (
     <ColumnsState
       projectId={projectId}
       graphqlField="participant"
       render={({ state: columnState }) => {
-        const participantDownload = participantDownloader({ api, sqon, columnState, isFileRepo });
+        const participantDownload = participantDownloader({
+          api,
+          sqon,
+          columnState,
+          isFileRepo,
+          tableViewTracking,
+        });
         const participantAndFamilyDownload = familyDownloader({
           api,
           sqon,
           columnState,
           isFileRepo,
+          tableViewTracking,
         });
-        const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState, isFileRepo });
+        const biospecimenDownload = biospecimenDownloader({
+          api,
+          sqon,
+          columnState,
+          isFileRepo,
+          tableViewTracking,
+        });
+
         return (
           <div style={{ position: 'relative', marginLeft: '15px' }}>
             <Component initialState={{ isDownloading: false }}>
@@ -167,6 +198,13 @@ export default compose(
                         }}
                         onClick={() => {
                           toggleDropdown();
+                          if (tableViewTracking) {
+                            trackDownloadInteraction({
+                              category: `${tableViewTracking}: Headers: Download`,
+                              action: TRACKING_EVENTS.actions.click,
+                              label: 'Download',
+                            })
+                          }
                         }}
                         {...props}
                       />
@@ -199,18 +237,18 @@ export default compose(
                                   Clinical Data: Participant & Family Members
                                 </OptionRow>
                               ) : (
-                                <OptionRow disabled>
-                                  <Tooltip
-                                    html={
-                                      isLoading
-                                        ? 'Calculating...'
-                                        : 'No report available for additional family members.'
-                                    }
-                                  >
-                                    Clinical Data: Participant & Family Members
+                                  <OptionRow disabled>
+                                    <Tooltip
+                                      html={
+                                        isLoading
+                                          ? 'Calculating...'
+                                          : 'No report available for additional family members.'
+                                      }
+                                    >
+                                      Clinical Data: Participant & Family Members
                                   </Tooltip>
-                                </OptionRow>
-                              )
+                                  </OptionRow>
+                                )
                             }
                           />
                           <OptionRow

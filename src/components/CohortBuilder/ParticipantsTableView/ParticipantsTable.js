@@ -15,14 +15,24 @@ import {
 } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
-import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-// import RemoveFromCohortButton from './RemoveFromCohortButton';
+import RemoveFromCohortButton from './RemoveFromCohortButton';
 
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import { union, compact } from 'lodash';
+
+import { isObject } from 'lodash';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const trackTableViewAction = ({ category, subcategory, action, label }) => {
+  trackUserInteraction({
+    category: `${category}: ${subcategory}`,
+    action,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
+};
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -62,19 +72,19 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
       <div style={{ flex: '4' }}>
         {compact(sortedData).length <= 1
           ? compact(sortedData)
-              .slice(0, displayedRowCount)
-              .map((datum, index) => (
-                <div key={index}>
-                  {datum === null
-                    ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-                    : datum}
-                </div>
-              ))
+            .slice(0, displayedRowCount)
+            .map((datum, index) => (
+              <div key={index}>
+                {datum === null
+                  ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+                  : datum}
+              </div>
+            ))
           : cleanedData
-              .slice(0, displayedRowCount)
-              .map((datum, index) => (
-                <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
-              ))}
+            .slice(0, displayedRowCount)
+            .map((datum, index) => (
+              <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
+            ))}
       </div>
       {displayMoreButton ? (
         <div
@@ -136,7 +146,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
         <SelectionCell
           {...props}
           value={dirtyHack.allRowsSelected}
-          onCellSelected={onAllRowsSelected}
+          onCellSelected={(checked) => onAllRowsSelected(checked, props.data)}
         />
       );
     },
@@ -236,8 +246,8 @@ class ParticipantsTable extends Component {
       dataTotalCount,
       onFetchData,
       onClearSelected,
-      // onRemoveFromCohort,
-      analyticsTracking = null,
+      onRemoveFromCohort,
+      analyticsTracking,
       downloadName = 'data',
       selectedRows,
       allRowsSelected,
@@ -249,11 +259,8 @@ class ParticipantsTable extends Component {
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
     const projectId = arrangerProjectId;
 
-    /*
-    const handleRemoveFromCohort = () => {
-      onRemoveFromCohort();
-    };
-    */
+    const queries = JSON.parse(localStorage.getItem('COHORT_BUILDER_FILTER_STATE'));
+    let activeSqon = queries ? queries.sqons[queries.activeIndex] : {};
 
     return (
       <Fragment>
@@ -263,19 +270,41 @@ class ParticipantsTable extends Component {
               <Fragment>
                 {/* Analyze in Cavatica */}
                 {/* Download */}
-                {/*
                 <RemoveFromCohortButton
-                  onClick={() => handleRemoveFromCohort()}
+                  onClick={() => {
+                    onRemoveFromCohort();
+                    trackTableViewAction({
+                      category: analyticsTracking.tableView,
+                      subcategory: selectedRows.length > 1
+                        ? `Rows: ${selectedRows.length}`
+                        : 'Rows: Single',
+                      action: TRACKING_EVENTS.actions.delete,
+                      label: { selectedRows, activeSqon },
+                    });
+                  }}
                   disabled={allRowsSelected || selectedRows.length === 0}
-                />*/}
+                />
                 {selectedRowsCount > 0 ? (
                   <ToolbarSelectionCount>
                     <Fragment>
                       <span>{selectedRowsCount}</span>
                       <span>{`\u00A0participant${
                         selectedRowsCount > 1 ? 's are' : ' is'
-                      } selected\u00A0`}</span>
-                      <button onClick={evt => onClearSelected()} className="clearSelection">
+                        } selected\u00A0`}</span>
+                      <button
+                        onClick={evt => {
+                          onClearSelected();
+                          trackTableViewAction({
+                            category: analyticsTracking.tableView,
+                            subcategory: selectedRows.length > 1
+                              ? `Rows: ${selectedRows.length}`
+                              : 'Rows: Single',
+                            action: TRACKING_EVENTS.actions.clear,
+                            label: selectedRows,
+                          });
+                        }}
+                        className="clearSelection"
+                      >
                         {'clear selection'}
                       </button>
                     </Fragment>
@@ -289,11 +318,18 @@ class ParticipantsTable extends Component {
                 {...this.props}
                 isFileRepo={false}
                 projectId={projectId}
+                tableViewTracking={analyticsTracking.tableView}
               />
             </ToolbarDownload>
             <ToolbarGroup>
               <ColumnFilter
                 columns={columns}
+                onClick={() => trackTableViewAction({
+                  category: analyticsTracking.tableView,
+                  subcategory: 'Headers: Columns',
+                  action: TRACKING_EVENTS.actions.click,
+                  label: 'Column Filter',
+                })}
                 onChange={item => {
                   const index = columns.findIndex(c => c.index === item.index);
                   const cols = columns.map((col, i) =>
@@ -301,18 +337,29 @@ class ParticipantsTable extends Component {
                   );
                   const colActedUpon = cols[index];
                   if (analyticsTracking) {
-                    trackUserInteraction({
-                      category: analyticsTracking.category,
-                      action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                        colActedUpon.show ? 'show' : 'hide'
-                      }`,
+                    trackTableViewAction({
+                      category: analyticsTracking.tableView,
+                      subcategory: 'Headers: Columns',
+                      action: `Column Filter: ${colActedUpon.show
+                        ? TRACKING_EVENTS.actions.check
+                        : TRACKING_EVENTS.actions.uncheck
+                        }`,
                       label: colActedUpon.Header,
                     });
                   }
                   this.setState({ columns: cols });
                 }}
               />
-              <Export {...{ columns, data: dataExport || [], downloadName }}>export</Export>
+              <Export
+                {...{
+                  columns,
+                  data: data || [],
+                  downloadName,
+                  tableViewTracking: analyticsTracking.tableView
+                }}
+              >
+                export
+              </Export>
             </ToolbarGroup>
           </Fragment>
         </Toolbar>
@@ -323,6 +370,7 @@ class ParticipantsTable extends Component {
           className={`${cssClass}`}
           onFetchData={onFetchData}
           dataTotalCount={dataTotalCount}
+          tableViewTracking={analyticsTracking.tableView}
         />
       </Fragment>
     );
@@ -337,10 +385,7 @@ ParticipantsTable.propTypes = {
   onRowSelected: PropTypes.func.isRequired,
   onAllRowsSelected: PropTypes.func.isRequired,
   onClearSelected: PropTypes.func.isRequired,
-  analyticsTracking: PropTypes.shape({
-    category: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-  }),
+  analyticsTracking: PropTypes.object.isRequired,
   downloadName: PropTypes.string,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,

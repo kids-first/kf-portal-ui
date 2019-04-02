@@ -11,6 +11,17 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
 import styled from 'react-emotion';
+import { TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const {
+  categories: {
+    cohortBuilder: {
+      results: {
+        summaryView,
+      },
+    },
+  },
+} = TRACKING_EVENTS;
 
 const PaddedColumn = styled(Col)`
   padding: 4px !important;
@@ -30,64 +41,86 @@ const Summary = ({
   },
   api,
 }) => (
-  <QueriesResolver
-    name="GQL_SUMMARY_CHARTS"
-    api={api}
-    queries={[
-      demographicQuery(sqon),
-      ageDiagQuery(sqon),
-      studiesQuery(sqon),
-      diagnosesQuery(sqon),
-      dataTypesExpStratPairsQuery(sqon),
-    ]}
-  >
-    {({ isLoading, data = null }) => {
-      const [
-        demographicData = [],
-        ageDiagData = [],
-        studiesData = [],
-        topDiagnosesData = [],
-        dataTypesExpStratPairs = [],
-      ] = data;
+    <QueriesResolver
+      name="GQL_SUMMARY_CHARTS"
+      api={api}
+      queries={[
+        demographicQuery(sqon),
+        ageDiagQuery(sqon),
+        studiesQuery(sqon),
+        diagnosesQuery(sqon),
+        dataTypesExpStratPairsQuery(sqon),
+      ]}
+    >
+      {({ isLoading, data = null }) => {
+        const [
+          demographicData = [],
+          ageDiagData = [],
+          studiesData = [],
+          topDiagnosesData = [],
+          dataTypesExpStratPairs = [],
+        ] = data;
 
-      return !data ? (
-        <Row nogutter> no data</Row>
-      ) : (
-        <Row nogutter>
-          <Col xl={12}>
+        return !data ? (
+          <Row nogutter> no data</Row>
+        ) : (
             <Row nogutter>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown
-                  sqon={sqon}
-                  isLoading={isLoading}
-                  dataTypesExpStratPairs={dataTypesExpStratPairs}
-                />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DemographicChart data={demographicData} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart sqon={sqon} />
-              </PaddedColumn>
-            </Row>
-          </Col>
-          {/* <PaddedColumn xl={spacing.xl}>
+              <Col xl={12}>
+                <Row nogutter>
+                  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                    <FileBreakdown
+                      sqon={sqon}
+                      isLoading={isLoading}
+                      dataTypesExpStratPairs={dataTypesExpStratPairs}
+                      analyticsTracking={{ category: summaryView, subcategory: 'Files' }}
+                    />
+                  </PaddedColumn>
+                  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                    <StudiesChart
+                      studies={studiesData}
+                      sqon={sqon}
+                      isLoading={isLoading}
+                      analyticsTracking={{ category: summaryView, subcategory: 'Studies' }}
+                    />
+                  </PaddedColumn>
+                  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                    <DiagnosesChart
+                      topDiagnoses={topDiagnosesData}
+                      sqon={sqon}
+                      isLoading={isLoading}
+                      analyticsTracking={{ category: summaryView, subcategory: 'Diagnoses' }}
+                    />
+                  </PaddedColumn>
+                  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                    <DemographicChart
+                      data={demographicData}
+                      isLoading={isLoading}
+                      analyticsTracking={{ category: summaryView, subcategory: 'Demographic' }}
+                    />
+                  </PaddedColumn>
+                  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                    <SurvivalChart
+                      sqon={sqon}
+                      analyticsTracking={{ category: summaryView, subcategory: 'Survival' }}
+                    />
+                  </PaddedColumn>{' '}
+                  <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                    <AgeDiagChart
+                      data={ageDiagData}
+                      isLoading={isLoading}
+                      analyticsTracking={{ category: summaryView, subcategory: 'Age at Diagnosis' }}
+                    />
+                  </PaddedColumn>
+                </Row>
+              </Col>
+              {/* <PaddedColumn xl={spacing.xl}>
             <PhenotypeBreakdown sqon={sqon} />
           </PaddedColumn>  */}
-        </Row>
-      );
-    }}
-  </QueriesResolver>
-);
+            </Row>
+          );
+      }}
+    </QueriesResolver>
+  );
 
 export default compose(
   withApi,

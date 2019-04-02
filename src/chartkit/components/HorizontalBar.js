@@ -42,13 +42,13 @@ class HorizontalBar extends Component {
     e.target.style.cursor = showCursor ? 'pointer' : 'default';
 
     if (data) {
-      const { index, indexValue } = data;
+      const { id, index, indexValue, value } = data;
       this.setState({ highlightedIndex: index, highlightedIndexValue: indexValue });
       if (this.props.analyticsTracking) {
         trackUserInteraction({
-          category: this.props.analyticsTracking.category,
+          category: `${this.props.analyticsTracking.category}: ${this.props.analyticsTracking.subcategory}`,
           action: `Chart Bar: ${TRACKING_EVENTS.actions.hover}`,
-          label: `${data.indexValue}: ${data.id}`,
+          label: JSON.stringify({ id, indexValue, value }),
         });
       }
     }
@@ -200,8 +200,8 @@ class HorizontalBar extends Component {
             {height ? (
               <ResponsiveBar {...chartData} height={height} />
             ) : (
-              <ResponsiveBar {...chartData} />
-            )}
+                <ResponsiveBar {...chartData} />
+              )}
           </ChartDisplayContainer>
         </TextBugWrapper>
       </HorizontalBarWrapper>

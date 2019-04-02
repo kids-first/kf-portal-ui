@@ -32,45 +32,45 @@ const BaseDataTable = ({
   className = '',
   showPagination,
 }) => (
-  <Fragment>
-    {header ? (
-      <TableToolbar pageSize={pageSize} page={pageIndex} total={data ? data.length : 0}>
-        <ColumnFilter
-          columns={columns}
-          onChange={item => {
-            const index = columns.findIndex(c => c.index === item.index);
-            const cols = columns.map((col, i) =>
-              i === index ? { ...col, ...{ show: !item.show } } : col,
-            );
-            const colActedUpon = cols[index];
-            if (analyticsTracking) {
-              trackUserInteraction({
-                category: analyticsTracking.category,
-                action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                  colActedUpon.show ? 'show' : 'hide'
-                }`,
-                label: colActedUpon.Header,
-              });
-            }
+    <Fragment>
+      {header ? (
+        <TableToolbar pageSize={pageSize} page={pageIndex} total={data ? data.length : 0}>
+          <ColumnFilter
+            columns={columns}
+            onChange={item => {
+              const index = columns.findIndex(c => c.index === item.index);
+              const cols = columns.map((col, i) =>
+                i === index ? { ...col, ...{ show: !item.show } } : col,
+              );
+              const colActedUpon = cols[index];
+              if (analyticsTracking) {
+                trackUserInteraction({
+                  category: analyticsTracking.category,
+                  action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
+                    colActedUpon.show ? 'show' : 'hide'
+                    }`,
+                  label: colActedUpon.Header,
+                });
+              }
 
-            setColumns(cols);
-          }}
-        />
+              setColumns(cols);
+            }}
+          />
 
-        <Export {...{ columns, data: data || [], downloadName }}>export</Export>
-      </TableToolbar>
-    ) : null}
-    <Table
-      showPagination={showPagination}
-      columns={columns}
-      loading={loading}
-      data={applyTransforms(data || [], transforms)}
-      onPageChange={pageIndex => setPageIndex(pageIndex)}
-      onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
-      className={className}
-    />
-  </Fragment>
-);
+          <Export {...{ columns, data: data || [], downloadName }}>export</Export>
+        </TableToolbar>
+      ) : null}
+      <Table
+        showPagination={showPagination}
+        columns={columns}
+        loading={loading}
+        data={applyTransforms(data || [], transforms)}
+        onPageChange={pageIndex => setPageIndex(pageIndex)}
+        onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
+        className={className}
+      />
+    </Fragment>
+  );
 
 BaseDataTable.propTypes = {
   columns: PropTypes.arrayOf(
