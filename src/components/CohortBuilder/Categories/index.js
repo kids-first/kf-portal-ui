@@ -105,7 +105,6 @@ const CATEGORY_FIELDS = {
     'biospecimens.source_text_tissue_type',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
-
   ],
   availableData: [
     'available_data_types',
@@ -156,6 +155,7 @@ class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.quickSearch}
           color={theme.filterPurple}
+          setSearchField={this.handleSearchField}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
         </Category>
@@ -167,6 +167,7 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.study}
           currentSearchField={currentSearchField}
           color={theme.studyRed}
+          setSearchField={this.handleSearchField}
         >
           <StudyIcon fill={theme.studyRed} />
         </Category>
@@ -178,6 +179,7 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.demographic}
           currentSearchField={currentSearchField}
           color={theme.demographicPurple}
+          setSearchField={this.handleSearchField}
         >
           <DemographicIcon fill={theme.demographicPurple} />
         </Category>
@@ -189,6 +191,7 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.clinical}
           currentSearchField={currentSearchField}
           color={theme.clinicalBlue}
+          setSearchField={this.handleSearchField}
         >
           <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
         </Category>
@@ -200,6 +203,7 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.biospecimen}
           currentSearchField={currentSearchField}
           color={theme.biospecimenOrange}
+          setSearchField={this.handleSearchField}
         >
           <BiospecimenIcon fill={theme.biospecimenOrange} />
         </Category>
@@ -211,6 +215,7 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.availableData}
           currentSearchField={currentSearchField}
           color={theme.dataBlue}
+          setSearchField={this.handleSearchField}
         >
           <FileIcon width={11} height={14} fill={theme.dataBlue} />
         </Category>
