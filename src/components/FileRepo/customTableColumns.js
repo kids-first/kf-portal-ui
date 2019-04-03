@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ActionsColumn, FileIdColumn } from './CustomColumns';
-import DownloadIcon from 'icons/DownloadIcon';
 
 export default ({ theme, fenceAcls }) => [
   {
