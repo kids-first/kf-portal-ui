@@ -155,7 +155,7 @@ class Categories extends React.Component {
   }
 
   handleCategoryClose() {
-    this.setState({ currentSearchField: '', currentCategory: null });
+    this.setActiveCategory({ fieldName: '', category: null });
   }
 
   setActiveCategory = ({ category, fieldName }) =>
