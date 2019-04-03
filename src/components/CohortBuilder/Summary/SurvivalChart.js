@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import { compose } from 'recompose';
 import { isEqual, defaults, get, has } from 'lodash';
 import { renderPlot } from '@oncojs/survivalplot/index.dist';
 import { CohortCard } from './ui';
-import { withApi } from 'services/api';
 import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
 import CardContent from 'uikit/Card/CardContent';
@@ -185,7 +183,7 @@ const StyledSurvivalPlot = styled(SurvivalPlot)`
   }
 `;
 
-class SurvivalChart extends React.Component {
+export class SurvivalChart extends React.Component {
   constructor(props) {
     super(props);
 
@@ -323,8 +321,6 @@ class SurvivalChart extends React.Component {
     );
   }
 }
-
-// export default compose(withApi)(SurvivalChart);
 
 export default () => (
   <CohortCard Content={SurvivalCardContent} title="Overall Survival">
