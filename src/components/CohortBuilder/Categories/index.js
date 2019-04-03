@@ -182,15 +182,14 @@ class Categories extends React.Component {
           title="Quick Filters"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.quickSearch}
+          currentSearchField={currentSearchField}
           color={theme.filterPurple}
           setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.quickSearch}
           currentCategory={currentCategory}
-          fields={CATEGORY_FIELDS.quickSearch}
-          currentSearchField={currentSearchField}
-          onClose={this.handleCategoryClose}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
         </Category>
