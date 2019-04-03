@@ -195,7 +195,7 @@ export default styled('div')`
       -webkit-box-flex: 1;
       -ms-flex: 1 0 0px;
       flex: 1 0 0;
-      white-space: nowrap;
+      white-space: normal;
       text-overflow: ellipsis;
       padding: 7px 5px;
       overflow: hidden;
