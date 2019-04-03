@@ -112,6 +112,9 @@ export const ArrangerContainer = styled(Row)`
       ${arrangerValueText};
       color: ${({ theme }) => theme.greyScale1};
     }
+    & .rt-td {
+      white-space: normal;
+    }
   }
 `;
 
