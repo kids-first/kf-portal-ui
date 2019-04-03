@@ -140,15 +140,15 @@ class Categories extends React.Component {
   // searching should not open quick filters
   handleSearchField(fieldName) {
     let currentCategory = null;
-    if (CATEGORY_FIELDS.clinical.indexOf(fieldName) > -1) {
+    if (CATEGORY_FIELDS.clinical.includes(fieldName)) {
       currentCategory = CATEGORY_NAMES.clinical;
-    } else if (CATEGORY_FIELDS.study.indexOf(fieldName) > -1) {
+    } else if (CATEGORY_FIELDS.study.includes(fieldName)) {
       currentCategory = CATEGORY_NAMES.study;
-    } else if (CATEGORY_FIELDS.biospecimen.indexOf(fieldName) > -1) {
+    } else if (CATEGORY_FIELDS.biospecimen.includes(fieldName)) {
       currentCategory = CATEGORY_NAMES.biospecimen;
-    } else if (CATEGORY_FIELDS.demographic.indexOf(fieldName) > -1) {
+    } else if (CATEGORY_FIELDS.demographic.includes(fieldName)) {
       currentCategory = CATEGORY_NAMES.demographic;
-    } else if (CATEGORY_FIELDS.availableData.indexOf(fieldName) > -1) {
+    } else if (CATEGORY_FIELDS.availableData.includes(fieldName)) {
       currentCategory = CATEGORY_NAMES.availableData;
     }
     this.setState({ currentSearchField: fieldName, currentCategory });
