@@ -113,11 +113,20 @@ const CATEGORY_FIELDS = {
   ],
 };
 
+const CATEGORY_NAMES = {
+  study: 'study',
+  clinical: 'clinical',
+  biospecimen: 'biospecimen',
+  demographic: 'demographic',
+  availableData: 'availableData',
+};
+
 class Categories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentSearchField: '',
+      currentCategory: null,
     };
     autobind(this);
   }
@@ -127,13 +136,32 @@ class Categories extends React.Component {
     this.props.onSqonUpdate(...args);
   }
 
+  // searching should not open quick filters
   handleSearchField(fieldName) {
-    this.setState({ currentSearchField: fieldName });
+    let currentCategory = null;
+    if (CATEGORY_FIELDS.clinical.indexOf(fieldName) > -1) {
+      currentCategory = CATEGORY_NAMES.clinical;
+    } else if (CATEGORY_FIELDS.study.indexOf(fieldName) > -1) {
+      currentCategory = CATEGORY_NAMES.study;
+    } else if (CATEGORY_FIELDS.biospecimen.indexOf(fieldName) > -1) {
+      currentCategory = CATEGORY_NAMES.biospecimen;
+    } else if (CATEGORY_FIELDS.demographic.indexOf(fieldName) > -1) {
+      currentCategory = CATEGORY_NAMES.demographic;
+    } else if (CATEGORY_FIELDS.availableData.indexOf(fieldName) > -1) {
+      currentCategory = CATEGORY_NAMES.availableData;
+    }
+    this.setState({ currentSearchField: fieldName, currentCategory });
   }
 
   handleCategoryClose() {
     this.setState({ currentSearchField: '' });
   }
+
+  setActiveCategory = (category, fieldName) =>
+    this.setState({
+      currentCategory: category,
+      currentSearchField: fieldName,
+    });
 
   render() {
     const { theme, sqon } = this.props;
