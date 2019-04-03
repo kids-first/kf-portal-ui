@@ -100,13 +100,17 @@ const CohortBuilder = compose(
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
             setSqons(newSyntheticSqons);
           };
-          const sqonBuilderActiveSqonSelect = ({ index }) => {
-            setActiveSqonIndex(index);
+          const sqonBuilderActiveSqonSelect = (props) => {
+
+
+            console.log('+ sqonBuilderActiveSqonSelect activeSqonIndex=' + activeSqonIndex + ' data='+JSON.stringify(props).toString())
+            setActiveSqonIndex(props.index);
           };
           const categoriesSqonUpdate = newSqon => {
             mergeSqonToActiveIndex(newSqon);
           };
           const onVirtualStudySelectChange = e => {
+            console.log('+ onVirtualStudySelectChange')
             onVirtualStudySelect(e.target.value);
           };
           const saveStudy = async studyName => {
@@ -144,6 +148,7 @@ const CohortBuilder = compose(
           };
 
           const createNewSqonExcludingParticipants = participantIds => {
+            console.log('+ createNewSqonExcludingParticipants')
             saveSet({
               type: 'participant',
               sqon: {
@@ -181,6 +186,7 @@ const CohortBuilder = compose(
                 return newSqons.length - 1;
               })
               .then(newSqonIndex => {
+                console.log('+ 188 .then(newSqonIndex => { ' + newSqonIndex)
                 setActiveSqonIndex(newSqonIndex);
               })
               .catch(console.error);
