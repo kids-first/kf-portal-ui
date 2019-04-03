@@ -105,7 +105,6 @@ const CATEGORY_FIELDS = {
     'biospecimens.source_text_tissue_type',
     'biospecimens.ncit_id_tissue_type',
     'biospecimens.source_text_tumor_descriptor',
-
   ],
   availableData: [
     'available_data_types',
@@ -114,11 +113,23 @@ const CATEGORY_FIELDS = {
   ],
 };
 
+const CATEGORY_NAMES = {
+  quickSearch: 'quickSearch',
+  study: 'study',
+  clinical: 'clinical',
+  biospecimen: 'biospecimen',
+  demographic: 'demographic',
+  availableData: 'availableData',
+};
+
+const excludedCategories = ['searchAll', 'quickSearch'];
+
 class Categories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentSearchField: '',
+      currentCategory: null,
     };
     autobind(this);
   }
@@ -128,17 +139,28 @@ class Categories extends React.Component {
     this.props.onSqonUpdate(...args);
   }
 
+  // searching should not open quick filters
   handleSearchField(fieldName) {
-    this.setState({ currentSearchField: fieldName });
+    const currentCategoryKey = Object.keys(CATEGORY_FIELDS)
+      .filter(key => !excludedCategories.includes(key))
+      .find(key => CATEGORY_FIELDS[key].includes(fieldName));
+    const currentCategory = CATEGORY_NAMES[currentCategoryKey];
+    this.setState({ currentSearchField: fieldName, currentCategory });
   }
 
   handleCategoryClose() {
-    this.setState({ currentSearchField: '' });
+    this.setActiveCategory({ fieldName: '', category: null });
   }
+
+  setActiveCategory = ({ category, fieldName }) =>
+    this.setState({
+      currentCategory: category,
+      currentSearchField: fieldName,
+    });
 
   render() {
     const { theme, sqon } = this.props;
-    const { currentSearchField } = this.state;
+    const { currentSearchField, currentCategory } = this.state;
 
     return (
       <Container>
@@ -154,8 +176,13 @@ class Categories extends React.Component {
           title="Quick Filters"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
+          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.quickSearch}
+          currentSearchField={currentSearchField}
           color={theme.filterPurple}
+          setActiveCategory={this.setActiveCategory}
+          category={CATEGORY_NAMES.quickSearch}
+          currentCategory={currentCategory}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
         </Category>
@@ -167,6 +194,9 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.study}
           currentSearchField={currentSearchField}
           color={theme.studyRed}
+          setActiveCategory={this.setActiveCategory}
+          category={CATEGORY_NAMES.study}
+          currentCategory={currentCategory}
         >
           <StudyIcon fill={theme.studyRed} />
         </Category>
@@ -178,6 +208,9 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.demographic}
           currentSearchField={currentSearchField}
           color={theme.demographicPurple}
+          setActiveCategory={this.setActiveCategory}
+          category={CATEGORY_NAMES.demographic}
+          currentCategory={currentCategory}
         >
           <DemographicIcon fill={theme.demographicPurple} />
         </Category>
@@ -189,6 +222,9 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.clinical}
           currentSearchField={currentSearchField}
           color={theme.clinicalBlue}
+          setActiveCategory={this.setActiveCategory}
+          category={CATEGORY_NAMES.clinical}
+          currentCategory={currentCategory}
         >
           <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
         </Category>
@@ -200,6 +236,9 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.biospecimen}
           currentSearchField={currentSearchField}
           color={theme.biospecimenOrange}
+          setActiveCategory={this.setActiveCategory}
+          category={CATEGORY_NAMES.biospecimen}
+          currentCategory={currentCategory}
         >
           <BiospecimenIcon fill={theme.biospecimenOrange} />
         </Category>
@@ -211,6 +250,9 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.availableData}
           currentSearchField={currentSearchField}
           color={theme.dataBlue}
+          setActiveCategory={this.setActiveCategory}
+          category={CATEGORY_NAMES.availableData}
+          currentCategory={currentCategory}
         >
           <FileIcon width={11} height={14} fill={theme.dataBlue} />
         </Category>

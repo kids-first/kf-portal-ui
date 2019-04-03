@@ -6,7 +6,7 @@ import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
 import { compose, lifecycle, withState, withProps } from 'recompose';
-import { withDropdownMultiPane } from 'uikit/Dropdown';
+import { withDropdownState } from 'uikit/Dropdown';
 import Filter from './Filter';
 import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
@@ -101,8 +101,8 @@ const CategoryButton = styled(Column)`
     background-color: ${({ theme }) => theme.backgroundGrey};
   }
 
-  ${({ isDropdownVisible, theme }) =>
-    isDropdownVisible
+  ${({ isOpen, theme }) =>
+    isOpen
       ? css`
           background-color: ${theme.backgroundGrey};
           box-shadow: 0 0 5.9px 0.1px ${theme.lighterShadow};
@@ -130,15 +130,11 @@ const CategoryRow = compose(withApi)(({ api, field, active }) => (
 const noop = () => {};
 
 const Category = compose(
-  withDropdownMultiPane,
-  withProps(({ fields, currentSearchField = '' }) => {
+  withDropdownState,
+  withProps(({ fields, currentSearchField = '', category, currentCategory }) => {
     const index = fields.indexOf(currentSearchField);
-    return index > -1
-      ? {
-          showExpanded: true,
-          activeIndex: index,
-          isDropdownVisible: true,
-        }
+    return index > -1 && category === currentCategory
+      ? { showExpanded: true, activeIndex: index }
       : {};
   }),
 )(
@@ -149,34 +145,36 @@ const Category = compose(
     toggleDropdown,
     isDropdownVisible,
     setDropdownVisibility,
-    toggleExpanded,
-    toggleExpandedDropdown,
-    setActiveIndex,
     activeIndex,
-    setExpanded,
+    setExpanded = noop,
     showExpanded,
     fields,
+    setActiveCategory,
     sqon = {
       op: 'and',
       content: [],
     },
     onSqonUpdate = noop,
     onClose = noop,
+    category = '',
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
+
+    const isOpen = isDropdownVisible || !!activeIndex;
+
     return (
       <Dropdown
         {...{
           multiLevel: true,
           onOuterClick: () => {
-            setExpanded(false);
+            setActiveCategory({ category, fieldName: '' });
             setDropdownVisibility(false);
             onClose();
           },
-          isOpen: isDropdownVisible,
+          isOpen,
           onToggle: toggleDropdown,
-          setActiveIndex,
+          setActiveIndex: index => setActiveCategory({ fieldName: fields[index], category }),
           activeIndex,
           setExpanded,
           showExpanded,
@@ -189,16 +187,14 @@ const Category = compose(
               initialSqon={sqon}
               onSubmit={sqon => {
                 onSqonUpdate(sqon);
-                toggleExpanded();
                 setDropdownVisibility(false);
                 onClose();
               }}
               onBack={() => {
-                toggleExpanded();
                 onClose();
               }}
               onCancel={() => {
-                toggleExpandedDropdown();
+                setDropdownVisibility(false);
                 onClose();
               }}
               field={field}
@@ -215,7 +211,7 @@ const Category = compose(
           OptionsContainerComponent: OptionsWrapper,
         }}
       >
-        <CategoryButton isDropdownVisible={isDropdownVisible}>
+        <CategoryButton isOpen={isOpen}>
           <Column alignItems="center">
             {' '}
             {children}
