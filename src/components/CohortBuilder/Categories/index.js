@@ -186,7 +186,6 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.quickSearch}
           currentSearchField={currentSearchField}
           color={theme.filterPurple}
-          setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.quickSearch}
           currentCategory={currentCategory}
@@ -201,7 +200,6 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.study}
           currentSearchField={currentSearchField}
           color={theme.studyRed}
-          setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.study}
           currentCategory={currentCategory}
@@ -216,7 +214,6 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.demographic}
           currentSearchField={currentSearchField}
           color={theme.demographicPurple}
-          setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.demographic}
           currentCategory={currentCategory}
@@ -231,7 +228,6 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.clinical}
           currentSearchField={currentSearchField}
           color={theme.clinicalBlue}
-          setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.clinical}
           currentCategory={currentCategory}
@@ -246,7 +242,6 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.biospecimen}
           currentSearchField={currentSearchField}
           color={theme.biospecimenOrange}
-          setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.biospecimen}
           currentCategory={currentCategory}
@@ -261,7 +256,6 @@ class Categories extends React.Component {
           fields={CATEGORY_FIELDS.availableData}
           currentSearchField={currentSearchField}
           color={theme.dataBlue}
-          setSearchField={this.handleSearchField}
           setActiveCategory={this.setActiveCategory}
           category={CATEGORY_NAMES.availableData}
           currentCategory={currentCategory}
