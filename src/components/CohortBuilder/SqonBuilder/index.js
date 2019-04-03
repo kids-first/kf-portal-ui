@@ -62,7 +62,10 @@ const SqonBuilder = compose(
   injectState,
 )(({ api, onChange, state, effects, ...rest }) => {
   const handleAction = async action => {
+
+
     if (action.eventKey === 'CLEAR_ALL') {
+      delete rest['activeSqonIndex'];
       effects.setModal({
         title: 'Clear All Queries',
         classNames: {
@@ -82,7 +85,12 @@ const SqonBuilder = compose(
     } else {
       onChange(action);
     }
+    console.log('+ handleAction ' + action.eventKey + ' ' + JSON.stringify(action).toString())
   };
+
+  console.log('++ handleAction rest ' + JSON.stringify(rest));
+
+
   return (
     <Container>
       <ExtendedMappingProvider
@@ -99,12 +107,14 @@ const SqonBuilder = compose(
               api={api}
               arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-              FieldOpModifierContainer={props => (
+              FieldOpModifierContainer={props => {
+                return (
                 <StyledFieldFilterContainer showHeader={false} {...props} />
-              )}
+              )}}
               fieldDisplayNameMap={extendedMappingToDisplayNameMap(extendedMapping)}
               onChange={handleAction}
               {...rest}
+              // activeSqonIndex={1}
             />
           )
         }
