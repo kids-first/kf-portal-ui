@@ -131,9 +131,11 @@ const noop = () => {};
 
 const Category = compose(
   withDropdownState,
-  withProps(({ fields, currentSearchField = '' }) => {
+  withProps(({ fields, currentSearchField = '', category, currentCategory }) => {
     const index = fields.indexOf(currentSearchField);
-    return index > -1 ? { showExpanded: true, activeIndex: index } : {};
+    return index > -1 && category === currentCategory
+      ? { showExpanded: true, activeIndex: index }
+      : {};
   }),
 )(
   ({
@@ -147,31 +149,32 @@ const Category = compose(
     setExpanded = noop,
     showExpanded,
     fields,
-    setSearchField,
+    setActiveCategory,
     sqon = {
       op: 'and',
       content: [],
     },
     onSqonUpdate = noop,
     onClose = noop,
+    category = '',
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
 
-    const isOpen = isDropdownVisible || activeIndex;
+    const isOpen = isDropdownVisible || !!activeIndex;
 
     return (
       <Dropdown
         {...{
           multiLevel: true,
           onOuterClick: () => {
-            setSearchField('');
+            setActiveCategory({ category, fieldName: '' });
             setDropdownVisibility(false);
             onClose();
           },
           isOpen,
           onToggle: toggleDropdown,
-          setActiveIndex: index => setSearchField(fields[index]),
+          setActiveIndex: index => setActiveCategory({ fieldName: fields[index], category }),
           activeIndex,
           setExpanded,
           showExpanded,
