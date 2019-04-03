@@ -122,6 +122,8 @@ const CATEGORY_NAMES = {
   availableData: 'availableData',
 };
 
+const excludedCategories = ['searchAll', 'quickSearch'];
+
 class Categories extends React.Component {
   constructor(props) {
     super(props);
@@ -139,18 +141,10 @@ class Categories extends React.Component {
 
   // searching should not open quick filters
   handleSearchField(fieldName) {
-    let currentCategory = null;
-    if (CATEGORY_FIELDS.clinical.includes(fieldName)) {
-      currentCategory = CATEGORY_NAMES.clinical;
-    } else if (CATEGORY_FIELDS.study.includes(fieldName)) {
-      currentCategory = CATEGORY_NAMES.study;
-    } else if (CATEGORY_FIELDS.biospecimen.includes(fieldName)) {
-      currentCategory = CATEGORY_NAMES.biospecimen;
-    } else if (CATEGORY_FIELDS.demographic.includes(fieldName)) {
-      currentCategory = CATEGORY_NAMES.demographic;
-    } else if (CATEGORY_FIELDS.availableData.includes(fieldName)) {
-      currentCategory = CATEGORY_NAMES.availableData;
-    }
+    const currentCategoryKey = Object.keys(CATEGORY_FIELDS)
+      .filter(key => !excludedCategories.includes(key))
+      .find(key => CATEGORY_FIELDS[key].includes(fieldName));
+    const currentCategory = CATEGORY_NAMES[currentCategoryKey];
     this.setState({ currentSearchField: fieldName, currentCategory });
   }
 
