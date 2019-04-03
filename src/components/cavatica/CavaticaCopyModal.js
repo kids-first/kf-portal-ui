@@ -22,44 +22,6 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 
 import { Paragraph } from 'uikit/Core';
 
-const enhance = compose(
-  provideCavaticaFileAuthorizations,
-  injectState,
-  withTheme,
-  withRouter,
-  withApi,
-  withState('addingProject', 'setAddingProject', false),
-  withState('selectedProjectData', 'setSelectedProjectData', null),
-  withState('filesSelected', 'setFilesSelected', []),
-  lifecycle({
-    async componentDidMount() {
-      const { selectedTableRows, setFilesSelected, sqon, api } = this.props;
-      let ids = selectedTableRows;
-      if (!ids || ids.length === 0) {
-        ids = await graphql(api)({
-          query: `query ($sqon: JSON){
-              file {
-                aggregations(filters: $sqon) {
-                  kf_id {
-                    buckets {
-                      key
-                    }
-                  }
-                }
-              }
-            }`,
-          variables: {
-            sqon,
-          },
-        }).then(({ data: { file: { aggregations: { kf_id: { buckets } } } } }) =>
-          buckets.map(({ key }) => key),
-        );
-      }
-      setFilesSelected(ids);
-    },
-  }),
-);
-
 const copyToProject = async ({ selectedFiles, selectedProject }) => {
   const promises = [];
 
@@ -154,15 +116,52 @@ div.content {
 }
 `;
 
+const enhance = compose(
+  provideCavaticaFileAuthorizations,
+  injectState,
+  withTheme,
+  withRouter,
+  withApi,
+  withState('addingProject', 'setAddingProject', false),
+  withState('selectedProjectData', 'setSelectedProjectData', null),
+  withState('filesSelected', 'setFilesSelected', []),
+  lifecycle({
+    async componentDidMount() {
+      const { fileIds, setFilesSelected, sqon, api } = this.props;
+      let ids = fileIds;
+      if (!ids || ids.length === 0) {
+        ids = await graphql(api)({
+          query: `query ($sqon: JSON){
+              file {
+                aggregations(filters: $sqon) {
+                  kf_id {
+                    buckets {
+                      key
+                    }
+                  }
+                }
+              }
+            }`,
+          variables: {
+            sqon,
+          },
+        }).then(({ data: { file: { aggregations: { kf_id: { buckets } } } } }) =>
+          buckets.map(({ key }) => key),
+        );
+      }
+      setFilesSelected(ids);
+    },
+  }),
+);
 const CavaticaCopyModal = ({
   state,
   effects: { unsetModal, setToast, closeToast },
   theme,
   addingProject,
+  fileIds,
   filesSelected,
   setAddingProject,
   selectedProjectData,
-  selectedTableRows,
   setSelectedProjectData,
   ...props
 }) => {
@@ -192,7 +191,7 @@ const CavaticaCopyModal = ({
             <Paragraph>
               Please{' '}
               <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
-                connect to GEN3
+                connect to data repositories
               </Link>{' '}
               to lookup which files you are authorized to copy.
             </Paragraph>

@@ -55,7 +55,7 @@ const customTableTypes = {
   ),
 };
 
-const TableHeaderContent = ({ sqon, disabled, ...props }) => {
+const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => {
   return (
     <Row right>
       <Tooltip
@@ -70,10 +70,12 @@ const TableHeaderContent = ({ sqon, disabled, ...props }) => {
         }
       >
         <CavaticaCopyButton
+          fileIds={selectedTableRows}
           sqon={sqon}
-          {...props}
           buttonStyle={cavaticaCopyButtonStyle}
           buttonContentStyle={false}
+          text="Analyze in Cavatica"
+          {...props}
         />
       </Tooltip>
       {disabled ? (
