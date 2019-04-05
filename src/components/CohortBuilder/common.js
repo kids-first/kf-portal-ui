@@ -69,9 +69,17 @@ export const FieldFilterContainer = compose(
   setDisabled,
 }) => {
   const hasSelectedElements = (handler) => {
-      const checkboxes = handler.parentElement.parentElement.querySelectorAll('input[type="checkbox"]:checked');
-      const toggles = handler.parentElement.parentElement.querySelectorAll('div.toggle-button-option.active');
-      setDisabled( (checkboxes.length < 1 && toggles.length < 1) )
+    const checkboxes = handler.parentElement.parentElement.querySelectorAll('input[type="checkbox"]:checked');
+    const toggles = handler.parentElement.parentElement.querySelectorAll('div.toggle-button-option.active');
+    const rangeNodes = handler.parentElement.parentElement.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
+    let ranges = 0;
+    rangeNodes.forEach((input, key) => {
+      const node = rangeNodes.item(key);
+      if (node.value.length > 0 && node.value > -1) {
+        ranges++;
+      }
+    })
+    setDisabled( (checkboxes.length < 1 && toggles.length < 1 && ranges < rangeNodes.length) )
   }
   return (
   <FilterCont className={className}>
