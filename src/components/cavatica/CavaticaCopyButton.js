@@ -25,10 +25,10 @@ const CavaticaButton = styled(BigWhiteButton)`
       disabled ? theme.greyScale8 : theme.primaryLight};
   }
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 600;
   color: ${({ theme }) => theme.white};
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.2px;
 
   ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
