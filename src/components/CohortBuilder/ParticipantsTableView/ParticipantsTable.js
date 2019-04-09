@@ -229,10 +229,11 @@ class ParticipantsTable extends Component {
               <Fragment>
                 {/* Analyze in Cavatica */}
                 {/* Download */}
+                {/* 
                 <RemoveFromCohortButton
                   onClick={() => handleRemoveFromCohort()}
                   disabled={allRowsSelected || selectedRows.length === 0}
-                />
+                />*/}
                 {selectedRowsCount > 0 ? (
                   <ToolbarSelectionCount>
                     <Fragment>
