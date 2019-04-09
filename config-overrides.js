@@ -15,6 +15,7 @@ function transpileNodeModules(config) {
   config.module.rules[1].oneOf[1].include = [
     config.module.rules[1].oneOf[1].include,
     resolveApp('node_modules/graphql-fields'),
+    resolveApp('node_modules/@arranger/admin-ui'),
   ];
   return config;
 }

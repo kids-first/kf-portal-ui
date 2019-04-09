@@ -91,3 +91,5 @@ export const reactApiDataVersionFallback: string =
 
 // Public Stats
 export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
+
+export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') || null;
