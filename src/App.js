@@ -1,11 +1,9 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'react-emotion';
-import { Dashboard as ArrangerDashboard } from '@arranger/components';
-// import  ArrangerAdminApp from '@arranger/admin-ui/dist';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
@@ -32,10 +30,11 @@ import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
-import { requireLogin, arrangerAdminApiRoot } from './common/injectGlobals';
+import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
+import ArrangerAdmin from 'components/ArrangerAdmin'
 
 const LazyArrangerAdminUi = React.lazy(() => import('@arranger/admin-ui/dist'))
 
@@ -75,7 +74,6 @@ const App = compose(
       <Switch>
         <Route
           // TODO: we need a user role specific for this
-          style={{width: "100%"}}
           path="/admin"
           render={props =>
             forceSelectRole({
@@ -88,19 +86,7 @@ const App = compose(
                 }) ? (
                   <Redirect to="/dashboard" />
                 ) : (
-                  <Suspense fallback={<div>Loading...</div>}>
-                    <LazyArrangerAdminUi 
-                      basename={match.url} 
-                      apiRoot={arrangerAdminApiRoot} 
-                      fetcher={(url, config) => fetch(url, {
-                        ...config,
-                        headers: {
-                          ...config.headers,
-                          authorization: `Bearer ${localStorage.EGO_JWT}`
-                        }
-                      })
-                    }/>
-                  </Suspense>
+                  <ArrangerAdmin baseRoute={match.url} failRedirect={"/"} />
                 );
               },
               loggedInUser,
