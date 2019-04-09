@@ -36,8 +36,6 @@ import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin'
 
-const LazyArrangerAdminUi = React.lazy(() => import('@arranger/admin-ui/dist'))
-
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
