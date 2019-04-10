@@ -17,7 +17,7 @@ import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-import RemoveFromCohortButton from './RemoveFromCohortButton';
+// import RemoveFromCohortButton from './RemoveFromCohortButton';
 
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
@@ -204,7 +204,7 @@ class ParticipantsTable extends Component {
       dataTotalCount,
       onFetchData,
       onClearSelected,
-      onRemoveFromCohort,
+      // onRemoveFromCohort,
       analyticsTracking = null,
       downloadName = 'data',
       selectedRows,
@@ -217,9 +217,9 @@ class ParticipantsTable extends Component {
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
     const projectId = arrangerProjectId;
 
-    const handleRemoveFromCohort = () => {
-      onRemoveFromCohort();
-    };
+    // const handleRemoveFromCohort = () => {
+    //   onRemoveFromCohort();
+    // };
 
     return (
       <Fragment>

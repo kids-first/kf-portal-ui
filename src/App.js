@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'react-emotion';
-import { Dashboard as ArrangerDashboard } from '@arranger/components';
+import { Dashboard as ArrangerDashboard } from '@arranger/components/dist';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';

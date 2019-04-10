@@ -1,7 +1,7 @@
 import { provideState } from 'freactal';
 import { isArray, pick, without, chain, omit } from 'lodash';
 import jwtDecode from 'jwt-decode';
-import { addHeaders } from '@arranger/components';
+import { addHeaders } from '@arranger/components/dist';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
@@ -108,7 +108,9 @@ export default provideState({
         .catch(err => console.log(err));
     },
     addUserSet: (effects, { api, ...set }) => state => {
-      const { loggedInUser: { email, sets, ...rest } } = state;
+      const {
+        loggedInUser: { email, sets, ...rest },
+      } = state;
       updateProfile(api)({
         user: {
           ...rest,
