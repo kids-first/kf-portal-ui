@@ -79,7 +79,7 @@ export const FieldFilterContainer = compose(
         ranges++;
       }
     })
-    setDisabled( (checkboxes.length < 1 && toggles.length < 1 && ranges < rangeNodes.length) )
+    return setDisabled( (checkboxes.length < 1 && toggles.length < 1 && (ranges < rangeNodes.length || rangeNodes.length === 0)) )
   }
   return (
   <FilterCont className={className}>
