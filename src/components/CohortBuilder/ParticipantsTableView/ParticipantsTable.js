@@ -201,6 +201,7 @@ class ParticipantsTable extends Component {
     const {
       loading,
       data,
+      dataExport,
       dataTotalCount,
       onFetchData,
       onClearSelected,
@@ -278,7 +279,7 @@ class ParticipantsTable extends Component {
                   this.setState({ columns: cols });
                 }}
               />
-              <Export {...{ columns, data: data || [], downloadName }}>export</Export>
+              <Export {...{ columns, data: dataExport || [], downloadName }}>export</Export>
             </ToolbarGroup>
           </Fragment>
         </Toolbar>
