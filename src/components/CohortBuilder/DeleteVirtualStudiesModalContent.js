@@ -20,7 +20,7 @@ export default ({ onSubmit, submitDisabled }) => {
             <PromptMessage heading={'Error'} content={s.state.errorMessage} error />
           )}
           <ModalContentSection>
-            Are you sure you want to delete this Virtual Study?
+            Deleting a virtual study is permanent. Do you really want to delete it?
           </ModalContentSection>
           <ModalFooter
             handleSubmit={submitHandler(s)}

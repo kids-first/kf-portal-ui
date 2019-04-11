@@ -95,7 +95,6 @@ const CohortBuilder = compose(
           getActiveExecutableSqon,
           mergeSqonToActiveIndex,
           selectedVirtualStudy,
-          selectedVirtualStudyId,
           onVirtualStudySelect,
           setVirtualStudy,
           isOwner,
@@ -163,7 +162,7 @@ const CohortBuilder = compose(
 
           const onDeleteClick = (deleteStudyCallback) => {
             effects.setModal({
-              title: 'Delete Virtual Study',
+              title: `Do you really want to delete your virtual study "${selectedVirtualStudy}"?`,
               classNames: {
                 modal: css`
                   max-width: 800px;
