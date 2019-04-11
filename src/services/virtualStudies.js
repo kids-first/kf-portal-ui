@@ -109,3 +109,18 @@ export const updateVirtualStudy = async ({ id, sqonsState, api, name, descriptio
     }),
   });
 };
+
+export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
+  if (!name.length) {
+    throw new Error('Study must have name');
+  }
+  // const data = await getSavedVirtualStudyNames(api);
+  const { egoId } = loggedInUser;
+  await api({
+    url: urlJoin(shortUrlApi, name),
+    method: 'DELETE',
+    body: JSON.stringify({
+      userid: egoId,
+    }),
+  });
+};
