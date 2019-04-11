@@ -113,8 +113,8 @@
     "yup": "^0.25.1"
   },
   "scripts": {
-    "start": "NODE_PATH=src react-app-rewired start",
-    "start-dev": "NODE_PATH=src react-app-rewired start --env-file=.env.development.local",
+    "start": "NODE_PATH=src node scripts/start.js",
+    "start-dev": "NODE_PATH=src node scripts/start.js --env-file=.env.development.local",
     "build": "NODE_PATH=src react-app-rewired build",
     "test": "NODE_PATH=src react-app-rewired test --env=jsdom",
     "translations": "i18next-scanner --output ./public 'src/**/*.js'",
