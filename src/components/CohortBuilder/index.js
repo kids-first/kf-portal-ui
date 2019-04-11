@@ -26,6 +26,7 @@ import DeleteVirtualStudiesModalContent from './DeleteVirtualStudiesModalContent
 import SaveIcon from 'icons/SaveIcon';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import DeleteQuery from 'components/LoadShareSaveDeleteQuery/DeleteQuery';
+import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import PromptMessage from 'uikit/PromptMessage';
 
 const Container = styled('div')`
@@ -103,9 +104,6 @@ const CohortBuilder = compose(
           const categoriesSqonUpdate = newSqon => {
             mergeSqonToActiveIndex(newSqon);
           };
-          const onVirtualStudySelectChange = e => {
-            onVirtualStudySelect(e.target.value);
-          };
           const saveStudy = async studyName => {
             if (!(studyName || '').length) {
               throw new Error('Study name cannot be empty');
@@ -154,9 +152,16 @@ const CohortBuilder = compose(
             setVirtualStudy('');
           };
 
+          const findSelectedStudy = () => {
+            return virtualStudies.filter((study) => {
+              return study.id === selectedVirtualStudy;
+            }).shift();
+          };
+
           const onDeleteClick = (deleteStudyCallback) => {
+            const study = findSelectedStudy();
             effects.setModal({
-              title: `Do you really want to delete your virtual study "${selectedVirtualStudy}"?`,
+              title: `Do you really want to delete your virtual study "${study.name}"?`,
               classNames: {
                 modal: css`
                   max-width: 800px;
@@ -218,6 +223,7 @@ const CohortBuilder = compose(
               window.location.origin,
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
+          const selectedStudy = findSelectedStudy();
 
           return (
             <Container>
@@ -233,24 +239,17 @@ const CohortBuilder = compose(
               />
               <Content>
                 <Row>
-                  { selectedVirtualStudy ? <HeadingWithStudy>{selectedVirtualStudy}</HeadingWithStudy> : <HeadingWithoutStudy>Virtual Study</HeadingWithoutStudy> }
+                  { selectedStudy ? <HeadingWithStudy>{selectedStudy.name}</HeadingWithStudy> : <HeadingWithoutStudy>Virtual Study</HeadingWithoutStudy> }
                 </Row>
                 <Row>
-
-                  <select
-                    value={selectedVirtualStudy}
-                    onChange={onVirtualStudySelectChange}
-                    disabled={!virtualStudies.length}
-                  >
-                    <option value="" selected>
-                      Load a Virtual Study
-                    </option>
-                    {virtualStudies.map(({ id, name }) => (
-                      <option value={id} key={id}>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
+                  <span style={{marginLeft: 10}}>
+                    <LoadQuery
+                      studies={virtualStudies}
+                      selection={selectedStudy}
+                      handleOpen={onVirtualStudySelect}
+                      disabled={loadingVirtualStudyList}
+                    />
+                  </span>
 
                   <TealActionButton
                     mr={'10px'}
@@ -274,18 +273,17 @@ const CohortBuilder = compose(
                       <ShareQuery disabled />
                     </Tooltip>
                   )}
+                  <span style={{marginLeft: 10}}>
                   {selectedVirtualStudy ? (
-                    <span style={{marginLeft: 10}}>
                       <DeleteQuery
                       handleDelete={onDeleteClick}
-                    /></span>
+                    />
                   ) : (
-                    <span style={{marginLeft: 10}}>
                     <Tooltip html={<div>Please save this study to enable deletion</div>}>
                       <DeleteQuery disabled />
                     </Tooltip>
-                    </span>
                   )}
+                  </span>
                 </Row>
               </Content>
               <FullWidthWhite>

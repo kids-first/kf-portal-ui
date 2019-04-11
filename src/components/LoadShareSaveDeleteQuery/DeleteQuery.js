@@ -16,7 +16,7 @@ const trackQueryDelete = channel => {
 };
 
 let AlignedDeleteIcon = styled(DeleteIcon)`
-  margin-top: -3px;
+  margin-top: -2px;
 `;
 
 export default injectState(

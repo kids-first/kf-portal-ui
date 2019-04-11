@@ -1,40 +1,15 @@
 import React from 'react';
 import { injectState } from 'freactal';
-import urlJoin from 'url-join';
-import Spinner from 'react-spinkit';
-import ShareIcon from 'react-icons/lib/fa/share-alt';
-import ChainIcon from 'react-icons/lib/fa/chain';
-import FBIcon from 'react-icons/lib/fa/facebook';
-import TwitterIcon from 'react-icons/lib/fa/twitter';
-import LIIcon from 'react-icons/lib/fa/linkedin';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
+import OpenIcon from 'react-icons/lib/fa/folder-open';
+import OpenMenuIcon from 'react-icons/lib/fa/folder'
 import Tooltip from 'uikit/Tooltip';
 import { shortUrlResolveRoot } from 'common/injectGlobals';
-import shortenApi from './shortenApi';
 import { Trans } from 'react-i18next';
-import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
-const trackQueryShare = channel => {
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-    action: TRACKING_EVENTS.actions.query.share,
-    label: channel,
-  });
-};
-
-let Bubble = styled(`span`)`
-  background-color: ${({ theme }) => theme.primary};
-  color: white;
-  padding: 4px 6px;
-  border-radius: 100%;
-  margin-right: 10px;
-`;
-
 let ItemRow = styled('div')`
-  padding: 10px;
+  padding: 2px 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -43,35 +18,32 @@ let ItemRow = styled('div')`
   }
 `;
 
+let AlignedLoadIcon = styled(OpenIcon)`
+  margin-top: -2px;
+`;
+
+let AlignedMenuLoadIcon = styled(OpenMenuIcon)`
+  max-height: 12px;
+`;
+
 export default injectState(
   class extends React.Component {
-    state = { link: null, copied: false, error: null, open: false };
+    state = { loaded: false, error: null, open: false, studies: [] };
 
-    share = async () => {
+    open = async (id) => {
       let {
-        stats,
-        sqon,
-        api,
-        state: { loggedInUser },
-        getSharableUrl,
-        handleShare,
+        handleOpen
       } = this.props;
       try {
-        const data = await (handleShare
-          ? handleShare()
-          : shortenApi({ stats, sqon, loggedInUser, api, sharedPublicly: true }));
-        this.setState({
-          link: getSharableUrl
-            ? getSharableUrl({ id: data.id })
-            : urlJoin(shortUrlResolveRoot, data.id),
-        });
+        this.setState({ open: false });
+        handleOpen(id)
       } catch (error) {
         this.setState({ error: true });
       }
     };
 
     render() {
-      const { disabled } = this.props;
+      const { disabled, studies, selection } = this.props;
       return (
         <WhiteButton
           disabled={disabled}
@@ -80,7 +52,6 @@ export default injectState(
               ? () => {}
               : () => {
                   this.setState({ open: true });
-                  this.share();
                 }
           }
         >
@@ -89,8 +60,6 @@ export default injectState(
             open={this.state.open}
             onRequestClose={() => {
               this.setState({ open: false });
-              // after fadeout transition finishes, clear copy state
-              setTimeout(() => this.setState({ copied: false }), 1000);
             }}
             interactive
             html={
@@ -99,82 +68,27 @@ export default injectState(
                   width: 200px;
                 `}
               >
-                {!this.state.link ? (
-                  <ItemRow
-                    css={`
-                      justify-content: center;
-                    `}
-                  >
-                    {this.state.error ? (
-                      <Trans>Sorry something went wrong.</Trans>
-                    ) : (
-                      <Spinner
-                        fadeIn="none"
-                        name="circle"
-                        color="purple"
-                        style={{
-                          width: 15,
-                          height: 15,
-                          marginRight: 9,
-                        }}
-                      />
-                    )}
+                <React.Fragment>
+                  <ItemRow onClick={ ()=>{ this.open('') } }>
+                    <AlignedMenuLoadIcon />&nbsp;New Virtual Study
                   </ItemRow>
-                ) : (
-                  <React.Fragment>
-                    <ItemRow>
-                      <CopyToClipboard
-                        text={this.state.link}
-                        onCopy={() => {
-                          this.setState({ copied: true });
-                          trackQueryShare('copied');
-                        }}
-                      >
-                        <span>
-                          <Bubble>
-                            <ChainIcon />
-                          </Bubble>
-                          <span>
-                            {this.state.copied ? (
-                              <Trans>Copied!</Trans>
-                            ) : (
-                              <Trans>copy short URL</Trans>
-                            )}
-                          </span>
-                        </span>
-                      </CopyToClipboard>
-                    </ItemRow>
-                    <ItemRow onClick={() => trackQueryShare('Facebook')}>
-                      <FacebookShareButton url={this.state.link} quote="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research.">
-                        <Bubble>
-                          <FBIcon />
-                        </Bubble>
-                        <Trans>share on facebook</Trans>
-                      </FacebookShareButton>
-                    </ItemRow>
-                    <ItemRow onClick={() => trackQueryShare('Twitter')}>
-                      <Bubble>
-                        <TwitterIcon />
-                      </Bubble>
-                      <TwitterShareButton title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research." url={this.state.link}>
-                        <Trans>share on twitter</Trans>
-                      </TwitterShareButton>
-                    </ItemRow>
-                    <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
-                      <LinkedinShareButton title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research." url={this.state.link}>
-                        <Bubble>
-                          <LIIcon />
-                        </Bubble>
-                        <Trans>share on linkedin</Trans>
-                      </LinkedinShareButton>
-                    </ItemRow>
-                  </React.Fragment>
-                )}
+                  {studies.map(({ id, name }) => {
+                    if (!selection || selection.id != id) {
+                      return (
+                        <ItemRow onClick={() => {
+                          this.open(id)
+                        }}>
+                          {name}
+                        </ItemRow>
+
+                      );
+                    }})}
+                </React.Fragment>
               </div>
             }
           >
-            <ShareIcon />
-            &nbsp;<Trans>share</Trans>
+            <AlignedLoadIcon />
+            &nbsp;<Trans>load</Trans>
           </Tooltip>
         </WhiteButton>
       );
