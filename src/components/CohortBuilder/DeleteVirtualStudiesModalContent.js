@@ -24,7 +24,7 @@ export default ({ onSubmit, submitDisabled }) => {
           </ModalContentSection>
           <ModalFooter
             handleSubmit={submitHandler(s)}
-            submitText={'Delete'}
+            submitText={'Yes'}
             submitDisabled={submitDisabled}
           />
         </React.Fragment>
