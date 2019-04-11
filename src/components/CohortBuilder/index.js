@@ -69,12 +69,6 @@ const SaveButtonText = styled('span')`
   margin-left: 5px;
 `;
 
-const PaddedShareQuery = styled(ShareQuery)`
-  margin-right: 10px;
-`;
-
-
-
 const CohortBuilder = compose(
   withApi,
   injectState,
@@ -260,34 +254,37 @@ const CohortBuilder = compose(
 
                   <TealActionButton
                     mr={'10px'}
+                    ml={'10px'}
                     disabled={loadingVirtualStudyList}
                     onClick={onSaveClick}
                   >
                     <span>
                       <SaveIcon height={10} width={10} fill={'white'} />
                     </span>
-                    <SaveButtonText>Save</SaveButtonText>
+                    <SaveButtonText>{ selectedVirtualStudy ? 'Clone' : 'Save' }</SaveButtonText>
                   </TealActionButton>
 
                   {sharingEnabled ? (
-                    <PaddedShareQuery
+                    <ShareQuery
                       getSharableUrl={getSharableUrl}
                       handleShare={() => Promise.resolve({ id: selectedVirtualStudy })}
                     />
                   ) : (
                     <Tooltip html={<div>Please save this study to enable sharing</div>}>
-                      <PaddedShareQuery disabled />
+                      <ShareQuery disabled />
                     </Tooltip>
                   )}
-
                   {selectedVirtualStudy ? (
-                    <DeleteQuery
+                    <span style={{marginLeft: 10}}>
+                      <DeleteQuery
                       handleDelete={onDeleteClick}
-                    />
+                    /></span>
                   ) : (
+                    <span style={{marginLeft: 10}}>
                     <Tooltip html={<div>Please save this study to enable deletion</div>}>
                       <DeleteQuery disabled />
                     </Tooltip>
+                    </span>
                   )}
                 </Row>
               </Content>
