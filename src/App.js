@@ -72,7 +72,6 @@ const App = compose(
     <AppContainer>
       <Switch>
         <Route
-          // TODO: we need a user role specific for this
           path="/admin"
           render={props =>
             forceSelectRole({
@@ -96,7 +95,7 @@ const App = compose(
           }
         />
         <Route
-          // TODO: we need a user role specific for this
+          // TODO: left here for convenience during roll out of the new admin
           path="/admin_legacy"
           render={props =>
             forceSelectRole({
