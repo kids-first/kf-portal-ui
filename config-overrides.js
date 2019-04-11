@@ -70,11 +70,11 @@ module.exports = {
     rewireReactHotLoader(config, env);
     return config;
   },
-  devServer: function(configFunction) {
-    return function(proxy, allowedHost) {
-      const config = configFunction(proxy, allowedHost);
-      config.watchContentBase = false;
-      return config;
-    };
-  },
+  // devServer: function(configFunction) {
+  //   return function(proxy, allowedHost) {
+  //     const config = configFunction(proxy, allowedHost);
+  //     config.watchContentBase = false;
+  //     return config;
+  //   };
+  // },
 };
