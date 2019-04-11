@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
+import { Dashboard as ArrangerDashboardLegacy } from '@arranger/components';	
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
@@ -85,6 +86,30 @@ const App = compose(
                   <Redirect to="/dashboard" />
                 ) : (
                   <ArrangerAdmin baseRoute={match.url} failRedirect={"/"} />
+                );
+              },
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
+        />
+        <Route
+          // TODO: we need a user role specific for this
+          path="/admin_legacy"
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              WrapperPage: FixedFooterPage,
+              Component: ({ match, ...props }) => {
+                return !isAdminToken({
+                  validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                }) ? (
+                  <Redirect to="/dashboard" />
+                ) : (
+                  <ArrangerDashboardLegacy basename={match.url} {...props} />
                 );
               },
               loggedInUser,
