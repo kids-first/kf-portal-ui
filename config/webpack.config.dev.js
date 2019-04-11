@@ -147,7 +147,7 @@ module.exports = {
               // directory for faster rebuilds.
               cacheDirectory: false,
               // TODO : move to package.json?
-              plugins: ['emotion'],
+              plugins: [['emotion', { sourceMap: true }]],
             },
           },
           // "postcss" loader applies autoprefixer to our CSS.
