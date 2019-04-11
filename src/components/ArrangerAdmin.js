@@ -20,7 +20,7 @@ export default withRouter(({
             ...config,
             headers: {
               ...config.headers,
-              authorization: `Bearer ${localStorage[EGO_JWT_KEY]}`
+              authorization: `Bearer ${localStorage.getItem(EGO_JWT_KEY)}`
             }
           })
           .catch(() => history.replace(failRedirect))
