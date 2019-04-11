@@ -1,7 +1,6 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import DeleteIcon from 'react-icons/lib/fa/trash';
-import { shortUrlResolveRoot } from 'common/injectGlobals';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { WhiteButton } from 'uikit/Button';
