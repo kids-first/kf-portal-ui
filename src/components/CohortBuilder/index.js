@@ -249,7 +249,7 @@ const CohortBuilder = compose(
                     onChange={onVirtualStudySelectChange}
                     disabled={!virtualStudies.length}
                   >
-                    <option value="" disabled selected>
+                    <option value="" selected>
                       Load a Virtual Study
                     </option>
                     {virtualStudies.map(({ id, name }) => (
