@@ -2,7 +2,6 @@ import React from 'react';
 import { injectState } from 'freactal';
 import DeleteIcon from 'react-icons/lib/fa/trash';
 import { shortUrlResolveRoot } from 'common/injectGlobals';
-import { shortenApiDelete } from './shortenApi';
 import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { WhiteButton } from 'uikit/Button';
@@ -26,19 +25,8 @@ export default injectState(
     state = { error: null };
 
     delete = async (selectedVirtualStudy) => {
-      let {
-        stats,
-        sqon,
-        api,
-        state: { loggedInUser },
-      } = this.props;
       try {
-
-
-
-
         trackQueryDelete(selectedVirtualStudy)
-        // await shortenApiDelete({ loggedInUser, api, id: selectedVirtualStudy });
       } catch (error) {
         console.log(error)
         this.setState({ error: true });

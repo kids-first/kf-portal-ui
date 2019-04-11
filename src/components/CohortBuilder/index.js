@@ -244,7 +244,6 @@ const CohortBuilder = compose(
                 </Row>
                 <Row>
 
-
                   <select
                     value={selectedVirtualStudy}
                     onChange={onVirtualStudySelectChange}
@@ -259,7 +258,6 @@ const CohortBuilder = compose(
                       </option>
                     ))}
                   </select>
-
 
                   <TealActionButton
                     mr={'10px'}

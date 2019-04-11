@@ -114,13 +114,46 @@ export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
   if (!name.length) {
     throw new Error('Study must have name');
   }
-  // const data = await getSavedVirtualStudyNames(api);
   const { egoId } = loggedInUser;
+  const personaData = await getSavedVirtualStudyNames(api);
   await api({
     url: urlJoin(shortUrlApi, name),
     method: 'DELETE',
     body: JSON.stringify({
       userid: egoId,
     }),
+  });
+  const newVirtualStudies = personaData.data.self.virtualStudies.filter(function(obj) {
+    return obj.id !== name;
+  });
+  return await api({
+    url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
+    body: {
+      variables: {
+        egoId,
+        virtualStudies: newVirtualStudies,
+        personaRecordId: loggedInUser._id,
+      },
+      query: print(gql`
+        mutation(
+          $virtualStudies: [UserModelUserModelVirtualStudiesInput]
+          $egoId: String
+          $personaRecordId: MongoID!
+        ) {
+          userUpdate(
+            record: { egoId: $egoId, virtualStudies: $virtualStudies, _id: $personaRecordId }
+          ) {
+            record {
+              firstName
+              email
+              virtualStudies {
+                name
+                id
+              }
+            }
+          }
+        }
+      `),
+    },
   });
 };
