@@ -1,7 +1,6 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import OpenIcon from 'react-icons/lib/fa/folder-open';
-import OpenMenuIcon from 'react-icons/lib/fa/folder';
 import Tooltip from 'uikit/Tooltip';
 import { Trans } from 'react-i18next';
 import { WhiteButton } from 'uikit/Button';
@@ -19,10 +18,6 @@ const ItemRow = styled('div')`
 
 const AlignedLoadIcon = styled(OpenIcon)`
   margin-top: -2px;
-`;
-
-const AlignedMenuLoadIcon = styled(OpenMenuIcon)`
-  max-height: 12px;
 `;
 
 export default injectState(
@@ -66,14 +61,6 @@ export default injectState(
                 `}
               >
                 <React.Fragment>
-                  <ItemRow
-                    onClick={() => {
-                      this.open('');
-                    }}
-                  >
-                    <AlignedMenuLoadIcon />
-                    &nbsp;New Virtual Study
-                  </ItemRow>
                   {studies.map(({ id, name }) => {
                     if (!selection || selection.id !== id) {
                       return (
@@ -93,7 +80,7 @@ export default injectState(
             }
           >
             <AlignedLoadIcon />
-            &nbsp;<Trans>load</Trans>
+            &nbsp;<Trans>open</Trans>
           </Tooltip>
         </WhiteButton>
       );

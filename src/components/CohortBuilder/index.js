@@ -13,7 +13,7 @@ import { createNewVirtualStudy, deleteVirtualStudy } from 'services/virtualStudi
 import { H1 } from 'uikit/Headings';
 
 import Tooltip from 'uikit/Tooltip';
-import { TealActionButton } from 'uikit/Button.js';
+import { TealActionButton, WhiteButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
 import Categories from './Categories';
 import ContentBar from './ContentBar';
@@ -28,6 +28,7 @@ import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import DeleteQuery from 'components/LoadShareSaveDeleteQuery/DeleteQuery';
 import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import PromptMessage from 'uikit/PromptMessage';
+import OpenMenuIcon from 'react-icons/lib/fa/folder';
 
 const Container = styled('div')`
   width: 100%;
@@ -242,7 +243,18 @@ const CohortBuilder = compose(
                   { selectedStudy ? <HeadingWithStudy>{selectedStudy.name}</HeadingWithStudy> : <HeadingWithoutStudy>Virtual Study</HeadingWithoutStudy> }
                 </Row>
                 <Row>
-                  <span style={{marginLeft: 10}}>
+
+                  <WhiteButton
+                    disabled={loadingVirtualStudyList}
+                    onClick={() => { onVirtualStudySelect('') }}
+                  >
+                    <span>
+                      <OpenMenuIcon height={11} width={11} />
+                    </span>
+                    <SaveButtonText>New</SaveButtonText>
+                  </WhiteButton>
+
+                  <span style={{marginLeft: 10, marginRight: 10}}>
                     <LoadQuery
                       studies={virtualStudies}
                       selection={selectedStudy}
@@ -252,10 +264,9 @@ const CohortBuilder = compose(
                   </span>
 
                   <TealActionButton
-                    mr={'10px'}
-                    ml={'10px'}
                     disabled={loadingVirtualStudyList}
                     onClick={onSaveClick}
+                    mr={10}
                   >
                     <span>
                       <SaveIcon height={10} width={10} fill={'white'} />
