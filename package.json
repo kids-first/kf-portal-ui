@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@arranger/admin-ui": "1.1.5",
+    "@arranger/admin-ui": "1.1.6",
     "@arranger/components": "1.0.34",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
@@ -21,7 +21,7 @@
     "emotion-theming": "^9.0.0",
     "fb": "^2.0.0",
     "file-loader": "^3.0.1",
-    "file-saver": "^2.0.0",
+    "file-saver": "^2.0.1",
     "filesize": "^3.6.0",
     "formik": "^0.10.5",
     "freactal": "^1.1.1",
