@@ -1,14 +1,13 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import OpenIcon from 'react-icons/lib/fa/folder-open';
-import OpenMenuIcon from 'react-icons/lib/fa/folder'
+import OpenMenuIcon from 'react-icons/lib/fa/folder';
 import Tooltip from 'uikit/Tooltip';
-import { shortUrlResolveRoot } from 'common/injectGlobals';
 import { Trans } from 'react-i18next';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
-let ItemRow = styled('div')`
+const ItemRow = styled('div')`
   padding: 2px 10px;
   display: flex;
   align-items: center;
@@ -18,11 +17,11 @@ let ItemRow = styled('div')`
   }
 `;
 
-let AlignedLoadIcon = styled(OpenIcon)`
+const AlignedLoadIcon = styled(OpenIcon)`
   margin-top: -2px;
 `;
 
-let AlignedMenuLoadIcon = styled(OpenMenuIcon)`
+const AlignedMenuLoadIcon = styled(OpenMenuIcon)`
   max-height: 12px;
 `;
 
@@ -30,13 +29,11 @@ export default injectState(
   class extends React.Component {
     state = { loaded: false, error: null, open: false, studies: [] };
 
-    open = async (id) => {
-      let {
-        handleOpen
-      } = this.props;
+    open = async id => {
+      let { handleOpen } = this.props;
       try {
         this.setState({ open: false });
-        handleOpen(id)
+        handleOpen(id);
       } catch (error) {
         this.setState({ error: true });
       }
@@ -69,20 +66,28 @@ export default injectState(
                 `}
               >
                 <React.Fragment>
-                  <ItemRow onClick={ ()=>{ this.open('') } }>
-                    <AlignedMenuLoadIcon />&nbsp;New Virtual Study
+                  <ItemRow
+                    onClick={() => {
+                      this.open('');
+                    }}
+                  >
+                    <AlignedMenuLoadIcon />
+                    &nbsp;New Virtual Study
                   </ItemRow>
                   {studies.map(({ id, name }) => {
-                    if (!selection || selection.id != id) {
+                    if (!selection || selection.id !== id) {
                       return (
-                        <ItemRow onClick={() => {
-                          this.open(id)
-                        }}>
+                        <ItemRow
+                          onClick={() => {
+                            return this.open(id);
+                          }}
+                        >
                           {name}
                         </ItemRow>
-
                       );
-                    }})}
+                    }
+                    return null;
+                  })}
                 </React.Fragment>
               </div>
             }
