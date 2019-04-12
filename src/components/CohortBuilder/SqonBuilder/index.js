@@ -85,11 +85,7 @@ const SqonBuilder = compose(
     } else {
       onChange(action);
     }
-    console.log('+ handleAction ' + action.eventKey + ' ' + JSON.stringify(action).toString())
   };
-
-  console.log('++ handleAction rest ' + JSON.stringify(rest));
-
 
   return (
     <Container>
