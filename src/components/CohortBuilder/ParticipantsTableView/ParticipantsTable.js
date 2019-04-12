@@ -22,6 +22,9 @@ import { configureCols } from 'uikit/DataTable/utils/columns';
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
+import { Tooltip } from 'react-tippy';
+import 'react-tippy/dist/tippy.css';
+import { union } from 'lodash';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -43,19 +46,27 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
-  // Display a fourth row when there is exactly 4 rows.
+  // Display one row when there is exactly more than one row.
   // Collapsing a single don't save any space.
-  const displayedRowCount = collapsed ? (data.length === 4 ? 4 : 3) : data.length;
-  const displayMoreButton = data.length > 4;
+  const sortedData = union(data);
+  const displayedRowCount = collapsed ? 1 : data.length;
+  const displayMoreButton = sortedData.length > 1;
   return (
     <React.Fragment>
-      {data.slice(0, displayedRowCount).map((datum, index) => (
-        <div key={index}>
-          {datum === null
-            ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-            : datum}
-        </div>
-      ))}
+      <Tooltip
+        position="bottom"
+        html={sortedData.map(datum => (
+          <div>{datum}</div>
+        ))}
+      >
+        {sortedData.slice(0, displayedRowCount).map((datum, index) => (
+          <div key={index}>
+            {datum === null
+              ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+              : datum}
+          </div>
+        ))}
+      </Tooltip>
       {displayMoreButton ? (
         <div
           onClick={() => {
@@ -63,7 +74,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${data.length - displayedRowCount} more` : 'Less'}
+            {collapsed ? `${sortedData.length - displayedRowCount} more` : 'Less'}
           </div>
         </div>
       ) : null}
@@ -108,6 +119,14 @@ const NbFilesCell = compose(
   }),
 );
 
+const StudyNameTooltip = ({ value: data }) => {
+  return (
+    <Tooltip position="bottom" html={data}>
+      {data}
+    </Tooltip>
+  );
+};
+
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
     Header: props => {
@@ -128,7 +147,13 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     minWidth: 33,
   },
   { Header: 'Participant ID', accessor: 'participantId' },
-  { Header: 'Study Name', accessor: 'studyName' },
+  {
+    Header: 'Study Name',
+    accessor: 'studyName',
+    Cell: props => {
+      return <StudyNameTooltip {...props} />;
+    },
+  },
   { Header: 'Proband', accessor: 'isProband' },
   { Header: 'Vital Status', accessor: 'vitalStatus' },
   {
