@@ -49,6 +49,17 @@ class ControlledDataTable extends Component {
           PaginationComponent={CustomPagination}
           className={`${className} ${striped ? '-striped' : ''}`}
           minRows={1} // hide empty rows
+          getTrProps={(state, rowInfo) => {
+            if (rowInfo && rowInfo.row) {
+              return {
+                style: {
+                  background: rowInfo.row.selected ? '#edf9fe' : '',
+                },
+              };
+            } else {
+              return {};
+            }
+          }}
         />
       </StyleWrapper>
     );
