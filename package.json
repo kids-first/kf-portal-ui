@@ -115,7 +115,7 @@
   "scripts": {
     "start": "NODE_PATH=src node scripts/start.js",
     "start-dev": "NODE_PATH=src node scripts/start.js --env-file=.env.development.local",
-    "build": "NODE_PATH=src react-app-rewired build",
+    "build": "NODE_PATH=src node scripts/build.js",
     "test": "NODE_PATH=src react-app-rewired test --env=jsdom",
     "translations": "i18next-scanner --output ./public 'src/**/*.js'",
     "storybook": "start-storybook -p 9001 -c .storybook",
