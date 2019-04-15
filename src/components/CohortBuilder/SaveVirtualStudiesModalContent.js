@@ -33,7 +33,7 @@ export default ({ onSubmit, submitDisabled }) => {
           <ModalFooter
             handleSubmit={submitHandler(s)}
             submitText={'Save'}
-            submitDisabled={submitDisabled}
+            submitDisabled={submitDisabled || s.state.name.length < 1}
           />
         </React.Fragment>
       )}
