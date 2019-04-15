@@ -22,8 +22,6 @@ import { configureCols } from 'uikit/DataTable/utils/columns';
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
-import { Tooltip } from 'react-tippy';
-import 'react-tippy/dist/tippy.css';
 import { union } from 'lodash';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
@@ -44,6 +42,13 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   );
 };
 
+const rowCss = css({
+  display: 'flex',
+  flexWrap: 'nowrap',
+  alignItems: 'flex-start',
+  alignContent: 'stretch',
+});
+
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
   // Display one row when there is exactly more than one row.
@@ -52,33 +57,37 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   const displayedRowCount = collapsed ? 1 : data.length;
   const displayMoreButton = sortedData.length > 1;
   return (
-    <React.Fragment>
-      <Tooltip
-        position="bottom"
-        html={sortedData.map(datum => (
-          <div>{datum}</div>
-        ))}
-      >
-        {sortedData.slice(0, displayedRowCount).map((datum, index) => (
-          <div key={index}>
-            {datum === null
-              ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-              : datum}
-          </div>
-        ))}
-      </Tooltip>
+    <div className={`${rowCss}`}>
+      <div style={{ flex: '4' }}>
+        {sortedData.length === 1
+          ? sortedData
+              .slice(0, displayedRowCount)
+              .map((datum, index) => (
+                <div key={index}>
+                  {datum === null
+                    ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+                    : datum}
+                </div>
+              ))
+          : data
+              .slice(0, displayedRowCount)
+              .map((datum, index) => (
+                <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
+              ))}
+      </div>
       {displayMoreButton ? (
         <div
+          style={{ flex: '1', marginTop: '-8px ' }}
           onClick={() => {
             setCollapsed(!collapsed);
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${sortedData.length - displayedRowCount} more` : 'Less'}
+            {collapsed ? `${data.length - displayedRowCount} ` : ''}
           </div>
         </div>
       ) : null}
-    </React.Fragment>
+    </div>
   );
 });
 
@@ -119,14 +128,6 @@ const NbFilesCell = compose(
   }),
 );
 
-const StudyNameTooltip = ({ value: data }) => {
-  return (
-    <Tooltip position="bottom" html={data}>
-      {data}
-    </Tooltip>
-  );
-};
-
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
     Header: props => {
@@ -150,12 +151,10 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Study Name',
     accessor: 'studyName',
-    Cell: props => {
-      return <StudyNameTooltip {...props} />;
-    },
+    minWidth: 140,
   },
-  { Header: 'Proband', accessor: 'isProband' },
-  { Header: 'Vital Status', accessor: 'vitalStatus' },
+  { Header: 'Proband', accessor: 'isProband', minWidth: 65 },
+  { Header: 'Vital Status', accessor: 'vitalStatus', minWidth: 70 },
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
@@ -167,6 +166,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     accessor: 'diagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.diagnosis',
+    minWidth: 175,
   },
   {
     Header: 'Age at Diagnosis (days)',
@@ -174,7 +174,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.age_at_event_days',
   },
-  { Header: 'Gender', accessor: 'gender', field: 'gender' },
+  { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   { Header: 'Family ID', accessor: 'familyId', field: 'family_id' },
   {
     Header: 'Family Composition',
