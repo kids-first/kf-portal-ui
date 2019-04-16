@@ -322,8 +322,4 @@ export class SurvivalChart extends React.Component {
   }
 }
 
-export default () => (
-  <CohortCard Content={SurvivalCardContent} title="Overall Survival">
-    <PromptMessage heading={'BETA'} content={<div>Visualization coming soon</div>} />
-  </CohortCard>
-);
+export default compose(withApi)(SurvivalChart);
