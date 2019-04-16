@@ -54,14 +54,14 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   // Display one row when there is exactly more than one row.
   // Collapsing a single don't save any space.
   const sortedData = union(data);
-  const compactData = compact(sortedData);
-  const displayedRowCount = collapsed ? 1 : compactData.length;
-  const displayMoreButton = compactData.length > 1;
+  const cleanedData = compact(data);
+  const displayedRowCount = collapsed ? 1 : cleanedData.length;
+  const displayMoreButton = compact(sortedData).length > 1;
   return (
     <div className={`${rowCss}`}>
       <div style={{ flex: '4' }}>
         {sortedData.length <= 1
-          ? compactData
+          ? compact(sortedData)
               .slice(0, displayedRowCount)
               .map((datum, index) => (
                 <div key={index}>
@@ -70,7 +70,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
                     : datum}
                 </div>
               ))
-          : compactData
+          : cleanedData
               .slice(0, displayedRowCount)
               .map((datum, index) => (
                 <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
@@ -84,7 +84,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${compactData.length - displayedRowCount} ` : ''}
+            {collapsed ? `${cleanedData.length - displayedRowCount} ` : ''}
           </div>
         </div>
       ) : null}
