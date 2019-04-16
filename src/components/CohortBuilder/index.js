@@ -227,7 +227,7 @@ const CohortBuilder = compose(
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
           const selectedStudy = findSelectedStudy();
-
+          const syntheticSqonIsEmpty = JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]'
           return (
             <Container>
               <StylePromptMessage
@@ -272,7 +272,7 @@ const CohortBuilder = compose(
                   <span style={{marginRight: 10}}>
                     <Tooltip html={<div>{ selectedVirtualStudy ? 'Save as a new virtual study' : 'Save a virtual study' }</div>}>
                       <WhiteButton
-                        disabled={loadingVirtualStudyList}
+                        disabled={loadingVirtualStudyList || syntheticSqonIsEmpty}
                         onClick={onSaveAsClick}
                       >
                         <span>
