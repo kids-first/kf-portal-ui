@@ -60,7 +60,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   return (
     <div className={`${rowCss}`}>
       <div style={{ flex: '4' }}>
-        {sortedData.length <= 1
+        {compact(sortedData).length <= 1
           ? compact(sortedData)
               .slice(0, displayedRowCount)
               .map((datum, index) => (
