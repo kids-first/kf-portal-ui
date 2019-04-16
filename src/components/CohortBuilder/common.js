@@ -71,15 +71,15 @@ export const FieldFilterContainer = compose(
   const hasSelectedElements = (handler) => {
     const checkboxes = handler.parentElement.parentElement.querySelectorAll('input[type="checkbox"]:checked');
     const toggles = handler.parentElement.parentElement.querySelectorAll('div.toggle-button-option.active');
-    const rangeNodes = handler.parentElement.parentElement.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
     let ranges = 0;
+    const rangeNodes = handler.parentElement.parentElement.parentElement.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
     rangeNodes.forEach((input, key) => {
       const node = rangeNodes.item(key);
       if (node.value.length > 0 && node.value > -1) {
         ranges++;
       }
     })
-    return setDisabled( (checkboxes.length < 1 && toggles.length < 1 && (ranges < rangeNodes.length || rangeNodes.length === 0)) )
+    return setDisabled( (checkboxes.length < 1 && toggles.length < 1 && (ranges < rangeNodes.length || rangeNodes.length === 0) ) );
   }
   return (
   <FilterCont className={className}>
@@ -93,6 +93,12 @@ export const FieldFilterContainer = compose(
     )}
     <Content className="filterContainer"
       onClick={(e) => {
+        const eventTarget = e.target;
+        setTimeout(() => {
+          hasSelectedElements(eventTarget)
+        }, 100)
+      }}
+      onKeyUp={(e) => {
         const eventTarget = e.target;
         setTimeout(() => {
           hasSelectedElements(eventTarget)
