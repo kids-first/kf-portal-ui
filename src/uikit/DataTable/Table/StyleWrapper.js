@@ -355,6 +355,11 @@ export default styled('div')`
       text-align: left;
     }
 
+    .ReactTable .rt-td div {
+      font-family: ${({ theme }) => theme.fonts.details};
+    }
+
+    ,
     .ReactTable .rt-tbody .rt-td {
       font-family: ${({ theme }) => theme.fonts.details};
       color: ${({ theme }) => theme.greyScale1};
