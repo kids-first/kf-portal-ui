@@ -31,33 +31,32 @@ import {
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
 
-const trackFenceAction = ({fence, fenceDetails, category, action, label}) =>{
-  if(fence){
-  let gaDimension = null
+const trackFenceAction = ({ fence, fenceDetails, category, action, label }) => {
+  if (fence) {
+    let gaDimension = null;
 
-  switch(fence){
-    case 'gen3':
-      // authorizedStudies
-      gaDimension = '5'
-      break;
-    case 'cavatica':
-     // userCavaticaProjects
-      gaDimension = '6'
-       break;
-    case 'dcf':
-      // userDCFdetails
-      gaDimension = '7'
-      break;
-     default:
-       break;
+    switch (fence) {
+      case 'gen3':
+        // authorizedStudies
+        gaDimension = '5';
+        break;
+      case 'cavatica':
+        // userCavaticaProjects
+        gaDimension = '6';
+        break;
+      case 'dcf':
+        // userDCFdetails
+        gaDimension = '7';
+        break;
+      default:
+        break;
+    }
+
+    setUserDimension(`dimension${gaDimension}`, fenceDetails);
   }
 
-   setUserDimension(`dimension${gaDimension}`, fenceDetails)
-  }
-
-   trackUserInteraction({category, action, label})
-}
-
+  trackUserInteraction({ category, action, label });
+};
 
 const enhanceActions = compose(
   withApi,
@@ -117,17 +116,16 @@ const disconnect = async ({ fence, api, setConnecting, effects }) => {
   await effects.setIntegrationToken(fence, null);
   await effects.removeFenceConnection(fence);
   trackFenceAction({
-        fence, 
-        fenceDetails: '',
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: TRACKING_EVENTS.actions.integration.disconnected,
-        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence}
-   )
+    fence,
+    fenceDetails: '',
+    category: TRACKING_EVENTS.categories.user.profile,
+    action: TRACKING_EVENTS.actions.integration.disconnected,
+    label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
+  });
   setConnecting(false);
 };
 
 const connect = ({ fence, api, setConnecting, effects }) => {
-
   analyticsTrigger({
     property: 'portal',
     type: 'recording',
@@ -153,12 +151,12 @@ const connect = ({ fence, api, setConnecting, effects }) => {
         ),
       });
       trackFenceAction({
-        fence, 
-        fenceDetails: JSON.stringify(details) , 
+        fence,
+        fenceDetails: JSON.stringify(details),
         category: TRACKING_EVENTS.categories.user.profile,
         action: TRACKING_EVENTS.actions.integration.connected,
-        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence}
-      )
+        label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
+      });
     })
     .catch(err => {
       console.log('err: ', err);
