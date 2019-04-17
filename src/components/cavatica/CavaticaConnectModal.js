@@ -129,14 +129,14 @@ const CavaticaConnectModal = withTheme(
               name="cavatica"
               placeholder="Cavatica Key"
               onChange={e => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.user.profile,
-                  action: "Integration Credentials Updated ",
-                  label: TRACKING_EVENTS.labels.cavatica,
-                });
                 setCavaticaKey(e.target.value);
                 setInvalidToken(false);
-                
+
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.user.profile,
+                  action: 'Integration Credentials Updated ',
+                  label: TRACKING_EVENTS.labels.cavatica,
+                });
               }}
             />
             <FormErrorMessage id="cavaticaTokenErrorMsg">
