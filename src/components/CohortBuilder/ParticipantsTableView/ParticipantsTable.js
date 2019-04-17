@@ -242,7 +242,6 @@ class ParticipantsTable extends Component {
     const {
       loading,
       data,
-      dataExport,
       dataTotalCount,
       onFetchData,
       onClearSelected,

@@ -67,7 +67,7 @@ const ParticipantsTableView = ({
       api={api}
       queries={[participantsQuery(sqon, sort, pageSize, pageIndex)]}
     >
-      {({ data, error }) => {
+      {({ isLoading, data, error }) => {
         if (error) {
           return (
             <Card>
@@ -76,7 +76,6 @@ const ParticipantsTableView = ({
           );
         }
 
-        const dataTotalCount = data[0] ? data[0].total : 0;
         const isRowSelected = node =>
           allRowsSelected || selectedRows.some(row => row === node.participantId);
 
