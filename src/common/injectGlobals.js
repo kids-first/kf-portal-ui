@@ -44,9 +44,6 @@ export const facebookAppId = getApplicationEnvVar('FACEBOOK_APP_ID');
 export const egoAppId = getApplicationEnvVar('EGO_APP_ID');
 export const googleMapsKey = getApplicationEnvVar('GOOGLE_MAPS_KEY');
 
-export const usersnapHost = getApplicationEnvVar('USERSNAP_HOST');
-export const usersnapId = getApplicationEnvVar('USERSNAP_ID');
-
 export const hotjarHost = getApplicationEnvVar('HOTJAR_HOST');
 export const hotjarId = getApplicationEnvVar('HOTJAR_ID');
 
@@ -91,3 +88,5 @@ export const reactApiDataVersionFallback: string =
 
 // Public Stats
 export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
+
+export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') || null;

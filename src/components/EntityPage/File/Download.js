@@ -30,7 +30,7 @@ const ControlledDownload = styled('div')`
 `;
 
 const StyledDownloadButton = styled(DownloadButton)`
-  height: 27px;
+  height: 30px;
   padding: 0 13px;
   align-items: center;
   margin-right: 10px;

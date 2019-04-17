@@ -14,7 +14,14 @@ import {
   ModalContentSection,
   ARRANGER_API_PARTICIPANT_INDEX_NAME,
 } from '../common';
+import {SQONdiff} from '../../Utils'
 import { ModalFooter } from 'components/Modal';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+
+const trackSQONaction = ({category, action, label}) => {
+  trackUserInteraction({category, action, label: JSON.stringify(label)})
+}
 
 const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
   extendedMapping.reduce((acc, { field, displayName }) => {
@@ -61,8 +68,23 @@ const SqonBuilder = compose(
   withApi,
   injectState,
 )(({ api, onChange, state, effects, ...rest }) => {
+  
   const handleAction = async action => {
+
+    // track the existing and operated on sqon actions
+    trackSQONaction({
+      category: TRACKING_EVENTS.categories.cohortBuilder.sqonBuilder,
+      action: `${action.eventKey} - ${Object.keys(action.eventDetails)[0]}`, 
+      label: {
+        [action.eventKey.toLowerCase()]: SQONdiff(rest.syntheticSqons, action.newSyntheticSqons), 
+        sqon_result: {
+          sqon: action.newSyntheticSqons, 
+          eventDetails: action.eventDetails 
+        } 
+      }})
+    
     if (action.eventKey === 'CLEAR_ALL') {
+      delete rest['activeSqonIndex'];
       effects.setModal({
         title: 'Clear All Queries',
         classNames: {
@@ -83,6 +105,7 @@ const SqonBuilder = compose(
       onChange(action);
     }
   };
+
   return (
     <Container>
       <ExtendedMappingProvider
@@ -99,12 +122,14 @@ const SqonBuilder = compose(
               api={api}
               arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-              FieldOpModifierContainer={props => (
+              FieldOpModifierContainer={props => {
+                return (
                 <StyledFieldFilterContainer showHeader={false} {...props} />
-              )}
+              )}}
               fieldDisplayNameMap={extendedMappingToDisplayNameMap(extendedMapping)}
               onChange={handleAction}
               {...rest}
+              // activeSqonIndex={1}
             />
           )
         }

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
+import { compose, withState } from 'recompose';
 import Row from 'uikit/Row';
 import { Div } from 'uikit/Core';
 
@@ -54,7 +55,9 @@ const Footer = styled(Row)`
   padding: 5px;
 `;
 
-export const FieldFilterContainer = ({
+export const FieldFilterContainer = compose(
+  withState('isDisabled', 'setDisabled', true),
+)(({
   children,
   onSubmit: onSqonSubmit,
   onCancel,
@@ -62,7 +65,23 @@ export const FieldFilterContainer = ({
   applyEnabled = true,
   showHeader = true,
   className = '',
-}) => (
+  isDisabled,
+  setDisabled,
+}) => {
+  const hasSelectedElements = (handler) => {
+    const checkboxes = handler.parentElement.parentElement.querySelectorAll('input[type="checkbox"]:checked');
+    const toggles = handler.parentElement.parentElement.querySelectorAll('div.toggle-button-option.active');
+    let ranges = 0;
+    const rangeNodes = handler.parentElement.parentElement.parentElement.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
+    rangeNodes.forEach((input, key) => {
+      const node = rangeNodes.item(key);
+      if (node.value.length > 0 && node.value > -1) {
+        ranges++;
+      }
+    })
+    return setDisabled( (checkboxes.length < 1 && toggles.length < 1 && (ranges < rangeNodes.length || rangeNodes.length === 0) ) );
+  }
+  return (
   <FilterCont className={className}>
     {showHeader && (
       <Header>
@@ -72,14 +91,27 @@ export const FieldFilterContainer = ({
         </WhiteButton>
       </Header>
     )}
-    <Content className="filterContainer">{children}</Content>
+    <Content className="filterContainer"
+      onClick={(e) => {
+        const eventTarget = e.target;
+        setTimeout(() => {
+          hasSelectedElements(eventTarget)
+        }, 100)
+      }}
+      onKeyUp={(e) => {
+        const eventTarget = e.target;
+        setTimeout(() => {
+          hasSelectedElements(eventTarget)
+        }, 100)
+      }}
+    >{children}</Content>
     <Footer>
       <WhiteButton onClick={onCancel}>Cancel</WhiteButton>
-      <TealActionButton disabled={!applyEnabled} onClick={onSqonSubmit}>
+      <TealActionButton disabled={!applyEnabled || isDisabled} onClick={onSqonSubmit}>
         Apply
       </TealActionButton>
     </Footer>
   </FilterCont>
-);
+)});
 
 export const ARRANGER_API_PARTICIPANT_INDEX_NAME = 'participant';

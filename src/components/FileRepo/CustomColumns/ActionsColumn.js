@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Component from 'react-component-component';
+import styled from 'react-emotion';
 import { get, intersection } from 'lodash';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
@@ -15,11 +16,18 @@ import Tooltip from 'uikit/Tooltip';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { DCF } from 'common/constants';
+import CavaticaLogo from 'icons/CavaticaLogo';
+import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapper';
 
 const enhance = compose(
   withApi,
   withTheme,
 );
+
+const ButtonWrapper = styled(Column)`
+  flex: 1;
+  align-items: center;
+`;
 
 const FenceDownloadButton = ({ fence, kfId, theme }) =>
   // DCF files currently aren't available to download, so we show tooltip and grey out button
@@ -56,7 +64,7 @@ const FenceDownloadButton = ({ fence, kfId, theme }) =>
 const ActionItems = ({ value, fence, hasAccess, theme }) => {
   return (
     <React.Fragment>
-      <Column style={{ flex: 1, alignItems: 'center' }}>
+      <ButtonWrapper>
         {hasAccess ? (
           <FenceDownloadButton fence={fence} kfId={value} theme={theme} />
         ) : (
@@ -68,7 +76,14 @@ const ActionItems = ({ value, fence, hasAccess, theme }) => {
             <ControlledIcon fill={theme.lightBlue} />
           </Tooltip>
         )}
-      </Column>
+      </ButtonWrapper>
+      <ButtonWrapper>
+        {hasAccess && (
+          <CavaticaOpenModalWrapper fileIds={[value]}>
+            <CavaticaLogo fill={theme.lightBlue} width={16} />
+          </CavaticaOpenModalWrapper>
+        )}
+      </ButtonWrapper>
     </React.Fragment>
   );
 };

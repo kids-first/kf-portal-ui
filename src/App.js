@@ -4,10 +4,10 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'react-emotion';
-import { Dashboard as ArrangerDashboard } from '@arranger/components';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
+import { Dashboard as ArrangerDashboardLegacy } from '@arranger/components';	
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
@@ -35,6 +35,7 @@ import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
+import ArrangerAdmin from 'components/ArrangerAdmin'
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -60,6 +61,7 @@ const AppContainer = styled('div')`
   }
 `;
 
+
 const App = compose(
   injectState,
   withApi,
@@ -70,19 +72,43 @@ const App = compose(
     <AppContainer>
       <Switch>
         <Route
-          // TODO: we need a user role specific for this
           path="/admin"
           render={props =>
             forceSelectRole({
               api,
               isLoadingUser,
+              WrapperPage: FixedFooterPage,
               Component: ({ match, ...props }) => {
                 return !isAdminToken({
                   validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                 }) ? (
                   <Redirect to="/dashboard" />
                 ) : (
-                  <ArrangerDashboard basename={match.url} {...props} />
+                  <ArrangerAdmin baseRoute={match.url} failRedirect={"/"} />
+                );
+              },
+              loggedInUser,
+              index: props.match.params.index,
+              graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
+        />
+        <Route
+          // TODO: left here for convenience during roll out of the new admin
+          path="/admin_legacy"
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              WrapperPage: FixedFooterPage,
+              Component: ({ match, ...props }) => {
+                return !isAdminToken({
+                  validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                }) ? (
+                  <Redirect to="/dashboard" />
+                ) : (
+                  <ArrangerDashboardLegacy basename={match.url} {...props} />
                 );
               },
               loggedInUser,

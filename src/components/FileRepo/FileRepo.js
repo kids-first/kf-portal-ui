@@ -14,8 +14,8 @@ import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
-import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
-import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
+import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
@@ -55,7 +55,7 @@ const customTableTypes = {
   ),
 };
 
-const TableHeaderContent = ({ sqon, disabled, ...props }) => {
+const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => {
   return (
     <Row right>
       <Tooltip
@@ -70,10 +70,12 @@ const TableHeaderContent = ({ sqon, disabled, ...props }) => {
         }
       >
         <CavaticaCopyButton
+          fileIds={selectedTableRows}
           sqon={sqon}
-          {...props}
           buttonStyle={cavaticaCopyButtonStyle}
           buttonContentStyle={false}
+          text="Analyze in Cavatica"
+          {...props}
         />
       </Tooltip>
       {disabled ? (

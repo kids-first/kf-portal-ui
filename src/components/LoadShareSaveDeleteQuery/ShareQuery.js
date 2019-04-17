@@ -25,6 +25,11 @@ const trackQueryShare = channel => {
   });
 };
 
+
+let AlignedShareIcon = styled(ShareIcon)`
+  margin-top: -2px;
+`;
+
 let Bubble = styled(`span`)`
   background-color: ${({ theme }) => theme.primary};
   color: white;
@@ -173,7 +178,7 @@ export default injectState(
               </div>
             }
           >
-            <ShareIcon />
+            <AlignedShareIcon />
             &nbsp;<Trans>share</Trans>
           </Tooltip>
         </WhiteButton>

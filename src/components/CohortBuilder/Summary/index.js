@@ -73,10 +73,10 @@ const Summary = ({
                 <DemographicChart data={demographicData} isLoading={isLoading} />
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart sqon={sqon} />
-              </PaddedColumn>{' '}
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
+              </PaddedColumn>
+              <PaddedColumn md={spacing.md} lg={spacing.lg}>
+                <SurvivalChart sqon={sqon} />
               </PaddedColumn>
             </Row>
           </Col>
