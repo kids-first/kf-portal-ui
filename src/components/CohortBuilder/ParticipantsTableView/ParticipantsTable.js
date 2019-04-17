@@ -22,6 +22,7 @@ import { configureCols } from 'uikit/DataTable/utils/columns';
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
+import { union, compact } from 'lodash';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -41,33 +42,53 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   );
 };
 
+const rowCss = css({
+  display: 'flex',
+  flexWrap: 'nowrap',
+  alignItems: 'flex-start',
+  alignContent: 'stretch',
+});
+
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
-  // Display a fourth row when there is exactly 4 rows.
+  // Display one row when there is exactly more than one row.
   // Collapsing a single don't save any space.
-  const displayedRowCount = collapsed ? (data.length === 4 ? 4 : 3) : data.length;
-  const displayMoreButton = data.length > 4;
+  const sortedData = union(data);
+  const cleanedData = compact(data);
+  const displayedRowCount = collapsed ? 1 : cleanedData.length;
+  const displayMoreButton = compact(sortedData).length > 1;
   return (
-    <React.Fragment>
-      {data.slice(0, displayedRowCount).map((datum, index) => (
-        <div key={index}>
-          {datum === null
-            ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-            : datum}
-        </div>
-      ))}
+    <div className={`${rowCss}`}>
+      <div style={{ flex: '4' }}>
+        {compact(sortedData).length <= 1
+          ? compact(sortedData)
+              .slice(0, displayedRowCount)
+              .map((datum, index) => (
+                <div key={index}>
+                  {datum === null
+                    ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+                    : datum}
+                </div>
+              ))
+          : cleanedData
+              .slice(0, displayedRowCount)
+              .map((datum, index) => (
+                <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
+              ))}
+      </div>
       {displayMoreButton ? (
         <div
+          style={{ flex: '1', marginTop: '-8px ' }}
           onClick={() => {
             setCollapsed(!collapsed);
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${data.length - displayedRowCount} more` : 'Less'}
+            {collapsed ? `${cleanedData.length - displayedRowCount} ` : ''}
           </div>
         </div>
       ) : null}
-    </React.Fragment>
+    </div>
   );
 });
 
@@ -128,9 +149,13 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     minWidth: 33,
   },
   { Header: 'Participant ID', accessor: 'participantId' },
-  { Header: 'Study Name', accessor: 'studyName' },
-  { Header: 'Proband', accessor: 'isProband' },
-  { Header: 'Vital Status', accessor: 'vitalStatus' },
+  {
+    Header: 'Study Name',
+    accessor: 'studyName',
+    minWidth: 140,
+  },
+  { Header: 'Proband', accessor: 'isProband', minWidth: 65 },
+  { Header: 'Vital Status', accessor: 'vitalStatus', minWidth: 70 },
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
@@ -143,6 +168,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     accessor: 'diagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.diagnosis',
+    minWidth: 175,
     sortable: false,
   },
   {
@@ -152,7 +178,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     field: 'diagnoses.age_at_event_days',
     sortable: false,
   },
-  { Header: 'Gender', accessor: 'gender', field: 'gender' },
+  { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   { Header: 'Family ID', accessor: 'familyId', field: 'family_id' },
   {
     Header: 'Family Composition',
