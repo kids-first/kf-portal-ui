@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@arranger/admin-ui": "1.1.5",
-    "@arranger/components": "1.0.34",
+    "@arranger/admin-ui": "1.1.7",
+    "@arranger/components": "1.1.7",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",

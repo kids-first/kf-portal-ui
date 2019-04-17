@@ -13,7 +13,7 @@ import { createNewVirtualStudy, deleteVirtualStudy } from 'services/virtualStudi
 import { H1 } from 'uikit/Headings';
 
 import Tooltip from 'uikit/Tooltip';
-import { TealActionButton, WhiteButton } from 'uikit/Button.js';
+import { WhiteButton } from 'uikit/Button.js';
 import Row from 'uikit/Row';
 import Categories from './Categories';
 import ContentBar from './ContentBar';
@@ -23,12 +23,12 @@ import SQONProvider from './SQONProvider';
 import VirtualStudyListProvider from './VirtualStudyListProvider';
 import SaveVirtualStudiesModalContent from './SaveVirtualStudiesModalContent';
 import DeleteVirtualStudiesModalContent from './DeleteVirtualStudiesModalContent';
-import SaveIcon from 'icons/SaveIcon';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import DeleteQuery from 'components/LoadShareSaveDeleteQuery/DeleteQuery';
 import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import PromptMessage from 'uikit/PromptMessage';
 import OpenMenuIcon from 'react-icons/lib/fa/folder';
+import SaveIcon from 'react-icons/lib/fa/file';
 
 const Container = styled('div')`
   width: 100%;
@@ -37,10 +37,6 @@ const Container = styled('div')`
 
 const HeadingWithStudy = styled(H1)`
   color: #2b388f;
-`;
-
-const HeadingWithoutStudy = styled(H1)`
-  color: #CCCCCC;
 `;
 
 const FullWidthWhite = styled('div')`
@@ -69,6 +65,10 @@ const StylePromptMessage = styled(PromptMessage)`
 
 const SaveButtonText = styled('span')`
   margin-left: 5px;
+`;
+
+let AlignedSaveIcon = styled(SaveIcon)`
+  margin-top: -2px;
 `;
 
 const CohortBuilder = compose(
@@ -123,7 +123,7 @@ const CohortBuilder = compose(
             setVirtualStudy(newStudyId);
           };
 
-          const onSaveClick = () => {
+          const onSaveAsClick = () => {
             effects.setModal({
               title: 'Save as Virtual Study',
               classNames: {
@@ -150,6 +150,7 @@ const CohortBuilder = compose(
             });
             await deleteStudyCallback(selectedVirtualStudy);
             await refetchVirtualStudies();
+            setSqons([{"op":"and","content":[]}]);
             setVirtualStudy('');
           };
 
@@ -162,7 +163,7 @@ const CohortBuilder = compose(
           const onDeleteClick = (deleteStudyCallback) => {
             const study = findSelectedStudy();
             effects.setModal({
-              title: `Do you really want to delete your virtual study "${study.name}"?`,
+              title: `Delete Virtual Study`,
               classNames: {
                 modal: css`
                   max-width: 800px;
@@ -170,6 +171,7 @@ const CohortBuilder = compose(
               },
               component: (
                 <DeleteVirtualStudiesModalContent
+                  name={study.name}
                   onSubmit={() => deleteStudy(deleteStudyCallback)}
                 />
               ),
@@ -225,7 +227,7 @@ const CohortBuilder = compose(
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
           const selectedStudy = findSelectedStudy();
-
+          const syntheticSqonIsEmpty = JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]'
           return (
             <Container>
               <StylePromptMessage
@@ -240,61 +242,63 @@ const CohortBuilder = compose(
               />
               <Content>
                 <Row>
-                  { selectedStudy ? <HeadingWithStudy>{selectedStudy.name}</HeadingWithStudy> : <HeadingWithoutStudy>Virtual Study</HeadingWithoutStudy> }
+                  <HeadingWithStudy>{ selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data' }</HeadingWithStudy>
                 </Row>
                 <Row>
 
+                  <Tooltip html={<div>Create a new virtual study</div>}>
                   <WhiteButton
-                    disabled={loadingVirtualStudyList}
-                    onClick={() => { onVirtualStudySelect('') }}
+                    disabled={loadingVirtualStudyList || !selectedStudy || !selectedStudy.id}
+                    onClick={() => { setSqons([{"op":"and","content":[]}]); onVirtualStudySelect(''); }}
                   >
                     <span>
                       <OpenMenuIcon height={11} width={11} />
                     </span>
                     <SaveButtonText>New</SaveButtonText>
                   </WhiteButton>
+                  </Tooltip>
 
                   <span style={{marginLeft: 10, marginRight: 10}}>
-                    <LoadQuery
-                      studies={virtualStudies}
-                      selection={selectedStudy}
-                      handleOpen={onVirtualStudySelect}
-                      disabled={loadingVirtualStudyList}
-                    />
+                    <Tooltip html={<div>Open a saved virtual study</div>}>
+                      <LoadQuery
+                        studies={virtualStudies}
+                        selection={selectedStudy}
+                        handleOpen={onVirtualStudySelect}
+                        disabled={loadingVirtualStudyList || (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) || virtualStudies.length < 1}
+                      />
+                    </Tooltip>
                   </span>
 
-                  <TealActionButton
-                    disabled={loadingVirtualStudyList}
-                    onClick={onSaveClick}
-                    mr={10}
-                  >
-                    <span>
-                      <SaveIcon height={10} width={10} fill={'white'} />
-                    </span>
-                    <SaveButtonText>{ selectedVirtualStudy ? 'Clone' : 'Save' }</SaveButtonText>
-                  </TealActionButton>
+                  <span style={{marginRight: 10}}>
+                    <Tooltip html={<div>{ selectedVirtualStudy ? 'Save as a new virtual study' : 'Save a virtual study' }</div>}>
+                      <WhiteButton
+                        disabled={loadingVirtualStudyList || syntheticSqonIsEmpty}
+                        onClick={onSaveAsClick}
+                      >
+                        <span>
+                          <AlignedSaveIcon height={10} width={10} />
+                        </span>
+                        <SaveButtonText>{ selectedVirtualStudy ? 'Save As' : 'Save' }</SaveButtonText>
+                      </WhiteButton>
+                    </Tooltip>
+                  </span>
 
-                  {sharingEnabled ? (
+                  <span style={{marginRight: 10}}>
+                    <Tooltip html={<div>Delete this virtual study</div>}>
+                      <DeleteQuery
+                        disabled={!selectedVirtualStudy}
+                        handleDelete={onDeleteClick}
+                      />
+                    </Tooltip>
+                  </span>
+
+                  <Tooltip html={<div>Share this virtual study</div>}>
                     <ShareQuery
+                      disabled={!sharingEnabled}
                       getSharableUrl={getSharableUrl}
                       handleShare={() => Promise.resolve({ id: selectedVirtualStudy })}
                     />
-                  ) : (
-                    <Tooltip html={<div>Please save this study to enable sharing</div>}>
-                      <ShareQuery disabled />
-                    </Tooltip>
-                  )}
-                  <span style={{marginLeft: 10}}>
-                  {selectedVirtualStudy ? (
-                      <DeleteQuery
-                      handleDelete={onDeleteClick}
-                    />
-                  ) : (
-                    <Tooltip html={<div>Please save this study to enable deletion</div>}>
-                      <DeleteQuery disabled />
-                    </Tooltip>
-                  )}
-                  </span>
+                  </Tooltip>
                 </Row>
               </Content>
               <FullWidthWhite>

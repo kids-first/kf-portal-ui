@@ -161,6 +161,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     accessor: 'diagnosisCategories',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.diagnosis_category',
+    sortable: false,
   },
   {
     Header: 'Diagnosis',
@@ -168,12 +169,14 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.diagnosis',
     minWidth: 175,
+    sortable: false,
   },
   {
     Header: 'Age at Diagnosis (days)',
     accessor: 'ageAtDiagnosis',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'diagnoses.age_at_event_days',
+    sortable: false,
   },
   { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
   { Header: 'Family ID', accessor: 'familyId', field: 'family_id' },
@@ -182,12 +185,14 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     accessor: 'familyCompositions',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
     field: 'family.family_compositions',
+    sortable: false,
   },
   {
     Header: 'Files',
     accessor: 'filesCount',
     Cell: props => <NbFilesCell {...props} />,
     field: 'files',
+    sortable: false,
   },
 ];
 
