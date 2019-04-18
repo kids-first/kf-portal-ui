@@ -2,6 +2,16 @@ import urlJoin from 'url-join';
 import sqonToName from 'common/sqonToName';
 import { shortUrlApi } from 'common/injectGlobals';
 
+export const shortenApiDelete = ({ loggedInUser, api, id }) => {
+  return api({
+    url: urlJoin(shortUrlApi, id),
+    method: 'DELETE',
+    body: JSON.stringify({
+      userid: (loggedInUser || {}).egoId || 'anonymous',
+    }),
+  });
+};
+
 export default ({ stats, queryName, sqon, loggedInUser, api, sharedPublicly = false }) => {
   let { Files, Participants, Families, Size } = stats;
   let alias = queryName || sqonToName({ filters: sqon });

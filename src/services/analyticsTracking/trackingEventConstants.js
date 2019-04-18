@@ -29,13 +29,19 @@ export const TRACKING_EVENTS = {
       file: 'Entity Page: File',
       participant: 'Entity Page: Participant',
     },
+    virtualStudies: "Virtual Studies",
     fileRepo: {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
       actionsSidebar: 'File Repo: Actions Sidebar',
     },
+    cohortBuilder:{
+      'sqonBuilder':"Cohort Builder: SQON Builder"
+    },
     integration: {
       cavatica: 'Integration: Cavatica',
+      gen3: 'Integration: Gen3',
+      dcf: 'Integration: DCF',
     },
   },
   actions: {
@@ -67,12 +73,14 @@ export const TRACKING_EVENTS = {
     integration: {
       init: 'Integration Connection INIT',
       connected: 'Integration Connection SUCCESS',
+      disconnected: 'Integration Connection DISCONNECTED',
       failed: 'Integration Connection FAILED',
     },
   },
   labels: {
     joinProcess: 'Join Process',
     gen3: 'Gen3',
+    dcf: 'DCF',
     cavatica: 'Cavatica',
   },
   timings: {

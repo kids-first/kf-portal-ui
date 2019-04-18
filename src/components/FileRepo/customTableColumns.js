@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ActionsColumn, FileIdColumn } from './CustomColumns';
-import DownloadIcon from 'icons/DownloadIcon';
 
 export default ({ theme, fenceAcls }) => [
   {
@@ -15,9 +14,9 @@ export default ({ theme, fenceAcls }) => [
     index: 13,
     content: {
       accessor: 'kf_id',
-      Header: () => <DownloadIcon width={13} fill={theme.filterPurple} />,
+      Header: () => <span style={{ color: theme.filterPurple }}>Actions</span>,
       Cell: props => <ActionsColumn {...props} fenceAcls={fenceAcls} />,
-      width: 40,
+      width: 80,
       sortable: false,
       resizable: false,
     },

@@ -7,7 +7,6 @@ import { getAppElement } from './services/globalDomNodes.js';
 import googleSDK from 'services/googleSDK';
 import facebookSDK from 'services/facebookSDK';
 import { initAnalyticsTracking } from 'services/analyticsTracking';
-import { init as initUsersnap } from 'services/usersnap';
 import { maintenanceMode } from 'common/injectGlobals';
 import MaintenancePage from './MaintenancePage';
 import './i18n';
@@ -15,7 +14,7 @@ import './i18n';
 initAnalyticsTracking();
 googleSDK();
 facebookSDK();
-initUsersnap();
+
 
 const render = Component => {
   ReactDOM.render(<Component />, getAppElement());

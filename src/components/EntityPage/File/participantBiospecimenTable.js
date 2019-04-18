@@ -2,13 +2,13 @@ import _ from 'lodash';
 import { pickData } from './utils';
 
 export const particpantBiospecimenColumns = [
-  { Header: 'Participant ID', accessor: 'participant_id' },
+  { Header: 'Participant ID', accessor: 'participant_id', minWidth: 80 },
   { Header: 'External ID', accessor: 'external_id' },
-  { Header: 'Study Name', accessor: 'study_name' },
-  { Header: 'Proband', accessor: 'proband' },
+  { Header: 'Study Name', accessor: 'study_name', minWidth: 150 },
+  { Header: 'Proband', accessor: 'proband', minWidth: 50 },
   { Header: 'Biospecimen ID', accessor: 'biospecimen_id' },
   { Header: 'Analyte Type', accessor: 'analyte_type' },
-  { Header: 'Tissue Type', accessor: 'tissue_type' },
+  { Header: 'Tissue Type', accessor: 'tissue_type', minWidth: 180 },
   { Header: 'Age at Sample Acquisition', accessor: 'age_at_sample_acquisition' },
 ];
 

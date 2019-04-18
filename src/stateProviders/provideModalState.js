@@ -1,6 +1,5 @@
 import { provideState } from 'freactal';
 
-import { addStateInfo as addUsersnapInfo } from 'services/usersnap';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import history from 'services/history';
 
@@ -27,7 +26,6 @@ export default provideState({
         action: TRACKING_EVENTS.actions.open,
         label: title,
       });
-      addUsersnapInfo({ modalState });
       return { ...state, modalState };
     },
     unsetModal: effects => state => {
@@ -40,7 +38,6 @@ export default provideState({
         action: TRACKING_EVENTS.actions.close,
         label: state.modalState.title,
       });
-      addUsersnapInfo({ modalState: initialState });
       return { ...state, modalState: initialState };
     },
   },

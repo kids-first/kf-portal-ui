@@ -27,6 +27,7 @@ const SQONProvider = compose(
       },
     ],
     activeIndex: 0,
+    lastAction: null,
     uid: null,
   };
   const didMount = s => {
@@ -70,7 +71,12 @@ const SQONProvider = compose(
   /**
    * utilities for children
    **/
-  const setActiveSqonIndex = s => index => s.setState({ activeIndex: index });
+  const setActiveSqonIndex = s => index => {
+
+    console.log('+ setActiveSqonIndex state ' + JSON.stringify(s))
+
+    s.setState({ activeIndex: index });
+  }
   const setSqons = s => (sqons = s.state.sqons) => s.setState({ sqons });
 
   // takes care of putting a new sqon into place while preserving references
