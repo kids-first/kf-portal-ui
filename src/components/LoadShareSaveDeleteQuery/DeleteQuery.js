@@ -6,7 +6,6 @@ import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsT
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
-
 const trackQueryDelete = channel => {
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.dataTable,
@@ -23,17 +22,16 @@ export default injectState(
   class extends React.Component {
     state = { error: null };
 
-    delete = async (selectedVirtualStudy) => {
+    delete = async selectedVirtualStudy => {
       try {
-        trackQueryDelete(selectedVirtualStudy)
+        trackQueryDelete(selectedVirtualStudy);
       } catch (error) {
-        console.log(error)
+        console.error(error);
         this.setState({ error: true });
       }
     };
 
     render() {
-      console.log(this.props);
       const { disabled } = this.props;
       return (
         <WhiteButton
@@ -41,7 +39,9 @@ export default injectState(
           onClick={
             disabled
               ? () => {}
-              : () => { this.props.handleDelete(this.delete); }
+              : () => {
+                  this.props.handleDelete(this.delete);
+                }
           }
         >
           <AlignedDeleteIcon />

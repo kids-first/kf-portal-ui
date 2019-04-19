@@ -30,53 +30,74 @@ const SQONProvider = compose(
     lastAction: null,
     uid: null,
   };
+
   const didMount = s => {
-    const savedLocalState = localStorage[COHORT_BUILDER_FILTER_STATE];
     if (virtualStudyId) {
-      syncWithHistory(s)(virtualStudyId);
-    } else if (savedLocalState) {
-      const localState = JSON.parse(savedLocalState);
+      loadVirtualStudy(s)(virtualStudyId).catch(console.err);
+      return;
+    }
+
+    const savedLocalState = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+    if (savedLocalState) {
+      let localState = JSON.parse(savedLocalState);
       s.setState({
         sqons: localState.sqons,
         activeIndex: localState.activeIndex,
       });
     }
   };
+
   const didUpdate = s => {
     const {
       props: { virtualStudyId },
       prevProps: { virtualStudyId: previousVirtualStudyId },
     } = s;
+
     if (virtualStudyId !== previousVirtualStudyId) {
-      syncWithHistory(s)(virtualStudyId);
+      if (!virtualStudyId) {
+        localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(initialState));
+        return;
+      }
+
+      loadVirtualStudy(s)(virtualStudyId)
+        .then(virtualStudy => {
+          let filterState;
+          try {
+            filterState = JSON.stringify({
+              sqons: virtualStudy.content.sqons,
+              activeIndex: virtualStudy.content.activeIndex,
+              uid: virtualStudy,
+            });
+          } catch (err) {
+            // something went wrong, reset the state in local storage
+            filterState = JSON.stringify(initialState);
+          }
+          localStorage.setItem(COHORT_BUILDER_FILTER_STATE, filterState);
+        })
+        .catch(err => {
+          console.error(err);
+          // something went wrong, reset the state in local storage
+          localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(initialState));
+        });
     }
-    localStorage.setItem(
-      COHORT_BUILDER_FILTER_STATE,
-      JSON.stringify({
-        sqons: s.state.sqons,
-        activeIndex: s.state.activeIndex,
-      }),
-    );
   };
 
-  const syncWithHistory = ({ setState }) => virtualStudyId =>
-    getVirtualStudy(api)(virtualStudyId).then(({ content, uid }) => {
-      setState({
-        sqons: content.sqons,
-        activeIndex: content.activeIndex,
+  const loadVirtualStudy = ({ setState }) => async virtualStudyId => {
+    return getVirtualStudy(api)(virtualStudyId).then(virtualStudy => {
+      const {
         uid,
-      });
+        content: { sqons, activeIndex },
+      } = virtualStudy;
+      setState({ sqons, activeIndex, uid });
     });
+  };
 
   /**
    * utilities for children
    **/
   const setActiveSqonIndex = s => index => {
-
-    console.log('+ setActiveSqonIndex state ' + JSON.stringify(s))
-
     s.setState({ activeIndex: index });
-  }
+  };
   const setSqons = s => (sqons = s.state.sqons) => s.setState({ sqons });
 
   // takes care of putting a new sqon into place while preserving references
@@ -95,19 +116,14 @@ const SQONProvider = compose(
     );
   const getActiveExecutableSqon = s => () =>
     resolveSyntheticSqon(s.state.sqons)(s.state.sqons[s.state.activeIndex]);
-  const onVirtualStudySelect = history => id => {
-    history.replace({
-      ...history.location,
-      search: stringify({ id }),
-    });
-  };
 
-  const setVirtualStudy = s => id => {
+  const setStudyInHash = id => {
+    // set the current study by the hash,
+    //  it will flow back from `didUpdate`
     history.replace({
       ...history.location,
-      search: stringify({ id }),
+      search: id ? stringify({ id }) : '',
     });
-    syncWithHistory(s);
   };
 
   return (
@@ -123,14 +139,13 @@ const SQONProvider = compose(
         } = s;
         return children({
           sqons,
+          setSqons: setSqons(s),
           activeIndex,
           setActiveSqonIndex: setActiveSqonIndex(s),
-          setSqons: setSqons(s),
           getActiveExecutableSqon: getActiveExecutableSqon(s),
           mergeSqonToActiveIndex: mergeSqonToActiveIndex(s),
-          selectedVirtualStudy: virtualStudyId,
-          onVirtualStudySelect: onVirtualStudySelect(history),
-          setVirtualStudy: setVirtualStudy(s),
+          activeVirtualStudyId: virtualStudyId,
+          setActiveVirtualStudyId: setStudyInHash,
           isOwner: uid === loggedInUser.egoId,
         });
       }}

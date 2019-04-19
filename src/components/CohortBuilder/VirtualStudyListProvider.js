@@ -24,7 +24,6 @@ export default compose(withApi)(({ api, children }) => {
             loading: false,
             virtualStudies,
           });
-          onUpdate({ virtualStudies });
         }),
     );
   };
