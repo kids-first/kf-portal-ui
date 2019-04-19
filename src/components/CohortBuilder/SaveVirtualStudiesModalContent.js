@@ -23,6 +23,10 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
     errorMessage: null,
   };
 
+  componentWillMount() {
+    this.saving = false;
+  }
+
   onDataChange(evt) {
     this.setState({ name: evt.target.value });
   }
@@ -37,7 +41,6 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
     return this.props
       .onSubmit(this.state.name)
       .then(() => {
-        this.saving = false;
         this.setState({ errorMessage: null });
       })
       .catch(err => {
@@ -48,7 +51,7 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
 
   render() {
     const { name, errorMessage } = this.state;
-    const submitDisabled = (name && name.length < 1) || this.saving || errorMessage;
+    const submitDisabled = (name && name.length < 1) || this.saving;
 
     return (
       <React.Fragment>
