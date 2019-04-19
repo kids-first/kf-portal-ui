@@ -131,11 +131,7 @@ const CohortBuilder = compose(
                   max-width: 800px;
                 `,
               },
-              component: (
-                <SaveVirtualStudiesModalContent
-                  onSubmit={({ studyName }) => saveStudy(studyName)}
-                />
-              ),
+              component: <SaveVirtualStudiesModalContent onSubmit={saveStudy} />,
             });
           };
 
@@ -269,8 +265,16 @@ const CohortBuilder = compose(
                     </Tooltip>
                   </span>
 
-                  <span style={{marginRight: 10}}>
-                    <Tooltip html={<div>{ selectedVirtualStudy ? 'Save as a new virtual study' : 'Save a virtual study' }</div>}>
+                  <span style={{ marginRight: 10 }}>
+                    <Tooltip
+                      html={
+                        <div>
+                          {selectedVirtualStudy
+                            ? 'Save as a new virtual study'
+                            : 'Save a virtual study'}
+                        </div>
+                      }
+                    >
                       <WhiteButton
                         disabled={loadingVirtualStudyList || syntheticSqonIsEmpty}
                         onClick={onSaveAsClick}
@@ -278,7 +282,7 @@ const CohortBuilder = compose(
                         <span>
                           <AlignedSaveIcon height={10} width={10} />
                         </span>
-                        <SaveButtonText>{ selectedVirtualStudy ? 'Save As' : 'Save' }</SaveButtonText>
+                        <SaveButtonText>{selectedVirtualStudy ? 'Save As' : 'Save'}</SaveButtonText>
                       </WhiteButton>
                     </Tooltip>
                   </span>
