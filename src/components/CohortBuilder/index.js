@@ -99,7 +99,7 @@ const CohortBuilder = compose(
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
             setSqons(newSyntheticSqons);
           };
-          const sqonBuilderActiveSqonSelect = (props) => {
+          const sqonBuilderActiveSqonSelect = props => {
             setActiveSqonIndex(props.index);
           };
           const categoriesSqonUpdate = newSqon => {
@@ -135,7 +135,7 @@ const CohortBuilder = compose(
             });
           };
 
-          const deleteStudy = async (deleteStudyCallback) => {
+          const deleteStudy = async deleteStudyCallback => {
             if (!(selectedVirtualStudy || '').length) {
               throw new Error('Study name cannot be empty');
             }
@@ -146,17 +146,19 @@ const CohortBuilder = compose(
             });
             await deleteStudyCallback(selectedVirtualStudy);
             await refetchVirtualStudies();
-            setSqons([{"op":"and","content":[]}]);
+            setSqons([{ op: 'and', content: [] }]);
             setVirtualStudy('');
           };
 
           const findSelectedStudy = () => {
-            return virtualStudies.filter((study) => {
+            return virtualStudies
+              .filter(study => {
               return study.id === selectedVirtualStudy;
-            }).shift();
+              })
+              .shift();
           };
 
-          const onDeleteClick = (deleteStudyCallback) => {
+          const onDeleteClick = deleteStudyCallback => {
             const study = findSelectedStudy();
             effects.setModal({
               title: `Delete Virtual Study`,
@@ -223,7 +225,8 @@ const CohortBuilder = compose(
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
           const selectedStudy = findSelectedStudy();
-          const syntheticSqonIsEmpty = JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]'
+          const syntheticSqonIsEmpty =
+            JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]';
           return (
             <Container>
               <StylePromptMessage
@@ -238,14 +241,18 @@ const CohortBuilder = compose(
               />
               <Content>
                 <Row>
-                  <HeadingWithStudy>{ selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data' }</HeadingWithStudy>
+                  <HeadingWithStudy>
+                    {selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data'}
+                  </HeadingWithStudy>
                 </Row>
                 <Row>
-
                   <Tooltip html={<div>Create a new virtual study</div>}>
                   <WhiteButton
                     disabled={loadingVirtualStudyList || !selectedStudy || !selectedStudy.id}
-                    onClick={() => { setSqons([{"op":"and","content":[]}]); onVirtualStudySelect(''); }}
+                      onClick={() => {
+                        setSqons([{ op: 'and', content: [] }]);
+                        onVirtualStudySelect('');
+                      }}
                   >
                     <span>
                       <OpenMenuIcon height={11} width={11} />
@@ -254,13 +261,17 @@ const CohortBuilder = compose(
                   </WhiteButton>
                   </Tooltip>
 
-                  <span style={{marginLeft: 10, marginRight: 10}}>
+                  <span style={{ marginLeft: 10, marginRight: 10 }}>
                     <Tooltip html={<div>Open a saved virtual study</div>}>
                       <LoadQuery
                         studies={virtualStudies}
                         selection={selectedStudy}
                         handleOpen={onVirtualStudySelect}
-                        disabled={loadingVirtualStudyList || (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) || virtualStudies.length < 1}
+                        disabled={
+                          loadingVirtualStudyList ||
+                          (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
+                          virtualStudies.length < 1
+                        }
                       />
                     </Tooltip>
                   </span>
@@ -287,12 +298,9 @@ const CohortBuilder = compose(
                     </Tooltip>
                   </span>
 
-                  <span style={{marginRight: 10}}>
+                  <span style={{ marginRight: 10 }}>
                     <Tooltip html={<div>Delete this virtual study</div>}>
-                      <DeleteQuery
-                        disabled={!selectedVirtualStudy}
-                        handleDelete={onDeleteClick}
-                      />
+                      <DeleteQuery disabled={!selectedVirtualStudy} handleDelete={onDeleteClick} />
                     </Tooltip>
                   </span>
 

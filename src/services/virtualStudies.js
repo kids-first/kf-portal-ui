@@ -86,7 +86,7 @@ export const createNewVirtualStudy = async ({
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.virtualStudies, 
     action: TRACKING_EVENTS.actions.save,
-    label: JSON.stringify(newVirtualStudy)
+    label: JSON.stringify(newVirtualStudy),
   });
   return newVirtualStudy;
 };
@@ -115,10 +115,11 @@ export const updateVirtualStudy = async ({ id, sqonsState, api, name, descriptio
       },
     }),
   });
+
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.virtualStudies, 
     action: TRACKING_EVENTS.actions.edit,
-    label: JSON.stringify(updatedStudy)
+    label: JSON.stringify(updatedStudy),
   });
 
   return updatedStudy;
