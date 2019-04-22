@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { get, sumBy } from 'lodash';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
@@ -26,20 +26,11 @@ const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
 export const ageDiagQuery = sqon => ({
   variables: { sqon },
   query: gql`
-    fragment histogramAgg on NumericAggregations {
-      histogram(interval: 365) {
-        buckets {
-          key
-          doc_count
-        }
-      }
-    }
     # embeds additional filter on the provided sqon to create the ranges.
     # diagnoses.age_at_event_days values are indays, converted from year
     query($sqon: JSON) {
       participant {
-        _0to1: aggregations(
-          aggregations_filter_themselves: true
+        _0to1: hits(
           filters: {
             op: "and"
             content: [
@@ -48,12 +39,9 @@ export const ageDiagQuery = sqon => ({
             ]
           }
         ) {
-          diagnoses__age_at_event_days {
-            ...histogramAgg
-          }
+          total
         }
-        _1to5: aggregations(
-          aggregations_filter_themselves: true
+        _1to5: hits(
           filters: {
             op: "and"
             content: [
@@ -65,12 +53,9 @@ export const ageDiagQuery = sqon => ({
             ]
           }
         ) {
-          diagnoses__age_at_event_days {
-            ...histogramAgg
-          }
+          total
         }
-        _5to10: aggregations(
-          aggregations_filter_themselves: true
+        _5to10: hits(
           filters: {
             op: "and"
             content: [
@@ -82,12 +67,9 @@ export const ageDiagQuery = sqon => ({
             ]
           }
         ) {
-          diagnoses__age_at_event_days {
-            ...histogramAgg
-          }
+          total
         }
-        _10to15: aggregations(
-          aggregations_filter_themselves: true
+        _10to15: hits(
           filters: {
             op: "and"
             content: [
@@ -99,12 +81,9 @@ export const ageDiagQuery = sqon => ({
             ]
           }
         ) {
-          diagnoses__age_at_event_days {
-            ...histogramAgg
-          }
+          total
         }
-        _15to18: aggregations(
-          aggregations_filter_themselves: true
+        _15to18: hits(
           filters: {
             op: "and"
             content: [
@@ -116,12 +95,9 @@ export const ageDiagQuery = sqon => ({
             ]
           }
         ) {
-          diagnoses__age_at_event_days {
-            ...histogramAgg
-          }
+          total
         }
-        _18plus: aggregations(
-          aggregations_filter_themselves: true
+        _18plus: hits(
           filters: {
             op: "and"
             content: [
@@ -130,26 +106,19 @@ export const ageDiagQuery = sqon => ({
             ]
           }
         ) {
-          diagnoses__age_at_event_days {
-            ...histogramAgg
-          }
+          total
         }
       }
     }
   `,
-  transform: ({ data }) => {
-    const getTotalDocCount = agg =>
-      sumBy(get(agg, 'diagnoses__age_at_event_days.histogram.buckets'), 'doc_count');
-
-    return [
-      { id: 'aggNewborn', label: 'Newborn', value: getTotalDocCount(data.participant._0to1) },
-      { id: 'agg5to10', label: '1 - 5', value: getTotalDocCount(data.participant._1to5) },
-      { id: 'agg5to10', label: '5 - 10', value: getTotalDocCount(data.participant._5to10) },
-      { id: 'agg10to15', label: '10 - 15', value: getTotalDocCount(data.participant._10to15) },
-      { id: 'agg15to18', label: '15 - 18', value: getTotalDocCount(data.participant._15to18) },
-      { id: 'aggAdult', label: 'Adult', value: getTotalDocCount(data.participant._18plus) },
-    ];
-  },
+  transform: ({ data }) => [
+    { id: 'aggNewborn', label: 'Newborn', value: get(data, 'participant._0to1.total', 0) },
+    { id: 'agg5to10', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
+    { id: 'agg5to10', label: '5 - 10', value: get(data, 'participant._5to10.total', 0) },
+    { id: 'agg10to15', label: '10 - 15', value: get(data, 'participant._10to15.total', 0) },
+    { id: 'agg15to18', label: '15 - 18', value: get(data, 'participant._15to18.total', 0) },
+    { id: 'aggAdult', label: 'Adult', value: get(data, 'participant._18plus.total', 0) },
+  ],
 });
 
 export default compose(withTheme)(AgeDiagChart);
