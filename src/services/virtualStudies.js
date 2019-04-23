@@ -38,7 +38,7 @@ export const createNewVirtualStudy = async ({
     },
   } = await getSavedVirtualStudyNames(api);
   const { egoId } = loggedInUser;
-  
+
   const newVirtualStudy = await api({
     url: urlJoin(shortUrlApi, 'shorten'),
     body: JSON.stringify({
@@ -52,6 +52,7 @@ export const createNewVirtualStudy = async ({
       },
     }),
   });
+
   const { id } = newVirtualStudy;
   await api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
@@ -84,24 +85,35 @@ export const createNewVirtualStudy = async ({
     },
   });
   trackUserInteraction({
-    category: TRACKING_EVENTS.categories.virtualStudies, 
+    category: TRACKING_EVENTS.categories.virtualStudies,
     action: TRACKING_EVENTS.actions.save,
-    label: JSON.stringify(newVirtualStudy)
+    label: JSON.stringify(newVirtualStudy),
   });
   return newVirtualStudy;
 };
 
-export const getVirtualStudy = api => async id => {
-  const data = await api({
+export const getVirtualStudy = api => virtualStudyId => {
+  if (!virtualStudyId) {
+    return Promise.reject(new Error(`Failed to load virtual study: expected an "id"`));
+  }
+
+  return api({
     method: 'GET',
-    url: urlJoin(shortUrlApi, id),
+    url: urlJoin(shortUrlApi, virtualStudyId),
+  }).catch(err => {
+    throw new Error(`Failed to load virtual study ${virtualStudyId} with error:\n${err.message}`);
   });
-  return data;
 };
 
 export const updateVirtualStudy = async ({ id, sqonsState, api, name, description }) => {
   const { sqons, activeIndex } = sqonsState;
-  const existingVirtualStudy = await getVirtualStudy(api)(id);
+  let existingVirtualStudy = null;
+  try {
+    existingVirtualStudy = await getVirtualStudy(api)(id);
+  } catch (err) {
+    return Promise.reject(`Failed to update virtual study ${id}: ${err.message}`);
+  }
+
   const updatedStudy = await api({
     method: 'PUT',
     url: urlJoin(shortUrlApi, id),
@@ -115,10 +127,11 @@ export const updateVirtualStudy = async ({ id, sqonsState, api, name, descriptio
       },
     }),
   });
+
   trackUserInteraction({
-    category: TRACKING_EVENTS.categories.virtualStudies, 
+    category: TRACKING_EVENTS.categories.virtualStudies,
     action: TRACKING_EVENTS.actions.edit,
-    label: JSON.stringify(updatedStudy)
+    label: JSON.stringify(updatedStudy),
   });
 
   return updatedStudy;
