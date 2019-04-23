@@ -80,7 +80,7 @@ const CohortBuilder = compose(
     {({
       virtualStudies = [],
       refetch: refetchVirtualStudies,
-      loading: loadingVirtualStudyList,
+      loading: virtualStudyListIsLoading,
     }) => (
       <SQONProvider>
         {({
@@ -90,20 +90,22 @@ const CohortBuilder = compose(
           setSqons,
           getActiveExecutableSqon,
           mergeSqonToActiveIndex,
-          selectedVirtualStudy,
-          onVirtualStudySelect,
-          setVirtualStudy,
+          activeVirtualStudyId,
+          setActiveVirtualStudyId,
           isOwner,
         }) => {
           const executableSqon = getActiveExecutableSqon();
           const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {
             setSqons(newSyntheticSqons);
           };
-          const sqonBuilderActiveSqonSelect = (props) => {
+          const sqonBuilderActiveSqonSelect = props => {
             setActiveSqonIndex(props.index);
           };
           const categoriesSqonUpdate = newSqon => {
             mergeSqonToActiveIndex(newSqon);
+          };
+          const resetSqons = () => {
+            setSqons([{ op: 'and', content: [] }]);
           };
           const saveStudy = async studyName => {
             if (!(studyName || '').length) {
@@ -120,7 +122,7 @@ const CohortBuilder = compose(
               description: '',
             });
             await refetchVirtualStudies();
-            setVirtualStudy(newStudyId);
+            setActiveVirtualStudyId(newStudyId);
           };
 
           const onSaveAsClick = () => {
@@ -131,37 +133,39 @@ const CohortBuilder = compose(
                   max-width: 800px;
                 `,
               },
-              component: (
-                <SaveVirtualStudiesModalContent
-                  onSubmit={({ studyName }) => saveStudy(studyName)}
-                />
-              ),
+              component: <SaveVirtualStudiesModalContent onSubmit={saveStudy} />,
             });
           };
 
-          const deleteStudy = async (deleteStudyCallback) => {
-            if (!(selectedVirtualStudy || '').length) {
+          const deleteStudy = async deleteStudyCallback => {
+            if (!(activeVirtualStudyId || '').length) {
               throw new Error('Study name cannot be empty');
             }
             await deleteVirtualStudy({
               loggedInUser,
               api,
-              name: selectedVirtualStudy,
+              name: activeVirtualStudyId,
             });
-            await deleteStudyCallback(selectedVirtualStudy);
+            await deleteStudyCallback(activeVirtualStudyId);
             await refetchVirtualStudies();
-            setSqons([{"op":"and","content":[]}]);
-            setVirtualStudy('');
+            // TODO : reset the sqon as soon as possible,
+            //  but not in case of a failure
+            resetSqons();
+            setActiveVirtualStudyId('');
           };
 
           const findSelectedStudy = () => {
-            return virtualStudies.filter((study) => {
-              return study.id === selectedVirtualStudy;
-            }).shift();
+            return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
           };
 
-          const onDeleteClick = (deleteStudyCallback) => {
+          const onDeleteClick = deleteStudyCallback => {
             const study = findSelectedStudy();
+            // Study not found, the study might have been deleted in parallel,
+            //  either because the studies has finished reloading and that study isn't there anymore,
+            //  or a user is bashing on the delete button. (I'm looking at you, Vincent ;) )
+            // Don't even call the callback, as this is a no-op.
+            if (!study) return;
+
             effects.setModal({
               title: `Delete Virtual Study`,
               classNames: {
@@ -220,14 +224,17 @@ const CohortBuilder = compose(
               })
               .catch(console.error);
           };
-          const sharingEnabled = !!selectedVirtualStudy;
+          const sharingEnabled = !!activeVirtualStudyId;
           const getSharableUrl = ({ id }) =>
             urlJoin(
               window.location.origin,
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
           const selectedStudy = findSelectedStudy();
-          const syntheticSqonIsEmpty = JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]'
+          // TODO fix potential bug with JSON serialized in a non-deterministic way
+          //  do a deep compare with an object instead
+          const syntheticSqonIsEmpty =
+            JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]';
           return (
             <Container>
               <StylePromptMessage
@@ -242,53 +249,68 @@ const CohortBuilder = compose(
               />
               <Content>
                 <Row>
-                  <HeadingWithStudy>{ selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data' }</HeadingWithStudy>
+                  <HeadingWithStudy>
+                    {selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data'}
+                  </HeadingWithStudy>
                 </Row>
                 <Row>
-
                   <Tooltip html={<div>Create a new virtual study</div>}>
-                  <WhiteButton
-                    disabled={loadingVirtualStudyList || !selectedStudy || !selectedStudy.id}
-                    onClick={() => { setSqons([{"op":"and","content":[]}]); onVirtualStudySelect(''); }}
-                  >
-                    <span>
-                      <OpenMenuIcon height={11} width={11} />
-                    </span>
-                    <SaveButtonText>New</SaveButtonText>
-                  </WhiteButton>
+                    <WhiteButton
+                      disabled={virtualStudyListIsLoading || !selectedStudy || !selectedStudy.id}
+                      onClick={() => {
+                        // TODO : reset the sqon as soon as possible,
+                        //  but not in case of a failure
+                        resetSqons();
+                        setActiveVirtualStudyId('');
+                      }}
+                    >
+                      <span>
+                        <OpenMenuIcon height={11} width={11} />
+                      </span>
+                      <SaveButtonText>New</SaveButtonText>
+                    </WhiteButton>
                   </Tooltip>
 
-                  <span style={{marginLeft: 10, marginRight: 10}}>
+                  <span style={{ marginLeft: 10, marginRight: 10 }}>
                     <Tooltip html={<div>Open a saved virtual study</div>}>
                       <LoadQuery
                         studies={virtualStudies}
                         selection={selectedStudy}
-                        handleOpen={onVirtualStudySelect}
-                        disabled={loadingVirtualStudyList || (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) || virtualStudies.length < 1}
+                        handleOpen={setActiveVirtualStudyId}
+                        disabled={
+                          virtualStudyListIsLoading ||
+                          (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
+                          virtualStudies.length < 1
+                        }
                       />
                     </Tooltip>
                   </span>
 
-                  <span style={{marginRight: 10}}>
-                    <Tooltip html={<div>{ selectedVirtualStudy ? 'Save as a new virtual study' : 'Save a virtual study' }</div>}>
+                  <span style={{ marginRight: 10 }}>
+                    <Tooltip
+                      html={
+                        <div>
+                          {activeVirtualStudyId
+                            ? 'Save as a new virtual study'
+                            : 'Save a virtual study'}
+                        </div>
+                      }
+                    >
                       <WhiteButton
-                        disabled={loadingVirtualStudyList || syntheticSqonIsEmpty}
+                        disabled={virtualStudyListIsLoading || syntheticSqonIsEmpty}
                         onClick={onSaveAsClick}
                       >
                         <span>
                           <AlignedSaveIcon height={10} width={10} />
                         </span>
-                        <SaveButtonText>{ selectedVirtualStudy ? 'Save As' : 'Save' }</SaveButtonText>
+                        <SaveButtonText>{activeVirtualStudyId ? 'Save As' : 'Save'}</SaveButtonText>
                       </WhiteButton>
                     </Tooltip>
                   </span>
 
-                  <span style={{marginRight: 10}}>
+                  <span style={{ marginRight: 10 }}>
                     <Tooltip html={<div>Delete this virtual study</div>}>
-                      <DeleteQuery
-                        disabled={!selectedVirtualStudy}
-                        handleDelete={onDeleteClick}
-                      />
+                      <DeleteQuery disabled={!activeVirtualStudyId} handleDelete={onDeleteClick} />
                     </Tooltip>
                   </span>
 
@@ -296,7 +318,7 @@ const CohortBuilder = compose(
                     <ShareQuery
                       disabled={!sharingEnabled}
                       getSharableUrl={getSharableUrl}
-                      handleShare={() => Promise.resolve({ id: selectedVirtualStudy })}
+                      handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
                     />
                   </Tooltip>
                 </Row>
