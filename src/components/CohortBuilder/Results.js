@@ -32,6 +32,22 @@ import familyMembers from 'assets/icon-families-grey.svg';
 const SUMMARY = 'summary';
 const TABLE = 'table';
 
+const summaryStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  flex: '2',
+});
+
+const summaryEntityStyle = css({
+  padding: '0 10px 0 10px',
+  borderLeft: `1px solid #a9adc0`,
+});
+
+const summaryFilesStyle = css({
+  display: 'grid',
+  gridTemplateColumns: '75px 50px',
+});
+
 const ViewLinks = styled(Row)`
   > div:not(:last-child) {
     margin-right: 30px;
@@ -106,22 +122,6 @@ const ResultsHeading = styled('div')`
   // border-right: 1px solid ${({ theme }) => theme.greyScale11};
   margin-right: 14px;
 `;
-
-const summaryStyle = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  flex: '2',
-});
-
-const summaryEntityStyle = css({
-  padding: '0 10px 0 10px',
-  borderLeft: `1px solid #a9adc0`,
-});
-
-const summaryFilesStyle = css({
-  display: 'grid',
-  gridTemplateColumns: '75px 50px',
-});
 
 const Content = styled(ContentBar)`
   padding: 0 30px 0 34px;
@@ -253,13 +253,13 @@ const Results = ({
                 <LoadingSpinner />
               ) : (
                 <div className={`${summaryStyle}`}>
-                  <div style={`${summaryEntityStyle}`}>
+                  <div className={`${summaryEntityStyle}`}>
                     <SubHeading>
                       <DemographicIcon />
                       {Number(participantCount || 0).toLocaleString()} Participants
                     </SubHeading>
                   </div>
-                  <div style={`${summaryEntityStyle}`}>
+                  <div className={`${summaryEntityStyle}`}>
                     <SubHeading>
                       <img src={familyMembers} alt="" height="13px" />{' '}
                       {Number(familiesCount || 0).toLocaleString()} Families
