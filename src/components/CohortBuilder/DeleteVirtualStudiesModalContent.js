@@ -1,36 +1,70 @@
 import React from 'react';
-import Component from 'react-component-component';
+import PropTypes from 'prop-types';
+import autobind from 'auto-bind-es5';
+
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 import PromptMessage from 'uikit/PromptMessage';
 
-export default ({ onSubmit, submitDisabled, name }) => {
-  const initialState = { errorMessage: null };
-  const submitHandler = s => () => {
-    s.setState({ errorMessage: null });
-    return onSubmit().catch(err => {
-      s.setState({ errorMessage: err.message });
-    });
+export default class DeleteVirtualStudiesModalContent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.deleting = false;
+    autobind(this);
+  }
+
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
   };
-  return (
-    <Component initialState={initialState}>
-      {s => (
-        <React.Fragment>
-          {s.state.errorMessage && (
-            <PromptMessage heading={'Error'} content={s.state.errorMessage} error />
-          )}
-          <ModalContentSection>
-            Are you sure you want to delete "{name}"?
-            <br /><br />
-            This action cannot be undone.
-          </ModalContentSection>
-          <ModalFooter
-            handleSubmit={submitHandler(s)}
-            submitText={'Delete'}
-            submitDisabled={submitDisabled}
-          />
-        </React.Fragment>
-      )}
-    </Component>
-  );
-};
+
+  state = {
+    errorMessage: null,
+  };
+
+  componentWillMount() {
+    this.deleting = false;
+  }
+
+  submitHandler() {
+    // prevent the user from bash clicking
+    if (this.deleting) return;
+    this.deleting = true;
+
+    console.log('🔥 submitHandler');
+
+    this.setState({ errorMessage: null });
+
+    return this.props
+      .onSubmit()
+      .then(() => {
+        this.setState({ errorMessage: null });
+      })
+      .catch(err => {
+        this.deleting = false;
+        this.setState({ errorMessage: err.message });
+      });
+  }
+
+  render() {
+    const { name } = this.props;
+    const { errorMessage } = this.state;
+
+    return (
+      <React.Fragment>
+        {errorMessage && <PromptMessage heading={'Error'} content={errorMessage} error />}
+        <ModalContentSection>
+          Are you sure you want to delete "{name}"?
+          <br />
+          <br />
+          This action cannot be undone.
+        </ModalContentSection>
+        <ModalFooter
+          handleSubmit={this.submitHandler}
+          submitText={'Delete'}
+          submitDisabled={this.deleting}
+        />
+      </React.Fragment>
+    );
+  }
+}
