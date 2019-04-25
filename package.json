@@ -124,7 +124,6 @@
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
     "storybook-react-router": "^1.0.2",
-    "sw-precache-webpack-plugin": "^0.11.5",
     "vinyl-fs": "^3.0.2",
     "webpack": "3.8.1",
     "webpack-bundle-analyzer": "^3.3.0",
