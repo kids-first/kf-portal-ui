@@ -123,8 +123,6 @@
     "babel-runtime": "6.26.0",
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
-    "react-app-rewire-emotion": "^4.0.0",
-    "react-app-rewired": "^1.4.1",
     "storybook-react-router": "^1.0.2",
     "sw-precache-webpack-plugin": "^0.11.5",
     "vinyl-fs": "^3.0.2",

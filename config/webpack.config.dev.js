@@ -1,5 +1,3 @@
-'use strict';
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -145,8 +143,9 @@ module.exports = {
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
+              // TODO ref/build: try to activate caching results
               cacheDirectory: false,
-              // TODO : move to package.json?
+              // TODO ref/build: move to package.json?
               plugins: [['emotion', { sourceMap: true }]],
             },
           },
