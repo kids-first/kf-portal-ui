@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { get, isArrayLikeObject } from 'lodash';
+import { get, isArrayLikeObject, toLower } from 'lodash';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
@@ -34,20 +34,17 @@ export const isAdminToken = ({ validatedPayload }) => {
 	const jwtUser = get(validatedPayload, 'context.user', {});
 	const roles = jwtUser.roles;
 	const type = jwtUser.type;
-	new String('ddd').localeCompare;
 	// maintain backward compatibility
 	return roles && null !== roles && isArrayLikeObject(roles)
 		? roles.includes('ADMIN')
 		: type && type !== null && type === 'ADMIN';
 };
-
 export const validateJWT = ({ jwt }) => {
 	if (!jwt) return false;
 	const validatedPayload = jwtDecode(jwt);
 	const isCurrent = new Date(validatedPayload.exp * 1000).valueOf() > Date.now();
-	const isApproved =
-		isAdminToken({ validatedPayload }) ||
-		'Approved'.localeCompare(get(validatedPayload, 'context.user.status', ''), 'en', { sensitivity: 'base' });
+	const status = get(validatedPayload, 'context.user.status', '');
+	const isApproved = isAdminToken({ validatedPayload }) || [ status ].map(toLower).includes('approved');
 	return isCurrent && isApproved && validatedPayload;
 };
 
