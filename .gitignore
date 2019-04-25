@@ -30,3 +30,6 @@ yarn.lock
 .cache/
 
 public/locales/*
+
+# local certificates are generated when testing production build
+*.pem
