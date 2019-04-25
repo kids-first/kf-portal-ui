@@ -39,6 +39,7 @@ export const isAdminToken = ({ validatedPayload }) => {
 		? roles.includes('ADMIN')
 		: type && type !== null && type === 'ADMIN';
 };
+
 export const validateJWT = ({ jwt }) => {
 	if (!jwt) return false;
 	const validatedPayload = jwtDecode(jwt);
