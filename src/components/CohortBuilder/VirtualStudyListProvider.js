@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import { getSavedVirtualStudyNames } from 'services/virtualStudies';
 import { withApi } from 'services/api';
 
-export default compose(withApi)(({ api, onUpdate = () => {}, children }) => {
+export default compose(withApi)(({ api, children }) => {
   const initialState = {
     loading: true,
     virtualStudies: [],
@@ -24,7 +24,6 @@ export default compose(withApi)(({ api, onUpdate = () => {}, children }) => {
             loading: false,
             virtualStudies,
           });
-          onUpdate({ virtualStudies });
         }),
     );
   };

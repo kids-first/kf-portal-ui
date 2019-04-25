@@ -14,8 +14,8 @@ import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger
 import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
-import SaveQuery from 'components/ShareSaveQuery/SaveQuery';
-import ShareQuery from 'components/ShareSaveQuery/ShareQuery';
+import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
+import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';

@@ -2,73 +2,65 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
 
-import Input from 'uikit/Input';
-import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
+import PromptMessage from 'uikit/PromptMessage';
 
-export default class SaveVirtualStudiesModalContent extends React.Component {
+export default class DeleteVirtualStudiesModalContent extends React.Component {
   constructor(props) {
     super(props);
-    this.saving = false;
+    this.deleting = false;
     autobind(this);
   }
 
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
   };
 
   state = {
-    name: '',
     errorMessage: null,
   };
 
   componentWillMount() {
-    this.saving = false;
-  }
-
-  onDataChange(evt) {
-    this.setState({ name: evt.target.value });
+    this.deleting = false;
   }
 
   submitHandler() {
     // prevent the user from bash clicking
-    if (this.saving) return;
-    this.saving = true;
+    if (this.deleting) return;
+    this.deleting = true;
 
     this.setState({ errorMessage: null });
 
     return this.props
-      .onSubmit(this.state.name)
+      .onSubmit()
       .then(() => {
         this.setState({ errorMessage: null });
       })
       .catch(err => {
-        this.saving = false;
+        this.deleting = false;
         this.setState({ errorMessage: err.message });
       });
   }
 
   render() {
-    const { name, errorMessage } = this.state;
-    const submitDisabled = (name && name.length < 1) || this.saving;
+    const { name } = this.props;
+    const { errorMessage } = this.state;
 
     return (
       <React.Fragment>
         {errorMessage && <PromptMessage heading={'Error'} content={errorMessage} error />}
         <ModalContentSection>
-          You are saving this page of results with the current configuration of queries.
-        </ModalContentSection>
-        <ModalContentSection>
-          <strong>Virtual Study name: *</strong>
-          <span>
-            <Input value={name} onChange={this.onDataChange} />
-          </span>
+          Are you sure you want to delete "{name}"?
+          <br />
+          <br />
+          This action cannot be undone.
         </ModalContentSection>
         <ModalFooter
           handleSubmit={this.submitHandler}
-          submitText={'Save'}
-          submitDisabled={submitDisabled}
+          submitText={'Delete'}
+          submitDisabled={this.deleting}
         />
       </React.Fragment>
     );

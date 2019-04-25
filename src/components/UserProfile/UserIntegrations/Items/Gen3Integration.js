@@ -1,28 +1,36 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 
-import ExternalLink from 'uikit/ExternalLink';
-
 import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceIntegrationItem';
 
 import { GEN3 } from 'common/constants';
 import gen3Logo from 'assets/logo-gen3.svg';
 import { gen3WebRoot } from 'common/injectGlobals';
+import { css } from 'emotion';
+
+const linkCss = css({
+  width: '140px',
+  textAlign: 'center',
+  marginTop: '10px',
+});
 
 const description = () => {
   return (
     <span>
-      <Trans>Access controlled data by connecting your account to</Trans>{' '}
-      <ExternalLink href={gen3WebRoot}>
-        <Trans>GEN3 Data Commons</Trans>
-      </ExternalLink>{' '}
-      <Trans>using your NIH login credentials.</Trans>
+      <Trans>
+        Access all released Kids First controlled access data by connecting your account using your
+        NIH login credentials.
+      </Trans>
     </span>
   );
 };
 
 const logo = () => {
-  return <img src={gen3Logo} alt="Gen3 Logo" />;
+  return (
+    <a href={gen3WebRoot} className={`${linkCss}`} target="_blank">
+      <img src={gen3Logo} alt="Gen3 Logo" height="30px" />
+    </a>
+  );
 };
 
 export default ({ ...props }) => {

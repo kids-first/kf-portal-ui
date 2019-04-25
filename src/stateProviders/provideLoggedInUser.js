@@ -7,10 +7,7 @@ import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
 import { setCookie, removeCookie } from 'services/cookie';
-import {
-  addStateInfo as addUsersnapInfo,
-  addLoggedInUser as setUsersnapUser,
-} from 'services/usersnap';
+
 import {
   TRACKING_EVENTS,
   trackUserSession,
@@ -95,8 +92,6 @@ export default provideState({
               label: user.roles[0],
             });
           }
-          addUsersnapInfo({ percentageFilled });
-          setUsersnapUser(user);
           trackUserSession({ ...user, egoGroups });
           return {
             ...state,
@@ -131,7 +126,7 @@ export default provideState({
         removeCookie(EGO_JWT_KEY, token);
         addHeaders({ authorization: '' });
       }
-      addUsersnapInfo({ loggedInUserToken_exist: !!token });
+      
       return { ...state, loggedInUserToken: token, loginProvider: provider };
     },
     setIntegrationToken: (effects, service, token) => state => {
