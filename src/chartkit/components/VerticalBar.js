@@ -114,13 +114,17 @@ class VerticalBar extends Component {
   render() {
     const {
       data,
-      sortBy,
+      sortBy = () => 1,
       keys,
       colors,
       legends,
       indexBy = 'id',
       height,
       tooltipFormatter,
+      axisLeftLegend = '# Participants',
+      axisBottomLegend = 'Age at Diagnosis (years)',
+      axisBottomFormat = v => v.toLocaleString(),
+      bottomLegendOffset = 35,
     } = this.props;
 
     const chartData = {
@@ -161,18 +165,18 @@ class VerticalBar extends Component {
       axisTop: null,
       axisRight: null,
       axisBottom: {
-        format: v => v.toLocaleString(),
+        format: axisBottomFormat,
         orient: 'bottom',
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'Age at Diagnosis (years)',
+        legend: axisBottomLegend,
         legendPosition: 'middle',
-        legendOffset: 35,
+        legendOffset: bottomLegendOffset,
         tickValues: this.tickValues,
       },
       axisLeft: {
-        legend: '# Participants',
+        legend: axisLeftLegend,
         legendPosition: 'middle',
         tickSize: 0,
         tickPadding: 5,
