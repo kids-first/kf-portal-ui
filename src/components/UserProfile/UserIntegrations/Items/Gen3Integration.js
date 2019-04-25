@@ -11,7 +11,7 @@ import { css } from 'emotion';
 const linkCss = css({
   width: '140px',
   textAlign: 'center',
-  marginTop: '15px',
+  marginTop: '10px',
 });
 
 const description = () => {
