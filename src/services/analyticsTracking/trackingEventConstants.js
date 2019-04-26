@@ -31,6 +31,7 @@ export const TRACKING_EVENTS = {
     },
     cohortBuilder: {
       _cohortBuilder: 'Cohort Builder',
+      sqonBuilder: 'Cohort Builder: SQON Builder',
       results: {
         _cohortBuilderResults: 'Cohort Builder: Results',
         summaryView: 'Cohort Builder: Summary View',
@@ -41,9 +42,6 @@ export const TRACKING_EVENTS = {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
       actionsSidebar: 'File Repo: Actions Sidebar',
-    },
-    cohortBuilder:{
-      'sqonBuilder':"Cohort Builder: SQON Builder"
     },
     integration: {
       cavatica: 'Integration: Cavatica',
