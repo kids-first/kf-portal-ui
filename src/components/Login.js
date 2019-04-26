@@ -187,6 +187,7 @@ class Component extends React.Component<any, any> {
           hasExternalIcon={false}
           href="https://kidsfirstdrc.org/contact"
           target="_blank"
+          key={`link-${i}`}
         >
           Contact us
         </ExternalLink>
