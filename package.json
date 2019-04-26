@@ -107,13 +107,9 @@
     "start-dev": "NODE_PATH=src node scripts/start.js --env-file=.env.development.local",
     "build": "NODE_PATH=src node scripts/build.js",
     "test": "NODE_PATH=src node scripts/test.js --env=jsdom",
-    "translations": "i18next-scanner --output ./public 'src/**/*.js'",
-    "storybook": "start-storybook -p 9001 -c .storybook",
-    "build-storybook": "build-storybook -c .storybook -o build-storybook"
+    "translations": "i18next-scanner --output ./public 'src/**/*.js'"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^4.0.4",
-    "@storybook/react": "^4.0.4",
     "babel-core": "6.26.0",
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
@@ -124,7 +120,6 @@
     "babel-runtime": "6.26.0",
     "i18next-scanner": "^2.4.6",
     "prettier": "^1.10.2",
-    "storybook-react-router": "^1.0.2",
     "vinyl-fs": "^3.0.2",
     "webpack": "3.8.1",
     "webpack-bundle-analyzer": "^3.3.0",
