@@ -9,14 +9,14 @@ const facebookSDK = () =>
       return;
     }
 
-    global.FB.init({
+    fbapi.init({
       appId: facebookAppId,
       autoLogAppEvents: true,
       xfbml: true,
       version: 'v2.10',
     });
 
-    resolve(global.FB);
+    resolve(fbapi);
   });
 
 export default facebookSDK;

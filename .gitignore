@@ -9,9 +9,6 @@
 # production
 /build
 
-#storybook
-/build-storybook
-
 # misc
 .DS_Store
 .env
@@ -30,3 +27,6 @@ yarn.lock
 .cache/
 
 public/locales/*
+
+# local certificates are generated when testing production build
+*.pem

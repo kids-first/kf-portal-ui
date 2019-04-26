@@ -26,9 +26,27 @@ import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { get } from 'lodash';
 import { Link } from 'react-router-dom';
+import FilesIcon from 'icons/FilesIcon';
+import familyMembers from 'assets/icon-families-grey.svg';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
+
+const summaryStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
+  flex: '2',
+});
+
+const summaryEntityStyle = css({
+  padding: '0 10px 0 10px',
+  borderLeft: `1px solid #a9adc0`,
+});
+
+const summaryFilesStyle = css({
+  display: 'grid',
+  gridTemplateColumns: '75px 50px',
+});
 
 const ViewLinks = styled(Row)`
   > div:not(:last-child) {
@@ -38,6 +56,7 @@ const ViewLinks = styled(Row)`
 
 const Detail = styled(Row)`
   align-items: center;
+  flex: 2;
 `;
 
 const Heading = styled(H2)`
@@ -99,8 +118,8 @@ const PurpleLink = styled(Link)`
 
 const ResultsHeading = styled('div')`
   display: flex;
-  padding: 0 20px 3px 0;
-  border-right: 1px solid ${({ theme }) => theme.greyScale11};
+  // padding: 0 20px 3px 0;
+  // border-right: 1px solid ${({ theme }) => theme.greyScale11};
   margin-right: 14px;
 `;
 
@@ -160,19 +179,30 @@ const cohortResultsQuery = sqon => ({
             }
           }
         }
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+          family_id {
+            buckets {
+              doc_count
+              key
+            }
+          }
+        }
       }
     }
   `,
+
   variables: { sqon },
   transform: data => {
     const participants = get(data, 'data.participant.hits.total', 0);
     const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
       b => b.key,
     );
+    const families = get(data, 'data.participant.aggregations.family_id.buckets', []);
     return {
       files,
       participantCount: participants,
       filesCount: files.length,
+      familiesCount: families.length,
     };
   },
 });
@@ -182,7 +212,10 @@ const Results = ({
   activeSqonIndex,
   setActiveView,
   theme,
-  sqon,
+  sqon = {
+    op: 'and',
+    content: [],
+  },
   api,
   state,
   onRemoveFromCohort,
@@ -192,11 +225,15 @@ const Results = ({
       const resultsData = data[0];
       const participantCount = get(resultsData, 'participantCount', null);
       const filesCount = get(resultsData, 'filesCount', null);
+      const familiesCount = get(resultsData, 'familiesCount', null);
       const cohortIsEmpty =
-        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+        (!isLoading && !resultsData) ||
+        participantCount === 0 ||
+        filesCount === 0 ||
+        familiesCount === 0;
 
       const filesCountHeading = resultsData
-        ? `${Number(data[0].filesCount || 0).toLocaleString()} Files`
+        ? `${Number(data[0].filesCount || 0).toLocaleString()}`
         : '';
 
       return error ? (
@@ -206,7 +243,7 @@ const Results = ({
           <Content>
             <Detail>
               <ResultsHeading>
-                {!sqon || isEmpty(sqon.content) ? (
+                {isEmpty(sqon.content) ? (
                   <Heading>All Data</Heading>
                 ) : (
                   <React.Fragment>
@@ -218,22 +255,42 @@ const Results = ({
               {isLoading ? (
                 <LoadingSpinner />
               ) : (
-                <React.Fragment>
-                  <DemographicIcon />
-                  <SubHeading>
-                    {Number(participantCount || 0).toLocaleString()} Participants with{' '}
-                  </SubHeading>
-                  {isEmpty(sqon.content) ? (
-                    <PurpleLink to="/search/file">{filesCountHeading}</PurpleLink>
-                  ) : (
-                    <PurpleLinkWithLoader
-                      replaceText={false}
-                      getLink={() => generateAllFilesLink(state.loggedInUser, api, data[0].files)}
-                    >
-                      {filesCountHeading}
-                    </PurpleLinkWithLoader>
-                  )}
-                </React.Fragment>
+                <div className={`${summaryStyle}`}>
+                  <div className={`${summaryEntityStyle}`}>
+                    <SubHeading>
+                      <DemographicIcon />
+                      {Number(participantCount || 0).toLocaleString()} Participants
+                    </SubHeading>
+                  </div>
+                  <div className={`${summaryEntityStyle}`}>
+                    <SubHeading>
+                      <img src={familyMembers} alt="" height="13px" />{' '}
+                      {Number(familiesCount || 0).toLocaleString()} Families
+                    </SubHeading>
+                  </div>
+                  <div className={`${summaryEntityStyle}`}>
+                    <SubHeading>
+                      <div className={`${summaryFilesStyle}`}>
+                        <div>
+                          <FilesIcon />
+                          {isEmpty(sqon.content) ? (
+                            <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
+                          ) : (
+                            <PurpleLinkWithLoader
+                              replaceText={false}
+                              getLink={() =>
+                                generateAllFilesLink(state.loggedInUser, api, data[0].files)
+                              }
+                            >
+                              {filesCountHeading}
+                            </PurpleLinkWithLoader>
+                          )}
+                        </div>
+                        <div>Files</div>
+                      </div>
+                    </SubHeading>
+                  </div>
+                </div>
               )}
             </Detail>
             <ViewLinks>
@@ -266,7 +323,7 @@ const Results = ({
 
 Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
-  sqon: PropTypes.object.isRequired,
+  sqon: PropTypes.object,
   onRemoveFromCohort: PropTypes.func.isRequired,
 };
 

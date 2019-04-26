@@ -33,6 +33,26 @@ For full functionality, the portal needs to interact with many APIs.
 All API endpoints may be set inside the environment.
 Copy `.env.schema` to `.env.local` and configure it with appropriate endpoints.
 
+### Analyzing the build
+
+To run webpack bundle analyzer, first generate a prodution build with the associated stats files (`build/stats.json`):
+
+```
+NODE_ENV=production NODE_PATH=src ./node_modules/.bin/webpack -p --config config/webpack.config.prod.js --profile --json > build/stats.json
+```
+
+Then launch the webpack-bundle-analyzer consuming that stats file:
+
+```
+./node_modules/.bin/webpack-bundle-analyzer build/stats.json build/
+```
+
+Finally, visit http://127.0.0.1:8888/ to see it in action.
+
+#### See
+
+[webpack-bundle-analyzer npm page](https://www.npmjs.com/package/webpack-bundle-analyzer)
+
 ### Contributing
 
 - ### Branches
@@ -47,21 +67,6 @@ Copy `.env.schema` to `.env.local` and configure it with appropriate endpoints.
   - chore (maintain)
 
   Once development is complete for the scope defined by the supporting branch, a pull request can be made for the `next` branch for code review.
-
-- ### Component Development
-
-  To facilitate parallel development of independent components, [Storybook](https://github.com/storybooks/storybook)(a sandboxed environment for development) is utilized.
-  To start a local storybook session:
-
-  - Run the command `npm run storybook`
-  - A storybook should be available at `localhost:9001`
-  - All stories live under `/stories`, these should only be used for development and demonstrations of components. Imports should only be made from `/src` to `/stories`, never the other way around.
-  - ## Setting up environment variables:
-    - `NODE_PATH=src/` is required for storybook build to allow absolute references in `src` to resolve properly. This also allows stories to import modules from `src` with absolute references, with `src` being the root directory.
-    - All environemnt variables required to run the portal should be exposed to Storybook using the prefix `"STORYBOOK_"`.
-      Example: the environment variable `REACT_APP_ARRANGER_API` would be `STORYBOOK_ARRANGER_API`
-    - Some UI components may require interactions with APIs guarded by [EGO](https://github.com/overture-stack/ego). To enable these components to access these APIs, an ego jwt must be provided in the `Storybook ego login` story, available once a Storybook instance is running.
-    - For an example story, please refer to `/Users/mha/repos/kf-portal-ui/stories/CohortBuilder/index.js`
 
 ### Acknowledgement
 
