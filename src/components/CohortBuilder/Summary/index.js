@@ -9,7 +9,7 @@ import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
-import DataTypeChart, { dataTypeQuery } from './DataTypeChart';
+import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
 import styled from 'react-emotion';
 import { CohortCard } from './ui';
 
@@ -25,7 +25,7 @@ const spacing = {
 
 
 const dataTypeTooltipByLabel = data => {
-  return `${data.value.toLocaleString()} ${data.label.toLocaleString()}`
+  return `${data.label.toLocaleString()}: ${data.value.toLocaleString()} Participants`
 };
 
 const Summary = ({
@@ -40,20 +40,22 @@ const Summary = ({
     name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[
+      dataTypesQuery(sqon),
+      experimentalStrategyQuery(sqon),
       demographicQuery(sqon),
       ageDiagQuery(sqon),
       studiesQuery(sqon),
       diagnosesQuery(sqon),
-      dataTypeQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
       const [
+        dataTypesData = [],
+        experimentalStrategyData = [],
         demographicData = [],
         ageDiagData = [],
         studiesData = [],
         topDiagnosesData = [],
-        dataTypeData = [],
       ] = data;
 
       return !data ? (
@@ -64,9 +66,9 @@ const Summary = ({
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <CohortCard title="Available Data Files" loading={isLoading}>
-                  <div style={{ height: '100%', width: '105%',  display: 'flex', flexFlow: 'column wrap', marginLeft: '-25px'}}>
-                    <DataTypeChart data={dataTypeData} axisLeftLegend={''} axisBottomLegend={'Data Type'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
-                    <DataTypeChart data={dataTypeData} axisLeftLegend={''} axisBottomLegend={'Experimental Strategy'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
+                  <div style={{ height: '100%', width: '100%',  display: 'flex', flexFlow: 'column wrap'}}>
+                    <DataTypeChart data={dataTypesData} axisLeftLegend={''} axisBottomLegend={'Data Type'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
+                    <DataTypeChart data={experimentalStrategyData} axisLeftLegend={''} axisBottomLegend={'Experimental Strategy'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
                   </div>
                 </CohortCard>
               </PaddedColumn>

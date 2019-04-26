@@ -72,6 +72,7 @@ class VerticalBar extends Component {
     const { format, key, x, y, theme, tickIndex } = tick;
 
     let value = tick.value;
+    const valueLength = value.toString().length;
 
     if (format !== undefined) {
       value = format(value);
@@ -79,7 +80,7 @@ class VerticalBar extends Component {
 
     const text = truncateText(value, xTickTextLength);
 
-    const xOffset = 25;
+    const xOffset = 20 + (5*(valueLength-2));
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 

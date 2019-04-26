@@ -13,7 +13,7 @@ const dataTypeTooltip = data => {
 const DataTypeChart = ({ data, theme, indexBy, axisLeftLegend, axisBottomLegend, tooltipFormatter}) => (
     <VerticalBar
       showCursor={false}
-      indexBy={indexBy || 'id'}
+      indexBy={indexBy || 'label'}
       tooltipFormatter={tooltipFormatter || dataTypeTooltip}
       sortByValue={true}
       height={260}
@@ -30,102 +30,56 @@ const DataTypeChart = ({ data, theme, indexBy, axisLeftLegend, axisBottomLegend,
       colors={[theme.chartColors.lightblue]}
     />
 );
-export const dataTypeQuery = sqon => ({
-  variables: { sqon },
+
+const toChartData = ({ key, doc_count }) => {
+  const dataKey = key === '__missing__' ? 'No Data' : key;
+  return {
+    id: dataKey,
+    label: dataKey,
+    value: doc_count,
+  };
+};
+
+export const dataTypesQuery = sqon => ({
   query: gql`
-    # embeds additional filter on the provided sqon to create the ranges.
-    # diagnoses.age_at_event_days values are indays, converted from year
-    query($sqon: JSON) {
+    query ($sqon: JSON) {
       participant {
-        _0to1: hits(
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              { op: "<=", content: { field: "diagnoses.age_at_event_days", value: [364] } }
-            ]
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+          files__data_type {
+            buckets {
+              key
+              doc_count
+            }
           }
-        ) {
-          total
-        }
-        _1to5: hits(
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              {
-                op: "between"
-                content: { field: "diagnoses.age_at_event_days", value: [365, 1824] }
-              }
-            ]
-          }
-        ) {
-          total
-        }
-        _5to10: hits(
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              {
-                op: "between"
-                content: { field: "diagnoses.age_at_event_days", value: [1825, 3649] }
-              }
-            ]
-          }
-        ) {
-          total
-        }
-        _10to15: hits(
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              {
-                op: "between"
-                content: { field: "diagnoses.age_at_event_days", value: [3650, 5474] }
-              }
-            ]
-          }
-        ) {
-          total
-        }
-        _15to18: hits(
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              {
-                op: "between"
-                content: { field: "diagnoses.age_at_event_days", value: [5475, 6569] }
-              }
-            ]
-          }
-        ) {
-          total
-        }
-        _18plus: hits(
-          filters: {
-            op: "and"
-            content: [
-              $sqon
-              { op: ">=", content: { field: "diagnoses.age_at_event_days", value: [6570] } }
-            ]
-          }
-        ) {
-          total
         }
       }
     }
   `,
-  transform: ({ data }) => [
-    { id: 'aggNewborn', label: 'Newborn', value: get(data, 'participant._0to1.total', 0) },
-    { id: 'agg5to10', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
-    { id: 'agg5to10', label: '5 - 10', value: get(data, 'participant._5to10.total', 0) },
-    { id: 'agg10to15', label: '10 - 15', value: get(data, 'participant._10to15.total', 0) },
-    { id: 'agg15to18', label: '15 - 18', value: get(data, 'participant._15to18.total', 0) },
-    { id: 'aggAdult', label: 'Adult', value: get(data, 'participant._18plus.total', 0) },
-  ],
+  variables: { sqon },
+  transform: data => {
+    return get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(toChartData)
+  },
+});
+
+export const experimentalStrategyQuery = sqon => ({
+  query: gql`
+    query ($sqon: JSON) {
+      participant {
+        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+          files__sequencing_experiments__experiment_strategy {
+            buckets {
+              key
+              doc_count
+            }
+          }
+        }
+      }
+    }
+  `,
+  variables: { sqon },
+  transform: data => {
+    return get(data, 'data.participant.aggregations.files__sequencing_experiments__experiment_strategy.buckets', []).map(toChartData)
+  },
 });
 
 export default compose(withTheme)(DataTypeChart);
