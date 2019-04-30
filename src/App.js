@@ -7,7 +7,7 @@ import styled from 'react-emotion';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
-import { Dashboard as ArrangerDashboardLegacy } from '@arranger/components';	
+import { Dashboard as ArrangerDashboardLegacy } from '@arranger/components/dist';
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';
@@ -35,7 +35,7 @@ import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
-import ArrangerAdmin from 'components/ArrangerAdmin'
+import ArrangerAdmin from 'components/ArrangerAdmin';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -61,7 +61,6 @@ const AppContainer = styled('div')`
   }
 `;
 
-
 const App = compose(
   injectState,
   withApi,
@@ -84,7 +83,7 @@ const App = compose(
                 }) ? (
                   <Redirect to="/dashboard" />
                 ) : (
-                  <ArrangerAdmin baseRoute={match.url} failRedirect={"/"} />
+                  <ArrangerAdmin baseRoute={match.url} failRedirect={'/'} />
                 );
               },
               loggedInUser,

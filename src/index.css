@@ -22,3 +22,15 @@ body {
 .dropDownButton {
   background-color: #fff;
 }
+
+a.bold {
+  font-weight: 500;
+}
+
+a.bare {
+  text-decoration: none;
+}
+
+a.primary {
+  color: #90278e;
+}

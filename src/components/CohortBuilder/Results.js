@@ -212,7 +212,10 @@ const Results = ({
   activeSqonIndex,
   setActiveView,
   theme,
-  sqon,
+  sqon = {
+    op: 'and',
+    content: [],
+  },
   api,
   state,
   onRemoveFromCohort,
@@ -240,7 +243,7 @@ const Results = ({
           <Content>
             <Detail>
               <ResultsHeading>
-                {!sqon || isEmpty(sqon.content) ? (
+                {isEmpty(sqon.content) ? (
                   <Heading>All Data</Heading>
                 ) : (
                   <React.Fragment>
@@ -322,7 +325,7 @@ const Results = ({
 
 Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
-  sqon: PropTypes.object.isRequired,
+  sqon: PropTypes.object,
   onRemoveFromCohort: PropTypes.func.isRequired,
 };
 
