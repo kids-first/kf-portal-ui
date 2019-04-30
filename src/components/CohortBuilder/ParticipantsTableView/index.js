@@ -53,30 +53,12 @@ const ParticipantsTableView = ({
             </Card>
           );
         }
-        // const dataTotalCount = data[0] ? data[0].total : 0;
         const isRowSelected = node =>
           allRowsSelected || selectedRows.some(row => row === node.participantId);
 
         const dataWithRowSelection = data[0]
           ? data[0].nodes.map(node => ({ ...node, selected: isRowSelected(node) }))
           : [];
-
-        // return (
-        //   <QueriesResolver
-        //     name="GQL_PARTICIPANTS_TABLE_EXPORT"
-        //     api={api}
-        //     queries={[participantsQuery(sqon, sort, dataTotalCount, '')]}
-        //   >
-        // {({ isLoading, data, error }) => {
-        //   if (error) {
-        //     return (
-        //       <Card>
-        //         <TableErrorView error={error} />
-        //       </Card>
-        //     );
-        //   }
-
-        // const dataExport = data[0] ? data[0].nodes.map(node => ({ ...node })) : [];
 
         const selectionSQON = selectedRows.length
           ? {
@@ -93,8 +75,6 @@ const ParticipantsTableView = ({
               data={dataWithRowSelection}
               api={api}
               sort={sort}
-              // dataExport={dataExport}
-              // dataTotalCount={dataTotalCount}
               dataTotalCount={data[0] ? data[0].total : 0}
               downloadName={'participant-table'}
               onFetchData={({ page, pageSize, sorted }) => {

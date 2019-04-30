@@ -1,14 +1,14 @@
-// import React from 'react';
 import React, { Component } from 'react';
 import { ToolbarItem, ToolbarButton, FileDownloadIcon } from './styles';
 import { saveAs } from 'file-saver';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import QueriesResolver from 'components/CohortBuilder/QueriesResolver';
+import LoadingSpinner from 'uikit/LoadingSpinner';
+import { isEmpty } from 'lodash';
 import {
   participantQueryExport,
   participantsQuery,
 } from 'components/CohortBuilder/ParticipantsTableView/queries';
-import { isEmpty } from 'lodash';
 
 const exportTSV = (data, columns, filename) => {
   const visibleCols = columns.filter(c => c.show && !c.skipExport);
@@ -24,64 +24,21 @@ const exportTSV = (data, columns, filename) => {
   saveAs(blob, `${filename}.tsv`);
 };
 
-// const Export = ({
-//   exporter = x => x,
-//   // data,
-//   columns,
-//   downloadName,
-//   // selectedRows,
-//   api,
-//   sqon,
-//   ...props
-// }) => {
-
-//   return (
-//     // <ToolbarItem onClick={() => exportTSV(data, columns, downloadName)} {...props}>
-//     <ToolbarItem
-//       onClick={() => {
-//         // return (triggerExport = true);
-//       }}
-//       style={{ border: '1px solid red' }}
-//     >
-//       <FileDownloadIcon width="12" height="12px" fill="#008299" style={{ marginRight: '7px' }} />
-//       <ToolbarButton>EXPORT</ToolbarButton>
-//       {console.log('*****triggerExport___1', triggerExport)};
-//       {triggerExport && (
-//         <QueriesResolver
-//           name="GQL_PARTICIPANTS_TABLE_EXPORT_REFACT"
-//           api={api}
-//           queries={[participantQueryExport(sqon)]}
-//         >
-//           {({ isLoading, data, error }) => {
-//             console.log('*****triggerExport___2', triggerExport);
-//             console.log('******columns****', columns);
-//             // console.log('*******downloadName****', downloadName);
-//             console.log('****data***', data);
-//             triggerExport = false;
-//             exportTSV(data, columns, downloadName);
-//             return '';
-//           }}
-//         </QueriesResolver>
-//       )}
-//     </ToolbarItem>
-//   );
-
-//   // );
-// };
-
-// export default Export;
-
 export default class Export extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      triggerExport: false,
-    };
+    this.triggerExport = false;
+    this.state = {};
   }
+
+  handleClick = () => {
+    this.triggerExport = true;
+    this.setState({});
+  };
 
   render() {
     const {
-      // data,
+      data,
       columns,
       downloadName,
       selectedRows,
@@ -90,34 +47,35 @@ export default class Export extends Component {
       sort,
       dataTotalCount,
     } = this.props;
-    return (
-      // <ToolbarItem onClick={() => exportTSV(data, columns, downloadName)} {...props}>
 
+    return (
       <ToolbarItem
-        onClick={() => {
-          this.setState({ triggerExport: !this.state.triggerExport });
-        }}
+        onClick={isEmpty(data) ? this.handleClick : () => exportTSV(data, columns, downloadName)}
       >
         <FileDownloadIcon width="12" height="12px" fill="#008299" style={{ marginRight: '7px' }} />
         <ToolbarButton>EXPORT</ToolbarButton>
-        {this.state.triggerExport && (
+
+        {this.triggerExport && isEmpty(data) && (
           <QueriesResolver
-            name="GQL_PARTICIPANTS_TABLE_EXPORT_REFACT"
+            name="GQL_PARTICIPANTS_TABLE_EXPORT"
             api={api}
             queries={
               isEmpty(selectedRows)
                 ? [participantsQuery(sqon, sort, dataTotalCount, '')]
-                : [participantQueryExport(sqon)]
+                : [participantQueryExport(sqon, selectedRows.length)]
             }
           >
             {({ isLoading, data, error }) => {
               if (error) {
                 console.log('error', error);
               }
+              if (isLoading) {
+                return <LoadingSpinner />;
+              }
               const dataExport = data[0] ? data[0].nodes.map(node => ({ ...node })) : [];
               if (!isEmpty(dataExport)) {
                 exportTSV(dataExport, columns, downloadName);
-                this.setState({ triggerExport: false });
+                this.triggerExport = false;
               }
               return '';
             }}

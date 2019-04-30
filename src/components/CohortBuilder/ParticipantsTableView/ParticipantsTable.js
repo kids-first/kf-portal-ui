@@ -232,7 +232,6 @@ class ParticipantsTable extends Component {
     const {
       loading,
       data,
-      // dataExport,
       api,
       sort,
       dataTotalCount,
@@ -317,13 +316,13 @@ class ParticipantsTable extends Component {
               <Export
                 {...{
                   columns,
-                  // data: data || [],
                   selectedRows: selectedRows || [],
                   downloadName,
                   api,
                   sqon: sqon,
                   sort,
                   dataTotalCount,
+                  data: [],
                 }}
               >
                 export

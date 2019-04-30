@@ -64,51 +64,14 @@ export const participantsQuery = (sqon, sort, pageSize = 20, pageIndex = 0) => (
     }
   `,
   variables: { sqon, pageSize, offset: pageSize * pageIndex, sort },
-  transform: data => {
-    const participants = get(data, 'data.participant.hits.edges');
-    const total = get(data, 'data.participant.hits.total');
-    const nodes = participants.map(p => p.node);
-
-    return {
-      total,
-      nodes: nodes.map(node => {
-        const diagnosisCategories = get(node, 'diagnoses.hits.edges', []).map(edge =>
-          get(edge, 'node.diagnosis_category'),
-        );
-        const diagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
-          get(edge, 'node.diagnosis'),
-        );
-        const ageAtDiagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
-          get(edge, 'node.age_at_event_days'),
-        );
-        const familyCompositions = get(node, 'family.family_compositions.hits.edges', []).map(
-          edge => get(edge, 'node.composition'),
-        );
-
-        return {
-          participantId: get(node, 'kf_id'),
-          studyName: get(node, 'study.short_name'),
-          isProband: get(node, 'is_proband', false) ? 'Yes' : 'No',
-          vitalStatus: get(node, 'outcome.vital_status'),
-          diagnosisCategories,
-          diagnosis,
-          ageAtDiagnosis,
-          gender: get(node, 'gender'),
-          familyId: get(node, 'family_id'),
-          familyCompositions,
-          filesCount: get(node, 'files.hits.total'),
-        };
-      }),
-    };
-  },
+  transform: data => transformData(data),
 });
-/*******************************************/
 
-export const participantQueryExport = sqon => ({
+export const participantQueryExport = (sqon, pageSize) => ({
   query: gql`
-    query($sqon: JSON) {
+    query($sqon: JSON, $pageSize: Int) {
       participant {
-        hits(filters: $sqon) {
+        hits(filters: $sqon, first: $pageSize) {
           total
           edges {
             node {
@@ -157,42 +120,44 @@ export const participantQueryExport = sqon => ({
       }
     }
   `,
-  variables: { sqon },
-  transform: data => {
-    const participants = get(data, 'data.participant.hits.edges');
-    const total = get(data, 'data.participant.hits.total');
-    const nodes = participants.map(p => p.node);
-
-    return {
-      total,
-      nodes: nodes.map(node => {
-        const diagnosisCategories = get(node, 'diagnoses.hits.edges', []).map(edge =>
-          get(edge, 'node.diagnosis_category'),
-        );
-        const diagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
-          get(edge, 'node.diagnosis'),
-        );
-        const ageAtDiagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
-          get(edge, 'node.age_at_event_days'),
-        );
-        const familyCompositions = get(node, 'family.family_compositions.hits.edges', []).map(
-          edge => get(edge, 'node.composition'),
-        );
-
-        return {
-          participantId: get(node, 'kf_id'),
-          studyName: get(node, 'study.short_name'),
-          isProband: get(node, 'is_proband', false) ? 'Yes' : 'No',
-          vitalStatus: get(node, 'outcome.vital_status'),
-          diagnosisCategories,
-          diagnosis,
-          ageAtDiagnosis,
-          gender: get(node, 'gender'),
-          familyId: get(node, 'family_id'),
-          familyCompositions,
-          filesCount: get(node, 'files.hits.total'),
-        };
-      }),
-    };
-  },
+  variables: { sqon, pageSize },
+  transform: data => transformData(data),
 });
+
+const transformData = data => {
+  const participants = get(data, 'data.participant.hits.edges');
+  const total = get(data, 'data.participant.hits.total');
+  const nodes = participants.map(p => p.node);
+
+  return {
+    total,
+    nodes: nodes.map(node => {
+      const diagnosisCategories = get(node, 'diagnoses.hits.edges', []).map(edge =>
+        get(edge, 'node.diagnosis_category'),
+      );
+      const diagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
+        get(edge, 'node.diagnosis'),
+      );
+      const ageAtDiagnosis = get(node, 'diagnoses.hits.edges', []).map(edge =>
+        get(edge, 'node.age_at_event_days'),
+      );
+      const familyCompositions = get(node, 'family.family_compositions.hits.edges', []).map(edge =>
+        get(edge, 'node.composition'),
+      );
+
+      return {
+        participantId: get(node, 'kf_id'),
+        studyName: get(node, 'study.short_name'),
+        isProband: get(node, 'is_proband', false) ? 'Yes' : 'No',
+        vitalStatus: get(node, 'outcome.vital_status'),
+        diagnosisCategories,
+        diagnosis,
+        ageAtDiagnosis,
+        gender: get(node, 'gender'),
+        familyId: get(node, 'family_id'),
+        familyCompositions,
+        filesCount: get(node, 'files.hits.total'),
+      };
+    }),
+  };
+};
