@@ -45,7 +45,7 @@ const summaryEntityStyle = css({
 
 const summaryFilesStyle = css({
   display: 'grid',
-  gridTemplateColumns: '75px 50px',
+  gridTemplateColumns: 'auto auto',
 });
 
 const ViewLinks = styled(Row)`
@@ -259,13 +259,15 @@ const Results = ({
                   <div className={`${summaryEntityStyle}`}>
                     <SubHeading>
                       <DemographicIcon />
-                      {Number(participantCount || 0).toLocaleString()} Participants
+                      {Number(participantCount || 0).toLocaleString()}{' '}
+                      {participantCount === 1 ? 'Participant' : 'Participants'}
                     </SubHeading>
                   </div>
                   <div className={`${summaryEntityStyle}`}>
                     <SubHeading>
                       <img src={familyMembers} alt="" height="13px" />{' '}
-                      {Number(familiesCount || 0).toLocaleString()} Families
+                      {Number(familiesCount || 0).toLocaleString()}{' '}
+                      {familiesCount === 1 ? 'Family' : 'Families'}
                     </SubHeading>
                   </div>
                   <div className={`${summaryEntityStyle}`}>
