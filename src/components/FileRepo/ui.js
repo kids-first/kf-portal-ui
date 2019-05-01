@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
-import '@arranger/components/public/themeStyles/beagle/beagle.css';
+import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
 // import arrangerStyle from './arrangerStyle';
 
 import Column from 'uikit/Column';

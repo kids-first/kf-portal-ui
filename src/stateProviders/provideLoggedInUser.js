@@ -1,7 +1,7 @@
 import { provideState } from 'freactal';
 import { isArray, pick, without, chain, omit } from 'lodash';
 import jwtDecode from 'jwt-decode';
-import { addHeaders } from '@arranger/components/dist';
+import { addHeaders } from '@kfarranger/components/dist';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
@@ -126,7 +126,7 @@ export default provideState({
         removeCookie(EGO_JWT_KEY, token);
         addHeaders({ authorization: '' });
       }
-      
+
       return { ...state, loggedInUserToken: token, loginProvider: provider };
     },
     setIntegrationToken: (effects, service, token) => state => {
