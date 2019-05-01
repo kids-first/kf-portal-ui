@@ -7,7 +7,7 @@ import _, { get, sortBy, sumBy, differenceBy } from 'lodash';
 import { CohortCard } from '../ui';
 import BaseDataTable from 'uikit/DataTable';
 import { withApi } from 'services/api';
-import saveSet from '@arranger/components/dist/utils/saveSet';
+import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { injectState } from 'freactal';
 import graphql from 'services/arranger';
 import LinkWithLoader from 'uikit/LinkWithLoader';

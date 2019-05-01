@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 import {
   resolveSyntheticSqon,
   isReference,
-} from '@arranger/components/dist/AdvancedSqonBuilder/utils';
+} from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 import { parse as parseQueryString, stringify } from 'query-string';
 
 import { withApi } from 'services/api';
