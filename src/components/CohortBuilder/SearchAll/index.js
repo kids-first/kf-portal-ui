@@ -8,7 +8,7 @@ import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
 import { debounce } from 'lodash';
 
-import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 
 import { withApi } from 'services/api';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';

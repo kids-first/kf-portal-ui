@@ -5,8 +5,8 @@ import { withTheme } from 'emotion-theming';
 import Component from 'react-component-component';
 import styled from 'react-emotion';
 
-import { AggregationsList } from '@kfarranger/components/dist/Arranger';
-import Query from '@kfarranger/components/dist/Query';
+import { AggregationsList } from '@arranger/components/dist/Arranger';
+import Query from '@arranger/components/dist/Query';
 
 import { CLINICAL_FILTERS, FILE_FILTERS } from './aggsConfig';
 import { withApi } from 'services/api';

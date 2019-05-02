@@ -6,7 +6,7 @@ import { css } from 'emotion';
 import { withRouter } from 'react-router-dom';
 import urlJoin from 'url-join';
 
-import saveSet from '@kfarranger/components/dist/utils/saveSet';
+import saveSet from '@arranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { withApi } from 'services/api';
 import { createNewVirtualStudy, deleteVirtualStudy } from 'services/virtualStudies';

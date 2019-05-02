@@ -3,7 +3,7 @@ import { arrangerAdminApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
 import { withRouter } from 'react-router-dom';
 
-const LazyArrangerAdminUi = React.lazy(() => import('@kfarranger/admin-ui/dist'))
+const LazyArrangerAdminUi = React.lazy(() => import('@arranger/admin-ui/dist'))
 
 export default withRouter(({
   baseRoute,

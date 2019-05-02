@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { get, difference } from 'lodash';
-import Query from '@kfarranger/components/dist/Query';
+import Query from '@arranger/components/dist/Query';
 import { withApi } from 'services/api';
 import { compose } from 'recompose';
 

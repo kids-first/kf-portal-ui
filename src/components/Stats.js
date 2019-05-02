@@ -1,6 +1,6 @@
 import React from 'react';
 import filesize from 'filesize';
-import { Stats, CombinedStatsQuery } from '@kfarranger/components/dist/Arranger';
+import { Stats, CombinedStatsQuery } from '@arranger/components/dist/Arranger';
 
 export const config = [
   {

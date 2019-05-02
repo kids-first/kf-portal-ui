@@ -4,7 +4,7 @@ import { injectState } from 'freactal';
 import { compose } from 'recompose';
 
 import { ModalFooter } from '../Modal/index.js';
-import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
+import { AdvancedFacetView } from '@arranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
 import { FilterInput } from 'uikit/Input';
 import { TRACKING_EVENTS } from '../../services/analyticsTracking';
