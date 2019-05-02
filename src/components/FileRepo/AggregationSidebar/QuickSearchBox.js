@@ -5,8 +5,8 @@ import { injectState } from 'freactal';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 
-import { QuickSearch, AggsWrapper } from '@kfarranger/components/dist/Arranger';
-import { TextHighlight } from '@kfarranger/components/dist';
+import { QuickSearch, AggsWrapper } from '@arranger/components/dist/Arranger';
+import { TextHighlight } from '@arranger/components/dist';
 
 import Row from 'uikit/Row';
 import { FilterInput } from 'uikit/Input';

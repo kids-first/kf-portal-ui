@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "@kfarranger/admin-ui": "^1.2.2",
-    "@kfarranger/components": "^1.2.2",
+    "@arranger/admin-ui": "1.1.7",
+    "@arranger/components": "1.1.7",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
-import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';

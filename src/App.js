@@ -7,7 +7,7 @@ import styled from 'react-emotion';
 import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
-import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
+import { Dashboard as ArrangerDashboardLegacy } from '@arranger/components/dist';
 
 import Modal from 'components/Modal';
 import UserProfile from 'components/UserProfile';

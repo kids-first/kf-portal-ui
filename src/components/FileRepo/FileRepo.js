@@ -10,8 +10,8 @@ import Tooltip from 'uikit/Tooltip';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
 import DownloadButton from './DownloadButton';
 
-import { Arranger, CurrentSQON, Table } from '@kfarranger/components/dist/Arranger';
-import { replaceSQON } from '@kfarranger/components/dist/SQONView/utils';
+import { Arranger, CurrentSQON, Table } from '@arranger/components/dist/Arranger';
+import { replaceSQON } from '@arranger/components/dist/SQONView/utils';
 
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';

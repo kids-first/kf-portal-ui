@@ -5,8 +5,8 @@ import { css } from 'emotion';
 import { omit } from 'lodash';
 import { memoize } from 'lodash';
 import { injectState } from 'freactal';
-import AdvancedSqonBuilder from '@kfarranger/components/dist/AdvancedSqonBuilder';
-import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+import AdvancedSqonBuilder from '@arranger/components/dist/AdvancedSqonBuilder';
+import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
 import { withApi } from 'services/api';
 import { arrangerProjectId } from 'common/injectGlobals';
 import {

@@ -8,8 +8,8 @@ import { css } from 'emotion';
 import Spinner from 'react-spinkit';
 import filesize from 'filesize';
 import { Trans } from 'react-i18next';
-import formatNumber from '@kfarranger/components/dist/utils/formatNumber';
-import { ColumnsState } from '@kfarranger/components/dist/DataTable';
+import formatNumber from '@arranger/components/dist/utils/formatNumber';
+import { ColumnsState } from '@arranger/components/dist/DataTable';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import CheckCircleIcon from 'icons/CheckCircleIcon.js';
