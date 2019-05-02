@@ -4,7 +4,7 @@ import { compose, withProps, withPropsOnChange, withState } from 'recompose';
 import styled from 'react-emotion';
 import Downshift from 'downshift';
 import { Trans } from 'react-i18next';
-import TextHighlight from '@arranger/components/dist/TextHighlight';
+import TextHighlight from '@kfarranger/components/dist/TextHighlight';
 
 import { titleCase } from 'common/displayFormatters';
 import { withApi } from 'services/api';

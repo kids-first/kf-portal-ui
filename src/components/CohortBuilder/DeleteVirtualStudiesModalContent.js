@@ -16,6 +16,7 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+
   };
 
   state = {
@@ -30,8 +31,6 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
     // prevent the user from bash clicking
     if (this.deleting) return;
     this.deleting = true;
-
-    console.log('🔥 submitHandler');
 
     this.setState({ errorMessage: null });
 

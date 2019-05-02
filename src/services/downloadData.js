@@ -1,6 +1,6 @@
 import { startCase } from 'lodash';
 import { format } from 'date-fns';
-import saveTSV from '@arranger/components/dist/DataTable/TableToolbar/saveTSV';
+import saveTSV from '@kfarranger/components/dist/DataTable/TableToolbar/saveTSV';
 import urlJoin from 'url-join';
 import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
 

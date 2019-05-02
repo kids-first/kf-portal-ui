@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'emotion-theming';
 
-import TextHighlight from '@arranger/components/dist/TextHighlight';
+import TextHighlight from '@kfarranger/components/dist/TextHighlight';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const QueryResultsBody = ({

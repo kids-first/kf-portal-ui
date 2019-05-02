@@ -4,7 +4,7 @@ import styled from 'react-emotion';
 import { get, intersection } from 'lodash';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import Query from '@arranger/components/dist/Query';
+import Query from '@kfarranger/components/dist/Query';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import { arrangerGqlRecompose } from 'services/arranger';
 import { withApi } from 'services/api';
@@ -110,7 +110,7 @@ const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
             hits (filters: $sqon) {
               edges {
                 node {
-                  acl 
+                  acl
                   repository
                 }
               }
