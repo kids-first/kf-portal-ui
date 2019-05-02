@@ -22,3 +22,10 @@ body {
 .dropDownButton {
   background-color: #fff;
 }
+
+/* Temporary fix for the aggregation cards overflow */
+.aggregation-card span.bucket-link {
+  max-width: 370px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
