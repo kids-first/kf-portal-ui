@@ -30,13 +30,23 @@ export const TRACKING_EVENTS = {
       participant: 'Entity Page: Participant',
     },
     virtualStudies: "Virtual Studies",
+    cohortBuilder: {
+      _cohortBuilder: "Cohort Builder",
+      sqonBuilder: "Cohort Builder: SQON Builder",
+      filters:{
+        _cohortBuilderFilters: "Cohort Builder: Filters",
+        quickFilters: "Cohort Builder: Filters - Quick",
+        studyFilters: "Cohort Builder: Filters - Study",
+        demographicFilters: "Cohort Builder: Filters - Demographic",
+        clinicalFilters: "Cohort Builder: Filters - Clinical",
+        biospecimensFilters: "Cohort Builder: Filters - Biospecimens",
+        availableDataFilters: "Cohort Builder: Filters - Available Data",
+      }
+    },
     fileRepo: {
       filters: 'File Repo: Filters',
       dataTable: 'File Repo: Data Table',
       actionsSidebar: 'File Repo: Actions Sidebar',
-    },
-    cohortBuilder:{
-      'sqonBuilder':"Cohort Builder: SQON Builder"
     },
     integration: {
       cavatica: 'Integration: Cavatica',
@@ -76,6 +86,9 @@ export const TRACKING_EVENTS = {
       disconnected: 'Integration Connection DISCONNECTED',
       failed: 'Integration Connection FAILED',
     },
+    search: 'Search',
+    clear: 'Clear',
+    apply: 'Apply',
   },
   labels: {
     joinProcess: 'Join Process',
