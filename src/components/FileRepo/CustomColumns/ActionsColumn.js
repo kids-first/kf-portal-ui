@@ -110,7 +110,7 @@ const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
             hits (filters: $sqon) {
               edges {
                 node {
-                  acl 
+                  acl
                   repository
                 }
               }

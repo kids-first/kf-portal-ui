@@ -31,8 +31,6 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
     if (this.deleting) return;
     this.deleting = true;
 
-    console.log('🔥 submitHandler');
-
     this.setState({ errorMessage: null });
 
     return this.props

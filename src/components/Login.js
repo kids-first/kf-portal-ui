@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { get } from 'lodash';
+import { get, isArrayLikeObject, toLower } from 'lodash';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
@@ -31,16 +31,22 @@ import { createExampleQueries } from 'services/riffQueries';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
-  return get(validatedPayload, 'context.user.roles', []).includes('ADMIN');
+  const jwtUser = get(validatedPayload, 'context.user', {});
+  const roles = jwtUser.roles;
+  const type = jwtUser.type;
+  // maintain backward compatibility
+  return roles && null !== roles && isArrayLikeObject(roles)
+    ? roles.includes('ADMIN')
+    : type && type !== null && type === 'ADMIN';
 };
 
 export const validateJWT = ({ jwt }) => {
   if (!jwt) return false;
   const validatedPayload = jwtDecode(jwt);
   const isCurrent = new Date(validatedPayload.exp * 1000).valueOf() > Date.now();
+  const status = get(validatedPayload, 'context.user.status', '');
   const isApproved =
-    isAdminToken({ validatedPayload }) ||
-    get(validatedPayload, 'context.user.status') === 'Approved';
+    isAdminToken({ validatedPayload }) || [status].map(toLower).includes('approved');
   return isCurrent && isApproved && validatedPayload;
 };
 
@@ -187,6 +193,7 @@ class Component extends React.Component<any, any> {
           hasExternalIcon={false}
           href="https://kidsfirstdrc.org/contact"
           target="_blank"
+          key={`link-${i}`}
         >
           Contact us
         </ExternalLink>

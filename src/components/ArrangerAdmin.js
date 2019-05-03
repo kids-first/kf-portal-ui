@@ -5,17 +5,17 @@ import { withRouter } from 'react-router-dom';
 
 const LazyArrangerAdminUi = React.lazy(() => import('@arranger/admin-ui/dist'))
 
-export default withRouter(({ 
-  baseRoute, 
-  history, 
+export default withRouter(({
+  baseRoute,
+  history,
   failRedirect="/"
 }) => (
   <div style={{ minHeight: "100vh" }}>
     <Suspense fallback={<div>Loading...</div>}>
-      <LazyArrangerAdminUi 
-        basename={baseRoute} 
-        apiRoot={arrangerAdminApiRoot} 
-        fetcher={(url, config) => 
+      <LazyArrangerAdminUi
+        basename={baseRoute}
+        apiRoot={arrangerAdminApiRoot}
+        fetcher={(url, config) =>
           fetch(url, {
             ...config,
             headers: {

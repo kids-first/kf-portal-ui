@@ -23,6 +23,18 @@ body {
   background-color: #fff;
 }
 
+a.bold {
+  font-weight: 500;
+}
+
+a.bare {
+  text-decoration: none;
+}
+
+a.primary {
+  color: #90278e;
+}
+
 /* Temporary fix for the aggregation cards overflow */
 .aggregation-card span.bucket-link {
   max-width: 370px;

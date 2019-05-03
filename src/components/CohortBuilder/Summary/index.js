@@ -5,12 +5,13 @@ import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
-import FileBreakdown, { dataTypesExpStratPairsQuery } from './FileBreakdown';
 import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
 import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
+import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
 import styled from 'react-emotion';
+import { CohortCard } from './ui';
 
 const PaddedColumn = styled(Col)`
   padding: 4px !important;
@@ -20,6 +21,11 @@ const spacing = {
   md: 6,
   lg: 4,
   xl: 3,
+};
+
+
+const dataTypeTooltipByLabel = data => {
+  return `${data.label.toLocaleString()}: ${data.value.toLocaleString()} Participants`
 };
 
 const Summary = ({
@@ -34,20 +40,22 @@ const Summary = ({
     name="GQL_SUMMARY_CHARTS"
     api={api}
     queries={[
+      dataTypesQuery(sqon),
+      experimentalStrategyQuery(sqon),
       demographicQuery(sqon),
       ageDiagQuery(sqon),
       studiesQuery(sqon),
       diagnosesQuery(sqon),
-      dataTypesExpStratPairsQuery(sqon),
     ]}
   >
     {({ isLoading, data = null }) => {
       const [
+        dataTypesData = [],
+        experimentalStrategyData = [],
         demographicData = [],
         ageDiagData = [],
         studiesData = [],
         topDiagnosesData = [],
-        dataTypesExpStratPairs = [],
       ] = data;
 
       return !data ? (
@@ -57,11 +65,12 @@ const Summary = ({
           <Col xl={12}>
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <FileBreakdown
-                  sqon={sqon}
-                  isLoading={isLoading}
-                  dataTypesExpStratPairs={dataTypesExpStratPairs}
-                />
+                <CohortCard title="Available Data" loading={isLoading}>
+                  <div style={{ height: '100%', width: '100%',  display: 'flex', flexFlow: 'column wrap'}}>
+                    <DataTypeChart data={dataTypesData} axisLeftLegend={'# Participants'} axisBottomLegend={'Data Type'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
+                    <DataTypeChart data={experimentalStrategyData} axisLeftLegend={'# Participants'} axisBottomLegend={'Experimental Strategy'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
+                  </div>
+                </CohortCard>
               </PaddedColumn>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />

@@ -5,13 +5,13 @@ import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceI
 import { css } from 'emotion';
 
 import { DCF } from 'common/constants';
-import dcfLogo from 'assets/logo-dcf.png';
+import dcfLogo from 'assets/logo-dcf.svg';
 import { dcfWebRoot } from 'common/injectGlobals';
 
 const linkCss = css({
   width: '140px',
   textAlign: 'center',
-  display: 'flex',
+  marginTop: '10px',
 });
 
 const description = () => {

@@ -1,7 +1,6 @@
 import queryString from 'querystring';
 
-const getApplicationEnvVar = envVarName =>
-  process.env[`REACT_APP_${envVarName}`] || process.env[`STORYBOOK_${envVarName}`];
+const getApplicationEnvVar = envVarName => process.env[`REACT_APP_${envVarName}`];
 
 localStorage.setItem('debug', getApplicationEnvVar('DEBUG') || ''); // manually set because CRA doesn't allow arbitrary env variable names.
 const debug = require('debug');
