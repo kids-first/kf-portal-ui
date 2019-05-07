@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next';
 import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 
-import { MatchBox } from '@arranger/components/dist/Arranger';
+import { MatchBox } from '@kfarranger/components/dist/Arranger';
 import graphql from 'services/arranger';
 import { ModalFooter } from './Modal';
 import { TealActionButton } from 'uikit/Button';
