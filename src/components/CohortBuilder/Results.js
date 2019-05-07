@@ -22,7 +22,7 @@ import { isEmpty } from 'lodash';
 import LinkWithLoader from 'uikit/LinkWithLoader';
 import { createFileRepoLink } from './util';
 import { injectState } from 'freactal';
-import saveSet from '@arranger/components/dist/utils/saveSet';
+import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
 import { get } from 'lodash';
 import { Link } from 'react-router-dom';
