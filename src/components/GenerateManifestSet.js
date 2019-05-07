@@ -5,7 +5,7 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
-import saveSet from '@arranger/components/dist/utils/saveSet';
+import saveSet from '@kfarranger/components/dist/utils/saveSet';
 
 import CopyToClipboardIcon from 'icons/CopyToClipboardIcon.js';
 import { copyValueToClipboard } from './CopyToClipboard';
