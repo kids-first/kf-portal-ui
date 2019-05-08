@@ -29,19 +29,19 @@ export const TRACKING_EVENTS = {
       file: 'Entity Page: File',
       participant: 'Entity Page: Participant',
     },
-    virtualStudies: 'Virtual Studies',
+    virtualStudies: "Virtual Studies",
     cohortBuilder: {
-      _cohortBuilder: 'Cohort Builder',
-      sqonBuilder: 'Cohort Builder: SQON Builder',
-      filters: {
-        _cohortBuilderFilters: 'Cohort Builder: Filters',
-        quickFilters: 'Cohort Builder: Filters - Quick',
-        studyFilters: 'Cohort Builder: Filters - Study',
-        demographicFilters: 'Cohort Builder: Filters - Demographic',
-        clinicalFilters: 'Cohort Builder: Filters - Clinical',
-        biospecimensFilters: 'Cohort Builder: Filters - Biospecimens',
-        availableDataFilters: 'Cohort Builder: Filters - Available Data',
-      },
+      _cohortBuilder: "Cohort Builder",
+      sqonBuilder: "Cohort Builder: SQON Builder",
+      filters:{
+        _cohortBuilderFilters: "Cohort Builder: Filters",
+        quickFilters: "Cohort Builder: Filters - Quick",
+        studyFilters: "Cohort Builder: Filters - Study",
+        demographicFilters: "Cohort Builder: Filters - Demographic",
+        clinicalFilters: "Cohort Builder: Filters - Clinical",
+        biospecimensFilters: "Cohort Builder: Filters - Biospecimens",
+        availableDataFilters: "Cohort Builder: Filters - Available Data",
+      }
     },
     fileRepo: {
       filters: 'File Repo: Filters',
