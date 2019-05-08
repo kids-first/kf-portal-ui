@@ -37,6 +37,12 @@ const Container = styled('div')`
 
 const HeadingWithStudy = styled(H1)`
   color: #2b388f;
+  padding-top: 3px;
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 1150px;
 `;
 
 const FullWidthWhite = styled('div')`
