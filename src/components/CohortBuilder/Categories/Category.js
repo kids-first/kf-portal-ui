@@ -6,21 +6,23 @@ import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import Dropdown from 'uikit/Dropdown';
 import { compose, lifecycle, withState, withProps } from 'recompose';
-import { withDropdownMultiPane } from 'uikit/Dropdown';
+import { withDropdownState } from 'uikit/Dropdown';
 import Filter from './Filter';
-import {SQONdiff} from '../../Utils'
+import { SQONdiff } from '../../Utils';
 import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-const trackCategoryAction = ({category, subCategory, action, label})=> {
+const trackCategoryAction = ({ category, subCategory, action, label }) => {
   trackUserInteraction({
-    category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - ${category} ${subCategory ? '- '+subCategory: ''}`, 
+    category: `${
+      TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
+    } - ${category} ${subCategory ? '- ' + subCategory : ''}`,
     action,
-    label
-  })
-}
+    label,
+  });
+};
 
 const Container = styled(Column)`
   flex: 1;
@@ -111,8 +113,8 @@ const CategoryButton = styled(Column)`
     background-color: ${({ theme }) => theme.backgroundGrey};
   }
 
-  ${({ isDropdownVisible, theme }) =>
-    isDropdownVisible
+  ${({ isOpen, theme }) =>
+    isOpen
       ? css`
           background-color: ${theme.backgroundGrey};
           box-shadow: 0 0 5.9px 0.1px ${theme.lighterShadow};
@@ -120,7 +122,7 @@ const CategoryButton = styled(Column)`
       : null}
 `;
 
-const CategoryRow = compose(withApi)(({ api, field, active}) => (
+const CategoryRow = compose(withApi)(({ api, field, active }) => (
   <ExtendedMappingProvider
     api={api}
     projectId={arrangerProjectId}
@@ -140,15 +142,11 @@ const CategoryRow = compose(withApi)(({ api, field, active}) => (
 const noop = () => {};
 
 const Category = compose(
-  withDropdownMultiPane,
-  withProps(({ fields, currentSearchField = '' }) => {
+  withDropdownState,
+  withProps(({ fields, currentSearchField = '', category, currentCategory }) => {
     const index = fields.indexOf(currentSearchField);
-    return index > -1
-      ? {
-          showExpanded: true,
-          activeIndex: index,
-          isDropdownVisible: true,
-        }
+    return index > -1 && category === currentCategory
+      ? { showExpanded: true, activeIndex: index }
       : {};
   }),
 )(
@@ -159,49 +157,53 @@ const Category = compose(
     toggleDropdown,
     isDropdownVisible,
     setDropdownVisibility,
-    toggleExpanded,
-    toggleExpandedDropdown,
-    setActiveIndex,
     activeIndex,
-    setExpanded,
+    setExpanded = noop,
     showExpanded,
     fields,
+    setActiveCategory,
     sqon = {
       op: 'and',
       content: [],
     },
     onSqonUpdate = noop,
     onClose = noop,
+    category = '',
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
-     let currentSQON = sqon;
-     
+    let currentSQON = sqon;
+    const isOpen = isDropdownVisible || !!activeIndex;
+
     return (
       <Dropdown
         {...{
           multiLevel: true,
           onOuterClick: () => {
-            setExpanded(false);
+            setActiveCategory({ category, fieldName: '' });
             setDropdownVisibility(false);
             onClose();
-            trackCategoryAction({category: title, action: 'Close'})
+            trackCategoryAction({ category: title, action: 'Close' });
           },
-          isOpen: isDropdownVisible,
-          onToggle:() =>{
-            trackCategoryAction({category: title, action: !isDropdownVisible ? 'Open': 'Close'})
-            toggleDropdown()
-          } ,
-          setActiveIndex,
+          isOpen,
+          onToggle: (...args) => {
+            trackCategoryAction({ category: title, action: !isDropdownVisible ? 'Open' : 'Close' });
+            toggleDropdown(...args);
+          },
+          setActiveIndex: index => setActiveCategory({ fieldName: fields[index], category }),
           activeIndex,
           setExpanded,
-          showExpanded,
-          showExpandedItem: (item) =>{
-            trackCategoryAction({category: title, subCategory: fields[item.key],  action: 'Open'})
+          showExpanded: (...args) => {
+            showExpanded(...args);
+            trackCategoryAction({
+              category: title,
+              subCategory: fields[args.item.key],
+              action: 'Open',
+            });
           },
           showArrow: false,
           items: (fields || []).map((field, i) => (
-             <CategoryRow active={isFieldInSqon(field)} field={field} />
+            <CategoryRow active={isFieldInSqon(field)} field={field} />
           )),
           expandedItems: (fields || []).map((field, i) => (
             <Filter
@@ -209,21 +211,19 @@ const Category = compose(
               onSubmit={sqon => {
                 let addedSQON = SQONdiff(sqon, currentSQON);
                 trackCategoryAction({
-                  category: title, 
-                  action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,  
-                  label: JSON.stringify({added_sqon: addedSQON, result_sqon: sqon})
-                })
+                  category: title,
+                  action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+                  label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
+                });
                 onSqonUpdate(sqon);
-                toggleExpanded();
                 setDropdownVisibility(false);
                 onClose();
               }}
               onBack={() => {
-                toggleExpanded();
                 onClose();
               }}
               onCancel={() => {
-                toggleExpandedDropdown();
+                setDropdownVisibility(false);
                 onClose();
               }}
               field={field}
@@ -240,7 +240,7 @@ const Category = compose(
           OptionsContainerComponent: OptionsWrapper,
         }}
       >
-        <CategoryButton isDropdownVisible={isDropdownVisible}>
+        <CategoryButton isOpen={isOpen}>
           <Column alignItems="center">
             {' '}
             {children}
