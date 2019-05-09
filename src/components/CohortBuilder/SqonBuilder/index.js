@@ -5,8 +5,8 @@ import { css } from 'emotion';
 import { omit } from 'lodash';
 import { memoize } from 'lodash';
 import { injectState } from 'freactal';
-import AdvancedSqonBuilder from '@arranger/components/dist/AdvancedSqonBuilder';
-import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+import AdvancedSqonBuilder from '@kfarranger/components/dist/AdvancedSqonBuilder';
+import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 import { withApi } from 'services/api';
 import { arrangerProjectId } from 'common/injectGlobals';
 import {
@@ -68,21 +68,21 @@ const SqonBuilder = compose(
   withApi,
   injectState,
 )(({ api, onChange, state, effects, ...rest }) => {
-  
+
   const handleAction = async action => {
 
     // track the existing and operated on sqon actions
     trackSQONaction({
       category: TRACKING_EVENTS.categories.cohortBuilder.sqonBuilder,
-      action: `${action.eventKey} - ${Object.keys(action.eventDetails)[0]}`, 
+      action: `${action.eventKey} - ${Object.keys(action.eventDetails)[0]}`,
       label: {
-        [action.eventKey.toLowerCase()]: SQONdiff(rest.syntheticSqons, action.newSyntheticSqons), 
+        [action.eventKey.toLowerCase()]: SQONdiff(rest.syntheticSqons, action.newSyntheticSqons),
         sqon_result: {
-          sqon: action.newSyntheticSqons, 
-          eventDetails: action.eventDetails 
-        } 
+          sqon: action.newSyntheticSqons,
+          eventDetails: action.eventDetails
+        }
       }})
-    
+
     if (action.eventKey === 'CLEAR_ALL') {
       delete rest['activeSqonIndex'];
       effects.setModal({

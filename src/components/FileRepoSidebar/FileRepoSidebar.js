@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
-import { ColumnsState } from '@arranger/components/dist/DataTable';
+import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 import { injectState } from 'freactal';
 
 import LeftChevron from 'icons/DoubleChevronLeftIcon';

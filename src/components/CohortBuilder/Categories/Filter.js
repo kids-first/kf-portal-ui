@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 
-import FieldFilter from '@arranger/components/dist/AdvancedSqonBuilder/filterComponents';
-import { isReference } from '@arranger/components/dist/AdvancedSqonBuilder/utils';
-import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
+import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import { withApi } from 'services/api';

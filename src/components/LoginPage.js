@@ -12,7 +12,11 @@ import SplashPage from 'components/SplashPage';
 import { Link, Section } from 'uikit/Core';
 import { JoinH2 } from '../uikit/Headings';
 
-const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, theme, api }) => (
+const LoginPage = compose(
+  withRouter,
+  withTheme,
+  withApi,
+)(({ history, location, theme, api }) => (
   <SplashPage>
     <JoinH2 mt="9px" mb={0}>
       <Trans>Log in</Trans>
@@ -31,7 +35,7 @@ const LoginPage = compose(withRouter, withTheme, withApi)(({ history, location, 
     />
     <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
       <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
-      <Link bare primary bold to="/join">
+      <Link to="/join" className="bare primary bold">
         <Trans>Join now</Trans>
         <RightIcon />
       </Link>

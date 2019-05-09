@@ -6,9 +6,9 @@ import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
-import { debounce } from 'lodash';
-
-import ExtendedMappingProvider from '@arranger/components/dist/utils/ExtendedMappingProvider';
+import { debounce, isObject, mapKeys } from 'lodash';
+import { SQONdiff } from '../../Utils';
+import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 
 import { withApi } from 'services/api';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
@@ -20,9 +20,18 @@ import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import QueriesResolver from '../QueriesResolver';
 import { searchAllFieldsQuery } from './queries';
 import QueryResults from './QueryResults';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import './SearchAll.css';
 import Downshift from 'downshift';
+
+const trackCohortBuilderAction = ({ action, label, category }) => {
+  trackUserInteraction({
+    category: category || TRACKING_EVENTS.categories.cohortBuilder._cohortBuilder,
+    action,
+    ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
+  });
+};
 
 const SearchAllContainer = styled('div')`
   display: flex;
@@ -195,6 +204,17 @@ class SearchAll extends React.Component {
 
   setQueryDebounced(state) {
     this.setState(state);
+
+    trackCohortBuilderAction({
+      category: `${
+        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
+      } - Search All`,
+      action:
+        state.debouncedQuery !== ''
+          ? TRACKING_EVENTS.actions.search
+          : TRACKING_EVENTS.actions.clear,
+      label: state.debouncedQuery,
+    });
   }
 
   handleQueryChange(evt) {
@@ -202,7 +222,17 @@ class SearchAll extends React.Component {
   }
 
   handleClearQuery() {
+    const { debouncedQuery } = this.state;
+
     this.close();
+
+    trackCohortBuilderAction({
+      category: `${
+        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
+      } - Search All`,
+      action: TRACKING_EVENTS.actions.clear,
+      label: debouncedQuery,
+    });
   }
 
   handleSelectionChange(evt, field, value) {
@@ -223,6 +253,26 @@ class SearchAll extends React.Component {
       selections: {
         ...this.state.selections,
         [field.name]: fieldSelection,
+      },
+    });
+
+    let keyedBuckets = mapKeys(field.buckets, (v, k) => v.value);
+    let bucket = field.buckets[Object.keys(keyedBuckets).indexOf(value)];
+    const { displayName, name } = field;
+
+    trackCohortBuilderAction({
+      category: `${
+        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
+      } - Search All`,
+      action: `${TRACKING_EVENTS.actions.filter} Selected`,
+      label: {
+        type: 'filter',
+        field: {
+          displayName,
+          name,
+          bucket,
+        },
+        value,
       },
     });
   }
@@ -255,6 +305,17 @@ class SearchAll extends React.Component {
     onSqonUpdate(newSqon);
 
     this.close();
+    /**
+     * trakcs both the added SQON and the final result/composite sqon
+     * after the new filters are applied
+     */
+    trackCohortBuilderAction({
+      category: `${
+        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
+      } - Search All`,
+      action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+      label: { added_sqon: SQONdiff(newSqon, sqon), result_sqon: newSqon },
+    });
   }
 
   handleSearchByField(fieldName) {

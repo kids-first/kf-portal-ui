@@ -36,8 +36,8 @@ const CavaticaButton = styled(BigWhiteButton)`
     disabled ? disabledButtonStyles : null}
 `;
 
-export default compose(withTheme)(({ disabled, theme, text, buttonStyle, fileIds, ...props }) => (
-  <CavaticaOpenModalWrapper fileIds={fileIds}>
+export default compose(withTheme)(({ disabled, theme, text, buttonStyle, fileIds, sqon }) => (
+  <CavaticaOpenModalWrapper fileIds={fileIds} sqon={sqon}>
     <CavaticaButton disabled={disabled} buttonStyle={buttonStyle}>
       <ButtonContent>
         <CavaticaLogo

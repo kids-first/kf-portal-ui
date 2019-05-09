@@ -5,10 +5,11 @@ import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 
-import saveSet from '@arranger/components/dist/utils/saveSet';
+import saveSet from '@kfarranger/components/dist/utils/saveSet';
 
 import CopyToClipboardIcon from 'icons/CopyToClipboardIcon.js';
 import { copyValueToClipboard } from './CopyToClipboard';
+import { ModalActionButton } from './Modal';
 import LoadingOnClick from 'components/LoadingOnClick';
 import graphql from '../services/arranger';
 import Spinner from 'react-spinkit';
