@@ -4,13 +4,24 @@ import styled, { css } from 'react-emotion';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 import { withApi } from 'services/api';
 import Column from 'uikit/Column';
-import Dropdown from 'uikit/Dropdown';
 import { compose, lifecycle, withState, withProps } from 'recompose';
-import { withDropdownState } from 'uikit/Dropdown';
+import Dropdown, { withDropdownState } from 'uikit/Dropdown';
 import Filter from './Filter';
+import { SQONdiff } from '../../Utils';
 import CategoryRowDisplay from './CategoryRowDisplay';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const trackCategoryAction = ({ category, subCategory, action, label }) => {
+  trackUserInteraction({
+    category: `${
+      TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
+    } - ${category} ${subCategory ? '- ' + subCategory : ''}`,
+    action,
+    label,
+  });
+};
 
 const Container = styled(Column)`
   flex: 1;
@@ -160,7 +171,7 @@ const Category = compose(
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
-
+    let currentSQON = sqon;
     const isOpen = isDropdownVisible || !!activeIndex;
 
     return (
@@ -171,13 +182,24 @@ const Category = compose(
             setActiveCategory({ category, fieldName: '' });
             setDropdownVisibility(false);
             onClose();
+            trackCategoryAction({ category: title, action: 'Close' });
           },
           isOpen,
-          onToggle: toggleDropdown,
+          onToggle: (...args) => {
+            trackCategoryAction({ category: title, action: !isDropdownVisible ? 'Open' : 'Close' });
+            toggleDropdown(...args);
+          },
           setActiveIndex: index => setActiveCategory({ fieldName: fields[index], category }),
           activeIndex,
           setExpanded,
-          showExpanded,
+          showExpanded: (...args) => {
+            showExpanded(...args);
+            trackCategoryAction({
+              category: title,
+              subCategory: fields[args.item.key],
+              action: 'Open',
+            });
+          },
           showArrow: false,
           items: (fields || []).map((field, i) => (
             <CategoryRow active={isFieldInSqon(field)} field={field} />
@@ -186,6 +208,12 @@ const Category = compose(
             <Filter
               initialSqon={sqon}
               onSubmit={sqon => {
+                let addedSQON = SQONdiff(sqon, currentSQON);
+                trackCategoryAction({
+                  category: title,
+                  action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+                  label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
+                });
                 onSqonUpdate(sqon);
                 setDropdownVisibility(false);
                 onClose();
