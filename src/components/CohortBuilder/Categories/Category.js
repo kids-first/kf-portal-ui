@@ -192,14 +192,16 @@ const Category = compose(
           setActiveIndex: index => setActiveCategory({ fieldName: fields[index], category }),
           activeIndex,
           setExpanded,
-          showExpanded: (...args) => {
-            showExpanded(...args);
-            trackCategoryAction({
-              category: title,
-              subCategory: fields[args.item.key],
-              action: 'Open',
-            });
-          },
+          showExpanded: showExpanded
+            ? (...args) => {
+                showExpanded(...args);
+                trackCategoryAction({
+                  category: title,
+                  subCategory: fields[args.item.key],
+                  action: 'Open',
+                });
+              }
+            : undefined,
           showArrow: false,
           items: (fields || []).map((field, i) => (
             <CategoryRow active={isFieldInSqon(field)} field={field} />
