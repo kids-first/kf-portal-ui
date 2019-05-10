@@ -37,12 +37,9 @@ const CATEGORY_FIELDS = {
 
     // Clinical
     'affected_status',
-    // "Cannot query field "buckets" on type "NumericAggregations"."
-    // 'diagnoses.age_at_event_days',
-    // "Cannot query field "buckets" on type "NumericAggregations"."
-    // 'outcome.age_at_event_days',
-    // "Cannot query field "buckets" on type "NumericAggregations"."
-    // 'phenotype.age_at_event_days',
+    'diagnoses.age_at_event_days',
+    'outcome.age_at_event_days',
+    'phenotype.age_at_event_days',
     'phenotype.ancestral_hpo_ids',
     'diagnoses.mondo_id_diagnosis',
     'diagnoses.ncit_id_diagnosis',
@@ -58,8 +55,7 @@ const CATEGORY_FIELDS = {
     'outcome.vital_status',
 
     // Biospecimen
-    // "Cannot query field "buckets" on type "NumericAggregations"."
-    // 'biospecimens.age_at_event_days',
+    'biospecimens.age_at_event_days',
     'biospecimens.analyte_type',
     'biospecimens.source_text_anatomical_site',
     'biospecimens.ncit_id_anatomical_site',
