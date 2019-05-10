@@ -38,20 +38,20 @@ const QueryResultsBody = ({
           <div className="category-name" data-index={i} onClick={handleFieldNameClicked}>
             <TextHighlight content={field.displayName} highlightText={query} />
           </div>
-          {field.buckets.map(({ value, docCount }) => (
-            <div className="result-item" key={`result-item_${value}`}>
+          {field.buckets.map(({ key, doc_count }) => (
+            <div className="result-item" key={`result-item_${key}`}>
               <label>
                 <input
                   type="checkbox"
-                  checked={selections[field.name].indexOf(value) > -1}
+                  checked={selections[field.name].indexOf(key) > -1}
                   className="selection"
                   onChange={evt => {
-                    onSelectionChange(evt, field, value);
+                    onSelectionChange(evt, field, key);
                   }}
                 />
-                <TextHighlight content={value} highlightText={query} />
+                <TextHighlight content={key} highlightText={query} />
               </label>
-              <span className="doc-count">{docCount}</span>
+              <span className="doc-count">{doc_count}</span>
             </div>
           ))}
         </div>
@@ -71,8 +71,8 @@ QueryResultsBody.propTypes = {
       matchByDisplayName: PropTypes.bool.isRequired,
       buckets: PropTypes.arrayOf(
         PropTypes.shape({
-          value: PropTypes.string.isRequired,
-          docCount: PropTypes.number.isRequired,
+          key: PropTypes.string.isRequired,
+          doc_count: PropTypes.number.isRequired,
         }),
       ),
     }),

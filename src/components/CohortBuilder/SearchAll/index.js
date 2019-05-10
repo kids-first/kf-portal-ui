@@ -18,7 +18,7 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 import QueriesResolver from '../QueriesResolver';
-import { searchAllFieldsQuery } from './queries';
+import { searchAllQueries } from './queries';
 import QueryResults from './QueryResults';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
@@ -111,7 +111,7 @@ const filterFields = (query, detailedFields) => {
     .map(field => {
       const matchByDisplayName = field.displayName.toLowerCase().indexOf(query.toLowerCase()) > -1;
       const filteredBuckets = field.buckets.filter(
-        ({ value }) => value.toLowerCase().indexOf(query.toLowerCase()) > -1,
+        ({ key }) => key.toLowerCase().indexOf(query.toLowerCase()) > -1,
       );
       return {
         ...field,
@@ -122,44 +122,13 @@ const filterFields = (query, detailedFields) => {
     .filter(field => field.matchByDisplayName || field.buckets.length > 0);
 };
 
-const filterExtendedMapping = memoizeOne((fields, extendedMapping) => {
-  return (extendedMapping || []).filter(emf => fields.some(field => field === emf.field));
-});
+const orderFields = memoizeOne((fields, aggFieldsValues) =>
+  fields.map(fieldName => aggFieldsValues[toGqlFieldPath(fieldName)]),
+);
 
-const getFieldsDetails = memoizeOne((fields, aggFieldsValues, extendedMapping) => {
-  // only keep the fields we're interested in
-  const filteredExtendedMapping = filterExtendedMapping(fields, extendedMapping);
-
-  // map the values to an object convenient to the render
-  return fields
-    .map(fieldName => {
-      const aggField = aggFieldsValues[toGqlFieldPath(fieldName)];
-      if (!aggField) {
-        console.log(`[SearchAll] Field ${fieldName} aggregated data could not be found`);
-        return null;
-      }
-
-      const fieldExtendedMapping = filteredExtendedMapping.find(fem => fem.field === fieldName);
-      if (!fieldExtendedMapping) {
-        console.log(`[SearchAll] Field ${fieldName} extended mapping could not be found`);
-        return null;
-      }
-
-      return {
-        name: fieldName,
-        displayName: fieldExtendedMapping.displayName,
-        buckets: aggField.buckets.map(b => ({
-          value: b.key,
-          docCount: b['doc_count'],
-        })),
-      };
-    })
-    .filter(f => f !== null);
-});
-
-const getFilteredFields = memoizeOne((query, fields, aggFieldsValues, extendedMapping) => {
-  const detailedFields = getFieldsDetails(fields, aggFieldsValues, extendedMapping);
-  return filterFields(query, detailedFields);
+const getFilteredFields = memoizeOne((query, fields, aggFieldsValues) => {
+  const orderedFields = orderFields(fields, aggFieldsValues);
+  return filterFields(query, orderedFields);
 });
 
 class SearchAll extends React.Component {
@@ -335,13 +304,13 @@ class SearchAll extends React.Component {
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
         useCache={true}
       >
-        {({ loading: extendedMappingIsLoading, extendedMapping }) => {
+        {({ loading: extendedMappingIsLoading, extendedMapping = [] }) => {
           return (
             <QueriesResolver
               name="GQL_PARTICIPANTS_TABLE"
               api={api}
               sqon={sqon}
-              queries={[searchAllFieldsQuery(sqon, fields)]}
+              queries={searchAllQueries(sqon, fields, extendedMapping)}
             >
               {({ isLoading, data, error }) => {
                 if (error) {
@@ -361,7 +330,7 @@ class SearchAll extends React.Component {
                 // filter both the fields and their buckets
                 //  to keep only the field values matching the query
                 const filteredFields = debouncedQuery
-                  ? getFilteredFields(debouncedQuery, fields, data[0], extendedMapping)
+                  ? getFilteredFields(debouncedQuery, fields, data[0])
                   : [];
 
                 return (
