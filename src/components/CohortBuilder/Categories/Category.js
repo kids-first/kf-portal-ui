@@ -171,8 +171,9 @@ const Category = compose(
   }) => {
     const isFieldInSqon = fieldId =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
-    let currentSQON = sqon;
-    const isOpen = isDropdownVisible || !!activeIndex;
+
+    const currentSQON = sqon;
+    const isOpen = isDropdownVisible || activeIndex >= 0;
 
     return (
       <Dropdown
@@ -203,7 +204,7 @@ const Category = compose(
               }
             : undefined,
           showArrow: false,
-          items: (fields || []).map((field, i) => (
+          items: (fields || []).map(field => (
             <CategoryRow active={isFieldInSqon(field)} field={field} />
           )),
           expandedItems: (fields || []).map((field, i) => (
