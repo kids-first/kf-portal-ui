@@ -94,6 +94,7 @@ const CohortBuilder = compose(
           activeIndex: activeSqonIndex,
           setActiveSqonIndex,
           setSqons,
+          resetSqons,
           getActiveExecutableSqon,
           mergeSqonToActiveIndex,
           activeVirtualStudyId,
@@ -109,9 +110,6 @@ const CohortBuilder = compose(
           };
           const categoriesSqonUpdate = newSqon => {
             mergeSqonToActiveIndex(newSqon);
-          };
-          const resetSqons = () => {
-            setSqons([{ op: 'and', content: [] }]);
           };
           const saveStudy = async studyName => {
             if (!(studyName || '').length) {
@@ -157,7 +155,6 @@ const CohortBuilder = compose(
             // TODO : reset the sqon as soon as possible,
             //  but not in case of a failure
             resetSqons();
-            setActiveVirtualStudyId('');
           };
 
           const findSelectedStudy = () => {
@@ -267,7 +264,6 @@ const CohortBuilder = compose(
                         // TODO : reset the sqon as soon as possible,
                         //  but not in case of a failure
                         resetSqons();
-                        setActiveVirtualStudyId('');
                       }}
                     >
                       <span>

@@ -1,156 +1,201 @@
 import React from 'react';
-import Component from 'react-component-component';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
+import autobind from 'auto-bind-es5';
+import { parse as parseQueryString, stringify } from 'query-string';
+import { cloneDeep } from 'lodash';
 import {
   resolveSyntheticSqon,
   isReference,
 } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
-import { parse as parseQueryString, stringify } from 'query-string';
 
 import { withApi } from 'services/api';
 import { getVirtualStudy } from 'services/virtualStudies';
 
-const SQONProvider = compose(
-  withApi,
-  withRouter,
-  injectState,
-)(({ api, history, children, state: { loggedInUser } }) => {
-  const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-  const { id: virtualStudyId } = parseQueryString(history.location.search);
-  const initialState = {
-    sqons: [
-      {
-        op: 'and',
-        content: [],
-      },
-    ],
-    activeIndex: 0,
-    lastAction: null,
-    uid: null,
+const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+const initialState = {
+  sqons: [
+    {
+      op: 'and',
+      content: [],
+    },
+  ],
+  activeIndex: 0,
+  uid: null,
+  virtualStudyId: null,
+};
+
+class SQONProvider extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { ...cloneDeep(initialState) };
+
+    this.previousVirtualStudyId = null;
+    this.previousSqons = null;
+    this.previousActiveIndex = null;
+
+    this.getVirtualStudy = getVirtualStudy(props.api);
+    autobind(this);
+  }
+
+  static propTypes = {
+    api: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
-  const didMount = s => {
-    if (virtualStudyId) {
-      loadVirtualStudy(s)(virtualStudyId).catch(console.err);
+  async loadVirtualStudy(virtualStudyId) {
+    this.previousVirtualStudyId = virtualStudyId;
+
+    if (virtualStudyId === null) {
+      this.resetSqons();
       return;
     }
 
+    return this.getVirtualStudy(virtualStudyId)
+      .then(virtualStudy => {
+        const {
+          uid,
+          content: { sqons, activeIndex },
+        } = virtualStudy;
+        this.setState(
+          {
+            sqons,
+            activeIndex,
+            uid,
+            virtualStudyId,
+          },
+          this.saveLocalSqons,
+        );
+      })
+      .catch(err => {
+        // something went wrong, reset the state in local storage
+        // TODO - display error message
+        console.error(err);
+      });
+  }
+
+  saveLocalSqons() {
+    const { sqons, activeIndex, uid } = this.state;
+    const filterState = JSON.stringify({
+      sqons,
+      activeIndex,
+      uid,
+    });
+
+    // TODO : use `egoId` in the key of the virtual study
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, filterState);
+  }
+
+  loadLocalSqons() {
+    // const { state: { loggedInUser: { egoId }}} = this.props;
+    // TODO : use `egoId` in the key of the virtual study
     const savedLocalState = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
     if (savedLocalState) {
-      let localState = JSON.parse(savedLocalState);
-      s.setState({
-        sqons: localState.sqons,
-        activeIndex: localState.activeIndex,
-      });
+      let filterState = JSON.parse(savedLocalState);
+      this.setState({ ...filterState });
     }
-  };
+  }
 
-  const didUpdate = s => {
-    const {
-      props: { virtualStudyId },
-      prevProps: { virtualStudyId: previousVirtualStudyId },
-    } = s;
+  componentDidMount() {
+    const { id: virtualStudyId } = parseQueryString(this.props.history.location.search);
 
-    if (virtualStudyId !== previousVirtualStudyId) {
-      if (!virtualStudyId) {
-        localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(initialState));
-        return;
-      }
+    this.loadLocalSqons();
 
-      loadVirtualStudy(s)(virtualStudyId)
-        .then(virtualStudy => {
-          let filterState;
-          try {
-            filterState = JSON.stringify({
-              sqons: virtualStudy.content.sqons,
-              activeIndex: virtualStudy.content.activeIndex,
-              uid: virtualStudy,
-            });
-          } catch (err) {
-            // something went wrong, reset the state in local storage
-            filterState = JSON.stringify(initialState);
-          }
-          localStorage.setItem(COHORT_BUILDER_FILTER_STATE, filterState);
-        })
-        .catch(err => {
-          console.error(err);
-          // something went wrong, reset the state in local storage
-          localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(initialState));
-        });
+    if (virtualStudyId) {
+      this.loadVirtualStudy(virtualStudyId);
+      return;
     }
-  };
+  }
 
-  const loadVirtualStudy = ({ setState }) => async virtualStudyId => {
-    return getVirtualStudy(api)(virtualStudyId).then(virtualStudy => {
-      const {
-        uid,
-        content: { sqons, activeIndex },
-      } = virtualStudy;
-      setState({ sqons, activeIndex, uid });
-    });
-  };
+  componentDidUpdate() {
+    const { virtualStudyId } = this.state;
 
-  /**
-   * utilities for children
-   **/
-  const setActiveSqonIndex = s => index => {
-    s.setState({ activeIndex: index });
-  };
-  const setSqons = s => (sqons = s.state.sqons) => s.setState({ sqons });
+    if (virtualStudyId !== null && virtualStudyId !== this.previousVirtualStudyId) {
+      this.loadVirtualStudy(virtualStudyId);
+    }
+  }
+
+  setActiveSqonIndex(index) {
+    this.setState({ activeIndex: index }, this.saveLocalSqons);
+  }
+
+  setSqons(sqons) {
+    this.setState({ sqons }, this.saveLocalSqons);
+  }
+
+  resetSqons() {
+    this.setState(
+      {
+        sqons: cloneDeep(initialState.sqons),
+        activeIndex: initialState.activeIndex,
+        uid: initialState.uid,
+        virtualStudyId: initialState.virtualStudyId,
+      },
+      this.saveLocalSqons,
+    );
+    this.setStudyInHash(null);
+  }
+
+  getActiveExecutableSqon() {
+    const { sqons, activeIndex } = this.state;
+    return resolveSyntheticSqon(sqons)(sqons[activeIndex]);
+  }
 
   // takes care of putting a new sqon into place while preserving references
-  const mergeSqonToActiveIndex = s => newSqon =>
-    setSqons(s)(
-      s.state.sqons.map((currentSqon, i) =>
-        i === s.state.activeIndex
-          ? {
-              ...currentSqon,
-              content: newSqon.content.map((newContent, _i) =>
-                isReference(currentSqon.content[_i]) ? currentSqon.content[_i] : newContent,
-              ),
-            }
-          : currentSqon,
-      ),
+  // TODO - move to @kfarranger/components/dist/AdvancedSqonBuilder/utils
+  mergeSqonToActiveIndex(newSqon) {
+    const { sqons, activeIndex } = this.state;
+    const updatedSqons = sqons.map((currentSqon, i) =>
+      i === activeIndex
+        ? {
+            ...currentSqon,
+            content: newSqon.content.map((newContent, _i) =>
+              isReference(currentSqon.content[_i]) ? currentSqon.content[_i] : newContent,
+            ),
+          }
+        : currentSqon,
     );
-  const getActiveExecutableSqon = s => () =>
-    resolveSyntheticSqon(s.state.sqons)(s.state.sqons[s.state.activeIndex]);
+    this.setSqons(updatedSqons);
+  }
 
-  const setStudyInHash = id => {
-    // set the current study by the hash,
-    //  it will flow back from `didUpdate`
-    history.replace({
-      ...history.location,
-      search: id ? stringify({ id }) : '',
+  setStudyInHash(virtualStudyId) {
+    const { history } = this.props;
+    this.setState({ virtualStudyId }, () => {
+      history.replace({
+        ...history.location,
+        search: virtualStudyId ? stringify({ id: virtualStudyId }) : '',
+      });
     });
-  };
+  }
 
-  return (
-    <Component
-      virtualStudyId={virtualStudyId}
-      initialState={initialState}
-      didMount={didMount}
-      didUpdate={didUpdate}
-    >
-      {s => {
-        const {
-          state: { sqons, activeIndex, uid },
-        } = s;
-        return children({
-          sqons,
-          setSqons: setSqons(s),
-          activeIndex,
-          setActiveSqonIndex: setActiveSqonIndex(s),
-          getActiveExecutableSqon: getActiveExecutableSqon(s),
-          mergeSqonToActiveIndex: mergeSqonToActiveIndex(s),
-          activeVirtualStudyId: virtualStudyId,
-          setActiveVirtualStudyId: setStudyInHash,
-          isOwner: uid === loggedInUser.egoId,
-        });
-      }}
-    </Component>
-  );
-});
+  render() {
+    // TODO - move `loggedInUser` to props
+    const {
+      children,
+      state: { loggedInUser },
+    } = this.props;
+    const { sqons, activeIndex, uid, virtualStudyId } = this.state;
 
-export default SQONProvider;
+    return children({
+      sqons,
+      setSqons: this.setSqons,
+      resetSqons: this.resetSqons,
+      activeIndex,
+      setActiveSqonIndex: this.setActiveSqonIndex,
+      getActiveExecutableSqon: this.getActiveExecutableSqon,
+      mergeSqonToActiveIndex: this.mergeSqonToActiveIndex,
+      activeVirtualStudyId: virtualStudyId,
+      setActiveVirtualStudyId: this.setStudyInHash,
+      isOwner: uid === loggedInUser.egoId,
+    });
+  }
+}
+
+export default compose(
+  withApi,
+  withRouter,
+  injectState,
+)(SQONProvider);
