@@ -36,6 +36,7 @@ import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
+import ErrorBoundary from 'ErrorBoundary';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -67,6 +68,7 @@ const App = compose(
   withTheme,
 )(({ editing, setEditing, state, api, theme }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
+
   return (
     <AppContainer>
       <Switch>
@@ -246,9 +248,11 @@ const App = compose(
 });
 
 const TranslatedApp = translate('translations', { withRef: true })(() => (
-  <ContextProvider>
-    <App />
-  </ContextProvider>
+  <ErrorBoundary>
+    <ContextProvider>
+      <App />
+    </ContextProvider>
+  </ErrorBoundary>
 ));
 
 export default hot(module)(TranslatedApp);
