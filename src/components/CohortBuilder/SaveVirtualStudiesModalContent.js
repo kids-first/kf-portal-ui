@@ -62,7 +62,7 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
         <ModalContentSection>
           <strong>Virtual Study name: *</strong>
           <span>
-            <Input value={name} onChange={this.onDataChange} />
+            <Input value={name} onChange={this.onDataChange} maxlength="60" />
           </span>
         </ModalContentSection>
         <ModalFooter
