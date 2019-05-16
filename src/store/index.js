@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import rootReducer from './reducers';
 import subscribe from './subscribers';
 
-let store = null;
+export let store = null;
 export const initStore = preloadedState => {
   const composeEnhancers = composeWithDevTools({
     // Specify extension’s options like name,
@@ -17,7 +17,7 @@ export const initStore = preloadedState => {
     // other store enhancers if any
   );
 
-  const store = createStore(rootReducer, preloadedState, enhancer);
+  store = createStore(rootReducer, preloadedState, enhancer);
 
   // Hooks the subscribers to the store
   subscribe(store);
