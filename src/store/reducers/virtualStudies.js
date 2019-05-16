@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 
 import {
-  LOAD_VIRTUAL_STUDY,
+  VIRTUAL_STUDY_LOAD_SUCCESS,
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
@@ -21,7 +21,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_VIRTUAL_STUDY:
+    case VIRTUAL_STUDY_LOAD_SUCCESS:
       return action.payload === null
         ? cloneDeep(initialState)
         : {

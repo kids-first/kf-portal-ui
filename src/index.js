@@ -18,25 +18,23 @@ initAnalyticsTracking();
 googleSDK();
 facebookSDK();
 
-const virtualStudies = loadDraftVirtualStudy() || undefined;
-const preloadedState = {
-  virtualStudies,
-};
-const store = initStore(preloadedState);
-
-const render = Component => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Component />
-    </Provider>,
-    getAppElement(),
-  );
+const render = rootElement => {
+  ReactDOM.render(rootElement, getAppElement());
 };
 
 if (maintenanceMode) {
-  render(MaintenancePage);
+  render(<MaintenancePage />);
 } else {
-  render(App);
+  const virtualStudies = loadDraftVirtualStudy() || undefined;
+  const preloadedState = {
+    virtualStudies,
+  };
+  const store = initStore(preloadedState);
+  render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+  );
 }
 
 navigator.serviceWorker.getRegistrations().then(registrations => {

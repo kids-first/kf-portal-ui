@@ -1,5 +1,7 @@
 import {
-  LOAD_VIRTUAL_STUDY,
+  VIRTUAL_STUDY_LOAD_REQUESTED,
+  VIRTUAL_STUDY_LOAD_SUCCESS,
+  VIRTUAL_STUDY_LOAD_FAILURE,
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
@@ -15,8 +17,12 @@ const api = initializeApi({
 });
 
 export const loadSavedVirtualStudy = virtualStudyId => {
-  return dispatch =>
-    getVirtualStudy(api)(virtualStudyId)
+  return dispatch => {
+    dispatch({
+      type: VIRTUAL_STUDY_LOAD_REQUESTED,
+      payload: virtualStudyId,
+    });
+    return getVirtualStudy(api)(virtualStudyId)
       .then(virtualStudy => {
         const {
           uid,
@@ -24,7 +30,7 @@ export const loadSavedVirtualStudy = virtualStudyId => {
         } = virtualStudy;
 
         dispatch({
-          type: LOAD_VIRTUAL_STUDY,
+          type: VIRTUAL_STUDY_LOAD_SUCCESS,
           payload: {
             sqons,
             activeIndex,
@@ -34,12 +40,17 @@ export const loadSavedVirtualStudy = virtualStudyId => {
         });
       })
       .catch(err => {
+        dispatch({
+          type: VIRTUAL_STUDY_LOAD_FAILURE,
+          payload: err,
+        });
         console.error(err.message);
       });
+  };
 };
 
 export const resetVirtualStudy = () => ({
-  type: LOAD_VIRTUAL_STUDY,
+  type: VIRTUAL_STUDY_LOAD_SUCCESS,
   payload: null,
 });
 
