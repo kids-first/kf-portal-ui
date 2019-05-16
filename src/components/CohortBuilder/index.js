@@ -5,6 +5,7 @@ import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withRouter } from 'react-router-dom';
 import urlJoin from 'url-join';
+import { isEqual } from 'lodash';
 
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
@@ -29,6 +30,8 @@ import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import PromptMessage from 'uikit/PromptMessage';
 import OpenMenuIcon from 'react-icons/lib/fa/folder';
 import SaveIcon from 'react-icons/lib/fa/file';
+
+const defaultSqon = [{ op: 'and', content: [] }];
 
 const Container = styled('div')`
   width: 100%;
@@ -152,8 +155,6 @@ const CohortBuilder = compose(
             });
             await deleteStudyCallback(activeVirtualStudyId);
             await refetchVirtualStudies();
-            // TODO : reset the sqon as soon as possible,
-            //  but not in case of a failure
             resetSqons();
           };
 
@@ -234,10 +235,7 @@ const CohortBuilder = compose(
               history.createHref({ ...history.location, search: `id=${id}` }),
             );
           const selectedStudy = findSelectedStudy();
-          // TODO fix potential bug with JSON serialized in a non-deterministic way
-          //  do a deep compare with an object instead
-          const syntheticSqonIsEmpty =
-            JSON.stringify(syntheticSqons) === '[{"op":"and","content":[]}]';
+          const syntheticSqonIsEmpty = isEqual(syntheticSqons, defaultSqon);
           return (
             <Container>
               <StylePromptMessage
@@ -261,8 +259,6 @@ const CohortBuilder = compose(
                     <WhiteButton
                       disabled={virtualStudyListIsLoading || !selectedStudy || !selectedStudy.id}
                       onClick={() => {
-                        // TODO : reset the sqon as soon as possible,
-                        //  but not in case of a failure
                         resetSqons();
                       }}
                     >
