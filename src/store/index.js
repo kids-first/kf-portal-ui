@@ -24,5 +24,3 @@ export const initStore = preloadedState => {
 
   return store;
 };
-
-export default store;
