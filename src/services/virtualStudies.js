@@ -1,8 +1,13 @@
+import { isNumber } from 'util';
 import urlJoin from 'url-join';
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+
+const isValidStudy = value => value && Array.isArray(value.sqons) && isNumber(value.activeIndex);
 
 export const getSavedVirtualStudyNames = async api =>
   api({
@@ -183,4 +188,24 @@ export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
       `),
     },
   });
+};
+
+export const loadDraftVirtualStudy = () => {
+  let virtualStudy = null;
+  const savedLocalState = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+  try {
+    virtualStudy = JSON.parse(savedLocalState);
+  } catch (err) {
+    console.error(`Error loading draft Virtual Study "${savedLocalState}"`, err);
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, null);
+  }
+
+  // validate the virtual study to avoid bugs accross versions
+  //  of the client that would be using different,
+  //  incompatible formats to store the virtual studies
+  return isValidStudy(virtualStudy) ? virtualStudy : null;
+};
+
+export const saveDraftVirtualStudy = virtualStudies => {
+  localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(virtualStudies));
 };
