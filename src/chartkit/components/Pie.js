@@ -49,6 +49,7 @@ class Pie extends Component {
       const { index } = data;
       this.setState({ highlightedIndex: index });
     }
+    e.target.style.cursor = 'pointer';
   }
 
   onMouseLeave(data, e) {
@@ -99,7 +100,6 @@ Pie.defaultProps = {
   isInteractive: true,
   colors: 'greys',
   tooltip: PieTooltip,
-  onClick: x => x,
   defs: [
     {
       id: 'lines',
