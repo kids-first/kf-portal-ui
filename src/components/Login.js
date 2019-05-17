@@ -29,6 +29,9 @@ import { FENCES, CAVATICA, GOOGLE, FACEBOOK, LOGIN_ERROR_DETAILS } from 'common/
 import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
 
+import { store } from '../store';
+import { loginSuccess, loginFailure } from '../store/actionCreators/user';
+
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
   const jwtUser = get(validatedPayload, 'context.user', {});
@@ -62,6 +65,8 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
 
   if (!jwtData) {
     setToken();
+    // clear the user details in the redux store
+    store.dispatch(loginFailure());
   } else {
     try {
       await setToken({ token: jwt, provider });
@@ -76,8 +81,13 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
       };
       await setUser({ ...loggedInUser, api });
       onFinish && onFinish(loggedInUser);
+
+      // store the user details in the redux store
+      store.dispatch(loginSuccess(loggedInUser));
     } catch (err) {
-      console.error(err);
+      console.error('Error during login', err);
+      // clear the user details in the redux store
+      store.dispatch(loginFailure());
     }
   }
   return jwtData;
