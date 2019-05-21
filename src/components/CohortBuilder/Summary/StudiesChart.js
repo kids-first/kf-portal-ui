@@ -2,11 +2,13 @@ import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import { get, size } from 'lodash';
+import { get, size, isEqual } from 'lodash';
 import gql from 'graphql-tag';
 import { withApi } from 'services/api';
 import QueriesResolver from '../QueriesResolver';
 import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -79,44 +81,74 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
     }),
   }));
 
-const StudiesChart = ({ studies, sqon, theme, api, isLoading: isParentLoading }) => (
-  <QueriesResolver
-    name="GQL_STUDIES_CHART"
-    api={api}
-    queries={toSingleStudyQueries({ studies, sqon })}
-  >
-    {({ isLoading, data }) => (
-      <CohortCard
-        title="Studies"
-        badge={data && !isLoading ? data.length : null}
-        loading={isLoading || isParentLoading}
+class StudiesChart extends React.Component {
+  addSqon = (field, value) => {
+    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+    let globalSqon = JSON.parse(savedSqon);
+
+    const pieSqon = {
+      op: 'in',
+      content: {
+        field: field,
+        value: [value],
+      },
+    };
+    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
+
+    if (globalSqonContent.filter(item => isEqual(item, pieSqon)).length === 0) {
+      globalSqonContent.push(pieSqon);
+    }
+
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
+    this.props.setSqons(globalSqon.sqons);
+  };
+
+  render() {
+    const { studies, sqon, theme, api, isLoading: isParentLoading } = this.props;
+    return (
+      <QueriesResolver
+        name="GQL_STUDIES_CHART"
+        api={api}
+        queries={toSingleStudyQueries({ studies, sqon })}
       >
-        {!data ? (
-          <div>No data</div>
-        ) : (
-          <BarChartContainer>
-            <HorizontalBar
-              showCursor={false}
-              data={data.map((d, i) => ({ ...d, id: i }))}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={studiesToolTip}
-              sortBy={sortDescParticipant}
-              tickInterval={4}
-              colors={getCohortBarColors(data, theme)}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Other Participants', color: theme.chartColors.purple },
-              ]}
-              padding={0.5}
-            />
-          </BarChartContainer>
+        {({ isLoading, data }) => (
+          <CohortCard
+            title="Studies"
+            badge={data && !isLoading ? data.length : null}
+            loading={isLoading || isParentLoading}
+          >
+            {!data ? (
+              <div>No data</div>
+            ) : (
+              <BarChartContainer>
+                <HorizontalBar
+                  showCursor={true}
+                  data={data.map((d, i) => ({ ...d, id: i }))}
+                  indexBy="label"
+                  keys={['probands', 'familyMembers']}
+                  tooltipFormatter={studiesToolTip}
+                  sortBy={sortDescParticipant}
+                  tickInterval={4}
+                  colors={getCohortBarColors(data, theme)}
+                  xTickTextLength={28}
+                  legends={[
+                    { title: 'Probands', color: theme.chartColors.blue },
+                    { title: 'Other Participants', color: theme.chartColors.purple },
+                  ]}
+                  padding={0.5}
+                  onClick={data => {
+                    this.addSqon('study.short_name', data.indexValue);
+                  }}
+                />
+              </BarChartContainer>
+            )}
+          </CohortCard>
         )}
-      </CohortCard>
-    )}
-  </QueriesResolver>
-);
+      </QueriesResolver>
+    );
+  }
+}
 
 export const studiesQuery = sqon => ({
   query: gql`
@@ -139,7 +171,15 @@ export const studiesQuery = sqon => ({
     ),
 });
 
+const mapDispatchToProps = {
+  setSqons,
+};
+
 export default compose(
   withTheme,
   withApi,
+  connect(
+    null,
+    mapDispatchToProps,
+  ),
 )(StudiesChart);
