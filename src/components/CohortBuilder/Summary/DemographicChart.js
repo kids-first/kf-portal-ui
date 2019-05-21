@@ -3,9 +3,11 @@ import gql from 'graphql-tag';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { get, startCase } from 'lodash';
+import { get, startCase, isEqual } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 import { CohortCard } from './ui';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
 
 const PieChartContainer = styled('div')`
   display: flex;
@@ -19,37 +21,84 @@ const PieChartContainer = styled('div')`
   bottom: 0px;
 `;
 
-const DemographicChart = ({ data, theme, isLoading: isParentLoading }) => (
-  <CohortCard showHeader={false} loading={isParentLoading}>
-    <PieChartContainer>
-      <Pie
-        style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-        title={'Gender'}
-        data={data.gender}
-        colors={[theme.chartColors.orange, '#FFFFFF']}
-      />
-      <Pie
-        style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
-        title={'Ethnicity'}
-        data={data.ethnicity}
-        colors={[theme.chartColors.darkblue, '#FFFFFF']}
-      />
-      <Pie
-        style={{ height: '42%', width: '50%' }}
-        title={'Race'}
-        data={data.race}
-        colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-      />
+class DemographicChart extends React.Component {
+  addQuery = (field, value) => {
+    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+    let globalSqon = JSON.parse(savedSqon);
 
-      <Pie
-        style={{ height: '42%', width: '50%' }}
-        title={'Family Composition'}
-        data={data.familyComposition}
-        colors={[theme.chartColors.lightblue, '#FFFFFF']}
-      />
-    </PieChartContainer>
-  </CohortCard>
-);
+    const pieSqon = {
+      op: 'in',
+      content: {
+        field: field,
+        value: [value],
+      },
+    };
+    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
+
+    if (globalSqonContent.filter(item => isEqual(item, pieSqon)).length === 0) {
+      globalSqonContent.push(pieSqon);
+    }
+
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
+    this.props.setSqons(globalSqon.sqons);
+  };
+
+  render() {
+    const { data, theme, isLoading: isParentLoading } = this.props;
+    return (
+      <CohortCard showHeader={false} loading={isParentLoading}>
+        <PieChartContainer>
+          <Pie
+            style={{
+              height: '42%',
+              width: '50%',
+              marginBottom: '10px',
+              marginTop: '5px',
+            }}
+            title={'Gender'}
+            data={data.gender}
+            colors={[theme.chartColors.orange, '#FFFFFF']}
+            onClick={data => {
+              const value = data.label;
+              this.addQuery('gender', value);
+            }}
+          />
+          <Pie
+            style={{ height: '42%', width: '50%', marginBottom: '10px', marginTop: '5px' }}
+            title={'Ethnicity'}
+            data={data.ethnicity}
+            colors={[theme.chartColors.darkblue, '#FFFFFF']}
+            onClick={data => {
+              const value = data.label.replace(' Or ', ' or ');
+              this.addQuery('ethnicity', value);
+            }}
+          />
+          <Pie
+            style={{ height: '42%', width: '50%' }}
+            title={'Race'}
+            data={data.race}
+            colors={[theme.chartColors.lightpurple, '#FFFFFF']}
+            onClick={data => {
+              const value = data.label.replace(' Or ', ' or ');
+              this.addQuery('race', value);
+            }}
+          />
+          <Pie
+            style={{ height: '42%', width: '50%' }}
+            title={'Family Composition'}
+            data={data.familyComposition}
+            colors={[theme.chartColors.lightblue, '#FFFFFF']}
+            onClick={data => {
+              const value = data.label.toLowerCase().replace('proband only', 'proband-only');
+              this.addQuery('family.family_compositions.composition', value);
+            }}
+          />
+        </PieChartContainer>
+      </CohortCard>
+    );
+  }
+}
 
 export const demographicQuery = sqon => ({
   query: gql`
@@ -110,4 +159,14 @@ export const demographicQuery = sqon => ({
 const keyToDisplay = key =>
   key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
 
-export default compose(withTheme)(DemographicChart);
+const mapDispatchToProps = {
+  setSqons,
+};
+
+export default compose(
+  withTheme,
+  connect(
+    null,
+    mapDispatchToProps,
+  ),
+)(DemographicChart);
