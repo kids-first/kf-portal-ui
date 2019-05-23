@@ -4,32 +4,68 @@ import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
-import _ from 'lodash';
+import _, { isEqual } from 'lodash';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
 
 const dataTypeTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
-const DataTypeChart = ({ data, theme, indexBy, axisLeftLegend, axisBottomLegend, tooltipFormatter}) => (
-    <VerticalBar
-      showCursor={false}
-      indexBy={indexBy || 'label'}
-      tooltipFormatter={tooltipFormatter || dataTypeTooltip}
-      sortByValue={true}
-      height={260}
-      bottomLegendOffset={20}
-      data={_(data)
-        .sortBy(d => d.value)
-        .map((d, i) => ({ ...d, id: i }))
-        .reverse()
-        .value()}
+class DataTypeChart extends React.Component {
+  addSqon = (field, value) => {
+    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+    let globalSqon = JSON.parse(savedSqon);
 
-      axisLeftLegend={axisLeftLegend}
-      axisBottomLegend={axisBottomLegend}
-      axisBottomFormat={() => {}}
-      colors={[theme.chartColors.lightblue]}
-    />
-);
+    const pieSqon = {
+      op: 'in',
+      content: {
+        field: field,
+        value: [value],
+      },
+    };
+    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
+
+    if (globalSqonContent.filter(item => isEqual(item, pieSqon)).length === 0) {
+      globalSqonContent.push(pieSqon);
+    }
+
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
+    this.props.setSqons(globalSqon.sqons);
+  };
+
+  render() {
+    const { data, theme, indexBy, axisLeftLegend, axisBottomLegend, tooltipFormatter } = this.props;
+    return (
+      <VerticalBar
+        showCursor={true}
+        indexBy={indexBy || 'label'}
+        tooltipFormatter={tooltipFormatter || dataTypeTooltip}
+        sortByValue={true}
+        height={260}
+        bottomLegendOffset={20}
+        data={_(data)
+          .sortBy(d => d.value)
+          .map((d, i) => ({ ...d, id: i }))
+          .reverse()
+          .value()}
+        axisLeftLegend={axisLeftLegend}
+        axisBottomLegend={axisBottomLegend}
+        axisBottomFormat={() => {}}
+        colors={[theme.chartColors.lightblue]}
+        onClick={data => {
+          this.addSqon(
+            axisBottomLegend === 'Data Type'
+              ? 'available_data_types'
+              : 'files.sequencing_experiments.experiment_strategy',
+            data.data.label,
+          );
+        }}
+      />
+    );
+  }
+}
 
 const toChartData = ({ key, doc_count }) => {
   const dataKey = key === '__missing__' ? 'No Data' : key;
@@ -42,7 +78,7 @@ const toChartData = ({ key, doc_count }) => {
 
 export const dataTypesQuery = sqon => ({
   query: gql`
-    query ($sqon: JSON) {
+    query($sqon: JSON) {
       participant {
         aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           files__data_type {
@@ -57,13 +93,13 @@ export const dataTypesQuery = sqon => ({
   `,
   variables: { sqon },
   transform: data => {
-    return get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(toChartData)
+    return get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(toChartData);
   },
 });
 
 export const experimentalStrategyQuery = sqon => ({
   query: gql`
-    query ($sqon: JSON) {
+    query($sqon: JSON) {
       participant {
         aggregations(filters: $sqon, aggregations_filter_themselves: true) {
           files__sequencing_experiments__experiment_strategy {
@@ -78,8 +114,22 @@ export const experimentalStrategyQuery = sqon => ({
   `,
   variables: { sqon },
   transform: data => {
-    return get(data, 'data.participant.aggregations.files__sequencing_experiments__experiment_strategy.buckets', []).map(toChartData)
+    return get(
+      data,
+      'data.participant.aggregations.files__sequencing_experiments__experiment_strategy.buckets',
+      [],
+    ).map(toChartData);
   },
 });
 
-export default compose(withTheme)(DataTypeChart);
+const mapDispatchToProps = {
+  setSqons,
+};
+
+export default compose(
+  withTheme,
+  connect(
+    null,
+    mapDispatchToProps,
+  ),
+)(DataTypeChart);
