@@ -1,22 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import autobind from 'auto-bind-es5';
+import { injectState } from 'freactal';
 
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 import PromptMessage from 'uikit/PromptMessage';
+import { deleteVirtualStudy } from '../../store/actionCreators/virtualStudies';
 
-export default class DeleteVirtualStudiesModalContent extends React.Component {
+class DeleteVirtualStudiesModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.deleting = false;
     autobind(this);
   }
-
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
-  };
 
   state = {
     errorMessage: null,
@@ -26,6 +24,20 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
     this.deleting = false;
   }
 
+  findSelectedStudy() {
+    const { virtualStudies, activeVirtualStudyId } = this.props;
+    return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
+  }
+
+  deleteStudy() {
+    const { activeVirtualStudyId, loggedInUser } = this.props;
+
+    return this.props.deleteVirtualStudy({
+      loggedInUser,
+      virtualStudyId: activeVirtualStudyId,
+    });
+  }
+
   submitHandler() {
     // prevent the user from bash clicking
     if (this.deleting) return;
@@ -33,10 +45,10 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
 
     this.setState({ errorMessage: null });
 
-    return this.props
-      .onSubmit()
+    return this.deleteStudy()
       .then(() => {
         this.setState({ errorMessage: null });
+        this.props.effects.unsetModal();
       })
       .catch(err => {
         this.deleting = false;
@@ -45,14 +57,14 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
   }
 
   render() {
-    const { name } = this.props;
+    const study = this.findSelectedStudy();
     const { errorMessage } = this.state;
 
     return (
       <React.Fragment>
         {errorMessage && <PromptMessage heading={'Error'} content={errorMessage} error />}
         <ModalContentSection>
-          Are you sure you want to delete "{name}"?
+          Are you sure you want to delete "{study && study.name}"?
           <br />
           <br />
           This action cannot be undone.
@@ -66,3 +78,21 @@ export default class DeleteVirtualStudiesModalContent extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  loggedInUser: state.user.loggedInUser,
+  activeVirtualStudyId: state.cohortBuilder.virtualStudyId,
+  virtualStudies: state.virtualStudies.studies,
+});
+
+const mapDispatchToProps = {
+  deleteVirtualStudy,
+};
+
+export default compose(
+  injectState,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(DeleteVirtualStudiesModalContent);

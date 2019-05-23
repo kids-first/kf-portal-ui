@@ -1,22 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import autobind from 'auto-bind-es5';
+import { injectState } from 'freactal';
 
 import Input from 'uikit/Input';
 import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 
-export default class SaveVirtualStudiesModalContent extends React.Component {
+import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
+
+class SaveVirtualStudiesModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.saving = false;
     autobind(this);
   }
-
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
 
   state = {
     name: '',
@@ -31,6 +31,21 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
     this.setState({ name: evt.target.value });
   }
 
+  saveStudy() {
+    const { name } = this.state;
+    const { loggedInUser, sqons, activeSqonIndex, saveVirtualStudy } = this.props;
+
+    return saveVirtualStudy({
+      name,
+      loggedInUser,
+      sqonsState: {
+        sqons,
+        activeIndex: activeSqonIndex,
+      },
+      description: '',
+    });
+  }
+
   submitHandler() {
     // prevent the user from bash clicking
     if (this.saving) return;
@@ -38,10 +53,10 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
 
     this.setState({ errorMessage: null });
 
-    return this.props
-      .onSubmit(this.state.name)
+    return this.saveStudy()
       .then(() => {
         this.setState({ errorMessage: null });
+        this.props.effects.unsetModal();
       })
       .catch(err => {
         this.saving = false;
@@ -74,3 +89,22 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  uid: state.user.uid,
+  loggedInUser: state.user.loggedInUser,
+  sqons: state.cohortBuilder.sqons,
+  activeSqonIndex: state.cohortBuilder.activeIndex,
+});
+
+const mapDispatchToProps = {
+  saveVirtualStudy,
+};
+
+export default compose(
+  injectState,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(SaveVirtualStudiesModalContent);

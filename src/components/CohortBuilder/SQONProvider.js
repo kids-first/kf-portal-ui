@@ -22,11 +22,6 @@ import {
 class SQONProvider extends React.Component {
   constructor(props) {
     super(props);
-
-    this.previousVirtualStudyId = null;
-    this.previousSqons = null;
-    this.previousActiveIndex = null;
-
     autobind(this);
   }
 
@@ -35,7 +30,6 @@ class SQONProvider extends React.Component {
   };
 
   loadVirtualStudy(virtualStudyId) {
-    this.previousVirtualStudyId = virtualStudyId;
     if (virtualStudyId === null) {
       this.resetSqons();
       return;
@@ -44,19 +38,25 @@ class SQONProvider extends React.Component {
   }
 
   componentDidMount() {
-    const { id: virtualStudyId } = parseQueryString(this.props.history.location.search);
-
-    if (virtualStudyId) {
+    const { virtualStudyId } = this.props;
+    const { id: urlVirtualStudyId } = parseQueryString(this.props.history.location.search);
+    if (urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
       this.loadVirtualStudy(virtualStudyId);
       return;
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { virtualStudyId } = this.props;
-
-    if (virtualStudyId !== null && virtualStudyId !== this.previousVirtualStudyId) {
-      this.loadVirtualStudy(virtualStudyId);
+    const { id: urlVirtualStudyId } = parseQueryString(this.props.history.location.search);
+    const { id: prevUrlVirtualStudyId } = parseQueryString(prevProps.history.location.search);
+    if (
+      urlVirtualStudyId &&
+      prevUrlVirtualStudyId !== urlVirtualStudyId &&
+      virtualStudyId !== urlVirtualStudyId
+    ) {
+      this.loadVirtualStudy(urlVirtualStudyId);
+      return;
     }
   }
 
@@ -108,6 +108,7 @@ class SQONProvider extends React.Component {
       setSqons,
     } = this.props;
 
+    // TODO redux - let the children call the actions?
     return children({
       sqons,
       setSqons: setSqons,
@@ -124,7 +125,7 @@ class SQONProvider extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { sqons, activeIndex, uid, virtualStudyId } = state.virtualStudies;
+  const { sqons, activeIndex, uid, virtualStudyId } = state.cohortBuilder;
   return {
     sqons,
     activeIndex,
