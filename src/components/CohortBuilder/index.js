@@ -54,11 +54,8 @@ const CohortBuilder = compose(
       activeIndex: activeSqonIndex,
       setActiveSqonIndex,
       setSqons,
-      resetSqons,
       getActiveExecutableSqon,
       mergeSqonToActiveIndex,
-      activeVirtualStudyId,
-      isOwner,
     }) => {
       const executableSqon = getActiveExecutableSqon();
       const sqonBuilderSqonsChange = ({ newSyntheticSqons }) => {

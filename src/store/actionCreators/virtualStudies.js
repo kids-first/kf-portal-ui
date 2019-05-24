@@ -112,8 +112,7 @@ export const loadSavedVirtualStudy = virtualStudyId => {
   };
 };
 
-// TODO JB rename to saveNewVirtualStudy
-export const saveVirtualStudy = ({ name, loggedInUser, sqonsState, description = '' }) => {
+export const saveNewVirtualStudy = ({ name, loggedInUser, sqonsState, description = '' }) => {
   return dispatch => {
     assertStudyName(name);
     assertUser(loggedInUser);

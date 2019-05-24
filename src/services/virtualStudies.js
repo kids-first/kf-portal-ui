@@ -5,7 +5,6 @@ import { print } from 'graphql/language/printer';
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-// TODO JB : use `egoId` in the key of the virtual study?
 const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
 
 const isValidStudy = value => value && Array.isArray(value.sqons) && isNumber(value.activeIndex);

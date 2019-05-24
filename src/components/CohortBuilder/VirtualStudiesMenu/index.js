@@ -17,9 +17,6 @@ import {
   fetchVirtualStudiesCollection,
   resetVirtualStudy,
   loadSavedVirtualStudy,
-  saveVirtualStudy,
-  deleteVirtualStudy,
-  setVirtualStudyId,
 } from '../../../store/actionCreators/virtualStudies';
 
 import Tooltip from 'uikit/Tooltip';
@@ -93,8 +90,7 @@ class VirtualStudiesMenu extends React.Component {
     return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
   }
 
-  // TODO JB rename
-  shizzle(virtualStudyId) {
+  handleOpen(virtualStudyId) {
     this.props.loadSavedVirtualStudy(virtualStudyId);
   }
 
@@ -134,7 +130,7 @@ class VirtualStudiesMenu extends React.Component {
             <LoadQuery
               studies={virtualStudies}
               selection={selectedStudy}
-              handleOpen={this.shizzle}
+              handleOpen={this.handleOpen}
               disabled={
                 virtualStudyListIsLoading ||
                 (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
@@ -207,9 +203,6 @@ const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
   resetVirtualStudy,
   loadSavedVirtualStudy,
-  saveVirtualStudy,
-  deleteVirtualStudy,
-  setVirtualStudyId,
 };
 
 export default compose(

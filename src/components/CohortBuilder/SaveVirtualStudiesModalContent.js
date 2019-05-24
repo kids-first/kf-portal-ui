@@ -9,7 +9,7 @@ import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 
-import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
+import { saveNewVirtualStudy } from '../../store/actionCreators/virtualStudies';
 
 class SaveVirtualStudiesModalContent extends React.Component {
   constructor(props) {
@@ -33,9 +33,9 @@ class SaveVirtualStudiesModalContent extends React.Component {
 
   saveStudy() {
     const { name } = this.state;
-    const { loggedInUser, sqons, activeSqonIndex, saveVirtualStudy } = this.props;
+    const { loggedInUser, sqons, activeSqonIndex, saveNewVirtualStudy } = this.props;
 
-    return saveVirtualStudy({
+    return saveNewVirtualStudy({
       name,
       loggedInUser,
       sqonsState: {
@@ -98,7 +98,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  saveVirtualStudy,
+  saveNewVirtualStudy: saveNewVirtualStudy,
 };
 
 export default compose(
