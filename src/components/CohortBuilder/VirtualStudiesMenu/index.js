@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { Trans } from 'react-i18next';
 import autobind from 'auto-bind-es5';
 import { isEqual } from 'lodash';
@@ -44,10 +43,6 @@ class VirtualStudiesMenu extends React.Component {
     super(props);
     autobind(this);
   }
-
-  static propTypes = {
-    setActiveVirtualStudyId: PropTypes.func.isRequired,
-  };
 
   componentDidMount() {
     const { uid, fetchVirtualStudiesCollection } = this.props;
@@ -100,9 +95,7 @@ class VirtualStudiesMenu extends React.Component {
 
   // TODO JB rename
   shizzle(virtualStudyId) {
-    this.props.loadSavedVirtualStudy(virtualStudyId).then(() => {
-      this.props.setActiveVirtualStudyId(virtualStudyId);
-    });
+    this.props.loadSavedVirtualStudy(virtualStudyId);
   }
 
   render() {

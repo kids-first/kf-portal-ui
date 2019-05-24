@@ -58,7 +58,6 @@ const CohortBuilder = compose(
       getActiveExecutableSqon,
       mergeSqonToActiveIndex,
       activeVirtualStudyId,
-      setActiveVirtualStudyId,
       isOwner,
     }) => {
       const executableSqon = getActiveExecutableSqon();
@@ -128,7 +127,7 @@ const CohortBuilder = compose(
             }
           />
 
-          <VirtualStudiesMenu setActiveVirtualStudyId={setActiveVirtualStudyId} />
+          <VirtualStudiesMenu />
 
           <FullWidthWhite>
             <Content>

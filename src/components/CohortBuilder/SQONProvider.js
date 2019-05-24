@@ -40,29 +40,41 @@ class SQONProvider extends React.Component {
   componentDidMount() {
     const { virtualStudyId } = this.props;
     const { id: urlVirtualStudyId } = parseQueryString(this.props.history.location.search);
+
+    // load the study in url if it is not already loaded (e.g. from local storage or previous mounting)
     if (urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
-      this.loadVirtualStudy(virtualStudyId);
+      this.loadVirtualStudy(urlVirtualStudyId);
+      return;
+    }
+
+    // add the id of the study to the url if it is not set, yet
+    if (!urlVirtualStudyId && virtualStudyId) {
+      this.setStudyInUrl(virtualStudyId);
       return;
     }
   }
 
   componentDidUpdate(prevProps) {
     const { virtualStudyId } = this.props;
+    const { virtualStudyId: prevVirtualStudyId } = prevProps;
     const { id: urlVirtualStudyId } = parseQueryString(this.props.history.location.search);
     const { id: prevUrlVirtualStudyId } = parseQueryString(prevProps.history.location.search);
-    if (
-      urlVirtualStudyId &&
-      prevUrlVirtualStudyId !== urlVirtualStudyId &&
-      virtualStudyId !== urlVirtualStudyId
-    ) {
-      this.loadVirtualStudy(urlVirtualStudyId);
+
+    // update current virtual study when url change
+    if (prevUrlVirtualStudyId !== urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.loadVirtualStudy(urlVirtualStudyId || null);
+      return;
+    }
+
+    // update url when current virtual study change
+    if (virtualStudyId !== prevVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.setStudyInUrl(virtualStudyId);
       return;
     }
   }
 
   resetSqons() {
     this.props.resetVirtualStudy();
-    this.setStudyInHash(null);
   }
 
   getActiveExecutableSqon() {
@@ -87,9 +99,8 @@ class SQONProvider extends React.Component {
     this.props.setSqons(updatedSqons);
   }
 
-  setStudyInHash(virtualStudyId) {
-    const { history, setVirtualStudyId } = this.props;
-    setVirtualStudyId(virtualStudyId);
+  setStudyInUrl(virtualStudyId) {
+    const { history } = this.props;
     history.replace({
       ...history.location,
       search: virtualStudyId ? stringify({ id: virtualStudyId }) : '',
@@ -118,7 +129,6 @@ class SQONProvider extends React.Component {
       getActiveExecutableSqon: this.getActiveExecutableSqon,
       mergeSqonToActiveIndex: this.mergeSqonToActiveIndex,
       activeVirtualStudyId: virtualStudyId,
-      setActiveVirtualStudyId: this.setStudyInHash,
       isOwner: uid === loggedInUser.egoId,
     });
   }
