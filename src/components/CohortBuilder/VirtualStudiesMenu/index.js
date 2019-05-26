@@ -31,7 +31,7 @@ import DeleteIcon from 'react-icons/lib/fa/trash';
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
 import DeleteVirtualStudiesModalContent from '../DeleteVirtualStudiesModalContent';
 
-import './index.css';
+import './index.postcss';
 
 const defaultSqon = [{ op: 'and', content: [] }];
 
