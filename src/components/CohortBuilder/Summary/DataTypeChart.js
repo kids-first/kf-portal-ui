@@ -1,39 +1,32 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { get } from 'lodash';
+import _, { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
-import _, { isEqual } from 'lodash';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
+import { mergeSqonAtIndex } from '../../../common/sqonUtils';
 
 const dataTypeTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
 class DataTypeChart extends React.Component {
-  addSqon = (field, value) => {
-    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
-    let globalSqon = JSON.parse(savedSqon);
+  addSqon(field, value) {
+    const { virtualStudy, setSqons } = this.props;
 
-    const pieSqon = {
+    const newSqon = {
       op: 'in',
       content: {
         field: field,
         value: [value],
       },
     };
-    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
 
-    if (globalSqonContent.filter(item => isEqual(item, pieSqon)).length === 0) {
-      globalSqonContent.push(pieSqon);
-    }
-
-    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
-    this.props.setSqons(globalSqon.sqons);
-  };
+    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    setSqons(modifiedSqons);
+  }
 
   render() {
     const { data, theme, indexBy, axisLeftLegend, axisBottomLegend, tooltipFormatter } = this.props;
@@ -122,6 +115,10 @@ export const experimentalStrategyQuery = sqon => ({
   },
 });
 
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
 const mapDispatchToProps = {
   setSqons,
 };
@@ -129,7 +126,7 @@ const mapDispatchToProps = {
 export default compose(
   withTheme,
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
 )(DataTypeChart);

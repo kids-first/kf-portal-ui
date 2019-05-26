@@ -3,11 +3,12 @@ import gql from 'graphql-tag';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
-import { get, startCase, isEqual } from 'lodash';
+import { get, startCase } from 'lodash';
 import Pie from 'chartkit/components/Pie';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
+import { mergeSqonAtIndex } from '../../../common/sqonUtils';
 
 const PieChartContainer = styled('div')`
   display: flex;
@@ -23,25 +24,18 @@ const PieChartContainer = styled('div')`
 
 class DemographicChart extends React.Component {
   addQuery = (field, value) => {
-    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
-    let globalSqon = JSON.parse(savedSqon);
+    const { virtualStudy, setSqons } = this.props;
 
-    const pieSqon = {
+    const newSqon = {
       op: 'in',
       content: {
         field: field,
         value: [value],
       },
     };
-    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
 
-    if (globalSqonContent.filter(item => isEqual(item, pieSqon)).length === 0) {
-      globalSqonContent.push(pieSqon);
-    }
-
-    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
-    this.props.setSqons(globalSqon.sqons);
+    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    setSqons(modifiedSqons);
   };
 
   render() {
@@ -159,6 +153,10 @@ export const demographicQuery = sqon => ({
 const keyToDisplay = key =>
   key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
 
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
 const mapDispatchToProps = {
   setSqons,
 };
@@ -166,7 +164,7 @@ const mapDispatchToProps = {
 export default compose(
   withTheme,
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
 )(DemographicChart);
