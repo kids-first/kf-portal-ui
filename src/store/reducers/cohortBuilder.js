@@ -26,22 +26,28 @@ const initialState = {
   activeIndex: 0,
   uid: null,
   virtualStudyId: null,
+  isLoading: false,
   error: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case VIRTUAL_STUDY_LOAD_REQUESTED:
-      return cloneDeep(initialState);
+      return {
+        ...cloneDeep(initialState),
+        isLoading: true,
+      };
     case VIRTUAL_STUDY_LOAD_SUCCESS:
       return {
         ...cloneDeep(initialState),
         ...action.payload,
+        isLoading: false,
       };
     case VIRTUAL_STUDY_LOAD_FAILURE:
       return {
         ...state,
         error: action.payload,
+        isLoading: false,
       };
 
     case VIRTUAL_STUDY_RESET:

@@ -1,3 +1,5 @@
+@use postcss-nested;
+
 .virtual-study-modal {
   max-width: 800px;
 }
@@ -7,9 +9,6 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 30px;
-}
-
-.virtual-studies-menu.content {
   padding-left: 30px;
   padding-right: 30px;
 }
@@ -24,30 +23,20 @@
   max-width: 1150px;
 }
 
-.virtual-studies-menu .virtual-studies-action-bar > div {
-  margin-left: 10px;
-}
+.virtual-studies-action-bar {
+  & .button-group {
+    margin-left: 10px;
 
-/* .virtual-studies-open */
-/* .virtual-studies-share */
-
-.virtual-studies-save-as {
-  & .button-icon {
-    margin-top: -2px;
+    & .button-text {
+      margin-left: 5px;
+    }
   }
-  & .button-text {
-    margin-left: 5px;
-  }
-}
 
-.virtual-studies-new {
-  & .button-text {
-    margin-left: 5px;
-  }
-}
-
-.virtual-studies-delete {
-  & .button-icon {
-    margin-top: -2px;
+  .virtual-studies-delete,
+  .virtual-studies-save,
+  .virtual-studies-save-as {
+    & .button-icon {
+      margin-top: -2px;
+    }
   }
 }
