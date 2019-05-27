@@ -150,7 +150,7 @@ class VirtualStudiesMenu extends React.Component {
     const cantSave = loading || syntheticSqonIsEmpty || !activeVirtualStudyId || !isOwner;
     const cantSaveAs = loading || syntheticSqonIsEmpty;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
-    const cantShare = loading || !activeVirtualStudyId;
+    const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
     return (
       <Row className="virtual-studies-menu container">
