@@ -28,45 +28,36 @@ export const getSavedVirtualStudyNames = async api =>
     },
   });
 
-export const createNewVirtualStudy = async ({
-  sqonsState,
-  loggedInUser,
-  api,
-  name = '',
-  description = '',
-}) => {
-  if (!name.length) {
-    throw new Error('Study must have name');
-  }
-  const { sqons, activeIndex } = sqonsState;
+const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
+  const { id, alias: name } = newVirtualStudy;
+  const { egoId, _id: personaRecordId } = loggedInUser;
+
   const {
     data: {
       self: { virtualStudies: currentVirtualStudies },
     },
   } = await getSavedVirtualStudyNames(api);
-  const { egoId, _id: personaRecordId } = loggedInUser;
 
-  const newVirtualStudy = await api({
-    url: urlJoin(shortUrlApi, 'shorten'),
-    body: JSON.stringify({
-      userid: egoId,
-      alias: name,
-      sharedPublicly: false,
-      content: {
-        sqons,
-        activeIndex,
-        description,
-      },
-    }),
-  });
+  // const virtualStudies = currentVirtualStudies.some(vs => vs.id === id) ?
+  let studyFound = false;
+  const virtualStudies = currentVirtualStudies.reduce((studies, study) => {
+    if (study.id === id) {
+      studyFound = true;
+      return studies.concat({ id, name });
+    }
+    return studies.concat(study);
+  }, []);
 
-  const { id } = newVirtualStudy;
-  await api({
+  if (!studyFound) {
+    virtualStudies.push({ id, name });
+  }
+
+  return await api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
     body: {
       variables: {
         egoId,
-        virtualStudies: [...currentVirtualStudies, { id, name }],
+        virtualStudies,
         personaRecordId,
       },
       query: print(gql`
@@ -91,6 +82,34 @@ export const createNewVirtualStudy = async ({
       `),
     },
   });
+};
+
+export const createNewVirtualStudy = async ({
+  sqonsState,
+  loggedInUser,
+  api,
+  name = '',
+  description = '',
+}) => {
+  if (!name.length) {
+    throw new Error('Study must have name');
+  }
+  const { sqons, activeIndex } = sqonsState;
+  const { egoId } = loggedInUser;
+
+  const newVirtualStudy = await api({
+    url: urlJoin(shortUrlApi, 'shorten'),
+    body: JSON.stringify({
+      userid: egoId,
+      alias: name,
+      sharedPublicly: false,
+      content: {
+        sqons,
+        activeIndex,
+        description,
+      },
+    }),
+  });
 
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.virtualStudies,
@@ -98,7 +117,15 @@ export const createNewVirtualStudy = async ({
     label: JSON.stringify(newVirtualStudy),
   });
 
-  return newVirtualStudy;
+  const {
+    data: {
+      userUpdate: {
+        record: { virtualStudies: updatedStudies },
+      },
+    },
+  } = await updateStudiesInPersona(api, loggedInUser, newVirtualStudy);
+
+  return [newVirtualStudy, updatedStudies];
 };
 
 export const getVirtualStudy = api => virtualStudyId => {
@@ -114,7 +141,13 @@ export const getVirtualStudy = api => virtualStudyId => {
   });
 };
 
-export const updateVirtualStudy = async ({ sqonsState, api, name, description = '' }) => {
+export const updateVirtualStudy = async ({
+  sqonsState,
+  api,
+  loggedInUser,
+  name,
+  description = '',
+}) => {
   const { sqons, activeIndex, virtualStudyId } = sqonsState;
   let existingVirtualStudy = null;
   try {
@@ -143,7 +176,15 @@ export const updateVirtualStudy = async ({ sqonsState, api, name, description = 
     label: JSON.stringify(updatedStudy),
   });
 
-  return updatedStudy;
+  const {
+    data: {
+      userUpdate: {
+        record: { virtualStudies: updatedStudies },
+      },
+    },
+  } = await updateStudiesInPersona(api, loggedInUser, updatedStudy);
+
+  return [updatedStudy, updatedStudies];
 };
 
 export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {

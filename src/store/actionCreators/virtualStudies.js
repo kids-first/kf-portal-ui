@@ -137,7 +137,7 @@ export const saveVirtualStudy = ({ loggedInUser, sqonsState, name, description =
       api,
       ...studyInfo,
     })
-      .then(newStudy => {
+      .then(([newStudy, updatedStudies]) => {
         dispatch({
           type: VIRTUAL_STUDY_SAVE_SUCCESS,
           payload: {
@@ -147,7 +147,10 @@ export const saveVirtualStudy = ({ loggedInUser, sqonsState, name, description =
             description: newStudy.content.description || '',
           },
         });
-        dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId));
+        dispatch({
+          type: FETCH_VIRTUAL_STUDIES_SUCCESS,
+          payload: updatedStudies,
+        });
       })
       .catch(err => {
         dispatch({

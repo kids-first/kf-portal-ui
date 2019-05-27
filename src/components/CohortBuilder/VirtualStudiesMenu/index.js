@@ -133,6 +133,7 @@ class VirtualStudiesMenu extends React.Component {
       sqons,
       activeVirtualStudyId,
       virtualStudyIsLoading,
+      virtualStudyName,
       virtualStudies,
       virtualStudiesAreLoading,
       isOwner,
@@ -155,7 +156,7 @@ class VirtualStudiesMenu extends React.Component {
       <Row className="virtual-studies-menu container">
         <Row>
           <H1 className="heading-with-study">
-            {selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data'}
+            {virtualStudyName ? `Virtual Study: ${virtualStudyName}` : 'Explore Data'}
           </H1>
         </Row>
 
@@ -233,6 +234,7 @@ const mapStateToProps = state => {
     isOwner: cohortBuilder.uid === user.uid,
     sqons: cohortBuilder.sqons,
     activeVirtualStudyId: cohortBuilder.virtualStudyId,
+    virtualStudyName: cohortBuilder.name,
     virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
