@@ -1,28 +1,101 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { get } from 'lodash';
+import { get, isEqual } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
-const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
-  <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
-    <VerticalBar
-      showCursor={false}
-      data={data}
-      indexBy="label"
-      tooltipFormatter={ageAtDiagnosisTooltip}
-      sortByValue={true}
-      height={225}
-      colors={[theme.chartColors.lightblue]}
-    />
-  </CohortCard>
-);
+class AgeDiagChart extends React.Component {
+  addSqon = (field, value) => {
+    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+    let globalSqon = JSON.parse(savedSqon);
+    let ageSqon = {};
+    switch (value) {
+      case 'Newborn':
+        ageSqon = {
+          op: '<=',
+          content: { field: field, value: [364] },
+        };
+        break;
+      case '1 - 5':
+        ageSqon = {
+          op: 'between',
+          content: { field: field, value: [365, 1824] },
+        };
+        break;
+      case '5 - 10':
+        ageSqon = {
+          op: 'between',
+          content: { field: field, value: [1825, 3649] },
+        };
+        break;
+      case '10 - 15':
+        ageSqon = {
+          op: 'between',
+          content: { field: field, value: [3650, 5474] },
+        };
+        break;
+      case '15 - 18':
+        ageSqon = {
+          op: 'between',
+          content: { field: field, value: [5475, 6569] },
+        };
+        break;
+      case 'Adult':
+        ageSqon = {
+          op: '>=',
+          content: { field: field, value: [6570] },
+        };
+        break;
+      default:
+    }
+
+    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
+
+    globalSqonContent.forEach(item => {
+      if (item.content.field === field) {
+        item.content.value = ageSqon.content.value;
+        item.op = ageSqon.op;
+      }
+    });
+
+    if (globalSqonContent.filter(item => isEqual(item, ageSqon)).length === 0) {
+      globalSqonContent.push(ageSqon);
+    }
+
+    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
+    this.props.setSqons(globalSqon.sqons);
+  };
+
+  render() {
+    const { data, theme, isLoading: isParentLoading } = this.props;
+    return (
+      <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
+        <VerticalBar
+          showCursor={true}
+          data={data}
+          indexBy="label"
+          tooltipFormatter={ageAtDiagnosisTooltip}
+          sortByValue={true}
+          height={225}
+          colors={[theme.chartColors.lightblue]}
+          onClick={data => {
+            this.addSqon('diagnoses.age_at_event_days', data.data.label);
+          }}
+        />
+      </CohortCard>
+    );
+  }
+}
+
 export const ageDiagQuery = sqon => ({
   variables: { sqon },
   query: gql`
@@ -121,4 +194,14 @@ export const ageDiagQuery = sqon => ({
   ],
 });
 
-export default compose(withTheme)(AgeDiagChart);
+const mapDispatchToProps = {
+  setSqons,
+};
+
+export default compose(
+  withTheme,
+  connect(
+    null,
+    mapDispatchToProps,
+  ),
+)(AgeDiagChart);
