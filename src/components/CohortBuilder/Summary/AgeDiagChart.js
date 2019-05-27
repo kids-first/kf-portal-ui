@@ -1,12 +1,13 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { get, isEqual } from 'lodash';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
+import { mergeSqonAtIndex } from '../../../common/sqonUtils';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -14,43 +15,42 @@ const ageAtDiagnosisTooltip = data => {
 
 class AgeDiagChart extends React.Component {
   addSqon = (field, value) => {
-    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
-    let globalSqon = JSON.parse(savedSqon);
-    let ageSqon = {};
+    const { virtualStudy, setSqons } = this.props;
+
+    let newSqon = {};
     switch (value) {
       case 'Newborn':
-        ageSqon = {
+        newSqon = {
           op: '<=',
           content: { field: field, value: [364] },
         };
         break;
       case '1 - 5':
-        ageSqon = {
+        newSqon = {
           op: 'between',
           content: { field: field, value: [365, 1824] },
         };
         break;
       case '5 - 10':
-        ageSqon = {
+        newSqon = {
           op: 'between',
           content: { field: field, value: [1825, 3649] },
         };
         break;
       case '10 - 15':
-        ageSqon = {
+        newSqon = {
           op: 'between',
           content: { field: field, value: [3650, 5474] },
         };
         break;
       case '15 - 18':
-        ageSqon = {
+        newSqon = {
           op: 'between',
           content: { field: field, value: [5475, 6569] },
         };
         break;
       case 'Adult':
-        ageSqon = {
+        newSqon = {
           op: '>=',
           content: { field: field, value: [6570] },
         };
@@ -58,21 +58,14 @@ class AgeDiagChart extends React.Component {
       default:
     }
 
-    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
-
-    globalSqonContent.forEach(item => {
-      if (item.content.field === field) {
-        item.content.value = ageSqon.content.value;
-        item.op = ageSqon.op;
-      }
-    });
-
-    if (globalSqonContent.filter(item => isEqual(item, ageSqon)).length === 0) {
-      globalSqonContent.push(ageSqon);
-    }
-
-    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
-    this.props.setSqons(globalSqon.sqons);
+    const modifiedSqons = mergeSqonAtIndex(
+      newSqon,
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      'ageDiagnosis',
+      field,
+    );
+    setSqons(modifiedSqons);
   };
 
   render() {
@@ -194,6 +187,10 @@ export const ageDiagQuery = sqon => ({
   ],
 });
 
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
 const mapDispatchToProps = {
   setSqons,
 };
@@ -201,7 +198,7 @@ const mapDispatchToProps = {
 export default compose(
   withTheme,
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
 )(AgeDiagChart);

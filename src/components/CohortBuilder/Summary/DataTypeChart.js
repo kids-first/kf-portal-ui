@@ -24,7 +24,13 @@ class DataTypeChart extends React.Component {
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    const modifiedSqons = mergeSqonAtIndex(
+      newSqon,
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      'dataType',
+      field,
+    );
     setSqons(modifiedSqons);
   }
 

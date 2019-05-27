@@ -23,7 +23,7 @@ const PieChartContainer = styled('div')`
 `;
 
 class DemographicChart extends React.Component {
-  addQuery = (field, value) => {
+  addSqon = (field, value) => {
     const { virtualStudy, setSqons } = this.props;
 
     const newSqon = {
@@ -34,7 +34,13 @@ class DemographicChart extends React.Component {
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    const modifiedSqons = mergeSqonAtIndex(
+      newSqon,
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      null,
+      null,
+    );
     setSqons(modifiedSqons);
   };
 
@@ -55,7 +61,7 @@ class DemographicChart extends React.Component {
             colors={[theme.chartColors.orange, '#FFFFFF']}
             onClick={data => {
               const value = data.label;
-              this.addQuery('gender', value);
+              this.addSqon('gender', value);
             }}
           />
           <Pie
@@ -65,7 +71,7 @@ class DemographicChart extends React.Component {
             colors={[theme.chartColors.darkblue, '#FFFFFF']}
             onClick={data => {
               const value = data.label.replace(' Or ', ' or ');
-              this.addQuery('ethnicity', value);
+              this.addSqon('ethnicity', value);
             }}
           />
           <Pie
@@ -75,7 +81,7 @@ class DemographicChart extends React.Component {
             colors={[theme.chartColors.lightpurple, '#FFFFFF']}
             onClick={data => {
               const value = data.label.replace(' Or ', ' or ');
-              this.addQuery('race', value);
+              this.addSqon('race', value);
             }}
           />
           <Pie
@@ -85,7 +91,7 @@ class DemographicChart extends React.Component {
             colors={[theme.chartColors.lightblue, '#FFFFFF']}
             onClick={data => {
               const value = data.label.toLowerCase().replace('proband only', 'proband-only');
-              this.addQuery('family.family_compositions.composition', value);
+              this.addSqon('family.family_compositions.composition', value);
             }}
           />
         </PieChartContainer>
