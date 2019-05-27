@@ -20,6 +20,7 @@ import {
   getVirtualStudy,
   getSavedVirtualStudyNames,
   createNewVirtualStudy,
+  updateVirtualStudy,
   deleteVirtualStudy as deleteVirtualStudyApi,
 } from '../../services/virtualStudies';
 import { initializeApi } from '../../services/api';
@@ -99,6 +100,8 @@ export const loadSavedVirtualStudy = virtualStudyId => {
             activeIndex,
             uid,
             virtualStudyId,
+            name: virtualStudy.alias || '',
+            description: virtualStudy.content.description || '',
           },
         });
       })
@@ -112,7 +115,7 @@ export const loadSavedVirtualStudy = virtualStudyId => {
   };
 };
 
-export const saveNewVirtualStudy = ({ name, loggedInUser, sqonsState, description = '' }) => {
+export const saveVirtualStudy = ({ loggedInUser, sqonsState, name, description = '' }) => {
   return dispatch => {
     assertStudyName(name);
     assertUser(loggedInUser);
@@ -121,7 +124,7 @@ export const saveNewVirtualStudy = ({ name, loggedInUser, sqonsState, descriptio
       loggedInUser,
       sqonsState,
       name,
-      description: '',
+      description,
     };
 
     dispatch({
@@ -129,20 +132,22 @@ export const saveNewVirtualStudy = ({ name, loggedInUser, sqonsState, descriptio
       payload: studyInfo,
     });
 
-    return createNewVirtualStudy({
+    const saveDelegate = sqonsState.virtualStudyId ? updateVirtualStudy : createNewVirtualStudy;
+    return saveDelegate({
       api,
       ...studyInfo,
     })
-      .then(({ id: newStudyId }) => {
+      .then(newStudy => {
         dispatch({
           type: VIRTUAL_STUDY_SAVE_SUCCESS,
           payload: {
-            virtualStudyId: newStudyId,
+            virtualStudyId: newStudy.id,
+            uid: newStudy.uid,
+            name: newStudy.alias || '',
+            description: newStudy.content.description || '',
           },
         });
-        dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId)).then(() => {
-          setVirtualStudyId(newStudyId);
-        });
+        dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId));
       })
       .catch(err => {
         dispatch({

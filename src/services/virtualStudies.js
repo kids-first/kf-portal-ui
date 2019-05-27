@@ -1,11 +1,13 @@
 import { isNumber } from 'util';
+import { pick } from 'lodash';
 import urlJoin from 'url-join';
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
+const COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY = 'DRAFT_VIRTUAL_STUDY';
+const DRAFT_FIELDS = ['sqons', 'activeIndex', 'name', 'description', 'uid', 'virtualStudyId'];
 
 const isValidStudy = value => value && Array.isArray(value.sqons) && isNumber(value.activeIndex);
 
@@ -42,7 +44,7 @@ export const createNewVirtualStudy = async ({
       self: { virtualStudies: currentVirtualStudies },
     },
   } = await getSavedVirtualStudyNames(api);
-  const { egoId } = loggedInUser;
+  const { egoId, _id: personaRecordId } = loggedInUser;
 
   const newVirtualStudy = await api({
     url: urlJoin(shortUrlApi, 'shorten'),
@@ -65,7 +67,7 @@ export const createNewVirtualStudy = async ({
       variables: {
         egoId,
         virtualStudies: [...currentVirtualStudies, { id, name }],
-        personaRecordId: loggedInUser._id,
+        personaRecordId,
       },
       query: print(gql`
         mutation(
@@ -89,11 +91,13 @@ export const createNewVirtualStudy = async ({
       `),
     },
   });
+
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.virtualStudies,
     action: TRACKING_EVENTS.actions.save,
     label: JSON.stringify(newVirtualStudy),
   });
+
   return newVirtualStudy;
 };
 
@@ -110,25 +114,25 @@ export const getVirtualStudy = api => virtualStudyId => {
   });
 };
 
-export const updateVirtualStudy = async ({ id, sqonsState, api, name, description }) => {
-  const { sqons, activeIndex } = sqonsState;
+export const updateVirtualStudy = async ({ sqonsState, api, name, description = '' }) => {
+  const { sqons, activeIndex, virtualStudyId } = sqonsState;
   let existingVirtualStudy = null;
   try {
-    existingVirtualStudy = await getVirtualStudy(api)(id);
+    existingVirtualStudy = await getVirtualStudy(api)(virtualStudyId);
   } catch (err) {
-    return Promise.reject(`Failed to update virtual study ${id}: ${err.message}`);
+    return Promise.reject(`Failed to update virtual study ${virtualStudyId}: ${err.message}`);
   }
 
   const updatedStudy = await api({
     method: 'PUT',
-    url: urlJoin(shortUrlApi, id),
+    url: urlJoin(shortUrlApi, virtualStudyId),
     body: JSON.stringify({
       alias: name || existingVirtualStudy.alias,
-      sharedPublicly: existingVirtualStudy.sharedPublicly,
+      sharedPublicly: existingVirtualStudy.sharedPublicly || false,
       content: {
         sqons: sqons || existingVirtualStudy.content.sqons,
         activeIndex: activeIndex || existingVirtualStudy.content.activeIndex,
-        description: description || existingVirtualStudy.content.description,
+        description: description,
       },
     }),
   });
@@ -192,20 +196,23 @@ export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
 
 export const loadDraftVirtualStudy = () => {
   let virtualStudy = null;
-  const savedLocalState = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
+  const savedLocalState = localStorage.getItem(COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY);
   try {
     virtualStudy = JSON.parse(savedLocalState);
   } catch (err) {
     console.error(`Error loading draft Virtual Study "${savedLocalState}"`, err);
-    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, null);
+    localStorage.setItem(COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY, null);
   }
 
   // validate the virtual study to avoid bugs accross versions
   //  of the client that would be using different,
   //  incompatible formats to store the virtual studies
-  return isValidStudy(virtualStudy) ? virtualStudy : null;
+  return isValidStudy(virtualStudy) ? pick(virtualStudy, DRAFT_FIELDS) : null;
 };
 
-export const saveDraftVirtualStudy = virtualStudies => {
-  localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(virtualStudies));
+export const saveDraftVirtualStudy = virtualStudy => {
+  localStorage.setItem(
+    COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY,
+    JSON.stringify(pick(virtualStudy, DRAFT_FIELDS)),
+  );
 };

@@ -3,13 +3,12 @@ import 'index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { initStore } from './store/index';
+import { initStore, getPreloadedState } from './store/index';
 import App from './App';
 import { getAppElement } from './services/globalDomNodes.js';
 import googleSDK from 'services/googleSDK';
 import facebookSDK from 'services/facebookSDK';
 import { initAnalyticsTracking } from 'services/analyticsTracking';
-import { loadDraftVirtualStudy } from 'services/virtualStudies';
 import { maintenanceMode } from 'common/injectGlobals';
 import MaintenancePage from './MaintenancePage';
 import './i18n';
@@ -31,10 +30,7 @@ if (maintenanceMode) {
     </Provider>,
   );
 } else {
-  const currentVirtualStudy = loadDraftVirtualStudy() || undefined;
-  const preloadedState = {
-    cohortBuilder: currentVirtualStudy,
-  };
+  const preloadedState = getPreloadedState();
   const store = initStore(preloadedState);
   render(
     <Provider store={store}>

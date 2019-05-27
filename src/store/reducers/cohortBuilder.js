@@ -16,7 +16,7 @@ import {
   SET_VIRTUAL_STUDY_ID,
 } from '../actionTypes';
 
-const initialState = {
+export const initialState = {
   sqons: [
     {
       op: 'and',
@@ -26,6 +26,8 @@ const initialState = {
   activeIndex: 0,
   uid: null,
   virtualStudyId: null,
+  name: '',
+  description: '',
   isLoading: false,
   error: null,
 };

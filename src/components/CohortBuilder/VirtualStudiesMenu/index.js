@@ -80,7 +80,13 @@ class VirtualStudiesMenu extends React.Component {
   }
 
   onSaveClick() {
-    throw new Error('NotImplementedYet');
+    this.props.effects.setModal({
+      title: 'Save Virtual Study',
+      classNames: {
+        modal: 'virtual-study-modal',
+      },
+      component: <SaveVirtualStudiesModalContent saveAs={false} />,
+    });
   }
 
   onSaveAsClick() {
@@ -89,7 +95,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent />,
+      component: <SaveVirtualStudiesModalContent saveAs={true} />,
     });
   }
 
@@ -129,6 +135,7 @@ class VirtualStudiesMenu extends React.Component {
       virtualStudyIsLoading,
       virtualStudies,
       virtualStudiesAreLoading,
+      isOwner,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
     const syntheticSqonIsEmpty = isEqual(sqons, defaultSqon);
@@ -139,8 +146,9 @@ class VirtualStudiesMenu extends React.Component {
       loading ||
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
       virtualStudies.length < 1;
-    const cantSave = loading || syntheticSqonIsEmpty;
-    const cantDelete = loading || !activeVirtualStudyId;
+    const cantSave = loading || syntheticSqonIsEmpty || !activeVirtualStudyId || !isOwner;
+    const cantSaveAs = loading || syntheticSqonIsEmpty;
+    const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId;
 
     return (
@@ -179,7 +187,7 @@ class VirtualStudiesMenu extends React.Component {
             tooltipText={'Save a virtual study'}
             icon={SaveIcon}
             iconProps={{ height: 12, width: 12 }}
-            disabled={cantSave || !activeVirtualStudyId}
+            disabled={cantSave}
             onClick={this.onSaveClick}
             className="virtual-studies-save"
           />
@@ -188,7 +196,7 @@ class VirtualStudiesMenu extends React.Component {
             label={'Save as'}
             tooltipText={'Save as a new virtual study'}
             icon={SaveAsIcon}
-            disabled={cantSave}
+            disabled={cantSaveAs}
             onClick={this.onSaveAsClick}
             className="virtual-studies-save-as"
           />
@@ -222,7 +230,7 @@ const mapStateToProps = state => {
   const { user, cohortBuilder, virtualStudies } = state;
   return {
     uid: user.uid,
-    loggedInUser: user.loggedInUser,
+    isOwner: cohortBuilder.uid === user.uid,
     sqons: cohortBuilder.sqons,
     activeVirtualStudyId: cohortBuilder.virtualStudyId,
     virtualStudyIsLoading: cohortBuilder.isLoading,

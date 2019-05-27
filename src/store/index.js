@@ -5,6 +5,8 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import rootReducer from './reducers';
 import subscribe from './subscribers';
 
+export { default as getPreloadedState } from './statePreloader';
+
 export let store = null;
 export const initStore = (preloadedState = {}) => {
   const composeEnhancers = composeWithDevTools({

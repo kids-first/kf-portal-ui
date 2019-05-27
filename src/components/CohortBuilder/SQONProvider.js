@@ -14,7 +14,6 @@ import {
   loadSavedVirtualStudy,
   setActiveSqonIndex,
   setSqons,
-  setVirtualStudyId,
   resetVirtualStudy,
 } from '../../store/actionCreators/virtualStudies';
 
@@ -131,7 +130,6 @@ const mapDispatchToProps = {
   loadSavedVirtualStudy,
   setActiveSqonIndex,
   setSqons,
-  setVirtualStudyId,
   resetVirtualStudy,
 };
 
