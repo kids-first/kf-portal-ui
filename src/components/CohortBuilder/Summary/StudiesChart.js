@@ -2,13 +2,14 @@ import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import { get, size, isEqual } from 'lodash';
+import { get, size } from 'lodash';
 import gql from 'graphql-tag';
 import { withApi } from 'services/api';
 import QueriesResolver from '../QueriesResolver';
 import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
+import { mergeSqonAtIndex } from '../../../common/sqonUtils';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -83,25 +84,18 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
 
 class StudiesChart extends React.Component {
   addSqon = (field, value) => {
-    const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-    const savedSqon = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
-    let globalSqon = JSON.parse(savedSqon);
+    const { virtualStudy, setSqons } = this.props;
 
-    const pieSqon = {
+    const newSqon = {
       op: 'in',
       content: {
         field: field,
         value: [value],
       },
     };
-    const globalSqonContent = globalSqon.sqons[globalSqon.activeIndex].content;
 
-    if (globalSqonContent.filter(item => isEqual(item, pieSqon)).length === 0) {
-      globalSqonContent.push(pieSqon);
-    }
-
-    localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(globalSqon));
-    this.props.setSqons(globalSqon.sqons);
+    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    setSqons(modifiedSqons);
   };
 
   render() {
@@ -171,6 +165,10 @@ export const studiesQuery = sqon => ({
     ),
 });
 
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
 const mapDispatchToProps = {
   setSqons,
 };
@@ -179,7 +177,7 @@ export default compose(
   withTheme,
   withApi,
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
 )(StudiesChart);
