@@ -1,48 +1,37 @@
-import { cloneDeep } from 'lodash';
-
 import {
-  VIRTUAL_STUDY_LOAD_SUCCESS,
-  SET_ACTIVE_INDEX,
-  SET_SQONS,
-  SET_VIRTUAL_STUDY_ID,
+  FETCH_VIRTUAL_STUDIES_REQUESTED,
+  FETCH_VIRTUAL_STUDIES_SUCCESS,
+  FETCH_VIRTUAL_STUDIES_FAILURE,
 } from '../actionTypes';
 
 const initialState = {
-  sqons: [
-    {
-      op: 'and',
-      content: [],
-    },
-  ],
-  activeIndex: 0,
-  uid: null,
-  virtualStudyId: null,
+  studies: [],
+  isLoading: false,
+  error: null,
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case VIRTUAL_STUDY_LOAD_SUCCESS:
-      return action.payload === null
-        ? cloneDeep(initialState)
-        : {
-            ...state,
-            ...action.payload,
-          };
-    case SET_ACTIVE_INDEX:
+    case FETCH_VIRTUAL_STUDIES_REQUESTED:
       return {
         ...state,
-        activeIndex: action.payload,
+        isLoading: true,
       };
-    case SET_SQONS:
+
+    case FETCH_VIRTUAL_STUDIES_SUCCESS:
       return {
         ...state,
-        sqons: action.payload,
+        studies: action.payload,
+        isLoading: false,
       };
-    case SET_VIRTUAL_STUDY_ID:
+
+    case FETCH_VIRTUAL_STUDIES_FAILURE:
       return {
         ...state,
-        virtualStudyId: action.payload,
+        isLoading: false,
+        error: action.payload,
       };
+
     default:
       return state;
   }

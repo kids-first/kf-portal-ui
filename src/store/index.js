@@ -6,7 +6,7 @@ import rootReducer from './reducers';
 import subscribe from './subscribers';
 
 export let store = null;
-export const initStore = preloadedState => {
+export const initStore = (preloadedState = {}) => {
   const composeEnhancers = composeWithDevTools({
     // Specify extension’s options like name,
     //  actionsBlacklist, actionsCreators, serialize...

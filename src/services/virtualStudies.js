@@ -146,7 +146,7 @@ export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
   if (!name.length) {
     throw new Error('Study must have name');
   }
-  const { egoId } = loggedInUser;
+  const { egoId, _id: personaRecordId } = loggedInUser;
   const personaData = await getSavedVirtualStudyNames(api);
   await api({
     url: urlJoin(shortUrlApi, name),
@@ -164,7 +164,7 @@ export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
       variables: {
         egoId,
         virtualStudies: newVirtualStudies,
-        personaRecordId: loggedInUser._id,
+        personaRecordId,
       },
       query: print(gql`
         mutation(

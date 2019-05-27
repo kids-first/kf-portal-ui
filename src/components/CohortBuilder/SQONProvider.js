@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { injectState } from 'freactal';
 import { compose } from 'recompose';
 import autobind from 'auto-bind-es5';
 import { parse as parseQueryString, stringify } from 'query-string';
@@ -22,11 +21,6 @@ import {
 class SQONProvider extends React.Component {
   constructor(props) {
     super(props);
-
-    this.previousVirtualStudyId = null;
-    this.previousSqons = null;
-    this.previousActiveIndex = null;
-
     autobind(this);
   }
 
@@ -35,34 +29,47 @@ class SQONProvider extends React.Component {
   };
 
   loadVirtualStudy(virtualStudyId) {
-    this.previousVirtualStudyId = virtualStudyId;
     if (virtualStudyId === null) {
-      this.resetSqons();
+      this.props.resetVirtualStudy();
       return;
     }
     this.props.loadSavedVirtualStudy(virtualStudyId);
   }
 
   componentDidMount() {
-    const { id: virtualStudyId } = parseQueryString(this.props.history.location.search);
+    const { virtualStudyId, history } = this.props;
+    const { id: urlVirtualStudyId } = parseQueryString(history.location.search);
 
-    if (virtualStudyId) {
-      this.loadVirtualStudy(virtualStudyId);
+    // load the study in url if it is not already loaded (e.g. from local storage or previous mounting)
+    if (urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.loadVirtualStudy(urlVirtualStudyId);
+      return;
+    }
+
+    // add the id of the study to the url if it is not set, yet
+    if (!urlVirtualStudyId && virtualStudyId) {
+      this.setStudyInUrl(virtualStudyId);
       return;
     }
   }
 
-  componentDidUpdate() {
-    const { virtualStudyId } = this.props;
+  componentDidUpdate(prevProps) {
+    const { virtualStudyId, history } = this.props;
+    const { virtualStudyId: prevVirtualStudyId } = prevProps;
+    const { id: urlVirtualStudyId } = parseQueryString(history.location.search);
+    const { id: prevUrlVirtualStudyId } = parseQueryString(prevProps.history.location.search);
 
-    if (virtualStudyId !== null && virtualStudyId !== this.previousVirtualStudyId) {
-      this.loadVirtualStudy(virtualStudyId);
+    // update current virtual study when url change
+    if (prevUrlVirtualStudyId !== urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.loadVirtualStudy(urlVirtualStudyId || null);
+      return;
     }
-  }
 
-  resetSqons() {
-    this.props.resetVirtualStudy();
-    this.setStudyInHash(null);
+    // update url when current virtual study change
+    if (virtualStudyId !== prevVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.setStudyInUrl(virtualStudyId);
+      return;
+    }
   }
 
   getActiveExecutableSqon() {
@@ -87,9 +94,8 @@ class SQONProvider extends React.Component {
     this.props.setSqons(updatedSqons);
   }
 
-  setStudyInHash(virtualStudyId) {
-    const { history, setVirtualStudyId } = this.props;
-    setVirtualStudyId(virtualStudyId);
+  setStudyInUrl(virtualStudyId) {
+    const { history } = this.props;
     history.replace({
       ...history.location,
       search: virtualStudyId ? stringify({ id: virtualStudyId }) : '',
@@ -97,34 +103,22 @@ class SQONProvider extends React.Component {
   }
 
   render() {
-    const {
-      sqons,
-      activeIndex,
-      uid,
-      virtualStudyId,
-      children,
-      state: { loggedInUser },
-      setActiveSqonIndex,
-      setSqons,
-    } = this.props;
+    const { sqons, activeIndex, children, setActiveSqonIndex, setSqons } = this.props;
 
+    // TODO redux - let the children call the actions?
     return children({
       sqons,
-      setSqons: setSqons,
-      resetSqons: this.resetSqons,
+      setSqons,
       activeIndex,
-      setActiveSqonIndex: setActiveSqonIndex,
+      setActiveSqonIndex,
       getActiveExecutableSqon: this.getActiveExecutableSqon,
       mergeSqonToActiveIndex: this.mergeSqonToActiveIndex,
-      activeVirtualStudyId: virtualStudyId,
-      setActiveVirtualStudyId: this.setStudyInHash,
-      isOwner: uid === loggedInUser.egoId,
     });
   }
 }
 
 const mapStateToProps = state => {
-  const { sqons, activeIndex, uid, virtualStudyId } = state.virtualStudies;
+  const { sqons, activeIndex, uid, virtualStudyId } = state.cohortBuilder;
   return {
     sqons,
     activeIndex,
@@ -143,7 +137,6 @@ const mapDispatchToProps = {
 
 export default compose(
   withRouter,
-  injectState,
   connect(
     mapStateToProps,
     mapDispatchToProps,

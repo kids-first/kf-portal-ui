@@ -23,11 +23,17 @@ const render = rootElement => {
 };
 
 if (maintenanceMode) {
-  render(<MaintenancePage />);
+  // TODO - TEMPORARY
+  const store = initStore();
+  render(
+    <Provider store={store}>
+      <MaintenancePage />
+    </Provider>,
+  );
 } else {
-  const virtualStudies = loadDraftVirtualStudy() || undefined;
+  const currentVirtualStudy = loadDraftVirtualStudy() || undefined;
   const preloadedState = {
-    virtualStudies,
+    cohortBuilder: currentVirtualStudy,
   };
   const store = initStore(preloadedState);
   render(
