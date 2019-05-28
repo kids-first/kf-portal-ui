@@ -7,7 +7,15 @@ import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY = 'DRAFT_VIRTUAL_STUDY';
-const DRAFT_FIELDS = ['sqons', 'activeIndex', 'name', 'description', 'uid', 'virtualStudyId'];
+const DRAFT_FIELDS = [
+  'sqons',
+  'activeIndex',
+  'name',
+  'description',
+  'uid',
+  'virtualStudyId',
+  'dirty',
+];
 
 const isValidStudy = value => value && Array.isArray(value.sqons) && isNumber(value.activeIndex);
 

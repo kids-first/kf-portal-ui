@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import autobind from 'auto-bind-es5';
-import { isEqual } from 'lodash';
 import urlJoin from 'url-join';
 
 // TODO - kill those once done
@@ -33,8 +32,6 @@ import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
 import DeleteVirtualStudiesModalContent from '../DeleteVirtualStudiesModalContent';
 
 import './index.postcss';
-
-const defaultSqon = [{ op: 'and', content: [] }];
 
 const VirtualStudiesMenuButton = ({
   tooltipText,
@@ -85,7 +82,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent saveAs={false} />,
+      component: <SaveVirtualStudiesModalContent />,
     });
   }
 
@@ -95,7 +92,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent saveAs={true} />,
+      component: <SaveVirtualStudiesModalContent />,
     });
   }
 
@@ -130,16 +127,16 @@ class VirtualStudiesMenu extends React.Component {
 
   render() {
     const {
-      sqons,
       activeVirtualStudyId,
       virtualStudyIsLoading,
       virtualStudyName,
       virtualStudies,
       virtualStudiesAreLoading,
       isOwner,
+      isDirty,
+      areSqonsEmpty,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
-    const syntheticSqonIsEmpty = isEqual(sqons, defaultSqon);
 
     const loading = virtualStudiesAreLoading || virtualStudyIsLoading;
     const newDisabled = loading || !selectedStudy || !selectedStudy.id;
@@ -147,16 +144,20 @@ class VirtualStudiesMenu extends React.Component {
       loading ||
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
       virtualStudies.length < 1;
-    const cantSave = loading || syntheticSqonIsEmpty || !activeVirtualStudyId || !isOwner;
-    const cantSaveAs = loading || syntheticSqonIsEmpty;
+    const cantSave = loading || areSqonsEmpty || !isOwner;
+    const cantSaveAs = loading || areSqonsEmpty;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
+    const titleFragment = virtualStudyName ? 'Virtual Study: ' : 'Explore Data';
+    const title = `${titleFragment} ${virtualStudyName}${isDirty ? '*' : ''}`;
+
     return (
       <Row className="virtual-studies-menu container">
-        <Row>
-          <H1 className="heading-with-study">
-            {virtualStudyName ? `Virtual Study: ${virtualStudyName}` : 'Explore Data'}
+        <Row className="virtual-studies-heading">
+          <H1>
+            {title}
+            {isDirty ? <p>You have unsaved changed</p> : null}
           </H1>
         </Row>
 
@@ -185,7 +186,7 @@ class VirtualStudiesMenu extends React.Component {
 
           <VirtualStudiesMenuButton
             label={'Save'}
-            tooltipText={'Save a virtual study'}
+            tooltipText={'Saves the current virtual study if it exists, or a new one if not'}
             icon={SaveIcon}
             iconProps={{ height: 12, width: 12 }}
             disabled={cantSave}
@@ -195,7 +196,7 @@ class VirtualStudiesMenu extends React.Component {
 
           <VirtualStudiesMenuButton
             label={'Save as'}
-            tooltipText={'Save as a new virtual study'}
+            tooltipText={'Saves the current virtual study as a new one'}
             icon={SaveAsIcon}
             disabled={cantSaveAs}
             onClick={this.onSaveAsClick}
@@ -232,12 +233,13 @@ const mapStateToProps = state => {
   return {
     uid: user.uid,
     isOwner: cohortBuilder.uid === user.uid,
-    sqons: cohortBuilder.sqons,
     activeVirtualStudyId: cohortBuilder.virtualStudyId,
     virtualStudyName: cohortBuilder.name,
     virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
+    isDirty: cohortBuilder.dirty,
+    areSqonsEmpty: cohortBuilder.areSqonsEmpty,
   };
 };
 

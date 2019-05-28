@@ -1,4 +1,4 @@
-import { loadDraftVirtualStudy } from 'services/virtualStudies';
+import { loadDraftVirtualStudy } from '../services/virtualStudies';
 import { initialState as cohortBuilderInitialState } from './reducers/cohortBuilder';
 
 const preloadState = () => {

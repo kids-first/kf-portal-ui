@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 
 import {
   VIRTUAL_STUDY_LOAD_REQUESTED,
@@ -16,24 +16,34 @@ import {
   SET_VIRTUAL_STUDY_ID,
 } from '../actionTypes';
 
+const defaultSqon = [{ op: 'and', content: [] }];
+
 export const initialState = {
-  sqons: [
-    {
-      op: 'and',
-      content: [],
-    },
-  ],
+  sqons: cloneDeep(defaultSqon),
   activeIndex: 0,
   uid: null,
   virtualStudyId: null,
   name: '',
   description: '',
+  dirty: false,
+  areSqonsEmpty: true,
   isLoading: false,
   error: null,
 };
 
+const dirty = state => ({
+  ...state,
+  dirty: true,
+  areSqonsEmpty: isEqual(state.sqons, defaultSqon),
+});
+
 export default (state = initialState, action) => {
   switch (action.type) {
+    case '@@INIT':
+      return {
+        ...state,
+        areSqonsEmpty: isEqual(state.sqons, defaultSqon),
+      };
     case VIRTUAL_STUDY_LOAD_REQUESTED:
       return {
         ...cloneDeep(initialState),
@@ -63,6 +73,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        dirty: false,
+        areSqonsEmpty: false,
       };
     case VIRTUAL_STUDY_SAVE_FAILURE:
       return {
@@ -83,22 +95,22 @@ export default (state = initialState, action) => {
       };
 
     case SET_ACTIVE_INDEX:
-      return {
+      return dirty({
         ...state,
         activeIndex: action.payload,
-      };
+      });
 
     case SET_SQONS:
-      return {
+      return dirty({
         ...state,
         sqons: action.payload,
-      };
+      });
 
     case SET_VIRTUAL_STUDY_ID:
-      return {
+      return dirty({
         ...state,
         virtualStudyId: action.payload,
-      };
+      });
 
     default:
       return state;
