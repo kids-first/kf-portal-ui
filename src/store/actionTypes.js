@@ -22,3 +22,4 @@ export const SET_VIRTUAL_STUDY_ID = 'SET_VIRTUAL_STUDY_ID';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';

@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAILURE } from '../actionTypes';
+import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../actionTypes';
 
 const initialState = {
   loggedInUser: null,
@@ -14,6 +14,8 @@ export default (state = initialState, action) => {
         uid: action.payload.egoId,
       };
     case LOGIN_FAILURE:
+      return { ...initialState };
+    case LOGOUT:
       return { ...initialState };
     default:
       return state;
