@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import autobind from 'auto-bind-es5';
-import { isEqual } from 'lodash';
 import urlJoin from 'url-join';
 
 // TODO - kill those once done
@@ -25,15 +24,33 @@ import { WhiteButton } from 'uikit/Button.js';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
 import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import OpenMenuIcon from 'react-icons/lib/fa/folder';
-import SaveIcon from 'react-icons/lib/fa/file';
+import SaveAsIcon from 'react-icons/lib/fa/file';
+import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import DeleteIcon from 'react-icons/lib/fa/trash';
 
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
 import DeleteVirtualStudiesModalContent from '../DeleteVirtualStudiesModalContent';
 
-import './index.css';
+import './index.postcss';
 
-const defaultSqon = [{ op: 'and', content: [] }];
+const VirtualStudiesMenuButton = ({
+  tooltipText,
+  onClick,
+  label,
+  icon: Icon,
+  iconProps = {},
+  disabled = false,
+  className = '',
+}) => (
+  <Tooltip html={<div>{tooltipText}</div>} className={`button-group tooltip ${className}`}>
+    <WhiteButton disabled={disabled} onClick={onClick}>
+      <span>
+        <Icon height={10} width={10} className="button-icon" {...iconProps} />
+      </span>
+      <span className="button-text">{label}</span>
+    </WhiteButton>
+  </Tooltip>
+);
 
 class VirtualStudiesMenu extends React.Component {
   constructor(props) {
@@ -53,6 +70,20 @@ class VirtualStudiesMenu extends React.Component {
     if (uid !== null && uid !== prevProps.uid) {
       fetchVirtualStudiesCollection(uid);
     }
+  }
+
+  onNewClick() {
+    this.props.resetVirtualStudy();
+  }
+
+  onSaveClick() {
+    this.props.effects.setModal({
+      title: 'Save Virtual Study',
+      classNames: {
+        modal: 'virtual-study-modal',
+      },
+      component: <SaveVirtualStudiesModalContent />,
+    });
   }
 
   onSaveAsClick() {
@@ -95,88 +126,98 @@ class VirtualStudiesMenu extends React.Component {
   }
 
   render() {
-    const { virtualStudyListIsLoading, virtualStudies, activeVirtualStudyId, sqons } = this.props;
+    const {
+      activeVirtualStudyId,
+      virtualStudyIsLoading,
+      virtualStudyName,
+      virtualStudies,
+      virtualStudiesAreLoading,
+      isOwner,
+      isDirty,
+      areSqonsEmpty,
+    } = this.props;
     const selectedStudy = this.findSelectedStudy();
-    const syntheticSqonIsEmpty = isEqual(sqons, defaultSqon);
-    const newDisabled = virtualStudyListIsLoading || !selectedStudy || !selectedStudy.id;
-    const sharingEnabled = !!activeVirtualStudyId;
+
+    const loading = virtualStudiesAreLoading || virtualStudyIsLoading;
+    const newDisabled = loading || !selectedStudy || !selectedStudy.id;
+    const cantOpen =
+      loading ||
+      (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
+      virtualStudies.length < 1;
+    const cantSave = loading || areSqonsEmpty || !isOwner;
+    const cantSaveAs = loading || areSqonsEmpty;
+    const cantDelete = loading || !activeVirtualStudyId || !isOwner;
+    const cantShare = loading || !activeVirtualStudyId || !isOwner;
+
+    const titleFragment = virtualStudyName ? 'Virtual Study: ' : 'Explore Data';
+    const title = `${titleFragment} ${virtualStudyName}${isDirty ? '*' : ''}`;
 
     return (
-      <Row className="virtual-studies-menu contentainer">
-        <Row className="virtual-studies-menu content">
-          <Row>
-            <H1 className="heading-with-study">
-              {selectedStudy ? `Virtual Study: ${selectedStudy.name}` : 'Explore Data'}
-            </H1>
-          </Row>
+      <Row className="virtual-studies-menu container">
+        <Row className="virtual-studies-heading">
+          <H1>
+            {title}
+            {isDirty ? <p>You have unsaved changed</p> : null}
+          </H1>
         </Row>
 
         <Row className="virtual-studies-action-bar">
-          <Tooltip html={<div>Create a new virtual study</div>} className="virtual-studies-new">
-            <WhiteButton
-              disabled={newDisabled}
-              onClick={() => {
-                this.props.resetVirtualStudy();
-              }}
-            >
-              <span>
-                <OpenMenuIcon height={11} width={11} />
-              </span>
-              <span className="new-button">New</span>
-            </WhiteButton>
-          </Tooltip>
+          <VirtualStudiesMenuButton
+            label={'New'}
+            tooltipText={'Create a new virtual study'}
+            icon={OpenMenuIcon}
+            iconProps={{ height: 11, width: 11 }}
+            disabled={newDisabled}
+            onClick={this.onNewClick}
+            className="virtual-studies-new"
+          />
 
-          <Tooltip html={<div>Open a saved virtual study</div>} className="virtual-studies-open">
+          <Tooltip
+            html={<div>Open a saved virtual study</div>}
+            className="virtual-studies-open button-group"
+          >
             <LoadQuery
               studies={virtualStudies}
               selection={selectedStudy}
               handleOpen={this.handleOpen}
-              disabled={
-                virtualStudyListIsLoading ||
-                (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
-                virtualStudies.length < 1
-              }
+              disabled={cantOpen}
             />
           </Tooltip>
 
-          <Tooltip
-            html={
-              <div>
-                {activeVirtualStudyId ? 'Save as a new virtual study' : 'Save a virtual study'}
-              </div>
-            }
+          <VirtualStudiesMenuButton
+            label={'Save'}
+            tooltipText={'Saves the current virtual study if it exists, or a new one if not'}
+            icon={SaveIcon}
+            iconProps={{ height: 12, width: 12 }}
+            disabled={cantSave}
+            onClick={this.onSaveClick}
             className="virtual-studies-save"
+          />
+
+          <VirtualStudiesMenuButton
+            label={'Save as'}
+            tooltipText={'Saves the current virtual study as a new one'}
+            icon={SaveAsIcon}
+            disabled={cantSaveAs}
+            onClick={this.onSaveAsClick}
+            className="virtual-studies-save-as"
+          />
+
+          <VirtualStudiesMenuButton
+            label={<Trans>delete</Trans>}
+            tooltipText={'Delete this virtual study'}
+            icon={DeleteIcon}
+            disabled={cantDelete}
+            onClick={this.onDeleteClick}
+            className="virtual-studies-delete"
+          />
+
+          <Tooltip
+            html={<div>Share this virtual study</div>}
+            className="virtual-studies-share button-group"
           >
-            <WhiteButton
-              disabled={virtualStudyListIsLoading || syntheticSqonIsEmpty}
-              onClick={this.onSaveAsClick}
-              className="save-button"
-            >
-              <span>
-                <SaveIcon height={10} width={10} className="save-icon" />
-              </span>
-              <span className="save-text">{activeVirtualStudyId ? 'Save As' : 'Save'}</span>
-            </WhiteButton>
-          </Tooltip>
-
-          <Tooltip html={<div>Delete this virtual study</div>} className="virtual-studies-delete">
-            <WhiteButton
-              disabled={!activeVirtualStudyId}
-              onClick={this.onDeleteClick}
-              className="delete-button"
-            >
-              <span>
-                <DeleteIcon className="delete-icon" />
-              </span>
-              <span className="delete-text">
-                <Trans>delete</Trans>
-              </span>
-            </WhiteButton>
-          </Tooltip>
-
-          <Tooltip html={<div>Share this virtual study</div>} className="virtual-studies-share">
             <ShareQuery
-              disabled={!sharingEnabled}
+              disabled={cantShare}
               getSharableUrl={this.getSharableUrl}
               handleShare={() => Promise.resolve({ id: activeVirtualStudyId })}
             />
@@ -191,11 +232,14 @@ const mapStateToProps = state => {
   const { user, cohortBuilder, virtualStudies } = state;
   return {
     uid: user.uid,
-    loggedInUser: user.loggedInUser,
-    sqons: cohortBuilder.sqons,
+    isOwner: cohortBuilder.uid === user.uid,
     activeVirtualStudyId: cohortBuilder.virtualStudyId,
+    virtualStudyName: cohortBuilder.name,
+    virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
-    virtualStudyListIsLoading: virtualStudies.isLoading,
+    virtualStudiesAreLoading: virtualStudies.isLoading,
+    isDirty: cohortBuilder.dirty,
+    areSqonsEmpty: cohortBuilder.areSqonsEmpty,
   };
 };
 

@@ -9,40 +9,44 @@ import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 
-import { saveNewVirtualStudy } from '../../store/actionCreators/virtualStudies';
+import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
+
+// const DESCRIPTION_MAX_LENGTH = 300;
 
 class SaveVirtualStudiesModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.saving = false;
+    this.state = {
+      name: props.name || '',
+      description: props.description || '',
+      errorMessage: null,
+    };
+
     autobind(this);
   }
-
-  state = {
-    name: '',
-    errorMessage: null,
-  };
 
   componentWillMount() {
     this.saving = false;
   }
 
   onDataChange(evt) {
-    this.setState({ name: evt.target.value });
+    this.setState({ [evt.target.name]: evt.target.value });
   }
 
   saveStudy() {
-    const { name } = this.state;
-    const { loggedInUser, sqons, activeSqonIndex, saveNewVirtualStudy } = this.props;
+    const { name, description } = this.state;
+    const { loggedInUser, sqons, activeSqonIndex, virtualStudyId, saveVirtualStudy } = this.props;
 
-    return saveNewVirtualStudy({
-      name,
+    return saveVirtualStudy({
       loggedInUser,
       sqonsState: {
         sqons,
         activeIndex: activeSqonIndex,
+        virtualStudyId,
       },
-      description: '',
+      name,
+      description,
     });
   }
 
@@ -65,7 +69,7 @@ class SaveVirtualStudiesModalContent extends React.Component {
   }
 
   render() {
-    const { name, errorMessage } = this.state;
+    const { name, /*description,*/ errorMessage } = this.state;
     const submitDisabled = (name && name.length < 1) || this.saving;
 
     return (
@@ -77,8 +81,17 @@ class SaveVirtualStudiesModalContent extends React.Component {
         <ModalContentSection>
           <strong>Virtual Study name: *</strong>
           <span>
-            <Input value={name} onChange={this.onDataChange} maxlength="60" />
+            <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" />
           </span>
+          {/* <strong>{`Description (${DESCRIPTION_MAX_LENGTH} characters max): `}</strong>
+          <span>
+            <Input
+              value={description}
+              name="description"
+              onChange={this.onDataChange}
+              maxlength={DESCRIPTION_MAX_LENGTH}
+            />
+          </span> */}
         </ModalContentSection>
         <ModalFooter
           handleSubmit={this.submitHandler}
@@ -95,10 +108,13 @@ const mapStateToProps = state => ({
   loggedInUser: state.user.loggedInUser,
   sqons: state.cohortBuilder.sqons,
   activeSqonIndex: state.cohortBuilder.activeIndex,
+  virtualStudyId: state.cohortBuilder.virtualStudyId,
+  name: state.cohortBuilder.name,
+  description: state.cohortBuilder.description,
 });
 
 const mapDispatchToProps = {
-  saveNewVirtualStudy: saveNewVirtualStudy,
+  saveVirtualStudy,
 };
 
 export default compose(
