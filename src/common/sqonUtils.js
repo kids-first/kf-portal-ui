@@ -10,7 +10,7 @@ import { cloneDeep, isEqual, includes } from 'lodash';
 export const mergeSqonAtIndex = (newSqon, targetSqons, activeIndex) => {
   const currentContent = targetSqons[activeIndex].content;
 
-  // skip merge if the exact same sqon in present in the target sqons,
+  // skip merge if the exact same sqon is present in the target sqons,
   //  but still return a clone be consistent
   if (currentContent.some(sqon => isEqual(sqon.content.field, newSqon.content.field))) {
     return cloneDeep(targetSqons);
@@ -23,7 +23,9 @@ export const mergeSqonAtIndex = (newSqon, targetSqons, activeIndex) => {
 };
 
 export const mergeSqonValueAtIndex = (newSqon, targetSqons, activeIndex, typeChart, field) => {
-  const currentContent = targetSqons[activeIndex].content;
+  // Clone state before updating
+  const clonedSqons = cloneDeep(targetSqons);
+  const currentContent = clonedSqons[activeIndex].content;
 
   // For Available data, if a field exists and value does not extist, concatenate values
   if (typeChart === 'dataType') {
@@ -47,11 +49,9 @@ export const mergeSqonValueAtIndex = (newSqon, targetSqons, activeIndex, typeCha
   // skip merge if the exact same sqon in present in the target sqons,
   //  but still return a clone be consistent
   if (currentContent.some(sqon => isEqual(sqon.content.field, newSqon.content.field))) {
-    return cloneDeep(targetSqons);
+    return cloneDeep(clonedSqons);
   }
 
-  // clone before merging to be immutable
-  const mergedSqons = cloneDeep(targetSqons);
-  mergedSqons[activeIndex].content = mergedSqons[activeIndex].content.concat(newSqon);
-  return mergedSqons;
+  clonedSqons[activeIndex].content = clonedSqons[activeIndex].content.concat(newSqon);
+  return clonedSqons;
 };
