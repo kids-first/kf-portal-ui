@@ -7,7 +7,7 @@ import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonAtIndex } from '../../../common/sqonUtils';
+import { mergeSqonValueAtIndex } from '../../../common/sqonUtils';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -58,7 +58,7 @@ class AgeDiagChart extends React.Component {
       default:
     }
 
-    const modifiedSqons = mergeSqonAtIndex(
+    const modifiedSqons = mergeSqonValueAtIndex(
       newSqon,
       virtualStudy.sqons,
       virtualStudy.activeIndex,
@@ -179,7 +179,7 @@ export const ageDiagQuery = sqon => ({
   `,
   transform: ({ data }) => [
     { id: 'aggNewborn', label: 'Newborn', value: get(data, 'participant._0to1.total', 0) },
-    { id: 'agg5to10', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
+    { id: 'agg1to5', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
     { id: 'agg5to10', label: '5 - 10', value: get(data, 'participant._5to10.total', 0) },
     { id: 'agg10to15', label: '10 - 15', value: get(data, 'participant._10to15.total', 0) },
     { id: 'agg15to18', label: '15 - 18', value: get(data, 'participant._15to18.total', 0) },

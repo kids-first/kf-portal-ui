@@ -34,13 +34,7 @@ class DemographicChart extends React.Component {
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(
-      newSqon,
-      virtualStudy.sqons,
-      virtualStudy.activeIndex,
-      null,
-      null,
-    );
+    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
     setSqons(modifiedSqons);
   };
 

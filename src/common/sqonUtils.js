@@ -7,7 +7,22 @@ import { cloneDeep, isEqual, includes } from 'lodash';
  * @param {Object} targetSqons - The sqon array to merge into
  * @param {Number} activeIndex - The index at which to merge the `newSqon`
  */
-export const mergeSqonAtIndex = (newSqon, targetSqons, activeIndex, typeChart, field) => {
+export const mergeSqonAtIndex = (newSqon, targetSqons, activeIndex) => {
+  const currentContent = targetSqons[activeIndex].content;
+
+  // skip merge if the exact same sqon in present in the target sqons,
+  //  but still return a clone be consistent
+  if (currentContent.some(sqon => isEqual(sqon.content.field, newSqon.content.field))) {
+    return cloneDeep(targetSqons);
+  }
+
+  // clone before merging to be immutable
+  const mergedSqons = cloneDeep(targetSqons);
+  mergedSqons[activeIndex].content = mergedSqons[activeIndex].content.concat(newSqon);
+  return mergedSqons;
+};
+
+export const mergeSqonValueAtIndex = (newSqon, targetSqons, activeIndex, typeChart, field) => {
   const currentContent = targetSqons[activeIndex].content;
 
   // For Available data, if a field exists and value does not extist, concatenate values
