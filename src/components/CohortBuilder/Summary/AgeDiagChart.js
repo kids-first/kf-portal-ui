@@ -81,7 +81,7 @@ class AgeDiagChart extends React.Component {
           height={225}
           colors={[theme.chartColors.lightblue]}
           onClick={data => {
-            this.addSqon('diagnoses.age_at_event_days', data.data.label);
+            this.addSqon('diagnoses.age_at_event_days', data.indexValue);
           }}
         />
       </CohortCard>
