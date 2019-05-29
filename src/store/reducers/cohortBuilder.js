@@ -14,6 +14,7 @@ import {
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
+  LOGOUT,
 } from '../actionTypes';
 
 const defaultSqon = [{ op: 'and', content: [] }];
@@ -111,6 +112,9 @@ export default (state = initialState, action) => {
         ...state,
         virtualStudyId: action.payload,
       });
+
+    case LOGOUT:
+      return cloneDeep(initialState);
 
     default:
       return state;
