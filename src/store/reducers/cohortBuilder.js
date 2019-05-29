@@ -51,11 +51,13 @@ export default (state = initialState, action) => {
         isLoading: true,
       };
     case VIRTUAL_STUDY_LOAD_SUCCESS:
-      return {
+      let newState = {
         ...cloneDeep(initialState),
         ...action.payload,
         isLoading: false,
       };
+      newState.areSqonsEmpty = isEqual(newState.sqons, defaultSqon);
+      return newState;
     case VIRTUAL_STUDY_LOAD_FAILURE:
       return {
         ...state,
