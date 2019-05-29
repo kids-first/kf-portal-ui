@@ -7,6 +7,9 @@ import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
+import { mergeSqonAtIndex } from '../../../common/sqonUtils';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -24,7 +27,10 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               op: "and"
               content: [
                 $sqon
-                { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
+                {
+                  op: "in"
+                  content: { field: "diagnoses.mondo_id_diagnosis", value: [$diagnosis] }
+                }
                 { op: "in", content: { field: "is_proband", value: ["false", "__missing__"] } }
               ]
             }
@@ -42,7 +48,10 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               op: "and"
               content: [
                 $sqon
-                { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
+                {
+                  op: "in"
+                  content: { field: "diagnoses.mondo_id_diagnosis", value: [$diagnosis] }
+                }
                 { op: "in", content: { field: "is_proband", value: ["true"] } }
               ]
             }
@@ -69,41 +78,92 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }),
   }));
 
-const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoading }) => (
-  <QueriesResolver
-    name="GQL_DIAGNOSIS_CHART"
-    api={api}
-    queries={toSingleDiagQueries({ topDiagnoses, sqon })}
-  >
-    {({ isLoading, data }) => (
-      <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
-        {!data ? (
-          <div>No data</div>
-        ) : (
-          <BarChartContainer>
-            <HorizontalBar
-              showCursor={false}
-              data={_(data)
-                .sortBy(d => d.probands + d.familyMembers)
-                .map((d, i) => ({ ...d, id: i }))
-                .value()}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={mostFrequentDiagnosisTooltip}
-              tickInterval={4}
-              colors={getCohortBarColors(data, theme)}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Other Participants', color: theme.chartColors.purple },
-              ]}
-            />
-          </BarChartContainer>
+const formatedField = value => {
+  switch (value) {
+    case 'Ewing Sarcoma MONDO 0012817':
+      return 'Ewing sarcoma (MONDO:0012817)';
+    case 'Neuroblastoma MONDO 0005072':
+      return 'neuroblastoma (MONDO:0005072)';
+    case 'Low Grade Glioma MONDO 0021637':
+      return 'low grade glioma (MONDO:0021637)';
+    case 'Cleft Lip Palate MONDO 0016044':
+      return 'cleft lip/palate (MONDO:0016044)';
+    case 'Medulloblastoma MONDO 0007959':
+      return 'medulloblastoma (MONDO:0007959)';
+    case 'Cleft Lip Disease MONDO 0004747':
+      return 'cleft lip (disease) (MONDO:0004747)';
+    case 'Grade III Glioma MONDO 0021640':
+      return 'grade III glioma (MONDO:0021640)';
+    case 'Cleft Palate MONDO 0016064':
+      return 'cleft palate (MONDO:0016064)';
+    case 'Ependymoma MONDO 0016698':
+      return 'ependymoma (MONDO:0016698)';
+    case 'Sex Differentiation Disease MONDO 0002145':
+      return 'sex differentiation disease (MONDO:0002145)';
+    default:
+      return null;
+  }
+};
+
+// const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoading }) => (
+class DiagnosesChart extends React.Component {
+  addSqon = (field, value) => {
+    const { virtualStudy, setSqons } = this.props;
+
+    const newSqon = {
+      op: 'in',
+      content: {
+        field: field,
+        value: [value],
+      },
+    };
+
+    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    setSqons(modifiedSqons);
+  };
+  render() {
+    const { topDiagnoses, sqon, theme, api, isLoading: isParentLoading } = this.props;
+    return (
+      <QueriesResolver
+        name="GQL_DIAGNOSIS_CHART"
+        api={api}
+        queries={toSingleDiagQueries({ topDiagnoses, sqon })}
+      >
+        {({ isLoading, data }) => (
+          <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
+            {!data ? (
+              <div>No data</div>
+            ) : (
+              <BarChartContainer>
+                <HorizontalBar
+                  showCursor={true}
+                  data={_(data)
+                    .sortBy(d => d.probands + d.familyMembers)
+                    .map((d, i) => ({ ...d, id: i }))
+                    .value()}
+                  indexBy="label"
+                  keys={['probands', 'familyMembers']}
+                  tooltipFormatter={mostFrequentDiagnosisTooltip}
+                  tickInterval={4}
+                  colors={getCohortBarColors(data, theme)}
+                  xTickTextLength={28}
+                  legends={[
+                    { title: 'Probands', color: theme.chartColors.blue },
+                    { title: 'Other Participants', color: theme.chartColors.purple },
+                  ]}
+                  onClick={data => {
+                    this.addSqon('diagnoses.mondo_id_diagnosis', formatedField(data.indexValue));
+                  }}
+                />
+              </BarChartContainer>
+            )}
+          </CohortCard>
         )}
-      </CohortCard>
-    )}
-  </QueriesResolver>
-);
+      </QueriesResolver>
+    );
+  }
+}
+// );
 
 /**
  * Get the top 10 diagnoses overall
@@ -114,7 +174,7 @@ export const diagnosesQuery = sqon => ({
     query($sqon: JSON) {
       participant {
         aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-          diagnoses__diagnosis {
+          diagnoses__mondo_id_diagnosis {
             buckets {
               doc_count
               key
@@ -126,7 +186,10 @@ export const diagnosesQuery = sqon => ({
   `,
   variables: { sqon },
   transform: data => {
-    const buckets = get(data, 'data.participant.aggregations.diagnoses__diagnosis.buckets');
+    const buckets = get(
+      data,
+      'data.participant.aggregations.diagnoses__mondo_id_diagnosis.buckets',
+    );
     return _(buckets)
       .orderBy(bucket => bucket.doc_count, 'desc')
       .take(10)
@@ -135,7 +198,19 @@ export const diagnosesQuery = sqon => ({
   },
 });
 
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
+const mapDispatchToProps = {
+  setSqons,
+};
+
 export default compose(
   withApi,
   withTheme,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(DiagnosesChart);
