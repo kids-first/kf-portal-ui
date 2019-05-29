@@ -54,6 +54,7 @@ export default (state = initialState, action) => {
         ...cloneDeep(initialState),
         ...action.payload,
         isLoading: false,
+        areSqonsEmpty: isEqual(state.sqons, defaultSqon),
       };
     case VIRTUAL_STUDY_LOAD_FAILURE:
       return {
