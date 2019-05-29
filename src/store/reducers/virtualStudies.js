@@ -1,7 +1,9 @@
+import { cloneDeep } from 'lodash';
 import {
   FETCH_VIRTUAL_STUDIES_REQUESTED,
   FETCH_VIRTUAL_STUDIES_SUCCESS,
   FETCH_VIRTUAL_STUDIES_FAILURE,
+  LOGOUT,
 } from '../actionTypes';
 
 const initialState = {
@@ -31,6 +33,9 @@ export default (state = initialState, action) => {
         isLoading: false,
         error: action.payload,
       };
+
+    case LOGOUT:
+      return cloneDeep(initialState);
 
     default:
       return state;
