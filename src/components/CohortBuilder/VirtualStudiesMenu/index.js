@@ -27,7 +27,7 @@ import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import OpenMenuIcon from 'react-icons/lib/fa/folder';
 import SaveAsIcon from 'react-icons/lib/fa/file';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
-// import EditIcon from 'react-icons/lib/fa/edit';
+import EditIcon from 'react-icons/lib/fa/edit';
 import DeleteIcon from 'react-icons/lib/fa/trash';
 
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
@@ -103,15 +103,15 @@ class VirtualStudiesMenu extends React.Component {
     });
   }
 
-  // onEditClick() {
-  //   this.props.effects.setModal({
-  //     title: 'Edit Virtual Study',
-  //     classNames: {
-  //       modal: 'virtual-study-modal',
-  //     },
-  //     component: <SaveVirtualStudiesModalContent />,
-  //   });
-  // }
+  onEditClick() {
+    this.props.effects.setModal({
+      title: 'Edit Virtual Study',
+      classNames: {
+        modal: 'virtual-study-modal',
+      },
+      component: <SaveVirtualStudiesModalContent />,
+    });
+  }
 
   onSaveAsClick() {
     this.props.effects.setModal({
@@ -171,7 +171,7 @@ class VirtualStudiesMenu extends React.Component {
       loading ||
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
       virtualStudies.length < 1;
-    // const cantEdit = loading || areSqonsEmpty || !isOwner;
+    const cantEdit = loading || areSqonsEmpty || !isOwner;
     const cantSave = loading || areSqonsEmpty || !isOwner || !isDirty;
     const cantSaveAs = loading || areSqonsEmpty;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
@@ -212,7 +212,7 @@ class VirtualStudiesMenu extends React.Component {
             />
           </Tooltip>
 
-          {/* <VirtualStudiesMenuButton
+          <VirtualStudiesMenuButton
             label={'Edit'}
             tooltipText={'Edit the current virtual study'}
             icon={EditIcon}
@@ -220,7 +220,7 @@ class VirtualStudiesMenu extends React.Component {
             disabled={cantEdit}
             onClick={this.onEditClick}
             className="virtual-studies-edit"
-          /> */}
+          />
 
           <VirtualStudiesMenuButton
             label={'Save'}
