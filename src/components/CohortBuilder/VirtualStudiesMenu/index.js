@@ -185,7 +185,7 @@ class VirtualStudiesMenu extends React.Component {
         <Row className="virtual-studies-heading">
           <H1>
             {title}
-            {<p>{isDirty ? 'You have unsaved changed' : ''}&nbsp;</p>}
+            {<p>{isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
           </H1>
         </Row>
 
