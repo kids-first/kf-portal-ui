@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonAtIndex } from '../../../common/sqonUtils';
+import { mergeSqonValueAtIndex } from '../../../common/sqonUtils';
 
 const dataTypeTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -24,7 +24,13 @@ class DataTypeChart extends React.Component {
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    const modifiedSqons = mergeSqonValueAtIndex(
+      newSqon,
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      'dataType',
+      field,
+    );
     setSqons(modifiedSqons);
   }
 
