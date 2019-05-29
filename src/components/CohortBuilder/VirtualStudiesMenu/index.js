@@ -109,7 +109,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent />,
+      component: <SaveVirtualStudiesModalContent saveAs={false} />,
     });
   }
 
@@ -119,7 +119,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent />,
+      component: <SaveVirtualStudiesModalContent saveAs={true} />,
     });
   }
 
@@ -166,7 +166,7 @@ class VirtualStudiesMenu extends React.Component {
     const selectedStudy = this.findSelectedStudy();
 
     const loading = virtualStudiesAreLoading || virtualStudyIsLoading;
-    const newDisabled = loading || !selectedStudy || !selectedStudy.id;
+    const newDisabled = loading || areSqonsEmpty;
     const cantOpen =
       loading ||
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
