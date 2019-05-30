@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAILURE } from '../actionTypes';
+import { LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } from '../actionTypes';
 
 export const loginSuccess = loggedInUser => {
   return {
@@ -10,6 +10,13 @@ export const loginSuccess = loggedInUser => {
 export const loginFailure = () => {
   return {
     type: LOGIN_FAILURE,
+    payload: null,
+  };
+};
+
+export const logout = () => {
+  return {
+    type: LOGOUT,
     payload: null,
   };
 };

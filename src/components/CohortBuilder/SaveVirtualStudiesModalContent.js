@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
 import { injectState } from 'freactal';
 
@@ -26,6 +27,10 @@ class SaveVirtualStudiesModalContent extends React.Component {
     autobind(this);
   }
 
+  propTypes = {
+    saveAs: PropTypes.bool.isRequired,
+  };
+
   componentWillMount() {
     this.saving = false;
   }
@@ -36,14 +41,21 @@ class SaveVirtualStudiesModalContent extends React.Component {
 
   saveStudy() {
     const { name, description } = this.state;
-    const { loggedInUser, sqons, activeSqonIndex, virtualStudyId, saveVirtualStudy } = this.props;
+    const {
+      loggedInUser,
+      sqons,
+      activeSqonIndex,
+      virtualStudyId,
+      saveVirtualStudy,
+      saveAs,
+    } = this.props;
 
     return saveVirtualStudy({
       loggedInUser,
       sqonsState: {
         sqons,
         activeIndex: activeSqonIndex,
-        virtualStudyId,
+        virtualStudyId: saveAs ? null : virtualStudyId,
       },
       name,
       description,

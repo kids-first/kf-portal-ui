@@ -16,6 +16,7 @@ import {
   fetchVirtualStudiesCollection,
   resetVirtualStudy,
   loadSavedVirtualStudy,
+  saveVirtualStudy,
 } from '../../../store/actionCreators/virtualStudies';
 
 import Tooltip from 'uikit/Tooltip';
@@ -26,6 +27,7 @@ import LoadQuery from 'components/LoadShareSaveDeleteQuery/LoadQuery';
 import OpenMenuIcon from 'react-icons/lib/fa/folder';
 import SaveAsIcon from 'react-icons/lib/fa/file';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
+import EditIcon from 'react-icons/lib/fa/edit';
 import DeleteIcon from 'react-icons/lib/fa/trash';
 
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
@@ -77,8 +79,33 @@ class VirtualStudiesMenu extends React.Component {
   }
 
   onSaveClick() {
+    const {
+      loggedInUser,
+      sqons,
+      activeIndex,
+      activeVirtualStudyId: virtualStudyId,
+      virtualStudyName: name,
+      description,
+      saveVirtualStudy,
+    } = this.props;
+
+    return saveVirtualStudy({
+      loggedInUser,
+      sqonsState: {
+        sqons,
+        activeIndex,
+        virtualStudyId,
+      },
+      name,
+      description,
+    }).catch(err => {
+      console.error('Error while saving the virtual study', err);
+    });
+  }
+
+  onEditClick() {
     this.props.effects.setModal({
-      title: 'Save Virtual Study',
+      title: 'Edit Virtual Study',
       classNames: {
         modal: 'virtual-study-modal',
       },
@@ -139,12 +166,13 @@ class VirtualStudiesMenu extends React.Component {
     const selectedStudy = this.findSelectedStudy();
 
     const loading = virtualStudiesAreLoading || virtualStudyIsLoading;
-    const newDisabled = loading || !selectedStudy || !selectedStudy.id;
+    const newDisabled = loading || areSqonsEmpty;
     const cantOpen =
       loading ||
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
       virtualStudies.length < 1;
-    const cantSave = loading || areSqonsEmpty || !isOwner;
+    const cantEdit = loading || areSqonsEmpty || !isOwner;
+    const cantSave = loading || areSqonsEmpty || !isOwner || !isDirty;
     const cantSaveAs = loading || areSqonsEmpty;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
@@ -157,8 +185,20 @@ class VirtualStudiesMenu extends React.Component {
         <Row className="virtual-studies-heading">
           <H1>
             {title}
-            {isDirty ? <p>You have unsaved changed</p> : null}
+            {<p>{isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
           </H1>
+          <Tooltip
+            html={<div>{'Edit the current virtual study'}</div>}
+            className="tooltip virtual-studies-edit"
+          >
+            <EditIcon
+              disabled={cantEdit}
+              height={16}
+              width={16}
+              className="floating-button-icon"
+              onClick={this.onEditClick}
+            />
+          </Tooltip>
         </Row>
 
         <Row className="virtual-studies-action-bar">
@@ -183,6 +223,16 @@ class VirtualStudiesMenu extends React.Component {
               disabled={cantOpen}
             />
           </Tooltip>
+
+          {/* <VirtualStudiesMenuButton
+            label={'Edit'}
+            tooltipText={'Edit the current virtual study'}
+            icon={EditIcon}
+            iconProps={{ height: 12, width: 12 }}
+            disabled={cantEdit}
+            onClick={this.onEditClick}
+            className="virtual-studies-edit"
+          /> */}
 
           <VirtualStudiesMenuButton
             label={'Save'}
@@ -232,9 +282,13 @@ const mapStateToProps = state => {
   const { user, cohortBuilder, virtualStudies } = state;
   return {
     uid: user.uid,
+    loggedInUser: user.loggedInUser,
     isOwner: cohortBuilder.uid === user.uid,
+    sqons: cohortBuilder.sqons,
+    activeIndex: cohortBuilder.activeIndex,
     activeVirtualStudyId: cohortBuilder.virtualStudyId,
     virtualStudyName: cohortBuilder.name,
+    description: cohortBuilder.description,
     virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
@@ -247,6 +301,7 @@ const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
   resetVirtualStudy,
   loadSavedVirtualStudy,
+  saveVirtualStudy,
 };
 
 export default compose(

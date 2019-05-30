@@ -14,6 +14,7 @@ import {
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
+  LOGOUT,
 } from '../actionTypes';
 
 const defaultSqon = [{ op: 'and', content: [] }];
@@ -50,11 +51,13 @@ export default (state = initialState, action) => {
         isLoading: true,
       };
     case VIRTUAL_STUDY_LOAD_SUCCESS:
-      return {
+      let newState = {
         ...cloneDeep(initialState),
         ...action.payload,
         isLoading: false,
       };
+      newState.areSqonsEmpty = isEqual(newState.sqons, defaultSqon);
+      return newState;
     case VIRTUAL_STUDY_LOAD_FAILURE:
       return {
         ...state,
@@ -111,6 +114,9 @@ export default (state = initialState, action) => {
         ...state,
         virtualStudyId: action.payload,
       });
+
+    case LOGOUT:
+      return cloneDeep(initialState);
 
     default:
       return state;
