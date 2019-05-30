@@ -78,7 +78,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     }),
   }));
 
-const formatedField = value => {
+const formatedValue = value => {
   switch (value) {
     case 'Cleft Lip Palate MONDO 0016044':
       return 'cleft lip/palate (MONDO:0016044)';
@@ -86,22 +86,13 @@ const formatedField = value => {
       return 'cleft lip (disease) (MONDO:0004747)';
     case 'Ewing Sarcoma MONDO 0012817':
       return 'Ewing sarcoma (MONDO:0012817)';
-    case 'Neuroblastoma MONDO 0005072':
-      return 'neuroblastoma (MONDO:0005072)';
-    case 'Low Grade Glioma MONDO 0021637':
-      return 'low grade glioma (MONDO:0021637)';
-    case 'Medulloblastoma MONDO 0007959':
-      return 'medulloblastoma (MONDO:0007959)';
     case 'Grade III Glioma MONDO 0021640':
       return 'grade III glioma (MONDO:0021640)';
-    case 'Cleft Palate MONDO 0016064':
-      return 'cleft palate (MONDO:0016064)';
-    case 'Ependymoma MONDO 0016698':
-      return 'ependymoma (MONDO:0016698)';
-    case 'Sex Differentiation Disease MONDO 0002145':
-      return 'sex differentiation disease (MONDO:0002145)';
     default:
-      return null;
+      const firstPart = value.slice(0, value.indexOf('MONDO')).toLowerCase();
+      const secondPart =
+        value.slice(value.indexOf('MONDO') - 1).replace(' MONDO ', '(MONDO:') + ')';
+      return `${firstPart}${secondPart}`;
   }
 };
 
@@ -151,7 +142,7 @@ class DiagnosesChart extends React.Component {
                     { title: 'Other Participants', color: theme.chartColors.purple },
                   ]}
                   onClick={data => {
-                    this.addSqon('diagnoses.mondo_id_diagnosis', formatedField(data.indexValue));
+                    this.addSqon('diagnoses.mondo_id_diagnosis', formatedValue(data.indexValue));
                   }}
                 />
               </BarChartContainer>
