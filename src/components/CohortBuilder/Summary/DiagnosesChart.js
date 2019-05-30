@@ -105,7 +105,6 @@ const formatedField = value => {
   }
 };
 
-// const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoading }) => (
 class DiagnosesChart extends React.Component {
   addSqon = (field, value) => {
     const { virtualStudy, setSqons } = this.props;
@@ -163,7 +162,6 @@ class DiagnosesChart extends React.Component {
     );
   }
 }
-// );
 
 /**
  * Get the top 10 diagnoses overall
