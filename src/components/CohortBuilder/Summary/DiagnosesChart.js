@@ -80,18 +80,18 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
 
 const formatedField = value => {
   switch (value) {
+    case 'Cleft Lip Palate MONDO 0016044':
+      return 'cleft lip/palate (MONDO:0016044)';
+    case 'Cleft Lip Disease MONDO 0004747':
+      return 'cleft lip (disease) (MONDO:0004747)';
     case 'Ewing Sarcoma MONDO 0012817':
       return 'Ewing sarcoma (MONDO:0012817)';
     case 'Neuroblastoma MONDO 0005072':
       return 'neuroblastoma (MONDO:0005072)';
     case 'Low Grade Glioma MONDO 0021637':
       return 'low grade glioma (MONDO:0021637)';
-    case 'Cleft Lip Palate MONDO 0016044':
-      return 'cleft lip/palate (MONDO:0016044)';
     case 'Medulloblastoma MONDO 0007959':
       return 'medulloblastoma (MONDO:0007959)';
-    case 'Cleft Lip Disease MONDO 0004747':
-      return 'cleft lip (disease) (MONDO:0004747)';
     case 'Grade III Glioma MONDO 0021640':
       return 'grade III glioma (MONDO:0021640)';
     case 'Cleft Palate MONDO 0016064':
