@@ -187,6 +187,18 @@ class VirtualStudiesMenu extends React.Component {
             {title}
             {<p>{isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
           </H1>
+          <Tooltip
+            html={<div>{'Edit the current virtual study'}</div>}
+            className="tooltip virtual-studies-edit"
+          >
+            <EditIcon
+              disabled={cantEdit}
+              height={16}
+              width={16}
+              className="floating-button-icon"
+              onClick={this.onEditClick}
+            />
+          </Tooltip>
         </Row>
 
         <Row className="virtual-studies-action-bar">
@@ -212,7 +224,7 @@ class VirtualStudiesMenu extends React.Component {
             />
           </Tooltip>
 
-          <VirtualStudiesMenuButton
+          {/* <VirtualStudiesMenuButton
             label={'Edit'}
             tooltipText={'Edit the current virtual study'}
             icon={EditIcon}
@@ -220,7 +232,7 @@ class VirtualStudiesMenu extends React.Component {
             disabled={cantEdit}
             onClick={this.onEditClick}
             className="virtual-studies-edit"
-          />
+          /> */}
 
           <VirtualStudiesMenuButton
             label={'Save'}
