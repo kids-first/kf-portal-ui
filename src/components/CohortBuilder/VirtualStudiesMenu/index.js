@@ -178,27 +178,31 @@ class VirtualStudiesMenu extends React.Component {
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
     const titleFragment = virtualStudyName ? 'Virtual Study: ' : 'Explore Data';
-    const title = `${titleFragment} ${virtualStudyName}${isDirty ? '*' : ''}`;
+    const title = `${titleFragment} ${virtualStudyName}${
+      activeVirtualStudyId && isDirty ? '*' : ''
+    }`;
 
     return (
       <Row className="virtual-studies-menu container">
         <Row className="virtual-studies-heading">
           <H1>
             {title}
-            {<p>{isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
+            {<p>{activeVirtualStudyId && isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
           </H1>
-          <Tooltip
-            html={<div>{'Edit the current virtual study'}</div>}
-            className="tooltip virtual-studies-edit"
-          >
-            <EditIcon
-              disabled={cantEdit}
-              height={16}
-              width={16}
-              className="floating-button-icon"
-              onClick={this.onEditClick}
-            />
-          </Tooltip>
+          {activeVirtualStudyId ? (
+            <Tooltip
+              html={<div>{'Edit the current virtual study'}</div>}
+              className="tooltip virtual-studies-edit"
+            >
+              <EditIcon
+                disabled={cantEdit}
+                height={16}
+                width={16}
+                className="floating-button-icon"
+                onClick={this.onEditClick}
+              />
+            </Tooltip>
+          ) : null}
         </Row>
 
         <Row className="virtual-studies-action-bar">
