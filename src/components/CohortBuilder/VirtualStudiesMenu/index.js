@@ -114,7 +114,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent />,
+      component: <SaveVirtualStudiesModalContent saveAs={false} />,
     });
   }
 
@@ -124,7 +124,7 @@ class VirtualStudiesMenu extends React.Component {
       classNames: {
         modal: 'virtual-study-modal',
       },
-      component: <SaveVirtualStudiesModalContent />,
+      component: <SaveVirtualStudiesModalContent saveAs={true} />,
     });
   }
 
