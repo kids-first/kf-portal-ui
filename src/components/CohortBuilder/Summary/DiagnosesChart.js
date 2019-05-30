@@ -35,7 +35,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               ]
             }
           ) {
-            diagnoses__diagnosis {
+            diagnoses__mondo_id_diagnosis {
               buckets {
                 doc_count
                 key
@@ -56,7 +56,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               ]
             }
           ) {
-            diagnoses__diagnosis {
+            diagnoses__mondo_id_diagnosis {
               buckets {
                 doc_count
                 key
@@ -68,33 +68,20 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     `,
     variables: { sqon, diagnosis },
     transform: data => ({
+      diagnosisValue: diagnosis,
       label: startCase(diagnosis),
       familyMembers: get(
         data,
-        'data.participant.familyMembers.diagnoses__diagnosis.buckets[0].doc_count',
+        'data.participant.familyMembers.diagnoses__mondo_id_diagnosis.buckets[0].doc_count',
         0,
       ),
-      probands: get(data, 'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count', 0),
+      probands: get(
+        data,
+        'data.participant.proband.diagnoses__mondo_id_diagnosis.buckets[0].doc_count',
+        0,
+      ),
     }),
   }));
-
-const formatedValue = value => {
-  switch (value) {
-    case 'Cleft Lip Palate MONDO 0016044':
-      return 'cleft lip/palate (MONDO:0016044)';
-    case 'Cleft Lip Disease MONDO 0004747':
-      return 'cleft lip (disease) (MONDO:0004747)';
-    case 'Ewing Sarcoma MONDO 0012817':
-      return 'Ewing sarcoma (MONDO:0012817)';
-    case 'Grade III Glioma MONDO 0021640':
-      return 'grade III glioma (MONDO:0021640)';
-    default:
-      const firstPart = value.slice(0, value.indexOf('MONDO')).toLowerCase();
-      const secondPart =
-        value.slice(value.indexOf('MONDO') - 1).replace(' MONDO ', '(MONDO:') + ')';
-      return `${firstPart}${secondPart}`;
-  }
-};
 
 class DiagnosesChart extends React.Component {
   addSqon = (field, value) => {
@@ -142,7 +129,7 @@ class DiagnosesChart extends React.Component {
                     { title: 'Other Participants', color: theme.chartColors.purple },
                   ]}
                   onClick={data => {
-                    this.addSqon('diagnoses.mondo_id_diagnosis', formatedValue(data.indexValue));
+                    this.addSqon('diagnoses.mondo_id_diagnosis', data.data.diagnosisValue);
                   }}
                 />
               </BarChartContainer>
@@ -181,8 +168,9 @@ export const diagnosesQuery = sqon => ({
     );
     return _(buckets)
       .orderBy(bucket => bucket.doc_count, 'desc')
-      .take(10)
       .map(diag => diag.key)
+      .difference(['No Match', '__missing__'])
+      .take(10)
       .value();
   },
 });
