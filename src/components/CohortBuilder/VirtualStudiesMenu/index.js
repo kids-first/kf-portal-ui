@@ -89,6 +89,11 @@ class VirtualStudiesMenu extends React.Component {
       saveVirtualStudy,
     } = this.props;
 
+    // if there is no virtual study loaded yet, save a new one instead
+    if (!virtualStudyId) {
+      return this.onSaveAsClick();
+    }
+
     return saveVirtualStudy({
       loggedInUser,
       sqonsState: {
@@ -172,8 +177,10 @@ class VirtualStudiesMenu extends React.Component {
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
-    const cantSave = loading || areSqonsEmpty || !isOwner || !isDirty;
-    const cantSaveAs = loading || areSqonsEmpty;
+    const cantSave = activeVirtualStudyId
+      ? loading || areSqonsEmpty || !isDirty || !isOwner
+      : loading || areSqonsEmpty || !isDirty;
+    const cantSaveAs = activeVirtualStudyId ? loading || areSqonsEmpty : true;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
