@@ -24,7 +24,10 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               op: "and"
               content: [
                 $sqon
-                { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
+                {
+                  op: "in"
+                  content: { field: "diagnoses.mondo_id_diagnosis", value: [$diagnosis] }
+                }
                 { op: "in", content: { field: "is_proband", value: ["false", "__missing__"] } }
               ]
             }
@@ -42,7 +45,10 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               op: "and"
               content: [
                 $sqon
-                { op: "in", content: { field: "diagnoses.diagnosis", value: [$diagnosis] } }
+                {
+                  op: "in"
+                  content: { field: "diagnoses.mondo_id_diagnosis", value: [$diagnosis] }
+                }
                 { op: "in", content: { field: "is_proband", value: ["true"] } }
               ]
             }
@@ -114,7 +120,7 @@ export const diagnosesQuery = sqon => ({
     query($sqon: JSON) {
       participant {
         aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-          diagnoses__diagnosis {
+          diagnoses__mondo_id_diagnosis {
             buckets {
               doc_count
               key
@@ -126,7 +132,10 @@ export const diagnosesQuery = sqon => ({
   `,
   variables: { sqon },
   transform: data => {
-    const buckets = get(data, 'data.participant.aggregations.diagnoses__diagnosis.buckets');
+    const buckets = get(
+      data,
+      'data.participant.aggregations.diagnoses__mondo_id_diagnosis.buckets',
+    );
     return _(buckets)
       .orderBy(bucket => bucket.doc_count, 'desc')
       .take(10)
