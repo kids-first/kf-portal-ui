@@ -18,7 +18,6 @@ See the list below for the issue numbers on GitHub.
 - #1644 Save a virtual study: Check the permissions in Riff and Persona
 - #1465 Cohort Builder: Make pie charts clickable in order to add a query term to the active query
 - #1739 Clickable chart: Available Data
-- #1741 Clickable charts: Most Frequent Diagnoses
 
 ### Bug fixes
 - #1639 "Search all filters": cannot find the "Age" filter
