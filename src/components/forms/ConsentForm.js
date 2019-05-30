@@ -18,7 +18,6 @@ import { personaApiRoot } from 'common/injectGlobals';
 
 import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
-import TextArea from 'uikit/TextArea';
 import ExternalLink from 'uikit/ExternalLink';
 import { JoinH3 } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
@@ -28,7 +27,8 @@ const ConsentContainer = styled(Column)`
   align-items: center;
 `;
 
-const Terms = styled(TextArea)`
+const Terms = styled('div')`
+  ${({ theme }) => theme.textarea};
   height: 250px;
   overflow-y: scroll;
 `;
