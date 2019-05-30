@@ -202,7 +202,7 @@ const cohortResultsQuery = sqon => ({
       files,
       participantCount: participants,
       filesCount: files.length,
-      familiesCount: families.length,
+      familiesCount: families.filter(item => item.key !== '__missing__').length,
     };
   },
 });
@@ -227,10 +227,7 @@ const Results = ({
       const filesCount = get(resultsData, 'filesCount', null);
       const familiesCount = get(resultsData, 'familiesCount', null);
       const cohortIsEmpty =
-        (!isLoading && !resultsData) ||
-        participantCount === 0 ||
-        filesCount === 0 ||
-        familiesCount === 0;
+        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
 
       const filesCountHeading = resultsData
         ? `${Number(data[0].filesCount || 0).toLocaleString()}`

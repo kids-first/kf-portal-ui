@@ -165,7 +165,7 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.css$/,
+            test: /\.(post)?css$/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -192,6 +192,7 @@ module.exports = {
                         ident: 'postcss',
                         plugins: () => [
                           require('postcss-flexbugs-fixes'),
+                          require('postcss-nested'),
                           autoprefixer({
                             browsers: [
                               '>1%',

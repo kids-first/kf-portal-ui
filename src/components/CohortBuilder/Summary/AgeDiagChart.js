@@ -5,24 +5,90 @@ import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
+import { mergeSqonValueAtIndex } from '../../../common/sqonUtils';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 };
 
-const AgeDiagChart = ({ data, theme, isLoading: isParentLoading }) => (
-  <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
-    <VerticalBar
-      showCursor={false}
-      data={data}
-      indexBy="label"
-      tooltipFormatter={ageAtDiagnosisTooltip}
-      sortByValue={true}
-      height={225}
-      colors={[theme.chartColors.lightblue]}
-    />
-  </CohortCard>
-);
+class AgeDiagChart extends React.Component {
+  addSqon = (field, value) => {
+    const { virtualStudy, setSqons } = this.props;
+
+    let newSqon = {};
+    switch (value) {
+      case 'Newborn':
+        newSqon = {
+          op: '<=',
+          content: { field: field, value: [364] },
+        };
+        break;
+      case '1 - 5':
+        newSqon = {
+          op: 'between',
+          content: { field: field, value: [365, 1824] },
+        };
+        break;
+      case '5 - 10':
+        newSqon = {
+          op: 'between',
+          content: { field: field, value: [1825, 3649] },
+        };
+        break;
+      case '10 - 15':
+        newSqon = {
+          op: 'between',
+          content: { field: field, value: [3650, 5474] },
+        };
+        break;
+      case '15 - 18':
+        newSqon = {
+          op: 'between',
+          content: { field: field, value: [5475, 6569] },
+        };
+        break;
+      case 'Adult':
+        newSqon = {
+          op: '>=',
+          content: { field: field, value: [6570] },
+        };
+        break;
+      default:
+    }
+
+    const modifiedSqons = mergeSqonValueAtIndex(
+      newSqon,
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      'ageDiagnosis',
+      field,
+    );
+    setSqons(modifiedSqons);
+  };
+
+  render() {
+    const { data, theme, isLoading: isParentLoading } = this.props;
+    return (
+      <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
+        <VerticalBar
+          showCursor={true}
+          data={data}
+          indexBy="label"
+          tooltipFormatter={ageAtDiagnosisTooltip}
+          sortByValue={true}
+          height={225}
+          colors={[theme.chartColors.lightblue]}
+          onClick={data => {
+            this.addSqon('diagnoses.age_at_event_days', data.indexValue);
+          }}
+        />
+      </CohortCard>
+    );
+  }
+}
+
 export const ageDiagQuery = sqon => ({
   variables: { sqon },
   query: gql`
@@ -113,7 +179,7 @@ export const ageDiagQuery = sqon => ({
   `,
   transform: ({ data }) => [
     { id: 'aggNewborn', label: 'Newborn', value: get(data, 'participant._0to1.total', 0) },
-    { id: 'agg5to10', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
+    { id: 'agg1to5', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
     { id: 'agg5to10', label: '5 - 10', value: get(data, 'participant._5to10.total', 0) },
     { id: 'agg10to15', label: '10 - 15', value: get(data, 'participant._10to15.total', 0) },
     { id: 'agg15to18', label: '15 - 18', value: get(data, 'participant._15to18.total', 0) },
@@ -121,4 +187,18 @@ export const ageDiagQuery = sqon => ({
   ],
 });
 
-export default compose(withTheme)(AgeDiagChart);
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
+const mapDispatchToProps = {
+  setSqons,
+};
+
+export default compose(
+  withTheme,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(AgeDiagChart);

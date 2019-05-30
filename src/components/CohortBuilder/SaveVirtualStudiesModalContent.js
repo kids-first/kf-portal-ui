@@ -1,26 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
+import { injectState } from 'freactal';
 
 import Input from 'uikit/Input';
 import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 
-export default class SaveVirtualStudiesModalContent extends React.Component {
+import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
+
+// const DESCRIPTION_MAX_LENGTH = 300;
+
+class SaveVirtualStudiesModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.saving = false;
+    this.state = {
+      name: props.name || '',
+      description: props.description || '',
+      errorMessage: null,
+    };
+
     autobind(this);
   }
 
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-  };
-
-  state = {
-    name: '',
-    errorMessage: null,
+  propTypes = {
+    saveAs: PropTypes.bool.isRequired,
   };
 
   componentWillMount() {
@@ -28,7 +36,30 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
   }
 
   onDataChange(evt) {
-    this.setState({ name: evt.target.value });
+    this.setState({ [evt.target.name]: evt.target.value });
+  }
+
+  saveStudy() {
+    const { name, description } = this.state;
+    const {
+      loggedInUser,
+      sqons,
+      activeSqonIndex,
+      virtualStudyId,
+      saveVirtualStudy,
+      saveAs,
+    } = this.props;
+
+    return saveVirtualStudy({
+      loggedInUser,
+      sqonsState: {
+        sqons,
+        activeIndex: activeSqonIndex,
+        virtualStudyId: saveAs ? null : virtualStudyId,
+      },
+      name,
+      description,
+    });
   }
 
   submitHandler() {
@@ -38,10 +69,10 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
 
     this.setState({ errorMessage: null });
 
-    return this.props
-      .onSubmit(this.state.name)
+    return this.saveStudy()
       .then(() => {
         this.setState({ errorMessage: null });
+        this.props.effects.unsetModal();
       })
       .catch(err => {
         this.saving = false;
@@ -50,7 +81,7 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
   }
 
   render() {
-    const { name, errorMessage } = this.state;
+    const { name, /*description,*/ errorMessage } = this.state;
     const submitDisabled = (name && name.length < 1) || this.saving;
 
     return (
@@ -62,8 +93,17 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
         <ModalContentSection>
           <strong>Virtual Study name: *</strong>
           <span>
-            <Input value={name} onChange={this.onDataChange} />
+            <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" />
           </span>
+          {/* <strong>{`Description (${DESCRIPTION_MAX_LENGTH} characters max): `}</strong>
+          <span>
+            <Input
+              value={description}
+              name="description"
+              onChange={this.onDataChange}
+              maxlength={DESCRIPTION_MAX_LENGTH}
+            />
+          </span> */}
         </ModalContentSection>
         <ModalFooter
           handleSubmit={this.submitHandler}
@@ -74,3 +114,25 @@ export default class SaveVirtualStudiesModalContent extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  uid: state.user.uid,
+  loggedInUser: state.user.loggedInUser,
+  sqons: state.cohortBuilder.sqons,
+  activeSqonIndex: state.cohortBuilder.activeIndex,
+  virtualStudyId: state.cohortBuilder.virtualStudyId,
+  name: state.cohortBuilder.name,
+  description: state.cohortBuilder.description,
+});
+
+const mapDispatchToProps = {
+  saveVirtualStudy,
+};
+
+export default compose(
+  injectState,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(SaveVirtualStudiesModalContent);

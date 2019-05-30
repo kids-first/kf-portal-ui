@@ -164,10 +164,10 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     sortable: false,
   },
   {
-    Header: 'Diagnosis',
-    accessor: 'diagnosis',
+    Header: 'Diagnosis (Mondo)',
+    accessor: 'diagnosisMondo',
     Cell: props => <CollapsibleMultiLineCell {...props} />,
-    field: 'diagnoses.diagnosis',
+    field: 'diagnoses.mondo_id_diagnosis',
     minWidth: 175,
     sortable: false,
   },

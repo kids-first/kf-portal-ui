@@ -96,18 +96,4 @@ export const withDropdownState = compose(
   }),
 );
 
-export const withDropdownMultiPane = compose(
-  withState('showExpanded', 'setExpanded', false),
-  withState('activeIndex', 'setActiveIndex', null),
-  withHandlers({
-    toggleExpanded: ({ showExpanded, setExpanded }) => e => {
-      setExpanded(!showExpanded);
-    },
-    toggleExpandedDropdown: ({ showExpanded, setExpanded, toggleDropdown }) => e => {
-      setExpanded(!showExpanded);
-      toggleDropdown();
-    },
-  }),
-);
-
 export default Dropdown;

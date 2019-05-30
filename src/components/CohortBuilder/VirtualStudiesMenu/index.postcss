@@ -1,0 +1,57 @@
+@use postcss-nested;
+
+.virtual-study-modal {
+  max-width: 800px;
+}
+
+.virtual-studies-menu.container {
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.virtual-studies-menu .virtual-studies-heading {
+  h1 {
+    color: #2b388f;
+    padding-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 1150px;
+  }
+
+  p {
+    display: block;
+    color: #a9adc0;
+    font-size: 12px;
+  }
+
+  .tooltip {
+    color: #008199;
+    padding: 3px 10px;
+
+    .floating-button-icon {
+    }
+  }
+}
+
+.virtual-studies-action-bar {
+  .button-group {
+    margin-left: 10px;
+
+    .button-text {
+      margin-left: 5px;
+    }
+  }
+
+  .virtual-studies-delete,
+  .virtual-studies-edit,
+  .virtual-studies-save,
+  .virtual-studies-save-as {
+    .button-icon {
+      margin-top: -2px;
+    }
+  }
+}

@@ -85,8 +85,8 @@ QueryResults.propTypes = {
       matchByDisplayName: PropTypes.bool.isRequired,
       buckets: PropTypes.arrayOf(
         PropTypes.shape({
-          value: PropTypes.string.isRequired,
-          docCount: PropTypes.number.isRequired,
+          key: PropTypes.string.isRequired,
+          doc_count: PropTypes.number.isRequired,
         }),
       ),
     }),

@@ -1,156 +1,142 @@
 import React from 'react';
-import Component from 'react-component-component';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { injectState } from 'freactal';
 import { compose } from 'recompose';
+import autobind from 'auto-bind-es5';
+import { parse as parseQueryString, stringify } from 'query-string';
+import { connect } from 'react-redux';
 import {
   resolveSyntheticSqon,
   isReference,
 } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
-import { parse as parseQueryString, stringify } from 'query-string';
 
-import { withApi } from 'services/api';
-import { getVirtualStudy } from 'services/virtualStudies';
+import {
+  loadSavedVirtualStudy,
+  setActiveSqonIndex,
+  setSqons,
+  resetVirtualStudy,
+} from '../../store/actionCreators/virtualStudies';
 
-const SQONProvider = compose(
-  withApi,
-  withRouter,
-  injectState,
-)(({ api, history, children, state: { loggedInUser } }) => {
-  const COHORT_BUILDER_FILTER_STATE = 'COHORT_BUILDER_FILTER_STATE';
-  const { id: virtualStudyId } = parseQueryString(history.location.search);
-  const initialState = {
-    sqons: [
-      {
-        op: 'and',
-        content: [],
-      },
-    ],
-    activeIndex: 0,
-    lastAction: null,
-    uid: null,
+class SQONProvider extends React.Component {
+  constructor(props) {
+    super(props);
+    autobind(this);
+  }
+
+  static propTypes = {
+    history: PropTypes.object.isRequired,
   };
 
-  const didMount = s => {
-    if (virtualStudyId) {
-      loadVirtualStudy(s)(virtualStudyId).catch(console.err);
+  loadVirtualStudy(virtualStudyId) {
+    if (virtualStudyId === null) {
+      this.props.resetVirtualStudy();
+      return;
+    }
+    this.props.loadSavedVirtualStudy(virtualStudyId);
+  }
+
+  componentDidMount() {
+    const { virtualStudyId, history } = this.props;
+    const { id: urlVirtualStudyId } = parseQueryString(history.location.search);
+
+    // load the study in url if it is not already loaded (e.g. from local storage or previous mounting)
+    if (urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.loadVirtualStudy(urlVirtualStudyId);
       return;
     }
 
-    const savedLocalState = localStorage.getItem(COHORT_BUILDER_FILTER_STATE);
-    if (savedLocalState) {
-      let localState = JSON.parse(savedLocalState);
-      s.setState({
-        sqons: localState.sqons,
-        activeIndex: localState.activeIndex,
-      });
+    // add the id of the study to the url if it is not set, yet
+    if (!urlVirtualStudyId && virtualStudyId) {
+      this.setStudyInUrl(virtualStudyId);
+      return;
     }
-  };
+  }
 
-  const didUpdate = s => {
-    const {
-      props: { virtualStudyId },
-      prevProps: { virtualStudyId: previousVirtualStudyId },
-    } = s;
+  componentDidUpdate(prevProps) {
+    const { virtualStudyId, history } = this.props;
+    const { virtualStudyId: prevVirtualStudyId } = prevProps;
+    const { id: urlVirtualStudyId } = parseQueryString(history.location.search);
+    const { id: prevUrlVirtualStudyId } = parseQueryString(prevProps.history.location.search);
 
-    if (virtualStudyId !== previousVirtualStudyId) {
-      if (!virtualStudyId) {
-        localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(initialState));
-        return;
-      }
-
-      loadVirtualStudy(s)(virtualStudyId)
-        .then(virtualStudy => {
-          let filterState;
-          try {
-            filterState = JSON.stringify({
-              sqons: virtualStudy.content.sqons,
-              activeIndex: virtualStudy.content.activeIndex,
-              uid: virtualStudy,
-            });
-          } catch (err) {
-            // something went wrong, reset the state in local storage
-            filterState = JSON.stringify(initialState);
-          }
-          localStorage.setItem(COHORT_BUILDER_FILTER_STATE, filterState);
-        })
-        .catch(err => {
-          console.error(err);
-          // something went wrong, reset the state in local storage
-          localStorage.setItem(COHORT_BUILDER_FILTER_STATE, JSON.stringify(initialState));
-        });
+    // update current virtual study when url change
+    if (prevUrlVirtualStudyId !== urlVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.loadVirtualStudy(urlVirtualStudyId || null);
+      return;
     }
-  };
 
-  const loadVirtualStudy = ({ setState }) => async virtualStudyId => {
-    return getVirtualStudy(api)(virtualStudyId).then(virtualStudy => {
-      const {
-        uid,
-        content: { sqons, activeIndex },
-      } = virtualStudy;
-      setState({ sqons, activeIndex, uid });
-    });
-  };
+    // update url when current virtual study change
+    if (virtualStudyId !== prevVirtualStudyId && virtualStudyId !== urlVirtualStudyId) {
+      this.setStudyInUrl(virtualStudyId);
+      return;
+    }
+  }
 
-  /**
-   * utilities for children
-   **/
-  const setActiveSqonIndex = s => index => {
-    s.setState({ activeIndex: index });
-  };
-  const setSqons = s => (sqons = s.state.sqons) => s.setState({ sqons });
+  getActiveExecutableSqon() {
+    const { sqons, activeIndex } = this.props;
+    return resolveSyntheticSqon(sqons)(sqons[activeIndex]);
+  }
 
   // takes care of putting a new sqon into place while preserving references
-  const mergeSqonToActiveIndex = s => newSqon =>
-    setSqons(s)(
-      s.state.sqons.map((currentSqon, i) =>
-        i === s.state.activeIndex
-          ? {
-              ...currentSqon,
-              content: newSqon.content.map((newContent, _i) =>
-                isReference(currentSqon.content[_i]) ? currentSqon.content[_i] : newContent,
-              ),
-            }
-          : currentSqon,
-      ),
+  // TODO - move to @kfarranger/components/dist/AdvancedSqonBuilder/utils
+  mergeSqonToActiveIndex(newSqon) {
+    const { sqons, activeIndex } = this.props;
+    const updatedSqons = sqons.map((currentSqon, i) =>
+      i === activeIndex
+        ? {
+            ...currentSqon,
+            content: newSqon.content.map((newContent, _i) =>
+              isReference(currentSqon.content[_i]) ? currentSqon.content[_i] : newContent,
+            ),
+          }
+        : currentSqon,
     );
-  const getActiveExecutableSqon = s => () =>
-    resolveSyntheticSqon(s.state.sqons)(s.state.sqons[s.state.activeIndex]);
+    this.props.setSqons(updatedSqons);
+  }
 
-  const setStudyInHash = id => {
-    // set the current study by the hash,
-    //  it will flow back from `didUpdate`
+  setStudyInUrl(virtualStudyId) {
+    const { history } = this.props;
     history.replace({
       ...history.location,
-      search: id ? stringify({ id }) : '',
+      search: virtualStudyId ? stringify({ id: virtualStudyId }) : '',
     });
+  }
+
+  render() {
+    const { sqons, activeIndex, children, setActiveSqonIndex, setSqons } = this.props;
+
+    // TODO redux - let the children call the actions?
+    return children({
+      sqons,
+      setSqons,
+      activeIndex,
+      setActiveSqonIndex,
+      getActiveExecutableSqon: this.getActiveExecutableSqon,
+      mergeSqonToActiveIndex: this.mergeSqonToActiveIndex,
+    });
+  }
+}
+
+const mapStateToProps = state => {
+  const { sqons, activeIndex, uid, virtualStudyId } = state.cohortBuilder;
+  return {
+    sqons,
+    activeIndex,
+    uid,
+    virtualStudyId,
   };
+};
 
-  return (
-    <Component
-      virtualStudyId={virtualStudyId}
-      initialState={initialState}
-      didMount={didMount}
-      didUpdate={didUpdate}
-    >
-      {s => {
-        const {
-          state: { sqons, activeIndex, uid },
-        } = s;
-        return children({
-          sqons,
-          setSqons: setSqons(s),
-          activeIndex,
-          setActiveSqonIndex: setActiveSqonIndex(s),
-          getActiveExecutableSqon: getActiveExecutableSqon(s),
-          mergeSqonToActiveIndex: mergeSqonToActiveIndex(s),
-          activeVirtualStudyId: virtualStudyId,
-          setActiveVirtualStudyId: setStudyInHash,
-          isOwner: uid === loggedInUser.egoId,
-        });
-      }}
-    </Component>
-  );
-});
+const mapDispatchToProps = {
+  loadSavedVirtualStudy,
+  setActiveSqonIndex,
+  setSqons,
+  resetVirtualStudy,
+};
 
-export default SQONProvider;
+export default compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+)(SQONProvider);

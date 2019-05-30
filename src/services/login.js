@@ -3,6 +3,8 @@ import ajax from 'services/ajax';
 import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
 import { removeCookie } from './cookie';
+import { store } from '../store';
+import { logout } from '../store/actionCreators/user';
 
 const gapi = global.gapi;
 
@@ -33,8 +35,8 @@ export const facebookLogout = () =>
   Promise.race([
     new Promise((resolve, reject) => {
       try {
-        global.FB.getLoginStatus(
-          response => (response.authResponse ? global.FB.logout(r => resolve(r)) : resolve()),
+        global.FB.getLoginStatus(response =>
+          response.authResponse ? global.FB.logout(r => resolve(r)) : resolve(),
         );
       } catch (err) {
         console.warn('failed to get fb login status: ', err);
@@ -46,5 +48,7 @@ export const facebookLogout = () =>
 
 export const logoutAll = () => {
   removeCookie(EGO_JWT_KEY);
+  // discard the user/session details
+  store.dispatch(logout());
   return Promise.all([googleLogout().catch(err => console.warn(err)), facebookLogout()]);
 };

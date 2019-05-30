@@ -68,6 +68,7 @@ export default injectState(
                           onClick={() => {
                             return this.open(id);
                           }}
+                          key={`vitual-study-listitem_${id}`}
                         >
                           {name}
                         </ItemRow>

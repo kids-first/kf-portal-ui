@@ -73,6 +73,7 @@ class HorizontalBar extends Component {
     const { format, key, x, y, theme, tickIndex } = tick;
 
     let value = tick.value;
+    value = value.indexOf('MONDO') > -1 ? value.substr(0, value.indexOf('MONDO')) : value;
 
     if (format !== undefined) {
       value = format(value);
