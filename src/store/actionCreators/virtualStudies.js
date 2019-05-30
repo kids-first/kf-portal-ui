@@ -39,7 +39,7 @@ const assertStudyId = id => {
 };
 
 const assertStudyName = name => {
-  if (!(name || '').length) {
+  if (typeof name !== 'string' || name.trim().length === 0) {
     throw new Error('Study name cannot be empty');
   }
 };
@@ -117,13 +117,17 @@ export const loadSavedVirtualStudy = virtualStudyId => {
 
 export const saveVirtualStudy = ({ loggedInUser, sqonsState, name, description = '' }) => {
   return dispatch => {
-    assertStudyName(name);
-    assertUser(loggedInUser);
+    try {
+      assertStudyName(name);
+      assertUser(loggedInUser);
+    } catch (err) {
+      return Promise.reject(err);
+    }
 
     const studyInfo = {
       loggedInUser,
       sqonsState,
-      name,
+      name: name.trim(),
       description,
     };
 
