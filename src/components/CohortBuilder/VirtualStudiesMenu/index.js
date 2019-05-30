@@ -89,6 +89,11 @@ class VirtualStudiesMenu extends React.Component {
       saveVirtualStudy,
     } = this.props;
 
+    // if there is no virtual study loaded yet, save a new one instead
+    if (!virtualStudyId) {
+      return this.onSaveAsClick();
+    }
+
     return saveVirtualStudy({
       loggedInUser,
       sqonsState: {
@@ -172,33 +177,39 @@ class VirtualStudiesMenu extends React.Component {
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
-    const cantSave = loading || areSqonsEmpty || !isOwner || !isDirty;
-    const cantSaveAs = loading || areSqonsEmpty;
+    const cantSave = activeVirtualStudyId
+      ? loading || areSqonsEmpty || !isDirty || !isOwner
+      : loading || areSqonsEmpty || !isDirty;
+    const cantSaveAs = activeVirtualStudyId ? loading || areSqonsEmpty : true;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
     const titleFragment = virtualStudyName ? 'Virtual Study: ' : 'Explore Data';
-    const title = `${titleFragment} ${virtualStudyName}${isDirty ? '*' : ''}`;
+    const title = `${titleFragment} ${virtualStudyName}${
+      activeVirtualStudyId && isDirty ? '*' : ''
+    }`;
 
     return (
       <Row className="virtual-studies-menu container">
         <Row className="virtual-studies-heading">
           <H1>
             {title}
-            {<p>{isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
+            {<p>{activeVirtualStudyId && isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
           </H1>
-          <Tooltip
-            html={<div>{'Edit the current virtual study'}</div>}
-            className="tooltip virtual-studies-edit"
-          >
-            <EditIcon
-              disabled={cantEdit}
-              height={16}
-              width={16}
-              className="floating-button-icon"
-              onClick={this.onEditClick}
-            />
-          </Tooltip>
+          {activeVirtualStudyId ? (
+            <Tooltip
+              html={<div>{'Edit the current virtual study'}</div>}
+              className="tooltip virtual-studies-edit"
+            >
+              <EditIcon
+                disabled={cantEdit}
+                height={16}
+                width={16}
+                className="floating-button-icon"
+                onClick={this.onEditClick}
+              />
+            </Tooltip>
+          ) : null}
         </Row>
 
         <Row className="virtual-studies-action-bar">
