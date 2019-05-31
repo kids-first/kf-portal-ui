@@ -427,12 +427,6 @@ export const CLINICAL_FILTERS = [
     active: true,
   },
   {
-    field:
-      'participants__family__family_compositions__family_members__phenotype__hpo__ancestral_hpo_ids',
-    show: false,
-    active: true,
-  },
-  {
     field: 'participants__family__family_compositions__family_members__phenotype__hpo__external_id',
     show: false,
     active: true,
@@ -506,11 +500,6 @@ export const CLINICAL_FILTERS = [
   },
   {
     field: 'participants__phenotype__hpo__age_at_event_days',
-    show: false,
-    active: true,
-  },
-  {
-    field: 'participants__phenotype__hpo__ancestral_hpo_ids',
     show: false,
     active: true,
   },
