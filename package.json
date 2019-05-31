@@ -111,7 +111,7 @@
     "start-dev": "NODE_PATH=src node scripts/start.js --env-file=.env.development.local",
     "build": "NODE_PATH=src node scripts/build.js",
     "test": "NODE_PATH=src node scripts/test.js --env=jsdom",
-    "test:unit": "NODE_ENV=test NODE_PATH=src mocha -w --require babel-core/register src/**/*.unit.js",
+    "test:unit": "NODE_ENV=test NODE_PATH=src nyc --reporter=html mocha -w --require babel-core/register src/**/*.unit.js",
     "translations": "i18next-scanner --output ./public 'src/**/*.js'"
   },
   "devDependencies": {
@@ -126,6 +126,7 @@
     "chai": "^4.2.0",
     "i18next-scanner": "^2.4.6",
     "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "prettier": "^1.10.2",
     "redux-devtools": "^3.5.0",
     "redux-devtools-extension": "^2.13.8",
