@@ -203,7 +203,6 @@ const participantQuery = `query ($sqon: JSON) {
           }
           phenotype {
             age_at_event_days
-            ancestral_hpo_ids
             external_id
             hpo_phenotype_not_observed
             hpo_phenotype_observed
