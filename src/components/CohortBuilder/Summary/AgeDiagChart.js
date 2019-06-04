@@ -7,7 +7,7 @@ import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonValueAtIndex } from '../../../common/sqonUtils';
+import { setSqonValueAtIndex } from '../../../common/sqonUtils';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -22,48 +22,46 @@ class AgeDiagChart extends React.Component {
       case 'Newborn':
         newSqon = {
           op: '<=',
-          content: { field: field, value: [364] },
+          content: { field, value: [364] },
         };
         break;
       case '1 - 5':
         newSqon = {
           op: 'between',
-          content: { field: field, value: [365, 1824] },
+          content: { field, value: [365, 1824] },
         };
         break;
       case '5 - 10':
         newSqon = {
           op: 'between',
-          content: { field: field, value: [1825, 3649] },
+          content: { field, value: [1825, 3649] },
         };
         break;
       case '10 - 15':
         newSqon = {
           op: 'between',
-          content: { field: field, value: [3650, 5474] },
+          content: { field, value: [3650, 5474] },
         };
         break;
       case '15 - 18':
         newSqon = {
           op: 'between',
-          content: { field: field, value: [5475, 6569] },
+          content: { field, value: [5475, 6569] },
         };
         break;
       case 'Adult':
         newSqon = {
           op: '>=',
-          content: { field: field, value: [6570] },
+          content: { field, value: [6570] },
         };
         break;
       default:
     }
 
-    const modifiedSqons = mergeSqonValueAtIndex(
-      newSqon,
+    const modifiedSqons = setSqonValueAtIndex(
       virtualStudy.sqons,
       virtualStudy.activeIndex,
-      'ageDiagnosis',
-      field,
+      newSqon,
     );
     setSqons(modifiedSqons);
   };

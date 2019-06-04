@@ -9,7 +9,7 @@ import QueriesResolver from '../QueriesResolver';
 import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonAtIndex } from '../../../common/sqonUtils';
+import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from '../../../common/sqonUtils';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -94,7 +94,12 @@ class StudiesChart extends React.Component {
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      { operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR },
+    );
     setSqons(modifiedSqons);
   };
 

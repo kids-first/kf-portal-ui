@@ -9,7 +9,11 @@ import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonAtIndex } from '../../../common/sqonUtils';
+import {
+  setSqonValueAtIndex,
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+} from '../../../common/sqonUtils';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -90,14 +94,23 @@ class DiagnosesChart extends React.Component {
     const newSqon = {
       op: 'in',
       content: {
-        field: field,
+        field,
         value: [value],
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      {
+        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+      },
+    );
     setSqons(modifiedSqons);
   };
+
   render() {
     const { topDiagnoses, sqon, theme, api, isLoading: isParentLoading } = this.props;
     return (

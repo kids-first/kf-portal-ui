@@ -3,8 +3,9 @@
 # dependencies
 /node_modules
 
-# testing
+# testing and coverage reports
 /coverage
+/.nyc_output
 
 # production
 /build
