@@ -120,7 +120,10 @@ class DiagnosesChart extends React.Component {
         queries={toSingleDiagQueries({ topDiagnoses, sqon })}
       >
         {({ isLoading, data }) => (
-          <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
+          <CohortCard
+            title="Most Frequent Diagnoses (Mondo)"
+            loading={isLoading || isParentLoading}
+          >
             {!data ? (
               <div>No data</div>
             ) : (
