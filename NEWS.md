@@ -1,7 +1,20 @@
 # Release notes for kf-portal-ui
 
-## 2019-05-30 kf-portal-ui 2.2.0
+# 2019-06-04 kf-portal-ui 2.3.0
+This release introduces a few features and bug fixes after a larger release.
 
+## New features
+- #1741 Clickable charts: Most Frequent Diagnoses
+- #1802 Change title of "Most Frequent Diagnoses" chart in the cohort builder
+- #1803 Update field names in exported Participant data TSV file
+
+## Bug fixes
+- #1803 Update field names in exported Participant data TSV file
+- #1695 Remove field phenotype.ancestral\_hpo\_ids 
+- #1801 Clicking on a chart crashes the application when the virtual study contains a reference
+
+
+## 2019-05-30 kf-portal-ui 2.2.0
 As part of this release, we have forked the Overture projects to the Fids First team: Ego, Persona, Rollcall and Riff.
 We also improved significantly the documentation for the deployment of all services. We standardized the deployment
 process for Riff. We also did the investigation and implementation of the backend for login in with ORCID with Ego.

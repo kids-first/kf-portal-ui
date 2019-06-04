@@ -6,7 +6,11 @@ import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonValueAtIndex } from '../../../common/sqonUtils';
+import {
+  setSqonValueAtIndex,
+  MERGE_VALUES_STRATEGIES,
+  MERGE_OPERATOR_STRATEGIES,
+} from '../../../common/sqonUtils';
 
 const dataTypeTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -19,17 +23,19 @@ class DataTypeChart extends React.Component {
     const newSqon = {
       op: 'in',
       content: {
-        field: field,
+        field,
         value: [value],
       },
     };
 
-    const modifiedSqons = mergeSqonValueAtIndex(
-      newSqon,
+    const modifiedSqons = setSqonValueAtIndex(
       virtualStudy.sqons,
       virtualStudy.activeIndex,
-      'dataType',
-      field,
+      newSqon,
+      {
+        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+      },
     );
     setSqons(modifiedSqons);
   }

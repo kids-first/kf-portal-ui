@@ -8,7 +8,11 @@ import Pie from 'chartkit/components/Pie';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
-import { mergeSqonAtIndex } from '../../../common/sqonUtils';
+import {
+  setSqonValueAtIndex,
+  MERGE_VALUES_STRATEGIES,
+  MERGE_OPERATOR_STRATEGIES,
+} from '../../../common/sqonUtils';
 
 const PieChartContainer = styled('div')`
   display: flex;
@@ -34,7 +38,15 @@ class DemographicChart extends React.Component {
       },
     };
 
-    const modifiedSqons = mergeSqonAtIndex(newSqon, virtualStudy.sqons, virtualStudy.activeIndex);
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      {
+        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+      },
+    );
     setSqons(modifiedSqons);
   };
 

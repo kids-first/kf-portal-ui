@@ -7,6 +7,13 @@ import gql from 'graphql-tag';
 import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
+import {
+  setSqonValueAtIndex,
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+} from '../../../common/sqonUtils';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -32,7 +39,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               ]
             }
           ) {
-            diagnoses__diagnosis {
+            diagnoses__mondo_id_diagnosis {
               buckets {
                 doc_count
                 key
@@ -53,7 +60,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
               ]
             }
           ) {
-            diagnoses__diagnosis {
+            diagnoses__mondo_id_diagnosis {
               buckets {
                 doc_count
                 key
@@ -65,51 +72,90 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
     `,
     variables: { sqon, diagnosis },
     transform: data => ({
+      diagnosisValue: diagnosis,
       label: startCase(diagnosis),
       familyMembers: get(
         data,
-        'data.participant.familyMembers.diagnoses__diagnosis.buckets[0].doc_count',
+        'data.participant.familyMembers.diagnoses__mondo_id_diagnosis.buckets[0].doc_count',
         0,
       ),
-      probands: get(data, 'data.participant.proband.diagnoses__diagnosis.buckets[0].doc_count', 0),
+      probands: get(
+        data,
+        'data.participant.proband.diagnoses__mondo_id_diagnosis.buckets[0].doc_count',
+        0,
+      ),
     }),
   }));
 
-const DiagnosesChart = ({ topDiagnoses, sqon, theme, api, isLoading: isParentLoading }) => (
-  <QueriesResolver
-    name="GQL_DIAGNOSIS_CHART"
-    api={api}
-    queries={toSingleDiagQueries({ topDiagnoses, sqon })}
-  >
-    {({ isLoading, data }) => (
-      <CohortCard title="Most Frequent Diagnoses" loading={isLoading || isParentLoading}>
-        {!data ? (
-          <div>No data</div>
-        ) : (
-          <BarChartContainer>
-            <HorizontalBar
-              showCursor={false}
-              data={_(data)
-                .sortBy(d => d.probands + d.familyMembers)
-                .map((d, i) => ({ ...d, id: i }))
-                .value()}
-              indexBy="label"
-              keys={['probands', 'familyMembers']}
-              tooltipFormatter={mostFrequentDiagnosisTooltip}
-              tickInterval={4}
-              colors={getCohortBarColors(data, theme)}
-              xTickTextLength={28}
-              legends={[
-                { title: 'Probands', color: theme.chartColors.blue },
-                { title: 'Other Participants', color: theme.chartColors.purple },
-              ]}
-            />
-          </BarChartContainer>
+class DiagnosesChart extends React.Component {
+  addSqon = (field, value) => {
+    const { virtualStudy, setSqons } = this.props;
+
+    const newSqon = {
+      op: 'in',
+      content: {
+        field,
+        value: [value],
+      },
+    };
+
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      {
+        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+      },
+    );
+    setSqons(modifiedSqons);
+  };
+
+  render() {
+    const { topDiagnoses, sqon, theme, api, isLoading: isParentLoading } = this.props;
+    return (
+      <QueriesResolver
+        name="GQL_DIAGNOSIS_CHART"
+        api={api}
+        queries={toSingleDiagQueries({ topDiagnoses, sqon })}
+      >
+        {({ isLoading, data }) => (
+          <CohortCard
+            title="Most Frequent Diagnoses (Mondo)"
+            loading={isLoading || isParentLoading}
+          >
+            {!data ? (
+              <div>No data</div>
+            ) : (
+              <BarChartContainer>
+                <HorizontalBar
+                  showCursor={true}
+                  data={_(data)
+                    .sortBy(d => d.probands + d.familyMembers)
+                    .map((d, i) => ({ ...d, id: i }))
+                    .value()}
+                  indexBy="label"
+                  keys={['probands', 'familyMembers']}
+                  tooltipFormatter={mostFrequentDiagnosisTooltip}
+                  tickInterval={4}
+                  colors={getCohortBarColors(data, theme)}
+                  xTickTextLength={28}
+                  legends={[
+                    { title: 'Probands', color: theme.chartColors.blue },
+                    { title: 'Other Participants', color: theme.chartColors.purple },
+                  ]}
+                  onClick={data => {
+                    this.addSqon('diagnoses.mondo_id_diagnosis', data.data.diagnosisValue);
+                  }}
+                />
+              </BarChartContainer>
+            )}
+          </CohortCard>
         )}
-      </CohortCard>
-    )}
-  </QueriesResolver>
-);
+      </QueriesResolver>
+    );
+  }
+}
 
 /**
  * Get the top 10 diagnoses overall
@@ -138,13 +184,26 @@ export const diagnosesQuery = sqon => ({
     );
     return _(buckets)
       .orderBy(bucket => bucket.doc_count, 'desc')
-      .take(10)
       .map(diag => diag.key)
+      .difference(['No Match', '__missing__'])
+      .take(10)
       .value();
   },
 });
 
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
+const mapDispatchToProps = {
+  setSqons,
+};
+
 export default compose(
   withApi,
   withTheme,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(DiagnosesChart);
