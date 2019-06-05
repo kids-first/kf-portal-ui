@@ -195,27 +195,28 @@ class VirtualStudiesMenu extends React.Component {
         <Row className="virtual-studies-heading">
           <header>
             <H1>{title}</H1>
-            <div className="sub-heading">
-              {description.split(/\n/).map(line => (
-                <p>{line}&nbsp;</p>
-              ))}
-            </div>
+
+            {activeVirtualStudyId ? (
+              <Tooltip
+                html={<div>{'Edit the current virtual study'}</div>}
+                className="tooltip virtual-studies-edit"
+              >
+                <EditIcon
+                  disabled={cantEdit}
+                  height={16}
+                  width={16}
+                  className="floating-button-icon"
+                  onClick={this.onEditClick}
+                />
+              </Tooltip>
+            ) : null}
           </header>
 
-          {activeVirtualStudyId ? (
-            <Tooltip
-              html={<div>{'Edit the current virtual study'}</div>}
-              className="tooltip virtual-studies-edit"
-            >
-              <EditIcon
-                disabled={cantEdit}
-                height={16}
-                width={16}
-                className="floating-button-icon"
-                onClick={this.onEditClick}
-              />
-            </Tooltip>
-          ) : null}
+          <div className="description">
+            {description.split(/\n/).map(line => (
+              <p>{line}&nbsp;</p>
+            ))}
+          </div>
         </Row>
 
         <Row className="virtual-studies-action-bar">
