@@ -154,10 +154,9 @@ const App = compose(
           exact
           render={props =>
             forceSelectRole({
-              api,
               isLoadingUser,
-              Component: ParticipantEntity,
               loggedInUser,
+              Component: ParticipantEntity,
               participantId: props.match.params.participantId,
               ...props,
             })
