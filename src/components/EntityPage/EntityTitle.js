@@ -42,7 +42,7 @@ const EntityTitle = ({ icon, title, tags = [] }) => (
   </Row>
 );
 
-EntityTitle.PropTypes = {
+EntityTitle.propTypes = {
   title: PropTypes.string,
   icon: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
