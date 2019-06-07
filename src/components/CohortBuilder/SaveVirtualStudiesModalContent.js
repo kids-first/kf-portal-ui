@@ -6,13 +6,14 @@ import autobind from 'auto-bind-es5';
 import { injectState } from 'freactal';
 
 import Input from 'uikit/Input';
+import TextArea from 'uikit/TextArea';
 import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 
 import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
 
-// const DESCRIPTION_MAX_LENGTH = 300;
+const DESCRIPTION_MAX_LENGTH = 300;
 
 class SaveVirtualStudiesModalContent extends React.Component {
   constructor(props) {
@@ -81,36 +82,34 @@ class SaveVirtualStudiesModalContent extends React.Component {
   }
 
   render() {
-    const { name, /*description,*/ errorMessage } = this.state;
+    const { name, description, errorMessage } = this.state;
     const submitDisabled = (name && name.length < 1) || this.saving;
 
     return (
-      <React.Fragment>
+      <div className="virtual-studies-save-modal">
         {errorMessage && <PromptMessage heading={'Error'} content={errorMessage} error />}
         <ModalContentSection>
           You are saving this page of results with the current configuration of queries.
         </ModalContentSection>
         <ModalContentSection>
-          <strong>Virtual Study name: *</strong>
-          <span>
-            <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" />
-          </span>
-          {/* <strong>{`Description (${DESCRIPTION_MAX_LENGTH} characters max): `}</strong>
-          <span>
-            <Input
-              value={description}
-              name="description"
-              onChange={this.onDataChange}
-              maxlength={DESCRIPTION_MAX_LENGTH}
-            />
-          </span> */}
+          <label required>Virtual Study name:</label>
+          <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" />
+
+          <strong>{`Description (${DESCRIPTION_MAX_LENGTH} characters max): `}</strong>
+          <TextArea
+            value={description}
+            name="description"
+            className="save-modal-container"
+            onChange={this.onDataChange}
+            maxlength={DESCRIPTION_MAX_LENGTH}
+          />
         </ModalContentSection>
         <ModalFooter
           handleSubmit={this.submitHandler}
           submitText={'Save'}
           submitDisabled={submitDisabled}
         />
-      </React.Fragment>
+      </div>
     );
   }
 }

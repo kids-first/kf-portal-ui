@@ -162,6 +162,7 @@ class VirtualStudiesMenu extends React.Component {
       activeVirtualStudyId,
       virtualStudyIsLoading,
       virtualStudyName,
+      description,
       virtualStudies,
       virtualStudiesAreLoading,
       isOwner,
@@ -192,24 +193,30 @@ class VirtualStudiesMenu extends React.Component {
     return (
       <Row className="virtual-studies-menu container">
         <Row className="virtual-studies-heading">
-          <H1>
-            {title}
-            {<p>{activeVirtualStudyId && isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
-          </H1>
-          {activeVirtualStudyId ? (
-            <Tooltip
-              html={<div>{'Edit the current virtual study'}</div>}
-              className="tooltip virtual-studies-edit"
-            >
-              <EditIcon
-                disabled={cantEdit}
-                height={16}
-                width={16}
-                className="floating-button-icon"
-                onClick={this.onEditClick}
-              />
-            </Tooltip>
-          ) : null}
+          <header>
+            <H1>{title}</H1>
+
+            {activeVirtualStudyId ? (
+              <Tooltip
+                html={<div>{'Edit the current virtual study'}</div>}
+                className="tooltip virtual-studies-edit"
+              >
+                <EditIcon
+                  disabled={cantEdit}
+                  height={16}
+                  width={16}
+                  className="floating-button-icon"
+                  onClick={this.onEditClick}
+                />
+              </Tooltip>
+            ) : null}
+          </header>
+
+          <div className="description">
+            {description.split(/\n/).map(line => (
+              <p>{line}&nbsp;</p>
+            ))}
+          </div>
         </Row>
 
         <Row className="virtual-studies-action-bar">
@@ -234,16 +241,6 @@ class VirtualStudiesMenu extends React.Component {
               disabled={cantOpen}
             />
           </Tooltip>
-
-          {/* <VirtualStudiesMenuButton
-            label={'Edit'}
-            tooltipText={'Edit the current virtual study'}
-            icon={EditIcon}
-            iconProps={{ height: 12, width: 12 }}
-            disabled={cantEdit}
-            onClick={this.onEditClick}
-            className="virtual-studies-edit"
-          /> */}
 
           <VirtualStudiesMenuButton
             label={'Save'}

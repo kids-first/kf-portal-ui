@@ -23,7 +23,6 @@ const Container = styled('div')`
 const FullWidthWhite = styled('div')`
   width: 100%;
   background: white;
-  margin-top: 21px;
 `;
 
 const SqonBuilderContainer = styled('div')`
@@ -38,6 +37,7 @@ const SqonBuilderContainer = styled('div')`
 const Content = styled(ContentBar)`
   padding-left: 30px;
   padding-right: 30px;
+  margin-top: 0;
 `;
 
 const StylePromptMessage = styled(PromptMessage)`
