@@ -28,7 +28,7 @@ const Chip = ({ theme, color, ...props }) => (
   </Column>
 );
 
-Chip.PropTypes = {
+Chip.propTypes = {
   color: PropTypes.string,
 };
 

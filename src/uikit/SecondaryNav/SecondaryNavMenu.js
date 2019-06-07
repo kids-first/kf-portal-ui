@@ -44,7 +44,7 @@ class SecondaryNavMenu extends React.Component {
   ensureValidHash() {}
 }
 
-SecondaryNavMenu.PropTypes = {
+SecondaryNavMenu.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.objectOf({ name: PropTypes.string.isRequired, hash: PropTypes.string.isRequired })
       .isRequired,

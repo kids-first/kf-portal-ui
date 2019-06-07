@@ -31,7 +31,7 @@ const EntityContentSection = ({ title, children }) => (
   </Container>
 );
 
-EntityContentSection.PropTypes = {
+EntityContentSection.propTypes = {
   title: PropTypes.string.isRequired,
 };
 

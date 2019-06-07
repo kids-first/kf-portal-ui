@@ -17,7 +17,7 @@ const SecondaryNavTab = ({ name, target, location: { hash } = {} }) => {
   );
 };
 
-SecondaryNavTab.PropTypes = {
+SecondaryNavTab.propTypes = {
   name: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
   location: PropTypes.objectOf({ hash: PropTypes.string }).isRequired,
