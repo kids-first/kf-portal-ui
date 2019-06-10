@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import autobind from 'auto-bind-es5';
 import urlJoin from 'url-join';
-
-// TODO - kill those once done
 import { injectState } from 'freactal';
 
 import Row from 'uikit/Row';
@@ -18,6 +16,7 @@ import {
   loadSavedVirtualStudy,
   saveVirtualStudy,
 } from '../../../store/actionCreators/virtualStudies';
+import { createVirtualStudy } from 'services/virtualStudies';
 
 import Tooltip from 'uikit/Tooltip';
 import { WhiteButton } from 'uikit/Button.js';
@@ -94,16 +93,9 @@ class VirtualStudiesMenu extends React.Component {
       return this.onSaveAsClick();
     }
 
-    return saveVirtualStudy({
-      loggedInUser,
-      sqonsState: {
-        sqons,
-        activeIndex,
-        virtualStudyId,
-      },
-      name,
-      description,
-    }).catch(err => {
+    const study = createVirtualStudy(virtualStudyId, name, description, sqons, activeIndex);
+
+    return saveVirtualStudy(loggedInUser, study).catch(err => {
       console.error('Error while saving the virtual study', err);
     });
   }
@@ -213,8 +205,8 @@ class VirtualStudiesMenu extends React.Component {
           </header>
 
           <div className="description">
-            {description.split(/\n/).map(line => (
-              <p>{line}&nbsp;</p>
+            {description.split(/\n/).map((line, i) => (
+              <p key={i}>{line}&nbsp;</p>
             ))}
           </div>
         </Row>

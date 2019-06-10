@@ -12,6 +12,7 @@ import { ModalFooter } from 'components/Modal/index.js';
 import { ModalContentSection } from './common';
 
 import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
+import { createVirtualStudy } from 'services/virtualStudies';
 
 const DESCRIPTION_MAX_LENGTH = 300;
 
@@ -28,7 +29,7 @@ class SaveVirtualStudiesModalContent extends React.Component {
     autobind(this);
   }
 
-  propTypes = {
+  static propTypes = {
     saveAs: PropTypes.bool.isRequired,
   };
 
@@ -51,16 +52,15 @@ class SaveVirtualStudiesModalContent extends React.Component {
       saveAs,
     } = this.props;
 
-    return saveVirtualStudy({
-      loggedInUser,
-      sqonsState: {
-        sqons,
-        activeIndex: activeSqonIndex,
-        virtualStudyId: saveAs ? null : virtualStudyId,
-      },
+    const study = createVirtualStudy(
+      saveAs ? null : virtualStudyId,
       name,
       description,
-    });
+      sqons,
+      activeSqonIndex,
+    );
+
+    return saveVirtualStudy(loggedInUser, study);
   }
 
   submitHandler() {

@@ -1,9 +1,10 @@
 import { isNumber } from 'util';
-import { pick } from 'lodash';
+import { pick, cloneDeep, get } from 'lodash';
 import urlJoin from 'url-join';
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';
 import { personaApiRoot, shortUrlApi } from 'common/injectGlobals';
+import { getDefaultSqon } from 'common/sqonUtils';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY = 'DRAFT_VIRTUAL_STUDY';
@@ -17,7 +18,74 @@ const DRAFT_FIELDS = [
   'dirty',
 ];
 
-const isValidStudy = value => value && Array.isArray(value.sqons) && isNumber(value.activeIndex);
+/**
+ * Validates the given Virtual Study `study`, returning a fixed clone of it if an error is detected.
+ * This allows to prevent bugs accross versions or side-effects from another bug, client-side or server-side,
+ * that could create a corrupted study.
+ * @param {Object} study - A virtual study
+ * @returns {Object} - A copy of the study, with detected errors corrected, or `null` if mandatory fields are missing.
+ */
+const validateStudy = study => {
+  if (typeof study !== 'object' || study === null) return null;
+  if (!Array.isArray(study.sqons)) return null;
+
+  // fix the study if any data corruption happened
+  const validatedStudy = cloneDeep(study);
+
+  // if study index got out of bound, reset it to the latest index.
+  if (!isNumber(study.activeIndex) || study.activeIndex < 0) {
+    validatedStudy.activeIndex = 0;
+  }
+  if (validatedStudy.activeIndex > validatedStudy.sqons.length - 1) {
+    validatedStudy.activeIndex = validatedStudy.sqons.length - 1;
+  }
+
+  // If any other property is missing or of wrong type, just put a default value.
+  if (typeof validatedStudy.name !== 'string') {
+    validatedStudy.name = '';
+  }
+  validatedStudy.name = validatedStudy.name.trim();
+
+  if (typeof validatedStudy.description !== 'string') {
+    validatedStudy.description = '';
+  }
+  validatedStudy.description = validatedStudy.description.trim();
+
+  if (typeof validatedStudy.uid !== 'string') {
+    validatedStudy.uid = null;
+  }
+
+  if (typeof validatedStudy.virtualStudyId !== 'string') {
+    validatedStudy.virtualStudyId = null;
+  }
+
+  if (validatedStudy.dirty !== true) {
+    validatedStudy.dirty = false;
+  }
+
+  return validatedStudy;
+};
+
+export const createVirtualStudy = (
+  virtualStudyId = null,
+  name = '',
+  description = '',
+  sqons = getDefaultSqon(),
+  activeIndex = 0,
+  uid = null,
+  sharedPublicly = false,
+  dirty = false,
+) =>
+  validateStudy({
+    virtualStudyId,
+    name,
+    description,
+    sqons,
+    activeIndex,
+    uid,
+    sharedPublicly,
+    dirty,
+  });
 
 export const getSavedVirtualStudyNames = async api =>
   api({
@@ -37,7 +105,7 @@ export const getSavedVirtualStudyNames = async api =>
   });
 
 const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
-  const { id, alias: name } = newVirtualStudy;
+  const { virtualStudyId: id, name } = newVirtualStudy;
   const { egoId, _id: personaRecordId } = loggedInUser;
 
   const {
@@ -92,17 +160,9 @@ const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
   });
 };
 
-export const createNewVirtualStudy = async ({
-  sqonsState,
-  loggedInUser,
-  api,
-  name = '',
-  description = '',
-}) => {
-  if (!name.length) {
-    throw new Error('Study must have name');
-  }
-  const { sqons, activeIndex } = sqonsState;
+export const createNewVirtualStudy = async (api, loggedInUser, study) => {
+  const validatedStudy = validateStudy(study);
+  const { sqons, activeIndex, name, description } = validatedStudy;
   const { egoId } = loggedInUser;
 
   const newVirtualStudy = await api({
@@ -119,10 +179,21 @@ export const createNewVirtualStudy = async ({
     }),
   });
 
+  const normalizedStudy = createVirtualStudy(
+    newVirtualStudy.id,
+    newVirtualStudy.alias,
+    newVirtualStudy.content.description,
+    newVirtualStudy.content.sqons,
+    newVirtualStudy.content.activeIndex,
+    newVirtualStudy.uid,
+    newVirtualStudy.sharedPublicly,
+    false,
+  );
+
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.virtualStudies,
     action: TRACKING_EVENTS.actions.save,
-    label: JSON.stringify(newVirtualStudy),
+    label: JSON.stringify(normalizedStudy),
   });
 
   const {
@@ -131,9 +202,9 @@ export const createNewVirtualStudy = async ({
         record: { virtualStudies: updatedStudies },
       },
     },
-  } = await updateStudiesInPersona(api, loggedInUser, newVirtualStudy);
+  } = await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
 
-  return [newVirtualStudy, updatedStudies];
+  return [normalizedStudy, updatedStudies];
 };
 
 export const getVirtualStudy = api => virtualStudyId => {
@@ -144,44 +215,62 @@ export const getVirtualStudy = api => virtualStudyId => {
   return api({
     method: 'GET',
     url: urlJoin(shortUrlApi, virtualStudyId),
-  }).catch(err => {
-    throw new Error(`Failed to load virtual study ${virtualStudyId} with error:\n${err.message}`);
-  });
+  })
+    .then(studyData => ({
+      sqons: get(studyData, 'content.sqons', getDefaultSqon()),
+      activeIndex: get(studyData, 'content.activeIndex', 0),
+      virtualStudyId: studyData.id || null,
+      name: studyData.alias || '',
+      description: get(studyData, 'content.description', ''),
+      uid: studyData.uid || null,
+      sharedPublicly: studyData.sharedPublicly || false,
+    }))
+    .then(validateStudy)
+    .catch(err => {
+      throw new Error(`Failed to load virtual study ${virtualStudyId} with error:\n${err.message}`);
+    });
 };
 
-export const updateVirtualStudy = async ({
-  sqonsState,
-  api,
-  loggedInUser,
-  name,
-  description = '',
-}) => {
-  const { sqons, activeIndex, virtualStudyId } = sqonsState;
+export const updateVirtualStudy = async (api, loggedInUser, study) => {
   let existingVirtualStudy = null;
   try {
-    existingVirtualStudy = await getVirtualStudy(api)(virtualStudyId);
+    existingVirtualStudy = await getVirtualStudy(api)(study.virtualStudyId);
   } catch (err) {
-    return Promise.reject(`Failed to update virtual study ${virtualStudyId}: ${err.message}`);
+    return Promise.reject(`Failed to update virtual study ${study.virtualStudyId}: ${err.message}`);
   }
+
+  const validatedStudy = validateStudy(study);
+  const { virtualStudyId, sqons, activeIndex, name, description } = validatedStudy;
 
   const updatedStudy = await api({
     method: 'PUT',
     url: urlJoin(shortUrlApi, virtualStudyId),
     body: JSON.stringify({
-      alias: name || existingVirtualStudy.alias,
+      alias: name,
       sharedPublicly: existingVirtualStudy.sharedPublicly || false,
       content: {
-        sqons: sqons || existingVirtualStudy.content.sqons,
-        activeIndex: activeIndex || existingVirtualStudy.content.activeIndex,
-        description: description,
+        sqons,
+        activeIndex,
+        description,
       },
     }),
   });
 
+  const normalizedStudy = createVirtualStudy(
+    updatedStudy.id,
+    updatedStudy.alias,
+    updatedStudy.content.description,
+    updatedStudy.content.sqons,
+    updatedStudy.content.activeIndex,
+    updatedStudy.uid,
+    updatedStudy.sharedPublicly,
+    false,
+  );
+
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.virtualStudies,
     action: TRACKING_EVENTS.actions.edit,
-    label: JSON.stringify(updatedStudy),
+    label: JSON.stringify(normalizedStudy),
   });
 
   const {
@@ -190,9 +279,9 @@ export const updateVirtualStudy = async ({
         record: { virtualStudies: updatedStudies },
       },
     },
-  } = await updateStudiesInPersona(api, loggedInUser, updatedStudy);
+  } = await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
 
-  return [updatedStudy, updatedStudies];
+  return [normalizedStudy, updatedStudies];
 };
 
 export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
@@ -253,15 +342,12 @@ export const loadDraftVirtualStudy = () => {
     localStorage.setItem(COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY, null);
   }
 
-  // validate the virtual study to avoid bugs accross versions
-  //  of the client that would be using different,
-  //  incompatible formats to store the virtual studies
-  return isValidStudy(virtualStudy) ? pick(virtualStudy, DRAFT_FIELDS) : null;
+  return virtualStudy === null ? null : pick(validateStudy(virtualStudy), DRAFT_FIELDS);
 };
 
 export const saveDraftVirtualStudy = virtualStudy => {
   localStorage.setItem(
     COHORT_BUILDER_DRAFT_LOCALSTORAGE_KEY,
-    JSON.stringify(pick(virtualStudy, DRAFT_FIELDS)),
+    JSON.stringify(pick(validateStudy(virtualStudy), DRAFT_FIELDS)),
   );
 };
