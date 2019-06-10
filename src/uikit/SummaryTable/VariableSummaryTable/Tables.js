@@ -35,8 +35,13 @@ const SummaryContent = styled('div')`
 `;
 
 const Tables = ({ rows, amount }) => {
+  window.console.log("Amount: " + amount);
+
   const numOfTables = amount === 1 ? rows.length : rows.length / amount;
   const tables = chunk(rows, numOfTables);
+
+  window.console.log("Number of rows: " + rows.length);
+  window.console.log("Number of tables: " + numOfTables);
 
   return tables.map((table, i) => (
     <Table key={i}>
