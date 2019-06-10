@@ -33,18 +33,18 @@ const SummaryTableWrapper = styled('div')`
   }
 `;
 
-const SummaryTable = ({ rows }) => (
-  <SummaryTableWrapper>
-    <Visible xs sm>
-      <Tables rows={rows} amount={1} />
-    </Visible>
-    <Visible md lg xl>
-      <Tables rows={rows} amount={2} />
-    </Visible>
-  </SummaryTableWrapper>
+const VariableSummaryTable = ({ rows, nbOfTables }) => (
+    <SummaryTableWrapper>
+      <Visible xs sm>
+        <Tables rows={rows} amount={1}/>
+      </Visible>
+      <Visible md lg xl>
+        <Tables rows={rows} amount={nbOfTables}/>
+      </Visible>
+    </SummaryTableWrapper>
 );
 
-SummaryTable.propTypes = {
+VariableSummaryTable.propTypes = {
   rows: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string,
@@ -52,4 +52,4 @@ SummaryTable.propTypes = {
   ).isRequired,
 };
 
-export default SummaryTable;
+export default VariableSummaryTable;

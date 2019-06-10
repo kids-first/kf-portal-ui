@@ -65,6 +65,7 @@ export default `query ($sqon: JSON) {
               hits {
                 edges {
                   node {
+                    composition
                     shared_hpo_ids
                     family_members {
                       hits {

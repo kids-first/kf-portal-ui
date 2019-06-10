@@ -86,7 +86,7 @@ class ParticipantEntity extends React.Component {
         </EntityActionBar>
         <EntityContent>
           <SecondaryNavContent target="summary" location={location}>
-            <ParticipantSummary />
+            <ParticipantSummary participant={participant} />
           </SecondaryNavContent>
           <SecondaryNavContent target="clinical" location={location}>
             <ParticipantClinical />
