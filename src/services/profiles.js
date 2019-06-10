@@ -1,9 +1,6 @@
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
 
-// TODO: Issue #321
-// acceptedKfOptIn
-// acceptedNihOptIn
 const DEFAULT_FIELDS = `
   _id
   title
@@ -49,7 +46,9 @@ const DEFAULT_FIELDS = `
 const url = urlJoin(personaApiRoot, 'graphql');
 
 export const getProfile = api => async () => {
-  const { data: { self } } = await api({
+  const {
+    data: { self },
+  } = await api({
     url,
     body: {
       query: `
@@ -66,7 +65,11 @@ export const getProfile = api => async () => {
 };
 
 export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
-  const { data: { userCreate: { record } } } = await api({
+  const {
+    data: {
+      userCreate: { record },
+    },
+  } = await api({
     url,
     body: {
       variables: { egoId, lastName, firstName, email },
@@ -85,7 +88,11 @@ export const createProfile = api => async ({ egoId, lastName, firstName, email }
 };
 
 export const updateProfile = api => async ({ user }) => {
-  const { data: { userUpdate: { record } } } = await api({
+  const {
+    data: {
+      userUpdate: { record },
+    },
+  } = await api({
     url,
     body: {
       variables: { record: user },
@@ -105,7 +112,11 @@ export const updateProfile = api => async ({ user }) => {
 };
 
 export const deleteProfile = api => async ({ user }) => {
-  const { data: { userRemove: { recordId } } } = await api({
+  const {
+    data: {
+      userRemove: { recordId },
+    },
+  } = await api({
     url,
     body: {
       variables: { _id: user._id },
@@ -123,7 +134,9 @@ export const deleteProfile = api => async ({ user }) => {
 };
 
 export const getTags = api => async ({ filter, size }) => {
-  const { data: { tags } } = await api({
+  const {
+    data: { tags },
+  } = await api({
     url,
     body: {
       variables: { model: 'User', field: 'interests', filter, size },
