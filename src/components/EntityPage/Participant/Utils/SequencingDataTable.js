@@ -1,7 +1,7 @@
-import ControlledDataTable from "../../../uikit/DataTable/ControlledDataTable";
+import ControlledDataTable from "../../../../uikit/DataTable/ControlledDataTable";
 import React from "react";
 import PropTypes from 'prop-types';
-import Holder from "./Holder";
+import Holder from "../Holder";
 import { Link } from 'react-router-dom';
 
 class SequencingDataTable extends React.Component {
@@ -10,7 +10,7 @@ class SequencingDataTable extends React.Component {
 
     function andCells(arr) {
       function makeCell(wrapper) {
-        if(wrapper.value === 0) return <div>0</div>;
+        if(wrapper.value === 0 || wrapper.column.Header === "Strategy") return <div>{wrapper.value}</div>;
 
         const url = `/search/file?sqon=
         {  
@@ -29,7 +29,7 @@ class SequencingDataTable extends React.Component {
           (() => {
             const strat = wrapper.row.leftField;
 
-            if(typeof strat === "undefined") return "";
+            if(strat === "N/A") return "";
 
             return `
                     
@@ -54,6 +54,15 @@ class SequencingDataTable extends React.Component {
                        "${wrapper.column.parentColumn.Header === "Harmonized"}"
                     ]
                  }
+              },
+              {  
+                 "op":"in",
+                 "content":{  
+                    "field":"participants.kf_id",
+                    "value":[  
+                       "${props.participantID}"
+                    ]
+                 }
               }
            ]
         }
@@ -73,7 +82,8 @@ class SequencingDataTable extends React.Component {
     }
 
     //Headers of headers: https://codesandbox.io/s/03x3r0vx1l
-    this.summaryCols = andCells([
+    this.breakdownCols = andCells([
+      { Header: "May have missing strategies!", columns: [{Header: "Strategy", accessor: "leftField"}]}, //https://kf-qa.netlify.com/participant/PT_3FV3E420#summary
       { Header: "Source", columns: [
           { Header: "Unaligned Reads", accessor: "source.unalignedreads" },
           { Header: 'Aligned Reads', accessor: "source.alignedreads" }, //https://kf-qa.netlify.com/participant/PT_3DPEF7PD#summary a les 2
@@ -90,50 +100,24 @@ class SequencingDataTable extends React.Component {
       }
     ]);
 
-    this.breakdownCols = [
-      { Header: "May have missing strategies!", columns: [{Header: "Strategy", accessor: "leftField"}]}, //https://kf-qa.netlify.com/participant/PT_3FV3E420#summary
-    ].concat(this.summaryCols);
-
-    function makeBaseline() {
-      const baselineNB = {unalignedreads: 0, alignedreads: 0, gvcf: 0, variantcalls: 0};
-
-      return {harmonized: {...baselineNB}, source: {...baselineNB}};
-    }
-
-    this.types = new Set(["Aligned Reads", "gVCF", "Unaligned Reads", "Variant Calls"]);
-
-    function normalize(thing) {
-      return thing.toString().toLowerCase().replace(/ /g, '');
-    }
-
-    this.summaryData = (() => {
-      let obj = makeBaseline();
-
-      props.files.forEach( fileTemp => {
-        const file = fileTemp.node;
-
-        if(this.types.has(file.data_type)) {
-          const field = file.is_harmonized ? "harmonized" : "source";
-
-          obj[field][normalize(file.data_type)]++;
-        }
-      });
-
-      return [obj];
-    })();
-
     this.breakdownData = (() => {
 
       function makeBaselineRow(row) {
-        return {...makeBaseline(), leftField: row}
+        const baselineNB = {unalignedreads: 0, alignedreads: 0, gvcf: 0, variantcalls: 0};
+
+        const baseline = {harmonized: {...baselineNB}, source: {...baselineNB}};
+
+        return {...baseline, leftField: row}
       }
 
       let rows = ["WGS", "WXS", "RNA-Seq", "miRNA-Seq", "N/A"].map(makeBaselineRow);
 
+      const types = new Set(["Aligned Reads", "gVCF", "Unaligned Reads", "Variant Calls"]);
+
       props.files.forEach( fileTemp => {
         const file = fileTemp.node;
 
-        if(this.types.has(file.data_type)) {
+        if(types.has(file.data_type)) {
           const field = file.is_harmonized ? "harmonized" : "source";
 
           /*
@@ -148,26 +132,24 @@ class SequencingDataTable extends React.Component {
             correctRow = rows[4];
           }
 
-          correctRow[field][normalize(file.data_type)]++;
+          correctRow[field][file.data_type.toString().toLowerCase().replace(/ /g, '')]++;
         }
       });
 
-      return rows
+      return rows;
     })()
   }
 
   render() {
     return (
-      <Holder>
-        <ControlledDataTable label={"All data"} loading={false} columns={this.summaryCols} data={this.summaryData} dataTotalCount={-1} onFetchData={() => null}/>
-        <ControlledDataTable label={"Strategies"} loading={false} columns={this.breakdownCols} data={this.breakdownData} dataTotalCount={-1} onFetchData={() => null}/>
-      </Holder>
+      <ControlledDataTable label={"Strategies"} loading={false} columns={this.breakdownCols} data={this.breakdownData} dataTotalCount={-1} onFetchData={() => null}/>
     )
   }
 }
 
 SequencingDataTable.propTypes = {
-  files: PropTypes.array.isRequired
+  files: PropTypes.array.isRequired,
+  participantID: PropTypes.number.isRequired
 };
 
 export default SequencingDataTable

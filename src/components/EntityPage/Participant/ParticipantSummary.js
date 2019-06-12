@@ -21,8 +21,11 @@ import { configureCols } from 'uikit/DataTable/utils/columns';
 import Holder from "./Holder";
 import styled from "react-emotion";
 import {Div} from "../../../uikit/Core";
-import SequencingDataTable from "./SequencingDataTable";
+import SequencingDataTable from "./Utils/SequencingDataTable";
+import OtherDataTypesSummaryTable from "./Utils/OtherDataTypesSummaryTable";
+import { Link } from 'react-router-dom';
 
+//https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
 const enhance = compose(withTheme);
 
@@ -150,44 +153,8 @@ function specimenSummaryTableData(specimen) {
     { title: "Anatomical Site (Uberon)", summary: get("uberon_id_anatomical_site")},
     { title: "Tissue Type (Source Text)", summary: get("source_text_tissue_type")},
     { title: "Tumor Description (Source Text)", summary: get("source_text_tumor_descriptor")},
-    { title: "Consent Code (dbGaP)", summary: get("consent_type")},
-    { title: "Files", summary: "TODO"}
+    { title: "Consent Code (dbGaP)", summary: get("consent_type")}
   ])
-}
-
-/**
- * Builds the data for the Other Data Types SummaryTable.
- *
- * @param files
- * @returns {*}
- */
-function otherDataTypesSummaryTableData(files) {
-
-  //"Other" being "not sequencing data"...
-  let wrongTypes = new Set(["Aligned Reads", "gVCF", "Unaligned Reads", "Variant Calls"]);
-
-  let arr = [];
-
-  function makeRow(title) {
-    arr.push( {title: title, summary: 1} )
-  }
-
-  files.forEach( fileTemp => {
-    const file = fileTemp.node;
-    const type = file.data_type;
-
-    if(!wrongTypes.has(type)) {
-      let row = arr.find(ele => (ele.title === type));
-
-      if(typeof row === 'undefined') {
-        makeRow(type)
-      } else {
-        row.summary++
-      }
-    }
-  });
-
-  return (arr.length === 0 ? <div>No other data types</div> : <VariableSummaryTable rows={arr} nbOfTables={2}/>)
 }
 
 const SubContent = styled(Div)`
@@ -218,11 +185,11 @@ const ParticipantSummary = ({participant}) => {
       <EntityContentSection title="Available Data">
         <SubContent>
           <EntityContentSection title="Sequencing Data">
-            <SequencingDataTable files={participant.files.hits.edges}/>
+            <SequencingDataTable files={participant.files.hits.edges} participantID={participant.kf_id}/>
           </EntityContentSection>
           <EntityContentDivider />
           <EntityContentSection title="Other Data Types">
-            {otherDataTypesSummaryTableData(participant.files.hits.edges)}
+            <OtherDataTypesSummaryTable files={participant.files.hits.edges} participantID={participant.kf_id}/>
           </EntityContentSection>
         </SubContent>
       </EntityContentSection>

@@ -1,6 +1,6 @@
 import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
 import styled from "react-emotion";
-import React from "react";
+import React, {useState} from "react";
 import {Container} from "../../FileRepoSidebar/ui";
 import {withTheme} from "emotion-theming";
 
@@ -28,9 +28,24 @@ class Holder extends React.Component {
   makeTabButtons() {
     return this.tabIDs.map(tabId => {
       //uses a fake Link: we want the same style as a SecondaryNavMenu, and this is the key to it
+
       return (
         <li onClick={ () => this.setState({activeTab: tabId})}>
-          <Link to={'#summary'} className={tabId === this.state.activeTab ? 'active' : ''}>{tabId}</Link>
+          <Link
+            style={
+              {
+                borderBottom: "0px solid transparent",
+                width: "100%",
+                borderRight: tabId === this.state.activeTab ? '5px solid #e83a9c' : '5px solid transparent',
+                textAlign: "center"
+              }
+            }
+
+            to={'#summary'}
+
+            className={tabId === this.state.activeTab ? 'active' : ''}>
+              {tabId}
+          </Link>
         </li>
       )
     })
@@ -50,13 +65,16 @@ class Holder extends React.Component {
     }
   }
 
-  //TODO handle case not array
+  //interesting https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
+
   render() {
     return (
-      <div>
-        <MenuWrapper>
-          {this.makeTabButtons()}
-        </MenuWrapper>
+      <div style={{display: "flex", flexDirection: "row"}}>
+        <div style={{alignSelf: "flex-start"}}>
+          <MenuWrapper style={{flexDirection: "column", display: "inline-block"}}>
+            {this.makeTabButtons()}
+          </MenuWrapper>
+        </div>
         <Container>
           {this.makeTabs()}
         </Container>
