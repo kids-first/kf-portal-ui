@@ -26,22 +26,10 @@ import SequencingDataTable from "./SequencingDataTable";
 
 const enhance = compose(withTheme);
 
-function he(obj) {
-  return obj.hits.edges;
-}
-
 /**
- * Accesses obj.Hits.Edges.atI.Node
- * @param obj
- * @param i
- * @returns {*}
- */
-function hein(obj, i=0) {
-  return he(obj)[i].node;
-}
-
-/**
- * Sanitizes an array. Makes boolean values into their corresponding Strings. Transforms null into "Null value".
+ * Sanitizes an array of SummaryTable data.
+ *
+ * Makes boolean values into their corresponding Strings. Transforms null into "Null value".
  *
  * @param arr The array
  * @returns {*} The sannitized array
@@ -56,13 +44,57 @@ function sannitize(arr) {
   })
 }
 
+/**
+ * Sometimes, intermediate nested fields are missing.
+ *
+ * Trying to access participant.diagnoses.hits.edges[0].node.diagnosis_category, for example, crashes the page when
+ * node is missing. https://kf-qa.netlify.com/participant/PT_3FV3E420#summary
+ *
+ * Thus, we're wrapping every access in a try catch that simply returns null when the accessor fails.
+ *
+ * We're taking the opportunity to sannitize the return value:
+ *  null = --
+ *  boolean = true/false
+ *
+ * @param obj
+ * @param accessor
+ * @returns {string|*|null|undefined}
+ */
+function getter(obj, accessor) {
+  try {
+    let current = obj;
+    for(let fields = accessor.split('.'); fields.length > 0; fields.shift()) {
+      current = current[fields[0]];
+    }
+
+    return current;
+  } catch (ignored) {
+    return null;
+  }
+}
+
+/**
+ * Builds the data for the main SummaryTable.
+ *
+ * @param participant
+ * @returns {*}
+ */
 function summaryTableData(participant) {
-  window.console.log(participant)
+
+  /**
+   * Syntaxic sugar for getter
+   *
+   * @param accessor
+   * @returns {string|*}
+   */
+  function get(accessor) {
+    return getter(participant, accessor)
+  }
 
   return sannitize([
-    { title: 'Kids First/Participant ID:', summary: participant.kf_id },
+    { title: 'Kids First/Participant ID:', summary: get("kf_id") },
 
-    { title: 'External ID:', summary: participant.external_id },
+    { title: 'External ID:', summary: get("external_id") },
     {
       title: 'Study:',
       summary: (
@@ -72,72 +104,66 @@ function summaryTableData(participant) {
             trackUserInteraction({
               category: TRACKING_EVENTS.categories.entityPage.file,
               action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-              label: `${participant.study.short_name} (${participant.study.kf_id})`,
+              label: `${participant.study.short_name} (${get("study.kf_id")})`,
             });
           }}
         >
-          {`${participant.study.short_name} (${participant.study.kf_id})`}
+          {`${participant.study.short_name} (${get("study.kf_id")})`}
         </ExternalLink>
       )
     },
-    { title: 'Diagnosis category:', summary: hein(participant.diagnoses).diagnosis_category },
-    { title: 'Proband:', summary: participant.is_proband },
-    { title: 'Family Composition:', summary: hein(participant.family.family_compositions).composition },
-    { title: 'Gender:', summary: participant.gender },
-    { title: 'Ethnicity:', summary: participant.ethnicity },
-    { title: 'Race:', summary: participant.race },
-    { title: 'Vital Status:', summary: participant.outcome.vital_status },
-    { title: 'Disease Related:', summary: participant.outcome.disease_related }
+    { title: 'Diagnosis category:', summary: get("diagnoses.hits.edges.0.node.diagnosis_category") },
+    { title: 'Proband:', summary: get("is_proband") },
+    { title: 'Family Composition:', summary: get("participant.family.family_compositions.hits.edges.0.node.composition") },
+    { title: 'Gender:', summary: get("gender") },
+    { title: 'Ethnicity:', summary: get("ethnicity") },
+    { title: 'Race:', summary: get("race") },
+    { title: 'Vital Status:', summary: get("outcome.vital_status") },
+    { title: 'Disease Related:', summary: get("outcome.disease_related") }
   ]);
 }
 
 /**
- * Defines columns. Need to pass a data obj to the table with the same accessors as these columns
- * @returns {*[]}
+ * Builds the data for the SummaryTable of the given specimen
+ *
+ * @param specimen
+ * @returns {*}
  */
-function sequencingDataColumns() {
-  return [
-    { Header: "WGS", accessor: "source.unalignedReads", sortable: true },
-    { Header: "Unaligned Reads", accessor: "source.unalignedReads", sortable: true },
-    { Header: 'Aligned Reads', accessor: "source.alignedReads", sortable: true },
-    { Header: 'gVCF', accessor: 'source.gVCF', sortable: true },
-    { Header: 'Variant', accessor: 'source.variant', minWidth: 65 },
-    { Header: "Unaligned Reads", accessor: "harmonized.unalignedReads", sortable: true },
-    { Header: 'Aligned Reads', accessor: "harmonized.alignedReads", sortable: true },
-    { Header: 'gVCF', accessor: 'harmonized.gVCF', sortable: true },
-    { Header: 'Variant', accessor: 'harmonized.variant', minWidth: 65 },
-  ];
-}
-
-function makeSpecimentTable(specimen) {
-  let columns = configureCols(
-    sequencingDataColumns(),
-  ).map(field =>
-    field.sortable !== false && SORTABLE_FIELDS_MAPPING.has(field.accessor)
-      ? { ...field, sortable: true }
-      : { ...field, sortable: false },
-  )
-
-   return <ControlledDataTable label={specimen.kf_id} columns={columns} data={[specimen]} dataTotalCount={columns.length} loading={false} onFetchData={() => null}>{specimen.kf_id}</ControlledDataTable>
-};
-
 function specimenSummaryTableData(specimen) {
+
+  /**
+   * Syntaxic sugar for getter
+   *
+   * @param accessor
+   * @returns {string|*}
+   */
+  function get(accessor) {
+    return getter(specimen, accessor)
+  }
+
   return sannitize( [
-    { title: "Specimen ID", summary: specimen.kf_id},
-    { title: "Age at Sample Acquisition", summary: specimen.age_at_event_days},
-    { title: "Analyte Type", summary: specimen.analyte_type},
-    { title: "Composition", summary: specimen.composition},
-    { title: "Tissue Type (NCIT)", summary: specimen.ncit_id_tissue_type},
-    { title: "Anatomical Site (Uberon)", summary: specimen.uberon_id_anatomical_site},
-    { title: "Tissue Type (Source Text)", summary: specimen.source_text_tissue_type},
-    { title: "Tumor Description (Source Text)", summary: specimen.source_text_tumor_descriptor},
-    { title: "Consent Code (dbGaP)", summary: specimen.consent_type},
+    { title: "Specimen ID", summary: get("kf_id")},
+    { title: "Age at Sample Acquisition", summary: get("age_at_event_days")},
+    { title: "Analyte Type", summary: get("analyte_type")},
+    { title: "Composition", summary: get("composition")},
+    { title: "Tissue Type (NCIT)", summary: get("ncit_id_tissue_type")},
+    { title: "Anatomical Site (Uberon)", summary: get("uberon_id_anatomical_site")},
+    { title: "Tissue Type (Source Text)", summary: get("source_text_tissue_type")},
+    { title: "Tumor Description (Source Text)", summary: get("source_text_tumor_descriptor")},
+    { title: "Consent Code (dbGaP)", summary: get("consent_type")},
     { title: "Files", summary: "TODO"}
   ])
 }
 
+/**
+ * Builds the data for the Other Data Types SummaryTable.
+ *
+ * @param files
+ * @returns {*}
+ */
 function otherDataTypesSummaryTableData(files) {
 
+  //"Other" being "not sequencing data"...
   let wrongTypes = new Set(["Aligned Reads", "gVCF", "Unaligned Reads", "Variant Calls"]);
 
   let arr = [];
@@ -156,7 +182,7 @@ function otherDataTypesSummaryTableData(files) {
       if(typeof row === 'undefined') {
         makeRow(type)
       } else {
-        row.summary = row.summary + 1
+        row.summary++
       }
     }
   });
@@ -180,7 +206,7 @@ const ParticipantSummary = ({participant}) => {
       <EntityContentSection title="Biospecimens">
         <Holder>
           {
-            he(participant.biospecimens).map( specimenNode => {
+            participant.biospecimens.hits.edges.map( specimenNode => {
               const specimen = specimenNode.node;
 
               return <VariableSummaryTable label={specimen.kf_id} rows={specimenSummaryTableData(specimen)} nbOfTables={2}/>
@@ -192,17 +218,17 @@ const ParticipantSummary = ({participant}) => {
       <EntityContentSection title="Available Data">
         <SubContent>
           <EntityContentSection title="Sequencing Data">
-            <SequencingDataTable files={he(participant.files)}/>
+            <SequencingDataTable files={participant.files.hits.edges}/>
           </EntityContentSection>
           <EntityContentDivider />
           <EntityContentSection title="Other Data Types">
-            {otherDataTypesSummaryTableData(he(participant.files))}
+            {otherDataTypesSummaryTableData(participant.files.hits.edges)}
           </EntityContentSection>
         </SubContent>
       </EntityContentSection>
     </React.Fragment>
   );
-
+//
 };
 
 export default enhance(ParticipantSummary);
