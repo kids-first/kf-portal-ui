@@ -25,6 +25,7 @@ export default `query ($sqon: JSON) {
                   dbgap_consent_code
                   external_aliquot_id
                   external_sample_id
+                  kf_id
                   method_of_sample_procurement
                   ncit_id_anatomical_site
                   ncit_id_tissue_type
@@ -127,7 +128,6 @@ export default `query ($sqon: JSON) {
             hits {
               edges {
                 node {
-                  id
                   acl
                   availability
                   controlled_access
@@ -142,6 +142,7 @@ export default `query ($sqon: JSON) {
                   modified_at
                   reference_genome
                   size
+                  repository
                   sequencing_experiments {
                     hits {
                       edges {
@@ -201,3 +202,52 @@ export default `query ($sqon: JSON) {
   }
 }
 `;
+
+
+/*
+files {
+            hits {
+              edges {
+                node {
+                  id
+                  acl
+                  availability
+                  controlled_access
+                  created_at
+                  data_type
+                  external_id
+                  file_format
+                  file_name
+                  is_harmonized
+                  kf_id
+                  latest_did
+                  modified_at
+                  reference_genome
+                  size
+                  sequencing_experiments {
+                    hits {
+                      edges {
+                        node {
+                          experiment_date
+                          experiment_strategy
+                          external_id
+                          instrument_model
+                          is_paired_end
+                          kf_id
+                          library_strand
+                          max_insert_size
+                          mean_depth
+                          mean_insert_size
+                          mean_read_length
+                          platform
+                          sequencing_center_id
+                          total_reads
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+ */

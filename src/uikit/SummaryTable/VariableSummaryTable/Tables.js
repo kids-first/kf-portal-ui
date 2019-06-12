@@ -57,14 +57,9 @@ function splitter(number, amount) {
 }
 
 const Tables = ({ rows, amount }) => {  //amount is number of tables we want
-  window.console.log("Amount: " + amount);
-
   let nbOfElePerTable = amount === 1 ? amount : splitter(rows.length, amount);
 
   const tables = chunk(rows, nbOfElePerTable);
-
-  window.console.log("Number of rows: " + rows.length);
-  window.console.log("Number of tables: " + nbOfElePerTable);
 
   return tables.map((table, i) => (
     <Table key={i}>

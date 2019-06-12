@@ -19,9 +19,16 @@ import {SORTABLE_FIELDS_MAPPING} from "../../CohortBuilder/ParticipantsTableView
 
 import { configureCols } from 'uikit/DataTable/utils/columns';
 import Holder from "./Holder";
+import styled from "react-emotion";
+import {Div} from "../../../uikit/Core";
+import SequencingDataTable from "./SequencingDataTable";
 
 
 const enhance = compose(withTheme);
+
+function he(obj) {
+  return obj.hits.edges;
+}
 
 /**
  * Accesses obj.Hits.Edges.atI.Node
@@ -30,7 +37,7 @@ const enhance = compose(withTheme);
  * @returns {*}
  */
 function hein(obj, i=0) {
-  return obj.hits.edges[i].node
+  return he(obj)[i].node;
 }
 
 /**
@@ -50,6 +57,8 @@ function sannitize(arr) {
 }
 
 function summaryTableData(participant) {
+  window.console.log(participant)
+
   return sannitize([
     { title: 'Kids First/Participant ID:', summary: participant.kf_id },
 
@@ -82,66 +91,84 @@ function summaryTableData(participant) {
   ]);
 }
 
-function specimenTableData() {
+/**
+ * Defines columns. Need to pass a data obj to the table with the same accessors as these columns
+ * @returns {*[]}
+ */
+function sequencingDataColumns() {
   return [
-    {
-      Header: "TESTTTTTTTTTTTTTTTTT",
-      accessor: 'selected',
-      filterable: false,
-      sortable: false,
-      skipExport: true,
-      resizable: false,
-      minWidth: 33,
-    },
-    { Header: 'Participant ID', accessor: 'participantId' },
-    {
-      Header: 'Study Name',
-      accessor: 'studyName',
-      minWidth: 140,
-    },
-    { Header: 'Proband', accessor: 'isProband', minWidth: 65 },
-    { Header: 'Vital Status', accessor: 'vitalStatus', minWidth: 70 },
-    {
-      Header: 'Diagnosis Category',
-      accessor: 'diagnosisCategories',
-      field: 'diagnoses.diagnosis_category',
-      sortable: false,
-    },
-    {
-      Header: 'Diagnosis (Mondo)',
-      accessor: 'diagnosisMondo',
-      field: 'diagnoses.mondo_id_diagnosis',
-      minWidth: 175,
-      sortable: false,
-    },
-    {
-      Header: 'Age at Diagnosis (days)',
-      accessor: 'ageAtDiagnosis',
-      field: 'diagnoses.age_at_event_days',
-      sortable: false,
-    },
-    { Header: 'Gender', accessor: 'gender', field: 'gender', minWidth: 70 },
-    { Header: 'Family ID', accessor: 'familyId', field: 'family_id' },
-    {
-      Header: 'Family Composition',
-      accessor: 'familyCompositions',
-      field: 'family.family_compositions',
-      sortable: false,
-    },
-    {
-      Header: 'Files',
-      accessor: 'filesCount',
-      field: 'files',
-      sortable: false,
-    },
+    { Header: "WGS", accessor: "source.unalignedReads", sortable: true },
+    { Header: "Unaligned Reads", accessor: "source.unalignedReads", sortable: true },
+    { Header: 'Aligned Reads', accessor: "source.alignedReads", sortable: true },
+    { Header: 'gVCF', accessor: 'source.gVCF', sortable: true },
+    { Header: 'Variant', accessor: 'source.variant', minWidth: 65 },
+    { Header: "Unaligned Reads", accessor: "harmonized.unalignedReads", sortable: true },
+    { Header: 'Aligned Reads', accessor: "harmonized.alignedReads", sortable: true },
+    { Header: 'gVCF', accessor: 'harmonized.gVCF', sortable: true },
+    { Header: 'Variant', accessor: 'harmonized.variant', minWidth: 65 },
   ];
 }
 
-function temp() {
+function makeSpecimentTable(specimen) {
+  let columns = configureCols(
+    sequencingDataColumns(),
+  ).map(field =>
+    field.sortable !== false && SORTABLE_FIELDS_MAPPING.has(field.accessor)
+      ? { ...field, sortable: true }
+      : { ...field, sortable: false },
+  )
+
+   return <ControlledDataTable label={specimen.kf_id} columns={columns} data={[specimen]} dataTotalCount={columns.length} loading={false} onFetchData={() => null}>{specimen.kf_id}</ControlledDataTable>
+};
+
+function specimenSummaryTableData(specimen) {
+  return sannitize( [
+    { title: "Specimen ID", summary: specimen.kf_id},
+    { title: "Age at Sample Acquisition", summary: specimen.age_at_event_days},
+    { title: "Analyte Type", summary: specimen.analyte_type},
+    { title: "Composition", summary: specimen.composition},
+    { title: "Tissue Type (NCIT)", summary: specimen.ncit_id_tissue_type},
+    { title: "Anatomical Site (Uberon)", summary: specimen.uberon_id_anatomical_site},
+    { title: "Tissue Type (Source Text)", summary: specimen.source_text_tissue_type},
+    { title: "Tumor Description (Source Text)", summary: specimen.source_text_tumor_descriptor},
+    { title: "Consent Code (dbGaP)", summary: specimen.consent_type},
+    { title: "Files", summary: "TODO"}
+  ])
 }
 
-const ParticipantSummary = ({participant}) => {
+function otherDataTypesSummaryTableData(files) {
 
+  let wrongTypes = new Set(["Aligned Reads", "gVCF", "Unaligned Reads", "Variant Calls"]);
+
+  let arr = [];
+
+  function makeRow(title) {
+    arr.push( {title: title, summary: 1} )
+  }
+
+  files.forEach( fileTemp => {
+    const file = fileTemp.node;
+    const type = file.data_type;
+
+    if(!wrongTypes.has(type)) {
+      let row = arr.find(ele => (ele.title === type));
+
+      if(typeof row === 'undefined') {
+        makeRow(type)
+      } else {
+        row.summary = row.summary + 1
+      }
+    }
+  });
+
+  return (arr.length === 0 ? <div>No other data types</div> : <VariableSummaryTable rows={arr} nbOfTables={2}/>)
+}
+
+const SubContent = styled(Div)`
+  margin-left: 1em;
+`;
+
+const ParticipantSummary = ({participant}) => {
   window.console.log(participant)
 
   return (
@@ -152,16 +179,30 @@ const ParticipantSummary = ({participant}) => {
       <EntityContentDivider />
       <EntityContentSection title="Biospecimens">
         <Holder>
-          <div label="bla1">Bla1</div>
-          <div label="bla2">Bla2</div>
-          <div label="bla3">Bla3</div>
+          {
+            he(participant.biospecimens).map( specimenNode => {
+              const specimen = specimenNode.node;
+
+              return <VariableSummaryTable label={specimen.kf_id} rows={specimenSummaryTableData(specimen)} nbOfTables={2}/>
+            })
+          }
         </Holder>
       </EntityContentSection>
       <EntityContentDivider />
       <EntityContentSection title="Available Data">
+        <SubContent>
+          <EntityContentSection title="Sequencing Data">
+            <SequencingDataTable files={he(participant.files)}/>
+          </EntityContentSection>
+          <EntityContentDivider />
+          <EntityContentSection title="Other Data Types">
+            {otherDataTypesSummaryTableData(he(participant.files))}
+          </EntityContentSection>
+        </SubContent>
       </EntityContentSection>
     </React.Fragment>
   );
+
 };
 
 export default enhance(ParticipantSummary);
