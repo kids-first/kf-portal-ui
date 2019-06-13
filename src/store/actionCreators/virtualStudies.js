@@ -88,67 +88,45 @@ export const loadSavedVirtualStudy = virtualStudyId => {
     });
     return getVirtualStudy(api)(virtualStudyId)
       .then(virtualStudy => {
-        const {
-          uid,
-          content: { sqons, activeIndex },
-        } = virtualStudy;
-
         return dispatch({
           type: VIRTUAL_STUDY_LOAD_SUCCESS,
-          payload: {
-            sqons,
-            activeIndex,
-            uid,
-            virtualStudyId,
-            name: virtualStudy.alias || '',
-            description: virtualStudy.content.description || '',
-          },
+          payload: virtualStudy,
         });
       })
       .catch(err => {
         dispatch({
           type: VIRTUAL_STUDY_LOAD_FAILURE,
-          payload: err,
+          payload: err.message,
         });
         console.error(err.message);
       });
   };
 };
 
-export const saveVirtualStudy = ({ loggedInUser, sqonsState, name, description = '' }) => {
+export const saveVirtualStudy = (loggedInUser, study) => {
   return dispatch => {
     try {
-      assertStudyName(name);
+      assertStudyName(study.name);
       assertUser(loggedInUser);
     } catch (err) {
       return Promise.reject(err);
     }
 
-    const studyInfo = {
-      loggedInUser,
-      sqonsState,
-      name: name.trim(),
-      description,
-    };
-
     dispatch({
       type: VIRTUAL_STUDY_SAVE_REQUESTED,
-      payload: studyInfo,
+      payload: study,
     });
 
-    const saveDelegate = sqonsState.virtualStudyId ? updateVirtualStudy : createNewVirtualStudy;
-    return saveDelegate({
-      api,
-      ...studyInfo,
-    })
+    const saveDelegate = study.virtualStudyId ? updateVirtualStudy : createNewVirtualStudy;
+    return saveDelegate(api, loggedInUser, study)
       .then(([newStudy, updatedStudies]) => {
         dispatch({
           type: VIRTUAL_STUDY_SAVE_SUCCESS,
           payload: {
-            virtualStudyId: newStudy.id,
+            virtualStudyId: newStudy.virtualStudyId,
             uid: newStudy.uid,
-            name: newStudy.alias || '',
-            description: newStudy.content.description || '',
+            name: newStudy.name,
+            description: newStudy.description,
           },
         });
         dispatch({

@@ -1,6 +1,19 @@
-import { cloneDeep, merge, union } from 'lodash';
+import { cloneDeep, merge, union, isEqual } from 'lodash';
 
 import { BOOLEAN_OPS, isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+
+/**
+ * Returns a default, empty sqon.
+ * @returns {Object[]} - A copy of an empty sqon.
+ */
+export const getDefaultSqon = () => cloneDeep([{ op: 'and', content: [] }]);
+
+/**
+ * Check wether this is a default, empty sqon.
+ * @param {Object[]} sqons - an array of sqon object.
+ * @returns {boolean} `true` if it is a default sqon; `false` otherwise.
+ */
+export const isDefaultSqon = sqons => isEqual(sqons, getDefaultSqon());
 
 /**
  * Sets the value in the given `newSqon` to the `sourceSqons` at the given `sourceIndex`.

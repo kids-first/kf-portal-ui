@@ -3,6 +3,8 @@ import { cloneDeep } from 'lodash';
 import { cyan } from 'chalk';
 
 import {
+  getDefaultSqon,
+  isDefaultSqon,
   setSqonValueAtIndex,
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
@@ -13,13 +15,40 @@ const numberOfSqonsDidntChanged = (sourceSqons, sqonIndex, newSqons) => {
 };
 
 describe(cyan.bold('sqonUtils'), () => {
+  describe('getDefaultSqon', () => {
+    it('returns an empty sqon', () => {
+      const sqon = getDefaultSqon();
+      expect(sqon.length).to.eq(1);
+      expect(sqon[0].op).to.eq('and');
+      expect(sqon[0].content).to.eql([]);
+    });
+
+    it('returns a new instance each time', () => {
+      const sqon1 = getDefaultSqon();
+      const sqon2 = getDefaultSqon();
+      expect(sqon1).not.to.be.eq(sqon2);
+      expect(sqon1).to.be.eql(sqon2);
+    });
+  });
+
+  describe('isDefaultSqon', () => {
+    it('returns `true` if a sqon is loosely equal to the default sqon', () => {
+      expect(isDefaultSqon([{ op: 'and', content: [] }])).to.be.true;
+    });
+
+    it('returns `false` if a sqon is not loosely equal to the default sqon', () => {
+      expect(isDefaultSqon([{ op: 'or', content: [] }])).to.be.false;
+      expect(isDefaultSqon([{ op: 'and', content: [0] }])).to.be.false;
+    });
+  });
+
   describe('setSqonValueAtIndex', () => {
     describe('given an empty sqon in "targetSqons" at the given "targetIndex"', () => {
       const targetIndex = 0;
       let sourceSqons;
 
       beforeEach(() => {
-        sourceSqons = [{ op: 'and', content: [] }];
+        sourceSqons = getDefaultSqon();
       });
 
       it('adds the operation of the "newSqon" in the "targetSqons"', () => {

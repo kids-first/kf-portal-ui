@@ -1,5 +1,3 @@
-// @flow
-// TODO: move this to arranger/components
 import React from 'react';
 import { compose, withState, withHandlers, defaultProps, withPropsOnChange } from 'recompose';
 import { trim } from 'lodash';
@@ -183,7 +181,9 @@ export default compose(
             `}
           >
             {trim(inputValue)
-              ? renderNonEditing ? renderNonEditing(trim(inputValue)) : trim(inputValue)
+              ? renderNonEditing
+                ? renderNonEditing(trim(inputValue))
+                : trim(inputValue)
               : placeholderComponent}
           </span>
           {!disabled && <PencilIcon style={{ paddingLeft: '10px' }} />}
