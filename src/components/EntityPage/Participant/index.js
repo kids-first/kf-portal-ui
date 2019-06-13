@@ -78,7 +78,7 @@ class ParticipantEntity extends React.Component {
     }
 
     if (participant === null) {
-      return 'NOT FOUND';
+      return <GenericErrorDisplay error={"PARTICIPANT NOT FOUND"} />;
     }
 
     return (

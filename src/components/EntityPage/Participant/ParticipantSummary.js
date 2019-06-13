@@ -18,7 +18,7 @@ import ControlledDataTable from "../../../uikit/DataTable/ControlledDataTable";
 import {SORTABLE_FIELDS_MAPPING} from "../../CohortBuilder/ParticipantsTableView/queries";
 
 import { configureCols } from 'uikit/DataTable/utils/columns';
-import Holder from "./Holder";
+import Holder from "./Utils/Holder";
 import styled from "react-emotion";
 import {Div} from "../../../uikit/Core";
 import SequencingDataTable from "./Utils/SequencingDataTable";
@@ -162,8 +162,6 @@ const SubContent = styled(Div)`
 `;
 
 const ParticipantSummary = ({participant}) => {
-  window.console.log(participant)
-
   return (
     <React.Fragment>
       <EntityContentSection title="Summary">
@@ -195,7 +193,6 @@ const ParticipantSummary = ({participant}) => {
       </EntityContentSection>
     </React.Fragment>
   );
-//
 };
 
 export default enhance(ParticipantSummary);

@@ -54,7 +54,8 @@ const OtherDataTypesSummaryTable = ({files, participantID}) => {
     return {...row, summary: <Link to={url}>{row.summary}</Link>}
   });
 
-  return (arr.length === 0 ? <div>No other data types</div> : <VariableSummaryTable rows={arr} nbOfTables={2}/>)
+  //we're setting the width of the SummaryTable's parent to be wayyy too small. This makes it the minimum viable width.
+  return (arr.length === 0 ? <div>No other data types</div> : <div style={{width: 0}}><VariableSummaryTable rows={arr} nbOfTables={1}/></div>)
 };
 
 export default OtherDataTypesSummaryTable;

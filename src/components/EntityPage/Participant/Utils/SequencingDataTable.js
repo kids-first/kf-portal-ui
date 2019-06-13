@@ -1,10 +1,13 @@
 import ControlledDataTable from "../../../../uikit/DataTable/ControlledDataTable";
 import React from "react";
 import PropTypes from 'prop-types';
-import Holder from "../Holder";
+import Holder from "./Holder";
 import { Link } from 'react-router-dom';
 
+const defaults = "Not Available";
+
 class SequencingDataTable extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -29,7 +32,7 @@ class SequencingDataTable extends React.Component {
           (() => {
             const strat = wrapper.row.leftField;
 
-            if(strat === "N/A") return "";
+            if(strat === defaults) return "";
 
             return `
                     
@@ -83,7 +86,7 @@ class SequencingDataTable extends React.Component {
 
     //Headers of headers: https://codesandbox.io/s/03x3r0vx1l
     this.breakdownCols = andCells([
-      { Header: "May have missing strategies!", columns: [{Header: "Strategy", accessor: "leftField"}]}, //https://kf-qa.netlify.com/participant/PT_3FV3E420#summary
+      { Header: "", columns: [{Header: "Strategy", accessor: "leftField"}]}, //https://kf-qa.netlify.com/participant/PT_3FV3E420#summary
       { Header: "Source", columns: [
           { Header: "Unaligned Reads", accessor: "source.unalignedreads" },
           { Header: 'Aligned Reads', accessor: "source.alignedreads" }, //https://kf-qa.netlify.com/participant/PT_3DPEF7PD#summary a les 2
@@ -110,7 +113,7 @@ class SequencingDataTable extends React.Component {
         return {...baseline, leftField: row}
       }
 
-      let rows = ["WGS", "WXS", "RNA-Seq", "miRNA-Seq", "N/A"].map(makeBaselineRow);
+      let rows = ["WGS", "WXS", "RNA-Seq", "miRNA-Seq", defaults].map(makeBaselineRow);
 
       const types = new Set(["Aligned Reads", "gVCF", "Unaligned Reads", "Variant Calls"]);
 
