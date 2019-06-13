@@ -8,6 +8,14 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { connect } from 'react-redux';
+import {
+  setSqonValueAtIndex,
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+} from '../../common/sqonUtils';
+
 const {
   categories: {
     charts: {
@@ -71,7 +79,7 @@ const trackBarClick = (trackingEventCategory, barData) => {
   });
 };
 
-export const StudiesChart = withTheme(({ data, theme }) => {
+export const studiesChart = withTheme(({ data, theme, setSqons, virtualStudy }) => {
   const mergedStudyData = data.map(d => ({
     ...d,
     url: getFileRepoURL(SHORT_NAME_FIELD, d.name),
@@ -79,7 +87,29 @@ export const StudiesChart = withTheme(({ data, theme }) => {
 
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
-    window.location.href = barData.data.url;
+    addSqon('study.short_name', barData.data.name);
+    window.location.href = '/explore';
+  };
+
+  const addSqon = (field, value) => {
+    const newSqon = {
+      op: 'in',
+      content: {
+        field,
+        value: [value],
+      },
+    };
+
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      {
+        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+      },
+    );
+    setSqons(modifiedSqons);
   };
 
   return (
@@ -102,6 +132,19 @@ export const StudiesChart = withTheme(({ data, theme }) => {
     />
   );
 });
+
+const mapStateToProps = state => ({
+  virtualStudy: state.cohortBuilder,
+});
+
+const mapDispatchToProps = {
+  setSqons,
+};
+
+export const StudiesChart = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(studiesChart);
 
 export const UserInterestsChart = withTheme(({ data, theme }) => {
   // sort by count then alpha, limit to top 10
