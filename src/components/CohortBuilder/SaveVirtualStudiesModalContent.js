@@ -86,14 +86,23 @@ class SaveVirtualStudiesModalContent extends React.Component {
     const submitDisabled = (name && name.length < 1) || this.saving;
 
     return (
-      <div className="virtual-studies-save-modal">
+      <div
+        className="virtual-studies-save-modal"
+        onKeyDown={event => {
+          if (event.key === 'Escape') {
+            this.props.effects.unsetModal();
+          } else if (event.key === 'Enter') {
+            this.submitHandler();
+          }
+        }}
+      >
         {errorMessage && <PromptMessage heading={'Error'} content={errorMessage} error />}
         <ModalContentSection>
           You are saving this page of results with the current configuration of queries.
         </ModalContentSection>
         <ModalContentSection>
           <label required>Virtual Study name:</label>
-          <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" />
+          <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" autoFocus />
 
           <strong>{`Description (${DESCRIPTION_MAX_LENGTH} characters max): `}</strong>
           <TextArea
