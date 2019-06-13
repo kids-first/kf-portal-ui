@@ -50,17 +50,17 @@ const colors = {
   errorBorder: `#e45562`,
   // warning
   warningDark: '#ff9427', //yellow
-  warningLight: '#ff9427', // TODO: confirm this color
+  warningLight: '#ff9427',
   warningBackground: '#fff4e9',
   warningBorder: `#ff9427`,
   // info
   infoDark: '#22afe9', //blue
-  infoLight: '#e8f7fd', // TODO: confirm this color
+  infoLight: '#e8f7fd',
   infoBackground: '#e8f7fd',
   infoBorder: `#22afe9`,
   // success
   successDark: '#009bb8', //green
-  successLight: '#e6f3f5', // TODO: confirm this color
+  successLight: '#e6f3f5',
   successBackground: '#e6f3f5',
   successBorder: `#009bb8`,
 

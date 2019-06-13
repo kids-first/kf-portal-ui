@@ -77,7 +77,7 @@ class SQONProvider extends React.Component {
   }
 
   // takes care of putting a new sqon into place while preserving references
-  // TODO - move to @kfarranger/components/dist/AdvancedSqonBuilder/utils
+  // TODO - move to `common/sqonUtils`
   mergeSqonToActiveIndex(newSqon) {
     const { sqons, activeIndex } = this.props;
     const updatedSqons = sqons.map((currentSqon, i) =>
