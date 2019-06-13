@@ -57,7 +57,7 @@ function splitter(number, amount) {
 }
 
 const Tables = ({ rows, amount }) => {  //amount is number of tables we want
-  let nbOfElePerTable = amount === 1 ? rows.length : splitter(rows.length, amount);
+  let nbOfElePerTable = (amount === 1 || amount > rows.length) ? rows.length : splitter(rows.length, amount);
 
   const tables = chunk(rows, nbOfElePerTable);
 
