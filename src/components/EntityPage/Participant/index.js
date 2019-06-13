@@ -15,7 +15,6 @@ import ParticipantClinical from './ParticipantClinical';
 import ParticipantFamily from './ParticipantFamily';
 
 import { fetchParticipant } from './actionCreators';
-import LoadingSpinner from "../../../uikit/LoadingSpinner";
 import Spinner from "react-spinkit";
 
 const Container = styled(Column)`

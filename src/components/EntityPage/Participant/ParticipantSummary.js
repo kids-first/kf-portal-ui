@@ -1,29 +1,16 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-
-import Row from 'uikit/Row';
-import Column from 'uikit/Column';
-
 import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable'
 import { EntityContentSection, EntityContentDivider } from '../';
-
 import ExternalLink from 'uikit/ExternalLink';
-
-import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
-
 import { kfWebRoot } from 'common/injectGlobals';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import ControlledDataTable from "../../../uikit/DataTable/ControlledDataTable";
-import {SORTABLE_FIELDS_MAPPING} from "../../CohortBuilder/ParticipantsTableView/queries";
-
-import { configureCols } from 'uikit/DataTable/utils/columns';
 import Holder from "./Utils/Holder";
 import styled from "react-emotion";
 import {Div} from "../../../uikit/Core";
 import SequencingDataTable from "./Utils/SequencingDataTable";
 import OtherDataTypesSummaryTable from "./Utils/OtherDataTypesSummaryTable";
-import { Link } from 'react-router-dom';
 
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
