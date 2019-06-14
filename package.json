@@ -113,7 +113,8 @@
     "build": "cross-env NODE_PATH=\"src\" node scripts/build.js",
     "test": "cross-env NODE_PATH=\"src\" node scripts/test.js --env=jsdom",
     "test:unit": "cross-env NODE_ENV=\"test\" NODE_PATH=\"src\" nyc --reporter=html mocha -w --require babel-core/register src/**/*.unit.js",
-    "translations": "i18next-scanner --output ./public 'src/**/*.js'"
+    "translations": "i18next-scanner --output ./public 'src/**/*.js'",
+    "format": "prettier --trailing-comma es5 --arrow-parens always --end-of-line lf --single-quote --write 'src/**/*.js'"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
