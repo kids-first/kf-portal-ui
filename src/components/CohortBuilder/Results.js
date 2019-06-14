@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import ContentBar from './ContentBar';
 import Summary from './Summary';
@@ -28,6 +28,8 @@ import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import FilesIcon from 'icons/FilesIcon';
 import familyMembers from 'assets/icon-families-grey.svg';
+import { setActiveView } from 'store/actionCreators/cohortBuilder';
+import { connect } from 'react-redux';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -118,8 +120,6 @@ const PurpleLink = styled(Link)`
 
 const ResultsHeading = styled('div')`
   display: flex;
-  // padding: 0 20px 3px 0;
-  // border-right: 1px solid ${({ theme }) => theme.greyScale11};
   margin-right: 14px;
 `;
 
@@ -207,128 +207,148 @@ const cohortResultsQuery = sqon => ({
   },
 });
 
-const Results = ({
-  activeView,
-  activeSqonIndex,
-  setActiveView,
-  theme,
-  sqon = {
-    op: 'and',
-    content: [],
-  },
-  api,
-  state,
-  onRemoveFromCohort,
-}) => (
-  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
-    {({ isLoading, data, error }) => {
-      const resultsData = data[0];
-      const participantCount = get(resultsData, 'participantCount', null);
-      const filesCount = get(resultsData, 'filesCount', null);
-      const familiesCount = get(resultsData, 'familiesCount', null);
-      const cohortIsEmpty =
-        (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+class Results extends React.Component {
+  static propTypes = {
+    activeSqonIndex: PropTypes.number.isRequired,
+    sqon: PropTypes.object,
+    onRemoveFromCohort: PropTypes.func.isRequired,
+    setActiveView: PropTypes.func.isRequired,
+    activeView: PropTypes.string.isRequired,
+  };
 
-      const filesCountHeading = resultsData
-        ? `${Number(data[0].filesCount || 0).toLocaleString()}`
-        : '';
+  render() {
+    const {
+      activeView,
+      activeSqonIndex,
+      setActiveView,
+      sqon = { op: 'and', content: [] },
+      api,
+      state,
+      onRemoveFromCohort,
+    } = this.props;
 
-      return error ? (
-        <TableErrorView error={error} />
-      ) : (
-        <React.Fragment>
-          <Content>
-            <Detail>
-              <ResultsHeading>
-                {isEmpty(sqon.content) ? (
-                  <Heading>All Data</Heading>
-                ) : (
-                  <React.Fragment>
-                    <Heading>Cohort Results</Heading>
-                    <SubHeading fontWeight={'normal'}>for Query {activeSqonIndex + 1}</SubHeading>
-                  </React.Fragment>
-                )}
-              </ResultsHeading>{' '}
-              {isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <div className={`${summaryStyle}`}>
-                  <div className={`${summaryEntityStyle}`}>
-                    <SubHeading>
-                      <DemographicIcon />
-                      {Number(participantCount || 0).toLocaleString()}{' '}
-                      {participantCount === 1 ? 'Participant' : 'Participants'}
-                    </SubHeading>
-                  </div>
-                  <div className={`${summaryEntityStyle}`}>
-                    <SubHeading>
-                      <img src={familyMembers} alt="" height="13px" />{' '}
-                      {Number(familiesCount || 0).toLocaleString()}{' '}
-                      {familiesCount === 1 ? 'Family' : 'Families'}
-                    </SubHeading>
-                  </div>
-                  <div className={`${summaryEntityStyle}`}>
-                    <SubHeading>
-                      <div className={`${summaryFilesStyle}`}>
-                        <div>
-                          <FilesIcon />
-                          {isEmpty(sqon.content) ? (
-                            <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
-                          ) : (
-                            <PurpleLinkWithLoader
-                              replaceText={false}
-                              getLink={() =>
-                                generateAllFilesLink(state.loggedInUser, api, data[0].files)
-                              }
-                            >
-                              {filesCountHeading}
-                            </PurpleLinkWithLoader>
-                          )}
-                        </div>
-                        <div>Files</div>
+    return (
+      <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
+        {({ isLoading, data, error }) => {
+          const resultsData = data[0];
+          const participantCount = get(resultsData, 'participantCount', null);
+          const filesCount = get(resultsData, 'filesCount', null);
+          const familiesCount = get(resultsData, 'familiesCount', null);
+          const cohortIsEmpty =
+            (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+
+          const filesCountHeading = resultsData
+            ? `${Number(data[0].filesCount || 0).toLocaleString()}`
+            : '';
+
+          return error ? (
+            <TableErrorView error={error} />
+          ) : (
+            <React.Fragment>
+              <Content>
+                <Detail>
+                  <ResultsHeading>
+                    {isEmpty(sqon.content) ? (
+                      <Heading>All Data</Heading>
+                    ) : (
+                      <React.Fragment>
+                        <Heading>Cohort Results</Heading>
+                        <SubHeading fontWeight={'normal'}>
+                          for Query {activeSqonIndex + 1}
+                        </SubHeading>
+                      </React.Fragment>
+                    )}
+                  </ResultsHeading>{' '}
+                  {isLoading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <div className={`${summaryStyle}`}>
+                      <div className={`${summaryEntityStyle}`}>
+                        <SubHeading>
+                          <DemographicIcon />
+                          {Number(participantCount || 0).toLocaleString()}{' '}
+                          {participantCount === 1 ? 'Participant' : 'Participants'}
+                        </SubHeading>
                       </div>
-                    </SubHeading>
-                  </div>
-                </div>
-              )}
-            </Detail>
-            <ViewLinks>
-              <ViewLink
-                onClick={() => setActiveView(SUMMARY)}
-                active={activeView === SUMMARY}
-                Icon={SummaryIcon}
-              >
-                Summary View
-              </ViewLink>
-              <ViewLink
-                onClick={() => setActiveView(TABLE)}
-                active={activeView === TABLE}
-                Icon={TableViewIcon}
-              >
-                Table View
-              </ViewLink>
-            </ViewLinks>
-          </Content>
-          <ActiveView activeView={activeView}>
-            <Summary sqon={sqon} />
-            <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
-            {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
-          </ActiveView>
-        </React.Fragment>
-      );
-    }}
-  </QueriesResolver>
-);
+                      <div className={`${summaryEntityStyle}`}>
+                        <SubHeading>
+                          <img src={familyMembers} alt="" height="13px" />{' '}
+                          {Number(familiesCount || 0).toLocaleString()}{' '}
+                          {familiesCount === 1 ? 'Family' : 'Families'}
+                        </SubHeading>
+                      </div>
+                      <div className={`${summaryEntityStyle}`}>
+                        <SubHeading>
+                          <div className={`${summaryFilesStyle}`}>
+                            <div>
+                              <FilesIcon />
+                              {isEmpty(sqon.content) ? (
+                                <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
+                              ) : (
+                                <PurpleLinkWithLoader
+                                  replaceText={false}
+                                  getLink={() =>
+                                    generateAllFilesLink(state.loggedInUser, api, data[0].files)
+                                  }
+                                >
+                                  {filesCountHeading}
+                                </PurpleLinkWithLoader>
+                              )}
+                            </div>
+                            <div>Files</div>
+                          </div>
+                        </SubHeading>
+                      </div>
+                    </div>
+                  )}
+                </Detail>
+                <ViewLinks>
+                  <ViewLink
+                    onClick={() => setActiveView(SUMMARY)}
+                    active={activeView === SUMMARY}
+                    Icon={SummaryIcon}
+                  >
+                    Summary View
+                  </ViewLink>
+                  <ViewLink
+                    onClick={() => setActiveView(TABLE)}
+                    active={activeView === TABLE}
+                    Icon={TableViewIcon}
+                  >
+                    Table View
+                  </ViewLink>
+                </ViewLinks>
+              </Content>
+              <ActiveView activeView={activeView}>
+                <Summary sqon={sqon} />
+                <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
+                {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
+              </ActiveView>
+            </React.Fragment>
+          );
+        }}
+      </QueriesResolver>
+    );
+  }
+}
 
-Results.propTypes = {
-  activeSqonIndex: PropTypes.number.isRequired,
-  sqon: PropTypes.object,
-  onRemoveFromCohort: PropTypes.func.isRequired,
+const mapStateToProps = state => {
+  const { activeView } = state.cohortBuilder;
+  return {
+    activeView,
+  };
+};
+
+const mapDispatchToProps = {
+  setActiveView,
 };
 
 export default compose(
   withTheme,
   withApi,
   injectState,
-  withState('activeView', 'setActiveView', SUMMARY),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Results);

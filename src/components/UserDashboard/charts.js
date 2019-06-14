@@ -15,6 +15,8 @@ import {
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
 } from '../../common/sqonUtils';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 const {
   categories: {
@@ -79,7 +81,10 @@ const trackBarClick = (trackingEventCategory, barData) => {
   });
 };
 
-export const studiesChart = withTheme(({ data, theme, setSqons, virtualStudy }) => {
+export const studiesChart = compose(
+  withRouter,
+  withTheme,
+)(({ data, theme, setSqons, virtualStudy, history }) => {
   const mergedStudyData = data.map(d => ({
     ...d,
     url: getFileRepoURL(SHORT_NAME_FIELD, d.name),
@@ -88,7 +93,7 @@ export const studiesChart = withTheme(({ data, theme, setSqons, virtualStudy }) 
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
     addSqon('study.short_name', barData.data.name);
-    window.location.href = '/explore';
+    history.push('/explore');
   };
 
   const addSqon = (field, value) => {
@@ -170,7 +175,10 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
   );
 });
 
-export const TopDiagnosesChart = withTheme(({ data, theme }) => {
+export const TopDiagnosesChart = compose(
+  withRouter,
+  withTheme,
+)(({ data, theme, history }) => {
   const mergedData = data.map(d => ({
     ...d,
     url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, d.name),
@@ -178,7 +186,7 @@ export const TopDiagnosesChart = withTheme(({ data, theme }) => {
 
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
-    window.location.href = barData.data.url;
+    history.push(barData.data.url);
   };
 
   return (
