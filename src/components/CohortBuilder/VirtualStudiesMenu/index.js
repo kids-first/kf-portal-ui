@@ -210,7 +210,7 @@ class VirtualStudiesMenu extends React.Component {
             ) : null}
           </header>
 
-          <div className="description">
+          <div className={`description ${description.trim().length ? '' : 'empty'}`}>
             {description.split(/\n/).map((line, i) => (
               <p key={i}>{line}&nbsp;</p>
             ))}
