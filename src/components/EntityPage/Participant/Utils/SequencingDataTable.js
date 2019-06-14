@@ -139,19 +139,19 @@ class SequencingDataTable extends React.Component {
       });
 
       return rows;
-    })()
+    })
   }
 
   render() {
     return (
-      <ControlledDataTable label={"Strategies"} loading={false} columns={this.breakdownCols} data={this.breakdownData} dataTotalCount={-1} onFetchData={() => null}/>
+      <ControlledDataTable label={"Strategies"} loading={false} columns={this.breakdownCols} data={this.breakdownData()} dataTotalCount={-1} onFetchData={() => null}/>
     )
   }
 }
 
 SequencingDataTable.propTypes = {
   files: PropTypes.array.isRequired,
-  participantID: PropTypes.number.isRequired
+  participantID: PropTypes.string.isRequired
 };
 
 export default SequencingDataTable

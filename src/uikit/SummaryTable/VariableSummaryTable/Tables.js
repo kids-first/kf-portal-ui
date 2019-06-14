@@ -35,7 +35,7 @@ const SummaryContent = styled('div')`
 `;
 
 /**
- * Splits a number into smaller chunks that will be even-ish. Returns the largest chunk, allowing lodash.chuck to do the
+ * Splits a number into smaller chunks that will be even-ish. Returns the largest chunk, allowing lodash.chunk to do the
  * heavy lifting from then on.
  *
  * Example: 11/3: 4/4/3 -> 4. 12/3: 4/4/4 -> 4.

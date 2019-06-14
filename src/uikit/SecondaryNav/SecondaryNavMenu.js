@@ -6,9 +6,9 @@ import { isEmpty } from 'lodash';
 
 import SecondaryNavTab from './SecondaryNavTab';
 
-  const MenuWrapper = styled('ul')`
-    ${({ theme }) => theme.secondaryNav}
-  `;
+const MenuWrapper = styled('ul')`
+  ${({ theme }) => theme.secondaryNav}
+`;
 
 class SecondaryNavMenu extends React.Component {
   hashes = [];
