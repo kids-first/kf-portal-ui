@@ -11,6 +11,7 @@ import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
+import OrcidLogin from 'components/loginButtons/OrcidLogin';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
@@ -139,7 +140,7 @@ const LoginError = styled(Box)`
   line-height: 1.7;
 `;
 
-class Component extends React.Component<any, any> {
+class Component extends React.Component {
   static propTypes = {
     effects: PropTypes.object,
     state: PropTypes.object,
@@ -280,6 +281,8 @@ class Component extends React.Component<any, any> {
                 })
               }
             />
+
+            <OrcidLogin />
           </React.Fragment>
         ) : (
           <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
