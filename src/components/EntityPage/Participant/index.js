@@ -15,6 +15,7 @@ import ParticipantClinical from './ParticipantClinical';
 import ParticipantFamily from './ParticipantFamily';
 
 import { fetchParticipant } from './actionCreators';
+import Spinner from "react-spinkit";
 
 const Container = styled(Column)`
   flex-direction: column;
@@ -52,16 +53,31 @@ class ParticipantEntity extends React.Component {
   render() {
     const { participantId, location, participant, isLoading, error } = this.props;
 
-    if (isLoading) {
-      return 'LOADING';
+    if(isLoading) {
+      return <div style={{width: "100%", height: "100%", position: "absolute", top: 0}}>
+        <Spinner
+          fadeIn="none"
+          name="circle"
+          color="#a9adc0"
+          style={{
+            width: 50,
+            height: 60,
+            top: "50%",
+            position: "absolute",
+            left: "50%",
+            transform: "translate(-50%, -50%)"
+          }}
+        />
+      </div>;
     }
+
 
     if (error) {
       return <GenericErrorDisplay error={error} />;
     }
 
     if (participant === null) {
-      return 'NOT FOUND';
+      return <GenericErrorDisplay error={"PARTICIPANT NOT FOUND"} />;
     }
 
     return (
@@ -86,7 +102,7 @@ class ParticipantEntity extends React.Component {
         </EntityActionBar>
         <EntityContent>
           <SecondaryNavContent target="summary" location={location}>
-            <ParticipantSummary />
+            <ParticipantSummary participant={participant} />
           </SecondaryNavContent>
           <SecondaryNavContent target="clinical" location={location}>
             <ParticipantClinical />
