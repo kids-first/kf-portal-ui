@@ -120,10 +120,10 @@ export default (state = initialState, action) => {
       return cloneDeep(initialState);
 
     case SET_ACTIVE_VIEW:
-      return dirty({
+      return {
         ...state,
         activeView: action.payload,
-      });
+      };
 
     default:
       return state;
