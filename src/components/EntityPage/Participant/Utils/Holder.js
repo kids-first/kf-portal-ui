@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import styled from "react-emotion";
 import {withTheme} from "emotion-theming";
-import PropTypes from 'prop-types';
 
 //taken from secondaryNavMenu
 const MenuWrapper = styled('ul')`
@@ -87,8 +86,6 @@ class Holder extends React.Component {
       tabIDs = this.props.children.map( child => child.props.label );
       children = this.props.children;
     }
-
-    window.console.log(children);
 
     return (
       <div style={{display: "flex", flexDirection: "row"}}>

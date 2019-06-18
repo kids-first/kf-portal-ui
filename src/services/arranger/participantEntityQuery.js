@@ -79,6 +79,8 @@ export default `query ($sqon: JSON) {
                             gender
                             race
                             relationship
+                            kf_id
+                            is_proband
                             diagnoses {
                               hits {
                                 edges {

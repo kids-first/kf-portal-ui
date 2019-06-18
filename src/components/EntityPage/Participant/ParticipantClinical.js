@@ -1,13 +1,44 @@
 import * as React from 'react';
+import { get } from 'lodash';
+import { EntityContentDivider, EntityContentSection } from '../';
+import ControlledDataTable from '../../../uikit/DataTable/ControlledDataTable';
+import FamilyTable from './Utils/FamilyTable';
+import sanitize from './Utils/sanitize';
 
-import { EntityContentSection, EntityContentDivider } from '../';
+//https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
+//https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
 
-const ParticipantClinical = () => {
+const ParticipantClinical = ({participant}) => {
+
+  const diagHeads = [
+    { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
+    { Header: "Diagnosis", accessor: "diagnosis"},
+    { Header: "Diagnosis (Mondo)", accessor: "mondo_id_diagnosis" },
+    { Header: 'Diagnosis (NCIT)', accessor: "ncit_id_diagnosis" },
+    { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis' },
+    { Header: "Age at event", accessor: "age_at_event_days" },
+    { Header: 'Shared with', accessor: "harmonized.alignedreads" }
+  ];
+
+  const diagnoses = get(participant, "diagnoses.hits.edges", []).map(ele => sanitize(get(ele, "node", {})));
+  //const phenotypes = getNodes(participant, "phenotype", []);
+
   return (
     <React.Fragment>
-      <EntityContentSection title="Diagnoses">Diagnoses Chart</EntityContentSection>
+      <EntityContentSection title="Diagnoses">
+        {diagnoses.length === 0 ?
+          <div>No diagnoses.</div> :
+          <ControlledDataTable loading={false} columns={diagHeads} data={diagnoses} dataTotalCount={-1} onFetchData={() => null} />
+        }
+      </EntityContentSection>
       <EntityContentDivider />
-      <EntityContentSection title="Phenotypes">Phenotypes Chart</EntityContentSection>
+      <EntityContentSection title={"Family"}>
+        <div style={{color: "#404c9a", fontWeight: "bold"}}>
+          <img src={require("../../../assets/icon-families-grey.svg")} style={{height: "1em", marginRight: "1em"}} alt={"family icon"}/>
+          {participant.family_id}
+        </div>
+        <FamilyTable participant={participant}/>
+      </EntityContentSection>
     </React.Fragment>
   );
 };

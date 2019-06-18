@@ -12,28 +12,11 @@ import {Div} from "../../../uikit/Core";
 import SequencingDataTable from "./Utils/SequencingDataTable";
 import OtherDataTypesSummaryTable from "./Utils/OtherDataTypesSummaryTable";
 import {get} from 'lodash';
+import sanitize from './Utils/sanitize';
 
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
 const enhance = compose(withTheme);
-
-/**
- * Sanitizes an array of SummaryTable data.
- *
- * Makes boolean values into their corresponding Strings. Transforms null into "Null value".
- *
- * @param arr The array
- * @returns {*} The sannitized array
- */
-function sanitizeSummaryData(arr) {
-  return arr.map( ele => {
-    let sanitized = ele.summary;
-    if (ele.summary === null) sanitized = "--";
-    else if(typeof ele.summary === "boolean") sanitized = `${sanitized}`;
-
-    return {title: ele.title, summary: sanitized}
-  })
-}
 
 /**
  * Sometimes, intermediate nested fields are missing.
@@ -68,7 +51,7 @@ function summaryTableData(participant) {
     return getter(participant, accessor)
   }
 
-  return sanitizeSummaryData([
+  return sanitize([
     { title: 'Kids First/Participant ID:', summary: getIt("kf_id") },
 
     { title: 'External ID:', summary: getIt("external_id") },
@@ -108,7 +91,7 @@ function summaryTableData(participant) {
  */
 function specimenSummaryTableData(specimen) {
 
-  return sanitizeSummaryData( [
+  return sanitize( [
     { title: "Specimen ID", summary: specimen.kf_id },
     { title: "Age at Sample Acquisition", summary: specimen.age_at_event_days },
     { title: "Analyte Type", summary: specimen.analyte_type },
