@@ -142,10 +142,9 @@ const CohortBuilder = compose(
                 emptyEntryMessage="Use the filters above to build a query"
                 ResultCountIcon={ParticipantIcon}
                 resultCountIconProps={{
-                  height: 14,
-                  width: 14,
+                  height: 18,
+                  width: 18,
                   fill: theme.greyScale11,
-                  // fill: 'currentColor',
                 }}
               />
             </SqonBuilderContainer>
