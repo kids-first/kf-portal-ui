@@ -12,7 +12,6 @@ export const actionTypes = {
   FETCH_PARTICIPANT_REQUESTED: 'FETCH_PARTICIPANT_REQUESTED',
   FETCH_PARTICIPANT_FAILURE: 'FETCH_PARTICIPANT_FAILURE',
   FETCH_PARTICIPANT_SUCCESS: 'FETCH_PARTICIPANT_SUCCESS',
-  NAVIGATE_TO_PARTICIPANT: 'NAVIGATE_TO_PARTICIPANT'
 };
 
 /**
@@ -26,7 +25,6 @@ export const fetchParticipant = participantId => {
       payload: participantId,
     });
 
-
     return fetchParticipantWithId(api, participantId)
       .then(participant => {
         dispatch({
@@ -42,29 +40,3 @@ export const fetchParticipant = participantId => {
       });
   };
 };
-
-export const navigateToParticipant = participantId => {
-  return dispatch => {
-    dispatch({
-      type: actionTypes.NAVIGATE_TO_PARTICIPANT,
-      payload: participantId,
-    });
-
-    return fetchParticipantWithId(api, participantId)
-      .then(participant => {
-
-        //router.push("/patient/"+participantId+"#summary");
-
-        dispatch({
-          type: actionTypes.FETCH_PARTICIPANT_SUCCESS,
-          payload: participant,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: actionTypes.FETCH_PARTICIPANT_FAILURE,
-          payload: err,
-        });
-      });
-  };
-}
