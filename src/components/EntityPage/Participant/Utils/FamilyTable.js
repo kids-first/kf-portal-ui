@@ -152,7 +152,7 @@ class FamilyTable extends React.Component  {
                 if (this.rows[j].leftfield === subItem) {
                   subLas = this.rows[j];
                   break
-                } else if(this.rows[j].subheader) break;  //if row is a subheader we know for sure we didn't find the subrow
+                }
               }
 
               if(subLas === null) {         //if we couldn't find it
