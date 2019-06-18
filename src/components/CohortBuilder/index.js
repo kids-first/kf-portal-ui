@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
+import { withTheme } from 'emotion-theming';
 
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
@@ -14,6 +15,7 @@ import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import VirtualStudiesMenu from './VirtualStudiesMenu';
 import PromptMessage from 'uikit/PromptMessage';
+import ParticipantIcon from 'icons/ParticipantIcon';
 
 const Container = styled('div')`
   width: 100%;
@@ -23,7 +25,6 @@ const Container = styled('div')`
 const FullWidthWhite = styled('div')`
   width: 100%;
   background: white;
-  margin-top: 21px;
 `;
 
 const SqonBuilderContainer = styled('div')`
@@ -38,6 +39,7 @@ const SqonBuilderContainer = styled('div')`
 const Content = styled(ContentBar)`
   padding-left: 30px;
   padding-right: 30px;
+  margin-top: 0;
 `;
 
 const StylePromptMessage = styled(PromptMessage)`
@@ -46,8 +48,9 @@ const StylePromptMessage = styled(PromptMessage)`
 
 const CohortBuilder = compose(
   withApi,
+  withTheme,
   injectState,
-)(({ api, state: { loggedInUser } }) => (
+)(({ api, state: { loggedInUser }, theme }) => (
   <SQONProvider>
     {({
       sqons: syntheticSqons,
@@ -137,6 +140,12 @@ const CohortBuilder = compose(
                 onChange={sqonBuilderSqonsChange}
                 onActiveSqonSelect={sqonBuilderActiveSqonSelect}
                 emptyEntryMessage="Use the filters above to build a query"
+                ResultCountIcon={ParticipantIcon}
+                resultCountIconProps={{
+                  height: 18,
+                  width: 18,
+                  fill: theme.greyScale11,
+                }}
               />
             </SqonBuilderContainer>
           </FullWidthWhite>

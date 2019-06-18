@@ -10,6 +10,8 @@ import CardContent from 'uikit/Card/CardContent';
 import { SizeProvider } from 'components/Utils';
 import { compose } from 'recompose';
 import { withApi } from 'services/api';
+import { WhiteButton } from 'uikit/Button.js';
+import ResetIcon from 'react-icons/lib/md/replay';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -58,11 +60,13 @@ class SurvivalPlot extends React.Component {
     onMouseEnterDonor: PropTypes.func,
     onMouseLeaveDonor: PropTypes.func,
     onClickDonor: PropTypes.func,
+    disableResetButton: PropTypes.func,
     margins: PropTypes.object,
     xAxisLabel: PropTypes.string,
     yAxisLabel: PropTypes.string,
     getSetSymbol: PropTypes.func,
     sqon: PropTypes.object,
+    resetZoom: PropTypes.boolean,
   };
 
   static defaultProps = {
@@ -70,6 +74,7 @@ class SurvivalPlot extends React.Component {
     censoredStatuses: ['alive'],
     onMouseEnterDonors(event, donors) {},
     onMouseLeaveDonors() {},
+    disableResetButton() {},
     onClickDonors(e, donors) {},
     xAxisLabel: 'Survival Rate',
     yAxisLabel: 'Duration (days)',
@@ -94,10 +99,16 @@ class SurvivalPlot extends React.Component {
     this.setState(newState);
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.resetZoom !== this.props.resetZoom) {
+      const newState = { xDomain: undefined };
+      this.setState(newState);
+    }
+  }
+
   update = params => {
     var state = this.state;
     var container = this._container;
-
     renderPlot(
       defaults(
         {
@@ -120,7 +131,10 @@ class SurvivalPlot extends React.Component {
           onMouseLeaveDonors:
             this.props.onMouseLeaveDonors && this.props.onMouseLeaveDonors.bind(this),
           onClickDonors: this.props.onClickDonors,
-          onDomainChange: newXDomain => this.updateState({ xDomain: newXDomain }),
+          onDomainChange: newXDomain => {
+            this.props.disableResetButton() && this.props.disableResetButton.bind(this);
+            this.updateState({ xDomain: newXDomain });
+          },
           margins: {
             top: 15,
             right: 20,
@@ -182,6 +196,12 @@ const StyledSurvivalPlot = styled(SurvivalPlot)`
     fill: none;
     stroke-width: 1.5px;
   }
+
+  .brush .extent {
+    stroke: #fff;
+    fill: #edf8ff;
+    shape-rendering: crispEdges;
+  }
 `;
 
 export class SurvivalChart extends React.Component {
@@ -197,6 +217,8 @@ export class SurvivalChart extends React.Component {
       },
       isLoading: true,
       data: [],
+      resetZoom: false,
+      zoomDisabled: true,
     };
   }
 
@@ -269,8 +291,16 @@ export class SurvivalChart extends React.Component {
     }));
   };
 
+  handleClick = () => {
+    this.setState({ resetZoom: !this.state.resetZoom, zoomDisabled: !this.state.zoomDisabled });
+  };
+
+  handleDisableResetButton = () => {
+    this.setState({ zoomDisabled: false });
+  };
+
   render() {
-    const { tooltip, data = [] } = this.state;
+    const { tooltip, data = [], resetZoom, zoomDisabled } = this.state;
 
     const donor = tooltip.donor;
     const tooltipStyle = {
@@ -286,24 +316,53 @@ export class SurvivalChart extends React.Component {
       fontSize: '10px',
     };
 
+    const header = {
+      display: 'flex',
+      justifyContent: 'space-between',
+      position: 'absolute',
+      width: '92%',
+    };
+
+    const dragZoom = {
+      fontSize: '10px',
+      textAlign: 'right',
+      color: '#888',
+      marginBottom: '-10px',
+      height: '13px',
+    };
+
     return (
       <SizeProvider>
         {({ size }) => (
           <CohortCard
             Content={SurvivalCardContent}
-            title="Overall Survival"
+            title={
+              <div style={header}>
+                <div>Overall Survival</div>
+                <div>
+                  <WhiteButton disabled={zoomDisabled} onClick={this.handleClick}>
+                    <span style={{ marginTop: '-10px' }}>
+                      <ResetIcon />
+                    </span>
+                    <span style={{ marginTop: '-8px' }}>reset zoom</span>
+                  </WhiteButton>
+                </div>
+              </div>
+            }
             loading={this.state.isLoading}
           >
             <SurvivalChartWrapper>
               <SurvivalChartHeader>
                 Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
               </SurvivalChartHeader>
-
+              <div style={dragZoom}>{zoomDisabled && <div>Drag to zoom</div>}</div>
               <StyledSurvivalPlot
                 size={size}
                 dataSets={data}
                 onMouseLeaveDonors={this.handleMouseLeaveDonors}
                 onMouseEnterDonors={this.handleMouseEnterDonors}
+                disableResetButton={this.handleDisableResetButton}
+                resetZoom={resetZoom}
               />
 
               <div style={tooltipStyle}>

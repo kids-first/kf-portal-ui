@@ -5,8 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import autobind from 'auto-bind-es5';
 import urlJoin from 'url-join';
-
-// TODO - kill those once done
 import { injectState } from 'freactal';
 
 import Row from 'uikit/Row';
@@ -18,6 +16,7 @@ import {
   loadSavedVirtualStudy,
   saveVirtualStudy,
 } from '../../../store/actionCreators/virtualStudies';
+import { createVirtualStudy } from 'services/virtualStudies';
 
 import Tooltip from 'uikit/Tooltip';
 import { WhiteButton } from 'uikit/Button.js';
@@ -32,6 +31,7 @@ import DeleteIcon from 'react-icons/lib/fa/trash';
 
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
 import DeleteVirtualStudiesModalContent from '../DeleteVirtualStudiesModalContent';
+import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
 import './index.postcss';
 
@@ -94,16 +94,9 @@ class VirtualStudiesMenu extends React.Component {
       return this.onSaveAsClick();
     }
 
-    return saveVirtualStudy({
-      loggedInUser,
-      sqonsState: {
-        sqons,
-        activeIndex,
-        virtualStudyId,
-      },
-      name,
-      description,
-    }).catch(err => {
+    const study = createVirtualStudy(virtualStudyId, name, description, sqons, activeIndex);
+
+    return saveVirtualStudy(loggedInUser, study).catch(err => {
       console.error('Error while saving the virtual study', err);
     });
   }
@@ -162,11 +155,13 @@ class VirtualStudiesMenu extends React.Component {
       activeVirtualStudyId,
       virtualStudyIsLoading,
       virtualStudyName,
+      description,
       virtualStudies,
       virtualStudiesAreLoading,
       isOwner,
       isDirty,
       areSqonsEmpty,
+      error,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
 
@@ -189,27 +184,39 @@ class VirtualStudiesMenu extends React.Component {
       activeVirtualStudyId && isDirty ? '*' : ''
     }`;
 
+    if (error) {
+      return <GenericErrorDisplay error={error} />;
+    }
+
     return (
       <Row className="virtual-studies-menu container">
         <Row className="virtual-studies-heading">
-          <H1>
-            {title}
-            {<p>{activeVirtualStudyId && isDirty ? 'You have unsaved changes' : ''}&nbsp;</p>}
-          </H1>
-          {activeVirtualStudyId ? (
-            <Tooltip
-              html={<div>{'Edit the current virtual study'}</div>}
-              className="tooltip virtual-studies-edit"
-            >
-              <EditIcon
-                disabled={cantEdit}
-                height={16}
-                width={16}
-                className="floating-button-icon"
-                onClick={this.onEditClick}
-              />
-            </Tooltip>
-          ) : null}
+          <header>
+            <H1>{title}</H1>
+
+            {activeVirtualStudyId ? (
+              <Tooltip
+                html={<div>{'Edit the current virtual study'}</div>}
+                className="tooltip virtual-studies-edit"
+              >
+                {!isOwner ? null : (
+                  <EditIcon
+                    disabled={cantEdit}
+                    height={16}
+                    width={16}
+                    className="floating-button-icon"
+                    onClick={this.onEditClick}
+                  />
+                )}
+              </Tooltip>
+            ) : null}
+          </header>
+
+          <div className={`description ${description.trim().length ? '' : 'empty'}`}>
+            {description.split(/\n/).map((line, i) => (
+              <p key={i}>{line}&nbsp;</p>
+            ))}
+          </div>
         </Row>
 
         <Row className="virtual-studies-action-bar">
@@ -234,16 +241,6 @@ class VirtualStudiesMenu extends React.Component {
               disabled={cantOpen}
             />
           </Tooltip>
-
-          {/* <VirtualStudiesMenuButton
-            label={'Edit'}
-            tooltipText={'Edit the current virtual study'}
-            icon={EditIcon}
-            iconProps={{ height: 12, width: 12 }}
-            disabled={cantEdit}
-            onClick={this.onEditClick}
-            className="virtual-studies-edit"
-          /> */}
 
           <VirtualStudiesMenuButton
             label={'Save'}
@@ -305,6 +302,7 @@ const mapStateToProps = state => {
     virtualStudiesAreLoading: virtualStudies.isLoading,
     isDirty: cohortBuilder.dirty,
     areSqonsEmpty: cohortBuilder.areSqonsEmpty,
+    error: cohortBuilder.error,
   };
 };
 

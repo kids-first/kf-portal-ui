@@ -50,17 +50,17 @@ const colors = {
   errorBorder: `#e45562`,
   // warning
   warningDark: '#ff9427', //yellow
-  warningLight: '#ff9427', // TODO: confirm this color
+  warningLight: '#ff9427',
   warningBackground: '#fff4e9',
   warningBorder: `#ff9427`,
   // info
   infoDark: '#22afe9', //blue
-  infoLight: '#e8f7fd', // TODO: confirm this color
+  infoLight: '#e8f7fd',
   infoBackground: '#e8f7fd',
   infoBorder: `#22afe9`,
   // success
   successDark: '#009bb8', //green
-  successLight: '#e6f3f5', // TODO: confirm this color
+  successLight: '#e6f3f5',
   successBackground: '#e6f3f5',
   successBorder: `#009bb8`,
 
@@ -380,6 +380,7 @@ const components = {
     width: 100%;
     min-width: 0;
     padding: 6px 12px;
+    font-family: Open Sans,sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
     background-color: #fff;
@@ -387,24 +388,17 @@ const components = {
     border-radius: 10px;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-
+    
     &:disabled {
         background-color: #edeef1;
         color: #8f9196;
     }
   },
   `,
+  /// TextArea inherits from Input
+  // font-family has to be redefined to avoid the user agent style from overriding it.
   textarea: css`
-    resize: none;
-    border-radius: 10px;
-    background-color: #ffffff;
-    border: solid 1px ${colors.borderGrey};
-    padding: 25px;
-    font-family: ${fonts.details};
-    font-size: 14px;
-    line-height: 1.86;
-    letter-spacing: 0.2px;
-    color: ${colors.greyScale0};
+    font-family: Open Sans, sans-serif;
   `,
   column: css`
     display: flex;

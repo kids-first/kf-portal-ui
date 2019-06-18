@@ -1,4 +1,5 @@
-import { cloneDeep, isEqual } from 'lodash';
+import { cloneDeep } from 'lodash';
+import { getDefaultSqon, isDefaultSqon } from 'common/sqonUtils';
 
 import {
   VIRTUAL_STUDY_LOAD_REQUESTED,
@@ -15,12 +16,11 @@ import {
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
   LOGOUT,
+  SET_ACTIVE_VIEW,
 } from '../actionTypes';
 
-const defaultSqon = [{ op: 'and', content: [] }];
-
 export const initialState = {
-  sqons: cloneDeep(defaultSqon),
+  sqons: getDefaultSqon(),
   activeIndex: 0,
   uid: null,
   virtualStudyId: null,
@@ -29,13 +29,14 @@ export const initialState = {
   dirty: false,
   areSqonsEmpty: true,
   isLoading: false,
+  activeView: 'summary',
   error: null,
 };
 
 const dirty = state => ({
   ...state,
   dirty: true,
-  areSqonsEmpty: isEqual(state.sqons, defaultSqon),
+  areSqonsEmpty: isDefaultSqon(state.sqons),
 });
 
 export default (state = initialState, action) => {
@@ -43,7 +44,7 @@ export default (state = initialState, action) => {
     case '@@INIT':
       return {
         ...state,
-        areSqonsEmpty: isEqual(state.sqons, defaultSqon),
+        areSqonsEmpty: isDefaultSqon(state.sqons),
       };
     case VIRTUAL_STUDY_LOAD_REQUESTED:
       return {
@@ -56,7 +57,7 @@ export default (state = initialState, action) => {
         ...action.payload,
         isLoading: false,
       };
-      newState.areSqonsEmpty = isEqual(newState.sqons, defaultSqon);
+      newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
       return newState;
     case VIRTUAL_STUDY_LOAD_FAILURE:
       return {
@@ -117,6 +118,12 @@ export default (state = initialState, action) => {
 
     case LOGOUT:
       return cloneDeep(initialState);
+
+    case SET_ACTIVE_VIEW:
+      return {
+        ...state,
+        activeView: action.payload,
+      };
 
     default:
       return state;

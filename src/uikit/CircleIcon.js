@@ -30,7 +30,7 @@ const CircleIcon = ({ color, fill, size, iconSize, Icon, style, ...props }) => (
   </IconWrapper>
 );
 
-CircleIcon.PropTypes = {
+CircleIcon.propTypes = {
   color: PropTypes.string,
   fill: PropTypes.string,
   size: PropTypes.number,

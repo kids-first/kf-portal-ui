@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default ({ width = 94, height = 94, fill = '#a9adc0', ...props }) => {
+export default ({ width = 94, height = 94, fill = '#a9adc0', className = '' }) => {
   return (
     <svg
       id="Isolation_Mode"
@@ -9,6 +9,7 @@ export default ({ width = 94, height = 94, fill = '#a9adc0', ...props }) => {
       viewBox="0 0 101.49 124.78"
       width={width}
       height={height}
+      className={className}
     >
       <defs>
         <style>{`.cls-1{fill: ${fill};fill-rule:evenodd;}`}</style>

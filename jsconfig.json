@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./",
+    "paths": {
+      "src/*": ["src/*"],
+      "components/*": ["src/components/*"],
+      "services/*": ["src/services/*"],
+      "uikit/*": ["src/uikit/*"],
+      "assets/*": ["src/assets/*"],
+      "common/*": ["src/common"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}
