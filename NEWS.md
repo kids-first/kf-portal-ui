@@ -1,5 +1,22 @@
 # Release notes for kf-portal-ui
 
+# 2019-06-18 kf-portal-ui 2.4.0
+This release introduces new features and bug fixes.
+
+## New features
+- #1387 Virtual Study: Add a description
+- #1467 Survival chart: reset zoom
+- #1685 Change the link of studies and participants clickable diagrams in the dashboard to point to the cohort buider
+- #1688 Query area: show number of participants for a query
+- #1724 Persistence of which tab is active in the cohort builder
+- #1795 Save dialog: pressing enter should close this dialog
+- #1810 File page: Put "--" for missing values for "Sequencing read properties"
+
+## Bug fixes
+- #1820 Corrupted Virtual Studies in saved Riff or in the local storage cause the application to break on load
+- #1836 Virtual studies: The vertical space for the comment section is too big
+
+
 # 2019-06-04 kf-portal-ui 2.3.0
 This release introduces a few features and bug fixes after a larger release.
 
@@ -9,7 +26,6 @@ This release introduces a few features and bug fixes after a larger release.
 - #1803 Update field names in exported Participant data TSV file
 
 ## Bug fixes
-- #1803 Update field names in exported Participant data TSV file
 - #1695 Remove field phenotype.ancestral\_hpo\_ids 
 - #1801 Clicking on a chart crashes the application when the virtual study contains a reference
 
