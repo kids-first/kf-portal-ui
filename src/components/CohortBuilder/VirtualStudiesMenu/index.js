@@ -31,6 +31,7 @@ import DeleteIcon from 'react-icons/lib/fa/trash';
 
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
 import DeleteVirtualStudiesModalContent from '../DeleteVirtualStudiesModalContent';
+import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
 import './index.postcss';
 
@@ -160,6 +161,7 @@ class VirtualStudiesMenu extends React.Component {
       isOwner,
       isDirty,
       areSqonsEmpty,
+      error,
     } = this.props;
     const selectedStudy = this.findSelectedStudy();
 
@@ -181,6 +183,10 @@ class VirtualStudiesMenu extends React.Component {
     const title = `${titleFragment} ${virtualStudyName}${
       activeVirtualStudyId && isDirty ? '*' : ''
     }`;
+
+    if (error) {
+      return <GenericErrorDisplay error={error} />;
+    }
 
     return (
       <Row className="virtual-studies-menu container">
@@ -206,7 +212,7 @@ class VirtualStudiesMenu extends React.Component {
             ) : null}
           </header>
 
-          <div className="description">
+          <div className={`description ${description.trim().length ? '' : 'empty'}`}>
             {description.split(/\n/).map((line, i) => (
               <p key={i}>{line}&nbsp;</p>
             ))}
@@ -296,6 +302,7 @@ const mapStateToProps = state => {
     virtualStudiesAreLoading: virtualStudies.isLoading,
     isDirty: cohortBuilder.dirty,
     areSqonsEmpty: cohortBuilder.areSqonsEmpty,
+    error: cohortBuilder.error,
   };
 };
 
