@@ -193,13 +193,15 @@ class VirtualStudiesMenu extends React.Component {
                 html={<div>{'Edit the current virtual study'}</div>}
                 className="tooltip virtual-studies-edit"
               >
-                <EditIcon
-                  disabled={cantEdit}
-                  height={16}
-                  width={16}
-                  className="floating-button-icon"
-                  onClick={this.onEditClick}
-                />
+                {!isOwner ? null : (
+                  <EditIcon
+                    disabled={cantEdit}
+                    height={16}
+                    width={16}
+                    className="floating-button-icon"
+                    onClick={this.onEditClick}
+                  />
+                )}
               </Tooltip>
             ) : null}
           </header>
