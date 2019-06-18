@@ -15,6 +15,7 @@ This release introduces new features and bug fixes.
 ## Bug fixes
 - #1820 Corrupted Virtual Studies in saved Riff or in the local storage cause the application to break on load
 - #1836 Virtual studies: The vertical space for the comment section is too big
+- #1832 Shared virtual study: the edit button should not be visible
 
 
 # 2019-06-04 kf-portal-ui 2.3.0
