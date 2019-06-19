@@ -5,7 +5,7 @@ import facebookSDK from 'services/facebookSDK';
 
 import DisabledFacebookLogin from './DisabledFacebookLogin';
 
-export default class extends React.Component<any, any> {
+export default class extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

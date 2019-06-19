@@ -26,6 +26,7 @@ import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import { isAdminToken, validateJWT } from 'components/Login';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
+import OrcidRedirect from 'components/Login/OrcidRedirect';
 
 import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
@@ -120,6 +121,7 @@ const App = compose(
           }
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
+        <Route path="/orcid" exact component={OrcidRedirect} />
         <Route path="/redirected" exact component={() => null} />
         <Route
           path={COHORT_BUILDER_PATH}
