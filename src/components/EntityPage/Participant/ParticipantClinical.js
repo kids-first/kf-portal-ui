@@ -4,6 +4,7 @@ import { EntityContentDivider, EntityContentSection } from '../';
 import ControlledDataTable from '../../../uikit/DataTable/ControlledDataTable';
 import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
+import familySVG from "../../../assets/icon-families-grey.svg";
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
@@ -34,7 +35,7 @@ const ParticipantClinical = ({participant}) => {
       <EntityContentDivider />
       <EntityContentSection title={"Family"}>
         <div style={{color: "#404c9a", fontWeight: "bold"}}>
-          <img src={require("../../../assets/icon-families-grey.svg")} style={{height: "1em", marginRight: "1em"}} alt={"family icon"}/>
+          <img src={familySVG} style={{height: "1em", marginRight: "1em"}} alt={"family icon"}/>
           {participant.family_id}
         </div>
         <FamilyTable participant={participant}/>

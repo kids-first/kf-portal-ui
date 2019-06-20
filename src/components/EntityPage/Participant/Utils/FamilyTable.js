@@ -91,7 +91,7 @@ class FamilyTable extends React.Component  {
             , kf_id
           );
 
-        } else return Promise.resolve(participant); //dont make anther call if we have the same participant
+        } else return Promise.resolve(participant); //dont make another call if we have the same participant
       })
 
     ).then(members => {

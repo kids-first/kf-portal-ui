@@ -53,7 +53,7 @@ class ParticipantEntity extends React.Component {
     const { participantId, location, participant, isLoading, error } = this.props;
 
     //only way to update the page when we click a link to a participant in clinical...
-    if(this.props.participant !== null && this.props.participant.kf_id !== this.props.participantId) {
+    if(!isLoading && this.props.participant !== null && this.props.participant.kf_id !== this.props.participantId) {
       this.props.fetchParticipant(participantId);
     }
 
