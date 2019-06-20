@@ -9,8 +9,6 @@ import {
   orcidAuthRedirectUri,
 } from 'common/injectGlobals';
 
-import DisabledOrcidLogin from './DisabledOrcidLogin';
-
 import './OrcidLogin.css';
 
 export default class OrcidButton extends React.Component {
@@ -39,9 +37,7 @@ export default class OrcidButton extends React.Component {
   }
 
   render() {
-    return this.state.disabled ? (
-      <DisabledOrcidLogin />
-    ) : (
+    return (
       <button id="connect-orcid-button" onClick={this.openORCID}>
         <img
           id="orcid-id-icon"
