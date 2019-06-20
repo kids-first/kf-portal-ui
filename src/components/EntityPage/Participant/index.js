@@ -12,7 +12,6 @@ import { EntityTitleBar, EntityTitle, EntityActionBar, EntityContent } from '../
 
 import ParticipantSummary from './ParticipantSummary';
 import ParticipantClinical from './ParticipantClinical';
-import ParticipantFamily from './ParticipantFamily';
 
 import { fetchParticipant } from './actionCreators';
 import Spinner from "react-spinkit";
@@ -52,6 +51,11 @@ class ParticipantEntity extends React.Component {
 
   render() {
     const { participantId, location, participant, isLoading, error } = this.props;
+
+    //only way to update the page when we click a link to a participant in clinical...
+    if(!isLoading && this.props.participant !== null && this.props.participant.kf_id !== this.props.participantId) {
+      this.props.fetchParticipant(participantId);
+    }
 
     if(isLoading) {
       return <div style={{width: "100%", height: "100%", position: "absolute", top: 0}}>
@@ -93,8 +97,7 @@ class ParticipantEntity extends React.Component {
           <SecondaryNavMenu
             tabs={[
               { name: 'Summary', hash: 'summary' },
-              { name: 'Clinical', hash: 'clinical' },
-              { name: 'Family', hash: 'family' },
+              { name: 'Clinical', hash: 'clinical' }
             ]}
             defaultHash="summary"
             location={location}
@@ -105,10 +108,7 @@ class ParticipantEntity extends React.Component {
             <ParticipantSummary participant={participant} />
           </SecondaryNavContent>
           <SecondaryNavContent target="clinical" location={location}>
-            <ParticipantClinical />
-          </SecondaryNavContent>
-          <SecondaryNavContent target="family" location={location}>
-            <ParticipantFamily />
+            <ParticipantClinical participant={participant} />
           </SecondaryNavContent>
         </EntityContent>
       </Container>
