@@ -26,7 +26,6 @@ import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import { isAdminToken, validateJWT } from 'components/Login';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
-import OrcidRedirect from 'components/Login/OrcidRedirect';
 
 import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
@@ -67,7 +66,7 @@ const App = compose(
   injectState,
   withApi,
   withTheme,
-)(({ editing, setEditing, state, api, theme }) => {
+)(({ state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
   return (
@@ -121,7 +120,19 @@ const App = compose(
           }
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
-        <Route path="/orcid" exact component={OrcidRedirect} />
+        <Route
+          path="/orcid"
+          exact
+          render={props => (
+            <SideImagePage
+              logo={logo}
+              backgroundImage={scienceBgPath}
+              Component={LoginPage}
+              sideImage={loginImage}
+              {...props}
+            />
+          )}
+        />
         <Route path="/redirected" exact component={() => null} />
         <Route
           path={COHORT_BUILDER_PATH}

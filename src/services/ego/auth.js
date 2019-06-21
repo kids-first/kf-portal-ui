@@ -1,7 +1,7 @@
 import { get, endsWith } from 'lodash';
 import urlJoin from 'url-join';
 
-import { egoApiRoot /*, egoAppId*/ } from 'common/injectGlobals';
+import { egoApiRoot, egoAppId } from 'common/injectGlobals';
 
 import ajax from 'services/ajax';
 
@@ -16,15 +16,14 @@ export const getOrcidToken = code => {
   const uri = urlJoin(egoApiRoot, 'oauth/orcid/token');
   return ajax(uri, {
     headers: { code },
+    params: {
+      client_id: egoAppId,
+    },
   })
     .then(res => {
-      const returnedCode = get(res, 'headers.code', null);
       const token = get(res, 'data', null);
       if (!token) {
         throw new Error(`${ERROR_MSG_PREFIX}Missing "token"`);
-      }
-      if (returnedCode !== code) {
-        throw new Error(`${ERROR_MSG_PREFIX}Invalid "code" returned`);
       }
       return token;
     })

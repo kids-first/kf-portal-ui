@@ -1,40 +1,47 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'querystring';
 import { get } from 'lodash';
 import autobind from 'auto-bind-es5';
-import { getOrcidToken } from 'services/ego/auth';
 
+import { getOrcidToken } from 'services/ego/auth';
+import { ORCID } from 'common/constants';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
 /*
-// TODO Orcid
+// TODO Orcid - List
 - Orcid: handle "processing"
 - Orcid: handle errors after redirect
 - Orcid: handle network errors (timeout, 500s, 400s)
-- Ego: handle success
-- Ego: handle "processing"
-- Ego: handle errors
 - Ego: handle network errors (timeout, 500s, 400s)
 - Allow login on localhost?
-- Make OrcidRedirect an ErrorBoundary
+- Make OrcidRedirect an ErrorBoundary?
 */
 
-// NOTES
-// See FenceAuthRedirect
-
-// https://kf-qa.netlify.com/orcid?code=FsFksA
 export default class OrcidRedirect extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       error: null,
-      token: null,
     };
     autobind(this);
   }
 
+  static propTypes = {
+    location: PropTypes.shape({
+      search: PropTypes.object,
+    }),
+    loggedInUserToken: PropTypes.string,
+    loginProvider: PropTypes.string,
+  };
+
   componentDidMount() {
-    this.code ? this.handleOrcidSuccess() : this.handleOrcidError();
+    this.code || this.hasOrcidToken() ? this.handleOrcidSuccess() : this.handleOrcidError();
+  }
+
+  hasOrcidToken() {
+    const { loginProvider, loggedInUserToken } = this.props;
+    return loginProvider === ORCID && loggedInUserToken;
   }
 
   get code() {
@@ -44,12 +51,14 @@ export default class OrcidRedirect extends React.Component {
   }
 
   handleOrcidSuccess() {
+    // already logged in with Orcid
+    if (this.hasOrcidToken()) {
+      this.props.onLogin(this.props.loggedInUserToken);
+      return;
+    }
+
     getOrcidToken(this.code)
-      .then(token => {
-        this.setState({ token });
-        // TODO Orcid use the token
-        console.log(`🔥 TOKEN ${token}`);
-      })
+      .then(this.props.onLogin)
       .catch(error => {
         this.setState({ error });
       });
@@ -60,22 +69,17 @@ export default class OrcidRedirect extends React.Component {
   }
 
   render() {
-    const { token, error } = this.state;
+    const { error } = this.state;
 
-    if (token) {
-      return `TOKEN: ${token}`;
-    }
+    // TODO Orcid - handle 'email.empty'
+    // if (error === 'email.empty') {}
 
-    if (error === 'email.empty') {
-      return 'GIVE YOUR EMAIL YOU FOO!';
-    }
-
-    if (error === 'email.not.verified') {
-      return 'VERIFY YOUR EMAIL YOU FOO!';
-    }
+    // TODO Orcid - handle 'email.not.verified'
+    // if (error === 'email.not.verified') {}
 
     if (error) return <GenericErrorDisplay error={error} />;
 
+    // TODO Orcid - Loader
     return 'PROCESSING ORCID LOGIN, please wait';
   }
 }
