@@ -170,7 +170,7 @@ class Component extends React.Component {
     });
 
     if ((response || {}).status === 200) {
-      handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })
+      return handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })
         .then(async success => {
           if (success) {
             this.trackUserSignIn(provider);

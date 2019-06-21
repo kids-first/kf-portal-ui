@@ -29,7 +29,7 @@ export default class OrcidRedirect extends React.Component {
 
   static propTypes = {
     location: PropTypes.shape({
-      search: PropTypes.object,
+      search: PropTypes.string,
     }),
     loggedInUserToken: PropTypes.string,
     loginProvider: PropTypes.string,
@@ -45,7 +45,7 @@ export default class OrcidRedirect extends React.Component {
   }
 
   get code() {
-    const search = get(this.props, 'location.search', {});
+    const search = get(this.props, 'location.search', '');
     const qs = queryString.parse(search.replace(/^\?/, ''));
     return get(qs, 'code', '');
   }

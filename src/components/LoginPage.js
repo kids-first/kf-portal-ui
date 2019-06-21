@@ -28,7 +28,7 @@ const LoginPage = compose(
       onFinish={user => {
         if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
           history.push('/join');
-        } else if (['/', '/join'].includes(location.pathname)) {
+        } else if (['/', '/join', '/orcid'].includes(location.pathname)) {
           history.push('/dashboard');
         }
       }}

@@ -38,6 +38,8 @@ export const getOrcidToken = code => {
     });
 };
 
+export const orcidLogout = () => {};
+
 /**
  * Generates a human readable error message from a error thrown by the `graphql` function.
  * @see https://www.npmjs.com/package/axios#handling-errors
