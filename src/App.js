@@ -129,6 +129,7 @@ const App = compose(
               backgroundImage={scienceBgPath}
               Component={LoginPage}
               sideImage={loginImage}
+              stealth={true} // hide some of the visuals of the page during redirection
               {...props}
             />
           )}

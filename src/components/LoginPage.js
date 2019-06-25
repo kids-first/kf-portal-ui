@@ -16,11 +16,13 @@ const LoginPage = compose(
   withRouter,
   withTheme,
   withApi,
-)(({ history, location, theme, api }) => (
-  <SplashPage>
-    <JoinH2 mt="9px" mb={0}>
-      <Trans>Log in</Trans>
-    </JoinH2>
+)(({ history, location, theme, api, stealth = false }) => (
+  <SplashPage stealth={stealth}>
+    {stealth ? null : (
+      <JoinH2 mt="9px" mb={0}>
+        <Trans>Log in</Trans>
+      </JoinH2>
+    )}
 
     <Login
       api={api}
@@ -33,13 +35,16 @@ const LoginPage = compose(
         }
       }}
     />
-    <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
-      <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
-      <Link to="/join" className="bare primary bold">
-        <Trans>Join now</Trans>
-        <RightIcon />
-      </Link>
-    </Section>
+
+    {stealth ? null : (
+      <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
+        <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
+        <Link to="/join" className="bare primary bold">
+          <Trans>Join now</Trans>
+          <RightIcon />
+        </Link>
+      </Section>
+    )}
   </SplashPage>
 ));
 export default LoginPage;

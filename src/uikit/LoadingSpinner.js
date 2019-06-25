@@ -2,8 +2,8 @@ import React from 'react';
 import Spinner from 'react-spinkit';
 import Column from './Column';
 
-const LoadingSpinner = ({ size = '11px', color = 'black', center = true }) => (
-  <Column center={center}>
+const LoadingSpinner = ({ size = '11px', color = 'black', center = true, className = '' }) => (
+  <Column center={center} className={className}>
     <Spinner
       fadeIn="none"
       name="circle"

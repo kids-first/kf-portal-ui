@@ -1,0 +1,12 @@
+.login-redirect-loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-redirect-loader-container > span {
+  color: #2b388f;
+  font-size: 1.1em;
+  font-weight: 500;
+  margin-top: 1.25em;
+}

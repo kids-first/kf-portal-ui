@@ -6,17 +6,11 @@ import autobind from 'auto-bind-es5';
 
 import { getOrcidToken } from 'services/ego/auth';
 import { ORCID } from 'common/constants';
-import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
-/*
-// TODO Orcid - List
-- Orcid: handle "processing"
-- Orcid: handle errors after redirect
-- Orcid: handle network errors (timeout, 500s, 400s)
-- Ego: handle network errors (timeout, 500s, 400s)
-- Allow login on localhost?
-- Make OrcidRedirect an ErrorBoundary?
-*/
+import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
+import LoadingSpinner from 'uikit/LoadingSpinner';
+
+import './index.css';
 
 export default class OrcidRedirect extends React.Component {
   constructor(props) {
@@ -79,7 +73,11 @@ export default class OrcidRedirect extends React.Component {
 
     if (error) return <GenericErrorDisplay error={error} />;
 
-    // TODO Orcid - Loader
-    return 'PROCESSING ORCID LOGIN, please wait';
+    return (
+      <div className="login-redirect-loader-container">
+        <LoadingSpinner size={96} color={'#a9adc0'} className="login-redirect-loader" />
+        <span>Trying to log in via ORCID...</span>
+      </div>
+    );
   }
 }
