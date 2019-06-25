@@ -9,8 +9,6 @@ import {
   orcidAuthRedirectUri,
 } from 'common/injectGlobals';
 
-import './OrcidLogin.css';
-
 export default class OrcidButton extends React.Component {
   constructor(props) {
     super(props);
@@ -38,16 +36,19 @@ export default class OrcidButton extends React.Component {
 
   render() {
     return (
-      <button id="connect-orcid-button" onClick={this.openORCID}>
-        <img
-          id="orcid-id-icon"
-          src="https://orcid.org/sites/default/files/images/orcid_24x24.png"
-          width="24"
-          height="24"
-          alt="ORCID iD icon"
-        />
-        Register or Connect your ORCID iD
-      </button>
+      <div className="login-button orcid-login-button">
+        <button onClick={this.openORCID}>
+          <img
+            src="https://orcid.org/sites/default/files/images/orcid_24x24.png"
+            width="24"
+            height="24"
+            alt="ORCID iD icon"
+          />
+          <span>
+            Log in with <em>ORCID iD</em>
+          </span>
+        </button>
+      </div>
     );
   }
 }

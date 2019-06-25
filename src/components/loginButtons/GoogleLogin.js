@@ -50,7 +50,7 @@ class GoogleButton extends Component {
     return this.state.disabled ? (
       <DisabledGoogleLogin />
     ) : (
-      <Box mb={3} key="google" id="googleSignin" />
+      <Box mb={3} key="google" id="googleSignin" className="google-login-button login-button" />
     );
   }
 }

@@ -257,7 +257,7 @@ class Component extends React.Component {
 
   renderSocialLoginButtons(disabled) {
     return (
-      <React.Fragment>
+      <div className="login-buttons-container">
         {this.state.authorizationError && (
           <ModalWarning>
             <Trans key="login.authorizationError">
@@ -292,7 +292,6 @@ class Component extends React.Component {
         />
 
         <FacebookLogin
-          key="facebook"
           onError={this.handleError}
           onLogin={r =>
             this.handleToken({
@@ -304,7 +303,7 @@ class Component extends React.Component {
         />
 
         <OrcidLogin />
-      </React.Fragment>
+      </div>
     );
   }
 

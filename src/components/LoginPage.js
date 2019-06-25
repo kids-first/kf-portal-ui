@@ -12,6 +12,8 @@ import SplashPage from 'components/SplashPage';
 import { Link, Section } from 'uikit/Core';
 import { JoinH2 } from '../uikit/Headings';
 
+import './Login/index.css';
+
 const LoginPage = compose(
   withRouter,
   withTheme,
