@@ -179,7 +179,7 @@ class VirtualStudiesMenu extends React.Component {
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
-    const titleFragment = virtualStudyName ? 'Virtual Study: ' : 'Explore Data';
+    const titleFragment = virtualStudyName ? '' : 'Explore Data';
     const title = `${titleFragment} ${virtualStudyName}${
       activeVirtualStudyId && isDirty ? '*' : ''
     }`;
