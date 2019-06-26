@@ -11,6 +11,13 @@
   margin-top: 1.25em;
 }
 
+.login-redirect-loader-container .generic-error-display a {
+  color: #a6278f;
+}
+.login-redirect-loader-container .generic-error-display a:hover {
+  color: #cc3399;
+}
+
 /*
 * Login Buttons
 */

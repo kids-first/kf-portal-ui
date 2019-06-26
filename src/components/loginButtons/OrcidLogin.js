@@ -17,11 +17,6 @@ export default class OrcidButton extends React.Component {
     };
   }
 
-  componentDidMount() {
-    // TODO ORCID health of the service?
-    // TODO ORCID validate configs here, disable the button if one is missing
-  }
-
   openORCID() {
     // redirect to Orcid OAuth flow
     const search = queryString.stringify({

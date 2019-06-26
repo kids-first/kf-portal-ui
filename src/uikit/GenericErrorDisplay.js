@@ -21,27 +21,48 @@ const splitMessageOnLines = (message, indent = 0) => {
     : typeof message === 'string'
     ? message.split(/\n/)
     : [];
-  return lines.map((line, i) => <p key={`error_line_${i}`}>{`${indentation}${line}`}</p>);
+  return lines.map((line, i) => (
+    <React.Fragment>
+      <span key={`error_line_${i}`}>{`${indentation}${line}`}</span>
+      <br />
+    </React.Fragment>
+  ));
 };
 
-const GenericErrorDisplay = ({ error }) => {
+const GenericErrorDisplay = ({ error, footer = null, header = 'Oops, something went wrong.' }) => {
   let message = '';
-  let header = '';
 
   if (!devDebug) {
-    header = 'Oops, something went wrong.';
     message = <StandardErrorContent />;
   } else if (typeof error === 'string') {
     message = <React.Fragment>{splitMessageOnLines(error)}</React.Fragment>;
-  } else {
+  } else if (typeof error === 'object') {
     message = <React.Fragment>{splitMessageOnLines(error.stack || error.message)}</React.Fragment>;
   }
 
-  return <PromptMessage heading={header} content={message} error={true} />;
+  if (footer) {
+    message = (
+      <React.Fragment>
+        {message}
+        <br />
+        {footer}
+      </React.Fragment>
+    );
+  }
+
+  return (
+    <PromptMessage
+      className="generic-error-display"
+      heading={header}
+      content={message}
+      error={true}
+    />
+  );
 };
 
 const messageValidator = PropTypes.oneOf([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]);
 GenericErrorDisplay.propTypes = {
+  header: PropTypes.string,
   error: PropTypes.oneOf([
     PropTypes.string,
     PropTypes.shape({
@@ -49,6 +70,10 @@ GenericErrorDisplay.propTypes = {
       stack: messageValidator,
     }),
   ]),
+  link: PropTypes.shape({
+    label: PropTypes.string,
+    href: PropTypes.string.isRequired,
+  }),
 };
 
 export default GenericErrorDisplay;
