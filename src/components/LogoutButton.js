@@ -7,15 +7,25 @@ import { withTheme } from 'emotion-theming';
 import { Trans } from 'react-i18next';
 import { withApi } from 'services/api';
 
-const enhance = compose(withRouter, injectState, withTheme, withApi);
+const enhance = compose(
+  withRouter,
+  injectState,
+  withTheme,
+  withApi,
+);
 
 export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) =>
-  logoutAll().then(() => {
-    setUser({ api });
-    setToken();
-    clearIntegrationTokens();
-    history.push('/');
-  });
+  logoutAll()
+    .then(() => {
+      setUser({ api });
+      setToken();
+      clearIntegrationTokens();
+      // we must wait so the freactal state propagates at least once or we will log back in Orcid
+      return new Promise(r => setTimeout(r, 100));
+    })
+    .then(() => {
+      history.push('/');
+    });
 
 const Logout = ({
   history,

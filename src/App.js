@@ -66,7 +66,7 @@ const App = compose(
   injectState,
   withApi,
   withTheme,
-)(({ editing, setEditing, state, api, theme }) => {
+)(({ state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
   return (
@@ -120,6 +120,20 @@ const App = compose(
           }
         />
         <Route path="/auth-redirect" exact component={AuthRedirect} />
+        <Route
+          path="/orcid"
+          exact
+          render={props => (
+            <SideImagePage
+              logo={logo}
+              backgroundImage={scienceBgPath}
+              Component={LoginPage}
+              sideImage={loginImage}
+              stealth={true} // hide some of the visuals of the page during redirection
+              {...props}
+            />
+          )}
+        />
         <Route path="/redirected" exact component={() => null} />
         <Route
           path={COHORT_BUILDER_PATH}

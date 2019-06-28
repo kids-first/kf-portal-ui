@@ -83,7 +83,7 @@ export default () => (
             </DropdownRow>
           </DropdownExternalLink>,
         ]}
-        ItemWrapperComponent={props => <Fragment {...props} />}
+        ItemWrapperComponent={props => <Fragment key={props.key} children={props.children} />}
         ContainerComponent={NavbarDropdownWrapper}
         OptionsContainerComponent={NavbarKidsFirstDropdown}
         LabelContainer={MenuLabelContainer}

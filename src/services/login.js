@@ -5,6 +5,7 @@ import { EGO_JWT_KEY } from 'common/constants';
 import { removeCookie } from './cookie';
 import { store } from '../store';
 import { logout } from '../store/actionCreators/user';
+import { orcidLogout } from 'services/ego/auth';
 
 const gapi = global.gapi;
 
@@ -50,5 +51,5 @@ export const logoutAll = () => {
   removeCookie(EGO_JWT_KEY);
   // discard the user/session details
   store.dispatch(logout());
-  return Promise.all([googleLogout().catch(err => console.warn(err)), facebookLogout()]);
+  return Promise.all([googleLogout(), facebookLogout(), orcidLogout()]);
 };

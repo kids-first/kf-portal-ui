@@ -51,7 +51,21 @@ export default provideState({
           },
         });
         if (validateJWT({ jwt })) {
-          handleJWT({ provider, jwt, setToken, setUser, api });
+          handleJWT({
+            provider,
+            jwt,
+            setToken,
+            setUser,
+            api,
+            onFinish: user => {
+              if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
+                history.push('/join');
+              } else if (['/', '/join', '/orcid'].includes(window.location.pathname)) {
+                history.push('/dashboard');
+              }
+            },
+          });
+
           // Get all integration keys from local storage
           SERVICES.forEach(service => {
             const storedToken = localStorage.getItem(`integration_${service}`);
