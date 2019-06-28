@@ -17,11 +17,16 @@ import QueryBlock from './QueryBlock';
 import CardHeader from 'uikit/Card/CardHeader';
 
 import Component from 'react-component-component';
-import { fetchVirtualStudiesCollection } from '../../../store/actionCreators/virtualStudies';
+import {
+  fetchVirtualStudiesCollection,
+  loadSavedVirtualStudy,
+} from '../../../store/actionCreators/virtualStudies';
 import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
 import { connect } from 'react-redux';
 import Row from 'uikit/Row';
 import { Flex } from 'uikit/Core';
+import Tooltip from 'uikit/Tooltip';
+import { css } from 'react-emotion';
 
 const Container = styled(Column)`
   margin: 0 0 15px 0;
@@ -65,10 +70,26 @@ const Scroll = styled('div')`
   right: 0;
   bottom: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 `;
+
+const studyDescriptionStyle = css({
+  fontSize: '12px',
+  fontFamily: 'Open Sans, sans-serif',
+  maxWidth: '400px',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+});
+
+const studyStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
+  loadSavedVirtualStudy,
 };
 
 const mapStateToProps = state => {
@@ -76,6 +97,19 @@ const mapStateToProps = state => {
   return {
     virtualStudies: virtualStudies.studies,
   };
+};
+
+let descriptions = new Array(20);
+
+const virtualStudyLoad = (id, index, props) => {
+  props
+    .loadSavedVirtualStudy(id)
+    .then(data => {
+      if (data) {
+        descriptions.splice(index, 1, data.payload.description);
+      }
+    })
+    .catch(error => console.error(`Error loading virtual study "${id}"`, error));
 };
 
 export const MySavedQueries = compose(
@@ -102,7 +136,7 @@ export const MySavedQueries = compose(
   }) => {
     const { virtualStudies } = props;
     return (
-      <Component initialState={{ selectedTab: 'PARTICIPANTS' }}>
+      <Component initialState={{ selectedTab: 'FILES' }}>
         {({ state: { selectedTab }, setState }) => (
           <DashboardCard showHeader={false}>
             {loadingQueries ? (
@@ -191,10 +225,18 @@ export const MySavedQueries = compose(
                     ) : (
                       <Box mt={2} mb={2}>
                         <Scroll>
-                          {virtualStudies.map(s => (
-                            <Study>
+                          {virtualStudies.map((s, index) => (
+                            <Study key={s.id}>
                               <Row justifyContent="space-between" width="100%">
-                                <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
+                                <div className={`${studyStyle}`}>
+                                  <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
+                                  {virtualStudyLoad(s.id, index, props)}
+                                  <Tooltip html={descriptions[index]}>
+                                    <div className={`${studyDescriptionStyle}`}>
+                                      {descriptions[index]}
+                                    </div>
+                                  </Tooltip>
+                                </div>
                               </Row>
                             </Study>
                           ))}
