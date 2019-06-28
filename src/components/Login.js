@@ -26,7 +26,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
+import { allRedirectUris, egoApiRoot, orcidAuthAppId } from 'common/injectGlobals';
 import { FENCES, CAVATICA, GOOGLE, FACEBOOK, ORCID, LOGIN_ERROR_DETAILS } from 'common/constants';
 import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
@@ -256,6 +256,8 @@ class Component extends React.Component {
   }
 
   renderSocialLoginButtons(disabled) {
+    const orcidLoginEnabled = Boolean(orcidAuthAppId);
+
     return (
       <div className="login-buttons-container">
         {this.state.authorizationError && (
@@ -302,7 +304,7 @@ class Component extends React.Component {
           }
         />
 
-        <OrcidLogin />
+        {orcidLoginEnabled ? <OrcidLogin /> : null}
       </div>
     );
   }
