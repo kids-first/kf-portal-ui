@@ -13,7 +13,7 @@ const Container = styled(Column)`
 const SectionTitle = applyDefaultStyles(styled('h2')`
   display: inline-block;
   font-family: ${({ theme }) => theme.fonts.default};
-  font-size: 20px;
+  font-size: ${({ size }) => (size === 'small' ? '16px' : '20px')};
   font-weight: 500;
   text-align: left;
   color: ${({ theme }) => theme.cardTitle};
@@ -24,9 +24,9 @@ const Content = styled('div')`
   padding-top: 15px;
 `;
 
-const EntityContentSection = ({ title, children }) => (
+const EntityContentSection = ({ title, children, size }) => (
   <Container>
-    <SectionTitle>{title}</SectionTitle>
+    <SectionTitle size={size}>{title}</SectionTitle>
     <Content>{children}</Content>
   </Container>
 );
