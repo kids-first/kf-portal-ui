@@ -19,7 +19,6 @@ import { DashboardCard } from '../styles';
 import QueryBlock from './QueryBlock';
 import CardHeader from 'uikit/Card/CardHeader';
 
-import Component from 'react-component-component';
 import {
   fetchVirtualStudiesCollection,
   loadSavedVirtualStudy,
@@ -94,6 +93,8 @@ class MySavedQueries extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // TODO - change for FILES
+      selectedTab: 'PARTICIPANTS',
       descriptions: [],
     };
     autobind(this);
@@ -114,6 +115,7 @@ class MySavedQueries extends React.Component {
     this.props
       .fetchVirtualStudiesCollection(this.props.loggedInUser.egoId)
       .then(() => {
+        // TODO - fetch all descriptions at once using /riff/user endpoint
         return Promise.all(
           this.props.virtualStudies.map(s => {
             return this.props
@@ -133,123 +135,112 @@ class MySavedQueries extends React.Component {
       state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
     } = this.props;
     const { virtualStudies } = this.props;
-    const { descriptions } = this.state;
+    const { descriptions, selectedTab } = this.state;
 
-    /// TODO REMOVE usage of <Component />
     return (
-      <Component initialState={{ selectedTab: 'PARTICIPANTS' }}>
-        {({ state: { selectedTab }, setState }) => (
-          <DashboardCard showHeader={false}>
-            {loadingQueries ? (
-              <CardContentSpinner />
-            ) : (
-              <div>
-                <CardHeader title="Saved Queries" style={{ margin: '5px 0 15px 0' }} />
-                <Container>
-                  <Tabs
-                    selectedTab={selectedTab}
-                    options={[
-                      {
-                        id: 'PARTICIPANTS',
-                        display: 'Participants',
-                        total: virtualStudies.length ? virtualStudies.length : [0],
-                      },
-                      {
-                        id: 'FILES',
-                        display: 'Files',
-                        total: fileQueries.length ? fileQueries.length : [0],
-                      },
-                    ]}
-                    onTabSelect={({ id }) => setState({ selectedTab: id })}
-                  />
-                  <ShowIf condition={selectedTab === 'FILES'}>
-                    {!fileQueries.length ? (
-                      <Scroll>
-                        <Box mt={2}>
-                          <PromptMessageContainer info mb={'8px'}>
-                            <PromptMessageContent>
-                              Explore the{' '}
-                              <FileRepositoryLink to="/search/file">
-                                File Repository
-                              </FileRepositoryLink>{' '}
-                              to save queries!
-                            </PromptMessageContent>
-                          </PromptMessageContainer>
-                        </Box>
-                        <Box mt={2} mb={2}>
-                          {exampleQueries.map(q => {
-                            q.link = `/search${q.content.longUrl.split('/search')[1]}`;
-                            return (
-                              <QueryBlock
-                                key={q.id}
-                                query={q}
-                                inactive={deletingIds.includes(q.id)}
-                                savedTime={false}
-                              />
-                            );
-                          })}
-                        </Box>
-                      </Scroll>
-                    ) : (
-                      <Scroll>
-                        <Box mt={2} mb={2}>
-                          {fileQueries
-                            .filter(q => q.alias && q.content.Files)
-                            .map(q => ({
-                              ...q,
-                              date: Number(new Date(q.creationDate)),
-                              link: `/search${q.content.longUrl.split('/search')[1]}`,
-                            }))
-                            .slice()
-                            .sort((a, b) => b.date - a.date)
-                            .map(q => (
-                              <QueryBlock
-                                key={q.id}
-                                query={q}
-                                inactive={deletingIds.includes(q.id)}
-                              />
-                            ))}
-                        </Box>
-                      </Scroll>
-                    )}
-                  </ShowIf>
-                  <ShowIf condition={selectedTab === 'PARTICIPANTS'}>
-                    {!virtualStudies.length ? (
-                      <Box mt={2}>
-                        <PromptMessageContainer info mb={'8px'}>
-                          <PromptMessageContent>
-                            <FileRepositoryLink to="/explore">Explore Data</FileRepositoryLink> and
-                            save virtual studies!
-                          </PromptMessageContent>
-                        </PromptMessageContainer>
-                      </Box>
-                    ) : (
-                      <Box mt={2} mb={2}>
-                        <Scroll>
-                          {virtualStudies.map((s, index) => (
-                            <Study key={s.id}>
-                              <Row justifyContent="space-between" width="100%">
-                                <div className={`${studyStyle}`}>
-                                  <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
-                                  <Tooltip html={descriptions[index]}>
-                                    <div className={`${studyDescriptionStyle}`}>
-                                      {descriptions[index]}
-                                    </div>
-                                  </Tooltip>
+      <DashboardCard showHeader={false}>
+        {loadingQueries ? (
+          <CardContentSpinner />
+        ) : (
+          <div>
+            <CardHeader title="Saved Queries" style={{ margin: '5px 0 15px 0' }} />
+            <Container>
+              <Tabs
+                selectedTab={selectedTab}
+                options={[
+                  {
+                    id: 'PARTICIPANTS',
+                    display: 'Participants',
+                    total: virtualStudies.length ? virtualStudies.length : [0],
+                  },
+                  {
+                    id: 'FILES',
+                    display: 'Files',
+                    total: fileQueries.length ? fileQueries.length : [0],
+                  },
+                ]}
+                onTabSelect={({ id }) => this.setState({ selectedTab: id })}
+              />
+              <ShowIf condition={selectedTab === 'FILES'}>
+                {!fileQueries.length ? (
+                  <Scroll>
+                    <Box mt={2}>
+                      <PromptMessageContainer info mb={'8px'}>
+                        <PromptMessageContent>
+                          Explore the{' '}
+                          <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink>{' '}
+                          to save queries!
+                        </PromptMessageContent>
+                      </PromptMessageContainer>
+                    </Box>
+                    <Box mt={2} mb={2}>
+                      {exampleQueries.map(q => {
+                        q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+                        return (
+                          <QueryBlock
+                            key={q.id}
+                            query={q}
+                            inactive={deletingIds.includes(q.id)}
+                            savedTime={false}
+                          />
+                        );
+                      })}
+                    </Box>
+                  </Scroll>
+                ) : (
+                  <Scroll>
+                    <Box mt={2} mb={2}>
+                      {fileQueries
+                        .filter(q => q.alias && q.content.Files)
+                        .map(q => ({
+                          ...q,
+                          date: Number(new Date(q.creationDate)),
+                          link: `/search${q.content.longUrl.split('/search')[1]}`,
+                        }))
+                        .slice()
+                        .sort((a, b) => b.date - a.date)
+                        .map(q => (
+                          <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
+                        ))}
+                    </Box>
+                  </Scroll>
+                )}
+              </ShowIf>
+              <ShowIf condition={selectedTab === 'PARTICIPANTS'}>
+                {!virtualStudies.length ? (
+                  <Box mt={2}>
+                    <PromptMessageContainer info mb={'8px'}>
+                      <PromptMessageContent>
+                        <FileRepositoryLink to="/explore">Explore Data</FileRepositoryLink> and save
+                        virtual studies!
+                      </PromptMessageContent>
+                    </PromptMessageContainer>
+                  </Box>
+                ) : (
+                  <Box mt={2} mb={2}>
+                    <Scroll>
+                      {virtualStudies.map((s, index) => (
+                        <Study key={s.id}>
+                          <Row justifyContent="space-between" width="100%">
+                            <div className={`${studyStyle}`}>
+                              <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
+                              <Tooltip html={descriptions[index]}>
+                                <div className={`${studyDescriptionStyle}`}>
+                                  {descriptions[index]}
                                 </div>
-                              </Row>
-                            </Study>
-                          ))}
-                        </Scroll>
-                      </Box>
-                    )}
-                  </ShowIf>
-                </Container>
-              </div>
-            )}
-          </DashboardCard>
+                              </Tooltip>
+                            </div>
+                          </Row>
+                        </Study>
+                      ))}
+                    </Scroll>
+                  </Box>
+                )}
+              </ShowIf>
+            </Container>
+          </div>
         )}
-      </Component>
+      </DashboardCard>
     );
   }
 }
