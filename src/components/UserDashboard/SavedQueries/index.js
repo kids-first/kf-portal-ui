@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { compose, lifecycle } from 'recompose';
+import { compose } from 'recompose';
 import { injectState } from 'freactal';
+import autobind from 'auto-bind-es5';
+import PropTypes from 'prop-types';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
@@ -87,18 +89,7 @@ const studyStyle = css({
   flexDirection: 'column',
 });
 
-const mapDispatchToProps = {
-  fetchVirtualStudiesCollection,
-  loadSavedVirtualStudy,
-};
-
-const mapStateToProps = state => {
-  const { virtualStudies } = state;
-  return {
-    virtualStudies: virtualStudies.studies,
-  };
-};
-
+// TODO - MOVE to redux state
 let descriptions = new Array(20);
 
 const virtualStudyLoad = (id, index, props) => {
@@ -112,29 +103,34 @@ const virtualStudyLoad = (id, index, props) => {
     .catch(error => console.error(`Error loading virtual study "${id}"`, error));
 };
 
-export const MySavedQueries = compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-  provideSavedQueries,
-  injectState,
-  lifecycle({
-    componentDidMount() {
-      const { api } = this.props;
-      this.props.effects.getQueries({ egoId: this.props.loggedInUser.egoId, api });
-      this.props.fetchVirtualStudiesCollection(this.props.loggedInUser.egoId);
-    },
-  }),
-)(
-  ({
-    state: { queries, exampleQueries, loadingQueries, deletingIds },
-    effects: { getQueries, deleteQuery },
-    api,
-    theme,
-    ...props
-  }) => {
-    const { virtualStudies } = props;
+class MySavedQueries extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    autobind(this);
+  }
+
+  static propTypes = {
+    state: PropTypes.shape({
+      queries: PropTypes.array.isRequired,
+      exampleQueries: PropTypes.array.isRequired,
+      loadingQueries: PropTypes.bool.isRequired,
+      deletingIds: PropTypes.array.isRequired,
+    }).isRequired,
+  };
+
+  componentDidMount() {
+    const { api } = this.props;
+    this.props.effects.getQueries({ egoId: this.props.loggedInUser.egoId, api });
+    this.props.fetchVirtualStudiesCollection(this.props.loggedInUser.egoId);
+  }
+
+  render() {
+    const {
+      state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
+    } = this.props;
+    const { virtualStudies } = this.props;
+
     return (
       <Component initialState={{ selectedTab: 'FILES' }}>
         {({ state: { selectedTab }, setState }) => (
@@ -156,13 +152,13 @@ export const MySavedQueries = compose(
                       {
                         id: 'FILES',
                         display: 'Files',
-                        total: queries.length ? queries.length : [0],
+                        total: fileQueries.length ? fileQueries.length : [0],
                       },
                     ]}
                     onTabSelect={({ id }) => setState({ selectedTab: id })}
                   />
                   <ShowIf condition={selectedTab === 'FILES'}>
-                    {!queries.length ? (
+                    {!fileQueries.length ? (
                       <Scroll>
                         <Box mt={2}>
                           <PromptMessageContainer info mb={'8px'}>
@@ -192,7 +188,7 @@ export const MySavedQueries = compose(
                     ) : (
                       <Scroll>
                         <Box mt={2} mb={2}>
-                          {queries
+                          {fileQueries
                             .filter(q => q.alias && q.content.Files)
                             .map(q => ({
                               ...q,
@@ -230,7 +226,8 @@ export const MySavedQueries = compose(
                               <Row justifyContent="space-between" width="100%">
                                 <div className={`${studyStyle}`}>
                                   <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
-                                  {virtualStudyLoad(s.id, index, props)}
+                                  {// TODO - MOVE away from the render path into proper lifecyle event
+                                  virtualStudyLoad(s.id, index, this.props)}
                                   <Tooltip html={descriptions[index]}>
                                     <div className={`${studyDescriptionStyle}`}>
                                       {descriptions[index]}
@@ -251,6 +248,26 @@ export const MySavedQueries = compose(
         )}
       </Component>
     );
-  },
-);
-export default MySavedQueries;
+  }
+}
+
+const mapDispatchToProps = {
+  fetchVirtualStudiesCollection,
+  loadSavedVirtualStudy,
+};
+
+const mapStateToProps = state => {
+  const { virtualStudies } = state;
+  return {
+    virtualStudies: virtualStudies.studies,
+  };
+};
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  provideSavedQueries,
+  injectState,
+)(MySavedQueries);
