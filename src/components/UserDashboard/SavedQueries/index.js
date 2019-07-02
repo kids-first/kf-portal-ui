@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
@@ -89,24 +90,12 @@ const studyStyle = css({
   flexDirection: 'column',
 });
 
-// TODO - MOVE to redux state
-let descriptions = new Array(20);
-
-const virtualStudyLoad = (id, index, props) => {
-  props
-    .loadSavedVirtualStudy(id)
-    .then(data => {
-      if (data) {
-        descriptions.splice(index, 1, data.payload.description);
-      }
-    })
-    .catch(error => console.error(`Error loading virtual study "${id}"`, error));
-};
-
 class MySavedQueries extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      descriptions: [],
+    };
     autobind(this);
   }
 
@@ -122,7 +111,21 @@ class MySavedQueries extends React.Component {
   componentDidMount() {
     const { api } = this.props;
     this.props.effects.getQueries({ egoId: this.props.loggedInUser.egoId, api });
-    this.props.fetchVirtualStudiesCollection(this.props.loggedInUser.egoId);
+    this.props
+      .fetchVirtualStudiesCollection(this.props.loggedInUser.egoId)
+      .then(() => {
+        return Promise.all(
+          this.props.virtualStudies.map(s => {
+            return this.props
+              .loadSavedVirtualStudy(s.id)
+              .then(data => (data ? get(data, 'payload.description', null) : null))
+              .catch(error => console.error(`Error loading virtual study "${s.id}"`, error));
+          }),
+        );
+      })
+      .then(descriptions => {
+        this.setState({ descriptions });
+      });
   }
 
   render() {
@@ -130,9 +133,11 @@ class MySavedQueries extends React.Component {
       state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
     } = this.props;
     const { virtualStudies } = this.props;
+    const { descriptions } = this.state;
 
+    /// TODO REMOVE usage of <Component />
     return (
-      <Component initialState={{ selectedTab: 'FILES' }}>
+      <Component initialState={{ selectedTab: 'PARTICIPANTS' }}>
         {({ state: { selectedTab }, setState }) => (
           <DashboardCard showHeader={false}>
             {loadingQueries ? (
@@ -226,8 +231,6 @@ class MySavedQueries extends React.Component {
                               <Row justifyContent="space-between" width="100%">
                                 <div className={`${studyStyle}`}>
                                   <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
-                                  {// TODO - MOVE away from the render path into proper lifecyle event
-                                  virtualStudyLoad(s.id, index, this.props)}
                                   <Tooltip html={descriptions[index]}>
                                     <div className={`${studyDescriptionStyle}`}>
                                       {descriptions[index]}
