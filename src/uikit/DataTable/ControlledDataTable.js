@@ -30,14 +30,16 @@ class ControlledDataTable extends Component {
     const totalRows = dataTotalCount > -1 ? dataTotalCount : data ? data.length : 0;
     const pages = Math.ceil(totalRows / pageSize);
 
+    console.log("this props of ControlledDataTable: ");console.log(this.props)
+
     return (
-      <StyleWrapper>
+      <StyleWrapper style={{borderRight: "none"}}>
         <ReactTable
           columns={columns}
           loading={loading}
           data={applyTransforms(data || [], transforms)}
           manual={true} // manual pagination
-          showPagination={true}
+          showPagination={this.props.hasOwnProperty("showPagination") ? this.props.showPagination : true}
           pages={pages}
           onFetchData={state => {
             this.setState({

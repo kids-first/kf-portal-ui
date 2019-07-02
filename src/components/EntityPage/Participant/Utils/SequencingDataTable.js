@@ -1,7 +1,7 @@
-import ControlledDataTable from "../../../../uikit/DataTable/ControlledDataTable";
 import React from "react";
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import ParticipantDataTable from './ParticipantDataTable';
 
 const defaults = "Not Available";
 
@@ -144,7 +144,7 @@ class SequencingDataTable extends React.Component {
 
   render() {
     return (
-      <ControlledDataTable label={"Strategies"} loading={false} columns={this.breakdownCols} data={this.breakdownData()} dataTotalCount={-1} onFetchData={() => null}/>
+      <ParticipantDataTable columns={this.breakdownCols} data={this.breakdownData()}/>
     )
   }
 }

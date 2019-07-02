@@ -3,9 +3,9 @@ import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import { fetchParticipantWithId } from '../../../../services/arranger/participants';
 import { initializeApi } from '../../../../services/api';
-import ControlledDataTable from '../../../../uikit/DataTable/ControlledDataTable';
 
 import sanitize from './sanitize';
+import ParticipantDataTable from './ParticipantDataTable';
 
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
@@ -46,7 +46,7 @@ class FamilyTable extends React.Component  {
   that created that search (here, diagnoses).
 
   After all that, the rows are directly ready to use in one pass, and we're directly putting them in our
-  ControlledDataTable.
+  ParticipantDataTable.
   */
   buildDataAndRows(participant) {
 
@@ -193,7 +193,7 @@ class FamilyTable extends React.Component  {
     return (
       <div>
         <div style={{textTransform: "capitalize"}} >Type: {composition}</div>
-        <ControlledDataTable loading={false} columns={this.heads} data={sanitize(this.rows)} dataTotalCount={-1} onFetchData={() => null} />
+        <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)}/>
       </div>
     )
   }

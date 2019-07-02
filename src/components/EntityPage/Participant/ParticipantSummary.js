@@ -137,12 +137,10 @@ const ParticipantSummary = ({ participant }) => {
             participantID={participant.kf_id}
           />
         </EntityContentSection>
-        <EntityContentSection title="Other Data Types" size={'small'}>
-          <OtherDataTypesSummaryTable
-            files={get(participant, 'files.hits.edges', [])}
-            participantID={participant.kf_id}
-          />
-        </EntityContentSection>
+        <OtherDataTypesSummaryTable
+          files={get(participant, 'files.hits.edges', [])}
+          participantID={participant.kf_id}
+        />
       </EntityContentSection>
     </React.Fragment>
   );

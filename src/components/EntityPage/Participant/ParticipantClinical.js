@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { EntityContentDivider, EntityContentSection } from '../';
-import ControlledDataTable from '../../../uikit/DataTable/ControlledDataTable';
 import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
 import familySVG from '../../../assets/icon-families-grey.svg';
+import ParticipantDataTable from './Utils/ParticipantDataTable';
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
@@ -30,12 +30,9 @@ const ParticipantClinical = ({ participant }) => {
         {diagnoses.length === 0 ? (
           <div>No diagnoses.</div>
         ) : (
-          <ControlledDataTable
-            loading={false}
+          <ParticipantDataTable
             columns={diagHeads}
             data={diagnoses}
-            dataTotalCount={-1}
-            onFetchData={() => null}
           />
         )}
       </EntityContentSection>

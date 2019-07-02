@@ -1,6 +1,8 @@
 import {Link} from "react-router-dom";
 import * as React from "react";
 import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable'
+import { get } from 'lodash';
+import { EntityContentSection } from '../../index';
 
 const OtherDataTypesSummaryTable = ({files, participantID}) => {
   //"Other" being "not sequencing data"...
@@ -55,7 +57,14 @@ const OtherDataTypesSummaryTable = ({files, participantID}) => {
   });
 
   //we're setting the width of the SummaryTable's parent to be wayyy too small. This makes it the minimum viable width.
-  return (arr.length === 0 ? <div>No other data types.</div> : <div style={{width: 0}}><VariableSummaryTable rows={arr} nbOfTables={1}/></div>)
+  return (
+    arr.length === 0 ?
+      ""
+      :
+      <EntityContentSection title="Other Data Types" size={'small'}>
+        <div style={{width: 0}}><VariableSummaryTable rows={arr} nbOfTables={1}/></div>
+      </EntityContentSection>
+  )
 };
 
 export default OtherDataTypesSummaryTable;
