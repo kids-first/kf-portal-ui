@@ -18,7 +18,7 @@ import {
 } from '../actionTypes';
 import {
   getVirtualStudy,
-  getSavedVirtualStudyNames,
+  getVirtualStudies,
   createNewVirtualStudy,
   updateVirtualStudy,
   deleteVirtualStudy as deleteVirtualStudyApi,
@@ -63,8 +63,8 @@ export const fetchVirtualStudiesCollection = uid => {
       payload: uid,
     });
 
-    return getSavedVirtualStudyNames(api)
-      .then(({ data: { self: { virtualStudies } } }) => {
+    return getVirtualStudies(api, uid)
+      .then(virtualStudies => {
         dispatch({
           type: FETCH_VIRTUAL_STUDIES_SUCCESS,
           payload: virtualStudies,
@@ -153,7 +153,7 @@ export const deleteVirtualStudy = ({ virtualStudyId, loggedInUser }) => {
       payload: virtualStudyId,
     });
 
-    return deleteVirtualStudyApi({ name: virtualStudyId, api, loggedInUser })
+    return deleteVirtualStudyApi({ virtualStudyId, api, loggedInUser })
       .then(() => dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId)))
       .then(() => {
         dispatch({

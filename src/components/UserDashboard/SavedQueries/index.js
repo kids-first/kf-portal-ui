@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
 
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
@@ -94,7 +93,6 @@ class SavedQueries extends React.Component {
     super(props);
     this.state = {
       selectedTab: 'FILES',
-      descriptions: [],
     };
     autobind(this);
   }
@@ -117,22 +115,7 @@ class SavedQueries extends React.Component {
   componentDidMount() {
     const { api } = this.props;
     this.props.effects.getQueries({ egoId: this.props.loggedInUser.egoId, api });
-    this.props
-      .fetchVirtualStudiesCollection(this.props.loggedInUser.egoId)
-      .then(() => {
-        // TODO - fetch all descriptions at once using /riff/user endpoint
-        return Promise.all(
-          this.props.virtualStudies.map(s => {
-            return this.props
-              .loadSavedVirtualStudy(s.id)
-              .then(data => (data ? get(data, 'payload.description', null) : null))
-              .catch(error => console.error(`Error loading virtual study "${s.id}"`, error));
-          }),
-        );
-      })
-      .then(descriptions => {
-        this.setState({ descriptions });
-      });
+    this.props.fetchVirtualStudiesCollection(this.props.loggedInUser.egoId);
   }
 
   render() {
@@ -140,7 +123,7 @@ class SavedQueries extends React.Component {
       state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
     } = this.props;
     const { virtualStudies } = this.props;
-    const { descriptions, selectedTab } = this.state;
+    const { selectedTab } = this.state;
 
     return (
       <DashboardCard showHeader={false}>
@@ -224,15 +207,15 @@ class SavedQueries extends React.Component {
                 ) : (
                   <Box mt={2} mb={2}>
                     <Scroll>
-                      {virtualStudies.map((s, index) => (
-                        <Study key={s.id}>
+                      {virtualStudies.map(vs => (
+                        <Study key={vs.virtualStudyId}>
                           <Row justifyContent="space-between" width="100%">
                             <div className={`${studyStyle}`}>
-                              <StudyLink to={`/explore?id=${s.id}`}>{s.name}</StudyLink>
-                              <Tooltip html={descriptions[index]}>
-                                <div className={`${studyDescriptionStyle}`}>
-                                  {descriptions[index]}
-                                </div>
+                              <StudyLink to={`/explore?id=${vs.virtualStudyId}`}>
+                                {vs.name}
+                              </StudyLink>
+                              <Tooltip html={vs.description}>
+                                <div className={`${studyDescriptionStyle}`}>{vs.description}</div>
                               </Tooltip>
                             </div>
                           </Row>

@@ -131,19 +131,19 @@ class VirtualStudiesMenu extends React.Component {
     });
   }
 
-  getSharableUrl({ id }) {
+  getSharableUrl({ id: virtualStudyId }) {
     return urlJoin(
       window.location.origin,
       this.props.history.createHref({
         ...this.props.history.location,
-        search: `id=${id}`,
+        search: `id=${virtualStudyId}`,
       }),
     );
   }
 
   findSelectedStudy() {
     const { virtualStudies, activeVirtualStudyId } = this.props;
-    return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
+    return virtualStudies.filter(study => study.virtualStudyId === activeVirtualStudyId)[0];
   }
 
   handleOpen(virtualStudyId) {
@@ -169,7 +169,7 @@ class VirtualStudiesMenu extends React.Component {
     const newDisabled = loading || areSqonsEmpty;
     const cantOpen =
       loading ||
-      (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
+      (virtualStudies.length === 1 && selectedStudy && selectedStudy.virtualStudyId) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
     const cantSave = activeVirtualStudyId

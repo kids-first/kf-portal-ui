@@ -61,14 +61,14 @@ export default injectState(
                 `}
               >
                 <React.Fragment>
-                  {studies.map(({ id, name }) => {
-                    if (!selection || selection.id !== id) {
+                  {studies.map(({ virtualStudyId, name }) => {
+                    if (!selection || selection.virtualStudyId !== virtualStudyId) {
                       return (
                         <ItemRow
                           onClick={() => {
-                            return this.open(id);
+                            return this.open(virtualStudyId);
                           }}
-                          key={`vitual-study-listitem_${id}`}
+                          key={`vitual-study-listitem_${virtualStudyId}`}
                         >
                           {name}
                         </ItemRow>

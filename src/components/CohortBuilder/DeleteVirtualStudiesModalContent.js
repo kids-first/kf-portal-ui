@@ -26,7 +26,7 @@ class DeleteVirtualStudiesModalContent extends React.Component {
 
   findSelectedStudy() {
     const { virtualStudies, activeVirtualStudyId } = this.props;
-    return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
+    return virtualStudies.filter(study => study.virtualStudyId === activeVirtualStudyId)[0];
   }
 
   deleteStudy() {
