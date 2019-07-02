@@ -89,24 +89,29 @@ const studyStyle = css({
   flexDirection: 'column',
 });
 
-class MySavedQueries extends React.Component {
+class SavedQueries extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO - change for FILES
-      selectedTab: 'PARTICIPANTS',
+      selectedTab: 'FILES',
       descriptions: [],
     };
     autobind(this);
   }
 
   static propTypes = {
+    // from redux store
+    virtualStudies: PropTypes.array.isRequired,
+    // from freactal state
     state: PropTypes.shape({
       queries: PropTypes.array.isRequired,
       exampleQueries: PropTypes.array.isRequired,
       loadingQueries: PropTypes.bool.isRequired,
       deletingIds: PropTypes.array.isRequired,
     }).isRequired,
+    effects: PropTypes.shape({
+      getQueries: PropTypes.func.isRequired,
+    }),
   };
 
   componentDidMount() {
@@ -264,4 +269,4 @@ export default compose(
   ),
   provideSavedQueries,
   injectState,
-)(MySavedQueries);
+)(SavedQueries);
