@@ -66,7 +66,7 @@ class SurvivalPlot extends React.Component {
     yAxisLabel: PropTypes.string,
     getSetSymbol: PropTypes.func,
     sqon: PropTypes.object,
-    resetZoom: PropTypes.boolean,
+    resetZoom: PropTypes.bool,
   };
 
   static defaultProps = {
