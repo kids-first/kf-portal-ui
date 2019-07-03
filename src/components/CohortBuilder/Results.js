@@ -28,7 +28,7 @@ import { get } from 'lodash';
 import { Link } from 'react-router-dom';
 import FilesIcon from 'icons/FilesIcon';
 import familyMembers from 'assets/icon-families-grey.svg';
-import { setActiveView } from 'store/actionCreators/cohortBuilder';
+import { setActiveView } from './actionCreators';
 import { connect } from 'react-redux';
 
 const SUMMARY = 'summary';
@@ -333,7 +333,7 @@ class Results extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { activeView } = state.cohortBuilder;
+  const { activeView } = state.ui.cohortBuilderPage;
   return {
     activeView,
   };

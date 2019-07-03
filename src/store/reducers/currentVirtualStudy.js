@@ -16,7 +16,6 @@ import {
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
   LOGOUT,
-  SET_ACTIVE_VIEW,
 } from '../actionTypes';
 
 export const initialState = {
@@ -29,7 +28,6 @@ export const initialState = {
   dirty: false,
   areSqonsEmpty: true,
   isLoading: false,
-  activeView: 'summary',
   error: null,
 };
 
@@ -118,12 +116,6 @@ export default (state = initialState, action) => {
 
     case LOGOUT:
       return cloneDeep(initialState);
-
-    case SET_ACTIVE_VIEW:
-      return {
-        ...state,
-        activeView: action.payload,
-      };
 
     default:
       return state;
