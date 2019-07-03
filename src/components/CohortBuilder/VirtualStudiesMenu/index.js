@@ -212,6 +212,8 @@ class VirtualStudiesMenu extends React.Component {
             ) : null}
           </header>
 
+          {isDirty ? <div className="dirty">You have unsaved changes</div> : null}
+
           <div className={`description ${description.trim().length ? '' : 'empty'}`}>
             {description.split(/\n/).map((line, i) => (
               <p key={i}>{line}&nbsp;</p>
