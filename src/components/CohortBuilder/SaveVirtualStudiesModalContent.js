@@ -123,18 +123,15 @@ class SaveVirtualStudiesModalContent extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { currentVirtualStudy } = state;
-  return {
-    uid: state.user.uid,
-    loggedInUser: state.user.loggedInUser,
-    sqons: currentVirtualStudy.sqons,
-    activeSqonIndex: currentVirtualStudy.activeIndex,
-    virtualStudyId: currentVirtualStudy.virtualStudyId,
-    name: currentVirtualStudy.name,
-    description: currentVirtualStudy.description,
-  };
-};
+const mapStateToProps = state => ({
+  uid: state.user.uid,
+  loggedInUser: state.user.loggedInUser,
+  sqons: state.cohortBuilder.sqons,
+  activeSqonIndex: state.cohortBuilder.activeIndex,
+  virtualStudyId: state.cohortBuilder.virtualStudyId,
+  name: state.cohortBuilder.name,
+  description: state.cohortBuilder.description,
+});
 
 const mapDispatchToProps = {
   saveVirtualStudy,

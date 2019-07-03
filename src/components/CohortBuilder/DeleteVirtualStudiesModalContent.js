@@ -81,7 +81,7 @@ class DeleteVirtualStudiesModalContent extends React.Component {
 
 const mapStateToProps = state => ({
   loggedInUser: state.user.loggedInUser,
-  activeVirtualStudyId: state.currentVirtualStudy.virtualStudyId,
+  activeVirtualStudyId: state.cohortBuilder.virtualStudyId,
   virtualStudies: state.virtualStudies.studies,
 });
 

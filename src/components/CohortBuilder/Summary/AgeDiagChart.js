@@ -186,7 +186,7 @@ export const ageDiagQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.currentVirtualStudy,
+  virtualStudy: state.cohortBuilder,
 });
 
 const mapDispatchToProps = {

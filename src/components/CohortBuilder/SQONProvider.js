@@ -117,7 +117,7 @@ class SQONProvider extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { sqons, activeIndex, uid, virtualStudyId } = state.currentVirtualStudy;
+  const { sqons, activeIndex, uid, virtualStudyId } = state.cohortBuilder;
   return {
     sqons,
     activeIndex,

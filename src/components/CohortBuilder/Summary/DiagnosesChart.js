@@ -192,7 +192,7 @@ export const diagnosesQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.currentVirtualStudy,
+  virtualStudy: state.cohortBuilder,
 });
 
 const mapDispatchToProps = {
