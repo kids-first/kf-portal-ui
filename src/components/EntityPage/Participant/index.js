@@ -91,8 +91,6 @@ class ParticipantEntity extends React.Component {
       return <GenericErrorDisplay error={'PARTICIPANT NOT FOUND'} />;
     }
 
-    console.log(this.props)
-
     return (
 
         <Container>

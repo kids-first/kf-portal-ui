@@ -6,22 +6,29 @@
  * @param obj Either an Object of an Array of Objects.
  * @returns {*}
  */
-function sanitize(obj) {
+export default function sanitize(obj) {
+
+  console.log(obj)
 
   if(Array.isArray(obj)) return obj.map(sanitize);
 
   return Object.keys(obj).reduce( (cleanObj, key) => {
-    const val = obj[key];
 
-    cleanObj[key] =
-      val === null ?  //if null, --
-        "--" :
-        typeof val === "boolean" ?  //otherwise, if boolean, "boolean"
-          `${val}` :
-          val;        //else just the val.
+    cleanObj[key] = prettify(obj[key]);
 
     return cleanObj;
   }, {});
 }
 
-export default sanitize;
+function prettify(val) {
+  if(val === null) return "--";
+  else if(typeof val === "boolean") return `${val}`;
+  else if(!isNaN(val) && (val == parseInt(""+val, 10))) return prettifyNumber(""+val, "");
+  else if(typeof val === "string") return val.charAt(0).toUpperCase() + val.slice(1);
+  else return val;
+}
+
+function prettifyNumber(num, acc) {
+  if(num.length <= 3) return ""+num+acc;
+  else return prettifyNumber(num.slice(0, num.length - 3), `,${num.slice(-3)}${acc}`)
+}
