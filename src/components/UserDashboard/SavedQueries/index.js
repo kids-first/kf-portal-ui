@@ -1,33 +1,32 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import TrashIcon from 'react-icons/lib/fa/trash';
+import { withTheme } from 'emotion-theming';
 
-import provideSavedQueries from 'stateProviders/provideSavedQueries';
-
-import { Box, Link } from 'uikit/Core';
-import Column from 'uikit/Column';
-import { PromptMessageContainer, PromptMessageContent } from '../styles';
-
-import { CardContentSpinner } from '../styles';
-
-import { DashboardCard } from '../styles';
-
-import QueryBlock from './QueryBlock';
+import { Box, Link, Flex, Span } from 'uikit/Core';
 import CardHeader from 'uikit/Card/CardHeader';
+import Row from 'uikit/Row';
+import Column from 'uikit/Column';
+import Tooltip from 'uikit/Tooltip';
+
+import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
+
+import { PromptMessageContainer, PromptMessageContent } from '../styles';
+import { CardContentSpinner } from '../styles';
+import { DashboardCard } from '../styles';
+import QueryBlock from './QueryBlock';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import {
   fetchVirtualStudiesCollection,
-  loadSavedVirtualStudy,
+  deleteVirtualStudy,
 } from '../../../store/actionCreators/virtualStudies';
-import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
-import { connect } from 'react-redux';
-import Row from 'uikit/Row';
-import { Flex } from 'uikit/Core';
-import Tooltip from 'uikit/Tooltip';
-import { css } from 'react-emotion';
+import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
 const Container = styled(Column)`
   margin: 0 0 15px 0;
@@ -83,10 +82,10 @@ const studyDescriptionStyle = css({
   overflow: 'hidden',
 });
 
-const studyStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
-});
+// const studyStyle = css({
+//   display: 'flex',
+//   flexDirection: 'column',
+// });
 
 class SavedQueries extends React.Component {
   constructor(props) {
@@ -118,11 +117,24 @@ class SavedQueries extends React.Component {
     this.props.fetchVirtualStudiesCollection(this.props.loggedInUser.egoId);
   }
 
+  deleteVirtualStudy(vs) {
+    trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.dashboard.widgets.savedVirtualStudies,
+      action: TRACKING_EVENTS.actions.query.delete,
+      label: JSON.stringify(vs),
+    });
+    this.props.deleteVirtualStudy({
+      virtualStudyId: vs.virtualStudyId,
+      loggedInUser: this.props.loggedInUser,
+    });
+  }
+
   render() {
     const {
       state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
+      theme,
+      virtualStudies,
     } = this.props;
-    const { virtualStudies } = this.props;
     const { selectedTab } = this.state;
 
     return (
@@ -209,16 +221,29 @@ class SavedQueries extends React.Component {
                     <Scroll>
                       {virtualStudies.map(vs => (
                         <Study key={vs.virtualStudyId}>
-                          <Row justifyContent="space-between" width="100%">
-                            <div className={`${studyStyle}`}>
+                          <Column width="100%">
+                            <Row justifyContent="space-between" width="100%">
                               <StudyLink to={`/explore?id=${vs.virtualStudyId}`}>
                                 {vs.name}
                               </StudyLink>
+                              <Box pr={2} pl={2}>
+                                <Span
+                                  color={theme.primary}
+                                  hover={{ cursor: 'pointer', color: theme.hover }}
+                                  onClick={() => {
+                                    this.deleteVirtualStudy(vs);
+                                  }}
+                                >
+                                  <TrashIcon />
+                                </Span>
+                              </Box>
+                            </Row>
+                            <Row justifyContent="space-between" width="100%">
                               <Tooltip html={vs.description}>
                                 <div className={`${studyDescriptionStyle}`}>{vs.description}</div>
                               </Tooltip>
-                            </div>
-                          </Row>
+                            </Row>
+                          </Column>
                         </Study>
                       ))}
                     </Scroll>
@@ -235,7 +260,7 @@ class SavedQueries extends React.Component {
 
 const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
-  loadSavedVirtualStudy,
+  deleteVirtualStudy,
 };
 
 const mapStateToProps = state => {
@@ -252,4 +277,5 @@ export default compose(
   ),
   provideSavedQueries,
   injectState,
+  withTheme,
 )(SavedQueries);
