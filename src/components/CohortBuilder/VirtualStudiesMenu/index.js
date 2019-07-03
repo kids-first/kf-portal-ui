@@ -289,22 +289,22 @@ class VirtualStudiesMenu extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { user, cohortBuilder, virtualStudies } = state;
+  const { user, currentVirtualStudy, virtualStudies } = state;
   return {
     uid: user.uid,
     loggedInUser: user.loggedInUser,
-    isOwner: cohortBuilder.uid === user.uid,
-    sqons: cohortBuilder.sqons,
-    activeIndex: cohortBuilder.activeIndex,
-    activeVirtualStudyId: cohortBuilder.virtualStudyId,
-    virtualStudyName: cohortBuilder.name,
-    description: cohortBuilder.description,
-    virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
-    isDirty: cohortBuilder.dirty,
-    areSqonsEmpty: cohortBuilder.areSqonsEmpty,
-    error: cohortBuilder.error,
+    isOwner: currentVirtualStudy.uid === user.uid,
+    sqons: currentVirtualStudy.sqons,
+    activeIndex: currentVirtualStudy.activeIndex,
+    activeVirtualStudyId: currentVirtualStudy.virtualStudyId,
+    virtualStudyName: currentVirtualStudy.name,
+    description: currentVirtualStudy.description,
+    virtualStudyIsLoading: currentVirtualStudy.isLoading,
+    isDirty: currentVirtualStudy.dirty,
+    areSqonsEmpty: currentVirtualStudy.areSqonsEmpty,
+    error: currentVirtualStudy.error,
   };
 };
 

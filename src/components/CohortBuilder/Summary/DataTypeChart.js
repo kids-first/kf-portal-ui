@@ -126,7 +126,7 @@ export const experimentalStrategyQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.cohortBuilder,
+  virtualStudy: state.currentVirtualStudy,
 });
 
 const mapDispatchToProps = {
