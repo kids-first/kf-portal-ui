@@ -82,11 +82,6 @@ const studyDescriptionStyle = css({
   overflow: 'hidden',
 });
 
-// const studyStyle = css({
-//   display: 'flex',
-//   flexDirection: 'column',
-// });
-
 class SavedQueries extends React.Component {
   constructor(props) {
     super(props);
