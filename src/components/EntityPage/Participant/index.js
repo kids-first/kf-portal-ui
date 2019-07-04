@@ -94,35 +94,33 @@ class ParticipantEntity extends React.Component {
     console.log(participant)
 
     return (
+      <Container>
+        <EntityTitleBar>
+          <EntityTitle
+            icon="participant"
+            title={participantId}
+            tags={isLoading ? [] : getTags(participant)}
+          />
+        </EntityTitleBar>
+        <ParticipantActionBar style={{backgroundColor: "red"}}>
 
-        <Container>
-          <EntityTitleBar>
-            <EntityTitle
-              icon="participant"
-              title={participantId}
-              tags={isLoading ? [] : getTags(participant)}
-            />
-          </EntityTitleBar>
-          <ParticipantActionBar style={{backgroundColor: "red"}}>
+          <SecondaryNavMenu
 
-            <SecondaryNavMenu
+            tabs={[{ name: 'Summary', hash: 'summary' }, { name: 'Clinical', hash: 'clinical' }]}
+            defaultHash="summary"
+            location={location}
+          />
 
-              tabs={[{ name: 'Summary', hash: 'summary' }, { name: 'Clinical', hash: 'clinical' }]}
-              defaultHash="summary"
-              location={location}
-            />
-
-          </ParticipantActionBar>
-          <EntityContent>
-            <SecondaryNavContent target="summary" location={location}>
-              <ParticipantSummary participant={participant} />
-            </SecondaryNavContent>
-            <SecondaryNavContent target="clinical" location={location}>
-              <ParticipantClinical participant={participant} />
-            </SecondaryNavContent>
-          </EntityContent>
-        </Container>
-
+        </ParticipantActionBar>
+        <EntityContent>
+          <SecondaryNavContent target="summary" location={location}>
+            <ParticipantSummary participant={participant} />
+          </SecondaryNavContent>
+          <SecondaryNavContent target="clinical" location={location}>
+            <ParticipantClinical participant={participant} />
+          </SecondaryNavContent>
+        </EntityContent>
+      </Container>
     );
   }
 }

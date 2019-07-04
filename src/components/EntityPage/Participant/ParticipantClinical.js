@@ -10,10 +10,15 @@ import graphql, { buildSqonForIds, getErrorMessageFromResponse } from 'services/
 import { initializeApi } from '../../../services/api';
 import { Link } from 'react-router-dom';
 import { setSqons } from 'store/actionCreators/virtualStudies';
-import { MERGE_OPERATOR_STRATEGIES, MERGE_VALUES_STRATEGIES, setSqonValueAtIndex } from '../../../common/sqonUtils';
+import {
+  getDefaultSqon,
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+  setSqonValueAtIndex,
+} from '../../../common/sqonUtils';
 import { withRouter } from 'react-router';
 import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
-
+import { store } from "../../../store";
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
@@ -23,8 +28,6 @@ class ParticipantClinical extends React.Component {
     super(props);
 
     this.state = {ready: false};
-
-    console.log(this.props.participant.diagnoses)
 
     this.buildData();
   }
@@ -58,7 +61,7 @@ class ParticipantClinical extends React.Component {
           const years = (""+(age / 365)).split(".")[0];
           const days = age - (years * 365);
 
-          diag.age_at_event_days = (years > 0) ? `${years} years and ${days} days` : `${age} days`;
+          diag.age_at_event_days = age === null ? "--" : (years > 0) ? `${years} years and ${days} days` : `${age} days`;
 
           return diag;
         });
@@ -88,35 +91,37 @@ class ParticipantClinical extends React.Component {
       { Header: 'Age at event', accessor: 'age_at_event_days' },
       { Header: 'Shared with', accessor: 'shared_with', Cell: ((wrapper) => {
 
+        console.log("wrapper "); console.log(wrapper)
+
         const onClick = () => {
-          resetVirtualStudy();
+          store.dispatch(resetVirtualStudy());
 
-          ((field) => {
-            const newSqon = {
-              op: 'in',
-              content: {
-                field,
-                value: ["Ewing Sarcoma: Genetic Risk"],
-              },
-            };
+          const newSqon = {
+            op: 'in',
+            content: {
+              field: "diagnoses.mondo_id_diagnosis",
+              value: [wrapper.original.mondo_id_diagnosis],
+            },
+          };
 
-            const modifiedSqons = setSqonValueAtIndex(
-              [{op: "and", content: []}], //virtualStudy.sqons,
-              0, //virtualStudy.activeIndex,
-              newSqon,
-              {
-                operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
-                values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
-              },
-            );
-            setSqons(modifiedSqons);
-          })("study.short_name");
+          const modifiedSqons = setSqonValueAtIndex(
+            getDefaultSqon(), //virtualStudy.sqons,
+            0, //virtualStudy.activeIndex,
+            newSqon,
+            {
+              operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+              values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+            },
+          );
+
+          console.log("SETTING SQONSSSSSS !");
+          console.log(store.dispatch(setSqons(modifiedSqons)));
 
           this.props.history.push('/explore');
         };
 
         return <div onClick={onClick}>{wrapper.value}</div>
-        })
+      })
       },
     ];
 
@@ -132,7 +137,7 @@ class ParticipantClinical extends React.Component {
           ) : (
             <ParticipantDataTable
               columns={diagHeads}
-              data={get(this.props.participant, "diagnoses.hits.edges", []).map( diag => diag.node)}
+              data={diagnoses}
             />
           )}
         </EntityContentSection>
