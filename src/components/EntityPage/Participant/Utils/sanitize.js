@@ -19,11 +19,24 @@ export default function sanitize(obj) {
 function prettify(val) {
   if (val === null) return '--';
   else if (typeof val === 'boolean') return `${val}`;
-  else if (!isNaN(val) && val == parseInt('' + val, 10)) return prettifyNumber('' + val, '');
+  else if (isFinite(Number(val))) return prettifyNumber(val);
+  else if (val === "") return "--";
   else return val;
 }
 
-function prettifyNumber(num, acc) {
-  if (num.length <= 3) return '' + num + acc;
-  else return prettifyNumber(num.slice(0, num.length - 3), `,${num.slice(-3)}${acc}`);
+function prettifyNumber(num) {
+  num = ""+num;
+
+  function iter(fragment, acc) {
+    if (fragment.length <= 3) return '' + fragment + acc;
+    else return iter(fragment.slice(0, fragment.length - 3), `,${fragment.slice(-3)}${acc}`);
+  }
+
+  if(num.includes(".")) { //handles decimals
+    const intAndDecimal = num.split(".");
+
+    return iter(intAndDecimal[0], "."+intAndDecimal[1]);
+  } else {                            //handles integers
+    return iter(num, "")
+  }
 }

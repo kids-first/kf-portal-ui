@@ -2,20 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { get, isNull } from 'lodash';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 
 import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
 import Column from 'uikit/Column';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
-import { EntityTitleBar, EntityTitle, EntityActionBar, EntityContent } from '../';
+import { EntityTitleBar, EntityTitle, EntityContent } from '../';
 
 import ParticipantSummary from './ParticipantSummary';
 import ParticipantClinical from './ParticipantClinical';
 
 import { fetchParticipant } from './actionCreators';
 import Spinner from 'react-spinkit';
-import { Link } from 'react-router-dom';
 import ParticipantActionBar from './Utils/ParticipantActionBar';
 
 const Container = styled(Column)`
@@ -91,7 +90,7 @@ class ParticipantEntity extends React.Component {
       return <GenericErrorDisplay error={'PARTICIPANT NOT FOUND'} />;
     }
 
-    console.log(participant)
+    console.log(participant);
 
     return (
       <Container>
@@ -102,15 +101,12 @@ class ParticipantEntity extends React.Component {
             tags={isLoading ? [] : getTags(participant)}
           />
         </EntityTitleBar>
-        <ParticipantActionBar style={{backgroundColor: "red"}}>
-
+        <ParticipantActionBar style={{ backgroundColor: 'red' }}>
           <SecondaryNavMenu
-
             tabs={[{ name: 'Summary', hash: 'summary' }, { name: 'Clinical', hash: 'clinical' }]}
             defaultHash="summary"
             location={location}
           />
-
         </ParticipantActionBar>
         <EntityContent>
           <SecondaryNavContent target="summary" location={location}>

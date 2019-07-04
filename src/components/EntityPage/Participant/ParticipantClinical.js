@@ -5,8 +5,7 @@ import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
 import familySVG from '../../../assets/icon-families-grey.svg';
 import ParticipantDataTable from './Utils/ParticipantDataTable';
-import participantQuery from '../../../services/arranger/participantEntityQuery';
-import graphql, { buildSqonForIds, getErrorMessageFromResponse } from 'services/arranger';
+import graphql from 'services/arranger';
 import { initializeApi } from '../../../services/api';
 import { Link } from 'react-router-dom';
 import { setSqons } from 'store/actionCreators/virtualStudies';
@@ -18,7 +17,7 @@ import {
 } from '../../../common/sqonUtils';
 import { withRouter } from 'react-router';
 import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
-import { store } from "../../../store";
+import { store } from '../../../store';
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
@@ -27,7 +26,7 @@ class ParticipantClinical extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {ready: false};
+    this.state = { ready: false };
 
     this.buildData();
   }
@@ -43,45 +42,48 @@ class ParticipantClinical extends React.Component {
     function call(diagnosis) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}` ,
-      })
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`,
+      });
     }
 
-    this.diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele => get(ele, 'node', {}));
+    this.diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele =>
+      get(ele, 'node', {}),
+    );
 
     Promise.all(
       (() => {
-        const temp = this.diagnoses.map( diag => {  //start ajax calls to know the shared with.
+        const temp = this.diagnoses.map(diag => {
+          //start ajax calls to know the shared with.
           return call(diag.mondo_id_diagnosis);
         });
 
-        this.diagnoses = this.diagnoses.map( diag => {  //make age more readable
+        this.diagnoses = this.diagnoses.map(diag => {
+          //make age more readable
           const age = diag.age_at_event_days;
 
-          const years = (""+(age / 365)).split(".")[0];
-          const days = age - (years * 365);
+          const years = ('' + age / 365).split('.')[0];
+          const days = age - years * 365;
 
-          diag.age_at_event_days = age === null ? "--" : (years > 0) ? `${years} years and ${days} days` : `${age} days`;
+          diag.age_at_event_days =
+            age === null ? '--' : years > 0 ? `${years} years and ${days} days` : `${age} days`;
 
           return diag;
         });
 
         return temp;
-      })()
-
-    ).then( nums => {
-
-      for(let i=0; i<nums.length; i++) this.diagnoses[i].shared_with = get(nums[i], "data.participant.hits.total", "--");
+      })(),
+    ).then(nums => {
+      for (let i = 0; i < nums.length; i++)
+        this.diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
 
       this.diagnoses = sanitize(this.diagnoses);
 
-      this.setState({ready: true});
+      this.setState({ ready: true });
     });
   }
 
   render() {
-
-    if(this.state.ready === false) return <div>Loading...</div>;
+    if (this.state.ready === false) return <div>Loading...</div>;
 
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
@@ -89,39 +91,39 @@ class ParticipantClinical extends React.Component {
       { Header: 'Diagnosis (NCIT)', accessor: 'ncit_id_diagnosis' },
       { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis' },
       { Header: 'Age at event', accessor: 'age_at_event_days' },
-      { Header: 'Shared with', accessor: 'shared_with', Cell: ((wrapper) => {
+      {
+        Header: 'Shared with',
+        accessor: 'shared_with',
+        Cell: wrapper => {
+          console.log('wrapper ');
+          console.log(wrapper);
 
-        console.log("wrapper "); console.log(wrapper)
+          const onClick = () => {
+            store.dispatch(resetVirtualStudy());
 
-        const onClick = () => {
-          store.dispatch(resetVirtualStudy());
+            const newSqon = {
+              op: 'in',
+              content: {
+                field: 'diagnoses.mondo_id_diagnosis',
+                value: [wrapper.original.mondo_id_diagnosis],
+              },
+            };
 
-          const newSqon = {
-            op: 'in',
-            content: {
-              field: "diagnoses.mondo_id_diagnosis",
-              value: [wrapper.original.mondo_id_diagnosis],
-            },
+            const modifiedSqons = setSqonValueAtIndex(
+              getDefaultSqon(), //virtualStudy.sqons,
+              0, //virtualStudy.activeIndex,
+              newSqon,
+              {
+                operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+                values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+              },
+            );
+
+            store.dispatch(setSqons(modifiedSqons))
           };
 
-          const modifiedSqons = setSqonValueAtIndex(
-            getDefaultSqon(), //virtualStudy.sqons,
-            0, //virtualStudy.activeIndex,
-            newSqon,
-            {
-              operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
-              values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
-            },
-          );
-
-          console.log("SETTING SQONSSSSSS !");
-          console.log(store.dispatch(setSqons(modifiedSqons)));
-
-          this.props.history.push('/explore');
-        };
-
-        return <div onClick={onClick}>{wrapper.value}</div>
-      })
+          return <Link to={"/explore"} onClick={onClick}>{wrapper.value}</Link>;
+        },
       },
     ];
 
@@ -131,16 +133,13 @@ class ParticipantClinical extends React.Component {
 
     return (
       <React.Fragment>
-        <EntityContentSection title="Diagnoses">
           {diagnoses.length === 0 ? (
-            <div>No diagnoses.</div>
+            ""
           ) : (
-            <ParticipantDataTable
-              columns={diagHeads}
-              data={diagnoses}
-            />
+            <EntityContentSection title="Diagnoses">
+              <ParticipantDataTable columns={diagHeads} data={diagnoses} />
+            </EntityContentSection>
           )}
-        </EntityContentSection>
         {participant.family_id && (
           <div>
             <EntityContentDivider />
