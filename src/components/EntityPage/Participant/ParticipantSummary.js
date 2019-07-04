@@ -75,8 +75,12 @@ function summaryTableData(participant) {
     },
     { title: 'Proband:', summary: participant.is_proband },
     {
+      title: 'Family ID:',
+      summary: getIt('family_id'),
+    },
+    {
       title: 'Family Composition:',
-      summary: getIt('participant.family.family_compositions.hits.edges.0.node.composition'),
+      summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
     },
     { title: 'Gender:', summary: participant.gender },
     { title: 'Ethnicity:', summary: participant.ethnicity },

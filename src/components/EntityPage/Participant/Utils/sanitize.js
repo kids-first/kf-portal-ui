@@ -7,9 +7,6 @@
  * @returns {*}
  */
 export default function sanitize(obj) {
-
-  console.log(obj)
-
   if(Array.isArray(obj)) return obj.map(sanitize);
 
   return Object.keys(obj).reduce( (cleanObj, key) => {

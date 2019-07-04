@@ -90,6 +90,8 @@ export const studiesChart = compose(
     url: getFileRepoURL(SHORT_NAME_FIELD, d.name),
   }));
 
+  console.log("the virtual study! "); console.log(virtualStudy)
+
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
     addSqon('study.short_name', barData.data.name);

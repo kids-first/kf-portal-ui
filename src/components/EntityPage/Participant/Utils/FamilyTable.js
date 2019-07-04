@@ -192,7 +192,7 @@ class FamilyTable extends React.Component  {
 
     return (
       <div>
-        <div style={{textTransform: "capitalize"}} >Type: {composition}</div>
+        <div style={{textTransform: "capitalize"}} >Composition: {composition}</div>
         <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)}/>
       </div>
     )

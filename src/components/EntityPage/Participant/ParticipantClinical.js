@@ -8,15 +8,23 @@ import ParticipantDataTable from './Utils/ParticipantDataTable';
 import participantQuery from '../../../services/arranger/participantEntityQuery';
 import graphql, { buildSqonForIds, getErrorMessageFromResponse } from 'services/arranger';
 import { initializeApi } from '../../../services/api';
+import { Link } from 'react-router-dom';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import { MERGE_OPERATOR_STRATEGIES, MERGE_VALUES_STRATEGIES, setSqonValueAtIndex } from '../../../common/sqonUtils';
+import { withRouter } from 'react-router';
+import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
+
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
 
-export default class ParticipantClinical extends React.Component {
+class ParticipantClinical extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {ready: false};
+
+    console.log(this.props.participant.diagnoses)
 
     this.buildData();
   }
@@ -39,14 +47,28 @@ export default class ParticipantClinical extends React.Component {
     this.diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele => get(ele, 'node', {}));
 
     Promise.all(
-      this.diagnoses.map( diag => {
-        return call(diag.mondo_id_diagnosis);
-      })
+      (() => {
+        const temp = this.diagnoses.map( diag => {  //start ajax calls to know the shared with.
+          return call(diag.mondo_id_diagnosis);
+        });
+
+        this.diagnoses = this.diagnoses.map( diag => {  //make age more readable
+          const age = diag.age_at_event_days;
+
+          const years = (""+(age / 365)).split(".")[0];
+          const days = age - (years * 365);
+
+          diag.age_at_event_days = (years > 0) ? `${years} years and ${days} days` : `${age} days`;
+
+          return diag;
+        });
+
+        return temp;
+      })()
+
     ).then( nums => {
 
-      for(let i=0; i<nums.length; i++) {
-        this.diagnoses[i].shared_with = get(nums[i], "data.participant.hits.total", "--");
-      }
+      for(let i=0; i<nums.length; i++) this.diagnoses[i].shared_with = get(nums[i], "data.participant.hits.total", "--");
 
       this.diagnoses = sanitize(this.diagnoses);
 
@@ -63,8 +85,39 @@ export default class ParticipantClinical extends React.Component {
       { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis' },
       { Header: 'Diagnosis (NCIT)', accessor: 'ncit_id_diagnosis' },
       { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis' },
-      { Header: 'Age at event (days)', accessor: 'age_at_event_days' },
-      { Header: 'Shared with', accessor: 'shared_with' },
+      { Header: 'Age at event', accessor: 'age_at_event_days' },
+      { Header: 'Shared with', accessor: 'shared_with', Cell: ((wrapper) => {
+
+        const onClick = () => {
+          resetVirtualStudy();
+
+          ((field) => {
+            const newSqon = {
+              op: 'in',
+              content: {
+                field,
+                value: ["Ewing Sarcoma: Genetic Risk"],
+              },
+            };
+
+            const modifiedSqons = setSqonValueAtIndex(
+              [{op: "and", content: []}], //virtualStudy.sqons,
+              0, //virtualStudy.activeIndex,
+              newSqon,
+              {
+                operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+                values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+              },
+            );
+            setSqons(modifiedSqons);
+          })("study.short_name");
+
+          this.props.history.push('/explore');
+        };
+
+        return <div onClick={onClick}>{wrapper.value}</div>
+        })
+      },
     ];
 
     const participant = this.props.participant;
@@ -79,7 +132,7 @@ export default class ParticipantClinical extends React.Component {
           ) : (
             <ParticipantDataTable
               columns={diagHeads}
-              data={diagnoses}
+              data={get(this.props.participant, "diagnoses.hits.edges", []).map( diag => diag.node)}
             />
           )}
         </EntityContentSection>
@@ -103,3 +156,5 @@ export default class ParticipantClinical extends React.Component {
     );
   }
 }
+
+export default withRouter(ParticipantClinical);

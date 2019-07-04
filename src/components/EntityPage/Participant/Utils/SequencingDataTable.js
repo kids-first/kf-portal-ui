@@ -68,9 +68,25 @@ class SequencingDataTable extends React.Component {
               }
            ]
         }
-      `;
+        `;
 
-        return <Link to={url}>{wrapper.value}</Link>
+        function sanitizeURL() {
+          let clean = "";
+          let escaped = false;
+
+          for(let i=0; i<url.length; i++) {
+            const char = url.charAt(i);
+
+            if(char === '"') escaped = !escaped;
+            else if(!escaped && (char === " " || char === "\n")) continue;
+
+            clean += char;
+          }
+
+          return clean;
+        }
+
+        return <Link to={sanitizeURL()}>{wrapper.value}</Link>
       }
 
       return arr.map( topObj => {

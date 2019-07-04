@@ -30,8 +30,6 @@ class ControlledDataTable extends Component {
     const totalRows = dataTotalCount > -1 ? dataTotalCount : data ? data.length : 0;
     const pages = Math.ceil(totalRows / pageSize);
 
-    console.log("this props of ControlledDataTable: ");console.log(this.props)
-
     return (
       <StyleWrapper style={{borderRight: "none"}}>
         <ReactTable
