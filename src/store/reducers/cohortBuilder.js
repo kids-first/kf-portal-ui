@@ -29,101 +29,94 @@ export const initialState = {
   dirty: false,
   areSqonsEmpty: true,
   isLoading: false,
-  activeView: 'summary',
+  activeView: 'summary', // TODO: MOVE TO another reducer
   error: null,
 };
 
-const dirty = state => ({
-  ...state,
-  dirty: true,
-  areSqonsEmpty: isDefaultSqon(state.sqons),
-});
+const currySetState = state => (diff = {}) => {
+  const newState = { ...state, ...diff };
+  newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
+  return newState;
+};
+
+const resetState = (diff = {}) => {
+  const newState = {
+    ...cloneDeep(initialState),
+    ...diff,
+  };
+  newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
+  return newState;
+};
 
 export default (state = initialState, action) => {
+  const setState = currySetState(state);
   switch (action.type) {
-    case '@@INIT':
-      return {
-        ...state,
-        areSqonsEmpty: isDefaultSqon(state.sqons),
-      };
     case VIRTUAL_STUDY_LOAD_REQUESTED:
-      return {
-        ...cloneDeep(initialState),
+      return resetState({
         isLoading: true,
-      };
+      });
     case VIRTUAL_STUDY_LOAD_SUCCESS:
-      let newState = {
-        ...cloneDeep(initialState),
+      return resetState({
         ...action.payload,
         isLoading: false,
-      };
-      newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
-      return newState;
+      });
     case VIRTUAL_STUDY_LOAD_FAILURE:
-      return {
-        ...state,
+      return setState({
         error: action.payload,
         isLoading: false,
-      };
+      });
 
     case VIRTUAL_STUDY_RESET:
-      return cloneDeep(initialState);
+      return resetState();
 
     case VIRTUAL_STUDY_SAVE_REQUESTED:
-      return {
-        ...state,
-      };
+      return state;
     case VIRTUAL_STUDY_SAVE_SUCCESS:
-      return {
-        ...state,
+      return setState({
         ...action.payload,
         dirty: false,
         areSqonsEmpty: false,
-      };
+      });
     case VIRTUAL_STUDY_SAVE_FAILURE:
-      return {
-        ...state,
+      return setState({
         error: action.payload,
-      };
+      });
 
     case VIRTUAL_STUDY_DELETE_REQUESTED:
-      return {
-        ...state,
-      };
+      return state;
     case VIRTUAL_STUDY_DELETE_SUCCESS:
-      return cloneDeep(initialState);
+      return resetState();
     case VIRTUAL_STUDY_DELETE_FAILURE:
-      return {
-        ...state,
-        err: action.payload,
-      };
+      return setState({
+        error: action.payload,
+      });
 
     case SET_ACTIVE_INDEX:
-      return dirty({
-        ...state,
+      return setState({
+        dirty: true,
         activeIndex: action.payload,
       });
 
     case SET_SQONS:
-      return dirty({
-        ...state,
+      return setState({
+        dirty: true,
         sqons: action.payload,
       });
 
     case SET_VIRTUAL_STUDY_ID:
-      return dirty({
-        ...state,
+      return setState({
+        dirty: true,
         virtualStudyId: action.payload,
       });
 
     case LOGOUT:
       return cloneDeep(initialState);
 
+    // TODO: MOVE TO another reducer
     case SET_ACTIVE_VIEW:
-      return {
-        ...state,
+      return setState({
         activeView: action.payload,
-      };
+      });
 
     default:
       return state;
