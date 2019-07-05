@@ -19,37 +19,37 @@ class AgeDiagChart extends React.Component {
 
     let newSqon = {};
     switch (value) {
-      case 'Newborn':
+      case 'aggNewborn':
         newSqon = {
           op: '<=',
           content: { field, value: [364] },
         };
         break;
-      case '1 - 5':
+      case 'agg1to5':
         newSqon = {
           op: 'between',
           content: { field, value: [365, 1824] },
         };
         break;
-      case '5 - 10':
+      case 'agg5to10':
         newSqon = {
           op: 'between',
           content: { field, value: [1825, 3649] },
         };
         break;
-      case '10 - 15':
+      case 'agg10to15':
         newSqon = {
           op: 'between',
           content: { field, value: [3650, 5474] },
         };
         break;
-      case '15 - 18':
+      case 'agg15to18':
         newSqon = {
           op: 'between',
           content: { field, value: [5475, 6569] },
         };
         break;
-      case 'Adult':
+      case 'aggAdult':
         newSqon = {
           op: '>=',
           content: { field, value: [6570] },
@@ -79,7 +79,7 @@ class AgeDiagChart extends React.Component {
           height={225}
           colors={[theme.chartColors.lightblue]}
           onClick={data => {
-            this.addSqon('diagnoses.age_at_event_days', data.indexValue);
+            this.addSqon('diagnoses.age_at_event_days', data.data.id);
           }}
         />
       </CohortCard>
@@ -177,10 +177,10 @@ export const ageDiagQuery = sqon => ({
   `,
   transform: ({ data }) => [
     { id: 'aggNewborn', label: 'Newborn', value: get(data, 'participant._0to1.total', 0) },
-    { id: 'agg1to5', label: '1 - 5', value: get(data, 'participant._1to5.total', 0) },
-    { id: 'agg5to10', label: '5 - 10', value: get(data, 'participant._5to10.total', 0) },
-    { id: 'agg10to15', label: '10 - 15', value: get(data, 'participant._10to15.total', 0) },
-    { id: 'agg15to18', label: '15 - 18', value: get(data, 'participant._15to18.total', 0) },
+    { id: 'agg1to5', label: '[ 1 - 5 [', value: get(data, 'participant._1to5.total', 0) },
+    { id: 'agg5to10', label: '[ 5 - 10 [', value: get(data, 'participant._5to10.total', 0) },
+    { id: 'agg10to15', label: '[ 10 - 15 [', value: get(data, 'participant._10to15.total', 0) },
+    { id: 'agg15to18', label: '[ 15 - 18 [', value: get(data, 'participant._15to18.total', 0) },
     { id: 'aggAdult', label: 'Adult', value: get(data, 'participant._18plus.total', 0) },
   ],
 });
