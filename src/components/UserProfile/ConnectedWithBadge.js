@@ -3,11 +3,12 @@ import { capitalize } from 'lodash';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import FBIcon from 'react-icons/lib/fa/facebook';
+import OrcidIcon from 'icons/OrcidIcon';
 import Check from 'react-icons/lib/fa/check';
 
 import { Box, Span } from 'uikit/Core';
 
-import { GOOGLE, FACEBOOK } from 'common/constants';
+import { GOOGLE, FACEBOOK, ORCID } from 'common/constants';
 import gicon from 'assets/google-icon.png';
 
 const GoogleIcon = styled('img')`
@@ -16,11 +17,12 @@ const GoogleIcon = styled('img')`
   vertical-align: middle;
 `;
 
-const identityProviders = [GOOGLE, FACEBOOK];
+const identityProviders = [GOOGLE, FACEBOOK, ORCID];
 
 const icons = {
-  [GOOGLE]: x => <GoogleIcon src={gicon} />,
-  [FACEBOOK]: x => <FBIcon color="#428bca" {...x} />,
+  [GOOGLE]: () => <GoogleIcon src={gicon} />,
+  [FACEBOOK]: () => <FBIcon color="#428bca" size={20} />,
+  [ORCID]: () => <OrcidIcon size={30} />,
 };
 
 const Status = styled(Span)`
@@ -37,7 +39,7 @@ const ConnectedWithBadge = withTheme(({ theme, provider, Icon = icons[provider] 
       <Fragment>
         <Status>
           <Check color={theme.active} />
-          {Icon && <Icon size={20} />}
+          {Icon && <Icon />}
         </Status>
         <Status>Connected with {capitalize(provider)}</Status>
       </Fragment>

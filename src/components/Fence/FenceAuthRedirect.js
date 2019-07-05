@@ -16,8 +16,6 @@ export default compose(withApi)(({ api, fence }) => (
     didMount={() => {
       const code = new URLSearchParams(window.location.search).get('code');
       const egoJwt = localStorage.getItem(EGO_JWT_KEY);
-      console.log(`code: ${code}`);
-      console.log(`jwt: ${egoJwt}`);
 
       if (code && egoJwt) {
         api({

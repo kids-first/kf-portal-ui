@@ -77,9 +77,7 @@ const Footer = () => (
       <Trans>UI:</Trans> {UI_VERSION}
       {', '}
       <Trans>Data Release: </Trans>
-      <DataVersionProvider
-        render={({ version }) => <Trans i18nKey="dataReleaseVersion">{version}</Trans>}
-      />
+      <DataVersionProvider />
     </Row>
     <SocialIcons>
       <Trans>Follow Us</Trans>

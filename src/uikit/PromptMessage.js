@@ -34,13 +34,19 @@ const MessageWrapper = applyDefaultStyles(styled(Column)`
     error
       ? theme.errorBackground
       : warning
-        ? theme.warningBackground
-        : success ? theme.successBackground : theme.infoBackground};
+      ? theme.warningBackground
+      : success
+      ? theme.successBackground
+      : theme.infoBackground};
   border-left: solid 5px
     ${({ theme, error, warning, success, info }) =>
       error
         ? theme.errorBorder
-        : warning ? theme.warningBorder : success ? theme.successBorder : theme.infoBorder}};
+        : warning
+        ? theme.warningBorder
+        : success
+        ? theme.successBorder
+        : theme.infoBorder}};
   padding: 10px;
   margin-bottom: 1em;
   border-bottom-right-radius: 5px;
@@ -89,8 +95,8 @@ export const PromptMessageContainer = ({
   </MessageWrapper>
 );
 
-export default ({ heading, content, ...props }) => (
-  <PromptMessageContainer {...props}>
+export default ({ heading, content, className = '', ...props }) => (
+  <PromptMessageContainer className={className} {...props}>
     <PromptMessageHeading {...props}>{heading}</PromptMessageHeading>
     <PromptMessageContent {...props}>{content}</PromptMessageContent>
   </PromptMessageContainer>

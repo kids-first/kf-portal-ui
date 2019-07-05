@@ -47,7 +47,7 @@ const ButtonText = styled(Box)`
 `;
 
 const DisabledGoogleLogin = () => (
-  <DisabledLogin height="40px" width="240px">
+  <DisabledLogin height="40px" width="240px" className="google-login-button login-button">
     <IconWrapper>
       <GoogleIcon src={GIcon} />
     </IconWrapper>

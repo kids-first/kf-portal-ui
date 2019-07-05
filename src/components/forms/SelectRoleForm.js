@@ -120,7 +120,7 @@ export const enhance = compose(
       return errors;
     },
     handleSubmit: async (
-      values: any,
+      values,
       {
         props: {
           state: { loggedInUser },
@@ -128,11 +128,9 @@ export const enhance = compose(
           onFinish,
           api,
           location: { pathname },
-          ...restProps
         },
         setSubmitting,
-        setErrors,
-      }: any,
+      },
     ) => {
       const { email, ...rest } = loggedInUser;
       updateProfile(api)({
@@ -166,7 +164,6 @@ export const enhance = compose(
 export default enhance(
   ({
     theme,
-    onFinish,
     errors,
     touched,
     handleSubmit,
@@ -301,9 +298,10 @@ export default enhance(
             <CheckboxLabel htmlFor="acceptedDatasetSubscriptionKfOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
                 <Trans>
-                  The Gabriella Miller Kids First Data Resource Center is constantly improving
-                  the availability and quality of new datasets added to the Data Resource Portal.
-                  Sign up below to opt-in to receive updates and announcements when new datasets are available in the Portal.
+                  The Gabriella Miller Kids First Data Resource Center is constantly improving the
+                  availability and quality of new datasets added to the Data Resource Portal. Sign
+                  up below to opt-in to receive updates and announcements when new datasets are
+                  available in the Portal.
                 </Trans>
               </Paragraph>
             </CheckboxLabel>
