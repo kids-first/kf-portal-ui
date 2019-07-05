@@ -131,19 +131,19 @@ class VirtualStudiesMenu extends React.Component {
     });
   }
 
-  getSharableUrl({ id }) {
+  getSharableUrl({ id: virtualStudyId }) {
     return urlJoin(
       window.location.origin,
       this.props.history.createHref({
         ...this.props.history.location,
-        search: `id=${id}`,
+        search: `id=${virtualStudyId}`,
       }),
     );
   }
 
   findSelectedStudy() {
     const { virtualStudies, activeVirtualStudyId } = this.props;
-    return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
+    return virtualStudies.filter(study => study.virtualStudyId === activeVirtualStudyId)[0];
   }
 
   handleOpen(virtualStudyId) {
@@ -169,7 +169,7 @@ class VirtualStudiesMenu extends React.Component {
     const newDisabled = loading || areSqonsEmpty;
     const cantOpen =
       loading ||
-      (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
+      (virtualStudies.length === 1 && selectedStudy && selectedStudy.virtualStudyId) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
     const cantSave = activeVirtualStudyId
@@ -211,6 +211,8 @@ class VirtualStudiesMenu extends React.Component {
               </Tooltip>
             ) : null}
           </header>
+
+          {isDirty ? <div className="dirty">You have unsaved changes</div> : null}
 
           <div className={`description ${description.trim().length ? '' : 'empty'}`}>
             {description.split(/\n/).map((line, i) => (
@@ -287,22 +289,22 @@ class VirtualStudiesMenu extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { user, cohortBuilder, virtualStudies } = state;
+  const { user, currentVirtualStudy, virtualStudies } = state;
   return {
     uid: user.uid,
     loggedInUser: user.loggedInUser,
-    isOwner: cohortBuilder.uid === user.uid,
-    sqons: cohortBuilder.sqons,
-    activeIndex: cohortBuilder.activeIndex,
-    activeVirtualStudyId: cohortBuilder.virtualStudyId,
-    virtualStudyName: cohortBuilder.name,
-    description: cohortBuilder.description,
-    virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
-    isDirty: cohortBuilder.dirty,
-    areSqonsEmpty: cohortBuilder.areSqonsEmpty,
-    error: cohortBuilder.error,
+    isOwner: currentVirtualStudy.uid === user.uid,
+    sqons: currentVirtualStudy.sqons,
+    activeIndex: currentVirtualStudy.activeIndex,
+    activeVirtualStudyId: currentVirtualStudy.virtualStudyId,
+    virtualStudyName: currentVirtualStudy.name,
+    description: currentVirtualStudy.description,
+    virtualStudyIsLoading: currentVirtualStudy.isLoading,
+    isDirty: currentVirtualStudy.dirty,
+    areSqonsEmpty: currentVirtualStudy.areSqonsEmpty,
+    error: currentVirtualStudy.error,
   };
 };
 

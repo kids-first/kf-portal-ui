@@ -26,7 +26,7 @@ class DeleteVirtualStudiesModalContent extends React.Component {
 
   findSelectedStudy() {
     const { virtualStudies, activeVirtualStudyId } = this.props;
-    return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
+    return virtualStudies.filter(study => study.virtualStudyId === activeVirtualStudyId)[0];
   }
 
   deleteStudy() {
@@ -81,7 +81,7 @@ class DeleteVirtualStudiesModalContent extends React.Component {
 
 const mapStateToProps = state => ({
   loggedInUser: state.user.loggedInUser,
-  activeVirtualStudyId: state.cohortBuilder.virtualStudyId,
+  activeVirtualStudyId: state.currentVirtualStudy.virtualStudyId,
   virtualStudies: state.virtualStudies.studies,
 });
 

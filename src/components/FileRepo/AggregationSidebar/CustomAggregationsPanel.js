@@ -56,7 +56,7 @@ const Badge = styled('div')`
 export const Tabs = ({ selectedTab, onTabSelect, options }) => (
   <TabsRow>
     {options.map(({ id, display, total }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
+      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id} key={id}>
         <Span style={{ width: '80%' }}>{display}</Span>
         {total && <TabsBadge selected={selectedTab === id}>{total}</TabsBadge>}
       </Tab>

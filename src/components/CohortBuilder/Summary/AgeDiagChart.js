@@ -73,9 +73,9 @@ class AgeDiagChart extends React.Component {
         <VerticalBar
           showCursor={true}
           data={data}
+          sortBy={false}
           indexBy="label"
           tooltipFormatter={ageAtDiagnosisTooltip}
-          sortByValue={true}
           height={225}
           colors={[theme.chartColors.lightblue]}
           onClick={data => {
@@ -91,7 +91,7 @@ export const ageDiagQuery = sqon => ({
   variables: { sqon },
   query: gql`
     # embeds additional filter on the provided sqon to create the ranges.
-    # diagnoses.age_at_event_days values are indays, converted from year
+    # diagnoses.age_at_event_days values are in days, converted from year
     query($sqon: JSON) {
       participant {
         _0to1: hits(
@@ -186,7 +186,7 @@ export const ageDiagQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.cohortBuilder,
+  virtualStudy: state.currentVirtualStudy,
 });
 
 const mapDispatchToProps = {
