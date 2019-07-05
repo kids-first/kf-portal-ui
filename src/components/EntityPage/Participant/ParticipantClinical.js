@@ -111,8 +111,6 @@ class ParticipantClinical extends React.Component {
         Header: 'Shared with',
         accessor: 'shared_with',
         Cell: wrapper => {
-          console.log('wrapper ');
-          console.log(wrapper);
 
           const onClick = () => {
             store.dispatch(resetVirtualStudy());
