@@ -111,15 +111,20 @@ function specimenSummaryTableData(specimen) {
 }
 
 const ParticipantSummary = ({ participant }) => {
+  const specimens = get(participant, 'biospecimens.hits.edges', []);
+
   return (
     <React.Fragment>
       <EntityContentSection title="Summary">
         <VariableSummaryTable rows={summaryTableData(participant)} nbOfTables={2} />
       </EntityContentSection>
-      <EntityContentDivider />
-      <EntityContentSection title="Biospecimens">
-        <Holder>
-          {get(participant, 'biospecimens.hits.edges', []).map(specimenNode => {
+      {
+        specimens.length === 0 ? "" :
+        <div>
+          <EntityContentDivider />
+          <EntityContentSection title="Biospecimens">
+          <Holder>
+          {specimens.map(specimenNode => {
             const specimen = specimenNode.node;
 
             return (
@@ -131,10 +136,13 @@ const ParticipantSummary = ({ participant }) => {
               />
             );
           })}
-        </Holder>
-      </EntityContentSection>
+          </Holder>
+          </EntityContentSection>
+        </div>
+      }
+
       <EntityContentDivider />
-      <EntityContentSection title="Available Data" size={'big'}>
+      <EntityContentSection title="Available Data Files" size={'big'}>
         <EntityContentSection title="Sequencing Data" size={'small'}>
           <SequencingDataTable
             files={get(participant, 'files.hits.edges', [])}

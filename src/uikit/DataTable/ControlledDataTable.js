@@ -30,8 +30,10 @@ class ControlledDataTable extends Component {
     const totalRows = dataTotalCount > -1 ? dataTotalCount : data ? data.length : 0;
     const pages = Math.ceil(totalRows / pageSize);
 
+    const style = this.props.hasOwnProperty("style") ? this.props.style : {};
+
     return (
-      <StyleWrapper style={{borderRight: "none"}}>
+      <StyleWrapper style={{...style, borderRight: "none"}}>
         <ReactTable
           columns={columns}
           loading={loading}

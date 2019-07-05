@@ -132,7 +132,6 @@ class FamilyTable extends React.Component {
         baseline('Ethnicity', 'ethnicity'),
         baseline('Race', 'race'),
         baseline('Gender', 'gender'),
-        baseline('Diagnoses', 'diagnoses.hits.edges', true, 'diagnosis'),
         baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
         baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
         baseline('Diagnoses (Source Text)', 'diagnoses.hits.edges', true, 'source_text_diagnosis'),
@@ -208,10 +207,7 @@ class FamilyTable extends React.Component {
     if (!this.state.ready) return <div>Building your table...</div>;
 
     return (
-      <div>
-        <div style={{ textTransform: 'capitalize' }}>Composition: {composition}</div>
-        <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)} />
-      </div>
+      <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)} />
     );
   }
 }

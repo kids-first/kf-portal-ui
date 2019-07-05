@@ -64,8 +64,24 @@ class ParticipantClinical extends React.Component {
           const years = ('' + age / 365).split('.')[0];
           const days = age - years * 365;
 
-          diag.age_at_event_days =
-            age === null ? '--' : years > 0 ? `${years} years and ${days} days` : `${age} days`;
+          function format() {
+            function y() {
+              if(years === 1) return `${years} year`;
+              else if(years === 0) return "";
+              else return `${years} years`;
+            }
+
+            function d() {
+              if(days === 1) return `${days} day`;
+              else if(days === 0) return "";
+              else return `${days} days`;
+            }
+
+            if(age === null) return "--";
+            else return y() + " " + d();
+          }
+
+          diag.age_at_event_days = format();
 
           return diag;
         });
@@ -142,15 +158,15 @@ class ParticipantClinical extends React.Component {
           )}
         {participant.family_id && (
           <div>
-            <EntityContentDivider />
-            <EntityContentSection title={'Family'}>
-              <div style={{ color: '#404c9a', fontWeight: 'bold' }}>
+            {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
+            <EntityContentSection title={'Shared Diagnosis and Phenotypes Within Family Members'}>
+              <div>
                 <img
                   src={familySVG}
                   style={{ height: '1em', marginRight: '1em' }}
                   alt={'family icon'}
                 />
-                {participant.family_id}
+                Family ID: <span style={{ color: '#404c9a', fontWeight: 'bold' }}>{participant.family_id}</span>
               </div>
               <FamilyTable participant={participant} />
             </EntityContentSection>
@@ -160,5 +176,5 @@ class ParticipantClinical extends React.Component {
     );
   }
 }
-
+//: {get(participant, "family.family_composition.hits.edges[0].node.composition", "trio")}
 export default withRouter(ParticipantClinical);

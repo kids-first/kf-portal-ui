@@ -62,6 +62,8 @@ class Holder extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log("THE PROPS!!"); console.log(props)
+
     this.state = {
       activeTab: Array.isArray(props.children)
         ? props.children[0].props.label

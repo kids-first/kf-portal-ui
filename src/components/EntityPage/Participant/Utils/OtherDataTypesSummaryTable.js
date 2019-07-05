@@ -63,7 +63,9 @@ const OtherDataTypesSummaryTable = ({ files, participantID }) => {
     ''
   ) : (
     <EntityContentSection title="Other Data Types" size={'small'}>
-      <VariableSummaryTable rows={arr} nbOfTables={1} />
+      <div style={{width: 0}}>
+        <VariableSummaryTable rows={arr} nbOfTables={1} />
+      </div>
     </EntityContentSection>
   );
 };
