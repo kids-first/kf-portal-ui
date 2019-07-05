@@ -54,18 +54,8 @@ const participantTooltip = data => {
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
 };
 
-const sqon = {
-  op: 'and',
-  content: [
-    {
-      op: 'in',
-      content: null,
-    },
-  ],
-};
-
-const SHORT_NAME_FIELD = 'participants.study.short_name';
-const TEXT_DIAGNOSES_FIELD = 'participants.diagnoses.diagnosis';
+const SHORT_NAME_FIELD = 'study.short_name';
+const TEXT_DIAGNOSES_FIELD = 'diagnoses.diagnosis';
 
 const trackBarClick = (trackingEventCategory, barData) => {
   trackUserInteraction({
@@ -81,7 +71,7 @@ export const studiesChart = compose(
 )(({ data, theme, setSqons, virtualStudy, history }) => {
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
-    addSqon('study.short_name', barData.data.name);
+    addSqon(SHORT_NAME_FIELD, barData.data.name);
     history.push('/explore');
   };
 
@@ -171,7 +161,7 @@ export const topDiagnoseChart = compose(
 
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
-    addSqon('diagnoses.diagnosis', barData.data.name);
+    addSqon(TEXT_DIAGNOSES_FIELD, barData.data.name);
     history.push('/explore');
   };
 
