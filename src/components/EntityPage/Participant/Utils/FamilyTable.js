@@ -66,21 +66,26 @@ class FamilyTable extends React.Component {
 
         // headers needs to be done here as we need relationship
         this.heads.push({
-          Header: (
-            <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
-              {kf_id === participant.kf_id ? (
-                <img
-                  src={require('../../../../assets/icon-participants.svg')}
-                  style={{ height: '1em', marginRight: '1em', float: 'left' }}
-                  alt={'participant icon'}
-                />
-              ) : (
-                ''
-              )}
-              <div>{kf_id}</div>
-              <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
-            </Link>
-          ),
+          Header:
+            (() => {
+              if(participant.kf_id === kf_id) {
+                return (
+                  <div style={{ textAlign: 'center' }} >
+                    <div>{kf_id}</div>
+                    <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
+                    <div>(This participant)</div>
+                  </div>
+                )
+              } else {
+                return (
+                  <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
+                    <div>{kf_id}</div>
+                    <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
+                  </Link>
+                )
+              }
+
+            })(),
           accessor: kf_id,
           Cell: makeCell,
         });
