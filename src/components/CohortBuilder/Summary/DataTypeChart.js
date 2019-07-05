@@ -51,7 +51,7 @@ class DataTypeChart extends React.Component {
         height={260}
         bottomLegendOffset={20}
         sortByKeys={['value']}
-        sortOrder={'asc'}
+        sortOrder={'desc'}
         data={data}
         axisLeftLegend={axisLeftLegend}
         axisBottomLegend={axisBottomLegend}
