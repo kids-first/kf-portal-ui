@@ -252,7 +252,9 @@ export const getVirtualStudy = api => virtualStudyId => {
 };
 
 export const updateVirtualStudy = async (api, loggedInUser, study) => {
+  const { egoId } = loggedInUser;
   let existingVirtualStudy = null;
+
   try {
     existingVirtualStudy = await getVirtualStudy(api)(study.virtualStudyId);
   } catch (err) {
@@ -293,13 +295,9 @@ export const updateVirtualStudy = async (api, loggedInUser, study) => {
     label: JSON.stringify(normalizedStudy),
   });
 
-  const {
-    data: {
-      userUpdate: {
-        record: { virtualStudies: updatedStudies },
-      },
-    },
-  } = await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+  await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+
+  const updatedStudies = await getVirtualStudies(api, egoId);
 
   return [normalizedStudy, updatedStudies];
 };
