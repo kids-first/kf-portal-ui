@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import _, { get } from 'lodash';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { setSqons } from 'store/actionCreators/virtualStudies';
@@ -47,14 +47,12 @@ class DataTypeChart extends React.Component {
         showCursor={true}
         indexBy={indexBy || 'label'}
         tooltipFormatter={tooltipFormatter || dataTypeTooltip}
-        sortByValue={true}
+        keys={['value']}
         height={260}
         bottomLegendOffset={20}
-        data={_(data)
-          .sortBy(d => d.value)
-          .map((d, i) => ({ ...d, id: i }))
-          .reverse()
-          .value()}
+        sortByKeys={['value']}
+        sortOrder={'asc'}
+        data={data}
         axisLeftLegend={axisLeftLegend}
         axisBottomLegend={axisBottomLegend}
         axisBottomFormat={() => {}}
@@ -128,7 +126,7 @@ export const experimentalStrategyQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.cohortBuilder,
+  virtualStudy: state.currentVirtualStudy,
 });
 
 const mapDispatchToProps = {

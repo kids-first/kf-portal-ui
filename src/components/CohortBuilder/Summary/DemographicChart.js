@@ -166,7 +166,7 @@ const keyToDisplay = key =>
   key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
 
 const mapStateToProps = state => ({
-  virtualStudy: state.cohortBuilder,
+  virtualStudy: state.currentVirtualStudy,
 });
 
 const mapDispatchToProps = {

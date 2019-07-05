@@ -130,12 +130,11 @@ class DiagnosesChart extends React.Component {
               <BarChartContainer>
                 <HorizontalBar
                   showCursor={true}
-                  data={_(data)
-                    .sortBy(d => d.probands + d.familyMembers)
-                    .map((d, i) => ({ ...d, id: i }))
-                    .value()}
+                  data={data}
                   indexBy="label"
                   keys={['probands', 'familyMembers']}
+                  sortByKeys={['probands', 'familyMembers']}
+                  sortOrder={'desc'}
                   tooltipFormatter={mostFrequentDiagnosisTooltip}
                   tickInterval={4}
                   colors={getCohortBarColors(data, theme)}
@@ -146,6 +145,11 @@ class DiagnosesChart extends React.Component {
                   ]}
                   onClick={data => {
                     this.addSqon('diagnoses.mondo_id_diagnosis', data.data.diagnosisValue);
+                  }}
+                  axisLeftFormat={value => {
+                    return value.indexOf('MONDO') > -1
+                      ? value.substr(0, value.indexOf('MONDO'))
+                      : value;
                   }}
                 />
               </BarChartContainer>
@@ -192,7 +196,7 @@ export const diagnosesQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.cohortBuilder,
+  virtualStudy: state.currentVirtualStudy,
 });
 
 const mapDispatchToProps = {
