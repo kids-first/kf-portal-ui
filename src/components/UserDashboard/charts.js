@@ -67,12 +67,6 @@ const sqon = {
 const SHORT_NAME_FIELD = 'participants.study.short_name';
 const TEXT_DIAGNOSES_FIELD = 'participants.diagnoses.diagnosis';
 
-const getFileRepoURL = (field, value) => {
-  sqon.content[0].content = { field, value };
-  const x = `/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`;
-  return x;
-};
-
 const trackBarClick = (trackingEventCategory, barData) => {
   trackUserInteraction({
     category: trackingEventCategory,
@@ -85,11 +79,6 @@ export const studiesChart = compose(
   withRouter,
   withTheme,
 )(({ data, theme, setSqons, virtualStudy, history }) => {
-  const mergedStudyData = data.map(d => ({
-    ...d,
-    url: getFileRepoURL(SHORT_NAME_FIELD, d.name),
-  }));
-
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
     addSqon('study.short_name', barData.data.name);
@@ -110,8 +99,8 @@ export const studiesChart = compose(
       virtualStudy.activeIndex,
       newSqon,
       {
-        operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
-        values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
+        values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
       },
     );
     setSqons(modifiedSqons);
@@ -119,7 +108,7 @@ export const studiesChart = compose(
 
   return (
     <HorizontalBar
-      data={mergedStudyData}
+      data={data}
       indexBy="label"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
@@ -175,23 +164,41 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
   );
 });
 
-export const TopDiagnosesChart = compose(
+export const topDiagnoseChart = compose(
   withRouter,
   withTheme,
-)(({ data, theme, history }) => {
-  const mergedData = data.map(d => ({
-    ...d,
-    url: getFileRepoURL(TEXT_DIAGNOSES_FIELD, d.name),
-  }));
+)(({ data, theme, setSqons, virtualStudy, history }) => {
 
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
-    history.push(barData.data.url);
+    addSqon('diagnoses.diagnosis', barData.data.name);
+    history.push('/explore');
+  };
+
+  const addSqon = (field, value) => {
+    const newSqon = {
+      op: 'in',
+      content: {
+        field,
+        value: [value],
+      },
+    };
+
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      newSqon,
+      {
+        operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
+        values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+      },
+    );
+    setSqons(modifiedSqons);
   };
 
   return (
     <HorizontalBar
-      data={mergedData}
+      data={data}
       indexBy="label"
       keys={['probands', 'familyMembers']}
       onClick={onClick}
@@ -209,3 +216,8 @@ export const TopDiagnosesChart = compose(
     />
   );
 });
+
+export const TopDiagnosesChart = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(topDiagnoseChart);
