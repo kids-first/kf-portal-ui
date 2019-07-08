@@ -47,7 +47,7 @@ class ParticipantClinical extends React.Component {
     }
 
     this.diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele =>
-      get(ele, 'node', {}),
+      Object.assign({}, get(ele, 'node', {})) //copy obj
     );
 
     Promise.all(
@@ -58,17 +58,17 @@ class ParticipantClinical extends React.Component {
         });
 
         this.diagnoses = this.diagnoses.map(diag => {
-          //make age more readable
+          //make age more readable while we wait for the calls
           const age = diag.age_at_event_days;
 
-          const years = ('' + age / 365).split('.')[0];
+          const years = Number(('' + age / 365).split('.')[0]);
           const days = age - years * 365;
 
           function format() {
             function y() {
-              if(years === 1) return `${years} year`;
+              if(years === 1) return `${years} year `;
               else if(years === 0) return "";
-              else return `${years} years`;
+              else return `${years} years `;
             }
 
             function d() {
@@ -78,7 +78,7 @@ class ParticipantClinical extends React.Component {
             }
 
             if(age === null) return "--";
-            else return y() + " " + d();
+            else return y() + d();
           }
 
           diag.age_at_event_days = format();
