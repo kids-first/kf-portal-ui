@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-
+import { css } from 'react-emotion';
 import { Link } from 'react-router-dom';
 
 import Column from 'uikit/Column';
@@ -9,7 +9,7 @@ const SecondaryNavTab = ({ name, target, location: { hash } = {} }) => {
   return (
     <li>
       <Column>
-        <Link to={`#${target}`} className={hash === `#${target}` ? 'active' : ''}>
+        <Link to={`#${target}`} className={hash === `#${target}` ? 'active' : css`border-bottom: solid 5px transparent;`}>
           {name}
         </Link>
       </Column>

@@ -75,8 +75,12 @@ function summaryTableData(participant) {
     },
     { title: 'Proband:', summary: participant.is_proband },
     {
+      title: 'Family ID:',
+      summary: getIt('family_id'),
+    },
+    {
       title: 'Family Composition:',
-      summary: getIt('participant.family.family_compositions.hits.edges.0.node.composition'),
+      summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
     },
     { title: 'Gender:', summary: participant.gender },
     { title: 'Ethnicity:', summary: participant.ethnicity },
@@ -107,15 +111,20 @@ function specimenSummaryTableData(specimen) {
 }
 
 const ParticipantSummary = ({ participant }) => {
+  const specimens = get(participant, 'biospecimens.hits.edges', []);
+
   return (
     <React.Fragment>
       <EntityContentSection title="Summary">
         <VariableSummaryTable rows={summaryTableData(participant)} nbOfTables={2} />
       </EntityContentSection>
-      <EntityContentDivider />
-      <EntityContentSection title="Biospecimens">
-        <Holder>
-          {get(participant, 'biospecimens.hits.edges', []).map(specimenNode => {
+      {
+        specimens.length === 0 ? "" :
+        <div>
+          <EntityContentDivider />
+          <EntityContentSection title="Biospecimens">
+          <Holder>
+          {specimens.map(specimenNode => {
             const specimen = specimenNode.node;
 
             return (
@@ -127,22 +136,23 @@ const ParticipantSummary = ({ participant }) => {
               />
             );
           })}
-        </Holder>
-      </EntityContentSection>
+          </Holder>
+          </EntityContentSection>
+        </div>
+      }
+
       <EntityContentDivider />
-      <EntityContentSection title="Available Data" size={'big'}>
+      <EntityContentSection title="Available Data Files" size={'big'}>
         <EntityContentSection title="Sequencing Data" size={'small'}>
           <SequencingDataTable
             files={get(participant, 'files.hits.edges', [])}
             participantID={participant.kf_id}
           />
         </EntityContentSection>
-        <EntityContentSection title="Other Data Types" size={'small'}>
-          <OtherDataTypesSummaryTable
-            files={get(participant, 'files.hits.edges', [])}
-            participantID={participant.kf_id}
-          />
-        </EntityContentSection>
+        <OtherDataTypesSummaryTable
+          files={get(participant, 'files.hits.edges', [])}
+          participantID={participant.kf_id}
+        />
       </EntityContentSection>
     </React.Fragment>
   );

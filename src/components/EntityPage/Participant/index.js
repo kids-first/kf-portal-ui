@@ -8,13 +8,14 @@ import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
 import Column from 'uikit/Column';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
-import { EntityTitleBar, EntityTitle, EntityActionBar, EntityContent } from '../';
+import { EntityTitleBar, EntityTitle, EntityContent } from '../';
 
 import ParticipantSummary from './ParticipantSummary';
 import ParticipantClinical from './ParticipantClinical';
 
 import { fetchParticipant } from './actionCreators';
 import Spinner from 'react-spinkit';
+import ParticipantActionBar from './Utils/ParticipantActionBar';
 
 const Container = styled(Column)`
   flex-direction: column;
@@ -98,13 +99,13 @@ class ParticipantEntity extends React.Component {
             tags={isLoading ? [] : getTags(participant)}
           />
         </EntityTitleBar>
-        <EntityActionBar>
+        <ParticipantActionBar style={{ backgroundColor: 'red' }}>
           <SecondaryNavMenu
             tabs={[{ name: 'Summary', hash: 'summary' }, { name: 'Clinical', hash: 'clinical' }]}
             defaultHash="summary"
             location={location}
           />
-        </EntityActionBar>
+        </ParticipantActionBar>
         <EntityContent>
           <SecondaryNavContent target="summary" location={location}>
             <ParticipantSummary participant={participant} />
