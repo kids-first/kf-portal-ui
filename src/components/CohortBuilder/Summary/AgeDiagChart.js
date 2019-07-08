@@ -75,6 +75,7 @@ class AgeDiagChart extends React.Component {
           data={data}
           sortBy={false}
           indexBy="label"
+          axisBottomLegend="Age at Diagnosis (years)"
           tooltipFormatter={ageAtDiagnosisTooltip}
           height={225}
           colors={[theme.chartColors.lightblue]}

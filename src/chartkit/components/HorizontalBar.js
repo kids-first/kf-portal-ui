@@ -181,7 +181,7 @@ class HorizontalBar extends Component {
       axisBottom: {
         orient: 'bottom',
         tickSize: 0,
-        tickPadding: 5,
+        tickPadding: 8,
         tickRotation: 0,
         legend: '# Participants',
         legendPosition: 'middle',
@@ -212,10 +212,11 @@ class HorizontalBar extends Component {
       tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
+    // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
       <HorizontalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="text-before-edge">
+        <TextBugWrapper baseline="central">
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />

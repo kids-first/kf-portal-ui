@@ -138,11 +138,12 @@ class VerticalBar extends Component {
       indexBy = 'id',
       height,
       tooltipFormatter,
-      axisLeftLegend = '# Participants', // TODO REMOVE magic string
-      axisBottomLegend = 'Age at Diagnosis (years)', // TODO REMOVE magic string
+      axisLeftLegend = '',
+      axisBottomLegend = '',
       axisLeftFormat = v => v.toLocaleString(),
       axisBottomFormat = v => v.toLocaleString(),
       bottomLegendOffset = 35,
+      leftLegendOffset = -40,
     } = this.props;
 
     const chartData = {
@@ -185,7 +186,7 @@ class VerticalBar extends Component {
       axisBottom: {
         orient: 'bottom',
         tickSize: 0,
-        tickPadding: 5,
+        tickPadding: 8,
         tickRotation: 0,
         legend: axisBottomLegend,
         legendPosition: 'middle',
@@ -200,7 +201,7 @@ class VerticalBar extends Component {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legendOffset: -42,
+        legendOffset: leftLegendOffset,
         renderTick: this.renderAxisLeftTick,
         format: axisLeftFormat,
         theme: defaultTheme,
@@ -221,10 +222,11 @@ class VerticalBar extends Component {
       tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
+    // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
       <VerticalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="text-before-edge">
+        <TextBugWrapper baseline="central">
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />
