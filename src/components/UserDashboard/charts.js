@@ -8,9 +8,10 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { setSqons } from 'store/actionCreators/virtualStudies';
+import { resetVirtualStudy, setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
 import {
+  getDefaultSqon,
   setSqonValueAtIndex,
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
@@ -71,11 +72,12 @@ export const studiesChart = compose(
 )(({ data, theme, setSqons, virtualStudy, history }) => {
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
-    addSqon(SHORT_NAME_FIELD, barData.data.name);
+    resetVirtualStudy();
+    generateSqon(SHORT_NAME_FIELD, barData.data.name);
     history.push('/explore');
   };
 
-  const addSqon = (field, value) => {
+  const generateSqon = (field, value) => {
     const newSqon = {
       op: 'in',
       content: {
@@ -85,8 +87,8 @@ export const studiesChart = compose(
     };
 
     const modifiedSqons = setSqonValueAtIndex(
-      virtualStudy.sqons,
-      virtualStudy.activeIndex,
+      getDefaultSqon(),
+      0,
       newSqon,
       {
         operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
@@ -161,11 +163,12 @@ export const topDiagnoseChart = compose(
 
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
-    addSqon(TEXT_DIAGNOSES_FIELD, barData.data.name);
+    resetVirtualStudy();
+    generateSqon(TEXT_DIAGNOSES_FIELD, barData.data.name);
     history.push('/explore');
   };
 
-  const addSqon = (field, value) => {
+  const generateSqon = (field, value) => {
     const newSqon = {
       op: 'in',
       content: {
@@ -175,8 +178,8 @@ export const topDiagnoseChart = compose(
     };
 
     const modifiedSqons = setSqonValueAtIndex(
-      virtualStudy.sqons,
-      virtualStudy.activeIndex,
+      getDefaultSqon(),
+      0,
       newSqon,
       {
         operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
