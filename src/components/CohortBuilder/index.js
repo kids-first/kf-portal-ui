@@ -133,7 +133,11 @@ const CohortBuilder = compose(
             <Content>
               <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
             </Content>
-            <SqonBuilderContainer>
+            <SqonBuilderContainer css={`
+            .sqonView {
+              margin-right: 60px;
+            }
+            `}>
               <SqonBuilder
                 syntheticSqons={syntheticSqons}
                 activeSqonIndex={activeSqonIndex}
