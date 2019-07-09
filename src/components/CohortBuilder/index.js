@@ -154,7 +154,6 @@ const CohortBuilder = compose(
             </SqonBuilderContainer>
           </FullWidthWhite>
 
-
           <Results
             sqon={executableSqon}
             activeSqonIndex={activeSqonIndex}
