@@ -103,7 +103,7 @@ class VirtualStudiesMenu extends React.Component {
 
   onEditClick() {
     this.props.effects.setModal({
-      title: 'Edit Virtual Study',
+      title: 'Edit Virtual Study Name and Description',
       classNames: {
         modal: 'virtual-study-modal',
       },
@@ -196,7 +196,7 @@ class VirtualStudiesMenu extends React.Component {
 
             {activeVirtualStudyId ? (
               <Tooltip
-                html={<div>{'Edit the current virtual study'}</div>}
+                html={<div>{'Edit name and description'}</div>}
                 className="tooltip virtual-studies-edit"
               >
                 {!isOwner ? null : (
