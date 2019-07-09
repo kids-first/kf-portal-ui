@@ -114,6 +114,9 @@ const CohortBuilder = compose(
           .catch(console.error);
       };
 
+      const participantCountWidth = document.getElementsByClassName("participantsCountContainer").offsetWidth;
+      console.log("THE WIDTH:"+participantCountWidth)
+
       return (
         <Container>
           <StylePromptMessage
@@ -133,7 +136,11 @@ const CohortBuilder = compose(
             <Content>
               <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
             </Content>
-            <SqonBuilderContainer>
+            <SqonBuilderContainer css={`
+            .sqonView {
+              margin-right: 60px;
+            }
+            `}>
               <SqonBuilder
                 syntheticSqons={syntheticSqons}
                 activeSqonIndex={activeSqonIndex}
@@ -149,6 +156,7 @@ const CohortBuilder = compose(
               />
             </SqonBuilderContainer>
           </FullWidthWhite>
+
 
           <Results
             sqon={executableSqon}
