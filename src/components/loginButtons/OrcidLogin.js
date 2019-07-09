@@ -40,7 +40,7 @@ export default class OrcidButton extends React.Component {
             alt="ORCID iD icon"
           />
           <span>
-            Log in with <em>ORCID iD</em>
+            Log in with ORCID
           </span>
         </button>
       </div>
