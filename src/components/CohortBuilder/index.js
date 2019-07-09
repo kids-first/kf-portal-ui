@@ -114,9 +114,6 @@ const CohortBuilder = compose(
           .catch(console.error);
       };
 
-      const participantCountWidth = document.getElementsByClassName("participantsCountContainer").offsetWidth;
-      console.log("THE WIDTH:"+participantCountWidth)
-
       return (
         <Container>
           <StylePromptMessage
