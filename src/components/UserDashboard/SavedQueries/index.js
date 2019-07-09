@@ -26,6 +26,8 @@ import {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
 } from '../../../store/actionCreators/virtualStudies';
+import { setActiveSavedQueryTab } from '../actionCreators';
+
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
 const Container = styled(Column)`
@@ -85,15 +87,13 @@ const studyDescriptionStyle = css({
 class SavedQueries extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedTab: 'FILES',
-    };
     autobind(this);
   }
 
   static propTypes = {
     // from redux store
     virtualStudies: PropTypes.array.isRequired,
+    userDashboardPage: PropTypes.string.isRequired,
     // from freactal state
     state: PropTypes.shape({
       queries: PropTypes.array.isRequired,
@@ -129,8 +129,10 @@ class SavedQueries extends React.Component {
       state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
       theme,
       virtualStudies,
+      userDashboardPage,
+      setActiveSavedQueryTab,
     } = this.props;
-    const { selectedTab } = this.state;
+    const selectedTab = userDashboardPage.activeSavedQueryTab;
 
     return (
       <DashboardCard showHeader={false}>
@@ -154,7 +156,7 @@ class SavedQueries extends React.Component {
                     total: fileQueries.length ? fileQueries.length : [0],
                   },
                 ]}
-                onTabSelect={({ id }) => this.setState({ selectedTab: id })}
+                onTabSelect={({ id }) => { setActiveSavedQueryTab(id) } }
               />
               <ShowIf condition={selectedTab === 'FILES'}>
                 {!fileQueries.length ? (
@@ -256,12 +258,14 @@ class SavedQueries extends React.Component {
 const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
+  setActiveSavedQueryTab,
 };
 
 const mapStateToProps = state => {
-  const { virtualStudies } = state;
+  const { virtualStudies, ui } = state;
   return {
     virtualStudies: virtualStudies.studies,
+    userDashboardPage: ui.userDashboardPage,
   };
 };
 
