@@ -68,7 +68,7 @@ const ParticipantsTableView = ({
           : sqon;
 
         return (
-          <Card>
+          <Card showHeader={false}>
             <ParticipantsTable
               sqon={selectionSQON}
               loading={isLoading}
