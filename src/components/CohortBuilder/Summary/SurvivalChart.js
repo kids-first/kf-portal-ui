@@ -339,16 +339,21 @@ export class SurvivalChart extends React.Component {
             title={
               <div style={header}>
                 <div>Overall Survival</div>
-                <div>
-                  <Tooltip html={<span>Reset zoom</span>}>
-                    <ResetIcon
-                      css={{ marginTop: -5 }}
-                      size={25}
-                      color={(zoomDisabled ? 'grey' : '#22AFE9')}
-                      onClick={this.handleClick}
-                    />
-                  </Tooltip>
-                </div>
+                  { !zoomDisabled && (
+                    <Tooltip html={<span>Reset zoom</span>}>
+                      <ResetIcon
+                        css={{ marginTop: -5 }}
+                        size={25}
+                        color='#22AFE9'
+                        onClick={this.handleClick}
+                      />
+                    </Tooltip> )}
+                { zoomDisabled && (
+                  <ResetIcon
+                    css={{ marginTop: -4 }}
+                    size={25}
+                    color='grey'
+                  />)}
               </div>
             }
             loading={this.state.isLoading}
