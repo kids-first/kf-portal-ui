@@ -66,7 +66,7 @@ export default compose(
 )(({ state: { loggedInUser }, theme, api }) => (
   <UserDashboard>
     <Helmet>
-      <title>Portal - User Dashboard</title>
+      <title>Kids First Data Portal</title>
     </Helmet>
     <DashboardTitle>My Dashboard</DashboardTitle>
     <SizeProvider>
