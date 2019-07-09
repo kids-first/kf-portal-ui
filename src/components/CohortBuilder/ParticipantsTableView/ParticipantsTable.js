@@ -258,9 +258,9 @@ class ParticipantsTable extends Component {
 
     return (
       <Fragment>
-        <Toolbar>
+        <Toolbar style={{ border: 'none' }}>
           <Fragment>
-            <ToolbarGroup borderless>
+            <ToolbarGroup style={{ border: 'none' }}>
               <Fragment>
                 {/* Analyze in Cavatica */}
                 {/* Download */}
