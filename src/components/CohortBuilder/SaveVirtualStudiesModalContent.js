@@ -91,8 +91,6 @@ class SaveVirtualStudiesModalContent extends React.Component {
         onKeyDown={event => {
           if (event.key === 'Escape') {
             this.props.effects.unsetModal();
-          } else if (event.key === 'Enter') {
-            this.submitHandler();
           }
         }}
       >
