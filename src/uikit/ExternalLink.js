@@ -17,6 +17,7 @@ export default withTheme(
   }): React.Element => {
     return (
       <a
+        style={{whiteSpace: "pre", ...(props.style)}}
         {...props}
         href={href}
         target="_blank"
