@@ -216,7 +216,7 @@ class VirtualStudiesMenu extends React.Component {
 
           <div className={`description ${description.trim().length ? '' : 'empty'}`}>
             {description.split(/\n/).map((line, i) => (
-              <p key={i}>{line}&nbsp;</p>
+              <p style={{ lineHeight: 0 }} key={i}>{line}&nbsp;</p>
             ))}
           </div>
         </Row>
