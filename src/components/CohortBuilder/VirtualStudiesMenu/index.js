@@ -166,7 +166,7 @@ class VirtualStudiesMenu extends React.Component {
     const selectedStudy = this.findSelectedStudy();
 
     const loading = virtualStudiesAreLoading || virtualStudyIsLoading;
-    const newDisabled = loading || areSqonsEmpty;
+    const newDisabled = selectedStudy !== undefined ? false : loading || areSqonsEmpty;
     const cantOpen =
       loading ||
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.virtualStudyId) ||
