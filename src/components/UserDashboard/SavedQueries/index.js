@@ -76,10 +76,7 @@ const Scroll = styled('div')`
 const studyDescriptionStyle = css({
   fontSize: '12px',
   fontFamily: 'Open Sans, sans-serif',
-  maxWidth: '400px',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
+  wordBreak: 'break-word',
 });
 
 class SavedQueries extends React.Component {
@@ -234,8 +231,10 @@ class SavedQueries extends React.Component {
                               </Box>
                             </Row>
                             <Row justifyContent="space-between" width="100%">
-                              <Tooltip html={vs.description}>
-                                <div className={`${studyDescriptionStyle}`}>{vs.description}</div>
+                              <Tooltip html={<div className={`${studyDescriptionStyle}`}>{vs.description}</div>}>
+                                <div className={`${studyDescriptionStyle}`} style={{marginRight: "32px"}}>
+                                  { vs.description.length >= 140 ? `${vs.description.slice(0, 140)}...` : vs.description }
+                                </div>
                               </Tooltip>
                             </Row>
                           </Column>
