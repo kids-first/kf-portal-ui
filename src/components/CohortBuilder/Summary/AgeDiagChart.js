@@ -180,8 +180,8 @@ export const ageDiagQuery = sqon => ({
     { id: 'aggNewborn', label: 'Newborn', value: get(data, 'participant._0to1.total', 0) },
     { id: 'agg1to5', label: '[1, 5)', value: get(data, 'participant._1to5.total', 0) },
     { id: 'agg5to10', label: '[5, 10)', value: get(data, 'participant._5to10.total', 0) },
-    { id: 'agg10to15', label: '[10 - 15)', value: get(data, 'participant._10to15.total', 0) },
-    { id: 'agg15to18', label: '[15 - 18)', value: get(data, 'participant._15to18.total', 0) },
+    { id: 'agg10to15', label: '[10, 15)', value: get(data, 'participant._10to15.total', 0) },
+    { id: 'agg15to18', label: '[15, 18)', value: get(data, 'participant._15to18.total', 0) },
     { id: 'aggAdult', label: 'Adult', value: get(data, 'participant._18plus.total', 0) },
   ],
 });
