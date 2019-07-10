@@ -14,7 +14,6 @@ import Results from './Results';
 import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import VirtualStudiesMenu from './VirtualStudiesMenu';
-import PromptMessage from 'uikit/PromptMessage';
 import ParticipantIcon from 'icons/ParticipantIcon';
 
 const Container = styled('div')`
@@ -40,10 +39,6 @@ const Content = styled(ContentBar)`
   padding-left: 30px;
   padding-right: 30px;
   margin-top: 0;
-`;
-
-const StylePromptMessage = styled(PromptMessage)`
-  width: 100%;
 `;
 
 const CohortBuilder = compose(
@@ -116,17 +111,6 @@ const CohortBuilder = compose(
 
       return (
         <Container>
-          <StylePromptMessage
-            content={
-              <div>
-                <strong>BETA RELEASE: </strong>Use the cohort builder to create virtual studies. You
-                can query participant variables including demographic, clinical, and data
-                categories. It's in progress, so you may experience some bugs. To give feedback,
-                click the button in the bottom right corner. All feedback is welcome!
-              </div>
-            }
-          />
-
           <VirtualStudiesMenu />
 
           <FullWidthWhite>
