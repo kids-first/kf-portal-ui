@@ -54,6 +54,15 @@ const VirtualStudiesMenuButton = ({
   </Tooltip>
 );
 
+const generateDescription = (content) => {
+  const descriptionLines = content.split(/\n/);
+  const jsx = descriptionLines.slice(0, 3).map((line, i) => (
+    <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 2 }} key={i}>{line}&nbsp;</p>
+  ))
+
+  return (descriptionLines.length > 3 ? <Tooltip html={(<span>{content}</span>)}>{jsx}</Tooltip> : jsx )
+}
+
 class VirtualStudiesMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -215,9 +224,7 @@ class VirtualStudiesMenu extends React.Component {
           {isDirty ? <div className="dirty">You have unsaved changes</div> : null}
 
           <div style={{ paddingTop: 20 }} className={`description ${description.trim().length ? '' : 'empty'}`}>
-            {description.split(/\n/).map((line, i) => (
-              <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginBottom: 2 }} key={i}>{line}&nbsp;</p>
-            ))}
+            { generateDescription(description) }
           </div>
         </Row>
 
