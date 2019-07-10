@@ -139,7 +139,7 @@ class HorizontalBar extends Component {
       indexBy = 'id',
       height,
       tooltipFormatter,
-      axisBottomFormat = v => v.toLocaleString(),
+      axisBottomFormat = v => Number.isInteger(Number(v)) ? v.toLocaleString() : "",
       axisLeftFormat = v => v.toLocaleString(),
     } = this.props;
 
