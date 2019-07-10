@@ -53,9 +53,6 @@ const Summary = ({
         topDiagnosesData = [],
       ] = data;
 
-      console.log(experimentalStrategyData);
-
-
       return !data ? (
         <Row nogutter> no data</Row>
       ) : (
