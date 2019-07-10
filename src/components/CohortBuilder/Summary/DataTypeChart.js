@@ -41,7 +41,31 @@ class DataTypeChart extends React.Component {
   }
 
   render() {
-    const { data, theme, indexBy, axisLeftLegend, axisBottomLegend, tooltipFormatter } = this.props;
+    const { data, theme, indexBy, axisLeftLegend, axisBottomLegend } = this.props;
+
+    // Get the minimum value (5% of the max) for any vertical bar's height
+    const minValue = data.reduce( (acc, val) => {
+      if(acc > val.value) return acc;
+      else return val.value;
+    }, 0) * 0.05;
+
+    // Then, clean the data by changing the value to the min if applicable. Keep old (correct) value in preciseValue
+    const normalizedData = data.map( item => {
+      if(item.value <= minValue) {
+        item.preciseValue = item.value;
+        item.value = minValue;
+      } else {
+        item.preciseValue = item.value;
+      }
+
+      return item;
+    });
+
+    // Finally, the tooltip has to reflect the correct value, so use preciseValue instead of value
+    const tooltipFormatter = data => {
+      return `${data.label.toLocaleString()}: ${data.preciseValue.toLocaleString()} Participants`
+    };
+
     return (
       <VerticalBar
         showCursor={true}
@@ -53,7 +77,7 @@ class DataTypeChart extends React.Component {
         leftLegendOffset={-42}
         sortByKeys={['value']}
         sortOrder={'desc'}
-        data={data}
+        data={normalizedData}
         axisLeftLegend={axisLeftLegend}
         axisBottomLegend={axisBottomLegend}
         axisBottomFormat={() => {}}
