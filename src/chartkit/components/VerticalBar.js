@@ -140,7 +140,7 @@ class VerticalBar extends Component {
       tooltipFormatter,
       axisLeftLegend = '',
       axisBottomLegend = '',
-      axisLeftFormat = v => v.toLocaleString(),
+      axisLeftFormat = v => Number.isInteger(Number(v)) ? v.toLocaleString() : "",
       axisBottomFormat = v => v.toLocaleString(),
       bottomLegendOffset = 35,
       leftLegendOffset = -40,

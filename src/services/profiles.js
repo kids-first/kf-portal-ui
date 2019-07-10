@@ -61,9 +61,6 @@ export const getProfile = api => async () => {
     },
   });
 
-  console.log(url)
-  console.log(self)
-
   return self;
 };
 
