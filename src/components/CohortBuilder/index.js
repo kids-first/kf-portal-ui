@@ -14,7 +14,6 @@ import Results from './Results';
 import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import VirtualStudiesMenu from './VirtualStudiesMenu';
-import PromptMessage from 'uikit/PromptMessage';
 import ParticipantIcon from 'icons/ParticipantIcon';
 
 const Container = styled('div')`
