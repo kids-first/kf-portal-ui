@@ -172,9 +172,6 @@ class VirtualStudiesMenu extends React.Component {
       (virtualStudies.length === 1 && selectedStudy && selectedStudy.virtualStudyId) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
-    const cantSave = activeVirtualStudyId
-      ? loading || areSqonsEmpty || !isDirty || !isOwner
-      : loading || areSqonsEmpty || !isDirty;
     const cantSaveAs = activeVirtualStudyId ? loading || areSqonsEmpty : true;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
@@ -249,7 +246,7 @@ class VirtualStudiesMenu extends React.Component {
             tooltipText={'Saves the current virtual study if it exists, or a new one if not'}
             icon={SaveIcon}
             iconProps={{ height: 12, width: 12 }}
-            disabled={cantSave}
+            disabled={!isDirty}
             onClick={this.onSaveClick}
             className="virtual-studies-save"
           />
