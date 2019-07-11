@@ -8,14 +8,14 @@ import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
 import Column from 'uikit/Column';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
-import { EntityTitleBar, EntityTitle, EntityActionBar, EntityContent } from '../';
+import { EntityTitleBar, EntityTitle, EntityContent } from '../';
 
 import ParticipantSummary from './ParticipantSummary';
 import ParticipantClinical from './ParticipantClinical';
-import ParticipantFamily from './ParticipantFamily';
 
 import { fetchParticipant } from './actionCreators';
-import Spinner from "react-spinkit";
+import Spinner from 'react-spinkit';
+import ParticipantActionBar from './Utils/ParticipantActionBar';
 
 const Container = styled(Column)`
   flex-direction: column;
@@ -53,31 +53,41 @@ class ParticipantEntity extends React.Component {
   render() {
     const { participantId, location, participant, isLoading, error } = this.props;
 
-    if(isLoading) {
-      return <div style={{width: "100%", height: "100%", position: "absolute", top: 0}}>
-        <Spinner
-          fadeIn="none"
-          name="circle"
-          color="#a9adc0"
-          style={{
-            width: 50,
-            height: 60,
-            top: "50%",
-            position: "absolute",
-            left: "50%",
-            transform: "translate(-50%, -50%)"
-          }}
-        />
-      </div>;
+    //only way to update the page when we click a link to a participant in clinical...
+    if (
+      !isLoading &&
+      this.props.participant !== null &&
+      this.props.participant.kf_id !== this.props.participantId
+    ) {
+      this.props.fetchParticipant(participantId);
     }
 
+    if (isLoading) {
+      return (
+        <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0 }}>
+          <Spinner
+            fadeIn="none"
+            name="circle"
+            color="#a9adc0"
+            style={{
+              width: 50,
+              height: 60,
+              top: '50%',
+              position: 'absolute',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+            }}
+          />
+        </div>
+      );
+    }
 
     if (error) {
       return <GenericErrorDisplay error={error} />;
     }
 
     if (participant === null) {
-      return <GenericErrorDisplay error={"PARTICIPANT NOT FOUND"} />;
+      return <GenericErrorDisplay error={'PARTICIPANT NOT FOUND'} />;
     }
 
     return (
@@ -89,26 +99,19 @@ class ParticipantEntity extends React.Component {
             tags={isLoading ? [] : getTags(participant)}
           />
         </EntityTitleBar>
-        <EntityActionBar>
+        <ParticipantActionBar style={{ backgroundColor: 'red' }}>
           <SecondaryNavMenu
-            tabs={[
-              { name: 'Summary', hash: 'summary' },
-              { name: 'Clinical', hash: 'clinical' },
-              { name: 'Family', hash: 'family' },
-            ]}
+            tabs={[{ name: 'Summary', hash: 'summary' }, { name: 'Clinical', hash: 'clinical' }]}
             defaultHash="summary"
             location={location}
           />
-        </EntityActionBar>
+        </ParticipantActionBar>
         <EntityContent>
           <SecondaryNavContent target="summary" location={location}>
             <ParticipantSummary participant={participant} />
           </SecondaryNavContent>
           <SecondaryNavContent target="clinical" location={location}>
-            <ParticipantClinical />
-          </SecondaryNavContent>
-          <SecondaryNavContent target="family" location={location}>
-            <ParticipantFamily />
+            <ParticipantClinical participant={participant} />
           </SecondaryNavContent>
         </EntityContent>
       </Container>

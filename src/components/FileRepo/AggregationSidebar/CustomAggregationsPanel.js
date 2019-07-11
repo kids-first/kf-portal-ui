@@ -35,11 +35,30 @@ const Tab = styled(({ className, selected, ...props }) => (
   padding: 5px;
 `;
 
-const Tabs = ({ selectedTab, onTabSelect, options }) => (
+export const TabsBadge = styled(({ className, selected, ...props }) => (
+  <Badge {...props} selected={selected} />
+))``;
+
+const Badge = styled('div')`
+  background-color: ${({ selected, theme }) => `${selected ? '#f4f5f8' : theme.defaultBadge}`};
+  font-family: ${({ theme }) => theme.fonts.details};
+  color: ${({ selected, theme }) => `${selected ? theme.defaultBadge : '#f4f5f8'}`};
+  font-weight: 500;
+  text-align: center;
+  min-width: 25px;
+  line-height: 25px;
+  padding: 0 0.4em;
+  border-radius: 50px;
+  position: relative;
+  height: 25px;
+`;
+
+export const Tabs = ({ selectedTab, onTabSelect, options }) => (
   <TabsRow>
-    {options.map(({ id, display }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id}>
-        <Span>{display}</Span>
+    {options.map(({ id, display, total }) => (
+      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id} key={id}>
+        <Span style={{ width: '80%' }}>{display}</Span>
+        {total && <TabsBadge selected={selectedTab === id}>{total}</TabsBadge>}
       </Tab>
     ))}
   </TabsRow>
@@ -64,7 +83,7 @@ const Scroll = styled('div')`
   overflow-y: auto;
 `;
 
-const ShowIf = ({ condition, children, ...rest }) => (
+export const ShowIf = ({ condition, children, ...rest }) => (
   /*
     NOTE: this style-based conditional rendering is an optimization strategy to
     prevent re-rendering of AggregationsList which results in extra

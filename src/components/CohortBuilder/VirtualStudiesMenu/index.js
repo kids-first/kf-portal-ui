@@ -54,6 +54,25 @@ const VirtualStudiesMenuButton = ({
   </Tooltip>
 );
 
+const generateDescription = (content) => {
+  const descriptionLines = content.trim().split(/\n/);
+  const jsx = descriptionLines.slice(0, 3).map((line, i) => (
+    <p style={{
+      overflow: 'hidden',
+      wordBreak: 'break-word',
+      margin: 0,
+      fontFamily: '"Open Sans", "sans-serif"',
+      fontSize: "16px",
+      paddingBottom: "8px",
+      paddingTop: "8px"
+    }} key={i}>
+      {line}&nbsp;
+    </p>
+  ));
+
+  return (descriptionLines.length > 3 ? <Tooltip html={(<span>{content}</span>)}>{jsx}</Tooltip> : jsx )
+};
+
 class VirtualStudiesMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -103,7 +122,7 @@ class VirtualStudiesMenu extends React.Component {
 
   onEditClick() {
     this.props.effects.setModal({
-      title: 'Edit Virtual Study',
+      title: 'Edit Virtual Study Name and Description',
       classNames: {
         modal: 'virtual-study-modal',
       },
@@ -131,19 +150,19 @@ class VirtualStudiesMenu extends React.Component {
     });
   }
 
-  getSharableUrl({ id }) {
+  getSharableUrl({ id: virtualStudyId }) {
     return urlJoin(
       window.location.origin,
       this.props.history.createHref({
         ...this.props.history.location,
-        search: `id=${id}`,
+        search: `id=${virtualStudyId}`,
       }),
     );
   }
 
   findSelectedStudy() {
     const { virtualStudies, activeVirtualStudyId } = this.props;
-    return virtualStudies.filter(study => study.id === activeVirtualStudyId).shift();
+    return virtualStudies.filter(study => study.virtualStudyId === activeVirtualStudyId)[0];
   }
 
   handleOpen(virtualStudyId) {
@@ -166,20 +185,17 @@ class VirtualStudiesMenu extends React.Component {
     const selectedStudy = this.findSelectedStudy();
 
     const loading = virtualStudiesAreLoading || virtualStudyIsLoading;
-    const newDisabled = loading || areSqonsEmpty;
+    const newDisabled = selectedStudy !== undefined ? false : loading || areSqonsEmpty;
     const cantOpen =
       loading ||
-      (virtualStudies.length === 1 && selectedStudy && selectedStudy.id) ||
+      (virtualStudies.length === 1 && selectedStudy && selectedStudy.virtualStudyId) ||
       virtualStudies.length < 1;
     const cantEdit = loading || areSqonsEmpty || !isOwner;
-    const cantSave = activeVirtualStudyId
-      ? loading || areSqonsEmpty || !isDirty || !isOwner
-      : loading || areSqonsEmpty || !isDirty;
     const cantSaveAs = activeVirtualStudyId ? loading || areSqonsEmpty : true;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
 
-    const titleFragment = virtualStudyName ? 'Virtual Study: ' : 'Explore Data';
+    const titleFragment = virtualStudyName ? '' : 'Explore Data';
     const title = `${titleFragment} ${virtualStudyName}${
       activeVirtualStudyId && isDirty ? '*' : ''
     }`;
@@ -196,7 +212,7 @@ class VirtualStudiesMenu extends React.Component {
 
             {activeVirtualStudyId ? (
               <Tooltip
-                html={<div>{'Edit the current virtual study'}</div>}
+                html={<div>{'Edit name and description'}</div>}
                 className="tooltip virtual-studies-edit"
               >
                 {!isOwner ? null : (
@@ -212,10 +228,10 @@ class VirtualStudiesMenu extends React.Component {
             ) : null}
           </header>
 
-          <div className={`description ${description.trim().length ? '' : 'empty'}`}>
-            {description.split(/\n/).map((line, i) => (
-              <p key={i}>{line}&nbsp;</p>
-            ))}
+          {isDirty ? <div className="dirty">You have unsaved changes</div> : null}
+
+          <div className={`${description.trim().length ? '' : 'empty'}`}>
+            { generateDescription(description) }
           </div>
         </Row>
 
@@ -247,7 +263,7 @@ class VirtualStudiesMenu extends React.Component {
             tooltipText={'Saves the current virtual study if it exists, or a new one if not'}
             icon={SaveIcon}
             iconProps={{ height: 12, width: 12 }}
-            disabled={cantSave}
+            disabled={!isDirty}
             onClick={this.onSaveClick}
             className="virtual-studies-save"
           />
@@ -287,22 +303,22 @@ class VirtualStudiesMenu extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { user, cohortBuilder, virtualStudies } = state;
+  const { user, currentVirtualStudy, virtualStudies } = state;
   return {
     uid: user.uid,
     loggedInUser: user.loggedInUser,
-    isOwner: cohortBuilder.uid === user.uid,
-    sqons: cohortBuilder.sqons,
-    activeIndex: cohortBuilder.activeIndex,
-    activeVirtualStudyId: cohortBuilder.virtualStudyId,
-    virtualStudyName: cohortBuilder.name,
-    description: cohortBuilder.description,
-    virtualStudyIsLoading: cohortBuilder.isLoading,
     virtualStudies: virtualStudies.studies,
     virtualStudiesAreLoading: virtualStudies.isLoading,
-    isDirty: cohortBuilder.dirty,
-    areSqonsEmpty: cohortBuilder.areSqonsEmpty,
-    error: cohortBuilder.error,
+    isOwner: currentVirtualStudy.uid === user.uid,
+    sqons: currentVirtualStudy.sqons,
+    activeIndex: currentVirtualStudy.activeIndex,
+    activeVirtualStudyId: currentVirtualStudy.virtualStudyId,
+    virtualStudyName: currentVirtualStudy.name,
+    description: currentVirtualStudy.description,
+    virtualStudyIsLoading: currentVirtualStudy.isLoading,
+    isDirty: currentVirtualStudy.dirty,
+    areSqonsEmpty: currentVirtualStudy.areSqonsEmpty,
+    error: currentVirtualStudy.error,
   };
 };
 

@@ -19,6 +19,20 @@ const DRAFT_FIELDS = [
 ];
 
 /**
+ * Normalizes a study coming from Riff into the format used in the application.
+ * @param {Object} studyData - A virtual study coming from Riff
+ */
+const normalizeRiffVirtualStudy = studyData => ({
+  sqons: get(studyData, 'content.sqons', getDefaultSqon()),
+  activeIndex: get(studyData, 'content.activeIndex', 0),
+  virtualStudyId: studyData.id || null,
+  name: studyData.alias || '',
+  description: get(studyData, 'content.description', ''),
+  uid: studyData.uid || null,
+  sharedPublicly: studyData.sharedPublicly || false,
+});
+
+/**
  * Validates the given Virtual Study `study`, returning a fixed clone of it if an error is detected.
  * This allows to prevent bugs accross versions or side-effects from another bug, client-side or server-side,
  * that could create a corrupted study.
@@ -87,7 +101,30 @@ export const createVirtualStudy = (
     dirty,
   });
 
-export const getSavedVirtualStudyNames = async api =>
+export const getVirtualStudies = async (api, egoId) => {
+  const riffVirtualStudiesPromise = getVirtualStudiesFromRiff(api, egoId);
+  const personaDataPromise = getVirtualStudiesFromPersona(api, egoId);
+
+  return Promise.all([riffVirtualStudiesPromise, personaDataPromise])
+    .then(([riffVirtualStudies, personaVirtualStudies]) => {
+      return riffVirtualStudies.filter(rvs =>
+        personaVirtualStudies.some(pvs => get(pvs, 'id', null) === rvs.virtualStudyId),
+      );
+    })
+    .catch(err => {
+      throw new Error(`Failed to load virtual studies for user "${egoId} :\n${err.message}`);
+    });
+};
+
+const getVirtualStudiesFromRiff = async (api, egoId) =>
+  api({
+    url: urlJoin(shortUrlApi, 'user', egoId),
+    method: 'GET',
+  }).then(result => {
+    return result.map(normalizeRiffVirtualStudy).map(validateStudy);
+  });
+
+const getVirtualStudiesFromPersona = async api =>
   api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_SAVED_VIRTUAL_STUDIES'),
     body: {
@@ -102,19 +139,14 @@ export const getSavedVirtualStudyNames = async api =>
         }
       `),
     },
-  });
+  }).then(personaData => get(personaData, 'data.self.virtualStudies', []));
 
 const updateStudiesInPersona = async (api, loggedInUser, newVirtualStudy) => {
   const { virtualStudyId: id, name } = newVirtualStudy;
   const { egoId, _id: personaRecordId } = loggedInUser;
 
-  const {
-    data: {
-      self: { virtualStudies: currentVirtualStudies },
-    },
-  } = await getSavedVirtualStudyNames(api);
+  const currentVirtualStudies = await getVirtualStudiesFromPersona(api);
 
-  // const virtualStudies = currentVirtualStudies.some(vs => vs.id === id) ?
   let studyFound = false;
   const virtualStudies = currentVirtualStudies.reduce((studies, study) => {
     if (study.id === id) {
@@ -196,13 +228,9 @@ export const createNewVirtualStudy = async (api, loggedInUser, study) => {
     label: JSON.stringify(normalizedStudy),
   });
 
-  const {
-    data: {
-      userUpdate: {
-        record: { virtualStudies: updatedStudies },
-      },
-    },
-  } = await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+  await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+
+  const updatedStudies = await getVirtualStudies(api, egoId);
 
   return [normalizedStudy, updatedStudies];
 };
@@ -216,15 +244,7 @@ export const getVirtualStudy = api => virtualStudyId => {
     method: 'GET',
     url: urlJoin(shortUrlApi, virtualStudyId),
   })
-    .then(studyData => ({
-      sqons: get(studyData, 'content.sqons', getDefaultSqon()),
-      activeIndex: get(studyData, 'content.activeIndex', 0),
-      virtualStudyId: studyData.id || null,
-      name: studyData.alias || '',
-      description: get(studyData, 'content.description', ''),
-      uid: studyData.uid || null,
-      sharedPublicly: studyData.sharedPublicly || false,
-    }))
+    .then(normalizeRiffVirtualStudy)
     .then(validateStudy)
     .catch(err => {
       throw new Error(`Failed to load virtual study ${virtualStudyId} with error:\n${err.message}`);
@@ -232,7 +252,9 @@ export const getVirtualStudy = api => virtualStudyId => {
 };
 
 export const updateVirtualStudy = async (api, loggedInUser, study) => {
+  const { egoId } = loggedInUser;
   let existingVirtualStudy = null;
+
   try {
     existingVirtualStudy = await getVirtualStudy(api)(study.virtualStudyId);
   } catch (err) {
@@ -273,33 +295,27 @@ export const updateVirtualStudy = async (api, loggedInUser, study) => {
     label: JSON.stringify(normalizedStudy),
   });
 
-  const {
-    data: {
-      userUpdate: {
-        record: { virtualStudies: updatedStudies },
-      },
-    },
-  } = await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+  await updateStudiesInPersona(api, loggedInUser, normalizedStudy);
+
+  const updatedStudies = await getVirtualStudies(api, egoId);
 
   return [normalizedStudy, updatedStudies];
 };
 
-export const deleteVirtualStudy = async ({ loggedInUser, api, name }) => {
-  if (!name.length) {
+export const deleteVirtualStudy = async ({ loggedInUser, api, virtualStudyId }) => {
+  if (!virtualStudyId.length) {
     throw new Error('Study must have name');
   }
   const { egoId, _id: personaRecordId } = loggedInUser;
-  const personaData = await getSavedVirtualStudyNames(api);
+  const virtualStudies = await getVirtualStudiesFromPersona(api);
   await api({
-    url: urlJoin(shortUrlApi, name),
+    url: urlJoin(shortUrlApi, virtualStudyId),
     method: 'DELETE',
     body: JSON.stringify({
       userid: egoId,
     }),
   });
-  const newVirtualStudies = personaData.data.self.virtualStudies.filter(function(obj) {
-    return obj.id !== name;
-  });
+  const newVirtualStudies = virtualStudies.filter(obj => obj.id !== virtualStudyId);
   return await api({
     url: urlJoin(personaApiRoot, 'graphql', 'PERSONA_UPDATE_VIRTUAL_STUDIES'),
     body: {

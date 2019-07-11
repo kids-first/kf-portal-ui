@@ -20,6 +20,7 @@ export const TRACKING_EVENTS = {
         widgets: {
           authorizedStudies: 'Autohorized Studies',
           savedQueries: 'User Dashboard: Saved Queries widget',
+          savedVirtualStudies: 'User Dashboard: Saved Virtual Studies widget',
           _card: 'User Dashboard: Card',
           _multiCard: 'User Dashboard: MultiCard',
         },

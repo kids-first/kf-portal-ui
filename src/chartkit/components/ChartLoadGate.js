@@ -14,8 +14,8 @@ const ChartLoadGate = ({
 
 ChartLoadGate.propTypes = {
   fetchedState: PropTypes.object,
-  Chart: PropTypes.func.isRequired,
-  Loader: PropTypes.element,
+  Chart: PropTypes.elementType.isRequired,
+  Loader: PropTypes.elementType,
   ErrorMessage: PropTypes.element,
 };
 

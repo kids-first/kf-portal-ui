@@ -1,9 +1,57 @@
 # Release notes for kf-portal-ui
 
-# 2019-06-18 kf-portal-ui 2.4.0
+## 2019-07-11 kf-portal-ui 2.5.0
 This release introduces new features and bug fixes.
 
-## New features
+### New features
+- #1115 Cohort Builder: Saved queries widget with Virtual Studies
+- #1685 Change the link of studies and participants clickable diagrams in the dashboard to point to the cohort buider
+- #1721 Saved queries: list virtual studies
+- #1722 Saved queries: show the description of each virtual study
+- #1723 Saved queries card: delete virtual studies
+- #1728 Remove "Beta release" banner
+- #1807 Change the link of Frequent diagnoses clickable diagrams in the dashboard to point to the cohort buider
+- #1833 Remove "Virtual Study" in the title
+- #1849 Cohort builder: Add the "Consent Type" field in the filters
+- #1853 Saved queries: list virtual studies
+- #1866 Cohort builder: Show "You have unsaved changes" when relevant
+- #1867 Cohort builder: Make the description of the virtual study bigger
+- #1883 The title of the page should always be the same
+- #1895 Styling simplification for the reset zoom button
+- #1903 Age at diagnosis chart: use a comma for ranges
+- #1906 Rename edit name dialog and tooltip
+
+### Bug fixes
+- #1417 The Virtual Study dropdown is not populated when you navigate back to Explore Data
+- #1471 Firefox is reverse sorting the Cohort Builder diagnosis card
+- #1506 Open #files link in new tab redirects to dashboard
+- #1520 Resources Menu is underneath columns selector on File Repository
+- #1597 External links need an non-breaking space
+- #1674 Cannot see the title of someone else's virtual study
+- #1675 A line at the top of the participant table is not at the right location
+- #1681 Bar charts: Number of participant should not be a fraction (have decimals)
+- #1697 Available Data bar chart: minimum column height
+- #1737 Dynamically update the data version
+- #1830 Cohort builder: The "New" button should be enabled, when a virtual study is open
+- #1835 "Age at diagnosis" chart: range should not overlap
+- #1865 Some widgets overlap on top of the menu
+- #1869 Active tab in Cohort Builder is lost
+- #1872 Long query parameters overlaps the count of participants
+- #1875 Available Data card: the titles at the bottom are cropped on Firefox
+- #1876 Available Data card: the title on the left of the chart overlaps on Firefox
+- #1877 Save dialog: pressing enter should not close the dialog anymore
+- #1885 Saved queries widget: persistence of which tab is selected
+- #1886 Available Data chart: sort the columns from most to least
+- #1891 Issues with "Save" and "Load"
+- #1897 Dashboard clickable charts: create a new query in a new virtual study
+- #1921 Cohort builder: The line height of the description of the virtual study is too high
+- #1930 Update data version API in prod
+
+
+## 2019-06-18 kf-portal-ui 2.4.0
+This release introduces new features and bug fixes.
+
+### New features
 - #1387 Virtual Study: Add a description
 - #1467 Survival chart: reset zoom
 - #1685 Change the link of studies and participants clickable diagrams in the dashboard to point to the cohort buider
@@ -12,21 +60,21 @@ This release introduces new features and bug fixes.
 - #1795 Save dialog: pressing enter should close this dialog
 - #1810 File page: Put "--" for missing values for "Sequencing read properties"
 
-## Bug fixes
+### Bug fixes
 - #1820 Corrupted Virtual Studies in saved Riff or in the local storage cause the application to break on load
 - #1836 Virtual studies: The vertical space for the comment section is too big
 - #1832 Shared virtual study: the edit button should not be visible
 
 
-# 2019-06-04 kf-portal-ui 2.3.0
+## 2019-06-04 kf-portal-ui 2.3.0
 This release introduces a few features and bug fixes after a larger release.
 
-## New features
+### New features
 - #1741 Clickable charts: Most Frequent Diagnoses
 - #1802 Change title of "Most Frequent Diagnoses" chart in the cohort builder
 - #1803 Update field names in exported Participant data TSV file
 
-## Bug fixes
+### Bug fixes
 - #1695 Remove field phenotype.ancestral\_hpo\_ids 
 - #1801 Clicking on a chart crashes the application when the virtual study contains a reference
 

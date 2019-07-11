@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import autobind from 'auto-bind-es5';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
@@ -24,17 +25,12 @@ class HorizontalBar extends Component {
       highlightedIndexValue: null,
     };
 
+    // TODO check that for participants tick interval < 1
     const { tickInterval } = props;
-
-    // const maxValue = getChartMaxValue(data, keys);
     this.maxValue = tickInterval ? this.maxValue : 'auto';
-
     this.tickValues = tickInterval;
 
-    this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
+    autobind(this);
   }
 
   onMouseEnter(data, e) {
@@ -72,15 +68,11 @@ class HorizontalBar extends Component {
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
 
-    let value = tick.value;
-    value = value.indexOf('MONDO') > -1 ? value.substr(0, value.indexOf('MONDO')) : value;
-
-    if (format !== undefined) {
-      value = format(value);
-    }
+    const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
     const text = truncateText(value, xTickTextLength);
 
+    //const valueLength = value.toString().length;
     const xOffset = 160;
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
@@ -113,20 +105,46 @@ class HorizontalBar extends Component {
     );
   }
 
+  sumUpKeys(obj) {
+    return this.props.sortByKeys.reduce((sum, key) => (sum += obj[key]), 0);
+  }
+
+  defaultSort(datumA, datumB) {
+    if (/desc(ending)?/i.test('' + this.props.sortOrder)) {
+      return this.sumUpKeys(datumA) - this.sumUpKeys(datumB);
+    }
+    return this.sumUpKeys(datumB) - this.sumUpKeys(datumA);
+  }
+
+  sortData(data) {
+    const { sortBy, sortByKeys = null } = this.props;
+    const sortFn =
+      typeof sortBy === 'function'
+        ? sortBy
+        : sortBy === false
+        ? null
+        : sortBy === true || sortByKeys
+        ? this.defaultSort
+        : null;
+    const filteredData = data.filter(x => x);
+    return sortFn ? filteredData.sort(sortFn) : filteredData;
+  }
+
   render() {
     const {
       data = [],
-      sortBy = () => 1,
       keys,
       colors,
       legends,
       indexBy = 'id',
       height,
       tooltipFormatter,
+      axisBottomFormat = v => Number.isInteger(Number(v)) ? v.toLocaleString() : "",
+      axisLeftFormat = v => v.toLocaleString(),
     } = this.props;
 
     const chartData = {
-      data: data.filter(x => x).sort(sortBy),
+      data: this.sortData(data),
       keys: keys,
       indexBy: indexBy,
       onMouseEnter: this.onMouseEnter,
@@ -161,21 +179,22 @@ class HorizontalBar extends Component {
       layout: 'horizontal',
       borderColor: 'inherit:darker(1.6)',
       axisBottom: {
-        format: v => v.toLocaleString(),
         orient: 'bottom',
         tickSize: 0,
-        tickPadding: 5,
+        tickPadding: 8,
         tickRotation: 0,
         legend: '# Participants',
         legendPosition: 'middle',
         legendOffset: 38,
         tickValues: this.tickValues,
+        format: axisBottomFormat,
       },
       axisLeft: {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
         renderTick: this.renderAxisLeftTick,
+        format: axisLeftFormat,
       },
       enableGridX: true,
       gridXValues: undefined,
@@ -193,10 +212,11 @@ class HorizontalBar extends Component {
       tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
+    // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
       <HorizontalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="text-before-edge">
+        <TextBugWrapper baseline="central">
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />
@@ -217,6 +237,16 @@ HorizontalBar.propTypes = {
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.func,
+  sortByKeys: PropTypes.arrayOf(PropTypes.string),
+  sortOrder: (props, propName, componentName) => {
+    if (props[propName] && !/(a|de)sc(ending)?/i.test(props[propName])) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`. Validation failed.`,
+      );
+    }
+  },
+  axisBottomFormat: PropTypes.func,
+  axisLeftFormat: PropTypes.func,
   analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
 };
 

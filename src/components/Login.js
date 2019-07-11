@@ -11,6 +11,8 @@ import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
+import OrcidLogin from 'components/loginButtons/OrcidLogin';
+import OrcidRedirect from 'components/Login/OrcidRedirect';
 import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
@@ -24,8 +26,8 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { googleLogin, facebookLogin } from 'services/login';
 import { getProfile, createProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { allRedirectUris, egoApiRoot } from 'common/injectGlobals';
-import { FENCES, CAVATICA, GOOGLE, FACEBOOK, LOGIN_ERROR_DETAILS } from 'common/constants';
+import { allRedirectUris, egoApiRoot, orcidAuthAppId } from 'common/injectGlobals';
+import { FENCES, CAVATICA, GOOGLE, FACEBOOK, ORCID, LOGIN_ERROR_DETAILS } from 'common/constants';
 import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
 
@@ -139,7 +141,7 @@ const LoginError = styled(Box)`
   line-height: 1.7;
 `;
 
-class Component extends React.Component<any, any> {
+class Component extends React.Component {
   static propTypes = {
     effects: PropTypes.object,
     state: PropTypes.object,
@@ -168,13 +170,20 @@ class Component extends React.Component<any, any> {
     });
 
     if ((response || {}).status === 200) {
-      if (await handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })) {
-        this.trackUserSignIn(provider);
-        fetchIntegrationTokens({ setIntegrationToken, api });
-      } else {
-        await logoutAll();
-        this.setState({ authorizationError: true });
-      }
+      return handleJWT({ provider, jwt: response.data, onFinish, setToken, setUser, api })
+        .then(async success => {
+          if (success) {
+            this.trackUserSignIn(provider);
+            fetchIntegrationTokens({ setIntegrationToken, api });
+          } else {
+            await logoutAll();
+            this.setState({ authorizationError: true });
+          }
+        })
+        .catch(async error => {
+          await logoutAll();
+          this.setState({ authorizationError: true });
+        });
     }
   };
 
@@ -215,77 +224,116 @@ class Component extends React.Component<any, any> {
     }
   };
 
+  renderSecurityError() {
+    return (
+      <Box maxWidth={600}>
+        <Trans i18nKey="login.connectionFailed">
+          Connection to ego failed, you may need to visit
+          <a target="_blank" href={egoApiRoot}>
+            {{ egoApiRoot }}
+          </a>
+          in a new tab and accept the warning
+        </Trans>
+      </Box>
+    );
+  }
+
+  renderOrcidRedirect() {
+    return (
+      <OrcidRedirect
+        location={this.props.location}
+        loggedInUserToken={this.props.state.loggedInUserToken}
+        loginProvider={this.props.state.loginProvider}
+        onLogin={token =>
+          this.handleToken({
+            provider: ORCID,
+            handler: () => Promise.resolve({ data: token, status: 200 }), // clean
+            token,
+          })
+        }
+      />
+    );
+  }
+
+  renderSocialLoginButtons(disabled) {
+    const orcidLoginEnabled = Boolean(orcidAuthAppId);
+
+    return (
+      <div className="login-buttons-container">
+        {this.state.authorizationError && (
+          <ModalWarning>
+            <Trans key="login.authorizationError">
+              The Kids First Portal is currently in early access beta, please register at{' '}
+              <ExternalLink href="https://kidsfirstdrc.org/portal/">
+                https://kidsfirstdrc.org/portal/
+              </ExternalLink>{' '}
+              if you are interested in participating. For any questions, or if you already have
+              access to Kids First datasets via dbGaP, please contact
+              <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
+            </Trans>
+          </ModalWarning>
+        )}
+
+        {disabled ? (
+          <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
+            <PromptMessageContent pt={0}>
+              <LoginError>{this.getErrorMessage()} </LoginError>
+            </PromptMessageContent>
+          </PromptMessageContainer>
+        ) : null}
+
+        <GoogleLogin
+          onError={this.handleError}
+          onLogin={id_token =>
+            this.handleToken({
+              provider: GOOGLE,
+              handler: googleLogin,
+              token: id_token,
+            })
+          }
+        />
+
+        <FacebookLogin
+          onError={this.handleError}
+          onLogin={r =>
+            this.handleToken({
+              provider: FACEBOOK,
+              handler: facebookLogin,
+              token: r.authResponse.accessToken,
+            })
+          }
+        />
+
+        {orcidLoginEnabled ? <OrcidLogin /> : null}
+      </div>
+    );
+  }
+
   render() {
+    // if we're redirecting from orcid oauth,
+    //  or we're on a page and we're already logged in with orcid (i.e. /join)
+    const renderOrcidRedirect =
+      this.props.location.pathname === '/orcid' ||
+      (this.props.state.loggedInUserToken && this.props.state.loginProvider === ORCID);
+
     const renderSocialLoginButtons =
       this.props.shouldNotRedirect || allRedirectUris.includes(window.location.origin);
 
     const { thirdPartyDataError, facebookError, unknownError } = this.state;
     const disabled = thirdPartyDataError || facebookError || unknownError;
 
-    return (
-      <LoginContainer disabled={disabled}>
-        {this.state.securityError ? (
-          <Box maxWidth={600}>
-            <Trans i18nKey="login.connectionFailed">
-              Connection to ego failed, you may need to visit
-              <a target="_blank" href={egoApiRoot}>
-                {{ egoApiRoot }}
-              </a>
-              in a new tab and accept the warning
-            </Trans>
-          </Box>
-        ) : renderSocialLoginButtons ? (
-          <React.Fragment>
-            {this.state.authorizationError && (
-              <ModalWarning>
-                <Trans key="login.authorizationError">
-                  The Kids First Portal is currently in early access beta, please register at{' '}
-                  <ExternalLink href="https://kidsfirstdrc.org/portal/">
-                    https://kidsfirstdrc.org/portal/
-                  </ExternalLink>{' '}
-                  if you are interested in participating. For any questions, or if you already have
-                  access to Kids First datasets via dbGaP, please contact
-                  <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
-                </Trans>
-              </ModalWarning>
-            )}
+    let content = null;
+    if (this.state.securityError) {
+      content = this.renderSecurityError();
+    } else if (renderOrcidRedirect) {
+      content = this.renderOrcidRedirect();
+    } else if (renderSocialLoginButtons) {
+      content = this.renderSocialLoginButtons(disabled);
+    } else {
+      content = <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />;
+    }
 
-            {disabled ? (
-              <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
-                <PromptMessageContent pt={0}>
-                  <LoginError>{this.getErrorMessage()} </LoginError>
-                </PromptMessageContent>
-              </PromptMessageContainer>
-            ) : null}
-
-            <GoogleLogin
-              onError={this.handleError}
-              onLogin={id_token =>
-                this.handleToken({
-                  provider: GOOGLE,
-                  handler: googleLogin,
-                  token: id_token,
-                })
-              }
-            />
-
-            <FacebookLogin
-              key="facebook"
-              onError={this.handleError}
-              onLogin={r =>
-                this.handleToken({
-                  provider: FACEBOOK,
-                  handler: facebookLogin,
-                  token: r.authResponse.accessToken,
-                })
-              }
-            />
-          </React.Fragment>
-        ) : (
-          <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />
-        )}
-      </LoginContainer>
-    );
+    return <LoginContainer disabled={disabled}>{content}</LoginContainer>;
   }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import { reactApiDataVersionApi, reactApiDataVersionFallback } from 'common/injectGlobals';
 import { sortBy } from 'lodash';
-import Component from 'react-component-component';
 
 const getLatestDataVersion = () => {
   return fetch(reactApiDataVersionApi)
@@ -26,18 +26,24 @@ const getLatestDataVersion = () => {
     .catch(() => reactApiDataVersionFallback);
 };
 
-export const DataVersionProvider = ({ render }) => (
-  <Component
-    initialState={{ loading: true, version: '' }}
-    didMount={({ setState }) =>
-      getLatestDataVersion().then(version => {
-        console.log('version: ', version);
-        setState({ version, loading: false });
-      })
-    }
-  >
-    {({ state }) => render(state)}
-  </Component>
-);
+export class DataVersionProvider extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      version: '',
+      loading: true,
+    };
+  }
+
+  componentDidMount() {
+    getLatestDataVersion().then(version => {
+      this.setState({ version, loading: false });
+    });
+  }
+
+  render() {
+    return <Trans i18nKey="dataReleaseVersion">{this.state.version}</Trans>;
+  }
+}
 
 export default getLatestDataVersion;

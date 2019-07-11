@@ -91,19 +91,15 @@ class SaveVirtualStudiesModalContent extends React.Component {
         onKeyDown={event => {
           if (event.key === 'Escape') {
             this.props.effects.unsetModal();
-          } else if (event.key === 'Enter') {
-            this.submitHandler();
           }
         }}
       >
         {errorMessage && <PromptMessage heading={'Error'} content={errorMessage} error />}
         <ModalContentSection>
-          You are saving this page of results with the current configuration of queries.
-        </ModalContentSection>
-        <ModalContentSection>
-          <label required>Virtual Study name:</label>
+          <label required>Name:</label>
           <Input value={name} name="name" onChange={this.onDataChange} maxlength="60" autoFocus />
-
+          <br />
+          <br />
           <strong>{`Description (${DESCRIPTION_MAX_LENGTH} characters max): `}</strong>
           <TextArea
             value={description}
@@ -123,15 +119,18 @@ class SaveVirtualStudiesModalContent extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  uid: state.user.uid,
-  loggedInUser: state.user.loggedInUser,
-  sqons: state.cohortBuilder.sqons,
-  activeSqonIndex: state.cohortBuilder.activeIndex,
-  virtualStudyId: state.cohortBuilder.virtualStudyId,
-  name: state.cohortBuilder.name,
-  description: state.cohortBuilder.description,
-});
+const mapStateToProps = state => {
+  const { currentVirtualStudy } = state;
+  return {
+    uid: state.user.uid,
+    loggedInUser: state.user.loggedInUser,
+    sqons: currentVirtualStudy.sqons,
+    activeSqonIndex: currentVirtualStudy.activeIndex,
+    virtualStudyId: currentVirtualStudy.virtualStudyId,
+    name: currentVirtualStudy.name,
+    description: currentVirtualStudy.description,
+  };
+};
 
 const mapDispatchToProps = {
   saveVirtualStudy,

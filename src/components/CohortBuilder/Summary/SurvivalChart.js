@@ -10,8 +10,8 @@ import CardContent from 'uikit/Card/CardContent';
 import { SizeProvider } from 'components/Utils';
 import { compose } from 'recompose';
 import { withApi } from 'services/api';
-import { WhiteButton } from 'uikit/Button.js';
 import ResetIcon from 'react-icons/lib/md/replay';
+import Tooltip from 'uikit/Tooltip';
 
 const SurvivalChartWrapper = styled('div')`
   margin-top: 10px;
@@ -66,7 +66,7 @@ class SurvivalPlot extends React.Component {
     yAxisLabel: PropTypes.string,
     getSetSymbol: PropTypes.func,
     sqon: PropTypes.object,
-    resetZoom: PropTypes.boolean,
+    resetZoom: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -339,14 +339,21 @@ export class SurvivalChart extends React.Component {
             title={
               <div style={header}>
                 <div>Overall Survival</div>
-                <div>
-                  <WhiteButton disabled={zoomDisabled} onClick={this.handleClick}>
-                    <span style={{ marginTop: '-10px' }}>
-                      <ResetIcon />
-                    </span>
-                    <span style={{ marginTop: '-8px' }}>reset zoom</span>
-                  </WhiteButton>
-                </div>
+                  { !zoomDisabled && (
+                    <Tooltip html={<span>Reset zoom</span>}>
+                      <ResetIcon
+                        css={{ marginTop: -5 }}
+                        size={25}
+                        color='#22AFE9'
+                        onClick={this.handleClick}
+                      />
+                    </Tooltip> )}
+                { zoomDisabled && (
+                  <ResetIcon
+                    css={{ marginTop: -4 }}
+                    size={25}
+                    color='grey'
+                  />)}
               </div>
             }
             loading={this.state.isLoading}

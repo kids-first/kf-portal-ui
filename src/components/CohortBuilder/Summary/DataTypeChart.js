@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import _, { get } from 'lodash';
+import { get } from 'lodash';
 import gql from 'graphql-tag';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { setSqons } from 'store/actionCreators/virtualStudies';
@@ -41,20 +41,43 @@ class DataTypeChart extends React.Component {
   }
 
   render() {
-    const { data, theme, indexBy, axisLeftLegend, axisBottomLegend, tooltipFormatter } = this.props;
+    const { data, theme, indexBy, axisLeftLegend, axisBottomLegend } = this.props;
+
+    // Get the minimum value (5% of the max) for any vertical bar's height
+    const minValue = data.reduce( (acc, val) => {
+      if(acc > val.value) return acc;
+      else return val.value;
+    }, 0) * 0.05;
+
+    // Then, clean the data by changing the value to the min if applicable. Keep old (correct) value in preciseValue
+    const normalizedData = data.map( item => {
+      if(item.value <= minValue) {
+        item.preciseValue = item.value;
+        item.value = minValue;
+      } else {
+        item.preciseValue = item.value;
+      }
+
+      return item;
+    });
+
+    // Finally, the tooltip has to reflect the correct value, so use preciseValue instead of value
+    const tooltipFormatter = data => {
+      return `${data.label.toLocaleString()}: ${data.preciseValue.toLocaleString()} Participants`
+    };
+
     return (
       <VerticalBar
         showCursor={true}
         indexBy={indexBy || 'label'}
         tooltipFormatter={tooltipFormatter || dataTypeTooltip}
-        sortByValue={true}
+        keys={['value']}
         height={260}
         bottomLegendOffset={20}
-        data={_(data)
-          .sortBy(d => d.value)
-          .map((d, i) => ({ ...d, id: i }))
-          .reverse()
-          .value()}
+        leftLegendOffset={-42}
+        sortByKeys={['value']}
+        sortOrder={'desc'}
+        data={normalizedData}
         axisLeftLegend={axisLeftLegend}
         axisBottomLegend={axisBottomLegend}
         axisBottomFormat={() => {}}
@@ -128,7 +151,7 @@ export const experimentalStrategyQuery = sqon => ({
 });
 
 const mapStateToProps = state => ({
-  virtualStudy: state.cohortBuilder,
+  virtualStudy: state.currentVirtualStudy,
 });
 
 const mapDispatchToProps = {

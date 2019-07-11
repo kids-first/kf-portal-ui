@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
+import autobind from 'auto-bind-es5';
 
 import { defaultTheme } from '../themes';
 import Legend from './Legend';
@@ -23,17 +24,12 @@ class VerticalBar extends Component {
       highlightedIndexValue: null,
     };
 
+    // TODO check that for participants tick interval < 1
     const { tickInterval } = props;
-
-    // const maxValue = getChartMaxValue(data, keys);
     this.maxValue = tickInterval ? this.maxValue : 'auto';
-
     this.tickValues = tickInterval;
 
-    this.renderAxisLeftTick = this.renderAxisLeftTick.bind(this);
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
+    autobind(this);
   }
 
   onMouseEnter(data, e) {
@@ -71,16 +67,12 @@ class VerticalBar extends Component {
     const { onClick, xTickTextLength = 10 } = this.props;
     const { format, key, x, y, theme, tickIndex } = tick;
 
-    let value = tick.value;
-    const valueLength = value.toString().length;
-
-    if (format !== undefined) {
-      value = format(value);
-    }
+    const value = typeof format === 'function' ? format(tick.value) : tick.value;
 
     const text = truncateText(value, xTickTextLength);
 
-    const xOffset = 20 + (5*(valueLength-2));
+    const valueLength = value.toString().length;
+    const xOffset = 20 + 5 * (valueLength - 2);
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
@@ -112,24 +104,50 @@ class VerticalBar extends Component {
     );
   }
 
+  sumUpKeys(obj) {
+    return this.props.sortByKeys.reduce((sum, key) => (sum += obj[key]), 0);
+  }
+
+  defaultSort(datumA, datumB) {
+    if (/desc(ending)?/i.test('' + this.props.sortOrder)) {
+      return this.sumUpKeys(datumB) - this.sumUpKeys(datumA);
+    }
+    return this.sumUpKeys(datumA) - this.sumUpKeys(datumB);
+  }
+
+  sortData(data) {
+    const { sortBy, sortByKeys = null } = this.props;
+    const sortFn =
+      typeof sortBy === 'function'
+        ? sortBy
+        : sortBy === false
+        ? null
+        : sortBy === true || sortByKeys
+        ? this.defaultSort
+        : null;
+    const filteredData = data.filter(x => x);
+    return sortFn ? filteredData.sort(sortFn) : filteredData;
+  }
+
   render() {
     const {
-      data,
-      sortBy = () => 1,
+      data = [],
       keys,
       colors,
       legends,
       indexBy = 'id',
       height,
       tooltipFormatter,
-      axisLeftLegend = '# Participants',
-      axisBottomLegend = 'Age at Diagnosis (years)',
+      axisLeftLegend = '',
+      axisBottomLegend = '',
+      axisLeftFormat = v => Number.isInteger(Number(v)) ? v.toLocaleString() : "",
       axisBottomFormat = v => v.toLocaleString(),
       bottomLegendOffset = 35,
+      leftLegendOffset = -40,
     } = this.props;
 
     const chartData = {
-      data: data.filter(x => x).sort(sortBy),
+      data: this.sortData(data),
       keys: keys,
       indexBy: indexBy,
       onMouseEnter: this.onMouseEnter,
@@ -166,15 +184,16 @@ class VerticalBar extends Component {
       axisTop: null,
       axisRight: null,
       axisBottom: {
-        format: axisBottomFormat,
         orient: 'bottom',
         tickSize: 0,
-        tickPadding: 5,
+        tickPadding: 8,
         tickRotation: 0,
         legend: axisBottomLegend,
         legendPosition: 'middle',
         legendOffset: bottomLegendOffset,
         tickValues: this.tickValues,
+        format: axisBottomFormat,
+        theme: defaultTheme,
       },
       axisLeft: {
         legend: axisLeftLegend,
@@ -182,8 +201,10 @@ class VerticalBar extends Component {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legendOffset: -42,
+        legendOffset: leftLegendOffset,
         renderTick: this.renderAxisLeftTick,
+        format: axisLeftFormat,
+        theme: defaultTheme,
       },
       enableGridX: false,
       gridXValues: undefined,
@@ -201,10 +222,11 @@ class VerticalBar extends Component {
       tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
+    // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
       <VerticalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="text-before-edge">
+        <TextBugWrapper baseline="central">
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />
@@ -225,6 +247,16 @@ VerticalBar.propTypes = {
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
   sortBy: PropTypes.func,
+  sortByKeys: PropTypes.arrayOf(PropTypes.string),
+  sortOrder: (props, propName, componentName) => {
+    if (props[propName] && !/(a|de)sc(ending)?/i.test(props[propName])) {
+      return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`. Validation failed.`,
+      );
+    }
+  },
+  axisBottomFormat: PropTypes.func,
+  axisLeftFormat: PropTypes.func,
   analyticsTracking: PropTypes.shape({ category: PropTypes.string }),
 };
 

@@ -23,11 +23,6 @@ const spacing = {
   xl: 3,
 };
 
-
-const dataTypeTooltipByLabel = data => {
-  return `${data.label.toLocaleString()}: ${data.value.toLocaleString()} Participants`
-};
-
 const Summary = ({
   theme,
   sqon = {
@@ -67,8 +62,8 @@ const Summary = ({
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <CohortCard title="Available Data" loading={isLoading}>
                   <div style={{ height: '100%', width: '100%',  display: 'flex', flexFlow: 'column wrap'}}>
-                    <DataTypeChart data={dataTypesData} axisLeftLegend={'# Participants'} axisBottomLegend={'Data Type'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
-                    <DataTypeChart data={experimentalStrategyData} axisLeftLegend={'# Participants'} axisBottomLegend={'Experimental Strategy'} tooltipFormatter={dataTypeTooltipByLabel} isLoading={isLoading} />
+                    <DataTypeChart data={dataTypesData} axisLeftLegend={'# Participants'} axisBottomLegend={'Data Type'} isLoading={isLoading} />
+                    <DataTypeChart data={experimentalStrategyData} axisLeftLegend={'# Participants'} axisBottomLegend={'Experimental Strategy'} isLoading={isLoading} />
                   </div>
                 </CohortCard>
               </PaddedColumn>
