@@ -1,6 +1,6 @@
 # Release notes for kf-portal-ui
 
-## 2019-07-11 kf-port-ui 2.5.0
+## 2019-07-11 kf-portal-ui 2.5.0
 This release introduces new features and bug fixes.
 
 ### New features
