@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "private": true,
   "dependencies": {
     "@kfarranger/admin-ui": "1.2.3",

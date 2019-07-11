@@ -1,5 +1,12 @@
 # Release notes for kf-portal-ui
 
+## 2019-07-11 kf-portal-ui 2.5.1
+This release introduces a bug fix.
+
+## Bug fix
+- #1943 Put back "Beta release" banner
+
+
 ## 2019-07-11 kf-portal-ui 2.5.0
 This release introduces new features and bug fixes.
 
