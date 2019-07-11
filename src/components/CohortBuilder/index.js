@@ -41,6 +41,10 @@ const Content = styled(ContentBar)`
   margin-top: 0;
 `;
 
+const StylePromptMessage = styled(PromptMessage)`
+  width: 100%;
+`;
+
 const CohortBuilder = compose(
   withApi,
   withTheme,
@@ -111,6 +115,17 @@ const CohortBuilder = compose(
 
       return (
         <Container>
+          <StylePromptMessage
+            content={
+              <div>
+                <strong>BETA RELEASE: </strong>Use the cohort builder to create virtual studies. You
+                can query participant variables including demographic, clinical, and data
+                categories. It's in progress, so you may experience some bugs. To give feedback,
+                click the button in the bottom right corner. All feedback is welcome!
+              </div>
+            }
+          />
+
           <VirtualStudiesMenu />
 
           <FullWidthWhite>
