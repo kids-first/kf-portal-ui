@@ -15,6 +15,7 @@ import SqonBuilder from './SqonBuilder';
 import SQONProvider from './SQONProvider';
 import VirtualStudiesMenu from './VirtualStudiesMenu';
 import ParticipantIcon from 'icons/ParticipantIcon';
+import PromptMessage from 'uikit/PromptMessage';
 
 const Container = styled('div')`
   width: 100%;
