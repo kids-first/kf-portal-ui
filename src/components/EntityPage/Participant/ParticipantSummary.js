@@ -108,7 +108,7 @@ function summaryTableData(participant) {
             ) },)
          return summaryList
       }
-      if(getIt('study.kf_id') == "SD_M3DBXD12"){
+      else if(getIt('study.kf_id') == "SD_M3DBXD12"){
         summaryList.push(
           { title: 'PedcBioPortal',
             summary: (
