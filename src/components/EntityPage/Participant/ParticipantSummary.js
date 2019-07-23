@@ -49,11 +49,11 @@ function summaryTableData(participant) {
   }
 
   return sanitize([
-    { title: 'Kids First/Participant ID:', summary: getIt('kf_id') },
+    { title: 'Kids First/Participant ID', summary: getIt('kf_id') },
 
-    { title: 'External ID:', summary: getIt('external_id') },
+    { title: 'External ID', summary: getIt('external_id') },
     {
-      title: 'Study:',
+      title: 'Study',
       summary: (
         <ExternalLink
           href={`${kfWebRoot}/support/studies-and-access`}
@@ -70,23 +70,23 @@ function summaryTableData(participant) {
       ),
     },
     {
-      title: 'Diagnosis category:',
+      title: 'Diagnosis category',
       summary: getIt('diagnoses.hits.edges.0.node.diagnosis_category'),
     },
-    { title: 'Proband:', summary: participant.is_proband },
+    { title: 'Proband', summary: participant.is_proband },
     {
-      title: 'Family ID:',
+      title: 'Family ID',
       summary: getIt('family_id'),
     },
     {
-      title: 'Family Composition:',
+      title: 'Family Composition',
       summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
     },
-    { title: 'Gender:', summary: participant.gender },
-    { title: 'Ethnicity:', summary: participant.ethnicity },
-    { title: 'Race:', summary: participant.race },
-    { title: 'Vital Status:', summary: getIt('outcome.vital_status') },
-    { title: 'Disease Related:', summary: getIt('outcome.disease_related') },
+    { title: 'Gender', summary: participant.gender },
+    { title: 'Ethnicity', summary: participant.ethnicity },
+    { title: 'Race', summary: participant.race },
+    { title: 'Vital Status', summary: getIt('outcome.vital_status') },
+    { title: 'Disease Related', summary: getIt('outcome.disease_related') },
   ]);
 }
 

@@ -134,12 +134,9 @@ class FamilyTable extends React.Component {
         baseline('Generic Information', '', true),
         baseline('Proband', 'is_proband'),
         baseline('Vital Status', 'outcome.vital_status'),
-        baseline('Ethnicity', 'ethnicity'),
-        baseline('Race', 'race'),
         baseline('Gender', 'gender'),
         baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
         baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
-        baseline('Diagnoses (Source Text)', 'diagnoses.hits.edges', true, 'source_text_diagnosis'),
       ];
 
       members.forEach(node => {
@@ -185,7 +182,7 @@ class FamilyTable extends React.Component {
                 this.rows = startArr.concat(endArr);
               }
 
-              subLas[kf_id] = true; //in any case, we now have the subrow, and we can change its value
+              subLas[kf_id] = "Reported"; //in any case, we now have the subrow, and we can change its value
             });
           } else {
             //if the accessed thing is not an Array, we're directly adding it to the LAS
