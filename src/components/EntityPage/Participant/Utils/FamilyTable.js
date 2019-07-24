@@ -118,11 +118,10 @@ class FamilyTable extends React.Component {
       const kf_id = node.kf_id;
 
       return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
-        if(currentRow.acc === "") return currentRow; //if the accessor of the row is empty, nothing to do
-
         const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
 
-        if(Array.isArray(accessorItem)) { //if the item is an array, then we'll have to extract some subaccessors from the array items
+        if(currentRow.acc === "") return currentRow; //if the accessor of the row is empty, nothing to do
+        else if(Array.isArray(accessorItem)) { //if the item is an array, then we'll have to extract some subaccessors from the array items
 
           //we return an array when we want to splice our values at this index: since we're using flatMap, it'll unpack them in the right positions for us!
           //if the value we want to splice in is an empty array, no biggie, it will be unpacked into, well, nothing
