@@ -28,10 +28,10 @@ class ParticipantClinical extends React.Component {
 
     this.state = { diagnoses: false };
 
-    this.buildData();
+    this.dataIntoState();
   }
 
-  getDiagnosisData(api) {
+  diagnosisIntoState(api) {
     function call(diagnosis) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
@@ -85,15 +85,15 @@ class ParticipantClinical extends React.Component {
       for (let i = 0; i < nums.length; i++)
         diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
 
-      this.setState({ diagnoses: sanitize(diagnoses) });
+      this.setState({ diagnoses: sanitize(diagnoses) });  //once we're ready, just tell the state, it'll do the rest
     });
   }
 
-  getPhenotypeData(api) {
+  getPhenotypeData(api) { //stub for when the phenotypes are available
 
   }
 
-  buildData() {
+  dataIntoState() {
     const api = initializeApi({
       onError: console.err,
       onUnauthorized: response => {
@@ -101,12 +101,10 @@ class ParticipantClinical extends React.Component {
       },
     });
 
-    this.getDiagnosisData(api)
+    this.diagnosisIntoState(api)
   }
 
   render() {
-    if (this.state.diagnoses === false) return <div>Loading...</div>;
-
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
       { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis' },
@@ -151,18 +149,19 @@ class ParticipantClinical extends React.Component {
     const diagnoses = this.state.diagnoses;
     //const phenotypes = getNodes(participant, "phenotype", []);
 
-
-    console.log(participant)
-
     return (
       <React.Fragment>
-          {diagnoses.length === 0 ? (
-            ""
-          ) : (
-            <EntityContentSection title="Diagnoses">
-              <ParticipantDataTable columns={diagHeads} data={diagnoses} />
-            </EntityContentSection>
-          )}
+          {
+            !diagnoses
+              ? <div>Loading the diagnoses data... </div>
+              : diagnoses.length === 0
+                ? ""
+                : (
+                  <EntityContentSection title="Diagnoses">
+                    <ParticipantDataTable columns={diagHeads} data={diagnoses} />
+                  </EntityContentSection>
+                )
+          }
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
