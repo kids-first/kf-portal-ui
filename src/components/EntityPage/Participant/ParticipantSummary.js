@@ -84,7 +84,7 @@ function summaryTableData(participant) {
         },
         { title: 'Gender', summary: participant.gender },
         { title: 'Ethnicity', summary: participant.ethnicity },
-        { title: 'Race:', summary participant.race },
+        { title: 'Race', summary: participant.race },
         { title: 'Vital Status', summary: getIt('outcome.vital_status') },
         { title: 'Disease Related', summary: getIt('outcome.disease_related') },
       ];
