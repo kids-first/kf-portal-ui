@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { Link } from 'react-router-dom';
-import { fetchParticipantWithId } from '../../../../services/arranger/participants';
-import { initializeApi } from '../../../../services/api';
-
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
 
