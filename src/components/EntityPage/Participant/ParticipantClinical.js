@@ -26,19 +26,12 @@ class ParticipantClinical extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { ready: false };
+    this.state = { diagnoses: false };
 
     this.buildData();
   }
 
-  buildData() {
-    const api = initializeApi({
-      onError: console.err,
-      onUnauthorized: response => {
-        console.warn('Unauthorized', response);
-      },
-    });
-
+  getDiagnosisData(api) {
     function call(diagnosis) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
@@ -46,18 +39,18 @@ class ParticipantClinical extends React.Component {
       });
     }
 
-    this.diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele =>
+    let diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele =>
       Object.assign({}, get(ele, 'node', {})) //copy obj
     );
 
     Promise.all(
       (() => {
-        const temp = this.diagnoses.map(diag => {
+        const temp = diagnoses.map(diag => {
           //start ajax calls to know the shared with.
           return call(diag.mondo_id_diagnosis);
         });
 
-        this.diagnoses = this.diagnoses.map(diag => {
+        diagnoses = diagnoses.map(diag => {
           //make age more readable while we wait for the calls
           const age = diag.age_at_event_days;
 
@@ -90,16 +83,29 @@ class ParticipantClinical extends React.Component {
       })(),
     ).then(nums => {
       for (let i = 0; i < nums.length; i++)
-        this.diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
+        diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
 
-      this.diagnoses = sanitize(this.diagnoses);
-
-      this.setState({ ready: true });
+      this.setState({ diagnoses: sanitize(diagnoses) });
     });
   }
 
+  getPhenotypeData(api) {
+
+  }
+
+  buildData() {
+    const api = initializeApi({
+      onError: console.err,
+      onUnauthorized: response => {
+        console.warn('Unauthorized', response);
+      },
+    });
+
+    this.getDiagnosisData(api)
+  }
+
   render() {
-    if (this.state.ready === false) return <div>Loading...</div>;
+    if (this.state.diagnoses === false) return <div>Loading...</div>;
 
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
@@ -142,8 +148,11 @@ class ParticipantClinical extends React.Component {
     ];
 
     const participant = this.props.participant;
-    const diagnoses = this.diagnoses;
+    const diagnoses = this.state.diagnoses;
     //const phenotypes = getNodes(participant, "phenotype", []);
+
+
+    console.log(participant)
 
     return (
       <React.Fragment>
