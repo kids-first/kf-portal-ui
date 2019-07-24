@@ -4,7 +4,7 @@ import { withTheme } from 'emotion-theming';
 import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable';
 import { EntityContentDivider, EntityContentSection } from '../';
 import ExternalLink from 'uikit/ExternalLink';
-import { kfWebRoot ,kfFacebook} from 'common/injectGlobals';
+import { kfWebRoot } from 'common/injectGlobals';
 import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import Holder from './Utils/Holder';
 import SequencingDataTable from './Utils/SequencingDataTable';
@@ -89,7 +89,7 @@ function summaryTableData(participant) {
         { title: 'Disease Related:', summary: getIt('outcome.disease_related') },
       ];
 
-      if(getIt('study.kf_id') == "SD_BHJXBDQK"){
+      if(getIt('study.kf_id') === "SD_BHJXBDQK"){
         summaryList.push(
         { title: 'PedcBioPortal',
           summary: (
@@ -108,7 +108,7 @@ function summaryTableData(participant) {
             ) },)
          return summaryList
       }
-      else if(getIt('study.kf_id') == "SD_M3DBXD12"){
+      else if(getIt('study.kf_id') === "SD_M3DBXD12"){
         summaryList.push(
           { title: 'PedcBioPortal',
             summary: (
