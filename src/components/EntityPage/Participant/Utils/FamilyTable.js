@@ -90,8 +90,6 @@ class FamilyTable extends React.Component {
   */
   buildRows(famMembersNodes) {
 
-    const allIDs = famMembersNodes.map(m => m.kf_id);
-
     /**
      * Makes a baseline row.
      *
@@ -101,6 +99,7 @@ class FamilyTable extends React.Component {
      * @param subaccessor Subaccessor for array items
      * @returns {{leftfield: *, subheader: boolean}}
      */
+    const allIDs = famMembersNodes.map(m => m.kf_id);
     function baseline(leftfield, accessor = '', subheader = false, subaccessor = '') {
       const temp = {
         leftfield: leftfield,
@@ -123,38 +122,35 @@ class FamilyTable extends React.Component {
       baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
     ];
 
-    return famMembersNodes.reduce( (rowAccumulator, node) => {  //reduce the family members into rows of a table
+    return famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
       const kf_id = node.kf_id;
 
-      return rowAccumulator.reduce( (rowIterator, currentRow, i) => { //reduce the rows got
-        if(currentRow.acc === "") return rowIterator; //if the accessor of the row is empty, nothing to do
+      return rows.flatMap( currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
+        if(currentRow.acc === "") return currentRow; //if the accessor of the row is empty, nothing to do
 
         const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
 
         if(Array.isArray(accessorItem)) { //if the item is an array, then we'll have to extract some subaccessors from the array items
 
-          const subRowsToAdd = accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, item) => {
-            const subRow = rowIterator.find( (ele) => ele.leftField === item);
+          //we return an array when we want to splice our values at this index: since we're using flatMap, it'll unpack them in the right positions for us!
+          //if the value we want to splice in is an empty array, no biggie, it will be unpacked into, well, nothing
+          return [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, item) => {   //reduce the accessed array into new rows
+            let subRow = rows.find( (ele) => ele.leftField === item); //let's try to see if the value is already in there.
 
-            if(subRow) {
-              subRow[kf_id] = "reported";
-              return acc;
-            } else {
-              const subRow = baseline(item);
-              subRow[kf_id] = "reported";
-              acc.push(subRow);
-              return acc;
+            if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
+            else {
+              subRow = baseline(item);  //if it's not, we have to make a new row,
+              subRow[kf_id] = "reported"; //add the reported value
+              acc.push(subRow); //push that new row to the accumulator
             }
-          }, []);
 
-          rowIterator.splice(i+1+rowIterator.length-rowAccumulator.length, 0, ...subRowsToAdd);
-          return rowIterator;
-        } else {
+            return acc; //in any case, we have to return the acc.
+          }, []));
+        } else {  //if the item is not an array, we can just plug its value into the current row
           currentRow[kf_id] = accessorItem;
-
-          return rowIterator
+          return currentRow;
         }
-      }, [...rowAccumulator]);
+      });
     }, rows);
   }
 
