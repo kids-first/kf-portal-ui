@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
@@ -12,7 +12,7 @@ class FamilyTable extends React.Component {
     super(props);
 
     const participant = props.participant;
-    participant.relationsip = "this participant";
+    participant.relationship = "(this participant)";
 
     const compNode = get(participant, 'family.family_compositions.hits.edges[0].node');
     this.composition = compNode.composition;
@@ -38,25 +38,20 @@ class FamilyTable extends React.Component {
 
       return {
         Header:
-          (() => {
-            if(famMembersNodes[0].kf_id === kf_id) {  //if it's the current participant
-              return (
+          (famMembersNodes[0].kf_id === kf_id  //if it's the current participant
+            ? (
                 <div style={{ textAlign: 'center' }} >
                   <div>{kf_id}</div>
                   <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
-                  <div>(This participant)</div>
                 </div>
               )
-            } else {  //otherwise
-              return (
+            : (
                 <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
                   <div>{kf_id}</div>
                   <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
                 </Link>
               )
-            }
-
-          })(),
+          ),
         accessor: kf_id,
         Cell: makeCell,
       }
@@ -122,7 +117,7 @@ class FamilyTable extends React.Component {
     return famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
       const kf_id = node.kf_id;
 
-      return rows.flatMap( currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
+      return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
         if(currentRow.acc === "") return currentRow; //if the accessor of the row is empty, nothing to do
 
         const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
