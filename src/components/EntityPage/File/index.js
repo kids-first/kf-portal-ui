@@ -10,6 +10,7 @@ import BaseDataTable from 'uikit/DataTable';
 import { InfoBoxRow } from 'uikit/InfoBox';
 import ExternalLink from 'uikit/ExternalLink';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import { Link } from 'uikit/Core';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { kfWebRoot } from 'common/injectGlobals';
 import { GEN3 } from 'common/constants';
@@ -354,6 +355,13 @@ const FileEntity = compose(withTheme)(
                         {studyShortName}
                       </ExternalLink>
                     ),
+
+                    participant_id: participantId => (
+                      <Link to={`/participant/${participantId}#summary`}>
+                        {participantId}
+                      </Link>
+                    ),
+
                   }}
                   columns={particpantBiospecimenColumns}
                   downloadName="participants_biospecimens"
