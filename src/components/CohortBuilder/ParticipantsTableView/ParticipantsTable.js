@@ -129,27 +129,9 @@ const NbFilesCell = compose(
   }),
 );
 
-const LinkedCell = compose(
+const ParticipantIdLink = compose(
   withTheme(({ value: idParticipant, row, theme }) => {
-    const encodedSqon = encodeURI(
-      JSON.stringify(
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'participants.kf_id',
-                value: [row.participantId],
-              },
-            },
-          ],
-        },
-        null,
-        0,
-      ),
-    );
-    return (
+        return (
       <Link to={`/participant/${idParticipant}#summary`}>
         {`${idParticipant}`}
       </Link>
@@ -178,7 +160,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   },
   { Header: 'Participant ID',
     accessor: 'participantId',
-    Cell: props => <LinkedCell {...props}/>},
+    Cell: props => <ParticipantIdLink {...props}/>},
   {
     Header: 'Study Name',
     accessor: 'studyName',
