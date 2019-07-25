@@ -129,6 +129,34 @@ const NbFilesCell = compose(
   }),
 );
 
+const LinkedCell = compose(
+  withTheme(({ value: idParticipant, row, theme }) => {
+    const encodedSqon = encodeURI(
+      JSON.stringify(
+        {
+          op: 'and',
+          content: [
+            {
+              op: 'in',
+              content: {
+                field: 'participants.kf_id',
+                value: [row.participantId],
+              },
+            },
+          ],
+        },
+        null,
+        0,
+      ),
+    );
+    return (
+      <Link to={`/participant/${idParticipant}#summary`}>
+        {`${idParticipant}`}
+      </Link>
+    );
+  }),
+);
+
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
     Header: props => {
@@ -148,7 +176,9 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     resizable: false,
     minWidth: 33,
   },
-  { Header: 'Participant ID', accessor: 'participantId' },
+  { Header: 'Participant ID',
+    accessor: 'participantId',
+    Cell: props => <LinkedCell {...props}/>},
   {
     Header: 'Study Name',
     accessor: 'studyName',
