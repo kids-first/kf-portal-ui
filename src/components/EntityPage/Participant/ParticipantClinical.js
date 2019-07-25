@@ -165,7 +165,7 @@ class ParticipantClinical extends React.Component {
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
-            <EntityContentSection title={'Shared Diagnosis and Phenotypes Within Family Members'}>
+            <EntityContentSection title={'Shared Diagnosis Within Family Members'}>
               <div>
                 <img
                   src={familySVG}
