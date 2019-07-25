@@ -26,19 +26,12 @@ class ParticipantClinical extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { ready: false };
+    this.state = { diagnoses: false };
 
-    this.buildData();
+    this.dataIntoState();
   }
 
-  buildData() {
-    const api = initializeApi({
-      onError: console.err,
-      onUnauthorized: response => {
-        console.warn('Unauthorized', response);
-      },
-    });
-
+  diagnosisIntoState(api) {
     function call(diagnosis) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
@@ -46,18 +39,18 @@ class ParticipantClinical extends React.Component {
       });
     }
 
-    this.diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele =>
+    let diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(ele =>
       Object.assign({}, get(ele, 'node', {})) //copy obj
     );
 
     Promise.all(
       (() => {
-        const temp = this.diagnoses.map(diag => {
+        const temp = diagnoses.map(diag => {
           //start ajax calls to know the shared with.
           return call(diag.mondo_id_diagnosis);
         });
 
-        this.diagnoses = this.diagnoses.map(diag => {
+        diagnoses = diagnoses.map(diag => {
           //make age more readable while we wait for the calls
           const age = diag.age_at_event_days;
 
@@ -90,17 +83,28 @@ class ParticipantClinical extends React.Component {
       })(),
     ).then(nums => {
       for (let i = 0; i < nums.length; i++)
-        this.diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
+        diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
 
-      this.diagnoses = sanitize(this.diagnoses);
-
-      this.setState({ ready: true });
+      this.setState({ diagnoses: sanitize(diagnoses) });  //once we're ready, just tell the state, it'll do the rest
     });
   }
 
-  render() {
-    if (this.state.ready === false) return <div>Loading...</div>;
+  getPhenotypeData(api) { //stub for when the phenotypes are available
 
+  }
+
+  dataIntoState() {
+    const api = initializeApi({
+      onError: console.err,
+      onUnauthorized: response => {
+        console.warn('Unauthorized', response);
+      },
+    });
+
+    this.diagnosisIntoState(api)
+  }
+
+  render() {
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
       { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis' },
@@ -142,22 +146,26 @@ class ParticipantClinical extends React.Component {
     ];
 
     const participant = this.props.participant;
-    const diagnoses = this.diagnoses;
+    const diagnoses = this.state.diagnoses;
     //const phenotypes = getNodes(participant, "phenotype", []);
 
     return (
       <React.Fragment>
-          {diagnoses.length === 0 ? (
-            ""
-          ) : (
-            <EntityContentSection title="Diagnoses">
-              <ParticipantDataTable columns={diagHeads} data={diagnoses} />
-            </EntityContentSection>
-          )}
+          {
+            !diagnoses
+              ? <div>Loading the diagnoses data... </div>
+              : diagnoses.length === 0
+                ? ""
+                : (
+                  <EntityContentSection title="Diagnoses">
+                    <ParticipantDataTable columns={diagHeads} data={diagnoses} />
+                  </EntityContentSection>
+                )
+          }
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
-            <EntityContentSection title={'Shared Diagnosis and Phenotypes Within Family Members'}>
+            <EntityContentSection title={'Shared Diagnosis Within Family Members'}>
               <div>
                 <img
                   src={familySVG}

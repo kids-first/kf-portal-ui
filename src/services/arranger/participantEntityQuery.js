@@ -106,17 +106,6 @@ export default `query ($sqon: JSON) {
                               external_id
                               vital_status
                             }
-                            phenotype {
-                              age_at_event_days
-                              external_id
-                              hpo_phenotype_not_observed
-                              hpo_phenotype_observed
-                              hpo_phenotype_observed_text
-                              shared_hpo_ids
-                              snomed_phenotype_not_observed
-                              snomed_phenotype_observed
-                              source_text_phenotype
-                            }
                           }
                         }
                       }
@@ -176,16 +165,6 @@ export default `query ($sqon: JSON) {
             disease_related
             external_id
             vital_status
-          }
-          phenotype {
-            age_at_event_days
-            external_id
-            hpo_phenotype_not_observed
-            hpo_phenotype_observed
-            hpo_phenotype_observed_text
-            snomed_phenotype_not_observed
-            snomed_phenotype_observed
-            source_text_phenotype
           }
           study {
             attribution
@@ -252,4 +231,25 @@ files {
               }
             }
           }
+ */
+
+/*
+
+                            phenotype {
+                              hits {
+                                edges {
+                                  node {
+                                    age_at_event_days
+                                    external_id
+                                    hpo_phenotype_not_observed
+                                    hpo_phenotype_observed
+                                    hpo_phenotype_observed_text
+                                    shared_hpo_ids
+                                    snomed_phenotype_not_observed
+                                    snomed_phenotype_observed
+                                    source_text_phenotype
+                                  }
+                                }
+                              }
+                            }
  */
