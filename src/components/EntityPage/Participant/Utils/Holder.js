@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-//taken from secondaryNavMenu
-const MenuWrapper = styled('ul')`
+styled('ul')`
   ${({ theme }) => theme.secondaryNav}
   border: 1px solid transparent;
 `;

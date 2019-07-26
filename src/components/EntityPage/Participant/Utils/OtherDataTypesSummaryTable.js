@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import * as React from 'react';
-import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable';
 import { EntityContentSection } from '../../index';
-import Row from 'uikit/Row';
 import sanitizeURL from './sanitizeURL';
 
 const OtherDataTypesSummaryTable = ({ files, participantID }) => {
