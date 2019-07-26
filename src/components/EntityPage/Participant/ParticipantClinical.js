@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { get } from 'lodash';
+// eslint-disable-next-line
 import { EntityContentDivider, EntityContentSection } from '../';
+// eslint-disable-next-line
 import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
+// eslint-disable-next-line
 import familySVG from '../../../assets/icon-families-grey.svg';
 import ParticipantDataTable from './Utils/ParticipantDataTable';
 import graphql from 'services/arranger';
