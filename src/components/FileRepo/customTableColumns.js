@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ActionsColumn, FileIdColumn } from './CustomColumns';
+import { ActionsColumn, FileIdColumn,ParticipantIdColumn } from './CustomColumns';
 
 export default ({ theme, fenceAcls }) => [
   {
@@ -10,6 +10,15 @@ export default ({ theme, fenceAcls }) => [
       field: 'kf_id',
     },
   },
+  {
+    index: 1,
+    content: {
+      accessor: 'participants.hits.edges[0].node.kf_id',
+      Cell: props => <ParticipantIdColumn {...props} />,
+      field: 'participants.kf_id',
+    },
+  },
+
   {
     index: 13,
     content: {
