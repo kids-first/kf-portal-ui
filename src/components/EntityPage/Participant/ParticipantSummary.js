@@ -64,6 +64,7 @@ function summaryTableData(participant) {
                   label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
                 });
               }}
+              style={{whiteSpace: "auto"}}
             >
               {`${getIt('study.short_name')} (${getIt('study.kf_id')})`}
             </ExternalLink>
@@ -105,10 +106,10 @@ function summaryTableData(participant) {
               >
                 {getIt('kf_id')}
               </ExternalLink>
-            ) },)
-         return summaryList
-      }
-      else if(getIt('study.kf_id') === "SD_M3DBXD12"){
+            ) },);
+         return summaryList;
+
+      } else if(getIt('study.kf_id') === "SD_M3DBXD12"){
         summaryList.push(
           { title: 'PedcBioPortal',
             summary: (
@@ -124,11 +125,11 @@ function summaryTableData(participant) {
                 >
                   {getIt('kf_id')}
                 </ExternalLink>
-              ) },)
-           return summaryList
-      }
-      else{
-       return summaryList
+              ) },);
+           return summaryList;
+
+      } else{
+       return summaryList;
       }
   })())
 }

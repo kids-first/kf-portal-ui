@@ -109,14 +109,15 @@ class ParticipantClinical extends React.Component {
   }
 
   render() {
-    //return <div>Coming soon!</div>;
+    const cellBreak = wrapper => <div style={{wordBreak: "break-word", textTransform: "capitalize"}}>{wrapper.value}</div>;
+
 // eslint-disable-next-line
     const diagHeads = [
-      { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
-      { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis' },
-      { Header: 'Diagnosis (NCIT)', accessor: 'ncit_id_diagnosis' },
-      { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis' },
-      { Header: 'Age at event', accessor: 'age_at_event_days' },
+      { Header: 'Diagnosis Category', accessor: 'diagnosis_category', Cell: cellBreak },
+      { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis', Cell: cellBreak },
+      { Header: 'Diagnosis (NCIT)', accessor: 'ncit_id_diagnosis', Cell: cellBreak },
+      { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis', Cell: cellBreak },
+      { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
       {
         Header: 'Shared with',
         accessor: 'shared_with',
@@ -159,7 +160,7 @@ class ParticipantClinical extends React.Component {
       <React.Fragment>
           {
             !diagnoses
-              ? <div>Loading the diagnoses data... </div>
+              ? ""
               : diagnoses.length === 0
                 ? ""
                 : (
