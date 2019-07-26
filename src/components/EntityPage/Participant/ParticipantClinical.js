@@ -102,11 +102,11 @@ class ParticipantClinical extends React.Component {
       },
     });
 
-    //this.diagnosisIntoState(api)
+    this.diagnosisIntoState(api)
   }
 
   render() {
-    return <div>Coming soon!</div>;
+    //return <div>Coming soon!</div>;
 // eslint-disable-next-line
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
@@ -165,6 +165,9 @@ class ParticipantClinical extends React.Component {
                   </EntityContentSection>
                 )
           }
+        <div>More coming soon!</div>
+      </React.Fragment>
+      /*
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
@@ -181,7 +184,7 @@ class ParticipantClinical extends React.Component {
             </EntityContentSection>
           </div>
         )}
-      </React.Fragment>
+      </React.Fragment>*/
     );
   }
 }
