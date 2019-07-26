@@ -3,6 +3,7 @@ import * as React from 'react';
 import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable';
 import { EntityContentSection } from '../../index';
 import Row from 'uikit/Row';
+import sanitizeURL from './sanitizeURL';
 
 const OtherDataTypesSummaryTable = ({ files, participantID }) => {
   //"Other" being "not sequencing data"...
@@ -56,21 +57,28 @@ const OtherDataTypesSummaryTable = ({ files, participantID }) => {
         }
       `;
 
-    return { ...row, summary: <Link to={url}>{row.summary}</Link> };
+    return { ...row, summary: <Link to={sanitizeURL(url)}>{row.summary}</Link> };
   });
 
   return arr.length === 0 ? (
     ''
   ) : (
-    <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
-      {arr.map( thing => {
-        return (
-          <div style={{backgroundColor: "#f4f5f8", flexGrow: 0, padding: "10px", marginTop: "10px", marginBottom: "10px", border: "thin solid rgb(224, 225, 230)"}}>
-            {thing.title} {thing.summary}
-          </div>
-        )
-      })}
-    </div>
+    <EntityContentSection title="Other Data Types" size={'small'}>
+      <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
+        {arr.map( (thing, i) => {
+          return (
+            <div
+              style={{
+                backgroundColor: "#f4f5f8", flexGrow: 0, padding: "10px", marginTop: "10px", marginBottom: "10px",
+                border: "thin solid rgb(224, 225, 230)", borderRadius: "1em", marginRight: (i===arr.length ? 0 : "1em")
+              }}
+            >
+              {thing.title}&nbsp;&nbsp;&nbsp;{thing.summary}
+            </div>
+          )
+        })}
+      </div>
+    </EntityContentSection>
   );
 };
 
