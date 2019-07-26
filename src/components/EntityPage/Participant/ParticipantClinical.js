@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { get } from 'lodash';
+// eslint-disable-next-line
 import { EntityContentDivider, EntityContentSection } from '../';
+// eslint-disable-next-line
 import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
+// eslint-disable-next-line
 import familySVG from '../../../assets/icon-families-grey.svg';
 import ParticipantDataTable from './Utils/ParticipantDataTable';
 import graphql from 'services/arranger';
@@ -94,6 +97,7 @@ class ParticipantClinical extends React.Component {
   }
 
   dataIntoState() {
+    // eslint-disable-next-line
     const api = initializeApi({
       onError: console.err,
       onUnauthorized: response => {
@@ -105,6 +109,8 @@ class ParticipantClinical extends React.Component {
   }
 
   render() {
+    //return <div>Coming soon!</div>;
+// eslint-disable-next-line
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
       { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis' },
@@ -144,7 +150,7 @@ class ParticipantClinical extends React.Component {
         },
       },
     ];
-
+// eslint-disable-next-line
     const participant = this.props.participant;
     const diagnoses = this.state.diagnoses;
     //const phenotypes = getNodes(participant, "phenotype", []);
@@ -162,6 +168,9 @@ class ParticipantClinical extends React.Component {
                   </EntityContentSection>
                 )
           }
+        <div>More coming soon!</div>
+      </React.Fragment>
+      /*
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
@@ -178,7 +187,7 @@ class ParticipantClinical extends React.Component {
             </EntityContentSection>
           </div>
         )}
-      </React.Fragment>
+      </React.Fragment>*/
     );
   }
 }
