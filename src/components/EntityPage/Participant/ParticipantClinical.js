@@ -94,6 +94,7 @@ class ParticipantClinical extends React.Component {
   }
 
   dataIntoState() {
+    // eslint-disable-next-line
     const api = initializeApi({
       onError: console.err,
       onUnauthorized: response => {
@@ -101,10 +102,12 @@ class ParticipantClinical extends React.Component {
       },
     });
 
-    this.diagnosisIntoState(api)
+    //this.diagnosisIntoState(api)
   }
 
   render() {
+    return <div>Coming soon!</div>;
+// eslint-disable-next-line
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category' },
       { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis' },
@@ -144,7 +147,7 @@ class ParticipantClinical extends React.Component {
         },
       },
     ];
-
+// eslint-disable-next-line
     const participant = this.props.participant;
     const diagnoses = this.state.diagnoses;
     //const phenotypes = getNodes(participant, "phenotype", []);
