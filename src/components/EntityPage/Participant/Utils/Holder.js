@@ -2,11 +2,6 @@ import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-styled('ul')`
-  ${({ theme }) => theme.secondaryNav}
-  border: 1px solid transparent;
-`;
-
 export const Container = styled('div')`
   overflow-y: hidden;
   flex-grow: 0;
