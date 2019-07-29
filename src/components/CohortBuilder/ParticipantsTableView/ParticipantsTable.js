@@ -129,6 +129,16 @@ const NbFilesCell = compose(
   }),
 );
 
+const ParticipantIdLink = compose(
+  withTheme(({ value: idParticipant, row, theme }) => {
+        return (
+      <Link to={`/participant/${idParticipant}#summary`}>
+        {`${idParticipant}`}
+      </Link>
+    );
+  }),
+);
+
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
     Header: props => {
@@ -148,7 +158,9 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     resizable: false,
     minWidth: 33,
   },
-  { Header: 'Participant ID', accessor: 'participantId' },
+  { Header: 'Participant ID',
+    accessor: 'participantId',
+    Cell: props => <ParticipantIdLink {...props}/>},
   {
     Header: 'Study Name',
     accessor: 'studyName',

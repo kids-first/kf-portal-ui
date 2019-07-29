@@ -130,7 +130,7 @@ class SavedQueries extends React.Component {
       setActiveSavedQueryTab,
     } = this.props;
     const selectedTab = userDashboardPage.activeSavedQueryTab;
-
+    console.log(exampleQueries)
     return (
       <DashboardCard showHeader={false}>
         {loadingQueries ? (

@@ -47,47 +47,91 @@ function summaryTableData(participant) {
   function getIt(accessor) {
     return getter(participant, accessor);
   }
+  return sanitize((()=>{
+    const summaryList =[
+        { title: 'Kids First/Participant ID', summary: getIt('kf_id') },
 
-  return sanitize([
-    { title: 'Kids First/Participant ID:', summary: getIt('kf_id') },
+        { title: 'External ID', summary: getIt('external_id') },
+        {
+          title: 'Study',
+          summary: (
+            <ExternalLink
+              href={`${kfWebRoot}/support/studies-and-access`}
+              onClick={e => {
+                trackUserInteraction({
+                  category: TRACKING_EVENTS.categories.entityPage.file,
+                  action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
+                  label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
+                });
+              }}
+              style={{whiteSpace: "auto"}}
+            >
+              {`${getIt('study.short_name')} (${getIt('study.kf_id')})`}
+            </ExternalLink>
+          ),
+        },
+        {
+          title: 'Diagnosis category',
+          summary: getIt('diagnoses.hits.edges.0.node.diagnosis_category'),
+        },
+        { title: 'Proband', summary: participant.is_proband },
+        {
+          title: 'Family ID',
+          summary: getIt('family_id'),
+        },
+        {
+          title: 'Family Composition',
+          summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
+        },
+        { title: 'Gender', summary: participant.gender },
+        { title: 'Ethnicity', summary: participant.ethnicity },
+        { title: 'Race', summary: participant.race },
+        { title: 'Vital Status', summary: getIt('outcome.vital_status') },
+        { title: 'Disease Related', summary: getIt('outcome.disease_related') },
+      ];
 
-    { title: 'External ID:', summary: getIt('external_id') },
-    {
-      title: 'Study:',
-      summary: (
-        <ExternalLink
-          href={`${kfWebRoot}/support/studies-and-access`}
-          onClick={e => {
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.entityPage.file,
-              action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-              label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
-            });
-          }}
-        >
-          {`${getIt('study.short_name')} (${getIt('study.kf_id')})`}
-        </ExternalLink>
-      ),
-    },
-    {
-      title: 'Diagnosis category:',
-      summary: getIt('diagnoses.hits.edges.0.node.diagnosis_category'),
-    },
-    { title: 'Proband:', summary: participant.is_proband },
-    {
-      title: 'Family ID:',
-      summary: getIt('family_id'),
-    },
-    {
-      title: 'Family Composition:',
-      summary: getIt('family.family_compositions.hits.edges[0].node.composition'),
-    },
-    { title: 'Gender:', summary: participant.gender },
-    { title: 'Ethnicity:', summary: participant.ethnicity },
-    { title: 'Race:', summary: participant.race },
-    { title: 'Vital Status:', summary: getIt('outcome.vital_status') },
-    { title: 'Disease Related:', summary: getIt('outcome.disease_related') },
-  ]);
+      if(getIt('study.kf_id') === "SD_BHJXBDQK"){
+        summaryList.push(
+        { title: 'PedcBioPortal',
+          summary: (
+              <ExternalLink
+                href={ `https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_cbttc&caseId=${getIt('kf_id')}`}
+                onClick={e => {
+                  trackUserInteraction({
+                    category: TRACKING_EVENTS.categories.entityPage.file,
+                    action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
+                    label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
+                  });
+                }}
+              >
+                {getIt('kf_id')}
+              </ExternalLink>
+            ) },);
+         return summaryList;
+
+      } else if(getIt('study.kf_id') === "SD_M3DBXD12"){
+        summaryList.push(
+          { title: 'PedcBioPortal',
+            summary: (
+                <ExternalLink
+                  href={ `https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_pnoc003&caseId${getIt('kf_id')}`}
+                  onClick={e => {
+                    trackUserInteraction({
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                      action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
+                      label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
+                    });
+                  }}
+                >
+                  {getIt('kf_id')}
+                </ExternalLink>
+              ) },);
+           return summaryList;
+
+      } else{
+       return summaryList;
+      }
+  })())
 }
 
 /**

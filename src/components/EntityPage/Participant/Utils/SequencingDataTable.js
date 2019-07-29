@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ParticipantDataTable from './ParticipantDataTable';
+import sanitizeURL from './sanitizeURL';
 
 const defaults = 'Not Available';
 
@@ -11,8 +12,8 @@ class SequencingDataTable extends React.Component {
 
     function andCells(arr) {
       function makeCell(wrapper) {
-        if (wrapper.value === 0 || wrapper.column.Header === 'Strategy')
-          return <div>{wrapper.value}</div>;
+        if(wrapper.column.Header === 'Strategy') return <div>{wrapper.value}</div>;
+        if (wrapper.value === 0) return <div></div>;
 
         const url = `/search/file?sqon=
         {  
@@ -71,23 +72,7 @@ class SequencingDataTable extends React.Component {
         }
         `;
 
-        function sanitizeURL() {
-          let clean = '';
-          let escaped = false;
-
-          for (let i = 0; i < url.length; i++) {
-            const char = url.charAt(i);
-
-            if (char === '"') escaped = !escaped;
-            else if (!escaped && (char === ' ' || char === '\n')) continue;
-
-            clean += char;
-          }
-
-          return clean;
-        }
-
-        return <Link to={sanitizeURL()}>{wrapper.value}</Link>;
+        return <div style={{textAlign: "center"}}><Link to={sanitizeURL(url)}>{wrapper.value}</Link></div>;
       }
 
       return arr.map(topObj => {

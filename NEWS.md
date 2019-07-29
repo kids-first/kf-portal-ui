@@ -1,9 +1,22 @@
 # Release notes for kf-portal-ui
 
+## 2019-07-26 kf-portal-ui 2.6.0
+This release introduces new features and bug fixes.
+
+### New features
+- #1123 Participant Page
+- #1829 Participant Page: Links to these pages from elsewhere in the portal
+- #1880 Participant Page: Add family ID
+- #1950 Participant Page: add PedcBioPortal link
+
+### Bug fixes
+- Null dates are rendered as an invalid date #1960
+
+
 ## 2019-07-11 kf-portal-ui 2.5.1
 This release introduces a bug fix.
 
-## Bug fix
+### Bug fix
 - #1943 Put back "Beta release" banner
 
 

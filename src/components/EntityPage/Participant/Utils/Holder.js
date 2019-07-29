@@ -1,13 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-
-//taken from secondaryNavMenu
-const MenuWrapper = styled('ul')`
-  ${({ theme }) => theme.secondaryNav}
-  border: 1px solid transparent;
-`;
 
 export const Container = styled('div')`
   overflow-y: hidden;
@@ -30,30 +23,21 @@ class TabButton extends React.Component {
   render() {
     const tabId = this.props.tabId;
     const isActive = this.props.isActive;
+    const changeColor = isActive || this.state.hovered;
 
     //uses a fake Link: we want the same style as a SecondaryNavMenu, and this is the key to it
     return (
-      <li
-        style={{
-          borderRight:
-            isActive || this.state.hovered ? '5px solid #e83a9c' : '5px solid transparent',
+      <div
+        style={{flexGrow: 0, padding: "10px", marginRight: "5px", marginBottom: "5px",
+          border: changeColor ? "thin solid #e83a9c" : "thin solid rgb(224, 225, 230)", borderRadius: "1em"
         }}
         onClick={() => this.props.clickEvent(tabId)}
-        /*
-        Would normally use a function to do the toggling, but JS classes are dumb and their "this" is not actually
-        their "this" when used inside a call
-         */
+
         onMouseEnter={() => this.setState({ hovered: true })}
         onMouseLeave={() => this.setState({ hovered: false })}
       >
-        <Link
-          style={{ borderBottom: 'none', marginLeft: '-40px' }}
-          to={'#summary'}
-          className={isActive ? 'active' : ''}
-        >
-          {tabId}
-        </Link>
-      </li>
+        {tabId}
+      </div>
     );
   }
 }
@@ -83,25 +67,18 @@ class Holder extends React.Component {
     }
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div style={{ alignSelf: 'flex-start' }}>
-          <MenuWrapper
-            style={{
-              flexDirection: 'column',
-              display: 'inline-block',
-            }}
-          >
-            {tabIDs.map(tabId => {
-              return (
-                <TabButton
-                  key={tabId}
-                  clickEvent={tabId => this.setState({ activeTab: tabId })}
-                  isActive={tabId === this.state.activeTab}
-                  tabId={tabId}
-                />
-              );
-            })}
-          </MenuWrapper>
+      <div>
+        <div style={{display: "flex", flexWrap: "wrap"}}>
+          {tabIDs.map(tabId => {
+            return (
+              <TabButton
+                key={tabId}
+                clickEvent={tabId => this.setState({ activeTab: tabId })}
+                isActive={tabId === this.state.activeTab}
+                tabId={tabId}
+              />
+            );
+          })}
         </div>
         <Container>{children.find(child => child.props.label === this.state.activeTab)}</Container>
       </div>
