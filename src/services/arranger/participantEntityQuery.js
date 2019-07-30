@@ -177,6 +177,23 @@ export default `query ($sqon: JSON) {
             short_name
             version
           }
+          phenotype {
+            hits {
+              edges {
+                node {
+                  age_at_event_days
+                  external_id
+                  hpo_phenotype_not_observed
+                  hpo_phenotype_observed
+                  hpo_phenotype_observed_text
+                  ancestral_hpo_ids
+                  snomed_phenotype_not_observed
+                  snomed_phenotype_observed
+                  source_text_phenotype
+                }
+              }
+            }
+          }
         }
       }
     }
