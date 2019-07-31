@@ -147,7 +147,7 @@ export const EXAMPLE_QUERIES = [
       'Female probands with cleft palate (HP:0000175) and parents with harmonized aligned reads',
     url: `${window.location.protocol}://${
       window.location.host
-    }/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"%3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.available_data_types"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
+    }/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"data_type"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"%3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
     stats: {
       Files: 218,
       Participants: 101,
