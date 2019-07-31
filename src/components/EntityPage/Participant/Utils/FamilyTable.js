@@ -125,7 +125,7 @@ class FamilyTable extends React.Component {
 
           //we return an array when we want to splice our values at this index: since we're using flatMap, it'll unpack them in the right positions for us!
           //if the value we want to splice in is an empty array, no biggie, it will be unpacked into, well, nothing
-          return  [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, name) => {   //reduce the accessed array into new rows
+          return [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, name) => {   //reduce the accessed array into new rows
             let subRow = rows.find( (ele) => ele.leftfield === name); //let's try to see if the value is already in there.
 
             if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.

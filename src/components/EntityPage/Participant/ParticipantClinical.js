@@ -19,6 +19,7 @@ import { withRouter } from 'react-router';
 import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
 import { store } from '../../../store';
 import prettifyAge from './Utils/prettifyAge';
+import { flatMap } from 'lodash/collection';
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
@@ -79,9 +80,9 @@ class ParticipantClinical extends React.Component {
       });
     }
 
-    let phenotypes = get(this.props.participant, 'phenotype.hits.edges', []).map(ele =>
+    let phenotypes = flatMap(get(this.props.participant, 'phenotype.hits.edges', []).map(ele =>
       Object.assign({}, get(ele, 'node', {})) //copy obj
-    );
+    ), pheno => (pheno.hpo_phenotype_not_observed === null && pheno.hpo_phenotype_observed === null) ? [] : pheno); //TODO do we really want to filter out non-hpo phenos? Ask vincent
 
     Promise.all(
       (() => {
@@ -90,20 +91,20 @@ class ParticipantClinical extends React.Component {
           return call(pheno.hpo_phenotype_observed);
         });
 
-        phenotypes = phenotypes.map(pheno => {
+        phenotypes = flatMap( phenotypes, pheno => {
           //transform phenotypes while we wait for the calls
 
-          if(pheno.hpo_phenotype_observed === null) {
-            pheno.hpo = pheno.hpo_phenotype_not_observed;
-            pheno.interpretation = "Not Observed";
-          } else {
+          if(pheno.hpo_phenotype_not_observed === null) {
             pheno.hpo = pheno.hpo_phenotype_observed;
             pheno.interpretation = "Observed";
+          } else {
+            pheno.hpo = pheno.hpo_phenotype_not_observed;
+            pheno.interpretation = "Not Observed";
           }
 
           pheno.age_at_event_days = prettifyAge(pheno.age_at_event_days);
 
-          return pheno;
+          return [pheno];
         });
 
         return temp;
