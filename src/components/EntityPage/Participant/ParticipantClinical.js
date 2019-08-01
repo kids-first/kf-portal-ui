@@ -20,6 +20,7 @@ import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies'
 import { store } from '../../../store';
 import prettifyAge from './Utils/prettifyAge';
 import { flatMap } from 'lodash/collection';
+import { HPOLink, SNOMEDLink } from './Utils/Links';
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
@@ -65,8 +66,7 @@ class ParticipantClinical extends React.Component {
         return temp;
       })(),
     ).then(nums => {
-      for (let i = 0; i < nums.length; i++)
-        diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
+      for (let i = 0; i < nums.length; i++) diagnoses[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
 
       this.updateState({ diagnoses: sanitize(diagnoses) });  //once we're ready, just tell the state, it'll do the rest
     });
@@ -76,13 +76,13 @@ class ParticipantClinical extends React.Component {
     function call(phenotype) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotypes.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
       });
     }
 
-    let phenotypes = flatMap(get(this.props.participant, 'phenotype.hits.edges', []).map(ele =>
+    let phenotypes = get(this.props.participant, 'phenotype.hits.edges', []).map(ele =>
       Object.assign({}, get(ele, 'node', {})) //copy obj
-    ), pheno => (pheno.hpo_phenotype_not_observed === null && pheno.hpo_phenotype_observed === null) ? [] : pheno); //TODO do we really want to filter out non-hpo phenos? Ask vincent
+    );
 
     Promise.all(
       (() => {
@@ -91,15 +91,17 @@ class ParticipantClinical extends React.Component {
           return call(pheno.hpo_phenotype_observed);
         });
 
-        phenotypes = flatMap( phenotypes, pheno => {
+        phenotypes = flatMap( phenotypes.sort( (a, b) => a.age_at_event_days-b.age_at_event_days ), pheno => {
           //transform phenotypes while we wait for the calls
 
           if(pheno.observed) {
             pheno.interpretation = "Observed";
-            pheno.hpo = pheno.hpo_phenotype_observed
+            pheno.hpo = pheno.hpo_phenotype_observed;
+            pheno.snomed = pheno.snomed_phenotype_observed;
           } else {
             pheno.interpretation = "Not Observed";
             pheno.hpo = pheno.hpo_phenotype_not_observed;
+            pheno.snomed = pheno.snomed_phenotype_not_observed;
           }
 
           pheno.age_at_event_days = prettifyAge(pheno.age_at_event_days);
@@ -118,7 +120,6 @@ class ParticipantClinical extends React.Component {
   }
 
   dataIntoState() {
-    
     const api = initializeApi({
       onError: console.err,
       onUnauthorized: response => {
@@ -176,8 +177,8 @@ class ParticipantClinical extends React.Component {
     ];
 
     const phenoHeadsObs = [
-      { Header: 'Phenotype (HPO)', accessor: 'hpo', Cell: cellBreak },
-      { Header: "Phenotype (SNOMED)", accessor: 'snomed', Cell: cellBreak },
+      { Header: 'Phenotype (HPO)', accessor: 'hpo', Cell: (wrapper) => wrapper.value === "--" ? <div>--</div> : <HPOLink hpo={wrapper.value}/> },
+      { Header: "Phenotype (SNOMED)", accessor: 'snomed', Cell: (wrapper) => wrapper.value === "--" ? <div>--</div> : <SNOMEDLink snomed={wrapper.value}/> },
       { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
       { Header: 'Interpretation', accessor: 'interpretation', Cell: cellBreak },
       { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
@@ -221,6 +222,9 @@ class ParticipantClinical extends React.Component {
     const diagnoses = this.state.diagnoses;
     const phenotypes = this.state.phenotypes;
 
+    console.log("the phenos")
+    console.log(phenotypes)
+
     return (
       <React.Fragment>
         {
@@ -249,15 +253,7 @@ class ParticipantClinical extends React.Component {
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
-            <EntityContentSection title={'Shared Diagnosis Within Family Members'}>
-              <div>
-                <img
-                  src={familySVG}
-                  style={{ height: '1em', marginRight: '1em' }}
-                  alt={'family icon'}
-                />
-                Family ID: <span style={{ color: '#404c9a', fontWeight: 'bold' }}>{participant.family_id}</span>
-              </div>
+            <EntityContentSection title={`Family Members (${participant.family_id})`}>
               <FamilyTable participant={participant} />
             </EntityContentSection>
           </div>

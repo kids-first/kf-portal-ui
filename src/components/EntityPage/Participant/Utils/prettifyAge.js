@@ -1,4 +1,6 @@
 export default function prettifyAge(age) {
+  if(age === null) return null;
+
   const years = Number(('' + age / 365).split('.')[0]);
   const days = age - years * 365;
 
