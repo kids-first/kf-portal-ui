@@ -181,6 +181,7 @@ export default `query ($sqon: JSON) {
             hits {
               edges {
                 node {
+                  observed
                   age_at_event_days
                   external_id
                   hpo_phenotype_not_observed

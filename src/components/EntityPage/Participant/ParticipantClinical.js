@@ -94,12 +94,12 @@ class ParticipantClinical extends React.Component {
         phenotypes = flatMap( phenotypes, pheno => {
           //transform phenotypes while we wait for the calls
 
-          if(pheno.hpo_phenotype_not_observed === null) {
-            pheno.hpo = pheno.hpo_phenotype_observed;
+          if(pheno.observed) {
             pheno.interpretation = "Observed";
+            pheno.hpo = pheno.hpo_phenotype_observed
           } else {
-            pheno.hpo = pheno.hpo_phenotype_not_observed;
             pheno.interpretation = "Not Observed";
+            pheno.hpo = pheno.hpo_phenotype_not_observed;
           }
 
           pheno.age_at_event_days = prettifyAge(pheno.age_at_event_days);
@@ -177,6 +177,7 @@ class ParticipantClinical extends React.Component {
 
     const phenoHeadsObs = [
       { Header: 'Phenotype (HPO)', accessor: 'hpo', Cell: cellBreak },
+      { Header: "Phenotype (SNOMED)", accessor: 'snomed', Cell: cellBreak },
       { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
       { Header: 'Interpretation', accessor: 'interpretation', Cell: cellBreak },
       { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
@@ -233,8 +234,6 @@ class ParticipantClinical extends React.Component {
                 </EntityContentSection>
               )
         }
-
-
         {
 
           !phenotypes
@@ -247,7 +246,6 @@ class ParticipantClinical extends React.Component {
                 </EntityContentSection>
               )
         }
-
         {participant.family_id && (
           <div>
             {diagnoses.length === 0 ? "" : <EntityContentDivider /> }
