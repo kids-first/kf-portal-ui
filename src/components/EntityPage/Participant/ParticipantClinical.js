@@ -3,7 +3,6 @@ import { get } from 'lodash';
 import { EntityContentDivider, EntityContentSection } from '../';
 import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
-import familySVG from '../../../assets/icon-families-grey.svg';
 import ParticipantDataTable from './Utils/ParticipantDataTable';
 import graphql from 'services/arranger';
 import { initializeApi } from '../../../services/api';
@@ -73,10 +72,17 @@ class ParticipantClinical extends React.Component {
   }
 
   phenotypeIntoState(api) { //stub for when the phenotypes are available
-    function call(phenotype) {
+    function callObs(phenotype) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
         variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
+      });
+    }
+
+    function callNotObs(phenotype) {
+      return graphql(api)({
+        query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_not_observed","value":["${phenotype}"]}}]}}`,
       });
     }
 
@@ -84,33 +90,29 @@ class ParticipantClinical extends React.Component {
       Object.assign({}, get(ele, 'node', {})) //copy obj
     );
 
+    phenotypes = flatMap( phenotypes.sort( (a, b) => a.age_at_event_days-b.age_at_event_days ), pheno => {
+      //transform phenotypes while we wait for the calls
+
+      if(pheno.observed) {
+        pheno.interpretation = "Observed";
+        pheno.hpo = pheno.hpo_phenotype_observed;
+        pheno.snomed = pheno.snomed_phenotype_observed;
+      } else {
+        pheno.interpretation = "Not Observed";
+        pheno.hpo = pheno.hpo_phenotype_not_observed;
+        pheno.snomed = pheno.snomed_phenotype_not_observed;
+      }
+
+      pheno.age_at_event_days = prettifyAge(pheno.age_at_event_days);
+
+      return [pheno];
+    });
+
     Promise.all(
-      (() => {
-        const temp = phenotypes.map(pheno => {
-          //start ajax calls to know the shared with.
-          return call(pheno.hpo_phenotype_observed);
-        });
-
-        phenotypes = flatMap( phenotypes.sort( (a, b) => a.age_at_event_days-b.age_at_event_days ), pheno => {
-          //transform phenotypes while we wait for the calls
-
-          if(pheno.observed) {
-            pheno.interpretation = "Observed";
-            pheno.hpo = pheno.hpo_phenotype_observed;
-            pheno.snomed = pheno.snomed_phenotype_observed;
-          } else {
-            pheno.interpretation = "Not Observed";
-            pheno.hpo = pheno.hpo_phenotype_not_observed;
-            pheno.snomed = pheno.snomed_phenotype_not_observed;
-          }
-
-          pheno.age_at_event_days = prettifyAge(pheno.age_at_event_days);
-
-          return [pheno];
-        });
-
-        return temp;
-      })(),
+      phenotypes.map(pheno => {
+        //start ajax calls to know the shared with.
+        return pheno.interpretation === "Observed" ? callObs(pheno.hpo) : callNotObs(pheno.hpo);
+      })
     ).then(nums => {
       for (let i = 0; i < nums.length; i++)
         phenotypes[i].shared_with = get(nums[i], 'data.participant.hits.total', '--');
@@ -147,6 +149,8 @@ class ParticipantClinical extends React.Component {
         accessor: 'shared_with',
         Cell: wrapper => {
 
+          if(wrapper.value === "0"|| wrapper.value === 0) return <div>0</div>;
+
           const onClick = () => {
             store.dispatch(resetVirtualStudy());
 
@@ -176,16 +180,18 @@ class ParticipantClinical extends React.Component {
       },
     ];
 
-    const phenoHeadsObs = [
+    const phenoHeads = [
       { Header: 'Phenotype (HPO)', accessor: 'hpo', Cell: (wrapper) => wrapper.value === "--" ? <div>--</div> : <HPOLink hpo={wrapper.value}/> },
       { Header: "Phenotype (SNOMED)", accessor: 'snomed', Cell: (wrapper) => wrapper.value === "--" ? <div>--</div> : <SNOMEDLink snomed={wrapper.value}/> },
       { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
       { Header: 'Interpretation', accessor: 'interpretation', Cell: cellBreak },
       { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
       {
-        Header: 'Shared with',
+        Header: 'Shared with (HPO)',
         accessor: 'shared_with',
         Cell: wrapper => {
+
+          if(wrapper.value === "0"|| wrapper.value === 0) return <div>0</div>;
 
           const onClick = () => {
             store.dispatch(resetVirtualStudy());
@@ -193,8 +199,8 @@ class ParticipantClinical extends React.Component {
             const newSqon = {
               op: 'in',
               content: {
-                field: 'diagnoses.mondo_id_diagnosis',
-                value: [wrapper.original.mondo_id_diagnosis],
+                field: wrapper.original.interpretation === 'Observed' ? "phenotype.hpo_phenotype_observed" : "phenotype.hpo_phenotype_not_observed",
+                value: [wrapper.original.hpo],
               },
             };
 
@@ -216,14 +222,9 @@ class ParticipantClinical extends React.Component {
       },
     ];
 
-    console.log(this.props.participant)
-
     const participant = this.props.participant;
     const diagnoses = this.state.diagnoses;
     const phenotypes = this.state.phenotypes;
-
-    console.log("the phenos")
-    console.log(phenotypes)
 
     return (
       <React.Fragment>
@@ -239,14 +240,13 @@ class ParticipantClinical extends React.Component {
               )
         }
         {
-
           !phenotypes
             ? ""
             : phenotypes.length === 0
               ? ""
               : (
                 <EntityContentSection title="Phenotypes">
-                  <ParticipantDataTable columns={phenoHeadsObs} data={phenotypes} />
+                  <ParticipantDataTable columns={phenoHeads} data={phenotypes} />
                 </EntityContentSection>
               )
         }
