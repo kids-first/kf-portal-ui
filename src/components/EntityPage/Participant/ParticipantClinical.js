@@ -136,8 +136,6 @@ class ParticipantClinical extends React.Component {
   render() {
     const cellBreak = wrapper => <div style={{wordBreak: "break-word", textTransform: "capitalize"}}>{wrapper.value}</div>;
 
-    console.log(this.state.phenotypes)
-
     const diagHeads = [
       { Header: 'Diagnosis Category', accessor: 'diagnosis_category', Cell: cellBreak },
       { Header: 'Diagnosis (Mondo)', accessor: 'mondo_id_diagnosis', Cell: cellBreak },

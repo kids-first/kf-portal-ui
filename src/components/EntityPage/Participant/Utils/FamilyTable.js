@@ -5,25 +5,6 @@ import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
 import { HPOLink, SNOMEDLink } from './Links';
 
-
-const Cell = ({children, style={}}) => <div style={style} ><span style={{textAlign: "center"}}>{children}</span></div>;
-
-function isOdd(num) {
-  return (num % 2) === 1;
-}
-
-const Table = ({data, acc=[], style={}, appendLeft=[]}) => {
-  return (
-    <div style={{ ...style, display: "grid", gridTemplateRows: Array(acc.length+1).join("1fr "), gridAutoFlow: "column" }}>
-      {
-        sanitize(data).map( datum => {
-          return acc.map( a => <Cell>{get(datum, a, null)}</Cell>)
-        })
-      }
-    </div>
-  )
-};
-
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
  */
@@ -223,8 +204,6 @@ class FamilyTable extends React.Component {
 
   render() {
     const composition = this.composition;
-
-    //return <Table data={this.famMembersNodes} acc={["kf_id", "is_proband", "gender", "outcome.vital_status"]}/>
 
     if (composition === 'proband-only') return (
       <div>
