@@ -13,7 +13,7 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import { Link } from 'uikit/Core';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { kfWebRoot } from 'common/injectGlobals';
-import { GEN3 } from 'common/constants';
+import { FENCES } from 'common/constants';
 
 import {
   EntityTitleBar,
@@ -419,9 +419,15 @@ const enhance = compose(
   lifecycle({
     async componentDidMount() {
       const { api, fileId, setPageLoading, setUserFilePermission } = this.props;
-      // TODO: Need to update this to check all fences
-      const hasFilePermission = await checkUserFilePermission(api)({ fileId, fence: GEN3 });
-      setUserFilePermission(hasFilePermission);
+      // Need to check all fences
+      const hasUserPermissionPromises = FENCES.map(fence =>
+        checkUserFilePermission(api)({ fileId, fence }),
+      );
+      // A user has access if at least one fence grants us access
+      const userHasFilePermission = await Promise.all(hasUserPermissionPromises).then(accesses =>
+        accesses.reduce((hasAccess, permission) => hasAccess || permission, false),
+      );
+      setUserFilePermission(userHasFilePermission);
       setPageLoading(false);
     },
   }),
