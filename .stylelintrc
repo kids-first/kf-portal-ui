@@ -1,8 +1,6 @@
 {
   "extends": "stylelint-config-recommended",
   "rules": {
-    "selector-nested-pattern": "^&",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "selector-nested-pattern": "^&"
   }
 }
