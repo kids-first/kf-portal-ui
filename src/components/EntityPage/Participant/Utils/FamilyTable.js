@@ -199,6 +199,16 @@ class FamilyTable extends React.Component {
       Object.values(phSNO)
     );
 
+    rows = rows.reduce((acc, row, i) => { //removes empty rows
+      if(row.subheader === true) {
+        const hasContent = ((i+1) >= rows.length) ? false : (rows[i + 1].subheader === false);
+        if (!hasContent) return acc;
+      }
+
+      acc.push(row);
+      return acc;
+    }, []);
+
     return rows;
   }
 
