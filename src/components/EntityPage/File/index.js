@@ -198,15 +198,21 @@ const fileQuery = `query ($sqon: JSON) {
                                       vital_status
                                     }
                                     phenotype {
-                                      age_at_event_days
-                                      external_id
-                                      hpo_phenotype_not_observed
-                                      hpo_phenotype_observed
-                                      hpo_phenotype_observed_text
-                                      shared_hpo_ids
-                                      snomed_phenotype_not_observed
-                                      snomed_phenotype_observed
-                                      source_text_phenotype
+                                      hits {
+                                        edges {
+                                          node {
+                                            age_at_event_days
+                                            external_id
+                                            hpo_phenotype_not_observed
+                                            hpo_phenotype_observed
+                                            hpo_phenotype_observed_text
+                                            shared_hpo_ids
+                                            snomed_phenotype_not_observed
+                                            snomed_phenotype_observed
+                                            source_text_phenotype
+                                          }
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -224,14 +230,20 @@ const fileQuery = `query ($sqon: JSON) {
                     vital_status
                   }
                   phenotype {
-                    age_at_event_days
-                    external_id
-                    hpo_phenotype_not_observed
-                    hpo_phenotype_observed
-                    hpo_phenotype_observed_text
-                    snomed_phenotype_not_observed
-                    snomed_phenotype_observed
-                    source_text_phenotype
+                    hits {
+                      edges {
+                        node {
+                          age_at_event_days
+                          external_id
+                          hpo_phenotype_not_observed
+                          hpo_phenotype_observed
+                          hpo_phenotype_observed_text
+                          snomed_phenotype_not_observed
+                          snomed_phenotype_observed
+                          source_text_phenotype
+                        }
+                      }
+                    }
                   }
                   study {
                     attribution
@@ -357,11 +369,8 @@ const FileEntity = compose(withTheme)(
                     ),
 
                     participant_id: participantId => (
-                      <Link to={`/participant/${participantId}#summary`}>
-                        {participantId}
-                      </Link>
+                      <Link to={`/participant/${participantId}#summary`}>{participantId}</Link>
                     ),
-
                   }}
                   columns={particpantBiospecimenColumns}
                   downloadName="participants_biospecimens"
