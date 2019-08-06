@@ -138,7 +138,7 @@ class ParticipantClinical extends React.Component {
 
   prettySharedWith(amount) {
     if(amount === "--") return amount;
-    else if(amount === 0 || amount === 1) return `${amount} participant`;
+    else if(amount === 1) return `${amount} participant`;
     else return `${amount} participants`;
   }
 
