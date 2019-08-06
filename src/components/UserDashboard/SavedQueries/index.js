@@ -157,7 +157,9 @@ class SavedQueries extends React.Component {
                     total: fileQueries.length ? fileQueries.length : [0],
                   },
                 ]}
-                onTabSelect={({ id }) => { setActiveSavedQueryTab(id) } }
+                onTabSelect={({ id }) => {
+                  setActiveSavedQueryTab(id);
+                }}
               />
               <ShowIf condition={selectedTab === 'FILES'}>
                 {!fileQueries.length ? (
@@ -238,9 +240,18 @@ class SavedQueries extends React.Component {
                               </Box>
                             </Row>
                             <Row justifyContent="space-between" width="100%">
-                              <Tooltip html={<div className={`${studyDescriptionStyle}`}>{vs.description}</div>}>
-                                <div className={`${studyDescriptionStyle}`} style={{marginRight: "32px"}}>
-                                  { vs.description.length >= 140 ? `${vs.description.slice(0, 140)}...` : vs.description }
+                              <Tooltip
+                                html={
+                                  <div className={`${studyDescriptionStyle}`}>{vs.description}</div>
+                                }
+                              >
+                                <div
+                                  className={`${studyDescriptionStyle}`}
+                                  style={{ marginRight: '32px' }}
+                                >
+                                  {vs.description.length >= 140
+                                    ? `${vs.description.slice(0, 140)}...`
+                                    : vs.description}
                                 </div>
                               </Tooltip>
                             </Row>

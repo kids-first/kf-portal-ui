@@ -1,0 +1,52 @@
+@import '../../theme/vars';
+
+.global-modal {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  position: absolute;
+  /* TODO: Use vars borderGrey */
+  border: 1px solid #cacbcf;
+  /* TODO: Use vars white */
+  background: #ffffff;
+  border-radius: 4px;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  padding: 20px 20px;
+  max-width: 1000px;
+  max-height: 85%;
+  min-height: 0;
+  /* TODO: Use vars: shadow */
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  & * {
+    box-sizing: border-box;
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #d4d6dd;
+    margin-bottom: 1.5em;
+  }
+
+  .footer {
+    padding-bottom: 75px;
+  }
+}
+
+.global-modal-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  /* TODO: Use vars: shadow */
+  background-color: rgba(0, 0, 0, 0.5);
+  display: block;
+  z-index: 1000;
+}

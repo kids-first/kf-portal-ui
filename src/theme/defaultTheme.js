@@ -1,4 +1,4 @@
-import { css } from 'react-emotion';
+const css = require('react-emotion').css;
 
 const colors = {
   white: '#ffffff',
@@ -17,7 +17,7 @@ const colors = {
   orange: '#ffaa52',
   purple: '#a6278f',
 
-  primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
+  //primaryGradient: `#90278e, #cc3399 35%, #be1e2d 66%, #f6921e`,
 
   active: '#00afed', //light blue
   inactive: '#dedfe4', //grey
@@ -87,7 +87,7 @@ const colors = {
   backgroundRowEven: '#f4f5f8',
 };
 
-export const chartColors = {
+const chartColors = {
   lightblue: '#00ACEB',
   darkblue: '#2b388f',
   lightpurple: '#A6278F',
@@ -576,10 +576,13 @@ const components = {
   info: css``,
 };
 
-export default {
+module.exports = {
   chartColors,
   ...colors,
   ...components,
   ...mixins,
   fonts,
+  variables: {
+    colors: colors,
+  },
 };

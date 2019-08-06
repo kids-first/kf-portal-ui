@@ -5,13 +5,20 @@ import { compose } from 'recompose';
 import autobind from 'auto-bind-es5';
 import SearchAll from '../SearchAll';
 import Category from './Category';
+import ActionCategory from './ActionCategory';
 import Row from 'uikit/Row';
 import QuickFilterIcon from 'icons/QuickFilterIcon';
 import StudyIcon from 'icons/StudyIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import ClinicalIcon from 'icons/ClinicalIcon';
+import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
+
+import { setModal } from '../../../store/actionCreators/ui/modalComponent';
+import { store } from '../../../store';
+
+import './styles.scss';
 
 const Container = styled(Row)`
   height: 72px;
@@ -156,6 +163,16 @@ class Categories extends React.Component {
     this.setActiveCategory({ fieldName: '', category: null });
   }
 
+  handleUploadIdsClick() {
+    store.dispatch(
+      setModal({
+        title: 'Boing!',
+        component: <div>BOING BOING!!!</div>,
+        classNames: {},
+      }),
+    );
+  }
+
   setActiveCategory = ({ category, fieldName }) =>
     this.setState({
       currentCategory: category,
@@ -167,7 +184,7 @@ class Categories extends React.Component {
     const { currentSearchField, currentCategory } = this.state;
 
     return (
-      <Container>
+      <Container className="virtual-Studies-categories">
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
@@ -260,6 +277,15 @@ class Categories extends React.Component {
         >
           <FileIcon width={11} height={14} fill={theme.dataBlue} />
         </Category>
+
+        {/* the below is not actually a Category */}
+        <ActionCategory
+          title="Upload IDs"
+          color={theme.uploadYellow}
+          onClick={this.handleUploadIdsClick}
+        >
+          <UploadIcon fill={theme.uploadYellow} />
+        </ActionCategory>
       </Container>
     );
   }
