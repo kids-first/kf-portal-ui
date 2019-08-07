@@ -13,7 +13,7 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import { Link } from 'uikit/Core';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { kfWebRoot } from 'common/injectGlobals';
-import { GEN3 } from 'common/constants';
+import { FENCES } from 'common/constants';
 
 import {
   EntityTitleBar,
@@ -198,15 +198,21 @@ const fileQuery = `query ($sqon: JSON) {
                                       vital_status
                                     }
                                     phenotype {
-                                      age_at_event_days
-                                      external_id
-                                      hpo_phenotype_not_observed
-                                      hpo_phenotype_observed
-                                      hpo_phenotype_observed_text
-                                      shared_hpo_ids
-                                      snomed_phenotype_not_observed
-                                      snomed_phenotype_observed
-                                      source_text_phenotype
+                                      hits {
+                                        edges {
+                                          node {
+                                            age_at_event_days
+                                            external_id
+                                            hpo_phenotype_not_observed
+                                            hpo_phenotype_observed
+                                            hpo_phenotype_observed_text
+                                            shared_hpo_ids
+                                            snomed_phenotype_not_observed
+                                            snomed_phenotype_observed
+                                            source_text_phenotype
+                                          }
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -224,14 +230,20 @@ const fileQuery = `query ($sqon: JSON) {
                     vital_status
                   }
                   phenotype {
-                    age_at_event_days
-                    external_id
-                    hpo_phenotype_not_observed
-                    hpo_phenotype_observed
-                    hpo_phenotype_observed_text
-                    snomed_phenotype_not_observed
-                    snomed_phenotype_observed
-                    source_text_phenotype
+                    hits {
+                      edges {
+                        node {
+                          age_at_event_days
+                          external_id
+                          hpo_phenotype_not_observed
+                          hpo_phenotype_observed
+                          hpo_phenotype_observed_text
+                          snomed_phenotype_not_observed
+                          snomed_phenotype_observed
+                          source_text_phenotype
+                        }
+                      }
+                    }
                   }
                   study {
                     attribution
@@ -357,11 +369,8 @@ const FileEntity = compose(withTheme)(
                     ),
 
                     participant_id: participantId => (
-                      <Link to={`/participant/${participantId}#summary`}>
-                        {participantId}
-                      </Link>
+                      <Link to={`/participant/${participantId}#summary`}>{participantId}</Link>
                     ),
-
                   }}
                   columns={particpantBiospecimenColumns}
                   downloadName="participants_biospecimens"
@@ -410,9 +419,15 @@ const enhance = compose(
   lifecycle({
     async componentDidMount() {
       const { api, fileId, setPageLoading, setUserFilePermission } = this.props;
-      // TODO: Need to update this to check all fences
-      const hasFilePermission = await checkUserFilePermission(api)({ fileId, fence: GEN3 });
-      setUserFilePermission(hasFilePermission);
+      // Need to check all fences
+      const hasUserPermissionPromises = FENCES.map(fence =>
+        checkUserFilePermission(api)({ fileId, fence }),
+      );
+      // A user has access if at least one fence grants us access
+      const userHasFilePermission = await Promise.all(hasUserPermissionPromises).then(accesses =>
+        accesses.reduce((hasAccess, permission) => hasAccess || permission, false),
+      );
+      setUserFilePermission(userHasFilePermission);
       setPageLoading(false);
     },
   }),

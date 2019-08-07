@@ -30,6 +30,7 @@ const normalizeRiffVirtualStudy = studyData => ({
   description: get(studyData, 'content.description', ''),
   uid: studyData.uid || null,
   sharedPublicly: studyData.sharedPublicly || false,
+  creationDate: studyData.creationDate || '',
 });
 
 /**

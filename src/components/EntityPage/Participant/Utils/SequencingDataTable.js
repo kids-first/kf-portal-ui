@@ -108,7 +108,7 @@ class SequencingDataTable extends React.Component {
       },
     ]);
 
-    this.breakdownData = () => {
+    this.breakdownData = (() => {
       function makeBaselineRow(row) {
         const baselineNB = { unalignedreads: 0, alignedreads: 0, gvcf: 0, variantcalls: 0 };
 
@@ -153,11 +153,11 @@ class SequencingDataTable extends React.Component {
       });
 
       return rows;
-    };
+    })();
   }
 
   render() {
-    return <ParticipantDataTable columns={this.breakdownCols} data={this.breakdownData()} />;
+    return <ParticipantDataTable columns={this.breakdownCols} data={this.breakdownData} />;
   }
 }
 

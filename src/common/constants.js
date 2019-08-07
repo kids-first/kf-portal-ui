@@ -147,12 +147,12 @@ export const EXAMPLE_QUERIES = [
       'Female probands with cleft palate (HP:0000175) and parents with harmonized aligned reads',
     url: `${window.location.protocol}://${
       window.location.host
-    }/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.available_data_types%22%2C%22value%22%3A%5B%22Aligned%20Reads%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.composition%22%2C%22value%22%3A%5B%22trio%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.family.family_compositions.family_members.phenotype.hpo.hpo_phenotype_observed%22%2C%22value%22%3A%5B%22HP%3A0000175%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22participants.gender%22%2C%22value%22%3A%5B%22Female%22%5D%7D%7D%5D%7D`,
+    }/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"data_type"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"%3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
     stats: {
-      Files: 738,
-      Participants: 369,
-      Families: 274,
-      Size: '9.34 TB',
+      Files: 218,
+      Participants: 101,
+      Families: 71,
+      Size: '1.23 TB',
     },
     example: true,
   },
