@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { withTheme } from 'emotion-theming';
-
+import { distanceInWords } from 'date-fns';
 import { Box, Link, Flex, Span } from 'uikit/Core';
 import CardHeader from 'uikit/Card/CardHeader';
 import Row from 'uikit/Row';
@@ -81,6 +81,11 @@ const studyDescriptionStyle = css({
   wordBreak: 'break-word',
 });
 
+const studySavedTimeStyle = css({
+  fontSize: '12px',
+  color:'rgb(52,52,52)'
+});
+
 class SavedQueries extends React.Component {
   constructor(props) {
     super(props);
@@ -130,7 +135,6 @@ class SavedQueries extends React.Component {
       setActiveSavedQueryTab,
     } = this.props;
     const selectedTab = userDashboardPage.activeSavedQueryTab;
-    console.log(exampleQueries)
     return (
       <DashboardCard showHeader={false}>
         {loadingQueries ? (
@@ -214,7 +218,8 @@ class SavedQueries extends React.Component {
                   <Box mt={2} mb={2}>
                     <Scroll>
                       {virtualStudies.map(vs => (
-                        <Study key={vs.virtualStudyId}>
+
+                        <Study key={vs.virtualStudyId} date={Number(new Date(vs.creationDate))}>
                           <Column width="100%">
                             <Row justifyContent="space-between" width="100%">
                               <StudyLink to={`/explore?id=${vs.virtualStudyId}`}>
@@ -239,9 +244,14 @@ class SavedQueries extends React.Component {
                                 </div>
                               </Tooltip>
                             </Row>
+                              <div className={`${studySavedTimeStyle}`} style={{fontFamily:'Open Sans,sans-serif' }}>
+                                Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
+                              </div>
                           </Column>
                         </Study>
-                      ))}
+                      )).slice()
+                        .sort((a, b) =>  b.props.date - a.props.date)
+                      }
                     </Scroll>
                   </Box>
                 )}
