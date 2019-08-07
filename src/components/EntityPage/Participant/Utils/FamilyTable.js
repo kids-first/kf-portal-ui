@@ -3,6 +3,7 @@ import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
+import { HPOLink, SNOMEDLink } from './Links';
 
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
@@ -17,18 +18,21 @@ class FamilyTable extends React.Component {
     const compNode = get(participant, 'family.family_compositions.hits.edges[0].node');
     this.composition = compNode.composition;
 
-    const famMembersNodes = [participant].concat(get(compNode, 'family_members.hits.edges', []).map(ele => ele.node))
+    this.famMembersNodes = [participant].concat(get(compNode, 'family_members.hits.edges', []).map(ele => ele.node))
 
-    this.heads = this.buildHeads(famMembersNodes);
-    this.rows = this.buildRows(famMembersNodes);
+    this.heads = this.buildHeads(this.famMembersNodes);
+    this.rows = this.buildRows(this.famMembersNodes);
   }
 
   buildHeads(famMembersNodes) {
     function makeCell(wrapper) {
       if (wrapper.row._original.subheader === 'true') {
-        if (wrapper.column.Header === '')
-          return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
-      } else return <div style={{ textTransform: 'capitalize' }}>{wrapper.value}</div>;
+        if (wrapper.column.Header === '') return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
+      } else {
+        if(/^.*SNOMEDCT:\d+$/.test(wrapper.value)) return <SNOMEDLink snomed={wrapper.value}/>;
+        else if(/^.*\(HP:\d+\)$/.test(wrapper.value)) return <HPOLink hpo={wrapper.value}/>;
+        else return <div style={{ textTransform: 'capitalize' }}>{wrapper.value}</div>;
+      }
 
       return '';
     }
@@ -105,7 +109,7 @@ class FamilyTable extends React.Component {
       return temp;
     }
 
-    const rows = [
+    let rows = [
       baseline('Generic Information', '', true),
       baseline('Proband', 'is_proband'),
       baseline('Vital Status', 'outcome.vital_status'),
@@ -114,7 +118,7 @@ class FamilyTable extends React.Component {
       baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
     ];
 
-    return famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
+    rows = famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
       const kf_id = node.kf_id;
 
       return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
@@ -125,7 +129,7 @@ class FamilyTable extends React.Component {
 
           //we return an array when we want to splice our values at this index: since we're using flatMap, it'll unpack them in the right positions for us!
           //if the value we want to splice in is an empty array, no biggie, it will be unpacked into, well, nothing
-          return  [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, name) => {   //reduce the accessed array into new rows
+          return [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, name) => {   //reduce the accessed array into new rows
             let subRow = rows.find( (ele) => ele.leftfield === name); //let's try to see if the value is already in there.
 
             if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
@@ -144,6 +148,68 @@ class FamilyTable extends React.Component {
         }
       });
     }, rows);
+
+    const phHPO = {};
+    const phSNO = {};
+
+    famMembersNodes.forEach( member => {
+      get(member, "phenotype.hits.edges", null).forEach( ele => {
+        ele = ele.node;
+
+        const report = ele.observed ? "Observed" : "Not observed";
+
+        let hpo;
+        let snomed;
+
+        if(ele.observed === true) {
+          hpo = ele.hpo_phenotype_observed;
+          snomed = ele.snomed_phenotype_observed;
+        } else {
+          hpo = ele.hpo_phenotype_not_observed;
+          snomed = ele.snomed_phenotype_not_observed
+        }
+
+        if(hpo !== null) {
+          if(hpo in phHPO) {
+            phHPO[hpo][member.kf_id] = report;
+          } else {
+            phHPO[hpo] = baseline(hpo);
+            phHPO[hpo][member.kf_id] = report;
+          }
+        }
+
+        if(snomed !== null) {
+          if(snomed in phSNO) {
+            phSNO[snomed][member.kf_id] = report;
+          } else {
+            phSNO[snomed] = baseline(snomed);
+            phSNO[snomed][member.kf_id] = report;
+          }
+        }
+      })
+    });
+
+    rows = rows.concat(
+      [baseline('Phenotypes (HPO)', '', true)]
+    ).concat(
+      Object.values(phHPO)
+    ).concat(
+      [baseline('Phenotypes (SNOMED)', '', true)]
+    ).concat(
+      Object.values(phSNO)
+    );
+
+    rows = rows.reduce((acc, row, i) => { //removes empty rows
+      if(row.subheader === true) {
+        const hasContent = ((i+1) >= rows.length) ? false : (rows[i + 1].subheader === false);
+        if (!hasContent) return acc;
+      }
+
+      acc.push(row);
+      return acc;
+    }, []);
+
+    return rows;
   }
 
   render() {

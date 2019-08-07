@@ -81,6 +81,24 @@ export default `query ($sqon: JSON) {
                             relationship
                             kf_id
                             is_proband
+                            phenotype {
+                              hits {
+                                edges {
+                                  node {
+                                    observed
+                                    age_at_event_days
+                                    external_id
+                                    hpo_phenotype_not_observed
+                                    hpo_phenotype_observed
+                                    hpo_phenotype_observed_text
+                                    ancestral_hpo_ids
+                                    snomed_phenotype_not_observed
+                                    snomed_phenotype_observed
+                                    source_text_phenotype
+                                  }
+                                }
+                              }
+                            }
                             diagnoses {
                               hits {
                                 edges {
@@ -176,6 +194,24 @@ export default `query ($sqon: JSON) {
             release_status
             short_name
             version
+          }
+          phenotype {
+            hits {
+              edges {
+                node {
+                  observed
+                  age_at_event_days
+                  external_id
+                  hpo_phenotype_not_observed
+                  hpo_phenotype_observed
+                  hpo_phenotype_observed_text
+                  ancestral_hpo_ids
+                  snomed_phenotype_not_observed
+                  snomed_phenotype_observed
+                  source_text_phenotype
+                }
+              }
+            }
           }
         }
       }
