@@ -17,6 +17,7 @@ import DemographicIcon from 'icons/DemographicIcon';
 
 import { setModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
+import SearchByIdModalContent from '../SearchById/SearchByIdModalContent';
 
 import './styles.scss';
 
@@ -166,9 +167,8 @@ class Categories extends React.Component {
   handleUploadIdsClick() {
     store.dispatch(
       setModal({
-        title: 'Boing!',
-        component: <div>BOING BOING!!!</div>,
-        classNames: {},
+        title: 'Upload a List of Identifiers',
+        component: <SearchByIdModalContent />,
       }),
     );
   }

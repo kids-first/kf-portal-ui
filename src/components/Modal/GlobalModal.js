@@ -50,25 +50,31 @@ class GlobalModal extends React.Component {
   }
 
   render() {
-    const { title = '', component = null, classNames = null, isFooterShown = true } = this.props;
+    const {
+      title = '',
+      component = null,
+      className = '',
+      classNames = null,
+      isFooterShown = true,
+      ...rest
+    } = this.props;
 
     return (
       <ReactModal
-        className={`global-modal ${classNames ? classNames.modal : ''} ${
-          isFooterShown ? 'footer' : ''
-        }`}
+        isOpen={!!component}
+        className={`global-modal ${className}} ${isFooterShown ? 'footer' : ''}`}
         overlayClassName={`global-modal-overlay ${classNames ? classNames.overlay : ''}`}
         appElement={getAppElement()}
-        isOpen={!!component}
+        {...rest}
       >
         {!!title ? (
           <ModalHeader
             title={title}
             onClose={this.handleClose}
-            className={`header ${classNames ? classNames.header : ''}`}
+            className={`header ${(classNames && classNames.header) || ''}`}
           />
         ) : null}
-        <ModalContent className={`${classNames ? classNames.content : ''}`}>
+        <ModalContent className={`content ${classNames ? classNames.content : ''}`}>
           {component}
         </ModalContent>
       </ReactModal>

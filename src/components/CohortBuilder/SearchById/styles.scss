@@ -1,0 +1,29 @@
+.search-by-id-modal-content {
+  & .sbi-description {
+    margin-bottom: 1.5em;
+  }
+
+  & .sbi-id-input {
+    box-sizing: border-box;
+
+    margin-bottom: 1.5em;
+
+    background: white;
+    border-radius: 10px;
+
+    border: solid 2px lightgrey;
+    padding: 5px;
+
+    font-family: 'Montserrat', sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    & textarea {
+      border: none;
+      flex: 1 1 0%;
+    }
+  }
+}
