@@ -41,7 +41,6 @@ export {HPOLink};
 
 
 const MONDOLink = ({mondo}) => {
-  console.log("mondo",mondo)
   const matcher = /^.*\((MONDO:\d+)\)$/.exec(mondo);
     if(matcher === null){
          return <div> -- </div>

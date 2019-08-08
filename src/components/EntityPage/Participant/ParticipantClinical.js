@@ -156,7 +156,7 @@ class ParticipantClinical extends React.Component {
         accessor: 'shared_with',
         Cell: wrapper => {
 
-          if(wrapper.value === "0 participants") return <div>0 participant</div>;
+          if(wrapper.value === "0 participants") return <div>0 participants</div>;
 
           const onClick = () => {
             store.dispatch(resetVirtualStudy());
@@ -198,7 +198,7 @@ class ParticipantClinical extends React.Component {
         accessor: 'shared_with',
         Cell: wrapper => {
 
-          if(wrapper.value === "0 participants") return <div>0 participant</div>;
+          if(wrapper.value === "0 participants") return <div>0 participants</div>;
 
           const onClick = () => {
             store.dispatch(resetVirtualStudy());
