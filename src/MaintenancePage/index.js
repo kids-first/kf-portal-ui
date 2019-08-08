@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import backgroundScene from './background-scene.png';
 import logo from './logo-kids-first-drc.svg';
+import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 
 const Container = styled('div')`
   background-color: #e3f6fd;
@@ -95,7 +96,7 @@ export default () => (
     <img class="background-img" src={backgroundScene} alt="background" />
 
     <div class="content-container">
-      <a href="http://www.kidsfirstdrc.org">
+      <a href={kfWebRoot}>
         <img alt="Kids First DRC logo" src={logo} width="250" />
       </a>
       <br />
@@ -111,16 +112,14 @@ export default () => (
       <h2>In the meantime…</h2>
       <ul>
         <li>
-          Read about the{' '}
-          <a href="http://www.kidsfirstdrc.org/about/program_impact">benefits of Kids First DRC</a>
+          Read about the <a href={`${kfWebRoot}/about/drc_impact`}>benefits of Kids First DRC</a>
         </li>
         <li>
-          Check out the latest <a href="http://www.kidsfirstdrc.org/news">News & Events</a>
+          Check out the latest <a href={`${kfWebRoot}/news`}>News &amp; Events</a>
         </li>
         <li>
-          Follow us on <a href="http://www.facebook.com/kidsfirstDRC">Facebook</a>,{' '}
-          <a href="http://twitter.com/kidsfirstDRC">Twitter</a> or{' '}
-          <a href="http://github.com/kids-first">GitHub</a>
+          Follow us on <a href={kfFacebook}>Facebook</a>, <a href={kfTwitter}>Twitter</a> or{' '}
+          <a href={kfGithub}>GitHub</a>
         </li>
       </ul>
 
