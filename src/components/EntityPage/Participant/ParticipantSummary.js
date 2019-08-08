@@ -11,6 +11,7 @@ import SequencingDataTable from './Utils/SequencingDataTable';
 import OtherDataTypesSummaryTable from './Utils/OtherDataTypesSummaryTable';
 import { get } from 'lodash';
 import sanitize from './Utils/sanitize';
+import {NCITLink} from '../../Utils/Links';
 
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
@@ -146,7 +147,7 @@ function specimenSummaryTableData(specimen) {
     { title: 'Age at Sample Acquisition', summary: specimen.age_at_event_days },
     { title: 'Analyte Type', summary: specimen.analyte_type },
     { title: 'Composition', summary: specimen.composition },
-    { title: 'Tissue Type (NCIT)', summary: specimen.ncit_id_tissue_type },
+    { title: 'Tissue Type (NCIT)', summary: <NCITLink ncit={specimen.ncit_id_tissue_type}/> },
     { title: 'Anatomical Site (Uberon)', summary: specimen.uberon_id_anatomical_site },
     { title: 'Tissue Type (Source Text)', summary: specimen.source_text_tissue_type },
     { title: 'Tumor Description (Source Text)', summary: specimen.source_text_tumor_descriptor },

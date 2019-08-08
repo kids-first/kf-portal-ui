@@ -3,7 +3,7 @@ import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
-import { HPOLink, SNOMEDLink } from './Links';
+import { HPOLink, SNOMEDLink , MONDOLink,NCITLink} from '../../../Utils/Links';
 
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
@@ -120,7 +120,6 @@ class FamilyTable extends React.Component {
 
     rows = famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
       const kf_id = node.kf_id;
-
       return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
         const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
 
@@ -134,11 +133,19 @@ class FamilyTable extends React.Component {
 
             if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
             else {
-              subRow = baseline(name);  //if it's not, we have to make a new row,
+                let link = name
+
+
+                if (name.includes("MONDO") ){
+                    link =  <MONDOLink mondo={name}/>
+                }
+                else if (name.includes("NCIT")){
+                    link =  <NCITLink ncit={name}/>
+                }
+              subRow = baseline(link);  //if it's not, we have to make a new row,
               subRow[kf_id] = "reported"; //add the reported value
               acc.push(subRow); //push that new row to the accumulator
             }
-
             return acc; //in any case, we have to return the acc.
           }, []));
 
