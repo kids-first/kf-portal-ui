@@ -1,20 +1,27 @@
+@import '../../../theme/vars';
+
 .search-by-id-modal-content {
-  & .sbi-description {
+  font-family: Open Sans, sans-serif;
+
+  section {
     margin-bottom: 1.5em;
   }
 
-  & .sbi-id-input {
+  .sbi-description {
+    p {
+      margin: 0;
+    }
+  }
+
+  .sbi-id-input {
+    /* TODO JB : remove unused / redundant styles */
     box-sizing: border-box;
 
-    margin-bottom: 1.5em;
-
-    background: white;
+    background: $white;
     border-radius: 10px;
 
     border: solid 2px lightgrey;
     padding: 5px;
-
-    font-family: 'Montserrat', sans-serif;
 
     display: flex;
     justify-content: center;
@@ -24,6 +31,12 @@
     & textarea {
       border: none;
       flex: 1 1 0%;
+      min-height: 100px;
+    }
+  }
+
+  .sbi-upload {
+    .btn-upload {
     }
   }
 }
