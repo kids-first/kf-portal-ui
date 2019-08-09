@@ -205,9 +205,6 @@ class FamilyTable extends React.Component {
         if (!hasContent) return acc;
       }
 
-      console.log(row);
-      console.log("removing row?"+(row.leftfield==="--"));
-
       if(row.leftfield === "--" || row.leftfield === null || row.leftfield === undefined) return acc;
 
       acc.push(row);
