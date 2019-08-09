@@ -3,7 +3,7 @@ import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
-import { HPOLink, SNOMEDLink } from './Links';
+import { HPOLink, SNOMEDLink , MONDOLink,NCITLink} from '../../../Utils/DiagnosisAndPhenotypeLinks';
 
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
@@ -29,9 +29,13 @@ class FamilyTable extends React.Component {
       if (wrapper.row._original.subheader === 'true') {
         if (wrapper.column.Header === '') return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
       } else {
-        if(/^.*SNOMEDCT:\d+$/.test(wrapper.value)) return <SNOMEDLink snomed={wrapper.value}/>;
-        else if(/^.*\(HP:\d+\)$/.test(wrapper.value)) return <HPOLink hpo={wrapper.value}/>;
-        else return <div style={{ textTransform: 'capitalize' }}>{wrapper.value}</div>;
+        const value = wrapper.value;
+
+        if(/^.*SNOMEDCT:\d+$/.test(value)) return <SNOMEDLink snomed={value}/>;
+        else if(/^.*\(HP:\d+\)$/.test(value)) return <HPOLink hpo={value}/>;
+        else if(/^.*\(MONDO:\d+\)$/.test(value)) return <MONDOLink mondo={value}/>;
+        else if(/^.*\(NCIT:.\d+\)$/.test(value)) return <NCITLink ncit={value}/>;
+        else return <div style={{ textTransform: 'capitalize' }}>{value}</div>;
       }
 
       return '';
@@ -120,7 +124,6 @@ class FamilyTable extends React.Component {
 
     rows = famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
       const kf_id = node.kf_id;
-
       return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
         const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
 
@@ -134,11 +137,11 @@ class FamilyTable extends React.Component {
 
             if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
             else {
+
               subRow = baseline(name);  //if it's not, we have to make a new row,
               subRow[kf_id] = "reported"; //add the reported value
               acc.push(subRow); //push that new row to the accumulator
             }
-
             return acc; //in any case, we have to return the acc.
           }, []));
 
@@ -204,6 +207,8 @@ class FamilyTable extends React.Component {
         const hasContent = ((i+1) >= rows.length) ? false : (rows[i + 1].subheader === false);
         if (!hasContent) return acc;
       }
+
+      if(row.leftfield === "--" || row.leftfield === null || row.leftfield === undefined) return acc;
 
       acc.push(row);
       return acc;
