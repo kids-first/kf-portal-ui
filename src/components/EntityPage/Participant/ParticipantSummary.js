@@ -11,7 +11,7 @@ import SequencingDataTable from './Utils/SequencingDataTable';
 import OtherDataTypesSummaryTable from './Utils/OtherDataTypesSummaryTable';
 import { get } from 'lodash';
 import sanitize from './Utils/sanitize';
-import {NCITLink} from '../../Utils/Links';
+import {NCITLink} from '../../Utils/DiagnosisAndPhenotypeLinks';
 
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 

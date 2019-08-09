@@ -19,7 +19,7 @@ import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies'
 import { store } from '../../../store';
 import prettifyAge from './Utils/prettifyAge';
 import { flatMap } from 'lodash/collection';
-import { HPOLink, SNOMEDLink , MONDOLink, NCITLink} from '../../Utils/Links';
+import { HPOLink, SNOMEDLink , MONDOLink, NCITLink} from '../../Utils/DiagnosisAndPhenotypeLinks';
 
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected

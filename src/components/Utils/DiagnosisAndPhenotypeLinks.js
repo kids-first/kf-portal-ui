@@ -3,10 +3,20 @@ import * as React from 'react';
 
 const style= {wordBreak: "break-word", textTransform: "capitalize"};
 
+const ifNotMatch =value=>{
+   if(value === 'undefined'  || value === null || value === ''){
+       return <div> -- </div>
+  }
+   else{
+       return <div> {value} </div>
+   }
+}
+
+
 const SNOMEDLink = ({snomed}) => {
   const matcher = /^.*SNOMEDCT:(\d+)$/.exec(snomed);
       if(matcher === null){
-           return <div> -- </div>
+           return ifNotMatch(snomed)
       }
   const matched = matcher[1];
   return (
@@ -24,7 +34,7 @@ export {SNOMEDLink};
 const HPOLink = ({hpo}) => {
   const matcher = /^.*\((HP:\d+)\)$/.exec(hpo);
       if(matcher === null){
-           return <div> -- </div>
+           return ifNotMatch(hpo)
       }
   const matched = matcher[1];
   return (
@@ -43,7 +53,7 @@ export {HPOLink};
 const MONDOLink = ({mondo}) => {
   const matcher = /^.*\((MONDO:\d+)\)$/.exec(mondo);
     if(matcher === null){
-         return <div> -- </div>
+        return ifNotMatch(mondo)
     }
   const matched = matcher[1];
 
@@ -66,7 +76,7 @@ const NCITLink = ({ncit}) => {
   const matcher = /^.*\((NCIT:.\d+)\)$/.exec(ncit);
 
   if(matcher === null){
-       return <div> -- </div>
+        return ifNotMatch(ncit)
   }
   const matched = matcher[1];
 

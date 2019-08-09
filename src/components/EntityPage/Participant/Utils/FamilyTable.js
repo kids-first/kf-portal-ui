@@ -3,7 +3,7 @@ import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
-import { HPOLink, SNOMEDLink , MONDOLink,NCITLink} from '../../../Utils/Links';
+import { HPOLink, SNOMEDLink , MONDOLink,NCITLink} from '../../../Utils/DiagnosisAndPhenotypeLinks';
 
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows

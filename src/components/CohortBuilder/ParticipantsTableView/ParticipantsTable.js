@@ -23,7 +23,7 @@ import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import { union, compact } from 'lodash';
-import {MONDOLink} from '../../Utils/Links'
+import {MONDOLink} from '../../Utils/DiagnosisAndPhenotypeLinks'
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
