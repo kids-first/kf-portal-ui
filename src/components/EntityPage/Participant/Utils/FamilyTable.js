@@ -29,11 +29,13 @@ class FamilyTable extends React.Component {
       if (wrapper.row._original.subheader === 'true') {
         if (wrapper.column.Header === '') return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
       } else {
-        if(wrapper.value.includes("SNOMEDCT")) return <SNOMEDLink snomed={wrapper.value}/>;
-        else if(wrapper.value.includes("HP:")) return <HPOLink hpo={wrapper.value}/>;
-        else if(wrapper.value.includes("MONDO")) return <MONDOLink mondo={wrapper.value}/>;
-        else if(wrapper.value.includes("NCIT")) return <NCITLink ncit={wrapper.value}/>;
-        else return <div style={{ textTransform: 'capitalize' }}>{wrapper.value}</div>;
+        const value = wrapper.value;
+
+        if(/^.*SNOMEDCT:\d+$/.test(value)) return <SNOMEDLink snomed={value}/>;
+        else if(/^.*\(HP:\d+\)$/.test(value)) return <HPOLink hpo={value}/>;
+        else if(/^.*\(MONDO:\d+\)$/.test(value)) return <MONDOLink mondo={value}/>;
+        else if(/^.*\(NCIT:.\d+\)$/.test(value)) return <NCITLink ncit={value}/>;
+        else return <div style={{ textTransform: 'capitalize' }}>{value}</div>;
       }
 
       return '';
