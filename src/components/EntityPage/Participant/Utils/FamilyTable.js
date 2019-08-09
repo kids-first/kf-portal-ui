@@ -205,6 +205,8 @@ class FamilyTable extends React.Component {
         if (!hasContent) return acc;
       }
 
+      if(row.leftfield === "--") return acc;
+
       acc.push(row);
       return acc;
     }, []);
