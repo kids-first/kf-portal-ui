@@ -29,8 +29,10 @@ class FamilyTable extends React.Component {
       if (wrapper.row._original.subheader === 'true') {
         if (wrapper.column.Header === '') return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
       } else {
-        if(/^.*SNOMEDCT:\d+$/.test(wrapper.value)) return <SNOMEDLink snomed={wrapper.value}/>;
-        else if(/^.*\(HP:\d+\)$/.test(wrapper.value)) return <HPOLink hpo={wrapper.value}/>;
+        if(wrapper.value.includes("SNOMEDCT")) return <SNOMEDLink snomed={wrapper.value}/>;
+        else if(wrapper.value.includes("HP:")) return <HPOLink hpo={wrapper.value}/>;
+        else if(wrapper.value.includes("MONDO")) return <MONDOLink mondo={wrapper.value}/>;
+        else if(wrapper.value.includes("NCIT")) return <NCITLink ncit={wrapper.value}/>;
         else return <div style={{ textTransform: 'capitalize' }}>{wrapper.value}</div>;
       }
 
@@ -133,16 +135,8 @@ class FamilyTable extends React.Component {
 
             if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
             else {
-                let link = name
 
-
-                if (name.includes("MONDO") ){
-                    link =  <MONDOLink mondo={name}/>
-                }
-                else if (name.includes("NCIT")){
-                    link =  <NCITLink ncit={name}/>
-                }
-              subRow = baseline(link);  //if it's not, we have to make a new row,
+              subRow = baseline(name);  //if it's not, we have to make a new row,
               subRow[kf_id] = "reported"; //add the reported value
               acc.push(subRow); //push that new row to the accumulator
             }
