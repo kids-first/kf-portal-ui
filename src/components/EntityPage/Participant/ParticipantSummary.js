@@ -157,6 +157,16 @@ function specimenSummaryTableData(specimen) {
 
 const ParticipantSummary = ({ participant }) => {
   const specimens = get(participant, 'biospecimens.hits.edges', []);
+  const hasFile = get(participant, 'files.hits.edges', [] ).length === 0 ? false : true
+  let wrongTypes = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
+
+  let hasSequencingData = false
+  for(const i in get(participant, 'files.hits.edges', [] )){
+    if(wrongTypes.includes(get(participant, 'files.hits.edges', [] )[i].node.data_type)){
+        hasSequencingData =true
+        break
+    }
+  }
 
   return (
     <React.Fragment>
@@ -186,19 +196,26 @@ const ParticipantSummary = ({ participant }) => {
         </div>
       }
 
-      <EntityContentDivider />
-      <EntityContentSection title="Available Data Files" size={'big'}>
-        <EntityContentSection title="Sequencing Data" size={'small'}>
-          <SequencingDataTable
-            files={get(participant, 'files.hits.edges', [])}
-            participantID={participant.kf_id}
-          />
-        </EntityContentSection>
-        <OtherDataTypesSummaryTable
-          files={get(participant, 'files.hits.edges', [])}
-          participantID={participant.kf_id}
-        />
-      </EntityContentSection>
+
+       {
+        hasFile ?
+        <div>
+            <EntityContentDivider />
+            <EntityContentSection title="Available Data Files" size={'big'}>
+                {
+                 hasSequencingData ?
+                 <EntityContentSection title="Sequencing Data" size={'small'}>
+                    <SequencingDataTable files={get(participant, 'files.hits.edges', [])} participantID={participant.kf_id}/>
+                 </EntityContentSection>    :   ""
+                }
+                <OtherDataTypesSummaryTable
+                  files={get(participant, 'files.hits.edges', [])}
+                  participantID={participant.kf_id}
+                  hasSequencingData = {hasSequencingData}
+                />
+            </EntityContentSection>
+        </div>: ""
+      }
     </React.Fragment>
   );
 };
