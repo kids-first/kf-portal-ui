@@ -1,5 +1,13 @@
 # Release notes for kf-portal-ui
 
+## 2019-08-13 kf-portal-ui 2.7.2
+
+This release includes a way to deploy the OrcId login button in production, but hidden. This is only done for testing purposes.
+
+### Includes
+
+- [#2014](https://github.com/kids-first/kf-portal-ui/issues/2014) Orcid Login : hidden deploy to test in production
+
 ## 2019-08-09 kf-portal-ui 2.7.1
 
 This release concentrates on bug fixes following the release 2.7.0 and contains no new features.
