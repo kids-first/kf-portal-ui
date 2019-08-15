@@ -11,7 +11,7 @@
   border-radius: 4px;
   transform: translate(-50%, -50%);
   width: 95%;
-  padding: 20px 20px;
+  padding-top: 10px;
   max-width: 1000px;
   max-height: 85%;
   min-height: 0;
@@ -23,8 +23,10 @@
     box-sizing: border-box;
   }
 
-  .content {
+  & .content {
     margin: 0;
+    padding-left: 20px;
+    padding-right: 20px;
     font-family: Open Sans, sans-serif;
     line-height: 28px;
     font-size: 15px;
@@ -32,16 +34,25 @@
     color: rgb(52, 52, 52);
   }
 
-  .header {
+  & .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     border-bottom: 1px solid #d4d6dd;
     margin-bottom: 1.5em;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
-  .footer {
-    padding-bottom: 75px;
+  & .footer {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: $tertiaryBackground;
   }
 }
 

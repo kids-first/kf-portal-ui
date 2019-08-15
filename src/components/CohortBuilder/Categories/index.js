@@ -15,7 +15,7 @@ import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 
-import { setModal } from '../../../store/actionCreators/ui/modalComponent';
+import { setModal, closeModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
 import SearchByIdModalContent from '../SearchById/SearchByIdModalContent';
 
@@ -142,6 +142,7 @@ class Categories extends React.Component {
     this.state = {
       currentSearchField: '',
       currentCategory: null,
+      inputIds: [],
     };
     autobind(this);
   }
@@ -164,11 +165,30 @@ class Categories extends React.Component {
     this.setActiveCategory({ fieldName: '', category: null });
   }
 
-  handleUploadIdsClick() {
+  handleIdsChange(inputIds) {
+    this.setState({ inputIds });
     store.dispatch(
       setModal({
-        title: 'Upload a List of Identifiers',
-        component: <SearchByIdModalContent />,
+        confirmDisabled: inputIds.length === 0,
+      }),
+    );
+  }
+
+  handleUploadIdsClick() {
+    const { inputIds } = this.state;
+    store.dispatch(
+      setModal({
+        component: <SearchByIdModalContent inputIds={inputIds} onChange={this.handleIdsChange} />,
+        header: 'Upload a List of Identifiers',
+        footer: true,
+        onCancel: () => {
+          store.dispatch(closeModal());
+        },
+        confirmLabel: 'View Results',
+        confirmDisabled: () => inputIds.length === 0,
+        onConfirm: () => {
+          // TODO JB : query for results
+        },
       }),
     );
   }

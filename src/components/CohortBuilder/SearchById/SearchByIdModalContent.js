@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
+import { uniq } from 'lodash';
 
 import Column from 'uikit/Column';
-import parseInputFiles from 'common/parseInputFiles';
+import { parseInputFiles } from 'common/parseInputFiles';
 
 import './styles.scss';
 
@@ -10,40 +12,40 @@ export default class SearchByIdModalContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputIds: '',
+      inputIdsText: '',
     };
     this.fileInpuRef = React.createRef();
     autobind(this);
   }
 
+  static propTypes = {
+    inputIds: PropTypes.arrayOf(PropTypes.string),
+    onChange: PropTypes.func.isRequired,
+  };
+
   handleFiles(evt) {
-    parseInputFiles(evt.currentTarget.files).then(contents => {
-      const inputIds = contents.reduce((ids, c) => ids + c, '');
-
-      this.setState({ inputIds });
-    });
-
-    // const reader = new FileReader();
-
-    // reader.onload = e => {
-    //   // The file's text will be printed here
-    //   console.log('onload', e.target.result);
-    //   reader.removeEventListener('abort', reader.onabort);
-    //   reader.removeEventListener('onload', reader.onload);
-    // };
-    // reader.onabort = e => {
-    //   // The file's text will be printed here
-    //   console.log('onabort', e);
-    //   reader.removeEventListener('abort', reader.onabort);
-    //   reader.removeEventListener('onload', reader.onload);
-    // };
-
-    // const fileObj = evt.currentTarget.files.item(0);
-    // reader.readAsText(fileObj, 'utf-8');
+    parseInputFiles(evt.currentTarget.files)
+      .then(contents => {
+        const inputIds = uniq(
+          contents
+            .reduce(
+              (ids, fileContent) => ids.concat(fileContent.split(/,\s*/)),
+              this.props.inputIds,
+            )
+            .filter(id => !!id),
+        );
+        const inputIdsText = inputIds.join(', ');
+        this.setState({ inputIdsText });
+        this.props.onChange(inputIds);
+      })
+      .catch(console.err);
   }
 
   handleInputIdsChange(evt) {
-    this.setState({ inputIds: evt.currentTarget.value });
+    const inputIdsText = evt.currentTarget.value;
+    this.setState({ inputIdsText });
+    const inputIds = inputIdsText.split(/,\s*/).filter(id => !!id);
+    this.props.onChange(inputIds);
   }
 
   render() {
@@ -56,7 +58,7 @@ export default class SearchByIdModalContent extends React.Component {
           {/* TODO JB : placeholder text in textarea */}
           <textarea
             placeholder="Eg. BS_4F9171D5, S88-3"
-            value={this.state.inputIds}
+            value={this.state.inputIdsText}
             onChange={this.handleInputIdsChange}
           />
         </section>
