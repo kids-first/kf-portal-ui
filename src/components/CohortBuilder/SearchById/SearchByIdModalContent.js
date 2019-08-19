@@ -4,6 +4,7 @@ import autobind from 'auto-bind-es5';
 import { uniq } from 'lodash';
 
 import Column from 'uikit/Column';
+import { TealActionButton } from 'uikit/Button';
 import { parseInputFiles } from 'common/parseInputFiles';
 
 import './styles.scss';
@@ -74,14 +75,14 @@ export default class SearchByIdModalContent extends React.Component {
             onChange={this.handleFiles}
             ref={this.fileInpuRef}
           />
-          <button
+          <TealActionButton
             className="btn-upload"
             onClick={() => {
               this.fileInpuRef.current.click();
             }}
           >
             Upload csv
-          </button>
+          </TealActionButton>
         </section>
       </Column>
     );

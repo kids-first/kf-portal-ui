@@ -20,6 +20,7 @@ import { store } from '../../../store';
 import SearchByIdModalContent from '../SearchById/SearchByIdModalContent';
 
 import './styles.scss';
+import { searchByIds } from 'services/arranger/searchByIds';
 
 const Container = styled(Row)`
   height: 72px;
@@ -188,6 +189,9 @@ class Categories extends React.Component {
         confirmDisabled: () => inputIds.length === 0,
         onConfirm: () => {
           // TODO JB : query for results
+          searchByIds(this.state.inputIds).then(results => {
+            console.log(`searchByIds results:`, results);
+          });
         },
       }),
     );

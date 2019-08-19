@@ -75,10 +75,10 @@ class GlobalModal extends React.Component {
     const {
       footer,
       onCancel = this.handleClose,
-      cancelLabel = 'Cancel',
+      cancelLabel,
       cancelDisabled = false,
       onConfirm = this.handleClose,
-      confirmLabel = 'Confirm',
+      confirmLabel,
       confirmDisabled = false,
       classNames = {},
     } = this.props;
@@ -97,7 +97,7 @@ class GlobalModal extends React.Component {
           disabled={isDisabled(cancelDisabled)}
           onClick={onCancel ? () => onCancel(this.handleClose) : noop}
         >
-          {cancelLabel}
+          {cancelLabel || 'Cancel'}
         </WhiteButton>,
       );
     }
@@ -117,7 +117,7 @@ class GlobalModal extends React.Component {
           disabled={isDisabled(confirmDisabled)}
           onClick={onConfirm ? () => onConfirm() : noop}
         >
-          {confirmLabel}
+          {confirmLabel || 'Confirm'}
         </TealActionButton>,
       );
     }
