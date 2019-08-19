@@ -137,7 +137,8 @@ export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
   try {
     accessToken = await getAccessToken(api, fence);
   } catch (err) {
-    console.warn(`[Fence] no access token fo file ${fileUuid}, assuming open access`);
+    // Open access files are accessible even when not logged with a fence, so assume access and let the download fail.
+    console.warn(`[Fence] no access token for file ${fileUuid}, assuming open access`);
   }
 
   const { fenceUri } = PROVIDERS[fence];
