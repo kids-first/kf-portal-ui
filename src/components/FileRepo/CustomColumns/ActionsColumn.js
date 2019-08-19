@@ -135,7 +135,7 @@ const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
           const file = get(data, 'file.hits.edges[0].node', {});
           const acl = file.acl || [];
           const repository = file.repository;
-          const hasAccess = intersection(fenceAcls, acl).length > 0;
+          const hasAccess = acl.includes('*') || intersection(fenceAcls, acl).length > 0;
           return (
             <Row center height={'100%'}>
               {loadingQuery ? (

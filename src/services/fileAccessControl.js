@@ -183,14 +183,15 @@ export const getUserStudyPermission = (api, fenceConnections) => async ({
 };
 
 export const checkUserFilePermission = api => async ({ fileId, fence }) => {
-  let userDetails;
+  let approvedAcls;
   try {
-    userDetails = await getFenceUser(api, fence);
+    const userDetails = await getFenceUser(api, fence);
+    approvedAcls = Object.keys(userDetails.projects);
   } catch (err) {
-    return Promise.resolve(false);
+    // Failed to get the fence information,
+    //  but we still want to allow access to open access files.
+    approvedAcls = [];
   }
-
-  const approvedAcls = Object.keys(userDetails.projects);
 
   return graphql(api)({
     query: `query ($sqon: JSON) {
@@ -217,7 +218,8 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
   })
     .then(data => {
       const fileAcl = _.get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
-      return fileAcl.some(fileAcl => approvedAcls.includes(fileAcl));
+      console.log('fileAcl', fileAcl);
+      return fileAcl.some(fileAcl => fileAcl === '*' || approvedAcls.includes(fileAcl));
     })
     .catch(err => {
       console.log('err', err);

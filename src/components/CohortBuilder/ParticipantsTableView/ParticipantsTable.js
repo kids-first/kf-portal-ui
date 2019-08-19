@@ -23,7 +23,7 @@ import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import { union, compact } from 'lodash';
-import {MONDOLink} from '../../Utils/DiagnosisAndPhenotypeLinks'
+import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   if (row === undefined) {
@@ -58,9 +58,9 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   const cleanedData = compact(data);
   const displayedRowCount = collapsed ? 1 : cleanedData.length;
   const displayMoreButton = compact(sortedData).length > 1;
-  let isMondo = false
-  if(typeof(sortedData[0])==="string"){
-    isMondo =sortedData[0].includes("MONDO")
+  let isMondo = false;
+  if (typeof sortedData[0] === 'string') {
+    isMondo = sortedData[0].includes('MONDO');
   }
   return (
     <div className={`${rowCss}`}>
@@ -68,19 +68,26 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
         {compact(sortedData).length <= 1
           ? compact(sortedData)
               .slice(0, displayedRowCount)
-              .map((datum, index) => (
-              isMondo ? <MONDOLink mondo={datum}/> :
-                <div key={index}>
-                  {datum === null
-                    ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-                    : datum}
-                </div>
-              ))
+              .map((datum, index) =>
+                isMondo ? (
+                  <MONDOLink key={index} mondo={datum} />
+                ) : (
+                  <div key={index}>
+                    {datum === null
+                      ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+                      : datum}
+                  </div>
+                ),
+              )
           : cleanedData
               .slice(0, displayedRowCount)
-              .map((datum, index) => (
-                isMondo ? <MONDOLink mondo={datum}/> : <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
-              ))}
+              .map((datum, index) =>
+                isMondo ? (
+                  <MONDOLink key={index} mondo={datum} />
+                ) : (
+                  <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
+                ),
+              )}
       </div>
       {displayMoreButton ? (
         <div
@@ -137,11 +144,7 @@ const NbFilesCell = compose(
 
 const ParticipantIdLink = compose(
   withTheme(({ value: idParticipant, row, theme }) => {
-        return (
-      <Link to={`/participant/${idParticipant}#summary`}>
-        {`${idParticipant}`}
-      </Link>
-    );
+    return <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>;
   }),
 );
 
@@ -164,9 +167,11 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     resizable: false,
     minWidth: 33,
   },
-  { Header: 'Participant ID',
+  {
+    Header: 'Participant ID',
     accessor: 'participantId',
-    Cell: props => <ParticipantIdLink {...props}/>},
+    Cell: props => <ParticipantIdLink {...props} />,
+  },
   {
     Header: 'Study Name',
     accessor: 'studyName',
