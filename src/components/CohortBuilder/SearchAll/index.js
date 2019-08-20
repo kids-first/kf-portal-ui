@@ -310,7 +310,7 @@ class SearchAll extends React.Component {
               name="GQL_PARTICIPANTS_TABLE"
               api={api}
               sqon={sqon}
-              queries={searchAllQueries(sqon, fields, extendedMapping)}
+              queries={searchAllQueries(sqon, fields, extendedMapping || [])}
             >
               {({ isLoading, data, error }) => {
                 if (error) {

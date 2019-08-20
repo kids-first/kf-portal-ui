@@ -1,42 +1,42 @@
 @import '../../../theme/vars';
 
-.search-by-id-modal-content {
-  font-family: Open Sans, sans-serif;
-
-  section {
-    margin-bottom: 1.5em;
-  }
-
-  .sbi-description {
-    p {
-      margin: 0;
+.search-by-id-modal {
+  & .body {
+    section {
+      margin-bottom: 1.5em;
     }
-  }
 
-  .sbi-id-input {
-    /* TODO JB : remove unused / redundant styles */
-    box-sizing: border-box;
-
-    background: $white;
-    border-radius: 10px;
-
-    border: solid 2px lightgrey;
-    padding: 5px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-
-    & textarea {
-      border: none;
-      flex: 1 1 0%;
-      min-height: 100px;
+    .sbi-description {
+      p {
+        margin: 0;
+      }
     }
-  }
 
-  .sbi-upload {
-    .btn-upload {
+    .sbi-id-input {
+      /* TODO JB : remove unused / redundant styles */
+      box-sizing: border-box;
+
+      background: $white;
+      border-radius: 10px;
+
+      border: solid 2px lightgrey;
+      padding: 5px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+
+      & textarea {
+        border: none;
+        flex: 1 1 0%;
+        min-height: 100px;
+      }
+    }
+
+    .sbi-upload {
+      .btn-upload {
+      }
     }
   }
 }

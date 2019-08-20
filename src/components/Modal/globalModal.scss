@@ -23,17 +23,6 @@
     box-sizing: border-box;
   }
 
-  & .content {
-    margin: 0;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-family: Open Sans, sans-serif;
-    line-height: 28px;
-    font-size: 15px;
-    /* TODO JB : get from vars.scss */
-    color: rgb(52, 52, 52);
-  }
-
   & .header {
     display: flex;
     flex-direction: row;
@@ -43,6 +32,17 @@
     padding-top: 10px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  & .body {
+    margin: 0;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-family: Open Sans, sans-serif;
+    line-height: 28px;
+    font-size: 15px;
+    color: #343434;
   }
 
   & .footer {

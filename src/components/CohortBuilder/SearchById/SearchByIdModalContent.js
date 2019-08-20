@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
 import { uniq } from 'lodash';
+import CloseIcon from 'react-icons/lib/md/close';
 
-import Column from 'uikit/Column';
-import { TealActionButton } from 'uikit/Button';
+import Row from 'uikit/Column';
+import { WhiteButton, TealActionButton } from 'uikit/Button';
 import { parseInputFiles } from 'common/parseInputFiles';
+import { ModalTitle } from '../../Modal/ui';
 
 import './styles.scss';
 
@@ -14,6 +16,8 @@ export default class SearchByIdModalContent extends React.Component {
     super(props);
     this.state = {
       inputIdsText: '',
+      cancelDisabled: false,
+      confirmDisabled: false,
     };
     this.fileInpuRef = React.createRef();
     autobind(this);
@@ -49,17 +53,31 @@ export default class SearchByIdModalContent extends React.Component {
     this.props.onChange(inputIds);
   }
 
-  render() {
+  renderHeader() {
     return (
-      <Column className="search-by-id-modal-content">
+      <React.Fragment>
+        <ModalTitle>Upload a List of Identifiers</ModalTitle>
+        <CloseIcon
+          css="cursor:pointer; width:22px; height:22px;"
+          fill="black"
+          onClick={this.handleClose}
+        />
+      </React.Fragment>
+    );
+  }
+
+  renderBody() {
+    const { inputIdsText } = this.state;
+
+    return (
+      <React.Fragment>
         <section className="sbi-description">
           <p>Type or copy-and-paste a list of comma delimited identifiers</p>
         </section>
         <section className="sbi-id-input">
-          {/* TODO JB : placeholder text in textarea */}
           <textarea
-            placeholder="Eg. BS_4F9171D5, S88-3"
-            value={this.state.inputIdsText}
+            placeholder="e.g. PT_X25FNZ4D, CDH1363, BS_E28336C7, 4-28F, GF_9R86WD1Z"
+            value={inputIdsText}
             onChange={this.handleInputIdsChange}
           />
         </section>
@@ -84,7 +102,32 @@ export default class SearchByIdModalContent extends React.Component {
             Upload csv
           </TealActionButton>
         </section>
-      </Column>
+      </React.Fragment>
+    );
+  }
+
+  renderFooter() {
+    const { cancelDisabled, confirmDisabled } = this.state;
+
+    return (
+      <React.Fragment>
+        <WhiteButton key="cancel" disabled={cancelDisabled} onClick={this.handleClose}>
+          Cancel
+        </WhiteButton>
+        <TealActionButton key="confirm" disabled={confirmDisabled} onClick={this.handleClose}>
+          View Results
+        </TealActionButton>
+      </React.Fragment>
+    );
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <Row className="header">{this.renderHeader()}</Row>
+        <Row className="body">{this.renderBody()}</Row>
+        <Row className="footer">{this.renderFooter()}</Row>
+      </React.Fragment>
     );
   }
 }

@@ -144,8 +144,14 @@ class Categories extends React.Component {
       currentSearchField: '',
       currentCategory: null,
       inputIds: [],
+      results: null,
+      loading: false,
     };
     autobind(this);
+  }
+
+  componentWillUnmount() {
+    this.setState({ loading: false });
   }
 
   handleSqonUpdate(...args) {
@@ -176,22 +182,34 @@ class Categories extends React.Component {
   }
 
   handleUploadIdsClick() {
-    const { inputIds } = this.state;
+    const { inputIds, results } = this.state;
     store.dispatch(
       setModal({
-        component: <SearchByIdModalContent inputIds={inputIds} onChange={this.handleIdsChange} />,
-        header: 'Upload a List of Identifiers',
-        footer: true,
+        component: (
+          <SearchByIdModalContent
+            inputIds={inputIds}
+            onChange={this.handleIdsChange}
+            results={results}
+          />
+        ),
+        className: 'search-by-id-modal',
         onCancel: () => {
           store.dispatch(closeModal());
+          this.setState({ results: null, loading: false });
         },
-        confirmLabel: 'View Results',
-        confirmDisabled: () => inputIds.length === 0,
+        confirmDisabled: () => this.state.loading || this.state.inputIds.length === 0,
         onConfirm: () => {
-          // TODO JB : query for results
-          searchByIds(this.state.inputIds).then(results => {
-            console.log(`searchByIds results:`, results);
-          });
+          // TODO switch that behavior once we have results
+          if (results === null) {
+            this.setState({ loading: true });
+            searchByIds(this.state.inputIds)
+              .then(results => {
+                this.setState({ loading: false, results });
+              })
+              .catch(() => {
+                this.setState({ loading: false });
+              });
+          }
         },
       }),
     );
