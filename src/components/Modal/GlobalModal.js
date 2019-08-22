@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { oneOfType } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
 import autobind from 'auto-bind-es5';
@@ -22,12 +22,6 @@ class GlobalModal extends React.Component {
   // TODO clean those
   static propTypes = {
     component: PropTypes.node,
-    onCancel: PropTypes.func,
-    cancelLabel: PropTypes.string,
-    cancelDisabled: oneOfType([PropTypes.bool, PropTypes.func]),
-    onConfirm: PropTypes.func,
-    confirmLabel: PropTypes.string,
-    confirmDisabled: oneOfType([PropTypes.bool, PropTypes.func]),
     className: PropTypes.string,
   };
 
@@ -55,5 +49,3 @@ class GlobalModal extends React.Component {
 const mapStateToProps = ({ ui: { modalComponent } }) => modalComponent;
 
 export default connect(mapStateToProps)(GlobalModal);
-// export { ModalActionButton } from './ui';
-// export { ModalSubHeader } from './ui';

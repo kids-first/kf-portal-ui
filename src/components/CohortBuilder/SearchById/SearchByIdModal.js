@@ -1,56 +1,72 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
 import { uniq } from 'lodash';
 import CloseIcon from 'react-icons/lib/md/close';
 
+import { searchByIds } from 'services/arranger/searchByIds';
 import Row from 'uikit/Column';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import { parseInputFiles } from 'common/parseInputFiles';
 import { ModalTitle } from '../../Modal/ui';
+import { closeModal } from '../../../store/actionCreators/ui/modalComponent';
 
 import './styles.scss';
 
-export default class SearchByIdModalContent extends React.Component {
+export default class SearchByIdModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       inputIdsText: '',
-      cancelDisabled: false,
-      confirmDisabled: false,
+      inputIds: [],
+      results: null,
     };
     this.fileInpuRef = React.createRef();
     autobind(this);
   }
 
-  static propTypes = {
-    inputIds: PropTypes.arrayOf(PropTypes.string),
-    onChange: PropTypes.func.isRequired,
-  };
+  componentWillUnmount() {
+    this.setState({ loading: false });
+  }
 
-  handleFiles(evt) {
+  handleFilesUpload(evt) {
     parseInputFiles(evt.currentTarget.files)
       .then(contents => {
         const inputIds = uniq(
           contents
             .reduce(
               (ids, fileContent) => ids.concat(fileContent.split(/,\s*/)),
-              this.props.inputIds,
+              this.state.inputIds,
             )
             .filter(id => !!id),
         );
         const inputIdsText = inputIds.join(', ');
-        this.setState({ inputIdsText });
-        this.props.onChange(inputIds);
+        this.setState({ inputIdsText, inputIds });
       })
       .catch(console.err);
   }
 
   handleInputIdsChange(evt) {
     const inputIdsText = evt.currentTarget.value;
-    this.setState({ inputIdsText });
     const inputIds = inputIdsText.split(/,\s*/).filter(id => !!id);
-    this.props.onChange(inputIds);
+    this.setState({ inputIdsText, inputIds });
+  }
+
+  async handleViewResultsClick() {
+    if (this.state.loading === true) return;
+    this.setState({ loading: true });
+    searchByIds(this.state.inputIds)
+      .then(results => {
+        this.setState({ loading: false, results });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+      });
+  }
+
+  handleClose() {
+    this.setState({ loading: false });
+    closeModal();
   }
 
   renderHeader() {
@@ -90,7 +106,7 @@ export default class SearchByIdModalContent extends React.Component {
             multiple
             accept=".tsv,.csv,text/*"
             style={{ display: 'none' }}
-            onChange={this.handleFiles}
+            onChange={this.handleFilesUpload}
             ref={this.fileInpuRef}
           />
           <TealActionButton
@@ -102,19 +118,23 @@ export default class SearchByIdModalContent extends React.Component {
             Upload csv
           </TealActionButton>
         </section>
+        <section>{JSON.stringify(this.state.results)}</section>
       </React.Fragment>
     );
   }
 
   renderFooter() {
-    const { cancelDisabled, confirmDisabled } = this.state;
-
+    const { loading } = this.state;
     return (
       <React.Fragment>
-        <WhiteButton key="cancel" disabled={cancelDisabled} onClick={this.handleClose}>
+        <WhiteButton key="cancel" onClick={this.handleClose}>
           Cancel
         </WhiteButton>
-        <TealActionButton key="confirm" disabled={confirmDisabled} onClick={this.handleClose}>
+        <TealActionButton
+          key="confirm"
+          disabled={loading === true}
+          onClick={this.handleViewResultsClick}
+        >
           View Results
         </TealActionButton>
       </React.Fragment>

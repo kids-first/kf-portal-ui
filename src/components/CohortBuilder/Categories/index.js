@@ -15,12 +15,11 @@ import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 
-import { setModal, closeModal } from '../../../store/actionCreators/ui/modalComponent';
+import { setModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
-import SearchByIdModalContent from '../SearchById/SearchByIdModalContent';
+import SearchByIdModal from '../SearchById/SearchByIdModal';
 
 import './styles.scss';
-import { searchByIds } from 'services/arranger/searchByIds';
 
 const Container = styled(Row)`
   height: 72px;
@@ -143,15 +142,8 @@ class Categories extends React.Component {
     this.state = {
       currentSearchField: '',
       currentCategory: null,
-      inputIds: [],
-      results: null,
-      loading: false,
     };
     autobind(this);
-  }
-
-  componentWillUnmount() {
-    this.setState({ loading: false });
   }
 
   handleSqonUpdate(...args) {
@@ -172,45 +164,13 @@ class Categories extends React.Component {
     this.setActiveCategory({ fieldName: '', category: null });
   }
 
-  handleIdsChange(inputIds) {
-    this.setState({ inputIds });
-    store.dispatch(
-      setModal({
-        confirmDisabled: inputIds.length === 0,
-      }),
-    );
-  }
-
   handleUploadIdsClick() {
-    const { inputIds, results } = this.state;
+    // TODO JB move away from passing a component instance in redux...
+    //  ugh... time for yet another popup factory
     store.dispatch(
       setModal({
-        component: (
-          <SearchByIdModalContent
-            inputIds={inputIds}
-            onChange={this.handleIdsChange}
-            results={results}
-          />
-        ),
+        component: <SearchByIdModal />,
         className: 'search-by-id-modal',
-        onCancel: () => {
-          store.dispatch(closeModal());
-          this.setState({ results: null, loading: false });
-        },
-        confirmDisabled: () => this.state.loading || this.state.inputIds.length === 0,
-        onConfirm: () => {
-          // TODO switch that behavior once we have results
-          if (results === null) {
-            this.setState({ loading: true });
-            searchByIds(this.state.inputIds)
-              .then(results => {
-                this.setState({ loading: false, results });
-              })
-              .catch(() => {
-                this.setState({ loading: false });
-              });
-          }
-        },
       }),
     );
   }
