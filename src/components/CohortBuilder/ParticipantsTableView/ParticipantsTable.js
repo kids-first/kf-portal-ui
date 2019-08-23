@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-
-import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 import {
@@ -17,133 +15,13 @@ import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-// import RemoveFromCohortButton from './RemoveFromCohortButton';
-
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
-import { union, compact } from 'lodash';
-import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-
-const SelectionCell = ({ value: checked, onCellSelected, row }) => {
-  if (row === undefined) {
-    // header row
-    return (
-      <input
-        type="checkbox"
-        checked={!!checked}
-        onChange={evt => {
-          onCellSelected(evt.currentTarget.checked);
-        }}
-      />
-    );
-  }
-  return (
-    <input type="checkbox" checked={!!checked} onChange={() => onCellSelected(!checked, row)} />
-  );
-};
-
-const rowCss = css({
-  display: 'flex',
-  flexWrap: 'nowrap',
-  alignItems: 'flex-start',
-  alignContent: 'stretch',
-});
-
-const enhance = compose(withState('collapsed', 'setCollapsed', true));
-const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
-  // Display one row when there is exactly more than one row.
-  // Collapsing a single don't save any space.
-  const sortedData = union(data);
-  const cleanedData = compact(data);
-  const displayedRowCount = collapsed ? 1 : cleanedData.length;
-  const displayMoreButton = compact(sortedData).length > 1;
-  let isMondo = false;
-  if (typeof sortedData[0] === 'string') {
-    isMondo = sortedData[0].includes('MONDO');
-  }
-  return (
-    <div className={`${rowCss}`}>
-      <div style={{ flex: '4' }}>
-        {compact(sortedData).length <= 1
-          ? compact(sortedData)
-              .slice(0, displayedRowCount)
-              .map((datum, index) =>
-                isMondo ? (
-                  <MONDOLink key={index} mondo={datum} />
-                ) : (
-                  <div key={index}>
-                    {datum === null
-                      ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-                      : datum}
-                  </div>
-                ),
-              )
-          : cleanedData
-              .slice(0, displayedRowCount)
-              .map((datum, index) =>
-                isMondo ? (
-                  <MONDOLink key={index} mondo={datum} />
-                ) : (
-                  <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
-                ),
-              )}
-      </div>
-      {displayMoreButton ? (
-        <div
-          style={{ flex: '1', marginTop: '-8px ' }}
-          onClick={() => {
-            setCollapsed(!collapsed);
-          }}
-        >
-          <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${cleanedData.length - displayedRowCount} ` : ''}
-          </div>
-        </div>
-      ) : null}
-    </div>
-  );
-});
-
-const NbFilesCell = compose(
-  withTheme(({ value: nbFiles, row, theme }) => {
-    const encodedSqon = encodeURI(
-      JSON.stringify(
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'participants.kf_id',
-                value: [row.participantId],
-              },
-            },
-          ],
-        },
-        null,
-        0,
-      ),
-    );
-
-    return (
-      <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
-        <FileIcon
-          className={css`
-            margin-right: 5px;
-          `}
-          width={8}
-          height={13}
-          fill={theme.greyScale11}
-        />
-        {`${nbFiles} Files`}
-      </Link>
-    );
-  }),
-);
+import { SelectionCell, CollapsibleMultiLineCell, NbFilesCell } from './cells';
 
 const ParticipantIdLink = compose(
-  withTheme(({ value: idParticipant, row, theme }) => {
+  withTheme(({ value: idParticipant }) => {
     return <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>;
   }),
 );
@@ -159,7 +37,10 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
         />
       );
     },
-    Cell: props => <SelectionCell {...props} onCellSelected={onRowSelected} />,
+    Cell: props => {
+      console.log('props ', props);
+      return <SelectionCell {...props} onCellSelected={onRowSelected} />;
+    },
     accessor: 'selected',
     filterable: false,
     sortable: false,

@@ -1,95 +1,57 @@
 import ExternalLink from 'uikit/ExternalLink';
 import * as React from 'react';
+import { isFunction } from 'lodash';
 
-const style= {wordBreak: "break-word", textTransform: "capitalize"};
+const style = { wordBreak: 'break-word', textTransform: 'capitalize' };
 
-const ifNotMatch =value=>{
-   if(value === 'undefined'  || value === null || value === ''){
-       return <div> -- </div>
+const generateLink = (diagnosisDescription, config) => {
+  const { referenceRegex, hrefStaticPart, matcherTransform } = config;
+  const matcher = referenceRegex.exec(diagnosisDescription);
+  if (matcher === null) {
+    return <div> {diagnosisDescription || '--'} </div>;
   }
-   else{
-       return <div> {value} </div>
-   }
-}
-
-
-const SNOMEDLink = ({snomed}) => {
-  const matcher = /^.*SNOMEDCT:(\d+)$/.exec(snomed);
-      if(matcher === null){
-           return ifNotMatch(snomed)
-      }
-  const matched = matcher[1];
+  const extractedReference = isFunction(matcherTransform)
+    ? matcherTransform(matcher[1])
+    : matcher[1];
   return (
-    <ExternalLink
-      style={style}
-      href={`http://snomed.info/id/${matched}`}
-    >
-      {snomed}
+    <ExternalLink style={style} href={`${hrefStaticPart}${extractedReference}`}>
+      {diagnosisDescription}
     </ExternalLink>
   );
 };
 
-export {SNOMEDLink};
-
-const HPOLink = ({hpo}) => {
-  const matcher = /^.*\((HP:\d+)\)$/.exec(hpo);
-      if(matcher === null){
-           return ifNotMatch(hpo)
-      }
-  const matched = matcher[1];
-  return (
-    <ExternalLink
-      style={style}
-      href={ `https://hpo.jax.org/app/browse/term/${matched}`}
-    >
-      {hpo}
-    </ExternalLink>
-  );
+const SNOMEDLink = ({ snomed }) => {
+  return generateLink(snomed, {
+    referenceRegex: /^.*SNOMEDCT:(\d+)$/,
+    hrefStaticPart: 'http://snomed.info/id/',
+  });
 };
 
-export {HPOLink};
+export { SNOMEDLink };
 
+const HPOLink = ({ hpo }) =>
+  generateLink(hpo, {
+    referenceRegex: /^.*\((HP:\d+)\)$/,
+    hrefStaticPart: 'https://hpo.jax.org/app/browse/term/',
+  });
 
-const MONDOLink = ({mondo}) => {
-  const matcher = /^.*\((MONDO:\d+)\)$/.exec(mondo);
-    if(matcher === null){
-        return ifNotMatch(mondo)
-    }
-  const matched = matcher[1];
+export { HPOLink };
 
-  return (
-    <ExternalLink
-      style={style}
-      href={ `https://monarchinitiative.org/disease/${matched}`}
-    >
-      {mondo}
-    </ExternalLink>
-  );
+const MONDOLink = ({ mondo }) => {
+  return generateLink(mondo, {
+    referenceRegex: /^.*\((MONDO:\d+)\)$/,
+    hrefStaticPart: 'https://monarchinitiative.org/disease/',
+  });
 };
 
-export {MONDOLink};
+export { MONDOLink };
 
+const NCITLink = ({ ncit }) =>
+  generateLink(ncit, {
+    referenceRegex: /^.*\((NCIT:.\d+)\)$/,
+    hrefStaticPart:
+      'https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=',
+    matcherTransform: matched => matched.split(':')[1],
+  });
 
-
-const NCITLink = ({ncit}) => {
-
-  const matcher = /^.*\((NCIT:.\d+)\)$/.exec(ncit);
-
-  if(matcher === null){
-        return ifNotMatch(ncit)
-  }
-  const matched = matcher[1];
-
-  const ncitID = matched.split(":")[1]
-
-  return (
-    <ExternalLink
-      style={style}
-      href={ `https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&ns=ncit&code=${ncitID}`}d
-    >
-      {ncit}
-    </ExternalLink>
-  );
-};
-
-export {NCITLink};
+export { NCITLink };
