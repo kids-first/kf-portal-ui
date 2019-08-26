@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
@@ -19,6 +18,7 @@ import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import { SelectionCell, CollapsibleMultiLineCell, NbFilesCell } from './cells';
+import { rooTable } from './css';
 
 const ParticipantIdLink = compose(
   withTheme(({ value: idParticipant }) => {
@@ -38,8 +38,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
       );
     },
     Cell: props => {
-      console.log('props ', props);
-      return <SelectionCell {...props} onCellSelected={onRowSelected} />;
+      return <SelectionCell value={props.value} row={props.row} onCellSelected={onRowSelected} />;
     },
     accessor: 'selected',
     filterable: false,
@@ -51,7 +50,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Participant ID',
     accessor: 'participantId',
-    Cell: props => <ParticipantIdLink {...props} />,
+    Cell: props => <ParticipantIdLink value={props.value} />,
   },
   {
     Header: 'Study Name',
@@ -63,14 +62,26 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'diagnoses.diagnosis_category',
     sortable: false,
   },
   {
     Header: 'Diagnosis (Mondo)',
     accessor: 'diagnosisMondo',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'diagnoses.mondo_id_diagnosis',
     minWidth: 175,
     sortable: false,
@@ -78,7 +89,13 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Age at Diagnosis (days)',
     accessor: 'ageAtDiagnosis',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'diagnoses.age_at_event_days',
     sortable: false,
   },
@@ -87,28 +104,24 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'family.family_compositions',
     sortable: false,
   },
   {
     Header: 'Files',
     accessor: 'filesCount',
-    Cell: props => <NbFilesCell {...props} />,
+    Cell: props => <NbFilesCell value={props.value} row={props.row} />,
     field: 'files',
     sortable: false,
   },
 ];
-
-const cssClass = css({
-  '.nbFilesLink img': {
-    top: '2px',
-    position: 'relative',
-  },
-  'div.rt-noData': {
-    display: 'none !important',
-  },
-});
 
 class ParticipantsTable extends Component {
   static defaultProps = {
@@ -238,7 +251,7 @@ class ParticipantsTable extends Component {
           columns={columns}
           data={data}
           loading={loading}
-          className={`${cssClass}`}
+          className={`${rooTable}`}
           onFetchData={onFetchData}
           dataTotalCount={dataTotalCount}
         />

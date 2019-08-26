@@ -6,29 +6,21 @@ import FileIcon from 'icons/FileIcon';
 import { Link } from 'uikit/Core';
 import { union, compact } from 'lodash';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-
-const rowCss = css({
-  display: 'flex',
-  flexWrap: 'nowrap',
-  alignItems: 'flex-start',
-  alignContent: 'stretch',
-});
+import { rowCss } from './css';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
-  if (row === undefined) {
-    // header row
-    return (
-      <input
-        type="checkbox"
-        checked={!!checked}
-        onChange={evt => {
-          onCellSelected(evt.currentTarget.checked);
-        }}
-      />
-    );
-  }
   return (
-    <input type="checkbox" checked={!!checked} onChange={() => onCellSelected(!checked, row)} />
+    <input
+      type="checkbox"
+      checked={!!checked}
+      onChange={
+        row
+          ? () => onCellSelected(!checked, row)
+          : evt => {
+              onCellSelected(evt.currentTarget.checked);
+            }
+      }
+    />
   );
 };
 
@@ -39,17 +31,17 @@ const enhance = compose(withState('collapsed', 'setCollapsed', true));
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
   // Display one row when there is exactly more than one row.
   // Collapsing a single don't save any space.
-  const uniquifiedData = union(data);
-  const cleanedData = compact(data);
-  const cleanedUniquifiedData = compact(uniquifiedData);
+  const cleanedUniquifiedData = compact(union(data));
 
-  const displayedRowCount = collapsed ? 1 : cleanedData.length;
-  const displayMoreButton = cleanedUniquifiedData.length > 1;
-  const hasManyValues = cleanedUniquifiedData.length > 1;
+  const sizeOfCleanData = cleanedUniquifiedData.length;
+
+  const displayedRowCount = collapsed ? 1 : sizeOfCleanData;
+  const displayMoreButton = sizeOfCleanData > 1;
+  const hasManyValues = sizeOfCleanData > 1;
 
   return (
     <div className={`${rowCss}`}>
-      <div style={{ flex: '4' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', flex: '4' }}>
         {cleanedUniquifiedData.slice(0, displayedRowCount).map((datum, index) => {
           if (isMondo(datum)) {
             return <MONDOLink key={index} mondo={datum} />;
@@ -72,7 +64,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${cleanedData.length - displayedRowCount} ` : ''}
+            {collapsed ? `${sizeOfCleanData - displayedRowCount} ` : ''}
           </div>
         </div>
       )}
