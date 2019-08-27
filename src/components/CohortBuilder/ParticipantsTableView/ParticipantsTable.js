@@ -70,8 +70,9 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
             return (
               <div key={index}>
                 {hasManyValues && '\u2022'}
-                {datum &&
-                  '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */}
+                {datum === null
+                  ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+                  : datum}
               </div>
             );
           }
