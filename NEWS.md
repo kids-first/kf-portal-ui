@@ -2,6 +2,16 @@
 
 ## 2019-08-05 kf-portal-ui 2.7.0
 
+This release introduces bug fixes.
+
+### Bug fixes
+
+- [#2020](https://github.com/kids-first/kf-portal-ui/issues/2020) Cohort Builder: MONDO link doesn't appear in the table view on the cohort builder
+- [#1961](https://github.com/kids-first/kf-portal-ui/issues/1961) Open access files should be accessible for everyone
+- [#2025](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
+
+## 2019-08-05 kf-portal-ui 2.7.0
+
 This release concentrates on renaming the studies and adding the participant entity page, including family and phenotype data. The format of family and phenotype data has been corrected in the ETL as part of that effort.
 
 It also introduces improvements and bug fixes.
