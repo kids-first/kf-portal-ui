@@ -133,12 +133,22 @@ export const deleteFenceTokens = async (api, fence) => {
  * Download File From a Fence Data Repository
  */
 export const downloadFileFromFence = async ({ fileUuid, api, fence }) => {
-  let accessToken = await getAccessToken(api, fence);
+  let accessToken = null;
+  try {
+    accessToken = await getAccessToken(api, fence);
+  } catch (err) {
+    // Open access files are accessible even when not logged with a fence, so assume access and let the download fail.
+    console.warn(`[Fence] no access token for file ${fileUuid}, assuming open access`);
+  }
+
   const { fenceUri } = PROVIDERS[fence];
+  const headers = accessToken
+    ? {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    : {};
   const { url } = await fetch(`${fenceUri}user/data/download/${fileUuid}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    headers,
   }).then(res => res.json());
   if (!url) {
     return null;

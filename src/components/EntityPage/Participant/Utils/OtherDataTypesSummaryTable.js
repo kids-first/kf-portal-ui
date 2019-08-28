@@ -3,7 +3,7 @@ import * as React from 'react';
 import { EntityContentSection } from '../../index';
 import sanitizeURL from './sanitizeURL';
 
-const OtherDataTypesSummaryTable = ({ files, participantID }) => {
+const OtherDataTypesSummaryTable = ({ files, participantID , hasSequencingData}) => {
   //"Other" being "not sequencing data"...
   let wrongTypes = new Set(['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls']);
 
@@ -13,7 +13,6 @@ const OtherDataTypesSummaryTable = ({ files, participantID }) => {
     //for every file
     const file = fileTemp.node;
     const type = file.data_type;
-
     if (!wrongTypes.has(type)) {
       //if they're the right type
       let row = arr.find(ele => ele.title === type); //find its row to increment the number of files
@@ -61,7 +60,7 @@ const OtherDataTypesSummaryTable = ({ files, participantID }) => {
   return arr.length === 0 ? (
     ''
   ) : (
-    <EntityContentSection title="Other Data Types" size={'small'}>
+    <EntityContentSection title={hasSequencingData ? "Other Data Types" :  "Data Types"} size={'small'}>
       <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
         {arr.map( (thing, i) => {
           return (

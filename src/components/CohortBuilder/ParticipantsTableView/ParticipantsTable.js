@@ -1,10 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
-import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-
-import FileIcon from 'icons/FileIcon';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 import {
@@ -17,29 +14,27 @@ import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
-// import RemoveFromCohortButton from './RemoveFromCohortButton';
-
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
+import { css } from 'emotion';
+import FileIcon from 'icons/FileIcon';
 import { union, compact } from 'lodash';
-import {MONDOLink} from '../../Utils/DiagnosisAndPhenotypeLinks'
+import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
-  if (row === undefined) {
-    // header row
-    return (
-      <input
-        type="checkbox"
-        checked={!!checked}
-        onChange={evt => {
-          onCellSelected(evt.currentTarget.checked);
-        }}
-      />
-    );
-  }
   return (
-    <input type="checkbox" checked={!!checked} onChange={() => onCellSelected(!checked, row)} />
+    <input
+      type="checkbox"
+      checked={!!checked}
+      onChange={
+        row
+          ? () => onCellSelected(!checked, row)
+          : evt => {
+              onCellSelected(evt.currentTarget.checked);
+            }
+      }
+    />
   );
 };
 
@@ -50,39 +45,40 @@ const rowCss = css({
   alignContent: 'stretch',
 });
 
+const isMondo = datum => typeof datum === 'string' && datum.includes('MONDO');
+
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
+
 const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed }) => {
   // Display one row when there is exactly more than one row.
   // Collapsing a single don't save any space.
-  const sortedData = union(data);
-  const cleanedData = compact(data);
-  const displayedRowCount = collapsed ? 1 : cleanedData.length;
-  const displayMoreButton = compact(sortedData).length > 1;
-  let isMondo = false
-  if(typeof(sortedData[0])==="string"){
-    isMondo =sortedData[0].includes("MONDO")
-  }
+  const cleanedUniquifiedData = compact(union(data));
+
+  const sizeOfCleanData = cleanedUniquifiedData.length;
+
+  const displayedRowCount = collapsed ? 1 : sizeOfCleanData;
+  const displayMoreButton = sizeOfCleanData > 1;
+  const hasManyValues = sizeOfCleanData > 1;
+
   return (
     <div className={`${rowCss}`}>
-      <div style={{ flex: '4' }}>
-        {compact(sortedData).length <= 1
-          ? compact(sortedData)
-              .slice(0, displayedRowCount)
-              .map((datum, index) => (
-              isMondo ? <MONDOLink mondo={datum}/> :
-                <div key={index}>
-                  {datum === null
-                    ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
-                    : datum}
-                </div>
-              ))
-          : cleanedData
-              .slice(0, displayedRowCount)
-              .map((datum, index) => (
-                isMondo ? <MONDOLink mondo={datum}/> : <div key={index}>&#8226; {datum === null ? '\u00A0' : datum}</div>
-              ))}
+      <div style={{ display: 'flex', flexDirection: 'column', flex: '4' }}>
+        {cleanedUniquifiedData.slice(0, displayedRowCount).map((datum, index) => {
+          if (isMondo(datum)) {
+            return <MONDOLink key={index} mondo={datum} />;
+          } else {
+            return (
+              <div key={index}>
+                {hasManyValues && '\u2022'}
+                {datum === null
+                  ? '\u00A0' /* unbreakable space to avoid empty rows from collapsing in height */
+                  : datum}
+              </div>
+            );
+          }
+        })}
       </div>
-      {displayMoreButton ? (
+      {displayMoreButton && (
         <div
           style={{ flex: '1', marginTop: '-8px ' }}
           onClick={() => {
@@ -90,10 +86,10 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
           }}
         >
           <div className={`showMore-wrapper ${collapsed ? 'more' : 'less'}`}>
-            {collapsed ? `${cleanedData.length - displayedRowCount} ` : ''}
+            {collapsed ? `${sizeOfCleanData - displayedRowCount} ` : ''}
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 });
@@ -136,12 +132,8 @@ const NbFilesCell = compose(
 );
 
 const ParticipantIdLink = compose(
-  withTheme(({ value: idParticipant, row, theme }) => {
-        return (
-      <Link to={`/participant/${idParticipant}#summary`}>
-        {`${idParticipant}`}
-      </Link>
-    );
+  withTheme(({ value: idParticipant }) => {
+    return <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>;
   }),
 );
 
@@ -156,7 +148,9 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
         />
       );
     },
-    Cell: props => <SelectionCell {...props} onCellSelected={onRowSelected} />,
+    Cell: props => {
+      return <SelectionCell value={props.value} row={props.row} onCellSelected={onRowSelected} />;
+    },
     accessor: 'selected',
     filterable: false,
     sortable: false,
@@ -164,9 +158,11 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
     resizable: false,
     minWidth: 33,
   },
-  { Header: 'Participant ID',
+  {
+    Header: 'Participant ID',
     accessor: 'participantId',
-    Cell: props => <ParticipantIdLink {...props}/>},
+    Cell: props => <ParticipantIdLink value={props.value} />,
+  },
   {
     Header: 'Study Name',
     accessor: 'studyName',
@@ -177,14 +173,26 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'diagnoses.diagnosis_category',
     sortable: false,
   },
   {
     Header: 'Diagnosis (Mondo)',
     accessor: 'diagnosisMondo',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'diagnoses.mondo_id_diagnosis',
     minWidth: 175,
     sortable: false,
@@ -192,7 +200,13 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Age at Diagnosis (days)',
     accessor: 'ageAtDiagnosis',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'diagnoses.age_at_event_days',
     sortable: false,
   },
@@ -201,14 +215,20 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
-    Cell: props => <CollapsibleMultiLineCell {...props} />,
+    Cell: props => (
+      <CollapsibleMultiLineCell
+        value={props.value}
+        collapsed={props.collapsed}
+        setCollapsed={props.setCollapsed}
+      />
+    ),
     field: 'family.family_compositions',
     sortable: false,
   },
   {
     Header: 'Files',
     accessor: 'filesCount',
-    Cell: props => <NbFilesCell {...props} />,
+    Cell: props => <NbFilesCell value={props.value} row={props.row} />,
     field: 'files',
     sortable: false,
   },

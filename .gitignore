@@ -24,6 +24,7 @@ yarn-error.log*
 yarn.lock
 
 .vscode/launch.json
+.vscode/extensions.json
 
 .cache/
 
