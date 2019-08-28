@@ -1,5 +1,29 @@
 # Release notes for kf-portal-ui
 
+## 2019-08-13 kf-portal-ui 2.7.2
+
+This release includes a way to deploy the OrcId login button in production, but hidden. This is only done for testing purposes.
+
+### Includes
+
+- [#2014](https://github.com/kids-first/kf-portal-ui/issues/2014) Orcid Login : hidden deploy to test in production
+
+## 2019-08-09 kf-portal-ui 2.7.1
+
+This release concentrates on bug fixes following the release 2.7.0 and contains no new features.
+
+### Bug fixes
+
+- [#2001](https://github.com/kids-first/kf-portal-ui/issues/2001) Broken link in the maintenance page
+- [#2007](https://github.com/kids-first/kf-portal-ui/issues/2007) Participant clinical tab returns a Maintenance page !!
+- [#2008](https://github.com/kids-first/kf-portal-ui/issues/2008) Participant Entity page: Empty lines in the Family members table
+
+### Also included
+
+Data fix, introduced 2019-08-08
+
+- [#2003](https://github.com/kids-first/kf-portal-ui/issues/2003) Rename study "Consortium: Pediatric Brain Tumors - CBTTC" to "Pediatric Brain Tumor Atlas: CBTTC"
+
 ## 2019-08-05 kf-portal-ui 2.7.0
 
 This release introduces bug fixes.
