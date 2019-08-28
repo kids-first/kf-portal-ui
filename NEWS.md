@@ -1,5 +1,15 @@
 # Release notes for kf-portal-ui
 
+## 2019-08-28 kf-portal-ui 2.8.0
+
+This release introduces bug fixes.
+
+### Bug fixes
+
+- [#2020](https://github.com/kids-first/kf-portal-ui/issues/2020) Cohort Builder: MONDO link doesn't appear in the table view on the cohort builder
+- [#1961](https://github.com/kids-first/kf-portal-ui/issues/1961) Open access files should be accessible for everyone
+- [#2025](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
+
 ## 2019-08-13 kf-portal-ui 2.7.2
 
 This release includes a way to deploy the OrcId login button in production, but hidden. This is only done for testing purposes.
@@ -23,16 +33,6 @@ This release concentrates on bug fixes following the release 2.7.0 and contains 
 Data fix, introduced 2019-08-08
 
 - [#2003](https://github.com/kids-first/kf-portal-ui/issues/2003) Rename study "Consortium: Pediatric Brain Tumors - CBTTC" to "Pediatric Brain Tumor Atlas: CBTTC"
-
-## 2019-08-05 kf-portal-ui 2.7.0
-
-This release introduces bug fixes.
-
-### Bug fixes
-
-- [#2020](https://github.com/kids-first/kf-portal-ui/issues/2020) Cohort Builder: MONDO link doesn't appear in the table view on the cohort builder
-- [#1961](https://github.com/kids-first/kf-portal-ui/issues/1961) Open access files should be accessible for everyone
-- [#2025](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
 
 ## 2019-08-05 kf-portal-ui 2.7.0
 
