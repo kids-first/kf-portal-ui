@@ -1,5 +1,13 @@
 # Release notes for kf-portal-ui
 
+## 2019-08-29 kf-portal-ui 2.9.0
+
+This release make ORCID feature available for everybody, and improve erro messages in case of errors during login with ORCID.
+
+### Includes
+
+- [#2016](https://github.com/kids-first/kf-portal-ui/issues/2016) OrcId Login : Make available to greater public
+
 ## 2019-08-28 kf-portal-ui 2.8.0
 
 This release introduces bug fixes.
