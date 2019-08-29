@@ -3,7 +3,7 @@ import * as React from 'react';
 import { EntityContentSection } from '../../index';
 import sanitizeURL from './sanitizeURL';
 
-const OtherDataTypesSummaryTable = ({ files, participantID , hasSequencingData}) => {
+const OtherDataTypesSummaryTable = ({ files, participantID, hasSequencingData }) => {
   //"Other" being "not sequencing data"...
   let wrongTypes = new Set(['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls']);
 
@@ -60,19 +60,29 @@ const OtherDataTypesSummaryTable = ({ files, participantID , hasSequencingData})
   return arr.length === 0 ? (
     ''
   ) : (
-    <EntityContentSection title={hasSequencingData ? "Other Data Types" :  "Data Types"} size={'small'}>
-      <div style={{display: "flex", flexWrap: "wrap", justifyContent: "space-between"}}>
-        {arr.map( (thing, i) => {
+    <EntityContentSection
+      title={hasSequencingData ? 'Other Data Types' : 'Data Types'}
+      size={'small'}
+    >
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        {arr.map((thing, i) => {
           return (
             <div
+              key={i}
               style={{
-                backgroundColor: "#f4f5f8", flexGrow: 0, padding: "10px", marginTop: "10px", marginBottom: "10px",
-                border: "thin solid rgb(224, 225, 230)", borderRadius: "1em", marginRight: (i===arr.length ? 0 : "1em")
+                backgroundColor: '#f4f5f8',
+                flexGrow: 0,
+                padding: '10px',
+                marginTop: '10px',
+                marginBottom: '10px',
+                border: 'thin solid rgb(224, 225, 230)',
+                borderRadius: '1em',
+                marginRight: i === arr.length ? 0 : '1em',
               }}
             >
               {thing.title}&nbsp;&nbsp;&nbsp;{thing.summary}
             </div>
-          )
+          );
         })}
       </div>
     </EntityContentSection>
