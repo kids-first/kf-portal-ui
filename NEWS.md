@@ -8,7 +8,7 @@ This release introduces bug fixes.
 
 - [#2020](https://github.com/kids-first/kf-portal-ui/issues/2020) Cohort Builder: MONDO link doesn't appear in the table view on the cohort builder
 - [#1961](https://github.com/kids-first/kf-portal-ui/issues/1961) Open access files should be accessible for everyone
-- [#2025](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
+- [#2005](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
 
 ## 2019-08-13 kf-portal-ui 2.7.2
 
