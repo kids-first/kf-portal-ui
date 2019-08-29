@@ -2,7 +2,7 @@
 
 ## 2019-08-29 kf-portal-ui 2.9.0
 
-This release make ORCID feature available for everybody, and improve erro messages in case of errors during login with ORCID.
+This release makes ORCID feature available for everybody, and improves error messages in case of errors during login with ORCID.
 
 ### Includes
 
