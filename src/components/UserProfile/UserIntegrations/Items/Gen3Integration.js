@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next';
 import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceIntegrationItem';
 
 import { GEN3 } from 'common/constants';
-import gen3Logo from 'assets/logo-gen3.svg';
+import kfFrameworkServicesLogo from 'assets/kids-first-framework-services.svg';
 import { gen3WebRoot } from 'common/injectGlobals';
 import { css } from 'emotion';
 
@@ -28,7 +28,7 @@ const description = () => {
 const logo = () => {
   return (
     <a href={gen3WebRoot} className={`${linkCss}`} target="_blank">
-      <img src={gen3Logo} alt="Gen3 Logo" height="30px" />
+      <img src={kfFrameworkServicesLogo} alt="Gen3 Logo" height="30px" />
     </a>
   );
 };
