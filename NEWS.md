@@ -1,5 +1,13 @@
 # Release notes for kf-portal-ui
 
+## 2019-08-29 kf-portal-ui 2.9.0
+
+This release makes ORCID feature available for everybody, and improves error messages in case of errors during login with ORCID.
+
+### Includes
+
+- [#2016](https://github.com/kids-first/kf-portal-ui/issues/2016) OrcId Login : Make available to greater public
+
 ## 2019-08-28 kf-portal-ui 2.8.0
 
 This release introduces bug fixes.
@@ -8,7 +16,7 @@ This release introduces bug fixes.
 
 - [#2020](https://github.com/kids-first/kf-portal-ui/issues/2020) Cohort Builder: MONDO link doesn't appear in the table view on the cohort builder
 - [#1961](https://github.com/kids-first/kf-portal-ui/issues/1961) Open access files should be accessible for everyone
-- [#2025](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
+- [#2005](https://github.com/kids-first/kf-portal-ui/issues/2025) Participant entity page: Don't display the sequencing data table if empty
 
 ## 2019-08-13 kf-portal-ui 2.7.2
 
