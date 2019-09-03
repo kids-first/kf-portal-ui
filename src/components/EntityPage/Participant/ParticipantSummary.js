@@ -11,9 +11,8 @@ import SequencingDataTable from './Utils/SequencingDataTable';
 import OtherDataTypesSummaryTable from './Utils/OtherDataTypesSummaryTable';
 import { get } from 'lodash';
 import sanitize from './Utils/sanitize';
-import { NCITLink, MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-import ParticipantDataTable from './Utils/ParticipantDataTable';
-
+import { NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
+import HistologicalDiagnosisTable from '../Histological/histologicalDiagnosisTable.js';
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
 const enhance = compose(withTheme);
@@ -162,6 +161,30 @@ function specimenSummaryTableData(specimen) {
   ]);
 }
 
+const buildSpecimenDxSection = ({ specimenId, sanitizedNodes }) => {
+  return (
+    <EntityContentSection
+      key={`entityContentSection`}
+      title="Histological Diagnoses"
+      size={'small'}
+    >
+      {sanitizedNodes.map((sanitizedNode, index) => {
+        return (
+          <HistologicalDiagnosisTable
+            key={`histological_dx_table_specimen_id_${specimenId}_node_index_${index}`}
+            data={[sanitizedNode]}
+          />
+        );
+      })}
+    </EntityContentSection>
+  );
+};
+
+const getSanitizedSpecimenDxsData = specimen =>
+  get(specimen, 'diagnoses.hits.edges', [])
+    .filter(edge => edge && Object.keys(edge).length > 0)
+    .map(edge => sanitize({ ...edge.node }));
+
 const ParticipantSummary = ({ participant }) => {
   const specimens = get(participant, 'biospecimens.hits.edges', []);
   const hasFile = get(participant, 'files.hits.edges', []).length === 0 ? false : true;
@@ -174,9 +197,6 @@ const ParticipantSummary = ({ participant }) => {
       break;
     }
   }
-  const cellBreak = wrapper => (
-    <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{wrapper.value}</div>
-  );
 
   return (
     <React.Fragment>
@@ -192,9 +212,7 @@ const ParticipantSummary = ({ participant }) => {
             <Holder>
               {specimens.map(specimenNode => {
                 const specimen = specimenNode.node;
-                const edgesNodes = get(specimen, 'diagnoses.hits.edges', [])
-                  .filter(edge => edge && Object.keys(edge).length > 0)
-                  .map(edge => sanitize({ ...edge.node }));
+                const specimenDxsData = getSanitizedSpecimenDxsData(specimen);
                 return (
                   <React.Fragment key={specimen.kf_id}>
                     <VariableSummaryTable
@@ -203,62 +221,11 @@ const ParticipantSummary = ({ participant }) => {
                       rows={specimenSummaryTableData(specimen)}
                       nbOfTables={2}
                     />
-                    {edgesNodes.length > 0 && (
-                      <EntityContentSection
-                        key={`entityContentSection`}
-                        title="Histological Diagnoses"
-                        size={'small'}
-                      >
-                        {edgesNodes.map((sanitizedNode, index) => {
-                          return (
-                            <ParticipantDataTable
-                              label={specimen.kf_id}
-                              key={`histological_diagnosis_table_specimen_id_${
-                                specimen.kf
-                              }_node_index_${index}`}
-                              columns={[
-                                {
-                                  Header: 'Diagnosis Category',
-                                  accessor: 'diagnosis_category',
-                                  Cell: cellBreak,
-                                },
-                                {
-                                  Header: 'Diagnosis (Mondo)',
-                                  accessor: 'mondo_id_diagnosis',
-                                  Cell: wrapper =>
-                                    wrapper.value === '--' ? (
-                                      <div>--</div>
-                                    ) : (
-                                      <MONDOLink mondo={wrapper.value} />
-                                    ),
-                                },
-                                {
-                                  Header: 'Diagnosis (NCIT)',
-                                  accessor: 'ncit_id_diagnosis',
-                                  Cell: wrapper =>
-                                    wrapper.value === '--' ? (
-                                      <div>--</div>
-                                    ) : (
-                                      <NCITLink ncit={wrapper.value} />
-                                    ),
-                                },
-                                {
-                                  Header: 'Diagnosis (Source Text)',
-                                  accessor: 'source_text_diagnosis',
-                                  Cell: cellBreak,
-                                },
-                                {
-                                  Header: 'Age at event',
-                                  accessor: 'age_at_event_days',
-                                  Cell: cellBreak,
-                                },
-                              ]}
-                              data={[sanitizedNode]}
-                            />
-                          );
-                        })}
-                      </EntityContentSection>
-                    )}
+                    {specimenDxsData.length > 0 &&
+                      buildSpecimenDxSection({
+                        specimenId: specimen.kf_id,
+                        sanitizedNodes: specimenDxsData,
+                      })}
                   </React.Fragment>
                 );
               })}
