@@ -28,7 +28,7 @@ const description = () => {
 const logo = () => {
   return (
     <a href={gen3WebRoot} className={`${linkCss}`} target="_blank">
-      <img src={kfFrameworkServicesLogo} alt="Gen3 Logo" height="30px" />
+      <img src={kfFrameworkServicesLogo} alt="Kids First Framework Services logo" height="30px" />
     </a>
   );
 };
