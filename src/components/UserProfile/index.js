@@ -26,6 +26,7 @@ import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import Row from 'uikit/Row';
 import { H1 } from 'uikit/Headings';
+import { isRoleDiffThanPxOrFamOrCommunity } from './utils';
 
 export const userProfileBackground = (
   loggedInUser,
@@ -145,15 +146,19 @@ export default compose(
                 ${theme.column};
               `}
             >
-              <span
-                className={css`
-                  font-size: 1.4em;
-                `}
-              >
-                {profile.jobTitle}
-              </span>
-              <span>{profile.institution}</span>
-              <span>{profile.department}</span>
+              {isRoleDiffThanPxOrFamOrCommunity(profile) && (
+                <React.Fragment>
+                  <span
+                    className={css`
+                      font-size: 1.4em;
+                    `}
+                  >
+                    {profile.jobTitle}
+                  </span>
+                  <span>{profile.institution}</span>
+                  <span>{profile.department}</span>
+                </React.Fragment>
+              )}
               <span>
                 {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
               </span>
