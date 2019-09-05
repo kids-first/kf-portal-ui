@@ -10,6 +10,7 @@ import { ModalContent } from './ui';
 
 import { closeModal } from '../../store/actionCreators/ui/modalComponent';
 import { store } from '../../store';
+import { getModal } from './modalFactory';
 
 import './globalModal.scss';
 
@@ -19,10 +20,10 @@ class GlobalModal extends React.Component {
     autobind(this);
   }
 
-  // TODO clean those
   static propTypes = {
-    component: PropTypes.node,
+    modalName: PropTypes.string,
     className: PropTypes.string,
+    modalProps: PropTypes.object,
   };
 
   handleClose() {
@@ -30,17 +31,19 @@ class GlobalModal extends React.Component {
   }
 
   render() {
-    const { component = null, className = '', ...rest } = this.props;
+    const { modalName, modalProps = {}, className = '' } = this.props;
+    const ModalComponent = getModal(modalName);
 
     return (
       <ReactModal
-        isOpen={!!component}
+        isOpen={!!modalName}
         className={`global-modal ${className}`}
         overlayClassName="global-modal-overlay"
         appElement={getAppElement()}
-        {...rest}
       >
-        <ModalContent className="container">{component}</ModalContent>
+        <ModalContent className="container">
+          {ModalComponent ? <ModalComponent {...modalProps} /> : null}
+        </ModalContent>
       </ReactModal>
     );
   }

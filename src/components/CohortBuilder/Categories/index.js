@@ -14,8 +14,9 @@ import ClinicalIcon from 'icons/ClinicalIcon';
 import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
+import { registerModal } from '../../Modal/modalFactory';
 
-import { setModal } from '../../../store/actionCreators/ui/modalComponent';
+import { openModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
 
@@ -143,6 +144,7 @@ class Categories extends React.Component {
       currentSearchField: '',
       currentCategory: null,
     };
+    registerModal('SearchByIdModal', SearchByIdModal);
     autobind(this);
   }
 
@@ -165,14 +167,7 @@ class Categories extends React.Component {
   }
 
   handleUploadIdsClick() {
-    // TODO JB move away from passing a component instance in redux...
-    //  ugh... time for yet another popup factory
-    store.dispatch(
-      setModal({
-        component: <SearchByIdModal />,
-        className: 'search-by-id-modal',
-      }),
-    );
+    store.dispatch(openModal('SearchByIdModal', {}, 'search-by-id-modal'));
   }
 
   setActiveCategory = ({ category, fieldName }) =>
