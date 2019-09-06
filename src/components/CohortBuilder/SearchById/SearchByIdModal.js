@@ -9,6 +9,7 @@ import { WhiteButton, TealActionButton } from 'uikit/Button';
 import { parseInputFiles } from 'common/parseInputFiles';
 import { ModalTitle } from '../../Modal/ui';
 import { closeModal } from '../../../store/actionCreators/ui/modalComponent';
+import SearchResults from './SearchResults';
 
 import './styles.scss';
 
@@ -83,7 +84,7 @@ export default class SearchByIdModal extends React.Component {
   }
 
   renderBody() {
-    const { inputIdsText } = this.state;
+    const { inputIdsText, inputIds, results } = this.state;
 
     return (
       <React.Fragment>
@@ -118,7 +119,11 @@ export default class SearchByIdModal extends React.Component {
             Upload csv
           </TealActionButton>
         </section>
-        <section>{JSON.stringify(this.state.results)}</section>
+        {results === null ? null : (
+          <section className="sbi-results">
+            <SearchResults query={inputIds} results={results.participants} />
+          </section>
+        )}
       </React.Fragment>
     );
   }

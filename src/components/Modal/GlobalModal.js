@@ -5,7 +5,7 @@ import ReactModal from 'react-modal';
 import autobind from 'auto-bind-es5';
 
 import { getAppElement } from '../../services/globalDomNodes.js';
-// TODO : import those styles
+// TODO JB : import those styles
 import { ModalContent } from './ui';
 
 import { closeModal } from '../../store/actionCreators/ui/modalComponent';

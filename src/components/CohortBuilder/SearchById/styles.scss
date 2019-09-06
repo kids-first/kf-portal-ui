@@ -1,6 +1,9 @@
 @import '../../../theme/vars';
 
 .search-by-id-modal {
+  min-height: 75%;
+  max-height: 95%;
+
   & .body {
     section {
       margin-bottom: 1.5em;
@@ -25,7 +28,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
 
       & textarea {
         border: none;

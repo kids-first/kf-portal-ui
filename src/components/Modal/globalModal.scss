@@ -35,6 +35,9 @@
   }
 
   & .body {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
     margin: 0;
     margin-bottom: 20px;
     padding-left: 20px;
@@ -43,11 +46,11 @@
     line-height: 28px;
     font-size: 15px;
     color: #343434;
+    overflow-y: auto;
   }
 
   & .footer {
     display: flex;
-    flex-grow: 1;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
