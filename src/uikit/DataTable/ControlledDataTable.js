@@ -6,7 +6,7 @@ import StyleWrapper from './Table/StyleWrapper';
 import CustomPagination from './Pagination';
 import applyTransforms from './utils/applyTransforms';
 
-class ControlledDataTable extends React.Component {
+export default class ControlledDataTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,6 +14,24 @@ class ControlledDataTable extends React.Component {
       pageSize: props.pageSize || props.defaultPageSize || 20,
     };
   }
+
+  static propTypes = {
+    loading: PropTypes.bool,
+    // see ReactTable v6 Columns doc: https://github.com/tannerlinsley/react-table/tree/v6#columns
+    columns: PropTypes.arrayOf(
+      PropTypes.shape({
+        Header: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+        accessor: PropTypes.string.isRequired,
+        Cell: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+      }),
+    ).isRequired,
+    data: PropTypes.array.isRequired,
+    dataTotalCount: PropTypes.number,
+    manualPagination: PropTypes.bool,
+    onFetchData: PropTypes.func,
+    transforms: PropTypes.arrayOf(PropTypes.func),
+    className: PropTypes.string,
+  };
 
   render() {
     const {
@@ -77,23 +95,3 @@ class ControlledDataTable extends React.Component {
     );
   }
 }
-
-ControlledDataTable.propTypes = {
-  loading: PropTypes.bool,
-  // see ReactTable v6 Columns doc: https://github.com/tannerlinsley/react-table/tree/v6#columns
-  columns: PropTypes.arrayOf(
-    PropTypes.shape({
-      Header: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-      accessor: PropTypes.string.isRequired,
-      Cell: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    }),
-  ).isRequired,
-  data: PropTypes.array.isRequired,
-  dataTotalCount: PropTypes.number.isRequired,
-  manualPagination: PropTypes.bool,
-  onFetchData: PropTypes.func,
-  transforms: PropTypes.arrayOf(PropTypes.func),
-  className: PropTypes.string,
-};
-
-export default ControlledDataTable;
