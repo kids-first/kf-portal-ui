@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { pickData } from './utils';
-import { formatToGB } from './utils';
+import { formatBytesToHumanReadable } from './utils';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { kfWebRoot } from 'common/injectGlobals';
 
@@ -68,6 +68,6 @@ export const toFilePropertiesSummary = data => {
     },
     { title: 'Data Type:', summary: pickData(data, 'data_type') },
     { title: 'File Format:', summary: pickData(data, 'file_format') },
-    { title: 'Size:', summary: pickData(data, 'size', size => formatToGB(size)) },
+    { title: 'Size:', summary: pickData(data, 'size', size => formatBytesToHumanReadable(size)) },
   ];
 };

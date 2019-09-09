@@ -19,4 +19,19 @@ export const formatDate = date => {
   return `${yearDiff} years ${dayDiff} days`;
 };
 
-export const formatToGB = size => `${(size / 1000000000).toFixed(2)} GB`;
+//https://ourcodeworld.com/articles/read/713/converting-bytes-to-human-readable-values-kb-mb-gb-tb-pb-eb-zb-yb-with-javascript
+export const formatBytesToHumanReadable = (bytes, decimals = 2) => {
+  if (bytes === 0) {
+    return '0';
+  }
+
+  const scale = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+  const matchedIndex = Math.floor(Math.log(bytes) / Math.log(scale));
+
+  return (
+    parseFloat((bytes / Math.pow(scale, matchedIndex)).toFixed(dm)) + ' ' + sizes[matchedIndex]
+  );
+};
