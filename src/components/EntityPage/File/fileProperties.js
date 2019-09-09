@@ -7,25 +7,16 @@ import { kfWebRoot } from 'common/injectGlobals';
 
 import ExternalLink from 'uikit/ExternalLink';
 
-export const toFilePropertiesSummary = data => {
-  const participants = data.participants.hits.edges[0].node;
+const buildParticipantsTableConfigs = participants => {
+  if (!participants) {
+    return [];
+  }
   const study = participants.study;
-  const biospecimens = participants.biospecimens.hits.edges[0].node;
-
-  const experimentalStrategies =
-    _.uniq(
-      data.sequencing_experiments.hits.edges
-        .filter(edge => edge.node && edge.node.experiment_strategy)
-        .map(edge => edge.node.experiment_strategy),
-    ).join(', ') || '--';
-
+  const biospecimens = pickData(participants, 'biospecimens.hits.edges[0].node');
   return [
-    { title: 'Kids First ID:', summary: pickData(data, 'kf_id') },
-
-    { title: 'Name:', summary: pickData(data, 'file_name') },
     {
       title: 'Study:',
-      summary: (
+      summary: study ? (
         <ExternalLink
           href={`${kfWebRoot}/support/studies-and-access`}
           onClick={e => {
@@ -38,10 +29,30 @@ export const toFilePropertiesSummary = data => {
         >
           {`${study.short_name} (${study.kf_id})`}
         </ExternalLink>
+      ) : (
+        '--'
       ),
     },
-    { title: 'Access:', summary: data.controlled_access ? 'Controlled' : 'Open' },
     { title: 'Consent Codes:', summary: pickData(biospecimens, 'dbgap_consent_code') },
+  ];
+};
+
+export const toFilePropertiesSummary = data => {
+  const participants = pickData(data, 'participants.hits.edges[0].node');
+
+  const experimentalStrategies =
+    _.uniq(
+      data.sequencing_experiments.hits.edges
+        .filter(edge => edge.node && edge.node.experiment_strategy)
+        .map(edge => edge.node.experiment_strategy),
+    ).join(', ') || '--';
+
+  return [
+    { title: 'Kids First ID:', summary: pickData(data, 'kf_id') },
+    { title: 'Name:', summary: pickData(data, 'file_name') },
+    ...buildParticipantsTableConfigs(participants),
+    { title: 'Access:', summary: data.controlled_access ? 'Controlled' : 'Open' },
+
     {
       title: 'External ID:',
       summary: pickData(data, 'external_id'),

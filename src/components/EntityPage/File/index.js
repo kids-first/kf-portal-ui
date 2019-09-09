@@ -302,6 +302,9 @@ const FileEntity = compose(withTheme)(
         const data = _.get(file, 'data.hits.edges[0].node');
         const fileType = data.file_format;
 
+        const hasParticipants =
+          Object.keys(_.get(data, 'participants.hits.edges[0].node', {})).length > 0;
+
         return (
           <Container>
             <EntityTitleBar>
@@ -342,41 +345,42 @@ const FileEntity = compose(withTheme)(
                 </Row>
               </EntityContentSection>
               <EntityContentDivider />
-              <EntityContentSection title="Associated Participants/Biospecimens">
-                <BaseDataTable
-                  analyticsTracking={{
-                    title: 'Associated Participants/Biospecimens',
-                    category: TRACKING_EVENTS.categories.entityPage.file,
-                  }}
-                  loading={file.isLoading}
-                  data={toParticpantBiospecimenData(data)}
-                  transforms={{
-                    study_name: studyShortName => (
-                      <ExternalLink
-                        href={`${kfWebRoot}/support/studies-and-access`}
-                        onClick={e => {
-                          trackUserInteraction({
-                            category: TRACKING_EVENTS.categories.entityPage.file,
-                            action:
-                              TRACKING_EVENTS.actions.click +
-                              `: Associated Participants/Biospecimens: Study Name`,
-                            label: studyShortName,
-                          });
-                        }}
-                      >
-                        {studyShortName}
-                      </ExternalLink>
-                    ),
+              {hasParticipants && (
+                <EntityContentSection title="Associated Participants/Biospecimens">
+                  <BaseDataTable
+                    analyticsTracking={{
+                      title: 'Associated Participants/Biospecimens',
+                      category: TRACKING_EVENTS.categories.entityPage.file,
+                    }}
+                    loading={file.isLoading}
+                    data={toParticpantBiospecimenData(data)}
+                    transforms={{
+                      study_name: studyShortName => (
+                        <ExternalLink
+                          href={`${kfWebRoot}/support/studies-and-access`}
+                          onClick={e => {
+                            trackUserInteraction({
+                              category: TRACKING_EVENTS.categories.entityPage.file,
+                              action:
+                                TRACKING_EVENTS.actions.click +
+                                `: Associated Participants/Biospecimens: Study Name`,
+                              label: studyShortName,
+                            });
+                          }}
+                        >
+                          {studyShortName}
+                        </ExternalLink>
+                      ),
 
-                    participant_id: participantId => (
-                      <Link to={`/participant/${participantId}#summary`}>{participantId}</Link>
-                    ),
-                  }}
-                  columns={particpantBiospecimenColumns}
-                  downloadName="participants_biospecimens"
-                />
-              </EntityContentSection>
-
+                      participant_id: participantId => (
+                        <Link to={`/participant/${participantId}#summary`}>{participantId}</Link>
+                      ),
+                    }}
+                    columns={particpantBiospecimenColumns}
+                    downloadName="participants_biospecimens"
+                  />
+                </EntityContentSection>
+              )}
               {hasSequencingReadProperties(data) ? (
                 <React.Fragment>
                   <EntityContentDivider />
