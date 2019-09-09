@@ -23,12 +23,15 @@
     box-sizing: border-box;
   }
 
+  & .container {
+    overflow: hidden;
+  }
+
   & .header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     border-bottom: 1px solid #d4d6dd;
-    margin-bottom: 1.5em;
     padding-top: 10px;
     padding-left: 20px;
     padding-right: 20px;
@@ -39,7 +42,8 @@
     display: flex;
     flex-grow: 1;
     margin: 0;
-    margin-bottom: 20px;
+    padding-bottom: 1em;
+    padding-top: 1em;
     padding-left: 20px;
     padding-right: 20px;
     font-family: Open Sans, sans-serif;
@@ -56,6 +60,8 @@
     justify-content: space-between;
     padding: 16px;
     background-color: $tertiaryBackground;
+    box-shadow: 0 -2px 8px 2px $white;
+    z-index: 1;
   }
 }
 

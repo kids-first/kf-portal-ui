@@ -5,17 +5,17 @@
   max-height: 95%;
 
   & .body {
-    section {
-      margin-bottom: 1.5em;
+    & section:not(:last-child) {
+      margin-bottom: 1em;
     }
 
-    .sbi-description {
-      p {
+    & .sbi-description {
+      & p {
         margin: 0;
       }
     }
 
-    .sbi-id-input {
+    & .sbi-id-input {
       /* TODO JB : remove unused / redundant styles */
       box-sizing: border-box;
 
