@@ -34,24 +34,17 @@ class SearchByIdModal extends React.Component {
   handleFilesUpload(evt) {
     parseInputFiles(evt.currentTarget.files)
       .then(contents => {
-        const inputIds = uniq(
-          contents
-            .reduce(
-              (ids, fileContent) => ids.concat(fileContent.split(/,\s*/)),
-              this.state.inputIds,
-            )
-            .filter(id => !!id),
-        );
-        const inputIdsText = inputIds.join(', ');
-        this.setState({ inputIdsText, inputIds });
+        const inputIds = contents
+          .reduce((ids, fileContent) => ids.concat(fileContent.split(/,\s*/)), this.state.inputIds)
+          .filter(id => !!id);
+        this.setInputIds(inputIds);
       })
       .catch(console.err);
   }
 
   handleInputIdsChange(evt) {
     const inputIdsText = evt.currentTarget.value;
-    const inputIds = inputIdsText.split(/,\s*/).filter(id => !!id);
-    this.setState({ inputIdsText, inputIds });
+    this.setInputText(inputIdsText);
   }
 
   async handleViewResultsClick() {
@@ -66,9 +59,24 @@ class SearchByIdModal extends React.Component {
       });
   }
 
+  setInputText(inputIdsText) {
+    const inputIds = uniq(inputIdsText.split(/,\s*/).filter(id => !!id));
+    this.setState({ inputIdsText, inputIds });
+  }
+
+  setInputIds(inputIds) {
+    const uniqueInputIds = uniq(inputIds);
+    const inputIdsText = uniqueInputIds.join(', ');
+    this.setState({ inputIdsText, inputIds: uniqueInputIds });
+  }
+
   handleClose() {
     this.setState({ loading: false });
     this.props.closeModal();
+  }
+
+  handleClear() {
+    this.setInputText('');
   }
 
   renderHeader() {
@@ -91,6 +99,9 @@ class SearchByIdModal extends React.Component {
       <React.Fragment>
         <section className="sbi-description">
           <p>Type or copy-and-paste a list of comma delimited identifiers</p>
+          <WhiteButton key="cancel" onClick={this.handleClear} className="clear">
+            Clear
+          </WhiteButton>
         </section>
         <section className="sbi-id-input">
           <textarea
@@ -100,9 +111,7 @@ class SearchByIdModal extends React.Component {
           />
         </section>
         <section className="sbi-description">
-          <p>Or choose file to upload</p>
-        </section>
-        <section className="sbi-upload">
+          <span>Or choose file to upload</span>
           <input
             type="file"
             multiple
