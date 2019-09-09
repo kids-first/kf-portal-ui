@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import autobind from 'auto-bind-es5';
 import { uniq } from 'lodash';
 import CloseIcon from 'react-icons/lib/md/close';
@@ -13,7 +14,7 @@ import SearchResults from './SearchResults';
 
 import './styles.scss';
 
-export default class SearchByIdModal extends React.Component {
+class SearchByIdModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,7 +68,7 @@ export default class SearchByIdModal extends React.Component {
 
   handleClose() {
     this.setState({ loading: false });
-    closeModal();
+    this.props.closeModal();
   }
 
   renderHeader() {
@@ -156,3 +157,8 @@ export default class SearchByIdModal extends React.Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { closeModal },
+)(SearchByIdModal);
