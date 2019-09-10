@@ -1,15 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import autobind from 'auto-bind-es5';
-import { uniq } from 'lodash';
+import { uniq, flatMap } from 'lodash';
 import CloseIcon from 'react-icons/lib/md/close';
 
 import { searchByIds } from 'services/arranger/searchByIds';
 import Row from 'uikit/Column';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
+import { H3 } from 'uikit/Headings';
 import { parseInputFiles } from 'common/parseInputFiles';
+import { setSqonValueAtIndex } from 'common/sqonUtils';
 import { ModalTitle } from '../../Modal/ui';
-import { closeModal } from '../../../store/actionCreators/ui/modalComponent';
+import { closeModal } from 'store/actionCreators/ui/modalComponent';
+import { setSqons } from 'store/actionCreators/virtualStudies';
 import SearchResults from './SearchResults';
 
 import './styles.scss';
@@ -50,7 +53,7 @@ class SearchByIdModal extends React.Component {
   async handleViewResultsClick() {
     if (this.state.loading === true) return;
     this.setState({ loading: true });
-    searchByIds(this.state.inputIds)
+    return searchByIds(this.state.inputIds)
       .then(results => {
         this.setState({ loading: false, results });
       })
@@ -59,15 +62,43 @@ class SearchByIdModal extends React.Component {
       });
   }
 
+  async handleApplyFilterClick() {
+    if (this.state.loading === true) return;
+    if (!(this.state.results && this.state.results.participants)) return;
+
+    const { virtualStudy, setSqons, closeModal } = this.props;
+
+    this.setState({ loading: true });
+    const participantIds = uniq(flatMap(this.state.results.participants, r => r.participantIds));
+
+    const participantsSqon = {
+      op: 'in',
+      content: {
+        field: 'kf_id',
+        value: participantIds,
+      },
+    };
+
+    const modifiedSqons = setSqonValueAtIndex(
+      virtualStudy.sqons,
+      virtualStudy.activeIndex,
+      participantsSqon,
+    );
+
+    setSqons(modifiedSqons);
+    closeModal();
+    this.setState({ loading: false });
+  }
+
   setInputText(inputIdsText) {
     const inputIds = uniq(inputIdsText.split(/,\s*/).filter(id => !!id));
-    this.setState({ inputIdsText, inputIds });
+    this.setState({ inputIdsText, inputIds, results: null });
   }
 
   setInputIds(inputIds) {
     const uniqueInputIds = uniq(inputIds);
     const inputIdsText = uniqueInputIds.join(', ');
-    this.setState({ inputIdsText, inputIds: uniqueInputIds });
+    this.setState({ inputIdsText, inputIds: uniqueInputIds, results: null });
   }
 
   handleClose() {
@@ -93,12 +124,15 @@ class SearchByIdModal extends React.Component {
   }
 
   renderBody() {
-    const { inputIdsText, inputIds, results } = this.state;
+    const { inputIdsText, inputIds, results, loading } = this.state;
 
     return (
       <React.Fragment>
         <section className="sbi-description">
-          <p>Type or copy-and-paste a list of comma delimited identifiers</p>
+          <p>
+            Type or copy-and-paste a list of comma delimited identifiers (participant, biospecimen,
+            file)
+          </p>
           <WhiteButton key="cancel" onClick={this.handleClear} className="clear">
             Clear
           </WhiteButton>
@@ -106,6 +140,7 @@ class SearchByIdModal extends React.Component {
         <section className="sbi-id-input">
           <textarea
             placeholder="e.g. PT_X25FNZ4D, CDH1363, BS_E28336C7, 4-28F, GF_9R86WD1Z"
+            rows="4"
             value={inputIdsText}
             onChange={this.handleInputIdsChange}
           />
@@ -131,7 +166,9 @@ class SearchByIdModal extends React.Component {
         </section>
         {results === null ? null : (
           <section className="sbi-results">
-            <SearchResults query={inputIds} results={results.participants} />
+            <hr />
+            <H3>Matching Participants</H3>
+            <SearchResults query={inputIds} results={results.participants} loading={loading} />
           </section>
         )}
       </React.Fragment>
@@ -139,7 +176,7 @@ class SearchByIdModal extends React.Component {
   }
 
   renderFooter() {
-    const { loading } = this.state;
+    const { loading, inputIds, results } = this.state;
     return (
       <React.Fragment>
         <WhiteButton key="cancel" onClick={this.handleClose}>
@@ -147,10 +184,17 @@ class SearchByIdModal extends React.Component {
         </WhiteButton>
         <TealActionButton
           key="confirm"
-          disabled={loading === true}
+          disabled={loading === true || inputIds.length === 0 || results !== null}
           onClick={this.handleViewResultsClick}
         >
           View Results
+        </TealActionButton>
+        <TealActionButton
+          key="apply"
+          disabled={loading === true || inputIds.length === 0 || results === null}
+          onClick={this.handleApplyFilterClick}
+        >
+          Apply Filter
         </TealActionButton>
       </React.Fragment>
     );
@@ -167,7 +211,13 @@ class SearchByIdModal extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  virtualStudy: state.currentVirtualStudy,
+});
+
+const mapDispatchToProps = { closeModal, setSqons };
+
 export default connect(
-  null,
-  { closeModal },
+  mapStateToProps,
+  mapDispatchToProps,
 )(SearchByIdModal);

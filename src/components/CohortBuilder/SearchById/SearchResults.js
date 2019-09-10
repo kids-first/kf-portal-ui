@@ -12,6 +12,7 @@ const columns = [
   {
     Header: 'Input Type',
     accessor: 'type',
+    className: 'input-type',
   },
   {
     Header: 'Matched Participant IDs',
@@ -36,19 +37,24 @@ export default class SearchResults extends React.Component {
       }).isRequired,
     ),
     query: PropTypes.arrayOf(PropTypes.string).isRequired,
+    loading: PropTypes.bool,
   };
 
   render() {
-    const { query, results } = this.props;
+    const { query, results, loading = false } = this.props;
     const { selectedTab } = this.state;
-    const loading = results === null;
     const unmatched = query.reduce((unmatchedIds, id) => {
       return results.some(res => res.search.toLowerCase() === id.toLowerCase())
         ? unmatchedIds
         : unmatchedIds.concat({ search: id, type: '', participantIds: [] });
     }, []);
 
-    const matched = results;
+    // the service returns uppercase types, lowercase them so they can be transformed in css.
+    const matched = results.map(r => ({
+      ...r,
+      type: (r.type || '').toLowerCase(),
+    }));
+
     return (
       <React.Fragment>
         <Tabs
@@ -57,7 +63,7 @@ export default class SearchResults extends React.Component {
             {
               id: 'matched',
               display: 'Matched',
-              total: results.length,
+              total: matched.length,
             },
             {
               id: 'unmatched',
@@ -66,7 +72,7 @@ export default class SearchResults extends React.Component {
             },
           ]}
           onTabSelect={({ id }) => {
-            this.setState({ selectedTab: id, page: 0 });
+            this.setState({ selectedTab: id });
           }}
         />
         <ControlledDataTable

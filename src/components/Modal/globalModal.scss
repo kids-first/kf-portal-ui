@@ -63,6 +63,22 @@
     box-shadow: 0 -2px 8px 2px $white;
     z-index: 1;
   }
+
+  & hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid lightgray;
+  }
+
+  & hr,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 0.8em;
+  }
 }
 
 .global-modal-overlay {

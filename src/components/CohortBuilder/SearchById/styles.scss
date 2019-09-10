@@ -40,8 +40,17 @@
       & textarea {
         border: none;
         flex: 1 1 0%;
-        min-height: 100px;
       }
     }
+
+    & .badge {
+      font-size: 12px;
+      line-height: 20px;
+      height: 20px;
+    }
+  }
+
+  & .ReactTable .input-type {
+    text-transform: capitalize;
   }
 }
