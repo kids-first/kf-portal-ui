@@ -45,7 +45,7 @@ const EntityTitle = ({ icon, title, tags = [] }) => (
 EntityTitle.propTypes = {
   title: PropTypes.string,
   icon: PropTypes.string,
-  tags: PropTypes.arrayOf(PropTypes.string),
+  tags: PropTypes.array,
 };
 
 export default EntityTitle;
