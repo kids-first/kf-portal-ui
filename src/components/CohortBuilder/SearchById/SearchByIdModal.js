@@ -17,6 +17,8 @@ import SearchResults from './SearchResults';
 
 import './styles.scss';
 
+const parseInput = inputText => uniq(inputText.split(/,|\s|\t(,|\s|\t)*/).filter(id => !!id));
+
 class SearchByIdModal extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,7 @@ class SearchByIdModal extends React.Component {
     parseInputFiles(evt.currentTarget.files)
       .then(contents => {
         const inputIds = contents
-          .reduce((ids, fileContent) => ids.concat(fileContent.split(/,\s*/)), this.state.inputIds)
+          .reduce((ids, fileContent) => ids.concat(parseInput(fileContent)), this.state.inputIds)
           .filter(id => !!id);
         this.setInputIds(inputIds);
       })
@@ -91,14 +93,13 @@ class SearchByIdModal extends React.Component {
   }
 
   setInputText(inputIdsText) {
-    const inputIds = uniq(inputIdsText.split(/,\s*/).filter(id => !!id));
+    const inputIds = parseInput(inputIdsText);
     this.setState({ inputIdsText, inputIds, results: null });
   }
 
   setInputIds(inputIds) {
-    const uniqueInputIds = uniq(inputIds);
-    const inputIdsText = uniqueInputIds.join(', ');
-    this.setState({ inputIdsText, inputIds: uniqueInputIds, results: null });
+    const inputIdsText = inputIds.join(', ');
+    this.setState({ inputIdsText, inputIds, results: null });
   }
 
   handleClose() {

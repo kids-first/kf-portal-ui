@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Tabs } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
 
+const CommaSeparatedValuesCell = ({ value }) => (Array.isArray(value) ? value.join(', ') : value);
+
 const columns = [
   {
     Header: 'Input ID',
@@ -17,6 +19,7 @@ const columns = [
   {
     Header: 'Matched Participant IDs',
     accessor: 'participantIds',
+    Cell: CommaSeparatedValuesCell,
   },
 ];
 
