@@ -13,6 +13,7 @@ import { get } from 'lodash';
 import sanitize from './Utils/sanitize';
 import { NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import HistologicalDiagnosisTable from '../Histological/histologicalDiagnosisTable.js';
+import prettifyAge from './Utils/prettifyAge';
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
 const enhance = compose(withTheme);
@@ -150,7 +151,7 @@ function summaryTableData(participant) {
 function specimenSummaryTableData(specimen) {
   return sanitize([
     { title: 'Specimen ID', summary: specimen.kf_id },
-    { title: 'Age at Sample Acquisition', summary: specimen.age_at_event_days },
+    { title: 'Age at Sample Acquisition', summary: prettifyAge(specimen.age_at_event_days) },
     { title: 'Analyte Type', summary: specimen.analyte_type },
     { title: 'Composition', summary: specimen.composition },
     { title: 'Tissue Type (NCIT)', summary: <NCITLink ncit={specimen.ncit_id_tissue_type} /> },
@@ -183,11 +184,16 @@ const buildSpecimenDxSection = ({ specimenId, sanitizedNodes }) => {
 const getSanitizedSpecimenDxsData = specimen =>
   get(specimen, 'diagnoses.hits.edges', [])
     .filter(edge => edge && Object.keys(edge).length > 0)
-    .map(edge => sanitize({ ...edge.node }));
+    .map(edge =>
+      sanitize({
+        ...edge.node,
+        age_at_event_days: prettifyAge(get(edge.node, 'age_at_event_days')),
+      }),
+    );
 
 const ParticipantSummary = ({ participant }) => {
   const specimens = get(participant, 'biospecimens.hits.edges', []);
-  const hasFile = get(participant, 'files.hits.edges', []).length === 0 ? false : true;
+  const hasFile = get(participant, 'files.hits.edges', []).length > 0;
   let wrongTypes = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
 
   let hasSequencingData = false;
