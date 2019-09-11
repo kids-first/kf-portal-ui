@@ -11,12 +11,17 @@ This release introduces Histological Diagnoses, a revamping of the member page, 
 - [#2028](https://github.com/kids-first/kf-portal-ui/issues/2028) Histological Diagnoses: Add filters to Cohort Builder
 - [#1247](https://github.com/kids-first/kf-portal-ui/issues/1247) Member page: Make my profile non-searchable (private profile)
 - [#1287](https://github.com/kids-first/kf-portal-ui/issues/1287) Member page: View someone's member's page
+- [#2023](https://github.com/kids-first/kf-portal-ui/issues/2023) Search by entity IDs: frontend
 
-#### kf-portal-etl
+#### kids-first/kf-arranger
+
+- [#109](https://github.com/kids-first/kf-arranger/issues/109) Search by entity IDs: added an endpoint to query for ids
+
+#### kids-first/kf-portal-etl
 
 - [#34](https://github.com/kids-first/kf-portal-etl/issues/34) ETL: Create field for Histological Diagnoses
 
-#### kf-es-model
+#### kids-first/kf-es-model
 
 - [#52](https://github.com/kids-first/kf-es-model/pull/52) Histological Diagnoses: Add diagnoses into biospecimens
 
