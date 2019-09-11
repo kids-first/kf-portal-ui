@@ -149,27 +149,41 @@ module.exports = {
               plugins: [['emotion', { sourceMap: true }]],
             },
           },
-          // "postcss" loader applies autoprefixer to our CSS.
-          // "css" loader resolves paths in CSS and adds assets as dependencies.
-          // "style" loader turns CSS into JS modules that inject <style> tags.
           // In production, we use a plugin to extract that CSS to a file, but
           // in development "style" loader enables hot editing of CSS.
           {
-            test: /\.(post)?css$/,
+            test: /\.s?css$/,
             use: [
-              require.resolve('style-loader'),
+              // "style" loader turns CSS into JS modules that inject <style> tags.
+              {
+                loader: require.resolve('style-loader'),
+                options: {
+                  sourceMap: true,
+                },
+              },
+              // "css" loader resolves paths in CSS and adds assets as dependencies.
               {
                 loader: require.resolve('css-loader'),
                 options: {
                   importLoaders: 1,
+                  sourceMap: true,
                 },
               },
+              {
+                loader: 'sass-loader',
+                options: {
+                  implementation: require('node-sass'),
+                  sourceMap: true,
+                },
+              },
+              // "postcss" loader applies autoprefixer to our CSS.
               {
                 loader: require.resolve('postcss-loader'),
                 options: {
                   // Necessary for external CSS imports to work
                   // https://github.com/facebookincubator/create-react-app/issues/2677
                   ident: 'postcss',
+                  sourceMap: true,
                   plugins: () => [
                     require('postcss-flexbugs-fixes'),
                     require('postcss-nested'),

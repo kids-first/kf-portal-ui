@@ -10,6 +10,7 @@ import { withTheme } from 'emotion-theming';
 import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
 
 import Modal from 'components/Modal';
+import GlobalModal from 'components/Modal/GlobalModal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
@@ -255,6 +256,7 @@ const App = compose(
         <Redirect from="*" to="/dashboard" />
       </Switch>
       <Modal />
+      <GlobalModal />
       <Toast {...toast}>{toast.component}</Toast>
     </AppContainer>
   );
