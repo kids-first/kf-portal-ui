@@ -10,7 +10,7 @@ import { WhiteButton, TealActionButton } from 'uikit/Button';
 import { H3 } from 'uikit/Headings';
 import { parseInputFiles } from 'common/parseInputFiles';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
-import { ModalTitle } from '../../Modal/ui';
+import { ModalTitle } from 'components/Modal/ui';
 import { closeModal } from 'store/actionCreators/ui/modalComponent';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import SearchResults from './SearchResults';
@@ -53,7 +53,7 @@ class SearchByIdModal extends React.Component {
   }
 
   async handleViewResultsClick() {
-    if (this.state.loading === true) return;
+    if (this.state.loading) return;
     this.setState({ loading: true });
     return searchByIds(this.state.inputIds)
       .then(results => {
@@ -65,7 +65,7 @@ class SearchByIdModal extends React.Component {
   }
 
   async handleApplyFilterClick() {
-    if (this.state.loading === true) return;
+    if (this.state.loading) return;
     if (!(this.state.results && this.state.results.participants)) return;
 
     const { virtualStudy, setSqons, closeModal } = this.props;

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTable from 'react-table';
 import PropTypes from 'prop-types';
+import noop from 'lodash/noop';
 
 import StyleWrapper from './Table/StyleWrapper';
 import CustomPagination from './Pagination';
@@ -51,7 +52,7 @@ export default class ControlledDataTable extends React.Component {
       manualPagination = true,
       defaultPageSize = 20,
       dataTotalCount = -1,
-      onFetchData = () => null,
+      onFetchData = noop,
     } = this.props;
 
     // pagination-related stuff
