@@ -4,6 +4,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import Component from 'react-component-component';
 import styled from 'react-emotion';
+import isNumber from 'lodash/isNumber';
 
 import { AggregationsList } from '@kfarranger/components/dist/Arranger';
 import Query from '@kfarranger/components/dist/Query';
@@ -58,7 +59,7 @@ export const Tabs = ({ selectedTab, onTabSelect, options }) => (
     {options.map(({ id, display, total }) => (
       <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id} key={id}>
         <Span style={{ width: '80%' }}>{display}</Span>
-        {total && <TabsBadge selected={selectedTab === id}>{total}</TabsBadge>}
+        {isNumber(total) && <TabsBadge selected={selectedTab === id}>{total}</TabsBadge>}
       </Tab>
     ))}
   </TabsRow>
