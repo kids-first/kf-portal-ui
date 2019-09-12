@@ -15,6 +15,7 @@ import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { registerModal } from '../../Modal/modalFactory';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 import { openModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
@@ -283,14 +284,15 @@ class Categories extends React.Component {
           <FileIcon width={11} height={14} fill={theme.dataBlue} />
         </Category>
 
-        {/* the below is not actually a Category */}
-        <ActionCategory
-          title="Upload IDs"
-          color={theme.uploadYellow}
-          onClick={this.handleUploadIdsClick}
-        >
-          <UploadIcon fill={theme.uploadYellow} />
-        </ActionCategory>
+        {isFeatureEnabled('searchByIds') && (
+          <ActionCategory
+            title="Upload IDs"
+            color={theme.uploadYellow}
+            onClick={this.handleUploadIdsClick}
+          >
+            <UploadIcon fill={theme.uploadYellow} />
+          </ActionCategory>
+        )}
       </Container>
     );
   }
