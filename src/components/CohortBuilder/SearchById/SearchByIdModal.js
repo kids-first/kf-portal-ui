@@ -202,7 +202,7 @@ class SearchByIdModal extends React.Component {
           disabled={loading || inputIds.length === 0 || results === null}
           onClick={this.handleApplyFilterClick}
         >
-          Apply Filter
+          View Results
         </TealActionButton>
       </React.Fragment>
     );
