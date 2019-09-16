@@ -46,11 +46,13 @@ export default class SearchResults extends React.Component {
   render() {
     const { query, results, loading = false } = this.props;
     const { selectedTab } = this.state;
-    const unmatched = query.reduce((unmatchedIds, id) => {
-      return results.some(res => res.search.toLowerCase() === id.toLowerCase())
-        ? unmatchedIds
-        : unmatchedIds.concat({ search: id, type: '', participantIds: [] });
-    }, []);
+    const unmatched = loading
+      ? 0
+      : query.reduce((unmatchedIds, id) => {
+          return results.some(res => res.search.toLowerCase() === id.toLowerCase())
+            ? unmatchedIds
+            : unmatchedIds.concat({ search: id, type: '', participantIds: [] });
+        }, []);
 
     // the service returns uppercase types, lowercase them so they can be transformed in css.
     const matched = results.map(r => ({
@@ -83,6 +85,7 @@ export default class SearchResults extends React.Component {
           columns={columns}
           data={selectedTab === 'matched' ? matched : unmatched}
           manualPagination={false}
+          showFixedNumberOfRows={true}
           defaultPageSize={5}
         />
       </React.Fragment>

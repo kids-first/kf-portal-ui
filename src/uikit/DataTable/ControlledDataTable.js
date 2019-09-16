@@ -12,7 +12,7 @@ export default class ControlledDataTable extends React.Component {
     super(props);
     this.state = {
       page: 0,
-      pageSize: props.pageSize || props.defaultPageSize || 20,
+      pageSize: props.defaultPageSize || 20,
     };
   }
 
@@ -31,7 +31,13 @@ export default class ControlledDataTable extends React.Component {
     manualPagination: PropTypes.bool,
     onFetchData: PropTypes.func,
     transforms: PropTypes.arrayOf(PropTypes.func),
+    // class to be assigne to the table
     className: PropTypes.string,
+    // alternate rows color
+    striped: PropTypes.bool,
+    // display empty rows when on the last (or only) page,
+    // so the table have the same amount of rows on each page
+    showFixedNumberOfRows: PropTypes.bool,
   };
 
   render() {
@@ -50,6 +56,7 @@ export default class ControlledDataTable extends React.Component {
       // pagination-related stuff
       showPagination = true,
       manualPagination = true,
+      showFixedNumberOfRows = false,
       defaultPageSize = 20,
       dataTotalCount = -1,
       onFetchData = noop,
@@ -70,16 +77,16 @@ export default class ControlledDataTable extends React.Component {
           showPagination={showPagination}
           pages={pages}
           defaultPageSize={defaultPageSize}
-          onFetchData={state => {
+          onFetchData={fetchState => {
             this.setState({
-              page: state.page,
-              pageSize: state.pageSize,
+              page: fetchState.page,
+              pageSize: fetchState.pageSize,
             });
-            onFetchData(state);
+            onFetchData(fetchState);
           }}
           PaginationComponent={CustomPagination}
           className={`${className} ${striped ? '-striped' : ''}`}
-          minRows={1} // hide empty rows
+          minRows={showFixedNumberOfRows ? pageSize : 1} // 1 = hide empty rows
           getTrProps={(state, rowInfo) => {
             if (rowInfo && rowInfo.row) {
               return {

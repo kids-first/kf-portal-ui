@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import autobind from 'auto-bind-es5';
-import { uniq, flatMap } from 'lodash';
+import uniq from 'lodash/uniq';
+import flatMap from 'lodash/flatMap';
+import debounce from 'lodash/debounce';
 import CloseIcon from 'react-icons/lib/md/close';
 
 import { searchByIds } from 'services/arranger/searchByIds';
@@ -19,6 +21,18 @@ import './styles.scss';
 
 const parseInput = inputText => uniq(inputText.split(/,|\s|\t(,|\s|\t)*/).filter(id => !!id));
 
+function handleViewResults() {
+  if (this.state.loading || !this.opened) return;
+  this.setState({ loading: true });
+  return searchByIds(this.state.inputIds)
+    .then(results => {
+      this.setState({ loading: false, results });
+    })
+    .catch(() => {
+      this.setState({ loading: false });
+    });
+}
+
 class SearchByIdModal extends React.Component {
   constructor(props) {
     super(props);
@@ -28,12 +42,19 @@ class SearchByIdModal extends React.Component {
       inputIds: [],
       results: null,
     };
+    this.opened = true;
     this.fileInpuRef = React.createRef();
+    this.handleViewResults = debounce(handleViewResults, 500);
     autobind(this);
+  }
+
+  componentDidMount() {
+    this.opened = true;
   }
 
   componentWillUnmount() {
     this.setState({ loading: false });
+    this.opened = false;
   }
 
   handleFilesUpload(evt) {
@@ -52,20 +73,8 @@ class SearchByIdModal extends React.Component {
     this.setInputText(inputIdsText);
   }
 
-  async handleViewResultsClick() {
-    if (this.state.loading) return;
-    this.setState({ loading: true });
-    return searchByIds(this.state.inputIds)
-      .then(results => {
-        this.setState({ loading: false, results });
-      })
-      .catch(() => {
-        this.setState({ loading: false });
-      });
-  }
-
-  async handleApplyFilterClick() {
-    if (this.state.loading) return;
+  handleApplyFilterClick() {
+    if (this.state.loading || !this.opened) return;
     if (!(this.state.results && this.state.results.participants)) return;
 
     const { virtualStudy, setSqons, closeModal } = this.props;
@@ -94,15 +103,18 @@ class SearchByIdModal extends React.Component {
 
   setInputText(inputIdsText) {
     const inputIds = parseInput(inputIdsText);
-    this.setState({ inputIdsText, inputIds, results: null });
+    this.setState({ inputIdsText, inputIds });
+    this.handleViewResults();
   }
 
   setInputIds(inputIds) {
     const inputIdsText = inputIds.join(', ');
-    this.setState({ inputIdsText, inputIds, results: null });
+    this.setState({ inputIdsText, inputIds });
+    this.handleViewResults();
   }
 
   handleClose() {
+    this.opened = false;
     this.setState({ loading: false });
     this.props.closeModal();
   }
@@ -132,7 +144,7 @@ class SearchByIdModal extends React.Component {
         <section className="sbi-description">
           <p>
             Type or copy-and-paste a list of comma delimited identifiers (participant, biospecimen,
-            file)
+            file, family)
           </p>
           <WhiteButton key="cancel" onClick={this.handleClear} className="clear">
             Clear
@@ -165,13 +177,15 @@ class SearchByIdModal extends React.Component {
             Upload csv
           </TealActionButton>
         </section>
-        {results === null ? null : (
-          <section className="sbi-results">
-            <hr />
-            <H3>Matching Participants</H3>
-            <SearchResults query={inputIds} results={results.participants} loading={loading} />
-          </section>
-        )}
+        <section className="sbi-results">
+          <hr />
+          <H3>Matching Participants</H3>
+          <SearchResults
+            query={inputIds}
+            results={results ? results.participants : []}
+            loading={loading}
+          />
+        </section>
       </React.Fragment>
     );
   }
@@ -184,18 +198,11 @@ class SearchByIdModal extends React.Component {
           Cancel
         </WhiteButton>
         <TealActionButton
-          key="confirm"
-          disabled={loading === true || inputIds.length === 0 || results !== null}
-          onClick={this.handleViewResultsClick}
-        >
-          View Results
-        </TealActionButton>
-        <TealActionButton
           key="apply"
-          disabled={loading === true || inputIds.length === 0 || results === null}
+          disabled={loading || inputIds.length === 0 || results === null}
           onClick={this.handleApplyFilterClick}
         >
-          Apply Filter
+          View Results
         </TealActionButton>
       </React.Fragment>
     );
