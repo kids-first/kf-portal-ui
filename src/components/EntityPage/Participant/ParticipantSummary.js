@@ -14,6 +14,7 @@ import sanitize from './Utils/sanitize';
 import { NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import HistologicalDiagnosisTable from '../Histological/histologicalDiagnosisTable.js';
 import prettifyAge from './Utils/prettifyAge';
+import ClinicalIcon from 'icons/ClinicalIcon';
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
 const enhance = compose(withTheme);
@@ -191,7 +192,7 @@ const getSanitizedSpecimenDxsData = specimen =>
       }),
     );
 
-const ParticipantSummary = ({ participant }) => {
+const ParticipantSummary = ({ participant, theme }) => {
   const specimens = get(participant, 'biospecimens.hits.edges', []);
   const hasFile = get(participant, 'files.hits.edges', []).length > 0;
   let wrongTypes = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
@@ -204,6 +205,25 @@ const ParticipantSummary = ({ participant }) => {
     }
   }
 
+  const biospecimenIdToTargetProps = (specimens = []) => {
+    return specimens.reduce((acc, specimen) => {
+      const currentNode = specimen.node;
+      if (!currentNode.kf_id) {
+        return acc;
+      }
+
+      const hasRelatedDx = get(currentNode, 'diagnoses.hits.edges', []).length > 0;
+      return {
+        ...acc,
+        [currentNode.kf_id]: {
+          rightIcon: hasRelatedDx ? (
+            <ClinicalIcon width={25} height={15} fill={theme.clinicalBlue} />
+          ) : null,
+        },
+      };
+    }, {});
+  };
+
   return (
     <React.Fragment>
       <EntityContentSection title="Summary">
@@ -215,7 +235,7 @@ const ParticipantSummary = ({ participant }) => {
         <div>
           <EntityContentDivider />
           <EntityContentSection title="Biospecimens">
-            <Holder>
+            <Holder biospecimenIdToData={biospecimenIdToTargetProps(specimens)}>
               {specimens.map(specimenNode => {
                 const specimen = specimenNode.node;
                 const specimenDxsData = getSanitizedSpecimenDxsData(specimen);

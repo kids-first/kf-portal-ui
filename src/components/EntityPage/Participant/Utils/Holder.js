@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
+import { css } from 'emotion';
 
 export const Container = styled('div')`
   overflow-y: hidden;
@@ -11,19 +12,26 @@ export const Container = styled('div')`
   height: 100%;
   // background: ${({ theme }) => theme.backgroundGrey};
 `;
+const tabIdRightIconWrapper = css({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const rightIconCss = css({ marginLeft: '10px' });
 
 //needs to be a class to use setState to do the hovering. Would do in CSS, but with emotion it's too complicated and hacky
 class TabButton extends React.Component {
-  constructor(props) {
-    super(props);
+  state = { hovered: false };
 
-    this.state = { hovered: false };
-  }
+  onClick = () => this.props.clickEvent(this.props.tabId);
+  onMouseEnter = () => this.setState({ hovered: true });
+  onMouseLeave = () => this.setState({ hovered: false });
 
   render() {
     const tabId = this.props.tabId;
     const isActive = this.props.isActive;
     const changeColor = isActive || this.state.hovered;
+    const rightIcon = this.props.rightIcon;
 
     //uses a fake Link: we want the same style as a SecondaryNavMenu, and this is the key to it
     return (
@@ -36,11 +44,18 @@ class TabButton extends React.Component {
           border: changeColor ? 'thin solid #e83a9c' : 'thin solid rgb(224, 225, 230)',
           borderRadius: '1em',
         }}
-        onClick={() => this.props.clickEvent(tabId)}
-        onMouseEnter={() => this.setState({ hovered: true })}
-        onMouseLeave={() => this.setState({ hovered: false })}
+        onClick={this.onClick}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
       >
-        {tabId}
+        {rightIcon ? (
+          <div className={tabIdRightIconWrapper}>
+            <div>{tabId}</div>
+            <div className={rightIconCss}>{rightIcon}</div>
+          </div>
+        ) : (
+          tabId
+        )}
       </div>
     );
   }
@@ -67,6 +82,7 @@ class Holder extends React.Component {
       tabIDs = this.props.children.map(child => child.key);
       children = this.props.children;
     }
+    const biospecimenIdToData = this.props.biospecimenIdToData;
 
     return (
       <div>
@@ -78,6 +94,7 @@ class Holder extends React.Component {
                 clickEvent={tabId => this.setState({ activeTab: tabId })}
                 isActive={tabId === this.state.activeTab}
                 tabId={tabId}
+                rightIcon={(biospecimenIdToData[tabId] || {}).rightIcon}
               />
             );
           })}
