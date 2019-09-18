@@ -59,6 +59,7 @@ export default `query ($sqon: JSON) {
             hits {
               edges {
                 node {
+                  biospecimens
                   age_at_event_days
                   diagnosis_category
                   diagnosis
