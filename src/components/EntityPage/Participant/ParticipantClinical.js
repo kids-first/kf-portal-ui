@@ -23,6 +23,7 @@ import { HPOLink, SNOMEDLink, MONDOLink, NCITLink } from '../../Utils/DiagnosisA
 import ClinicalIcon from 'icons/ClinicalIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import { withTheme } from 'emotion-theming';
+import isEmpty from 'lodash/isEmpty';
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
 
@@ -192,7 +193,7 @@ class ParticipantClinical extends React.Component {
     const diagHeads = [
       {
         Header: '',
-        accessor: 'biospecimensTODO',
+        accessor: 'biospecimens',
         width: 75,
         headerStyle: {
           textAlign: 'center',
@@ -201,15 +202,16 @@ class ParticipantClinical extends React.Component {
           textAlign: 'center',
         },
         Cell: row => {
-          return row.value ? (
+          const biospecimensIds = row.value;
+          return isEmpty(biospecimensIds) ? (
+            <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
+          ) : (
             <BiospecimenIcon
               width={18}
               height={18}
               fill={theme.biospecimenOrange}
               alt="histological"
             />
-          ) : (
-            <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
           );
         },
       },
@@ -241,14 +243,23 @@ class ParticipantClinical extends React.Component {
       },
       {
         Header: 'Specimen IDs',
-        accessor: 'biospecimensTODO',
+        accessor: 'biospecimens',
         headerStyle: {
           textAlign: 'center',
         },
         style: {
           textAlign: 'center',
         },
-        Cell: () => <div>--</div>,
+        Cell: row => {
+          const biospecimensIds = row.value;
+          return isEmpty(biospecimensIds) ? (
+            <div>--</div>
+          ) : (
+            <div style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+              {biospecimensIds.join(' ')}
+            </div>
+          );
+        },
       },
     ];
 
