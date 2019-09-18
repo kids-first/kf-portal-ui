@@ -14,7 +14,8 @@ import sanitize from './Utils/sanitize';
 import { NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import HistologicalDiagnosisTable from '../Histological/histologicalDiagnosisTable.js';
 import prettifyAge from './Utils/prettifyAge';
-import ClinicalIcon from 'icons/ClinicalIcon';
+import BiospecimenIcon from 'icons/BiospecimenIcon';
+import Tooltip from 'uikit/Tooltip';
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
 
 const enhance = compose(withTheme);
@@ -212,12 +213,14 @@ const ParticipantSummary = ({ participant, theme }) => {
         return acc;
       }
 
-      const hasRelatedDx = get(currentNode, 'diagnoses.hits.edges', []).length > 0;
+      const hasRelatedBioSpecimenDx = get(currentNode, 'diagnoses.hits.edges', []).length > 0;
       return {
         ...acc,
         [currentNode.kf_id]: {
-          rightIcon: hasRelatedDx ? (
-            <ClinicalIcon width={25} height={15} fill={theme.clinicalBlue} />
+          rightIcon: hasRelatedBioSpecimenDx ? (
+            <Tooltip html={'Histological Diagnosis'}>
+              <BiospecimenIcon width={25} height={15} fill={theme.biospecimenOrange} />
+            </Tooltip>
           ) : null,
         },
       };
