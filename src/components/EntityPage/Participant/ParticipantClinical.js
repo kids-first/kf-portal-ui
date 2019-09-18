@@ -24,6 +24,7 @@ import ClinicalIcon from 'icons/ClinicalIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import { withTheme } from 'emotion-theming';
 import isEmpty from 'lodash/isEmpty';
+import Tooltip from 'uikit/Tooltip';
 //https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
 //https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
 
@@ -154,7 +155,7 @@ class ParticipantClinical extends React.Component {
   }
 
   showParticipantNb = (wrapper, field, value) => {
-    if (wrapper.value === '0 participants') return <div>0 participant</div>;
+    if (wrapper.value === '0 participants') return <div>0 participants</div>;
 
     const onClick = () => {
       store.dispatch(resetVirtualStudy());
@@ -192,30 +193,35 @@ class ParticipantClinical extends React.Component {
 
     const diagHeads = [
       {
-        Header: '',
-        accessor: 'biospecimens',
-        width: 75,
-        headerStyle: {
-          textAlign: 'center',
-        },
-        style: {
-          textAlign: 'center',
-        },
+        Header: 'Diagnosis Category',
+        accessor: 'diagnosis_category',
         Cell: row => {
-          const biospecimensIds = row.value;
-          return isEmpty(biospecimensIds) ? (
-            <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
-          ) : (
-            <BiospecimenIcon
-              width={18}
-              height={18}
-              fill={theme.biospecimenOrange}
-              alt="histological"
-            />
+          const category = row.value;
+          const rowData = row.original;
+          const biospecimensIds = rowData.biospecimens || [];
+          const hasNoBioSpecimenIds = isEmpty(biospecimensIds);
+          return (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Tooltip
+                html={`${hasNoBioSpecimenIds ? 'Clinical' : 'Histological'} Diagnosis`}
+                style={{ marginRight: '10px' }}
+              >
+                {hasNoBioSpecimenIds ? (
+                  <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
+                ) : (
+                  <BiospecimenIcon
+                    width={18}
+                    height={18}
+                    fill={theme.biospecimenOrange}
+                    alt="histological"
+                  />
+                )}
+              </Tooltip>
+              <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{category}</div>
+            </div>
           );
         },
       },
-      { Header: 'Diagnosis Category', accessor: 'diagnosis_category', Cell: cellBreak },
       {
         Header: 'Diagnosis (Mondo)',
         accessor: 'mondo_id_diagnosis',
@@ -244,6 +250,7 @@ class ParticipantClinical extends React.Component {
       {
         Header: 'Specimen IDs',
         accessor: 'biospecimens',
+        width: 175,
         headerStyle: {
           textAlign: 'center',
         },
@@ -256,7 +263,7 @@ class ParticipantClinical extends React.Component {
             <div>--</div>
           ) : (
             <div style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-              {biospecimensIds.join(' ')}
+              {biospecimensIds.join(', ')}
             </div>
           );
         },

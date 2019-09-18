@@ -43,6 +43,7 @@ class TabButton extends React.Component {
           marginBottom: '5px',
           border: changeColor ? 'thin solid #e83a9c' : 'thin solid rgb(224, 225, 230)',
           borderRadius: '1em',
+          cursor: 'pointer',
         }}
         onClick={this.onClick}
         onMouseEnter={this.onMouseEnter}
