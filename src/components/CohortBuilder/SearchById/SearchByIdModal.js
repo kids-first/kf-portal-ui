@@ -177,15 +177,13 @@ class SearchByIdModal extends React.Component {
             Upload csv
           </TealActionButton>
         </section>
-        <section className="sbi-results">
-          <hr />
-          <H3>Matching Participants</H3>
-          <SearchResults
-            query={inputIds}
-            results={results ? results.participants : []}
-            loading={loading}
-          />
-        </section>
+        {!!results ? (
+          <section className="sbi-results">
+            <hr />
+            <H3>Matching Participants</H3>
+            <SearchResults query={inputIds} results={results.participants} loading={loading} />
+          </section>
+        ) : null}
       </React.Fragment>
     );
   }
