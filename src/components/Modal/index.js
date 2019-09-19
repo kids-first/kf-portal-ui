@@ -12,7 +12,10 @@ import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessag
 import { ModalFooterContainer, ModalFooterContent, Modal, ModalContent, ModalTitle } from './ui';
 import { WhiteButton, TealActionButton } from '../../uikit/Button.js';
 
-const enhance = compose(withTheme, injectState);
+const enhance = compose(
+  withTheme,
+  injectState,
+);
 
 const defaultLoadingContent = (
   <Spinner
@@ -28,7 +31,7 @@ const defaultLoadingContent = (
   />
 );
 
-const ModalHeader = ({ theme, title, unsetModal, ...props }) => (
+const ModalHeader = ({ theme, title, unsetModal }) => (
   <div
     css={`
       ${theme.row} justify-content: space-between;
@@ -94,7 +97,9 @@ const ModalView = ({
   isFooterShown = true,
   theme,
   effects: { setModal, unsetModal },
-  state: { modalState: { component, title, classNames } },
+  state: {
+    modalState: { component, title, classNames },
+  },
   ...props
 }) => (
   <Modal

@@ -1,5 +1,43 @@
 # Release notes for kf-portal-ui
 
+## 2019-09-11 kf-portal-ui 2.10.0
+
+This release introduces Histological Diagnoses, a revamping of the member page, some backend features for members search (front end coming later), along with some bug fixes.
+
+### Includes
+
+#### kids-first/kf-portal-ui
+
+- [#2028](https://github.com/kids-first/kf-portal-ui/issues/2028) Histological Diagnoses: Add filters to Cohort Builder
+- [#1247](https://github.com/kids-first/kf-portal-ui/issues/1247) Member page: Make my profile non-searchable (private profile)
+- [#1287](https://github.com/kids-first/kf-portal-ui/issues/1287) Member page: View someone's member's page
+- [#2023](https://github.com/kids-first/kf-portal-ui/issues/2023) Search by entity IDs: frontend
+
+#### kids-first/kf-arranger
+
+- [#109](https://github.com/kids-first/kf-arranger/issues/109) Search by entity IDs: added an endpoint to query for ids
+
+#### kids-first/kf-portal-etl
+
+- [#34](https://github.com/kids-first/kf-portal-etl/issues/34) ETL: Create field for Histological Diagnoses
+
+#### kids-first/kf-es-model
+
+- [#52](https://github.com/kids-first/kf-es-model/pull/52) Histological Diagnoses: Add diagnoses into biospecimens
+
+#### kids-first/kf-persona
+
+- [#25](https://github.com/kids-first/kf-persona/issues/25) Member page: Store user preference for private profile
+- [#46](https://github.com/kids-first/kf-persona/issues/46) Member Page: Index members in Elastic Search so we can search for them
+
+### Bug fixes
+
+- [#2041](https://github.com/kids-first/kf-portal-ui/issues/2041) File Repo: File without participants returns an error
+- [#2048](https://github.com/kids-first/kf-portal-ui/issues/2048) User setting page: Replace the Gen3 Logo
+- [#2072](https://github.com/kids-first/kf-portal-ui/issues/2072) Download Clinical Data : HPOs related columns are always empty
+- [#2004](https://github.com/kids-first/kf-portal-ui/issues/2004) Weird column names in File Repository
+- [#2041](https://github.com/kids-first/kf-portal-ui/issues/2041) File Repo: File without participants returns an error
+
 ## 2019-08-29 kf-portal-ui 2.9.0
 
 This release makes ORCID feature available for everybody, and improves error messages in case of errors during login with ORCID.

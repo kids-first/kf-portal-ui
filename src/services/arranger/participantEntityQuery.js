@@ -38,6 +38,19 @@ export default `query ($sqon: JSON) {
                   spatial_descriptor
                   uberon_id_anatomical_site
                   volume_ul
+                  diagnoses {
+                    hits {
+                      edges {
+                        node {
+                          diagnosis_category
+                          age_at_event_days
+                          mondo_id_diagnosis
+                          ncit_id_diagnosis
+                          source_text_diagnosis
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -46,6 +59,7 @@ export default `query ($sqon: JSON) {
             hits {
               edges {
                 node {
+                  biospecimens
                   age_at_event_days
                   diagnosis_category
                   diagnosis
@@ -219,7 +233,6 @@ export default `query ($sqon: JSON) {
   }
 }
 `;
-
 
 /*
 files {

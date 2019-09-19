@@ -22,7 +22,7 @@ export const graphql = (api, queryName = '') => body =>
  * @param {String} customMsg - a message appended to the begining of the message
  */
 export const getErrorMessageFromResponse = (err, customMsg = '') => {
-  if (err.response) {
+  if (err.response && err.response.data && Array.isArray(err.response.data.errors)) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     const errors = err.response.data.errors.map(error => error.message).join('\n');

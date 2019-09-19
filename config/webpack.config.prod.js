@@ -165,7 +165,7 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.(post)?css$/,
+            test: /\.s?css$/,
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -181,6 +181,13 @@ module.exports = {
                       options: {
                         importLoaders: 1,
                         minimize: true,
+                        sourceMap: shouldUseSourceMap,
+                      },
+                    },
+                    {
+                      loader: 'sass-loader',
+                      options: {
+                        implementation: require('node-sass'),
                         sourceMap: shouldUseSourceMap,
                       },
                     },

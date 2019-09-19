@@ -35,7 +35,7 @@ CircleIcon.propTypes = {
   fill: PropTypes.string,
   size: PropTypes.number,
   iconSize: PropTypes.number,
-  Icon: PropTypes.element,
+  Icon: PropTypes.elementType,
 };
 
 export default CircleIcon;
