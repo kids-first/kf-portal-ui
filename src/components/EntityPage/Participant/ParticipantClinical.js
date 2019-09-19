@@ -251,12 +251,6 @@ class ParticipantClinical extends React.Component {
         Header: 'Specimen IDs',
         accessor: 'biospecimens',
         width: 175,
-        headerStyle: {
-          textAlign: 'center',
-        },
-        style: {
-          textAlign: 'center',
-        },
         Cell: row => {
           const biospecimensIds = row.value;
           return isEmpty(biospecimensIds) ? (
