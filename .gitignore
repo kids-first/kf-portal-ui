@@ -32,3 +32,4 @@ public/locales/*
 
 # local certificates are generated when testing production build
 *.pem
+.vscode/settings.json
