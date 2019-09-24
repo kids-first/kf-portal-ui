@@ -159,15 +159,15 @@ export default compose(
                     const gqlAggregationFields = types.find(
                       ({ name }) => name === `${graphqlField}Aggregations`,
                     ).fields;
-                    const extendAggsConfig = config =>
-                      config
-                        .filter(({ show }) => show)
-                        .map(config => ({
-                          ...config,
-                          type: gqlAggregationFields.find(
-                            fileAggField => config.field === fileAggField.name,
-                          ).type.name,
-                        }));
+                    const extendAggsConfig = fieldNames => {
+                      return fieldNames.map(fieldName => ({
+                        field: fieldName,
+                        show: true,
+                        type: gqlAggregationFields.find(
+                          fileAggField => fieldName === fileAggField.name,
+                        ).type.name,
+                      }));
+                    };
                     const renderAggsConfig = ({ aggConfig, quickSearchFields = [] }) => (
                       <AggregationsList
                         {...{
