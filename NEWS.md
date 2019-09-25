@@ -58,6 +58,7 @@ This release introduces Histological Diagnoses, a revamping of the member page, 
 - [#2048](https://github.com/kids-first/kf-portal-ui/issues/2048) User setting page: Replace the Gen3 Logo
 - [#2072](https://github.com/kids-first/kf-portal-ui/issues/2072) Download Clinical Data : HPOs related columns are always empty
 - [#2004](https://github.com/kids-first/kf-portal-ui/issues/2004) Weird column names in File Repository
+- [#2041](https://github.com/kids-first/kf-portal-ui/issues/2041) File Repo: File without participants returns an error
 
 ## 2019-08-29 kf-portal-ui 2.9.0
 
