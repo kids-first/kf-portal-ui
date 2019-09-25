@@ -40,14 +40,14 @@ export default compose(injectState)(({ state, effects, children, fileIds, ...pro
   const sqon =
     fileIds && fileIds.length > 0
       ? {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: { field: 'kf_id', value: fileIds },
-            },
-          ],
-        }
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: { field: '_id', value: fileIds },
+          },
+        ],
+      }
       : props.sqon;
   return (
     <div

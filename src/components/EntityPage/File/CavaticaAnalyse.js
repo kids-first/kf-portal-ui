@@ -13,13 +13,13 @@ export default ({ fileId, disabled }) => (
   <CavaticaCopyButton
     text="ANALYZE FILE IN CAVATICA"
     buttonStyle={buttonStyle}
-    selectedTableRows={[fileId]}
+    fileIds={[fileId]}
     sqon={{
       op: 'and',
       content: [
         {
           op: 'in',
-          content: { field: 'kf_id', value: [fileId] },
+          content: { field: '_id', value: [fileId] },
         },
       ],
     }}
