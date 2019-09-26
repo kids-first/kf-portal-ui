@@ -182,3 +182,5 @@ export const LOGIN_ERROR_DETAILS = {
 export const ACTIONS_COLUMNS = 'ACTIONS_COLUMNS';
 
 export const FILE_VIEW = 'FILE_VIEW';
+
+export const SEARCH_MEMBER_PATH = '/memberPage';

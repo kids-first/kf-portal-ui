@@ -6,6 +6,7 @@ import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
+import UserIcon from 'react-icons/lib/fa/user';
 import styled from 'react-emotion';
 import ExploreDataIcon from 'icons/ExploreDataIcon';
 
@@ -13,7 +14,7 @@ import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';
-import { COHORT_BUILDER_PATH } from 'common/constants';
+import { COHORT_BUILDER_PATH, SEARCH_MEMBER_PATH } from 'common/constants';
 import { withApi } from 'services/api';
 import {
   NavLink,
@@ -79,6 +80,11 @@ const Header = ({
                   <li>
                     <NavLink currentPathName={currentPathName} to={`/search/file`}>
                       <DatabaseIcon /> <Trans>File Repository</Trans>
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink currentPathName={currentPathName} to={SEARCH_MEMBER_PATH}>
+                      <UserIcon /> <Trans>Member Search</Trans>
                     </NavLink>
                   </li>
                 </NavBarList>
