@@ -3,22 +3,40 @@ import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
-import { HPOLink, SNOMEDLink , MONDOLink,NCITLink} from '../../../Utils/DiagnosisAndPhenotypeLinks';
+import {
+  HPOLink,
+  SNOMEDLink,
+  MONDOLink,
+  NCITLink,
+} from '../../../Utils/DiagnosisAndPhenotypeLinks';
+
+const isParticipantSharingDx = (dxRow, restOfFamilyIds) => {
+  return restOfFamilyIds.some(memId => Boolean(dxRow[memId]) && dxRow[memId] !== '--');
+};
+
+const getParticipantId = (nodes = []) => {
+  const participant = nodes.find(e => e && e.relationship === '(this participant)');
+  // Should never be falsy
+  return participant.kf_id;
+};
 
 /*
 Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
  */
+
 class FamilyTable extends React.Component {
   constructor(props) {
     super(props);
 
     const participant = props.participant;
-    participant.relationship = "(this participant)";
+    participant.relationship = '(this participant)';
 
     const compNode = get(participant, 'family.family_compositions.hits.edges[0].node');
     this.composition = compNode.composition;
 
-    this.famMembersNodes = [participant].concat(get(compNode, 'family_members.hits.edges', []).map(ele => ele.node))
+    this.famMembersNodes = [participant].concat(
+      get(compNode, 'family_members.hits.edges', []).map(ele => ele.node),
+    );
 
     this.heads = this.buildHeads(this.famMembersNodes);
     this.rows = this.buildRows(this.famMembersNodes);
@@ -27,43 +45,43 @@ class FamilyTable extends React.Component {
   buildHeads(famMembersNodes) {
     function makeCell(wrapper) {
       if (wrapper.row._original.subheader === 'true') {
-        if (wrapper.column.Header === '') return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
+        if (wrapper.column.Header === '')
+          return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
       } else {
         const value = wrapper.value;
 
-        if(/^.*SNOMEDCT:\d+$/.test(value)) return <SNOMEDLink snomed={value}/>;
-        else if(/^.*\(HP:\d+\)$/.test(value)) return <HPOLink hpo={value}/>;
-        else if(/^.*\(MONDO:\d+\)$/.test(value)) return <MONDOLink mondo={value}/>;
-        else if(/^.*\(NCIT:.\d+\)$/.test(value)) return <NCITLink ncit={value}/>;
+        if (/^.*SNOMEDCT:\d+$/.test(value)) return <SNOMEDLink snomed={value} />;
+        else if (/^.*\(HP:\d+\)$/.test(value)) return <HPOLink hpo={value} />;
+        else if (/^.*\(MONDO:\d+\)$/.test(value)) return <MONDOLink mondo={value} />;
+        else if (/^.*\(NCIT:.\d+\)$/.test(value)) return <NCITLink ncit={value} />;
         else return <div style={{ textTransform: 'capitalize' }}>{value}</div>;
       }
 
       return '';
     }
 
-    return [{ Header: '', accessor: 'leftfield', Cell: makeCell }].concat(famMembersNodes.map(node => {
-      const kf_id = node.kf_id;
+    return [{ Header: '', accessor: 'leftfield', Cell: makeCell }].concat(
+      famMembersNodes.map(node => {
+        const kf_id = node.kf_id;
 
-      return {
-        Header:
-          (famMembersNodes[0].kf_id === kf_id  //if it's the current participant
-            ? (
-                <div style={{ textAlign: 'center' }} >
-                  <div>{kf_id}</div>
-                  <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
-                </div>
-              )
-            : (
-                <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
-                  <div>{kf_id}</div>
-                  <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
-                </Link>
-              )
-          ),
-        accessor: kf_id,
-        Cell: makeCell,
-      }
-    }))
+        return {
+          Header:
+            famMembersNodes[0].kf_id === kf_id ? ( //if it's the current participant
+              <div style={{ textAlign: 'center' }}>
+                <div>{kf_id}</div>
+                <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
+              </div>
+            ) : (
+              <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
+                <div>{kf_id}</div>
+                <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
+              </Link>
+            ),
+          accessor: kf_id,
+          Cell: makeCell,
+        };
+      }),
+    );
   }
 
   /*
@@ -89,7 +107,6 @@ class FamilyTable extends React.Component {
   ParticipantDataTable.
   */
   buildRows(famMembersNodes) {
-
     /**
      * Makes a baseline row.
      *
@@ -118,34 +135,49 @@ class FamilyTable extends React.Component {
       baseline('Proband', 'is_proband'),
       baseline('Vital Status', 'outcome.vital_status'),
       baseline('Gender', 'gender'),
-      baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
-      baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
+      {
+        ...baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
+        headerId: 'Diagnoses (Mondo)',
+      },
+      {
+        ...baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
+        headerId: 'Diagnoses (NCIT)',
+      },
     ];
 
-    rows = famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
+    rows = famMembersNodes.reduce((rows, node) => {
+      //reduce the family members into rows of a table
       const kf_id = node.kf_id;
-      return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
-        const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
-
-        if(currentRow.acc === "") return currentRow; //if the accessor of the row is empty, nothing to do
-        else if(Array.isArray(accessorItem)) { //if the item is an array, then we'll have to extract some subaccessors from the array items
+      return flatMap(rows, currentRow => {
+        if (currentRow.acc === '') return currentRow;
+        //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
+        const accessorItem = get(node, currentRow.acc, null); //the item at the accessor
+        if (Array.isArray(accessorItem)) {
+          //if the item is an array, then we'll have to extract some subaccessors from the array items
 
           //we return an array when we want to splice our values at this index: since we're using flatMap, it'll unpack them in the right positions for us!
           //if the value we want to splice in is an empty array, no biggie, it will be unpacked into, well, nothing
-          return [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, name) => {   //reduce the accessed array into new rows
-            let subRow = rows.find( (ele) => ele.leftfield === name); //let's try to see if the value is already in there.
+          return [currentRow].concat(
+            accessorItem
+              .map(a => get(a.node, currentRow.subacc, null))
+              .reduce((acc, name) => {
+                //reduce the accessed array into new rows
+                let subRow = rows.find(ele => ele.leftfield === name); //let's try to see if the value is already in there.
+                if (!subRow) {
+                  if (['Diagnoses (Mondo)', 'Diagnoses (NCIT)'].includes(currentRow.headerId)) {
+                    subRow = { ...baseline(name), parentHeaderId: currentRow.headerId };
+                  } else {
+                    subRow = baseline(name); //if it's not, we have to make a new row,
+                  }
 
-            if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
-            else {
-
-              subRow = baseline(name);  //if it's not, we have to make a new row,
-              subRow[kf_id] = "reported"; //add the reported value
-              acc.push(subRow); //push that new row to the accumulator
-            }
-            return acc; //in any case, we have to return the acc.
-          }, []));
-
-        } else {  //if the item is not an array, we can just plug its value into the current row
+                  subRow[kf_id] = 'reported'; //add the reported value
+                  acc.push(subRow); //push that new row to the accumulator
+                }
+                return acc; //in any case, we have to return the acc.
+              }, []),
+          );
+        } else {
+          //if the item is not an array, we can just plug its value into the current row
           currentRow[kf_id] = accessorItem;
           return currentRow;
         }
@@ -155,25 +187,25 @@ class FamilyTable extends React.Component {
     const phHPO = {};
     const phSNO = {};
 
-    famMembersNodes.forEach( member => {
-      get(member, "phenotype.hits.edges", null).forEach( ele => {
+    famMembersNodes.forEach(member => {
+      get(member, 'phenotype.hits.edges', null).forEach(ele => {
         ele = ele.node;
 
-        const report = ele.observed ? "Observed" : "Not observed";
+        const report = ele.observed ? 'Observed' : 'Not observed';
 
         let hpo;
         let snomed;
 
-        if(ele.observed === true) {
+        if (ele.observed === true) {
           hpo = ele.hpo_phenotype_observed;
           snomed = ele.snomed_phenotype_observed;
         } else {
           hpo = ele.hpo_phenotype_not_observed;
-          snomed = ele.snomed_phenotype_not_observed
+          snomed = ele.snomed_phenotype_not_observed;
         }
 
-        if(hpo !== null) {
-          if(hpo in phHPO) {
+        if (hpo !== null) {
+          if (hpo in phHPO) {
             phHPO[hpo][member.kf_id] = report;
           } else {
             phHPO[hpo] = baseline(hpo);
@@ -181,54 +213,64 @@ class FamilyTable extends React.Component {
           }
         }
 
-        if(snomed !== null) {
-          if(snomed in phSNO) {
+        if (snomed !== null) {
+          if (snomed in phSNO) {
             phSNO[snomed][member.kf_id] = report;
           } else {
             phSNO[snomed] = baseline(snomed);
             phSNO[snomed][member.kf_id] = report;
           }
         }
-      })
+      });
     });
 
-    rows = rows.concat(
-      [baseline('Phenotypes (HPO)', '', true)]
-    ).concat(
-      Object.values(phHPO)
-    ).concat(
-      [baseline('Phenotypes (SNOMED)', '', true)]
-    ).concat(
-      Object.values(phSNO)
-    );
+    rows = rows
+      .concat([baseline('Phenotypes (HPO)', '', true)])
+      .concat(Object.values(phHPO))
+      .concat([baseline('Phenotypes (SNOMED)', '', true)])
+      .concat(Object.values(phSNO));
 
-    rows = rows.reduce((acc, row, i) => { //removes empty rows
-      if(row.subheader === true) {
-        const hasContent = ((i+1) >= rows.length) ? false : (rows[i + 1].subheader === false);
-        if (!hasContent) return acc;
+    const participantId = getParticipantId(famMembersNodes);
+    const famMembersIds = allIDs.filter(id => id !== participantId);
+
+    const rowsRemovedOfNotSharingRows = rows.filter(r => {
+      if (!r.subheader && ['Diagnoses (Mondo)', 'Diagnoses (NCIT)'].includes(r.parentHeaderId)) {
+        const partcipantDx = r[participantId] || '--';
+        return partcipantDx !== '--' && isParticipantSharingDx(r, famMembersIds);
+      }
+      return true;
+    });
+
+    rows = rowsRemovedOfNotSharingRows.filter((row, i) => {
+      //removes empty rows
+      if (row.subheader) {
+        const hasContent =
+          i + 1 >= rowsRemovedOfNotSharingRows.length
+            ? false
+            : !rowsRemovedOfNotSharingRows[i + 1].subheader;
+        if (!hasContent) {
+          return false;
+        }
       }
 
-      if(row.leftfield === "--" || row.leftfield === null || row.leftfield === undefined) return acc;
-
-      acc.push(row);
-      return acc;
-    }, []);
+      if (!row.leftfield || row.leftfield === '--') {
+        return false;
+      }
+      return true;
+    });
 
     return rows;
   }
 
   render() {
     const composition = this.composition;
-
-    if (composition === 'proband-only') return (
-      <div>
-        <span style={{ textTransform: 'capitalize' }}>{composition}</span>; no recorded family
-      </div>
-    );
-
-    else return (
-      <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)} />
-    );
+    if (composition === 'proband-only')
+      return (
+        <div>
+          <span style={{ textTransform: 'capitalize' }}>{composition}</span>; no recorded family
+        </div>
+      );
+    else return <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)} />;
   }
 }
 
