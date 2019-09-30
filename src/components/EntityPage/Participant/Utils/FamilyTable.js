@@ -29,7 +29,7 @@ const buildDefaultForMembers = (ids = [], defaultValue = '--') => {
   }, {});
 };
 
-const baselineWithIds = (leftfield, accessor = '', subheader = false, subaccessor = '') => ids => {
+const baselineWithIds = ids => (leftfield, accessor = '', subheader = false, subaccessor = '') => {
   return {
     leftfield: leftfield,
     subheader: subheader,
@@ -55,7 +55,7 @@ const buildPhenotypesRows = (famMemNodes = {}, ids) => {
           if (!(term in toFill)) {
             const parentHeaderId =
               partialKey === 'hpo' ? 'Phenotypes (HPO)' : 'Phenotypes (SNOMED)';
-            toFill[term] = { ...baselineWithIds(term)(ids), parentHeaderId };
+            toFill[term] = { ...baselineWithIds(ids)(term), parentHeaderId };
           }
           toFill[term][member.kf_id] = report;
         }
@@ -113,21 +113,18 @@ class FamilyTable extends React.Component {
 
   buildRows(famMembersNodes) {
     const allIDs = famMembersNodes.map(m => m.kf_id);
+    const baseline = baselineWithIds(allIDs);
     let rows = [
-      baselineWithIds('Generic Information', '', true)(allIDs),
-      baselineWithIds('Proband', 'is_proband')(allIDs),
-      baselineWithIds('Vital Status', 'outcome.vital_status')(allIDs),
-      baselineWithIds('Gender', 'gender')(allIDs),
+      baseline('Generic Information', '', true),
+      baseline('Proband', 'is_proband'),
+      baseline('Vital Status', 'outcome.vital_status'),
+      baseline('Gender', 'gender'),
       {
-        ...baselineWithIds('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis')(
-          allIDs,
-        ),
+        ...baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
         headerId: 'Diagnoses (Mondo)',
       },
       {
-        ...baselineWithIds('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis')(
-          allIDs,
-        ),
+        ...baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
         headerId: 'Diagnoses (NCIT)',
       },
     ];
@@ -147,11 +144,11 @@ class FamilyTable extends React.Component {
                 if (!subRow) {
                   if (['Diagnoses (Mondo)', 'Diagnoses (NCIT)'].includes(currentRow.headerId)) {
                     subRow = {
-                      ...baselineWithIds(name)(allIDs),
+                      ...baseline(name),
                       parentHeaderId: currentRow.headerId,
                     };
                   } else {
-                    subRow = baselineWithIds(name)(allIDs);
+                    subRow = baseline(name);
                   }
 
                   subRow[kf_id] = 'reported';
@@ -170,13 +167,11 @@ class FamilyTable extends React.Component {
     const { phHPO, phSNO } = buildPhenotypesRows(famMembersNodes, allIDs);
 
     rows = rows
-      .concat([
-        { ...baselineWithIds('Phenotypes (HPO)', '', true)(allIDs), headerId: 'Phenotypes (HPO)' },
-      ])
+      .concat([{ ...baseline('Phenotypes (HPO)', '', true), headerId: 'Phenotypes (HPO)' }])
       .concat(Object.values(phHPO))
       .concat([
         {
-          ...baselineWithIds('Phenotypes (SNOMED)', '', true)(allIDs),
+          ...baseline('Phenotypes (SNOMED)', '', true),
           headerId: 'Phenotypes (SNOMED)',
         },
       ])
