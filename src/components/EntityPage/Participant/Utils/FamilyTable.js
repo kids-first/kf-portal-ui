@@ -9,9 +9,21 @@ import {
   MONDOLink,
   NCITLink,
 } from '../../../Utils/DiagnosisAndPhenotypeLinks';
+import EntityContentSection from '../../EntityContent';
 
-const isParticipantSharingDxOrPheno = (dxRow, restOfFamilyIds) => {
-  return restOfFamilyIds.some(memId => Boolean(dxRow[memId]) && dxRow[memId] !== '--');
+const DXS_PHENOTYPES_HEADER_LABELS = [
+  'Diagnoses (Mondo)',
+  'Diagnoses (NCIT)',
+  'Phenotypes (HPO)',
+  'Phenotypes (SNOMED)',
+];
+
+const hasTableSharingDxOrPhenotypes = (finalRows = []) => {
+  return finalRows.some(r => r && DXS_PHENOTYPES_HEADER_LABELS.includes(r.leftfield));
+};
+
+const isParticipantSharingDxOrPheno = (row, restOfFamilyIds) => {
+  return restOfFamilyIds.some(memId => Boolean(row[memId]) && row[memId] !== '--');
 };
 
 const getParticipantId = (nodes = []) => {
@@ -181,15 +193,7 @@ class FamilyTable extends React.Component {
     const famMembersIds = allIDs.filter(id => id !== participantId);
 
     const rowsRemovedOfNotSharingRows = rows.filter(r => {
-      if (
-        !r.subheader &&
-        [
-          'Diagnoses (Mondo)',
-          'Diagnoses (NCIT)',
-          'Phenotypes (HPO)',
-          'Phenotypes (SNOMED)',
-        ].includes(r.parentHeaderId)
-      ) {
+      if (!r.subheader && DXS_PHENOTYPES_HEADER_LABELS.includes(r.parentHeaderId)) {
         const partcipantDx = r[participantId] || '--';
         return partcipantDx !== '--' && isParticipantSharingDxOrPheno(r, famMembersIds);
       }
@@ -224,23 +228,28 @@ class FamilyTable extends React.Component {
     const compNode = get(enhancedParticipant, 'family.family_compositions.hits.edges[0].node', {});
     const composition = compNode.composition;
 
+    if (composition === 'proband-only') {
+      return null;
+    }
+
     const famMembersNodes = [enhancedParticipant].concat(
       get(compNode, 'family_members.hits.edges', []).map(ele => ele.node),
     );
 
-    if (composition === 'proband-only')
+    const builtRows = this.buildRows(famMembersNodes);
+
+    if (hasTableSharingDxOrPhenotypes(builtRows)) {
+      //<EntityContentSection/> is added here because it's possible that the table renders nothing and there is no easy way for the parent to know about it.
       return (
-        <div>
-          <span style={{ textTransform: 'capitalize' }}>{composition}</span>; no recorded family
-        </div>
+        <EntityContentSection title={`Family Members (${participant.family_id})`}>
+          <ParticipantDataTable
+            columns={this.buildHeads(famMembersNodes)}
+            data={sanitize(builtRows)}
+          />
+        </EntityContentSection>
       );
-    else
-      return (
-        <ParticipantDataTable
-          columns={this.buildHeads(famMembersNodes)}
-          data={sanitize(this.buildRows(famMembersNodes))}
-        />
-      );
+    }
+    return null;
   }
 }
 

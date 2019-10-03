@@ -25,19 +25,122 @@ import BiospecimenIcon from 'icons/BiospecimenIcon';
 import { withTheme } from 'emotion-theming';
 import isEmpty from 'lodash/isEmpty';
 import Tooltip from 'uikit/Tooltip';
-//https://kf-qa.netlify.com/participant/PT_C954K04Y#summary tons of phenotypes
-//https://kf-qa.netlify.com/participant/PT_CB55W43A#clinical family has mother and child being affected
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const cellBreak = wrapper => (
   <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{wrapper.value}</div>
 );
 
 class ParticipantClinical extends React.Component {
-  state = { diagnoses: [], phenotypes: [] };
+  state = { diagnoses: [], phenotypes: [], hasLoadedDxs: false, hasLoadedPhenotypes: false };
 
   componentDidMount() {
     this.dataIntoState();
   }
+
+  diagHeads = theme => [
+    {
+      Header: 'Diagnosis Category',
+      accessor: 'diagnosis_category',
+      Cell: row => {
+        const category = row.value;
+        const rowData = row.original;
+        const biospecimensIds = rowData.biospecimens || [];
+        const hasNoBioSpecimenIds = isEmpty(biospecimensIds);
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip
+              html={`${hasNoBioSpecimenIds ? 'Clinical' : 'Histological'} Diagnosis`}
+              style={{ marginRight: '10px' }}
+            >
+              {hasNoBioSpecimenIds ? (
+                <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
+              ) : (
+                <BiospecimenIcon
+                  width={18}
+                  height={18}
+                  fill={theme.biospecimenOrange}
+                  alt="histological"
+                />
+              )}
+            </Tooltip>
+            <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{category}</div>
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Diagnosis (Mondo)',
+      accessor: 'mondo_id_diagnosis',
+      Cell: wrapper =>
+        wrapper.value === '--' ? <div>--</div> : <MONDOLink mondo={wrapper.value} />,
+    },
+    {
+      Header: 'Diagnosis (NCIT)',
+      accessor: 'ncit_id_diagnosis',
+      Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <NCITLink ncit={wrapper.value} />),
+    },
+    { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis', Cell: cellBreak },
+    { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
+    {
+      Header: 'Mondo term shared with',
+      accessor: 'shared_with',
+      Cell: wrapper => {
+        const participant = this.showParticipantNb(wrapper, 'diagnoses.mondo_id_diagnosis', [
+          wrapper.original.mondo_id_diagnosis,
+        ]);
+
+        return participant;
+      },
+    },
+    {
+      Header: 'Specimen IDs',
+      accessor: 'biospecimens',
+      width: 175,
+      Cell: row => {
+        const biospecimensIds = row.value;
+        return isEmpty(biospecimensIds) ? (
+          <div>--</div>
+        ) : (
+          <div style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+            {biospecimensIds.join(', ')}
+          </div>
+        );
+      },
+    },
+  ];
+
+  phenoHeads = () => [
+    {
+      Header: 'Phenotype (HPO)',
+      accessor: 'hpo',
+      Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <HPOLink hpo={wrapper.value} />),
+    },
+    {
+      Header: 'Phenotype (SNOMED)',
+      accessor: 'snomed',
+      Cell: wrapper =>
+        wrapper.value === '--' ? <div>--</div> : <SNOMEDLink snomed={wrapper.value} />,
+    },
+    { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
+    { Header: 'Interpretation', accessor: 'interpretation', Cell: cellBreak },
+    { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
+    {
+      Header: 'HPO term shared with',
+      accessor: 'shared_with',
+      Cell: wrapper => {
+        const participant = this.showParticipantNb(
+          wrapper,
+          wrapper.original.interpretation === 'Observed'
+            ? 'phenotype.hpo_phenotype_observed'
+            : 'phenotype.hpo_phenotype_not_observed',
+          [wrapper.original.hpo],
+        );
+
+        return participant;
+      },
+    },
+  ];
 
   diagnosisIntoState(api) {
     function call(diagnosis) {
@@ -75,7 +178,7 @@ class ParticipantClinical extends React.Component {
         );
       }
 
-      this.setState({ diagnoses: sanitize(diagnoses) }); //once we're ready, just tell the state, it'll do the rest
+      this.setState({ diagnoses: sanitize(diagnoses), hasLoadedDxs: true }); //once we're ready, just tell the state, it'll do the rest
     });
   }
 
@@ -132,7 +235,7 @@ class ParticipantClinical extends React.Component {
         );
       }
 
-      this.setState({ phenotypes: sanitize(phenotypes) }); //once we're ready, just tell the state, it'll do the rest
+      this.setState({ phenotypes: sanitize(phenotypes), hasLoadedPhenotypes: true }); //once we're ready, just tell the state, it'll do the rest
     });
   }
 
@@ -189,135 +292,38 @@ class ParticipantClinical extends React.Component {
   };
 
   render() {
-    const theme = this.props.theme;
-
-    const diagHeads = [
-      {
-        Header: 'Diagnosis Category',
-        accessor: 'diagnosis_category',
-        Cell: row => {
-          const category = row.value;
-          const rowData = row.original;
-          const biospecimensIds = rowData.biospecimens || [];
-          const hasNoBioSpecimenIds = isEmpty(biospecimensIds);
-          return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Tooltip
-                html={`${hasNoBioSpecimenIds ? 'Clinical' : 'Histological'} Diagnosis`}
-                style={{ marginRight: '10px' }}
-              >
-                {hasNoBioSpecimenIds ? (
-                  <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
-                ) : (
-                  <BiospecimenIcon
-                    width={18}
-                    height={18}
-                    fill={theme.biospecimenOrange}
-                    alt="histological"
-                  />
-                )}
-              </Tooltip>
-              <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{category}</div>
-            </div>
-          );
-        },
-      },
-      {
-        Header: 'Diagnosis (Mondo)',
-        accessor: 'mondo_id_diagnosis',
-        Cell: wrapper =>
-          wrapper.value === '--' ? <div>--</div> : <MONDOLink mondo={wrapper.value} />,
-      },
-      {
-        Header: 'Diagnosis (NCIT)',
-        accessor: 'ncit_id_diagnosis',
-        Cell: wrapper =>
-          wrapper.value === '--' ? <div>--</div> : <NCITLink ncit={wrapper.value} />,
-      },
-      { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis', Cell: cellBreak },
-      { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
-      {
-        Header: 'Mondo term shared with',
-        accessor: 'shared_with',
-        Cell: wrapper => {
-          const participant = this.showParticipantNb(wrapper, 'diagnoses.mondo_id_diagnosis', [
-            wrapper.original.mondo_id_diagnosis,
-          ]);
-
-          return participant;
-        },
-      },
-      {
-        Header: 'Specimen IDs',
-        accessor: 'biospecimens',
-        width: 175,
-        Cell: row => {
-          const biospecimensIds = row.value;
-          return isEmpty(biospecimensIds) ? (
-            <div>--</div>
-          ) : (
-            <div style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-              {biospecimensIds.join(', ')}
-            </div>
-          );
-        },
-      },
-    ];
-
-    const phenoHeads = [
-      {
-        Header: 'Phenotype (HPO)',
-        accessor: 'hpo',
-        Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <HPOLink hpo={wrapper.value} />),
-      },
-      {
-        Header: 'Phenotype (SNOMED)',
-        accessor: 'snomed',
-        Cell: wrapper =>
-          wrapper.value === '--' ? <div>--</div> : <SNOMEDLink snomed={wrapper.value} />,
-      },
-      { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
-      { Header: 'Interpretation', accessor: 'interpretation', Cell: cellBreak },
-      { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
-      {
-        Header: 'HPO term shared with',
-        accessor: 'shared_with',
-        Cell: wrapper => {
-          const participant = this.showParticipantNb(
-            wrapper,
-            wrapper.original.interpretation === 'Observed'
-              ? 'phenotype.hpo_phenotype_observed'
-              : 'phenotype.hpo_phenotype_not_observed',
-            [wrapper.original.hpo],
-          );
-
-          return participant;
-        },
-      },
-    ];
-
+    if (!this.state.hasLoadedPhenotypes || !this.state.hasLoadedDxs) {
+      //make sure all data is loaded before deciding what to display.
+      return <LoadingSpinner color={this.props.theme.greyScale11} size={'50px'} />;
+    }
     const participant = this.props.participant;
     const diagnoses = this.state.diagnoses;
     const phenotypes = this.state.phenotypes;
 
+    const hasDxs = diagnoses && diagnoses.length > 0;
+    const hasPhenotype = phenotypes && phenotypes.length > 0;
+
+    const hasDataToShow = hasDxs || hasPhenotype;
+
+    if (!hasDataToShow) {
+      return <span>{'No Clinical Data Reported'}</span>;
+    }
     return (
       <React.Fragment>
-        {diagnoses && diagnoses.length > 0 && (
+        {hasDxs && (
           <EntityContentSection title="Diagnoses">
-            <ParticipantDataTable columns={diagHeads} data={diagnoses} />
+            <ParticipantDataTable columns={this.diagHeads(this.props.theme)} data={diagnoses} />
           </EntityContentSection>
         )}
-        {phenotypes && phenotypes.length > 0 && (
+        {hasPhenotype && (
           <EntityContentSection title="Phenotypes">
-            <ParticipantDataTable columns={phenoHeads} data={phenotypes} />
+            <ParticipantDataTable columns={this.phenoHeads()} data={phenotypes} />
           </EntityContentSection>
         )}
         {participant.family_id && (
           <div>
-            {diagnoses.length === 0 ? '' : <EntityContentDivider />}
-            <EntityContentSection title={`Family Members (${participant.family_id})`}>
-              <FamilyTable participant={participant} />
-            </EntityContentSection>
+            {hasDxs ? <EntityContentDivider /> : ''}
+            <FamilyTable participant={participant} />
           </div>
         )}
       </React.Fragment>
