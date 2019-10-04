@@ -96,7 +96,6 @@ const ProjectHeader = styled(TableHeader)`
 `;
 
 const CavaticaProjects = ({
-  effects: { setToast, closeToast },
   theme,
   projectSearchValue,
   setProjectSearchValue,

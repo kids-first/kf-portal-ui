@@ -9,7 +9,7 @@ const buttonStyle = props =>
     margin-right: 10px;
   `;
 
-export default ({ fileId, disabled }) => (
+export default ({ fileId, disabled, hasFilePermission }) => (
   <CavaticaCopyButton
     text="ANALYZE FILE IN CAVATICA"
     buttonStyle={buttonStyle}
@@ -24,5 +24,6 @@ export default ({ fileId, disabled }) => (
       ],
     }}
     disabled={disabled}
+    hasFilePermission={hasFilePermission}
   />
 );

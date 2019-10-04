@@ -2,119 +2,20 @@ import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { css } from 'emotion';
-
-import { cavaticaWebRoot } from 'common/injectGlobals';
-import { FENCES } from 'common/constants';
-import { Link, withRouter } from 'react-router-dom';
-import ExternalLink from 'uikit/ExternalLink';
-import RightArrows from 'react-icons/lib/fa/angle-double-right';
-import CavaticaFileSummary from './CavaticaFileSummary';
-import CavaticaProjects from './CavaticaProjects';
+import { withRouter } from 'react-router-dom';
 import { graphql } from 'services/arranger';
 import { withApi } from 'services/api';
-
-import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
-
-import { convertFenceUuids, copyFiles as copyCavaticaFiles } from 'services/cavatica';
+import { ModalFooter } from 'components/Modal/index.js';
 import provideCavaticaFileAuthorizations from 'stateProviders/provideCavaticaFileAuthorizations';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
+import { SuccessToastComponent } from './CavaticaSuccessToast';
+import { cssCopyModalRoot } from './css';
+import { copyToProject } from './api';
+import CavaticaProjects from './CavaticaProjects';
+import { Link } from 'react-router-dom';
+import CavaticaFileSummary from './CavaticaFileSummary';
+import { ModalWarning } from 'components/Modal/index.js';
 import { Paragraph } from 'uikit/Core';
-
-const copyToProject = async ({ selectedFiles, selectedProject }) => {
-  const promises = [];
-
-  // Make a request to get cavaticaIds forEach repository, stick it in our promises list
-  //  Don't do the async await in the forEach loop...
-  Object.keys(selectedFiles).forEach(fence => {
-    if (FENCES.includes(fence) && selectedFiles[fence] && selectedFiles[fence].length > 0) {
-      // Convert KF_IDs to CavaticaIds
-      const promise = convertFenceUuids({
-        ids: selectedFiles[fence],
-        fence: fence,
-      }).then(response =>
-        // Then Copy to Cavatica
-        copyCavaticaFiles({
-          project: selectedProject,
-          ids: [...response.map(item => item.id)],
-        }),
-      );
-      promises.push(promise);
-    }
-  });
-
-  return await Promise.all(promises);
-};
-
-const SuccessToastComponent = ({ theme, selectedProjectData }) => (
-  <div
-    css={`
-      display: flex;
-    `}
-  >
-    <div
-      css={`
-        display: flex;
-        flex-direction: column;
-      `}
-    >
-      <div
-        css={`
-          font-size: 16px;
-        `}
-      >
-        Success!
-      </div>
-      <div>Files were copied to your Cavatica project:</div>
-      <div
-        css={`
-          color: ${theme.secondary};
-          margin-bottom: 20px;
-        `}
-      >
-        {selectedProjectData.name}
-      </div>
-      <ExternalLink
-        css={`
-          font-size: 14px;
-        `}
-        href={`${cavaticaWebRoot}/u/${selectedProjectData.id}`}
-      >
-        Open project in Cavatica
-        <RightArrows fill={theme.primary} width="10px" css="margin-left:4px;" />
-      </ExternalLink>
-    </div>
-  </div>
-);
-
-const styles = theme => css`
-.wrapper {
-  border-radius: 10px;
-  background-color: #ffffff;
-  border: solid 1px #cacbcf;
-
-  input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-    outline: none;
-  }
-}
-
-div.verticalCenter {
-  display:flex;
-  flex-direction:vertical:
-  align-items:center;
-}
-
-div.content {
-  margin: 1em 0em;
-  ${theme.column}
-}
-
-}
-`;
 
 const enhance = compose(
   provideCavaticaFileAuthorizations,
@@ -153,9 +54,9 @@ const enhance = compose(
     },
   }),
 );
-const CavaticaCopyModal = ({
+const CavaticaCopyMultipleFilesModal = ({
   state,
-  effects: { unsetModal, setToast, closeToast },
+  effects,
   theme,
   addingProject,
   fileIds,
@@ -163,14 +64,15 @@ const CavaticaCopyModal = ({
   setAddingProject,
   selectedProjectData,
   setSelectedProjectData,
+  onComplete,
   ...props
 }) => {
-  const unauthFilesWarning = state.unauthorizedFiles && state.unauthorizedFiles > 0;
   const hasFenceConnection = Object.keys(state.fenceConnections).length > 0;
   const isFilesSelected = filesSelected && filesSelected.length > 0;
+  const unauthFilesWarning = state.unauthorizedFiles && state.unauthorizedFiles.length > 0;
   const showWarning = unauthFilesWarning || !hasFenceConnection;
   return (
-    <div css={styles(theme)}>
+    <div css={cssCopyModalRoot(theme)}>
       {showWarning && (
         <ModalWarning>
           <span
@@ -190,7 +92,7 @@ const CavaticaCopyModal = ({
           {!hasFenceConnection && (
             <Paragraph>
               Please{' '}
-              <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={unsetModal}>
+              <Link to={`/user/${state.loggedInUser.egoId}#settings`} onClick={effects.unsetModal}>
                 connect to data repositories
               </Link>{' '}
               to lookup which files you are authorized to copy.
@@ -198,7 +100,7 @@ const CavaticaCopyModal = ({
           )}
         </ModalWarning>
       )}
-      {hasFenceConnection && isFilesSelected && (
+      {!hasFenceConnection && isFilesSelected && (
         <div className="content">
           <CavaticaFileSummary filesSelected={filesSelected} {...props} />
         </div>
@@ -224,7 +126,7 @@ const CavaticaCopyModal = ({
                 selectedProject: selectedProjectData.id,
                 selectedFiles: state.authorizedFiles,
               });
-              setToast({
+              effects.setToast({
                 id: `${Date.now()}`,
                 action: 'success',
                 component: SuccessToastComponent({ theme, selectedProjectData }),
@@ -235,7 +137,7 @@ const CavaticaCopyModal = ({
                 action: 'Copied Files to Cavatica Project',
                 label: JSON.stringify({ files: uuids.length, uuids }),
               });
-              props.onComplete();
+              onComplete();
             } catch (e) {
               //TODO: Display failure error.
               trackUserInteraction({
@@ -263,4 +165,4 @@ const CavaticaCopyModal = ({
   );
 };
 
-export default enhance(CavaticaCopyModal);
+export default enhance(CavaticaCopyMultipleFilesModal);

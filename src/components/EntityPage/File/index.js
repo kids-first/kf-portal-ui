@@ -311,7 +311,11 @@ const FileEntity = compose(withTheme)(
               <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
             </EntityTitleBar>
             <EntityActionBar>
-              <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
+              <CavaticaAnalyse
+                fileId={fileId}
+                disabled={!hasFilePermission}
+                hasFilePermission={hasFilePermission}
+              />
               <Download
                 onSuccess={url => {
                   trackUserInteraction({

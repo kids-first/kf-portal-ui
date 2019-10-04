@@ -18,6 +18,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { DCF } from 'common/constants';
 import CavaticaLogo from 'icons/CavaticaLogo';
 import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapper';
+import { ACTIONS_COLUMNS } from 'common/constants';
 
 const enhance = compose(
   withApi,
@@ -79,7 +80,10 @@ const ActionItems = ({ value, fence, hasAccess, theme }) => {
       </ButtonWrapper>
       <ButtonWrapper>
         {hasAccess && (
-          <CavaticaOpenModalWrapper fileIds={[value]}>
+          <CavaticaOpenModalWrapper
+            fileIds={[value]}
+            source={{ location: ACTIONS_COLUMNS, hasAccess }}
+          >
             <CavaticaLogo fill={theme.lightBlue} width={16} />
           </CavaticaOpenModalWrapper>
         )}
