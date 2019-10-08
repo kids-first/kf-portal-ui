@@ -315,6 +315,11 @@ const FileEntity = compose(withTheme)(
                 fileId={fileId}
                 disabled={!hasFilePermission}
                 hasFilePermission={hasFilePermission}
+                file={{
+                  acl: data.acl,
+                  latest_did: data.latest_did,
+                  repository: data.repository,
+                }}
               />
               <Download
                 onSuccess={url => {
