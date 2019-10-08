@@ -4,7 +4,7 @@ import { ACTIONS_COLUMNS, FILE_VIEW } from 'common/constants';
 import CavaticaCopyMultipleFilesModal from './CavaticaCopyMultipleFilesModal';
 import CavaticaCopyAccessFileModal from './CavaticaCopyOpenAccessFileModal';
 
-const isModalInitiatedByOneOpenAccessFile = (source = {}, fileIds = []) => {
+const isModalForOpenAccessFile = (source = {}, fileIds = []) => {
   return (
     [ACTIONS_COLUMNS, FILE_VIEW].includes(source.location) &&
     Boolean(source.hasAccess) &&
@@ -13,8 +13,10 @@ const isModalInitiatedByOneOpenAccessFile = (source = {}, fileIds = []) => {
 };
 
 const CavaticaCopyModalManager = ({ fileIds, filesSelected, source, onComplete, ...props }) => {
-  if (isModalInitiatedByOneOpenAccessFile(source, fileIds)) {
-    return <CavaticaCopyAccessFileModal fileId={fileIds[0]} onComplete={onComplete} />;
+  if (isModalForOpenAccessFile(source, fileIds)) {
+    return (
+      <CavaticaCopyAccessFileModal fileId={fileIds[0]} onComplete={onComplete} file={source.file} />
+    );
   }
   return (
     <CavaticaCopyMultipleFilesModal

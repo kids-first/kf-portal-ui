@@ -70,10 +70,9 @@ const CavaticaCopyMultipleFilesModal = ({
   const hasFenceConnection = Object.keys(state.fenceConnections).length > 0;
   const isFilesSelected = filesSelected && filesSelected.length > 0;
   const unauthFilesWarning = state.unauthorizedFiles && state.unauthorizedFiles.length > 0;
-  const showWarning = unauthFilesWarning || !hasFenceConnection;
   return (
     <div css={cssCopyModalRoot(theme)}>
-      {showWarning && (
+      {unauthFilesWarning && (
         <ModalWarning>
           <span
             css={`
@@ -83,12 +82,10 @@ const CavaticaCopyMultipleFilesModal = ({
           >
             Access Error
           </span>
-          {unauthFilesWarning && (
-            <span>
-              <br />
-              You are attempting to copy files that you are not authorized to access.
-            </span>
-          )}
+          <span>
+            <br />
+            You are attempting to copy files that you are not authorized to access.
+          </span>
           {!hasFenceConnection && (
             <Paragraph>
               Please{' '}
@@ -100,9 +97,9 @@ const CavaticaCopyMultipleFilesModal = ({
           )}
         </ModalWarning>
       )}
-      {!hasFenceConnection && isFilesSelected && (
+      {hasFenceConnection && isFilesSelected && (
         <div className="content">
-          <CavaticaFileSummary filesSelected={filesSelected} {...props} />
+          <CavaticaFileSummary sqon={props.sqon} api={props.api} />
         </div>
       )}
       <div className="content">

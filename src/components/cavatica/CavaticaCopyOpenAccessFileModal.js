@@ -28,6 +28,7 @@ const CavaticaCopyOpenAccessFileModal = ({
   selectedProjectData,
   setSelectedProjectData,
   onComplete,
+  file,
   ...props
 }) => {
   return (
@@ -47,10 +48,14 @@ const CavaticaCopyOpenAccessFileModal = ({
       <ModalFooter
         {...{
           handleSubmit: async () => {
+            const fence = file.repository;
             try {
+              if (!fence) {
+                throw new Error('This file has no repository information.');
+              }
               await copyToProject({
                 selectedProject: selectedProjectData.id,
-                selectedFiles: [fileId],
+                selectedFiles: { [fence]: [fileId] },
               });
               setToast({
                 id: `${Date.now()}`,
@@ -66,6 +71,7 @@ const CavaticaCopyOpenAccessFileModal = ({
               onComplete();
             } catch (e) {
               //TODO: Display failure error.
+              console.error(e);
               trackUserInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                 action: 'Copied File to Cavatica Project FAILED',
