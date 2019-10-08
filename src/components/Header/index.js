@@ -84,7 +84,7 @@ const Header = ({
                   </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to={SEARCH_MEMBER_PATH}>
-                      <UserIcon /> <Trans>Member Search</Trans>
+                      <UserIcon /> <Trans>Members Search</Trans>
                     </NavLink>
                   </li>
                 </NavBarList>
