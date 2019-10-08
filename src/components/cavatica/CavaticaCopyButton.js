@@ -7,6 +7,7 @@ import Row from 'uikit/Row';
 import CavaticaOpenModalWrapper from './CavaticaOpenModalWrapper';
 import { BigWhiteButton, disabledButtonStyles } from 'uikit/Button';
 import CavaticaLogo from 'icons/CavaticaLogo';
+import { FILE_VIEW } from 'common/constants';
 
 const ButtonContent = styled(Row)`
   ${({ theme }) => theme.center};
@@ -36,17 +37,23 @@ const CavaticaButton = styled(BigWhiteButton)`
     disabled ? disabledButtonStyles : null}
 `;
 
-export default compose(withTheme)(({ disabled, theme, text, buttonStyle, fileIds, sqon }) => (
-  <CavaticaOpenModalWrapper fileIds={fileIds} sqon={sqon}>
-    <CavaticaButton disabled={disabled} buttonStyle={buttonStyle}>
-      <ButtonContent>
-        <CavaticaLogo
-          width="28"
-          fill={disabled ? theme.borderGrey : 'white'}
-          style={{ marginRight: '7px' }}
-        />
-        {text}
-      </ButtonContent>
-    </CavaticaButton>
-  </CavaticaOpenModalWrapper>
-));
+export default compose(withTheme)(
+  ({ disabled, theme, text, buttonStyle, fileIds, sqon, hasFilePermission }) => (
+    <CavaticaOpenModalWrapper
+      fileIds={fileIds}
+      sqon={sqon}
+      source={{ location: FILE_VIEW, hasAccess: hasFilePermission }}
+    >
+      <CavaticaButton disabled={disabled} buttonStyle={buttonStyle}>
+        <ButtonContent>
+          <CavaticaLogo
+            width="28"
+            fill={disabled ? theme.borderGrey : 'white'}
+            style={{ marginRight: '7px' }}
+          />
+          {text}
+        </ButtonContent>
+      </CavaticaButton>
+    </CavaticaOpenModalWrapper>
+  ),
+);

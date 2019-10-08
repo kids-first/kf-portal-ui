@@ -18,6 +18,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { DCF } from 'common/constants';
 import CavaticaLogo from 'icons/CavaticaLogo';
 import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapper';
+import { ACTIONS_COLUMNS } from 'common/constants';
 
 const enhance = compose(
   withApi,
@@ -61,7 +62,7 @@ const FenceDownloadButton = ({ fence, kfId, theme }) =>
     />
   );
 
-const ActionItems = ({ value, fence, hasAccess, theme }) => {
+const ActionItems = ({ value, fence, hasAccess, theme, file }) => {
   return (
     <React.Fragment>
       <ButtonWrapper>
@@ -79,7 +80,10 @@ const ActionItems = ({ value, fence, hasAccess, theme }) => {
       </ButtonWrapper>
       <ButtonWrapper>
         {hasAccess && (
-          <CavaticaOpenModalWrapper fileIds={[value]}>
+          <CavaticaOpenModalWrapper
+            fileIds={[value]}
+            source={{ location: ACTIONS_COLUMNS, hasAccess, file }}
+          >
             <CavaticaLogo fill={theme.lightBlue} width={16} />
           </CavaticaOpenModalWrapper>
         )}
@@ -141,7 +145,13 @@ const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
               {loadingQuery ? (
                 <TableSpinner style={{ width: 15, height: 15 }} />
               ) : (
-                <ActionItems value={value} fence={repository} hasAccess={hasAccess} theme={theme} />
+                <ActionItems
+                  value={value}
+                  fence={repository}
+                  hasAccess={hasAccess}
+                  theme={theme}
+                  file={file}
+                />
               )}
             </Row>
           );

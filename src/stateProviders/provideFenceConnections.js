@@ -149,9 +149,13 @@ export default provideState({
       }),
     ),
     fetchFenceStudies: (effects, { api, fence, details }) => {
-      return getUserStudyPermission(api, {
-        [fence]: details,
-      })({})
+      return getUserStudyPermission(
+        api,
+        {
+          [fence]: details,
+        },
+        {},
+      )
         .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) =>
           effects.addFenceStudies(fence, {
             authorizedStudies: acceptedStudiesAggs,

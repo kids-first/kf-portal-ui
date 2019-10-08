@@ -15,6 +15,15 @@ import { getUserStudyPermission } from 'services/fileAccessControl';
 
 import { FENCES } from 'common/constants';
 
+const shapeStudyAggs = (studyAggs = []) =>
+  studyAggs
+    .filter(({ files }) => files.length > 0)
+    .map(({ id, files }) => ({
+      id: id,
+      count: files.length,
+    }))
+    .sort(({ count }, { count: nextCount }) => nextCount - count);
+
 const enhance = compose(
   injectState,
   withTheme,
@@ -41,24 +50,14 @@ const enhance = compose(
       const { acceptedStudiesAggs, unacceptedStudiesAggs } = await getUserStudyPermission(
         api,
         fenceConnections,
-      )({
-        sqon,
-      });
+        {
+          sqon,
+        },
+      );
+
       setFileStudyData({
-        authorized: acceptedStudiesAggs
-          .map(({ id, files, studyName }) => ({
-            id: id,
-            count: files.length,
-          }))
-          .filter(({ count }) => count)
-          .sort(({ count }, { count: nextCount }) => nextCount - count),
-        unauthorized: unacceptedStudiesAggs
-          .map(({ id, files, studyName }) => ({
-            id: id,
-            count: files.length,
-          }))
-          .filter(({ count }) => count)
-          .sort(({ count }, { count: nextCount }) => nextCount - count),
+        authorized: shapeStudyAggs(acceptedStudiesAggs),
+        unauthorized: shapeStudyAggs(unacceptedStudiesAggs),
         names: [...acceptedStudiesAggs, ...unacceptedStudiesAggs].reduce(
           (acc, { id, studyName }) => ({
             ...acc,
@@ -91,7 +90,7 @@ const enhance = compose(
             },
           ],
         };
-        const promise = getUserStudyPermission(api, fenceConnections)({
+        const promise = getUserStudyPermission(api, fenceConnections, {
           sqon: fenceSqon,
         }).then(response => {
           authFiles[fence] = response.acceptedStudiesAggs
@@ -185,17 +184,7 @@ const styles = theme => css`
   }
 `;
 
-const CavaticaFileSummary = ({
-  state,
-  theme,
-  effects,
-  showDetails,
-  setShowDetails,
-  authorizedFiles,
-  unauthorizedFiles,
-  fileStudyData,
-  ...props
-}) => {
+const CavaticaFileSummary = ({ state, theme, showDetails, setShowDetails }) => {
   const showUnauth = !!(state.unauthorizedFiles && state.unauthorizedFiles.length > 0);
   const showAuth =
     state.authorizedFiles !== null && (state.authorizedFilesCombined.length > 0 || showUnauth);
