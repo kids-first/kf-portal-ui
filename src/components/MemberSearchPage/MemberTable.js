@@ -1,84 +1,45 @@
-import { Table, Divider, Tag } from 'antd';
+import { Avatar, Table } from 'antd';
 import React from 'react';
+import { find } from 'lodash';
+import { ROLES } from 'common/constants';
+import { ProfileImage } from 'components/UserProfile/ui';
+import { NavigationGravatar } from 'components/Header/ui';
+import { MemberImage } from 'components/MemberSearchPage/ui';
 
+const userRoleDisplayName = (userRole) => find(ROLES, { type: userRole }).displayName;
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    render: text => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
-    render: tags => (
+    title: 'Avatar',
+    key: 'avatar',
+    render: (member) => (
       <span>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
+        <MemberImage email={member.email || ''}/>
+        {console.log(member.roles[0])}
+        {console.log(userRoleDisplayName(member.roles[0]))}
+        {console.log(member.roles[0])}
+        <div>{userRoleDisplayName(member.roles[0])}</div>
       </span>
+
     ),
   },
   {
     title: 'Action',
     key: 'action',
-    render: (text, record) => (
+    render: (member) => (
       <span>
-        <a>Invite {record.name}</a>
-        <Divider type="vertical" />
-        <a>Delete</a>
+        <a>{member.title + ' ' + member.firstName + ' ' + member.lastName}</a>
+        <div>{member.city}, {member.state}, {member.country}</div>
+        <div>Research Interests: {member.interests.join(",")}</div>
       </span>
     ),
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
   },
 ];
 
 const MemberTable = (props) => {
   return (
     <div>
-      <Table pagination={{defaultPageSize:10, showSizeChanger: true, pageSizeOptions: ['10', '20', '50']}} columns={columns} dataSource={data} />
+      {console.log(props)}
+      <Table pagination={{defaultPageSize:10, showSizeChanger: true, pageSizeOptions: ['10', '20', '50']}} columns={columns} dataSource={props.memberList} />
     </div>
   );
 };

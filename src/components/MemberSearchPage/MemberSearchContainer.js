@@ -5,7 +5,7 @@ import MemberSearch from './MemberSearch';
 import  fetchListOfMembersAction  from 'components/MemberSearchPage/fetchListOfMembers';
 import { bindActionCreators } from 'redux';
 import { Row, Col, Input, Tooltip, Icon } from 'antd';
-import MemeberTable from './MemberTable'
+import MemberTable from './MemberTable'
 
 class MemberSearchContainer extends Component {
   constructor(props) {
@@ -19,7 +19,26 @@ class MemberSearchContainer extends Component {
     fetchListOfMembers(e.target.value, {start: 0, end: 10})
   } //FIXME
 
+  componentDidMount() {
+    const {fetchListOfMembers} = this.props;
+    fetchListOfMembers("", {start: 0, end: 10})
+  }//FIXME
+
   render() {
+    //FIXME
+    const memberList = this.props.members.map(row => ({
+      key: row[0]._id,
+      firstName: row[0].firstName,
+      lastName: row[0].lastName,
+      email: row[0].email,
+      city: row[0].city,
+      state: row[0].state,
+      country: row[0].country,
+      title: row[0].title,
+      interests: row[0].interests,
+      institution: row[0].institution,
+      roles: row[0].roles
+    }));
     return (
       <div id={"grid-container"}>
         <Row>
@@ -38,12 +57,7 @@ class MemberSearchContainer extends Component {
                 </Tooltip>
               }
             />
-            <MemeberTable></MemeberTable>
-            <ul>
-              {this.props.members.map((member, index) => <div key={index}>{member[0].firstName}</div>)}
-
-            </ul>
-
+            <MemberTable memberList={memberList}/>
           </Col>
         </Row>
 
