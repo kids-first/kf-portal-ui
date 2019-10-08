@@ -1,7 +1,7 @@
 import { initializeApi } from 'services/api';
 import urljoin from 'url-join';
 
-const MEMBERS_SERVICE_ROOT_URL = 'TODO';
+const MEMBERS_SERVICE_ROOT_URL = 'https://api-search-members-qa.kidsfirstdrc.org';
 
 const api = initializeApi({
   onError: console.err,

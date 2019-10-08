@@ -10,7 +10,7 @@ const initialState = {
   errors: null,
 };
 
-const memberSearchPageReducer = (state = initialState, action) => {
+export default function memberSearchPageReducer (state = initialState, action) {
   switch (action.type) {
     case REQUEST_MATCHING_LIST_OF_MEMBERS:
       return { ...state, isFetching: true };
@@ -21,6 +21,4 @@ const memberSearchPageReducer = (state = initialState, action) => {
     default:
       return state;
   }
-};
-
-export default memberSearchPageReducer;
+}

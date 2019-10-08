@@ -1,7 +1,7 @@
 import { fetchMatchingListOfMembers, receiveMatchingListOfMembers, requestError } from './actions';
-import searchMembers from 'services/members/search';
+import { searchMembers } from 'services/members/search';
 
-export const fetchListOfMembers = (searchInput = '', searchParams) => {
+const fetchListOfMembers = (searchInput = '', searchParams) => {
   return async dispatch => {
     dispatch(fetchMatchingListOfMembers());
     try {
@@ -9,9 +9,11 @@ export const fetchListOfMembers = (searchInput = '', searchParams) => {
       if (response.err) {
         throw response.err;
       }
-      dispatch(receiveMatchingListOfMembers(response.data));
+      dispatch(receiveMatchingListOfMembers(response.publicMembers));
     } catch (err) {
       dispatch(requestError(err));
     }
   };
 };
+
+export default fetchListOfMembers;

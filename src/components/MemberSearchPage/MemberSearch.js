@@ -1,10 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const MemberSearch = function(props) {
-  return <div>TODO</div>;
+
+const MemberSearch = (props) => {
+  return (
+    <div>
+      <button onClick={props.onClick} > TEST </button>
+    </div>
+  );
 };
-
-MemberSearch.propTypes = {};
 
 export default MemberSearch;
