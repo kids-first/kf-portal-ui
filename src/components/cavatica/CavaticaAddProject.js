@@ -69,7 +69,6 @@ const enhance = compose(
 );
 
 const CavaticaAddProject = ({
-  state,
   theme,
   projectName,
   setProjectName,
@@ -79,7 +78,7 @@ const CavaticaAddProject = ({
   billingGroups,
   selectedBillingGroup,
   selectBillingGroup,
-  ...props
+  onSuccess,
 }) => {
   const onSaveButtonClick = async () => {
     saveProject({
@@ -90,7 +89,7 @@ const CavaticaAddProject = ({
       setAddingProject(false);
       setProjectName('');
       setSelectedProject(id);
-      props.onSuccess();
+      onSuccess();
     });
   };
   const onProjectNameChange = e => setProjectName(e.target.value);
