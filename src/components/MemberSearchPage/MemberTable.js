@@ -1,45 +1,62 @@
-import { Avatar, Table } from 'antd';
+import { Col, List, Row } from 'antd';
 import React from 'react';
 import { find } from 'lodash';
 import { ROLES } from 'common/constants';
-import { ProfileImage } from 'components/UserProfile/ui';
-import { NavigationGravatar } from 'components/Header/ui';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 
 const userRoleDisplayName = (userRole) => find(ROLES, { type: userRole }).displayName;
-const columns = [
-  {
-    title: 'Avatar',
-    key: 'avatar',
-    render: (member) => (
-      <span>
-        <MemberImage email={member.email || ''}/>
-        {console.log(member.roles[0])}
-        {console.log(userRoleDisplayName(member.roles[0]))}
-        {console.log(member.roles[0])}
-        <div>{userRoleDisplayName(member.roles[0])}</div>
-      </span>
 
-    ),
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (member) => (
-      <span>
-        <a>{member.title + ' ' + member.firstName + ' ' + member.lastName}</a>
-        <div>{member.city}, {member.state}, {member.country}</div>
-        <div>Research Interests: {member.interests.join(",")}</div>
-      </span>
-    ),
-  },
-];
+function renderButton() {
+  if(this.state.mode === 'view') {
+    return (
+      <button onClick={this.handleEdit}>
+        Edit
+      </button>
+    );
+  } else {
+    return (
+      <button onClick={this.handleSave}>
+        Save
+      </button>
+    );
+  }
+}
 
 const MemberTable = (props) => {
   return (
     <div>
-      {console.log(props)}
-      <Table pagination={{defaultPageSize:10, showSizeChanger: true, pageSizeOptions: ['10', '20', '50']}} columns={columns} dataSource={props.memberList} />
+      <List
+        itemLayout={"vertical"}
+        header={
+          `Showing 1-10 of ${props.memberList.length} (${props.totalCount} members matching)`
+        }
+        pagination={{defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '50'], defaultCurrent: 1, total: props.memberList.length}}
+        dataSource={props.memberList}
+        // loading={true}
+
+        renderItem={item => (
+          <List.Item key={item.title}>
+            <Row>
+              <Col span={6}>
+                <Row type="flex" justify="space-around" align="middle">
+                  <Col span={6}>
+                    <MemberImage email={item.email || ''} d={"mp"}/>
+                  </Col>
+                  <Col span={18}>
+                    <div style={{alignContent:'center', alignItems:'center'}}>{item.roles[0] ? userRoleDisplayName(item.roles[0]) : "NO ROLE"}</div>
+                  </Col>
+                </Row>
+              </Col>
+              <Col span={18}>
+                <a>{(item.title ? item.title.toUpperCase() + ' ' : '') + item.firstName + ' ' + item.lastName}</a>
+                <div>Address: {[item.city, item.state, item.country].filter(Boolean).join(", ")}</div>
+                <div>Research Interests: {item.interests.join(", ")}</div>
+              </Col>
+            </Row>
+          </List.Item>
+        )}
+
+      />
     </div>
   );
 };

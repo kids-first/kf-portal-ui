@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { connect} from 'react-redux';
-import MemberSearch from './MemberSearch';
-// import reducer from '@kfarranger/admin-ui/src/store/configEditorReducer/index';
-import  fetchListOfMembersAction  from 'components/MemberSearchPage/fetchListOfMembers';
+import { connect } from 'react-redux';
+import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
 import { bindActionCreators } from 'redux';
-import { Row, Col, Input, Tooltip, Icon } from 'antd';
-import MemberTable from './MemberTable'
+import { Col, Icon, Input, Row, Tooltip } from 'antd';
+import MemberTable from './MemberTable';
 
 class MemberSearchContainer extends Component {
   constructor(props) {
@@ -16,12 +14,12 @@ class MemberSearchContainer extends Component {
 
   handleChange(e) {
     const {fetchListOfMembers} = this.props;
-    fetchListOfMembers(e.target.value, {start: 0, end: 10})
+    fetchListOfMembers(e.target.value, {start: 0, end: 50})
   } //FIXME
 
   componentDidMount() {
     const {fetchListOfMembers} = this.props;
-    fetchListOfMembers("", {start: 0, end: 10})
+    fetchListOfMembers("", {start: 0, end: 50})
   }//FIXME
 
   render() {
@@ -48,6 +46,7 @@ class MemberSearchContainer extends Component {
           <Col span={16}>
             <p>Member Search</p>
             <Input
+              style={{borderRadius: 30}}
               onChange={this.handleChange}
               placeholder="Member Name, Email, Interests,..."
               prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -57,7 +56,10 @@ class MemberSearchContainer extends Component {
                 </Tooltip>
               }
             />
-            <MemberTable memberList={memberList}/>
+            {console.log("ADRIAN")}
+            {console.log(this.props)}
+            {console.log("ADRIAN")}
+            <MemberTable memberList={memberList} totalCount={this.props.totalCount}/>
           </Col>
         </Row>
 
@@ -72,6 +74,7 @@ class MemberSearchContainer extends Component {
 const mapStateToProps = state => ({
   error: state.ui.memberSearchPageReducer.errors,
   members: state.ui.memberSearchPageReducer.members,
+  totalCount: state.ui.memberSearchPageReducer.totalCount,
   pending: state.ui.memberSearchPageReducer.pending,
 });
 
