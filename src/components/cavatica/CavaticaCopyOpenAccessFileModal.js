@@ -49,13 +49,16 @@ const CavaticaCopyOpenAccessFileModal = ({
         {...{
           handleSubmit: async () => {
             const fence = file.repository;
+            const latestDid = file.latest_did;
             try {
               if (!fence) {
                 throw new Error('This file has no repository information.');
+              } else if (!latestDid) {
+                throw new Error('This file has no "latest_did" property.');
               }
               await copyToProject({
                 selectedProject: selectedProjectData.id,
-                selectedFiles: { [fence]: [fileId] },
+                selectedFiles: { [fence]: [latestDid] },
               });
               setToast({
                 id: `${Date.now()}`,

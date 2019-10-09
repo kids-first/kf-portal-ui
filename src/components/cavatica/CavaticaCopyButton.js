@@ -38,11 +38,11 @@ const CavaticaButton = styled(BigWhiteButton)`
 `;
 
 export default compose(withTheme)(
-  ({ disabled, theme, text, buttonStyle, fileIds, sqon, hasFilePermission }) => (
+  ({ disabled, theme, text, buttonStyle, fileIds, sqon, hasFilePermission, file }) => (
     <CavaticaOpenModalWrapper
       fileIds={fileIds}
       sqon={sqon}
-      source={{ location: FILE_VIEW, hasAccess: hasFilePermission }}
+      source={{ location: FILE_VIEW, hasAccess: hasFilePermission, file }}
     >
       <CavaticaButton disabled={disabled} buttonStyle={buttonStyle}>
         <ButtonContent>

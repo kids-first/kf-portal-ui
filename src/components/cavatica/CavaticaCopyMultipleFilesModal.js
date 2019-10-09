@@ -97,7 +97,7 @@ const CavaticaCopyMultipleFilesModal = ({
           )}
         </ModalWarning>
       )}
-      {hasFenceConnection && isFilesSelected && (
+      {isFilesSelected && (
         <div className="content">
           <CavaticaFileSummary sqon={props.sqon} api={props.api} />
         </div>
