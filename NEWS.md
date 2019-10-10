@@ -1,14 +1,14 @@
 # Release notes for kf-portal-ui
 
-## 2019-09-25 kf-portal-ui 2.11.1
+## 2019-10-10 kf-portal-ui 2.11.1
 
 This release fixes major issues, most of these concern the public access files :
 
 ### Bug fixes
 - [#2088](https://github.com/kids-first/kf-portal-ui/issues/2088) File Repository : Analyze in Cavatica after opening entity page directly does not work
-- [#2090] (https://github.com/kids-first/kf-portal-ui/issues/2090) Cavatica: can't push open access files
-- [#2093] (https://github.com/kids-first/kf-portal-ui/issues/2093) Filter on value * for ACL is not working
-- [#2091] (https://github.com/kids-first/kf-portal-ui/issues/2091) Participant page: Do not repeat diagnoses and phenotypes that are not shared with other family members in the family table
+- [#2090](https://github.com/kids-first/kf-portal-ui/issues/2090) Cavatica: can't push open access files
+- [#2093](https://github.com/kids-first/kf-portal-ui/issues/2093) Filter on value * for ACL is not working
+- [#2091](https://github.com/kids-first/kf-portal-ui/issues/2091) Participant page: Do not repeat diagnoses and phenotypes that are not shared with other family members in the family table
 
 
 #### kids-first/kf-portal-ui
