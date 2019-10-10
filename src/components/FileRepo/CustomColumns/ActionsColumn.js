@@ -141,7 +141,6 @@ const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
           const acl = file.acl || [];
           const repository = file.repository;
           const hasAccess = acl.includes('*') || intersection(fenceAcls, acl).length > 0;
-          console.log('file ', file, 'data ', data); //==========================================================================TODO
           return (
             <Row center height={'100%'}>
               {loadingQuery ? (

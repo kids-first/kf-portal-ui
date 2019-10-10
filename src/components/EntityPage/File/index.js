@@ -46,6 +46,7 @@ import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
 import ShareButton from 'uikit/ShareButton';
 import { checkUserFilePermission } from 'services/fileAccessControl';
+import { FILE_VIEW } from 'common/constants';
 
 // file types
 const FILE_TYPE_BAM = 'bam';
@@ -320,6 +321,7 @@ const FileEntity = compose(withTheme)(
                   latest_did: data.latest_did,
                   repository: data.repository,
                 }}
+                sourceLocation={FILE_VIEW}
               />
               <Download
                 onSuccess={url => {

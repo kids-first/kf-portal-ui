@@ -110,12 +110,10 @@ const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => 
 export const getUserStudyPermission = async (
   api,
   fenceConnections,
-  {
-    sqon = {
-      op: 'and',
-      content: [],
-    },
-  } = {},
+  sqon = {
+    op: 'and',
+    content: [],
+  },
 ) => {
   const projects = _(fenceConnections)
     .values()

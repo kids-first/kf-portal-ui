@@ -111,6 +111,7 @@ const CavaticaProjects = ({
   setAddingProject,
   getGen3Ids,
   isLoadingProjects,
+  onSelectProject,
   ...props
 }) => {
   return (
@@ -146,7 +147,7 @@ const CavaticaProjects = ({
                     className={`projectOption ${selected ? 'selected' : ''}`}
                     onClick={() => {
                       setSelectedProject(project.id);
-                      props.onSelectProject(project);
+                      onSelectProject(project);
                     }}
                   >
                     <div className="checkSymbol">
