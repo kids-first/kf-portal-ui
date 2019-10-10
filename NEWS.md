@@ -1,6 +1,6 @@
 # Release notes for kf-portal-ui
 
-## 2019-09-25 kf-portal-ui 2.11.1
+## 2019-10-10 kf-portal-ui 2.11.1
 
 This release fixes major issues, most of these concern the public access files :
 
