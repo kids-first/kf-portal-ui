@@ -154,7 +154,7 @@ export default provideState({
         {
           [fence]: details,
         },
-        {},
+        undefined,
       )
         .then(({ acceptedStudiesAggs, unacceptedStudiesAggs }) =>
           effects.addFenceStudies(fence, {
@@ -162,7 +162,7 @@ export default provideState({
             unauthorizedStudies: unacceptedStudiesAggs,
           }),
         )
-        .catch(err => console.log(`Error fetching fence studies for '${fence}': ${err}`));
+        .catch(err => console.error(`Error fetching fence studies for '${fence}': ${err}`));
     },
   },
 });
