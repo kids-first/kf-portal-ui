@@ -107,18 +107,21 @@ const createUnacceptedFilesByUserStudySqon = projects => ({ studyId, sqon }) => 
   };
 };
 
-export const getUserStudyPermission = (api, fenceConnections) => async ({
+export const getUserStudyPermission = async (
+  api,
+  fenceConnections,
   sqon = {
     op: 'and',
     content: [],
   },
-} = {}) => {
+) => {
   const projects = _(fenceConnections)
     .values()
     .filter(fenceUser => _.isObject(fenceUser.projects))
     .map(({ projects }) => _.keys(projects))
     .flatten()
-    .value();
+    .value()
+    .concat('*');
 
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
@@ -192,7 +195,6 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
     //  but we still want to allow access to open access files.
     approvedAcls = [];
   }
-
   return graphql(api)({
     query: `query ($sqon: JSON) {
       file {
@@ -218,7 +220,6 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
   })
     .then(data => {
       const fileAcl = _.get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
-      console.log('fileAcl', fileAcl);
       return fileAcl.some(fileAcl => fileAcl === '*' || approvedAcls.includes(fileAcl));
     })
     .catch(err => {

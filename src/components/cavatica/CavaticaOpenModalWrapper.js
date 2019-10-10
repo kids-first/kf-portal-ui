@@ -4,7 +4,7 @@ import { injectState } from 'freactal';
 
 import { CAVATICA } from 'common/constants';
 import CavaticaConnectModal from './CavaticaConnectModal';
-import CavaticaCopyModal from './CavaticaCopyModal';
+import CavaticaCopyModalManager from './CavaticaCopyModalManager';
 
 const showConnectModal = ({ effects, props }) => {
   effects.setModal({
@@ -20,10 +20,11 @@ const showConnectModal = ({ effects, props }) => {
 };
 
 const showCopyModal = ({ effects, fileIds, sqon, props }) => {
+  const isPlural = fileIds && fileIds.length > 1;
   effects.setModal({
-    title: 'Copy Files to Cavatica Project',
+    title: `Copy File${isPlural ? 's' : ''} to Cavatica Project`,
     component: (
-      <CavaticaCopyModal
+      <CavaticaCopyModalManager
         onComplete={effects.unsetModal}
         onCancel={effects.unsetModal}
         fileIds={fileIds}
@@ -34,27 +35,35 @@ const showCopyModal = ({ effects, fileIds, sqon, props }) => {
   });
 };
 
-export default compose(injectState)(({ state, effects, children, fileIds, ...props }) => {
-  const connected = state.integrationTokens[CAVATICA];
-  const clickAction = connected ? showCopyModal : showConnectModal;
-  const sqon =
-    fileIds && fileIds.length > 0
-      ? {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: { field: 'kf_id', value: fileIds },
-            },
-          ],
-        }
-      : props.sqon;
-  return (
-    <div
-      onClick={() => clickAction({ effects, fileIds, sqon, props })}
-      style={{ cursor: 'pointer' }}
-    >
-      {children}
-    </div>
-  );
-});
+const CavaticaOpenModalWrapper = compose(injectState)(
+  ({ state, effects, children, fileIds, ...props }) => {
+    const connected = state.integrationTokens[CAVATICA];
+    const clickAction = connected ? showCopyModal : showConnectModal;
+    const sqon =
+      fileIds && fileIds.length > 0
+        ? {
+            op: 'and',
+            content: [
+              {
+                op: 'in',
+                content: { field: '_id', value: fileIds },
+              },
+            ],
+          }
+        : props.sqon;
+    return (
+      <div
+        onClick={() => clickAction({ effects, fileIds, sqon, props })}
+        style={{ cursor: 'pointer' }}
+      >
+        {children}
+      </div>
+    );
+  },
+);
+
+CavaticaOpenModalWrapper.defaultProps = {
+  source: {},
+};
+
+export default CavaticaOpenModalWrapper;

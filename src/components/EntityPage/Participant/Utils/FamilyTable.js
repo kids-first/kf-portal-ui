@@ -3,232 +3,253 @@ import { get, flatMap } from 'lodash';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';
-import { HPOLink, SNOMEDLink , MONDOLink,NCITLink} from '../../../Utils/DiagnosisAndPhenotypeLinks';
+import {
+  HPOLink,
+  SNOMEDLink,
+  MONDOLink,
+  NCITLink,
+} from '../../../Utils/DiagnosisAndPhenotypeLinks';
+import EntityContentSection from '../../EntityContent';
 
-/*
-Needs to be a class: we're using setState to display the table after the calls to graphql are done to populate the rows
- */
+const DXS_PHENOTYPES_HEADER_LABELS = [
+  'Diagnoses (Mondo)',
+  'Diagnoses (NCIT)',
+  'Phenotypes (HPO)',
+  'Phenotypes (SNOMED)',
+];
+
+const hasTableSharingDxOrPhenotypes = (finalRows = []) => {
+  return finalRows.some(r => r && DXS_PHENOTYPES_HEADER_LABELS.includes(r.leftfield));
+};
+
+const isParticipantSharingDxOrPheno = (row, restOfFamilyIds) => {
+  return restOfFamilyIds.some(memId => Boolean(row[memId]) && row[memId] !== '--');
+};
+
+const getParticipantId = (nodes = []) => {
+  const participant = nodes.find(e => e && e.relationship === '(this participant)');
+  // must always exists
+  return participant.kf_id;
+};
+
+const buildDefaultForMembers = (ids = [], defaultValue = '--') => {
+  return ids.reduce((acc, id) => {
+    return {
+      ...acc,
+      [id]: defaultValue,
+    };
+  }, {});
+};
+
+const baselineWithIds = ids => (leftfield, accessor = '', subheader = false, subaccessor = '') => {
+  return {
+    leftfield: leftfield,
+    subheader: subheader,
+    acc: accessor,
+    subacc: subaccessor,
+    ...buildDefaultForMembers(ids),
+  };
+};
+
+const buildPhenotypesRows = (famMemNodes = {}, ids) => {
+  const phHPO = {};
+  const phSNO = {};
+  famMemNodes.forEach(member => {
+    get(member, 'phenotype.hits.edges', []).forEach(ele => {
+      ele = ele.node;
+      const report = ele.observed ? 'Observed' : 'Not observed';
+      ['hpo', 'snomed'].forEach(partialKey => {
+        const term = ele.observed
+          ? ele[`${partialKey}_phenotype_observed`]
+          : ele[`${partialKey}_phenotype_not_observed`];
+        const toFill = partialKey === 'hpo' ? phHPO : phSNO;
+        if (term) {
+          if (!(term in toFill)) {
+            const parentHeaderId =
+              partialKey === 'hpo' ? 'Phenotypes (HPO)' : 'Phenotypes (SNOMED)';
+            toFill[term] = { ...baselineWithIds(ids)(term), parentHeaderId };
+          }
+          toFill[term][member.kf_id] = report;
+        }
+      });
+    });
+  });
+  return {
+    phHPO,
+    phSNO,
+  };
+};
+
+const makeCell = wrapper => {
+  if (wrapper.row._original.subheader === 'true') {
+    if (wrapper.column.Header === '')
+      return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
+  } else {
+    const value = wrapper.value;
+
+    if (/^.*SNOMEDCT:\d+$/.test(value)) return <SNOMEDLink snomed={value} />;
+    else if (/^.*\(HP:\d+\)$/.test(value)) return <HPOLink hpo={value} />;
+    else if (/^.*\(MONDO:\d+\)$/.test(value)) return <MONDOLink mondo={value} />;
+    else if (/^.*\(NCIT:.\d+\)$/.test(value)) return <NCITLink ncit={value} />;
+    else return <div style={{ textTransform: 'capitalize' }}>{value}</div>;
+  }
+
+  return '';
+};
+
 class FamilyTable extends React.Component {
-  constructor(props) {
-    super(props);
-
-    const participant = props.participant;
-    participant.relationship = "(this participant)";
-
-    const compNode = get(participant, 'family.family_compositions.hits.edges[0].node');
-    this.composition = compNode.composition;
-
-    this.famMembersNodes = [participant].concat(get(compNode, 'family_members.hits.edges', []).map(ele => ele.node))
-
-    this.heads = this.buildHeads(this.famMembersNodes);
-    this.rows = this.buildRows(this.famMembersNodes);
-  }
-
   buildHeads(famMembersNodes) {
-    function makeCell(wrapper) {
-      if (wrapper.row._original.subheader === 'true') {
-        if (wrapper.column.Header === '') return <div style={{ fontWeight: 'bold', color: '#404c9a' }}>{wrapper.value}</div>;
-      } else {
-        const value = wrapper.value;
+    return [{ Header: '', accessor: 'leftfield', Cell: makeCell }].concat(
+      famMembersNodes.map(node => {
+        const kf_id = node.kf_id;
 
-        if(/^.*SNOMEDCT:\d+$/.test(value)) return <SNOMEDLink snomed={value}/>;
-        else if(/^.*\(HP:\d+\)$/.test(value)) return <HPOLink hpo={value}/>;
-        else if(/^.*\(MONDO:\d+\)$/.test(value)) return <MONDOLink mondo={value}/>;
-        else if(/^.*\(NCIT:.\d+\)$/.test(value)) return <NCITLink ncit={value}/>;
-        else return <div style={{ textTransform: 'capitalize' }}>{value}</div>;
-      }
-
-      return '';
-    }
-
-    return [{ Header: '', accessor: 'leftfield', Cell: makeCell }].concat(famMembersNodes.map(node => {
-      const kf_id = node.kf_id;
-
-      return {
-        Header:
-          (famMembersNodes[0].kf_id === kf_id  //if it's the current participant
-            ? (
-                <div style={{ textAlign: 'center' }} >
-                  <div>{kf_id}</div>
-                  <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
-                </div>
-              )
-            : (
-                <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
-                  <div>{kf_id}</div>
-                  <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
-                </Link>
-              )
-          ),
-        accessor: kf_id,
-        Cell: makeCell,
-      }
-    }))
+        return {
+          Header:
+            famMembersNodes[0].kf_id === kf_id ? (
+              <div style={{ textAlign: 'center' }}>
+                <div>{kf_id}</div>
+                <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
+              </div>
+            ) : (
+              <Link style={{ textAlign: 'center' }} to={'/participant/' + kf_id + '#summary'}>
+                <div>{kf_id}</div>
+                <div style={{ textTransform: 'capitalize' }}>{node.relationship}</div>
+              </Link>
+            ),
+          accessor: kf_id,
+          Cell: makeCell,
+        };
+      }),
+    );
   }
 
-  /*
-  Logically part of the constructor, but does a very precise task: build the rows and headers for the table.
-
-  This is essentially a SQL pivot in JS. We're simplifying the logic by a TON by using a "baseline-accessor-subaccessor"
-  logic.
-
-  What we're doing is creating the rows with basic values. We're specifying the name of those rows, and how they access
-  their corresponding data in the member.
-
-  If the accessed data isn't an array: cool! We're done, just add the value of
-  that data to the colomn of that.
-
-  If the accessed data is an array: we have a problem. We just want values, not arrays of values. So we'll start by
-  accessing the right element in that array by using the row's subaccessor. Then, we'll look in our rows to see if
-  there's one that has the same row name as that subaccessor. (Example: we're asking for the mondo diagnosis. This is a
-  field in the array accessed by diagnoses. => member.diagnoses returns an array => access mondo diagnosis => look for a
-  row called mondo diagnosis.) If we can't find said row, we're creating a new one and inserting it right after the row
-  that created that search (here, diagnoses).
-
-  After all that, the rows are directly ready to use in one pass, and we're directly putting them in our
-  ParticipantDataTable.
-  */
   buildRows(famMembersNodes) {
-
-    /**
-     * Makes a baseline row.
-     *
-     * @param leftfield Its left field
-     * @param accessor Its accessor
-     * @param subheader Is it a subheader?
-     * @param subaccessor Subaccessor for array items
-     * @returns {{leftfield: *, subheader: boolean}}
-     */
     const allIDs = famMembersNodes.map(m => m.kf_id);
-    function baseline(leftfield, accessor = '', subheader = false, subaccessor = '') {
-      const temp = {
-        leftfield: leftfield,
-        subheader: subheader,
-        acc: accessor,
-        subacc: subaccessor,
-      };
-
-      allIDs.forEach(id => (temp[id] = '--'));
-
-      return temp;
-    }
-
+    const baseline = baselineWithIds(allIDs);
     let rows = [
       baseline('Generic Information', '', true),
       baseline('Proband', 'is_proband'),
       baseline('Vital Status', 'outcome.vital_status'),
       baseline('Gender', 'gender'),
-      baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
-      baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
+      {
+        ...baseline('Diagnoses (Mondo)', 'diagnoses.hits.edges', true, 'mondo_id_diagnosis'),
+        headerId: 'Diagnoses (Mondo)',
+      },
+      {
+        ...baseline('Diagnoses (NCIT)', 'diagnoses.hits.edges', true, 'ncit_id_diagnosis'),
+        headerId: 'Diagnoses (NCIT)',
+      },
     ];
 
-    rows = famMembersNodes.reduce( (rows, node) => {  //reduce the family members into rows of a table
+    rows = famMembersNodes.reduce((accRows, node) => {
       const kf_id = node.kf_id;
-      return flatMap(rows, currentRow => {  //map the rows into more rows, splicing in new rows as needed with flatMap's unpacking
-        const accessorItem = get(node, currentRow.acc, null);   //the item at the accessor
+      return flatMap(accRows, currentRow => {
+        if (currentRow.acc === '') return currentRow;
+        const accessorItem = get(node, currentRow.acc, null);
+        if (Array.isArray(accessorItem)) {
+          return [currentRow].concat(
+            accessorItem
+              .map(a => get(a.node, currentRow.subacc, null))
+              .reduce((acc, name) => {
+                //reduce the accessed array into new rows
+                let subRow = accRows.find(ele => ele.leftfield === name);
+                if (!subRow) {
+                  if (['Diagnoses (Mondo)', 'Diagnoses (NCIT)'].includes(currentRow.headerId)) {
+                    subRow = {
+                      ...baseline(name),
+                      parentHeaderId: currentRow.headerId,
+                    };
+                  } else {
+                    subRow = baseline(name);
+                  }
 
-        if(currentRow.acc === "") return currentRow; //if the accessor of the row is empty, nothing to do
-        else if(Array.isArray(accessorItem)) { //if the item is an array, then we'll have to extract some subaccessors from the array items
-
-          //we return an array when we want to splice our values at this index: since we're using flatMap, it'll unpack them in the right positions for us!
-          //if the value we want to splice in is an empty array, no biggie, it will be unpacked into, well, nothing
-          return [currentRow].concat(accessorItem.map(a => get(a.node, currentRow.subacc, null)).reduce( (acc, name) => {   //reduce the accessed array into new rows
-            let subRow = rows.find( (ele) => ele.leftfield === name); //let's try to see if the value is already in there.
-
-            if(subRow) subRow[kf_id] = "reported";  //if it is, great, let's just mutate it.
-            else {
-
-              subRow = baseline(name);  //if it's not, we have to make a new row,
-              subRow[kf_id] = "reported"; //add the reported value
-              acc.push(subRow); //push that new row to the accumulator
-            }
-            return acc; //in any case, we have to return the acc.
-          }, []));
-
-        } else {  //if the item is not an array, we can just plug its value into the current row
+                  subRow[kf_id] = 'reported';
+                  acc.push(subRow);
+                }
+                return acc;
+              }, []),
+          );
+        } else {
           currentRow[kf_id] = accessorItem;
           return currentRow;
         }
       });
     }, rows);
 
-    const phHPO = {};
-    const phSNO = {};
+    const { phHPO, phSNO } = buildPhenotypesRows(famMembersNodes, allIDs);
 
-    famMembersNodes.forEach( member => {
-      get(member, "phenotype.hits.edges", null).forEach( ele => {
-        ele = ele.node;
+    rows = rows
+      .concat([{ ...baseline('Phenotypes (HPO)', '', true), headerId: 'Phenotypes (HPO)' }])
+      .concat(Object.values(phHPO))
+      .concat([
+        {
+          ...baseline('Phenotypes (SNOMED)', '', true),
+          headerId: 'Phenotypes (SNOMED)',
+        },
+      ])
+      .concat(Object.values(phSNO));
 
-        const report = ele.observed ? "Observed" : "Not observed";
+    const participantId = getParticipantId(famMembersNodes);
+    const famMembersIds = allIDs.filter(id => id !== participantId);
 
-        let hpo;
-        let snomed;
-
-        if(ele.observed === true) {
-          hpo = ele.hpo_phenotype_observed;
-          snomed = ele.snomed_phenotype_observed;
-        } else {
-          hpo = ele.hpo_phenotype_not_observed;
-          snomed = ele.snomed_phenotype_not_observed
-        }
-
-        if(hpo !== null) {
-          if(hpo in phHPO) {
-            phHPO[hpo][member.kf_id] = report;
-          } else {
-            phHPO[hpo] = baseline(hpo);
-            phHPO[hpo][member.kf_id] = report;
-          }
-        }
-
-        if(snomed !== null) {
-          if(snomed in phSNO) {
-            phSNO[snomed][member.kf_id] = report;
-          } else {
-            phSNO[snomed] = baseline(snomed);
-            phSNO[snomed][member.kf_id] = report;
-          }
-        }
-      })
+    const rowsRemovedOfNotSharingRows = rows.filter(r => {
+      if (!r.subheader && DXS_PHENOTYPES_HEADER_LABELS.includes(r.parentHeaderId)) {
+        const partcipantDx = r[participantId] || '--';
+        return partcipantDx !== '--' && isParticipantSharingDxOrPheno(r, famMembersIds);
+      }
+      return true;
     });
 
-    rows = rows.concat(
-      [baseline('Phenotypes (HPO)', '', true)]
-    ).concat(
-      Object.values(phHPO)
-    ).concat(
-      [baseline('Phenotypes (SNOMED)', '', true)]
-    ).concat(
-      Object.values(phSNO)
-    );
-
-    rows = rows.reduce((acc, row, i) => { //removes empty rows
-      if(row.subheader === true) {
-        const hasContent = ((i+1) >= rows.length) ? false : (rows[i + 1].subheader === false);
-        if (!hasContent) return acc;
+    rows = rowsRemovedOfNotSharingRows.filter((row, i) => {
+      //removes empty rows
+      if (row.subheader) {
+        const hasContent =
+          i + 1 >= rowsRemovedOfNotSharingRows.length
+            ? false
+            : !rowsRemovedOfNotSharingRows[i + 1].subheader;
+        if (!hasContent) {
+          return false;
+        }
       }
 
-      if(row.leftfield === "--" || row.leftfield === null || row.leftfield === undefined) return acc;
-
-      acc.push(row);
-      return acc;
-    }, []);
+      if (!row.leftfield || row.leftfield === '--') {
+        return false;
+      }
+      return true;
+    });
 
     return rows;
   }
 
   render() {
-    const composition = this.composition;
+    const { participant } = this.props;
+    const enhancedParticipant = { ...participant, relationship: '(this participant)' };
 
-    if (composition === 'proband-only') return (
-      <div>
-        <span style={{ textTransform: 'capitalize' }}>{composition}</span>; no recorded family
-      </div>
+    const compNode = get(enhancedParticipant, 'family.family_compositions.hits.edges[0].node', {});
+    const composition = compNode.composition;
+
+    if (composition === 'proband-only') {
+      return null;
+    }
+
+    const famMembersNodes = [enhancedParticipant].concat(
+      get(compNode, 'family_members.hits.edges', []).map(ele => ele.node),
     );
 
-    else return (
-      <ParticipantDataTable columns={this.heads} data={sanitize(this.rows)} />
-    );
+    const builtRows = this.buildRows(famMembersNodes);
+
+    if (hasTableSharingDxOrPhenotypes(builtRows)) {
+      //<EntityContentSection/> is added here because it's possible that the table renders nothing and there is no easy way for the parent to know about it.
+      return (
+        <EntityContentSection title={`Family Members (${participant.family_id})`}>
+          <ParticipantDataTable
+            columns={this.buildHeads(famMembersNodes)}
+            data={sanitize(builtRows)}
+          />
+        </EntityContentSection>
+      );
+    }
+    return null;
   }
 }
 
