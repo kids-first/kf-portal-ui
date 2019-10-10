@@ -9,7 +9,7 @@ import {
   MONDOLink,
   NCITLink,
 } from '../../../Utils/DiagnosisAndPhenotypeLinks';
-import EntityContentSection from '../../EntityContent';
+import EntityContentSection from '../../EntityContentSection';
 
 const DXS_PHENOTYPES_HEADER_LABELS = [
   'Diagnoses (Mondo)',
