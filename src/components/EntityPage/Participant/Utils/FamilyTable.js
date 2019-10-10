@@ -9,7 +9,7 @@ import {
   MONDOLink,
   NCITLink,
 } from '../../../Utils/DiagnosisAndPhenotypeLinks';
-import EntityContentSection from '../../EntityContent';
+import EntityContentSection from '../../EntityContentSection';
 
 const DXS_PHENOTYPES_HEADER_LABELS = [
   'Diagnoses (Mondo)',
@@ -241,7 +241,9 @@ class FamilyTable extends React.Component {
     if (hasTableSharingDxOrPhenotypes(builtRows)) {
       //<EntityContentSection/> is added here because it's possible that the table renders nothing and there is no easy way for the parent to know about it.
       return (
-        <EntityContentSection title={`Family Members (${participant.family_id})`}>
+        <EntityContentSection
+          title={`Participant's phenotypes/diagnoses shared with other family's members`}
+        >
           <ParticipantDataTable
             columns={this.buildHeads(famMembersNodes)}
             data={sanitize(builtRows)}

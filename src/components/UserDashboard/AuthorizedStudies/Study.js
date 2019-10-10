@@ -43,39 +43,39 @@ const Study = ({
   consentCodes = [],
   total,
   authorized,
-  onStudyAuthorizedClick = () => {},
-  onStudyTotalClick = () => {},
+  onStudyAuthorizedClick = () => { },
+  onStudyTotalClick = () => { },
 }) => (
-  <StudyCol>
-    <Row justifyContent="space-between" pl={0}>
-      <Name>{name}</Name>
-      <StudyCount>
-        Authorized:{' '}
-        <NumberLink
-          onClick={() => {
-            onStudyAuthorizedClick(studyId, 'NumberLink');
-          }}
-          hasExternalIcon={false}
-        >
-          {authorized.toLocaleString()}
-        </NumberLink>
-        {' / '}
-        <NumberLink onClick={onStudyTotalClick} hasExternalIcon={false}>
-          {total.toLocaleString()}
-        </NumberLink>{' '}
-        files
+    <StudyCol>
+      <Row justifyContent="space-between" pl={0}>
+        <Name>{name}</Name>
+        <StudyCount>
+          Authorized:{' '}
+          <NumberLink
+            onClick={() => {
+              onStudyAuthorizedClick(studyId, 'NumberLink');
+            }}
+            hasExternalIcon={false}
+          >
+            {authorized.toLocaleString()}
+          </NumberLink>
+          {' / '}
+          <NumberLink onClick={onStudyTotalClick} hasExternalIcon={false}>
+            {total.toLocaleString()}
+          </NumberLink>{' '}
+          files
       </StudyCount>
-    </Row>
-    <Codes>Consent Codes: {consentCodes.join(', ')}</Codes>
-    <ProgressBar
-      analyticsTracking={{ category: `Authorized Studies`, label: `studyId: ${studyId}` }}
-      onClick={() => {
-        onStudyAuthorizedClick(studyId, 'ProgressBar');
-      }}
-      percent={(authorized / total) * 100}
-      height={10}
-    />
-  </StudyCol>
-);
+      </Row>
+      <Codes>Data Use Groups: {consentCodes.concat('Open Access').join(', ')}</Codes>
+      <ProgressBar
+        analyticsTracking={{ category: `Authorized Studies`, label: `studyId: ${studyId}` }}
+        onClick={() => {
+          onStudyAuthorizedClick(studyId, 'ProgressBar');
+        }}
+        percent={(authorized / total) * 100}
+        height={10}
+      />
+    </StudyCol>
+  );
 
 export default Study;
