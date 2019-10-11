@@ -19,6 +19,25 @@ import Input from 'uikit/Input';
 import styled from 'react-emotion';
 import ExternalLink from 'uikit/ExternalLink';
 import { gen3WebRoot } from 'common/injectGlobals';
+import { Link } from 'react-router-dom';
+import IntegrationTableItem from './UserIntegrations/IntegrationTableItem';
+
+import PrivacyIcon from 'react-icons/lib/fa/lock';
+import PublicIcon from 'react-icons/lib/fa/unlock';
+import { ConnectButtonWrapper } from './UserIntegrations/ui';
+
+const PrivacyToggle = ({ onClick, checked }) => {
+  return (
+    <ConnectButtonWrapper
+      maxWidth={160}
+      onClick={() => {
+        onClick(!checked);
+      }}
+    >
+      <div>{checked ? 'Make Private' : 'Make Public'}</div>
+    </ConnectButtonWrapper>
+  );
+};
 
 const CardBody = styled('div')`
   margin: -15px 0 15px 0;
@@ -33,8 +52,9 @@ export default compose(
   withApi,
   withState('mode', 'setMode', 'account'),
   fenceConnectionInitializeHoc,
-)(({ profile, submit, mode, setMode, state: { loginProvider }, ...props }) => (
+)(({ profile, submit, state: { loginProvider } }) => (
   <Box style={{ maxWidth: 1050 }} pr={4} pl={0} pt="8px">
+    {console.log('profile ', profile) /* =====TODO ===== */}
     <SettingsSection>
       <CardHeader mb="43px">
         <Trans>Settings</Trans>
@@ -49,7 +69,45 @@ export default compose(
         </Row>
       </Column>
     </SettingsSection>
-
+    <SettingsSection>
+      <CardHeader mt="22px" mb="31px">
+        <Trans>Privacy</Trans>
+      </CardHeader>
+      <CardBody>
+        When your profile is public, other logged-in Kids First members (and potential contributors)
+        will be able to find your profile in searches. If your profile is private, you will be
+        private and unsearchable to others.
+      </CardBody>
+      <IntegrationTable>
+        <IntegrationTableItem
+          connected={false}
+          //https://www.materialpalette.com/icons
+          logo={profile.isPublic ? <PublicIcon size={30} /> : <PrivacyIcon size={30} />}
+          description={
+            <span style={{ width: '100%' }}>
+              You profile is currently <b>{`${profile.isPublic ? 'public' : 'private'}`}</b>.
+              {profile.isPublic ? (
+                <span>
+                  {' '}
+                  Click <Link to={'/user/' + profile._id}>here</Link> to view your public profile.
+                </span>
+              ) : (
+                ''
+              )}
+            </span>
+          }
+          actions={
+            <PrivacyToggle
+              checked={profile.isPublic}
+              onClick={checked => {
+                profile.isPublic = checked;
+                submit(profile);
+              }}
+            />
+          }
+        />
+      </IntegrationTable>
+    </SettingsSection>
     <SettingsSection>
       <CardHeader mt="22px" mb="31px">
         <Trans>Data Repository Integrations</Trans>

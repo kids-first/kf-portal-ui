@@ -33,7 +33,7 @@ const Table = styled('table')`
 export default ({ children, ...props }) => {
   return (
     <UserIntegrationsWrapper {...props}>
-      <Table>
+      <Table style={{ width: '100%' }}>
         <tbody>{children}</tbody>
       </Table>
     </UserIntegrationsWrapper>

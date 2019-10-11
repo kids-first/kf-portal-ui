@@ -35,6 +35,7 @@ const DEFAULT_FIELDS = `
   acceptedKfOptIn
   acceptedNihOptIn
   acceptedDatasetSubscriptionKfOptIn
+  isPublic
   sets {
     name
     size
