@@ -1,26 +1,52 @@
 import { Col, List, Row } from 'antd';
 import React from 'react';
-import { find, trim } from 'lodash';
+import { find } from 'lodash';
 import { ROLES } from 'common/constants';
 import { MemberImage } from 'components/MemberSearchPage/ui';
-import md5 from 'md5';
 
 const userRoleDisplayName = (userRole) => find(ROLES, { type: userRole }).displayName;
 
+const regex = /<\/?em>/gi;
+const regex2 = /<\/?em>.+<\/?em>/gi;
+
+
 const formatLabel = (label, value) => {
   if (!value) {
+    console.log("null");
     return label;
   }
-  return (<span>
-    { label.split(value)
-      .reduce((prev, current, i) => {
-        if (!i) {
-          return [current];
-        }
-        return prev.concat(<b key={value + current}>{ value }</b>, current);
-      }, [])
+  const arr = value.split(regex);
+
+  if(arr.length < 3) {
+    console.log("33333333");
+    return label
+  }
+
+  return(
+      <div>{arr[0]}<b>{arr[1]}</b>{arr[2]}</div>
+  )
+};
+
+const address = (item) => {
+  return(
+    <span>
+      <text>{item.highlights.city ? formatLabel(item.city, item.highlights.city[0]) : item.city} {item.highlights.state ? formatLabel(item.state, item.highlights.state[0]) : item.highlights.state } {item.highlights.country ? formatLabel(item.country, item.highlights.country[0]) : item.country}</text>
+    </span>
+  )
+};
+
+const interestFormat = (interest, highlights) => {
+  if (!highlights) {
+    return interest;
+  }
+
+  for(const h of highlights){
+    if(interest === h.replace(regex, '')){
+      return (<span>{formatLabel(interest, h)}</span>);
     }
-  </span>);
+  }
+
+  return interest;
 };
 
 const MemberTable = (props) => {
@@ -61,15 +87,17 @@ const MemberTable = (props) => {
                 </Row>
               </Col>
               <Col span={18}>
-                <div>{formatLabel(item.firstName, 'Ad')}</div>
-                <a>{(item.title ? item.title.toUpperCase() + ' ' : '') + formatLabel(item.firstName, 'Ad')+ ' ' + item.lastName}</a>
-                <div>Address: {[item.city, item.state, item.country].filter(Boolean).join(", ")}</div>
-                <div>Research Interests: {item.interests.join(", ")}</div>
+                <div>
+                  <a>
+                    {(item.title ? item.title.toUpperCase() + ' ' : '')} {item.highlights.firstName ? formatLabel(item.firstName, item.highlights.firstName[0]) : item.firstName} {item.highlights.lastName ? formatLabel(item.lastName, item.highlights.lastName[0]) : item.lastName}
+                  </a>
+                </div>
+                {address(item)}
+                {item.interests.map(interest => interestFormat(interest, item.highlights.interests))}
               </Col>
             </Row>
           </List.Item>
         )}
-
       />
     </div>
   );
