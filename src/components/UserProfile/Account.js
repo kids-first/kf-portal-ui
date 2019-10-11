@@ -54,7 +54,6 @@ export default compose(
   fenceConnectionInitializeHoc,
 )(({ profile, submit, state: { loginProvider } }) => (
   <Box style={{ maxWidth: 1050 }} pr={4} pl={0} pt="8px">
-    {console.log('profile ', profile) /* =====TODO ===== */}
     <SettingsSection>
       <CardHeader mb="43px">
         <Trans>Settings</Trans>
