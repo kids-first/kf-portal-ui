@@ -20,6 +20,9 @@ const ConnectButtonWrapper = styled(ActionButton)`
   font-size: 14px;
   background: ${({ theme }) => theme.lightBlue};
 `;
+
+export { ConnectButtonWrapper };
+
 const ExternalLink = applyDefaultStyles(ExternalLinkIcon);
 const RightArrow = applyDefaultStyles(RightIcon);
 
