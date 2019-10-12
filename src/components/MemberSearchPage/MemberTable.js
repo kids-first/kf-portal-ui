@@ -7,30 +7,39 @@ import { MemberImage } from 'components/MemberSearchPage/ui';
 const userRoleDisplayName = (userRole) => find(ROLES, { type: userRole }).displayName;
 
 const regex = /<\/?em>/gi;
-const regex2 = /<\/?em>.+<\/?em>/gi;
 
-
-const formatLabel = (label, value) => {
-  if (!value) {
-    console.log("null");
-    return label;
+/**
+ * Formats a text value. Returns the same text value
+ * with a portion of the text in bold.
+ * @param {String}    value           Text to be formatted (ex. "xx abc yy")
+ * @param {[String]}  highLightValues Array of highlighted texts
+ * (ex. ["...", "xx <em>abc</em> yy", ".."]
+ * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
+ */
+const formatLabel = (value, highLightValues) => {
+  if (!highLightValues) {
+    return <div>{value}</div>;
   }
-  const arr = value.split(regex);
+  for(const h of highLightValues){
+    if(value === h.replace(regex, '')){
+      const arr = h.split(regex);
+      if(arr.length >= 3) {
+        const [first, second, third] = arr;
 
-  if(arr.length < 3) {
-    console.log("33333333");
-    return label
+        return(
+          <div>{first}<b>{second}</b>{third}</div>
+        )
+      }
+    }
   }
 
-  return(
-      <div>{arr[0]}<b>{arr[1]}</b>{arr[2]}</div>
-  )
+  return <div>{value}</div>
 };
 
 const address = (item) => {
   return(
     <span>
-      <text>{item.highlights.city ? formatLabel(item.city, item.highlights.city[0]) : item.city} {item.highlights.state ? formatLabel(item.state, item.highlights.state[0]) : item.highlights.state } {item.highlights.country ? formatLabel(item.country, item.highlights.country[0]) : item.country}</text>
+      {formatLabel(item.city, item.highlights.city)} {formatLabel(item.state, item.highlights.state)} {formatLabel(item.country, item.highlights.country)}
     </span>
   )
 };
@@ -89,11 +98,13 @@ const MemberTable = (props) => {
               <Col span={18}>
                 <div>
                   <a>
-                    {(item.title ? item.title.toUpperCase() + ' ' : '')} {item.highlights.firstName ? formatLabel(item.firstName, item.highlights.firstName[0]) : item.firstName} {item.highlights.lastName ? formatLabel(item.lastName, item.highlights.lastName[0]) : item.lastName}
+                    <span>
+                      {(item.title ? item.title.toUpperCase() + ' ' : '')} {formatLabel(item.firstName, item.highlights.firstName)} {formatLabel(item.lastName, item.highlights.lastName)}
+                    </span>
                   </a>
                 </div>
                 {address(item)}
-                {item.interests.map(interest => interestFormat(interest, item.highlights.interests))}
+                {item.interests.map(interest => formatLabel(interest, item.highlights.interests))}
               </Col>
             </Row>
           </List.Item>
