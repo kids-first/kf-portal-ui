@@ -24,7 +24,7 @@ const AuthorizedStudies = compose(
   withApi,
   injectState,
   withTheme,
-  fenceConnectionInitializeHoc,
+  fenceConnectionInitializeHoc
 )(
   ({
     state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
@@ -70,8 +70,8 @@ const AuthorizedStudies = compose(
             />
           </Fragment>
         ) : (
-          <StudiesConnected />
-        )}
+              <StudiesConnected />
+            )}
       </DashboardCard>
     );
   },
