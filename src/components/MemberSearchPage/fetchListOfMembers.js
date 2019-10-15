@@ -1,6 +1,5 @@
 import { fetchMatchingListOfMembers, receiveMatchingListOfMembers, requestError } from './actions';
 import { searchMembers } from 'services/members/search';
-import { receiveTotalMemberCount } from 'components/MemberSearchPage/actions';
 
 const fetchListOfMembers = (searchInput = '', searchParams) => {
   return async dispatch => {
@@ -10,8 +9,7 @@ const fetchListOfMembers = (searchInput = '', searchParams) => {
       if (response.err) {
         throw response.err;
       }
-      dispatch(receiveMatchingListOfMembers(response.publicMembers));
-      dispatch(receiveTotalMemberCount(response.totalMemberCount));
+      dispatch(receiveMatchingListOfMembers(response));
     } catch (err) {
       dispatch(requestError(err));
     }

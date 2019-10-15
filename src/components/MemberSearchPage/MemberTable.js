@@ -14,11 +14,12 @@ const regex = /<\/?em>/gi;
  * @param {String}    value           Text to be formatted (ex. "xx abc yy")
  * @param {[String]}  highLightValues Array of highlighted texts
  * (ex. ["...", "xx <em>abc</em> yy", ".."]
+ * @param index
  * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
  */
-const formatLabel = (value, highLightValues) => {
+const formatLabel = (value, highLightValues, index = 0) => {
   if (!highLightValues) {
-    return <div>{value}</div>;
+    return <div key={index} style={{paddingRight: 5}}>{value}</div>;
   }
   for(const h of highLightValues){
     if(value === h.replace(regex, '')){
@@ -27,44 +28,39 @@ const formatLabel = (value, highLightValues) => {
         const [first, second, third] = arr;
 
         return(
-          <div>{first}<b>{second}</b>{third}</div>
+          <div key = {index} style={{paddingRight: 5}}>{first}<b>{second}</b>{third}</div>
         )
       }
     }
   }
 
-  return <div>{value}</div>
+  return <div key={index} style={{paddingRight: 5}}>{value}</div>
 };
 
 const address = (item) => {
   return(
-    <span>
-      {formatLabel(item.city, item.highlights.city)} {formatLabel(item.state, item.highlights.state)} {formatLabel(item.country, item.highlights.country)}
-    </span>
+    <div style={{display: 'flex'}}>
+      {formatLabel(item.city, item.highlights.city, 1)} {formatLabel(item.state, item.highlights.state, 2)} {formatLabel(item.country, item.highlights.country, 3)}
+    </div>
   )
 };
 
-const interestFormat = (interest, highlights) => {
-  if (!highlights) {
-    return interest;
-  }
-
-  for(const h of highlights){
-    if(interest === h.replace(regex, '')){
-      return (<span>{formatLabel(interest, h)}</span>);
-    }
-  }
-
-  return interest;
+const divStyle = {
+  marginTop: '20px',
+  marginBottom: '20px',
+  border: '2px solid lightgrey',
+  borderRadius: '5px'
 };
 
 const MemberTable = (props) => {
+  const firstItem = props.currentPage * props.membersPerPage - props.membersPerPage + 1;
+  const lastItem = props.currentPage * props.membersPerPage;
   return (
-    <div>
+    <div style={divStyle}>
       <List
         itemLayout={"vertical"}
         header={
-          `Showing 1-10 of ${props.memberList.length} (${props.totalCount} members matching)`
+          `Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${props.count.public} (${props.count.total} members matching)`
         }
 
         pagination={{
@@ -72,39 +68,37 @@ const MemberTable = (props) => {
           showSizeChanger: true,
           pageSizeOptions: ['10', '20', '50'],
           defaultCurrent: 1,
-          // current: props.currentPage,
-          total: 80, //TODO
-          // pageSize: props.membersPerPage,
+          current: props.currentPage,
+          total: props.count.public,
+          pageSize: props.membersPerPage,
           onChange: props.handlePageChange,
           onShowSizeChange: props.handleShowSizeChange,
         }}
 
+        style={{margin:20}}
+
         dataSource={props.memberList}
-        // loading={true}
+        loading={props.pending}
 
         renderItem={item => (
-          <List.Item key={item.title}>
-            <Row>
-              <Col span={6}>
-                <Row type="flex" justify="space-around" align="middle"  >
-                  <Col span={6}>
-                    <MemberImage email={item.email || ''} d={"mp"}/>
-                  </Col>
-                  <Col span={18}>
-                    <div style={{alignContent:'center', alignItems:'center'}}>{item.roles[0] ? userRoleDisplayName(item.roles[0]) : "NO ROLE"}</div>
-                  </Col>
-                </Row>
+          <List.Item key={item.key}>
+            <Row type="flex" justify="space-around" align="middle" gutter={10}>
+              <Col xxl={2} xl={3} lg={3} md={3} sm={4}>
+                <MemberImage email={item.email || ''} d={"mp"}/>
               </Col>
-              <Col span={18}>
-                <div>
-                  <a>
-                    <span>
-                      {(item.title ? item.title.toUpperCase() + ' ' : '')} {formatLabel(item.firstName, item.highlights.firstName)} {formatLabel(item.lastName, item.highlights.lastName)}
-                    </span>
-                  </a>
-                </div>
+              <Col xxl={4} xl={6} lg={6} md={6} sm={8}>
+                <div style={{alignContent:'center', alignItems:'center'}}>{item.roles[0] ? userRoleDisplayName(item.roles[0]) : "NO ROLE"}</div>
+              </Col>
+              <Col xxl={18} xl={15} lg={15} md={15} sm={12}>
+                <a>
+                  <div style={{display: 'flex'}}>
+                    {item.title ? <div key={0} style={{paddingRight: 5}}>{item.title.toUpperCase()}</div>  : ''}
+                    {formatLabel(item.firstName, item.highlights.firstName, 1)}
+                    {formatLabel(item.lastName, item.highlights.lastName, 2)}
+                  </div>
+                </a>
                 {address(item)}
-                {item.interests.map(interest => formatLabel(interest, item.highlights.interests))}
+                <div style={{display: 'flex', alignItems: 'baseline', flexWrap: 'wrap'}}>{item.interests.map((interest, index) => formatLabel(interest, item.highlights.interests, index))}</div>
               </Col>
             </Row>
           </List.Item>

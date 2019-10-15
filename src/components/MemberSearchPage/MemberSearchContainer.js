@@ -26,6 +26,7 @@ class MemberSearchContainer extends Component {
       queryString: '',
       currentPage: 1,
       membersPerPage: 10,
+      listHasLoaded: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -49,6 +50,7 @@ class MemberSearchContainer extends Component {
   }; //FIXME
 
   componentDidMount() {
+    this.setState({listHasLoaded: true});
     const {fetchListOfMembers} = this.props;
     fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
   };//FIXME
@@ -73,26 +75,27 @@ class MemberSearchContainer extends Component {
   render() {
     //FIXME
     const memberList = this.props.members.map(row => ({
-      key: row[0]._id,
-      firstName: row[0].firstName,
-      lastName: row[0].lastName,
-      email: row[0].email,
-      city: row[0].city,
-      state: row[0].state,
-      country: row[0].country,
-      title: row[0].title,
-      interests: row[0].interests,
-      institution: row[0].institution,
-      roles: row[0].roles,
-      highlights: row[1].highlight,
+      key: row._id,
+      firstName: row.firstName,
+      lastName: row.lastName,
+      email: row.email,
+      city: row.city,
+      state: row.state,
+      country: row.country,
+      title: row.title,
+      interests: row.interests,
+      institution: row.institution,
+      roles: row.roles,
+      highlights: row.highlight,
     }));
+    const memberCount = this.props.count;
     return (
       <div id={"grid-container"}>
         <Row>
-          <Col span={8}>
+          <Col span={6}>
             TODO add table
           </Col>
-          <Col span={16}>
+          <Col span={18}>
             <Input
               style={{borderRadius: 30}}
               onChange={this.handleChange}
@@ -106,16 +109,16 @@ class MemberSearchContainer extends Component {
             />
             <MemberTable
               memberList={memberList}
-              totalCount={this.props.totalCount}
+              count={memberCount}
               currentPage={this.state.currentPage}
               membersPerPage={this.state.membersPerPage}
               handlePageChange={this.handlePageChange}
               handleShowSizeChange={this.handleShowSizeChange}
+              pending={this.props.pending}
             />
           </Col>
         </Row>
       </div>
-
     );
   }
 }
@@ -123,7 +126,7 @@ class MemberSearchContainer extends Component {
 const mapStateToProps = state => ({
   error: state.ui.memberSearchPageReducer.errors,
   members: state.ui.memberSearchPageReducer.members,
-  totalCount: state.ui.memberSearchPageReducer.totalCount,
+  count: state.ui.memberSearchPageReducer.count,
   pending: state.ui.memberSearchPageReducer.pending,
 });
 
