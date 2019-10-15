@@ -66,7 +66,7 @@ const Study = ({
           files
       </StudyCount>
       </Row>
-      <Codes>Data Use Groups: {consentCodes.concat('Open Access').join(', ')}</Codes>
+      <Codes>Data Use Groups: {consentCodes.join(', ').replace('*', 'Open Access')}</Codes>
       <ProgressBar
         analyticsTracking={{ category: `Authorized Studies`, label: `studyId: ${studyId}` }}
         onClick={() => {

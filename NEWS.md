@@ -1,5 +1,11 @@
 # Release notes for kf-portal-ui
 
+## 2019-10-14 kf-portal-ui 2.11.3
+
+This release fixes major issues :
+- [#2113](https://github.com/kids-first/kf-portal-ui/issues/2113) Widget Authorized studies show open access files on study that not contain open access files 
+- [#2105](https://github.com/kids-first/kf-portal-ui/issues/2111) Duplicate studies in widget Authorized Studies
+
 ## 2019-10-10 kf-portal-ui 2.11.2
 
 This release fixes minor issues :
