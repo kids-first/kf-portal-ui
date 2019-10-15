@@ -9,6 +9,7 @@
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",
     "@oncojs/survivalplot": "^0.7.2",
+    "antd": "^3.23.6",
     "auto-bind-es5": "^1.1.0",
     "autoprefixer": "7.1.6",
     "axios": "^0.17.0",
@@ -103,7 +104,6 @@
     "tinygradient": "^0.4.2",
     "url-join": "^2.0.2",
     "url-loader": "0.6.2",
-    "victory-pie": "^14.0.1",
     "whatwg-fetch": "2.0.3",
     "yup": "^0.25.1"
   },
