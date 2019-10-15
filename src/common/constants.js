@@ -179,4 +179,8 @@ export const LOGIN_ERROR_DETAILS = {
   thirdPartyData: 'To sign in with Google, please enable third party cookies in your browser.',
 };
 
+export const ACTIONS_COLUMNS = 'ACTIONS_COLUMNS';
+
+export const FILE_VIEW = 'FILE_VIEW';
+
 export const KEY_PUBLIC_PROFILE_INVITE_IS_SEEN = 'public_profile_invite_is_seen';

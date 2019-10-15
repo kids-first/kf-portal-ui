@@ -46,6 +46,7 @@ import CavaticaAnalyse from './CavaticaAnalyse';
 import Download from './Download';
 import ShareButton from 'uikit/ShareButton';
 import { checkUserFilePermission } from 'services/fileAccessControl';
+import { FILE_VIEW } from 'common/constants';
 
 // file types
 const FILE_TYPE_BAM = 'bam';
@@ -311,7 +312,17 @@ const FileEntity = compose(withTheme)(
               <EntityTitle icon="file" title={fileId} tags={file.isLoading ? [] : getTags(data)} />
             </EntityTitleBar>
             <EntityActionBar>
-              <CavaticaAnalyse fileId={fileId} disabled={!hasFilePermission} />
+              <CavaticaAnalyse
+                fileId={fileId}
+                disabled={!hasFilePermission}
+                hasFilePermission={hasFilePermission}
+                file={{
+                  acl: data.acl,
+                  latest_did: data.latest_did,
+                  repository: data.repository,
+                }}
+                sourceLocation={FILE_VIEW}
+              />
               <Download
                 onSuccess={url => {
                   trackUserInteraction({

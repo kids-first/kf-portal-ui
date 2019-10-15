@@ -14,19 +14,23 @@ import CheckIcon from 'icons/CircleCheckIcon';
 import { TableHeader } from 'uikit/Table';
 import { Paragraph, Box } from 'uikit/Core';
 import { FilterInput } from 'uikit/Input';
+import LoadingSpinner from 'uikit/LoadingSpinner';
 
 const enhance = compose(
   injectState,
   withTheme,
+  withState('isLoadingProjects', 'setIsLoadingProject', false),
   withState('projectSearchValue', 'setProjectSearchValue', ''),
   withState('projectList', 'setProjectList', []),
   withState('selectedProject', 'setSelectedProject', null),
   lifecycle({
     async componentDidMount() {
-      const { setProjectList } = this.props;
+      const { setProjectList, setIsLoadingProject } = this.props;
 
+      setIsLoadingProject(true);
       getCavaticaProjects().then(projects => {
         setProjectList(projects);
+        setIsLoadingProject(false);
       });
     },
   }),
@@ -96,7 +100,6 @@ const ProjectHeader = styled(TableHeader)`
 `;
 
 const CavaticaProjects = ({
-  effects: { setToast, closeToast },
   theme,
   projectSearchValue,
   setProjectSearchValue,
@@ -107,6 +110,8 @@ const CavaticaProjects = ({
   addingProject,
   setAddingProject,
   getGen3Ids,
+  isLoadingProjects,
+  onSelectProject,
   ...props
 }) => {
   return (
@@ -126,10 +131,10 @@ const CavaticaProjects = ({
         }
       </div>
       <div className="body">
-        <ProjectSelector onChange={e => {}}>
-          {projectList &&
-            projectList.map &&
-            projectList
+        {isLoadingProjects && <LoadingSpinner size={'35px'} />}
+        {!isLoadingProjects && Array.isArray(projectList) && projectList.length > 0 && (
+          <ProjectSelector onChange={() => {}}>
+            {projectList
               .filter(project => {
                 if (project.id === selectedProject) return true;
                 return projectSearchValue !== '' ? project.name.includes(projectSearchValue) : true;
@@ -142,7 +147,7 @@ const CavaticaProjects = ({
                     className={`projectOption ${selected ? 'selected' : ''}`}
                     onClick={() => {
                       setSelectedProject(project.id);
-                      props.onSelectProject(project);
+                      onSelectProject(project);
                     }}
                   >
                     <div className="checkSymbol">
@@ -152,7 +157,8 @@ const CavaticaProjects = ({
                   </div>
                 );
               })}
-        </ProjectSelector>
+          </ProjectSelector>
+        )}
       </div>
       <div className="footer">
         <CavaticaAddProject

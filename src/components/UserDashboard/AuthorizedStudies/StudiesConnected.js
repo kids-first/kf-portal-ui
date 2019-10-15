@@ -57,40 +57,14 @@ const renderNoAuthorizedStudies = ({ loggedInUser }) => (
 );
 
 const renderAuthorizedStudies = ({
-  fenceAuthFiles,
-  fenceNonAuthFiles,
-
   fenceAuthStudies,
-  fenceNonAuthStudies,
   fenceConnections,
   history,
 }) => {
-  const userConsentCodes = Object.keys(fenceConnections).reduce(
-    (output, key) => output.concat(Object.keys(fenceConnections[key].projects || {})),
-    [],
-  );
-
-  const authStudies = _(fenceAuthFiles)
-    .groupBy('studyId')
-    .value();
-  const unauthedStudies = _(fenceNonAuthFiles)
-    .groupBy('studyId')
-    .value();
-
-  const combinedStudyData = fenceAuthStudies.reduce((acc, authorizedStudy) => {
-    const unAuthorizedFiles = (
-      fenceNonAuthStudies.find(({ id }) => id === authorizedStudy.id) || { files: [] }
-    ).files;
-    return {
-      ...acc,
-      [authorizedStudy.id]: {
-        authorizedFiles: authorizedStudy.files,
-        unAuthorizedFiles: unAuthorizedFiles,
-        consentCodes: userConsentCodes.filter(code => code.includes(authorizedStudy.id)),
-      },
-    };
+  const studiesById = fenceAuthStudies.reduce((obj, study) => {
+    obj[study.id] = study;
+    return obj;
   }, {});
-
   const onStudyTotalClick = studyId => () => {
     trackUserInteraction({
       category: TRACKING_EVENTS.categories.user.dashboard.widgets.authorizedStudies,
@@ -106,7 +80,7 @@ const renderAuthorizedStudies = ({
       action: `${eventOrigin}: ${TRACKING_EVENTS.actions.click}`,
       label: `studyId: ${studyId}`,
     });
-    const { consentCodes } = combinedStudyData[studyId];
+    const consentCodes  = studiesById[studyId].acl;
     history.push(
       `/search/file?sqon=${encodeURI(
         JSON.stringify(createAcceptedFilesByUserStudySqon(consentCodes)({ studyId })),
@@ -114,19 +88,16 @@ const renderAuthorizedStudies = ({
     );
   };
 
-  return fenceAuthStudies.map(({ studyShortName, id: studyId }) => {
-    const { consentCodes } = combinedStudyData[studyId];
-    const authorizedFiles = _.get(authStudies, studyId, []);
-    const unauthorizedFiles = _.get(unauthedStudies, studyId, []);
+  return fenceAuthStudies.map(( study) => {
     return (
       <Study
-        key={studyId}
-        studyId={studyId}
-        name={studyShortName}
-        consentCodes={consentCodes}
-        authorized={authorizedFiles.length}
-        total={authorizedFiles.length + unauthorizedFiles.length}
-        onStudyTotalClick={onStudyTotalClick(studyId)}
+        key={study.id}
+        studyId={study.id}
+        name={study.studyShortName}
+        consentCodes={study.acl}
+        authorized={study.authorizedFiles}
+        total={study.totalFiles}
+        onStudyTotalClick={onStudyTotalClick(study.id)}
         onStudyAuthorizedClick={onStudyAuthorizedClick}
       />
     );
@@ -145,9 +116,6 @@ const StudiesConnected = enhance(
       loggedInUser,
       fenceConnections,
       fenceAuthStudies,
-      fenceNonAuthStudies,
-      fenceAuthFiles,
-      fenceNonAuthFiles,
     },
     history,
   }) => {
@@ -156,11 +124,7 @@ const StudiesConnected = enhance(
         <Column>
           {!_.isEmpty(fenceAuthStudies) > 0
             ? renderAuthorizedStudies({
-                fenceAuthFiles,
-                fenceNonAuthFiles,
-
                 fenceAuthStudies,
-                fenceNonAuthStudies,
                 fenceConnections,
                 history,
               })

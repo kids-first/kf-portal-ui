@@ -36,17 +36,33 @@ const CavaticaButton = styled(BigWhiteButton)`
     disabled ? disabledButtonStyles : null}
 `;
 
-export default compose(withTheme)(({ disabled, theme, text, buttonStyle, fileIds, sqon }) => (
-  <CavaticaOpenModalWrapper fileIds={fileIds} sqon={sqon}>
-    <CavaticaButton disabled={disabled} buttonStyle={buttonStyle}>
-      <ButtonContent>
-        <CavaticaLogo
-          width="28"
-          fill={disabled ? theme.borderGrey : 'white'}
-          style={{ marginRight: '7px' }}
-        />
-        {text}
-      </ButtonContent>
-    </CavaticaButton>
-  </CavaticaOpenModalWrapper>
-));
+export default compose(withTheme)(
+  ({
+    disabled,
+    theme,
+    text,
+    buttonStyle,
+    fileIds,
+    sqon,
+    hasFilePermission,
+    file,
+    sourceLocation = '',
+  }) => (
+    <CavaticaOpenModalWrapper
+      fileIds={fileIds}
+      sqon={sqon}
+      source={{ location: sourceLocation, hasAccess: hasFilePermission, file }}
+    >
+      <CavaticaButton disabled={disabled} buttonStyle={buttonStyle}>
+        <ButtonContent>
+          <CavaticaLogo
+            width="28"
+            fill={disabled ? theme.borderGrey : 'white'}
+            style={{ marginRight: '7px' }}
+          />
+          {text}
+        </ButtonContent>
+      </CavaticaButton>
+    </CavaticaOpenModalWrapper>
+  ),
+);
