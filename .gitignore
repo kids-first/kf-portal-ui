@@ -27,6 +27,7 @@ yarn.lock
 .vscode/extensions.json
 
 .cache/
+.idea/
 
 public/locales/*
 
