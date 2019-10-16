@@ -19,7 +19,7 @@ const regex = /<\/?em>/gi;
  */
 const formatLabel = (value, highLightValues, index = 0) => {
   if (!highLightValues) {
-    return <div key={index} style={{paddingRight: 5}}>{value}</div>;
+    return <div key={index} style={{paddingRight: 5, wordWrap: 'break-word', maxWidth: '100%'}}>{value}</div>;
   }
   for(const h of highLightValues){
     if(value === h.replace(regex, '')){
@@ -28,19 +28,19 @@ const formatLabel = (value, highLightValues, index = 0) => {
         const [first, second, third] = arr;
 
         return(
-          <div key = {index} style={{paddingRight: 5}}>{first}<b>{second}</b>{third}</div>
+          <div key = {index} style={{paddingRight: 5, wordWrap: 'break-word', maxWidth: '100%'}}>{first}<b>{second}</b>{third}</div>
         )
       }
     }
   }
 
-  return <div key={index} style={{paddingRight: 5}}>{value}</div>
+  return <div key={index} style={{paddingRight: 5, wordWrap: 'break-word', maxWidth: '100%'}}>{value}</div>
 };
 
 const address = (item) => {
   return(
     <div style={{display: 'flex'}}>
-      {formatLabel(item.city, item.highlights.city, 1)} {formatLabel(item.state, item.highlights.state, 2)} {formatLabel(item.country, item.highlights.country, 3)}
+      {formatLabel(item.city, item.highlight.city, 1)} {formatLabel(item.state, item.highlight.state, 2)} {formatLabel(item.country, item.highlight.country, 3)}
     </div>
   )
 };
@@ -81,7 +81,7 @@ const MemberTable = (props) => {
         loading={props.pending}
 
         renderItem={item => (
-          <List.Item key={item.key}>
+          <List.Item key={item._id}>
             <Row type="flex" justify="space-around" align="middle" gutter={10}>
               <Col xxl={2} xl={3} lg={3} md={3} sm={4}>
                 <MemberImage email={item.email || ''} d={"mp"}/>
@@ -93,12 +93,12 @@ const MemberTable = (props) => {
                 <a>
                   <div style={{display: 'flex'}}>
                     {item.title ? <div key={0} style={{paddingRight: 5}}>{item.title.toUpperCase()}</div>  : ''}
-                    {formatLabel(item.firstName, item.highlights.firstName, 1)}
-                    {formatLabel(item.lastName, item.highlights.lastName, 2)}
+                    {formatLabel(item.firstName, item.highlight.firstName, 1)}
+                    {formatLabel(item.lastName, item.highlight.lastName, 2)}
                   </div>
                 </a>
                 {address(item)}
-                <div style={{display: 'flex', alignItems: 'baseline', flexWrap: 'wrap'}}>{item.interests.map((interest, index) => formatLabel(interest, item.highlights.interests, index))}</div>
+                <div style={{display: 'flex', alignItems: 'baseline', flexWrap: 'wrap'}}>{item.interests.map((interest, index) => formatLabel(interest, item.highlight.interests, index))}</div>
               </Col>
             </Row>
           </List.Item>

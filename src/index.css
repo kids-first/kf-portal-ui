@@ -33,6 +33,7 @@ a.primary {
 
 #grid-container{
   width: 100%;
+  padding: 25px 25px 25px 25px;
 }
 
 /* Temporary fix for the aggregation cards overflow */

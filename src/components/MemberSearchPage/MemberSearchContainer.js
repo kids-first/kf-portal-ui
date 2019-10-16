@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import { Col, Icon, Input, Row, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
 
-const PAGE_COUNT = 10;
-
 function updatePage(page) {
   return (previousState, currentProps) => {
     return { ...previousState, currentPage: page };
@@ -46,7 +44,7 @@ class MemberSearchContainer extends Component {
   handleChange(e) {
     const {fetchListOfMembers} = this.props;
     fetchListOfMembers(e.target.value, {start: this.getCurrentStart(), end: this.getCurrentEnd()});
-    this.setState({queryString: e.target.value})
+    this.setState({queryString: e.target.value, currentPage: 1})
   }; //FIXME
 
   componentDidMount() {
@@ -56,7 +54,8 @@ class MemberSearchContainer extends Component {
   };//FIXME
 
   handlePageChange = page => {
-    if (page < 1 || page > PAGE_COUNT) return; //FIXME
+    const maxPage = this.props.count.public / this.state.membersPerPage;
+    if (!maxPage || page < 1 || page > maxPage) return;
     const {fetchListOfMembers} = this.props;
     this.setState(
       updatePage(page),
@@ -73,29 +72,13 @@ class MemberSearchContainer extends Component {
   }
 
   render() {
-    //FIXME
-    const memberList = this.props.members.map(row => ({
-      key: row._id,
-      firstName: row.firstName,
-      lastName: row.lastName,
-      email: row.email,
-      city: row.city,
-      state: row.state,
-      country: row.country,
-      title: row.title,
-      interests: row.interests,
-      institution: row.institution,
-      roles: row.roles,
-      highlights: row.highlight,
-    }));
-    const memberCount = this.props.count;
     return (
       <div id={"grid-container"}>
         <Row>
-          <Col span={6}>
-            TODO add table
-          </Col>
-          <Col span={18}>
+          {/*<Col span={6}>*/}
+          {/*  TODO add table*/}
+          {/*</Col>*/}
+          <Col span={24}>
             <Input
               style={{borderRadius: 30}}
               onChange={this.handleChange}
@@ -108,8 +91,8 @@ class MemberSearchContainer extends Component {
               }
             />
             <MemberTable
-              memberList={memberList}
-              count={memberCount}
+              memberList={this.props.members}
+              count={this.props.count}
               currentPage={this.state.currentPage}
               membersPerPage={this.state.membersPerPage}
               handlePageChange={this.handlePageChange}
