@@ -32,6 +32,7 @@ import {
   MenuLabelContainer,
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const ExploreDataIconStyled = styled(ExploreDataIcon)`
   top: 3px;
@@ -82,11 +83,13 @@ const Header = ({
                       <DatabaseIcon /> <Trans>File Repository</Trans>
                     </NavLink>
                   </li>
-                  <li>
-                    <NavLink currentPathName={currentPathName} to={SEARCH_MEMBER_PATH}>
-                      <UserIcon /> <Trans>Members Search</Trans>
-                    </NavLink>
-                  </li>
+                  {isFeatureEnabled('searchMembers') && (
+                    <li>
+                      <NavLink currentPathName={currentPathName} to={SEARCH_MEMBER_PATH}>
+                        <UserIcon /> <Trans>Members Search</Trans>
+                      </NavLink>
+                    </li>
+                  )}
                 </NavBarList>
               )}
             </Row>

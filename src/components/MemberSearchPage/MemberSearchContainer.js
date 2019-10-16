@@ -39,52 +39,61 @@ class MemberSearchContainer extends Component {
     members: PropTypes.arrayOf(PropTypes.object),
   };
 
-
   getCurrentStart = () => {
-    return (this.state.currentPage * this.state.membersPerPage - this.state.membersPerPage)
+    return this.state.currentPage * this.state.membersPerPage - this.state.membersPerPage;
   };
 
   getCurrentEnd = () => {
-    return (this.state.currentPage * this.state.membersPerPage)
+    return this.state.currentPage * this.state.membersPerPage;
   };
 
   handleChange(e) {
-    this.props.fetchListOfMembers(e.target.value, {start: this.getCurrentStart(), end: this.getCurrentEnd()});
-    this.setState({queryString: e.target.value, currentPage: 1})
-  };
+    this.props.fetchListOfMembers(e.target.value, {
+      start: this.getCurrentStart(),
+      end: this.getCurrentEnd(),
+    });
+    this.setState({ queryString: e.target.value, currentPage: 1 });
+  }
 
   componentDidMount() {
-    this.setState({listHasLoaded: true});
-    this.props.fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
-  };
+    this.setState({ listHasLoaded: true });
+    this.props.fetchListOfMembers(this.state.queryString, {
+      start: this.getCurrentStart(),
+      end: this.getCurrentEnd(),
+    });
+  }
 
   handlePageChange = page => {
     const maxPage = this.props.count.public / this.state.membersPerPage;
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
-    this.setState(
-      updatePage(page),
-      () => this.props.fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
+    this.setState(updatePage(page), () =>
+      this.props.fetchListOfMembers(this.state.queryString, {
+        start: this.getCurrentStart(),
+        end: this.getCurrentEnd(),
+      }),
     );
   }; //FIXME maybe use componentDidUpdate in lieu...
 
   handleShowSizeChange(current, pageSize) {
-    const {fetchListOfMembers} = this.props;
-    this.setState(
-      updatePageSize(current, pageSize),
-      () => fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
+    const { fetchListOfMembers } = this.props;
+    this.setState(updatePageSize(current, pageSize), () =>
+      fetchListOfMembers(this.state.queryString, {
+        start: this.getCurrentStart(),
+        end: this.getCurrentEnd(),
+      }),
     );
   }
 
   render() {
     return (
-      <div id={"grid-container"}>
+      <div id={'grid-container'}>
         <Row>
           {/*<Col span={6}>*/}
           {/*  TODO add filter tables here*/}
           {/*</Col>*/}
           <Col span={24}>
             <Input
-              style={{borderRadius: 30}}
+              style={{ borderRadius: 30 }}
               onChange={this.handleChange}
               placeholder="Member Name, Email, Interests,..."
               prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -117,11 +126,15 @@ const mapStateToProps = state => ({
   pending: state.ui.memberSearchPageReducer.pending,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchListOfMembers: fetchListOfMembersAction
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchListOfMembers: fetchListOfMembersAction,
+    },
+    dispatch,
+  );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(MemberSearchContainer);
