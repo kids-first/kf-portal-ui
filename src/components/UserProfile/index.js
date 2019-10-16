@@ -26,6 +26,8 @@ import Row from 'uikit/Row';
 import { H1 } from 'uikit/Headings';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import { Alert } from 'antd';
+import { isFeatureEnabled } from 'common/featuresToggles';
+
 export const userProfileBackground = (
   loggedInUser,
   { showBanner = true, gradientDirection = 'right' } = {},
@@ -47,6 +49,10 @@ export const userProfileBackground = (
 };
 
 const showPublicProfileInvite = (profile = {}) => {
+  if (!isFeatureEnabled('searchMembers')) {
+    //TODO : remove me one day :)
+    return false;
+  }
   return (
     !Boolean(profile.isPublic) && !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
   );
