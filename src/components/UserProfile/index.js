@@ -18,15 +18,14 @@ import { getProfile, updateProfile } from 'services/profiles';
 import { ROLES } from 'common/constants';
 
 import BasicInfoForm from 'components/forms/BasicInfoForm';
-import CompleteOMeter from 'components/CompleteOMeter';
 import { Container, EditButton, ProfileImage } from './ui';
 import AboutMe from './AboutMe';
 import Settings from './Settings';
-import CompletionWrapper from './CompletionWrapper';
 import RoleIconButton from '../RoleIconButton';
 import Row from 'uikit/Row';
 import { H1 } from 'uikit/Headings';
-
+import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
+import { Alert } from 'antd';
 export const userProfileBackground = (
   loggedInUser,
   { showBanner = true, gradientDirection = 'right' } = {},
@@ -45,6 +44,12 @@ export const userProfileBackground = (
         ${profileColors.gradientLight}
       );
   `;
+};
+
+const showPublicProfileInvite = (profile = {}) => {
+  return (
+    !Boolean(profile.isPublic) && !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
+  );
 };
 
 export default compose(
@@ -100,147 +105,138 @@ export default compose(
         await setUser({ ...updatedProfile, api });
       });
     },
+    onCloseAlert: () => () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true),
   }),
   branch(
     ({ profile }) => !profile || profile.length === 0,
     renderComponent(({ match: { params: { egoId } } }) => <div>No user found with id {egoId}</div>),
   ),
-)(({ state, effects: { setModal }, profile, theme, canEdit, submit, location: { hash }, api }) => (
-  <div
-    className={css`
-      flex: 1;
-    `}
-  >
+)(
+  ({
+    state,
+    effects: { setModal },
+    profile,
+    theme,
+    canEdit,
+    submit,
+    location: { hash },
+    api,
+    onCloseAlert,
+  }) => (
     <div
       className={css`
-        ${userProfileBackground(profile)};
-        min-height: 330px;
-        align-items: center;
-        display: flex;
-        justify-content: center;
+        flex: 1;
       `}
     >
-      <Container row alignItems="center">
-        <Row width="65%" pr={50} alignItems="center">
-          <ProfileImage email={profile.email || ''} />
-          <div
-            className={css`
-              width: 49%;
-              align-items: flex-start;
-              ${theme.column};
-              padding: 0 15px;
-            `}
-          >
-            <RoleIconButton />
-
-            <H1 lineHeight="31px" mb="10px" mt="16px" color={theme.white}>
-              {`${profile.firstName} ${profile.lastName}`}
-            </H1>
-
+      {hash !== '#settings' && showPublicProfileInvite(profile) && (
+        <Alert
+          message="Make your profile public"
+          description="You can make your profile public by changing your account settings"
+          type="info"
+          banner
+          closable
+          onClose={onCloseAlert}
+        />
+      )}
+      <div
+        className={css`
+          ${userProfileBackground(profile)};
+          min-height: 330px;
+          align-items: center;
+          display: flex;
+          justify-content: center;
+        `}
+      >
+        <Container row alignItems="center">
+          <Row width="65%" pr={50} alignItems="center">
+            <ProfileImage email={profile.email || ''} />
             <div
               className={css`
-                font-size: 14px;
-                color: #fff;
-                line-height: 28px;
+                width: 49%;
+                align-items: flex-start;
                 ${theme.column};
+                padding: 0 15px;
               `}
             >
-              <span
+              <RoleIconButton />
+
+              <H1 lineHeight="31px" mb="10px" mt="16px" color={theme.white}>
+                {`${profile.firstName} ${profile.lastName}`}
+              </H1>
+
+              <div
                 className={css`
-                  font-size: 1.4em;
+                  font-size: 14px;
+                  color: #fff;
+                  line-height: 28px;
+                  ${theme.column};
                 `}
               >
-                {profile.jobTitle}
-              </span>
-              <span>{profile.institution}</span>
-              <span>{profile.department}</span>
-              <span>
-                {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
-              </span>
-              <span
-                css={`
-                  margin-top: 5px;
-                `}
-              >
-                <EditButton
-                  onClick={() => {
-                    setModal({
-                      title: 'Edit Basic Information',
-                      component: <BasicInfoForm {...{ api }} />,
-                    });
-                  }}
-                />
-              </span>
+                <span
+                  className={css`
+                    font-size: 1.4em;
+                  `}
+                >
+                  {profile.jobTitle}
+                </span>
+                <span>{profile.institution}</span>
+                <span>{profile.department}</span>
+                <span>
+                  {[profile.city, profile.state, profile.country].filter(Boolean).join(', ')}
+                </span>
+                <span
+                  css={`
+                    margin-top: 5px;
+                  `}
+                >
+                  <EditButton
+                    onClick={() => {
+                      setModal({
+                        title: 'Edit Basic Information',
+                        component: <BasicInfoForm {...{ api }} />,
+                      });
+                    }}
+                  />
+                </span>
+              </div>
             </div>
-          </div>
-        </Row>
-
-        <div
-          css={`
-            width: 35%;
-            ${theme.column};
-            align-items: center;
-          `}
-        >
-          <CompletionWrapper
-            completed={state.percentageFilled}
-            css={`
-              width: 130px;
-            `}
-          >
-            <CompleteOMeter percentage={state.percentageFilled} />
-          </CompletionWrapper>
-
-          <div
-            css={`
-              font-family: ${theme.fonts.details};
-              font-size: 13px;
-              font-style: italic;
-              line-height: 1.69;
-              color: #ffffff;
-              padding-top: 21px;
-            `}
-          >
-            Complete your profile for a more personalized
-            <br />
-            experience and to help encourage collaboration!
-          </div>
-        </div>
-      </Container>
-    </div>
-    <div
-      className={css`
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        background: #fff;
-        box-shadow: 0px 0px 4.9px 0.1px #bbbbbb;
-        border: solid 1px #e0e1e6;
-      `}
-    >
-      <Container>
-        <ul className={theme.secondaryNav}>
-          <li>
-            <Link
-              to="#aboutMe"
-              className={hash === '#aboutMe' || hash !== '#settings' ? 'active' : ''}
-            >
-              About Me
-            </Link>
-          </li>
-          {canEdit && (
+          </Row>
+        </Container>
+      </div>
+      <div
+        className={css`
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          background: #fff;
+          box-shadow: 0px 0px 4.9px 0.1px #bbbbbb;
+          border: solid 1px #e0e1e6;
+        `}
+      >
+        <Container>
+          <ul className={theme.secondaryNav}>
             <li>
-              <Link to="#settings" className={hash === '#settings' ? 'active' : ''}>
-                Settings
+              <Link
+                to="#aboutMe"
+                className={hash === '#aboutMe' || hash !== '#settings' ? 'active' : ''}
+              >
+                About Me
               </Link>
             </li>
-          )}
-        </ul>
-      </Container>
+            {canEdit && (
+              <li>
+                <Link to="#settings" className={hash === '#settings' ? 'active' : ''}>
+                  Settings
+                </Link>
+              </li>
+            )}
+          </ul>
+        </Container>
+      </div>
+      {(hash === '#aboutMe' || hash !== '#settings') && (
+        <AboutMe profile={profile} canEdit={canEdit} submit={submit} />
+      )}
+      {hash === '#settings' && <Settings profile={profile} submit={submit} />}
     </div>
-    {(hash === '#aboutMe' || hash !== '#settings') && (
-      <AboutMe profile={profile} canEdit={canEdit} submit={submit} />
-    )}
-    {hash === '#settings' && <Settings profile={profile} submit={submit} />}
-  </div>
-));
+  ),
+);
