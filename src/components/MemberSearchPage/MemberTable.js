@@ -40,7 +40,9 @@ const formatLabel = (value, highLightValues, index = 0) => {
 const address = (item) => {
   return(
     <div style={{display: 'flex'}}>
-      {formatLabel(item.city, item.highlight.city, 1)} {formatLabel(item.state, item.highlight.state, 2)} {formatLabel(item.country, item.highlight.country, 3)}
+      {formatLabel(item.city, item.highlight ? item.highlight.city : null, 1)}
+      {formatLabel(item.state, item.highlight ? item.highlight.state : null, 2)}
+      {formatLabel(item.country, item.highlight ? item.highlight.country : null, 3)}
     </div>
   )
 };
@@ -93,12 +95,12 @@ const MemberTable = (props) => {
                 <a>
                   <div style={{display: 'flex'}}>
                     {item.title ? <div key={0} style={{paddingRight: 5}}>{item.title.toUpperCase()}</div>  : ''}
-                    {formatLabel(item.firstName, item.highlight.firstName, 1)}
-                    {formatLabel(item.lastName, item.highlight.lastName, 2)}
+                    {formatLabel(item.firstName, item.highlight ? item.highlight.firstName : null, 1)}
+                    {formatLabel(item.lastName, item.highlight ? item.highlight.lastName : null, 2)}
                   </div>
                 </a>
                 {address(item)}
-                <div style={{display: 'flex', alignItems: 'baseline', flexWrap: 'wrap'}}>{item.interests.map((interest, index) => formatLabel(interest, item.highlight.interests, index))}</div>
+                <div style={{display: 'flex', alignItems: 'baseline', flexWrap: 'wrap'}}>{item.interests.map((interest, index) => formatLabel(interest, item.highlight ? item.highlight.interests : null, index))}</div>
               </Col>
             </Row>
           </List.Item>

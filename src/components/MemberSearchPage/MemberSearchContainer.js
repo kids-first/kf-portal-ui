@@ -4,6 +4,7 @@ import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMem
 import { bindActionCreators } from 'redux';
 import { Col, Icon, Input, Row, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
+import PropTypes from 'prop-types';
 
 function updatePage(page) {
   return (previousState, currentProps) => {
@@ -30,7 +31,13 @@ class MemberSearchContainer extends Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleShowSizeChange = this.handleShowSizeChange.bind(this);
   }
-  static propTypes = {};
+
+  static propTypes = {
+    pending: PropTypes.bool,
+    error: PropTypes.error,
+    count: PropTypes.object,
+    members: PropTypes.arrayOf(PropTypes.object),
+  };
 
 
   getCurrentStart = () => {
@@ -42,24 +49,21 @@ class MemberSearchContainer extends Component {
   };
 
   handleChange(e) {
-    const {fetchListOfMembers} = this.props;
-    fetchListOfMembers(e.target.value, {start: this.getCurrentStart(), end: this.getCurrentEnd()});
+    this.props.fetchListOfMembers(e.target.value, {start: this.getCurrentStart(), end: this.getCurrentEnd()});
     this.setState({queryString: e.target.value, currentPage: 1})
-  }; //FIXME
+  };
 
   componentDidMount() {
     this.setState({listHasLoaded: true});
-    const {fetchListOfMembers} = this.props;
-    fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
-  };//FIXME
+    this.props.fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
+  };
 
   handlePageChange = page => {
     const maxPage = this.props.count.public / this.state.membersPerPage;
-    if (!maxPage || page < 1 || page > maxPage) return;
-    const {fetchListOfMembers} = this.props;
+    if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
     this.setState(
       updatePage(page),
-      () => fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
+      () => this.props.fetchListOfMembers(this.state.queryString, {start: this.getCurrentStart(), end: this.getCurrentEnd()})
     );
   }; //FIXME maybe use componentDidUpdate in lieu...
 
@@ -76,7 +80,7 @@ class MemberSearchContainer extends Component {
       <div id={"grid-container"}>
         <Row>
           {/*<Col span={6}>*/}
-          {/*  TODO add table*/}
+          {/*  TODO add filter tables here*/}
           {/*</Col>*/}
           <Col span={24}>
             <Input
