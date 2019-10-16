@@ -36,7 +36,12 @@ const baseStyles = complexStyle({
   prop: 'baseStyle',
   key: 'baseStyles',
 });
-export const applyDefaultStyles = Component => styled(Component)`
+export const applyDefaultStyles = (
+  Component,
+  customShouldFowardProp = { shouldForwardProp: null },
+) => styled(Component, {
+  shouldForwardProp: customShouldFowardProp.shouldForwardProp,
+})`
   ${baseStyles}
   ${space}
   ${width}

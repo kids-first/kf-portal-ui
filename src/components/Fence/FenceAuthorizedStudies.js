@@ -70,7 +70,7 @@ const FenceProjectList = compose(
     get(fenceStudies, `${fence}.authorizedStudies`, []).map(({ id, studyShortName }) => {
       const sqon = sqonForStudy(id);
       return (
-        <ItemRowContainer>
+        <ItemRowContainer key={id}>
           <Column justifyContent="center" p={15}>
             <StackIcon width={20} />
           </Column>

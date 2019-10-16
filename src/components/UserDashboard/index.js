@@ -23,6 +23,7 @@ import CavaticaProjects from './CavaticaProjects';
 import { DashboardCard, CardContentSpinner, DashboardMulticard } from './styles';
 import { SizeProvider } from 'components/Utils';
 import DashboardCardError from './DashboardCardError';
+import PropTypes from 'prop-types';
 
 const UserDashboard = styled('div')`
   width: 100%;
@@ -41,14 +42,21 @@ const DashboardTitle = styled('h1')`
   padding-left: 30px;
 `;
 
-const Container = props => (
+const Container = ({ className, children }) => (
   // This is to cancel out the negative margin set by react-grid-system
   <div style={{ marginLeft: '15px', marginRight: '15px' }}>
-    <Row {...props} />
+    <Row className={className} children={children} />
   </div>
 );
 
-const ContainerRow = styled(Container)`
+Container.prototype = {
+  children: PropTypes.arrayOf(PropTypes.element),
+  className: PropTypes.string.isRequired,
+};
+
+const ContainerRow = styled(Container, {
+  shouldForwardProp: prop => !['currentWidth'].includes(prop),
+})`
   padding-left: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 0 : 15)}px;
   padding-right: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 0 : 15)}px;
 `;
