@@ -113,7 +113,7 @@ export default compose(
   ),
 )(
   ({
-    state,
+    state: { loggedInUser },
     effects: { setModal },
     profile,
     theme,
@@ -158,7 +158,7 @@ export default compose(
                 padding: 0 15px;
               `}
             >
-              <RoleIconButton />
+              <RoleIconButton loggedInUser={loggedInUser} />
 
               <H1 lineHeight="31px" mb="10px" mt="16px" color={theme.white}>
                 {`${profile.firstName} ${profile.lastName}`}

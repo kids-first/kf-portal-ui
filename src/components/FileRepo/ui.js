@@ -16,7 +16,7 @@ import { TealActionButton } from 'uikit/Button';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
-
+import noop from 'lodash/noop';
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
 `;
@@ -234,7 +234,8 @@ export const DownloadButton = compose(withTheme)(
     theme,
     content = () => <Trans>Download</Trans>,
     buttonRef = React.createRef(),
-    ...rest
+    disabled = false,
+    onBlur = noop,
   }) => {
     return (
       <StyledActionButton
@@ -242,7 +243,8 @@ export const DownloadButton = compose(withTheme)(
         innerRef={ref => {
           buttonRef.current = ref;
         }}
-        {...rest}
+        disabled={disabled}
+        onBlur={onBlur}
       >
         <DownloadIcon
           className={css`

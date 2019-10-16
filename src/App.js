@@ -252,7 +252,7 @@ const App = compose(
         />
         <Route path="/gen3_redirect" exact render={props => <FenceAuthRedirect fence={GEN3} />} />
         <Route path="/dcf_redirect" exact render={props => <FenceAuthRedirect fence={DCF} />} />
-        <Route path="/error" exact render={props => <Error {...props} />} />
+        <Route path="/error" exact render={() => <Error />} />
         <Redirect from="*" to="/dashboard" />
       </Switch>
       <Modal />

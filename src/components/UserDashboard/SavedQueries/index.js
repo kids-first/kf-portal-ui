@@ -83,7 +83,7 @@ const studyDescriptionStyle = css({
 
 const studySavedTimeStyle = css({
   fontSize: '12px',
-  color:'rgb(52,52,52)'
+  color: 'rgb(52,52,52)',
 });
 
 class SavedQueries extends React.Component {
@@ -95,7 +95,7 @@ class SavedQueries extends React.Component {
   static propTypes = {
     // from redux store
     virtualStudies: PropTypes.array.isRequired,
-    userDashboardPage: PropTypes.string.isRequired,
+    userDashboardPage: PropTypes.object.isRequired,
     // from freactal state
     state: PropTypes.shape({
       queries: PropTypes.array.isRequired,
@@ -219,50 +219,55 @@ class SavedQueries extends React.Component {
                 ) : (
                   <Box mt={2} mb={2}>
                     <Scroll>
-                      {virtualStudies.map(vs => (
-
-                        <Study key={vs.virtualStudyId} date={Number(new Date(vs.creationDate))}>
-                          <Column width="100%">
-                            <Row justifyContent="space-between" width="100%">
-                              <StudyLink to={`/explore?id=${vs.virtualStudyId}`}>
-                                {vs.name}
-                              </StudyLink>
-                              <Box pr={2} pl={2}>
-                                <Span
-                                  color={theme.primary}
-                                  hover={{ cursor: 'pointer', color: theme.hover }}
-                                  onClick={() => {
-                                    this.deleteVirtualStudy(vs);
-                                  }}
+                      {virtualStudies
+                        .map(vs => (
+                          <Study key={vs.virtualStudyId} date={Number(new Date(vs.creationDate))}>
+                            <Column width="100%">
+                              <Row justifyContent="space-between" width="100%">
+                                <StudyLink to={`/explore?id=${vs.virtualStudyId}`}>
+                                  {vs.name}
+                                </StudyLink>
+                                <Box pr={2} pl={2}>
+                                  <Span
+                                    color={theme.primary}
+                                    hover={{ cursor: 'pointer', color: theme.hover }}
+                                    onClick={() => {
+                                      this.deleteVirtualStudy(vs);
+                                    }}
+                                  >
+                                    <TrashIcon />
+                                  </Span>
+                                </Box>
+                              </Row>
+                              <Row justifyContent="space-between" width="100%">
+                                <Tooltip
+                                  html={
+                                    <div className={`${studyDescriptionStyle}`}>
+                                      {vs.description}
+                                    </div>
+                                  }
                                 >
-                                  <TrashIcon />
-                                </Span>
-                              </Box>
-                            </Row>
-                            <Row justifyContent="space-between" width="100%">
-                              <Tooltip
-                                html={
-                                  <div className={`${studyDescriptionStyle}`}>{vs.description}</div>
-                                }
+                                  <div
+                                    className={`${studyDescriptionStyle}`}
+                                    style={{ marginRight: '32px' }}
+                                  >
+                                    {vs.description.length >= 140
+                                      ? `${vs.description.slice(0, 140)}...`
+                                      : vs.description}
+                                  </div>
+                                </Tooltip>
+                              </Row>
+                              <div
+                                className={`${studySavedTimeStyle}`}
+                                style={{ fontFamily: 'Open Sans,sans-serif' }}
                               >
-                                <div
-                                  className={`${studyDescriptionStyle}`}
-                                  style={{ marginRight: '32px' }}
-                                >
-                                  {vs.description.length >= 140
-                                    ? `${vs.description.slice(0, 140)}...`
-                                    : vs.description}
-                                </div>
-                              </Tooltip>
-                            </Row>
-                              <div className={`${studySavedTimeStyle}`} style={{fontFamily:'Open Sans,sans-serif' }}>
                                 Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
                               </div>
-                          </Column>
-                        </Study>
-                      )).slice()
-                        .sort((a, b) =>  b.props.date - a.props.date)
-                      }
+                            </Column>
+                          </Study>
+                        ))
+                        .slice()
+                        .sort((a, b) => b.props.date - a.props.date)}
                     </Scroll>
                   </Box>
                 )}
