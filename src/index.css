@@ -31,11 +31,6 @@ a.primary {
   color: #90278e;
 }
 
-#grid-container{
-  width: 100%;
-  padding: 25px 25px 25px 25px;
-}
-
 /* Temporary fix for the aggregation cards overflow */
 .aggregation-card span.bucket-link {
   max-width: 370px;
