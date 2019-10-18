@@ -1,0 +1,35 @@
+.grid-container {
+  width: 100%;
+  padding: 25px 25px 25px 25px;
+}
+
+.member-list-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+}
+
+.member-list {
+  margin: 20px;
+}
+
+.interest-container {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.member-list-col {
+    align-content: center;
+    align-items: center;
+}
+
+.format-label {
+    padding-right: 5px;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+div.flex {
+    display: flex;
+}

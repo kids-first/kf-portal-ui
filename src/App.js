@@ -19,6 +19,7 @@ import LoginPage from 'components/LoginPage';
 import FileEntity from './components/EntityPage/File';
 import ParticipantEntity from './components/EntityPage/Participant';
 import CohortBuilder from './components/CohortBuilder';
+import MemberSearchPage from './components/MemberSearchPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
@@ -35,7 +36,7 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
+import { DCF, GEN3, COHORT_BUILDER_PATH, SEARCH_MEMBER_PATH } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
 
@@ -146,6 +147,18 @@ const App = compose(
               loggedInUser,
               index: props.match.params.index,
               graphqlField: props.match.params.index,
+              ...props,
+            })
+          }
+        />
+        <Route
+          path={SEARCH_MEMBER_PATH}
+          exact
+          render={props =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: MemberSearchPage,
+              loggedInUser,
               ...props,
             })
           }
