@@ -141,7 +141,9 @@ const Header = ({
                       <Trans>Logout</Trans>
                     </DropdownLink>,
                   ]}
-                  ItemWrapperComponent={props => <Fragment {...props} />}
+                  ItemWrapperComponent={({ id, children }) => {
+                    return <Fragment key={id} children={children} />;
+                  }}
                   ContainerComponent={NavbarDropdownWrapper}
                   OptionsContainerComponent={NavbarDropdownOptionsContainer}
                   LabelContainer={MenuLabelContainer}

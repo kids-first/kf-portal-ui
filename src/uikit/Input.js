@@ -4,6 +4,8 @@ import Row from 'uikit/Row';
 import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import { flex } from 'styled-system';
+import omit from 'lodash/omit';
+
 /*
 this component should implement the same interface as <input> from react-dom
 with some additional props
@@ -51,7 +53,7 @@ export const FilterInput = ({
   return (
     <FilterInputWrapper disabled={disabled} className={className}>
       {LeftIcon && <LeftIcon className={'icon-left'} />}
-      <input {...{ value, disabled, ...props }} ref={ref} autoFocus />
+      <input {...{ value, disabled, ...omit(props, ['componentRef']) }} ref={ref} autoFocus />
       {value && value.length && <RightIcon className={'icon-right'} onClick={clearInput} />}
     </FilterInputWrapper>
   );

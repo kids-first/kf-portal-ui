@@ -137,7 +137,7 @@ export default compose(
   withApi,
   injectState,
 )(({ effects: { setModal }, ...props }) => {
-  const { api, sqon, projectId, isFileRepo } = props;
+  const { api, sqon, projectId, isFileRepo, disabled = false } = props;
   return (
     <ColumnsState
       projectId={projectId}
@@ -168,7 +168,7 @@ export default compose(
                         onClick={() => {
                           toggleDropdown();
                         }}
-                        {...props}
+                        disabled={disabled}
                       />
                       {isDropdownVisible ? (
                         <StyledDropdownOptionsContainer hideTip>
