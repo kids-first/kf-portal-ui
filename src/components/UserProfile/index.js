@@ -20,6 +20,9 @@ import Error from '../Error';
 import inRange from 'lodash/inRange';
 import { extractErrorMessage } from 'utils';
 
+import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
+import { Alert } from 'antd';
+import UserProfilePageContainer from './UserProfilePageContainer';
 export const userProfileBackground = (
   profile,
   { showBanner = true, gradientDirection = 'right' } = {},
@@ -54,7 +57,7 @@ const fetchProfile = async ({ loggedInUser, userID, api, setProfile, setError })
   }
 };
 
-export default compose(
+const UserProfile = compose(
   injectState,
   withRouter,
   withState('profile', 'setProfile', null),

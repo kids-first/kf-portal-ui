@@ -12,7 +12,7 @@ import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
 
-class UserProfileContainer extends React.Component {
+class UserProfilePageContainer extends React.Component {
   static propTypes = {
     profile: PropTypes.object,
     onFetchProfile: PropTypes.func.isRequired,
@@ -39,6 +39,7 @@ class UserProfileContainer extends React.Component {
 
   /**
    *  TODOs 
+   * - simplify logic in app's route to determine who's who.
    * - add antd spinner
    * - test how error behaves and display it accordingly 
    *    import inRange from 'lodash/inRange';
@@ -84,4 +85,4 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps,
   ),
-)(UserProfileContainer);
+)(UserProfilePageContainer);
