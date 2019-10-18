@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import {
   selectProfile,
+  selectLoggedInUser,
   selectIsProfileLoading,
   selectErrorProfile,
 } from '../../store/selectors/users';
@@ -20,6 +21,7 @@ class UserProfilePageContainer extends React.Component {
     isLoading: PropTypes.bool.isRequired,
     error: PropTypes.object,
     userID: PropTypes.string,
+    loggedInUser: PropTypes.object,
   };
 
   componentDidMount() {
@@ -48,7 +50,7 @@ class UserProfilePageContainer extends React.Component {
   */
 
   render() {
-    const { isLoading, error, profile } = this.props;
+    const { isLoading, error, profile, loggedInUser } = this.props;
     if (isLoading) {
       return '...loading'; //TODO mettre un spinner
     } else if (error) {
@@ -56,12 +58,13 @@ class UserProfilePageContainer extends React.Component {
     } else if (isEmpty(profile)) {
       return <Error text={'404: Page not found.'} />;
     }
-
+    {console.log(loggedInUser, "LG from container")}
     return (
       <UserProfilePage
         profile={profile}
         onSummitUpdateProfile={this.submit}
         canEdit={this.canEdit()}
+        loggedInUser={loggedInUser}
       />
     );
   }
@@ -69,6 +72,7 @@ class UserProfilePageContainer extends React.Component {
 
 const mapStateToProps = state => ({
   profile: selectProfile(state),
+  loggedInUser: selectLoggedInUser(state),
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
 });
