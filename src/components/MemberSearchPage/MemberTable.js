@@ -25,23 +25,31 @@ const FormatLabel = ({ value, highLightValues, index }) => {
     );
   }
 
-  const res = [];
-  highLightValues.forEach(h => {
-    if (value === h.replace(regex, '')) {
-      const arr = h.split(regex);
-      const [first = '', second = '', third = ''] = arr;
+  const isHighlight = (hit) => {
+    return value === hit.replace(regex, '')
+  };
 
-      res.push(
-        <div key={index} className={'format-label'}>
-          {first}
-          <b>{second}</b>
-          {third}
-        </div>,
-      );
-    }
-  });
+  // eslint-disable-next-line no-unused-vars
+  const [head, ...tail] = highLightValues.filter(isHighlight);
 
-  return res;
+  if(head) {
+    const arr = head.split(regex);
+    const [first = '', second = '', third = ''] = arr;
+
+    return(
+      <div key={index} className={'format-label'}>
+        {first}
+        <b>{second}</b>
+        {third}
+      </div>
+    )
+  } else {
+    return (
+      <div key={index} className={'format-label'}>
+        {value}
+      </div>
+    )
+  }
 };
 
 const regex = /<\/?em>/gi;
