@@ -91,8 +91,6 @@ export const UI_VERSION = packageJson.version;
 
 export const EGO_JWT_KEY = 'EGO_JWT';
 
-export const COHORT_BUILDER_PATH = '/explore';
-
 export const DISEASE_AREAS = [
   'Patients With Both Childhood Cancer And Birth Defects',
   'Childhood Cancer',
@@ -184,5 +182,3 @@ export const ACTIONS_COLUMNS = 'ACTIONS_COLUMNS';
 export const FILE_VIEW = 'FILE_VIEW';
 
 export const KEY_PUBLIC_PROFILE_INVITE_IS_SEEN = 'public_profile_invite_is_seen';
-
-export const SEARCH_MEMBER_PATH = '/memberPage';
