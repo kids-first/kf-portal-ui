@@ -146,7 +146,7 @@ module.exports = {
               // TODO ref/build: try to activate caching results
               cacheDirectory: false,
               // TODO ref/build: move to package.json?
-              plugins: [['emotion', { sourceMap: true }]],
+              plugins: [['emotion', { sourceMap: true }], ['transform-decorators-legacy']],
             },
           },
           // In production, we use a plugin to extract that CSS to a file, but

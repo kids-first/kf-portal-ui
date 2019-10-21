@@ -149,7 +149,7 @@ module.exports = {
             options: {
               compact: true,
               // TODO : move to package.json?
-              plugins: [['emotion', { sourceMap: false }]],
+              plugins: [['emotion', { sourceMap: false }], ['transform-decorators-legacy']],
             },
           },
           // The notation here is somewhat confusing.
