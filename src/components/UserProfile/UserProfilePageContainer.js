@@ -25,7 +25,7 @@ class UserProfilePageContainer extends React.Component {
   };
 
   componentDidMount() {
-    const { onFetchProfile } = this.props;
+    const { onFetchProfile, theme } = this.props;
     onFetchProfile();
   }
 
@@ -58,7 +58,6 @@ class UserProfilePageContainer extends React.Component {
     } else if (isEmpty(profile)) {
       return <Error text={'404: Page not found.'} />;
     }
-    {console.log(loggedInUser, "LG from container")}
     return (
       <UserProfilePage
         profile={profile}
