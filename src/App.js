@@ -36,9 +36,10 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { DCF, GEN3, COHORT_BUILDER_PATH, SEARCH_MEMBER_PATH } from 'common/constants';
+import { DCF, GEN3 } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
+import ROUTES from 'common/routes';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -75,7 +76,7 @@ const App = compose(
     <AppContainer>
       <Switch>
         <Route
-          path="/admin"
+          path={ROUTES.admin}
           render={props =>
             forceSelectRole({
               api,
@@ -85,7 +86,7 @@ const App = compose(
                 return !isAdminToken({
                   validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                 }) ? (
-                  <Redirect to="/dashboard" />
+                  <Redirect to={ROUTES.dashboard} />
                 ) : (
                   <ArrangerAdmin baseRoute={match.url} failRedirect={'/'} />
                 );
@@ -99,7 +100,7 @@ const App = compose(
         />
         <Route
           // TODO: left here for convenience during roll out of the new admin
-          path="/admin_legacy"
+          path={ROUTES.adminLegacy}
           render={props =>
             forceSelectRole({
               api,
@@ -109,7 +110,7 @@ const App = compose(
                 return !isAdminToken({
                   validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                 }) ? (
-                  <Redirect to="/dashboard" />
+                  <Redirect to={ROUTES.dashboard} />
                 ) : (
                   <ArrangerDashboardLegacy basename={match.url} {...props} />
                 );
@@ -121,9 +122,9 @@ const App = compose(
             })
           }
         />
-        <Route path="/auth-redirect" exact component={AuthRedirect} />
+        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
         <Route
-          path="/orcid"
+          path={ROUTES.orcid}
           exact
           render={props => (
             <SideImagePage
@@ -136,9 +137,9 @@ const App = compose(
             />
           )}
         />
-        <Route path="/redirected" exact component={() => null} />
+        <Route path={ROUTES.redirected} exact component={() => null} />
         <Route
-          path={COHORT_BUILDER_PATH}
+          path={ROUTES.cohortBuilder}
           exact
           render={props =>
             forceSelectRole({
@@ -152,7 +153,7 @@ const App = compose(
           }
         />
         <Route
-          path={SEARCH_MEMBER_PATH}
+          path={ROUTES.searchMember}
           exact
           render={props =>
             forceSelectRole({
@@ -164,7 +165,7 @@ const App = compose(
           }
         />
         <Route
-          path="/file/:fileId"
+          path={`${ROUTES.file}/:fileId`}
           exact
           render={props =>
             forceSelectRole({
@@ -178,7 +179,7 @@ const App = compose(
           }
         />
         <Route
-          path="/participant/:participantId"
+          path={`${ROUTES.participant}/:participantId`}
           exact
           render={props =>
             forceSelectRole({
@@ -191,7 +192,7 @@ const App = compose(
           }
         />
         <Route
-          path="/search/:index"
+          path={`${ROUTES.search}/:index`}
           exact
           render={props =>
             forceSelectRole({
@@ -206,7 +207,7 @@ const App = compose(
           }
         />
         <Route
-          path="/user/:egoId"
+          path={`${ROUTES.user}/:egoId`}
           exact
           render={props =>
             forceSelectRole({
@@ -219,7 +220,7 @@ const App = compose(
           }
         />
         <Route
-          path="/dashboard"
+          path={ROUTES.dashboard}
           exact
           render={props =>
             forceSelectRole({
@@ -232,7 +233,7 @@ const App = compose(
           }
         />
         <Route
-          path="/join"
+          path={ROUTES.join}
           exact
           render={props => {
             return (
@@ -263,10 +264,10 @@ const App = compose(
             />
           )}
         />
-        <Route path="/gen3_redirect" exact render={props => <FenceAuthRedirect fence={GEN3} />} />
-        <Route path="/dcf_redirect" exact render={props => <FenceAuthRedirect fence={DCF} />} />
-        <Route path="/error" exact render={() => <Error />} />
-        <Redirect from="*" to="/dashboard" />
+        <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
+        <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
+        <Route path={ROUTES.error} exact render={() => <Error />} />
+        <Redirect from="*" to={ROUTES.dashboard} />
       </Switch>
       <Modal />
       <GlobalModal />

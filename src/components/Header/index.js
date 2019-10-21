@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom';
 import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
 import UserIcon from 'react-icons/lib/fa/user';
@@ -14,7 +13,6 @@ import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';
-import { COHORT_BUILDER_PATH, SEARCH_MEMBER_PATH } from 'common/constants';
 import { withApi } from 'services/api';
 import {
   NavLink,
@@ -33,6 +31,20 @@ import {
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
 import { isFeatureEnabled } from 'common/featuresToggles';
+import { Alert } from 'antd';
+import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
+import ROUTES from 'common/routes';
+
+const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
+
+const showPublicProfileInvite = (user = {}) => {
+  if (!isSearchMemberFeatEnabled) {
+    return false;
+  }
+  return (
+    !Boolean(user.isPublic) && !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
+  );
+};
 
 const ExploreDataIconStyled = styled(ExploreDataIcon)`
   top: 3px;
@@ -40,10 +52,12 @@ const ExploreDataIconStyled = styled(ExploreDataIcon)`
   fill: currentColor;
 `;
 
+const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
+const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user.egoId}${hash}`;
+
 const Header = ({
   state: { loggedInUser },
   effects: { setUser, setToken, clearIntegrationTokens },
-  theme,
   history,
   match: { path },
   api,
@@ -56,6 +70,7 @@ const Header = ({
       path !== '/join' &&
       path !== '/');
   const currentPathName = history.location.pathname;
+
   return (
     <DropDownState
       render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
@@ -63,29 +78,29 @@ const Header = ({
           <GradientAccent />
           <HeaderContent>
             <Row>
-              <Link to="/dashboard">
+              <Link to={ROUTES.dashboard}>
                 <Logo src={logoPath} alt="Kids First Logo" />
               </Link>
               {canSeeProtectedRoutes && (
                 <NavBarList ml={40}>
                   <li>
-                    <NavLink currentPathName={currentPathName} to="/dashboard">
+                    <NavLink currentPathName={currentPathName} to={ROUTES.dashboard}>
                       <HouseIcon /> <Trans>Dashboard</Trans>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to={COHORT_BUILDER_PATH}>
+                    <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
                       <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to={`/search/file`}>
+                    <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
                       <DatabaseIcon /> <Trans>File Repository</Trans>
                     </NavLink>
                   </li>
-                  {isFeatureEnabled('searchMembers') && (
+                  {isSearchMemberFeatEnabled && (
                     <li>
-                      <NavLink currentPathName={currentPathName} to={SEARCH_MEMBER_PATH}>
+                      <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
                         <UserIcon /> <Trans>Members Search</Trans>
                       </NavLink>
                     </li>
@@ -97,11 +112,11 @@ const Header = ({
               {!loggedInUser && (
                 <li>
                   {path === '/' ? (
-                    <LinkAsButton to="/join">
+                    <LinkAsButton to={ROUTES.join}>
                       <Trans>Join now</Trans>
                     </LinkAsButton>
                   ) : (
-                    <LinkAsButton to="/">
+                    <LinkAsButton to={ROUTES.login}>
                       <Trans>Login</Trans>
                     </LinkAsButton>
                   )}
@@ -119,18 +134,18 @@ const Header = ({
                   items={[
                     <DropdownLink
                       onClick={toggleDropdown}
-                      to={`/user/${loggedInUser.egoId}#aboutMe`}
+                      to={getUrlForUser(loggedInUser, '#aboutMe')}
                     >
                       <Trans>My Profile</Trans>
                     </DropdownLink>,
                     <DropdownLink
                       onClick={toggleDropdown}
-                      to={`/user/${loggedInUser.egoId}#settings`}
+                      to={getUrlForUser(loggedInUser, '#settings')}
                     >
                       Settings
                     </DropdownLink>,
                     <DropdownLink
-                      to={`/dashboard`}
+                      to={ROUTES.dashboard}
                       separated
                       onClick={e => {
                         e.preventDefault();
@@ -154,6 +169,22 @@ const Header = ({
               )}
             </NavBarList>
           </HeaderContent>
+          {showPublicProfileInvite(loggedInUser) && (
+            <Alert
+              message={
+                <Fragment>
+                  <Link to={getUrlForUser(loggedInUser, '#settings')}>
+                    Make your profile public
+                  </Link>
+                  {' so that other members can view it!'}
+                </Fragment>
+              }
+              type="info"
+              banner
+              closable
+              onClose={onCloseAlert}
+            />
+          )}
         </HeaderContainer>
       )}
     />
@@ -162,7 +193,6 @@ const Header = ({
 
 export default compose(
   injectState,
-  withTheme,
   withRouter,
   withApi,
 )(Header);

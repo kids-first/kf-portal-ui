@@ -25,8 +25,6 @@ import RoleIconButton from '../RoleIconButton';
 import Row from 'uikit/Row';
 import { H1 } from 'uikit/Headings';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
-import { Alert } from 'antd';
-import { isFeatureEnabled } from 'common/featuresToggles';
 
 export const userProfileBackground = (
   loggedInUser,
@@ -46,16 +44,6 @@ export const userProfileBackground = (
         ${profileColors.gradientLight}
       );
   `;
-};
-
-const showPublicProfileInvite = (profile = {}) => {
-  if (!isFeatureEnabled('searchMembers')) {
-    //TODO : remove me one day :)
-    return false;
-  }
-  return (
-    !Boolean(profile.isPublic) && !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
-  );
 };
 
 export default compose(
@@ -134,16 +122,6 @@ export default compose(
         flex: 1;
       `}
     >
-      {hash !== '#settings' && showPublicProfileInvite(profile) && (
-        <Alert
-          message="Make your profile public"
-          description="You can make your profile public by changing your account settings"
-          type="info"
-          banner
-          closable
-          onClose={onCloseAlert}
-        />
-      )}
       <div
         className={css`
           ${userProfileBackground(profile)};
