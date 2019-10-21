@@ -95,3 +95,6 @@ export const reactApiSearchMembersApi = getApplicationEnvVar('SEARCH_MEMBERS_API
 export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
 
 export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') || null;
+
+// Reports API
+export const reportsApiRoot = getApplicationEnvVar('REPORTS_API') || '';

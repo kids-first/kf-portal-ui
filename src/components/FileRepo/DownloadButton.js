@@ -3,9 +3,9 @@ import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
-import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 import { uniq } from 'lodash';
 import Component from 'react-component-component';
+import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 import Row from 'uikit/Row';
@@ -21,6 +21,7 @@ import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 import Tooltip from 'uikit/Tooltip';
+import clinicalDataReport from '../../services/reports/clinicalData';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
@@ -70,29 +71,36 @@ const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon
 });
 
 const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
-  const { participantIds } = await familyMemberAndParticipantIds({
-    api,
-    sqon,
-    isFileRepo,
-  });
-  let downloadConfig = {
-    sqon: {
-      op: 'in',
-      content: {
-        field: isFileRepo ? 'participants.kf_id' : 'kf_id',
-        value: participantIds,
-      },
-    },
-    columns: columnState.columns,
-    isFileRepo: isFileRepo,
-  };
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
     label: 'Clinical (Participant)',
   });
-  const downloader = clinicalDataParticipants(downloadConfig);
-  return downloader();
+
+  // Keep legacy code for File Repository Download button until the endpoint supports it
+  if (isFileRepo) {
+    const { participantIds } = await familyMemberAndParticipantIds({
+      api,
+      sqon,
+      isFileRepo,
+    });
+    let downloadConfig = {
+      sqon: {
+        op: 'in',
+        content: {
+          field: isFileRepo ? 'participants.kf_id' : 'kf_id',
+          value: participantIds,
+        },
+      },
+      columns: columnState.columns,
+      isFileRepo: isFileRepo,
+    };
+    const downloader = clinicalDataParticipants(downloadConfig);
+    return downloader();
+  }
+
+  // The new report
+  return clinicalDataReport(sqon);
 };
 
 const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
