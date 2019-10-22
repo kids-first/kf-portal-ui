@@ -12,3 +12,15 @@ export function bind(target, name, descriptor) {
     },
   };
 }
+
+export const extractErrorMessage = (response, indexError = 0) => {
+  if (!response) {
+    return;
+  }
+  const data = response.data || {};
+  const errors = data.errors;
+  if (!Array.isArray(errors)) {
+    return;
+  }
+  return (errors[indexError] || {}).message;
+};

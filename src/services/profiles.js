@@ -46,23 +46,36 @@ const DEFAULT_FIELDS = `
 
 const url = urlJoin(personaApiRoot, 'graphql');
 
-export const getProfile = api => async () => {
-  const {
-    data: { self },
-  } = await api({
-    url,
-    body: {
-      query: `
+export const getProfile = api => async id => {
+  const params = id
+    ? {
+        url,
+        body: {
+          variables: { _id: id },
+          query: `
+      query($_id: MongoID!){
+        user(_id:$_id){
+            ${DEFAULT_FIELDS}
+        }
+      }
+    `,
+        },
+      }
+    : {
+        url,
+        body: {
+          query: `
         query {
           self {
             ${DEFAULT_FIELDS}
           }
         }
       `,
-    },
-  });
+        },
+      };
 
-  return self;
+  const response = await api(params);
+  return response.data[id ? 'user' : 'self'];
 };
 
 export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {

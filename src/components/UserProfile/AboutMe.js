@@ -111,12 +111,11 @@ export default compose(
             <H3 lineHeight="1.71" letterSpacing="0.2px">
               My bio
             </H3>
-            {(bioTextarea === '' || isEditingBackgroundInfo) &&
-              canEdit && (
-                <H4>
-                  Share information about your professional background and your research interests.
-                </H4>
-              )}
+            {(bioTextarea === '' || isEditingBackgroundInfo) && canEdit && (
+              <H4>
+                Share information about your professional background and your research interests.
+              </H4>
+            )}
             <EditableLabel
               autoFocus={focusedTextArea !== 'myStory'}
               type="textarea"
@@ -148,8 +147,9 @@ export default compose(
             <H3 lineHeight="1.71" letterSpacing="0.2px" mt="40px">
               My story
             </H3>
-            {(storyTextarea === '' || isEditingBackgroundInfo) &&
-              canEdit && <H4>Share why you’re a part of the Kids First community.</H4>}
+            {(storyTextarea === '' || isEditingBackgroundInfo) && canEdit && (
+              <H4>Share why you’re a part of the Kids First community.</H4>
+            )}
             <EditableLabel
               autoFocus={focusedTextArea === 'myStory'}
               type="textarea"
@@ -211,7 +211,7 @@ export default compose(
               </TealActionButton>
             </ActionBar>
           )}
-          <Contact mt={'50px'} profile={profile} />
+          <Contact mt={'50px'} profile={profile} canEdit={canEdit} />
         </Column>
 
         <Column width="35%">
