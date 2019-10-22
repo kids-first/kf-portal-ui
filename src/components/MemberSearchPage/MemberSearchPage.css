@@ -33,3 +33,13 @@
 div.flex {
     display: flex;
 }
+
+.comma:not(:last-of-type):after {
+    content: ",";
+}
+.comma:nth-last-of-type(2):before {
+    content: none;
+}
+.comma:nth-last-of-type(2):after {
+    content: " and ";
+}

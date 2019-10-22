@@ -1,9 +1,11 @@
-import { Col, List, Row } from 'antd';
+import { Col, List, Row, Typography } from 'antd';
 import React from 'react';
 import { find } from 'lodash';
 import { ROLES } from 'common/constants';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
+
+const { Text, Paragraph } = Typography;
 
 const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayName;
 
@@ -13,42 +15,43 @@ const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayN
  * @param {String}    value           Text to be formatted (ex. "xx abc yy")
  * @param {[String]}  highLightValues Array of highlighted texts
  * (ex. ["...", "xx <em>abc</em> yy", ".."]
+ * @param classname
  * @param index
  * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
  */
-const FormatLabel = ({ value, highLightValues, index }) => {
+const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
   if (!highLightValues) {
     return (
-      <div key={index} className={'format-label'}>
+      <div key={index} className={`format-label ${classname}`}>
         {value}
       </div>
     );
   }
 
-  const isHighlight = (hit) => {
-    return value === hit.replace(regex, '')
+  const isHighlight = hit => {
+    return value === hit.replace(regex, '');
   };
 
   // eslint-disable-next-line no-unused-vars
   const [head, ...tail] = highLightValues.filter(isHighlight);
 
-  if(head) {
+  if (head) {
     const arr = head.split(regex);
     const [first = '', second = '', third = ''] = arr;
 
-    return(
+    return (
       <div key={index} className={'format-label'}>
         {first}
         <b>{second}</b>
         {third}
       </div>
-    )
+    );
   } else {
     return (
       <div key={index} className={'format-label'}>
         {value}
       </div>
-    )
+    );
   }
 };
 
@@ -81,9 +84,15 @@ const MemberTable = props => {
     <div className={'member-list-container'}>
       <List
         itemLayout={'vertical'}
-        header={`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
-          props.count.public
-        } (${props.count.total} members matching)`}
+        // header={`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+        //   props.count.public
+        // } (${props.count.total} members matching)`}
+        header={<Row>
+          <Col span={12} style={{textAlign:'left'}}>{`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+            props.count.public
+          }`}</Col>
+          <Col span={12} style={{textAlign:'right'}} >{`${props.count.total} members total (public & private)`}</Col>
+        </Row>}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
@@ -112,7 +121,7 @@ const MemberTable = props => {
                   <div className={'flex'}>
                     {item.title ? (
                       <div key={0} style={{ paddingRight: 5 }}>
-                        {item.title.toUpperCase()}
+                        {item.title[0].toUpperCase() + item.title.slice(1) + '.'}
                       </div>
                     ) : (
                       ''
@@ -129,16 +138,22 @@ const MemberTable = props => {
                     />
                   </div>
                 </a>
+                <Text>{item.institution}</Text>
                 <Address item={item} />
-                <div className={'interest-container'}>
-                  {item.interests.map((interest, index) => (
-                    <FormatLabel
-                      value={interest}
-                      highLightValues={item.highlight ? item.highlight.interests : null}
-                      key={index}
-                    />
-                  ))}
-                </div>
+                {item.interests.length < 1 ? (
+                  ''
+                ) : (
+                   <Paragraph className={'interest-container'} >
+                     Research Interests: &nbsp; {item.interests.map((interest, index) => (
+                      <FormatLabel
+                        value={interest}
+                        highLightValues={item.highlight ? item.highlight.interests : null}
+                        key={index}
+                        classname={'comma'}
+                      />
+                    ))}
+                  </Paragraph>
+                )}
               </Col>
             </Row>
           </List.Item>
