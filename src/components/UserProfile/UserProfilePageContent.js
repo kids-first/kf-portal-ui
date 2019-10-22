@@ -1,23 +1,17 @@
 import React, { useState } from 'react';
-import { Card, Col, Icon, Input, Row, Typography } from 'antd';
-import { ClickToAdd } from 'components/UserProfile/ui';
-import EditableLabel from 'uikit/EditableLabel';
+import { Card, Col, Row, Typography } from 'antd';
 import { withTheme } from 'emotion-theming';
 import { trackProfileInteraction } from 'services/analyticsTracking';
 
-const { Title, Text } = Typography;
+const { Title, Paragraph, Text } = Typography;
 const { Meta } = Card;
-const { TextArea } = Input;
 
 const Box = props => (
   <Card
     className={`height-${props.value}`}
     style={{ backgroundColor: 'white', width: '100%', height: '100%', borderRadius: 10 }}
   >
-    <Meta
-      className={'text-color-dark'}
-      title={<Title level={2}>Profile</Title>}
-    />
+    <Meta className={'text-color-dark'} title={<Title level={2}>Profile</Title>} />
     {props.children}
   </Card>
 );
@@ -28,9 +22,16 @@ const gridStyle = {
 };
 
 const handleEditingBackgroundInfo = ({ setEditingBackgroundInfo }) => ({ type, value }) => {
+  console.log("EDIT");
   setEditingBackgroundInfo(value);
   trackProfileInteraction({ action: 'Profile', value, type });
 };
+
+const onChange = () => {
+  console.log("toto")
+};
+
+
 
 const UserProfilePageContent = ({
   profile,
@@ -50,19 +51,26 @@ const UserProfilePageContent = ({
       <Col span={14}>
         <Row type="flex" justify="space-around" align="middle">
           <Box value={100}>
-            <Card
-              style={gridStyle}
-              extra={<Icon type="edit" theme="twoTone"  style={{fontSize: '20px', color: '#08c', cursor: 'pointer' }} />}
-            >
-              <Meta
-                title={<Title level={3}>My Bio</Title>}
-              />
-              {(profile.bio === '' || isEditingBackgroundInfo) && canEdit && (
-                <Text>
-                  Share information about your professional background and your research interests.
-                </Text>
-              )}
-              <TextArea />
+            <Card style={gridStyle}>
+              <Meta title={<Title level={3}>My Bio</Title>} />
+              {(profile.bio === '' || isEditingBackgroundInfo) &&
+              canEdit && ( //FIXME
+                  <Text
+                    ellipsis={{
+                      rows: 3,
+                    }}
+                    // editable={{ onChange: () => {
+                    //     handleEditingBackgroundInfo({
+                    //       value: !isEditingBackgroundInfo,
+                    //     });
+                    //     setFocusedTextArea('myBio'); }
+                    // }}
+                    editable={{ onChange: onChange }}
+                  >
+                    Share information about your professional background and your research
+                    interests.
+                  </Text>
+                )}
             </Card>
             <Card.Grid style={gridStyle}>Content</Card.Grid>
           </Box>
