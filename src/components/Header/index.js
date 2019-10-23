@@ -53,7 +53,7 @@ const ExploreDataIconStyled = styled(ExploreDataIcon)`
 `;
 
 const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
-const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user.egoId}${hash}`;
+const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
 const Header = ({
   state: { loggedInUser },

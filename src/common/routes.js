@@ -16,6 +16,7 @@ const ROUTES = {
   search: '/search',
   searchMember: '/memberPage',
   user: '/user',
+  profile: '/profile',
 };
 
 export default ROUTES;
