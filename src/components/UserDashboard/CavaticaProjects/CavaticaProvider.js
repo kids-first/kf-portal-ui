@@ -10,7 +10,7 @@ const CavaticaProvider = ({ children, isConnected }) => {
 
     const projects = await getCavaticaProjects();
     const projectList = await Promise.all(
-      projects.map(async p => {
+      (projects || []).map(async p => {
         const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
           getMembers({ project: p.id }),
           getTasks({ project: p.id, type: 'COMPLETED' }),
