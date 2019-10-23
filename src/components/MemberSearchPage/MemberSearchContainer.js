@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { Icon, Input, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
-
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 
 class MemberSearchContainer extends Component {
@@ -69,7 +68,7 @@ class MemberSearchContainer extends Component {
 
   render() {
     return (
-      <MemberSearchBorder>
+      <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
         <Input
           style={{ borderRadius: 30 }}
           onChange={this.handleChange}
@@ -100,6 +99,7 @@ const mapStateToProps = state => ({
   members: state.ui.memberSearchPageReducer.members,
   count: state.ui.memberSearchPageReducer.count,
   pending: state.ui.memberSearchPageReducer.pending,
+  loggedInUser: state.user.loggedInUser,
 });
 
 const mapDispatchToProps = dispatch =>

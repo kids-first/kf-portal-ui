@@ -4,58 +4,12 @@ import { find } from 'lodash';
 import { ROLES } from 'common/constants';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
+import FormatLabel from 'components/MemberSearchPage/FormatLabel';
+import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
 
-const { Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayName;
-
-/**
- * Formats a text value. Returns the same text value
- * with a portion of the text in bold.
- * @param {String}    value           Text to be formatted (ex. "xx abc yy")
- * @param {[String]}  highLightValues Array of highlighted texts
- * (ex. ["...", "xx <em>abc</em> yy", ".."]
- * @param classname
- * @param index
- * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
- */
-const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
-  if (!highLightValues) {
-    return (
-      <div key={index} className={`format-label ${classname}`}>
-        {value}
-      </div>
-    );
-  }
-
-  const isHighlight = hit => {
-    return value === hit.replace(regex, '');
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  const [head, ...tail] = highLightValues.filter(isHighlight);
-
-  if (head) {
-    const arr = head.split(regex);
-    const [first = '', second = '', third = ''] = arr;
-
-    return (
-      <div key={index} className={'format-label'}>
-        {first}
-        <b>{second}</b>
-        {third}
-      </div>
-    );
-  } else {
-    return (
-      <div key={index} className={'format-label'}>
-        {value}
-      </div>
-    );
-  }
-};
-
-const regex = /<\/?em>/gi;
 
 const Address = ({ item }) => (
   <div className={'flex'}>
@@ -84,9 +38,6 @@ const MemberTable = props => {
     <div className={'member-list-container'}>
       <List
         itemLayout={'vertical'}
-        // header={`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
-        //   props.count.public
-        // } (${props.count.total} members matching)`}
         header={<Row>
           <Col span={12} style={{textAlign:'left'}}>{`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
             props.count.public
@@ -140,20 +91,15 @@ const MemberTable = props => {
                 </a>
                 <Text>{item.institution}</Text>
                 <Address item={item} />
-                {item.interests.length < 1 ? (
-                  ''
-                ) : (
-                   <Paragraph className={'interest-container'} >
-                     Research Interests: &nbsp; {item.interests.map((interest, index) => (
-                      <FormatLabel
-                        value={interest}
-                        highLightValues={item.highlight ? item.highlight.interests : null}
-                        key={index}
-                        classname={'comma'}
-                      />
-                    ))}
-                  </Paragraph>
-                )}
+                <div>
+                  {
+                    item.interests.length < 1 ? (
+                      ''
+                    ) : (
+                      <MemberInterests interests={item.interests} highligthts={item.highlight ? item.highlight.interests : []} />
+                    )
+                  }
+                </div>
               </Col>
             </Row>
           </List.Item>
