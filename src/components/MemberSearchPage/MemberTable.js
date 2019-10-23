@@ -6,6 +6,8 @@ import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
+import {Link} from 'uikit/Core';
+import ROUTES from 'common/routes';
 
 const { Text } = Typography;
 
@@ -68,7 +70,7 @@ const MemberTable = props => {
                 {item.roles[0] ? userRoleDisplayName(item.roles[0]) : 'NO ROLE'}
               </Col>
               <Col xxl={18} xl={15} lg={15} md={15} sm={12}>
-                <a>
+                <Link to={`${ROUTES.user}/${item._id}`}>
                   <div className={'flex'}>
                     {item.title ? (
                       <div key={0} style={{ paddingRight: 5 }}>
@@ -88,7 +90,7 @@ const MemberTable = props => {
                       index={2}
                     />
                   </div>
-                </a>
+                </Link>
                 <Text>{item.institution}</Text>
                 <Address item={item} />
                 <div>
@@ -96,7 +98,7 @@ const MemberTable = props => {
                     item.interests.length < 1 ? (
                       ''
                     ) : (
-                      <MemberInterests interests={item.interests} highligthts={item.highlight ? item.highlight.interests : []} />
+                      <MemberInterests interests={item.interests} highlights={(item.highlight || {}).interests || [] } />
                     )
                   }
                 </div>

@@ -1,3 +1,6 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
 /**
  * Formats a text value. Returns the same text value
  * with a portion of the text in bold.
@@ -8,7 +11,6 @@
  * @param index
  * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
  */
-import React from 'react';
 
 const regex = /<\/?em>/gi;
 
@@ -46,6 +48,13 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
       </div>
     );
   }
+};
+
+FormatLabel.propTypes = {
+  value: PropTypes.string.isRequired,
+  highLightValues: PropTypes.array.isRequired,
+  classname: PropTypes.string,
+  index: PropTypes.number.isRequired,
 };
 
 export default FormatLabel;
