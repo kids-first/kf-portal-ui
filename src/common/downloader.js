@@ -45,13 +45,17 @@ const getBlobFromResponse = (res, responseType = 'json') => {
 };
 
 /**
- * Download a file obtained from the given request `args`.
- * Specify `responseType` to ensure the response is handled properly.
+ * Download a file obtained from the given request `opts`.
+ * @param opts {Object} - an axios request config object.
+ * @param opts.responseType {string} - Specify `responseType` to ensure the response is handled properly.
+ * `'json'`, `'text'`, `'blob'`, `'arraybuffer'` are supported.
+ * The appropriate `Content-Type` header will be included in the request.
+ * Defaults to `'json'`.
  * @see https://www.npmjs.com/package/axios#request-config
  *
- * @returns {Promise} a promise that resolve to nothing once the request is done.
+ * @returns {Promise<void>} a promise that resolve to `void` once the request is done.
  */
-export default (opts = {}) => {
+export default async (opts = {}) => {
   if (opts.responseType && ['stream', 'document'].includes(opts.responseType)) {
     throw new Error(`Unsupported responseType "${opts.responseType}" provided.`);
   }
