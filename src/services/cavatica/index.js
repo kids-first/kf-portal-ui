@@ -36,7 +36,7 @@ export const getUser = async () => {
     });
     data = response.data;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return data;
 };
@@ -118,20 +118,6 @@ const createProject = async ({ name, billing_group, description = '' }) => {
   return data;
 };
 
-export const getFiles = async () => {
-  let data;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/files',
-      method: 'GET',
-    });
-    data = response.data;
-  } catch (error) {
-    console.warn(error);
-  }
-  return data;
-};
-
 export const getMembers = async ({ project }) => {
   let data;
   try {
@@ -176,7 +162,6 @@ export const getTaskLink = ({ project, status }) => {
  */
 export const convertFenceUuids = async ({ ids, fence }) => {
   let items = [];
-
   /* ABOUT THE CHUNKS:
    * Cavatica has a limit of how many items it can take at one time,
    *  so we batch a list of ids into chunks of size 75
@@ -205,7 +190,7 @@ export const convertFenceUuids = async ({ ids, fence }) => {
       });
       items.push(...response.data.items);
     } catch (error) {
-      console.warn(error);
+      throw error;
     }
   }
   return items;
@@ -219,7 +204,6 @@ export const convertFenceUuids = async ({ ids, fence }) => {
  */
 export const copyFiles = async ({ project, ids }) => {
   let data = [];
-
   //Cavatica times out if copying too many files at a time,
   // chunk it into groups of 75 to accomodate.
   const chunks = makeChunks(ids, 75);
@@ -235,7 +219,7 @@ export const copyFiles = async ({ project, ids }) => {
       });
       data.push(response.data);
     } catch (error) {
-      console.warn(error);
+      throw error;
     }
   }
   return data;

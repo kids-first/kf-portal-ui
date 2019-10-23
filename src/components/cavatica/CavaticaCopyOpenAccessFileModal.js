@@ -9,11 +9,13 @@ import { SuccessToastComponent } from './CavaticaSuccessToast';
 import { cssCopyModalRoot } from './css';
 import { copyToProject } from './api';
 import CavaticaProjects from './CavaticaProjects';
+import { Alert } from 'antd';
 
 class CavaticaCopyOpenAccessFileModal extends React.Component {
   state = {
     addingProject: false,
     selectedProjectData: null,
+    error: null,
   };
   render() {
     const {
@@ -25,9 +27,18 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
     } = this.props;
 
     const { addingProject, selectedProjectData } = this.state;
-
+    const { error } = this.state;
     return (
       <div css={cssCopyModalRoot(theme)}>
+        {error && (
+          <Alert
+            message="Error"
+            description="An error occured. Please try again or contact our support."
+            type="error"
+            closable
+            showIcon
+          />
+        )}
         <div className="content">
           <span css={theme.modalHeader}>Select which Cavatica project you want to copy to:</span>
           <CavaticaProjects
@@ -68,12 +79,13 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
                 });
                 onComplete();
               } catch (e) {
-                console.error(e); //TODO: Display failure error.
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Copied File to Cavatica Project FAILED',
                   label: e.message ? e.message : null,
                 });
+                console.error(e);
+                this.setState({ error: e });
               }
             },
             submitDisabled: !selectedProjectData,
