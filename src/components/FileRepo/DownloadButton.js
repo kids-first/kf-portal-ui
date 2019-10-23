@@ -22,6 +22,7 @@ import { DropDownState } from 'components/Header/AppsMenu';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 import Tooltip from 'uikit/Tooltip';
 import clinicalDataReport from '../../services/reports/clinicalData';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
@@ -78,7 +79,7 @@ const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
   });
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo) {
+  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
     const { participantIds } = await familyMemberAndParticipantIds({
       api,
       sqon,
