@@ -1,6 +1,6 @@
 import { injectState, provideState, update } from 'freactal';
 import { compose, lifecycle } from 'recompose';
-import _, { flatten } from 'lodash';
+import { keys, omit, isEmpty, flatMap, flatten } from 'lodash';
 
 import { getFenceUser } from 'services/fence';
 import { FENCES } from 'common/constants';
@@ -9,7 +9,7 @@ import { graphql } from 'services/arranger';
 
 async function getAuthStudiesIdAndCount(userAcl, fence, api) {
   return graphql(api)({
-      query: `
+    query: `
             query AuthorizedStudyIdsAndCount($sqon: JSON) {
               file {
                 aggregations(filters: $sqon, aggregations_filter_themselves: true){
@@ -22,50 +22,52 @@ async function getAuthStudiesIdAndCount(userAcl, fence, api) {
               }
             }
     `,
-      variables: {
-
-        sqon: {
-          op: 'and', content: [
-            { op: 'in', content: { field: 'acl', value: userAcl } },
-            { op: 'in', content: { field: 'repository', value: fence } },
-          ],
-        },
-
+    variables: {
+      sqon: {
+        op: 'and',
+        content: [
+          { op: 'in', content: { field: 'acl', value: userAcl } },
+          { op: 'in', content: { field: 'repository', value: fence } },
+        ],
       },
     },
-  ).then(
+  }).then(
     ({
-       data: {
-         file: {
-           aggregations: {
-             participants__study__external_id: { buckets },
-           },
-         },
-       },
-     }) =>
-      buckets.reduce(
-        (obj, { key, doc_count }) => {
-          obj[key] = { authorizedFiles: doc_count };
-          return obj;
-        }, {},
-      ),
+      data: {
+        file: {
+          aggregations: {
+            participants__study__external_id: { buckets },
+          },
+        },
+      },
+    }) =>
+      buckets.reduce((obj, { key, doc_count }) => {
+        obj[key] = { authorizedFiles: doc_count };
+        return obj;
+      }, {}),
   );
-
 }
 
 async function getStudiesCountByNameAndAcl(studies, userAcl, api) {
-  const studyIds = _.keys(studies);
+  const studyIds = keys(studies);
 
   const sqons = studyIds.reduce((obj, studyId) => {
-    obj[`${studyId}_sqon`] = { op: 'in', content: { field: 'participants.study.external_id', value: [studyId] } };
+    obj[`${studyId}_sqon`] = {
+      op: 'in',
+      content: { field: 'participants.study.external_id', value: [studyId] },
+    };
     return obj;
   }, {});
 
   return graphql(api)({
-      query: `
-        query StudyCountByNamesAndAcl(${studyIds.map(studyId => `$${studyId}_sqon: JSON`)}) {          
+    query: `
+        query StudyCountByNamesAndAcl(${studyIds.map(
+          studyId => `$${studyId}_sqon: JSON`,
+        )}) {          
           file {
-            ${studyIds.map((studyId) => `
+            ${studyIds
+              .map(
+                studyId => `
               ${studyId}: aggregations(filters: $${studyId}_sqon, aggregations_filter_themselves: true) {
                 acl {
                   buckets {
@@ -79,30 +81,27 @@ async function getStudiesCountByNameAndAcl(studies, userAcl, api) {
                   }
                 } 
               }
-            `).join('')}
+            `,
+              )
+              .join('')}
 
           }
         }
     `,
-      variables: sqons,
-    },
-  )
-    .then(
-      ({ data: { file } }) => {
-        return studyIds.map(id => {
-          let study = {};
-          const agg = file[id];
-          study['acl'] = agg['acl']['buckets'].map(b => b.key).filter(a => userAcl.includes(a));
-          study['studyShortName'] = agg['participants__study__short_name']['buckets'][0]['key'];
-          study['totalFiles'] = agg['participants__study__short_name']['buckets'][0]['doc_count'];
-          study['id'] = id;
-          study['authorizedFiles'] = studies[id]['authorizedFiles'];
+    variables: sqons,
+  }).then(({ data: { file } }) => {
+    return studyIds.map(id => {
+      let study = {};
+      const agg = file[id];
+      study['acl'] = agg['acl']['buckets'].map(b => b.key).filter(a => userAcl.includes(a));
+      study['studyShortName'] = agg['participants__study__short_name']['buckets'][0]['key'];
+      study['totalFiles'] = agg['participants__study__short_name']['buckets'][0]['doc_count'];
+      study['id'] = id;
+      study['authorizedFiles'] = studies[id]['authorizedFiles'];
 
-          return study;
-        });
-      },
-    );
-
+      return study;
+    });
+  });
 }
 
 export default provideState({
@@ -136,8 +135,8 @@ export default provideState({
         Object.keys(fenceConnections).map(fence => Object.keys(fenceConnections[fence].projects)),
       ),
     fenceAuthStudies: ({ fenceStudies }) =>
-      !_.isEmpty(fenceStudies)
-        ? _.flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)
+      !isEmpty(fenceStudies)
+        ? flatMap(Object.values(fenceStudies), studies => studies.authorizedStudies)
         : [],
   },
   effects: {
@@ -155,8 +154,8 @@ export default provideState({
       };
     }),
     removeFenceConnection: update((state, fence) => ({
-      fenceConnections: _.omit(state.fenceConnections, fence),
-      fenceStudies: _.omit(state.fenceStudies, fence),
+      fenceConnections: omit(state.fenceConnections, fence),
+      fenceStudies: omit(state.fenceStudies, fence),
       fenceStudiesInitialized: false,
     })),
     fetchFenceConnections: (effects, { api }) => {
@@ -186,35 +185,30 @@ export default provideState({
       fenceStudies: {},
       fenceStudiesInitialized: false,
     })),
-    addFenceStudies: update(
-      (state, fence, authorizedStudies) => ({
-        fenceStudies: {
-          ...state.fenceStudies,
-          [fence]: authorizedStudies,
-        },
-      }),
-    ),
+    addFenceStudies: update((state, fence, authorizedStudies) => ({
+      fenceStudies: {
+        ...state.fenceStudies,
+        [fence]: authorizedStudies,
+      },
+    })),
     fetchFenceStudies: (effects, { api, fence, details }) => {
       const userAcl = Object.keys(details.projects).concat('*');
-      return getAuthStudiesIdAndCount(userAcl, fence, api).then(
-        studies => {
-          if (!_.isEmpty(studies))
-            return getStudiesCountByNameAndAcl(studies, userAcl, api);
+      return getAuthStudiesIdAndCount(userAcl, fence, api)
+        .then(studies => {
+          if (!isEmpty(studies)) return getStudiesCountByNameAndAcl(studies, userAcl, api);
           else return [];
-        },
-      ).then((studies) => {
-          if (!_.isEmpty(studies)) {
+        })
+        .then(studies => {
+          if (!isEmpty(studies)) {
             effects.addFenceStudies(fence, {
               authorizedStudies: studies,
             });
           }
-        }
-      )
+        })
         .catch(err => console.error(`Error fetching fence studies for '${fence}': ${err}`));
     },
   },
-})
-;
+});
 
 export const fenceConnectionInitializeHoc = Component =>
   compose(

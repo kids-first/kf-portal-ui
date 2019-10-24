@@ -16,7 +16,7 @@ import { createStudyIdSqon, createAcceptedFilesByUserStudySqon } from 'services/
 import Study from './Study';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 const InternalLink = styled(Link)`
   color: ${({ theme }) => theme.primary};
@@ -56,11 +56,7 @@ const renderNoAuthorizedStudies = ({ loggedInUser }) => (
   </Box>
 );
 
-const renderAuthorizedStudies = ({
-  fenceAuthStudies,
-  fenceConnections,
-  history,
-}) => {
+const renderAuthorizedStudies = ({ fenceAuthStudies, fenceConnections, history }) => {
   const studiesById = fenceAuthStudies.reduce((obj, study) => {
     obj[study.id] = study;
     return obj;
@@ -80,7 +76,7 @@ const renderAuthorizedStudies = ({
       action: `${eventOrigin}: ${TRACKING_EVENTS.actions.click}`,
       label: `studyId: ${studyId}`,
     });
-    const consentCodes  = studiesById[studyId].acl;
+    const consentCodes = studiesById[studyId].acl;
     history.push(
       `/search/file?sqon=${encodeURI(
         JSON.stringify(createAcceptedFilesByUserStudySqon(consentCodes)({ studyId })),
@@ -88,7 +84,7 @@ const renderAuthorizedStudies = ({
     );
   };
 
-  return fenceAuthStudies.map(( study) => {
+  return fenceAuthStudies.map(study => {
     return (
       <Study
         key={study.id}
@@ -111,18 +107,11 @@ const enhance = compose(
 );
 
 const StudiesConnected = enhance(
-  ({
-    state: {
-      loggedInUser,
-      fenceConnections,
-      fenceAuthStudies,
-    },
-    history,
-  }) => {
+  ({ state: { loggedInUser, fenceConnections, fenceAuthStudies }, history }) => {
     return (
       <Fragment>
         <Column>
-          {!_.isEmpty(fenceAuthStudies) > 0
+          {!isEmpty(fenceAuthStudies) > 0
             ? renderAuthorizedStudies({
                 fenceAuthStudies,
                 fenceConnections,

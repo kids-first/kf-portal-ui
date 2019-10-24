@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
-import _ from 'lodash';
+import { startCase, orderBy } from 'lodash';
 import { Row, Col } from 'react-grid-system';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
@@ -94,9 +94,7 @@ export default compose(
               url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
               api={api}
               transform={data =>
-                _(data.studies)
-                  .map(study => ({ ...study, label: _.startCase(study.name) }))
-                  .value()
+                (data.studies || []).map(study => ({ ...study, label: startCase(study.name) }))
               }
             >
               {fetchedState => {
@@ -156,13 +154,15 @@ export default compose(
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
                 api={api}
-                transform={data =>
-                  _(data.diagnoses)
-                    .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
-                    .take(10)
-                    .map(d => ({ ...d, label: _.startCase(d.name) }))
-                    .value()
-                }
+                transform={data => {
+                  const dxs = data.diagnoses || [];
+                  const orderedDxs = orderBy(
+                    dxs,
+                    diagnosis => diagnosis.familyMembers + diagnosis.probands,
+                    'desc',
+                  );
+                  return orderedDxs.slice(0, 10).map(d => ({ ...d, label: startCase(d.name) }));
+                }}
               >
                 {fetchedState => (
                   <ChartLoadGate

@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import omit from 'lodash/omit';
 
 import facebookSDK from 'services/facebookSDK';
 
@@ -45,7 +45,7 @@ export default class extends React.Component {
       <DisabledFacebookLogin />
     ) : (
       <div
-        {..._.omit(this.props, ['onLogin', 'onError'])}
+        {...omit(this.props, ['onLogin', 'onError'])}
         className="fb-login-button login-button"
         style={{ height: '40px' }}
         data-max-rows="1"

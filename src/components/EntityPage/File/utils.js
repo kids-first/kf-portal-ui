@@ -1,8 +1,8 @@
-import _ from 'lodash';
+import get from 'lodash/get';
 import { differenceInYears, differenceInDays, addYears } from 'date-fns';
 
 export const pickData = (data, valuePath, transform) => {
-  const selectedData = _.get(data, valuePath, null);
+  const selectedData = get(data, valuePath, null);
   if (transform) {
     return transform(selectedData);
   }
