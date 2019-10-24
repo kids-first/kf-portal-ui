@@ -107,7 +107,8 @@ export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
     .then(userData => {
       setIntegrationToken(CAVATICA, JSON.stringify(userData));
     })
-    .catch(response => {
+    .catch(error => {
+      console.error(error);
       // Could not retrieve cavatica user info, nothing to do.
     });
 

@@ -18,6 +18,7 @@ import { Paragraph } from 'uikit/Core';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 import flatten from 'lodash/flatten';
 import { FENCES } from 'common/constants';
+import { Alert } from 'antd';
 
 const shapeStudyAggs = (studyAggs = []) =>
   studyAggs
@@ -53,6 +54,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     fileStudyData: {},
     fileAuthInitialized: false,
     authorizedFilesCombined: [],
+    error: null,
   };
 
   async componentDidMount() {
@@ -164,8 +166,18 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     const hasFenceConnection = Object.keys(state.fenceConnections).length > 0;
     const isFilesSelected = filesSelected && filesSelected.length > 0;
     const unauthFilesWarning = unauthorizedFiles && unauthorizedFiles.length > 0;
+    const { error } = this.state;
     return (
       <div css={cssCopyModalRoot(theme)}>
+        {error && (
+          <Alert
+            message="Error"
+            description="An error occured. Please try again or contact our support."
+            type="error"
+            closable
+            showIcon
+          />
+        )}
         {unauthFilesWarning && (
           <ModalWarning>
             <span
@@ -238,12 +250,13 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                 });
                 onComplete();
               } catch (e) {
-                console.error(e); //TODO Display failure error.
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Copied Files to Cavatica Project FAILED',
                   label: e.message ? e.message : null,
                 });
+                console.error(e);
+                this.setState({ error: e });
               }
             },
             submitDisabled: !(selectedProjectData && authorizedFilesCombined.length > 0),
