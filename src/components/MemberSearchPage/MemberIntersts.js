@@ -30,10 +30,6 @@ class MemberInterests extends Component {
       filter: !prevState.filter,
     }));
   }
-  @bind
-  clickTest() {
-    console.log('CLICK');
-  }
 
   @bind
   testIfHighlighted(originalInterest) {
@@ -73,6 +69,7 @@ class MemberInterests extends Component {
               value={item.original}
               highLightValues={item.highlighted ? [item.highlighted] : null}
               key={index}
+              index={index}
               classname={'comma'}
             />
           ))}
