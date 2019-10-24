@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Typography } from 'antd';
+import { Icon, Typography } from 'antd';
 import { bind } from '../../utils';
 import PropTypes from 'prop-types';
 
@@ -29,6 +29,10 @@ class MemberInterests extends Component {
     this.setState(prevState => ({
       filter: !prevState.filter,
     }));
+  }
+  @bind
+  clickTest() {
+    console.log('CLICK');
   }
 
   @bind
@@ -72,19 +76,12 @@ class MemberInterests extends Component {
               classname={'comma'}
             />
           ))}
+          {this.state.filter && mergedInterests.length > 3 ? (
+            <Icon className="ant-typography-expand" type="plus" onClick={this.onClick} />
+          ) : (
+            ''
+          )}
         </Paragraph>
-        {mergedInterests.length > 3 ? (
-          <div
-            style={{ margin: 0 }}
-            className="ant-typography-expand"
-            aria-label="Expand"
-            onClick={this.onClick}
-          >
-            {this.state.filter ? 'Expand' : 'Close'}
-          </div>
-        ) : (
-          ''
-        )}
       </div>
     );
   }
