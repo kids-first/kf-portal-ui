@@ -1,5 +1,5 @@
 import { provideState } from 'freactal';
-import { isArray, pick, without, chain, omit } from 'lodash';
+import { isArray, pick, without, omit, get } from 'lodash';
 import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@kfarranger/components/dist';
 import { setToken } from 'services/ajax';
@@ -82,11 +82,9 @@ export default provideState({
     setUser: (effects, { api, egoGroups, ...user }) => {
       return getAllFieldNamesPromise(api)
         .then(({ data }) => {
-          return chain(data)
-            .get('__type.fields', [])
-            .map(f => f.name)
-            .without('sets')
-            .value();
+          return get(data, '__type.fields', [])
+            .filter(field => field && field.name !== 'sets')
+            .map(field => field.name);
         })
         .then(fields => state => {
           const userRole = user.roles ? user.roles[0] : null;

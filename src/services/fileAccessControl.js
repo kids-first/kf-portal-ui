@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { isObject, keys, get, flatten } from 'lodash';
 import { getFenceUser } from 'services/fence';
 import { graphql } from 'services/arranger';
 
@@ -115,14 +115,12 @@ export const getUserStudyPermission = async (
     content: [],
   },
 ) => {
-  const projects = _(fenceConnections)
-    .values()
-    .filter(fenceUser => _.isObject(fenceUser.projects))
-    .map(({ projects }) => _.keys(projects))
-    .flatten()
-    .value()
-    .concat('*');
-
+  const projects = flatten(
+    Object.values(fenceConnections || {})
+      .filter(fenceUser => isObject(fenceUser.projects) && keys(fenceUser.projects).length > 0)
+      .map(({ projects }) => keys(projects))
+      .concat('*'),
+  );
   const [acceptedStudyIds, unacceptedStudyIds] = await Promise.all([
     getStudyIdsFromSqon(api)({
       sqon: {
@@ -219,7 +217,7 @@ export const checkUserFilePermission = api => async ({ fileId, fence }) => {
     },
   })
     .then(data => {
-      const fileAcl = _.get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
+      const fileAcl = get(data, 'data.file.aggregations.acl.buckets', []).map(({ key }) => key);
       return fileAcl.some(fileAcl => fileAcl === '*' || approvedAcls.includes(fileAcl));
     })
     .catch(err => {

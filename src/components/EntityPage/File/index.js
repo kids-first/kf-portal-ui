@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import _ from 'lodash';
+import { isNull, isUndefined, get } from 'lodash';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import SummaryTable from 'uikit/SummaryTable';
@@ -269,11 +269,9 @@ const fileQuery = `query ($sqon: JSON) {
 
 const getTags = data => {
   const dataType = data.data_type;
-  const experimentalStrategies = Array.from(new Set(_.get(data, 'experiment_strategies', [])));
+  const experimentalStrategies = Array.from(new Set(get(data, 'experiment_strategies', [])));
 
-  return [dataType, experimentalStrategies].filter(
-    item => !(_.isNull(item) || _.isUndefined(item)),
-  );
+  return [dataType, experimentalStrategies].filter(item => !(isNull(item) || isUndefined(item)));
 };
 
 const Container = styled(Column)`
@@ -289,7 +287,7 @@ const FileEntity = compose(withTheme)(
       api={api}
       query={fileQuery}
       sqon={buildSqonForIds([fileId])}
-      transform={data => _.get(data, 'data.file')}
+      transform={data => get(data, 'data.file')}
     >
       {file => {
         if (file.isLoading || isPageLoading) {
@@ -300,11 +298,11 @@ const FileEntity = compose(withTheme)(
           );
         }
 
-        const data = _.get(file, 'data.hits.edges[0].node');
+        const data = get(file, 'data.hits.edges[0].node');
         const fileType = data.file_format;
 
         const hasParticipants =
-          Object.keys(_.get(data, 'participants.hits.edges[0].node', {})).length > 0;
+          Object.keys(get(data, 'participants.hits.edges[0].node', {})).length > 0;
 
         return (
           <Container>

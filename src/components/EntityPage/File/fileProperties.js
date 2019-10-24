@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import uniq from 'lodash/uniq';
 import { pickData } from './utils';
 import { formatBytesToHumanReadable } from './utils';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
@@ -41,7 +41,7 @@ export const toFilePropertiesSummary = data => {
   const participants = pickData(data, 'participants.hits.edges[0].node');
 
   const experimentalStrategies =
-    _.uniq(
+    uniq(
       data.sequencing_experiments.hits.edges
         .filter(edge => edge.node && edge.node.experiment_strategy)
         .map(edge => edge.node.experiment_strategy),
