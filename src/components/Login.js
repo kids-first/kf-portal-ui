@@ -6,7 +6,6 @@ import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
-import { Trans } from 'react-i18next';
 import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
@@ -228,13 +227,11 @@ class Component extends React.Component {
   renderSecurityError() {
     return (
       <Box maxWidth={600}>
-        <Trans i18nKey="login.connectionFailed">
-          Connection to ego failed, you may need to visit
-          <a target="_blank" href={egoApiRoot}>
-            {{ egoApiRoot }}
-          </a>
-          in a new tab and accept the warning
-        </Trans>
+        Connection to ego failed, you may need to visit
+        <a target="_blank" href={egoApiRoot}>
+          {{ egoApiRoot }}
+        </a>
+        in a new tab and accept the warning
       </Box>
     );
   }
@@ -263,15 +260,13 @@ class Component extends React.Component {
       <div className="login-buttons-container">
         {this.state.authorizationError && (
           <ModalWarning>
-            <Trans key="login.authorizationError">
-              The Kids First Portal is currently in early access beta, please register at{' '}
-              <ExternalLink href="https://kidsfirstdrc.org/portal/">
-                https://kidsfirstdrc.org/portal/
-              </ExternalLink>{' '}
-              if you are interested in participating. For any questions, or if you already have
-              access to Kids First datasets via dbGaP, please contact
-              <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
-            </Trans>
+            The Kids First Portal is currently in early access beta, please register at{' '}
+            <ExternalLink href="https://kidsfirstdrc.org/portal/">
+              https://kidsfirstdrc.org/portal/
+            </ExternalLink>{' '}
+            if you are interested in participating. For any questions, or if you already have access
+            to Kids First datasets via dbGaP, please contact
+            <a href="mailto:support@kidsfirstdrc.org">support@kidsfirstdrc.org</a>.
           </ModalWarning>
         )}
 

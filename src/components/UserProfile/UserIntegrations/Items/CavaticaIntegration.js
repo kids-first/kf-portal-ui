@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
@@ -68,13 +67,8 @@ const actions = ({ ...props }) => {
 const description = () => {
   return (
     <span>
-      <Trans>
-        Analyze data quickly by connecting your account to the cloud compute environment,
-      </Trans>{' '}
-      <ExternalLink href={cavaticaWebRoot}>
-        <Trans>Cavatica</Trans>
-      </ExternalLink>
-      <Trans>.</Trans>
+      {'Analyze data quickly by connecting your account to the cloud compute environment,  '}
+      <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
     </span>
   );
 };

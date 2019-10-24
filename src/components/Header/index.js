@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import HouseIcon from 'react-icons/lib/fa/home';
@@ -85,23 +84,23 @@ const Header = ({
                 <NavBarList ml={40}>
                   <li>
                     <NavLink currentPathName={currentPathName} to={ROUTES.dashboard}>
-                      <HouseIcon /> <Trans>Dashboard</Trans>
+                      <HouseIcon /> Dashboard
                     </NavLink>
                   </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
-                      <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
+                      <ExploreDataIconStyled /> Explore Data
                     </NavLink>
                   </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
-                      <DatabaseIcon /> <Trans>File Repository</Trans>
+                      <DatabaseIcon /> File Repository
                     </NavLink>
                   </li>
                   {isSearchMemberFeatEnabled && (
                     <li>
                       <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
-                        <UserIcon /> <Trans>Members Search</Trans>
+                        <UserIcon /> Members Search
                       </NavLink>
                     </li>
                   )}
@@ -112,13 +111,9 @@ const Header = ({
               {!loggedInUser && (
                 <li>
                   {path === '/' ? (
-                    <LinkAsButton to={ROUTES.join}>
-                      <Trans>Join now</Trans>
-                    </LinkAsButton>
+                    <LinkAsButton to={ROUTES.join}>Join now</LinkAsButton>
                   ) : (
-                    <LinkAsButton to={ROUTES.login}>
-                      <Trans>Login</Trans>
-                    </LinkAsButton>
+                    <LinkAsButton to={ROUTES.login}>Login</LinkAsButton>
                   )}
                 </li>
               )}
@@ -136,7 +131,7 @@ const Header = ({
                       onClick={toggleDropdown}
                       to={getUrlForUser(loggedInUser, '#aboutMe')}
                     >
-                      <Trans>My Profile</Trans>
+                      My Profile
                     </DropdownLink>,
                     <DropdownLink
                       onClick={toggleDropdown}
@@ -153,7 +148,7 @@ const Header = ({
                         uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
                       }}
                     >
-                      <Trans>Logout</Trans>
+                      Logout
                     </DropdownLink>,
                   ]}
                   ItemWrapperComponent={({ id, children }) => {

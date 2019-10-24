@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { Trans } from 'react-i18next';
 import urlJoin from 'url-join';
 import { SocialIcon as ReactSocialIcon } from 'react-social-icons';
 import { DataVersionProvider } from 'services/dataVersion';
@@ -55,32 +54,32 @@ const Footer = () => (
   <FooterContainer>
     <Row>
       <FooterLink href={kfWebRoot} target="_blank">
-        <Trans>kidsfirstdrc.org</Trans>
+        kidsfirstdrc.org
       </FooterLink>
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
-        <Trans>About the Portal</Trans>
+        About the Portal
       </FooterLink>
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/policies')} target="_blank">
-        <Trans>Policies</Trans>
+        Policies
       </FooterLink>
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')} target="_blank">
-        <Trans>Support</Trans>
+        Support
       </FooterLink>
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/contact')} target="_blank">
-        <Trans>Contact</Trans>
+        Contact
       </FooterLink>
       {' | '}
-      <Trans>UI:</Trans> {UI_VERSION}
+      {`UI: ${UI_VERSION}`}
       {', '}
-      <Trans>Data Release: </Trans>
+      {'Data Release:'}
       <DataVersionProvider />
     </Row>
     <SocialIcons>
-      <Trans>Follow Us</Trans>
+      {'Follow Us'}
       <SocialIcon url={kfFacebook} />
       <SocialIcon url={kfTwitter} />
       <SocialIcon url={kfGithub} />

@@ -5,7 +5,6 @@ import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
@@ -262,11 +261,9 @@ export default enhance(
             />
             <CheckboxLabel htmlFor="acceptedKfOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
-                <Trans>
-                  I would like to receive the Kids First Data Resource Center quarterly newsletter
-                  to get the latest DRC news including recent study updates, new investigators and
-                  partners added to the effort.
-                </Trans>
+                I would like to receive the Kids First Data Resource Center quarterly newsletter to
+                get the latest DRC news including recent study updates, new investigators and
+                partners added to the effort.
               </Paragraph>
             </CheckboxLabel>
           </Row>
@@ -280,10 +277,8 @@ export default enhance(
             />
             <CheckboxLabel htmlFor="acceptedNihOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
-                <Trans>
-                  I would like to receive updates from the NIH Kids First program including funding
-                  updates and news about the program.
-                </Trans>
+                I would like to receive updates from the NIH Kids First program including funding
+                updates and news about the program.
               </Paragraph>
             </CheckboxLabel>
           </Row>
@@ -297,12 +292,10 @@ export default enhance(
             />
             <CheckboxLabel htmlFor="acceptedDatasetSubscriptionKfOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
-                <Trans>
-                  The Gabriella Miller Kids First Data Resource Center is constantly improving the
-                  availability and quality of new datasets added to the Data Resource Portal. Sign
-                  up below to opt-in to receive updates and announcements when new datasets are
-                  available in the Portal.
-                </Trans>
+                The Gabriella Miller Kids First Data Resource Center is constantly improving the
+                availability and quality of new datasets added to the Data Resource Portal. Sign up
+                below to opt-in to receive updates and announcements when new datasets are available
+                in the Portal.
               </Paragraph>
             </CheckboxLabel>
           </Row>

@@ -3,7 +3,6 @@ import { injectState } from 'freactal';
 import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { get } from 'lodash';
@@ -63,16 +62,10 @@ const Consent = compose(
   }) => {
     return (
       <Fragment>
-        <JoinH3>
-          <Trans i18nKey="join.terms.instructions">
-            Read and consent to our terms and conditions
-          </Trans>
-        </JoinH3>
+        <JoinH3>{'Read and consent to our terms and conditions'}</JoinH3>
         <ConsentContainer>
           <Terms>
-            <FormParagraph fontWeight="600">
-              <Trans i18nKey="join.terms.title">Last Update Date: 7/13/18</Trans>
-            </FormParagraph>{' '}
+            <FormParagraph fontWeight="600">{'Last Update Date: 7/13/18'}</FormParagraph>{' '}
             <FormParagraph>
               As a user of the Kids First DRC Website, Portal and/or other Services you agree that
               you are 13 years of age or older and furthermore agree to the Terms and Conditions of
@@ -132,10 +125,12 @@ const Consent = compose(
               or any of the other Services, please contact us at{' '}
               <ExternalLink hasExternalIcon={false} href="support@kidsfirstdrc.org">
                 support@kidsfirstdrc.org
-              </ExternalLink>. The full list of Kids first DRC policies are located at{' '}
+              </ExternalLink>
+              . The full list of Kids first DRC policies are located at{' '}
               <ExternalLink href="https://kidsfirstdrc.org/policies/">
                 https://kidsfirstdrc.org/policies/
-              </ExternalLink>.
+              </ExternalLink>
+              .
             </FormParagraph>
           </Terms>
           <CheckboxBubble
@@ -166,9 +161,9 @@ const Consent = compose(
             <Label>
               <FormParagraph>
                 {' '}
-                <Trans i18nKey="join.terms.userAgreement">
-                  I have read and agreed to the Kids First Data Research Portal Term and Conditions
-                </Trans>
+                {
+                  'I have read and agreed to the Kids First Data Research Portal Term and Conditions'
+                }
               </FormParagraph>{' '}
             </Label>
           </CheckboxBubble>
@@ -186,7 +181,11 @@ const subscribeUser = api => ({ loggedInUser }) =>
     },
   });
 
-export default compose(injectState, withTheme, withApi)(
+export default compose(
+  injectState,
+  withTheme,
+  withApi,
+)(
   ({
     state: { loggedInUser },
     effects: { setToast, closeModal, closeToast },
@@ -209,11 +208,11 @@ export default compose(injectState, withTheme, withApi)(
       <ButtonsDiv mt={2}>
         <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
           <LeftIcon />
-          <Trans>Back</Trans>
+          Back
         </button>
         <div className={theme.row}>
           <DeleteButton api={api} className={theme.wizardButton}>
-            <Trans>Cancel</Trans>
+            Cancel
           </DeleteButton>
           <button
             className={theme.actionButton}
@@ -226,18 +225,16 @@ export default compose(injectState, withTheme, withApi)(
                   action: 'info',
                   component: (
                     <div>
-                      <Trans i18nKey="join.wizard.profileOrBrowse">
-                        Fill out your profile, or skip and
-                        <Link
-                          to={`/search/file`}
-                          onClick={function() {
-                            //using 'function' so that we don't break Trans parsing
-                            closeToast();
-                          }}
-                        >
-                          browse data
-                        </Link>
-                      </Trans>
+                      Fill out your profile, or skip and
+                      <Link
+                        to={`/search/file`}
+                        onClick={function() {
+                          //using 'function' so that we don't break Trans parsing
+                          closeToast();
+                        }}
+                      >
+                        browse data
+                      </Link>
                     </div>
                   ),
                 });
@@ -250,7 +247,7 @@ export default compose(injectState, withTheme, withApi)(
               }
             }}
           >
-            <Trans>Save</Trans>
+            Save
             <RightIcon />
           </button>
         </div>

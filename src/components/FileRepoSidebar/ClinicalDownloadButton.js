@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 import { uniq } from 'lodash';
@@ -147,7 +146,7 @@ export default compose(
                 render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
                   <Fragment>
                     <DownloadButton
-                      content={() => <Trans>Clinical</Trans>}
+                      content={() => 'Clinical'}
                       onBlur={async e => {
                         if (!isDownloading) {
                           setDropdownVisibility(false);
@@ -190,7 +189,9 @@ export default compose(
                               <OptionRow disabled>
                                 Participant and family
                                 {isLoading ? null : (
-                                  <Tooltip>No report available for additional family members.</Tooltip>
+                                  <Tooltip>
+                                    No report available for additional family members.
+                                  </Tooltip>
                                 )}
                               </OptionRow>
                             )

@@ -7,7 +7,6 @@ import { withTheme } from 'emotion-theming';
 import { css } from 'emotion';
 import Spinner from 'react-spinkit';
 import filesize from 'filesize';
-import { Trans } from 'react-i18next';
 import formatNumber from '@kfarranger/components/dist/utils/formatNumber';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 
@@ -241,13 +240,11 @@ export default compose(
               const participantSection = (
                 <Section>
                   <ModalSubHeader className={`modalSubHeader`}>
-                    <H3 display="inline-block">
-                      <Trans>Participants Summary</Trans>
-                    </H3>
+                    <H3 display="inline-block">{'Participants Summary'}</H3>
                     <span>
                       {' '}
                       <Paragraph display="inline-block">
-                        <Trans>- all files will be included in the manifest</Trans>.
+                        {'- all files will be included in the manifest'}
                       </Paragraph>
                     </span>
                   </ModalSubHeader>
@@ -306,19 +303,17 @@ export default compose(
                                   <span>
                                     {' '}
                                     <Paragraph display="inline-block">
-                                      <Trans>
-                                        - the participants in your query have related family member
-                                        data
-                                      </Trans>.
+                                      {
+                                        ' - the participants in your query have related family member data.'
+                                      }
                                     </Paragraph>
                                   </span>
                                   <div>
                                     {' '}
                                     <Paragraph>
-                                      <Trans>
-                                        To include the family data in the manifest, select your
-                                        desired data types below
-                                      </Trans>:{' '}
+                                      {
+                                        ' To include the family data in the manifest, select your desired data types below :  '
+                                      }
                                     </Paragraph>
                                   </div>
                                 </ModalSubHeader>

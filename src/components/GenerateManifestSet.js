@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal/lib/inject';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 
@@ -46,7 +45,10 @@ const GenerateButton = styled(ModalActionButton)`
   display: flex;
 `;
 
-export default compose(injectState, withTheme)(
+export default compose(
+  injectState,
+  withTheme,
+)(
   ({
     api,
     theme,
@@ -92,7 +94,7 @@ export default compose(injectState, withTheme)(
           render={({ onClick, loading }) => (
             <Fragment>
               <span ref={copyRef} className={`copyContent`}>
-                {setId || <Trans>Generate manifest ID</Trans>}
+                {setId || 'Generate manifest ID'}
               </span>
               <GenerateButton {...{ onClick, disabled: loading }}>
                 {' '}
@@ -110,10 +112,10 @@ export default compose(injectState, withTheme)(
                 ) : setId ? (
                   <Fragment>
                     <CopyToClipboardIcon className={`clipboardIcon`} fill={theme.white} />{' '}
-                    <Trans>Copy ID</Trans>
+                    {'Copy ID'}
                   </Fragment>
                 ) : (
-                  <Trans>GENERATE</Trans>
+                  'GENERATE'
                 )}
               </GenerateButton>
             </Fragment>

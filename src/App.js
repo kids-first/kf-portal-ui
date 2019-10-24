@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'react-emotion';
-import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
 import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
@@ -291,12 +290,11 @@ const App = compose(
   );
 });
 
-const TranslatedApp = translate('translations', { withRef: true })(() => (
+const enhanceApp = () => (
   <ErrorBoundary>
     <ContextProvider>
       <App />
     </ContextProvider>
   </ErrorBoundary>
-));
-
-export default hot(module)(TranslatedApp);
+);
+export default hot(module)(enhanceApp);

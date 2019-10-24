@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 
 import FenceIntegrationItem from 'components/UserProfile/UserIntegrations/FenceIntegrationItem';
 import { css } from 'emotion';
@@ -17,10 +16,8 @@ const linkCss = css({
 const description = () => {
   return (
     <span>
-      <Trans>
-        Access select NCI controlled access data by connecting your account using your NIH login
-        credentials.
-      </Trans>
+      Access select NCI controlled access data by connecting your account using your NIH login
+      credentials.
     </span>
   );
 };

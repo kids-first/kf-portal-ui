@@ -3,7 +3,6 @@ import { debounce, difference } from 'lodash';
 import { compose, withProps, withPropsOnChange, withState } from 'recompose';
 import styled from 'react-emotion';
 import Downshift from 'downshift';
-import { Trans } from 'react-i18next';
 import TextHighlight from '@kfarranger/components/dist/TextHighlight';
 
 import { titleCase } from 'common/displayFormatters';
@@ -145,9 +144,7 @@ const InterestsAutocomplete = compose(
               {showSuggestions ? (
                 <Box>
                   <DropdownItem>
-                    <DropdownLabel>
-                      <Trans>Suggestions:</Trans>
-                    </DropdownLabel>
+                    <DropdownLabel>Suggestions:</DropdownLabel>
                   </DropdownItem>
                   {suggestions.map(item => (
                     <DropdownItem withHover key={item} {...getItemProps({ item })}>
@@ -163,9 +160,7 @@ const InterestsAutocomplete = compose(
                   {...getItemProps({ item: inputValue })}
                 >
                   <NewItem>{titleCase(inputValue)}</NewItem>
-                  <DropdownLabel>
-                    <Trans>(New Interest)</Trans>
-                  </DropdownLabel>
+                  <DropdownLabel>(New Interest)</DropdownLabel>
                 </DropdownItem>
               ) : null}
             </DropdownMenu>

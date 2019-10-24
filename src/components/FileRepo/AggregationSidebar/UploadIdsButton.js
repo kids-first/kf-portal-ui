@@ -1,6 +1,4 @@
 import React from 'react';
-
-import { Trans } from 'react-i18next';
 import styled from 'react-emotion';
 import { css } from 'emotion';
 
@@ -42,7 +40,7 @@ const UploadIdsButton = ({
         margin-right: 5px;
       `}
     />
-    <Trans>UPLOAD YOUR LIST OF IDS</Trans>
+    {'UPLOAD YOUR LIST OF IDS'}
   </UploadButton>
 );
 

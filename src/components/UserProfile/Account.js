@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
-import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 
 import { CardHeader } from './ui';
@@ -55,9 +54,7 @@ export default compose(
 )(({ profile, submit, state: { loginProvider } }) => (
   <Box style={{ maxWidth: 1050 }} pr={4} pl={0} pt="8px">
     <SettingsSection>
-      <CardHeader mb="43px">
-        <Trans>Settings</Trans>
-      </CardHeader>
+      <CardHeader mb="43px">Settings</CardHeader>
       <Column>
         Email Address:
         <Row alignItems="center" mt={2}>
@@ -70,7 +67,7 @@ export default compose(
     </SettingsSection>
     <SettingsSection>
       <CardHeader mt="22px" mb="31px">
-        <Trans>Privacy</Trans>
+        Privacy
       </CardHeader>
       <CardBody>
         When your profile is public, other logged-in Kids First members (and potential contributors)
@@ -109,7 +106,7 @@ export default compose(
     </SettingsSection>
     <SettingsSection>
       <CardHeader mt="22px" mb="31px">
-        <Trans>Data Repository Integrations</Trans>
+        Data Repository Integrations
       </CardHeader>
       <CardBody>
         The Kids First DRC provides the ability to integrate across different data repositories for
@@ -128,7 +125,7 @@ export default compose(
 
     <SettingsSection>
       <CardHeader mt="22px" mb="31px">
-        <Trans>Application Integrations</Trans>
+        Application Integrations
       </CardHeader>
 
       <IntegrationTable>

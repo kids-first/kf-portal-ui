@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Trans } from 'react-i18next';
 import autobind from 'auto-bind-es5';
 import urlJoin from 'url-join';
 import { injectState } from 'freactal';
@@ -287,7 +286,7 @@ class VirtualStudiesMenu extends React.Component {
           />
 
           <VirtualStudiesMenuButton
-            label={<Trans>delete</Trans>}
+            label={'delete'}
             tooltipText={'Delete this virtual study'}
             icon={DeleteIcon}
             disabled={cantDelete}
