@@ -37,7 +37,7 @@ const MemberTable = props => {
   const firstItem = props.currentPage * props.membersPerPage - props.membersPerPage + 1;
   const lastItem = props.currentPage * props.membersPerPage;
   return (
-    <div className={'member-list-container'}>
+    <div className={'member-list-container'} style={{backgroundColor:'white'}}>
       <List
         itemLayout={'vertical'}
         header={<Row>

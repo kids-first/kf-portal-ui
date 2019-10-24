@@ -6,6 +6,7 @@ import { Icon, Input, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
+import { withTheme } from 'emotion-theming';
 
 class MemberSearchContainer extends Component {
   state = {
@@ -68,28 +69,30 @@ class MemberSearchContainer extends Component {
 
   render() {
     return (
-      <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
-        <Input
-          style={{ borderRadius: 30 }}
-          onChange={this.handleChange}
-          placeholder="Member Name, Email, Interests,..."
-          prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-          suffix={
-            <Tooltip title="Enter text to search for members">
-              <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
-            </Tooltip>
-          }
-        />
-        <MemberTable
-          memberList={this.props.members}
-          count={this.props.count}
-          currentPage={this.state.currentPage}
-          membersPerPage={this.state.membersPerPage}
-          handlePageChange={this.handlePageChange}
-          handleShowSizeChange={this.handleShowSizeChange}
-          pending={this.props.pending}
-        />
-      </MemberSearchBorder>
+      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width:'100%' }}>
+        <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
+          <Input
+            style={{ borderRadius: 30 }}
+            onChange={this.handleChange}
+            placeholder="Member Name, Email, Interests,..."
+            prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            suffix={
+              <Tooltip title="Enter text to search for members">
+                <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+              </Tooltip>
+            }
+          />
+          <MemberTable
+            memberList={this.props.members}
+            count={this.props.count}
+            currentPage={this.state.currentPage}
+            membersPerPage={this.state.membersPerPage}
+            handlePageChange={this.handlePageChange}
+            handleShowSizeChange={this.handleShowSizeChange}
+            pending={this.props.pending}
+          />
+        </MemberSearchBorder>
+      </div>
     );
   }
 }
@@ -110,7 +113,9 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
+const MemberSearchContainerWithTheme = withTheme(MemberSearchContainer);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MemberSearchContainer);
+)(MemberSearchContainerWithTheme);
