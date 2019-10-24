@@ -3,7 +3,6 @@ import { compose, withState } from 'recompose';
 import styled from 'react-emotion';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 
 import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
@@ -71,7 +70,7 @@ export const DownloadManifestModalFooter = compose(withTheme)(
                 />
               )}
             />
-            <Trans>Download Manifest</Trans>
+            {'Download Manifest'}
           </TealActionButton>
         )}
       />

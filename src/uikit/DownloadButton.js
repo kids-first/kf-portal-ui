@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
 import styled, { css } from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
@@ -16,7 +15,7 @@ const DownloadButton = compose(withTheme)(
   ({
     onClick,
     theme,
-    content = () => <Trans>Download</Trans>,
+    content = () => 'Download',
     buttonRef = React.createRef(),
     disabled,
     ...rest

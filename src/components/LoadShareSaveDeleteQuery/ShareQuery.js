@@ -12,7 +12,6 @@ import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 're
 import Tooltip from 'uikit/Tooltip';
 import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
-import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
@@ -24,7 +23,6 @@ const trackQueryShare = channel => {
     label: channel,
   });
 };
-
 
 let AlignedShareIcon = styled(ShareIcon)`
   margin-top: -2px;
@@ -111,7 +109,7 @@ export default injectState(
                     `}
                   >
                     {this.state.error ? (
-                      <Trans>Sorry something went wrong.</Trans>
+                      'Sorry something went wrong.'
                     ) : (
                       <Spinner
                         fadeIn="none"
@@ -139,38 +137,41 @@ export default injectState(
                           <Bubble>
                             <ChainIcon />
                           </Bubble>
-                          <span>
-                            {this.state.copied ? (
-                              <Trans>Copied!</Trans>
-                            ) : (
-                              <Trans>copy short URL</Trans>
-                            )}
-                          </span>
+                          <span>{this.state.copied ? 'Copied!' : 'copy short URL'}</span>
                         </span>
                       </CopyToClipboard>
                     </ItemRow>
                     <ItemRow onClick={() => trackQueryShare('Facebook')}>
-                      <FacebookShareButton url={this.state.link} quote="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research.">
+                      <FacebookShareButton
+                        url={this.state.link}
+                        quote="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research."
+                      >
                         <Bubble>
                           <FBIcon />
                         </Bubble>
-                        <Trans>share on facebook</Trans>
+                        share on facebook
                       </FacebookShareButton>
                     </ItemRow>
                     <ItemRow onClick={() => trackQueryShare('Twitter')}>
                       <Bubble>
                         <TwitterIcon />
                       </Bubble>
-                      <TwitterShareButton title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research." url={this.state.link}>
-                        <Trans>share on twitter</Trans>
+                      <TwitterShareButton
+                        title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research."
+                        url={this.state.link}
+                      >
+                        share on twitter
                       </TwitterShareButton>
                     </ItemRow>
                     <ItemRow onClick={() => trackQueryShare('LinkedIn')}>
-                      <LinkedinShareButton title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research." url={this.state.link}>
+                      <LinkedinShareButton
+                        title="Kids First Data Resource Portal: sharing data to enable researchers, clinicians, and patients to collaborate and accelerate pediatric cancer and structural birth defects research."
+                        url={this.state.link}
+                      >
                         <Bubble>
                           <LIIcon />
                         </Bubble>
-                        <Trans>share on linkedin</Trans>
+                        share on linkedin
                       </LinkedinShareButton>
                     </ItemRow>
                   </React.Fragment>
@@ -179,7 +180,7 @@ export default injectState(
             }
           >
             <AlignedShareIcon />
-            &nbsp;<Trans>share</Trans>
+            &nbsp;share
           </Tooltip>
         </WhiteButton>
       );

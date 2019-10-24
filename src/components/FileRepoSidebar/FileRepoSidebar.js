@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 import { injectState } from 'freactal';
 
@@ -27,7 +26,7 @@ import FamilyManifestModal from '../FamilyManifestModal';
 
 const FileManifestsDownloadButton = compose(injectState)(({ effects: { setModal }, ...props }) => (
   <DownloadButton
-    content={() => <Trans>Manifest</Trans>}
+    content={() => 'Manifest'}
     onClick={() =>
       setModal({
         title: 'Download Manifest',
@@ -44,7 +43,7 @@ const BioSpecimentDownloadButton = ({ sqon, projectId, isFileRepo, ...props }) =
     graphqlField="participant"
     render={({ state }) => (
       <DownloadButton
-        content={() => <Trans>BioSpecimen</Trans>}
+        content={() => 'BioSpecimen'}
         onClick={() => {
           let downloadConfig = { sqon, columns: state.columns, isFileRepo };
           trackUserInteraction({
@@ -85,29 +84,22 @@ const FileRepoSidebar = compose(
               <LeftChevron width={14} fill={theme.secondary} />
             )}{' '}
           </Span>
-          <H2 display="inline-block">
-            <Trans>Actions</Trans>
-          </H2>
+          <H2 display="inline-block">Actions</H2>
         </Titlebar>
         <Content {...{ expanded, contentSidePadding, containerWidth }}>
           <Section>
             <Text>
-              <Trans i18nKey="fileRepoSidebar.noneSelected">
-                If you have not selected any files, all files in your query will be included in the
-                actions.
-              </Trans>
+              {
+                'If you have not selected any files, all files in your query will be included in the actions.'
+              }
             </Text>
           </Section>
           <Section>
-            <H3 mb="15px">
-              <Trans>Data Analysis</Trans>
-            </H3>
+            <H3 mb="15px">Data Analysis</H3>
             <CavaticaCopyButton {...props} />
           </Section>
           <Section>
-            <H3 mb="15px">
-              <Trans>Download</Trans>
-            </H3>
+            <H3 mb="15px">Download</H3>
             <DownloadButtonsContainer>
               <FileManifestsDownloadButton {...props} />
               <BioSpecimentDownloadButton {...props} isFileRepo={true} />

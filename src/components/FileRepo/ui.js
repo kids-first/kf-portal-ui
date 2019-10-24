@@ -3,7 +3,6 @@ import Component from 'react-component-component';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
@@ -232,7 +231,7 @@ export const DownloadButton = compose(withTheme)(
   ({
     onClick,
     theme,
-    content = () => <Trans>Download</Trans>,
+    content = () => 'Download',
     buttonRef = React.createRef(),
     disabled = false,
     onBlur = noop,

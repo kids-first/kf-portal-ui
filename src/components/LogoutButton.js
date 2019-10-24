@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 import { withApi } from 'services/api';
 
 const enhance = compose(
@@ -41,7 +40,7 @@ const Logout = ({
     `}
     onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })}
   >
-    <Trans>Logout</Trans>
+    Logout
   </button>
 );
 

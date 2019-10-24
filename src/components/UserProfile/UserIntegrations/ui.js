@@ -6,7 +6,6 @@ import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import Pencil from 'react-icons/lib/fa/pencil';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import X from 'react-icons/lib/fa/close';
-import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 
 import { ActionButton, WhiteButton } from 'uikit/Button';
@@ -32,7 +31,7 @@ export const ConnectButton = compose(
 )(({ text = 'Connect', doConnect, api, effects, ...props }) => {
   return (
     <ConnectButtonWrapper maxWidth={160} {...props}>
-      <ExternalLink size={14} position="relative" right={4} /> <Trans>{text}</Trans>
+      <ExternalLink size={14} position="relative" right={4} /> {text}
       <RightArrow size={14} position="relative" left={4} />
     </ConnectButtonWrapper>
   );

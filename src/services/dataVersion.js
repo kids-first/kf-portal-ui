@@ -1,5 +1,4 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
 import { reactApiDataVersionApi, reactApiDataVersionFallback } from 'common/injectGlobals';
 import { sortBy } from 'lodash';
 
@@ -42,7 +41,7 @@ export class DataVersionProvider extends React.Component {
   }
 
   render() {
-    return <Trans i18nKey="dataReleaseVersion">{this.state.version}</Trans>;
+    return this.state.version;
   }
 }
 

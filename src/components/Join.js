@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 
 import Login from 'components/Login';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
@@ -34,7 +33,7 @@ const JoinContainer = styled(Column)`
 
 export const JoinPageHeader = withTheme(({ theme }) => (
   <JoinH2 mt="25px" mb="35px">
-    <Trans>Join Kids First Data Resource Portal</Trans>
+    Join Kids First Data Resource Portal
   </JoinH2>
 ));
 
@@ -58,16 +57,10 @@ const JoinContent = compose(
             title: 'Connect',
             render: ({ nextStep }) => (
               <div className={theme.column}>
-                <JoinH3>
-                  <Trans i18nKey="join.wizard.socialSelect">
-                    Select a way to connect to the Kids First Data Resource Portal
-                  </Trans>
-                </JoinH3>
+                <JoinH3>Select a way to connect to the Kids First Data Resource Portal</JoinH3>
                 <Paragraph my="16">
-                  <Trans i18nKey="join.wizard.dataConfidentiality">
-                    Your information will be kept confidential and secure and is not shared with any
-                    of these providers.
-                  </Trans>
+                  Your information will be kept confidential and secure and is not shared with any
+                  of these providers.
                 </Paragraph>
                 <Login
                   shouldNotRedirect={true}
@@ -88,14 +81,9 @@ const JoinContent = compose(
             title: 'Basic Info',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <div className={theme.column}>
-                <JoinH3>
-                  <Trans i18nKey="join.wizard.basicInfoHeader">Tell us about yourself</Trans>
-                </JoinH3>
+                <JoinH3>Tell us about yourself</JoinH3>
                 <Paragraph my="16px">
-                  <Trans i18nKey="join.wizard.basicInfoInstructions">
-                    Please provide information about yourself to help us personalize your
-                    experience.
-                  </Trans>
+                  Please provide information about yourself to help us personalize your experience.
                 </Paragraph>
                 <SelectRoleForm
                   onValidateFinish={errors => disableNextStep(!!Object.keys(errors).length)}

@@ -8,7 +8,6 @@ import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
 import Tooltip from 'uikit/Tooltip';
-import { Trans } from 'react-i18next';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
@@ -87,9 +86,7 @@ class ShareButton extends React.Component {
                         <Bubble>
                           <ChainIcon />
                         </Bubble>
-                        <span>
-                          {this.state.copied ? <Trans>Copied!</Trans> : <Trans>copy URL</Trans>}
-                        </span>
+                        <span>{this.state.copied ? 'Copied!' : 'copy URL'}</span>
                       </span>
                     </CopyToClipboard>
                   </ItemRow>
@@ -98,7 +95,7 @@ class ShareButton extends React.Component {
                       <Bubble>
                         <FBIcon />
                       </Bubble>
-                      <Trans>share on facebook</Trans>
+                      share on facebook
                     </FacebookShareButton>
                   </ItemRow>
                   <ItemRow onClick={() => track('Twitter', trackShare)}>
@@ -106,7 +103,7 @@ class ShareButton extends React.Component {
                       <TwitterIcon />
                     </Bubble>
                     <TwitterShareButton title="Kids First File Repo Query" url={link}>
-                      <Trans>share on twitter</Trans>
+                      share on twitter
                     </TwitterShareButton>
                   </ItemRow>
                   <ItemRow onClick={() => track('LinkedIn', trackShare)}>
@@ -114,7 +111,7 @@ class ShareButton extends React.Component {
                       <Bubble>
                         <LIIcon />
                       </Bubble>
-                      <Trans>share on linkedin</Trans>
+                      share on linkedin
                     </LinkedinShareButton>
                   </ItemRow>
                 </React.Fragment>
@@ -122,7 +119,7 @@ class ShareButton extends React.Component {
             }
           >
             <ShareIcon />
-            &nbsp;<Trans>share</Trans>
+            &nbsp;share
           </Tooltip>
         </Button>
       </ButtonContainer>

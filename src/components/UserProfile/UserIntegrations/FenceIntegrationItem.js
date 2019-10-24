@@ -2,8 +2,6 @@ import React from 'react';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 
-import { Trans } from 'react-i18next';
-
 import IntegrationTableItem from 'components/UserProfile/UserIntegrations/IntegrationTableItem';
 import Row from 'uikit/Row';
 
@@ -137,11 +135,7 @@ const connect = ({ fence, api, setConnecting, effects }) => {
       effects.setToast({
         id: `${Date.now()}`,
         action: 'success',
-        component: (
-          <Row>
-            <Trans>Controlled dataset access sucessfully connected.</Trans>
-          </Row>
-        ),
+        component: <Row>Controlled dataset access sucessfully connected.</Row>,
       });
       trackFenceAction({
         fence,
