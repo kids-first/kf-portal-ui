@@ -7,12 +7,16 @@
 
 # testing
 /coverage
+/.nyc_output
 
 # production
 /build
 
 # misc
 .DS_Store
+
+# environment variables
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -21,3 +25,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
+
+# VsCode ignored files
+.vscode/launch.json
+
+# WebStrorm ignored files
+.cache/
+.idea/
+
+# local certificates are generated when testing production build
+*.pem
