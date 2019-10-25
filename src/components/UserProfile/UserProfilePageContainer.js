@@ -25,7 +25,7 @@ class UserProfilePageContainer extends React.Component {
   };
 
   componentDidMount() {
-    const { onFetchProfile, theme } = this.props;
+    const { onFetchProfile } = this.props;
     onFetchProfile();
   }
 
