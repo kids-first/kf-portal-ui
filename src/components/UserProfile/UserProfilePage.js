@@ -6,14 +6,14 @@ import UserProfilePageContent from 'components/UserProfile/UserProfilePageConten
 
 const { Header, Footer, Content } = Layout;
 
-const UserProfilePage = ({ profile, onSummitUpdateProfile, canEdit, loggedInUser }) => {
+const UserProfilePage = ({ profile, onSubmitUpdateProfile, canEdit, loggedInUser }) => {
   return (
     <Layout>
       <Header style={{backgroundColor: 'transparent', minHeight: 250, padding: 0}}>
         <UserProfilePageHeader profile={profile} loggedInUser={loggedInUser} />
       </Header>
       <Content>
-        <UserProfilePageContent profile={profile} loggedInUser={loggedInUser} canEdit={canEdit}/>
+        <UserProfilePageContent profile={profile} loggedInUser={loggedInUser} onSubmitUpdateProfile={onSubmitUpdateProfile} canEdit={canEdit}/>
       </Content>
       <Footer>Footer</Footer>
     </Layout>
@@ -22,7 +22,7 @@ const UserProfilePage = ({ profile, onSummitUpdateProfile, canEdit, loggedInUser
 
 UserProfilePage.propTypes = {
   profile: PropTypes.object.isRequired,
-  onSummitUpdateProfile: PropTypes.func.isRequired,
+  onSubmitUpdateProfile: PropTypes.func.isRequired,
   canEdit: PropTypes.bool.isRequired,
 };
 

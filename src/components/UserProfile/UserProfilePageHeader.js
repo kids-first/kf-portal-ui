@@ -111,7 +111,7 @@ const UserProfilePageHeader = ({
 
 UserProfilePageHeader.propTypes = {
   // profile: PropTypes.object.isRequired,
-  // onSummitUpdateProfile: PropTypes.func.isRequired,
+  // onSubmitUpdateProfile: PropTypes.func.isRequired,
   // canEdit: PropTypes.bool.isRequired,
 };
 const UserProfilePageHeaderWithTheme = withTheme(UserProfilePageHeader);

@@ -1,91 +1,124 @@
 import React, { useState } from 'react';
-import { Card, Col, Row, Typography } from 'antd';
+import { Button, Card, Col, Divider, Icon, Input, Row, Typography } from 'antd';
 import { withTheme } from 'emotion-theming';
-import { trackProfileInteraction } from 'services/analyticsTracking';
+import PropTypes from 'prop-types';
+import { TRACKING_EVENTS } from 'services/analyticsTracking';
 
-const { Title, Paragraph, Text } = Typography;
-const { Meta } = Card;
+const { Title, Text, Paragraph } = Typography;
+const { TextArea } = Input;
 
 const Box = props => (
-  <Card
-    className={`height-${props.value}`}
+  <Col
+    span={24}
     style={{ backgroundColor: 'white', width: '100%', height: '100%', borderRadius: 10 }}
   >
-    <Meta className={'text-color-dark'} title={<Title level={2}>Profile</Title>} />
-    {props.children}
-  </Card>
+    <Row align="middle">
+      <Col span={20}>
+        <Title level={2}>{props.title}</Title>
+      </Col>
+      <Col span={4}>
+        <Icon type="edit" theme="twoTone" style={{ fontSize: 20 }} onClick={props.onEditClick} />
+      </Col>
+    </Row>
+    <Row>{props.children}</Row>
+    {
+      props.isEditingBackgroundInfo ? (
+        <Row>
+          <Button type="primary" shape="round" icon="save" size={'small'} onClick={props.onSave}>
+            Save
+          </Button>
+          <Button type="default" shape="round" icon="close" size={'small'}>
+            Cancel
+          </Button>
+        </Row>
+      ):''
+    }
+  </Col>
 );
 
-const gridStyle = {
-  width: '100%',
-  textAlign: 'left',
-};
+class UserProfilePageContent extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      isEditingBackgroundInfo: false,
+      bioTextarea: '',
+      storyTextarea: '',
+      value:'',
+    }
+  }
 
-const handleEditingBackgroundInfo = ({ setEditingBackgroundInfo }) => ({ type, value }) => {
-  console.log("EDIT");
-  setEditingBackgroundInfo(value);
-  trackProfileInteraction({ action: 'Profile', value, type });
-};
-
-const onChange = () => {
-  console.log("toto")
-};
+  componentDidMount(){
+    this.setState({
+      bioTextarea: this.props.profile.bio,
+      storyTextarea: this.props.profile.story
+    })
+  }
 
 
 
-const UserProfilePageContent = ({
-  profile,
-  loggedInUser,
-  api,
-  onSummitUpdateProfile,
-  canEdit,
-  theme,
-}) => {
-  const [isEditingBackgroundInfo, setEditingBackgroundInfo] = useState(false);
-  const [focusedTextArea, setFocusedTextArea] = useState('myBio');
-  const [bioTextarea, setBioTextarea] = useState(profile.bio || ''); //FIXME
+  static propTypes = {
+    profile: PropTypes.object,
+    loggedInUser: PropTypes.object,
+    // api: PropTypes.
+    onSubmitUpdateProfile: PropTypes.func.isRequired,
+    canEdit: PropTypes.func.isRequired,
+    theme: PropTypes.object,
+  };
 
-  return (
-    <div>
-      {console.log(profile, 'profile')}
-      <Col span={14}>
-        <Row type="flex" justify="space-around" align="middle">
-          <Box value={100}>
-            <Card style={gridStyle}>
-              <Meta title={<Title level={3}>My Bio</Title>} />
-              {(profile.bio === '' || isEditingBackgroundInfo) &&
-              canEdit && ( //FIXME
-                  <Text
-                    ellipsis={{
-                      rows: 3,
-                    }}
-                    // editable={{ onChange: () => {
-                    //     handleEditingBackgroundInfo({
-                    //       value: !isEditingBackgroundInfo,
-                    //     });
-                    //     setFocusedTextArea('myBio'); }
-                    // }}
-                    editable={{ onChange: onChange }}
-                  >
-                    Share information about your professional background and your research
-                    interests.
-                  </Text>
-                )}
-            </Card>
-            <Card.Grid style={gridStyle}>Content</Card.Grid>
-          </Box>
-        </Row>
-      </Col>
-      <Col span={10} />
-    </div>
-  );
-};
+  onChange = ({ target: { value } }) => {
+    this.setState({ bioTextarea: value });
+  };
 
-UserProfilePageContent.propTypes = {
-  // profile: PropTypes.object.isRequired,
-  // onSummitUpdateProfile: PropTypes.func.isRequired,
-  // canEdit: PropTypes.bool.isRequired,
-};
+  onSave = () => {
+    this.props.onSubmitUpdateProfile({
+      bio: this.state.bioTextarea,
+      story: this.state.storyTextarea,
+    });
+  };
+
+  onEditClick = () => {
+    this.setState({isEditingBackgroundInfo: !this.state.isEditingBackgroundInfo})
+  };
+
+  onStart = () => {
+    console.log("start")
+  };
+
+  render() {
+    const { bioTextarea, storyTextarea }  = this.state;
+    return (
+      <div>
+        <Col span={14}>
+          <Row type="flex" justify="space-around" align="middle">
+            <Box title={'Profile'} onSave={this.onSave} onEditClick={this.onEditClick} isEditingBackgroundInfo={this.state.isEditingBackgroundInfo}>
+              <Row>
+                <Title level={3}>My Bio</Title>
+                <TextArea
+                  placeholder="Autosize height based on content lines"
+                  onChange={this.onChange}
+                  defaultValue={this.props.profile.bio}
+                  value={bioTextarea}
+                  autoSize={true}
+                />
+              </Row>
+              <Divider />
+              <Row>
+                <Title level={3}>My Story</Title>
+                <TextArea
+                  placeholder="Autosize height based on content lines"
+                  onChange={this.onChange}
+                  defaultValue={storyTextarea}
+                />
+              </Row>
+            </Box>
+          </Row>
+        </Col>
+        <Col span={10} />
+      </div>
+    );
+  }
+}
+
 const UserProfilePageContentWithTheme = withTheme(UserProfilePageContent);
 
 export default UserProfilePageContentWithTheme;

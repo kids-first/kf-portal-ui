@@ -32,6 +32,7 @@ class UserProfilePageContainer extends React.Component {
   canEdit = () => !Boolean(this.props.userID);
 
   submit = values => {
+    console.log("SUBMIT", values);
     const { profile, onUpdateProfile } = this.props;
     onUpdateProfile({
       ...profile,
@@ -61,7 +62,7 @@ class UserProfilePageContainer extends React.Component {
     return (
       <UserProfilePage
         profile={profile}
-        onSummitUpdateProfile={this.submit}
+        onSubmitUpdateProfile={this.submit}
         canEdit={this.canEdit()}
         loggedInUser={loggedInUser}
       />
@@ -79,7 +80,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     onFetchProfile: userID => dispatch(fetchProfileIfNeeded(userID)),
-    onUpdateProfile: () => dispatch(updateUserProfile()),
+    onUpdateProfile: user => dispatch(updateUserProfile(user)),
   };
 };
 
