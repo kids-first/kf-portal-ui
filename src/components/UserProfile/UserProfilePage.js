@@ -15,7 +15,6 @@ const UserProfilePage = ({ profile, onSubmitUpdateProfile, canEdit, loggedInUser
       <Content>
         <UserProfilePageContent profile={profile} loggedInUser={loggedInUser} onSubmitUpdateProfile={onSubmitUpdateProfile} canEdit={canEdit}/>
       </Content>
-      <Footer>Footer</Footer>
     </Layout>
   );
 };

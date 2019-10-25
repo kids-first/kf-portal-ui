@@ -3,6 +3,7 @@ import { Col } from 'antd';
 import { withTheme } from 'emotion-theming';
 import PropTypes from 'prop-types';
 import UserProfilePageAboutMe from 'components/UserProfile/UserProfilePageAboutMe';
+import UserProfilePageContacts from 'components/UserProfile/UserProfilePageContacts';
 
 class UserProfilePageContent extends React.Component {
   constructor(props) {
@@ -69,6 +70,15 @@ class UserProfilePageContent extends React.Component {
             onEdit={this.onEditClick}
             canEdit={this.props.canEdit}
             theme={this.props.theme}
+          />
+          <UserProfilePageContacts
+            isEditingBackgroundInfo={isEditingBackgroundInfo}
+            onSave={this.onSave}
+            onCancel={this.onCancel}
+            onEdit={this.onEditClick}
+            canEdit={this.props.canEdit}
+            theme={this.props.theme}
+            profile={this.props.profile} //FIXME maybe just send the address info
           />
         </Col>
         <Col span={10} />

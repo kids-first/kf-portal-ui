@@ -31,9 +31,11 @@ const UserProfilePageAboutMe = props => {
     >
       <Row>
         <Title level={3}>My Bio</Title>
-        <Title style={h4(props.theme)} level={4}>
-          Share information about your professional background and your research interests.
-        </Title>
+        {(props.storyTextarea === '' || props.isEditingBackgroundInfo) && props.canEdit && (
+          <Title style={h4(props.theme)} level={4}>
+            Share information about your professional background and your research interests.
+          </Title>
+        )}
         {props.isEditingBackgroundInfo ? (
           <TextArea
             placeholder="Autosize height based on content lines"
@@ -52,9 +54,10 @@ const UserProfilePageAboutMe = props => {
       <Divider />
       <Row>
         <Title level={3}>My Story</Title>
-        <Title level={4} style={h4(props.theme)}>
+        {(props.storyTextarea === '' || props.isEditingBackgroundInfo) &&
+        props.canEdit && <Title level={4} style={h4(props.theme)}>
           Share why you’re a part of the Kids First community.
-        </Title>
+        </Title>}
         {props.isEditingBackgroundInfo ? (
           <TextArea
             placeholder="Autosize height based on content lines"

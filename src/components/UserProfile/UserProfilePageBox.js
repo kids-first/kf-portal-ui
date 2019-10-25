@@ -7,7 +7,7 @@ const UserProfilePageBox = props => {
   return (
     <Col
       span={24}
-      style={{ backgroundColor: 'white', width: '100%', height: '100%', borderRadius: 10, padding: 15, boxShadow:'0 2px 8px rgba(0, 0, 0, 0.15)' }}
+      style={{ backgroundColor: 'white', width: '100%', height: '100%', borderRadius: 10, padding: 15, boxShadow:'0 2px 8px rgba(0, 0, 0, 0.15)', marginBottom: 5 }}
     >
       <Row type="flex" justify="space-around" align="middle">
         <Col span={20}>
