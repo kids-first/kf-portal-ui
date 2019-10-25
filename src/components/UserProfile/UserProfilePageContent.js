@@ -58,7 +58,7 @@ class UserProfilePageContent extends React.Component {
     const { bioTextarea, storyTextarea, isEditingBackgroundInfo } = this.state;
     return (
       <div>
-        <Col span={14}>
+        <Col span={14} style={{ padding:5 }}>
           <UserProfilePageAboutMe
             bioTextarea={bioTextarea}
             storyTextarea={storyTextarea}
