@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { compose, lifecycle, withState } from 'recompose';
+import React, { Component } from 'react';
+import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
 
@@ -7,10 +7,11 @@ import Row from 'uikit/Row';
 import Input from 'uikit/Input';
 import { injectState } from 'freactal';
 import { getBillingGroups, saveProject } from 'services/cavatica';
-import LoadingOnClick from 'components/LoadingOnClick';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Select from 'uikit/Select';
+import { bind, getMsgFromErrorOrElse } from 'utils';
+import { Result, Button } from 'antd';
 
 const Container = styled(Row)`
   align-items: center;
@@ -56,50 +57,106 @@ const AddIcon = styled(PlusIcon)`
 const enhance = compose(
   injectState,
   withTheme,
-  withState('projectName', 'setProjectName', ''),
-  withState('addingProject', 'setAddingProject', false),
-  withState('billingGroups', 'setBillingGroups', []),
   withState('billingGroup', 'selectBillingGroup', null),
-  lifecycle({
-    async componentDidMount() {
-      const { setBillingGroups } = this.props;
-      getBillingGroups().then(bg => setBillingGroups(bg));
-    },
-  }),
 );
 
-const CavaticaAddProject = ({
-  theme,
-  projectName,
-  setProjectName,
-  addingProject,
-  setAddingProject,
-  setSelectedProject,
-  billingGroups,
-  selectedBillingGroup,
-  selectBillingGroup,
-  onSuccess,
-}) => {
-  const onSaveButtonClick = async () => {
-    saveProject({
-      projectName,
-      selectedBillingGroup,
-      billingGroups,
-    }).then(({ id }) => {
-      setAddingProject(false);
-      setProjectName('');
+const defaultState = {
+  projectName: '',
+  billingGroups: [],
+  selectedBillingGroup: null,
+  error: null,
+  addingProject: false,
+  //Do not show 'try again' if getBillingGroups fails. To show it, we should add a key to the component and change it to refresh the component. The parent is a bit too complicated to add extra logic to it so I prefer to make things simple...
+  isErrorFromBillingGroups: false,
+};
+
+class CavaticaAddProject extends Component {
+  state = {
+    ...defaultState,
+  };
+
+  async componentDidMount() {
+    try {
+      const billingGroups = (await getBillingGroups()) || [];
+      this.setState({ billingGroups });
+    } catch (error) {
+      this.setState({ error, isErrorFromBillingGroups: true });
+    }
+  }
+
+  @bind
+  async onSaveButtonClick() {
+    const { projectName, selectedBillingGroup, billingGroups } = this.state;
+    const { onSuccess, setSelectedProject } = this.props;
+
+    try {
+      this.setState({ isSaveButtonDisabled: true });
+      const { id } = await saveProject({
+        projectName,
+        selectedBillingGroup,
+        billingGroups,
+      });
       setSelectedProject(id);
       onSuccess();
-    });
-  };
-  const onProjectNameChange = e => setProjectName(e.target.value);
-  const onBillingGroupSelect = e => selectBillingGroup(e.target.value);
-  const onCancelClick = () => setAddingProject(false);
-  const onCreateButtonClick = () => setAddingProject(true);
-  return (
-    <Container>
-      {addingProject ? (
-        <Fragment>
+      this.setState({
+        projectName: '',
+        addingProject: false,
+      });
+    } catch (error) {
+      this.setState({ error });
+    } finally {
+      this.setState({ projectName: '', isSaveButtonDisabled: false });
+    }
+  }
+
+  @bind
+  onProjectNameChange(e) {
+    this.setState({ projectName: e.target.value });
+  }
+  @bind
+  onBillingGroupSelect(e) {
+    this.setState({ selectedBillingGroup: e.target.value });
+  }
+
+  @bind
+  onCancelClick() {
+    this.setState({ addingProject: false });
+  }
+  @bind
+  onCreateButtonClick() {
+    this.setState({ addingProject: true });
+  }
+
+  @bind
+  onClickTryAgain() {
+    this.setState({ ...defaultState });
+  }
+  render() {
+    const { theme } = this.props;
+    const {
+      error,
+      addingProject,
+      projectName,
+      isSaveButtonDisabled,
+      billingGroups,
+      isErrorFromBillingGroups,
+    } = this.state;
+    if (error) {
+      return (
+        <Result
+          style={{ width: '100%' }}
+          status="error"
+          title={getMsgFromErrorOrElse(error)}
+          extra={
+            !isErrorFromBillingGroups ? (
+              <Button onClick={this.onClickTryAgain}>try again</Button>
+            ) : null
+          }
+        />
+      );
+    } else if (addingProject) {
+      return (
+        <Container>
           <AddIcon width={15} height={15} fill={theme.tertiary} />
           <InputLabel>Create a project</InputLabel>
           <Input
@@ -107,33 +164,33 @@ const CavaticaAddProject = ({
             type="text"
             placeholder="Enter name of project"
             value={projectName}
-            onChange={onProjectNameChange}
+            onChange={this.onProjectNameChange}
           />
-          <Select onChange={onBillingGroupSelect}>
-            {billingGroups.map((bg, i) => (
+          <Select onChange={this.onBillingGroupSelect}>
+            {(billingGroups || []).map((bg, i) => (
               <option key={i} value={bg.id}>
                 {bg.name}
               </option>
             ))}
           </Select>
-          <LoadingOnClick
-            onClick={onSaveButtonClick}
-            render={({ loading, onClick }) => (
-              <TealActionButton disabled={loading} onClick={onClick}>
-                Save
-              </TealActionButton>
-            )}
-          />
-          <WhiteButton onClick={onCancelClick}>Cancel</WhiteButton>
-        </Fragment>
-      ) : (
-        <CreateButton onClick={onCreateButtonClick}>
-          <AddIcon width={12} height={12} />
-          Create a project
-        </CreateButton>
-      )}
-    </Container>
-  );
-};
+          <TealActionButton disabled={isSaveButtonDisabled} onClick={this.onSaveButtonClick}>
+            Save
+          </TealActionButton>
+          <WhiteButton onClick={this.onCancelClick}>Cancel</WhiteButton>
+        </Container>
+      );
+    } else if (!addingProject) {
+      return (
+        <Container>
+          <CreateButton onClick={this.onCreateButtonClick}>
+            <AddIcon width={12} height={12} />
+            Create a project
+          </CreateButton>{' '}
+        </Container>
+      );
+    }
+    return null;
+  }
+}
 
 export default enhance(CavaticaAddProject);
