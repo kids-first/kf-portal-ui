@@ -17,44 +17,53 @@ const Box = props => (
         <Title level={2}>{props.title}</Title>
       </Col>
       <Col span={4}>
-        <Icon type="edit" theme="twoTone" style={{ fontSize: 20 }} onClick={props.onEditClick} />
+        {props.canEdit &&
+          (props.isEditingBackgroundInfo ? (
+            <Row>
+              <Button
+                type="primary"
+                shape="round"
+                icon="save"
+                size={'small'}
+                onClick={props.onSave}
+              >
+                Save
+              </Button>
+              <Button type="default" shape="round" icon="close" size={'small'} onClick={props.onCancel}>
+                Cancel
+              </Button>
+            </Row>
+          ) : (
+            <Icon
+              type="edit"
+              theme="twoTone"
+              style={{ fontSize: 20 }}
+              onClick={props.onEditClick}
+            />
+          ))}
       </Col>
     </Row>
     <Row>{props.children}</Row>
-    {
-      props.isEditingBackgroundInfo ? (
-        <Row>
-          <Button type="primary" shape="round" icon="save" size={'small'} onClick={props.onSave}>
-            Save
-          </Button>
-          <Button type="default" shape="round" icon="close" size={'small'}>
-            Cancel
-          </Button>
-        </Row>
-      ):''
-    }
   </Col>
 );
 
 class UserProfilePageContent extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       isEditingBackgroundInfo: false,
       bioTextarea: '',
       storyTextarea: '',
-      value:'',
-    }
+      value: '',
+    };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.setState({
       bioTextarea: this.props.profile.bio,
-      storyTextarea: this.props.profile.story
-    })
+      storyTextarea: this.props.profile.story,
+    });
   }
-
-
 
   static propTypes = {
     profile: PropTypes.object,
@@ -65,8 +74,12 @@ class UserProfilePageContent extends React.Component {
     theme: PropTypes.object,
   };
 
-  onChange = ({ target: { value } }) => {
-    this.setState({ bioTextarea: value });
+  onChange = tags => (event) => {
+    const obj = {
+      [tags]: event.target.value
+    };
+    this.setState(obj);
+
   };
 
   onSave = () => {
@@ -74,41 +87,70 @@ class UserProfilePageContent extends React.Component {
       bio: this.state.bioTextarea,
       story: this.state.storyTextarea,
     });
+    this.setState({ isEditingBackgroundInfo: false });
+  };
+
+  onCancel = () => {
+    this.setState({ isEditingBackgroundInfo: false });
   };
 
   onEditClick = () => {
-    this.setState({isEditingBackgroundInfo: !this.state.isEditingBackgroundInfo})
+    this.setState({ isEditingBackgroundInfo: !this.state.isEditingBackgroundInfo });
   };
 
   onStart = () => {
-    console.log("start")
+    console.log('start');
   };
 
   render() {
-    const { bioTextarea, storyTextarea }  = this.state;
+    console.log('props', this.props);
+    const { bioTextarea, storyTextarea, isEditingBackgroundInfo } = this.state;
     return (
       <div>
         <Col span={14}>
           <Row type="flex" justify="space-around" align="middle">
-            <Box title={'Profile'} onSave={this.onSave} onEditClick={this.onEditClick} isEditingBackgroundInfo={this.state.isEditingBackgroundInfo}>
+            <Box
+              title={'Profile'}
+              onSave={this.onSave}
+              onCancel={this.onCancel}
+              onEditClick={this.onEditClick}
+              isEditingBackgroundInfo={isEditingBackgroundInfo}
+              canEdit={this.props.canEdit}
+            >
               <Row>
                 <Title level={3}>My Bio</Title>
-                <TextArea
-                  placeholder="Autosize height based on content lines"
-                  onChange={this.onChange}
-                  defaultValue={this.props.profile.bio}
-                  value={bioTextarea}
-                  autoSize={true}
-                />
+                {isEditingBackgroundInfo ? (
+                  <TextArea
+                    placeholder="Autosize height based on content lines"
+                    onChange={this.onChange("bioTextarea")}
+                    defaultValue={bioTextarea}
+                    disabled={ !isEditingBackgroundInfo }
+                    // value={bioTextarea}
+                    autoSize={true}
+                  />
+                ):(
+                  <Text editable={false} style={{whiteSpace: "pre-wrap"}}>
+                    {this.props.profile.bio}
+                  </Text>
+                )}
               </Row>
               <Divider />
               <Row>
                 <Title level={3}>My Story</Title>
-                <TextArea
-                  placeholder="Autosize height based on content lines"
-                  onChange={this.onChange}
-                  defaultValue={storyTextarea}
-                />
+                {isEditingBackgroundInfo ? (
+                  <TextArea
+                    placeholder="Autosize height based on content lines"
+                    onChange={this.onChange('storyTextarea')}
+                    defaultValue={storyTextarea}
+                    disabled={ !isEditingBackgroundInfo }
+                    // value={bioTextarea}
+                    autoSize={true}
+                  />
+                ):(
+                  <Text editable={false} style={{whiteSpace: "pre-wrap"}}>
+                    {this.props.profile.story}
+                  </Text>
+                )}
               </Row>
             </Box>
           </Row>
