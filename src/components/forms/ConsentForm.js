@@ -12,7 +12,7 @@ import { updateProfile } from 'services/profiles';
 import { Link } from 'react-router-dom';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { ButtonsDiv } from 'components/Join';
+import { ButtonsDiv } from 'components/Login/Join';
 import { personaApiRoot } from 'common/injectGlobals';
 
 import CheckboxBubble from 'uikit/CheckboxBubble';

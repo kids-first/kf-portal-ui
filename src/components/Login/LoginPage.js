@@ -3,15 +3,15 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { withApi } from '../services/api';
+import { withApi } from 'services/api';
 
-import Login from 'components/Login';
+import Login from 'components/Login/Login';
 import SplashPage from 'components/SplashPage';
 
 import { Link, Section } from 'uikit/Core';
-import { JoinH2 } from '../uikit/Headings';
+import { JoinH2 } from 'uikit/Headings';
 
-import './Login/index.css';
+import './index.css';
 
 const LoginPage = compose(
   withRouter,
