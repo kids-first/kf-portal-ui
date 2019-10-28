@@ -58,7 +58,7 @@ export const getBillingGroups = async () => {
     });
     items = response.data.items;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return items;
 };
@@ -80,7 +80,7 @@ export const getProjects = async () => {
     });
     items = response.data.items;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return items;
 };
@@ -113,7 +113,7 @@ const createProject = async ({ name, billing_group, description = '' }) => {
     });
     data = response.data;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return data;
 };
@@ -240,20 +240,24 @@ const getProjectDescriptionTemplate = memoize(() =>
 export const saveProject = async ({ projectName, billingGroupId }) => {
   const USER_NAME_TEMPLATE_STRING = '<username>';
   const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
-  const [descriptionTemplate, { username }] = await Promise.all([
-    getProjectDescriptionTemplate(),
-    getUser(),
-  ]);
-  const projectDescription = descriptionTemplate
-    .split(PROJECT_NAME_TEMPLATE_STRING)
-    .join(projectName)
-    .split(USER_NAME_TEMPLATE_STRING)
-    .join(username);
-  return createProject({
-    billing_group: billingGroupId,
-    name: projectName,
-    description: projectDescription,
-  });
+  try {
+    const [descriptionTemplate, { username }] = await Promise.all([
+      getProjectDescriptionTemplate(),
+      getUser(),
+    ]);
+    const projectDescription = descriptionTemplate
+      .split(PROJECT_NAME_TEMPLATE_STRING)
+      .join(projectName)
+      .split(USER_NAME_TEMPLATE_STRING)
+      .join(username);
+    return createProject({
+      billing_group: billingGroupId,
+      name: projectName,
+      description: projectDescription,
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const isValidKey = key => {

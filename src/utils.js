@@ -24,3 +24,8 @@ export const extractErrorMessage = (response, indexError = 0) => {
   }
   return (errors[indexError] || {}).message;
 };
+
+export const getMsgFromErrorOrElse = (error, defaultIfNone = 'An Error Occurred') =>
+  typeof error === 'object' && Object.prototype.hasOwnProperty.call(error, 'message')
+    ? error.message
+    : defaultIfNone;
