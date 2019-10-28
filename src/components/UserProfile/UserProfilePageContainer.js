@@ -32,7 +32,6 @@ class UserProfilePageContainer extends React.Component {
   canEdit = () => !Boolean(this.props.userID);
 
   submit = values => {
-    console.log("SUBMIT", values);
     const { profile, onUpdateProfile } = this.props;
     onUpdateProfile({
       ...profile,
