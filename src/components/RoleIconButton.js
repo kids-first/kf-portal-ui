@@ -6,8 +6,8 @@ import { css } from 'emotion';
 
 const roleLookup = ROLES.reduce((acc, { type, ...x }) => ({ ...acc, [type]: x }), {});
 
-const RoleIconButton = ({ className = '', children, loggedInUser }) => {
-  const userRole = get(loggedInUser, ['roles', 0]);
+const RoleIconButton = ({ className = '', children, profile }) => {
+  const userRole = get(profile, ['roles', 0]);
   const userRoleDisplayName = find(ROLES, { type: userRole }).displayName;
   const RoleIcon = get(roleLookup, [userRole, 'icon'], null);
   const background = get(roleLookup, [userRole, 'color'], null);
