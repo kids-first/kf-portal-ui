@@ -10,7 +10,7 @@ import { getBillingGroups, saveProject } from 'services/cavatica';
 import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Select from 'uikit/Select';
-import { bind, getMsgFromErrorOrElse } from 'utils';
+import { getMsgFromErrorOrElse } from 'utils';
 import { Result, Button } from 'antd';
 
 const Container = styled(Row)`
@@ -84,8 +84,7 @@ class CavaticaAddProject extends Component {
     }
   }
 
-  @bind
-  async onSaveButtonClick() {
+  onSaveButtonClick = async () => {
     const { projectName, selectedBillingGroup, billingGroups } = this.state;
     const { onSuccess, setSelectedProject } = this.props;
 
@@ -107,31 +106,29 @@ class CavaticaAddProject extends Component {
     } finally {
       this.setState({ projectName: '', isSaveButtonDisabled: false });
     }
-  }
+  };
 
-  @bind
-  onProjectNameChange(e) {
+  onProjectNameChange = e => {
     this.setState({ projectName: e.target.value });
-  }
-  @bind
-  onBillingGroupSelect(e) {
+  };
+
+  onBillingGroupSelect = e => {
     this.setState({ selectedBillingGroup: e.target.value });
-  }
+  };
 
-  @bind
-  onCancelClick() {
+  onCancelClick = () => {
     this.setState({ addingProject: false });
-  }
-  @bind
-  onCreateButtonClick() {
-    this.setState({ addingProject: true });
-  }
+  };
 
-  @bind
-  onClickTryAgain() {
+  onCreateButtonClick = () => {
+    this.setState({ addingProject: true });
+  };
+
+  onClickTryAgain = () => {
     this.setState({ ...defaultState });
-  }
+  };
   render() {
+    console.log('ok');
     const { theme } = this.props;
     const {
       error,

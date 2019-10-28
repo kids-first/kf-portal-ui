@@ -10,7 +10,7 @@ import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Input from 'uikit/Input';
 import { getBillingGroups, saveProject } from 'services/cavatica';
 import { Result, Button } from 'antd';
-import { bind, getMsgFromErrorOrElse } from 'utils';
+import { getMsgFromErrorOrElse } from 'utils';
 
 const StyledLabel = styled('label')`
   font-size: 14px;
@@ -55,8 +55,7 @@ class Create extends React.Component {
     }
   }
 
-  @bind
-  async onSaveButtonClick() {
+  onSaveButtonClick = async () => {
     const { projectName, selectedBillingGroup, billingGroups } = this.state;
     const { onProjectCreated } = this.props;
 
@@ -73,20 +72,19 @@ class Create extends React.Component {
     } finally {
       this.setState({ projectName: '', isSaveButtonDisabled: false });
     }
-  }
+  };
 
-  @bind
-  onProjectNameChange(e) {
+  onProjectNameChange = e => {
     this.setState({ projectName: e.target.value });
-  }
-  @bind
-  onBillingGroupSelect(e) {
+  };
+
+  onBillingGroupSelect = e => {
     this.setState({ selectedBillingGroup: e.target.value });
-  }
-  @bind
-  onClickTryAgain() {
+  };
+
+  onClickTryAgain = () => {
     this.setState({ ...defaultState });
-  }
+  };
   onCancelClick = data => () => this.props.onProjectCreationCancelled(data);
 
   render() {
