@@ -11,7 +11,7 @@ import PhoneIcon from 'icons/PhoneIcon';
 import Row from 'uikit/Row';
 import { Section } from 'uikit/Core';
 import { withApi } from 'services/api';
-import { formatPhoneNumber, formatAddressLine } from 'common/displayFormatters';
+import { formatAddressLine } from 'common/displayFormatters';
 
 const EmailLink = styled(ExternalLink)`
   text-decoration: underline;
@@ -20,10 +20,6 @@ const EmailLink = styled(ExternalLink)`
 
 const ContactItem = styled(Section)`
   line-height: 1.83;
-`;
-
-const Address = styled('div')`
-  text-transform: capitalize;
 `;
 
 const Contact = compose(
@@ -62,11 +58,11 @@ const Contact = compose(
         <Row alignItems="flex-start" mb={'20px'}>
           <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
           <ContactItem ml={'7px'}>
-            <Address>
+            <div>
               {institution && <H3>{institution}</H3>}
               <div>{formatAddressLine([addressLine1, addressLine2])}</div>
               <div>{formatAddressLine([city, state, country])}</div>
-            </Address>
+            </div>
             {zip && <div>{zip.toUpperCase()}</div>}
           </ContactItem>
         </Row>
@@ -76,7 +72,7 @@ const Contact = compose(
         <Row alignItems="center" mb={'20px'}>
           <EnvelopeIcon height={'10px'} />
           <ContactItem ml={'7px'}>
-            <EmailLink bare primary bold href="mailto:simonscientist@chop.edu">
+            <EmailLink bare primary bold href={`mailto:${institutionalEmail}`}>
               {institutionalEmail}
             </EmailLink>
           </ContactItem>
@@ -86,7 +82,7 @@ const Contact = compose(
       {phone && (
         <Row alignItems="center" mb={'20px'}>
           <PhoneIcon height={'12px'} />
-          <ContactItem ml={'7px'}>{formatPhoneNumber(phone)}</ContactItem>
+          <ContactItem ml={'7px'}>{phone}</ContactItem>
         </Row>
       )}
     </Box>
