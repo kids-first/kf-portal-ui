@@ -1,0 +1,21 @@
+.advancedFacetViewWrapper {
+  padding: 0px;
+}
+.advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
+  border-bottom: none;
+}
+.afvModalContent {
+  position: absolute;
+  width: 95%;
+}
+
+.afvStatContainer .statContainer {
+  background: none;
+  padding: none;
+  border: none;
+}
+
+.afvStatContainer .statContainer .stat {
+  padding-left: 10px;
+  padding-right: 10px;
+}

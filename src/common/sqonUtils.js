@@ -1,0 +1,140 @@
+import { cloneDeep, merge, union, isEqual } from 'lodash';
+
+import { BOOLEAN_OPS, isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
+
+/**
+ * Returns a default, empty sqon.
+ * @returns {Object[]} - A copy of an empty sqon.
+ */
+export const getDefaultSqon = () => cloneDeep([{ op: 'and', content: [] }]);
+
+/**
+ * Check wether this is a default, empty sqon.
+ * @param {Object[]} sqons - an array of sqon object.
+ * @returns {boolean} `true` if it is a default sqon; `false` otherwise.
+ */
+export const isDefaultSqon = sqons => isEqual(sqons, getDefaultSqon());
+
+/**
+ * Sets the value in the given `newSqon` to the `sourceSqons` at the given `sourceIndex`.
+ * Merging behavoir can be provided with `opts`.
+ * This does not mutates the original `sourceSqons`.
+ * @param {Object[]} sourceSqons - an array of sqons
+ * @param {Number} sourceIndex - the index at which the change must be made
+ * @param {Object} newSqon - a sqon representing the value to set and, optionaly, the operator
+ * @param {{values:MERGE_STRATEGIES,operator:MERGE_STRATEGIES}} opts - options to handle how to merge the values or the operator
+ * @returns {Object} a new sqon including the `newSqon`.
+ */
+export const setSqonValueAtIndex = (sourceSqons, sourceIndex, newSqon, opts) => {
+  // clone targetSqons to preserve immutability
+  const clonedSqons = cloneDeep(sourceSqons);
+
+  // default values
+  opts = merge(
+    {},
+    {
+      values: MERGE_VALUES_STRATEGIES.DEFAULT,
+      operator: MERGE_OPERATOR_STRATEGIES.DEFAULT,
+    },
+    opts,
+  );
+
+  // try to recursively traverse the sqon and mutate the matching field
+  const found = deeplySetSqonValue(clonedSqons[sourceIndex], newSqon, opts);
+
+  if (!found) {
+    if (!newSqon.op) {
+      throw new Error(
+        `Cannot add the field "${
+          newSqon.content.field
+        }" to the sqons: no operator provided and no matching field found in sqons`,
+      );
+    }
+    clonedSqons[sourceIndex].content.push(newSqon);
+  }
+
+  return clonedSqons;
+};
+
+/**
+ * Recursively traverse the `sourceSqon` and mutate the matching field's value and, optionaly, it's operator.
+
+ * @param {Object} sourceSqon - a sqon object to traverse recursively and mutate
+ * @param {Object} newSqon - a sqon, that may omit the operator,
+ * that provide the field name searched and value to be set
+ * @param {Object} opts - options to handle merging the values.
+ * 
+ * @returns `true` if the field was found; `false` otherwise.
+ */
+const deeplySetSqonValue = (sourceSqon, newSqon, opts) => {
+  let found = false;
+
+  sourceSqon.content.forEach(sqon => {
+    // dont follow references
+    if (isReference(sqon)) return;
+
+    // traverse nested sqons recursively
+    if (BOOLEAN_OPS.includes(sqon.op)) {
+      found = deeplySetSqonValue(sqon, newSqon, opts);
+      return;
+    }
+
+    // field found, set the value and operator
+    if (sqon.content.field === newSqon.content.field) {
+      found = true;
+
+      if (newSqon.op) {
+        if (opts.operator !== MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR) {
+          sqon.op = newSqon.op;
+        }
+      }
+
+      if (opts.values === MERGE_VALUES_STRATEGIES.APPEND_VALUES) {
+        sqon.content.value = union([], sqon.content.value, newSqon.content.value);
+      }
+
+      if (opts.values === MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES) {
+        sqon.content.value = newSqon.content.value;
+      }
+    }
+  });
+
+  return found;
+};
+
+/**
+ * Strategy to use to merge the values of the field.
+ */
+export const MERGE_VALUES_STRATEGIES = {
+  /**
+   * Defaults to `OVERRIDE_VALUES`
+   */
+  DEFAULT: 'OVERRIDE_VALUES',
+  /**
+   * Replaces existing values with provided ones
+   */
+  OVERRIDE_VALUES: 'OVERRIDE_VALUES',
+  /**
+   * Append provided values to existing ones
+   */
+  APPEND_VALUES: 'APPEND_VALUES',
+};
+
+/**
+ * Strategy to use to merge the operator of the field.
+ */
+export const MERGE_OPERATOR_STRATEGIES = {
+  /**
+   * Defaults to `OVERRIDE_OPERATOR`
+   */
+  DEFAULT: 'OVERRIDE_OPERATOR',
+  /**
+   * Replaces existing operator with provided one
+   */
+  OVERRIDE_OPERATOR: 'OVERRIDE_OPERATOR',
+  /**
+   * Keep the current operator.
+   * The one provided will be used if the field is not found.
+   */
+  KEEP_OPERATOR: 'KEEP_OPERATOR',
+};

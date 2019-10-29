@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "allowSyntheticDefaultImports": false,
+    "baseUrl": "./src",
+    "paths": {
+      "src/*": ["src/*"],
+      "components/*": ["src/components/*"],
+      "services/*": ["src/services/*"],
+      "uikit/*": ["src/uikit/*"],
+      "assets/*": ["src/assets/*"],
+      "common/*": ["src/common"]
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

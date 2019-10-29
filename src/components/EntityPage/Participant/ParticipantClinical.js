@@ -1,0 +1,337 @@
+import * as React from 'react';
+import { get } from 'lodash';
+import { EntityContentDivider, EntityContentSection } from '../';
+import FamilyTable from './Utils/FamilyTable';
+import sanitize from './Utils/sanitize';
+import ParticipantDataTable from './Utils/ParticipantDataTable';
+import graphql from 'services/arranger';
+import { initializeApi } from '../../../services/api';
+import { Link } from 'react-router-dom';
+import { setSqons } from 'store/actionCreators/virtualStudies';
+import {
+  getDefaultSqon,
+  MERGE_OPERATOR_STRATEGIES,
+  MERGE_VALUES_STRATEGIES,
+  setSqonValueAtIndex,
+} from '../../../common/sqonUtils';
+import { withRouter } from 'react-router';
+import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
+import { store } from '../../../store';
+import prettifyAge from './Utils/prettifyAge';
+import { flatMap } from 'lodash/collection';
+import { HPOLink, SNOMEDLink, MONDOLink, NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
+import ClinicalIcon from 'icons/ClinicalIcon';
+import BiospecimenIcon from 'icons/BiospecimenIcon';
+import { withTheme } from 'emotion-theming';
+import isEmpty from 'lodash/isEmpty';
+import Tooltip from 'uikit/Tooltip';
+import LoadingSpinner from 'uikit/LoadingSpinner';
+
+const cellBreak = wrapper => (
+  <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{wrapper.value}</div>
+);
+
+class ParticipantClinical extends React.Component {
+  state = { diagnoses: [], phenotypes: [], hasLoadedDxs: false, hasLoadedPhenotypes: false };
+
+  componentDidMount() {
+    this.dataIntoState();
+  }
+
+  diagHeads = theme => [
+    {
+      Header: 'Diagnosis Category',
+      accessor: 'diagnosis_category',
+      Cell: row => {
+        const category = row.value;
+        const rowData = row.original;
+        const biospecimensIds = rowData.biospecimens || [];
+        const hasNoBioSpecimenIds = isEmpty(biospecimensIds);
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip
+              html={`${hasNoBioSpecimenIds ? 'Clinical' : 'Histological'} Diagnosis`}
+              style={{ marginRight: '10px' }}
+            >
+              {hasNoBioSpecimenIds ? (
+                <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
+              ) : (
+                <BiospecimenIcon
+                  width={18}
+                  height={18}
+                  fill={theme.biospecimenOrange}
+                  alt="histological"
+                />
+              )}
+            </Tooltip>
+            <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{category}</div>
+          </div>
+        );
+      },
+    },
+    {
+      Header: 'Diagnosis (Mondo)',
+      accessor: 'mondo_id_diagnosis',
+      Cell: wrapper =>
+        wrapper.value === '--' ? <div>--</div> : <MONDOLink mondo={wrapper.value} />,
+    },
+    {
+      Header: 'Diagnosis (NCIT)',
+      accessor: 'ncit_id_diagnosis',
+      Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <NCITLink ncit={wrapper.value} />),
+    },
+    { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis', Cell: cellBreak },
+    { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
+    {
+      Header: 'Mondo term shared with',
+      accessor: 'shared_with',
+      Cell: wrapper => {
+        const participant = this.showParticipantNb(wrapper, 'diagnoses.mondo_id_diagnosis', [
+          wrapper.original.mondo_id_diagnosis,
+        ]);
+
+        return participant;
+      },
+    },
+    {
+      Header: 'Specimen IDs',
+      accessor: 'biospecimens',
+      width: 175,
+      Cell: row => {
+        const biospecimensIds = row.value;
+        return isEmpty(biospecimensIds) ? (
+          <div>--</div>
+        ) : (
+          <div style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+            {biospecimensIds.join(', ')}
+          </div>
+        );
+      },
+    },
+  ];
+
+  phenoHeads = () => [
+    {
+      Header: 'Phenotype (HPO)',
+      accessor: 'hpo',
+      Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <HPOLink hpo={wrapper.value} />),
+    },
+    {
+      Header: 'Phenotype (SNOMED)',
+      accessor: 'snomed',
+      Cell: wrapper =>
+        wrapper.value === '--' ? <div>--</div> : <SNOMEDLink snomed={wrapper.value} />,
+    },
+    { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
+    { Header: 'Interpretation', accessor: 'interpretation', Cell: cellBreak },
+    { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
+    {
+      Header: 'HPO term shared with',
+      accessor: 'shared_with',
+      Cell: wrapper => {
+        const participant = this.showParticipantNb(
+          wrapper,
+          wrapper.original.interpretation === 'Observed'
+            ? 'phenotype.hpo_phenotype_observed'
+            : 'phenotype.hpo_phenotype_not_observed',
+          [wrapper.original.hpo],
+        );
+
+        return participant;
+      },
+    },
+  ];
+
+  diagnosisIntoState(api) {
+    function call(diagnosis) {
+      return graphql(api)({
+        query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`,
+      });
+    }
+
+    let diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(
+      ele => Object.assign({}, get(ele, 'node', {})), //copy obj
+    );
+
+    Promise.all(
+      (() => {
+        const temp = diagnoses.map(diag => {
+          //start ajax calls to know the shared with.
+          return call(diag.mondo_id_diagnosis);
+        });
+
+        diagnoses = diagnoses.map(diag => {
+          //make age more readable while we wait for the calls
+
+          diag.age_at_event_days = prettifyAge(diag.age_at_event_days);
+
+          return diag;
+        });
+
+        return temp;
+      })(),
+    ).then(nums => {
+      for (let i = 0; i < nums.length; i++) {
+        diagnoses[i].shared_with = this.prettySharedWith(
+          get(nums[i], 'data.participant.hits.total', '--'),
+        );
+      }
+
+      this.setState({ diagnoses: sanitize(diagnoses), hasLoadedDxs: true }); //once we're ready, just tell the state, it'll do the rest
+    });
+  }
+
+  phenotypeIntoState(api) {
+    //stub for when the phenotypes are available
+    function callObs(phenotype) {
+      return graphql(api)({
+        query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
+      });
+    }
+
+    function callNotObs(phenotype) {
+      return graphql(api)({
+        query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_not_observed","value":["${phenotype}"]}}]}}`,
+      });
+    }
+
+    let phenotypes = get(this.props.participant, 'phenotype.hits.edges', []).map(
+      ele => Object.assign({}, get(ele, 'node', {})), //copy obj
+    );
+
+    phenotypes = flatMap(
+      phenotypes.sort((a, b) => a.age_at_event_days - b.age_at_event_days),
+      pheno => {
+        //transform phenotypes while we wait for the calls
+
+        if (pheno.observed) {
+          pheno.interpretation = 'Observed';
+          pheno.hpo = pheno.hpo_phenotype_observed;
+          pheno.snomed = pheno.snomed_phenotype_observed;
+        } else {
+          pheno.interpretation = 'Not Observed';
+          pheno.hpo = pheno.hpo_phenotype_not_observed;
+          pheno.snomed = pheno.snomed_phenotype_not_observed;
+        }
+
+        pheno.age_at_event_days = prettifyAge(pheno.age_at_event_days);
+
+        return [pheno];
+      },
+    );
+
+    Promise.all(
+      phenotypes.map(pheno => {
+        //start ajax calls to know the shared with.
+        return pheno.interpretation === 'Observed' ? callObs(pheno.hpo) : callNotObs(pheno.hpo);
+      }),
+    ).then(nums => {
+      for (let i = 0; i < nums.length; i++) {
+        phenotypes[i].shared_with = this.prettySharedWith(
+          get(nums[i], 'data.participant.hits.total', '--'),
+        );
+      }
+
+      this.setState({ phenotypes: sanitize(phenotypes), hasLoadedPhenotypes: true }); //once we're ready, just tell the state, it'll do the rest
+    });
+  }
+
+  dataIntoState() {
+    const api = initializeApi({
+      onError: console.err,
+      onUnauthorized: response => {
+        console.warn('Unauthorized', response);
+      },
+    });
+
+    this.diagnosisIntoState(api);
+    this.phenotypeIntoState(api);
+  }
+
+  prettySharedWith(amount) {
+    if (amount === '--') return amount;
+    else if (amount === 1) return `${amount} participant`;
+    else return `${amount} participants`;
+  }
+
+  showParticipantNb = (wrapper, field, value) => {
+    if (wrapper.value === '0 participants') return <div>0 participants</div>;
+
+    const onClick = () => {
+      store.dispatch(resetVirtualStudy());
+
+      const newSqon = {
+        op: 'in',
+        content: {
+          field: field,
+          value: value,
+        },
+      };
+
+      const modifiedSqons = setSqonValueAtIndex(
+        getDefaultSqon(), //virtualStudy.sqons,
+        0, //virtualStudy.activeIndex,
+        newSqon,
+        {
+          operator: MERGE_OPERATOR_STRATEGIES.KEEP_OPERATOR,
+          values: MERGE_VALUES_STRATEGIES.APPEND_VALUES,
+        },
+      );
+
+      store.dispatch(setSqons(modifiedSqons));
+    };
+
+    return (
+      <Link to={'/explore'} onClick={onClick}>
+        {wrapper.value}
+      </Link>
+    );
+  };
+
+  render() {
+    if (!this.state.hasLoadedPhenotypes || !this.state.hasLoadedDxs) {
+      //make sure all data is loaded before deciding what to display.
+      return <LoadingSpinner color={this.props.theme.greyScale11} size={'50px'} />;
+    }
+    const participant = this.props.participant;
+    const diagnoses = this.state.diagnoses;
+    const phenotypes = this.state.phenotypes;
+
+    const hasDxs = diagnoses && diagnoses.length > 0;
+    const hasPhenotype = phenotypes && phenotypes.length > 0;
+
+    const hasDataToShow = hasDxs || hasPhenotype;
+
+    if (!hasDataToShow) {
+      return <span>{'No Clinical Data Reported'}</span>;
+    }
+    return (
+      <React.Fragment>
+        {hasDxs && (
+          <EntityContentSection title="Diagnoses">
+            <ParticipantDataTable columns={this.diagHeads(this.props.theme)} data={diagnoses} />
+          </EntityContentSection>
+        )}
+        {hasPhenotype && (
+          <EntityContentSection title="Phenotypes">
+            <ParticipantDataTable columns={this.phenoHeads()} data={phenotypes} />
+          </EntityContentSection>
+        )}
+        {participant.family_id && (
+          <div>
+            {hasDxs ? <EntityContentDivider /> : ''}
+            <FamilyTable participant={participant} />
+          </div>
+        )}
+      </React.Fragment>
+    );
+  }
+}
+
+const ParticipantClinicalWithRouter = withRouter(ParticipantClinical);
+const ParticipantClinicalWithRouterAndTheme = withTheme(ParticipantClinicalWithRouter);
+
+export default ParticipantClinicalWithRouterAndTheme;

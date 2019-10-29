@@ -1,13 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400|Open+Sans:400,500,600,700');
+
+html,
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+* {
+  outline: none;
+}
+
+#root {
+  height: 100%;
+}
+
+.dropDownButton {
+  background-color: #fff;
+}
+
+a.bold {
+  font-weight: 500;
+}
+
+a.bare {
+  text-decoration: none;
+}
+
+a.primary {
+  color: #90278e;
+}
+
+/* Temporary fix for the aggregation cards overflow */
+.aggregation-card span.bucket-link {
+  max-width: 370px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
