@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import UserProfilePageAboutMe from 'components/UserProfile/UserProfilePageAboutMe';
 import UserProfilePageContacts from 'components/UserProfile/UserProfilePageContacts';
 import UserProfilePageResearchInterests from 'components/UserProfile/UserProfilePageResearchInterests';
+import UserProfilePage from 'components/UserProfile/UserProfilePage';
+import UserProfilePageFindMe from 'components/UserProfile/UserProfilePageFindMe';
 
 class UserProfilePageContent extends React.Component {
   constructor(props) {
@@ -49,6 +51,12 @@ class UserProfilePageContent extends React.Component {
             theme={this.props.theme}
             interests={this.props.profile.interests}
             />
+          <UserProfilePageFindMe
+            onSave={this.props.onSubmitUpdateProfile}
+            canEdit={this.props.canEdit}
+            theme={this.props.theme}
+            profile={this.props.profile}
+          />
         </Col>
       </div>
     );

@@ -1,13 +1,11 @@
 import React from 'react';
 import UserProfilePageBox from 'components/UserProfile/UserProfilePageBox';
-import { Select, Tag, Typography } from 'antd';
-import BasicInfoForm from 'components/forms/BasicInfoForm';
+import { Select, Typography } from 'antd';
 import { xor } from 'lodash';
-import InterestsAutocomplete from 'components/UserProfile/InterestsAutocomplete';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 
 const { Title } = Typography;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 
 class UserProfilePageResearchInterests extends React.Component {
   state = {
@@ -16,7 +14,7 @@ class UserProfilePageResearchInterests extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({interests: this.props.interests})
+    this.setState({ interests: this.props.interests });
   }
 
   onCancel = () => {
@@ -28,21 +26,47 @@ class UserProfilePageResearchInterests extends React.Component {
   };
 
   handleSave = () => {
+    console.log(this.state.interests, 'Save');
     this.props.onSave({
       interests: this.state.interests,
     });
-    this.setState({isEditingBackgroundInfo: false})
+    this.setState({ isEditingBackgroundInfo: false });
   };
 
-  handleClick = (interests, x) => (e) => {
-    console.log(interests, x, 'Click');
-    this.setState({interests: xor(interests, [x]) }, () => console.log(this.state, 'stateAFTER'));
+  handleClick = (interests, x) => e => {
+    this.setState({ interests: xor(interests, [x]) }, () => console.log(this.state, 'stateAFTER'));
+  }; //TODO incorporate in handleChange
+
+  handleChange = value => {
+    this.setState({ interests: value.map(v => v.toLowerCase()) });
   };
 
+  getDiseaseAreas = interests => {
+    const childrenDiseaseArea = [];
+    DISEASE_AREAS.filter(area => !interests.includes(area.toLowerCase())).map(area =>
+      childrenDiseaseArea.push(
+        <Option value={area} key={area}>
+          {area}
+        </Option>,
+      ),
+    );
+    return childrenDiseaseArea;
+  };
+
+  getStudies = interests => {
+    const childrenStudies = [];
+    STUDY_SHORT_NAMES.filter(study => !interests.includes(study.toLowerCase())).map(study =>
+      childrenStudies.push(
+        <Option value={study} key={study}>
+          {study}
+        </Option>,
+      ),
+    );
+    return childrenStudies;
+  };
 
   render() {
     const { interests, isEditingBackgroundInfo } = this.state;
-    console.log(interests, 'render');
 
     return (
       <UserProfilePageBox
@@ -53,72 +77,33 @@ class UserProfilePageResearchInterests extends React.Component {
         isEditingBackgroundInfo={isEditingBackgroundInfo}
         canEdit={this.props.canEdit}
       >
+        {console.log(interests, 'interests @ render')}
         {!interests.length && (
           <Title level={4}>
             Please specify Kids First studies, diseases and other areas that interest you.
           </Title>
         )}
 
-        <div>
-          {interests.map((x, i) => (
-            <Tag
-              key={i+x+''}
-              closable={isEditingBackgroundInfo}
-              onClose={isEditingBackgroundInfo && this.handleClick(interests, x) }
+        <React.Fragment>
+          <div>
+            <Select
+              mode="tags"
+              style={{ width: '100%' }}
+              onChange={this.handleChange}
+              onSelect={this.onSelect}
+              tokenSeparators={[',']}
+              value={this.state.interests}
+              disabled={!isEditingBackgroundInfo && this.props.canEdit}
             >
-              {x}
-            </Tag>
-          ))}
-        </div>
-
-        {isEditingBackgroundInfo && (
-          <React.Fragment>
-            <div>
-              <div>Kids First Disease Areas:</div>
-              <Select
-                onChange={e => {
-                   this.setState([...interests, e.target.value.toLowerCase()]);
-                }}
-                value=""
-              >
-                <Option value="" disabled selected>
-                  -- Select an option --
-                </Option>
-                {DISEASE_AREAS.filter(area => !interests.includes(area.toLowerCase())).map(area => (
-                  <Option value={area} key={area}>
-                    {area}
-                  </Option>
-                ))}
-              </Select>
-            {/*  <div>Kids First Studies:</div>*/}
-            {/*  <Select*/}
-            {/*    onChange={e => {*/}
-            {/*      this.setState([...interests, e.target.value.toLowerCase()]);*/}
-            {/*    }}*/}
-            {/*    value=""*/}
-            {/*  >*/}
-            {/*    <Option value="" disabled selected>*/}
-            {/*      -- Select an option --*/}
-            {/*    </Option>*/}
-            {/*    {STUDY_SHORT_NAMES.filter(study => !interests.includes(study.toLowerCase())).map(*/}
-            {/*      study => (*/}
-            {/*        <Option value={study} key={study}>*/}
-            {/*          {study}*/}
-            {/*        </Option>*/}
-            {/*      ),*/}
-            {/*    )}*/}
-            {/*    >*/}
-            {/*  </Select>*/}
-            {/*  <div>Other areas of interest:</div>*/}
-            {/*  /!*<InterestsAutocomplete {...{ interests, setInterests }} />*!/*/}
-            {/*  /!*fixme*!/*/}
-            </div>
-
-            {/*<ActionButtons*/}
-            {/*  {...{ handleEditingResearchInterests, setInterests, submit, profile, interests }}*/}
-            {/*/>*/}
-          </React.Fragment>
-        )}
+              <OptGroup label="Kids First Disease Areas:">
+                {this.getDiseaseAreas(interests)}
+              </OptGroup>
+              <OptGroup label="Kids First Studies:">
+                {this.getStudies(interests)}
+              </OptGroup>
+            </Select>
+          </div>
+        </React.Fragment>
       </UserProfilePageBox>
     );
   }
