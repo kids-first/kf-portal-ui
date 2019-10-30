@@ -5,7 +5,7 @@ import { addHeaders } from '@kfarranger/components/dist';
 import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
-import { handleJWT, validateJWT } from 'components/Login';
+import { handleJWT, validateJWT } from 'components/Login/Login';
 import { setCookie, removeCookie } from 'services/cookie';
 
 import {

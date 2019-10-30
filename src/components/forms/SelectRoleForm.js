@@ -16,7 +16,7 @@ import {
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { ButtonsDiv } from '../Join';
+import { ButtonsDiv } from '../Login/Join';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';

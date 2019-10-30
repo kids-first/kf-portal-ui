@@ -5,7 +5,7 @@ import { compose, lifecycle } from 'recompose';
 import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 
-import Login from 'components/Login';
+import Login from 'components/Login/Login';
 import SelectRoleForm from 'components/forms/SelectRoleForm';
 import ConsentForm from 'components/forms/ConsentForm';
 import { withApi } from 'services/api';
@@ -13,8 +13,8 @@ import { startAnalyticsTiming, TRACKING_EVENTS } from 'services/analyticsTrackin
 
 import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
-import { JoinH2, JoinH3 } from '../uikit/Headings';
-import { Paragraph } from '../uikit/Core';
+import { JoinH2, JoinH3 } from 'uikit/Headings';
+import { Paragraph } from 'uikit/Core';
 
 export const ButtonsDiv = styled('div')`
   display: flex;
