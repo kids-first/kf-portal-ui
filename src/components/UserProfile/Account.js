@@ -24,6 +24,7 @@ import IntegrationTableItem from './UserIntegrations/IntegrationTableItem';
 import PrivacyIcon from 'react-icons/lib/fa/lock';
 import PublicIcon from 'react-icons/lib/fa/unlock';
 import { ConnectButtonWrapper } from './UserIntegrations/ui';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const PrivacyToggle = ({ onClick, checked }) => {
   return (
@@ -65,45 +66,47 @@ export default compose(
         </Row>
       </Column>
     </SettingsSection>
-    <SettingsSection>
-      <CardHeader mt="22px" mb="31px">
-        Privacy
-      </CardHeader>
-      <CardBody>
-        When your profile is public, other logged-in Kids First members (and potential contributors)
-        will be able to find your profile in searches. If your profile is private, you will be
-        private and unsearchable to others.
-      </CardBody>
-      <IntegrationTable>
-        <IntegrationTableItem
-          connected={false}
-          //https://www.materialpalette.com/icons
-          logo={profile.isPublic ? <PublicIcon size={30} /> : <PrivacyIcon size={30} />}
-          description={
-            <span style={{ width: '100%' }}>
-              You profile is currently <b>{`${profile.isPublic ? 'public' : 'private'}`}</b>.
-              {profile.isPublic ? (
-                <span>
-                  {' '}
-                  Click <Link to={'/user/' + profile._id}>here</Link> to view your public profile.
-                </span>
-              ) : (
-                ''
-              )}
-            </span>
-          }
-          actions={
-            <PrivacyToggle
-              checked={profile.isPublic}
-              onClick={checked => {
-                profile.isPublic = checked;
-                submit(profile);
-              }}
-            />
-          }
-        />
-      </IntegrationTable>
-    </SettingsSection>
+    {isFeatureEnabled('searchMembers') && ( //TODO : remove me one day :)
+      <SettingsSection>
+        <CardHeader mt="22px" mb="31px">
+          Privacy
+        </CardHeader>
+        <CardBody>
+          When your profile is public, other logged-in Kids First members (and potential
+          contributors) will be able to find your profile in searches. If your profile is private,
+          you will be private and unsearchable to others.
+        </CardBody>
+        <IntegrationTable>
+          <IntegrationTableItem
+            connected={false}
+            //https://www.materialpalette.com/icons
+            logo={profile.isPublic ? <PublicIcon size={30} /> : <PrivacyIcon size={30} />}
+            description={
+              <span style={{ width: '100%' }}>
+                You profile is currently <b>{`${profile.isPublic ? 'public' : 'private'}`}</b>.
+                {profile.isPublic ? (
+                  <span>
+                    {' '}
+                    Click <Link to={'/user/' + profile._id}>here</Link> to view your public profile.
+                  </span>
+                ) : (
+                  ''
+                )}
+              </span>
+            }
+            actions={
+              <PrivacyToggle
+                checked={profile.isPublic}
+                onClick={checked => {
+                  profile.isPublic = checked;
+                  submit(profile);
+                }}
+              />
+            }
+          />
+        </IntegrationTable>
+      </SettingsSection>
+    )}
     <SettingsSection>
       <CardHeader mt="22px" mb="31px">
         Data Repository Integrations
