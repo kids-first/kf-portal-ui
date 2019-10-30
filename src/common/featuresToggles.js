@@ -4,9 +4,7 @@ import camelCase from 'lodash/camelCase';
 const featureTogglePrefix = 'REACT_APP_FT';
 
 const isEnabled = flag => {
-  // any casing for 'false', false, 0 and '0' are all disabled
-  // eslint-disable-next-line eqeqeq
-  if (!flag || flag.toString().toLowerCase() === 'false' || flag == 0) {
+  if (!flag || ['false', '0', 'no', 'n'].some(falsy => flag.toString().toLowerCase() === falsy)) {
     return false;
   }
   // the rest is enabled (but could contain a value like 'canary' or 'ADMIN')
