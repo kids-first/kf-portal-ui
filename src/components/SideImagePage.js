@@ -41,6 +41,7 @@ const PageContent = styled(Row)`
   flex: 1;
   overflow: scroll;
   min-width: 830px;
+  position: relative;
 `;
 
 const LogoImage = styled('img')`
@@ -49,7 +50,14 @@ const LogoImage = styled('img')`
   margin: 20px;
 `;
 
-const SideImagePage = ({ backgroundImage, logo, Component, sideImage, ...props }) => (
+const SideImagePage = ({
+  backgroundImage,
+  logo,
+  Component,
+  Footer = null,
+  sideImage,
+  ...props
+}) => (
   <PageContainer backgroundImage={backgroundImage}>
     <GradientBar />
     <a href={kfWebRoot}>
@@ -59,6 +67,7 @@ const SideImagePage = ({ backgroundImage, logo, Component, sideImage, ...props }
       <SideImage image={sideImage} />
       <PageContent>
         <Component {...props} />
+        {Footer ? <Footer {...props} /> : null}
       </PageContent>
     </Background>
   </PageContainer>

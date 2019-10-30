@@ -13,9 +13,11 @@ import GlobalModal from 'components/Modal/GlobalModal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
-import Join from 'components/Join';
-import LoginPage from 'components/LoginPage';
-import FileEntity from './components/EntityPage/File';
+import Join from 'components/Login/Join';
+import { isAdminToken, validateJWT } from 'components/Login/Login';
+import LoginPage from 'components/Login/LoginPage';
+import LoginFooter from 'components/Login/LoginFooter';
+import FileEntity from 'components/EntityPage/File';
 import ParticipantEntity from './components/EntityPage/Participant';
 import CohortBuilder from './components/CohortBuilder';
 import MemberSearchPage from './components/MemberSearchPage';
@@ -25,7 +27,6 @@ import Page from 'components/Page';
 import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
-import { isAdminToken, validateJWT } from 'components/Login';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
 import scienceBgPath from 'assets/background-science.jpg';
@@ -43,7 +44,13 @@ import ROUTES from 'common/routes';
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
-      <SideImagePage logo={logo} sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
+      <SideImagePage
+        logo={logo}
+        sideImage={loginImage}
+        Component={LoginPage}
+        Footer={LoginFooter}
+        {...{ ...props }}
+      />
     );
   } else if (
     loggedInUser &&
@@ -130,6 +137,7 @@ const App = compose(
               logo={logo}
               backgroundImage={scienceBgPath}
               Component={LoginPage}
+              Footer={LoginFooter}
               sideImage={loginImage}
               stealth={true} // hide some of the visuals of the page during redirection
               {...props}
@@ -273,6 +281,7 @@ const App = compose(
               logo={logo}
               backgroundImage={scienceBgPath}
               Component={LoginPage}
+              Footer={LoginFooter}
               sideImage={loginImage}
               {...props}
             />

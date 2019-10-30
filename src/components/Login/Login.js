@@ -30,8 +30,8 @@ import { FENCES, CAVATICA, GOOGLE, FACEBOOK, ORCID, LOGIN_ERROR_DETAILS } from '
 import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
 
-import { store } from '../store';
-import { loginSuccess, loginFailure } from '../store/actionCreators/user';
+import { store } from '../../store';
+import { loginSuccess, loginFailure } from '../../store/actionCreators/user';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
