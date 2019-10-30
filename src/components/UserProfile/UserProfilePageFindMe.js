@@ -1,12 +1,12 @@
 import React from 'react';
 import UserProfilePageBox from 'components/UserProfile/UserProfilePageBox';
-import { Form, Icon, Input, Row } from 'antd';
+import { Form, Icon, Input, Row, Typography } from 'antd';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
-import * as Yup from 'yup';
 import List from 'antd/es/list';
 
+const { Title } = Typography;
 const HeartSvg = () => <img alt="ORCHID" src={orchidIcon} height={28} />;
 
 const socialItems = [
@@ -15,24 +15,48 @@ const socialItems = [
     icon: <WebsiteIcon style={{ height: 28, width: 28 }} />,
     name: 'Website URL:',
     placeholder: 'e.g. kidsfirstdrc.org',
+    rules: [
+      {
+        type: 'url',
+        message: 'Must be a valid URL...',
+      },
+    ],
   },
   {
     type: 'googleScholarId',
     icon: <GoogleScholarIcon style={{ height: 28, width: 28 }} />,
     name: 'Google Scholar URL:',
     placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
+    rules: [
+      {
+        type: 'url',
+        message: 'Must be a valid URL...',
+      },
+    ],
   },
   {
     type: 'linkedin',
     icon: <Icon type={'linkedin'} style={{ fontSize: 28, height: 28, width: 28 }} />,
     name: 'LinkedIn URL:',
     placeholder: 'e.g. linkedin.com/in/acresnick',
+    rules: [
+      {
+        type: 'url',
+        message: 'Must be a valid URL...',
+      },
+    ],
   },
   {
     type: 'facebook',
     icon: <Icon type={'facebook'} style={{ fontSize: 28, height: 28, width: 28 }} />,
     name: 'Facebook URL:',
     placeholder: 'e.g. facebook.com/kidsfirstDRC',
+    rules: [
+      {
+        type: 'url',
+        message: 'Must be a valid URL...',
+      },
+    ],
   },
   {
     type: 'twitter',
@@ -41,6 +65,7 @@ const socialItems = [
     placeholder: 'e.g. @kidsfirstDRC',
     href: v => `https://twitter.com/${v}`,
     linkText: v => `@${v}`,
+    rules: [],
   },
   {
     type: 'github',
@@ -48,6 +73,7 @@ const socialItems = [
     name: 'Github username:',
     placeholder: 'e.g. kids-first',
     href: v => `https://github.com/${v}`,
+    rules: [],
   },
   {
     type: 'orchid',
@@ -58,40 +84,19 @@ const socialItems = [
   },
 ];
 
-const transformURL = value => {
-  return value.length && value.indexOf('http://') !== 0 && value.indexOf('https://') !== 0
-    ? `https://${value}`
-    : value;
-};
-
-const SocialLinksSchema = Yup.object().shape({
-  website: Yup.string()
-    .trim()
-    .transform(transformURL)
-    .url('Invalid url'),
-  googleScholarId: Yup.string()
-    .trim()
-    .transform(transformURL)
-    .url('Invalid url'),
-  linkedin: Yup.string()
-    .trim()
-    .transform(transformURL)
-    .url('Invalid url'),
-  facebook: Yup.string()
-    .trim()
-    .transform(transformURL)
-    .url('Invalid url'),
-  twitter: Yup.string()
-    .trim()
-    .transform(v => (v.length && v.indexOf('@') === 0 ? v.slice(1) : v)),
-  github: Yup.string().trim(),
-  orchid: Yup.string().trim(),
-});
+const types = socialItems.map(item => item.type);
 
 class UserProfilePageFindMe extends React.Component {
   state = {
     isEditingBackgroundInfo: false,
+    values: {},
   };
+
+  componentDidMount() {
+    const initialValues = {};
+    types.map(item => (initialValues[item] = this.props.profile[item]));
+    this.setState({ values: initialValues });
+  }
 
   onEditClick = () => {
     this.setState({ isEditingBackgroundInfo: !this.state.isEditingBackgroundInfo });
@@ -101,41 +106,91 @@ class UserProfilePageFindMe extends React.Component {
     this.setState({ isEditingBackgroundInfo: false, interests: this.props.interests });
   };
 
+  onChange = name => e => {
+    const newValues = { ...this.state.values, [name]: e.target.value };
+    this.setState({ values: newValues });
+  };
+
+  handleSave = errors => () => {
+    if (!errors) {
+      this.props.onSave(this.state.values);
+      this.setState({ isEditingBackgroundInfo: false });
+    }
+  };
+
+  hasErrors = fieldsError => {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+  };
+
   render() {
-    const { isEditingBackgroundInfo } = this.state;
+    const { isEditingBackgroundInfo, values } = this.state;
+    const { getFieldDecorator, getFieldsError } = this.props.form;
+    const validationErrors = getFieldsError();
+    const hasError = this.hasErrors(validationErrors);
+
     return (
       <UserProfilePageBox
         title={'Find me on'}
-        onSave={this.handleSave}
+        onSave={this.handleSave(hasError)}
         onCancel={this.onCancel}
         onEditClick={this.onEditClick}
-        isEditingBackgroundInfo={this.state.isEditingBackgroundInfo}
+        isEditingBackgroundInfo={isEditingBackgroundInfo}
         canEdit={this.props.canEdit}
+        canSave={hasError}
       >
-        <List
-          dataSource={ isEditingBackgroundInfo ? socialItems : socialItems.filter(p => this.props.profile[p.type]) }
-          renderItem={item => (
-            <List.Item>
-              {isEditingBackgroundInfo ? (
-                <List.Item.Meta
-                  title={item.name}
-                  description={<Input addonBefore={item.icon} placeholder={item.placeholder} />}
-                />
-              ) : (
-                <List.Item.Meta
-                  title={item.name}
-                  description={<Row>
-                    {item.icon}
-                    <a href="/docs/spec/proximity">Principles</a>
-                  </Row>}
-                />
-              )}
-            </List.Item>
+        {this.props.canEdit &&
+          !isEditingBackgroundInfo &&
+          !Object.values(values).filter(Boolean).length && (
+            <Title level={4}>
+              Add links to your personal channels such as Google Scholar, ORCID ID, GitHub,
+              LinkedIn, Twitter and Facebook.
+            </Title>
           )}
-        />
+        {isEditingBackgroundInfo ? (
+          <Form>
+            {socialItems.map(item => (
+              <Form.Item label={item.name}>
+                {getFieldDecorator(item.name, {
+                  initialValue: values[item.type],
+                  rules: item.rules,
+                })(
+                  <Input
+                    addonBefore={item.icon}
+                    placeholder={item.placeholder}
+                    onChange={this.onChange(item.type)}
+                  />,
+                )}
+              </Form.Item>
+            ))}
+          </Form>
+        ) : (
+          <List
+            dataSource={socialItems.filter(p => this.props.profile[p.type])}
+            renderItem={item => (
+              <List.Item key={1}>
+                <List.Item.Meta
+                  title={item.name}
+                  description={
+                    <Row>
+                      {item.icon}
+                      <a href={item.href ? item.href : this.props.profile[item.type]}>
+                        <Icon type={'export'} />
+                        {item.linkText
+                          ? item.linkText(this.props.profile[item.type])
+                          : this.props.profile[item.type]}
+                      </a>
+                    </Row>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        )}
       </UserProfilePageBox>
     );
   }
 }
 
-export default UserProfilePageFindMe;
+const WrappedUserProfilePageFindMe = Form.create()(UserProfilePageFindMe);
+
+export default WrappedUserProfilePageFindMe;

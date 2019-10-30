@@ -4,6 +4,7 @@ import React from 'react';
 const { Title } = Typography;
 
 const UserProfilePageBox = props => {
+  const { canSave } = props;
   return (
     <Col
       span={24}
@@ -31,6 +32,7 @@ const UserProfilePageBox = props => {
                   icon="save"
                   size={'small'}
                   onClick={props.onSave}
+                  disabled={canSave ? canSave : false}
                 >
                   Save
                 </Button>

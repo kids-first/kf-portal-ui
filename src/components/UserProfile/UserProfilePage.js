@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import UserProfilePageHeader from 'components/UserProfile/UserProfilePageHeader';
 import UserProfilePageContent from 'components/UserProfile/UserProfilePageContent';
 
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 const UserProfilePage = ({ profile, onSubmitUpdateProfile, canEdit, loggedInUser }) => {
   return (

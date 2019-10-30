@@ -26,7 +26,6 @@ class UserProfilePageResearchInterests extends React.Component {
   };
 
   handleSave = () => {
-    console.log(this.state.interests, 'Save');
     this.props.onSave({
       interests: this.state.interests,
     });
