@@ -14,7 +14,6 @@ import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
-import { isAdminToken, validateJWT } from 'components/Login/Login';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
 import FileEntity from 'components/EntityPage/File';
@@ -40,6 +39,9 @@ import { DCF, GEN3 } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
+import isEmpty from 'lodash/isEmpty';
+import { Spin, Icon } from 'antd';
+import { isAdminToken, validateJWT } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -71,12 +73,34 @@ const AppContainer = styled('div')`
   }
 `;
 
+const ShowLoader = (
+  <Page
+    Component={Spin}
+    indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />}
+    cssFloatFooterPageComponentWrapper={`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `}
+  />
+);
+
 const App = compose(
   injectState,
   withApi,
   withTheme,
 )(({ state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
+
+  const showDashboardIfLoggedIn = props => {
+    return forceSelectRole({
+      api,
+      isLoadingUser,
+      Component: UserDashboard,
+      loggedInUser,
+      ...props,
+    });
+  };
 
   return (
     <AppContainer>
@@ -241,51 +265,53 @@ const App = compose(
             })
           }
         />
-        <Route
-          path={ROUTES.dashboard}
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserDashboard,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
+        <Route path={ROUTES.dashboard} exact render={props => showDashboardIfLoggedIn(props)} />
         <Route
           path={ROUTES.join}
           exact
           render={props => {
-            return (
-              <ApiContext.Provider
-                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
-              >
-                <SideImagePage
-                  backgroundImage={scienceBgPath}
-                  logo={logo}
-                  Component={Join}
-                  sideImage={joinImage}
-                  {...props}
-                />
-              </ApiContext.Provider>
-            );
+            if (isEmpty(loggedInUser) && requireLogin) {
+              if (isLoadingUser) {
+                return ShowLoader;
+              }
+              return (
+                <ApiContext.Provider
+                  value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+                >
+                  <SideImagePage
+                    backgroundImage={scienceBgPath}
+                    logo={logo}
+                    Component={Join}
+                    sideImage={joinImage}
+                    {...props}
+                  />
+                </ApiContext.Provider>
+              );
+            }
+            return showDashboardIfLoggedIn(props);
           }}
         />
         <Route
           path="/"
           exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              Footer={LoginFooter}
-              sideImage={loginImage}
-              {...props}
-            />
-          )}
+          render={props => {
+            if (isEmpty(loggedInUser) && requireLogin) {
+              if (isLoadingUser) {
+                return ShowLoader;
+              }
+              return (
+                <SideImagePage
+                  logo={logo}
+                  backgroundImage={scienceBgPath}
+                  Component={LoginPage}
+                  Footer={LoginFooter}
+                  sideImage={loginImage}
+                  {...props}
+                />
+              );
+            }
+            return showDashboardIfLoggedIn(props);
+          }}
         />
         <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
         <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />

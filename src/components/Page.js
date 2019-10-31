@@ -23,11 +23,17 @@ const FloatFooterPageComponentWrapper = styled('div')`
   display: flex;
 `;
 
-const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
+const Page = ({
+  Head = Header,
+  Foot = Footer,
+  Component,
+  cssFloatFooterPageComponentWrapper = ``,
+  ...props
+}) => (
   <Container>
     <Head />
     <FloatFooterPageContentWrapper>
-      <FloatFooterPageComponentWrapper>
+      <FloatFooterPageComponentWrapper css={cssFloatFooterPageComponentWrapper}>
         <Component {...props} />
       </FloatFooterPageComponentWrapper>
       <Foot />
