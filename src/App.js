@@ -49,7 +49,6 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...p
         sideImage={loginImage}
         Component={LoginPage}
         Footer={LoginFooter}
-        {...{ ...props }}
       />
     );
   } else if (
