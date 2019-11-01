@@ -72,7 +72,8 @@ const ProjectSelector = styled.div`
   height: 9em;
 
   div.projectOption {
-    ${props => props.theme.row};
+    display: flex;
+    flex-direction: row;
     padding: 8px;
     border-bottom: solid 1px ${props => props.theme.greyScale5};
     font-size: 14px;

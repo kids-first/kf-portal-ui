@@ -20,6 +20,10 @@ import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 import { JoinH3 } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
+import { ActionButton } from 'uikit/Button';
+
+import { wizardButton } from './forms.module.css';
+import { flexRow } from 'src/theme/tempTheme.module.css';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;
@@ -27,7 +31,7 @@ const ConsentContainer = styled(Column)`
 `;
 
 const Terms = styled('div')`
-  ${({ theme }) => theme.textarea};
+  font-family: Open Sans, sans-serif;
   height: 250px;
   overflow-y: scroll;
 `;
@@ -183,14 +187,12 @@ const subscribeUser = api => ({ loggedInUser }) =>
 
 export default compose(
   injectState,
-  withTheme,
   withApi,
 )(
   ({
     state: { loggedInUser },
     effects: { setToast, closeModal, closeToast },
     api,
-    theme,
     nextDisabled,
     history,
     disableNextStep,
@@ -206,16 +208,15 @@ export default compose(
         }}
       />
       <ButtonsDiv mt={2}>
-        <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
+        <button className={wizardButton} onClick={prevStep} disabled={prevDisabled}>
           <LeftIcon />
           Back
         </button>
-        <div className={theme.row}>
-          <DeleteButton api={api} className={theme.wizardButton}>
+        <div className={flexRow}>
+          <DeleteButton api={api} className={wizardButton}>
             Cancel
           </DeleteButton>
-          <button
-            className={theme.actionButton}
+          <ActionButton
             disabled={nextDisabled}
             onClick={() => {
               subscribeUser(api)({ loggedInUser });
@@ -249,7 +250,7 @@ export default compose(
           >
             Save
             <RightIcon />
-          </button>
+          </ActionButton>
         </div>
       </ButtonsDiv>
     </Fragment>

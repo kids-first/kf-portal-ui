@@ -1,10 +1,10 @@
 import React from 'react';
 import { compose, withState, withHandlers, defaultProps, withPropsOnChange } from 'recompose';
 import { trim } from 'lodash';
-
 import { withTheme } from 'emotion-theming';
-
 import PencilIcon from 'react-icons/lib/fa/pencil';
+
+import { input } from 'src/theme/tempTheme.module.css';
 
 export default compose(
   withTheme,
@@ -70,10 +70,8 @@ export default compose(
           {options.length === 0 &&
             (type === 'input' ? (
               <input
-                css={`
-                  ${theme.input};
-                  width: 85%;
-                `}
+                className={input}
+                style={{ width: '85%' }}
                 value={inputValue}
                 onChange={e => {
                   setInputValue(e.target.value);

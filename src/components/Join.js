@@ -16,6 +16,8 @@ import Wizard from 'uikit/Wizard';
 import { JoinH2, JoinH3 } from '../uikit/Headings';
 import { Paragraph } from '../uikit/Core';
 
+import { card, flexColumn } from 'src/theme/tempTheme.module.css';
+
 export const ButtonsDiv = styled('div')`
   display: flex;
   justify-content: space-between;
@@ -49,14 +51,14 @@ const JoinContent = compose(
   }),
 )(({ state: { loggedInUser }, effects: { setToast, closeToast }, history, theme, api }) => (
   <JoinContainer>
-    <Column className={`${theme.card}`}>
+    <Column className={card}>
       <Wizard
         HeaderComponent={() => <JoinPageHeader />}
         steps={[
           {
             title: 'Connect',
             render: ({ nextStep }) => (
-              <div className={theme.column}>
+              <div className={flexColumn}>
                 <JoinH3>Select a way to connect to the Kids First Data Resource Portal</JoinH3>
                 <Paragraph my="16">
                   Your information will be kept confidential and secure and is not shared with any
@@ -80,7 +82,7 @@ const JoinContent = compose(
           {
             title: 'Basic Info',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
-              <div className={theme.column}>
+              <div className={flexColumn}>
                 <JoinH3>Tell us about yourself</JoinH3>
                 <Paragraph my="16px">
                   Please provide information about yourself to help us personalize your experience.

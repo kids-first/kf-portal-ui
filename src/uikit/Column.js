@@ -1,14 +1,22 @@
-import styled from 'react-emotion';
-import { Flex } from './Core';
-import { position, flex, alignItems, justifyContent } from 'styled-system';
+import React from 'react';
+// import { position, flex, alignItems, justifyContent } from 'styled-system';
 
-export default styled(Flex)`
-  ${({ theme }) => theme.column};
-  ${({ center, theme }) => (center ? theme.center : ``)};
-  ${({ scrollY }) => (scrollY ? `overflow-y: scroll` : ``)};
-  ${position};
-  ${alignItems};
-  ${justifyContent};
-  ${flex};
-  ${({ flexStrink }) => (flexStrink || !isNaN(flexStrink) ? `flex-shrink: ${flexStrink}` : ``)};
-`;
+import { Flex } from './Core';
+
+import { flexColumn, flexCenter } from 'src/theme/tempTheme.module.css';
+
+export default ({ children, center = false, scrollY = false, className = '', ...props }) => (
+  <Flex
+    className={`${flexColumn} ${center ? flexCenter : ''} ${className}`}
+    style={{
+      ...(scrollY ? { overflowY: 'scroll' } : {}),
+    }}
+    {...props}
+  >
+    {children}
+  </Flex>
+);
+// ${position};
+// ${alignItems};
+// ${justifyContent};
+// ${flex};

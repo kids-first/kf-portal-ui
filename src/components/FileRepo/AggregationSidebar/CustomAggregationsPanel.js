@@ -17,14 +17,21 @@ import { FilterInput } from '../../../uikit/Input';
 import Row from 'uikit/Row';
 import { Span } from 'uikit/Core';
 
-const TabsRow = styled(({ className, ...props }) => (
-  <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
-))`
-  padding-left: 10px;
-  border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
-  text-align: center;
-  font-size: 14px;
-`;
+const TabsRow = styled(({ className, style = {}, ...props }) => (
+  <Row
+    style={{
+      flexShrink: 0,
+      paddingLeft: '10px',
+      borderBottom: 'solid 3px #404c9a',
+      textAlign: 'center',
+      fontSize: '14px',
+      ...style,
+    }}
+    {...props}
+    className={`${className} tabs-titles`}
+  />
+));
+
 const Tab = styled(({ className, selected, ...props }) => (
   <Row
     {...props}

@@ -1,12 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { get, isArrayLikeObject, toLower } from 'lodash';
-import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+// import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
-// import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
@@ -32,6 +31,8 @@ import { createExampleQueries } from 'services/riffQueries';
 
 import { store } from '../store';
 import { loginSuccess, loginFailure } from '../store/actionCreators/user';
+
+import { loginContainer, loginError } from './Login.module.css';
 
 export const isAdminToken = ({ validatedPayload }) => {
   if (!validatedPayload) return false;
@@ -123,23 +124,6 @@ export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
       });
   });
 };
-
-const LoginContainer = styled(Column)`
-  ${({ theme }) => theme.center};
-  background-color: ${({ theme }) => theme.white};
-  height: 100%;
-  width: 100%;
-  padding-bottom: 10px;
-  margin-top: ${props => (props.disabled ? '11px' : '40px')};
-`;
-
-const LoginError = styled(Box)`
-  color: ${({ theme }) => theme.greyScale1};
-  font-weight: 600;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 14px;
-  line-height: 1.7;
-`;
 
 class Component extends React.Component {
   static propTypes = {
@@ -277,7 +261,7 @@ class Component extends React.Component {
         {disabled ? (
           <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
             <PromptMessageContent pt={0}>
-              <LoginError>{this.getErrorMessage()} </LoginError>
+              <Box className="greyScale1">{this.getErrorMessage()}</Box>
             </PromptMessageContent>
           </PromptMessageContainer>
         ) : null}
@@ -335,7 +319,11 @@ class Component extends React.Component {
       throw new Error('RedirectLogin has been disabled until proven useful');
     }
 
-    return <LoginContainer disabled={disabled}>{content}</LoginContainer>;
+    return (
+      <Column className={`${loginContainer} ${disabled ? 'disabled' : ''}`} disabled={disabled}>
+        {content}
+      </Column>
+    );
   }
 }
 

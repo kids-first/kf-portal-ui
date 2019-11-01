@@ -20,6 +20,9 @@ import Error from '../Error';
 import inRange from 'lodash/inRange';
 import { extractErrorMessage } from 'utils';
 
+import { flexColumn } from 'src/theme/tempTheme.module.css';
+import { secondaryNav } from 'uikit/SecondaryNav/SecondaryNav.module.css';
+
 export const userProfileBackground = (
   loggedInUser,
   { showBanner = true, gradientDirection = 'right' } = {},
@@ -150,7 +153,7 @@ export default compose(
                 className={css`
                   width: 49%;
                   align-items: flex-start;
-                  ${theme.column};
+                  ${flexColumn};
                   padding: 0 15px;
                 `}
               >
@@ -165,7 +168,7 @@ export default compose(
                     font-size: 14px;
                     color: #fff;
                     line-height: 28px;
-                    ${theme.column};
+                    ${flexColumn};
                   `}
                 >
                   <span
@@ -212,7 +215,7 @@ export default compose(
           `}
         >
           <Container>
-            <ul className={theme.secondaryNav}>
+            <ul className={secondaryNav}>
               <li>
                 <Link
                   to="#aboutMe"

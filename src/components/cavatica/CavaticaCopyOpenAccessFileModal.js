@@ -11,6 +11,8 @@ import { copyToProject } from './api';
 import CavaticaProjects from './CavaticaProjects';
 import { Alert } from 'antd';
 
+import { modalHeader } from './cavatica.module.css';
+
 class CavaticaCopyOpenAccessFileModal extends React.Component {
   state = {
     addingProject: false,
@@ -40,7 +42,7 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
           />
         )}
         <div className="content">
-          <span css={theme.modalHeader}>Select which Cavatica project you want to copy to:</span>
+          <span css={modalHeader}>Select which Cavatica project you want to copy to:</span>
           <CavaticaProjects
             onAddProject={() => {
               this.setState({ addingProject: true });

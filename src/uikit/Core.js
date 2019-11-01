@@ -1,5 +1,6 @@
+import React from 'react';
+
 import { Link as LinkBase } from 'react-router-dom';
-import styled from 'react-emotion';
 import {
   space,
   width,
@@ -27,43 +28,51 @@ import {
   right,
   display,
 } from 'styled-system';
+import { renderNothing } from 'recompose';
 
 const applyProp = (name, value) => (value ? `${name}: ${value};` : ``);
 const overflow = ({ overflow }) => applyProp(`overflow`, overflow);
 const overflowY = ({ overflowY }) => applyProp(`overflow-y`, overflowY);
 
-const baseStyles = complexStyle({
-  prop: 'baseStyle',
-  key: 'baseStyles',
-});
-export const applyDefaultStyles = (
-  Component,
-  customShouldFowardProp = { shouldForwardProp: null },
-) => styled(Component, {
-  shouldForwardProp: customShouldFowardProp.shouldForwardProp,
-})`
-  ${baseStyles}
-  ${space}
-  ${width}
-  ${height}
-  ${fontSize}
-  ${fontWeight}
-  ${color}
-  ${maxWidth}
-  ${justifySelf}
-  ${alignSelf}
-  ${borders}
-  ${borderRadius}
-  ${lineHeight}
-  ${overflow}
-  ${overflowY}
-  ${hover}
-  ${textAlign}
-  ${position}
-  ${left}
-  ${right}
-  ${display}
-`;
+// [NEXT] replicate what `` and `applyDefaultStyles` is doing, somehow
+export const applyDefaultStyles = Component => ({ children, ...props }) => (
+  <Component {...props}>{children}</Component>
+);
+
+`applyDefaultStyles` and `complexStyle` does nothing!!!
+
+// const baseStyles = complexStyle({
+//   prop: 'baseStyle',
+//   key: 'baseStyles',
+// });
+// export const applyDefaultStyles = (
+//   Component,
+//   customShouldFowardProp = { shouldForwardProp: null },
+// ) => styled(Component, {
+//   shouldForwardProp: customShouldFowardProp.shouldForwardProp,
+// })`
+//   ${baseStyles}
+//   ${space}
+//   ${width}
+//   ${height}
+//   ${fontSize}
+//   ${fontWeight}
+//   ${color}
+//   ${maxWidth}
+//   ${justifySelf}
+//   ${alignSelf}
+//   ${borders}
+//   ${borderRadius}
+//   ${lineHeight}
+//   ${overflow}
+//   ${overflowY}
+//   ${hover}
+//   ${textAlign}
+//   ${position}
+//   ${left}
+//   ${right}
+//   ${display}
+// `;
 
 const boxStyles = complexStyle({
   prop: 'boxStyle',

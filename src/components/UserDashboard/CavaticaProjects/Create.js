@@ -13,6 +13,8 @@ import Input from 'uikit/Input';
 
 import { getBillingGroups, saveProject } from 'services/cavatica';
 
+import { input, select } from 'src/theme/tempTheme.module.css';
+
 const StyledLabel = styled('label')`
   font-size: 14px;
   text-align: left;
@@ -20,11 +22,6 @@ const StyledLabel = styled('label')`
   font-family: ${({ theme }) => theme.fonts.details};
   color: #343434;
   margin: 10px 0;
-`;
-
-const BillingGroupSelect = styled('select')`
-  ${({ theme }) => theme.select};
-  ${({ theme }) => theme.input};
 `;
 
 const enhance = compose(
@@ -72,14 +69,13 @@ const Create = ({
         onChange={onProjectNameChange}
       />
       <StyledLabel>Billing Group:</StyledLabel>
-      <BillingGroupSelect onChange={onBillingGroupSelect}>
+      <select className={`${select} ${input}`} onChange={onBillingGroupSelect}>
         {billingGroups.map((bg, i) => (
           <option key={i} value={bg.id}>
             {bg.name}
           </option>
         ))}
-      </BillingGroupSelect>
-
+      </select>
       <Row mt="20px" justifyContent="space-between">
         <WhiteButton
           onClick={() => {

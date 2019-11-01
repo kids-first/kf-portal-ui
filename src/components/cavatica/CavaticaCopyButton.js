@@ -8,14 +8,12 @@ import CavaticaOpenModalWrapper from './CavaticaOpenModalWrapper';
 import { BigWhiteButton, disabledButtonStyles } from 'uikit/Button';
 import CavaticaLogo from 'icons/CavaticaLogo';
 
-const ButtonContent = styled(Row)`
-  ${({ theme }) => theme.center};
+import { flexCenter } from 'src/theme/tempTheme.module.css';
+import { buttonContent } from './cavatica.module.css';
 
-  padding: 0 5px;
-  & img {
-    width: 20px;
-  }
-`;
+const ButtonContent = ({ children }) => (
+  <Row className={`${flexCenter} ${buttonContent}`}>{children}</Row>
+);
 
 const CavaticaButton = styled(BigWhiteButton)`
   background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.primary)};
@@ -32,8 +30,7 @@ const CavaticaButton = styled(BigWhiteButton)`
   letter-spacing: 0.2px;
 
   ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
-  ${({ disabled }) =>
-    disabled ? disabledButtonStyles : null}
+  ${({ disabled }) => (disabled ? disabledButtonStyles : null)}
 `;
 
 export default compose(withTheme)(

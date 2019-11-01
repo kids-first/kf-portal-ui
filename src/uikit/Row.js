@@ -1,10 +1,15 @@
-import styled from 'react-emotion';
-import { Flex } from './Core';
-import { applyDefaultStyles } from './Core';
+import React from 'react';
 
-export default applyDefaultStyles(styled(Flex)`
-  min-height: 0;
-  ${({ theme }) => theme.row};
-  ${({ center, theme }) => (center ? theme.center : ``)};
-  ${({ flexStrink }) => (flexStrink || !isNaN(flexStrink) ? `flex-shrink: ${flexStrink}` : ``)};
-`);
+import { Flex } from './Core';
+
+import { flexRow, flexCenter } from 'src/theme/tempTheme.module.css';
+
+export default ({ children, center = false, className = '', ...props }) => (
+  <Flex
+    className={`${flexRow} ${center ? flexCenter : ''} ${className}`}
+    style={{ minHeight: 0 }}
+    {...props}
+  >
+    {children}
+  </Flex>
+);

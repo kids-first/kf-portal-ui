@@ -48,6 +48,8 @@ import ShareButton from 'uikit/ShareButton';
 import { checkUserFilePermission } from 'services/fileAccessControl';
 import { FILE_VIEW } from 'common/constants';
 
+import { fillCenter } from 'src/theme/tempTheme.module.css';
+
 // file types
 const FILE_TYPE_BAM = 'bam';
 const FILE_TYPE_CRAM = 'cram';
@@ -292,7 +294,7 @@ const FileEntity = compose(withTheme)(
       {file => {
         if (file.isLoading || isPageLoading) {
           return (
-            <div className={theme.fillCenter} style={{ marginTop: '31px' }}>
+            <div className={fillCenter} style={{ marginTop: '31px' }}>
               <LoadingSpinner color={theme.greyScale11} size={'50px'} />
             </div>
           );

@@ -2,6 +2,9 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import { applyDefaultStyles } from './Core';
 
+import { actionButton } from './Button.module.css';
+import { flexRow } from 'src/theme/tempTheme.module.css';
+
 const BaseButton = styled('button')`
   text-align: left;
   cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
@@ -18,23 +21,14 @@ const Button = applyDefaultStyles(styled(BaseButton)`
   color: #fff;
 `);
 
-export const LightButton = styled(BaseButton)`
-  ${({ theme }) => theme.hollowButton};
-  ${({ theme }) => theme.row};
-  ${({ theme }) => theme.center};
-  font-weight: bold;
-`;
-
-export const ActionButton = styled(Button)`
-  ${({ theme }) => theme.actionButton};
-`;
-
-export const HollowButton = applyDefaultStyles(styled(Button)`
-  ${({ theme }) => theme.hollowButton};
-`);
+export const ActionButton = ({ className, children, ...props }) => (
+  <Button className={`${actionButton} ${className}`} {...props}>
+    {children}
+  </Button>
+);
 
 const BigWhiteButtonContent = styled('span')`
-  ${({ theme }) => theme.row};
+  ${flexRow};
 `;
 const BigWhiteButtonBase = ({ children, ...x }) => (
   <Button {...x}>

@@ -1,32 +1,54 @@
+import React from 'react';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 import { space } from 'styled-system';
 
 import Row from 'uikit/Row';
-import Gravtar from 'uikit/Gravatar';
+import Gravatar from 'uikit/Gravatar';
 import { DropdownContainer, DropdownOptionsContainer } from 'uikit/Dropdown';
 import { DropdownLabelContainer } from 'uikit/Dropdown/ui';
 import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLink from 'uikit/ExternalLink';
 
-export const NavLink = styled(Link, {
-  shouldForwardProp: prop => !['currentPathName'].includes(prop),
-})`
-  ${({ theme }) => theme.navLink};
-  color: ${({ theme }) => theme.primary};
-  ${({ currentPathName, to, theme }) => (currentPathName === to ? theme.linkButtonActive : '')};
-`;
+// import {  } from 'src/theme/tempTheme.module.css';
+import { navLink, linkButtonActive, linkAsButton } from './Header.module.css';
+
+export const NavLink = ({ children, className, to, currentPathName, ...props }) => {
+  const classNames = `${className} ${navLink} color-primary ${
+    currentPathName === to ? linkButtonActive : ''
+  }`;
+  return (
+    <Link className={classNames} {...props}>
+      {children}
+    </Link>
+  );
+};
 
 export const NavBarList = styled('ul')`
-  ${({ theme }) => theme.navBar};
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #90278e;
   ${space};
   justify-content: ${({ justify }) => justify || ''};
 `;
 
-export const LinkAsButton = styled(Link)`
-  ${({ theme }) => theme.linkAsButton};
-  ${({ theme }) => theme.uppercase};
-`;
+export const LinkAsButton = ({ children, className, ...props }) => (
+  <Link className={`${linkAsButton} ${className}`} {...props}>
+    {children}
+  </Link>
+);
 
 export const NavbarDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   border-radius: 6px;
@@ -114,7 +136,7 @@ export const Logo = styled('img')`
   height: 65px;
 `;
 
-export const NavigationGravatar = styled(Gravtar)`
+export const NavigationGravatar = styled(Gravatar)`
   height: 45px;
   width: 45px;
   border-radius: 50%;

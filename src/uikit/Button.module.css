@@ -1,0 +1,28 @@
+.actionButton {
+  outline: none;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: #fff;
+  padding: 0px 16px;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  border-radius: 19px;
+  background-color: #009bb8;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.actionButton:hover {
+  background-color: #19a9c4;
+  color: #ffffff;
+  cursor: pointer;
+}
+.actionButton:link {
+  text-decoration: none;
+}
+.actionButton:disabled,
+.actionButton:disabled:hover {
+  cursor: default;
+  color: rgb(107, 98, 98);
+  background-color: rgb(212, 214, 221);
+}

@@ -1,0 +1,14 @@
+.modalHeader {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.87;
+  letter-spacing: 0.2px;
+  color: rgb(52, 52, 52);
+}
+
+.buttonContent {
+  padding: 0 5px;
+}
+.buttonContent img {
+  width: 20px;
+}

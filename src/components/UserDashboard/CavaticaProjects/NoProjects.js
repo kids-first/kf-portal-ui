@@ -10,7 +10,6 @@ import {
   NoteList,
 } from '../styles';
 import Info from '../Info';
-import { CardLink } from '../styles';
 
 const NoProjects = ({ tabToCreate }) => (
   <Column>
@@ -21,8 +20,10 @@ const NoProjects = ({ tabToCreate }) => (
       <PromptMessageContent>
         <NoteList>
           <NotePoints>
-            <CardLink onClick={tabToCreate}>Create a Cavatica Project</CardLink> easily from the
-            portal.
+            <ExternalLink onClick={tabToCreate} style={{ textDecoration: 'underline' }}>
+              Create a Cavatica Project
+            </ExternalLink>{' '}
+            easily from the portal.
           </NotePoints>
           <NotePoints>
             Or join one of the{' '}

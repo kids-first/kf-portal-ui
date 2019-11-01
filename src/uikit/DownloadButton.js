@@ -36,7 +36,7 @@ const DownloadButton = compose(withTheme)(
             margin-right: 9px;
           `}
         />
-        <span css={theme.uppercase}>{content()}</span>
+        <span style={{ textTransform: 'uppercase' }}>{content()}</span>
       </StyledActionButton>
     );
   },

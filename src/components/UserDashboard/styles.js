@@ -89,8 +89,3 @@ export const PromptMessageContent = styled(PMContent)`
   font-size: 14px;
   line-height: normal;
 `;
-
-export const CardLink = styled('a')`
-  ${({ theme }) => theme.externalLink};
-  text-decoration: underline;
-`;

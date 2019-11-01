@@ -18,9 +18,6 @@ import { TealActionButton } from 'uikit/Button';
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 
-// TODO: bringing beagle in through arrangerStyle seems to break the prod build...
-// import arrangerStyle from 'components/FileRepo/arrangerStyle';
-
 const AggregationWrapper = styled(Column)`
   width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
   max-width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;

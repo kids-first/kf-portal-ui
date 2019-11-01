@@ -1,44 +1,19 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
-import styled from 'react-emotion';
 import { Flex } from 'uikit/Core';
-import Row from 'uikit/Row';
+import { ContentContainer } from 'theme/tempTheme';
+import { entityPageActionBar } from './EntityPage.module.css';
 
-import { withApi } from 'services/api';
-
-const enhance = compose(
-  injectState,
-  withTheme,
-  withApi,
+export default ({ children }) => (
+  <Flex className={entityPageActionBar}>
+    <ContentContainer
+      style={{
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        height: '100%',
+      }}
+    >
+      {children}
+    </ContentContainer>
+  </Flex>
 );
-
-const ActionBar = styled(Flex)`
-  height: 62px;
-  width: 100%;
-
-  box-shadow: 0 4.9px 4.9px -4.9px ${({ theme }) => theme.lighterShadow};
-  border: solid 1px ${({ theme }) => theme.greyScale5};
-  background-color: ${({ theme }) => theme.white};
-
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: column;
-`;
-
-const ContentContainer = styled(Row)`
-  ${({ theme }) => theme.contentContainer};
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-`;
-
-const EntityActionBar = ({ children }) => (
-  <ActionBar>
-    <ContentContainer>{children}</ContentContainer>
-  </ActionBar>
-);
-
-export default enhance(EntityActionBar);

@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Flex } from 'uikit/Core';
-import { withTheme } from 'emotion-theming';
 import { applyDefaultStyles, Div } from './Core';
 
 import ErrorSvg from 'icons/ErrorIcon';
@@ -11,42 +10,53 @@ import WarningSvg from 'icons/WarningIcon';
 import NoteSvg from 'icons/NoteIcon';
 import CircleCheckSvg from 'icons/CircleCheckIcon';
 
-const ErrorIcon = withTheme(({ theme }) => (
-  <ErrorSvg width={26} height={26} fill={theme.errorBorder} />
-));
-
-const InfoIcon = withTheme(({ theme }) => (
-  <NoteSvg width={30} height={30} fill={theme.infoBorder} />
-));
-
-const SucessIcon = withTheme(({ theme }) => (
-  <CircleCheckSvg width={30} height={30} fill={theme.successBorder} />
-));
-
-const WarningIcon = withTheme(({ theme }) => (
-  <WarningSvg width={30} height={30} fill={theme.warningBorder} />
-));
+const COLORS = {
+  SUCCESS: {
+    dark: '#009bb8', //green
+    light: '#e6f3f5',
+    background: '#e6f3f5',
+    border: `#009bb8`,
+  },
+  ERROR: {
+    dark: '#d8202f', //red
+    light: '#fadfe1', //light red (pink) fill
+    background: '#f9dee1',
+    border: `#e45562`,
+  },
+  INFO: {
+    dark: '#22afe9', //blue
+    light: '#e8f7fd',
+    background: '#e8f7fd',
+    border: `#22afe9`,
+  },
+  WARNING: {
+    dark: '#ff9427', //yellow
+    light: '#ff9427',
+    background: '#fff4e9',
+    border: `#ff9427`,
+  },
+};
 
 const MessageWrapper = applyDefaultStyles(styled(Column)`
   position: relative;
   align-items: left;
-  background-color: ${({ theme, error, warning, success, info }) =>
+  background-color: ${({ error, warning, success, info }) =>
     error
-      ? theme.errorBackground
+      ? COLORS.ERROR.background
       : warning
-      ? theme.warningBackground
+      ? COLORS.WARNING.background
       : success
-      ? theme.successBackground
-      : theme.infoBackground};
+      ? COLORS.SUCCESS.background
+      : COLORS.INFO.background};
   border-left: solid 5px
-    ${({ theme, error, warning, success, info }) =>
+    ${({ error, warning, success, info }) =>
       error
-        ? theme.errorBorder
+        ? COLORS.ERROR.border
         : warning
-        ? theme.warningBorder
+        ? COLORS.WARNING.border
         : success
-        ? theme.successBorder
-        : theme.infoBorder}};
+        ? COLORS.SUCCESS.border
+        : COLORS.INFO.border};
   padding: 10px;
   margin-bottom: 1em;
   border-bottom-right-radius: 5px;
@@ -68,7 +78,6 @@ export const PromptMessageContent = applyDefaultStyles(styled(Div)`
 `);
 
 export const PromptMessageContainer = ({
-  theme,
   error,
   warning,
   success,
@@ -77,17 +86,17 @@ export const PromptMessageContainer = ({
   children,
   ...rest
 }) => (
-  <MessageWrapper {...{ theme, error, warning, info, success, className, ...rest }}>
+  <MessageWrapper {...{ error, warning, info, success, className, ...rest }}>
     <Row>
       <Flex flex={1} mr={10}>
         {error ? (
-          <ErrorIcon />
+          <ErrorSvg width={26} height={26} fill={COLORS.ERROR.border} />
         ) : warning ? (
-          <WarningIcon />
+          <WarningSvg width={30} height={30} fill={COLORS.WARNING.border} />
         ) : success ? (
-          <SucessIcon />
+          <CircleCheckSvg width={30} height={30} fill={COLORS.SUCCESS.border} />
         ) : (
-          <InfoIcon />
+          <NoteSvg width={30} height={30} fill={COLORS.INFO.border} />
         )}
       </Flex>
       <Column textAlign={'left'}>{children}</Column>

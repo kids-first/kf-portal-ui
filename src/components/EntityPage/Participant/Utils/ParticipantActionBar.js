@@ -5,9 +5,9 @@ import { withTheme } from 'emotion-theming';
 
 import styled from 'react-emotion';
 import { Flex } from 'uikit/Core';
-import Row from 'uikit/Row';
 
 import { withApi } from 'services/api';
+import { ContentContainer } from 'theme/tempTheme';
 
 const enhance = compose(
   injectState,
@@ -28,16 +28,17 @@ const ActionBar = styled(Flex)`
   flex-direction: column;
 `;
 
-const ContentContainer = styled(Row)`
-  ${({ theme }) => theme.contentContainer};
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-`;
-
 const ParticipantActionBar = ({ children }) => (
   <ActionBar>
-    <ContentContainer>{children}</ContentContainer>
+    <ContentContainer
+      style={{
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        height: '100%',
+      }}
+    >
+      {children}
+    </ContentContainer>
   </ActionBar>
 );
 

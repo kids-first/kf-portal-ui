@@ -4,9 +4,7 @@ import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 import { compose } from 'recompose';
 
-// TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
-// import arrangerStyle from './arrangerStyle';
 
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
@@ -16,6 +14,9 @@ import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
 import noop from 'lodash/noop';
+
+import { flexCenter } from 'src/theme/tempTheme.module.css';
+
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
 `;
@@ -25,10 +26,11 @@ const arrangerValueText = css`
   font-size: 13px;
 `;
 
-export const SaveShareButtonContainer = styled(Row)`
-  ${({ theme }) => theme.center};
-  padding: 10px 5px;
-`;
+export const SaveShareButtonContainer = ({ style = {}, children, ...props }) => (
+  <Row className={flexCenter} style={{ padding: '10px 5px', ...style }} {...props}>
+    {children}
+  </Row>
+);
 
 export const ArrangerContainer = styled(Row)`
   min-height: calc(100vh - 56px);
@@ -251,7 +253,7 @@ export const DownloadButton = compose(withTheme)(
             margin-right: 9px;
           `}
         />
-        <span css={theme.uppercase}>{content()}</span>
+        <span style={{ textTransform: 'uppercase' }}>{content()}</span>
       </StyledActionButton>
     );
   },

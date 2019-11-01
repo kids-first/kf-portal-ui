@@ -28,7 +28,9 @@ const GenerateManifestWrapper = styled('div')`
     color: ${({ theme }) => theme.white};
   }
   & .copyContent {
-    ${({ theme }) => theme.center};
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: ${({ theme }) => theme.greyScale1};
     padding-left: 20px;
     padding-right: 20px;
@@ -39,7 +41,9 @@ const GenerateManifestWrapper = styled('div')`
 `;
 
 const GenerateButton = styled(ModalActionButton)`
-  ${({ theme }) => theme.center};
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 0px;
   margin: 0px;
   display: flex;

@@ -1,17 +1,13 @@
 import React from 'react';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import styled from 'react-emotion';
 import Column from 'uikit/Column';
-import { footerHeight } from './Footer';
 import { applyDefaultStyles } from 'uikit/Core';
 
-const Container = applyDefaultStyles(styled(Column)`
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  background-repeat: repeat;
-`);
+import { pageContainer } from './Page.module.css';
+
+const Bob = ({ children, ...props }) => <Column className={pageContainer}>{children}</Column>;
+const Container = applyDefaultStyles(Bob);
 
 const FloatFooterPageContentWrapper = styled('div')`
   height: 100%;
@@ -19,12 +15,12 @@ const FloatFooterPageContentWrapper = styled('div')`
 `;
 
 const FloatFooterPageComponentWrapper = styled('div')`
-  min-height: calc(100% - ${footerHeight});
+  min-height: calc(100% - 56px);
   display: flex;
 `;
 
 const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
-  <Container>
+  <Column className={pageContainer}>
     <Head />
     <FloatFooterPageContentWrapper>
       <FloatFooterPageComponentWrapper>
@@ -32,15 +28,15 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
       </FloatFooterPageComponentWrapper>
       <Foot />
     </FloatFooterPageContentWrapper>
-  </Container>
+  </Column>
 );
 
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
-  <Container height="auto">
+  <Column className={pageContainer} height="auto">
     <Head />
     <Component {...props} />
     <Foot />
-  </Container>
+  </Column>
 );
 
 export default Page;

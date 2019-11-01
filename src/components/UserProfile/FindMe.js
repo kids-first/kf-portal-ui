@@ -25,9 +25,7 @@ import { H4 } from 'uikit/Headings';
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
-const StyledField = styled(Field)`
-  ${({ theme }) => theme.input};
-`;
+import { input } from 'src/theme/tempTheme.module.css';
 
 const StyledLabel = styled('label')`
   font-family: ${({ theme }) => theme.fonts.details};
@@ -318,13 +316,12 @@ export default compose(
                             html={(errors || {})[field]}
                             open={Object.keys(errors || {}).includes(field)}
                           >
-                            <StyledField
-                              css={
+                            <Field
+                              className={input}
+                              style={
                                 Object.keys(errors || {}).includes(field)
-                                  ? `
-                            border-color: red;
-                          `
-                                  : ''
+                                  ? { borderColor: 'red' }
+                                  : {}
                               }
                               id={field}
                               name={field}

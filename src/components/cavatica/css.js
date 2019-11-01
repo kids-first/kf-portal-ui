@@ -23,7 +23,8 @@ export const cssCopyModalRoot = theme => {
   
   div.content {
     margin: 1em 0em;
-    ${theme.column}
+    display: flex;
+    flex-direction: column;
   }
   
   }
@@ -49,9 +50,12 @@ export const cssFileSummaryRoot = theme => css`
     padding: 15px;
   }
   .summary {
-    ${theme.row};
+    display: flex;
+    flex-direction: row;
+
     .block {
-      ${theme.row};
+      display: flex;
+      flex-direction: row;
     }
   }
   .block {
@@ -81,7 +85,8 @@ export const cssFileSummaryRoot = theme => css`
     padding: 3px;
   }
   .details {
-    ${theme.row};
+    display: flex;
+    flex-direction: row;
     border-top: solid 1px ${theme.greyScale5};
     .block {
       padding-bottom: 0px;
