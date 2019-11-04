@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Flex } from './Core';
 
-import { flexColumn, flexCenter } from 'src/theme/tempTheme.module.css';
+import { flexColumn, flexCenter } from '../../src/theme/tempTheme.module.css';
 
 export default ({ children, center = false, scrollY = false, className = '', ...props }) => (
   <Flex

@@ -115,3 +115,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.disabledButtonStyles,
+.disabledButtonStyles:disabled,
+.disabledButtonStyles:hover:disabled {
+  background-color: #f4f5f8;
+  color: #cacbcf;
+  cursor: not-allowed;
+}

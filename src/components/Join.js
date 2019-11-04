@@ -13,10 +13,11 @@ import { startAnalyticsTiming, TRACKING_EVENTS } from 'services/analyticsTrackin
 
 import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
-import { JoinH2, JoinH3 } from '../uikit/Headings';
 import { Paragraph } from '../uikit/Core';
 
 import { card, flexColumn } from 'src/theme/tempTheme.module.css';
+
+import './Login/index.css';
 
 export const ButtonsDiv = styled('div')`
   display: flex;
@@ -33,11 +34,11 @@ const JoinContainer = styled(Column)`
   margin: auto;
 `;
 
-export const JoinPageHeader = withTheme(({ theme }) => (
-  <JoinH2 mt="25px" mb="35px">
+const JoinPageHeader = () => (
+  <h2 className="loginH2" mt="25px" mb="35px">
     Join Kids First Data Resource Portal
-  </JoinH2>
-));
+  </h2>
+);
 
 const JoinContent = compose(
   injectState,
@@ -59,7 +60,9 @@ const JoinContent = compose(
             title: 'Connect',
             render: ({ nextStep }) => (
               <div className={flexColumn}>
-                <JoinH3>Select a way to connect to the Kids First Data Resource Portal</JoinH3>
+                <h3 className="loginH3">
+                  Select a way to connect to the Kids First Data Resource Portal
+                </h3>
                 <Paragraph my="16">
                   Your information will be kept confidential and secure and is not shared with any
                   of these providers.
@@ -83,7 +86,7 @@ const JoinContent = compose(
             title: 'Basic Info',
             render: ({ disableNextStep, nextStep, prevStep, nextDisabled, prevDisabled }) => (
               <div className={flexColumn}>
-                <JoinH3>Tell us about yourself</JoinH3>
+                <h3 className="loginH3">Tell us about yourself</h3>
                 <Paragraph my="16px">
                   Please provide information about yourself to help us personalize your experience.
                 </Paragraph>

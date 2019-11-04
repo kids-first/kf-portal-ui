@@ -1,25 +1,17 @@
 import React from 'react';
-import styled from 'react-emotion';
 
-const TooltipContianer = styled('div')`
-  fill: ${({ theme }) => theme.primaryHover};
-  font-family: ${({ theme }) => theme.details};
-  font-size: 12px;
-`;
-
-const Tooltip = ({
-  className,
-  id,
-  value,
-  index,
-  color,
-  data,
-  children = null,
-  formatter = v => v,
-}) => (
-  <TooltipContianer className={className} keys={index}>
+const Tooltip = ({ className = '', index, data, children = null, formatter = v => v }) => (
+  <div
+    className={className}
+    keys={index}
+    style={{
+      fill: '#404c9a',
+      fontFamily: 'Open Sans, sans-serif',
+      fontSize: '12px',
+    }}
+  >
     {children ? children : formatter(data)}
-  </TooltipContianer>
+  </div>
 );
 
 export default Tooltip;

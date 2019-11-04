@@ -10,7 +10,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 // import Modal from 'components/Modal';
 // import GlobalModal from 'components/Modal/GlobalModal';
 // import UserProfile from 'components/UserProfile';
-// import UserDashboard from 'components/UserDashboard';
+import UserDashboard from 'components/UserDashboard';
 // import FileRepo from 'components/FileRepo';
 // import Join from 'components/Join';
 import LoginPage from 'components/LoginPage';
@@ -20,7 +20,7 @@ import LoginPage from 'components/LoginPage';
 // import MemberSearchPage from './components/MemberSearchPage';
 // import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
-// import Page from 'components/Page';
+import Page from 'components/Page';
 // import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 // import Error from 'components/Error';
@@ -28,30 +28,35 @@ import ContextProvider from 'components/ContextProvider';
 // import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
 import loginImage from 'assets/smiling-girl.jpg';
-import joinImage from 'assets/smiling-boy.jpg';
+// import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
-// import { requireLogin } from './common/injectGlobals';
+import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 // import { initializeApi, ApiContext } from 'services/api';
 // import { DCF, GEN3 } from 'common/constants';
 // import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
-// import ROUTES from 'common/routes';
+import ROUTES from 'common/routes';
 
-// const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
-//   if (!loggedInUser && requireLogin) {
-//     return isLoadingUser ? null : (
-//       <SideImagePage logo={logo} sideImagePath={loginImage} {...{ ...props }} Component={LoginPage} />
-//     );
-//   } else if (
-//     loggedInUser &&
-//     (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms)
-//   ) {
-//     return <Redirect to="/join" />;
-//   } else {
-//     return <WrapperPage {...props} />;
-//   }
-// };
+const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
+  if (!loggedInUser && requireLogin) {
+    return isLoadingUser ? null : (
+      <SideImagePage
+        logo={logo}
+        sideImagePath={loginImage}
+        {...{ ...props }}
+        Component={LoginPage}
+      />
+    );
+  } else if (
+    loggedInUser &&
+    (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms)
+  ) {
+    return <Redirect to="/join" />;
+  } else {
+    return <WrapperPage {...props} />;
+  }
+};
 
 const App = compose(
   injectState,
@@ -224,6 +229,7 @@ const App = compose(
             })
           }
         />
+        */}
         <Route
           path={ROUTES.dashboard}
           exact
@@ -237,6 +243,7 @@ const App = compose(
             })
           }
         />
+        {/*}
         <Route
           path={ROUTES.join}
           exact
@@ -273,8 +280,8 @@ const App = compose(
         {/*
         <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
         <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
-        <Route path={ROUTES.error} exact render={() => <Error />} />
-        <Redirect from="*" to={ROUTES.dashboard} /> */}
+        <Route path={ROUTES.error} exact render={() => <Error />} /> */}
+        <Redirect from="*" to={ROUTES.dashboard} />
       </Switch>
       {/* <Modal /> */}
       {/* <GlobalModal /> */}

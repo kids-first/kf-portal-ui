@@ -14,7 +14,7 @@ import {
   modal,
   modalContent,
   modalSubHeader,
-  modalTitle,
+  // modalTitle,
 } from './Modal.module.css';
 
 export const ModalFooterContainer = ({ children }) => (

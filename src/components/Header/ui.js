@@ -1,7 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
-import { space } from 'styled-system';
 
 import Row from 'uikit/Row';
 import Gravatar from 'uikit/Gravatar';
@@ -10,8 +8,15 @@ import { DropdownLabelContainer } from 'uikit/Dropdown/ui';
 import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLink from 'uikit/ExternalLink';
 
-// import {  } from 'src/theme/tempTheme.module.css';
-import { navLink, linkButtonActive, linkAsButton } from './Header.module.css';
+import {
+  navLink,
+  linkButtonActive,
+  linkAsButton,
+  navBarList,
+  navbarDropdownOptionsContainer,
+  navbarDropdownWrapper,
+  dropdownLink,
+} from './Header.module.css';
 
 export const NavLink = ({ children, className, to, currentPathName, ...props }) => {
   const classNames = `${className} ${navLink} color-primary ${
@@ -24,25 +29,11 @@ export const NavLink = ({ children, className, to, currentPathName, ...props }) 
   );
 };
 
-export const NavBarList = styled('ul')`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 14px;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-  text-align: left;
-  color: #90278e;
-  ${space};
-  justify-content: ${({ justify }) => justify || ''};
-`;
+export const NavBarList = ({ children, justify = '' }) => (
+  <ul className={navBarList} style={{ justifyContent: justify }}>
+    {children}
+  </ul>
+);
 
 export const LinkAsButton = ({ children, className, ...props }) => (
   <Link className={`${linkAsButton} ${className}`} {...props}>
@@ -50,47 +41,29 @@ export const LinkAsButton = ({ children, className, ...props }) => (
   </Link>
 );
 
-export const NavbarDropdownOptionsContainer = styled(DropdownOptionsContainer)`
-  border-radius: 6px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-`;
+export const NavbarDropdownOptionsContainer = ({ children, ...props }) => (
+  <DropdownOptionsContainer className={navbarDropdownOptionsContainer} {...props}>
+    {children}
+  </DropdownOptionsContainer>
+);
 
-export const NavbarKidsFirstDropdown = styled(NavbarDropdownOptionsContainer)`
-  left: -40px;
-`;
+export const NavbarKidsFirstDropdown = ({ children, ...props }) => (
+  <NavbarDropdownOptionsContainer style={{ left: '-40px' }} {...props}>
+    {children}
+  </NavbarDropdownOptionsContainer>
+);
 
-export const NavbarDropdownWrapper = styled(DropdownContainer)`
-  border: 0;
-  color: ${({ theme }) => theme.hover};
+export const NavbarDropdownWrapper = ({ children, ...props }) => (
+  <DropdownContainer className={navbarDropdownWrapper} {...props}>
+    {children}
+  </DropdownContainer>
+);
 
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-  padding-right: 10px;
-`;
-
-export const DropdownLink = styled(Link, {
-  shouldForwardProp: prop => !['separated'].includes(prop),
-})`
-  color: ${({ theme }) => theme.greyScale2};
-  text-decoration: none;
-  padding: 10px 20px;
-  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
-  border-left: solid 2px ${({ theme }) => theme.white};
-  &:hover {
-    color: ${({ theme }) => theme.hover};
-    border-left: solid 2px ${({ theme }) => theme.hover};
-
-    svg {
-      fill: ${({ theme }) => theme.hover};
-    }
-  }
-`;
+export const DropdownLink = ({ children, separated = false, ...props }) => (
+  <Link className={`${dropdownLink} ${separated ? 'separated' : ''}`} {...props}>
+    {children}
+  </Link>
+);
 
 export const DropdownExternalLink = applyDefaultStyles(
   styled(ExternalLink)`

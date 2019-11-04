@@ -9,18 +9,21 @@ import { getUser as getCavaticaUser } from 'services/cavatica';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { ModalFooter, ModalWarning } from 'components/Modal/index.js';
 import ExternalLink from 'uikit/ExternalLink';
-import IntegrationStepsModalContent, {
-  NumberBullet,
-  TokenTitle,
-  TokenInput,
-  FormErrorMessage,
-  DemoImage,
-} from 'components/IntegrationStepsModal';
+import Input from 'uikit/Input';
+import { Paragraph } from 'uikit/Core';
 import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGlobals';
 
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
-import { Paragraph } from '../../uikit/Core';
+
+import {
+  numberBullet,
+  tokenTitle,
+  tokenInput,
+  formErrorMessage,
+  demoImage,
+  integrationStepsModalContent,
+} from './cavatica.module.css';
 
 const enhance = compose(
   injectState,
@@ -65,6 +68,8 @@ const submitCavaticaToken = async ({
   }
 };
 
+const NumberBullet = ({ children }) => <span className={numberBullet}>{children}</span>;
+
 const CavaticaConnectModal = withTheme(
   ({
     state,
@@ -81,7 +86,7 @@ const CavaticaConnectModal = withTheme(
     ...props
   }) => {
     return (
-      <IntegrationStepsModalContent>
+      <div className={integrationStepsModalContent}>
         <div>
           {props.withWarning && (
             <ModalWarning>
@@ -115,7 +120,11 @@ const CavaticaConnectModal = withTheme(
                 . From the Dashboard, click on the "Auth Token" tab.
               </Paragraph>
             </div>
-            <DemoImage src={step2Screenshot} alt="Screenshot of Cavatica's Developer Den" />
+            <img
+              className={demoImage}
+              src={step2Screenshot}
+              alt="Screenshot of Cavatica's Developer Den"
+            />
           </div>
           <div className="stepRow">
             <div>
@@ -129,13 +138,14 @@ const CavaticaConnectModal = withTheme(
             </div>
           </div>
           <div css="display:flex; flex-direction:column; margin-left:74px;">
-            <TokenTitle>Cavatica Authentication Token:</TokenTitle>
-            <TokenInput
+            <span className={tokenTitle}>Cavatica Authentication Token:</span>
+            <Input
               id="cavaticaKey"
               type="text"
               value={cavaticaKey}
               name="cavatica"
               placeholder="Cavatica Key"
+              className={tokenInput}
               onChange={e => {
                 setCavaticaKey(e.target.value);
                 setInvalidToken(false);
@@ -147,9 +157,9 @@ const CavaticaConnectModal = withTheme(
                 });
               }}
             />
-            <FormErrorMessage id="cavaticaTokenErrorMsg">
+            <div className={formErrorMessage} id="cavaticaTokenErrorMsg">
               {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ' '}
-            </FormErrorMessage>
+            </div>
           </div>
         </div>
         <ModalFooter
@@ -166,7 +176,7 @@ const CavaticaConnectModal = withTheme(
             submitDisabled: invalidToken || !isValidKey(cavaticaKey),
           }}
         />
-      </IntegrationStepsModalContent>
+      </div>
     );
   },
 );

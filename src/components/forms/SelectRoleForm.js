@@ -20,7 +20,7 @@ import { ButtonsDiv } from '../Join';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
-import { JoinH3 } from '../../uikit/Headings';
+import { H3 } from '../../uikit/Headings';
 import { Paragraph } from '../../uikit/Core';
 import { ActionButton } from 'uikit/Button';
 import { FieldInput } from './components';
@@ -43,7 +43,7 @@ const RoleBubble = styled(CheckboxBubble)`
   justify-content: flex-start;
 `;
 
-const RoleLabel = styled(JoinH3)`
+const RoleLabel = styled(H3)`
   display: block;
   text-transform: capitalize;
   border: none;

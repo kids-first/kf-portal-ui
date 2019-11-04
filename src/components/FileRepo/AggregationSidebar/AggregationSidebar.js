@@ -13,7 +13,6 @@ import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
 import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
-import { FileRepoH2 as H2 } from 'uikit/Headings';
 import { TealActionButton } from 'uikit/Button';
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';

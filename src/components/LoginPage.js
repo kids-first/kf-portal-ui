@@ -9,7 +9,6 @@ import Login from 'components/Login';
 import SplashPage from 'components/SplashPage';
 
 import { Link, Section } from 'uikit/Core';
-import { JoinH2 } from '../uikit/Headings';
 
 import './Login/index.css';
 
@@ -20,9 +19,9 @@ const LoginPage = compose(
 )(({ history, location, theme, api, stealth = false }) => (
   <SplashPage stealth={stealth}>
     {stealth ? null : (
-      <JoinH2 mt="9px" mb={0}>
+      <h2 className="loginH2" mt="9px" mb={0}>
         Log in
-      </JoinH2>
+      </h2>
     )}
 
     <Login

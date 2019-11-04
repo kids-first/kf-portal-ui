@@ -6,7 +6,7 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { handleJWT, validateJWT } from 'components/Login';
-// import { setCookie, removeCookie } from 'services/cookie';
+import { setCookie, removeCookie } from 'services/cookie';
 
 import {
   TRACKING_EVENTS,
@@ -19,10 +19,9 @@ import history from 'services/history';
 const setEgoTokenCookie = token => {
   const { exp } = jwtDecode(token);
   const expires = new Date(exp * 1000);
-  // [NEXT] Not sure ego actually needs a cookie at all
-  // setCookie(EGO_JWT_KEY, token, {
-  //   expires: expires,
-  // });
+  setCookie(EGO_JWT_KEY, token, {
+    expires: expires,
+  });
 };
 
 export default provideState({
@@ -136,8 +135,7 @@ export default provideState({
       } else {
         localStorage.removeItem('LOGIN_PROVIDER');
         localStorage.removeItem(EGO_JWT_KEY);
-        // [NEXT] Not sure ego actually needs a cookie at all
-        // removeCookie(EGO_JWT_KEY, token);
+        removeCookie(EGO_JWT_KEY, token);
         addHeaders({ authorization: '' });
       }
 

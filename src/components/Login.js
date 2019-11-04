@@ -216,7 +216,7 @@ class Component extends React.Component {
     return (
       <Box maxWidth={600}>
         Connection to ego failed, you may need to visit
-        <a target="_blank" href={egoApiRoot}>
+        <a target="_blank" rel="noopener noreferrer" href={egoApiRoot}>
           {{ egoApiRoot }}
         </a>
         in a new tab and accept the warning
@@ -261,7 +261,7 @@ class Component extends React.Component {
         {disabled ? (
           <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
             <PromptMessageContent pt={0}>
-              <Box className="greyScale1">{this.getErrorMessage()}</Box>
+              <Box className={`${loginError} greyScale1`}>{this.getErrorMessage()}</Box>
             </PromptMessageContent>
           </PromptMessageContainer>
         ) : null}

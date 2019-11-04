@@ -1,14 +1,15 @@
 import React from 'react';
-import styled from 'react-emotion';
+// import styled from 'react-emotion';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
-import { Flex } from 'uikit/Core';
-import { applyDefaultStyles, Div } from './Core';
+import { Div, Flex } from 'uikit/Core';
 
 import ErrorSvg from 'icons/ErrorIcon';
 import WarningSvg from 'icons/WarningIcon';
 import NoteSvg from 'icons/NoteIcon';
 import CircleCheckSvg from 'icons/CircleCheckIcon';
+
+import styles from './PromptMessage.module.css';
 
 const COLORS = {
   SUCCESS: {
@@ -37,45 +38,34 @@ const COLORS = {
   },
 };
 
-const MessageWrapper = applyDefaultStyles(styled(Column)`
-  position: relative;
-  align-items: left;
-  background-color: ${({ error, warning, success, info }) =>
-    error
-      ? COLORS.ERROR.background
-      : warning
-      ? COLORS.WARNING.background
-      : success
-      ? COLORS.SUCCESS.background
-      : COLORS.INFO.background};
-  border-left: solid 5px
-    ${({ error, warning, success, info }) =>
-      error
-        ? COLORS.ERROR.border
-        : warning
-        ? COLORS.WARNING.border
-        : success
-        ? COLORS.SUCCESS.border
-        : COLORS.INFO.border};
-  padding: 10px;
-  margin-bottom: 1em;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-  padding: 20px;
-`);
+const MessageWrapper = ({
+  children,
+  className = '',
+  error = false,
+  warning = false,
+  success = false,
+  info = false,
+  ...props
+}) => {
+  const severity = error ? 'error' : warning ? 'warning' : success ? 'success' : 'info';
+  return (
+    <Column className={`${styles.messageWrapper} ${severity} ${className}`} {...props}>
+      {children}
+    </Column>
+  );
+};
 
-export const PromptMessageHeading = applyDefaultStyles(styled(Div)`
-  padding-right: 10px;
-  font-size: 20px;
-`);
+export const PromptMessageHeading = ({ children, className = '', ...props }) => (
+  <Div className={`${styles.promptMessageHeading} ${className}`} {...props}>
+    {children}
+  </Div>
+);
 
-export const PromptMessageContent = applyDefaultStyles(styled(Div)`
-  padding-top: 2px;
-  line-height: 1.6em;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
-  line-height: 30px;
-`);
+export const PromptMessageContent = ({ children, className = '', ...props }) => (
+  <Div className={`${styles.promptMessageContent} ${className}`} {...props}>
+    {children}
+  </Div>
+);
 
 export const PromptMessageContainer = ({
   error,

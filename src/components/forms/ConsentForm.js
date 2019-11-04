@@ -18,7 +18,7 @@ import { personaApiRoot } from 'common/injectGlobals';
 import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
-import { JoinH3 } from 'uikit/Headings';
+import { H3 } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
 import { ActionButton } from 'uikit/Button';
 
@@ -66,7 +66,7 @@ const Consent = compose(
   }) => {
     return (
       <Fragment>
-        <JoinH3>{'Read and consent to our terms and conditions'}</JoinH3>
+        <H3>{'Read and consent to our terms and conditions'}</H3>
         <ConsentContainer>
           <Terms>
             <FormParagraph fontWeight="600">{'Last Update Date: 7/13/18'}</FormParagraph>{' '}

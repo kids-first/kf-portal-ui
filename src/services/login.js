@@ -2,7 +2,7 @@ import urlJoin from 'url-join';
 import ajax from 'services/ajax';
 import { egoAppId, egoApiRoot } from 'common/injectGlobals';
 import { EGO_JWT_KEY } from 'common/constants';
-// import { removeCookie } from './cookie';
+import { removeCookie } from './cookie';
 import { store } from '../store';
 import { logout } from '../store/actionCreators/user';
 import { orcidLogout } from 'services/ego/auth';
@@ -48,8 +48,7 @@ export const facebookLogout = () =>
   ]);
 
 export const logoutAll = () => {
-  // [NEXT] Not sure ego actually needs a cookie at all
-  // removeCookie(EGO_JWT_KEY);
+  removeCookie(EGO_JWT_KEY);
   // discard the user/session details
   store.dispatch(logout());
   return Promise.all([googleLogout(), facebookLogout(), orcidLogout()]);

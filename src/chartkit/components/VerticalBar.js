@@ -226,7 +226,7 @@ class VerticalBar extends Component {
     return (
       <VerticalBarWrapper>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="central">
+        <TextBugWrapper>
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />

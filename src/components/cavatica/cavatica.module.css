@@ -12,3 +12,53 @@
 .buttonContent img {
   width: 20px;
 }
+
+/********************************************************************/
+
+.numberBullet {
+  color: white;
+  background: #00afed;
+  width: 14px;
+  border-radius: 50%;
+  margin: 20px;
+  padding: 10px;
+  height: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tokenTitle {
+  color: #2b388f;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tokenInput {
+  width: 35em;
+  max-width: 90%;
+}
+
+.formErrorMessage {
+  color: #e45562;
+  padding: 10px;
+  padding-left: 20px;
+  height: 1.6em;
+}
+
+.demoImage {
+  height: 210px;
+  border: solid 2px #cacbcf;
+}
+
+.integrationStepsModalContent div.stepText {
+  line-height: 1.6em;
+}
+.integrationStepsModalContent .stepRow {
+  display: flex;
+  flex-direction: row;
+}
+.integrationStepsModalContent .stepText {
+  padding-top: 20px;
+}

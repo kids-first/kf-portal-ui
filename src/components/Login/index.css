@@ -87,3 +87,29 @@
   font-style: normal;
   font-weight: 600;
 }
+
+/* [NEXT] REMOVE */
+.baseJoinHeading {
+  font-family: Montserrat, sans-serif;
+  color: #2b388f;
+  font-weight: 500;
+}
+
+.loginH2 {
+  font-family: Montserrat, sans-serif;
+  color: #2b388f;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 0.87;
+  letter-spacing: 0.4px;
+  text-align: center;
+}
+
+.loginH3 {
+  font-family: Montserrat, sans-serif;
+  color: #2b388f;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.44;
+  letter-spacing: 0;
+}
