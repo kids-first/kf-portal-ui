@@ -76,6 +76,22 @@ const Header = ({
     <DropDownState
       render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
         <HeaderContainer>
+          {showPublicProfileInvite(loggedInUser) && (
+            <Alert
+              message={
+                <Fragment>
+                  <Link to={getUrlForUser(loggedInUser, '#settings')}>
+                    Make your profile public
+                  </Link>
+                  {' so that other members can view it!'}
+                </Fragment>
+              }
+              type="info"
+              banner
+              closable
+              onClose={onCloseAlert}
+            />
+          )}
           <GradientAccent />
           <HeaderContent>
             <Row>
@@ -166,22 +182,6 @@ const Header = ({
               )}
             </NavBarList>
           </HeaderContent>
-          {showPublicProfileInvite(loggedInUser) && (
-            <Alert
-              message={
-                <Fragment>
-                  <Link to={getUrlForUser(loggedInUser, '#settings')}>
-                    Make your profile public
-                  </Link>
-                  {' so that other members can view it!'}
-                </Fragment>
-              }
-              type="info"
-              banner
-              closable
-              onClose={onCloseAlert}
-            />
-          )}
         </HeaderContainer>
       )}
     />
