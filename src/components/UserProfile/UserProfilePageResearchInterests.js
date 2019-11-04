@@ -76,7 +76,6 @@ class UserProfilePageResearchInterests extends React.Component {
         isEditingBackgroundInfo={isEditingBackgroundInfo}
         canEdit={this.props.canEdit}
       >
-        {console.log(interests, 'interests @ render')}
         {!interests.length && (
           <Title level={4}>
             Please specify Kids First studies, diseases and other areas that interest you.

@@ -15,7 +15,6 @@ class UserProfilePageContent extends React.Component {
 
   static propTypes = {
     profile: PropTypes.object,
-    loggedInUser: PropTypes.object,
     // api: PropTypes.
     onSubmitUpdateProfile: PropTypes.func.isRequired,
     canEdit: PropTypes.func.isRequired,

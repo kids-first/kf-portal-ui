@@ -10,9 +10,9 @@ import {
   UPDATE_USER_SUCCESS,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
-import { getProfile, updateProfile } from 'services/profiles';
+import {getProfileNew, updateProfile} from 'services/profiles';
 
-const getProfileFromUserID = getProfile(apiInitialized);
+const getProfileFromUserID = getProfileNew(apiInitialized);
 const updateProfileFromUser = updateProfile(apiInitialized);
 
 export const loginSuccess = loggedInUser => {
@@ -62,7 +62,7 @@ export const updateProfileSuccess = () => {
   };
 };
 
-const fetchProfile = userID => {
+const fetchProfile = (userID, loggedInUser) => {
   return async dispatch => {
     const onSuccess = profile => {
       return dispatch(receiveProfile(profile));
@@ -74,7 +74,7 @@ const fetchProfile = userID => {
     dispatch(requestProfile());
 
     try {
-      const fetchedProfile = await getProfileFromUserID(userID);
+      const fetchedProfile = await getProfileFromUserID(userID, loggedInUser);
       return onSuccess(fetchedProfile);
     } catch (e) {
       return onError(e);
@@ -87,10 +87,10 @@ const shouldFetchProfile = (state, userID) => {
   return !Boolean(profileInStore) || (Boolean(profileInStore._id) && profileInStore._id !== userID);
 };
 
-export const fetchProfileIfNeeded = userID => {
+export const fetchProfileIfNeeded = (userID, loggedInUser) => {
   return (dispatch, getState) => {
     if (shouldFetchProfile(getState(), userID)) {
-      return dispatch(fetchProfile(userID));
+      return dispatch(fetchProfile(userID, loggedInUser));
     }
   };
 };

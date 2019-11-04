@@ -86,38 +86,77 @@ const DEFAULT_FIELDS_OTHER_USER = `
 
 const url = urlJoin(personaApiRoot, 'graphql');
 
-export const getProfile = api => async id => {
-  const isOtherUser = Boolean(id);
-  const params = isOtherUser
-    ? {
-        url,
-        body: {
-          variables: { _id: id },
-          query: `
+// export const getProfile = api => async id => {
+//   const isOtherUser = Boolean(id);
+//   const params = isOtherUser
+//       ? {
+//         url,
+//         body: {
+//           variables: { _id: id },
+//           query: `
+//       query($_id: MongoID!){
+//         user(_id:$_id){
+//             ${DEFAULT_FIELDS_OTHER_USER}
+//         }
+//       }
+//     `,
+//         },
+//       }
+//       : {
+//         url,
+//         body: {
+//           query: `
+//         query {
+//           self {
+//             ${DEFAULT_FIELDS_SELF}
+//           }
+//         }
+//       `,
+//         },
+//       };
+//
+//   const response = await api(params);
+//   return response.data[isOtherUser ? 'user' : 'self'];
+// };
+
+export const getProfileNew = api => async (id, loggedInUser) => {
+  const isOtherUser = Boolean(id) && loggedInUser && loggedInUser._id !== id;
+  if(isOtherUser){
+    const response = await api({
+      url,
+      body: {
+        variables: { _id: id },
+        query: `
       query($_id: MongoID!){
         user(_id:$_id){
             ${DEFAULT_FIELDS_OTHER_USER}
         }
       }
     `,
-        },
-      }
-    : {
-        url,
-        body: {
-          query: `
+      },
+    });
+    return response.data.user;
+  }
+  return  {...loggedInUser};
+};
+
+export const getMyProfile = async api=> {
+  const response = await api({
+    url,
+    body: {
+      query: `
         query {
           self {
             ${DEFAULT_FIELDS_SELF}
           }
         }
       `,
-        },
-      };
-
-  const response = await api(params);
-  return response.data[isOtherUser ? 'user' : 'self'];
+    },
+  });
+  return response.data.self;
 };
+
+
 
 export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {
   const {

@@ -14,6 +14,10 @@ import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
 
 class UserProfilePageContainer extends React.Component {
+  state = {
+    canEdit: false,
+  };
+
   static propTypes = {
     profile: PropTypes.object,
     onFetchProfile: PropTypes.func.isRequired,
@@ -25,8 +29,20 @@ class UserProfilePageContainer extends React.Component {
   };
 
   componentDidMount() {
-    const { onFetchProfile } = this.props;
-    onFetchProfile();
+      const { onFetchProfile, loggedInUser, userID } = this.props;
+
+      console.log(userID, loggedInUser, 'did mount', this.props.myProfile);
+      if(loggedInUser){
+          console.log("THIS");
+          onFetchProfile(userID, loggedInUser);
+      }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      const { loggedInUser, onFetchProfile, userID } = this.props;
+      onFetchProfile(userID, loggedInUser);
+    }
   }
 
   canEdit = () => !Boolean(this.props.userID);
@@ -40,7 +56,7 @@ class UserProfilePageContainer extends React.Component {
   };
 
   /**
-   *  TODOs 
+     *  TODOs
    * - simplify logic in app's route to determine who's who.
    * - add antd spinner
    * - test how error behaves and display it accordingly 
@@ -50,7 +66,11 @@ class UserProfilePageContainer extends React.Component {
   */
 
   render() {
+    console.log(this.props, 'RENDER_PROPS');
+    console.log(this.state, 'RENDER_STATE');
+
     const { isLoading, error, profile, loggedInUser } = this.props;
+
     if (isLoading) {
       return '...loading'; //TODO mettre un spinner
     } else if (error) {
@@ -58,12 +78,12 @@ class UserProfilePageContainer extends React.Component {
     } else if (isEmpty(profile)) {
       return <Error text={'404: Page not found.'} />;
     }
+
     return (
       <UserProfilePage
         profile={profile}
         onSubmitUpdateProfile={this.submit}
-        canEdit={this.canEdit()}
-        loggedInUser={loggedInUser}
+        canEdit={this.state.canEdit}
       />
     );
   }
@@ -71,6 +91,7 @@ class UserProfilePageContainer extends React.Component {
 
 const mapStateToProps = state => ({
   profile: selectProfile(state),
+  myProfile: state.user.loggedInUser,
   loggedInUser: selectLoggedInUser(state),
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
@@ -78,7 +99,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchProfile: userID => dispatch(fetchProfileIfNeeded(userID)),
+    onFetchProfile: (userID, loggedInUser) => dispatch(fetchProfileIfNeeded(userID, loggedInUser)),
     onUpdateProfile: user => dispatch(updateUserProfile(user)),
   };
 };

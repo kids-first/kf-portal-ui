@@ -11,10 +11,10 @@ import { withTheme } from 'emotion-theming';
 const { Title } = Typography;
 
 export const userProfileBackground = (
-  loggedInUser,
+  profile,
   { showBanner = true, gradientDirection = 'right' } = {},
 ) => {
-  const role = ROLES.find(x => x.type === get(loggedInUser, 'roles[0]', '')) || {};
+  const role = ROLES.find(x => x.type === get(profile, 'roles[0]', '')) || {};
   const banner = get(role, 'banner', '');
   const profileColors = get(role, 'profileColors', {});
   return css`
@@ -51,7 +51,7 @@ const UserProfilePageHeader = ({
                 ${theme.column};
                 padding: 0 15px;
               `}>
-          <RoleIconButton loggedInUser={loggedInUser} />
+          <RoleIconButton profile={profile} />
           <Title
             style={{
               fontSize: 28,

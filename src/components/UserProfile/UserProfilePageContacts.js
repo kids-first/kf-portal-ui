@@ -5,7 +5,7 @@ import { Box } from 'uikit/Core';
 import Icon from 'antd/es/icon';
 import { H3 } from 'components/UserProfile/ui';
 import { formatAddressLine } from 'common/displayFormatters';
-import { formatPhoneNumber } from 'common/displayFormatters';
+// import { formatPhoneNumber } from 'common/displayFormatters';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 import { withApi } from 'services/api';
 import { compose } from "recompose";
@@ -94,7 +94,7 @@ class UserProfilePageContacts extends React.Component {
             <Col>
               <Icon type="phone" theme="twoTone" />
             </Col>
-            <Col style={{paddingLeft:10}} >{formatPhoneNumber(phone)} </Col>
+            {/*<Col style={{paddingLeft:10}} >{formatPhoneNumber(phone)} </Col>*/}
           </Row>
         )}
       </UserProfilePageBox>

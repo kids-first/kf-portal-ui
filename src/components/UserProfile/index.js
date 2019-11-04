@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import { getProfile, updateProfile } from 'services/profiles';
+import { getProfileNew, updateProfile } from 'services/profiles';
 import { ROLES } from 'common/constants';
 
 import BasicInfoForm from 'components/forms/BasicInfoForm';
@@ -50,7 +50,7 @@ const fetchProfile = async ({ loggedInUser, userID, api, setProfile, setError })
   }
 
   try {
-    const profile = await getProfile(api)(userID);
+    const profile = await getProfileNew(api)(userID, loggedInUser);
     setProfile(profile);
   } catch (error) {
     setError(error);
@@ -230,3 +230,5 @@ const UserProfile = compose(
     </div>
   );
 });
+
+export default UserProfilePageContainer; //UserProfilePageContainer  || UserProfile
