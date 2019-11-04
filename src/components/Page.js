@@ -27,13 +27,12 @@ const Page = ({
   Head = Header,
   Foot = Footer,
   Component,
-  cssFloatFooterPageComponentWrapper = ``,
   ...props
 }) => (
   <Container>
     <Head />
     <FloatFooterPageContentWrapper>
-      <FloatFooterPageComponentWrapper css={cssFloatFooterPageComponentWrapper}>
+      <FloatFooterPageComponentWrapper>
         <Component {...props} />
       </FloatFooterPageComponentWrapper>
       <Foot />

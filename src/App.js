@@ -76,11 +76,6 @@ const ShowLoader = (
   <Page
     Component={Spin}
     indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />}
-    cssFloatFooterPageComponentWrapper={`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `}
   />
 );
 
@@ -264,7 +259,7 @@ const App = compose(
             })
           }
         />
-        <Route path={ROUTES.dashboard} exact render={props => showDashboardIfLoggedIn(props)} />
+        <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
         <Route
           path={ROUTES.join}
           exact
