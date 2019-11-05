@@ -43,7 +43,7 @@ const MemberTable = props => {
         header={<Row>
           <Col span={12} style={{textAlign:'left'}}>{`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
             props.count.public
-          }`}</Col>
+          } public members`}</Col>
           <Col span={12} style={{textAlign:'right'}} >{`${props.count.total} members total (public & private)`}</Col>
         </Row>}
         pagination={{
