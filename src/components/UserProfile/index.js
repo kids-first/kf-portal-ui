@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 
-import { getProfileNew, updateProfile } from 'services/profiles';
+import { updateProfile, getProfile } from 'services/profiles';
 import { ROLES } from 'common/constants';
 
 import BasicInfoForm from 'components/forms/BasicInfoForm';
@@ -20,8 +20,6 @@ import Error from '../Error';
 import inRange from 'lodash/inRange';
 import { extractErrorMessage } from 'utils';
 
-import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
-import { Alert } from 'antd';
 import UserProfilePageContainer from './UserProfilePageContainer';
 export const userProfileBackground = (
   profile,
@@ -50,7 +48,7 @@ const fetchProfile = async ({ loggedInUser, userID, api, setProfile, setError })
   }
 
   try {
-    const profile = await getProfileNew(api)(userID, loggedInUser);
+    const profile = await getProfile(api)(); //FIXME broken because of refactoring
     setProfile(profile);
   } catch (error) {
     setError(error);

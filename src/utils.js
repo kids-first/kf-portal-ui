@@ -133,3 +133,10 @@ export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
       });
   });
 };
+
+export const isSelfInUrlWhenLoggedIn = (userIdFromUrl, loggedInUser) => {
+  if (!loggedInUser || Object.keys(loggedInUser).length === 0) {
+    return true
+  }
+  return  loggedInUser._id === userIdFromUrl;
+};

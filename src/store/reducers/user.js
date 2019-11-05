@@ -8,6 +8,7 @@ import {
   REQUEST_PROFILE_UPDATE,
   FAILURE_UPDATE,
   UPDATE_USER_SUCCESS,
+  DELETE_PROFILE,
 } from '../actionTypes';
 
 const initialState = {
@@ -42,6 +43,8 @@ export default (state = initialState, action) => {
       return { ...state, errorProfile: action.payload, isProfileLoading: false };
     case UPDATE_USER_SUCCESS:
       return { ...state, isProfileLoading: false };
+    case DELETE_PROFILE:
+      return { ...state, profile: null };
     default:
       return state;
   }

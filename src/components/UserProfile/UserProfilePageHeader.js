@@ -64,7 +64,6 @@ const UserProfilePageHeader = ({
               fontFamily: `${theme.fonts.default}`,
               textDecoration: 'none',
             }}
-            lineHeigh="31px"
             mb="10px"
             mt="16px"
           >

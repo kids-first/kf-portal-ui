@@ -11,13 +11,10 @@ import UserProfileSettings from 'components/UserProfile/UserProfileSettings';
 const TabPane = Tabs.TabPane;
 
 class UserProfilePageContent extends React.Component {
-  //TODO change to dumb component
-
   static propTypes = {
     profile: PropTypes.object,
-    // api: PropTypes.
     onSubmitUpdateProfile: PropTypes.func.isRequired,
-    canEdit: PropTypes.func.isRequired,
+    canEdit: PropTypes.bool.isRequired,
     theme: PropTypes.object,
   };
 

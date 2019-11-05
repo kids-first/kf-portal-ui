@@ -8,11 +8,12 @@ import {
   REQUEST_PROFILE_UPDATE,
   FAILURE_UPDATE,
   UPDATE_USER_SUCCESS,
+  DELETE_PROFILE,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
-import {getProfileNew, updateProfile} from 'services/profiles';
+import { getOtherUserProfile, getUserLoggedInProfile, updateProfile } from 'services/profiles';
+import { selectProfile } from '../selectors/users';
 
-const getProfileFromUserID = getProfileNew(apiInitialized);
 const updateProfileFromUser = updateProfile(apiInitialized);
 
 export const loginSuccess = loggedInUser => {
@@ -62,7 +63,7 @@ export const updateProfileSuccess = () => {
   };
 };
 
-const fetchProfile = (userID, loggedInUser) => {
+const fetchProfile = userInfo => {
   return async dispatch => {
     const onSuccess = profile => {
       return dispatch(receiveProfile(profile));
@@ -72,9 +73,10 @@ const fetchProfile = (userID, loggedInUser) => {
     };
 
     dispatch(requestProfile());
-
     try {
-      const fetchedProfile = await getProfileFromUserID(userID, loggedInUser);
+      const fetchedProfile = await (userInfo.isSelf
+        ? getUserLoggedInProfile()
+        : getOtherUserProfile(userInfo.userID));
       return onSuccess(fetchedProfile);
     } catch (e) {
       return onError(e);
@@ -82,15 +84,19 @@ const fetchProfile = (userID, loggedInUser) => {
   };
 };
 
-const shouldFetchProfile = (state, userID) => {
-  const profileInStore = state.profile;
-  return !Boolean(profileInStore) || (Boolean(profileInStore._id) && profileInStore._id !== userID);
+const shouldFetchProfile = (state, userInfo) => {
+  const profileInStore = selectProfile(state);
+  if (!Boolean(profileInStore)) {
+    return true;
+  }
+
+  return profileInStore._id !== userInfo.userID;
 };
 
-export const fetchProfileIfNeeded = (userID, loggedInUser) => {
+export const fetchProfileIfNeeded = userInfo => {
   return (dispatch, getState) => {
-    if (shouldFetchProfile(getState(), userID)) {
-      return dispatch(fetchProfile(userID, loggedInUser));
+    if (shouldFetchProfile(getState(), userInfo)) {
+      return dispatch(fetchProfile(userInfo));
     }
   };
 };
@@ -107,6 +113,7 @@ export const failureUpdateProfile = error => {
     payload: error,
   };
 };
+
 export const updateUserProfile = user => {
   return async dispatch => {
     dispatch(requestUpdateProfile());
@@ -117,7 +124,11 @@ export const updateUserProfile = user => {
       });
       return dispatch(updateProfileSuccess());
     } catch (e) {
-      return dispatch(receiveProfile(failureProfile(e)));
+      return dispatch(failureUpdateProfile(e));
     }
   };
+};
+
+export const deleteProfile = () => {
+  return dispatch => dispatch({ type: DELETE_PROFILE });
 };

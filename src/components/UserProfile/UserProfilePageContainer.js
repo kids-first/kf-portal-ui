@@ -4,20 +4,20 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import {
   selectProfile,
-  selectLoggedInUser,
   selectIsProfileLoading,
   selectErrorProfile,
 } from '../../store/selectors/users';
-import { fetchProfileIfNeeded, updateUserProfile } from '../../store/actionCreators/user';
+import {
+  fetchProfileIfNeeded,
+  updateUserProfile,
+  deleteProfile,
+} from '../../store/actionCreators/user';
 import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
+import { Spin, Icon, Layout } from 'antd';
 
 class UserProfilePageContainer extends React.Component {
-  state = {
-    canEdit: false,
-  };
-
   static propTypes = {
     profile: PropTypes.object,
     onFetchProfile: PropTypes.func.isRequired,
@@ -25,27 +25,31 @@ class UserProfilePageContainer extends React.Component {
     isLoading: PropTypes.bool.isRequired,
     error: PropTypes.object,
     userID: PropTypes.string,
-    loggedInUser: PropTypes.object,
+    userInfo: PropTypes.exact({
+      userID: PropTypes.string,
+      isSelf: PropTypes.bool,
+    }).isRequired,
+    onDeleteProfile: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
-      const { onFetchProfile, loggedInUser, userID } = this.props;
-
-      console.log(userID, loggedInUser, 'did mount', this.props.myProfile);
-      if(loggedInUser){
-          console.log("THIS");
-          onFetchProfile(userID, loggedInUser);
-      }
+    const { onFetchProfile, userInfo } = this.props;
+    onFetchProfile(userInfo);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
-      const { loggedInUser, onFetchProfile, userID } = this.props;
-      onFetchProfile(userID, loggedInUser);
+    if (prevProps.userInfo.userID !== this.props.userInfo.userID) {
+      const { onFetchProfile, userInfo } = this.props;
+      onFetchProfile(userInfo);
     }
   }
 
-  canEdit = () => !Boolean(this.props.userID);
+  componentWillUnmount() {
+    const { onDeleteProfile } = this.props;
+    onDeleteProfile();
+  }
+
+  canEdit = () => this.props.userInfo.isSelf;
 
   submit = values => {
     const { profile, onUpdateProfile } = this.props;
@@ -55,24 +59,15 @@ class UserProfilePageContainer extends React.Component {
     });
   };
 
-  /**
-     *  TODOs
-   * - simplify logic in app's route to determine who's who.
-   * - add antd spinner
-   * - test how error behaves and display it accordingly 
-   *    import inRange from 'lodash/inRange';
-        const errorStatus = error.response.status;
-        const text = inRange(errorStatus, 400) ? error.message : undefined;
-  */
-
   render() {
-    console.log(this.props, 'RENDER_PROPS');
-    console.log(this.state, 'RENDER_STATE');
-
-    const { isLoading, error, profile, loggedInUser } = this.props;
+    const { isLoading, error, profile } = this.props;
 
     if (isLoading) {
-      return '...loading'; //TODO mettre un spinner
+      return (
+        <Layout style={{ justifyContent: 'center' }}>
+          <Spin indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
+        </Layout>
+      );
     } else if (error) {
       return <Error text={'TODO'} />;
     } else if (isEmpty(profile)) {
@@ -83,7 +78,7 @@ class UserProfilePageContainer extends React.Component {
       <UserProfilePage
         profile={profile}
         onSubmitUpdateProfile={this.submit}
-        canEdit={this.state.canEdit}
+        canEdit={this.canEdit()}
       />
     );
   }
@@ -91,16 +86,15 @@ class UserProfilePageContainer extends React.Component {
 
 const mapStateToProps = state => ({
   profile: selectProfile(state),
-  myProfile: state.user.loggedInUser,
-  loggedInUser: selectLoggedInUser(state),
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchProfile: (userID, loggedInUser) => dispatch(fetchProfileIfNeeded(userID, loggedInUser)),
+    onFetchProfile: userInfo => dispatch(fetchProfileIfNeeded(userInfo)),
     onUpdateProfile: user => dispatch(updateUserProfile(user)),
+    onDeleteProfile: () => dispatch(deleteProfile()),
   };
 };
 
