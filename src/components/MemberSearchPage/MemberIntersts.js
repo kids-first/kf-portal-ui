@@ -62,7 +62,8 @@ class MemberInterests extends Component {
     const populatedList = this.state.filter ? mergedInterests.slice(0, 3) : mergedInterests;
     return (
       <div>
-        <Paragraph className={'interest-container'}>
+        {/*TODO remove style with Ant Design theme*/}
+        <Paragraph className={'interest-container'} style={{color:'inherit'}}>
           <div>Research Interests: &nbsp; </div>
           {populatedList.map((item, index) => (
             <FormatLabel

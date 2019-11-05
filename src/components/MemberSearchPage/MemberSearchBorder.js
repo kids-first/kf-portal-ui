@@ -7,7 +7,7 @@ const { Title } = Typography;
 
 const MemberSearchBorder = props => {
   return (
-    <div className={'grid-container'} >
+    <div className={'grid-container'}>
       <Row>
         <Title
           level={1}
@@ -26,13 +26,6 @@ const MemberSearchBorder = props => {
           Kids First Membership
         </Title>
       </Row>
-      {props.loggedInUser && !props.loggedInUser.isPublic ? (
-        <Row>
-          <i> Make your profile public to appear in the list </i>
-        </Row>
-      ) : (
-        ''
-      )}
       <Row style={{ marginTop: 20 }}>
         <Col span={24}>{props.children}</Col>
       </Row>
