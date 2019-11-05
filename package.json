@@ -106,11 +106,12 @@
     "yup": "^0.25.1"
   },
   "scripts": {
-    "start": "cross-env NODE_PATH=\"src\" node scripts/start.js",
+    "start": "npm run theme && cross-env NODE_PATH=\"src\" node scripts/start.js",
     "start-dev": "cross-env NODE_PATH=\"src\" node scripts/start.js --env-file=.env.development.local",
     "build": "cross-env NODE_PATH=\"src\" node scripts/build.js",
     "test": "cross-env NODE_PATH=\"src\" node scripts/test.js --env=jsdom",
-    "test:unit": "cross-env NODE_ENV=\"test\" NODE_PATH=\"src\" nyc --reporter=html mocha -w --require babel-core/register src/**/*.unit.js"
+    "test:unit": "cross-env NODE_ENV=\"test\" NODE_PATH=\"src\" nyc --reporter=html mocha -w --require babel-core/register src/**/*.unit.js",
+    "theme": "lessc --js src/antdTheme.less src/antd-kf-theme.css"
   },
   "devDependencies": {
     "babel-core": "6.26.0",
@@ -123,6 +124,7 @@
     "babel-preset-react-app": "^3.1.2",
     "babel-runtime": "6.26.0",
     "chai": "^4.2.0",
+    "lessc": "^1.0.2",
     "mocha": "^6.1.4",
     "node-sass": "^4.12.0",
     "nyc": "^14.1.1",
