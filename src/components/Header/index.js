@@ -116,7 +116,7 @@ const Header = ({
                   {isSearchMemberFeatEnabled && (
                     <li>
                       <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
-                        <UserIcon /> Members Search
+                        <UserIcon /> Members
                       </NavLink>
                     </li>
                   )}
