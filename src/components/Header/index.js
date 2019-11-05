@@ -41,7 +41,9 @@ const showPublicProfileInvite = (user = {}) => {
     return false;
   }
   return (
-    !Boolean(user.isPublic) && !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
+    Boolean(user) &&
+    !Boolean(user.isPublic) &&
+    !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
   );
 };
 
