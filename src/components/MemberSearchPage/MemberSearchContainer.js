@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import { bindActionCreators } from 'redux';
-import { Icon, Input, Tooltip } from 'antd';
+import {bindActionCreators} from 'redux';
+import {Icon, Input, Layout, Tooltip} from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
-import { withTheme } from 'emotion-theming';
+import {withTheme} from 'emotion-theming';
+import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
 
 class MemberSearchContainer extends Component {
   state = {
@@ -69,30 +70,33 @@ class MemberSearchContainer extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width:'100%' }}>
-        <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
-          <Input
-            style={{ borderRadius: 30 }}
-            onChange={this.handleChange}
-            placeholder="Member Name, Email, Interests,..."
-            prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            allowClear={true}
-            suffix={
-              <Tooltip title="Enter text to search for members">
-                <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
-              </Tooltip>
-            }
-          />
-          <MemberTable
-            memberList={this.props.members}
-            count={this.props.count}
-            currentPage={this.state.currentPage}
-            membersPerPage={this.state.membersPerPage}
-            handlePageChange={this.handlePageChange}
-            handleShowSizeChange={this.handleShowSizeChange}
-            pending={this.props.pending}
-          />
-        </MemberSearchBorder>
+      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
+        <Layout style={{ minHeight: '100vh' }} >
+          <FilterDrawer />
+          <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
+            <Input
+              style={{ borderRadius: 30 }}
+              onChange={this.handleChange}
+              placeholder="Member Name, Email, Interests,..."
+              prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              allowClear={true}
+              suffix={
+                <Tooltip title="Enter text to search for members">
+                  <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+                </Tooltip>
+              }
+            />
+            <MemberTable
+              memberList={this.props.members}
+              count={this.props.count}
+              currentPage={this.state.currentPage}
+              membersPerPage={this.state.membersPerPage}
+              handlePageChange={this.handlePageChange}
+              handleShowSizeChange={this.handleShowSizeChange}
+              pending={this.props.pending}
+            />
+          </MemberSearchBorder>
+        </Layout>
       </div>
     );
   }
