@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Icon, Typography } from 'antd';
-import { bind } from '../../utils';
+import {Typography} from 'antd';
+import {bind} from '../../utils';
 import PropTypes from 'prop-types';
 
 const { Paragraph } = Typography;
@@ -63,7 +63,7 @@ class MemberInterests extends Component {
     return (
       <div>
         {/*TODO remove style with Ant Design theme*/}
-        <Paragraph className={'interest-container'} style={{color:'inherit'}}>
+        <Paragraph className={'interest-container'} style={{ color: 'inherit' }}>
           <div>Research Interests: &nbsp; </div>
           {populatedList.map((item, index) => (
             <FormatLabel
@@ -74,8 +74,15 @@ class MemberInterests extends Component {
               classname={'comma'}
             />
           ))}
-          {this.state.filter && mergedInterests.length > 3 ? (
-            <Icon className="ant-typography-expand" type="plus" onClick={this.onClick} />
+          {mergedInterests.length > 3 ? (
+            <a
+              style={{ margin: 0 }}
+              className="ant-typography-expand"
+              aria-label="Expand"
+              onClick={this.onClick}
+            >
+              {this.state.filter?'Expand':'Close'}
+            </a>
           ) : (
             ''
           )}
