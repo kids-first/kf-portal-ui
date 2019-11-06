@@ -59,7 +59,7 @@ const MemberTable = props => {
             <Col span={12} style={{ textAlign: 'left' }}>{`Showing ${firstItem} - ${Math.min(
               lastItem,
               props.count.public,
-            )} of ${props.count.public}`}</Col>
+            )} of ${props.count.public} public members`}</Col>
             <Col
               span={12}
               style={{ textAlign: 'right' }}

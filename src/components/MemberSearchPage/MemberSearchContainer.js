@@ -76,6 +76,7 @@ class MemberSearchContainer extends Component {
             onChange={this.handleChange}
             placeholder="Member Name, Email, Interests,..."
             prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            allowClear={true}
             suffix={
               <Tooltip title="Enter text to search for members">
                 <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
