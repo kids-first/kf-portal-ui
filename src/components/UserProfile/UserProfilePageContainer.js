@@ -49,8 +49,6 @@ class UserProfilePageContainer extends React.Component {
     onDeleteProfile();
   }
 
-  canEdit = () => this.props.userInfo.isSelf;
-
   submit = values => {
     const { profile, onUpdateProfile } = this.props;
     onUpdateProfile({
@@ -60,7 +58,7 @@ class UserProfilePageContainer extends React.Component {
   };
 
   render() {
-    const { isLoading, error, profile } = this.props;
+    const { isLoading, error, profile, userInfo } = this.props;
 
     if (isLoading) {
       return (
@@ -78,7 +76,7 @@ class UserProfilePageContainer extends React.Component {
       <UserProfilePage
         profile={profile}
         onSubmitUpdateProfile={this.submit}
-        canEdit={this.canEdit()}
+        canEdit={userInfo.isSelf}
       />
     );
   }

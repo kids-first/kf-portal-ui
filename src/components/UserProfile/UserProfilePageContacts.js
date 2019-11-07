@@ -1,38 +1,20 @@
-import { Col, Divider, Input, Row, Typography } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import React from 'react';
 import UserProfilePageBox from 'components/UserProfile/UserProfilePageBox';
-import { Box } from 'uikit/Core';
 import Icon from 'antd/es/icon';
-import { H3 } from 'components/UserProfile/ui';
 import { formatAddressLine } from 'common/displayFormatters';
-// import { formatPhoneNumber } from 'common/displayFormatters';
 import BasicInfoForm from 'components/forms/BasicInfoForm';
 import { withApi } from 'services/api';
-import { compose } from "recompose";
+import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
-const { Title, Text } = Typography;
-const { TextArea } = Input;
-
-const h4 = theme => {
-  return {
-    fontFamily: theme.fonts.details,
-    fontSize: 13,
-    fontStyle: 'italic',
-    lineHeight: 1.85,
-    textAlign: 'left',
-    color: theme.greyScale9,
-    margin: 0,
-    padding: 0,
-    fontWeight: 'normal',
-  };
-};
+const { Title } = Typography;
 
 class UserProfilePageContacts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isEditingBackgroundInfo: false
+      isEditingBackgroundInfo: false,
     };
   } //FIXME
 
@@ -71,7 +53,7 @@ class UserProfilePageContacts extends React.Component {
             <Col>
               <Icon type="environment" theme="twoTone" />
             </Col>
-            <Col style={{paddingLeft:10}} >
+            <Col style={{ paddingLeft: 10 }}>
               {institution && <Title level={3}>{institution}</Title>}
               <Row>{formatAddressLine([addressLine1, addressLine2])}</Row>
               <Row>{formatAddressLine([city, state, country])}</Row>
@@ -84,7 +66,7 @@ class UserProfilePageContacts extends React.Component {
             <Col>
               <Icon type="mail" theme="twoTone" />
             </Col>
-            <Col ml={'7px'} style={{paddingLeft:10}} >
+            <Col ml={'7px'} style={{ paddingLeft: 10 }}>
               <a href="mailto:simonscientist@chop.edu">{institutionalEmail}</a>
             </Col>
           </Row>
@@ -94,14 +76,15 @@ class UserProfilePageContacts extends React.Component {
             <Col>
               <Icon type="phone" theme="twoTone" />
             </Col>
-            {/*<Col style={{paddingLeft:10}} >{formatPhoneNumber(phone)} </Col>*/}
           </Row>
         )}
       </UserProfilePageBox>
     );
   }
 }
-const UserProfilePageContactsEnhanced = compose(injectState, withApi)(UserProfilePageContacts);
-
+const UserProfilePageContactsEnhanced = compose(
+  injectState,
+  withApi,
+)(UserProfilePageContacts);
 
 export default UserProfilePageContactsEnhanced;

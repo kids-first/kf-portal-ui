@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Card, Col, Divider, Input, Row, Typography } from 'antd';
+import { Card, Col, Input, Row, Typography } from 'antd';
 import { FACEBOOK, GOOGLE, ORCID } from 'common/constants';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';

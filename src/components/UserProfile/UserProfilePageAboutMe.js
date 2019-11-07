@@ -1,4 +1,4 @@
-import { Divider, Input, Row, Typography } from 'antd';
+import { Input, Row, Typography } from 'antd';
 import React from 'react';
 import UserProfilePageBox from 'components/UserProfile/UserProfilePageBox';
 

@@ -2,60 +2,36 @@ import React from 'react';
 import { css } from 'emotion';
 import { Col, Typography } from 'antd';
 import Row from 'uikit/Row';
-import { get } from 'lodash';
-import { ROLES } from 'common/constants';
 import { EditButton, ProfileImage } from 'components/UserProfile/ui';
 import RoleIconButton from 'components/RoleIconButton';
 import { withTheme } from 'emotion-theming';
+import { userProfileBackground } from './utils';
+import PropTypes from 'prop-types';
 
 const { Title } = Typography;
 
-export const userProfileBackground = (
-  profile,
-  { showBanner = true, gradientDirection = 'right' } = {},
-) => {
-  const role = ROLES.find(x => x.type === get(profile, 'roles[0]', '')) || {};
-  const banner = get(role, 'banner', '');
-  const profileColors = get(role, 'profileColors', {});
-  return css`
-    background-position-x: right;
-    background-repeat: no-repeat;
-    background-image: ${showBanner ? `url(${banner}), ` : ``}
-      linear-gradient(
-        to ${gradientDirection},
-        ${profileColors.gradientDark} 33%,
-        ${profileColors.gradientMid} 66%,
-        ${profileColors.gradientLight}
-      );
-  `;
-};
-
-const UserProfilePageHeader = ({
-  profile,
-  loggedInUser,
-  theme,
-}) => {
+const UserProfilePageHeader = ({ profile, theme }) => {
   return (
     <div
-      className={css`
-        ${userProfileBackground(profile)};
-      `}
-      style={{ align: 'center', justify:"space-around", height: '100%'}}
+      className={userProfileBackground(profile)}
+      style={{ align: 'center', justify: 'space-around', height: '100%' }}
     >
-      <Row align="center" justify="space-around" style={{ height: '100%' }} >
+      <Row align="center" justify="space-around" style={{ height: '100%' }}>
         <Col span={6}>
           <ProfileImage email={profile.email || ''} d={'mp'} />
         </Col>
-        <Col span={6} className={css`
-                align-items: flex-start;
-                ${theme.column};
-                padding: 0 15px;
-              `}>
+        <Col
+          span={6}
+          className={css`
+            align-items: flex-start;
+            ${theme.column};
+            padding: 0 15px;
+          `}
+        >
           <RoleIconButton profile={profile} />
           <Title
             style={{
               fontSize: 28,
-              // color: ${props.color ? props.color : theme.secondary},
               margin: 0,
               padding: 0,
               fontWeight: 500,
@@ -109,9 +85,8 @@ const UserProfilePageHeader = ({
 };
 
 UserProfilePageHeader.propTypes = {
-  // profile: PropTypes.object.isRequired,
-  // onSubmitUpdateProfile: PropTypes.func.isRequired,
-  // canEdit: PropTypes.bool.isRequired,
+  profile: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 const UserProfilePageHeaderWithTheme = withTheme(UserProfilePageHeader);
 
