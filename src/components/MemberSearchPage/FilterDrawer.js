@@ -6,30 +6,20 @@ import { ROLES } from 'common/constants';
 const { Sider } = Layout;
 const { Title } = Typography;
 
-const roleLookup = ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {});
-
 class FilterDrawer extends Component {
   state = {
     collapsed: false,
-    roleLookup,
   };
 
   onCollapse = () => {
     this.setState({ collapsed: !this.state.collapsed });
   };
 
-  onChange = type => e => {
-    console.log('checked = ', e.target.checked);
-    console.log(type);
-    // this.setState({
-    //   checked: e.target.checked,
-    // });
-  };
-
   render() {
     return (
       <Sider
         trigger={null}
+        width={250}
         collapsible
         collapsed={this.state.collapsed}
         style={{ padding: 20, boxShadow: '2px 2px 3px 1px #888888' }}
@@ -39,7 +29,7 @@ class FilterDrawer extends Component {
           type={this.state.collapsed ? 'double-right' : 'double-left'}
           onClick={this.onCollapse}
         />
-        <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
+        <div className={'member-list-container'} style={{ backgroundColor: 'white', display: this.state.collapsed ? 'none':'inline-block' }}>
           <Title
             level={2}
             style={{
@@ -56,6 +46,8 @@ class FilterDrawer extends Component {
           </Title>
           <Divider />
           <List
+            style={{ paddingLeft: 10 }}
+            split={false}
             itemLayout="horizontal"
             dataSource={ROLES}
             renderItem={role => {
@@ -63,9 +55,11 @@ class FilterDrawer extends Component {
                 <List.Item key={role.type}>
                   <Row type="flex" justify="space-around" align="middle" gutter={10}>
                     <Checkbox
-                        checked={this.state.checked}
-                        onChange={this.onChange(role.type)}
-                    >{role.displayName}</Checkbox>
+                      checked={this.props.checkboxes[role.type]}
+                      onChange={this.props.onChange(role.type)}
+                    >
+                      {role.displayName}
+                    </Checkbox>
                   </Row>
                 </List.Item>
               );

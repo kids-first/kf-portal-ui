@@ -1,19 +1,23 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import {bindActionCreators} from 'redux';
-import {Icon, Input, Layout, Tooltip} from 'antd';
+import { bindActionCreators } from 'redux';
+import { Icon, Input, Layout, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
-import {withTheme} from 'emotion-theming';
+import { withTheme } from 'emotion-theming';
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
+import { ROLES } from 'common/constants';
+
+const roleLookup = ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {});
 
 class MemberSearchContainer extends Component {
   state = {
     queryString: '',
     currentPage: 1,
     membersPerPage: 10,
+    roleCheckboxes: { ...roleLookup },
   };
 
   static propTypes = {
@@ -37,6 +41,15 @@ class MemberSearchContainer extends Component {
       end: this.getCurrentEnd(this.state.currentPage),
     });
     this.setState({ queryString: e.target.value, currentPage: 1 });
+  };
+
+  onChangeRoleFilter = type => e => {
+    this.setState({
+      roleCheckboxes: {
+        ...this.state.roleCheckboxes,
+        [type]: e.target.checked,
+      },
+    });
   };
 
   componentDidMount() {
@@ -71,8 +84,8 @@ class MemberSearchContainer extends Component {
   render() {
     return (
       <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
-        <Layout style={{ minHeight: '100vh' }} >
-          <FilterDrawer />
+        <Layout style={{ minHeight: '100vh' }}>
+          <FilterDrawer onChange={this.onChangeRoleFilter} checkboxes={this.state.roleCheckboxes} />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
             <Input
               style={{ borderRadius: 30 }}
