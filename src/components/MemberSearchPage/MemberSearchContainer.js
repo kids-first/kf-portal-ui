@@ -12,6 +12,16 @@ import { ROLES } from 'common/constants';
 
 const roleLookup = ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {});
 
+function getSelectedRoles(roles) {
+  const myArray = [];
+  for (const key in roles) {
+    if (roles[key] === true) {
+      myArray.push(key);
+    }
+  }
+  return myArray;
+}
+
 class MemberSearchContainer extends Component {
   state = {
     queryString: '',
@@ -39,11 +49,18 @@ class MemberSearchContainer extends Component {
     this.props.fetchListOfMembers(e.target.value, {
       start: this.getCurrentStart(this.state.currentPage),
       end: this.getCurrentEnd(this.state.currentPage),
+      roles: getSelectedRoles(this.state.roleCheckboxes),
     });
     this.setState({ queryString: e.target.value, currentPage: 1 });
   };
 
   onChangeRoleFilter = type => e => {
+    this.props.fetchListOfMembers(this.state.queryString, {
+      start: this.getCurrentStart(this.state.currentPage),
+      end: this.getCurrentEnd(this.state.currentPage),
+      roles: getSelectedRoles({ ...this.state.roleCheckboxes, [type]: e.target.checked }),
+    });
+
     this.setState({
       roleCheckboxes: {
         ...this.state.roleCheckboxes,
