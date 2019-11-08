@@ -102,7 +102,11 @@ class MemberSearchContainer extends Component {
     return (
       <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
         <Layout style={{ minHeight: '100vh' }}>
-          <FilterDrawer onChange={this.onChangeRoleFilter} checkboxes={this.state.roleCheckboxes} />
+          <FilterDrawer
+            onChange={this.onChangeRoleFilter}
+            checkboxes={this.state.roleCheckboxes}
+            count={this.props.count}
+          />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
             <Input
               style={{ borderRadius: 30 }}
