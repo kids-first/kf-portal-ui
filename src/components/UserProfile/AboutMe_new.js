@@ -5,11 +5,12 @@ import ContactReadOnly from 'components/UserProfile/ContactReadOnly';
 import ContactEditForm from 'components/UserProfile/ContactEditForm';
 import EditToggle from 'components/UserProfile/EditToggle';
 import ProfileReadOnly from './ProfileReadOnly';
-
+import { compose } from 'recompose';
 const { Content } = Layout;
 
 const filterContactInfoFromProfile = profile => {
-  const keepKeys = [
+  const findMeFields = ['github', 'googleScholarId', 'linkedin', 'orchid', 'twitter', 'facebook'];
+  const keepKeysExceptFindMeOn = [
     'addressLine1',
     'institution',
     'city',
@@ -19,35 +20,71 @@ const filterContactInfoFromProfile = profile => {
     'institutionalEmail',
     'zip',
   ];
-  const { fromEntries, entries } = Object;
-  return fromEntries(entries(profile).filter(([key]) => keepKeys.includes(key)));
+
+  const { entries } = Object;
+
+  return entries(profile).reduce(
+    (acc, [key, value]) => {
+      if (keepKeysExceptFindMeOn.includes(key)) {
+        return { ...acc, [key]: value };
+      } else if (findMeFields.includes(key) && Boolean(profile[key])) {
+        const findMe = { ...acc.findMe, [key]: value };
+        return { ...acc, findMe };
+      }
+      return acc;
+    },
+    { findMe: {} },
+  );
+};
+
+const addDefaultBioIfEmpty = profile => {
+  if (!profile.bio) {
+    return {
+      ...profile,
+      bio: 'Share information about your professional background and your research interests',
+    };
+  }
+};
+
+const addDefaultStoryIfEmpty = profile => {
+  if (!profile.story) {
+    return {
+      ...profile,
+      story: "Share why your're part of the Kids First community",
+    };
+  }
 };
 
 const AboutMe = props => {
   const { canEdit, profile } = props;
   return (
-    <Layout style={{ padding: '25px' }}>
+    <Layout style={{ display: 'flex', alignItems: 'center', padding: '25px', background: '#fff' }}>
       <Content>
-        <Row>
+        <Row align={'middle'} style={{ paddingBottom: '48px' }}>
           <Col span={24}>
             <EditToggle
-              data={filterContactInfoFromProfile(profile)}
+              data={compose(
+                addDefaultBioIfEmpty,
+                addDefaultStoryIfEmpty,
+              )(profile)}
               canEdit={canEdit}
               ReadOnlyComponent={ProfileReadOnly}
-              EditableComponent={<div/>}
+              EditableComponent={<div />}
             />
           </Col>
         </Row>
-        <Row>
-          <Col span={24}>
-            <EditToggle
-              data={filterContactInfoFromProfile(profile)}
-              canEdit={canEdit}
-              ReadOnlyComponent={ContactReadOnly}
-              EditableComponent={ContactEditForm}
-            />
-          </Col>
-        </Row>
+        {
+          <Row>
+            <Col span={24}>
+              <EditToggle
+                data={filterContactInfoFromProfile(profile)}
+                canEdit={canEdit}
+                ReadOnlyComponent={ContactReadOnly}
+                EditableComponent={ContactEditForm}
+              />
+            </Col>
+          </Row>
+        }
       </Content>
     </Layout>
   );

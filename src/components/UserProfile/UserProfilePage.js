@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import UserProfilePageHeader from 'components/UserProfile/UserProfilePageHeader';
-import UserProfilePageContent from 'components/UserProfile/UserProfilePageContent';
 import AboutMe from './AboutMe_new'; //TODO
 const KEY_ABOUT_ME = 'aboutMe';
 const KEY_SETTINGS = 'settings';
@@ -27,7 +26,7 @@ class UserProfilePage extends Component {
   };
 
   render() {
-    const { profile, onSubmitUpdateProfile, canEdit } = this.props;
+    const { profile, canEdit } = this.props;
     const { currentMenuItem } = this.state;
     return (
       <Layout>
@@ -54,16 +53,5 @@ class UserProfilePage extends Component {
     );
   }
 }
-
-/*
-  <UserProfilePageContent
-          profile={profile}
-          onSubmitUpdateProfile={onSubmitUpdateProfile}
-          canEdit={canEdit}
-        />
-
-
-*
-* */
 
 export default UserProfilePage;

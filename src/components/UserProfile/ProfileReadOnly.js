@@ -1,46 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Divider, Card, Button, Typography, Icon } from 'antd';
-import chunk from 'lodash/chunk';
-import { toKebabCase } from 'utils';
+import { Button, Card, Col, Divider, Row, Typography } from 'antd';
+import ResearchInterest from './ResearchInterests_new';
 
-const { Title } = Typography;
-
-const generateInterests = interests => {
-  const CHUNK_SIZE = 2;
-  const chunks = chunk(interests, CHUNK_SIZE);
-  return chunks.map((chunk, index) => {
-    const [interestLeft, interestRight] = chunk;
-    return (
-      <Row key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}>
-        <Col span={12}>
-          <span>
-            <Icon type="check-circle" style={{ paddingRight: '5px' }} />
-            {interestLeft}
-          </span>
-        </Col>
-        <Col span={12}>
-          {Boolean(interestRight) && (
-            <span>
-              <Icon type="check-circle" style={{ paddingRight: '5px' }} />
-              {interestRight}
-            </span>
-          )}
-        </Col>
-      </Row>
-    );
-  });
-};
-
+const { Title, Text } = Typography;
+//FIXME : make custom styles global.
 const ProfileReadOnly = props => {
   const { data, canEdit, onClickEditCb } = props;
-  const { interests = ['a', 'b', 'c', 'd', 'e', 'f', 'g'] } = data; //TODO
   return (
     <Card
-      title="Profile"
+      title={
+        <Title
+          level={3}
+          style={{
+            color: 'rgb(43, 56, 143)',
+          }}
+        >
+          Profile
+        </Title>
+      }
+      style={{
+        width: '1000px',
+        borderRadius: '10px',
+      }}
+      headStyle={{
+        color: 'rgb(43, 56, 143)',
+        backgroundColor: 'rgb(237,238,241)',
+        paddingBottom: '14px',
+        paddingTop: '14px',
+        paddingLeft: '32px',
+        paddingRight: '32px',
+      }}
+      bodyStyle={{
+        padding: '32px',
+      }}
       extra={
         canEdit ? (
-          <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
+          <Button
+            icon="edit"
+            shape="round"
+            style={{ color: 'white', backgroundColor: '#90278e' }}
+            onClick={onClickEditCb}
+          >
             Edit
           </Button>
         ) : null
@@ -48,32 +49,47 @@ const ProfileReadOnly = props => {
     >
       <Row>
         <Col span={24}>
-          <Title level={2}>My Bio</Title>
-          <p>
-            Lorem ipsum dolor super head lock amet, consectetur adipiscing bionic catapult into the
-            Spanish announce table. Nullam dignissim frog splash leg sweep dui, et luctus mauris
-            suscipit a. crossbody STO aptent taciti sociosqu ad atomic STF torquent per conubia
-            nostra, per gutwrench hip toss himenaeos.
-          </p>
+          <Title
+            level={4}
+            style={{
+              color: 'rgb(43, 56, 143)',
+            }}
+          >
+            My Bio
+          </Title>
+          <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>{data.bio}</Text>
+          <Divider style={{ marginBottom: '24px' }} />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Title level={2}>My Story</Title>
-          <p>
-            Lorem ipsum dolor super head lock amet, consectetur adipiscing bionic catapult into the
-            Spanish announce table. Nullam dignissim frog splash leg sweep dui, et luctus mauris
-            suscipit a. crossbody STO aptent taciti sociosqu ad atomic STF torquent per conubia
-            nostra, per gutwrench hip toss himenaeos.
-          </p>
+          <Title
+            level={4}
+            style={{
+              color: 'rgb(43, 56, 143)',
+            }}
+          >
+            My Story
+          </Title>
+          <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>{data.story}</Text>
+          <Divider style={{ marginBottom: '24px' }} />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Title level={2}>Research Interests</Title>
-          {Array.isArray(interests) && interests.length > 0
-            ? generateInterests(interests)
-            : 'vulputate neque gutwrench figure-four pellentesque lorem. '}
+          <Title
+            level={4}
+            style={{
+              color: 'rgb(43, 56, 143)',
+            }}
+          >
+            Research Interests
+          </Title>
+          {Array.isArray(data.interests) && data.interests.length > 0 ? (
+            <ResearchInterest interests={data.interests} />
+          ) : (
+            <Text style={{ fontStyle: 'italic' }}>{'click edit to add interests '}</Text>
+          )}
         </Col>
       </Row>
     </Card>
