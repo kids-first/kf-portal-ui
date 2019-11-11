@@ -87,7 +87,7 @@ const MemberTable = props => {
             return (
                 <List.Item key={item._id}>
                     <Row type="flex" justify="space-around" align="middle" gutter={10}>
-                        <Col xxl={2} xl={3} lg={3} md={3} sm={4}>
+                        <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{width: 'auto'}}>
                             <MemberImage email={item.email || ''} d={'mp'} />
                         </Col>
                         <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8}>

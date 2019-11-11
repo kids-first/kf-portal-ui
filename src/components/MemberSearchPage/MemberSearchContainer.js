@@ -86,6 +86,7 @@ class MemberSearchContainer extends Component {
     this.props.fetchListOfMembers(this.state.queryString, {
       start: this.getCurrentStart(page),
       end: this.getCurrentEnd(page),
+      roles: getSelectedRoles(this.state.roleCheckboxes),
     });
   };
 
@@ -95,6 +96,16 @@ class MemberSearchContainer extends Component {
     this.props.fetchListOfMembers(this.state.queryString, {
       start: this.getCurrentStart(current, pageSize),
       end: this.getCurrentEnd(current, pageSize),
+      roles: getSelectedRoles(this.state.roleCheckboxes),
+    });
+  };
+
+  handleRolesClear = (event) => {
+    event.stopPropagation();
+    this.setState({roleCheckboxes: { ...roleLookup }});
+    this.props.fetchListOfMembers(this.state.queryString, {
+      start: this.getCurrentStart(this.state.currentPage),
+      end: this.getCurrentEnd(this.state.currentPage),
     });
   };
 
@@ -105,6 +116,7 @@ class MemberSearchContainer extends Component {
           <FilterDrawer
             onChange={this.onChangeRoleFilter}
             checkboxes={this.state.roleCheckboxes}
+            clearboxes={this.handleRolesClear}
             count={this.props.count}
           />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
