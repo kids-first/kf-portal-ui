@@ -32,7 +32,7 @@ import { FilterInput } from 'uikit/Input.js';
 import { FieldInput } from './components';
 
 import { select, hollowSelect } from './forms.module.css';
-import { flexColumn, flexRow } from 'src/theme/tempTheme.module.css';
+import { flexColumn, flexRow } from '../../theme/tempTheme.module.css';
 
 const labelStyle = `
   font-size: 14px;

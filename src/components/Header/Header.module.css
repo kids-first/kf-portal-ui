@@ -1,7 +1,7 @@
 /* components.navLink */
 .navLink {
   display: block;
-  color: #c03299;
+  color: rgb(144, 39, 142);
   padding: 6px 10px;
   margin: 0px 4px;
   text-decoration: none;
@@ -62,10 +62,7 @@
   font-size: 14px;
   line-height: 1.86;
   letter-spacing: 0.2px;
-  font-size: 14px;
   font-weight: 500;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
   text-align: left;
   color: #90278e;
 }
@@ -106,4 +103,48 @@
 }
 .dropdownLink svg {
   fill: #c03299;
+}
+
+.headerContainer {
+  background: #ffffff;
+  box-shadow: 0 0 4.9px 0.1px #a0a0a3;
+  flex: none;
+  z-index: 2;
+}
+
+.gradientAccent {
+  width: 100%;
+  height: 5px;
+  background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
+}
+
+.headerContent {
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.headerProfilePicture {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  padding: 2px;
+  background-color: #ffffff;
+  border: 1px solid #cacbcf;
+  margin: 5px;
+}
+
+.menuLabelContainer {
+  color: #90278e;
+}
+.menuLabelContainer:hover {
+  color: #c03299;
+}
+.menuLabelContainer svg {
+  fill: #90278e;
+}
+.menuLabelContainer:hover svg {
+  fill: #c03299;
+}
+.menuLabelContainer.open {
+  color: #c03299;
 }

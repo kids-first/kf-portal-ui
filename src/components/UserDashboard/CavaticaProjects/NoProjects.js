@@ -2,13 +2,7 @@ import React from 'react';
 
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
-import {
-  PromptMessageContainer,
-  PromptMessageHeading,
-  PromptMessageContent,
-  NotePoints,
-  NoteList,
-} from '../styles';
+import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from '../styles';
 import Info from '../Info';
 
 const NoProjects = ({ tabToCreate }) => (
@@ -18,14 +12,14 @@ const NoProjects = ({ tabToCreate }) => (
         You are connected to Cavatica, but you don’t have any projects yet.
       </PromptMessageHeading>
       <PromptMessageContent>
-        <NoteList>
-          <NotePoints>
+        <ul>
+          <li>
             <ExternalLink onClick={tabToCreate} style={{ textDecoration: 'underline' }}>
               Create a Cavatica Project
             </ExternalLink>{' '}
             easily from the portal.
-          </NotePoints>
-          <NotePoints>
+          </li>
+          <li>
             Or join one of the{' '}
             <ExternalLink
               href={'https://cavatica.sbgenomics.com/public/controlled-projects#q'}
@@ -33,8 +27,8 @@ const NoProjects = ({ tabToCreate }) => (
             >
               Cavatica public controlled projects
             </ExternalLink>
-          </NotePoints>
-        </NoteList>
+          </li>
+        </ul>
       </PromptMessageContent>
     </PromptMessageContainer>
     <Info

@@ -1,28 +1,20 @@
 import React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-
-import LoadingOnClick from 'components/LoadingOnClick';
 
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Input from 'uikit/Input';
-
 import { getBillingGroups, saveProject } from 'services/cavatica';
+import LoadingOnClick from 'components/LoadingOnClick';
+import { styleComponent } from 'components/Utils';
 
-import { input, select } from 'src/theme/tempTheme.module.css';
+import { input, select } from '../../../theme/tempTheme.module.css';
+import { styledLabel } from './CavaticaProjects.module.css';
 
-const StyledLabel = styled('label')`
-  font-size: 14px;
-  text-align: left;
-  font-weight: 600;
-  font-family: ${({ theme }) => theme.fonts.details};
-  color: #343434;
-  margin: 10px 0;
-`;
+const StyledLabel = styleComponent('label', styledLabel);
 
 const enhance = compose(
   injectState,

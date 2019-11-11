@@ -1,5 +1,4 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import autobind from 'auto-bind-es5';
@@ -8,6 +7,7 @@ import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { withTheme } from 'emotion-theming';
 import { distanceInWords } from 'date-fns';
+
 import { Box, Link, Flex, Span } from 'uikit/Core';
 import CardHeader from 'uikit/Card/CardHeader';
 import Row from 'uikit/Row';
@@ -15,76 +15,33 @@ import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
 
 import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
-
-import { PromptMessageContainer, PromptMessageContent } from '../styles';
-import { CardContentSpinner } from '../styles';
-import { DashboardCard } from '../styles';
+import {
+  PromptMessageContainer,
+  PromptMessageContent,
+  CardContentSpinner,
+  DashboardCard,
+} from '../styles';
 import QueryBlock from './QueryBlock';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
 import {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
 } from '../../../store/actionCreators/virtualStudies';
 import { setActiveSavedQueryTab } from '../actionCreators';
-
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
+import { styleComponent } from 'components/Utils';
 
-const Container = styled(Column)`
-  margin: 0 0 15px 0;
-  flex: 3;
-  border-top: 0;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-`;
+import {
+  savedQueriesContainer,
+  study,
+  studyLink,
+  scrollY,
+  studyDescription,
+  studySavedTime,
+} from './SavedQueries.module.css';
 
-const FileRepositoryLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
-`;
-
-const Study = styled(Flex)`
-  padding: 10px 10px 10px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-  transition-property: opacity;
-  ${({ inactive, theme }) =>
-    inactive
-      ? `
-          opacity: 0.6;
-          pointer-events: none;
-          &:last-child {
-            border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-          }
-        `
-      : ``};
-`;
-
-const StudyLink = styled(Link)`
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.primary};
-`;
-
-const Scroll = styled('div')`
-  position: absolute;
-  top: 83px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
-
-const studyDescriptionStyle = css({
-  fontSize: '12px',
-  fontFamily: 'Open Sans, sans-serif',
-  wordBreak: 'break-word',
-});
-
-const studySavedTimeStyle = css({
-  fontSize: '12px',
-  color: 'rgb(52,52,52)',
-});
+const FileRepositoryLink = styleComponent(Link, 'color-primary');
+const Scroll = styleComponent('div', scrollY);
 
 class SavedQueries extends React.Component {
   constructor(props) {
@@ -142,7 +99,7 @@ class SavedQueries extends React.Component {
         ) : (
           <div>
             <CardHeader title="Saved Queries" style={{ margin: '5px 0 15px 0' }} />
-            <Container>
+            <Column className={savedQueriesContainer}>
               <Tabs
                 selectedTab={selectedTab}
                 options={[
@@ -221,12 +178,16 @@ class SavedQueries extends React.Component {
                     <Scroll>
                       {virtualStudies
                         .map(vs => (
-                          <Study key={vs.virtualStudyId} date={Number(new Date(vs.creationDate))}>
+                          <Flex
+                            className={study}
+                            key={vs.virtualStudyId}
+                            date={Number(new Date(vs.creationDate))}
+                          >
                             <Column width="100%">
                               <Row justifyContent="space-between" width="100%">
-                                <StudyLink to={`/explore?id=${vs.virtualStudyId}`}>
+                                <Link className={studyLink} to={`/explore?id=${vs.virtualStudyId}`}>
                                   {vs.name}
-                                </StudyLink>
+                                </Link>
                                 <Box pr={2} pl={2}>
                                   <Span
                                     color={theme.primary}
@@ -241,16 +202,9 @@ class SavedQueries extends React.Component {
                               </Row>
                               <Row justifyContent="space-between" width="100%">
                                 <Tooltip
-                                  html={
-                                    <div className={`${studyDescriptionStyle}`}>
-                                      {vs.description}
-                                    </div>
-                                  }
+                                  html={<div className={studyDescription}>{vs.description}</div>}
                                 >
-                                  <div
-                                    className={`${studyDescriptionStyle}`}
-                                    style={{ marginRight: '32px' }}
-                                  >
+                                  <div className={studyDescription} style={{ marginRight: '32px' }}>
                                     {vs.description.length >= 140
                                       ? `${vs.description.slice(0, 140)}...`
                                       : vs.description}
@@ -258,13 +212,13 @@ class SavedQueries extends React.Component {
                                 </Tooltip>
                               </Row>
                               <div
-                                className={`${studySavedTimeStyle}`}
+                                className={studySavedTime}
                                 style={{ fontFamily: 'Open Sans,sans-serif' }}
                               >
                                 Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
                               </div>
                             </Column>
-                          </Study>
+                          </Flex>
                         ))
                         .slice()
                         .sort((a, b) => b.props.date - a.props.date)}
@@ -272,7 +226,7 @@ class SavedQueries extends React.Component {
                   </Box>
                 )}
               </ShowIf>
-            </Container>
+            </Column>
           </div>
         )}
       </DashboardCard>

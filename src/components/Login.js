@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { get, isArrayLikeObject, toLower } from 'lodash';
-// import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import jwtDecode from 'jwt-decode';
@@ -11,7 +10,7 @@ import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
 import OrcidLogin from 'components/loginButtons/OrcidLogin';
 import OrcidRedirect from 'components/Login/OrcidRedirect';
-// import RedirectLogin from 'components/loginButtons/RedirectLogin';
+import RedirectLogin from 'components/loginButtons/RedirectLogin';
 import { ModalWarning } from 'components/Modal';
 import { Box } from 'uikit/Core';
 import Column from 'uikit/Column';
@@ -32,6 +31,7 @@ import { createExampleQueries } from 'services/riffQueries';
 import { store } from '../store';
 import { loginSuccess, loginFailure } from '../store/actionCreators/user';
 
+import './Login.module.css';
 import { loginContainer, loginError } from './Login.module.css';
 
 export const isAdminToken = ({ validatedPayload }) => {
@@ -315,8 +315,8 @@ class Component extends React.Component {
       content = this.renderSocialLoginButtons(disabled);
     } else {
       // [NEXT] Might be used for NIH (Gen3/GCF) login?
-      // content = <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />;
-      throw new Error('RedirectLogin has been disabled until proven useful');
+      content = <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />;
+      // throw new Error('RedirectLogin has been disabled until proven useful');
     }
 
     return (

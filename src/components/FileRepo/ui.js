@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 import { compose } from 'recompose';
 
+// [NEXT] beagle import moved to ./index.css
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
 
 import Column from 'uikit/Column';
@@ -15,7 +16,7 @@ import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
 import noop from 'lodash/noop';
 
-import { flexCenter } from 'src/theme/tempTheme.module.css';
+import { flexCenter } from '../..//theme/tempTheme.module.css';
 
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;

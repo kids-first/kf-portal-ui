@@ -26,11 +26,10 @@ import {
 } from './statVisuals';
 
 import { dataTableStyle, modalContentStyle } from './style';
-import { FileRepoH3 as H3 } from 'uikit/Headings';
+import { FileRepoH3 as H3, TableHeader } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
-import { TableHeader } from 'uikit/Table';
 
-import { flexColumn, flexRow } from 'src/theme/tempTheme.module.css';
+import { flexColumn, flexRow } from '../../theme/tempTheme.module.css';
 
 const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
   return sqon

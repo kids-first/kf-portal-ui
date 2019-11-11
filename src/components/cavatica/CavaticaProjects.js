@@ -11,7 +11,7 @@ import CavaticaAddProject from './CavaticaAddProject';
 
 import CheckIcon from 'icons/CircleCheckIcon';
 
-import { TableHeader } from 'uikit/Table';
+import { TableHeader } from 'uikit/Headings';
 import { Paragraph, Box } from 'uikit/Core';
 import { FilterInput } from 'uikit/Input';
 import LoadingSpinner from 'uikit/LoadingSpinner';

@@ -32,7 +32,7 @@ export default () => (
             onClick={toggleDropdown}
             style={{ borderLeftColor: '#c03299' }}
           >
-            <DropdownRow alignItems="center" color={'#c03299'}>
+            <DropdownRow alignItems="center" color="#c03299">
               <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
               Data Resource Portal
             </DropdownRow>

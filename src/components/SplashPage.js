@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { splashPageContainer } from './SplashPage.module.css';
+import './SplashPage.css';
 
 const SplashPage = ({ children, stealth = false }) => (
-  <div className={splashPageContainer}>
+  <div className="splashPageContainer">
     {stealth ? (
       children
     ) : (

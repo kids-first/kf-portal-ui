@@ -20,7 +20,7 @@ import Error from '../Error';
 import inRange from 'lodash/inRange';
 import { extractErrorMessage } from 'utils';
 
-import { flexColumn } from 'src/theme/tempTheme.module.css';
+import { flexColumn } from '../../theme/tempTheme.module.css';
 import { secondaryNav } from 'uikit/SecondaryNav/SecondaryNav.module.css';
 
 export const userProfileBackground = (

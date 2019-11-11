@@ -15,7 +15,7 @@ import Column from 'uikit/Column';
 import Wizard from 'uikit/Wizard';
 import { Paragraph } from '../uikit/Core';
 
-import { card, flexColumn } from 'src/theme/tempTheme.module.css';
+import { card, flexColumn } from '../theme/tempTheme.module.css';
 
 import './Login/index.css';
 

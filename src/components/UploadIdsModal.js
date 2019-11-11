@@ -8,8 +8,7 @@ import graphql from 'services/arranger';
 import { ModalFooter } from './Modal';
 import { TealActionButton } from 'uikit/Button';
 import { Paragraph } from 'uikit/Core';
-import { FileRepoH3 as H3 } from 'uikit/Headings';
-import { TableHeader } from 'uikit/Table';
+import { FileRepoH3 as H3, TableHeader } from 'uikit/Headings';
 import { withApi } from 'services/api';
 
 const enhance = compose(

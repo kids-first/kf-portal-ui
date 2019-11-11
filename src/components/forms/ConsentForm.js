@@ -23,7 +23,7 @@ import { Paragraph } from 'uikit/Core';
 import { ActionButton } from 'uikit/Button';
 
 import { wizardButton } from './forms.module.css';
-import { flexRow } from 'src/theme/tempTheme.module.css';
+import { flexRow } from '../../theme/tempTheme.module.css';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;

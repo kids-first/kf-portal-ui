@@ -1,20 +1,14 @@
-import * as React from 'react';
-import styled from 'react-emotion';
+import React from 'react';
 
 import { kfWebRoot } from 'common/injectGlobals';
 import ExternalLink from 'uikit/ExternalLink';
 import { PromptMessageContainer, PromptMessageHeading, PromptMessageContent } from './styles';
 
-const Container = styled('div')`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import { dashboardCardErrorContainer } from './UserDashboard.module.css';
 
 export default () => {
   return (
-    <Container>
+    <div className={dashboardCardErrorContainer}>
       <PromptMessageContainer error mb={'8px'}>
         <PromptMessageHeading error mb={10}>
           Oops, something went wrong.
@@ -26,6 +20,6 @@ export default () => {
           </ExternalLink>
         </PromptMessageContent>
       </PromptMessageContainer>
-    </Container>
+    </div>
   );
 };

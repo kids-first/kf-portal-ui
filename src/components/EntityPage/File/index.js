@@ -48,7 +48,7 @@ import ShareButton from 'uikit/ShareButton';
 import { checkUserFilePermission } from 'services/fileAccessControl';
 import { FILE_VIEW } from 'common/constants';
 
-import { fillCenter } from 'src/theme/tempTheme.module.css';
+import { fillCenter } from '../../theme/tempTheme.module.css';
 
 // file types
 const FILE_TYPE_BAM = 'bam';

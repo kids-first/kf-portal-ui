@@ -40,7 +40,7 @@ import {
 } from './ui';
 import customTableColumns from './customTableColumns';
 
-import { fillCenter } from 'src/theme/tempTheme.module.css';
+import { fillCenter } from '../../theme/tempTheme.module.css';
 
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({

@@ -14,6 +14,8 @@ import { initAnalyticsTracking } from 'services/analyticsTracking';
 import { maintenanceMode } from 'common/injectGlobals';
 import MaintenancePage from './MaintenancePage';
 
+import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
+
 initAnalyticsTracking();
 googleSDK();
 facebookSDK();

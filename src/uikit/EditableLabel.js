@@ -4,7 +4,7 @@ import { trim } from 'lodash';
 import { withTheme } from 'emotion-theming';
 import PencilIcon from 'react-icons/lib/fa/pencil';
 
-import { input } from 'src/theme/tempTheme.module.css';
+import { input } from '../theme/tempTheme.module.css';
 
 export default compose(
   withTheme,

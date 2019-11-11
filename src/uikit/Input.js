@@ -5,7 +5,7 @@ import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 // import { flex } from 'styled-system';
 import omit from 'lodash/omit';
 
-import { input, flex } from 'src/theme/tempTheme.module.css';
+import { input, flex } from '../theme/tempTheme.module.css';
 import { filterInputWrapper } from './Input.module.css';
 
 /*

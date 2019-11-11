@@ -8,7 +8,7 @@ import CavaticaOpenModalWrapper from './CavaticaOpenModalWrapper';
 import { BigWhiteButton, disabledButtonStyles } from 'uikit/Button';
 import CavaticaLogo from 'icons/CavaticaLogo';
 
-import { flexCenter } from 'src/theme/tempTheme.module.css';
+import { flexCenter } from '../../theme/tempTheme.module.css';
 import { buttonContent } from './cavatica.module.css';
 
 const ButtonContent = ({ children }) => (

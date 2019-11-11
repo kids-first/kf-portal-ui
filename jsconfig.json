@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
+    "experimentalDecorators": false,
     "target": "es2017",
     "allowSyntheticDefaultImports": false,
     "baseUrl": "./src",

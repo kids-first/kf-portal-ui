@@ -12,7 +12,7 @@ import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
 
-import { flexCenter } from 'src/theme/tempTheme.module.css';
+import { flexCenter } from '../theme/tempTheme.module.css';
 
 const track = (channel, trackingFunc) => trackingFunc(channel);
 

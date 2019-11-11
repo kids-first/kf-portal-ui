@@ -16,7 +16,7 @@ import { WhiteButton } from 'uikit/Button';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-import { niceWhiteButton } from 'src/theme/tempTheme.module.css';
+import { niceWhiteButton } from '../../theme/tempTheme.module.css';
 
 export default injectState(
   class extends React.Component {

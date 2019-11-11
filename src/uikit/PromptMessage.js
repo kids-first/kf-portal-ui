@@ -1,5 +1,4 @@
 import React from 'react';
-// import styled from 'react-emotion';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Div, Flex } from 'uikit/Core';

@@ -17,8 +17,10 @@ import { Span } from 'uikit/Core';
 
 import styles, { tabsTitle, tabsRow, tabsBadge } from './AggregationSidebar.module.css';
 
-const Tab = ({ className, selected }) => (
-  <Row center className={`tabs-title ${className} ${tabsRow} ${selected ? 'active-tab' : ''}`} />
+const Tab = ({ className, selected, children = null }) => (
+  <Row center className={`tabs-title ${className} ${tabsRow} ${selected ? 'active-tab' : ''}`}>
+    {children}
+  </Row>
 );
 
 export const Tabs = ({ selectedTab, onTabSelect, options }) => (

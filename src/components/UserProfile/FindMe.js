@@ -25,7 +25,7 @@ import { H4 } from 'uikit/Headings';
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
-import { input } from 'src/theme/tempTheme.module.css';
+import { input } from '../../theme/tempTheme.module.css';
 
 const StyledLabel = styled('label')`
   font-family: ${({ theme }) => theme.fonts.details};

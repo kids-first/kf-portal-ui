@@ -37,7 +37,7 @@ const LoginPage = compose(
     />
 
     {stealth ? null : (
-      <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
+      <Section className="loginJoinMessage">
         {'New to Kids First Data Resource Portal? '}
         <Link to="/join" className="bare primary bold">
           Join now
