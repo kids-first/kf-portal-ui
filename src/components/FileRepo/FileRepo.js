@@ -40,6 +40,8 @@ import {
 } from './ui';
 import customTableColumns from './customTableColumns';
 
+import { fillCenter } from '../../theme/tempTheme.module.css';
+
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
     category: 'File Repo',
@@ -116,7 +118,7 @@ const FileRepo = ({
         graphqlField={props.graphqlField}
         render={({ connecting, connectionError }) =>
           connecting || connectionError ? (
-            <div className={theme.fillCenter}>
+            <div className={fillCenter}>
               {connectionError ? (
                 `Unable to connect to the file repo, please try again later`
               ) : (

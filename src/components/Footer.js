@@ -1,90 +1,52 @@
 import React from 'react';
-import styled from 'react-emotion';
+import PropTypes from 'prop-types';
 import urlJoin from 'url-join';
-import { SocialIcon as ReactSocialIcon } from 'react-social-icons';
+// [NEXT] 'react-icons' have these icons, 'react-social-icons' is not necessary here
+// e.g. https://fontawesome.com/icons/twitter
+import { SocialIcon } from 'react-social-icons';
 import { DataVersionProvider } from 'services/dataVersion';
 
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
 import Row from 'uikit/Row';
 
-export const footerHeight = '56px';
+import { footerLink, footerContainer, socialIconsContainer } from './Footer.module.css';
 
-const FooterLink = styled('a')`
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 12px;
-  line-height: 2.17;
-  letter-spacing: 0.2px;
-  text-align: center;
-  color: ${({ theme }) => theme.greyScale0};
-  text-decoration: underline;
-  margin: 0 8px;
-`;
+const FooterLink = ({ href, children }) => (
+  <a className={`${footerLink} greyScale0`} href={href} target="_blank" rel="noopener noreferrer">
+    {children}
+  </a>
+);
+FooterLink.propTypes = {
+  href: PropTypes.string.isRequired,
+};
 
-const FooterContainer = styled('footer')`
-  ${({ theme }) => theme.row};
-  ${({ theme }) => theme.center};
-  flex: none;
-  height: ${footerHeight};
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.shadow};
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 12px;
-  line-height: 2.17;
-  letter-spacing: 0.2px;
-  color: ${({ theme }) => theme.greyScale9};
-  z-index: 100;
-  position: relative;
-`;
-
-const SocialIcons = styled('div')`
-  position: absolute;
-  right: 30px;
-  ${({ theme }) => theme.center};
-`;
-
-const SocialIcon = styled(({ width = 30, height = width, ...props }) => (
-  <ReactSocialIcon {...props} style={{ width, height }} />
-))`
-  margin-left: 10px;
-`;
-
+const socialIconSize = { width: 30, height: 30 };
 const Footer = () => (
-  <FooterContainer>
+  <footer className={`${footerContainer} greyScale9`}>
     <Row>
-      <FooterLink href={kfWebRoot} target="_blank">
-        kidsfirstdrc.org
-      </FooterLink>
+      <FooterLink href={kfWebRoot}>kidsfirstdrc.org</FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/portal')} target="_blank">
-        About the Portal
-      </FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/portal')}>About the Portal</FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/policies')} target="_blank">
-        Policies
-      </FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/policies')}>Policies</FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')} target="_blank">
-        Support
-      </FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')}>Support</FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/contact')} target="_blank">
-        Contact
-      </FooterLink>
+      <FooterLink href={urlJoin(kfWebRoot, '/contact')}>Contact</FooterLink>
       {' | '}
       {`UI: ${UI_VERSION}`}
       {', '}
       {'Data Release:'}
       <DataVersionProvider />
     </Row>
-    <SocialIcons>
+    <div className={socialIconsContainer}>
       {'Follow Us'}
-      <SocialIcon url={kfFacebook} />
-      <SocialIcon url={kfTwitter} />
-      <SocialIcon url={kfGithub} />
-    </SocialIcons>
-  </FooterContainer>
+      <SocialIcon url={kfFacebook} style={socialIconSize} />
+      <SocialIcon url={kfTwitter} style={socialIconSize} />
+      <SocialIcon url={kfGithub} style={socialIconSize} />
+    </div>
+  </footer>
 );
 
 export default Footer;

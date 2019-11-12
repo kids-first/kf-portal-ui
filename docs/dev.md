@@ -1,4 +1,4 @@
-## Testing production build lcoally
+## Testing production build locally
 
 Set the values in your `.env.local.` to use the correct values for your environment.
 

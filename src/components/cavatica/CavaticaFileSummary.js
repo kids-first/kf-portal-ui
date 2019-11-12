@@ -9,6 +9,8 @@ import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
 import { cssFileSummaryRoot } from './css';
 
+import { modalHeader } from './cavatica.module.css';
+
 class CavaticaFileSummary extends React.Component {
   state = {
     showDetails: false,
@@ -29,7 +31,7 @@ class CavaticaFileSummary extends React.Component {
     const showAuth = Boolean(authorizedFiles) && (authorizedFilesCombined.length > 0 || showUnauth);
     return (
       <div>
-        <span css={theme.modalHeader}>File Summary:</span>
+        <span css={modalHeader}>File Summary:</span>
         <div css={cssFileSummaryRoot(theme)}>
           <div className="filePermissions">
             {!fileAuthInitialized && (

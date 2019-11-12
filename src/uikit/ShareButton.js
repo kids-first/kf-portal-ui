@@ -12,12 +12,15 @@ import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 import Row from 'uikit/Row';
 
+import { flexCenter } from '../theme/tempTheme.module.css';
+
 const track = (channel, trackingFunc) => trackingFunc(channel);
 
-const ButtonContainer = styled(Row)`
-  ${({ theme }) => theme.center};
-  padding: 10px 5px;
-`;
+const ButtonContainer = ({ children }) => (
+  <Row className={flexCenter} style={{ padding: '10px 5px' }}>
+    {children}
+  </Row>
+);
 
 const Bubble = styled(`span`)`
   background-color: ${({ theme }) => theme.primary};

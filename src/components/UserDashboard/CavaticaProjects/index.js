@@ -14,11 +14,14 @@ import {
   setUserDimension,
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
+
 import { Result } from 'antd';
 import { getMsgFromErrorOrElse } from 'utils';
+
 const isValidKey = key => {
   return key && key.length > 0;
 };
+
 const generateTabsContent = ({
   isConnected,
   projectsError,
@@ -71,6 +74,7 @@ const generateTabsContent = ({
       ]
     : [{ title: 'Cavatica Projects', component: cardProps => <NotConnected /> }];
 };
+
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 

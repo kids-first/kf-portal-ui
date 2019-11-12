@@ -20,6 +20,8 @@ import flatten from 'lodash/flatten';
 import { FENCES } from 'common/constants';
 import { Alert } from 'antd';
 
+import { modalHeader } from './cavatica.module.css';
+
 const shapeStudyAggs = (studyAggs = []) =>
   studyAggs
     .filter(({ files }) => files.length > 0)
@@ -172,7 +174,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
         {error && (
           <Alert
             message="Error"
-            description="An error occured. Please try again or contact our support."
+            description="An error occurred. Please try again or contact our support."
             type="error"
             closable
             showIcon
@@ -217,7 +219,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
           </div>
         )}
         <div className="content">
-          <span css={theme.modalHeader}>Select which Cavatica project you want to copy to:</span>
+          <span className={modalHeader}>Select which Cavatica project you want to copy to:</span>
           <CavaticaProjects
             onAddProject={() => {
               this.setState({ addingProject: true });

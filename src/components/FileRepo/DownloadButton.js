@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import uniq from 'lodash/uniq';
-import Component from 'react-component-component';
-import autobind from 'auto-bind-es5';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
+import { uniq } from 'lodash';
+import Component from 'react-component-component';
 
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
 import Row from 'uikit/Row';
@@ -17,13 +15,11 @@ import {
   clinicalDataFamily,
   downloadBiospecimen,
 } from 'services/downloadData';
-import { DownloadButton as DownloadButtonUI } from './ui';
+import { DownloadButton } from './ui';
 import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 import Tooltip from 'uikit/Tooltip';
-import { clinicalDataReport, familyClinicalDataReport } from 'services/reports';
-import { isFeatureEnabled } from 'common/featuresToggles';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
@@ -52,20 +48,19 @@ const OptionRow = styled(Row)`
   }
 `;
 
-const isFamilyDownloadAvailable = async ({ api, sqon }) => {
-  const { familyMembersWithoutParticipantIds } = await familyMemberAndParticipantIds({
-    api,
-    sqon,
-  });
-  return Boolean((familyMembersWithoutParticipantIds || []).length);
-};
-
 const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon }) => {
+  const isFamilyDownloadAvailable = async () => {
+    const { familyMembersWithoutParticipantIds } = await familyMemberAndParticipantIds({
+      api,
+      sqon,
+    });
+    return Boolean((familyMembersWithoutParticipantIds || []).length);
+  };
   return (
     <Component
       initialState={{ isLoading: true, available: false }}
       didMount={async ({ state, setState }) =>
-        setState({ isLoading: false, available: await isFamilyDownloadAvailable({ api, sqon }) })
+        setState({ isLoading: false, available: await isFamilyDownloadAvailable() })
       }
     >
       {({ state }) => render(state)}
@@ -74,70 +69,56 @@ const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon
 });
 
 const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+  const { participantIds } = await familyMemberAndParticipantIds({
+    api,
+    sqon,
+    isFileRepo,
+  });
+  let downloadConfig = {
+    sqon: {
+      op: 'in',
+      content: {
+        field: isFileRepo ? 'participants.kf_id' : 'kf_id',
+        value: participantIds,
+      },
+    },
+    columns: columnState.columns,
+    isFileRepo: isFileRepo,
+  };
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
     label: 'Clinical (Participant)',
   });
-
-  // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
-    const { participantIds } = await familyMemberAndParticipantIds({
-      api,
-      sqon,
-      isFileRepo,
-    });
-    let downloadConfig = {
-      sqon: {
-        op: 'in',
-        content: {
-          field: isFileRepo ? 'participants.kf_id' : 'kf_id',
-          value: participantIds,
-        },
-      },
-      columns: columnState.columns,
-      isFileRepo: isFileRepo,
-    };
-    const downloader = clinicalDataParticipants(downloadConfig);
-    return downloader();
-  }
-
-  // The new report
-  return clinicalDataReport(sqon);
+  const downloader = clinicalDataParticipants(downloadConfig);
+  return downloader();
 };
 
 const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+  const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
+    api,
+    sqon,
+    isFileRepo,
+  });
+  let downloadConfig = {
+    sqon: {
+      op: 'in',
+      content: {
+        field: isFileRepo ? 'participants.kf_id' : 'kf_id',
+        value: uniq([...familyMemberIds, ...participantIds]),
+      },
+    },
+    columns: columnState.columns,
+    isFileRepo: isFileRepo,
+  };
+
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
     label: 'Clinical (Participant and family)',
   });
-
-  // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
-    const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
-      api,
-      sqon,
-      isFileRepo,
-    });
-    let downloadConfig = {
-      sqon: {
-        op: 'in',
-        content: {
-          field: isFileRepo ? 'participants.kf_id' : 'kf_id',
-          value: uniq([...familyMemberIds, ...participantIds]),
-        },
-      },
-      columns: columnState.columns,
-      isFileRepo: isFileRepo,
-    };
-
-    const downloader = clinicalDataFamily(downloadConfig);
-    return downloader();
-  }
-
-  // The new report
-  return familyClinicalDataReport(sqon);
+  const downloader = clinicalDataFamily(downloadConfig);
+  return downloader();
 };
 
 const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
@@ -151,273 +132,119 @@ const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
   return downloader();
 };
 
-const queryHasFamilyMembers = async (api, sqon, isFileRepo) => {
-  // TODO : check if the family report is available
-  // the condition makes no sense, so just remove the condition atm.
-  return Promise.resolve(true);
-
-  // let response;
-  // try {
-  //   response = familyMemberAndParticipantIds({ api, sqon, isFileRepo });
-  // } catch (err) {
-  //   console.error('🔥 err', err);
-  //   return false;
-  // }
-  // console.log('🔥', response);
-  // const extractResults = path => {
-  //   get(response, 'data.participant.aggregations.kf_id.buckets', []).map(b => b.key);
-  // };
-
-  // return true;
-};
-
-class DownloadButton extends React.Component {
-  constructor(props) {
-    super(props);
-    autobind(this);
-
-    this.state = {
-      isDownloadingReport: false,
-      isFamilyReportAvailable: false,
-      isLoadingFamilyInfo: true,
-    };
-
-    if (this.props.isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
-      // nothing for now
-    } else {
-      // check if the family report is available
-      queryHasFamilyMembers(props.api, props.sqon, props.isFileRepo).then(active => {
-        this.setState({
-          isFamilyReportAvailable: active,
-          isLoadingFamilyInfo: false,
-        });
-      });
-    }
-  }
-
-  static propTypes = {
-    api: PropTypes.func.isRequired,
-    sqon: PropTypes.object.isRequired,
-  };
-
-  async downloadReport(reportName, sqon) {
-    const reportMap = {
-      clinicalData: clinicalDataReport,
-      familyClinicalData: familyClinicalDataReport,
-      // TODO : implement this one, too
-      biospecimenData: () => {
-        throw new Error(`Biospecimen data report is not implemented yet.`);
-      },
-    };
-    const reportFn = reportMap[reportName] || Promise.resolve();
-
-    this.setState({ isDownloadingReport: true });
-    try {
-      await reportFn(sqon);
-    } catch (err) {
-      console.error(`Error downloading the report`, err);
-    } finally {
-      this.setState({ isDownloadingReport: false });
-    }
-  }
-
-  cohortBuilderRender() {
-    const { sqon, disabled = false } = this.props;
-    const { isDownloadingReport, isFamilyReportAvailable, isLoadingFamilyInfo } = this.state;
-
-    return (
-      <DropDownState
-        render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
-          <Fragment>
-            <DownloadButtonUI
-              content={() => 'Download'}
-              onBlur={() => {
-                if (!isDownloadingReport) {
-                  setDropdownVisibility(false);
-                }
-              }}
-              onClick={() => toggleDropdown()}
-              disabled={disabled}
-            />
-            {isDropdownVisible ? (
-              <StyledDropdownOptionsContainer hideTip>
-                <OptionRow
-                  onMouseDown={async () => {
-                    await this.downloadReport('clinicalData', sqon);
-                    setDropdownVisibility(false);
-                  }}
-                >
-                  Clinical Data: Participants only
-                </OptionRow>
-                {isFamilyReportAvailable ? (
-                  <OptionRow
-                    onMouseDown={async () => {
-                      await this.downloadReport('familyClinicalData', sqon);
-                      setDropdownVisibility(false);
-                    }}
-                  >
-                    Clinical Data: Participant & Family Members
-                  </OptionRow>
-                ) : (
-                  <OptionRow disabled>
-                    <Tooltip
-                      html={
-                        isLoadingFamilyInfo
-                          ? 'Calculating...'
-                          : 'No report available for additional family members.'
-                      }
-                    >
-                      Clinical Data: Participant & Family Members
-                    </Tooltip>
-                  </OptionRow>
-                )}
-              </StyledDropdownOptionsContainer>
-            ) : null}
-          </Fragment>
-        )}
-      />
-    );
-  }
-
-  fileRepoRender() {
-    const {
-      api,
-      sqon,
-      projectId,
-      isFileRepo,
-      disabled = false,
-      effects: { setModal },
-    } = this.props;
-    const { isDownloadingReport } = this.state;
-
-    const handleDownloadReport = async reportFn => {
-      this.setState({ isDownloadingReport: true });
-      try {
-        await reportFn();
-      } catch (err) {
-        console.error(`Error downloading the report`, err);
-      } finally {
-        this.setState({ isDownloadingReport: false });
-      }
-    };
-
-    return (
-      <ColumnsState
-        projectId={projectId}
-        graphqlField="participant"
-        render={({ state: columnState }) => {
-          const participantDownload = participantDownloader({ api, sqon, columnState, isFileRepo });
-          const participantAndFamilyDownload = familyDownloader({
-            api,
-            sqon,
-            columnState,
-            isFileRepo,
-          });
-          const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState, isFileRepo });
-          return (
-            <DropDownState
-              render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
-                <Fragment>
-                  <DownloadButtonUI
-                    content={() => 'Download'}
-                    onBlur={e => {
-                      if (!isDownloadingReport) {
-                        setDropdownVisibility(false);
-                      }
-                    }}
-                    onClick={() => {
-                      toggleDropdown();
-                    }}
-                    disabled={disabled}
-                  />
-                  {isDropdownVisible ? (
-                    <StyledDropdownOptionsContainer hideTip>
-                      <OptionRow
-                        onMouseDown={async () => {
-                          await handleDownloadReport(participantDownload);
-                          setDropdownVisibility(false);
-                        }}
-                      >
-                        Clinical Data: Participants only
-                      </OptionRow>
-                      <FamilyDownloadAvailabilityProvider
-                        sqon={sqon}
-                        render={({ available, isLoading }) =>
-                          available ? (
-                            <OptionRow
-                              onMouseDown={() => {
-                                this.setState({ isDownloadingReport: true });
-                                participantAndFamilyDownload().then(() => {
-                                  setDropdownVisibility(false);
-                                  this.setState({ isDownloadingReport: false });
-                                });
-                              }}
-                            >
-                              Clinical Data: Participant & Family Members
-                            </OptionRow>
-                          ) : (
-                            <OptionRow disabled>
-                              <Tooltip
-                                html={
-                                  isLoading
-                                    ? 'Calculating...'
-                                    : 'No report available for additional family members.'
-                                }
-                              >
-                                Clinical Data: Participant & Family Members
-                              </Tooltip>
-                            </OptionRow>
-                          )
-                        }
-                      />
-                      <OptionRow
-                        onMouseDown={() => {
-                          this.setState({ isDownloadingReport: true });
-                          biospecimenDownload().then(() => {
-                            setDropdownVisibility(false);
-                            this.setState({ isDownloadingReport: false });
-                          });
-                        }}
-                      >
-                        Biospecimen Data
-                      </OptionRow>
-                      {isFileRepo && (
-                        <OptionRow
-                          onMouseDown={() => {
-                            setModal({
-                              title: 'Download Manifest',
-                              component: <FamilyManifestModal {...this.props} />,
-                            });
-                          }}
-                        >
-                          File Manifest
-                        </OptionRow>
-                      )}
-                    </StyledDropdownOptionsContainer>
-                  ) : null}
-                </Fragment>
-              )}
-            />
-          );
-        }}
-      />
-    );
-  }
-
-  render() {
-    const { isFileRepo } = this.props;
-
-    return (
-      <div style={{ position: 'relative', marginLeft: '15px' }}>
-        {isFileRepo || !isFeatureEnabled('clinicalDataReport')
-          ? this.fileRepoRender()
-          : this.cohortBuilderRender()}
-      </div>
-    );
-  }
-}
-
 export default compose(
   withApi,
   injectState,
-)(DownloadButton);
+)(({ effects: { setModal }, ...props }) => {
+  const { api, sqon, projectId, isFileRepo, disabled = false } = props;
+  return (
+    <ColumnsState
+      projectId={projectId}
+      graphqlField="participant"
+      render={({ state: columnState }) => {
+        const participantDownload = participantDownloader({ api, sqon, columnState, isFileRepo });
+        const participantAndFamilyDownload = familyDownloader({
+          api,
+          sqon,
+          columnState,
+          isFileRepo,
+        });
+        const biospecimenDownload = biospecimenDownloader({ api, sqon, columnState, isFileRepo });
+        return (
+          <div style={{ position: 'relative', marginLeft: '15px' }}>
+            <Component initialState={{ isDownloading: false }}>
+              {({ state: { isDownloading }, setState: setDownloadingState }) => (
+                <DropDownState
+                  render={({ isDropdownVisible, setDropdownVisibility, toggleDropdown }) => (
+                    <Fragment>
+                      <DownloadButton
+                        content={() => 'Download'}
+                        onBlur={async e => {
+                          if (!isDownloading) {
+                            setDropdownVisibility(false);
+                          }
+                        }}
+                        onClick={() => {
+                          toggleDropdown();
+                        }}
+                        disabled={disabled}
+                      />
+                      {isDropdownVisible ? (
+                        <StyledDropdownOptionsContainer hideTip>
+                          <OptionRow
+                            onMouseDown={() => {
+                              setDownloadingState({ isDownloading: true });
+                              participantDownload().then(() => {
+                                setDropdownVisibility(false);
+                                setDownloadingState({ isDownloading: false });
+                              });
+                            }}
+                          >
+                            Clinical Data: Participants only
+                          </OptionRow>
+                          <FamilyDownloadAvailabilityProvider
+                            sqon={sqon}
+                            render={({ available, isLoading }) =>
+                              available ? (
+                                <OptionRow
+                                  onMouseDown={() => {
+                                    setDownloadingState({ isDownloading: true });
+                                    participantAndFamilyDownload().then(() => {
+                                      setDropdownVisibility(false);
+                                      setDownloadingState({ isDownloading: false });
+                                    });
+                                  }}
+                                >
+                                  Clinical Data: Participant & Family Members
+                                </OptionRow>
+                              ) : (
+                                <OptionRow disabled>
+                                  <Tooltip
+                                    html={
+                                      isLoading
+                                        ? 'Calculating...'
+                                        : 'No report available for additional family members.'
+                                    }
+                                  >
+                                    Clinical Data: Participant & Family Members
+                                  </Tooltip>
+                                </OptionRow>
+                              )
+                            }
+                          />
+                          <OptionRow
+                            onMouseDown={() => {
+                              setDownloadingState({ isDownloading: true });
+                              biospecimenDownload().then(() => {
+                                setDropdownVisibility(false);
+                                setDownloadingState({ isDownloading: false });
+                              });
+                            }}
+                          >
+                            Biospecimen Data
+                          </OptionRow>
+                          {isFileRepo && (
+                            <OptionRow
+                              onMouseDown={() => {
+                                setModal({
+                                  title: 'Download Manifest',
+                                  component: <FamilyManifestModal {...props} />,
+                                });
+                              }}
+                            >
+                              File Manifest
+                            </OptionRow>
+                          )}
+                        </StyledDropdownOptionsContainer>
+                      ) : null}
+                    </Fragment>
+                  )}
+                />
+              )}
+            </Component>
+          </div>
+        );
+      }}
+    />
+  );
+});

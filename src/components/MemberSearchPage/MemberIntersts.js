@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import {Typography} from 'antd';
-import {bind} from '../../utils';
+import { Typography } from 'antd';
 import PropTypes from 'prop-types';
+import autobind from 'auto-bind-es5';
 
 const { Paragraph } = Typography;
 
@@ -15,23 +15,25 @@ const compare = (a, b) => {
 };
 
 class MemberInterests extends Component {
-  state = {
-    filter: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: true,
+    };
+    autobind(this);
+  }
 
   static propTypes = {
     interests: PropTypes.array.isRequired,
     highlights: PropTypes.array.isRequired,
   };
 
-  @bind
   onClick() {
     this.setState(prevState => ({
       filter: !prevState.filter,
     }));
   }
 
-  @bind
   testIfHighlighted(originalInterest) {
     const { highlights } = this.props;
     const matched = highlights.find(hl => {
@@ -40,7 +42,6 @@ class MemberInterests extends Component {
     return matched || null;
   }
 
-  @bind
   getMergedInterests() {
     return this.props.interests
       .reduce((accumulator, currentInterest) => {
@@ -81,7 +82,7 @@ class MemberInterests extends Component {
               aria-label="Expand"
               onClick={this.onClick}
             >
-              {this.state.filter?'Expand':'Close'}
+              {this.state.filter ? 'Expand' : 'Close'}
             </a>
           ) : (
             ''

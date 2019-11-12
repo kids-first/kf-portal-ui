@@ -17,10 +17,11 @@ import { configureCols } from 'uikit/DataTable/utils/columns';
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
-import { css } from 'emotion';
 import FileIcon from 'icons/FileIcon';
 import { union, compact } from 'lodash';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
+
+import { rowCss } from './ParticipantTableView.module.css';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   return (
@@ -38,13 +39,6 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   );
 };
 
-const rowCss = css({
-  display: 'flex',
-  flexWrap: 'nowrap',
-  alignItems: 'flex-start',
-  alignContent: 'stretch',
-});
-
 const isMondo = datum => typeof datum === 'string' && datum.includes('MONDO');
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
@@ -61,7 +55,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   const hasManyValues = sizeOfCleanData > 1;
 
   return (
-    <div className={`${rowCss}`}>
+    <div className={rowCss}>
       <div style={{ display: 'flex', flexDirection: 'column', flex: '4' }}>
         {cleanedUniquifiedData.slice(0, displayedRowCount).map((datum, index) => {
           if (isMondo(datum)) {
@@ -117,14 +111,7 @@ const NbFilesCell = compose(
 
     return (
       <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
-        <FileIcon
-          className={css`
-            margin-right: 5px;
-          `}
-          width={8}
-          height={13}
-          fill={theme.greyScale11}
-        />
+        <FileIcon style={{ marginRight: '5px' }} width={8} height={13} fill={theme.greyScale11} />
         {`${nbFiles} Files`}
       </Link>
     );

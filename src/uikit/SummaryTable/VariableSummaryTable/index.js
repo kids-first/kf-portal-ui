@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { mq } from 'uikit/BreakpointHelper';
+// [NEXT] TODO - REMOVE react-grid-system in favor of whatever else we have
 import { Visible } from 'react-grid-system';
 import Tables from './Tables';
 
@@ -34,14 +35,14 @@ const SummaryTableWrapper = styled('div')`
 `;
 
 const VariableSummaryTable = ({ rows, nbOfTables }) => (
-    <SummaryTableWrapper>
-      <Visible xs sm>
-        <Tables rows={rows} amount={1}/>
-      </Visible>
-      <Visible md lg xl>
-        <Tables rows={rows} amount={nbOfTables}/>
-      </Visible>
-    </SummaryTableWrapper>
+  <SummaryTableWrapper>
+    <Visible xs sm>
+      <Tables rows={rows} amount={1} />
+    </Visible>
+    <Visible md lg xl>
+      <Tables rows={rows} amount={nbOfTables} />
+    </Visible>
+  </SummaryTableWrapper>
 );
 
 VariableSummaryTable.propTypes = {

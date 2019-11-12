@@ -1,14 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 import { isEmpty } from 'lodash';
 
 import SecondaryNavTab from './SecondaryNavTab';
 
-const MenuWrapper = styled('ul')`
-  ${({ theme }) => theme.secondaryNav}
-`;
+import { secondaryNav } from './SecondaryNav.module.css';
 
 class SecondaryNavMenu extends React.Component {
   hashes = [];
@@ -28,7 +25,7 @@ class SecondaryNavMenu extends React.Component {
 
   render() {
     return (
-      <MenuWrapper>
+      <ul className={secondaryNav}>
         {this.props.tabs.map((tab, i) => (
           <SecondaryNavTab
             key={`${i}_${tab.hash}`}
@@ -37,7 +34,7 @@ class SecondaryNavMenu extends React.Component {
             location={this.props.location}
           />
         ))}
-      </MenuWrapper>
+      </ul>
     );
   }
 

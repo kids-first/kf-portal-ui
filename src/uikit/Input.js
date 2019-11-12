@@ -1,30 +1,23 @@
 import React from 'react';
-import styled from 'react-emotion';
 import Row from 'uikit/Row';
 import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
-import { flex } from 'styled-system';
+// import { flex } from 'styled-system';
 import omit from 'lodash/omit';
+
+import { input, flex } from '../theme/tempTheme.module.css';
+import { filterInputWrapper } from './Input.module.css';
 
 /*
 this component should implement the same interface as <input> from react-dom
 with some additional props
 */
-const FilterInputWrapper = styled(Row)`
-  ${({ theme }) => theme.input};
-  color: ${({ theme }) => theme.greyScale7};
-  align-items: center;
-  .icon-left {
-    margin-right: 5px;
-  }
-  .icon-right {
-    cursor: pointer;
-  }
-  input {
-    border: none;
-    flex: 1;
-  }
-`;
+const FilterInputWrapper = ({ children, className = '', ...props }) => (
+  <Row className={`${input} ${filterInputWrapper} ${className}`} {...props}>
+    {children}
+  </Row>
+);
+
 const setNativeValue = (element, value) => {
   const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
   const prototype = Object.getPrototypeOf(element);
@@ -58,8 +51,19 @@ export const FilterInput = ({
     </FilterInputWrapper>
   );
 };
-export default styled('input')`
-  ${({ theme }) => theme.input};
-  ${({ italic }) => (italic ? `font-style: italic` : ``)};
-  ${flex};
-`;
+
+export default ({ children, className, italic = false, ...props }) => (
+  <input
+    className={`${input} ${flex} ${className}`}
+    style={
+      italic
+        ? {
+            fontStyle: 'italic',
+          }
+        : {}
+    }
+    {...props}
+  >
+    {children}
+  </input>
+);

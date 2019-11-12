@@ -12,14 +12,18 @@ import { updateProfile } from 'services/profiles';
 import { Link } from 'react-router-dom';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { ButtonsDiv } from 'components/Login/Join';
+import { ButtonsDiv } from 'components/Join';
 import { personaApiRoot } from 'common/injectGlobals';
 
 import CheckboxBubble from 'uikit/CheckboxBubble';
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
-import { JoinH3 } from 'uikit/Headings';
+import { H3 } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
+import { ActionButton } from 'uikit/Button';
+
+import { wizardButton } from './forms.module.css';
+import { flexRow } from '../../theme/tempTheme.module.css';
 
 const ConsentContainer = styled(Column)`
   justify-content: space-between;
@@ -27,7 +31,7 @@ const ConsentContainer = styled(Column)`
 `;
 
 const Terms = styled('div')`
-  ${({ theme }) => theme.textarea};
+  font-family: Open Sans, sans-serif;
   height: 250px;
   overflow-y: scroll;
 `;
@@ -62,7 +66,7 @@ const Consent = compose(
   }) => {
     return (
       <Fragment>
-        <JoinH3>{'Read and consent to our terms and conditions'}</JoinH3>
+        <H3>{'Read and consent to our terms and conditions'}</H3>
         <ConsentContainer>
           <Terms>
             <FormParagraph fontWeight="600">{'Last Update Date: 7/13/18'}</FormParagraph>{' '}
@@ -183,14 +187,12 @@ const subscribeUser = api => ({ loggedInUser }) =>
 
 export default compose(
   injectState,
-  withTheme,
   withApi,
 )(
   ({
     state: { loggedInUser },
     effects: { setToast, closeModal, closeToast },
     api,
-    theme,
     nextDisabled,
     history,
     disableNextStep,
@@ -206,16 +208,15 @@ export default compose(
         }}
       />
       <ButtonsDiv mt={2}>
-        <button className={theme.wizardButton} onClick={prevStep} disabled={prevDisabled}>
+        <button className={wizardButton} onClick={prevStep} disabled={prevDisabled}>
           <LeftIcon />
           Back
         </button>
-        <div className={theme.row}>
-          <DeleteButton api={api} className={theme.wizardButton}>
+        <div className={flexRow}>
+          <DeleteButton api={api} className={wizardButton}>
             Cancel
           </DeleteButton>
-          <button
-            className={theme.actionButton}
+          <ActionButton
             disabled={nextDisabled}
             onClick={() => {
               subscribeUser(api)({ loggedInUser });
@@ -249,7 +250,7 @@ export default compose(
           >
             Save
             <RightIcon />
-          </button>
+          </ActionButton>
         </div>
       </ButtonsDiv>
     </Fragment>

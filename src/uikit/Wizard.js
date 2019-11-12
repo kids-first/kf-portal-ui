@@ -8,9 +8,11 @@ import { trackPageView } from 'services/analyticsTracking';
 import { withRouter } from 'react-router';
 import Column from 'uikit/Column';
 
+import { flexRow } from '../theme/tempTheme.module.css';
+
 const BAR_STEP_WIDTH = 320;
 const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) => (
-  <div css={theme.row}>
+  <div className={flexRow}>
     {steps
       .map((step, i) => ({
         ...step,

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { compose, withState } from 'recompose';
-import { withTheme } from 'emotion-theming';
+import { compose, withState, withTheme } from 'recompose';
 import styled from 'react-emotion';
 
 import Row from 'uikit/Row';

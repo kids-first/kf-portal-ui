@@ -69,7 +69,7 @@ class MemberSearchContainer extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width:'100%' }}>
+      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
         <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
           <Input
             style={{ borderRadius: 30 }}

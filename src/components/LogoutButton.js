@@ -1,17 +1,17 @@
-import * as React from 'react';
+// import * as React from 'react';
 import { logoutAll } from 'services/login';
-import { withRouter } from 'react-router-dom';
-import { injectState } from 'freactal';
-import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
-import { withApi } from 'services/api';
+// import { withRouter } from 'react-router-dom';
+// import { injectState } from 'freactal';
+// import { compose } from 'recompose';
+// import { withApi } from 'services/api';
 
-const enhance = compose(
-  withRouter,
-  injectState,
-  withTheme,
-  withApi,
-);
+// import { logoutButton } from './Logout.module.css';
+
+// const enhance = compose(
+//   withRouter,
+//   injectState,
+//   withApi,
+// );
 
 export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) =>
   logoutAll()
@@ -26,22 +26,18 @@ export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, a
       history.push('/');
     });
 
-const Logout = ({
-  history,
-  effects: { setToken, setUser, clearIntegrationTokens },
-  theme,
-  className,
-  api,
-}) => (
-  <button
-    css={`
-      ${theme.button};
-      ${className};
-    `}
-    onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })}
-  >
-    Logout
-  </button>
-);
+// const LogoutButton = ({
+//   history,
+//   effects: { setToken, setUser, clearIntegrationTokens },
+//   className,
+//   api,
+// }) => (
+//   <button
+//     className={`${logoutButton} ${className}`}
+//     onClick={() => uiLogout({ history, setToken, setUser, clearIntegrationTokens, api })}
+//   >
+//     Logout
+//   </button>
+// );
 
-export default enhance(Logout);
+// export default enhance(LogoutButton);

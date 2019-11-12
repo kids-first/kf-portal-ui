@@ -8,7 +8,7 @@ export {
   trackPageView,
   setUserDimension,
   trackProfileInteraction,
-  updateTrackingDimension,
+  addStateInfo as updateTrackingDimension,
   addStateInfo,
   trackExternalLink,
   startAnalyticsTiming,

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
-import styled from 'react-emotion';
 
 import { injectState } from 'freactal';
 import { kfWebRoot } from 'common/injectGlobals';
@@ -18,10 +17,6 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 
 import isEmpty from 'lodash/isEmpty';
 
-const InternalLink = styled(Link)`
-  color: ${({ theme }) => theme.primary};
-`;
-
 const NoAuthorizedStudiesMessage = ({ user }) => (
   <PromptMessageContainer info mb={'8px'}>
     <PromptMessageHeading info mb={10}>
@@ -30,14 +25,15 @@ const NoAuthorizedStudiesMessage = ({ user }) => (
     </PromptMessageHeading>
     <PromptMessageContent>
       Start applying from our{' '}
-      <InternalLink
+      <Link
+        className="color-primary"
         to={{
           pathname: `/user/${user.egoId}`,
           hash: '#settings',
         }}
       >
         studies and access page.
-      </InternalLink>
+      </Link>
     </PromptMessageContent>
   </PromptMessageContainer>
 );

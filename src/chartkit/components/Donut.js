@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { truncate } from 'lodash';
 
@@ -10,10 +9,6 @@ import { defaultTheme } from 'chartkit/themes';
 import ChartDisplayContainer from './ChartDisplayContainer';
 import Tooltip from './Tooltip';
 import { trackUserInteraction } from 'services/analyticsTracking';
-
-const DonutWrapper = styled('div')`
-  height: 100%;
-`;
 
 const DonutTooltip = ({ id, value }) => (
   <Tooltip key={id}>
@@ -111,7 +106,7 @@ class Donut extends Component {
     };
 
     return (
-      <DonutWrapper>
+      <div style={{ height: '100%' }}>
         <ChartDisplayContainer>
           {height ? (
             <ResponsivePie {...chartData} height={height} />
@@ -119,7 +114,7 @@ class Donut extends Component {
             <ResponsivePie {...chartData} />
           )}
         </ChartDisplayContainer>
-      </DonutWrapper>
+      </div>
     );
   }
 }

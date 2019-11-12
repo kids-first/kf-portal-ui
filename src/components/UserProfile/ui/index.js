@@ -1,8 +1,6 @@
 import React from 'react';
-import { compose } from 'recompose';
 import styled from 'react-emotion';
 import PencilIcon from 'react-icons/lib/fa/pencil';
-import { withTheme } from 'emotion-theming';
 import { ModalActionButton } from '../../Modal';
 import Gravtar from 'uikit/Gravatar';
 
@@ -15,12 +13,6 @@ export const Container = styled(Flex)`
   width: 76%;
 `;
 
-export const xEditButton = compose(withTheme)(({ theme, ...props }) => (
-  <button css={theme.hollowButton} {...props}>
-    <PencilIcon className={'icon'} /> Edit
-  </button>
-));
-
 export const EditButton = props => (
   <WhiteButton {...props}>
     <PencilIcon size={12} className="icon" /> Edit
@@ -28,11 +20,26 @@ export const EditButton = props => (
 );
 
 export const H2 = styled('h2')`
-  ${props => props.theme.profileH2};
+  color: ${({ theme }) => theme.colors.secondary};
+  margin-top: 0px;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.27;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid #d4d6dd;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 10px;
 `;
 
 export const H3 = styled('h3')`
-  ${props => props.theme.profileH3};
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.71;
+  letter-spacing: 0.2px;
+  color: #343434;
+  margin: 0;
 `;
 
 export const H4 = styled('h4')`
@@ -55,7 +62,9 @@ export const NavContainer = styled('div')`
 `;
 
 export const NavList = styled('ul')`
-  ${({ theme }) => theme.column} list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;

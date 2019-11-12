@@ -1,12 +1,15 @@
-import 'babel-polyfill';
-import 'index.css';
-// import 'antd/dist/antd.css';
-import './antd-kf-theme.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
+// import 'antd/dist/antd.css';
+import './antd-kf-theme.css';
+import './index.css';
+
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { initStore, getPreloadedState } from './store/index';
-import App from './App';
 import { getAppElement } from './services/globalDomNodes.js';
 import googleSDK from 'services/googleSDK';
 import facebookSDK from 'services/facebookSDK';
@@ -40,13 +43,15 @@ if (maintenanceMode) {
   );
 }
 
-navigator.serviceWorker.getRegistrations().then(registrations => {
-  registrations.forEach(r => r.unregister());
-});
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
 
+// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
 // webpack Hot Module Replacement API
-if (module.hot) {
-  module.hot.accept('./App', () => {
-    render(App);
-  });
-}
+// if (module.hot) {
+//   module.hot.accept('./App', () => {
+//     render(App);
+//   });
+// }

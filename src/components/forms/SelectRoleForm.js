@@ -20,16 +20,15 @@ import { ButtonsDiv } from '../Login/Join';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
-import { JoinH3 } from '../../uikit/Headings';
+import { H3 } from '../../uikit/Headings';
 import { Paragraph } from '../../uikit/Core';
+import { ActionButton } from 'uikit/Button';
+import { FieldInput } from './components';
+
+import { wizardButton } from './forms.module.css';
 
 const SelectRoleForm = styled('form')`
   justify-content: space-around;
-`;
-
-const FieldInput = styled(Field)`
-  ${({ theme }) => theme.input};
-  width: 374px;
 `;
 
 const RoleBubble = styled(CheckboxBubble)`
@@ -44,7 +43,7 @@ const RoleBubble = styled(CheckboxBubble)`
   justify-content: flex-start;
 `;
 
-const RoleLabel = styled(JoinH3)`
+const RoleLabel = styled(H3)`
   display: block;
   text-transform: capitalize;
   border: none;
@@ -187,6 +186,7 @@ export default enhance(
                 placeholder="First Name"
                 value={values.firstName}
                 onBlur={submitForm}
+                style={{ width: '374px' }}
               />
               {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
             </Column>
@@ -199,6 +199,7 @@ export default enhance(
                 placeholder="Last Name"
                 value={values.lastName}
                 onBlur={submitForm}
+                style={{ width: '374px' }}
               />
               {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
             </Column>
@@ -212,6 +213,7 @@ export default enhance(
                 value={values.email}
                 placeholder="Email"
                 disabled="true"
+                style={{ width: '374px' }}
               />
             </Column>
           </Row>
@@ -301,20 +303,20 @@ export default enhance(
           </Row>
         </SelectRoleForm>
         <ButtonsDiv>
-          <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
+          <DeleteButton className={wizardButton} disabled={prevDisabled}>
             <LeftIcon />
             Back
           </DeleteButton>
           <Row>
             <DeleteButton
-              css={`
-                ${theme.wizardButton} font-weight: 300;
-              `}
+              className={wizardButton}
+              style={{
+                fontWeight: 300,
+              }}
             >
               Cancel
             </DeleteButton>
-            <button
-              className={theme.actionButton}
+            <ActionButton
               onClick={() => {
                 submitForm();
                 nextStep();
@@ -323,7 +325,7 @@ export default enhance(
             >
               Next
               <RightIcon />
-            </button>
+            </ActionButton>
           </Row>
         </ButtonsDiv>
       </Column>

@@ -1,0 +1,14 @@
+.filterInputWrapper {
+  color: 'rgb(107,98,98)';
+  align-items: center;
+}
+.filterInputWrapper .icon-left {
+  margin-right: 5px;
+}
+.filterInputWrapper .icon-right {
+  cursor: pointer;
+}
+.filterInputWrapper input {
+  border: none;
+  flex: 1;
+}

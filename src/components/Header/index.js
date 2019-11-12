@@ -5,22 +5,17 @@ import { injectState } from 'freactal';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
 import UserIcon from 'react-icons/lib/fa/user';
-import styled from 'react-emotion';
 import ExploreDataIcon from 'icons/ExploreDataIcon';
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
+import Gravatar from 'uikit/Gravatar';
 import { uiLogout } from 'components/LogoutButton';
 import { withApi } from 'services/api';
 import {
   NavLink,
   DropdownLink,
-  HeaderContainer,
-  GradientAccent,
-  HeaderContent,
-  Logo,
-  NavigationGravatar,
   LinkAsButton,
   NavBarList,
   NavbarDropdownWrapper,
@@ -34,6 +29,13 @@ import { Alert } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 
+import {
+  headerContainer,
+  gradientAccent,
+  headerContent,
+  headerProfilePicture,
+} from './Header.module.css';
+
 const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
 
 const showPublicProfileInvite = (user = {}) => {
@@ -46,12 +48,6 @@ const showPublicProfileInvite = (user = {}) => {
     !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
   );
 };
-
-const ExploreDataIconStyled = styled(ExploreDataIcon)`
-  top: 3px;
-  position: relative;
-  fill: currentColor;
-`;
 
 const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
@@ -75,7 +71,7 @@ const Header = ({
   return (
     <DropDownState
       render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
-        <HeaderContainer>
+        <div className={headerContainer}>
           {showPublicProfileInvite(loggedInUser) && (
             <Alert
               message={
@@ -92,11 +88,15 @@ const Header = ({
               onClose={onCloseAlert}
             />
           )}
-          <GradientAccent />
-          <HeaderContent>
+          <div className={gradientAccent} />
+          <Row className={headerContent}>
             <Row>
               <Link to={ROUTES.dashboard}>
-                <Logo src={logoPath} alt="Kids First Logo" />
+                <img
+                  src={logoPath}
+                  alt="Kids First Logo"
+                  style={{ width: '211px', height: '65px' }}
+                />
               </Link>
               {canSeeProtectedRoutes && (
                 <NavBarList ml={40}>
@@ -107,7 +107,10 @@ const Header = ({
                   </li>
                   <li>
                     <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
-                      <ExploreDataIconStyled /> Explore Data
+                      <ExploreDataIcon
+                        style={{ top: '3px', position: 'relative', fill: 'currentColor' }}
+                      />{' '}
+                      Explore Data
                     </NavLink>
                   </li>
                   <li>
@@ -176,13 +179,33 @@ const Header = ({
                   OptionsContainerComponent={NavbarDropdownOptionsContainer}
                   LabelContainer={MenuLabelContainer}
                 >
-                  <NavigationGravatar email={loggedInUser.email || ''} size={39} />
+                  <Gravatar
+                    className={headerProfilePicture}
+                    email={loggedInUser.email || ''}
+                    size={39}
+                  />
                   <DropdownRow>{loggedInUser.firstName}</DropdownRow>
                 </Dropdown>
               )}
             </NavBarList>
-          </HeaderContent>
-        </HeaderContainer>
+          </Row>
+          {showPublicProfileInvite(loggedInUser) && (
+            <Alert
+              message={
+                <Fragment>
+                  <Link to={getUrlForUser(loggedInUser, '#settings')}>
+                    Make your profile public
+                  </Link>
+                  {' so that other members can view it!'}
+                </Fragment>
+              }
+              type="info"
+              banner
+              closable
+              onClose={onCloseAlert}
+            />
+          )}
+        </div>
       )}
     />
   );

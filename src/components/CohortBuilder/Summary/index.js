@@ -1,6 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
+// [NEXT] TODO - REMOVE react-grid-system in favor of whatever else we have
 import { Col, Row } from 'react-grid-system';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
@@ -61,9 +62,26 @@ const Summary = ({
             <Row nogutter>
               <PaddedColumn md={spacing.md} lg={spacing.lg}>
                 <CohortCard title="Available Data" loading={isLoading}>
-                  <div style={{ height: '100%', width: '100%',  display: 'flex', flexFlow: 'column wrap'}}>
-                    <DataTypeChart data={dataTypesData} axisLeftLegend={'# Participants'} axisBottomLegend={'Data Type'} isLoading={isLoading} />
-                    <DataTypeChart data={experimentalStrategyData} axisLeftLegend={'# Participants'} axisBottomLegend={'Experimental Strategy'} isLoading={isLoading} />
+                  <div
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      display: 'flex',
+                      flexFlow: 'column wrap',
+                    }}
+                  >
+                    <DataTypeChart
+                      data={dataTypesData}
+                      axisLeftLegend={'# Participants'}
+                      axisBottomLegend={'Data Type'}
+                      isLoading={isLoading}
+                    />
+                    <DataTypeChart
+                      data={experimentalStrategyData}
+                      axisLeftLegend={'# Participants'}
+                      axisBottomLegend={'Experimental Strategy'}
+                      isLoading={isLoading}
+                    />
                   </div>
                 </CohortCard>
               </PaddedColumn>

@@ -1,54 +1,54 @@
 import React from 'react';
-import { hot } from 'react-hot-loader';
+// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
+// import { hot } from 'react-hot-loader';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import styled from 'react-emotion';
-import Toast from 'uikit/Toast';
-import { withTheme } from 'emotion-theming';
-import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
+// import Toast from 'uikit/Toast';
+// import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
 
-import Modal from 'components/Modal';
-import GlobalModal from 'components/Modal/GlobalModal';
-import UserProfile from 'components/UserProfile';
+// import Modal from 'components/Modal';
+// import GlobalModal from 'components/Modal/GlobalModal';
+// import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
-import FileRepo from 'components/FileRepo';
-import Join from 'components/Login/Join';
+// import FileRepo from 'components/FileRepo';
+// import Join from 'components/Login/Join';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
-import FileEntity from 'components/EntityPage/File';
-import ParticipantEntity from './components/EntityPage/Participant';
-import CohortBuilder from './components/CohortBuilder';
-import MemberSearchPage from './components/MemberSearchPage';
-import AuthRedirect from 'components/AuthRedirect';
+// import FileEntity from './components/EntityPage/File';
+// import ParticipantEntity from './components/EntityPage/Participant';
+// import CohortBuilder from './components/CohortBuilder';
+// import MemberSearchPage from './components/MemberSearchPage';
+// import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
-import { FixedFooterPage } from 'components/Page';
+// import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
-import Error from 'components/Error';
-import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
+// import Error from 'components/Error';
+// import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
-import scienceBgPath from 'assets/background-science.jpg';
 import loginImage from 'assets/smiling-girl.jpg';
-import joinImage from 'assets/smiling-boy.jpg';
+// import joinImage from 'assets/smiling-boy.jpg';
+import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
-import { initializeApi, ApiContext } from 'services/api';
-import { DCF, GEN3 } from 'common/constants';
-import ArrangerAdmin from 'components/ArrangerAdmin';
+// import { initializeApi, ApiContext } from 'services/api';
+// import { DCF, GEN3 } from 'common/constants';
+// import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
+
 import isEmpty from 'lodash/isEmpty';
 import { Spin, Icon } from 'antd';
-import { isAdminToken, validateJWT } from 'utils';
+// import { isAdminToken, validateJWT } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
       <SideImagePage
         logo={logo}
-        sideImage={loginImage}
+        sideImagePath={loginImage}
         Component={LoginPage}
         Footer={LoginFooter}
       />
@@ -63,26 +63,13 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...p
   }
 };
 
-const AppContainer = styled('div')`
-  height: 100vh;
-  overflow: auto;
-  & * {
-    box-sizing: border-box;
-    font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
-  }
-`;
-
 const ShowLoader = (
-  <Page
-    Component={Spin}
-    indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />}
-  />
+  <Page Component={Spin} indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
 );
 
 const App = compose(
   injectState,
   withApi,
-  withTheme,
 )(({ state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
@@ -97,9 +84,9 @@ const App = compose(
   };
 
   return (
-    <AppContainer>
+    <div className="appContainer">
       <Switch>
-        <Route
+        {/* <Route
           path={ROUTES.admin}
           render={props =>
             forceSelectRole({
@@ -156,7 +143,7 @@ const App = compose(
               backgroundImage={scienceBgPath}
               Component={LoginPage}
               Footer={LoginFooter}
-              sideImage={loginImage}
+              sideImagePath={loginImage}
               stealth={true} // hide some of the visuals of the page during redirection
               {...props}
             />
@@ -259,7 +246,9 @@ const App = compose(
             })
           }
         />
+        */}
         <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
+        {/*}
         <Route
           path={ROUTES.join}
           exact
@@ -276,7 +265,7 @@ const App = compose(
                     backgroundImage={scienceBgPath}
                     logo={logo}
                     Component={Join}
-                    sideImage={joinImage}
+                    sideImagePath={joinImage}
                     {...props}
                   />
                 </ApiContext.Provider>
@@ -284,7 +273,7 @@ const App = compose(
             }
             return showDashboardIfLoggedIn(props);
           }}
-        />
+        */}
         <Route
           path="/"
           exact
@@ -299,7 +288,7 @@ const App = compose(
                   backgroundImage={scienceBgPath}
                   Component={LoginPage}
                   Footer={LoginFooter}
-                  sideImage={loginImage}
+                  sideImagePath={loginImage}
                   {...props}
                 />
               );
@@ -307,15 +296,16 @@ const App = compose(
             return showDashboardIfLoggedIn(props);
           }}
         />
+        {/*
         <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
         <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
-        <Route path={ROUTES.error} exact render={() => <Error />} />
+        <Route path={ROUTES.error} exact render={() => <Error />} /> */}
         <Redirect from="*" to={ROUTES.dashboard} />
       </Switch>
-      <Modal />
-      <GlobalModal />
-      <Toast {...toast}>{toast.component}</Toast>
-    </AppContainer>
+      {/* <Modal /> */}
+      {/* <GlobalModal /> */}
+      {/* <Toast {...toast}>{toast.component}</Toast> */}
+    </div>
   );
 });
 
@@ -326,4 +316,8 @@ const enhanceApp = () => (
     </ContextProvider>
   </ErrorBoundary>
 );
-export default hot(module)(enhanceApp);
+
+// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
+// export default hot(module)(enhanceApp);
+
+export default enhanceApp;

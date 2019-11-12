@@ -14,15 +14,15 @@ const defaultOptions = {
 };
 
 export const removeCookie = (key, options = {}) => {
-  Cookies.remove(key, { ...defaultOptions, ...options })
+  Cookies.remove(key, { ...defaultOptions, ...options });
 };
 
 export const setCookie = (key, value, options = {}) => {
-  const cookieOption = { ...defaultOptions, ...options }
+  const cookieOption = { ...defaultOptions, ...options };
   removeCookie(key, cookieOption);
   return Cookies.set(key, value, cookieOption);
 };
 
-window.Cookies = Cookies
+window.Cookies = Cookies;
 
 export const getCookie = Cookies.get;

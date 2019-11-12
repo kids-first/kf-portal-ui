@@ -26,9 +26,10 @@ import {
 } from './statVisuals';
 
 import { dataTableStyle, modalContentStyle } from './style';
-import { FileRepoH3 as H3 } from 'uikit/Headings';
+import { FileRepoH3 as H3, TableHeader } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
-import { TableHeader } from 'uikit/Table';
+
+import { flexColumn, flexRow } from '../../theme/tempTheme.module.css';
 
 const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
   return sqon
@@ -76,32 +77,34 @@ const ManifestTableDataRow = compose(withTheme)(
     className = '',
     ...rest
   }) => (
-    <div className={`row ${isChecked ? 'selected' : ''} ${theme.row} ${className}`} {...rest}>
-      <div className={`tableCell ${theme.row}`}>
+    <div className={`row ${isChecked ? 'selected' : ''} ${flexRow} ${className}`} {...rest}>
+      <div className={`tableCell ${flexRow}`}>
         {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
         {leftComponent && <div className={`left`}>{leftComponent}</div>}
         {fileType}
       </div>
-      <div className={`tableCell ${theme.row} ${DataText}`}>{formatNumber(members)}</div>
-      <div className={`tableCell ${theme.row} ${DataText}`}>{formatNumber(files)}</div>
-      <div className={`tableCell ${theme.row} ${DataText}`}>{fileSize}</div>
+      <div className={`tableCell ${flexRow} ${DataText}`}>{formatNumber(members)}</div>
+      <div className={`tableCell ${flexRow} ${DataText}`}>{formatNumber(files)}</div>
+      <div className={`tableCell ${flexRow} ${DataText}`}>{fileSize}</div>
     </div>
   ),
 );
 
-const Table = compose(withTheme)(({ theme, stats, className, children, reverseColor = false }) => (
-  <div className={`${theme.column} ${className} ${dataTableStyle({ theme, reverseColor })}`}>
-    <div className={`row ${theme.row}`}>
-      {stats.map(({ label, icon }, i) => (
-        <div key={i} className={`tableCell ${theme.row}`}>
-          <div className={`left`}>{icon}</div>
-          <TableHeader>{label}</TableHeader>
-        </div>
-      ))}
+const Table = compose(withTheme)(
+  ({ theme, stats, className = '', children, reverseColor = false }) => (
+    <div className={`${flexColumn} ${className} ${dataTableStyle({ theme, reverseColor })}`}>
+      <div className={`row ${flexRow}`}>
+        {stats.map(({ label, icon }, i) => (
+          <div key={i} className={`tableCell ${flexRow}`}>
+            <div className={`left`}>{icon}</div>
+            <TableHeader>{label}</TableHeader>
+          </div>
+        ))}
+      </div>
+      {children}
     </div>
-    {children}
-  </div>
-));
+  ),
+);
 
 const spinner = (
   <Spinner
@@ -270,7 +273,7 @@ export default compose(
               return loading ? (
                 spinner
               ) : (
-                <div className={`${theme.column} ${modalContentStyle(theme)}`}>
+                <div className={`${flexColumn} ${modalContentStyle(theme)}`}>
                   {!isFamilyMemberFilesAvailable && participantSection}
                   {isFamilyMemberFilesAvailable ? (
                     <FamilyDataTypesStatsQuery

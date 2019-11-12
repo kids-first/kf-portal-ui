@@ -1,0 +1,100 @@
+.userDashboardContainer {
+  width: 100%;
+  min-height: 600px;
+  background-color: #f4f5f8;
+}
+
+.dashboardTitle {
+  font-family: Montserrat, sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-align: left;
+  color: #2b388f;
+  margin-top: 26px;
+  margin-bottom: 24px;
+  padding-left: 30px;
+}
+
+.loadingScreenContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+
+/*******************************************************/
+/* Info */
+/*******************************************************/
+.infoLink {
+  font-size: 14px;
+  font-family: Open Sans, sans-serif;
+  margin-bottom: 0;
+  text-decoration: underline;
+}
+
+.infoMessage {
+  font-size: 14px;
+  color: #343434;
+  font-family: Open Sans, sans-serif;
+  margin-bottom: 0;
+}
+
+/*******************************************************/
+/* DashboardCard */
+/*******************************************************/
+.dashboardCardErrorContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboardCard {
+  height: 404px;
+}
+
+.cardActionButton {
+  height: 37px;
+  padding-right: 21px;
+  padding-left: 21px;
+  font-size: 14px;
+  border-radius: 18px;
+}
+
+.cardActionButton {
+  color: #90278e;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.cardActionButton:hover,
+.cardActionButton.active {
+  color: #e83a9c;
+}
+
+.noteList {
+  padding-left: 18px;
+}
+.noteList li {
+  margin-top: 5px;
+}
+
+.promptMessageContainer {
+}
+.promptMessageContent {
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  line-height: normal;
+}
+.promptMessageContent ul {
+  padding-left: '18px';
+}
+.promptMessageContent li {
+  margin-top: 5px;
+}
+.promptMessageHeading {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}

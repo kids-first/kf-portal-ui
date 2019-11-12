@@ -6,7 +6,6 @@ import urlJoin from 'url-join';
 import Spinner from 'react-spinkit';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
 import Tooltip from 'uikit/Tooltip';
-import NiceWhiteButton from 'uikit/NiceWhiteButton';
 import theme from 'theme/defaultTheme';
 import { ModalFooter } from 'components/Modal';
 import { arrangerApiRoot } from 'common/injectGlobals';
@@ -16,6 +15,8 @@ import { SaveQueryHeading } from './ui';
 import { WhiteButton } from 'uikit/Button';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+
+import { niceWhiteButton } from '../../theme/tempTheme.module.css';
 
 export default injectState(
   class extends React.Component {
@@ -149,14 +150,7 @@ export default injectState(
                                 history.push('/dashboard');
                               }}
                             >
-                              <NiceWhiteButton
-                                css={`
-                                  margin: 0 auto;
-                                  padding: 10px 15px;
-                                `}
-                              >
-                                View in My Saved Queries
-                              </NiceWhiteButton>
+                              <button className={niceWhiteButton}>View in My Saved Queries</button>
                             </div>
                           </div>
                           <SaveQueryHeading>

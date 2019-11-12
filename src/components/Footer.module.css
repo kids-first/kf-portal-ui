@@ -1,0 +1,39 @@
+.footerLink {
+  font-family: Open Sans, sans-serif;
+  font-size: 12px;
+  line-height: 2.17;
+  letter-spacing: 0.2px;
+  text-align: center;
+  margin: 0 8px;
+  text-decoration: underline;
+}
+
+.footerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  height: 56px;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 4.9px 0.1px rgba(0, 0, 0, 0.5);
+
+  font-family: Open Sans, sans-serif;
+  font-size: 12px;
+  line-height: 2.17;
+  letter-spacing: 0.2px;
+  z-index: 100;
+  position: relative;
+}
+
+.socialIconsContainer {
+  position: absolute;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.socialIconsContainer > * {
+  margin-left: 10px;
+}

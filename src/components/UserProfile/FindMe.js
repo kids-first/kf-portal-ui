@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { compose, withState, withHandlers } from 'recompose';
 import styled from 'react-emotion';
 import { withFormik, Field, Form } from 'formik';
+// [NEXT] remove Yup?
 import * as Yup from 'yup';
 import { SocialIcon } from 'react-social-icons';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
@@ -24,9 +25,7 @@ import { H4 } from 'uikit/Headings';
 import { TRACKING_EVENTS, trackProfileInteraction } from 'services/analyticsTracking';
 import { WhiteButton, TealActionButton } from '../../uikit/Button';
 
-const StyledField = styled(Field)`
-  ${({ theme }) => theme.input};
-`;
+import { input } from '../../theme/tempTheme.module.css';
 
 const StyledLabel = styled('label')`
   font-family: ${({ theme }) => theme.fonts.details};
@@ -282,17 +281,15 @@ export default compose(
           </CardHeader>
 
           <StyledSection>
-            {canEdit &&
-              !isEditing &&
-              !Object.values(values).filter(Boolean).length && (
-                <Fragment>
-                  <H4 mt="29px">
-                    Add links to your personal channels such as Google Scholar, ORCID ID, GitHub,
-                    LinkedIn, Twitter and Facebook.
-                  </H4>
-                  <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
-                </Fragment>
-              )}
+            {canEdit && !isEditing && !Object.values(values).filter(Boolean).length && (
+              <Fragment>
+                <H4 mt="29px">
+                  Add links to your personal channels such as Google Scholar, ORCID ID, GitHub,
+                  LinkedIn, Twitter and Facebook.
+                </H4>
+                <ClickToAdd onClick={() => setIsEditing(true)}>click to add</ClickToAdd>
+              </Fragment>
+            )}
 
             <List>
               {Object.entries(socialItems)
@@ -319,13 +316,12 @@ export default compose(
                             html={(errors || {})[field]}
                             open={Object.keys(errors || {}).includes(field)}
                           >
-                            <StyledField
-                              css={
+                            <Field
+                              className={input}
+                              style={
                                 Object.keys(errors || {}).includes(field)
-                                  ? `
-                            border-color: red;
-                          `
-                                  : ''
+                                  ? { borderColor: 'red' }
+                                  : {}
                               }
                               id={field}
                               name={field}

@@ -14,7 +14,8 @@ import { Box, Flex } from 'uikit/Core';
 import Row from 'uikit/Row';
 import { Tag } from 'uikit/Tags';
 import { H4 } from 'uikit/Headings';
-import { WhiteButton, TealActionButton } from '../../uikit/Button';
+import { WhiteButton, TealActionButton } from 'uikit/Button';
+import Select from 'uikit/Select';
 
 const InterestsContainer = styled(Box)`
   background-color: ${({ theme }) => theme.backgroundGrey};
@@ -40,11 +41,17 @@ const InterestsLabel = styled('div')`
   width: 80%;
 `;
 
-const InterestsSelect = styled('select')`
-  ${({ theme }) => theme.select};
-  ${({ theme }) => theme.input};
-  text-transform: none;
-`;
+const InterestsSelect = ({ children, style = {}, ...props }) => (
+  <Select
+    style={{
+      textTransform: 'none',
+      ...style,
+    }}
+    {...props}
+  >
+    {children}
+  </Select>
+);
 
 const InterestsOption = styled('option')``;
 const ActionButtons = ({
@@ -136,18 +143,16 @@ export default compose(
         </H4>
       )}
 
-      {canEdit &&
-        !interests.length &&
-        !editingResearchInterests && (
-          <ClickToAdd
-            onClick={() => {
-              handleEditingResearchInterests({ value: !editingResearchInterests });
-              setFocusedTextArea('googleScholarId');
-            }}
-          >
-            click to add
-          </ClickToAdd>
-        )}
+      {canEdit && !interests.length && !editingResearchInterests && (
+        <ClickToAdd
+          onClick={() => {
+            handleEditingResearchInterests({ value: !editingResearchInterests });
+            setFocusedTextArea('googleScholarId');
+          }}
+        >
+          click to add
+        </ClickToAdd>
+      )}
 
       <Row flexWrap="wrap" pt={2} pb={2}>
         {interests.map((x, i) => (
