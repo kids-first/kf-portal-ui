@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 
 import { MatchBox } from '@kfarranger/components/dist/Arranger';
@@ -12,14 +11,12 @@ import { FileRepoH3 as H3, TableHeader } from 'uikit/Headings';
 import { withApi } from 'services/api';
 
 const enhance = compose(
-  withTheme,
   injectState,
   withApi,
 );
 
 const UploadIdsModal = ({
   api,
-  theme,
   state: { loggedInUser },
   effects: { addUserSet, unsetModal },
   setSQON,

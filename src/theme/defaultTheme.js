@@ -307,7 +307,7 @@ const components = {
   // dropdownContainer: css`
   //   position: absolute;
   //   top: 100%;
-  //   backgroundcolor: white;
+  //   background-color: white;
   //   border: 1px solid ${colors.greyScale4};
   //   width: 100%;
   //   font-size: 14px;

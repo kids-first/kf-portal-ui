@@ -52,6 +52,15 @@
   color: #90278e;
 }
 
+.studyDeleteWrapper {
+  font-family: Open Sans, sans-serif;
+  color: #90278e;
+}
+.studyDeleteWrapper:hover {
+  cursor: pointer;
+  color: #c03299;
+}
+
 .scrollY {
   position: absolute;
   top: 83px;

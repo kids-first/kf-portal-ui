@@ -5,7 +5,6 @@ import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
-import { withTheme } from 'emotion-theming';
 import { distanceInWords } from 'date-fns';
 import { Box, Link, Flex, Span } from 'uikit/Core';
 import CardHeader from 'uikit/Card/CardHeader';
@@ -34,6 +33,7 @@ import {
   savedQueriesContainer,
   study,
   studyLink,
+  studyDeleteWrapper,
   scrollY,
   studyDescription,
   studySavedTime,
@@ -85,7 +85,6 @@ class SavedQueries extends React.Component {
   render() {
     const {
       state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
-      theme,
       virtualStudies,
       userDashboardPage,
       setActiveSavedQueryTab,
@@ -188,15 +187,14 @@ class SavedQueries extends React.Component {
                                   {vs.name}
                                 </Link>
                                 <Box pr={2} pl={2}>
-                                  <Span
-                                    color={theme.primary}
-                                    hover={{ cursor: 'pointer', color: theme.hover }}
+                                  <span
+                                    className={studyDeleteWrapper}
                                     onClick={() => {
                                       this.deleteVirtualStudy(vs);
                                     }}
                                   >
                                     <TrashIcon />
-                                  </Span>
+                                  </span>
                                 </Box>
                               </Row>
                               <Row justifyContent="space-between" width="100%">
@@ -254,5 +252,4 @@ export default compose(
   ),
   provideSavedQueries,
   injectState,
-  withTheme,
 )(SavedQueries);

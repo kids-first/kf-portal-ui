@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
@@ -18,11 +17,6 @@ import { input, select } from '../../../theme/tempTheme.module.css';
 import { styledLabel } from './CavaticaProjects.module.css';
 
 const StyledLabel = styleComponent('label', styledLabel);
-
-const enhance = compose(
-  injectState,
-  withTheme,
-);
 
 const defaultState = {
   projectName: '',
@@ -129,4 +123,4 @@ class Create extends React.Component {
   }
 }
 
-export default enhance(Create);
+export default compose(injectState)(Create);

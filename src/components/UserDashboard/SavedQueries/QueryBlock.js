@@ -3,7 +3,6 @@ import { distanceInWords } from 'date-fns';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { Box, Flex, Span, Link } from 'uikit/Core';
@@ -12,7 +11,14 @@ import Row from 'uikit/Row';
 import { withApi } from 'services/api';
 import { styleComponent } from 'components/Utils';
 
-import { query, detail, queryLink, detailBox, detailHeading } from './SavedQueries.module.css';
+import {
+  query,
+  detail,
+  queryLink,
+  detailBox,
+  detailHeading,
+  studyDeleteWrapper,
+} from './SavedQueries.module.css';
 
 const Detail = styleComponent(Span, detail);
 const DetailBox = styleComponent(Box, detailBox);
@@ -21,8 +27,7 @@ const DetailHeading = styleComponent('span', detailHeading);
 export default compose(
   injectState,
   withApi,
-  withTheme,
-)(({ effects: { deleteQuery }, api, query: q, inactive = false, theme, savedTime = true }) => (
+)(({ effects: { deleteQuery }, api, query: q, inactive = false, savedTime = true }) => (
   <Flex className={`${query} ${inactive ? 'inactive' : ''}`}>
     <Column width="100%">
       <Row justifyContent="space-between" width="100%">
@@ -41,8 +46,7 @@ export default compose(
         </Link>
         <Box pr={2} pl={2}>
           <Span
-            color={theme.primary}
-            hover={{ cursor: 'pointer', color: theme.hover }}
+            className={studyDeleteWrapper}
             onClick={() => {
               trackUserInteraction({
                 category: TRACKING_EVENTS.categories.user.dashboard.widgets.savedQueries,

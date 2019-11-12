@@ -8,7 +8,6 @@ import { Row, Col } from 'react-grid-system';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
-import { withTheme } from 'emotion-theming';
 
 import { StudiesChart, TopDiagnosesChart, UserInterestsChart } from './charts';
 import { withApi } from '../../services/api';
@@ -58,9 +57,8 @@ export default compose(
   injectState,
   withRouter,
   withApi,
-  withTheme,
   branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
-)(({ state: { loggedInUser }, theme, api }) => (
+)(({ state: { loggedInUser }, api }) => (
   <div className={userDashboardContainer}>
     <h1 className={dashboardTitle}>My Dashboard</h1>
     {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
@@ -68,7 +66,7 @@ export default compose(
       {({ size }) => (
         <ContainerRow currentWidth={size.width}>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <SavedQueries {...{ api, loggedInUser, theme }} />
+            <SavedQueries {...{ api, loggedInUser }} />
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
             <AuthorizedStudies />

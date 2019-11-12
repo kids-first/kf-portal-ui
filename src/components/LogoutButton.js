@@ -13,8 +13,8 @@ import { logoutAll } from 'services/login';
 //   withApi,
 // );
 
-export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) =>
-  logoutAll()
+export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, api }) => {
+  return logoutAll()
     .then(() => {
       setUser({ api });
       setToken();
@@ -25,6 +25,7 @@ export const uiLogout = ({ history, setUser, setToken, clearIntegrationTokens, a
     .then(() => {
       history.push('/');
     });
+};
 
 // const LogoutButton = ({
 //   history,

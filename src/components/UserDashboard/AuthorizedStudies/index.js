@@ -2,13 +2,11 @@ import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 import { isEmpty } from 'lodash';
 
 import CardHeader from 'uikit/Card/CardHeader';
 import DownloadController from 'icons/DownloadController';
 
-import { withApi } from 'services/api';
 import StudiesConnected from './StudiesConnected';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
@@ -20,17 +18,11 @@ import Info from '../Info';
 import { CardActionButton } from '../styles';
 
 const AuthorizedStudies = compose(
-  withApi,
   injectState,
-  withTheme,
   fenceConnectionInitializeHoc,
 )(
   ({
     state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
-    effects,
-    theme,
-    api,
-    ...props
   }) => {
     const Header = (
       <CardHeader title="Authorized Studies" badge={fenceAuthStudies.length || null} />

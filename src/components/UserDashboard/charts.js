@@ -1,5 +1,4 @@
 import React from 'react';
-import { withTheme } from 'emotion-theming';
 import orderBy from 'lodash/orderBy';
 
 import { titleCase } from 'common/displayFormatters';
@@ -7,7 +6,7 @@ import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
+import theme from 'src/theme/defaultTheme';
 import { resetVirtualStudy, setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
 import {
@@ -66,10 +65,7 @@ const trackBarClick = (trackingEventCategory, barData) => {
   });
 };
 
-export const studiesChart = compose(
-  withRouter,
-  withTheme,
-)(({ data, theme, setSqons, virtualStudy, history }) => {
+export const studiesChart = compose(withRouter)(({ data, setSqons, virtualStudy, history }) => {
   const onClick = barData => {
     trackBarClick(studiesChartCategory, barData);
     resetVirtualStudy();
@@ -127,7 +123,7 @@ export const StudiesChart = connect(
   mapDispatchToProps,
 )(studiesChart);
 
-export const UserInterestsChart = withTheme(({ data, theme }) => {
+export const UserInterestsChart = ({ data }) => {
   // sort by count then alpha, limit to top 10
   const filteredInterests = data.filter(interest =>
     ALLOWED_INTERESTS.includes(interest.name.toLowerCase()),
@@ -149,12 +145,9 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
       colors={[theme.chartColors.red, '#FFF']}
     />
   );
-});
+};
 
-export const topDiagnoseChart = compose(
-  withRouter,
-  withTheme,
-)(({ data, theme, setSqons, virtualStudy, history }) => {
+export const topDiagnoseChart = compose(withRouter)(({ data, setSqons, virtualStudy, history }) => {
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
     resetVirtualStudy();

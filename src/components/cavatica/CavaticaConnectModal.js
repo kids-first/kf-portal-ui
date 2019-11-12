@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { compose, withState } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { isValidKey } from 'services/cavatica';
 import step2Screenshot from 'assets/cavaticaTokenScreenshot.png';
 import { deleteSecret, setSecret } from 'services/secrets';
@@ -70,115 +69,112 @@ const submitCavaticaToken = async ({
 
 const NumberBullet = ({ children }) => <span className={numberBullet}>{children}</span>;
 
-const CavaticaConnectModal = withTheme(
-  ({
-    state,
-    effects,
-    theme,
-    cavaticaKey,
-    setCavaticaKey,
-    gen3Key,
-    setGen3Key,
-    editingCavitca,
-    setEditingCavatica,
-    invalidToken,
-    setInvalidToken,
-    ...props
-  }) => {
-    return (
-      <div className={integrationStepsModalContent}>
-        <div>
-          {props.withWarning && (
-            <ModalWarning>
-              You have not connected to your Cavatica account. Please follow the instructions below
-              to connect and start copying files.
-            </ModalWarning>
-          )}
-          <div className="stepRow">
-            <div>
-              <NumberBullet>1</NumberBullet>
-            </div>
-            <div className="stepText">
-              <Paragraph>
-                If you don't have one, please{' '}
-                <ExternalLink href={`${cavaticaWebRegistrationRoot}`}>
-                  register for a Cavatica Account <RightArrows />
-                </ExternalLink>
-              </Paragraph>
-            </div>
+const CavaticaConnectModal = ({
+  state,
+  effects,
+  cavaticaKey,
+  setCavaticaKey,
+  gen3Key,
+  setGen3Key,
+  editingCavitca,
+  setEditingCavatica,
+  invalidToken,
+  setInvalidToken,
+  ...props
+}) => {
+  return (
+    <div className={integrationStepsModalContent}>
+      <div>
+        {props.withWarning && (
+          <ModalWarning>
+            You have not connected to your Cavatica account. Please follow the instructions below to
+            connect and start copying files.
+          </ModalWarning>
+        )}
+        <div className="stepRow">
+          <div>
+            <NumberBullet>1</NumberBullet>
           </div>
-          <div className="stepRow">
-            <div>
-              <NumberBullet>2</NumberBullet>
-            </div>
-            <div className="stepText">
-              <Paragraph>
-                You will need to retrieve your authentication token from the Cavatica{' '}
-                <ExternalLink href={`${cavaticaWebRoot}/developer#token`}>
-                  Developer Dashboard
-                </ExternalLink>
-                . From the Dashboard, click on the "Auth Token" tab.
-              </Paragraph>
-            </div>
-            <img
-              className={demoImage}
-              src={step2Screenshot}
-              alt="Screenshot of Cavatica's Developer Den"
-            />
-          </div>
-          <div className="stepRow">
-            <div>
-              <NumberBullet>3</NumberBullet>
-            </div>
-            <div className="stepText">
-              <Paragraph>
-                Click on "<strong>Generate Token</strong>", copy and paste it into the field below
-                and click Connect.
-              </Paragraph>
-            </div>
-          </div>
-          <div css="display:flex; flex-direction:column; margin-left:74px;">
-            <span className={tokenTitle}>Cavatica Authentication Token:</span>
-            <Input
-              id="cavaticaKey"
-              type="text"
-              value={cavaticaKey}
-              name="cavatica"
-              placeholder="Cavatica Key"
-              className={tokenInput}
-              onChange={e => {
-                setCavaticaKey(e.target.value);
-                setInvalidToken(false);
-
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.user.profile,
-                  action: 'Integration Credentials Updated ',
-                  label: TRACKING_EVENTS.labels.cavatica,
-                });
-              }}
-            />
-            <div className={formErrorMessage} id="cavaticaTokenErrorMsg">
-              {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ' '}
-            </div>
+          <div className="stepText">
+            <Paragraph>
+              If you don't have one, please{' '}
+              <ExternalLink href={`${cavaticaWebRegistrationRoot}`}>
+                register for a Cavatica Account <RightArrows />
+              </ExternalLink>
+            </Paragraph>
           </div>
         </div>
-        <ModalFooter
-          {...{
-            handleSubmit: async () => {
-              await submitCavaticaToken({
-                token: cavaticaKey,
-                setIntegrationToken: effects.setIntegrationToken,
-                onSuccess: props.onComplete,
-                onFail: () => setInvalidToken(true),
+        <div className="stepRow">
+          <div>
+            <NumberBullet>2</NumberBullet>
+          </div>
+          <div className="stepText">
+            <Paragraph>
+              You will need to retrieve your authentication token from the Cavatica{' '}
+              <ExternalLink href={`${cavaticaWebRoot}/developer#token`}>
+                Developer Dashboard
+              </ExternalLink>
+              . From the Dashboard, click on the "Auth Token" tab.
+            </Paragraph>
+          </div>
+          <img
+            className={demoImage}
+            src={step2Screenshot}
+            alt="Screenshot of Cavatica's Developer Den"
+          />
+        </div>
+        <div className="stepRow">
+          <div>
+            <NumberBullet>3</NumberBullet>
+          </div>
+          <div className="stepText">
+            <Paragraph>
+              Click on "<strong>Generate Token</strong>", copy and paste it into the field below and
+              click Connect.
+            </Paragraph>
+          </div>
+        </div>
+        <div css="display:flex; flex-direction:column; margin-left:74px;">
+          <span className={tokenTitle}>Cavatica Authentication Token:</span>
+          <Input
+            id="cavaticaKey"
+            type="text"
+            value={cavaticaKey}
+            name="cavatica"
+            placeholder="Cavatica Key"
+            className={tokenInput}
+            onChange={e => {
+              setCavaticaKey(e.target.value);
+              setInvalidToken(false);
+
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.user.profile,
+                action: 'Integration Credentials Updated ',
+                label: TRACKING_EVENTS.labels.cavatica,
               });
-            },
-            submitText: 'Connect',
-            submitDisabled: invalidToken || !isValidKey(cavaticaKey),
-          }}
-        />
+            }}
+          />
+          <div className={formErrorMessage} id="cavaticaTokenErrorMsg">
+            {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ' '}
+          </div>
+        </div>
       </div>
-    );
-  },
-);
+      <ModalFooter
+        {...{
+          handleSubmit: async () => {
+            await submitCavaticaToken({
+              token: cavaticaKey,
+              setIntegrationToken: effects.setIntegrationToken,
+              onSuccess: props.onComplete,
+              onFail: () => setInvalidToken(true),
+            });
+          },
+          submitText: 'Connect',
+          submitDisabled: invalidToken || !isValidKey(cavaticaKey),
+        }}
+      />
+    </div>
+  );
+};
 
 export default enhance(CavaticaConnectModal);
