@@ -11,6 +11,7 @@ const { Content } = Layout;
 const filterContactInfoFromProfile = profile => {
   const findMeFields = ['github', 'googleScholarId', 'linkedin', 'orchid', 'twitter', 'facebook'];
   const keepKeysExceptFindMeOn = [
+    'email',
     'addressLine1',
     'institution',
     'city',
@@ -22,16 +23,16 @@ const filterContactInfoFromProfile = profile => {
   ];
 
   const { entries } = Object;
-
+  // keep only needed value from profile + add findMe elements to it, as well.
   return entries(profile).reduce(
-    (acc, [key, value]) => {
-      if (keepKeysExceptFindMeOn.includes(key)) {
-        return { ...acc, [key]: value };
-      } else if (findMeFields.includes(key) && Boolean(profile[key])) {
-        const findMe = { ...acc.findMe, [key]: value };
-        return { ...acc, findMe };
+    (reducedProfile, [profileKey, profileValue]) => {
+      if (keepKeysExceptFindMeOn.includes(profileKey)) {
+        return { ...reducedProfile, [profileKey]: profileValue };
+      } else if (findMeFields.includes(profileKey) && Boolean(profileValue)) {
+        const findMe = { ...reducedProfile.findMe, [profileKey]: profileValue };
+        return { ...reducedProfile, findMe };
       }
-      return acc;
+      return reducedProfile;
     },
     { findMe: {} },
   );

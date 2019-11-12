@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu } from 'antd';
 import UserProfilePageHeader from 'components/UserProfile/UserProfilePageHeader';
 import AboutMe from './AboutMe_new'; //TODO
 const KEY_ABOUT_ME = 'aboutMe';
@@ -34,13 +34,23 @@ class UserProfilePage extends Component {
           <UserProfilePageHeader profile={profile} />
         </Header>
         <Layout>
-          <Sider style={{ background: '#fff' }}>
+          <Sider
+            width={450}
+            style={{
+              background: '#fff',
+              borderRight: '1px solid rgb(237,238,241)',
+              paddingTop: '25px',
+            }}
+          >
             <Menu mode="inline" defaultSelectedKeys={[KEY_ABOUT_ME]} onClick={this.handleClick}>
-              <Menu.Item key={KEY_ABOUT_ME}>
-                <span className="nav-text">About me Todo</span>
+              <Menu.Item
+                key={KEY_ABOUT_ME}
+                style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
+              >
+                <div style={{ textAlign: 'right', paddingRight: '10px' }}>About Me</div>
               </Menu.Item>
-              <Menu.Item key={KEY_SETTINGS}>
-                <span className="nav-text">Settings todo </span>
+              <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
+                <div style={{ textAlign: 'right', paddingRight: '10px' }}>Settings </div>
               </Menu.Item>
             </Menu>
           </Sider>
