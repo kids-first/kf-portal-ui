@@ -1,16 +1,16 @@
 /* https://catalinxyz.com/create-the-@bind-decorator-to-help-with-react-events-and-callback-props */
-import { get, isArrayLikeObject, toLower } from 'lodash';
-
+import { get, isArrayLikeObject, toLower, trim } from 'lodash';
+import md5 from 'md5';
 import jwtDecode from 'jwt-decode';
 
-import { getProfile, createProfile } from 'services/profiles';
+import { createProfile, getProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { FENCES, CAVATICA } from 'common/constants';
+import { CAVATICA, FENCES } from 'common/constants';
 import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
 
 import { store } from 'store';
-import { loginSuccess, loginFailure } from 'store/actionCreators/user';
+import { loginFailure, loginSuccess } from 'store/actionCreators/user';
 
 export function bind(target, name, descriptor) {
   return {
@@ -150,4 +150,11 @@ export const toKebabCase = str => {
       .map(x => x.toLowerCase())
       .join('-')
   );
+};
+
+export const computeGravatarSrcFromEmail = (email, options) => {
+  const size = (options || {}).size || 100;
+  const defaultImage = (options || {}).d || '';
+  const emailToHash = md5(trim((email || '').toLowerCase()));
+  return `https://www.gravatar.com/avatar/${emailToHash}?s=${size}&d=${defaultImage}`;
 };

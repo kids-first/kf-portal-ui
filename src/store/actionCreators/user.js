@@ -9,6 +9,9 @@ import {
   FAILURE_UPDATE,
   UPDATE_USER_SUCCESS,
   DELETE_PROFILE,
+  REQUEST_IS_PUBLIC_TOGGLE,
+  RECEIVE_IS_PUBLIC_TOGGLE,
+  FAILURE_IS_PUBLIC_TOGGLE,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
 import { getOtherUserProfile, getUserLoggedInProfile, updateProfile } from 'services/profiles';
@@ -127,6 +130,41 @@ export const updateUserProfile = user => {
       return dispatch(failureUpdateProfile(e));
     }
   };
+};
+
+export const requestIsPublicToggle = () => {
+  return {
+    type: REQUEST_IS_PUBLIC_TOGGLE,
+  };
+};
+
+export const receiveIsPublicToggle = () => {
+  return {
+    type: RECEIVE_IS_PUBLIC_TOGGLE,
+  };
+};
+
+export const failureIsPublicToggle = (error) => {
+  return {
+    type: FAILURE_IS_PUBLIC_TOGGLE,
+    payload: error,
+  };
+};
+
+export const toggleIsPublic = user => {
+  return async dispatch => {
+    dispatch(requestIsPublicToggle());
+
+    try {
+      await updateProfileFromUser({
+        user,
+      });
+      return dispatch(receiveIsPublicToggle());
+    } catch (e) {
+      return dispatch(failureIsPublicToggle(e));
+    }
+  };
+
 };
 
 export const deleteProfile = () => {

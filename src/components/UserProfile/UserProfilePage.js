@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
-import UserProfilePageHeader from 'components/UserProfile/UserProfilePageHeader';
 import AboutMe from './AboutMe_new'; //TODO
+import HeaderBannerContainer from './HeaderBannerContainer';
+
 const KEY_ABOUT_ME = 'aboutMe';
 const KEY_SETTINGS = 'settings';
 
@@ -30,12 +31,12 @@ class UserProfilePage extends Component {
     const { currentMenuItem } = this.state;
     return (
       <Layout>
-        <Header style={{ backgroundColor: 'transparent', minHeight: 250, padding: 0 }}>
-          <UserProfilePageHeader profile={profile} />
+        <Header style={{ backgroundColor: 'transparent', height: 240, padding: 0 }}>
+          <HeaderBannerContainer canEdit={canEdit} />
         </Header>
         <Layout>
           <Sider
-            width={450}
+            width={350}
             style={{
               background: '#fff',
               borderRight: '1px solid rgb(237,238,241)',

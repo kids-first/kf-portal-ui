@@ -21,7 +21,7 @@ const ContactReadOnly = props => {
         </Title>
       }
       style={{
-        width: '1000px',
+        width: '1200px',
         borderRadius: '10px',
       }}
       headStyle={{
