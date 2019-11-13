@@ -2,14 +2,16 @@ import * as React from 'react';
 import { compose, branch, renderComponent } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
-import { startCase, orderBy } from 'lodash';
+import { startCase } from 'lodash';
+// [NEXT] replace by antd's grid system
 import { Row, Col } from 'react-grid-system';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
+import CardContentSpinner from 'uikit/Card/CardContentSpinner';
 
-import { StudiesChart, TopDiagnosesChart, UserInterestsChart } from './charts';
+import { StudiesChart, UserInterestsChart } from './charts';
 import { withApi } from '../../services/api';
 import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
 
@@ -17,11 +19,12 @@ import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 
-import { DashboardCard, CardContentSpinner, DashboardMulticard } from './styles';
+import { DashboardCard, DashboardMulticard } from './styles';
 import { SizeProvider } from 'components/Utils';
 import DashboardCardError from './DashboardCardError';
 import PropTypes from 'prop-types';
 
+import { MostFrequentDiagnosesChart } from 'components/Charts';
 import { userDashboardContainer, dashboardTitle } from './UserDashboard.module.css';
 
 const Container = ({ className = '', children }) => (
@@ -57,7 +60,10 @@ export default compose(
   injectState,
   withRouter,
   withApi,
-  branch(({ state: { loggedInUser } }) => !loggedInUser, renderComponent(() => <div />)),
+  branch(
+    ({ state: { loggedInUser } }) => !loggedInUser,
+    renderComponent(() => <div />),
+  ),
 )(({ state: { loggedInUser }, api }) => (
   <div className={userDashboardContainer}>
     <h1 className={dashboardTitle}>My Dashboard</h1>
@@ -117,6 +123,20 @@ export default compose(
             </DataProvider>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
+            <MemberResearchInterestsChart api={api} />
+          </CardSlot>
+          <CardSlot sm={12} md={6} lg={6} xl={4}>
+            <DashboardCard title="Most Frequent Diagnoses">
+              <MostFrequentDiagnosesChart />
+            </DashboardCard>
+          </CardSlot>
+        </ContainerRow>
+      )}
+    </SizeProvider>
+  </div>
+));
+
+const MemberResearchInterestsChart = ({ api }) => (
             <DashboardCard title="Member Research Interests">
               <DataProvider
                 url={`${publicStatsApiRoot}users/interests`}
@@ -133,35 +153,4 @@ export default compose(
                 )}
               </DataProvider>
             </DashboardCard>
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Most Frequent Diagnoses">
-              <DataProvider
-                url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
-                api={api}
-                transform={data => {
-                  const dxs = data.diagnoses || [];
-                  const orderedDxs = orderBy(
-                    dxs,
-                    diagnosis => diagnosis.familyMembers + diagnosis.probands,
-                    'desc',
                   );
-                  return orderedDxs.slice(0, 10).map(d => ({ ...d, label: startCase(d.name) }));
-                }}
-              >
-                {fetchedState => (
-                  <ChartLoadGate
-                    Error={DashboardCardError}
-                    Loader={CardContentSpinner}
-                    fetchedState={fetchedState}
-                    Chart={TopDiagnosesChart}
-                  />
-                )}
-              </DataProvider>
-            </DashboardCard>
-          </CardSlot>
-        </ContainerRow>
-      )}
-    </SizeProvider>
-  </div>
-));

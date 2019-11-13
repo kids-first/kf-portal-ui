@@ -5,13 +5,14 @@ import { injectState } from 'freactal';
 import { isEmpty } from 'lodash';
 
 import CardHeader from 'uikit/Card/CardHeader';
+import CardContentSpinner from 'uikit/Card/CardContentSpinner';
 import DownloadController from 'icons/DownloadController';
 
 import StudiesConnected from './StudiesConnected';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
 import AccessGate from '../../AccessGate';
-import { DashboardCard, CardContentSpinner } from '../styles';
+import { DashboardCard } from '../styles';
 
 import Info from '../Info';
 

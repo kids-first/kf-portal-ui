@@ -6,7 +6,7 @@ import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
 import Donut from 'chartkit/components/Donut';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import theme from 'src/theme/defaultTheme';
+import theme from 'theme/defaultTheme';
 import { resetVirtualStudy, setSqons } from 'store/actionCreators/virtualStudies';
 import { connect } from 'react-redux';
 import {
@@ -21,7 +21,7 @@ import { compose } from 'recompose';
 const {
   categories: {
     charts: {
-      bar: { studies: studiesChartCategory, diagnoses: diagnosesChartCategory },
+      bar: { studies: studiesChartCategory },
     },
   },
 } = TRACKING_EVENTS;
@@ -49,13 +49,7 @@ const studiesToolTip = data => {
   );
 };
 
-const participantTooltip = data => {
-  const participants = data.familyMembers + data.probands;
-  return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
-};
-
 const SHORT_NAME_FIELD = 'study.short_name';
-const TEXT_DIAGNOSES_FIELD = 'diagnoses.diagnosis';
 
 const trackBarClick = (trackingEventCategory, barData) => {
   trackUserInteraction({
@@ -118,10 +112,7 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export const StudiesChart = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(studiesChart);
+export const StudiesChart = connect(mapStateToProps, mapDispatchToProps)(studiesChart);
 
 export const UserInterestsChart = ({ data }) => {
   // sort by count then alpha, limit to top 10
@@ -146,53 +137,3 @@ export const UserInterestsChart = ({ data }) => {
     />
   );
 };
-
-export const topDiagnoseChart = compose(withRouter)(({ data, setSqons, virtualStudy, history }) => {
-  const onClick = barData => {
-    trackBarClick(diagnosesChartCategory, barData);
-    resetVirtualStudy();
-    generateSqon(TEXT_DIAGNOSES_FIELD, barData.data.name);
-    history.push('/explore');
-  };
-
-  const generateSqon = (field, value) => {
-    const newSqon = {
-      op: 'in',
-      content: {
-        field,
-        value: [value],
-      },
-    };
-
-    const modifiedSqons = setSqonValueAtIndex(getDefaultSqon(), 0, newSqon, {
-      operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
-      values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
-    });
-    setSqons(modifiedSqons);
-  };
-
-  return (
-    <HorizontalBar
-      data={data}
-      indexBy="label"
-      keys={['probands', 'familyMembers']}
-      onClick={onClick}
-      tooltipFormatter={participantTooltip}
-      sortBy={sortDescParticipant}
-      analyticsTracking={{ category: diagnosesChartCategory }}
-      tickInterval={4}
-      colors={[theme.chartColors.blue, theme.chartColors.purple]}
-      xTickTextLength={28}
-      legends={[
-        { title: 'Probands', color: theme.chartColors.blue },
-        { title: 'Family Members', color: theme.chartColors.purple },
-      ]}
-      padding={0.4}
-    />
-  );
-});
-
-export const TopDiagnosesChart = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(topDiagnoseChart);

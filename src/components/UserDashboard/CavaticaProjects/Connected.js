@@ -2,9 +2,9 @@ import React from 'react';
 
 import Column from 'uikit/Column';
 import { Box } from 'uikit/Core';
+import CardContentSpinner from 'uikit/Card/CardContentSpinner';
 import ProjectList from './ProjectList';
 import NoProjects from './NoProjects';
-import { CardContentSpinner } from '../styles';
 
 const Connected = ({ loading, projects, tabToCreate }) => {
   return loading ? (

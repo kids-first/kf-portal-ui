@@ -6,19 +6,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { distanceInWords } from 'date-fns';
-import { Box, Link, Flex, Span } from 'uikit/Core';
+
+import { Box, Link, Flex } from 'uikit/Core';
 import CardHeader from 'uikit/Card/CardHeader';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
+import CardContentSpinner from 'uikit/Card/CardContentSpinner';
 
 import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
-import {
-  PromptMessageContainer,
-  PromptMessageContent,
-  CardContentSpinner,
-  DashboardCard,
-} from '../styles';
+import { PromptMessageContainer, PromptMessageContent, DashboardCard } from '../styles';
 import QueryBlock from './QueryBlock';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import {
@@ -246,10 +243,7 @@ const mapStateToProps = state => {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   provideSavedQueries,
   injectState,
 )(SavedQueries);

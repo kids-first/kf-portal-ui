@@ -1,5 +1,4 @@
 import React from 'react';
-import Spinner from 'react-spinkit';
 import ExternalLinkIcon from 'react-icons/lib/fa/external-link';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 
@@ -16,7 +15,6 @@ import { styleComponent } from 'components/Utils';
 
 import {
   dashboardCard,
-  loadingScreenContainer,
   cardActionButton,
   promptMessageContainer,
   promptMessageContent,
@@ -27,18 +25,6 @@ import {
 
 export const DashboardCard = styleComponent(Card, dashboardCard);
 export const DashboardMulticard = styleComponent(Multicard, dashboardCard);
-
-export const CardContentSpinner = () => (
-  <div className={loadingScreenContainer}>
-    <Spinner
-      name="circle"
-      style={{
-        width: 50,
-        height: 50,
-      }}
-    />
-  </div>
-);
 
 export const CardActionButton = styleComponent(TealActionButton, cardActionButton);
 export const CardLink = styleComponent('a', cardLink);

@@ -15,15 +15,6 @@
   padding-left: 30px;
 }
 
-.loadingScreenContainer {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.5;
-}
-
 /*******************************************************/
 /* Info */
 /*******************************************************/
@@ -44,15 +35,15 @@
 /*******************************************************/
 /* DashboardCard */
 /*******************************************************/
+.dashboardCard {
+  height: 404px;
+}
+
 .dashboardCardErrorContainer {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.dashboardCard {
-  height: 404px;
 }
 
 .cardActionButton {
@@ -80,6 +71,7 @@
   margin-top: 5px;
 }
 
+/* // TODO REMOVE, UNUSED? */
 .promptMessageContainer {
 }
 .promptMessageContent {

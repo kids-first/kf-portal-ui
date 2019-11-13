@@ -71,7 +71,7 @@ const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, toast, isLoadingUser } = state;
+  const { loggedInUser, /* toast,*/ isLoadingUser } = state;
 
   const showDashboardIfLoggedIn = props => {
     return forceSelectRole({
