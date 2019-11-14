@@ -13,6 +13,7 @@ if (egoApiOverride) {
   global.log('warning: using ego api override');
 }
 export const devDebug = process.env.NODE_ENV === 'development';
+export const debugGoogleAnalytics = getApplicationEnvVar('DEBUG_GOOGLE_ANALYTICS') === 'true';
 
 export const egoApiRoot: string = egoApiOverride || getApplicationEnvVar('EGO_API') || '';
 

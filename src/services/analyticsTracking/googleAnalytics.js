@@ -1,5 +1,5 @@
 import ReactGA from 'react-ga';
-import { gaTrackingID, devDebug } from 'common/injectGlobals';
+import { gaTrackingID, devDebug, debugGoogleAnalytics } from 'common/injectGlobals';
 import history from '../history';
 import { merge, isObject } from 'lodash';
 import { TRACKING_EVENTS } from './trackingEventConstants';
@@ -21,7 +21,7 @@ let GAState = {
 let timingsStorage = window.localStorage;
 
 export const initGATracking = () => {
-  ReactGA.initialize(GAState.trackingId, { debug: devDebug });
+  ReactGA.initialize(GAState.trackingId, { debug: Boolean(devDebug && debugGoogleAnalytics) });
   ReactGA.ga(function(tracker) {
     var clientId = tracker.get('clientId');
     addStateInfo({ clientId });
