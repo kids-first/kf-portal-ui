@@ -91,15 +91,3 @@
 .headerWrapper.inactive {
   opacity: 0.5;
 }
-
-/**********************************************************/
-/* CardContentSpinner */
-/**********************************************************/
-.cardSpinnerContainer {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.5;
-}

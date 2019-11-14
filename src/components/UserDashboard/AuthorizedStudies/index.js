@@ -5,7 +5,7 @@ import { injectState } from 'freactal';
 import { isEmpty } from 'lodash';
 
 import CardHeader from 'uikit/Card/CardHeader';
-import CardContentSpinner from 'uikit/Card/CardContentSpinner';
+import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import DownloadController from 'icons/DownloadController';
 
 import StudiesConnected from './StudiesConnected';
@@ -33,7 +33,7 @@ const AuthorizedStudies = compose(
     return (
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
-          <CardContentSpinner />
+          <ChartContentSpinner />
         ) : isEmpty(fenceConnections) ? (
           <Fragment>
             <AccessGate

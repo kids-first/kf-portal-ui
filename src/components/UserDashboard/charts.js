@@ -1,10 +1,6 @@
 import React from 'react';
-import orderBy from 'lodash/orderBy';
 
-import { titleCase } from 'common/displayFormatters';
-import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import Donut from 'chartkit/components/Donut';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import theme from 'theme/defaultTheme';
 import { resetVirtualStudy, setSqons } from 'store/actionCreators/virtualStudies';
@@ -25,10 +21,6 @@ const {
     },
   },
 } = TRACKING_EVENTS;
-
-const ALLOWED_INTERESTS = []
-  .concat(DISEASE_AREAS, STUDY_SHORT_NAMES)
-  .map(interest => interest.toLowerCase());
 
 const sortDescParticipant = (a, b) => {
   const aTotal = a.probands + a.familyMembers;
@@ -113,27 +105,3 @@ const mapDispatchToProps = {
 };
 
 export const StudiesChart = connect(mapStateToProps, mapDispatchToProps)(studiesChart);
-
-export const UserInterestsChart = ({ data }) => {
-  // sort by count then alpha, limit to top 10
-  const filteredInterests = data.filter(interest =>
-    ALLOWED_INTERESTS.includes(interest.name.toLowerCase()),
-  );
-  const sortedInterests = orderBy(filteredInterests, ['count', 'name'], ['desc', 'asc'])
-    .slice(0, 10)
-    .map(interest => ({
-      id: titleCase(interest.name),
-      label: titleCase(interest.name),
-      value: interest.count,
-    }));
-
-  return (
-    <Donut
-      analyticsTracking={{
-        category: TRACKING_EVENTS.categories.charts.donut.userInterests,
-      }}
-      data={sortedInterests}
-      colors={[theme.chartColors.red, '#FFF']}
-    />
-  );
-};

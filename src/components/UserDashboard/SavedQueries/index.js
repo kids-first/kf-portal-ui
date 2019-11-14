@@ -12,7 +12,7 @@ import CardHeader from 'uikit/Card/CardHeader';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
-import CardContentSpinner from 'uikit/Card/CardContentSpinner';
+import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 
 import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
 import { PromptMessageContainer, PromptMessageContent, DashboardCard } from '../styles';
@@ -90,7 +90,7 @@ class SavedQueries extends React.Component {
     return (
       <DashboardCard showHeader={false}>
         {loadingQueries ? (
-          <CardContentSpinner />
+          <ChartContentSpinner />
         ) : (
           <div>
             <CardHeader title="Saved Queries" style={{ margin: '5px 0 15px 0' }} />

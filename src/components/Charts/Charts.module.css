@@ -17,9 +17,24 @@
   font-size: 16px;
 }
 
-.dashboardCardErrorContainer {
+/*********************************************************/
+/* ChartError */
+/*********************************************************/
+.chartErrorContainer {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/**********************************************************/
+/* CardContentSpinner */
+/**********************************************************/
+.chartSpinnerContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
 }

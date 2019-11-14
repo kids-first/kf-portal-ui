@@ -14,7 +14,6 @@ import theme from 'theme/defaultTheme';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import CardContentSpinner from 'uikit/Card/CardContentSpinner';
 import {
   getDefaultSqon,
   setSqonValueAtIndex,
@@ -22,7 +21,8 @@ import {
   MERGE_VALUES_STRATEGIES,
 } from 'common/sqonUtils';
 
-import ChartCardError from './ChartCardError';
+import ChartContentSpinner from './ChartContentSpinner';
+import ChartError from './ChartError';
 
 export default compose(withApi)(({ api }) => (
   <DataProvider
@@ -40,8 +40,8 @@ export default compose(withApi)(({ api }) => (
   >
     {fetchedState => (
       <ChartLoadGate
-        Error={ChartCardError}
-        Loader={CardContentSpinner}
+        Error={ChartError}
+        Loader={ChartContentSpinner}
         fetchedState={fetchedState}
         Chart={TopDiagnosesChart}
       />

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { compose, branch, renderComponent } from 'recompose';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { compose, branch, renderComponent } from 'recompose';
 import { injectState } from 'freactal';
 import { startCase } from 'lodash';
 // [NEXT] replace by antd's grid system
@@ -9,11 +10,11 @@ import { Row, Col } from 'react-grid-system';
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
 import DataProvider from 'chartkit/components/DataProvider';
 import MultiHeader from 'uikit/Multicard/MultiHeader';
-import CardContentSpinner from 'uikit/Card/CardContentSpinner';
+import CardContentSpinner from 'components/Charts/ChartContentSpinner';
 
-import { StudiesChart, UserInterestsChart } from './charts';
-import { withApi } from '../../services/api';
-import { publicStatsApiRoot, arrangerProjectId } from '../../common/injectGlobals';
+import { StudiesChart } from './charts';
+import { withApi } from 'services/api';
+import { publicStatsApiRoot, arrangerProjectId } from 'common/injectGlobals';
 
 import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
@@ -22,9 +23,8 @@ import CavaticaProjects from './CavaticaProjects';
 import { DashboardCard, DashboardMulticard } from './styles';
 import { SizeProvider } from 'components/Utils';
 import DashboardCardError from './DashboardCardError';
-import PropTypes from 'prop-types';
 
-import { MostFrequentDiagnosesChart } from 'components/Charts';
+import { MostFrequentDiagnosesChart, MemberResearchInterestsChart } from 'components/Charts';
 import { userDashboardContainer, dashboardTitle } from './UserDashboard.module.css';
 
 const Container = ({ className = '', children }) => (
@@ -123,7 +123,9 @@ export default compose(
             </DataProvider>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <MemberResearchInterestsChart api={api} />
+            <DashboardCard title="Member Research Interests">
+              <MemberResearchInterestsChart />
+            </DashboardCard>
           </CardSlot>
           <CardSlot sm={12} md={6} lg={6} xl={4}>
             <DashboardCard title="Most Frequent Diagnoses">
@@ -135,22 +137,3 @@ export default compose(
     </SizeProvider>
   </div>
 ));
-
-const MemberResearchInterestsChart = ({ api }) => (
-            <DashboardCard title="Member Research Interests">
-              <DataProvider
-                url={`${publicStatsApiRoot}users/interests`}
-                api={api}
-                transform={data => data.interests}
-              >
-                {fetchedState => (
-                  <ChartLoadGate
-                    Error={DashboardCardError}
-                    Loader={CardContentSpinner}
-                    fetchedState={fetchedState}
-                    Chart={UserInterestsChart}
-                  />
-                )}
-              </DataProvider>
-            </DashboardCard>
-                  );
