@@ -6,7 +6,10 @@ import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from './ProfilePill';
 
 const { Title, Text } = Typography;
-
+/* TODO
+* import { isFeatureEnabled } from 'common/featuresToggles';
+isFeatureEnabled('searchMembers')
+* */
 const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canEdit }) => {
   return (
     <Row
@@ -61,7 +64,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
             <Col span={4}>
               <Switch
                 loading={isLoading}
-                style={{ backgroundColor: 'darkgrey' }}
+                style={{ backgroundColor: profile.isPublic ? 'chartreuse' : 'darkgrey' }}
                 defaultChecked
                 onChange={onChangePrivacyStatusCb}
                 checked={profile.isPublic}

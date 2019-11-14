@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Menu } from 'antd';
 import AboutMe from './AboutMe_new'; //TODO
 import HeaderBannerContainer from './HeaderBannerContainer';
+import Settings from './Settings_new';
 
 const KEY_ABOUT_ME = 'aboutMe';
 const KEY_SETTINGS = 'settings';
@@ -48,16 +49,16 @@ class UserProfilePage extends Component {
                 key={KEY_ABOUT_ME}
                 style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
               >
-                <div style={{ textAlign: 'right', paddingRight: '10px' }}>About Me</div>
+                <div style={{ textAlign: 'right', paddingRight: '10px', fontSize: '24px', paddingBottom: '10px' }}>About Me</div>
               </Menu.Item>
               <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
-                <div style={{ textAlign: 'right', paddingRight: '10px' }}>Settings </div>
+                <div style={{ textAlign: 'right', paddingRight: '10px', fontSize: '24px',  paddingBottom: '10px' }}>Settings </div>
               </Menu.Item>
             </Menu>
           </Sider>
           <Content>
             {currentMenuItem === KEY_ABOUT_ME && <AboutMe canEdit={canEdit} profile={profile} />}
-            {currentMenuItem === KEY_SETTINGS && <div>hello settings</div>}
+            {currentMenuItem === KEY_SETTINGS && <Settings profile={profile} />}
           </Content>
         </Layout>
       </Layout>
