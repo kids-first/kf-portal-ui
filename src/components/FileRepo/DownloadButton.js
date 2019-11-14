@@ -22,7 +22,11 @@ import { withApi } from 'services/api';
 import { DropDownState } from 'components/Header/AppsMenu';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 import Tooltip from 'uikit/Tooltip';
-import { clinicalDataReport, familyClinicalDataReport } from 'services/reports';
+import {
+  clinicalDataReport,
+  familyClinicalDataReport,
+  biospecimenDataReport,
+} from 'services/reports';
 import { isFeatureEnabled } from 'common/featuresToggles';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
@@ -73,12 +77,16 @@ const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon
   );
 });
 
-const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+const trackDownload = label => {
   trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
-    label: 'Clinical (Participant)',
+    label: label,
   });
+};
+
+const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
+  trackDownload('Clinical (Participant)');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
   if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
@@ -107,11 +115,7 @@ const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
 };
 
 const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-    action: TRACKING_EVENTS.actions.download.report,
-    label: 'Clinical (Participant and family)',
-  });
+  trackDownload('Clinical (Participant and family)');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
   if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
@@ -141,14 +145,17 @@ const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () =>
 };
 
 const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async () => {
-  let downloadConfig = { sqon, columns: columnState.columns, isFileRepo };
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
-    action: TRACKING_EVENTS.actions.download.report,
-    label: 'Biospecimen',
-  });
-  const downloader = downloadBiospecimen(downloadConfig);
-  return downloader();
+  trackDownload('Biospecimen');
+
+  // Keep legacy code for File Repository Download button until the endpoint supports it
+  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
+    let downloadConfig = { sqon, columns: columnState.columns, isFileRepo };
+    const downloader = downloadBiospecimen(downloadConfig);
+    return downloader();
+  }
+
+  // The new report
+  return biospecimenDataReport(sqon);
 };
 
 const queryHasFamilyMembers = async (api, sqon, isFileRepo) => {
@@ -160,10 +167,8 @@ const queryHasFamilyMembers = async (api, sqon, isFileRepo) => {
   // try {
   //   response = familyMemberAndParticipantIds({ api, sqon, isFileRepo });
   // } catch (err) {
-  //   console.error('🔥 err', err);
   //   return false;
   // }
-  // console.log('🔥', response);
   // const extractResults = path => {
   //   get(response, 'data.participant.aggregations.kf_id.buckets', []).map(b => b.key);
   // };
@@ -204,10 +209,7 @@ class DownloadButton extends React.Component {
     const reportMap = {
       clinicalData: clinicalDataReport,
       familyClinicalData: familyClinicalDataReport,
-      // TODO : implement this one, too
-      biospecimenData: () => {
-        throw new Error(`Biospecimen data report is not implemented yet.`);
-      },
+      biospecimenData: biospecimenDataReport,
     };
     const reportFn = reportMap[reportName] || Promise.resolve();
 
@@ -219,6 +221,19 @@ class DownloadButton extends React.Component {
     } finally {
       this.setState({ isDownloadingReport: false });
     }
+  }
+
+  renderReportDropdownItem(reportName, label, sqon, setDropdownVisibility) {
+    return (
+      <OptionRow
+        onMouseDown={async () => {
+          await this.downloadReport(reportName, sqon);
+          setDropdownVisibility(false);
+        }}
+      >
+        {label}
+      </OptionRow>
+    );
   }
 
   cohortBuilderRender() {
@@ -241,23 +256,19 @@ class DownloadButton extends React.Component {
             />
             {isDropdownVisible ? (
               <StyledDropdownOptionsContainer hideTip>
-                <OptionRow
-                  onMouseDown={async () => {
-                    await this.downloadReport('clinicalData', sqon);
-                    setDropdownVisibility(false);
-                  }}
-                >
-                  Clinical Data: Participants only
-                </OptionRow>
+                {this.renderReportDropdownItem(
+                  'clinicalData',
+                  'Clinical Data: Participants only',
+                  sqon,
+                  setDropdownVisibility,
+                )}
                 {isFamilyReportAvailable ? (
-                  <OptionRow
-                    onMouseDown={async () => {
-                      await this.downloadReport('familyClinicalData', sqon);
-                      setDropdownVisibility(false);
-                    }}
-                  >
-                    Clinical Data: Participant & Family Members
-                  </OptionRow>
+                  this.renderReportDropdownItem(
+                    'familyClinicalData',
+                    'Clinical Data: Participant & Family Members',
+                    sqon,
+                    setDropdownVisibility,
+                  )
                 ) : (
                   <OptionRow disabled>
                     <Tooltip
@@ -270,6 +281,12 @@ class DownloadButton extends React.Component {
                       Clinical Data: Participant & Family Members
                     </Tooltip>
                   </OptionRow>
+                )}
+                {this.renderReportDropdownItem(
+                  'biospecimenData',
+                  'Biospecimen Data',
+                  sqon,
+                  setDropdownVisibility,
                 )}
               </StyledDropdownOptionsContainer>
             ) : null}
