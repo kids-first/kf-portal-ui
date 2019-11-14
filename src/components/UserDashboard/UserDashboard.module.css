@@ -39,13 +39,6 @@
   height: 404px;
 }
 
-.dashboardCardErrorContainer {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .cardActionButton {
   height: 37px;
   padding-right: 21px;
