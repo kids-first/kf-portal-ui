@@ -58,7 +58,7 @@ class UserProfilePage extends Component {
           </Sider>
           <Content>
             {currentMenuItem === KEY_ABOUT_ME && <AboutMe canEdit={canEdit} profile={profile} />}
-            {currentMenuItem === KEY_SETTINGS && <Settings profile={profile} />}
+            {currentMenuItem === KEY_SETTINGS && <Settings />}
           </Content>
         </Layout>
       </Layout>

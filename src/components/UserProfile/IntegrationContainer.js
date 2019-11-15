@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose } from 'recompose';
+import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
 import { withApi } from 'services/api';
 import IntegrationItem from './IntegrationItem';
@@ -19,6 +19,7 @@ import {
   TRACKING_EVENTS,
   trackUserInteraction,
 } from 'services/analyticsTracking';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const trackFenceAction = ({ fence, fenceDetails, category, action, label }) => {
@@ -61,22 +62,26 @@ const viewDetails = ({ fence, fenceUser, effects }) =>
     ),
   });
 
-const disconnect = async ({ fence, api, setConnecting, effects }) => {
+const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
   setConnecting(true);
-  await deleteFenceTokens(api, fence);
-  await effects.setIntegrationToken(fence, null);
-  await effects.removeFenceConnection(fence);
-  trackFenceAction({
-    fence,
-    fenceDetails: '',
-    category: TRACKING_EVENTS.categories.user.profile,
-    action: TRACKING_EVENTS.actions.integration.disconnected,
-    label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
-  });
+  try {
+    await deleteFenceTokens(api, fence);
+    await effects.setIntegrationToken(fence, null);
+    await effects.removeFenceConnection(fence);
+    trackFenceAction({
+      fence,
+      fenceDetails: '',
+      category: TRACKING_EVENTS.categories.user.profile,
+      action: TRACKING_EVENTS.actions.integration.disconnected,
+      label: TRACKING_EVENTS.labels[fence] ? TRACKING_EVENTS.labels[fence] : fence,
+    });
+  } catch (e) {
+    setError(e);
+  }
   setConnecting(false);
 };
 
-const connect = ({ fence, api, setConnecting, effects }) => {
+const connect = ({ fence, api, setConnecting, effects, setError }) => {
   analyticsTrigger({
     property: 'portal',
     type: 'recording',
@@ -107,7 +112,7 @@ const connect = ({ fence, api, setConnecting, effects }) => {
       });
     })
     .catch(err => {
-      console.log('err: ', err);
+      setError(err);
       setConnecting(false);
       trackFenceAction({
         category: TRACKING_EVENTS.categories.user.profile,
@@ -120,18 +125,24 @@ const connect = ({ fence, api, setConnecting, effects }) => {
 class IntegrationContainer extends React.Component {
   state = {
     connecting: false,
+    errorConnect: null,
+    errorDisconnect: null,
   };
 
   setConnecting = isConnecting => {
     return this.setState({ connecting: isConnecting });
   };
 
-  onChange = checked => {
-    const { fence, api, effects } = this.props;
-    if (checked) {
-      return connect({ fence, api, setConnecting: this.setConnecting, effects });
-    }
-    return disconnect({ fence, api, setConnecting: this.setConnecting, effects });
+  setErrorConnect = error => {
+    return this.setState({ errorConnect: error });
+  };
+
+  setErrorDisConnect = error => {
+    return this.setState({ errorDisconnect: error });
+  };
+
+  onClickResetErrors = () => {
+    return this.setState({ errorConnect: null, errorDisconnect: null });
   };
 
   onClickAuthorizedStudies = () => {
@@ -139,13 +150,27 @@ class IntegrationContainer extends React.Component {
     return viewDetails({ fence, fenceUser: get(fenceConnections, fence, {}), effects });
   };
   onClickDisconnect = () => {
+    this.setState({ errorDisconnect: null });
     const { fence, api, effects } = this.props;
-    return disconnect({ fence, api, setConnecting: this.setConnecting, effects });
+    return disconnect({
+      fence,
+      api,
+      setConnecting: this.setConnecting,
+      effects,
+      setError: this.setErrorDisConnect,
+    });
   };
 
   onClickConnect = () => {
+    this.setState({ errorConnect: null });
     const { fence, effects, api } = this.props;
-    return connect({ fence, api, setConnecting: this.setConnecting, effects });
+    return connect({
+      fence,
+      api,
+      setConnecting: this.setConnecting,
+      effects,
+      setError: this.setErrorConnect,
+    });
   };
 
   render() {
@@ -154,10 +179,10 @@ class IntegrationContainer extends React.Component {
       state: { fenceConnectionsInitialized, fenceConnections },
       logo,
       description,
+      history,
     } = this.props;
 
-    const { connecting } = this.state;
-
+    const { connecting, errorConnect, errorDisconnect } = this.state;
     const connected = !!get(fenceConnections, fence, false);
     const loading = !fenceConnectionsInitialized || connecting;
     return (
@@ -169,25 +194,40 @@ class IntegrationContainer extends React.Component {
         onClickAuthorizedStudiesCb={this.onClickAuthorizedStudies}
         onClickDisconnectCb={this.onClickDisconnect}
         onClickConnectCb={this.onClickConnect}
+        errorConnect={errorConnect}
+        errorDisconnect={errorDisconnect}
+        history={history}
+        onClickResetErrorsCb={this.onClickResetErrors}
+        actionButtonWhenConnected={{
+          onClick: this.onClickAuthorizedStudies,
+          icon: 'book',
+          label: 'Authorized studies',
+        }}
       />
     );
   }
 }
 
 const Enhanced = compose(
-  withApi,
-  fenceConnectionInitializeHoc,
   injectState,
+  fenceConnectionInitializeHoc,
+  withRouter,
+  withApi,
+  setPropTypes({
+    logo: PropTypes.node.isRequired,
+    description: PropTypes.string.isRequired,
+    connecting: PropTypes.bool,
+    fence: PropTypes.string.isRequired,
+    state: PropTypes.object.isRequired,
+    effects: PropTypes.object.isRequired,
+    api: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    actionButtonWhenConnected: PropTypes.shape({
+      onClick: PropTypes.func.isRequired,
+      icon: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }),
+  }),
 )(IntegrationContainer);
-
-Enhanced.propTypes = {
-  logo: PropTypes.node.isRequired,
-  description: PropTypes.string.isRequired,
-  connecting: PropTypes.bool,
-  fence: PropTypes.string.isRequired,
-  state: PropTypes.object.isRequired,
-  effects: PropTypes.object.isRequired,
-  api: PropTypes.func.isRequired,
-};
 
 export default Enhanced;
