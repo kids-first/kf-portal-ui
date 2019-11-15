@@ -1,6 +1,4 @@
 import React from 'react';
-// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
-// import { hot } from 'react-hot-loader';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -316,8 +314,5 @@ const enhanceApp = () => (
     </ContextProvider>
   </ErrorBoundary>
 );
-
-// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
-// export default hot(module)(enhanceApp);
 
 export default enhanceApp;

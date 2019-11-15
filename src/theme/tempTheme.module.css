@@ -56,7 +56,7 @@
   color: #8f9196;
 }
 
-/* [NEXT] put the same values as `// import { flex } from 'styled-system';` */
+/* components.flex */
 .flex {
   display: flex;
 }

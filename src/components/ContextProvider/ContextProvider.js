@@ -1,8 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
-// import { AppContainer } from 'react-hot-loader';
 import { Router } from 'react-router';
 import ScrollbarSizeProvider from './ScrollbarSizeProvider';
 import {
@@ -37,12 +35,7 @@ export default compose(
       })}
     >
       <ScrollbarSizeProvider>
-        {
-          // [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
-          /* <AppContainer> */
-        }
         <Router history={history}>{children}</Router>
-        {/* </AppContainer> */}
       </ScrollbarSizeProvider>
     </ApiContext.Provider>
   </HistoryContext.Provider>

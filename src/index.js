@@ -47,11 +47,3 @@ if (maintenanceMode) {
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
-
-// [NEXT] Hot Reload: not sure if this is necessary in this version of CRA
-// webpack Hot Module Replacement API
-// if (module.hot) {
-//   module.hot.accept('./App', () => {
-//     render(App);
-//   });
-// }
