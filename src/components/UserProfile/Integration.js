@@ -2,8 +2,6 @@ import React from 'react';
 import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
 import { withApi } from 'services/api';
-import IntegrationItem from './IntegrationItem';
-import Row from 'uikit/Row'; //TODO swap with antd
 import { get } from 'lodash';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import {
@@ -19,25 +17,29 @@ import {
   TRACKING_EVENTS,
   trackUserInteraction,
 } from 'services/analyticsTracking';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import IntegrationManager from './IntegrationManager';
 
-const trackFenceAction = ({ fence, fenceDetails, category, action, label }) => {
+const AUTHORIZED_STUDIES_DIM = '5';
+const CAVATICA_DIM = '6';
+const DCF_DIM = '7';
+
+const trackFenceAction = async ({ fence, fenceDetails, category, action, label }) => {
   if (fence) {
     let gaDimension = null;
 
     switch (fence) {
       case 'gen3':
         // authorizedStudies
-        gaDimension = '5';
+        gaDimension = AUTHORIZED_STUDIES_DIM;
         break;
       case 'cavatica':
         // userCavaticaProjects
-        gaDimension = '6';
+        gaDimension = CAVATICA_DIM;
         break;
       case 'dcf':
         // userDCFdetails
-        gaDimension = '7';
+        gaDimension = DCF_DIM;
         break;
       default:
         break;
@@ -46,11 +48,11 @@ const trackFenceAction = ({ fence, fenceDetails, category, action, label }) => {
     setUserDimension(`dimension${gaDimension}`, fenceDetails);
   }
 
-  trackUserInteraction({ category, action, label });
+  await trackUserInteraction({ category, action, label });
 };
 
-const viewDetails = ({ fence, fenceUser, effects }) =>
-  effects.setModal({
+const viewDetails = ({ fence, fenceUser, effects }) => {
+  return effects.setModal({
     title: 'Authorized Studies',
     component: (
       <FenceAuthorizedStudies
@@ -61,6 +63,7 @@ const viewDetails = ({ fence, fenceUser, effects }) =>
       />
     ),
   });
+};
 
 const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
   setConnecting(true);
@@ -68,7 +71,7 @@ const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
     await deleteFenceTokens(api, fence);
     await effects.setIntegrationToken(fence, null);
     await effects.removeFenceConnection(fence);
-    trackFenceAction({
+    await trackFenceAction({
       fence,
       fenceDetails: '',
       category: TRACKING_EVENTS.categories.user.profile,
@@ -101,7 +104,7 @@ const connect = ({ fence, api, setConnecting, effects, setError }) => {
       effects.setToast({
         id: `${Date.now()}`,
         action: 'success',
-        component: <Row>Controlled dataset access sucessfully connected.</Row>,
+        component: <div>Controlled dataset access sucessfully connected.</div>,
       });
       trackFenceAction({
         fence,
@@ -122,96 +125,51 @@ const connect = ({ fence, api, setConnecting, effects, setError }) => {
     });
 };
 
-class IntegrationContainer extends React.Component {
-  state = {
-    connecting: false,
-    errorConnect: null,
-    errorDisconnect: null,
-  };
+function Integration(props) {
+  const {
+    fence,
+    state: { fenceConnectionsInitialized, fenceConnections },
+    logo,
+    description,
+    effects,
+    api,
+  } = props;
 
-  setConnecting = isConnecting => {
-    return this.setState({ connecting: isConnecting });
-  };
-
-  setErrorConnect = error => {
-    return this.setState({ errorConnect: error });
-  };
-
-  setErrorDisConnect = error => {
-    return this.setState({ errorDisconnect: error });
-  };
-
-  onClickResetErrors = () => {
-    return this.setState({ errorConnect: null, errorDisconnect: null });
-  };
-
-  onClickAuthorizedStudies = () => {
-    const { fence, fenceConnections, effects } = this.props;
-    return viewDetails({ fence, fenceUser: get(fenceConnections, fence, {}), effects });
-  };
-  onClickDisconnect = () => {
-    this.setState({ errorDisconnect: null });
-    const { fence, api, effects } = this.props;
-    return disconnect({
-      fence,
-      api,
-      setConnecting: this.setConnecting,
-      effects,
-      setError: this.setErrorDisConnect,
-    });
-  };
-
-  onClickConnect = () => {
-    this.setState({ errorConnect: null });
-    const { fence, effects, api } = this.props;
-    return connect({
-      fence,
-      api,
-      setConnecting: this.setConnecting,
-      effects,
-      setError: this.setErrorConnect,
-    });
-  };
-
-  render() {
-    const {
-      fence,
-      state: { fenceConnectionsInitialized, fenceConnections },
-      logo,
-      description,
-      history,
-    } = this.props;
-
-    const { connecting, errorConnect, errorDisconnect } = this.state;
-    const connected = !!get(fenceConnections, fence, false);
-    const loading = !fenceConnectionsInitialized || connecting;
-    return (
-      <IntegrationItem
-        logo={logo}
-        description={description}
-        connected={connected}
-        loading={loading}
-        onClickAuthorizedStudiesCb={this.onClickAuthorizedStudies}
-        onClickDisconnectCb={this.onClickDisconnect}
-        onClickConnectCb={this.onClickConnect}
-        errorConnect={errorConnect}
-        errorDisconnect={errorDisconnect}
-        history={history}
-        onClickResetErrorsCb={this.onClickResetErrors}
-        actionButtonWhenConnected={{
-          onClick: this.onClickAuthorizedStudies,
-          icon: 'book',
-          label: 'Authorized studies',
-        }}
-      />
-    );
-  }
+  return (
+    <IntegrationManager
+      logo={logo}
+      description={description}
+      isConnected={!!get(fenceConnections, fence, false)}
+      isLoadingBeforeConnecting={!fenceConnectionsInitialized}
+      actionWhenConnected={{
+        actionCb: viewDetails,
+        actionCbParam: { fence, fenceUser: get(fenceConnections, fence, {}), effects },
+        buttonIcon: 'book',
+        buttonLabel: 'Authorized studies',
+      }}
+      connection={{
+        connectCb: connect,
+        connectCbParams: {
+          fence,
+          api,
+          effects,
+        },
+      }}
+      disConnection={{
+        disConnectCb: disconnect,
+        disConnectCbParams: {
+          fence,
+          api,
+          effects,
+        },
+      }}
+    />
+  );
 }
 
 const Enhanced = compose(
   injectState,
   fenceConnectionInitializeHoc,
-  withRouter,
   withApi,
   setPropTypes({
     logo: PropTypes.node.isRequired,
@@ -221,13 +179,12 @@ const Enhanced = compose(
     state: PropTypes.object.isRequired,
     effects: PropTypes.object.isRequired,
     api: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
     actionButtonWhenConnected: PropTypes.shape({
       onClick: PropTypes.func.isRequired,
       icon: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
     }),
   }),
-)(IntegrationContainer);
+)(Integration);
 
 export default Enhanced;

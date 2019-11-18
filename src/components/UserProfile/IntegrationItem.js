@@ -2,6 +2,8 @@ import { Card, Col, Row, Typography, Button } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import IntegrationItemErrorRow from './IntegrationItemErrorRow';
+import { compose, setPropTypes } from 'recompose';
+import { withRouter } from 'react-router';
 
 const { Paragraph } = Typography;
 
@@ -84,22 +86,25 @@ const IntegrationItem = props => {
   );
 };
 
-IntegrationItem.propTypes = {
-  logo: PropTypes.node.isRequired,
-  description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
-  connected: PropTypes.bool,
-  loading: PropTypes.bool.isRequired,
-  actionButtonWhenConnected: PropTypes.shape({
-    onClick: PropTypes.func.isRequired,
-    icon: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  }).isRequired,
-  onClickDisconnectCb: PropTypes.func.isRequired,
-  onClickConnectCb: PropTypes.func.isRequired,
-  errorConnect: PropTypes.object,
-  errorDisconnect: PropTypes.object,
-  history: PropTypes.object.isRequired,
-  onClickResetErrorsCb: PropTypes.func.isRequired,
-};
+const Enhanced = compose(
+  withRouter,
+  setPropTypes({
+    logo: PropTypes.node.isRequired,
+    description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
+    connected: PropTypes.bool,
+    loading: PropTypes.bool.isRequired,
+    actionButtonWhenConnected: PropTypes.shape({
+      onClick: PropTypes.func.isRequired,
+      icon: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+    onClickDisconnectCb: PropTypes.func.isRequired,
+    onClickConnectCb: PropTypes.func.isRequired,
+    errorConnect: PropTypes.object,
+    errorDisconnect: PropTypes.object,
+    history: PropTypes.object.isRequired,
+    onClickResetErrorsCb: PropTypes.func.isRequired,
+  }),
+)(IntegrationItem);
 
-export default IntegrationItem;
+export default Enhanced;

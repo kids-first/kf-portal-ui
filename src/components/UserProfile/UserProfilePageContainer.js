@@ -16,6 +16,7 @@ import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
 import { Spin, Icon, Layout } from 'antd';
+import { withRouter } from 'react-router-dom';
 
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
@@ -30,6 +31,9 @@ class UserProfilePageContainer extends React.Component {
       isSelf: PropTypes.bool,
     }).isRequired,
     onDeleteProfile: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+      hash: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   componentDidMount() {
@@ -58,7 +62,13 @@ class UserProfilePageContainer extends React.Component {
   };
 
   render() {
-    const { isLoading, error, profile, userInfo } = this.props;
+    const {
+      isLoading,
+      error,
+      profile,
+      userInfo,
+      location: { hash },
+    } = this.props;
 
     if (isLoading) {
       return (
@@ -77,6 +87,8 @@ class UserProfilePageContainer extends React.Component {
         profile={profile}
         onSubmitUpdateProfile={this.submit}
         canEdit={userInfo.isSelf}
+        hash={hash}
+        key={hash}// Allows to create a new component instance when hash is changed.
       />
     );
   }
@@ -97,6 +109,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default compose(
+  withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps,
