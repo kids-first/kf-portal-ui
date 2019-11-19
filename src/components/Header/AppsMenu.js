@@ -32,7 +32,7 @@ export default () => (
             onClick={toggleDropdown}
             style={{ borderLeftColor: '#c03299' }}
           >
-            <DropdownRow alignItems="center" color="#c03299">
+            <DropdownRow color="#c03299">
               <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
               Data Resource Portal
             </DropdownRow>
@@ -43,7 +43,7 @@ export default () => (
             href="https://kidsfirstdrc.org/"
             target="_blank"
           >
-            <DropdownRow alignItems="center">
+            <DropdownRow>
               <AllAppsWebsiteIcon width="14px" height="13px" />
               Website
             </DropdownRow>
@@ -54,7 +54,7 @@ export default () => (
             href="https://kidsfirstdrc.org/support/studies-and-access/"
             target="_blank"
           >
-            <DropdownRow alignItems="center">
+            <DropdownRow>
               <AllAppsStudiesIcon width="15" height="15" />
               Studies and Access
             </DropdownRow>
@@ -65,7 +65,7 @@ export default () => (
             href="https://kidsfirstdrc.org/support/getting-started/"
             target="_blank"
           >
-            <DropdownRow alignItems="center">
+            <DropdownRow>
               <AllAppsSupportIcon width="15px" height="15px" />
               Support
             </DropdownRow>
@@ -76,7 +76,7 @@ export default () => (
             href="https://kidsfirstdrc.org/contact"
             target="_blank"
           >
-            <DropdownRow alignItems="center">
+            <DropdownRow>
               <AllAppsContactIcon width="16px" height="11px" />
               Contact
             </DropdownRow>
@@ -87,8 +87,8 @@ export default () => (
         OptionsContainerComponent={NavbarKidsFirstDropdown}
         LabelContainer={MenuLabelContainer}
       >
-        <DropdownRow height="55px" alignItems="center">
-          <AllAppsMenuIcon size="14px" style={{ marginRight: '10px' }} />
+        <DropdownRow>
+          <AllAppsMenuIcon size="14px" />
           Resources
         </DropdownRow>
       </Dropdown>

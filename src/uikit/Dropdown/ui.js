@@ -17,22 +17,8 @@ export const DropdownContainer = styleComponent(Row, dropdownContainer);
 export const ItemWrapper = styleComponent('div', dropdownItemWrapper);
 export const DropdownLabelContainer = styleComponent(Row);
 
-export const DropdownOptionsContainer = ({
-  children,
-  align,
-  style = {},
-  hideTip = false,
-  ...props
-}) => (
-  <Column
-    className={`${dropdownOptionsContainer} ${hideTip ? '' : 'showTip'}`}
-    style={{
-      ...style,
-      right: align === 'right' ? '25px' : 'auto',
-      left: align === 'left' ? 'auto' : '-25px',
-    }}
-    {...props}
-  >
+export const DropdownOptionsContainer = ({ children, align, hideTip = false, ...props }) => (
+  <Column className={`${dropdownOptionsContainer} ${hideTip ? '' : 'showTip'}`} {...props}>
     {children}
   </Column>
 );

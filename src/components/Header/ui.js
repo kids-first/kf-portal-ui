@@ -13,6 +13,7 @@ import {
   navBarList,
   navbarDropdownOptionsContainer,
   navbarDropdownWrapper,
+  navbarDropdownRow,
   dropdownLink,
   menuLabelContainer,
 } from './Header.module.css';
@@ -26,8 +27,8 @@ export const NavLink = ({ children, className = '', to, currentPathName, ...prop
   );
 };
 
-export const NavBarList = ({ children, justify = '' }) => (
-  <ul className={navBarList} style={{ justifyContent: justify }}>
+export const NavBarList = ({ children, style = {} }) => (
+  <ul className={navBarList} style={{ ...style }}>
     {children}
   </ul>
 );
@@ -38,14 +39,14 @@ export const LinkAsButton = ({ children, className, ...props }) => (
   </Link>
 );
 
-export const NavbarDropdownOptionsContainer = ({ children, ...props }) => (
-  <DropdownOptionsContainer className={navbarDropdownOptionsContainer} {...props}>
+export const NavbarDropdownOptionsContainer = ({ children, className = '', ...props }) => (
+  <DropdownOptionsContainer className={`${navbarDropdownOptionsContainer} ${className}`} {...props}>
     {children}
   </DropdownOptionsContainer>
 );
 
-export const NavbarKidsFirstDropdown = ({ children, ...props }) => (
-  <NavbarDropdownOptionsContainer style={{ left: '-40px' }} {...props}>
+export const NavbarKidsFirstDropdown = ({ children, style = {}, ...props }) => (
+  <NavbarDropdownOptionsContainer style={{ ...style, left: '-40px' }} {...props}>
     {children}
   </NavbarDropdownOptionsContainer>
 );
@@ -68,7 +69,11 @@ export const DropdownExternalLink = ({ children, separated = false, ...props }) 
   </ExternalLink>
 );
 
-export const DropdownRow = Row;
+export const DropdownRow = ({ children, className = '', ...props }) => (
+  <Row className={`${navbarDropdownRow} ${className}`} {...props}>
+    {children}
+  </Row>
+);
 
 export const MenuLabelContainer = ({ children, className = '', isOpen = false, ...props }) => (
   <DropdownLabelContainer

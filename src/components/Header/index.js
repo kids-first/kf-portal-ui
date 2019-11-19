@@ -61,11 +61,11 @@ const Header = ({
 }) => {
   const canSeeProtectedRoutes =
     loggedInUser &&
-    (loggedInUser.roles &&
-      loggedInUser.roles[0] &&
-      loggedInUser.acceptedTerms &&
-      path !== '/join' &&
-      path !== '/');
+    loggedInUser.roles &&
+    loggedInUser.roles[0] &&
+    loggedInUser.acceptedTerms &&
+    path !== '/join' &&
+    path !== '/';
   const currentPathName = history.location.pathname;
 
   return (
@@ -128,7 +128,7 @@ const Header = ({
                 </NavBarList>
               )}
             </Row>
-            <NavBarList justify={'flex-end'}>
+            <NavBarList style={{ justifyContent: 'flex-end' }}>
               {!loggedInUser && (
                 <li>
                   {path === '/' ? (
@@ -211,8 +211,4 @@ const Header = ({
   );
 };
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(Header);
+export default compose(injectState, withRouter, withApi)(Header);

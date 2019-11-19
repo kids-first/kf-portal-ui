@@ -1,6 +1,6 @@
 import { BaseSvg } from 'icons';
 
-export default ({ fill = '#a6278f', size = '14px', width = size, height = size, style = {} }) =>
+export default ({ fill = '#a6278f', size = '14px', width = size, height = size, ...props }) =>
   BaseSvg({
     svg: `<svg
     id="all_topics_purple"
@@ -57,9 +57,7 @@ export default ({ fill = '#a6278f', size = '14px', width = size, height = size, 
       transform="translate(0)"
     />
   </svg>`,
-    style: {
-      ...style,
-      width,
-      height,
-    },
+    width,
+    height,
+    ...props,
   });
