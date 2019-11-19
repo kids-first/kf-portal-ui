@@ -239,7 +239,7 @@ class Categories extends React.Component {
           category={CATEGORY_NAMES.demographic}
           currentCategory={currentCategory}
         >
-          <DemographicIcon fill={theme.demographicPurple} />
+          <DemographicIcon fill={theme.demographicPurple} width="14px" height="17px" />
         </Category>
         <Category
           title="Clinical"
@@ -253,7 +253,7 @@ class Categories extends React.Component {
           category={CATEGORY_NAMES.clinical}
           currentCategory={currentCategory}
         >
-          <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
+          <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
         </Category>
         <Category
           title="Biospecimens"
@@ -281,7 +281,7 @@ class Categories extends React.Component {
           category={CATEGORY_NAMES.availableData}
           currentCategory={currentCategory}
         >
-          <FileIcon width={11} height={14} fill={theme.dataBlue} />
+          <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>
 
         {isFeatureEnabled('searchByIds') && (
@@ -290,7 +290,7 @@ class Categories extends React.Component {
             color={theme.uploadYellow}
             onClick={this.handleUploadIdsClick}
           >
-            <UploadIcon fill={theme.uploadYellow} />
+            <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
           </ActionCategory>
         )}
       </Container>

@@ -153,7 +153,7 @@ class CavaticaAddProject extends Component {
     } else if (addingProject) {
       return (
         <Container>
-          <AddIcon width={15} height={15} fill={theme.tertiary} />
+          <AddIcon width="15px" height="15px" fill={theme.tertiary} />
           <InputLabel>Create a project</InputLabel>
           <Input
             italic
@@ -179,7 +179,7 @@ class CavaticaAddProject extends Component {
       return (
         <Container>
           <CreateButton onClick={this.onCreateButtonClick}>
-            <AddIcon width={12} height={12} />
+            <AddIcon width="12px" height="12px" />
             Create a project
           </CreateButton>{' '}
         </Container>

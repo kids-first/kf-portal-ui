@@ -219,7 +219,7 @@ const ParticipantSummary = ({ participant, theme }) => {
         [currentNode.kf_id]: {
           rightIcon: hasRelatedBioSpecimenDx ? (
             <Tooltip html={'Histological Diagnosis'}>
-              <BiospecimenIcon width={25} height={15} fill={theme.biospecimenOrange} />
+              <BiospecimenIcon width="25px" height="15px" fill={theme.biospecimenOrange} />
             </Tooltip>
           ) : null,
         },

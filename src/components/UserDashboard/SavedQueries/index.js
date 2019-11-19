@@ -88,6 +88,7 @@ class SavedQueries extends React.Component {
     } = this.props;
     const selectedTab = userDashboardPage.activeSavedQueryTab;
     return (
+      // TODO EXTRACT DashboardCard to UserDashboard/index.js
       <DashboardCard showHeader={false}>
         {loadingQueries ? (
           <ChartContentSpinner />

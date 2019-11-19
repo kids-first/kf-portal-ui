@@ -56,7 +56,7 @@ const Contact = compose(
 
       {(addressLine1 || addressLine2 || institution || city || country || state) && (
         <Row alignItems="flex-start" mb={'20px'}>
-          <MapMarkerIcon height={'17px'} style={{ position: 'relative', top: '4px' }} />
+          <MapMarkerIcon size="17px" style={{ position: 'relative', top: '4px' }} />
           <ContactItem ml={'7px'}>
             <div>
               {institution && <H3>{institution}</H3>}
@@ -70,7 +70,7 @@ const Contact = compose(
 
       {institutionalEmail && (
         <Row alignItems="center" mb={'20px'}>
-          <EnvelopeIcon height={'10px'} />
+          <EnvelopeIcon size="10px" />
           <ContactItem ml={'7px'}>
             <EmailLink bare primary bold href={`mailto:${institutionalEmail}`}>
               {institutionalEmail}
@@ -81,7 +81,7 @@ const Contact = compose(
 
       {phone && (
         <Row alignItems="center" mb={'20px'}>
-          <PhoneIcon height={'12px'} />
+          <PhoneIcon size="12px" />
           <ContactItem ml={'7px'}>{phone}</ContactItem>
         </Row>
       )}

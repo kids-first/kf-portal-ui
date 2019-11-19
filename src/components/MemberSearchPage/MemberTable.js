@@ -109,11 +109,7 @@ const MemberTable = props => {
                     }}
                   >
                     <div style={{ display: 'flex' }}>
-                      <FixedRoleIcon
-                        height="26px"
-                        // fill="#fff"
-                        fill={background(item.roles[0])}
-                      />
+                      <FixedRoleIcon size="26px" fill={background(item.roles[0])} />
                       <div style={{ color: `${background(item.roles[0])}` }}>
                         {item.roles[0] ? userRoleDisplayName(item.roles[0]) : 'NO ROLE'}
                       </div>

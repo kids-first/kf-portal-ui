@@ -287,10 +287,10 @@ export default compose(
                   (acc, { type, icon, color }) => ({
                     ...acc,
                     [type]: icon({
-                      height: '45px',
-                      className: css`
-                        margin: 5px 5px 5px 5px;
-                      `,
+                      size: '45px',
+                      style: {
+                        margin: '5px 5px 5px 5px',
+                      },
                       fill: color,
                     }),
                   }),

@@ -16,7 +16,7 @@ const AccessGate = ({
     <Column className={styles.wrapper} mt={mt}>
       <div className={styles.iconWrapper}>
         <div className={styles.iconBackground}>
-          <Icon width={23} height={23} />
+          <Icon size="23px" />
         </div>
       </div>
       <div className={styles.heading}>{title}</div>

@@ -42,7 +42,7 @@ const BiospecimenIcon = () => (
 
 const FileIcon = () => (
   <IconContainer borderColor={theme.white} backgroundColor={theme.tertiary}>
-    <FileSvg width={15} height={15} fill={theme.white} />
+    <FileSvg size="15px" fill={theme.white} />
   </IconContainer>
 );
 

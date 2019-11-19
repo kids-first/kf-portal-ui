@@ -92,15 +92,7 @@ const ListItem = styled('li')`
 
 const socialItems = {
   website: {
-    icon: (
-      <WebsiteIcon
-        height={28}
-        width={28}
-        css={`
-          margin: 5px 10px 0 0;
-        `}
-      />
-    ),
+    icon: <WebsiteIcon size="28px" style={{ margin: '5px 10px 0 0' }} />,
     name: 'Website URL:',
     placeholder: 'e.g. kidsfirstdrc.org',
     type: 'text',
@@ -108,11 +100,10 @@ const socialItems = {
   googleScholarId: {
     icon: (
       <GoogleScholarIcon
-        height={28}
-        width={28}
-        css={`
-          margin: 5px 10px 0 0;
-        `}
+        size="28px"
+        style={{
+          margin: '5px 10px 0 0',
+        }}
       />
     ),
     name: 'Google Scholar URL:',
@@ -120,15 +111,7 @@ const socialItems = {
     type: 'text',
   },
   linkedin: {
-    icon: (
-      <LinkedInIcon
-        height={28}
-        width={28}
-        css={`
-          margin: 5px 10px 0 0;
-        `}
-      />
-    ),
+    icon: <LinkedInIcon size="28px" style={{ margin: '5px 10px 0 0' }} />,
     name: 'LinkedIn URL:',
     placeholder: 'e.g. linkedin.com/in/acresnick',
     type: 'text',

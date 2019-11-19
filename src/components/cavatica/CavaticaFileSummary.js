@@ -130,11 +130,11 @@ class CavaticaFileSummary extends React.Component {
                   <PlusIcon
                     width={10}
                     height={10}
-                    css={`
-                      fill: ${theme.primary};
-                      margin-top: 1px;
-                      margin-right: 4px;
-                    `}
+                    style={{
+                      fill: theme.primary,
+                      marginTop: '1px',
+                      marginRight: '4px',
+                    }}
                   />
                   Close Details
                 </div>
@@ -143,11 +143,11 @@ class CavaticaFileSummary extends React.Component {
                   <PlusIcon
                     width={10}
                     height={10}
-                    css={`
-                      fill: ${theme.primary};
-                      margin-top: 1px;
-                      margin-right: 4px;
-                    `}
+                    style={{
+                      fill: theme.primary,
+                      marginTop: '1px',
+                      marginRight: '4px',
+                    }}
                   />
                   File Details
                 </div>

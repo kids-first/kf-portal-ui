@@ -22,10 +22,14 @@ const IconBackground = styled('div')`
   justify-content: center;
 `;
 
-const CircleIcon = ({ color, fill, size, iconSize, Icon, style, ...props }) => (
+const CircleIcon = ({ color, fill, size, iconSize, Icon }) => (
   <IconWrapper style={{ height: size, width: size }}>
     <IconBackground style={{ backgroundColor: color, height: size - 10, width: size - 10 }}>
-      <Icon width={iconSize || size - 32} height={iconSize || size - 32} fill={fill || '#fff'} />
+      <Icon
+        width={`${iconSize || size - 32}px`}
+        height={`${iconSize || size - 32}px`}
+        fill={fill || '#fff'}
+      />
     </IconBackground>
   </IconWrapper>
 );

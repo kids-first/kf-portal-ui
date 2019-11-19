@@ -31,6 +31,7 @@ const AuthorizedStudies = compose(
 
     const inactive = !fenceConnectionsInitialized;
     return (
+      // TODO EXTRACT DashboardCard to UserDashboard/index.js
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
           <ChartContentSpinner />

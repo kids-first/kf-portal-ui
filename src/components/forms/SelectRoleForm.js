@@ -241,7 +241,7 @@ export default enhance(
                     checked={values.roles.toLowerCase() === type}
                     name="roles"
                   />
-                  {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
+                  {icon({ size: '64px', fill: color, style: { padding: '8px' } })}
                   <div>
                     <RoleLabel>{displayName}</RoleLabel>
                     <Paragraph lineHeight="26px" fontSize="14px">

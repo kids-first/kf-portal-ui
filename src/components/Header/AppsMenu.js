@@ -88,7 +88,7 @@ export default () => (
         LabelContainer={MenuLabelContainer}
       >
         <DropdownRow height="55px" alignItems="center">
-          <AllAppsMenuIcon width="14" height="14" />
+          <AllAppsMenuIcon size="14px" style={{ marginRight: '10px' }} />
           Resources
         </DropdownRow>
       </Dropdown>

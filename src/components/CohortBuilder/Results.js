@@ -265,7 +265,7 @@ class Results extends React.Component {
                     <div className={`${summaryStyle}`}>
                       <div className={`${summaryEntityStyle}`}>
                         <SubHeading>
-                          <DemographicIcon />
+                          <DemographicIcon width="14px" height="17px" />
                           {Number(participantCount || 0).toLocaleString()}{' '}
                           {participantCount === 1 ? 'Participant' : 'Participants'}
                         </SubHeading>
@@ -281,7 +281,7 @@ class Results extends React.Component {
                         <SubHeading>
                           <div className={`${summaryFilesStyle}`}>
                             <div>
-                              <FilesIcon />
+                              <FilesIcon style={{ marginRight: '6px' }} />
                               {isEmpty(sqon.content) ? (
                                 <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
                               ) : (
@@ -347,8 +347,5 @@ export default compose(
   withTheme,
   withApi,
   injectState,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 )(Results);

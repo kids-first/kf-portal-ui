@@ -54,14 +54,9 @@ class ParticipantClinical extends React.Component {
               style={{ marginRight: '10px' }}
             >
               {hasNoBioSpecimenIds ? (
-                <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
+                <ClinicalIcon size="18px" fill={theme.clinicalBlue} alt="clinical" />
               ) : (
-                <BiospecimenIcon
-                  width={18}
-                  height={18}
-                  fill={theme.biospecimenOrange}
-                  alt="histological"
-                />
+                <BiospecimenIcon size="18px" fill={theme.biospecimenOrange} alt="histological" />
               )}
             </Tooltip>
             <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{category}</div>

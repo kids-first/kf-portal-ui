@@ -7,7 +7,7 @@ import Column from 'uikit/Column';
 import Chip from 'uikit/Chip';
 import Row from 'uikit/Row';
 import CircleIcon from 'uikit/CircleIcon';
-import filesSvg from 'icons/FileIcon';
+import FileIcon from 'icons/FileIcon';
 import participantSvg from 'icons/ParticipantIcon';
 
 const Title = applyDefaultStyles(styled('h1')`
@@ -24,7 +24,7 @@ const Title = applyDefaultStyles(styled('h1')`
 const entityIcon = type => {
   switch (type) {
     case 'file':
-      return <CircleIcon color="#009cbb" size={60} Icon={filesSvg} iconSize={22} />;
+      return <CircleIcon color="#009cbb" size={60} Icon={FileIcon} iconSize="22px" />;
     case 'participant':
       return <CircleIcon color="#ed2b9e" size={60} Icon={participantSvg} />;
     default:

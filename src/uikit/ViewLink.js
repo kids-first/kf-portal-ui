@@ -32,7 +32,7 @@ const ViewLink = ({ children, Icon, onClick, active, theme }) => (
         onMouseLeave={() => setState({ isHovered: false })}
       >
         <Icon
-          marginRight="5px"
+          style={{ marginRight: '5px' }}
           fill={active || state.isHovered ? theme.linkPurple : theme.purple}
         />
         {children}

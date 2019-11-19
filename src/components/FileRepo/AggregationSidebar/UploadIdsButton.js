@@ -32,7 +32,7 @@ const UploadIdsButton = ({
       })
     }
   >
-    <UploadIcon style={{ marginRight: '5px' }} />
+    <UploadIcon width="13px" height="16px" style={{ marginRight: '5px' }} />
     {'UPLOAD YOUR LIST OF IDS'}
   </ActionButton>
 );
