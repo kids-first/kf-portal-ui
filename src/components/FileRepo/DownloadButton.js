@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { compose } from 'recompose';
@@ -28,6 +29,7 @@ import {
   biospecimenDataReport,
 } from 'services/reports';
 import { isFeatureEnabled } from 'common/featuresToggles';
+import { displayError } from 'store/actionCreators/errors';
 
 const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
   position: absolute;
@@ -217,6 +219,7 @@ class DownloadButton extends React.Component {
     try {
       await reportFn(sqon);
     } catch (err) {
+      this.props.displayError(`Error downloading the report`);
       console.error(`Error downloading the report`, err);
     } finally {
       this.setState({ isDownloadingReport: false });
@@ -227,8 +230,11 @@ class DownloadButton extends React.Component {
     return (
       <OptionRow
         onMouseDown={async () => {
-          await this.downloadReport(reportName, sqon);
-          setDropdownVisibility(false);
+          try {
+            await this.downloadReport(reportName, sqon);
+          } finally {
+            setDropdownVisibility(false);
+          }
         }}
       >
         {label}
@@ -298,6 +304,7 @@ class DownloadButton extends React.Component {
 
   fileRepoRender() {
     const {
+      displayError,
       api,
       sqon,
       projectId,
@@ -312,6 +319,7 @@ class DownloadButton extends React.Component {
       try {
         await reportFn();
       } catch (err) {
+        displayError(`Error downloading the report`);
         console.error(`Error downloading the report`, err);
       } finally {
         this.setState({ isDownloadingReport: false });
@@ -434,7 +442,15 @@ class DownloadButton extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  displayError,
+};
+
 export default compose(
   withApi,
   injectState,
+  connect(
+    null,
+    mapDispatchToProps,
+  ),
 )(DownloadButton);
