@@ -18,6 +18,16 @@ import UserProfilePage from './UserProfilePage';
 import { Spin, Icon, Layout } from 'antd';
 import { withRouter } from 'react-router-dom';
 
+const KEY_ABOUT_ME = 'aboutMe';
+const KEY_SETTINGS = 'settings';
+
+const getKeyFromHash = hash => {
+  if (hash === `#${KEY_SETTINGS}`) {
+    return KEY_SETTINGS;
+  }
+  return KEY_ABOUT_ME;
+};
+
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
     profile: PropTypes.object,
@@ -34,6 +44,10 @@ class UserProfilePageContainer extends React.Component {
     location: PropTypes.shape({
       hash: PropTypes.string.isRequired,
     }).isRequired,
+  };
+
+  state = {
+    currentMenuItem: getKeyFromHash(this.props.hash),
   };
 
   componentDidMount() {
@@ -61,6 +75,12 @@ class UserProfilePageContainer extends React.Component {
     });
   };
 
+  handleMenuClick = e => {
+    this.setState({
+      currentMenuItem: e.key,
+    });
+  };
+
   render() {
     const {
       isLoading,
@@ -69,6 +89,8 @@ class UserProfilePageContainer extends React.Component {
       userInfo,
       location: { hash },
     } = this.props;
+
+    const { currentMenuItem } = this.state;
 
     if (isLoading) {
       return (
@@ -85,10 +107,12 @@ class UserProfilePageContainer extends React.Component {
     return (
       <UserProfilePage
         profile={profile}
-        onSubmitUpdateProfile={this.submit}
+        updateProfileCb={this.submit}
         canEdit={userInfo.isSelf}
         hash={hash}
-        key={hash}// Allows to create a new component instance when hash is changed.
+        key={hash} // Allows to create a new component instance when hash is changed.
+        handleMenuClickCb={this.handleMenuClick}
+        currentMenuItem={currentMenuItem}
       />
     );
   }

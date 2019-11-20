@@ -5,7 +5,8 @@ import ContactReadOnly from 'components/UserProfile/ContactReadOnly';
 import ContactEditForm from 'components/UserProfile/ContactEditForm';
 import EditToggle from 'components/UserProfile/EditToggle';
 import ProfileReadOnly from './ProfileReadOnly';
-import { compose } from 'recompose';
+import ProfileEditable from './ProfileEditable';
+
 const { Content } = Layout;
 
 const filterContactInfoFromProfile = profile => {
@@ -38,39 +39,21 @@ const filterContactInfoFromProfile = profile => {
   );
 };
 
-const addDefaultBioIfEmpty = profile => {
-  if (!profile.bio) {
-    return {
-      ...profile,
-      bio: 'Share information about your professional background and your research interests',
-    };
-  }
-};
 
-const addDefaultStoryIfEmpty = profile => {
-  if (!profile.story) {
-    return {
-      ...profile,
-      story: "Share why your're part of the Kids First community",
-    };
-  }
-};
 
 const AboutMe = props => {
-  const { canEdit, profile } = props;
+  const { canEdit, profile, updateProfileCb } = props;
   return (
     <Layout style={{ display: 'flex', alignItems: 'center', padding: '25px', background: '#fff' }}>
       <Content>
         <Row align={'middle'} style={{ paddingBottom: '48px' }}>
           <Col span={24}>
             <EditToggle
-              data={compose(
-                addDefaultBioIfEmpty,
-                addDefaultStoryIfEmpty,
-              )(profile)}
+              data={profile}
               canEdit={canEdit}
               ReadOnlyComponent={ProfileReadOnly}
-              EditableComponent={<div />}
+              EditableComponent={ProfileEditable}
+              updateProfileCb={updateProfileCb}
             />
           </Col>
         </Row>
@@ -82,6 +65,7 @@ const AboutMe = props => {
                 canEdit={canEdit}
                 ReadOnlyComponent={ContactReadOnly}
                 EditableComponent={ContactEditForm}
+                updateProfileCb={updateProfileCb}
               />
             </Col>
           </Row>
@@ -93,6 +77,8 @@ const AboutMe = props => {
 
 AboutMe.propTypes = {
   canEdit: PropTypes.bool.isRequired,
+  updateProfileCb: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
 export default AboutMe;

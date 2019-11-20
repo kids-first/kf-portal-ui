@@ -1,8 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Divider, Row, Typography } from 'antd';
+import capitalize from 'lodash/capitalize';
 
 const { Text } = Typography;
+
+const keyToLabel = {
+  email: 'email',
+  addressLine1: 'address',
+  institution: 'institution',
+  city: 'city',
+  country: 'country',
+  state: 'state',
+  phone: 'phone',
+  institutionalEmail: 'institutional email',
+  zip: 'zip code',
+};
+
+const fromKeyToLabel = key => {
+  if (Object.prototype.hasOwnProperty.call(keyToLabel, key)) {
+    return keyToLabel[key];
+  }
+  return key;
+};
 
 const ContactInformationReadOnly = props => {
   const { data } = props;
@@ -16,7 +36,7 @@ const ContactInformationReadOnly = props => {
       <React.Fragment key={index}>
         <Row type={'flex'} justify="space-between" align="bottom">
           <Col span={4}>
-            <Text>{key}</Text>
+            <Text>{capitalize(fromKeyToLabel(key))}</Text>
           </Col>
           <Col span={8}>
             <Text style={Boolean(val) ? null : { fontStyle: 'italic' }}>

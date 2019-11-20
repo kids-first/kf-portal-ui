@@ -11,6 +11,7 @@ class EditToggle extends Component {
     data: PropTypes.object,
     ReadOnlyComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
     EditableComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]).isRequired,
+    updateProfileCb: PropTypes.func.isRequired,
   };
 
   state = {
@@ -30,7 +31,7 @@ class EditToggle extends Component {
   };
 
   render() {
-    const { ReadOnlyComponent, EditableComponent, data, canEdit } = this.props;
+    const { ReadOnlyComponent, EditableComponent, data, canEdit, updateProfileCb } = this.props;
     const { viewType } = this.state;
     if (viewType === VIEW_TYPE_READ_ONLY) {
       return <ReadOnlyComponent data={data} canEdit={canEdit} onClickEditCb={this.onClickEdit} />;
@@ -40,6 +41,7 @@ class EditToggle extends Component {
           data={data}
           onClickCancelCb={this.onClickCancel}
           onClickSaveCb={this.onClickSave}
+          updateProfileCb={updateProfileCb}
         />
       );
     }
