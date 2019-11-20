@@ -10,7 +10,7 @@ const api = initializeApi({
 });
 
 export const searchMembers = async (searchTerm, searchParams) => {
-  const { start = 0, end = 50, roles = [] } = searchParams;
+  const { start = 0, end = 50, roles = [], interests = [] } = searchParams;
   let response;
   try {
     response = await api({
@@ -19,8 +19,9 @@ export const searchMembers = async (searchTerm, searchParams) => {
         reactApiSearchMembersApi,
         'searchmembers',
         `?queryString=${searchTerm}&start=${start}&end=${end}${roles
-          .map(role => `&role=${role}`)
-          .join('')}`,
+          .map(role => `&role=${role}`).join('')}${interests
+          .map(interest => `&interest=${interest}`).join('')
+        }`,
       ),
     });
   } catch (err) {

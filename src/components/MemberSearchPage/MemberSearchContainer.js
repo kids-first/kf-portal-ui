@@ -8,28 +8,14 @@ import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 import { withTheme } from 'emotion-theming';
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
-import { ROLES } from 'common/constants';
-
-const roleLookup = ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {});
-
-function getSelectedRoles(roles) {
-  const myArray = [];
-  for (const key in roles) {
-    if (roles[key] === true) {
-      myArray.push(key);
-    }
-  }
-  return myArray;
-}
+import {
+  requestCurrentPageUpdate,
+  requestMemberPerPageUpdate,
+  requestQueryStringUpdate,
+} from 'components/MemberSearchPage/actions';
+import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 
 class MemberSearchContainer extends Component {
-  state = {
-    queryString: '',
-    currentPage: 1,
-    membersPerPage: 10,
-    roleCheckboxes: { ...roleLookup },
-  };
-
   static propTypes = {
     pending: PropTypes.bool.isRequired,
     error: PropTypes.object,
@@ -37,75 +23,49 @@ class MemberSearchContainer extends Component {
     members: PropTypes.arrayOf(PropTypes.object),
   };
 
-  getCurrentStart = (page = this.state.currentPage, pageSize = this.state.membersPerPage) => {
-    return pageSize * (page - 1);
-  };
-
-  getCurrentEnd = (page = this.state.currentPage, pageSize = this.state.membersPerPage) => {
-    return page * pageSize;
-  };
-
   handleChange = e => {
     this.props.fetchListOfMembers(e.target.value, {
-      start: this.getCurrentStart(this.state.currentPage),
-      end: this.getCurrentEnd(this.state.currentPage),
-      roles: getSelectedRoles(this.state.roleCheckboxes),
-    });
-    this.setState({ queryString: e.target.value, currentPage: 1 });
-  };
-
-  onChangeRoleFilter = type => e => {
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(this.state.currentPage),
-      end: this.getCurrentEnd(this.state.currentPage),
-      roles: getSelectedRoles({ ...this.state.roleCheckboxes, [type]: e.target.checked }),
+      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
+      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
+      roles: getSelectedFilter(this.props.rolesFilter),
+      interests: getSelectedFilter(this.props.interestsFilter),
     });
 
-    this.setState({
-      roleCheckboxes: {
-        ...this.state.roleCheckboxes,
-        [type]: e.target.checked,
-      },
-    });
+    this.props.queryStringUpdate(e.target.value);
+    this.props.currentPageUpdate(1);
   };
 
   componentDidMount() {
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(this.state.currentPage),
-      end: this.getCurrentEnd(this.state.currentPage),
+    this.props.fetchListOfMembers(this.props.queryString, {
+      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
+      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
     });
   }
 
   handlePageChange = async page => {
-    const maxPage = this.props.count.public / this.state.membersPerPage;
+    const maxPage = this.props.count.public / this.props.membersPerPage;
 
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
 
-    this.setState({ currentPage: page });
+    this.props.currentPageUpdate(page);
 
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(page),
-      end: this.getCurrentEnd(page),
-      roles: getSelectedRoles(this.state.roleCheckboxes),
+    this.props.fetchListOfMembers(this.props.queryString, {
+      start: getCurrentStart(page, this.props.membersPerPage),
+      end: getCurrentEnd(page, this.props.membersPerPage),
+      roles: getSelectedFilter(this.props.rolesFilter),
+      interests: getSelectedFilter(this.props.interestsFilter),
     });
   };
 
   handleShowSizeChange = async (current, pageSize) => {
-    this.setState({ membersPerPage: pageSize, currentPage: current });
+    this.props.currentPageUpdate(current);
+    this.props.membersPerPageUpdate(pageSize);
 
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(current, pageSize),
-      end: this.getCurrentEnd(current, pageSize),
-      roles: getSelectedRoles(this.state.roleCheckboxes),
-    });
-  };
-
-  handleRolesClear = (event) => {
-    event.stopPropagation();
-    this.setState({roleCheckboxes: { ...roleLookup }});
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(this.state.currentPage),
-      end: this.getCurrentEnd(this.state.currentPage),
+    this.props.fetchListOfMembers(this.props.queryString, {
+      start: getCurrentStart(current, pageSize),
+      end: getCurrentEnd(current, pageSize),
+      roles: getSelectedFilter(this.props.rolesFilter),
+      interests: getSelectedFilter(this.props.interestsFilter),
     });
   };
 
@@ -113,12 +73,7 @@ class MemberSearchContainer extends Component {
     return (
       <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
         <Layout style={{ minHeight: '100vh' }}>
-          <FilterDrawer
-            onChange={this.onChangeRoleFilter}
-            checkboxes={this.state.roleCheckboxes}
-            clearboxes={this.handleRolesClear}
-            count={this.props.count}
-          />
+          <FilterDrawer />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
             <Input
               style={{ borderRadius: 30 }}
@@ -135,9 +90,9 @@ class MemberSearchContainer extends Component {
             <MemberTable
               memberList={this.props.members}
               count={this.props.count}
-              currentPage={this.state.currentPage}
-              membersPerPage={this.state.membersPerPage}
-              handlePageChange={this.handlePageChange}
+              currentPage={this.props.currentPage}
+              membersPerPage={this.props.membersPerPage}
+              handlePageChange={this.handlePageChange} //FIXME Move to MemberTable
               handleShowSizeChange={this.handleShowSizeChange}
               pending={this.props.pending}
             />
@@ -154,12 +109,20 @@ const mapStateToProps = state => ({
   count: state.ui.memberSearchPageReducer.count,
   pending: state.ui.memberSearchPageReducer.pending,
   loggedInUser: state.user.loggedInUser,
+  queryString: state.ui.memberSearchPageReducer.queryString,
+  currentPage: state.ui.memberSearchPageReducer.currentPage,
+  membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
+  rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
+  interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchListOfMembers: fetchListOfMembersAction,
+      queryStringUpdate: queryString => dispatch(requestQueryStringUpdate(queryString)),
+      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
+      membersPerPageUpdate: membersPerPage => dispatch(requestMemberPerPageUpdate(membersPerPage)),
     },
     dispatch,
   );

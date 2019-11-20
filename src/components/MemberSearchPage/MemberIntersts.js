@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import {Typography} from 'antd';
-import {bind} from '../../utils';
+import { Typography } from 'antd';
+import { bind } from '../../utils';
 import PropTypes from 'prop-types';
 
 const { Paragraph } = Typography;
@@ -64,7 +64,7 @@ class MemberInterests extends Component {
       <div>
         {/*TODO remove style with Ant Design theme*/}
         <Paragraph className={'interest-container'} style={{ color: 'inherit' }}>
-          <div>Research Interests: &nbsp; </div>
+          <div style={{ fontStyle: 'italic' }}>Research Interests: &nbsp; </div>
           {populatedList.map((item, index) => (
             <FormatLabel
               value={item.original}
@@ -81,7 +81,7 @@ class MemberInterests extends Component {
               aria-label="Expand"
               onClick={this.onClick}
             >
-              {this.state.filter?'Expand':'Close'}
+              {this.state.filter ? 'Expand' : 'Close'}
             </a>
           ) : (
             ''
