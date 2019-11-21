@@ -9,6 +9,10 @@ const api = initializeApi({
   },
 });
 
+const enhanceWithFilter = (filters, filterType) => {
+  return filters.map(filter => `&${filterType}=${filter}`).join('');
+};
+
 export const searchMembers = async (searchTerm, searchParams) => {
   const { start = 0, end = 50, roles = [], interests = [] } = searchParams;
   let response;
@@ -18,10 +22,11 @@ export const searchMembers = async (searchTerm, searchParams) => {
       url: urljoin(
         reactApiSearchMembersApi,
         'searchmembers',
-        `?queryString=${searchTerm}&start=${start}&end=${end}${roles
-          .map(role => `&role=${role}`).join('')}${interests
-          .map(interest => `&interest=${interest}`).join('')
-        }`,
+        `?queryString=${searchTerm}&start=${start}&end=${end}${enhanceWithFilter(
+          roles,
+          'role',
+        )}${enhanceWithFilter(interests, 'interest')}
+        `,
       ),
     });
   } catch (err) {

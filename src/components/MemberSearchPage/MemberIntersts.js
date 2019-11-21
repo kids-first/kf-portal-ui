@@ -42,7 +42,8 @@ class MemberInterests extends Component {
 
   @bind
   getMergedInterests() {
-    return this.props.interests
+    const { interests } = this.props;
+    return interests
       .reduce((accumulator, currentInterest) => {
         const testResult = this.testIfHighlighted(currentInterest);
         return [
@@ -58,8 +59,9 @@ class MemberInterests extends Component {
   }
 
   render() {
+    const { filter } = this.state;
     const mergedInterests = this.getMergedInterests();
-    const populatedList = this.state.filter ? mergedInterests.slice(0, 3) : mergedInterests;
+    const populatedList = filter ? mergedInterests.slice(0, 3) : mergedInterests;
     return (
       <div>
         {/*TODO remove style with Ant Design theme*/}
@@ -81,7 +83,7 @@ class MemberInterests extends Component {
               aria-label="Expand"
               onClick={this.onClick}
             >
-              {this.state.filter ? 'Expand' : 'Close'}
+              {filter ? 'Expand' : 'Close'}
             </a>
           ) : (
             ''

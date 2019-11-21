@@ -6,6 +6,7 @@ import { requestInterestsFilterUpdate } from 'components/MemberSearchPage/action
 import FilterTable from 'components/MemberSearchPage/FilterTable';
 import FilterTableList from 'components/MemberSearchPage/FilterTableList';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
+import PropTypes from 'prop-types';
 
 class InterestsFilter extends Component {
   state = {
@@ -13,48 +14,77 @@ class InterestsFilter extends Component {
     filterSearchString: '',
   };
 
+  static propTypes = {
+    pending: PropTypes.bool,
+    error: PropTypes.object,
+    count: PropTypes.object.isRequired,
+    queryString: PropTypes.string.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    membersPerPage: PropTypes.number.isRequired,
+    rolesFilter: PropTypes.object.isRequired,
+    interestsFilter: PropTypes.object.isRequired,
+    fetchListOfMembers: PropTypes.func.isRequired,
+    updateInterestsFilter: PropTypes.func.isRequired,
+  };
+
   onChange = type => e => {
-    this.props.fetchListOfMembers(this.props.queryString, {
-      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
-      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
-      roles: getSelectedFilter(this.props.rolesFilter),
-      interests: getSelectedFilter({ ...this.props.interestsFilter, [type]: e.target.checked }),
+    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, interestsFilter, updateInterestsFilter } = this.props;
+
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter({ ...interestsFilter, [type]: e.target.checked }),
     });
 
-    this.props.updateInterestsFilter({ ...this.props.interestsFilter, [type]: e.target.checked });
+    updateInterestsFilter({ ...interestsFilter, [type]: e.target.checked });
   };
 
   handleClear = event => {
     event.stopPropagation();
-    this.props.fetchListOfMembers(this.props.queryString, {
-      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
-      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
-      roles: getSelectedFilter(this.props.rolesFilter),
+    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, updateInterestsFilter } = this.props;
+
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
       interests: [],
     });
 
-    this.props.updateInterestsFilter();
+    updateInterestsFilter();
+  };
+
+  handleChangeFilterString = event => {
+    this.setState({ filterSearchString: event.target.value });
+  };
+
+  toggleShowAll = () => {
+    const {showAll} = this.state;
+    this.setState({ showAll: !showAll });
   };
 
   render() {
+    const { collapsed, count, interestsFilter } = this.props;
+    const { filterSearchString, showAll } = this.state;
+
     return (
       <div>
         <FilterTable
           title={'Research Interests'}
-          handleClear={this.handleClear} //FIXME
-          collapsed={this.props.collapsed} //FIXME
+          handleClear={this.handleClear}
+          collapsed={collapsed}
           borderLeftColor={'#00afed'}
           showSearchDefault={true}
-          handleChangeFilterString={e => this.setState({ filterSearchString: e.target.value })}
+          handleChangeFilterString={this.handleChangeFilterString}
         >
           <FilterTableList
-            dataSource={this.props.count ? this.props.count.interests : {}}
-            checkboxes={this.props.interestsFilter}
+            dataSource={count ? count.interests : {}}
+            checkboxes={interestsFilter}
             onChange={this.onChange}
             keyDisplayNames={{}}
-            searchString={this.state.filterSearchString}
-            showAll={this.state.showAll}
-            toggleShowAll={() => this.setState({ showAll: !this.state.showAll })}
+            searchString={filterSearchString}
+            showAll={showAll}
+            toggleShowAll={this.toggleShowAll}
           />
         </FilterTable>
       </div>

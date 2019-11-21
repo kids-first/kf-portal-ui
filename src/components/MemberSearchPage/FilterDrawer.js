@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './MemberSearchPage.css';
 import { Icon, Layout, Typography } from 'antd';
-import { withTheme } from 'emotion-theming';
 import RolesFilter from 'components/MemberSearchPage/RolesFilter';
 import InterestsFilter from 'components/MemberSearchPage/InterestsFilter';
 
@@ -18,6 +17,8 @@ class FilterDrawer extends Component {
   };
 
   render() {
+    const { collapsed } = this.state;
+    //TODO mode style to css class or default ant design theme
     return (
       <Sider
         trigger={null}
@@ -37,24 +38,22 @@ class FilterDrawer extends Component {
               margin: 0,
               padding: 0,
               fontSize: 18,
-              display: this.state.collapsed ? 'none' : 'block',
+              display: collapsed ? 'none' : 'block',
             }}
           >
             Filters
           </Title>
           <Icon
             style={{ width: '100%', textAlign: 'end', fontSize: 20, color: 'rgb(43, 56, 143)' }}
-            type={this.state.collapsed ? 'double-right' : 'double-left'}
+            type={collapsed ? 'double-right' : 'double-left'}
             onClick={this.onCollapse}
           />
         </div>
-        <RolesFilter collapsed={this.state.collapsed} />
-        <InterestsFilter collapsed={this.state.collapsed} />
+        <RolesFilter collapsed={collapsed} />
+        <InterestsFilter collapsed={collapsed} />
       </Sider>
     );
   }
 }
 
-const FilterDrawerWithTheme = withTheme(FilterDrawer);
-
-export default FilterDrawerWithTheme;
+export default FilterDrawer;

@@ -11,22 +11,25 @@ const FilterTableList = ({
   toggleShowAll,
 }) => {
   const dataKeys = dataSource ? Object.keys(dataSource) : [];
+
   const filteredDataKeys = searchString
     ? dataKeys.filter(key => key.includes(searchString))
     : dataKeys;
 
-  const dataArray = filteredDataKeys.reduce((acc, field) => {
-    acc.push({ [field]: dataSource[field] });
+  const displayDataArray = showAll ? filteredDataKeys : filteredDataKeys.slice(0, 5);
+
+  const dataArray = displayDataArray.reduce((acc, field) => {
+    acc = [...acc,...[{ [field]: dataSource[field] }]];
     return acc;
   }, []);
 
-  const displayDataArray = showAll ? dataArray : dataArray.slice(0, 5);
-  const dataSourceLength = dataArray.length;
+  const dataSourceLength = filteredDataKeys.length;
+
   return (
     <List
       split={false}
       footer={
-        dataSourceLength > 10 && (
+        dataSourceLength > 5 && (
           <Button
             style={{ float: 'right', height: 30, padding: 0 }}
             type="link"
@@ -38,7 +41,7 @@ const FilterTableList = ({
         )
       }
       itemLayout="horizontal"
-      dataSource={displayDataArray}
+      dataSource={dataArray}
       renderItem={item => {
         const key = Object.keys(item)[0];
         const displayName = keyDisplayNames[key] ? keyDisplayNames[key] : key;

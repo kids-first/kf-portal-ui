@@ -7,6 +7,7 @@ import { ROLES } from 'common/constants';
 import FilterTable from 'components/MemberSearchPage/FilterTable';
 import FilterTableList from 'components/MemberSearchPage/FilterTableList';
 import { getSelectedFilter, getCurrentStart, getCurrentEnd } from './utils';
+import PropTypes from 'prop-types';
 
 const roleLookup = ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {});
 
@@ -29,55 +30,83 @@ class RolesFilter extends Component {
     filterSearchString: '',
   };
 
+  static propTypes = {
+    pending: PropTypes.bool,
+    error: PropTypes.object,
+    count: PropTypes.object.isRequired,
+    queryString: PropTypes.string.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    membersPerPage: PropTypes.number.isRequired,
+    rolesFilter: PropTypes.object.isRequired,
+    interestsFilter: PropTypes.object.isRequired,
+    fetchListOfMembers: PropTypes.func.isRequired,
+    updateRolesFilter: PropTypes.func.isRequired,
+  };
+
   componentDidMount() {
-    this.props.updateRolesFilter(ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {}));
+    const { updateRolesFilter } = this.props;
+    updateRolesFilter(ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {}));
   }
 
   onChange = type => e => {
-    this.props.fetchListOfMembers(this.props.queryString, {
-      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
-      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
-      roles: getSelectedFilter({ ...this.props.rolesFilter, [type]: e.target.checked }),
-      interests: getSelectedFilter(this.props.interestsFilter),
+    const { queryString, membersPerPage, currentPage, rolesFilter, interestsFilter, updateRolesFilter, fetchListOfMembers } = this.props;
+
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter({ ...rolesFilter, [type]: e.target.checked }),
+      interests: getSelectedFilter(interestsFilter),
     });
 
-    this.props.updateRolesFilter({ ...this.props.rolesFilter, [type]: e.target.checked });
+    updateRolesFilter({ ...rolesFilter, [type]: e.target.checked });
   };
 
   handleClear = event => {
     event.stopPropagation();
+    const { queryString, membersPerPage, currentPage, updateRolesFilter, fetchListOfMembers, interestsFilter } = this.props;
 
-    this.props.fetchListOfMembers(this.props.queryString, {
-      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
-      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
       roles: [],
-      interests: getSelectedFilter(this.props.interestsFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
 
-    this.props.updateRolesFilter(roleLookup);
+    updateRolesFilter(roleLookup);
+  };
+
+  handleChangeFilterString = event => {
+    this.setState({ filterSearchString: event.target.value });
+  };
+
+  toggleShowAll = () => {
+    const {showAll} = this.state;
+    this.setState({ showAll: !showAll });
   };
 
   render() {
+    const { showAll, filterSearchString } = this.state;
+    const { count, rolesFilter, collapsed } = this.props;
     return (
       <div>
         <FilterTable
           title={'Member Categories'}
           handleClear={this.handleClear}
-          collapsed={this.props.collapsed}
+          collapsed={collapsed}
           borderLeftColor={'#a42c90'}
           showSearchDefault={false}
-          searchString={this.state.filterSearchString}
-          showAll={this.state.showAll}
-          toggleShowAll={() => this.setState({ showAll: !this.state.showAll })}
-          handleChangeFilterString={e => this.setState({ filterSearchString: e.target.value })}
+          searchString={filterSearchString}
+          showAll={showAll}
+          toggleShowAll={this.toggleShowAll}
+          handleChangeFilterString={this.handleChangeFilterString}
         >
           <FilterTableList
-            dataSource={this.props.count && this.props.count.roles ? this.props.count.roles : {}}
-            checkboxes={this.props.rolesFilter}
+            dataSource={count && count.roles ? count.roles : {}}
+            checkboxes={rolesFilter}
             onChange={this.onChange}
             keyDisplayNames={
-              this.props.count && this.props.count.roles
-                ? getKeyDisplayNames(this.props.count.roles)
+              count && count.roles
+                ? getKeyDisplayNames(count.roles)
                 : {}
             }
           />

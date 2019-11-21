@@ -1,7 +1,7 @@
 export function getSelectedFilter(filters) {
   const myArray = [];
   for (const key in filters) {
-    if (filters[key] === true) {
+    if (filters[key]) {
       myArray.push(key);
     }
   }

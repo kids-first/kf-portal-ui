@@ -16,59 +16,73 @@ import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 
 class MemberSearchContainer extends Component {
   static propTypes = {
-    pending: PropTypes.bool.isRequired,
+    pending: PropTypes.bool,
     error: PropTypes.object,
     count: PropTypes.object,
-    members: PropTypes.arrayOf(PropTypes.object),
+    queryString: PropTypes.string.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    membersPerPage: PropTypes.number.isRequired,
+    rolesFilter: PropTypes.object.isRequired,
+    interestsFilter: PropTypes.object.isRequired,
+    fetchListOfMembers: PropTypes.func.isRequired,
+    currentPageUpdate: PropTypes.func.isRequired,
   };
 
   handleChange = e => {
-    this.props.fetchListOfMembers(e.target.value, {
-      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
-      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
-      roles: getSelectedFilter(this.props.rolesFilter),
-      interests: getSelectedFilter(this.props.interestsFilter),
+    const { membersPerPage, fetchListOfMembers, queryStringUpdate, currentPageUpdate, currentPage, rolesFilter, interestsFilter} = this.props;
+
+    fetchListOfMembers(e.target.value, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
 
-    this.props.queryStringUpdate(e.target.value);
-    this.props.currentPageUpdate(1);
+    queryStringUpdate(e.target.value);
+    currentPageUpdate(1);
   };
 
   componentDidMount() {
-    this.props.fetchListOfMembers(this.props.queryString, {
-      start: getCurrentStart(this.props.currentPage, this.props.membersPerPage),
-      end: getCurrentEnd(this.props.currentPage, this.props.membersPerPage),
+    const { membersPerPage, fetchListOfMembers, queryString, currentPage} = this.props;
+
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
     });
   }
 
   handlePageChange = async page => {
-    const maxPage = this.props.count.public / this.props.membersPerPage;
+    const { count, membersPerPage, fetchListOfMembers, queryString, rolesFilter, interestsFilter, currentPageUpdate} = this.props;
+    const maxPage = count.public / membersPerPage;
 
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
 
-    this.props.currentPageUpdate(page);
+    currentPageUpdate(page);
 
-    this.props.fetchListOfMembers(this.props.queryString, {
-      start: getCurrentStart(page, this.props.membersPerPage),
-      end: getCurrentEnd(page, this.props.membersPerPage),
-      roles: getSelectedFilter(this.props.rolesFilter),
-      interests: getSelectedFilter(this.props.interestsFilter),
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(page, membersPerPage),
+      end: getCurrentEnd(page, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
   };
 
   handleShowSizeChange = async (current, pageSize) => {
-    this.props.currentPageUpdate(current);
-    this.props.membersPerPageUpdate(pageSize);
+    const { currentPageUpdate, membersPerPageUpdate, fetchListOfMembers, queryString, rolesFilter, interestsFilter} = this.props;
 
-    this.props.fetchListOfMembers(this.props.queryString, {
+    currentPageUpdate(current);
+    membersPerPageUpdate(pageSize);
+    fetchListOfMembers(queryString, {
       start: getCurrentStart(current, pageSize),
       end: getCurrentEnd(current, pageSize),
-      roles: getSelectedFilter(this.props.rolesFilter),
-      interests: getSelectedFilter(this.props.interestsFilter),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
   };
 
   render() {
+    const {members, count, currentPage ,membersPerPage, pending} = this.props;
+
     //TODO mode style to css class or default ant design theme
     return (
       <div style={{ backgroundColor: 'rgb(244, 245, 248)', width: '100%' }}>
@@ -88,13 +102,13 @@ class MemberSearchContainer extends Component {
               }
             />
             <MemberTable
-              memberList={this.props.members}
-              count={this.props.count}
-              currentPage={this.props.currentPage}
-              membersPerPage={this.props.membersPerPage}
-              handlePageChange={this.handlePageChange} //FIXME Move to MemberTable
+              memberList={members}
+              count={count}
+              currentPage={currentPage}
+              membersPerPage={membersPerPage}
+              handlePageChange={this.handlePageChange}
               handleShowSizeChange={this.handleShowSizeChange}
-              pending={this.props.pending}
+              pending={pending}
             />
           </MemberSearchBorder>
         </Layout>
