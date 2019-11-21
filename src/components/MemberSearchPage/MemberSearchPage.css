@@ -1,6 +1,6 @@
 .grid-container {
   width: 100%;
-  padding: 25px 150px 25px 150px;
+  padding: 25px 50px 25px 50px;
 }
 
 .member-list-container {
@@ -12,6 +12,15 @@
 
 .member-list {
   margin: 20px;
+}
+
+.h2-title{
+    font-family: Montserrat,sans-serif;
+    color: #2b388f;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
 }
 
 .interest-container {

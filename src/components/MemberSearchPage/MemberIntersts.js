@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import {Typography} from 'antd';
-import {bind} from '../../utils';
+import { Typography } from 'antd';
+import { bind } from '../../utils';
 import PropTypes from 'prop-types';
 
 const { Paragraph } = Typography;
@@ -42,7 +42,8 @@ class MemberInterests extends Component {
 
   @bind
   getMergedInterests() {
-    return this.props.interests
+    const { interests } = this.props;
+    return interests
       .reduce((accumulator, currentInterest) => {
         const testResult = this.testIfHighlighted(currentInterest);
         return [
@@ -58,13 +59,14 @@ class MemberInterests extends Component {
   }
 
   render() {
+    const { filter } = this.state;
     const mergedInterests = this.getMergedInterests();
-    const populatedList = this.state.filter ? mergedInterests.slice(0, 3) : mergedInterests;
+    const populatedList = filter ? mergedInterests.slice(0, 3) : mergedInterests;
     return (
       <div>
         {/*TODO remove style with Ant Design theme*/}
         <Paragraph className={'interest-container'} style={{ color: 'inherit' }}>
-          <div>Research Interests: &nbsp; </div>
+          <div style={{ fontStyle: 'italic' }}>Research Interests: &nbsp; </div>
           {populatedList.map((item, index) => (
             <FormatLabel
               value={item.original}
@@ -81,7 +83,7 @@ class MemberInterests extends Component {
               aria-label="Expand"
               onClick={this.onClick}
             >
-              {this.state.filter?'Expand':'Close'}
+              {filter ? 'Expand' : 'Close'}
             </a>
           ) : (
             ''

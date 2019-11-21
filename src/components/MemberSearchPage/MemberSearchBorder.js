@@ -1,24 +1,24 @@
 import React from 'react';
 import { Col, Row, Typography } from 'antd';
 import './MemberSearchPage.css';
-import { withTheme } from 'emotion-theming';
 
 const { Title } = Typography;
 
 const MemberSearchBorder = props => {
   return (
+    //TODO mode style to css class or default ant design theme
     <div className={'grid-container'}>
       <Row>
         <Title
           level={1}
           style={{
-            color: `${props.color ? props.color : props.theme.secondary}`,
+            color: 'rgb(43, 56, 143)',
             margin: 0,
             padding: 0,
             fontWeight: 500,
             linHeight: 0.71,
             letterSpacing: 0.4,
-            fontFamily: `${props.theme.fonts.default}`,
+            fontFamily: 'Montserrat, sans-serif',
             textDecoration: 'none',
             fontSize: 28,
           }}
@@ -32,6 +32,5 @@ const MemberSearchBorder = props => {
     </div>
   );
 };
-const MemberSearchBorderWithTheme = withTheme(MemberSearchBorder);
 
-export default MemberSearchBorderWithTheme;
+export default MemberSearchBorder;
