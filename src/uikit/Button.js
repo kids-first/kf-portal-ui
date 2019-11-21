@@ -40,12 +40,11 @@ export const WhiteButton = ({ children, className = '', ...props }) => (
 );
 
 export const TealActionButton = ({ children, className = '', ...props }) => (
-  <button {...props}>
-    <span
-      className={`${baseButtonWithIcon} ${disabledButtonStyles} ${tealActionButton} ${className}`}
-    >
-      {children}
-    </span>
+  <button
+    className={`${baseButtonWithIcon} ${disabledButtonStyles} ${tealActionButton} ${className}`}
+    {...props}
+  >
+    {children}
   </button>
 );
 

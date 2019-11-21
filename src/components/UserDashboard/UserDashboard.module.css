@@ -44,24 +44,6 @@
   height: 404px;
 }
 
-.cardActionButton {
-  height: 37px;
-  padding-right: 21px;
-  padding-left: 21px;
-  font-size: 14px;
-  border-radius: 18px;
-}
-
-.cardActionButton {
-  color: #90278e;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.cardActionButton:hover,
-.cardActionButton.active {
-  color: #e83a9c;
-}
-
 .noteList {
   padding-left: 18px;
 }

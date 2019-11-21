@@ -15,7 +15,6 @@ import { styleComponent } from 'components/Utils';
 
 import {
   dashboardCard,
-  cardActionButton,
   promptMessageContainer,
   promptMessageContent,
   promptMessageHeading,
@@ -26,15 +25,14 @@ import {
 export const DashboardCard = styleComponent(Card, dashboardCard);
 export const DashboardMulticard = styleComponent(Multicard, dashboardCard);
 
-export const CardActionButton = styleComponent(TealActionButton, cardActionButton);
 export const CardLink = styleComponent('a', cardLink);
 
 export const ConnectButton = ({ external = true, ...props }) => (
-  <CardActionButton {...props} maxWidth={160}>
+  <TealActionButton maxWidth={160} {...props}>
     {external ? <ExternalLinkIcon size={12} position="relative" right={5} /> : null}
     Connect
     <RightIcon size={14} position="relative" left={5} />
-  </CardActionButton>
+  </TealActionButton>
 );
 
 export const NoteList = styleComponent('ul', noteList);

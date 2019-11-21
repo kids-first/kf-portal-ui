@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { isEmpty } from 'lodash';
 
+import { TealActionButton } from 'uikit/Button';
 import CardHeader from 'uikit/Card/CardHeader';
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import DownloadController from 'icons/DownloadController';
@@ -13,10 +14,7 @@ import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnect
 
 import AccessGate from '../../AccessGate';
 import { DashboardCard } from '../styles';
-
 import Info from '../Info';
-
-import { CardActionButton } from '../styles';
 
 const AuthorizedStudies = compose(
   injectState,
@@ -48,9 +46,9 @@ const AuthorizedStudies = compose(
                 </span>
               }
             >
-              <CardActionButton>
+              <TealActionButton>
                 <Link to={`/user/${loggedInUser.egoId}#settings`}>Settings</Link>
-              </CardActionButton>
+              </TealActionButton>
             </AccessGate>
             <Info
               link={{

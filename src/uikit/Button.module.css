@@ -76,7 +76,6 @@
   cursor: default;
 }
 
-.disabledButtonStyles,
 .disabledButtonStyles:disabled,
 .disabledButtonStyles:hover:disabled {
   background-color: #f4f5f8;
@@ -110,8 +109,11 @@
 
 .tealActionButton {
   border: 1px solid #009bb8;
+  border-radius: 18px;
   background-color: #009bb8;
   color: #ffffff;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
 }
 .tealActionButton a {
   color: #ffffff;
@@ -120,7 +122,6 @@
 .tealActionButton:hover {
   background-color: #19a9c4;
 }
-.tealActionButton,
 .tealActionButton:disabled,
 .tealActionButton:hover:disabled {
   border: #d4d6dd;
