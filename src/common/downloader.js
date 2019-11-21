@@ -60,32 +60,30 @@ export default async (opts = {}) => {
     throw new Error(`Unsupported responseType "${opts.responseType}" provided.`);
   }
 
-  return axios(opts)
-    .then(response => {
-      // Make a Blob from the response
-      const blob = getBlobFromResponse(response, opts.responseType);
+  return axios(opts).then(response => {
+    // Make a Blob from the response
+    const blob = getBlobFromResponse(response, opts.responseType);
 
-      // Try to determine the filename from the `content-disposition` header,
-      //  fallback to a UUID if it fails.
-      let filename = null;
-      const disposition = response.headers['content-disposition'];
-      if (disposition) {
-        try {
-          const filenameFromContentDisposition = disposition
-            .split(';')
-            .map(part => part.trim())
-            // Matching the modern format`filename="MyFile.txt"`,
-            //  but not the derelict syntax `filename*=utf-8''MyFile.txt`
-            .find(part => /filename=".*"/i.test(part));
-          filename = /filename="(.*)"/i.exec(filenameFromContentDisposition)[1];
-        } catch (err) {
-          filename = uuid();
-          console.warn('failed to parse filename, will fallback to an UUID', disposition);
-        }
+    // Try to determine the filename from the `content-disposition` header,
+    //  fallback to a UUID if it fails.
+    let filename = null;
+    const disposition = response.headers['content-disposition'];
+    if (disposition) {
+      try {
+        const filenameFromContentDisposition = disposition
+          .split(';')
+          .map(part => part.trim())
+          // Matching the modern format`filename="MyFile.txt"`,
+          //  but not the derelict syntax `filename*=utf-8''MyFile.txt`
+          .find(part => /filename=".*"/i.test(part));
+        filename = /filename="(.*)"/i.exec(filenameFromContentDisposition)[1];
+      } catch (err) {
+        filename = uuid();
+        console.warn('failed to parse filename, will fallback to an UUID', disposition);
       }
+    }
 
-      // Let the user download the file.
-      saveAs(blob, filename);
-    })
-    .catch(console.error);
+    // Let the user download the file.
+    saveAs(blob, filename);
+  });
 };

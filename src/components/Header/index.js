@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
@@ -34,6 +35,8 @@ import { Alert } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 
+import { dismissError } from 'store/actionCreators/errors';
+
 const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
 
 const showPublicProfileInvite = (user = {}) => {
@@ -53,10 +56,51 @@ const ExploreDataIconStyled = styled(ExploreDataIcon)`
   fill: currentColor;
 `;
 
-const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
+const onClosePublicProfileInviteAlert = () =>
+  localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
+const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
+  if (currentError) {
+    return (
+      <Alert
+        message={
+          <Fragment>
+            <span style={{ fontWeight: 'bold' }}>Error: </span>
+            <span>{currentError.message}</span>
+          </Fragment>
+        }
+        type="error"
+        banner
+        closable
+        onClose={() => dismissError(currentError.uuid)}
+      />
+    );
+  }
+
+  if (showPublicProfileInvite(loggedInUser)) {
+    return (
+      <Alert
+        message={
+          <Fragment>
+            <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
+            {' so that other members can view it!'}
+          </Fragment>
+        }
+        type="info"
+        banner
+        closable
+        onClose={onClosePublicProfileInviteAlert}
+      />
+    );
+  }
+
+  return null;
+};
+
 const Header = ({
+  currentError,
+  dismissError,
   state: { loggedInUser },
   effects: { setUser, setToken, clearIntegrationTokens },
   history,
@@ -76,22 +120,7 @@ const Header = ({
     <DropDownState
       render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
         <HeaderContainer>
-          {showPublicProfileInvite(loggedInUser) && (
-            <Alert
-              message={
-                <Fragment>
-                  <Link to={getUrlForUser(loggedInUser, '#settings')}>
-                    Make your profile public
-                  </Link>
-                  {' so that other members can view it!'}
-                </Fragment>
-              }
-              type="info"
-              banner
-              closable
-              onClose={onCloseAlert}
-            />
-          )}
+          {renderAlertIfAny(loggedInUser, currentError, dismissError)}
           <GradientAccent />
           <HeaderContent>
             <Row>
@@ -188,8 +217,20 @@ const Header = ({
   );
 };
 
+const mapStateToProps = state => ({
+  currentError: state.errors.currentError,
+});
+
+const mapDispatchToProps = {
+  dismissError,
+};
+
 export default compose(
   injectState,
   withRouter,
   withApi,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Header);
