@@ -1,4 +1,9 @@
 .userDashboardContainer {
+  min-height: calc(100% - 56px);
+  display: flex;
+}
+
+.userDashboardContent {
   width: 100%;
   min-height: 600px;
   background-color: #f4f5f8;

@@ -149,6 +149,9 @@
   border-left: solid 2px #c03299;
 }
 .dropdownLink svg {
+  fill: #a9adc0;
+}
+.dropdownLink:hover svg {
   fill: #c03299;
 }
 

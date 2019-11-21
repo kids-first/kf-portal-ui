@@ -21,7 +21,11 @@ import {
   MostParticipantsStudiesChart,
 } from 'components/Charts';
 
-import { userDashboardContainer, dashboardTitle } from './UserDashboard.module.css';
+import {
+  userDashboardContainer,
+  userDashboardContent,
+  dashboardTitle,
+} from './UserDashboard.module.css';
 
 const Container = ({ className = '', children }) => (
   // This is to cancel out the negative margin set by react-grid-system
@@ -62,37 +66,39 @@ export default compose(
   ),
 )(({ state: { loggedInUser }, api }) => (
   <div className={userDashboardContainer}>
-    <h1 className={dashboardTitle}>My Dashboard</h1>
-    {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
-    <SizeProvider>
-      {({ size }) => (
-        <ContainerRow currentWidth={size.width}>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <SavedQueries {...{ api, loggedInUser }} />
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <AuthorizedStudies />
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <CavaticaProjects />
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard showHeader={false}>
-              <MostParticipantsStudiesChart />
-            </DashboardCard>
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Member Research Interests">
-              <MemberResearchInterestsChart />
-            </DashboardCard>
-          </CardSlot>
-          <CardSlot sm={12} md={6} lg={6} xl={4}>
-            <DashboardCard title="Most Frequent Diagnoses">
-              <MostFrequentDiagnosesChart />
-            </DashboardCard>
-          </CardSlot>
-        </ContainerRow>
-      )}
-    </SizeProvider>
+    <div className={userDashboardContent}>
+      <h1 className={dashboardTitle}>My Dashboard</h1>
+      {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
+      <SizeProvider>
+        {({ size }) => (
+          <ContainerRow currentWidth={size.width}>
+            <CardSlot sm={12} md={6} lg={6} xl={4}>
+              <SavedQueries {...{ api, loggedInUser }} />
+            </CardSlot>
+            <CardSlot sm={12} md={6} lg={6} xl={4}>
+              <AuthorizedStudies />
+            </CardSlot>
+            <CardSlot sm={12} md={6} lg={6} xl={4}>
+              <CavaticaProjects />
+            </CardSlot>
+            <CardSlot sm={12} md={6} lg={6} xl={4}>
+              <DashboardCard showHeader={false}>
+                <MostParticipantsStudiesChart />
+              </DashboardCard>
+            </CardSlot>
+            <CardSlot sm={12} md={6} lg={6} xl={4}>
+              <DashboardCard title="Member Research Interests">
+                <MemberResearchInterestsChart />
+              </DashboardCard>
+            </CardSlot>
+            <CardSlot sm={12} md={6} lg={6} xl={4}>
+              <DashboardCard title="Most Frequent Diagnoses">
+                <MostFrequentDiagnosesChart />
+              </DashboardCard>
+            </CardSlot>
+          </ContainerRow>
+        )}
+      </SizeProvider>
+    </div>
   </div>
 ));

@@ -8,10 +8,6 @@ const svg = ({ width = '12px', height = '12px', ...props }) => (
     viewBox="0 0 47.05 47.05"
     width={width}
     height={height}
-    css={`
-      margin-right: 10px;
-      fill: #a9adc0;
-    `}
     {...props}
   >
     <title>icon-studies</title>

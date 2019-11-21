@@ -1,5 +1,4 @@
 import React from 'react';
-// import { position, flex, alignItems, justifyContent } from 'styled-system';
 
 import { Flex } from './Core';
 
@@ -16,7 +15,3 @@ export default ({ children, center = false, scrollY = false, className = '', ...
     {children}
   </Flex>
 );
-// ${position};
-// ${alignItems};
-// ${justifyContent};
-// ${flex};

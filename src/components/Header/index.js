@@ -29,12 +29,7 @@ import { Alert } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 
-import {
-  headerContainer,
-  gradientAccent,
-  headerContent,
-  headerProfilePicture,
-} from './Header.module.css';
+import './Header.css';
 
 const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
 
@@ -71,7 +66,7 @@ const Header = ({
   return (
     <DropDownState
       render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
-        <div className={headerContainer}>
+        <div className="headerContainer">
           {showPublicProfileInvite(loggedInUser) && (
             <Alert
               message={
@@ -88,8 +83,8 @@ const Header = ({
               onClose={onCloseAlert}
             />
           )}
-          <div className={gradientAccent} />
-          <Row className={headerContent}>
+          <div className="gradientAccent" />
+          <Row className="headerContent">
             <Row>
               <Link to={ROUTES.dashboard}>
                 <img
@@ -180,7 +175,7 @@ const Header = ({
                   LabelContainer={MenuLabelContainer}
                 >
                   <Gravatar
-                    className={headerProfilePicture}
+                    className="headerProfilePicture"
                     email={loggedInUser.email || ''}
                     size={39}
                   />
