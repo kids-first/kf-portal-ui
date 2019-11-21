@@ -6,7 +6,6 @@ import { Icon, Input, Layout, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
-import { withTheme } from 'emotion-theming';
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
 import {
   requestCurrentPageUpdate,
@@ -70,8 +69,9 @@ class MemberSearchContainer extends Component {
   };
 
   render() {
+    //TODO mode style to css class or default ant design theme
     return (
-      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
+      <div style={{ backgroundColor: 'rgb(244, 245, 248)', width: '100%' }}>
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
@@ -127,9 +127,7 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-const MemberSearchContainerWithTheme = withTheme(MemberSearchContainer);
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MemberSearchContainerWithTheme);
+)(MemberSearchContainer);

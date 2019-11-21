@@ -1,5 +1,4 @@
 import { Collapse, Divider, Input, Typography } from 'antd';
-import { withTheme } from 'emotion-theming';
 import React from 'react';
 
 const { Title } = Typography;
@@ -16,6 +15,7 @@ const FilterTable = props => {
     handleChangeFilterString,
   } = props;
   return (
+    //TODO move all styles in classes or modify ant design theme
     <Collapse
       defaultActiveKey={['1']}
       style={{
@@ -32,10 +32,10 @@ const FilterTable = props => {
           <Title
             level={2}
             style={{
-              color: `${props.theme.secondary}`,
+              color: 'rgb(43, 56, 143)',
               margin: 0,
               padding: 0,
-              fontFamily: `${props.theme.fonts.default}`,
+              fontFamily: 'Montserrat, sans-serif',
               textDecoration: 'none',
               fontSize: 14,
               fontWeight: 700,
@@ -59,6 +59,5 @@ const FilterTable = props => {
     </Collapse>
   );
 };
-const FilterTableWithTheme = withTheme(FilterTable);
 
-export default FilterTableWithTheme;
+export default FilterTable;
