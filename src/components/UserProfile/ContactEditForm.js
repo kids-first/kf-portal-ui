@@ -1,36 +1,112 @@
-import React, { Component } from 'react';
-import { Card, Button } from 'antd';
+import React, { Component, Fragment } from 'react';
+import { Button, Card, Col, Form, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
+import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
+
+const { Title } = Typography;
+
+const formItemLayout = { //TODO
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 5 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 12 },
+  },
+};
 
 class ContactEditForm extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     onClickCancelCb: PropTypes.func.isRequired,
     onClickSaveCb: PropTypes.func.isRequired,
+    form: PropTypes.object.isRequired,
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    const { form, onClickSaveCb, updateProfileCb } = this.props;
+
+    const fieldsValues = form.getFieldsValue();
+
+    //TODO  updateProfileCb({});
+    onClickSaveCb();
   };
 
   state = {};
 
   render() {
-    const { data, onClickCancelCb, onClickSaveCb } = this.props;
+    const { data, onClickCancelCb, form } = this.props;
     return (
-      <Card
-        title="Contact Information"
-        extra={
-          <div>
-            <Button type="primary" shape="round" onClick={onClickCancelCb}>
-              Cancel
-            </Button>
-            <Button type="primary" shape="round" onClick={onClickSaveCb}>
-              Save
-            </Button>
-          </div>
-        }
-      >
-        <p>TODO</p>
-      </Card>
+      <Form onSubmit={this.handleSubmit} {...formItemLayout}>
+        <Card
+          title={
+            <Title
+              level={3}
+              style={{
+                color: 'rgb(43, 56, 143)',
+              }}
+            >
+              Contact Information
+            </Title>
+          }
+          style={{
+            width: '1200px',
+            borderRadius: '10px',
+          }}
+          headStyle={{
+            color: 'rgb(43, 56, 143)',
+            backgroundColor: 'rgb(237,238,241)',
+            paddingBottom: '14px',
+            paddingTop: '14px',
+            paddingLeft: '32px',
+            paddingRight: '32px',
+          }}
+          bodyStyle={{
+            padding: '32px',
+          }}
+          extra={
+            <Fragment>
+              <Button
+                icon="edit"
+                shape="round"
+                style={{ color: 'white', backgroundColor: '#90278e' }}
+                onClick={onClickCancelCb}
+              >
+                Cancel
+              </Button>
+              <Button
+                icon="edit"
+                shape="round"
+                style={{ color: 'white', backgroundColor: '#90278e' }}
+                htmlType="submit"
+              >
+                Save
+              </Button>
+            </Fragment>
+          }
+        >
+          <Row>
+            <Col span={14} style={{ paddingRight: '72px' }}>
+              <ContactInformationEditable data={data} parentForm={form} />
+            </Col>
+            <Col
+              span={10}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              TODO find ME
+            </Col>
+          </Row>
+        </Card>
+      </Form>
     );
   }
 }
 
-export default ContactEditForm;
+const ContactForm = Form.create({ name: 'contact_form' })(ContactEditForm);
+
+export default ContactForm;

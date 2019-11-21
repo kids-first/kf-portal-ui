@@ -26,7 +26,7 @@ class ProfileEditable extends Component {
   };
 
   handleSubmit = e => {
-    e.preventDefault(); //TODO
+    e.preventDefault();
     const { form, onClickSaveCb, updateProfileCb } = this.props;
 
     const fieldsValues = form.getFieldsValue();
@@ -86,7 +86,6 @@ class ProfileEditable extends Component {
                 shape="round"
                 style={{ color: 'white', backgroundColor: '#90278e' }}
                 htmlType="submit"
-                // onClick={onClickEditCb}
               >
                 Save
               </Button>

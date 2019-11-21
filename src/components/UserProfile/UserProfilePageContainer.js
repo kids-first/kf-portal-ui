@@ -6,6 +6,7 @@ import {
   selectProfile,
   selectIsProfileLoading,
   selectErrorProfile,
+  selectIsProfileUpdating,
 } from '../../store/selectors/users';
 import {
   fetchProfileIfNeeded,
@@ -15,8 +16,11 @@ import {
 import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
-import { Spin, Icon, Layout } from 'antd';
 import { withRouter } from 'react-router-dom';
+import { Icon, Layout, Spin } from 'antd';
+
+//TODO : Add Delete Account
+//TODO: Add Tracking back
 
 const KEY_ABOUT_ME = 'aboutMe';
 const KEY_SETTINGS = 'settings';
@@ -44,10 +48,11 @@ class UserProfilePageContainer extends React.Component {
     location: PropTypes.shape({
       hash: PropTypes.string.isRequired,
     }).isRequired,
+    isProfileUpdating: PropTypes.bool.isRequired,
   };
 
   state = {
-    currentMenuItem: getKeyFromHash(this.props.hash),
+    currentMenuItem: getKeyFromHash(this.props.location.hash),
   };
 
   componentDidMount() {
@@ -56,9 +61,15 @@ class UserProfilePageContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.userInfo.userID !== this.props.userInfo.userID) {
-      const { onFetchProfile, userInfo } = this.props;
+    const { onFetchProfile, userInfo, location: { hash } } = this.props;
+    if (prevProps.userInfo.userID !== userInfo.userID) {
       onFetchProfile(userInfo);
+    }
+
+    const hasHashChanged = prevProps.location.hash !== hash;
+    const keyFromHash = getKeyFromHash(hash);
+    if (hasHashChanged) {
+      this.setState({ currentMenuItem: keyFromHash });
     }
   }
 
@@ -88,13 +99,19 @@ class UserProfilePageContainer extends React.Component {
       profile,
       userInfo,
       location: { hash },
+      isProfileUpdating,
     } = this.props;
 
     const { currentMenuItem } = this.state;
 
     if (isLoading) {
       return (
-        <Layout style={{ justifyContent: 'center' }}>
+        <Layout
+          style={{
+            justifyContent: 'center',
+            background: '#fff',
+          }}
+        >
           <Spin indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
         </Layout>
       );
@@ -110,9 +127,10 @@ class UserProfilePageContainer extends React.Component {
         updateProfileCb={this.submit}
         canEdit={userInfo.isSelf}
         hash={hash}
-        key={hash} // Allows to create a new component instance when hash is changed.
+        key={currentMenuItem} // Allows to create a new component instance when hash is changed.
         handleMenuClickCb={this.handleMenuClick}
         currentMenuItem={currentMenuItem}
+        isProfileUpdating={isProfileUpdating}
       />
     );
   }
@@ -122,6 +140,7 @@ const mapStateToProps = state => ({
   profile: selectProfile(state),
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
+  isProfileUpdating: selectIsProfileUpdating(state),
 });
 
 const mapDispatchToProps = dispatch => {

@@ -89,3 +89,13 @@ export const userProfileBackground = (
       );
   `;
 };
+
+export const extractFindMeFromProfile = (profile = {}) => {
+  const findMeFields = ['github', 'googleScholarId', 'linkedin', 'orchid', 'twitter', 'facebook'];
+  return Object.entries(profile).reduce((accFindMe, [profileKey, profileValue]) => {
+    if (findMeFields.includes(profileKey) && Boolean(profileValue)) {
+      return { ...accFindMe, [profileKey]: profileValue };
+    }
+    return accFindMe;
+  }, {});
+};

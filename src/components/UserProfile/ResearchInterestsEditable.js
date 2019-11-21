@@ -12,7 +12,7 @@ const { Option } = Select;
 
 const MIN_NUM_OF_CHAR_TO_CHECK = 2;
 
-const generateFieldFromInterest = interest => toKebabCase(`tag ${interest}`);
+const generateFieldNameFromInterest = interest => toKebabCase(`tag ${interest}`);
 
 // Let's inject tags into the form so we can have access to them in the parent.
 class ResearchInterestsEditable extends Component {
@@ -34,9 +34,9 @@ class ResearchInterestsEditable extends Component {
 
   setFieldForEveryInterests = (interests = []) => {
     const { parentForm } = this.props;
-    //Inject dynamically initial tags into the form
+    //Inject dynamically tags into the form
     interests.forEach(interest => {
-      const fieldNameForTag = generateFieldFromInterest(interest);
+      const fieldNameForTag = generateFieldNameFromInterest(interest);
       parentForm.setFieldsValue({ [fieldNameForTag]: interest });
     });
   };
@@ -49,6 +49,7 @@ class ResearchInterestsEditable extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { interests } = this.state;
+    // We can only add or remove so there is not need to check the content
     if (interests.length !== prevState.interests.length) {
       this.setFieldForEveryInterests(interests);
     }
@@ -69,7 +70,7 @@ class ResearchInterestsEditable extends Component {
       return (
         <Row key={index}>
           <Form.Item style={formItemStyle}>
-            {getFieldDecorator(generateFieldFromInterest(interest), {
+            {getFieldDecorator(generateFieldNameFromInterest(interest), {
               rules: [{ required: false }],
             })(
               <Tag
@@ -113,7 +114,7 @@ class ResearchInterestsEditable extends Component {
       const uniqueSuggestions = difference(loweredSuggestions, interests);
       this.setState({ dataSource: uniqueSuggestions });
     } catch (e) {
-      this.setState({ errorFetchingTags: e });
+      //FIXME when backend is fixed add error management by adding this line =>this.setState({ errorFetchingTags: e });
     }
   }, 200);
 
@@ -138,7 +139,6 @@ class ResearchInterestsEditable extends Component {
 
   render() {
     const { parentForm } = this.props;
-
     const { getFieldDecorator } = parentForm;
 
     const autoCompleteCurrentValue = parentForm.getFieldsValue().otherAreasOfInterests || '';

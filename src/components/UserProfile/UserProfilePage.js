@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu } from 'antd';
+import { Icon, Layout, Menu, Spin } from 'antd';
 import AboutMe from './AboutMe_new'; //TODO
 import HeaderBannerContainer from './HeaderBannerContainer';
 import Settings from './Settings_new';
@@ -11,10 +11,39 @@ const KEY_SETTINGS = 'settings';
 const { Header, Content, Sider } = Layout;
 
 function UserProfilePage(props) {
-  const { profile, canEdit, handleMenuClickCb, currentMenuItem, updateProfileCb } = props;
+  const {
+    profile,
+    canEdit,
+    handleMenuClickCb,
+    currentMenuItem,
+    updateProfileCb,
+    isProfileUpdating,
+  } = props;
 
   const isAboutMeSelected = currentMenuItem === KEY_ABOUT_ME;
   const isSettingsSelected = currentMenuItem === KEY_SETTINGS;
+
+  let contentDisplay = null;
+  if (isProfileUpdating) {
+    contentDisplay = (
+      <Layout
+        style={{
+          justifyContent: 'center',
+          height: '100%',
+          alignItems: 'center',
+          background: '#fff',
+        }}
+      >
+        <Spin indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
+      </Layout>
+    );
+  } else if (isAboutMeSelected) {
+    contentDisplay = (
+      <AboutMe canEdit={canEdit} profile={profile} updateProfileCb={updateProfileCb} />
+    );
+  } else if (isSettingsSelected) {
+    contentDisplay = <Settings userEmail={profile.email} />;
+  }
 
   return (
     <Layout>
@@ -60,12 +89,7 @@ function UserProfilePage(props) {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content>
-          {isAboutMeSelected && (
-            <AboutMe canEdit={canEdit} profile={profile} updateProfileCb={updateProfileCb} />
-          )}
-          {isSettingsSelected && <Settings userEmail={profile.email} />}
-        </Content>
+        <Content>{contentDisplay}</Content>
       </Layout>
     </Layout>
   );
@@ -78,6 +102,7 @@ UserProfilePage.propTypes = {
   handleMenuClickCb: PropTypes.func.isRequired,
   currentMenuItem: PropTypes.string.isRequired,
   updateProfileCb: PropTypes.func.isRequired,
+  isProfileUpdating: PropTypes.bool.isRequired,
 };
 
 export default UserProfilePage;

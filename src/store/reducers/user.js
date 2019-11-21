@@ -22,6 +22,7 @@ const initialState = {
   errorProfile: null,
   isTogglingProfileStatus: false,
   isTogglingProfileStatusInError: null,
+  isProfileUpdating: false,
 };
 
 export default (state = initialState, action) => {
@@ -43,11 +44,11 @@ export default (state = initialState, action) => {
     case FAILURE_PROFILE:
       return { ...state, errorProfile: action.payload, isProfileLoading: false };
     case REQUEST_PROFILE_UPDATE:
-      return { ...state, isProfileLoading: true };
+      return { ...state, isProfileUpdating: true };
     case FAILURE_UPDATE:
       return { ...state, errorProfile: action.payload, isProfileLoading: false };
     case UPDATE_USER_SUCCESS:
-      return { ...state, isProfileLoading: false };
+      return { ...state, profile: action.payload, isProfileUpdating: false };
     case DELETE_PROFILE:
       return { ...state, profile: null };
     case REQUEST_IS_PUBLIC_TOGGLE:

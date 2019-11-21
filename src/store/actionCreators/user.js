@@ -60,9 +60,10 @@ export const failureProfile = error => {
   };
 };
 
-export const updateProfileSuccess = () => {
+export const updateProfileSuccess = updatedProfile => {
   return {
     type: UPDATE_USER_SUCCESS,
+    payload: updatedProfile,
   };
 };
 
@@ -92,7 +93,6 @@ const shouldFetchProfile = (state, userInfo) => {
   if (!Boolean(profileInStore)) {
     return true;
   }
-
   return profileInStore._id !== userInfo.userID;
 };
 
@@ -120,12 +120,11 @@ export const failureUpdateProfile = error => {
 export const updateUserProfile = user => {
   return async dispatch => {
     dispatch(requestUpdateProfile());
-
     try {
-      await updateProfileFromUser({
+      const updatedProfile = await updateProfileFromUser({
         user,
       });
-      return dispatch(updateProfileSuccess());
+      return dispatch(updateProfileSuccess(updatedProfile));
     } catch (e) {
       return dispatch(failureUpdateProfile(e));
     }
@@ -144,7 +143,7 @@ export const receiveIsPublicToggle = () => {
   };
 };
 
-export const failureIsPublicToggle = (error) => {
+export const failureIsPublicToggle = error => {
   return {
     type: FAILURE_IS_PUBLIC_TOGGLE,
     payload: error,
@@ -154,7 +153,6 @@ export const failureIsPublicToggle = (error) => {
 export const toggleIsPublic = user => {
   return async dispatch => {
     dispatch(requestIsPublicToggle());
-
     try {
       await updateProfileFromUser({
         user,
@@ -164,7 +162,6 @@ export const toggleIsPublic = user => {
       return dispatch(failureIsPublicToggle(e));
     }
   };
-
 };
 
 export const deleteProfile = () => {

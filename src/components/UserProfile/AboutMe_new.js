@@ -9,38 +9,6 @@ import ProfileEditable from './ProfileEditable';
 
 const { Content } = Layout;
 
-const filterContactInfoFromProfile = profile => {
-  const findMeFields = ['github', 'googleScholarId', 'linkedin', 'orchid', 'twitter', 'facebook'];
-  const keepKeysExceptFindMeOn = [
-    'email',
-    'addressLine1',
-    'institution',
-    'city',
-    'country',
-    'state',
-    'phone',
-    'institutionalEmail',
-    'zip',
-  ];
-
-  const { entries } = Object;
-  // keep only needed value from profile + add findMe elements to it, as well.
-  return entries(profile).reduce(
-    (reducedProfile, [profileKey, profileValue]) => {
-      if (keepKeysExceptFindMeOn.includes(profileKey)) {
-        return { ...reducedProfile, [profileKey]: profileValue };
-      } else if (findMeFields.includes(profileKey) && Boolean(profileValue)) {
-        const findMe = { ...reducedProfile.findMe, [profileKey]: profileValue };
-        return { ...reducedProfile, findMe };
-      }
-      return reducedProfile;
-    },
-    { findMe: {} },
-  );
-};
-
-
-
 const AboutMe = props => {
   const { canEdit, profile, updateProfileCb } = props;
   return (
@@ -61,7 +29,7 @@ const AboutMe = props => {
           <Row>
             <Col span={24}>
               <EditToggle
-                data={filterContactInfoFromProfile(profile)}
+                data={profile}
                 canEdit={canEdit}
                 ReadOnlyComponent={ContactReadOnly}
                 EditableComponent={ContactEditForm}
