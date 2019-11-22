@@ -21,7 +21,8 @@ import { Icon, Layout, Spin } from 'antd';
 
 //TODO : Add Delete Account
 //TODO: Add Tracking back
-
+//TODO: Add missing fields (jobTitle,...) and hide some of them when community or patient
+//TODO : check if banner colour changes when click on save
 const KEY_ABOUT_ME = 'aboutMe';
 const KEY_SETTINGS = 'settings';
 
@@ -116,7 +117,7 @@ class UserProfilePageContainer extends React.Component {
         </Layout>
       );
     } else if (error) {
-      return <Error text={'TODO'} />;
+      return <Error />;
     } else if (isEmpty(profile)) {
       return <Error text={'404: Page not found.'} />;
     }

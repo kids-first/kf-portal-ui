@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { SOCIAL_ITEMS } from 'components/UserProfile/utils';
+import { socialItems } from 'components/UserProfile/utils';
 import { List, Row, Typography } from 'antd';
 
 const { Title, Text } = Typography;
@@ -24,9 +24,10 @@ const FindMeReadOnly = props => {
     );
   }
 
-  const userSocialItems = keys(SOCIAL_ITEMS)
+  const socialItemsWithSized = socialItems();
+  const userSocialItems = keys(socialItemsWithSized)
     .filter(key => prototype.hasOwnProperty.call(findMe, key))
-    .map(key => ({ ...SOCIAL_ITEMS[key], value: findMe[key] }));
+    .map(key => ({ ...socialItemsWithSized[key], value: findMe[key] }));
 
   return (
     <div style={{ borderLeft: '1px solid rgb(237,238,241)', paddingLeft: '48px' }}>

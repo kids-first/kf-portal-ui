@@ -2,19 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Button, Card, Col, Form, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
-
+import FindMeEditable from './FindMeEditable';
 const { Title } = Typography;
-
-const formItemLayout = { //TODO
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 5 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
-};
 
 class ContactEditForm extends Component {
   static propTypes = {
@@ -30,7 +19,7 @@ class ContactEditForm extends Component {
 
     const fieldsValues = form.getFieldsValue();
 
-    //TODO  updateProfileCb({});
+    updateProfileCb(fieldsValues);
     onClickSaveCb();
   };
 
@@ -39,7 +28,7 @@ class ContactEditForm extends Component {
   render() {
     const { data, onClickCancelCb, form } = this.props;
     return (
-      <Form onSubmit={this.handleSubmit} {...formItemLayout}>
+      <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
           title={
             <Title
@@ -88,17 +77,17 @@ class ContactEditForm extends Component {
           }
         >
           <Row>
-            <Col span={14} style={{ paddingRight: '72px' }}>
+            <Col span={16} style={{ paddingRight: '72px' }}>
               <ContactInformationEditable data={data} parentForm={form} />
             </Col>
             <Col
-              span={10}
+              span={8}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
               }}
             >
-              TODO find ME
+              <FindMeEditable parentForm={form} data={data} />
             </Col>
           </Row>
         </Card>

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutoComplete from 'components/UserProfile/PlacesAutoComplete';
-import { Input } from 'antd';
+import { Input, List } from 'antd';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
-
 
 class ContactEditablePlacesAutoComplete extends Component {
   static propTypes = {
@@ -26,7 +25,6 @@ class ContactEditablePlacesAutoComplete extends Component {
     try {
       const response = await geocodeByPlaceId(placeId);
       const data = response[0];
-
       const addressComponent = data.address_components;
       const findAddressField = field =>
         addressComponent.find(c => c.types.includes(field)) || defaultObject;
@@ -35,10 +33,10 @@ class ContactEditablePlacesAutoComplete extends Component {
         country: findAddressField('country').long_name,
         state: findAddressField('administrative_area_level_1').long_name,
         city: findAddressField('locality').long_name,
-        addressLine1: `${findAddressField('streetNumber').long_name} ${
+        addressLine1: `${findAddressField('street_number').long_name} ${
           findAddressField('route').long_name
         }`,
-        zip: findAddressField('zip').long_name,
+        zip: findAddressField('postal_code').long_name,
       });
     } catch (e) {
       this.setState({ errorFetchingPlaces: e });
@@ -61,21 +59,21 @@ class ContactEditablePlacesAutoComplete extends Component {
                 id: 'address-input',
               })}
               placeholder={'e.g 3401 Civic Center Blvd.'}
+              allowClear
             />
 
             <div>
-              {loading ? <div>Loading...</div> : null}
-              {suggestions.map(suggestion => {
-                const spread = {
-                  ...getSuggestionItemProps(suggestion),
-                };
-
-                return (
-                  <div {...spread} key={suggestion.id}>
-                    <div>{suggestion.description}</div>
-                  </div>
-                );
-              })}
+              <List
+                locale={{ emptyText: <div/> }}
+                loading={loading}
+                itemLayout="horizontal"
+                dataSource={suggestions || []}
+                renderItem={item => (
+                  <List.Item {...getSuggestionItemProps(item)}>
+                    <List.Item.Meta title={item.description} />
+                  </List.Item>
+                )}
+              />
             </div>
           </React.Fragment>
         )}

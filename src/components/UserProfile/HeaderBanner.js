@@ -1,15 +1,12 @@
 import React from 'react';
-import { Alert, Avatar, Col, Icon, Row, Switch, Typography, Tooltip } from 'antd';
+import { Alert, Avatar, Col, Icon, Row, Switch, Typography, Tooltip, Button } from 'antd';
 import { userProfileBackground } from './utils';
 import PropTypes from 'prop-types';
 import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from './ProfilePill';
 
 const { Title, Text } = Typography;
-/* TODO
-* import { isFeatureEnabled } from 'common/featuresToggles';
-isFeatureEnabled('searchMembers')
-* */
+
 const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canEdit }) => {
   return (
     <Row
@@ -27,10 +24,22 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
         </Row>
         <Row type={'flex'} align={'middle'}>
           <Col span={6} offset={6}>
-            <Avatar
-              src={computeGravatarSrcFromEmail(profile.email, { size: 80, d: 'mp' })}
-              size={80}
-            />
+            <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+              <Avatar
+                src={computeGravatarSrcFromEmail(profile.email, { size: 80, d: 'mp' })}
+                size={80}
+              />
+              {canEdit && (
+                <Button
+                  style={{ transform: 'translateX(-18px)' }}
+                  size="small"
+                  icon={'edit'}
+                  shape={'circle'}
+                  href="https://en.gravatar.com/site/login"
+                  target="_blank"
+                />
+              )}
+            </div>
           </Col>
           <Col span={12}>
             <Title

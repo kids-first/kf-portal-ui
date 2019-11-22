@@ -9,66 +9,67 @@ import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
 
-const commonSize = { height: 32, width: 32 };
-
-export const SOCIAL_ITEMS = {
-  website: {
-    icon: <WebsiteIcon {...commonSize} />,
-    name: 'Website URL:',
-    placeholder: 'e.g. kidsfirstdrc.org',
-    type: 'text',
-    service: 'Website',
-    href: v => v,
-  },
-  googleScholarId: {
-    icon: <GoogleScholarIcon {...commonSize} />,
-    name: 'Google Scholar URL:',
-    placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
-    type: 'text',
-    service: 'Google Scholar',
-    href: v => v,
-  },
-  linkedin: {
-    icon: <LinkedInIcon {...commonSize} />,
-    name: 'LinkedIn URL:',
-    placeholder: 'e.g. linkedin.com/in/acresnick',
-    type: 'text',
-    service: 'LinkedIn',
-    href: v => v,
-  },
-  facebook: {
-    icon: <SocialIcon url={kfFacebook} style={{ ...commonSize }} />,
-    name: 'Facebook URL:',
-    placeholder: 'e.g. facebook.com/kidsfirstDRC',
-    type: 'text',
-    service: 'Facebook',
-    href: v => v,
-  },
-  twitter: {
-    icon: <SocialIcon url={kfTwitter} style={{ ...commonSize }} />,
-    name: 'Twitter handle/username:',
-    placeholder: 'e.g. @kidsfirstDRC',
-    type: 'text',
-    href: v => `https://twitter.com/${v}`,
-    linkText: v => `@${v}`,
-    service: 'Twitter',
-  },
-  github: {
-    icon: <SocialIcon url={kfGithub} style={{ ...commonSize }} />,
-    name: 'Github username:',
-    placeholder: 'e.g. kids-first',
-    type: 'text',
-    href: v => `https://github.com/${v}`,
-    service: 'Github',
-  },
-  orchid: {
-    icon: <img alt="ORCHID" src={orchidIcon} {...commonSize} />,
-    name: 'ORCID ID:',
-    placeholder: 'e.g. 0000-0003-0436-4189',
-    type: 'text',
-    href: v => `https://orcid.org/${v}`,
-    service: 'Orchid',
-  },
+export const socialItems = (width = 32, height = 32) => {
+  const commonSize = { height, width };
+  return {
+    website: {
+      icon: <WebsiteIcon {...commonSize} />,
+      name: 'Website URL:',
+      placeholder: 'e.g. kidsfirstdrc.org',
+      type: 'text',
+      service: 'Website',
+      href: v => v,
+    },
+    googleScholarId: {
+      icon: <GoogleScholarIcon {...commonSize} />,
+      name: 'Google Scholar URL:',
+      placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
+      type: 'text',
+      service: 'Google Scholar',
+      href: v => v,
+    },
+    linkedin: {
+      icon: <LinkedInIcon {...commonSize} />,
+      name: 'LinkedIn URL:',
+      placeholder: 'e.g. linkedin.com/in/acresnick',
+      type: 'text',
+      service: 'LinkedIn',
+      href: v => v,
+    },
+    facebook: {
+      icon: <SocialIcon url={kfFacebook} style={{ ...commonSize }} />,
+      name: 'Facebook URL:',
+      placeholder: 'e.g. facebook.com/kidsfirstDRC',
+      type: 'text',
+      service: 'Facebook',
+      href: v => v,
+    },
+    twitter: {
+      icon: <SocialIcon url={kfTwitter} style={{ ...commonSize }} />,
+      name: 'Twitter handle/username:',
+      placeholder: 'e.g. @kidsfirstDRC',
+      type: 'text',
+      href: v => `https://twitter.com/${v}`,
+      linkText: v => `@${v}`,
+      service: 'Twitter',
+    },
+    github: {
+      icon: <SocialIcon url={kfGithub} style={{ ...commonSize }} />,
+      name: 'Github username:',
+      placeholder: 'e.g. kids-first',
+      type: 'text',
+      href: v => `https://github.com/${v}`,
+      service: 'Github',
+    },
+    orchid: {
+      icon: <img alt="ORCHID" src={orchidIcon} {...commonSize} />,
+      name: 'ORCID ID:',
+      placeholder: 'e.g. 0000-0003-0436-4189',
+      type: 'text',
+      href: v => `https://orcid.org/${v}`,
+      service: 'Orchid',
+    },
+  }
 };
 export const userProfileBackground = (
   profile,
