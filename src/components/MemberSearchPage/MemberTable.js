@@ -8,6 +8,7 @@ import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
+import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
 
 const { Text } = Typography;
 
@@ -150,6 +151,11 @@ const MemberTable = props => {
                       />
                     )}
                   </div>
+                  {item.highlight && (item.highlight.bio || item.highlight.story) ? (
+                    <MemberSearchBioStory bio={item.highlight.bio} story={item.highlight.story} />
+                  ) : (
+                    ''
+                  )}
                 </Col>
               </Row>
             </List.Item>
