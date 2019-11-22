@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { multicardTabMenuHeader } from './Multicard.module.css';
+import './Multicard.css';
 
 const Header = ({ children, active, ...props }) => (
-  <div className={`${multicardTabMenuHeader} ${active ? 'active' : ''}`} {...props}>
+  <div className={`multicardTabMenuHeader ${active ? 'active' : ''}`} {...props}>
     {children}
   </div>
 );

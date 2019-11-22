@@ -44,16 +44,16 @@
   cursor: pointer;
 }
 
-.indexCircle {
+.multicardIndexCircle {
   border-radius: 50%;
   height: 11px;
   width: 11px;
   background-color: #a6278f;
   margin-left: 6px;
 }
-.indexCircle.active {
+.multicardIndexCircle.active {
   background-color: #cc3399;
 }
-.indexCircle:hover {
+.multicardIndexCircle:hover {
   cursor: pointer;
 }

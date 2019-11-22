@@ -32,10 +32,11 @@ export const BigWhiteButton = ({ children, className = '', ...props }) => (
 );
 
 export const WhiteButton = ({ children, className = '', ...props }) => (
-  <button {...props}>
-    <span className={`${baseButtonWithIcon} ${disabledButtonStyles} ${whiteButton} ${className}`}>
-      {children}
-    </span>
+  <button
+    className={`${baseButtonWithIcon} ${disabledButtonStyles} ${whiteButton} ${className}`}
+    {...props}
+  >
+    {children}
   </button>
 );
 

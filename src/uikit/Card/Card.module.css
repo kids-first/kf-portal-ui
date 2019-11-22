@@ -47,6 +47,7 @@
 .cardScrollY {
   flex: 1;
   overflow-y: visible;
+  width: 100%;
 }
 .cardScrollY.scrollable {
   overflow-y: auto;

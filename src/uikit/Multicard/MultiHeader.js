@@ -3,10 +3,10 @@ import React from 'react';
 import Row from 'uikit/Row';
 import { styleComponent } from 'components/Utils';
 
-import { multicardTitle, multicardBadge } from './Multicard.module.css';
+import './Multicard.css';
 
-const Title = styleComponent('h2', multicardTitle);
-const Badge = styleComponent('div', multicardBadge);
+const Title = styleComponent('h2', 'multicardTitle');
+const Badge = styleComponent('div', 'multicardBadge');
 
 const MultiHeader = ({ headings, children, ...rest }) => (
   <Row>

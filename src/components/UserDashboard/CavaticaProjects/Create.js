@@ -14,9 +14,9 @@ import { getMsgFromErrorOrElse } from 'utils';
 import { styleComponent } from 'components/Utils';
 
 import { input, select } from '../../../theme/tempTheme.module.css';
-import { styledLabel } from './CavaticaProjects.module.css';
+import './CavaticaProjects.css';
 
-const StyledLabel = styleComponent('label', styledLabel);
+const StyledLabel = styleComponent('label', 'CavaticaStyledLabel');
 
 const defaultState = {
   projectName: '',

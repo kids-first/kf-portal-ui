@@ -6,7 +6,7 @@ import ExternalLink from 'uikit/ExternalLink';
 import { getTaskLink } from 'services/cavatica';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import './CavaticaProjects.module.css';
+import './CavaticaProjects.css';
 
 const Task = ({ tasks, status, projectId, displayStyle = '' }) => {
   const text = `${tasks} ${status}`;
