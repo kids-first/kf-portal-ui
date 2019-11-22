@@ -13,18 +13,16 @@ import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
-
-import { Tabs, ShowIf } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
+import Tabs from 'components/Tabs';
+import { styleComponent } from 'components/Utils';
 import { PromptMessageContainer, PromptMessageContent, DashboardCard } from '../styles';
 import QueryBlock from './QueryBlock';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
-} from '../../../store/actionCreators/virtualStudies';
-import { setActiveSavedQueryTab } from '../actionCreators';
+} from 'store/actionCreators/virtualStudies';
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
-import { styleComponent } from 'components/Utils';
 
 import {
   savedQueriesContainer,
@@ -48,7 +46,6 @@ class SavedQueries extends React.Component {
   static propTypes = {
     // from redux store
     virtualStudies: PropTypes.array.isRequired,
-    userDashboardPage: PropTypes.object.isRequired,
     // from freactal state
     state: PropTypes.shape({
       queries: PropTypes.array.isRequired,
@@ -79,148 +76,146 @@ class SavedQueries extends React.Component {
     });
   }
 
+  renderParticipantQueries() {
+    const { virtualStudies } = this.props;
+
+    return !virtualStudies.length ? (
+      <Box key="virtual-studies" mt={2}>
+        <PromptMessageContainer info mb={'8px'}>
+          <PromptMessageContent>
+            <FileRepositoryLink to="/explore">Explore Data</FileRepositoryLink> and save virtual
+            studies!
+          </PromptMessageContent>
+        </PromptMessageContainer>
+      </Box>
+    ) : (
+      <Box key="virtual-studies" mt={2} mb={2}>
+        <Scroll>
+          {virtualStudies
+            .map(vs => (
+              <Flex
+                className={study}
+                key={vs.virtualStudyId}
+                date={Number(new Date(vs.creationDate))}
+              >
+                <Column width="100%">
+                  <Row justifyContent="space-between" width="100%">
+                    <Link className={studyLink} to={`/explore?id=${vs.virtualStudyId}`}>
+                      {vs.name}
+                    </Link>
+                    <Box pr={2} pl={2}>
+                      <span
+                        className={studyDeleteWrapper}
+                        onClick={() => {
+                          this.deleteVirtualStudy(vs);
+                        }}
+                      >
+                        <TrashIcon />
+                      </span>
+                    </Box>
+                  </Row>
+                  <Row justifyContent="space-between" width="100%">
+                    <Tooltip html={<div className={studyDescription}>{vs.description}</div>}>
+                      <div className={studyDescription} style={{ marginRight: '32px' }}>
+                        {vs.description.length >= 140
+                          ? `${vs.description.slice(0, 140)}...`
+                          : vs.description}
+                      </div>
+                    </Tooltip>
+                  </Row>
+                  <div className={studySavedTime} style={{ fontFamily: 'Open Sans,sans-serif' }}>
+                    Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
+                  </div>
+                </Column>
+              </Flex>
+            ))
+            .slice()
+            .sort((a, b) => b.props.date - a.props.date)}
+        </Scroll>
+      </Box>
+    );
+  }
+
+  renderFileQueries() {
+    const {
+      state: { queries: fileQueries, exampleQueries, deletingIds },
+    } = this.props;
+
+    return !fileQueries.length ? (
+      <Scroll key="files-queries">
+        <Box mt={2}>
+          <PromptMessageContainer info mb={'8px'}>
+            <PromptMessageContent>
+              Explore the <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink>{' '}
+              to save queries!
+            </PromptMessageContent>
+          </PromptMessageContainer>
+        </Box>
+        <Box mt={2} mb={2}>
+          {exampleQueries.map(q => {
+            q.link = `/search${q.content.longUrl.split('/search')[1]}`;
+            return (
+              <QueryBlock
+                key={q.id}
+                query={q}
+                inactive={deletingIds.includes(q.id)}
+                savedTime={false}
+              />
+            );
+          })}
+        </Box>
+      </Scroll>
+    ) : (
+      <Scroll key="files-queries">
+        <Box mt={2} mb={2}>
+          {fileQueries
+            .filter(q => q.alias && q.content.Files)
+            .map(q => ({
+              ...q,
+              date: Number(new Date(q.creationDate)),
+              link: `/search${q.content.longUrl.split('/search')[1]}`,
+            }))
+            .slice()
+            .sort((a, b) => b.date - a.date)
+            .map(q => (
+              <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
+            ))}
+        </Box>
+      </Scroll>
+    );
+  }
+
   render() {
     const {
-      state: { queries: fileQueries, exampleQueries, loadingQueries, deletingIds },
+      state: { queries: fileQueries, loadingQueries },
       virtualStudies,
-      userDashboardPage,
-      setActiveSavedQueryTab,
     } = this.props;
-    const selectedTab = userDashboardPage.activeSavedQueryTab;
+
     return (
       // TODO EXTRACT DashboardCard to UserDashboard/index.js
       <DashboardCard showHeader={false}>
         {loadingQueries ? (
           <ChartContentSpinner />
         ) : (
-          <div>
+          <div style={{ height: '100%' }}>
             <CardHeader title="Saved Queries" style={{ margin: '5px 0 15px 0' }} />
             <Column className={savedQueriesContainer}>
               <Tabs
-                selectedTab={selectedTab}
+                initialSelectedTab="PARTICIPANTS"
                 options={[
                   {
-                    id: 'PARTICIPANTS',
                     display: 'Participants',
                     total: virtualStudies.length ? virtualStudies.length : [0],
                   },
                   {
-                    id: 'FILES',
                     display: 'Files',
                     total: fileQueries.length ? fileQueries.length : [0],
                   },
                 ]}
-                onTabSelect={({ id }) => {
-                  setActiveSavedQueryTab(id);
-                }}
-              />
-              <ShowIf condition={selectedTab === 'FILES'}>
-                {!fileQueries.length ? (
-                  <Scroll>
-                    <Box mt={2}>
-                      <PromptMessageContainer info mb={'8px'}>
-                        <PromptMessageContent>
-                          Explore the{' '}
-                          <FileRepositoryLink to="/search/file">File Repository</FileRepositoryLink>{' '}
-                          to save queries!
-                        </PromptMessageContent>
-                      </PromptMessageContainer>
-                    </Box>
-                    <Box mt={2} mb={2}>
-                      {exampleQueries.map(q => {
-                        q.link = `/search${q.content.longUrl.split('/search')[1]}`;
-                        return (
-                          <QueryBlock
-                            key={q.id}
-                            query={q}
-                            inactive={deletingIds.includes(q.id)}
-                            savedTime={false}
-                          />
-                        );
-                      })}
-                    </Box>
-                  </Scroll>
-                ) : (
-                  <Scroll>
-                    <Box mt={2} mb={2}>
-                      {fileQueries
-                        .filter(q => q.alias && q.content.Files)
-                        .map(q => ({
-                          ...q,
-                          date: Number(new Date(q.creationDate)),
-                          link: `/search${q.content.longUrl.split('/search')[1]}`,
-                        }))
-                        .slice()
-                        .sort((a, b) => b.date - a.date)
-                        .map(q => (
-                          <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
-                        ))}
-                    </Box>
-                  </Scroll>
-                )}
-              </ShowIf>
-              <ShowIf condition={selectedTab === 'PARTICIPANTS'}>
-                {!virtualStudies.length ? (
-                  <Box mt={2}>
-                    <PromptMessageContainer info mb={'8px'}>
-                      <PromptMessageContent>
-                        <FileRepositoryLink to="/explore">Explore Data</FileRepositoryLink> and save
-                        virtual studies!
-                      </PromptMessageContent>
-                    </PromptMessageContainer>
-                  </Box>
-                ) : (
-                  <Box mt={2} mb={2}>
-                    <Scroll>
-                      {virtualStudies
-                        .map(vs => (
-                          <Flex
-                            className={study}
-                            key={vs.virtualStudyId}
-                            date={Number(new Date(vs.creationDate))}
-                          >
-                            <Column width="100%">
-                              <Row justifyContent="space-between" width="100%">
-                                <Link className={studyLink} to={`/explore?id=${vs.virtualStudyId}`}>
-                                  {vs.name}
-                                </Link>
-                                <Box pr={2} pl={2}>
-                                  <span
-                                    className={studyDeleteWrapper}
-                                    onClick={() => {
-                                      this.deleteVirtualStudy(vs);
-                                    }}
-                                  >
-                                    <TrashIcon />
-                                  </span>
-                                </Box>
-                              </Row>
-                              <Row justifyContent="space-between" width="100%">
-                                <Tooltip
-                                  html={<div className={studyDescription}>{vs.description}</div>}
-                                >
-                                  <div className={studyDescription} style={{ marginRight: '32px' }}>
-                                    {vs.description.length >= 140
-                                      ? `${vs.description.slice(0, 140)}...`
-                                      : vs.description}
-                                  </div>
-                                </Tooltip>
-                              </Row>
-                              <div
-                                className={studySavedTime}
-                                style={{ fontFamily: 'Open Sans,sans-serif' }}
-                              >
-                                Saved {distanceInWords(new Date(), new Date(vs.creationDate))} ago
-                              </div>
-                            </Column>
-                          </Flex>
-                        ))
-                        .slice()
-                        .sort((a, b) => b.props.date - a.props.date)}
-                    </Scroll>
-                  </Box>
-                )}
-              </ShowIf>
+              >
+                {this.renderParticipantQueries()}
+                {this.renderFileQueries()}
+              </Tabs>
             </Column>
           </div>
         )}
@@ -232,14 +227,12 @@ class SavedQueries extends React.Component {
 const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
-  setActiveSavedQueryTab,
 };
 
 const mapStateToProps = state => {
-  const { virtualStudies, ui } = state;
+  const { virtualStudies } = state;
   return {
     virtualStudies: virtualStudies.studies,
-    userDashboardPage: ui.userDashboardPage,
   };
 };
 

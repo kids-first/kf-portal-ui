@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import Component from 'react-component-component';
-import isNumber from 'lodash/isNumber';
 
 import { AggregationsList } from '@kfarranger/components/dist/Arranger';
 import Query from '@kfarranger/components/dist/Query';
@@ -12,41 +11,13 @@ import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import QuickSearchBox from './QuickSearchBox';
 import { FilterInput } from '../../../uikit/Input';
-import Row from 'uikit/Row';
-import { Span } from 'uikit/Core';
 
-import styles, { tabsTitle, tabsRow, tabsBadge } from './AggregationSidebar.module.css';
+import Tabs from 'components/Tabs';
 
-const Tab = ({ className, selected, children = null }) => (
-  <Row center className={`tabs-title ${className} ${tabsRow} ${selected ? 'active-tab' : ''}`}>
-    {children}
-  </Row>
-);
-
-export const Tabs = ({ selectedTab, onTabSelect, options }) => (
-  <Row className={`${tabsTitle} tabs-titles`}>
-    {options.map(({ id, display, total }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id} key={id}>
-        <Span>{display}</Span>
-        {isNumber(total) && <div className={tabsBadge}>{total}</div>}
-      </Tab>
-    ))}
-  </Row>
-);
+import styles from './AggregationSidebar.module.css';
 
 const ScrollY = ({ children, className = '', ...props }) => (
   <div className={`${styles.scrollY} ${className}`} {...props}>
-    {children}
-  </div>
-);
-
-export const ShowIf = ({ condition, children, ...props }) => (
-  /*
-    NOTE: this style-based conditional rendering is an optimization strategy to
-    prevent re-rendering of AggregationsList which results in extra
-    fetching and visual flash
-  */
-  <div style={{ display: condition ? 'block' : 'none' }} {...props}>
     {children}
   </div>
 );
@@ -79,7 +50,7 @@ export default compose(
               { id: 'CLINICAL', display: 'Clinical Filters' },
               { id: 'FILE', display: 'File Filters' },
             ]}
-            onTabSelect={({ id }) => setState({ selectedTab: id })}
+            onTabSelect={id => setState({ selectedTab: id })}
           />
           <div className={styles.aggsListWrapper}>
             <ScrollY>

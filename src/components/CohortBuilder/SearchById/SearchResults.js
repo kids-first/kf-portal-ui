@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
-import { Tabs } from 'components/FileRepo/AggregationSidebar/CustomAggregationsPanel';
+import Tabs from 'components/Tabs';
 
 const CommaSeparatedValuesCell = ({ value }) => (Array.isArray(value) ? value.join(', ') : value);
 
@@ -76,7 +76,7 @@ export default class SearchResults extends React.Component {
               total: unmatched.length,
             },
           ]}
-          onTabSelect={({ id }) => {
+          onTabSelect={id => {
             this.setState({ selectedTab: id });
           }}
         />

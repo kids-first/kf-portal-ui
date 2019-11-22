@@ -21,7 +21,7 @@ class CardContent extends React.Component {
   }
 
   render() {
-    const { children, scrollable = false, showsContentFader = true, className } = this.props;
+    const { children, scrollable = false, showsContentFader = true, className = '' } = this.props;
     return (
       <div className={`${cardContent} ${className}`}>
         <div
