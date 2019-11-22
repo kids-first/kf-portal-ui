@@ -55,7 +55,7 @@ const AuthorizedStudies = compose(
               }
             >
               <CardActionButton>
-                <Link to={`/user/${loggedInUser.egoId}#settings`}>Settings</Link>
+                <Link to={`/user/${loggedInUser._id}#settings`}>Settings</Link>
               </CardActionButton>
             </AccessGate>
             <Info
