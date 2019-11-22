@@ -193,12 +193,12 @@ class SavedQueries extends React.Component {
 
     return (
       // TODO EXTRACT DashboardCard to UserDashboard/index.js
-      <DashboardCard showHeader={false}>
+      <DashboardCard scrollable={true} showHeader={false} style={{ width: '100%' }}>
         {loadingQueries ? (
           <ChartContentSpinner />
         ) : (
           <div style={{ height: '100%' }}>
-            <CardHeader title="Saved Queries" style={{ margin: '5px 0 15px 0' }} />
+            <CardHeader title="Saved Queries" style={{ margin: '0px 0 15px 0' }} />
             <Column className={savedQueriesContainer}>
               <Tabs
                 initialSelectedTab="PARTICIPANTS"
