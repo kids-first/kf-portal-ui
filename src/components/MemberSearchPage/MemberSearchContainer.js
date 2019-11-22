@@ -83,9 +83,8 @@ class MemberSearchContainer extends Component {
   render() {
     const {members, count, currentPage ,membersPerPage, pending} = this.props;
 
-    //TODO mode style to css class or default ant design theme
     return (
-      <div style={{ backgroundColor: 'rgb(244, 245, 248)', width: '100%' }}>
+      <div className={'background-container'} style={{ width: '100%' }}>
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>

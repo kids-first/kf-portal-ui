@@ -6,17 +6,16 @@ const { Title } = Typography;
 
 const MemberSearchBorder = props => {
   return (
-    //TODO mode style to css class or default ant design theme
     <div className={'grid-container'}>
       <Row>
         <Title
           level={1}
           style={{
-            color: 'rgb(43, 56, 143)',
+            color: '#2b388f',
             margin: 0,
             padding: 0,
             fontWeight: 500,
-            linHeight: 0.71,
+            lineHeight: 0.71,
             letterSpacing: 0.4,
             fontFamily: 'Montserrat, sans-serif',
             textDecoration: 'none',

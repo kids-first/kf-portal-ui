@@ -91,23 +91,7 @@ const MemberTable = props => {
                   <MemberImage email={item.email || ''} d={'mp'} />
                 </Col>
                 <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8}>
-                  <Tag
-                    color={getTagColor(item.roles[0])}
-                    style={{
-                      borderRadius: 14,
-                      height: 28,
-                      display: 'flex',
-                      color: 'white',
-                      fontSize: 14,
-                      fontWeight: 300,
-                      lineHeight: 1.86,
-                      letterSpacing: 0.2,
-                      textAlign: 'left',
-                      textTransform: 'capitalize',
-                      padding: '0 16px 0 0',
-                      width: 220,
-                    }}
-                  >
+                  <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
                     <div style={{ display: 'flex' }}>
                       <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
                       <div style={{ color: `${background(item.roles[0])}` }}>
@@ -154,11 +138,10 @@ const MemberTable = props => {
                       </div>
                     )}
                   </div>
-                  {item.highlight && (item.highlight.bio || item.highlight.story) ? (
-                    <MemberSearchBioStory bio={item.highlight.bio} story={item.highlight.story} />
-                  ) : (
-                    ''
-                  )}
+                  <MemberSearchBioStory
+                    bio={(item.highlight || {}).bio || []}
+                    story={(item.highlight || {}).story || []}
+                  />
                 </Col>
               </Row>
             </List.Item>

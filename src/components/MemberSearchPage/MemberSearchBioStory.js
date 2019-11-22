@@ -1,22 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import { Divider, Typography } from 'antd';
-import { bind } from '../../utils';
-import PropTypes from 'prop-types';
 
 const { Paragraph } = Typography;
 
 const regex = /<\/?em>/gi;
 
 const MemberSearchBioStory = ({ bio, story }) => {
-  // static propTypes = {
-  //   highlights: PropTypes.array.isRequired,
-  // };
 
   return (
     <div>
       <Paragraph style={{ color: 'inherit' }}>
-        {bio ? (
+        {bio && bio.length > 0 ? (
           <div>
             <Divider style={{ margin: 5 }} />
             <div style={{ fontStyle: 'italic' }}>Member Biography: &nbsp;</div>
@@ -30,7 +25,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
         ) : (
           ''
         )}
-        {story ? (
+        {story && story.length > 0 ? (
           <div>
             <Divider style={{ margin: 5 }} />
             <div style={{ fontStyle: 'italic' }}>Member Story: &nbsp;</div>
