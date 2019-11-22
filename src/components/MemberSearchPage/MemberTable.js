@@ -1,4 +1,4 @@
-import { Col, List, Row, Tag, Typography } from 'antd';
+import { Col, Divider, List, Row, Tag, Typography } from 'antd';
 import React from 'react';
 import { find, get } from 'lodash';
 import { ROLES } from 'common/constants';
@@ -8,6 +8,7 @@ import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
+import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
 
 const { Text } = Typography;
 
@@ -90,23 +91,7 @@ const MemberTable = props => {
                   <MemberImage email={item.email || ''} d={'mp'} />
                 </Col>
                 <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8}>
-                  <Tag
-                    color={getTagColor(item.roles[0])}
-                    style={{
-                      borderRadius: 14,
-                      height: 28,
-                      display: 'flex',
-                      color: 'white',
-                      fontSize: 14,
-                      fontWeight: 300,
-                      lineHeight: 1.86,
-                      letterSpacing: 0.2,
-                      textAlign: 'left',
-                      textTransform: 'capitalize',
-                      padding: '0 16px 0 0',
-                      width: 220,
-                    }}
-                  >
+                  <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
                     <div style={{ display: 'flex' }}>
                       <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
                       <div style={{ color: `${background(item.roles[0])}` }}>
@@ -144,12 +129,19 @@ const MemberTable = props => {
                     {item.interests.length < 1 ? (
                       ''
                     ) : (
-                      <MemberInterests
-                        interests={item.interests}
-                        highlights={(item.highlight || {}).interests || []}
-                      />
+                      <div>
+                        <Divider style={{ margin: 5 }} />
+                        <MemberInterests
+                          interests={item.interests}
+                          highlights={(item.highlight || {}).interests || []}
+                        />
+                      </div>
                     )}
                   </div>
+                  <MemberSearchBioStory
+                    bio={(item.highlight || {}).bio || []}
+                    story={(item.highlight || {}).story || []}
+                  />
                 </Col>
               </Row>
             </List.Item>
