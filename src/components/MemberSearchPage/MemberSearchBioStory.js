@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Typography } from 'antd';
+import { Divider, Typography } from 'antd';
 import { bind } from '../../utils';
 import PropTypes from 'prop-types';
 
@@ -18,6 +18,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
       <Paragraph style={{ color: 'inherit' }}>
         {bio ? (
           <div>
+            <Divider style={{ margin: 5 }} />
             <div style={{ fontStyle: 'italic' }}>Member Biography: &nbsp;</div>
             <FormatLabel
               value={bio[0].replace(regex, '')}
@@ -31,6 +32,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
         )}
         {story ? (
           <div>
+            <Divider style={{ margin: 5 }} />
             <div style={{ fontStyle: 'italic' }}>Member Story: &nbsp;</div>
             <FormatLabel
               value={story[0].replace(regex, '')}

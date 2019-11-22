@@ -1,4 +1,4 @@
-import { Col, List, Row, Tag, Typography } from 'antd';
+import { Col, Divider, List, Row, Tag, Typography } from 'antd';
 import React from 'react';
 import { find, get } from 'lodash';
 import { ROLES } from 'common/constants';
@@ -145,10 +145,13 @@ const MemberTable = props => {
                     {item.interests.length < 1 ? (
                       ''
                     ) : (
-                      <MemberInterests
-                        interests={item.interests}
-                        highlights={(item.highlight || {}).interests || []}
-                      />
+                      <div>
+                        <Divider style={{ margin: 5 }} />
+                        <MemberInterests
+                          interests={item.interests}
+                          highlights={(item.highlight || {}).interests || []}
+                        />
+                      </div>
                     )}
                   </div>
                   {item.highlight && (item.highlight.bio || item.highlight.story) ? (
