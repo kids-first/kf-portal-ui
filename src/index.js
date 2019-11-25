@@ -1,7 +1,6 @@
 import 'babel-polyfill';
-import 'index.css';
-// import 'antd/dist/antd.css';
 import './antd-kf-theme.css';
+import 'index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

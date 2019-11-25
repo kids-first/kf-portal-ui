@@ -30,16 +30,10 @@ const FilterTable = props => {
         key={1}
         header={
           <Title
-            level={2}
+            level={3}
+            className={'filter-title'}
             style={{
-              color: 'rgb(43, 56, 143)',
               margin: 0,
-              padding: 0,
-              fontFamily: 'Montserrat, sans-serif',
-              textDecoration: 'none',
-              fontSize: 14,
-              fontWeight: 700,
-              textAlign: 'center',
               display: 'inline-flex',
             }}
           >
