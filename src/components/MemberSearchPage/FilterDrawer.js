@@ -30,14 +30,7 @@ class FilterDrawer extends Component {
         <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
           <Title
             level={2}
-            className={'h2-title'}
             style={{
-              fontFamily: 'Montserrat,sans-serif',
-              color: '#2b388f',
-              fontWeight: 500,
-              margin: 0,
-              padding: 0,
-              fontSize: 18,
               display: collapsed ? 'none' : 'block',
             }}
           >
