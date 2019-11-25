@@ -1,28 +1,63 @@
 # Release notes for kf-portal-ui
 
+## 2019-12-?? kf-portal-ui 2.??.??
+
+This release includes a new _Members_ page and alterations to the profile page, allowing to search for other members that made their user profile public.
+
+### Features
+
+- [#1954](https://github.com/kids-first/kf-portal-ui/issues/1954) Member page: Invite members to make their profile public
+- [#1881](https://github.com/kids-first/kf-portal-ui/issues/1881) Member page: List member pages
+- [#1887](https://github.com/kids-first/kf-portal-ui/issues/1887) Member page: Search members
+- [#2158](https://github.com/kids-first/kf-portal-ui/issues/2158) Member page: Filter member search by interests or role
+- [#2124](https://github.com/kids-first/kf-portal-ui/pull/2124) Make sure other members profile can be viewed but not edited
+
+## 2019-11-27 kf-portal-ui 2.12.0
+
+This release includes revamped clinical data reports, available under the _Download Data_ button of the Cohort Builder table.
+
+It also include improvements and bug fixes including Cavatica error management.
+
+### Features
+
+- [#2031](https://github.com/kids-first/kf-portal-ui/issues/2031) Download Clinical Data/Biospecimen Data
+
+### Bug fixes
+
+- [#2044](https://github.com/kids-first/kf-portal-ui/issues/2044) Manage errors during calls to Cavatica API
+- [#1822](https://github.com/kids-first/kf-portal-ui/issues/1822) An error should show an Internal error, not a "we are down for maintenance" page
+- [#1042](https://github.com/kids-first/kf-portal-ui/issues/1042) Fix bump on login when user already has a token
+- [#2143](https://github.com/kids-first/kf-portal-ui/issues/2143) Page routing is broken once a user is logged out
+
+### Technical / Other changes
+
+- [#2021](https://github.com/kids-first/kf-portal-ui/issues/2021) Netlify OSS licence for kf-qa : display Netlify logo on the login page
+- [#2063](https://github.com/kids-first/kf-portal-ui/issues/2063) Reduce front-end JavaScript bundle size in production
+
 ## 2019-10-14 kf-portal-ui 2.11.3
 
 This release fixes major issues :
-- [#2113](https://github.com/kids-first/kf-portal-ui/issues/2113) Widget Authorized studies show open access files on study that not contain open access files 
+
+- [#2113](https://github.com/kids-first/kf-portal-ui/issues/2113) Widget Authorized studies show open access files on study that not contain open access files
 - [#2105](https://github.com/kids-first/kf-portal-ui/issues/2111) Duplicate studies in widget Authorized Studies
 
 ## 2019-10-10 kf-portal-ui 2.11.2
 
 This release fixes minor issues :
+
 - [#2102](https://github.com/kids-first/kf-portal-ui/issues/2102) Participant page : Rename family table in the clinical tab
 - [#2105](https://github.com/kids-first/kf-portal-ui/issues/2105) Dashboard : Widgets Authorized studies broken
-
 
 ## 2019-10-10 kf-portal-ui 2.11.1
 
 This release fixes major issues, most of these concern the public access files :
 
 ### Bug fixes
+
 - [#2088](https://github.com/kids-first/kf-portal-ui/issues/2088) File Repository : Analyze in Cavatica after opening entity page directly does not work
 - [#2090](https://github.com/kids-first/kf-portal-ui/issues/2090) Cavatica: can't push open access files
-- [#2093](https://github.com/kids-first/kf-portal-ui/issues/2093) Filter on value * for ACL is not working
+- [#2093](https://github.com/kids-first/kf-portal-ui/issues/2093) Filter on value \* for ACL is not working
 - [#2091](https://github.com/kids-first/kf-portal-ui/issues/2091) Participant page: Do not repeat diagnoses and phenotypes that are not shared with other family members in the family table
-
 
 ## 2019-09-25 kf-portal-ui 2.11.0
 
