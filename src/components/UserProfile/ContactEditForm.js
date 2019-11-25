@@ -5,12 +5,20 @@ import ContactInformationEditable from 'components/UserProfile/ContactInformatio
 import FindMeEditable from './FindMeEditable';
 const { Title } = Typography;
 
+const reshapeForProfile = (fields) => {
+  if (fields.roles && !Array.isArray(fields.roles)) {
+    return ({...fields, roles: [fields.roles]})
+  }
+  return fields;
+};
+
 class ContactEditForm extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     onClickCancelCb: PropTypes.func.isRequired,
     onClickSaveCb: PropTypes.func.isRequired,
     form: PropTypes.object.isRequired,
+    isProfileUpdating: PropTypes.bool.isRequired,
   };
 
   handleSubmit = e => {
@@ -19,17 +27,18 @@ class ContactEditForm extends Component {
 
     const fieldsValues = form.getFieldsValue();
 
-    updateProfileCb(fieldsValues);
+    updateProfileCb(reshapeForProfile(fieldsValues));
     onClickSaveCb();
   };
 
   state = {};
 
   render() {
-    const { data, onClickCancelCb, form } = this.props;
+    const { data, onClickCancelCb, form, isProfileUpdating } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
+          loading={isProfileUpdating}
           title={
             <Title
               level={3}

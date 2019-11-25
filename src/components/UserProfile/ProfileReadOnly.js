@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Col, Divider, Row, Typography } from 'antd';
 import ResearchInterest from './ResearchInterests_new';
-import { bioMsgWhenEmpty, storyMsgWhenEmpty } from "components/UserProfile/constants";
+import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
 
 const { Title, Text } = Typography;
-//FIXME : make custom styles global.
+
 const ProfileReadOnly = props => {
-  const { data, canEdit, onClickEditCb } = props;
+  const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
   return (
     <Card
+      loading={isProfileUpdating}
       title={
         <Title
           level={3}
@@ -58,7 +59,9 @@ const ProfileReadOnly = props => {
           >
             My Bio
           </Title>
-          <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>{data.bio || bioMsgWhenEmpty}</Text>
+          <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>
+            {data.bio || bioMsgWhenEmpty}
+          </Text>
           <Divider style={{ marginBottom: '24px' }} />
         </Col>
       </Row>
@@ -72,7 +75,9 @@ const ProfileReadOnly = props => {
           >
             My Story
           </Title>
-          <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>{data.story || storyMsgWhenEmpty}</Text>
+          <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>
+            {data.story || storyMsgWhenEmpty}
+          </Text>
           <Divider style={{ marginBottom: '24px' }} />
         </Col>
       </Row>
@@ -101,6 +106,7 @@ ProfileReadOnly.propTypes = {
   data: PropTypes.object.isRequired,
   canEdit: PropTypes.bool.isRequired,
   onClickEditCb: PropTypes.func.isRequired,
+  isProfileUpdating: PropTypes.bool.isRequired,
 };
 
 export default ProfileReadOnly;

@@ -57,7 +57,7 @@ class ContactInformationEditable extends Component {
             )}
           </Form.Item>
           <Form.Item label="Profile Type">
-            {getFieldDecorator('role', {
+            {getFieldDecorator('roles', {
               initialValue: data.roles[0],
               rules: [{ required: true }],
             })(

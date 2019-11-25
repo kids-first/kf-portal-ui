@@ -8,12 +8,12 @@ const { Title } = Typography;
 
 const { TextArea } = Input;
 
-const retrieveInterestsFromForm = (formFields) => {
+const retrieveInterestsFromForm = formFields => {
   return Object.entries(formFields).reduce((acc, [key, value]) => {
     if (!key.startsWith('tag')) {
       return acc;
     }
-    return [value,...acc];
+    return [value, ...acc];
   }, []);
 };
 class ProfileEditable extends Component {
@@ -23,6 +23,7 @@ class ProfileEditable extends Component {
     onClickSaveCb: PropTypes.func.isRequired,
     form: PropTypes.object.isRequired,
     updateProfileCb: PropTypes.func.isRequired,
+    isProfileUpdating: PropTypes.bool.isRequired,
   };
 
   handleSubmit = e => {
@@ -34,18 +35,19 @@ class ProfileEditable extends Component {
     const valuesToUpdate = {
       bio: fieldsValues.bio,
       story: fieldsValues.story,
-      interests: retrieveInterestsFromForm(fieldsValues)
+      interests: retrieveInterestsFromForm(fieldsValues),
     };
     updateProfileCb(valuesToUpdate);
     onClickSaveCb();
   };
 
   render() {
-    const { data, form, onClickCancelCb } = this.props;
+    const { data, form, onClickCancelCb, isProfileUpdating } = this.props;
     const { getFieldDecorator } = form;
     return (
       <Form onSubmit={this.handleSubmit}>
         <Card
+          loading={isProfileUpdating}
           title={
             <Title
               level={3}

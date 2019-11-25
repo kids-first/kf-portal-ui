@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Col, Divider, Row, Typography } from 'antd';
 import FindMeReadOnly from './FindMeReadOnly';
@@ -6,10 +6,33 @@ import { extractFindMeFromProfile } from './utils';
 
 const { Text, Title } = Typography;
 
+const isResearcher = data => {
+  return data.roles[0] === 'research';
+};
+
+const isCommunity = data => {
+  return data.roles[0] === 'community';
+};
+
+const showInstitution = data => {
+  return isResearcher(data) || isCommunity(data);
+};
+
+const getInstitutionLabelGivenRole = data => {
+  const role = data.roles[0];
+  if (role === 'research') {
+    return 'Institution';
+  } else if (role === 'community') {
+    return 'Institution/Organization';
+  }
+  return '';
+};
+
 const ContactReadOnly = props => {
-  const { data, canEdit, onClickEditCb } = props;
+  const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
   return (
     <Card
+      loading={isProfileUpdating}
       title={
         <Title
           level={3}
@@ -64,7 +87,6 @@ const ContactReadOnly = props => {
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Address'}</Text>
-              {/* TODO : merge addresses */}
             </Col>
             <Col span={8}>
               <Text style={Boolean(data.addressLine1) ? null : { fontStyle: 'italic' }}>
@@ -73,17 +95,36 @@ const ContactReadOnly = props => {
             </Col>
           </Row>
           <Divider style={{ margin: '18px 0' }} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text>{'Institution'}</Text>
-            </Col>
-            <Col span={8}>
-              <Text style={Boolean(data.institution) ? null : { fontStyle: 'italic' }}>
-                {data.institution || 'Edit Card to Add Details'}
-              </Text>
-            </Col>
-          </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          {showInstitution(data) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Col span={4}>
+                  <Text>{'Institution'}</Text>
+                </Col>
+                <Col span={8}>
+                  <Text style={Boolean(data.institution) ? null : { fontStyle: 'italic' }}>
+                    {getInstitutionLabelGivenRole(data) || 'Edit Card to Add Details'}
+                  </Text>
+                </Col>
+              </Row>
+              <Divider style={{ margin: '18px 0' }} />
+            </Fragment>
+          )}
+          {isResearcher(data) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Col span={4}>
+                  <Text>{'Job Title'}</Text>
+                </Col>
+                <Col span={8}>
+                  <Text style={Boolean(data.jobTitle) ? null : { fontStyle: 'italic' }}>
+                    {data.jobTitle || 'Edit Card to Add Details'}
+                  </Text>
+                </Col>
+              </Row>
+              <Divider style={{ margin: '18px 0' }} />
+            </Fragment>
+          )}
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'City'}</Text>
@@ -168,6 +209,7 @@ ContactReadOnly.propTypes = {
   data: PropTypes.object.isRequired,
   canEdit: PropTypes.bool.isRequired,
   onClickEditCb: PropTypes.func.isRequired,
+  isProfileUpdating: PropTypes.bool.isRequired,
 };
 
 export default ContactReadOnly;

@@ -4,6 +4,7 @@ import { userProfileBackground } from './utils';
 import PropTypes from 'prop-types';
 import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from './ProfilePill';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const { Title, Text } = Typography;
 
@@ -49,7 +50,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           </Col>
         </Row>
       </Col>
-      {canEdit && (
+      {canEdit && isFeatureEnabled('searchMembers') && ( // isFeatureEnabled remove me one day :)
         <Col span={4} offset={12} pull={1}>
           <Row type={'flex'} justify={'center'}>
             <Col span={8} offset={12}>

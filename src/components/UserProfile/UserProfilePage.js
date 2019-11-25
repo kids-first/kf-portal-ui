@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Layout, Menu, Spin } from 'antd';
-import AboutMe from './AboutMe_new'; //TODO
+import { Layout, Menu } from 'antd';
+import AboutMe from './AboutMe';
 import HeaderBannerContainer from './HeaderBannerContainer';
-import Settings from './Settings_new';
+import Settings from './Settings';
 
-const KEY_ABOUT_ME = 'aboutMe';
-const KEY_SETTINGS = 'settings';
+const KEY_ABOUT_ME = '#aboutMe';
+const KEY_SETTINGS = '#settings';
 
 const { Header, Content, Sider } = Layout;
 
@@ -24,22 +24,14 @@ function UserProfilePage(props) {
   const isSettingsSelected = currentMenuItem === KEY_SETTINGS;
 
   let contentDisplay = null;
-  if (isProfileUpdating) {
+  if (isAboutMeSelected) {
     contentDisplay = (
-      <Layout
-        style={{
-          justifyContent: 'center',
-          height: '100%',
-          alignItems: 'center',
-          background: '#fff',
-        }}
-      >
-        <Spin indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
-      </Layout>
-    );
-  } else if (isAboutMeSelected) {
-    contentDisplay = (
-      <AboutMe canEdit={canEdit} profile={profile} updateProfileCb={updateProfileCb} />
+      <AboutMe
+        canEdit={canEdit}
+        profile={profile}
+        updateProfileCb={updateProfileCb}
+        isProfileUpdating={isProfileUpdating}
+      />
     );
   } else if (isSettingsSelected) {
     contentDisplay = <Settings userEmail={profile.email} />;

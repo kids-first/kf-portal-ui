@@ -18,20 +18,12 @@ import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
 import { withRouter } from 'react-router-dom';
 import { Icon, Layout, Spin } from 'antd';
-
-//TODO : Add Delete Account
-//TODO: Add Tracking back
-//TODO: Add missing fields (jobTitle,...) and hide some of them when community or patient
-//TODO : check if banner colour changes when click on save
-const KEY_ABOUT_ME = 'aboutMe';
-const KEY_SETTINGS = 'settings';
-
-const getKeyFromHash = hash => {
-  if (hash === `#${KEY_SETTINGS}`) {
-    return KEY_SETTINGS;
-  }
-  return KEY_ABOUT_ME;
-};
+import {
+  addStateInfo as updateTrackingInfo,
+  TRACKING_EVENTS,
+  trackProfileInteraction,
+  trackUserInteraction,
+} from 'services/analyticsTracking';
 
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
@@ -53,7 +45,7 @@ class UserProfilePageContainer extends React.Component {
   };
 
   state = {
-    currentMenuItem: getKeyFromHash(this.props.location.hash),
+    currentMenuItem: this.props.location.hash,
   };
 
   componentDidMount() {
@@ -62,15 +54,19 @@ class UserProfilePageContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { onFetchProfile, userInfo, location: { hash } } = this.props;
+    const {
+      onFetchProfile,
+      userInfo,
+      location: { hash },
+    } = this.props;
     if (prevProps.userInfo.userID !== userInfo.userID) {
       onFetchProfile(userInfo);
     }
 
     const hasHashChanged = prevProps.location.hash !== hash;
-    const keyFromHash = getKeyFromHash(hash);
+
     if (hasHashChanged) {
-      this.setState({ currentMenuItem: keyFromHash });
+      this.setState({ currentMenuItem: hash });
     }
   }
 
@@ -79,12 +75,33 @@ class UserProfilePageContainer extends React.Component {
     onDeleteProfile();
   }
 
-  submit = values => {
+  submit = async values => {
     const { profile, onUpdateProfile } = this.props;
-    onUpdateProfile({
+
+    const isRoleChanged = Object.prototype.hasOwnProperty.call(values, 'roles');
+
+    const mergedProfile = {
       ...profile,
       ...values,
+    };
+    const roles = mergedProfile.roles;
+
+    if (isRoleChanged) {
+      await trackUserInteraction({
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: `${TRACKING_EVENTS.actions.userRoleSelected} to`,
+        label: roles[0],
+      });
+      updateTrackingInfo({ userRoles: roles });
+    }
+
+    await trackProfileInteraction({
+      action: 'Profile',
+      value: false,
+      type: TRACKING_EVENTS.actions.save,
     });
+
+    onUpdateProfile(mergedProfile);
   };
 
   handleMenuClick = e => {

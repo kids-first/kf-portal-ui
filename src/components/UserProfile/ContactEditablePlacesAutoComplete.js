@@ -61,7 +61,6 @@ class ContactEditablePlacesAutoComplete extends Component {
               placeholder={'e.g 3401 Civic Center Blvd.'}
               allowClear
             />
-
             <div>
               <List
                 locale={{ emptyText: <div/> }}
