@@ -50,7 +50,7 @@ class ProfileEditable extends Component {
           loading={isProfileUpdating}
           title={
             <Title
-              level={3}
+              level={1}
               style={{
                 color: 'rgb(43, 56, 143)',
               }}
