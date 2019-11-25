@@ -19,7 +19,7 @@ const FilterTableList = ({
   const displayDataArray = showAll ? filteredDataKeys : filteredDataKeys.slice(0, 5);
 
   const dataArray = displayDataArray.reduce((acc, field) => {
-    acc = [...acc,...[{ [field]: dataSource[field] }]];
+    acc = [...acc, ...[{ [field]: dataSource[field] }]];
     return acc;
   }, []);
 
@@ -64,14 +64,14 @@ const FilterTableList = ({
               gutter={10}
               style={{ width: '100%' }}
             >
-              <Col span={2}>
+              <Col span={20}>
                 <Checkbox
                   checked={checkboxes[key] ? checkboxes[key] : false}
                   onChange={onChange(key)}
-                />
-              </Col>
-              <Col style={{ wordWrap: 'break-word' }} span={18}>
-                {displayName}
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <div style={{ wordBreak: 'break-word' }}>{displayName}</div>
+                </Checkbox>
               </Col>
               <Col span={4}>
                 <Tag
