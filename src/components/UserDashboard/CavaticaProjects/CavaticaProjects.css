@@ -17,12 +17,11 @@
 .members {
   font-family: Open Sans, sans-serif;
   font-size: 12px;
+  line-height: 21px;
   color: #74757d;
 }
 .members span {
-  font-size: 12px;
   color: #343434;
-  font-family: Open Sans, sans-serif;
 }
 
 .projectLink {
