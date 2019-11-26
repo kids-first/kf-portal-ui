@@ -67,6 +67,7 @@ const MemberTable = props => {
             >{`${props.count.total} members total (public & private)`}</Col>
           </Row>
         }
+        gutter={20}
         style={{ color: '#343434' }} //TODO remove with Ant Design Theme
         pagination={{
           defaultPageSize: 10,
@@ -86,11 +87,11 @@ const MemberTable = props => {
           const FixedRoleIcon = RoleIcon(item.roles[0]);
           return (
             <List.Item key={item._id}>
-              <Row type="flex" justify="space-around" align="middle" gutter={10}>
+              <Row type="flex" justify="start" align="middle" gutter={20}>
                 <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{ width: 'auto' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
                 </Col>
-                <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8}>
+                <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8} style={{ width: 'auto' }}>
                   <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
                     <div style={{ display: 'flex' }}>
                       <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
@@ -100,7 +101,7 @@ const MemberTable = props => {
                     </div>
                   </Tag>
                 </Col>
-                <Col xxl={18} xl={15} lg={15} md={15} sm={12}>
+                <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
                     <div className={'flex'}>
                       {item.title ? (
