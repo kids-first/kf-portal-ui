@@ -44,7 +44,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           </Col>
           <Col span={12}>
             <Title
-              level={3}
+              level={1}
               style={{ color: 'white' }}
             >{`${profile.firstName} ${profile.lastName}`}</Title>
           </Col>

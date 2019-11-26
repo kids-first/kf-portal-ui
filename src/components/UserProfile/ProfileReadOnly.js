@@ -14,9 +14,7 @@ const ProfileReadOnly = props => {
       title={
         <Title
           level={1}
-          style={{
-            color: 'rgb(43, 56, 143)',
-          }}
+          style={{ marginBottom: 0 }}
         >
           Profile
         </Title>
@@ -26,12 +24,7 @@ const ProfileReadOnly = props => {
         borderRadius: '10px',
       }}
       headStyle={{
-        color: 'rgb(43, 56, 143)',
         backgroundColor: 'rgb(237,238,241)',
-        paddingBottom: '14px',
-        paddingTop: '14px',
-        paddingLeft: '32px',
-        paddingRight: '32px',
       }}
       bodyStyle={{
         padding: '32px',
@@ -53,9 +46,6 @@ const ProfileReadOnly = props => {
         <Col span={24}>
           <Title
             level={4}
-            style={{
-              color: 'rgb(43, 56, 143)',
-            }}
           >
             My Bio
           </Title>
@@ -69,9 +59,6 @@ const ProfileReadOnly = props => {
         <Col span={24}>
           <Title
             level={4}
-            style={{
-              color: 'rgb(43, 56, 143)',
-            }}
           >
             My Story
           </Title>
@@ -85,9 +72,6 @@ const ProfileReadOnly = props => {
         <Col span={24}>
           <Title
             level={4}
-            style={{
-              color: 'rgb(43, 56, 143)',
-            }}
           >
             Research Interests
           </Title>
