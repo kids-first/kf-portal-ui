@@ -16,7 +16,9 @@ const FilterTableList = ({
     ? dataKeys.filter(key => key.includes(searchString))
     : dataKeys;
 
-  const displayDataArray = showAll ? filteredDataKeys : filteredDataKeys.slice(0, 5);
+  const reorderData = [...filteredDataKeys.filter(f => checkboxes[f]), ...filteredDataKeys.filter(f => !checkboxes[f] )];
+
+  const displayDataArray = showAll ? reorderData : reorderData.slice(0, 5);
 
   const dataArray = displayDataArray.reduce((acc, field) => {
     acc = [...acc, ...[{ [field]: dataSource[field] }]];
