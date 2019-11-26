@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import union from 'lodash/union';
+import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
 import { withTheme } from 'emotion-theming';
+import { message } from 'antd';
+import autobind from 'auto-bind-es5';
+
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
 import {
@@ -19,7 +24,6 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import { css } from 'emotion';
 import FileIcon from 'icons/FileIcon';
-import { union, compact } from 'lodash';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
@@ -251,6 +255,7 @@ class ParticipantsTable extends Component {
       content: [],
     },
   };
+
   constructor(props) {
     super(props);
     // TODO clean that once react-table is updated.
@@ -264,6 +269,30 @@ class ParticipantsTable extends Component {
           : { ...field, sortable: false },
       ),
     };
+    autobind(this);
+  }
+
+  handleDownloadStarted(downloadId) {
+    // `duration: 0` means "do not hide automatically"
+    message.loading({
+      content: 'Please wait while we generate your report',
+      key: downloadId,
+      duration: 0,
+    });
+  }
+
+  handleDownloadCompleted(err, downloadId) {
+    err !== null
+      ? message.error({
+          content: 'An error prevented the report from being generated, please try again later',
+          key: downloadId,
+          duration: 3,
+        })
+      : message.success({
+          content: 'Done',
+          key: downloadId,
+          duration: 3,
+        });
   }
 
   render() {
@@ -326,8 +355,9 @@ class ParticipantsTable extends Component {
               <DownloadButton
                 sqon={sqon}
                 {...this.props}
-                isFileRepo={false}
                 projectId={projectId}
+                onDownloadStarts={this.handleDownloadStarted}
+                onDownloadEnds={this.handleDownloadCompleted}
               />
             </ToolbarDownload>
             <ToolbarGroup>
