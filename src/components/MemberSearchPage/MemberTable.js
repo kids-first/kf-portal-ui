@@ -1,4 +1,4 @@
-import { Col, Divider, Icon, List, Row, Tag, Typography } from 'antd';
+import { Col, Divider, List, Row, Tag, Typography } from 'antd';
 import React from 'react';
 import { find, get } from 'lodash';
 import { ROLES } from 'common/constants';
@@ -102,18 +102,18 @@ const MemberTable = props => {
                   sm={8}
                   style={{ width: 'auto' }}
                 >
-                  <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
-                    <div style={{ display: 'flex' }}>
-                      {item.roles[0] ? (
+                  {item.roles[0] ? (
+                    <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
+                      <div style={{ display: 'flex' }}>
                         <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
-                      ) : (
-                        <Icon style={{ fontSize: 26, marginRight:10 }} type="question-circle" theme="twoTone" twoToneColor="red" />
-                      )}
-                      <div style={{ color: `${background(item.roles[0])}` }}>
-                        {item.roles[0] ? userRoleDisplayName(item.roles[0]) : 'No Role'}
+                        <div style={{ color: `${background(item.roles[0])}` }}>
+                          { userRoleDisplayName(item.roles[0]) }
+                        </div>
                       </div>
-                    </div>
-                  </Tag>
+                    </Tag>
+                  ) : (
+                    ''
+                  )}
                 </Col>
                 <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
