@@ -24,6 +24,8 @@ const FilterTable = props => {
         borderLeftWidth: 5,
         borderLeftColor: borderLeftColor,
         borderRadius: 0,
+        color: 'rgb(52, 52, 52)',
+        marginBottom: 5,
       }}
     >
       <Panel

@@ -14,8 +14,8 @@ const { Text } = Typography;
 
 const roleLookup = ROLES.reduce((acc, { type, ...x }) => ({ ...acc, [type]: x }), {});
 const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayName;
-const RoleIcon = userRole => get(roleLookup, [userRole, 'icon'], null);
-const background = userRole => get(roleLookup, [userRole, 'color'], null).toString();
+const RoleIcon = userRole => get(roleLookup, [userRole, 'icon'], 'ResearchIcon');
+const background = userRole => get(roleLookup, [userRole, 'color'], 'red').toString();
 const getTagColor = userRole => {
   if (userRole === 'research') {
     return 'blue';
@@ -23,8 +23,10 @@ const getTagColor = userRole => {
     return 'cyan';
   } else if (userRole === 'patient') {
     return 'magenta';
-  } else {
+  } else if (userRole === 'community') {
     return 'geekblue';
+  } else {
+    return 'red';
   }
 };
 const Address = ({ item }) => (
@@ -91,15 +93,27 @@ const MemberTable = props => {
                 <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{ width: 'auto' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
                 </Col>
-                <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8} style={{ width: 'auto' }}>
-                  <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
-                    <div style={{ display: 'flex' }}>
-                      <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
-                      <div style={{ color: `${background(item.roles[0])}` }}>
-                        {item.roles[0] ? userRoleDisplayName(item.roles[0]) : 'NO ROLE'}
+                <Col
+                  className={'member-list-col'}
+                  xxl={4}
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={8}
+                  style={{ width: 'auto' }}
+                >
+                  {item.roles[0] ? (
+                    <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
+                      <div style={{ display: 'flex' }}>
+                        <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
+                        <div style={{ color: `${background(item.roles[0])}` }}>
+                          { userRoleDisplayName(item.roles[0]) }
+                        </div>
                       </div>
-                    </div>
-                  </Tag>
+                    </Tag>
+                  ) : (
+                    ''
+                  )}
                 </Col>
                 <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
