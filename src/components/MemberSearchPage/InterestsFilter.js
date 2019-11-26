@@ -28,6 +28,7 @@ class InterestsFilter extends Component {
   };
 
   onChange = type => e => {
+    e.preventDefault();
     const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, interestsFilter, updateInterestsFilter } = this.props;
 
     fetchListOfMembers(queryString, {
