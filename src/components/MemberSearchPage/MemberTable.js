@@ -1,4 +1,4 @@
-import { Col, Divider, List, Row, Tag, Typography } from 'antd';
+import { Col, Divider, Icon, List, Row, Tag, Typography } from 'antd';
 import React from 'react';
 import { find, get } from 'lodash';
 import { ROLES } from 'common/constants';
@@ -14,8 +14,8 @@ const { Text } = Typography;
 
 const roleLookup = ROLES.reduce((acc, { type, ...x }) => ({ ...acc, [type]: x }), {});
 const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayName;
-const RoleIcon = userRole => get(roleLookup, [userRole, 'icon'], null);
-const background = userRole => get(roleLookup, [userRole, 'color'], null).toString();
+const RoleIcon = userRole => get(roleLookup, [userRole, 'icon'], 'ResearchIcon');
+const background = userRole => get(roleLookup, [userRole, 'color'], 'red').toString();
 const getTagColor = userRole => {
   if (userRole === 'research') {
     return 'blue';
@@ -23,8 +23,10 @@ const getTagColor = userRole => {
     return 'cyan';
   } else if (userRole === 'patient') {
     return 'magenta';
-  } else {
+  } else if (userRole === 'community') {
     return 'geekblue';
+  } else {
+    return 'red';
   }
 };
 const Address = ({ item }) => (
@@ -91,12 +93,24 @@ const MemberTable = props => {
                 <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{ width: 'auto' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
                 </Col>
-                <Col className={'member-list-col'} xxl={4} xl={6} lg={6} md={6} sm={8} style={{ width: 'auto' }}>
+                <Col
+                  className={'member-list-col'}
+                  xxl={4}
+                  xl={6}
+                  lg={6}
+                  md={6}
+                  sm={8}
+                  style={{ width: 'auto' }}
+                >
                   <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
                     <div style={{ display: 'flex' }}>
-                      <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
+                      {item.roles[0] ? (
+                        <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
+                      ) : (
+                        <Icon style={{ fontSize: 26, marginRight:10 }} type="question-circle" theme="twoTone" twoToneColor="red" />
+                      )}
                       <div style={{ color: `${background(item.roles[0])}` }}>
-                        {item.roles[0] ? userRoleDisplayName(item.roles[0]) : 'NO ROLE'}
+                        {item.roles[0] ? userRoleDisplayName(item.roles[0]) : 'No Role'}
                       </div>
                     </div>
                   </Tag>
