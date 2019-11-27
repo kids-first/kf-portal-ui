@@ -1,0 +1,41 @@
+.toastContainer {
+  position: fixed;
+  top: 10px;
+  width: 100vw;
+  z-index: 100;
+  pointer-events: none;
+  text-align: center;
+  word-break: break-word;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toastContent {
+  position: relative;
+  pointer-events: all;
+  width: 500px;
+  max-width: 100%;
+}
+
+.closeButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+.closeButton:hover {
+  color: red;
+}
+
+.toastMessage {
+  pointer-events: all;
+  transition: transform 0.25s ease;
+  transform: translateY(-140%);
+}
+.toastMessage.visible {
+  transform: translateY(0);
+}
