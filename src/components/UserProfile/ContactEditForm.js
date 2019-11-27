@@ -5,9 +5,9 @@ import ContactInformationEditable from 'components/UserProfile/ContactInformatio
 import FindMeEditable from './FindMeEditable';
 const { Title } = Typography;
 
-const reshapeForProfile = (fields) => {
+const reshapeForProfile = fields => {
   if (fields.roles && !Array.isArray(fields.roles)) {
-    return ({...fields, roles: [fields.roles]})
+    return { ...fields, roles: [fields.roles] };
   }
   return fields;
 };
@@ -39,27 +39,9 @@ class ContactEditForm extends Component {
       <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
           loading={isProfileUpdating}
-          title={
-            <Title
-              level={1}
-              style={{
-                color: 'rgb(43, 56, 143)',
-              }}
-            >
-              Contact Information
-            </Title>
-          }
+          title={<Title level={1}>Contact Information</Title>}
           style={{
             width: '1200px',
-            borderRadius: '10px',
-          }}
-          headStyle={{
-            color: 'rgb(43, 56, 143)',
-            backgroundColor: 'rgb(237,238,241)',
-            paddingBottom: '14px',
-            paddingTop: '14px',
-            paddingLeft: '32px',
-            paddingRight: '32px',
           }}
           bodyStyle={{
             padding: '32px',
@@ -69,7 +51,6 @@ class ContactEditForm extends Component {
               <Button
                 icon="edit"
                 shape="round"
-                style={{ color: 'white', backgroundColor: '#90278e' }}
                 onClick={onClickCancelCb}
               >
                 Cancel
@@ -77,7 +58,6 @@ class ContactEditForm extends Component {
               <Button
                 icon="edit"
                 shape="round"
-                style={{ color: 'white', backgroundColor: '#90278e' }}
                 htmlType="submit"
               >
                 Save

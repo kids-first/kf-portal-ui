@@ -12,9 +12,9 @@ const { Content } = Layout;
 const AboutMe = props => {
   const { canEdit, profile, updateProfileCb, isProfileUpdating } = props;
   return (
-    <Layout style={{ display: 'flex', alignItems: 'center', padding: '25px', background: '#fff' }}>
+    <Layout style={{ display: 'flex', alignItems: 'center', padding: 48, background: '#fff' }}>
       <Content>
-        <Row align={'middle'} style={{ paddingBottom: '48px' }}>
+        <Row align={'middle'} style={{ paddingBottom: '40px' }}>
           <Col span={24}>
             <EditToggle
               isProfileUpdating={isProfileUpdating}
@@ -26,20 +26,18 @@ const AboutMe = props => {
             />
           </Col>
         </Row>
-        {
-          <Row>
-            <Col span={24}>
-              <EditToggle
-                isProfileUpdating={isProfileUpdating}
-                data={profile}
-                canEdit={canEdit}
-                ReadOnlyComponent={ContactReadOnly}
-                EditableComponent={ContactEditForm}
-                updateProfileCb={updateProfileCb}
-              />
-            </Col>
-          </Row>
-        }
+        <Row>
+          <Col span={24}>
+            <EditToggle
+              isProfileUpdating={isProfileUpdating}
+              data={profile}
+              canEdit={canEdit}
+              ReadOnlyComponent={ContactReadOnly}
+              EditableComponent={ContactEditForm}
+              updateProfileCb={updateProfileCb}
+            />
+          </Col>
+        </Row>
       </Content>
     </Layout>
   );

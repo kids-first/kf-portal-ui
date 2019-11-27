@@ -75,7 +75,6 @@ class ProfileEditable extends Component {
               <Button
                 icon="edit"
                 shape="round"
-                style={{ color: 'white', backgroundColor: '#90278e' }}
                 onClick={onClickCancelCb}
               >
                 Cancel
@@ -83,7 +82,6 @@ class ProfileEditable extends Component {
               <Button
                 icon="edit"
                 shape="round"
-                style={{ color: 'white', backgroundColor: '#90278e' }}
                 htmlType="submit"
               >
                 Save

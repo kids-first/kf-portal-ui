@@ -12,19 +12,12 @@ const ProfileReadOnly = props => {
     <Card
       loading={isProfileUpdating}
       title={
-        <Title
-          level={1}
-          style={{ marginBottom: 0 }}
-        >
+        <Title level={1} style={{ marginBottom: 0 }}>
           Profile
         </Title>
       }
       style={{
         width: '1200px',
-        borderRadius: '10px',
-      }}
-      headStyle={{
-        backgroundColor: 'rgb(237,238,241)',
       }}
       bodyStyle={{
         padding: '32px',
@@ -34,7 +27,6 @@ const ProfileReadOnly = props => {
           <Button
             icon="edit"
             shape="round"
-            style={{ color: 'white', backgroundColor: '#90278e' }}
             onClick={onClickEditCb}
           >
             Edit
@@ -44,11 +36,7 @@ const ProfileReadOnly = props => {
     >
       <Row>
         <Col span={24}>
-          <Title
-            level={4}
-          >
-            My Bio
-          </Title>
+          <Title level={4}>My Bio</Title>
           <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>
             {data.bio || bioMsgWhenEmpty}
           </Text>
@@ -57,11 +45,7 @@ const ProfileReadOnly = props => {
       </Row>
       <Row>
         <Col span={24}>
-          <Title
-            level={4}
-          >
-            My Story
-          </Title>
+          <Title level={4}>My Story</Title>
           <Text style={{ fontStyle: 'italic', paddingBottom: '24px' }}>
             {data.story || storyMsgWhenEmpty}
           </Text>
@@ -70,11 +54,7 @@ const ProfileReadOnly = props => {
       </Row>
       <Row>
         <Col span={24}>
-          <Title
-            level={4}
-          >
-            Research Interests
-          </Title>
+          <Title level={4}>Research Interests</Title>
           {Array.isArray(data.interests) && data.interests.length > 0 ? (
             <ResearchInterest interests={data.interests} />
           ) : (

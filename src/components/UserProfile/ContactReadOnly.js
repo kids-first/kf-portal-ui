@@ -34,26 +34,12 @@ const ContactReadOnly = props => {
     <Card
       loading={isProfileUpdating}
       title={
-        <Title
-          level={1}
-          style={{
-            color: 'rgb(43, 56, 143)',
-          }}
-        >
+        <Title level={1} style={{ marginBottom: 0 }}>
           Contact Information
         </Title>
       }
       style={{
         width: '1200px',
-        borderRadius: '10px',
-      }}
-      headStyle={{
-        color: 'rgb(43, 56, 143)',
-        backgroundColor: 'rgb(237,238,241)',
-        paddingBottom: '14px',
-        paddingTop: '14px',
-        paddingLeft: '32px',
-        paddingRight: '32px',
       }}
       bodyStyle={{
         padding: '32px',
@@ -61,7 +47,6 @@ const ContactReadOnly = props => {
       extra={
         canEdit ? (
           <Button
-            style={{ color: 'white', backgroundColor: '#90278e' }}
             icon="edit"
             shape="round"
             onClick={onClickEditCb}
