@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import noop from 'lodash/noop';
 import { compose, withState, shouldUpdate, mapProps } from 'recompose';
 import CloseIcon from 'react-icons/lib/md/close';
 import { PromptMessageContainer } from 'uikit/PromptMessage';
 
 import './Toast.css';
 
-const Toast = ({ visible, action, close, children }) => (
-  <div className="toastContainer">
-    <PromptMessageContainer
-      className={`toastMessage ${visible ? 'visible' : ''}`}
-      {...{ [action]: true }}
-    >
-      <CloseIcon className="closeButton" onClick={close} />
-      <div className="toastContent">{children}</div>
-    </PromptMessageContainer>
-  </div>
-);
+const Toast = ({ visible = false, action = null, close = noop, children = null }) => {
+  const childProps = action !== null ? { [action]: true } : {};
+  return (
+    <div className="toastContainer">
+      <PromptMessageContainer
+        className={`toastMessage ${visible ? 'visible' : ''}`}
+        {...childProps}
+      >
+        <CloseIcon className="closeButton" onClick={close} />
+        <div className="toastContent">{children}</div>
+      </PromptMessageContainer>
+    </div>
+  );
+};
 
 Toast.propTypes = {
   style: PropTypes.object,

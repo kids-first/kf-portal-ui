@@ -131,24 +131,6 @@ const App = compose(
             })
           }
         />
-        */}
-        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
-        {/*
-        <Route
-          path={ROUTES.orcid}
-          exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              Footer={LoginFooter}
-              sideImagePath={loginImage}
-              stealth={true} // hide some of the visuals of the page during redirection
-              {...props}
-            />
-          )}
-        />
         <Route path={ROUTES.redirected} exact component={() => null} />
         <Route
           path={ROUTES.cohortBuilder}
@@ -274,6 +256,8 @@ const App = compose(
             return showDashboardIfLoggedIn(props);
           }}
         */}
+
+        {/* Root route */}
         <Route
           path="/"
           exact
@@ -297,14 +281,35 @@ const App = compose(
           }}
         />
 
+        {/* Authentication related routes */}
+        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+        <Route
+          path={ROUTES.orcid}
+          exact
+          render={props => (
+            <SideImagePage
+              logo={logo}
+              backgroundImage={scienceBgPath}
+              Component={LoginPage}
+              Footer={LoginFooter}
+              sideImagePath={loginImage}
+              stealth={true} // hide some of the visuals of the page during redirection
+              {...props}
+            />
+          )}
+        />
         <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
         <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
+
+        {/* Error page */}
         <Route path={ROUTES.error} exact render={() => <Error />} />
+
+        {/* Fallback to the Dashboard if route is invalid */}
         <Redirect from="*" to={ROUTES.dashboard} />
       </Switch>
-      {<Modal />}
-      {<GlobalModal />}
-      {<Toast {...toast}>{toast.component}</Toast>}
+      <Modal />
+      <GlobalModal />
+      <Toast {...toast}>{toast.component}</Toast>
     </div>
   );
 });

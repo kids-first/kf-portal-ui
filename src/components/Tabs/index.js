@@ -57,7 +57,7 @@ export default class Tabs extends React.Component {
 
     return (
       <React.Fragment>
-        <Row className="tabs-options">
+        <Row className="tabs-options" key="tabs-options">
           {options.map(({ display, id = display, total = null }) => (
             <Tab
               onClick={() => {
@@ -72,11 +72,12 @@ export default class Tabs extends React.Component {
           ))}
         </Row>
         {children && (
-          <Row className="tabs-content-container">
+          <Row className="tabs-content-container" key="tabs-content-container">
             {children.map((child, index) => {
-              const { id, display } = options[index];
+              const { display, id = display } = options[index];
               return (
                 <ShowIf
+                  key={id}
                   className="tabs-content-content"
                   condition={selectedTab === (id || display)}
                 >
