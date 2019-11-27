@@ -1,3 +1,4 @@
+<!--
 # Release notes for kf-portal-ui
 
 ## 2019-12-?? kf-portal-ui 2.??.??
@@ -11,6 +12,7 @@ This release includes a new _Members_ page and alterations to the profile page, 
 - [#1887](https://github.com/kids-first/kf-portal-ui/issues/1887) Member page: Search members
 - [#2158](https://github.com/kids-first/kf-portal-ui/issues/2158) Member page: Filter member search by interests or role
 - [#2124](https://github.com/kids-first/kf-portal-ui/pull/2124) Make sure other members profile can be viewed but not edited
+-->
 
 ## 2019-11-27 kf-portal-ui 2.12.0
 
