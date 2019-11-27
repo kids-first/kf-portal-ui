@@ -18,14 +18,14 @@ class FilterDrawer extends Component {
 
   render() {
     const { collapsed } = this.state;
-    //TODO mode style to css class or default ant design theme
     return (
       <Sider
         trigger={null}
-        width={300}
+        width={314}
+        collapsedWidth={37}
         collapsible
         collapsed={this.state.collapsed}
-        style={{ boxShadow: '2px 2px 3px 1px #888888' }}
+        style={{ boxShadow: '0 0 4.9px 0.2px rgba(0,0,0,0.5)' }}
       >
         <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
           <Title

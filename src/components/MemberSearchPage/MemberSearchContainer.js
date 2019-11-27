@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
 import { bindActionCreators } from 'redux';
-import { Icon, Input, Layout, Tooltip } from 'antd';
+import { Col, Divider, Icon, Input, Layout, Row, Tag } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
@@ -13,6 +13,13 @@ import {
   requestQueryStringUpdate,
 } from 'components/MemberSearchPage/actions';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
+import { find } from 'lodash';
+import { ROLES } from 'common/constants';
+
+const userRoleDisplayName = userRole => {
+  const role = find(ROLES, { type: userRole });
+  return role ? role.displayName : userRole;
+};
 
 class MemberSearchContainer extends Component {
   static propTypes = {
@@ -29,7 +36,15 @@ class MemberSearchContainer extends Component {
   };
 
   handleChange = e => {
-    const { membersPerPage, fetchListOfMembers, queryStringUpdate, currentPageUpdate, currentPage, rolesFilter, interestsFilter} = this.props;
+    const {
+      membersPerPage,
+      fetchListOfMembers,
+      queryStringUpdate,
+      currentPageUpdate,
+      currentPage,
+      rolesFilter,
+      interestsFilter,
+    } = this.props;
 
     fetchListOfMembers(e.target.value, {
       start: getCurrentStart(currentPage, membersPerPage),
@@ -43,7 +58,7 @@ class MemberSearchContainer extends Component {
   };
 
   componentDidMount() {
-    const { membersPerPage, fetchListOfMembers, queryString, currentPage} = this.props;
+    const { membersPerPage, fetchListOfMembers, queryString, currentPage } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
@@ -52,7 +67,15 @@ class MemberSearchContainer extends Component {
   }
 
   handlePageChange = async page => {
-    const { count, membersPerPage, fetchListOfMembers, queryString, rolesFilter, interestsFilter, currentPageUpdate} = this.props;
+    const {
+      count,
+      membersPerPage,
+      fetchListOfMembers,
+      queryString,
+      rolesFilter,
+      interestsFilter,
+      currentPageUpdate,
+    } = this.props;
     const maxPage = count.public / membersPerPage;
 
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
@@ -68,7 +91,14 @@ class MemberSearchContainer extends Component {
   };
 
   handleShowSizeChange = async (current, pageSize) => {
-    const { currentPageUpdate, membersPerPageUpdate, fetchListOfMembers, queryString, rolesFilter, interestsFilter} = this.props;
+    const {
+      currentPageUpdate,
+      membersPerPageUpdate,
+      fetchListOfMembers,
+      queryString,
+      rolesFilter,
+      interestsFilter,
+    } = this.props;
 
     currentPageUpdate(current);
     membersPerPageUpdate(pageSize);
@@ -81,7 +111,11 @@ class MemberSearchContainer extends Component {
   };
 
   render() {
-    const {members, count, currentPage ,membersPerPage, pending} = this.props;
+    const { members, count, currentPage, membersPerPage, pending } = this.props;
+    const filters = {
+      roles: [...getSelectedFilter(this.props.rolesFilter)],
+      interests: [...getSelectedFilter(this.props.interestsFilter)],
+    };
 
     return (
       <div className={'background-container'} style={{ width: '100%' }}>
@@ -89,17 +123,51 @@ class MemberSearchContainer extends Component {
           <FilterDrawer />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
             <Input
-              style={{ borderRadius: 30 }}
               onChange={this.handleChange}
-              placeholder="Member Name, Email, Interests,..."
+              placeholder="Member Name, Address, Email, Interests, Member Biography or Story"
               prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
               allowClear={true}
-              suffix={
-                <Tooltip title="Enter text to search for members">
-                  <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
-                </Tooltip>
-              }
             />
+            {(filters.roles && filters.roles.length > 0) ||
+            (filters.interests && filters.interests.length > 0) ? (
+              <Row gutter={16} style={{ borderRadius: 5, backgroundColor: 'white', margin: 0 }}>
+                {filters.roles.length > 0 ? (
+                  <Col span={6}>
+                    <Row>Role Filters</Row>
+                    <Row>
+                      <Divider style={{marginBottom: 16, marginTop: 8}} />
+                    </Row>
+                    <Row type="flex" justify="start"  align="middle" style={{ paddingBottom: 10 }}>
+                      {filters.roles.map(f => (
+                        <Tag>
+                          {userRoleDisplayName(f)} <Icon style={{ color: 'white' }} type="close" />
+                        </Tag>
+                      ))}
+                    </Row>
+                  </Col>
+                ) : (
+                  ''
+                )}
+                {filters.interests.length > 0 ? (
+                  <Col span={18}>
+                    <Row>Interests Filters</Row>
+                    <Divider style={{marginBottom: 16, marginTop: 8}} />
+                    <Row type="flex" justify="start"  align="middle">
+                      {filters.interests.map(f => (
+                        <Tag>
+                          {f} <Icon style={{ color: 'white' }} type="close" />
+                        </Tag>
+                      ))}
+                    </Row>
+                  </Col>
+                ) : (
+                  ''
+                )}
+              </Row>
+            ) : (
+              ''
+            )}
+
             <MemberTable
               memberList={members}
               count={count}
