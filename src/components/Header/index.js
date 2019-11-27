@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { Trans } from 'react-i18next';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
+import UserIcon from 'react-icons/lib/fa/user';
 import styled from 'react-emotion';
 import ExploreDataIcon from 'icons/ExploreDataIcon';
 
@@ -13,7 +13,6 @@ import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Dropdown from 'uikit/Dropdown';
 import Row from 'uikit/Row';
 import { uiLogout } from 'components/LogoutButton';
-import { COHORT_BUILDER_PATH } from 'common/constants';
 import { withApi } from 'services/api';
 import {
   NavLink,
@@ -31,6 +30,25 @@ import {
   MenuLabelContainer,
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
+import { isFeatureEnabled } from 'common/featuresToggles';
+import { Alert } from 'antd';
+import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
+import ROUTES from 'common/routes';
+
+import { dismissError } from 'store/actionCreators/errors';
+
+const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
+
+const showPublicProfileInvite = (user = {}) => {
+  if (!isSearchMemberFeatEnabled) {
+    return false;
+  }
+  return (
+    Boolean(user) &&
+    !Boolean(user.isPublic) &&
+    !Boolean(localStorage.getItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN))
+  );
+};
 
 const ExploreDataIconStyled = styled(ExploreDataIcon)`
   top: 3px;
@@ -38,10 +56,53 @@ const ExploreDataIconStyled = styled(ExploreDataIcon)`
   fill: currentColor;
 `;
 
+const onClosePublicProfileInviteAlert = () =>
+  localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
+const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
+
+const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
+  if (currentError) {
+    return (
+      <Alert
+        message={
+          <Fragment>
+            <span style={{ fontWeight: 'bold' }}>Error: </span>
+            <span>{currentError.message}</span>
+          </Fragment>
+        }
+        type="error"
+        banner
+        closable
+        onClose={() => dismissError(currentError.uuid)}
+      />
+    );
+  }
+
+  if (showPublicProfileInvite(loggedInUser)) {
+    return (
+      <Alert
+        message={
+          <Fragment>
+            <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
+            {' so that other members can view it!'}
+          </Fragment>
+        }
+        type="info"
+        banner
+        closable
+        onClose={onClosePublicProfileInviteAlert}
+      />
+    );
+  }
+
+  return null;
+};
+
 const Header = ({
+  currentError,
+  dismissError,
   state: { loggedInUser },
   effects: { setUser, setToken, clearIntegrationTokens },
-  theme,
   history,
   match: { path },
   api,
@@ -54,33 +115,42 @@ const Header = ({
       path !== '/join' &&
       path !== '/');
   const currentPathName = history.location.pathname;
+
   return (
     <DropDownState
       render={({ isDropdownVisible, toggleDropdown, setDropdownVisibility }) => (
         <HeaderContainer>
+          {renderAlertIfAny(loggedInUser, currentError, dismissError)}
           <GradientAccent />
           <HeaderContent>
             <Row>
-              <Link to="/dashboard">
+              <Link to={ROUTES.dashboard}>
                 <Logo src={logoPath} alt="Kids First Logo" />
               </Link>
               {canSeeProtectedRoutes && (
                 <NavBarList ml={40}>
                   <li>
-                    <NavLink currentPathName={currentPathName} to="/dashboard">
-                      <HouseIcon /> <Trans>Dashboard</Trans>
+                    <NavLink currentPathName={currentPathName} to={ROUTES.dashboard}>
+                      <HouseIcon /> Dashboard
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to={COHORT_BUILDER_PATH}>
-                      <ExploreDataIconStyled /> <Trans>Explore Data</Trans>
+                    <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
+                      <ExploreDataIconStyled /> Explore Data
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink currentPathName={currentPathName} to={`/search/file`}>
-                      <DatabaseIcon /> <Trans>File Repository</Trans>
+                    <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
+                      <DatabaseIcon /> File Repository
                     </NavLink>
                   </li>
+                  {isSearchMemberFeatEnabled && (
+                    <li>
+                      <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
+                        <UserIcon /> Members
+                      </NavLink>
+                    </li>
+                  )}
                 </NavBarList>
               )}
             </Row>
@@ -88,13 +158,9 @@ const Header = ({
               {!loggedInUser && (
                 <li>
                   {path === '/' ? (
-                    <LinkAsButton to="/join">
-                      <Trans>Join now</Trans>
-                    </LinkAsButton>
+                    <LinkAsButton to={ROUTES.join}>Join now</LinkAsButton>
                   ) : (
-                    <LinkAsButton to="/">
-                      <Trans>Login</Trans>
-                    </LinkAsButton>
+                    <LinkAsButton to={ROUTES.login}>Login</LinkAsButton>
                   )}
                 </li>
               )}
@@ -110,18 +176,18 @@ const Header = ({
                   items={[
                     <DropdownLink
                       onClick={toggleDropdown}
-                      to={`/user/${loggedInUser.egoId}#aboutMe`}
+                      to={getUrlForUser(loggedInUser, '#aboutMe')}
                     >
-                      <Trans>My Profile</Trans>
+                      My Profile
                     </DropdownLink>,
                     <DropdownLink
                       onClick={toggleDropdown}
-                      to={`/user/${loggedInUser.egoId}#settings`}
+                      to={getUrlForUser(loggedInUser, '#settings')}
                     >
                       Settings
                     </DropdownLink>,
                     <DropdownLink
-                      to={`/dashboard`}
+                      to={ROUTES.dashboard}
                       separated
                       onClick={e => {
                         e.preventDefault();
@@ -129,10 +195,12 @@ const Header = ({
                         uiLogout({ history, setToken, setUser, clearIntegrationTokens, api });
                       }}
                     >
-                      <Trans>Logout</Trans>
+                      Logout
                     </DropdownLink>,
                   ]}
-                  ItemWrapperComponent={props => <Fragment {...props} />}
+                  ItemWrapperComponent={({ id, children }) => {
+                    return <Fragment key={id} children={children} />;
+                  }}
                   ContainerComponent={NavbarDropdownWrapper}
                   OptionsContainerComponent={NavbarDropdownOptionsContainer}
                   LabelContainer={MenuLabelContainer}
@@ -149,9 +217,20 @@ const Header = ({
   );
 };
 
+const mapStateToProps = state => ({
+  currentError: state.errors.currentError,
+});
+
+const mapDispatchToProps = {
+  dismissError,
+};
+
 export default compose(
   injectState,
-  withTheme,
   withRouter,
   withApi,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(Header);

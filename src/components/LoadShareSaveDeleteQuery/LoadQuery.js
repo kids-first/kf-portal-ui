@@ -2,7 +2,6 @@ import React from 'react';
 import { injectState } from 'freactal';
 import OpenIcon from 'react-icons/lib/fa/folder-open';
 import Tooltip from 'uikit/Tooltip';
-import { Trans } from 'react-i18next';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
 
@@ -81,7 +80,7 @@ export default injectState(
             }
           >
             <AlignedLoadIcon />
-            &nbsp;<Trans>open</Trans>
+            &nbsp;open
           </Tooltip>
         </WhiteButton>
       );

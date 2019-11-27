@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { Helmet } from 'react-helmet';
 import styled from 'react-emotion';
-import _ from 'lodash';
+import { startCase, orderBy } from 'lodash';
 import { Row, Col } from 'react-grid-system';
 
 import ChartLoadGate from 'chartkit/components/ChartLoadGate';
@@ -23,6 +23,7 @@ import CavaticaProjects from './CavaticaProjects';
 import { DashboardCard, CardContentSpinner, DashboardMulticard } from './styles';
 import { SizeProvider } from 'components/Utils';
 import DashboardCardError from './DashboardCardError';
+import PropTypes from 'prop-types';
 
 const UserDashboard = styled('div')`
   width: 100%;
@@ -41,14 +42,21 @@ const DashboardTitle = styled('h1')`
   padding-left: 30px;
 `;
 
-const Container = props => (
+const Container = ({ className, children }) => (
   // This is to cancel out the negative margin set by react-grid-system
   <div style={{ marginLeft: '15px', marginRight: '15px' }}>
-    <Row {...props} />
+    <Row className={className} children={children} />
   </div>
 );
 
-const ContainerRow = styled(Container)`
+Container.prototype = {
+  children: PropTypes.arrayOf(PropTypes.element),
+  className: PropTypes.string.isRequired,
+};
+
+const ContainerRow = styled(Container, {
+  shouldForwardProp: prop => !['currentWidth'].includes(prop),
+})`
   padding-left: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 0 : 15)}px;
   padding-right: ${({ currentWidth = NaN }) => (currentWidth < 500 ? 0 : 15)}px;
 `;
@@ -86,9 +94,7 @@ export default compose(
               url={`${publicStatsApiRoot}${arrangerProjectId}/studies`}
               api={api}
               transform={data =>
-                _(data.studies)
-                  .map(study => ({ ...study, label: _.startCase(study.name) }))
-                  .value()
+                (data.studies || []).map(study => ({ ...study, label: startCase(study.name) }))
               }
             >
               {fetchedState => {
@@ -148,13 +154,15 @@ export default compose(
               <DataProvider
                 url={`${publicStatsApiRoot}${arrangerProjectId}/diagnoses/text`}
                 api={api}
-                transform={data =>
-                  _(data.diagnoses)
-                    .orderBy(diagnosis => diagnosis.familyMembers + diagnosis.probands, 'desc')
-                    .take(10)
-                    .map(d => ({ ...d, label: _.startCase(d.name) }))
-                    .value()
-                }
+                transform={data => {
+                  const dxs = data.diagnoses || [];
+                  const orderedDxs = orderBy(
+                    dxs,
+                    diagnosis => diagnosis.familyMembers + diagnosis.probands,
+                    'desc',
+                  );
+                  return orderedDxs.slice(0, 10).map(d => ({ ...d, label: startCase(d.name) }));
+                }}
               >
                 {fetchedState => (
                   <ChartLoadGate

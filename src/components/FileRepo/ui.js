@@ -3,7 +3,6 @@ import Component from 'react-component-component';
 import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
 
 // TODO: bringing beagle in through arrangerStyle seems to break the prod build...
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
@@ -16,7 +15,7 @@ import { TealActionButton } from 'uikit/Button';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
-
+import noop from 'lodash/noop';
 const montserrat = css`
   font-family: 'Montserrat', sans-serif;
 `;
@@ -232,9 +231,10 @@ export const DownloadButton = compose(withTheme)(
   ({
     onClick,
     theme,
-    content = () => <Trans>Download</Trans>,
+    content = () => 'Download',
     buttonRef = React.createRef(),
-    ...rest
+    disabled = false,
+    onBlur = noop,
   }) => {
     return (
       <StyledActionButton
@@ -242,7 +242,8 @@ export const DownloadButton = compose(withTheme)(
         innerRef={ref => {
           buttonRef.current = ref;
         }}
-        {...rest}
+        disabled={disabled}
+        onBlur={onBlur}
       >
         <DownloadIcon
           className={css`

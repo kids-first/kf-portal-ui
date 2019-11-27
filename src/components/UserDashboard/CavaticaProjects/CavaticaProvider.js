@@ -7,10 +7,18 @@ const CavaticaProvider = ({ children, isConnected }) => {
   const refresh = ({ setState }) => async () => {
     if (!isConnected) return false;
     setState({ loading: true });
+    let projects = [];
+    try {
+      const response = await getCavaticaProjects();
+      if (response) {
+        projects = response;
+      }
+    } catch (error) {
+      setState({ projectsError: error });
+    }
 
-    const projects = await getCavaticaProjects();
     const projectList = await Promise.all(
-      projects.map(async p => {
+      (projects || []).map(async p => {
         const [members, completedTasks, failedTasks, runningTasks] = await Promise.all([
           getMembers({ project: p.id }),
           getTasks({ project: p.id, type: 'COMPLETED' }),
@@ -27,7 +35,6 @@ const CavaticaProvider = ({ children, isConnected }) => {
         return { ...p, members: members.items.length, tasks };
       }),
     );
-
     setState({ projects: projectList, loading: false });
   };
 
@@ -38,6 +45,7 @@ const CavaticaProvider = ({ children, isConnected }) => {
           projects: state.projects,
           loading: state.loading,
           refresh: refresh({ setState }),
+          projectsError: state.projectsError,
         })
       }
     </Component>

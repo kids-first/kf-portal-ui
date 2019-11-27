@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 import { isEmpty } from 'lodash';
 
 import CardHeader from 'uikit/Card/CardHeader';
@@ -24,7 +23,7 @@ const AuthorizedStudies = compose(
   withApi,
   injectState,
   withTheme,
-  fenceConnectionInitializeHoc
+  fenceConnectionInitializeHoc,
 )(
   ({
     state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
@@ -56,9 +55,7 @@ const AuthorizedStudies = compose(
               }
             >
               <CardActionButton>
-                <Link to={`/user/${loggedInUser.egoId}#settings`}>
-                  <Trans>Settings</Trans>
-                </Link>
+                <Link to={`/user/${loggedInUser._id}#settings`}>Settings</Link>
               </CardActionButton>
             </AccessGate>
             <Info
@@ -70,8 +67,8 @@ const AuthorizedStudies = compose(
             />
           </Fragment>
         ) : (
-              <StudiesConnected />
-            )}
+          <StudiesConnected />
+        )}
       </DashboardCard>
     );
   },

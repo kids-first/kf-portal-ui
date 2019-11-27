@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import './antd-kf-theme.css';
 import 'index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -11,7 +12,6 @@ import facebookSDK from 'services/facebookSDK';
 import { initAnalyticsTracking } from 'services/analyticsTracking';
 import { maintenanceMode } from 'common/injectGlobals';
 import MaintenancePage from './MaintenancePage';
-import './i18n';
 
 initAnalyticsTracking();
 googleSDK();

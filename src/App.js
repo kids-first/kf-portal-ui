@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'react-emotion';
-import { translate } from 'react-i18next';
 import Toast from 'uikit/Toast';
 import { withTheme } from 'emotion-theming';
 import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
@@ -14,18 +13,19 @@ import GlobalModal from 'components/Modal/GlobalModal';
 import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
-import Join from 'components/Join';
-import LoginPage from 'components/LoginPage';
-import FileEntity from './components/EntityPage/File';
+import Join from 'components/Login/Join';
+import LoginPage from 'components/Login/LoginPage';
+import LoginFooter from 'components/Login/LoginFooter';
+import FileEntity from 'components/EntityPage/File';
 import ParticipantEntity from './components/EntityPage/Participant';
 import CohortBuilder from './components/CohortBuilder';
+import MemberSearchPage from './components/MemberSearchPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
 import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
-import { isAdminToken, validateJWT } from 'components/Login';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
 import scienceBgPath from 'assets/background-science.jpg';
@@ -35,14 +35,23 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { DCF, GEN3, COHORT_BUILDER_PATH } from 'common/constants';
+import { DCF, GEN3 } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
+import ROUTES from 'common/routes';
+import isEmpty from 'lodash/isEmpty';
+import { Spin, Icon } from 'antd';
+import { isAdminToken, validateJWT } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
     return isLoadingUser ? null : (
-      <SideImagePage logo={logo} sideImage={loginImage} {...{ ...props }} Component={LoginPage} />
+      <SideImagePage
+        logo={logo}
+        sideImage={loginImage}
+        Component={LoginPage}
+        Footer={LoginFooter}
+      />
     );
   } else if (
     loggedInUser &&
@@ -63,6 +72,13 @@ const AppContainer = styled('div')`
   }
 `;
 
+const ShowLoader = (
+  <Page
+    Component={Spin}
+    indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />}
+  />
+);
+
 const App = compose(
   injectState,
   withApi,
@@ -70,11 +86,21 @@ const App = compose(
 )(({ state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
+  const showDashboardIfLoggedIn = props => {
+    return forceSelectRole({
+      api,
+      isLoadingUser,
+      Component: UserDashboard,
+      loggedInUser,
+      ...props,
+    });
+  };
+
   return (
     <AppContainer>
       <Switch>
         <Route
-          path="/admin"
+          path={ROUTES.admin}
           render={props =>
             forceSelectRole({
               api,
@@ -84,7 +110,7 @@ const App = compose(
                 return !isAdminToken({
                   validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                 }) ? (
-                  <Redirect to="/dashboard" />
+                  <Redirect to={ROUTES.dashboard} />
                 ) : (
                   <ArrangerAdmin baseRoute={match.url} failRedirect={'/'} />
                 );
@@ -98,7 +124,7 @@ const App = compose(
         />
         <Route
           // TODO: left here for convenience during roll out of the new admin
-          path="/admin_legacy"
+          path={ROUTES.adminLegacy}
           render={props =>
             forceSelectRole({
               api,
@@ -108,7 +134,7 @@ const App = compose(
                 return !isAdminToken({
                   validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
                 }) ? (
-                  <Redirect to="/dashboard" />
+                  <Redirect to={ROUTES.dashboard} />
                 ) : (
                   <ArrangerDashboardLegacy basename={match.url} {...props} />
                 );
@@ -120,24 +146,25 @@ const App = compose(
             })
           }
         />
-        <Route path="/auth-redirect" exact component={AuthRedirect} />
+        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
         <Route
-          path="/orcid"
+          path={ROUTES.orcid}
           exact
           render={props => (
             <SideImagePage
               logo={logo}
               backgroundImage={scienceBgPath}
               Component={LoginPage}
+              Footer={LoginFooter}
               sideImage={loginImage}
               stealth={true} // hide some of the visuals of the page during redirection
               {...props}
             />
           )}
         />
-        <Route path="/redirected" exact component={() => null} />
+        <Route path={ROUTES.redirected} exact component={() => null} />
         <Route
-          path={COHORT_BUILDER_PATH}
+          path={ROUTES.cohortBuilder}
           exact
           render={props =>
             forceSelectRole({
@@ -151,7 +178,19 @@ const App = compose(
           }
         />
         <Route
-          path="/file/:fileId"
+          path={ROUTES.searchMember}
+          exact
+          render={props =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: MemberSearchPage,
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
+        <Route
+          path={`${ROUTES.file}/:fileId`}
           exact
           render={props =>
             forceSelectRole({
@@ -165,7 +204,7 @@ const App = compose(
           }
         />
         <Route
-          path="/participant/:participantId"
+          path={`${ROUTES.participant}/:participantId`}
           exact
           render={props =>
             forceSelectRole({
@@ -178,7 +217,7 @@ const App = compose(
           }
         />
         <Route
-          path="/search/:index"
+          path={`${ROUTES.search}/:index`}
           exact
           render={props =>
             forceSelectRole({
@@ -193,7 +232,7 @@ const App = compose(
           }
         />
         <Route
-          path="/user/:egoId"
+          path={ROUTES.profile}
           exact
           render={props =>
             forceSelectRole({
@@ -201,59 +240,77 @@ const App = compose(
               isLoadingUser,
               Component: UserProfile,
               loggedInUser,
+              userID: null,
               ...props,
             })
           }
         />
         <Route
-          path="/dashboard"
+          path={`${ROUTES.user}/:userID`}
           exact
           render={props =>
             forceSelectRole({
               api,
               isLoadingUser,
-              Component: UserDashboard,
+              Component: UserProfile,
               loggedInUser,
+              userID: props.match.params.userID,
               ...props,
             })
           }
         />
+        <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
         <Route
-          path="/join"
+          path={ROUTES.join}
           exact
           render={props => {
-            return (
-              <ApiContext.Provider
-                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
-              >
-                <SideImagePage
-                  backgroundImage={scienceBgPath}
-                  logo={logo}
-                  Component={Join}
-                  sideImage={joinImage}
-                  {...props}
-                />
-              </ApiContext.Provider>
-            );
+            if (isEmpty(loggedInUser) && requireLogin) {
+              if (isLoadingUser) {
+                return ShowLoader;
+              }
+              return (
+                <ApiContext.Provider
+                  value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+                >
+                  <SideImagePage
+                    backgroundImage={scienceBgPath}
+                    logo={logo}
+                    Component={Join}
+                    sideImage={joinImage}
+                    {...props}
+                  />
+                </ApiContext.Provider>
+              );
+            }
+            return showDashboardIfLoggedIn(props);
           }}
         />
         <Route
           path="/"
           exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              sideImage={loginImage}
-              {...props}
-            />
-          )}
+          render={props => {
+            if (isEmpty(loggedInUser) && requireLogin) {
+              if (isLoadingUser) {
+                return ShowLoader;
+              }
+              return (
+                <SideImagePage
+                  logo={logo}
+                  backgroundImage={scienceBgPath}
+                  Component={LoginPage}
+                  Footer={LoginFooter}
+                  sideImage={loginImage}
+                  {...props}
+                />
+              );
+            }
+            return showDashboardIfLoggedIn(props);
+          }}
         />
-        <Route path="/gen3_redirect" exact render={props => <FenceAuthRedirect fence={GEN3} />} />
-        <Route path="/dcf_redirect" exact render={props => <FenceAuthRedirect fence={DCF} />} />
-        <Route path="/error" exact render={props => <Error {...props} />} />
-        <Redirect from="*" to="/dashboard" />
+        <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
+        <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
+        <Route path={ROUTES.error} exact render={() => <Error />} />
+        <Redirect from="*" to={ROUTES.dashboard} />
       </Switch>
       <Modal />
       <GlobalModal />
@@ -262,12 +319,11 @@ const App = compose(
   );
 });
 
-const TranslatedApp = translate('translations', { withRef: true })(() => (
+const enhanceApp = () => (
   <ErrorBoundary>
     <ContextProvider>
       <App />
     </ContextProvider>
   </ErrorBoundary>
-));
-
-export default hot(module)(TranslatedApp);
+);
+export default hot(module)(enhanceApp);

@@ -1,3 +1,10 @@
+.login-footer {
+  position: absolute;
+  bottom: 0;
+  padding: 30px;
+  margin: 0 auto;
+}
+
 .login-redirect-loader-container {
   display: flex;
   flex-direction: column;

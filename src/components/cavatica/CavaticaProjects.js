@@ -15,6 +15,8 @@ import { TableHeader } from 'uikit/Table';
 import { Paragraph, Box } from 'uikit/Core';
 import { FilterInput } from 'uikit/Input';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import { Result } from 'antd';
+import { getMsgFromErrorOrElse } from 'utils';
 
 const enhance = compose(
   injectState,
@@ -23,15 +25,20 @@ const enhance = compose(
   withState('projectSearchValue', 'setProjectSearchValue', ''),
   withState('projectList', 'setProjectList', []),
   withState('selectedProject', 'setSelectedProject', null),
+  withState('errorFetchingProjects', 'setErrorFetchingProjects', null),
   lifecycle({
     async componentDidMount() {
-      const { setProjectList, setIsLoadingProject } = this.props;
+      const { setProjectList, setIsLoadingProject, setErrorFetchingProjects } = this.props;
 
       setIsLoadingProject(true);
-      getCavaticaProjects().then(projects => {
+      try {
+        const projects = await getCavaticaProjects();
         setProjectList(projects);
+      } catch (error) {
+        setErrorFetchingProjects(error);
+      } finally {
         setIsLoadingProject(false);
-      });
+      }
     },
   }),
 );
@@ -112,8 +119,19 @@ const CavaticaProjects = ({
   getGen3Ids,
   isLoadingProjects,
   onSelectProject,
+  errorFetchingProjects,
   ...props
 }) => {
+  if (errorFetchingProjects) {
+    return (
+      <Result
+        style={{ width: '100%' }}
+        status="error"
+        title={getMsgFromErrorOrElse(errorFetchingProjects)}
+      />
+    );
+  }
+
   return (
     <div css={styles(theme)}>
       <div className="header">

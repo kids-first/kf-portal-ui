@@ -9,7 +9,9 @@ import { DropdownLabelContainer } from 'uikit/Dropdown/ui';
 import { applyDefaultStyles } from 'uikit/Core';
 import ExternalLink from 'uikit/ExternalLink';
 
-export const NavLink = styled(Link)`
+export const NavLink = styled(Link, {
+  shouldForwardProp: prop => !['currentPathName'].includes(prop),
+})`
   ${({ theme }) => theme.navLink};
   color: ${({ theme }) => theme.primary};
   ${({ currentPathName, to, theme }) => (currentPathName === to ? theme.linkButtonActive : '')};
@@ -50,7 +52,9 @@ export const NavbarDropdownWrapper = styled(DropdownContainer)`
   padding-right: 10px;
 `;
 
-export const DropdownLink = styled(Link)`
+export const DropdownLink = styled(Link, {
+  shouldForwardProp: prop => !['separated'].includes(prop),
+})`
   color: ${({ theme }) => theme.greyScale2};
   text-decoration: none;
   padding: 10px 20px;
@@ -66,21 +70,26 @@ export const DropdownLink = styled(Link)`
   }
 `;
 
-export const DropdownExternalLink = applyDefaultStyles(styled(ExternalLink)`
-  color: ${({ theme }) => theme.greyScale2};
-  text-decoration: none;
-  padding: 10px 20px;
-  border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
-  border-left: solid 2px ${({ theme, borderColor }) => (borderColor ? borderColor : theme.white)};
-  &:hover {
-    color: ${({ theme }) => theme.hover};
-    border-left: solid 2px ${({ theme }) => theme.hover};
+export const DropdownExternalLink = applyDefaultStyles(
+  styled(ExternalLink)`
+    color: ${({ theme }) => theme.greyScale2};
+    text-decoration: none;
+    padding: 10px 20px;
+    border-top: ${({ theme, separated }) => (separated ? `1px solid ${theme.borderGrey}` : 'none')};
+    border-left: solid 2px ${({ theme, borderColor }) => (borderColor ? borderColor : theme.white)};
+    &:hover {
+      color: ${({ theme }) => theme.hover};
+      border-left: solid 2px ${({ theme }) => theme.hover};
 
-    svg {
-      fill: ${({ theme }) => theme.hover};
+      svg {
+        fill: ${({ theme }) => theme.hover};
+      }
     }
-  }
-`);
+  `,
+  {
+    shouldForwardProp: prop => !['borderColor', 'separated'].includes(prop),
+  },
+);
 
 export const HeaderContainer = styled('div')`
   background: ${({ theme }) => theme.white};

@@ -1,22 +1,12 @@
 import featureToggles from 'feature-toggles';
 import camelCase from 'lodash/camelCase';
 
-import { getApplicationEnvVar } from 'common/injectGlobals';
-
 const featureTogglePrefix = 'REACT_APP_FT';
 
-const isEnabled = (featureName, defaultValue = true) => {
-  const flag = getApplicationEnvVar(featureName);
-
-  // missing feature flags defaults to their default
-  if (typeof flag === 'undefined') return defaultValue;
-
-  // any casing for 'false', false, 0 and '0' are all disabled
-  // eslint-disable-next-line eqeqeq
-  if (flag === false || flag.toString().toLowerCase() === 'false' || flag == 0) {
+const isEnabled = flag => {
+  if (!flag || ['false', '0', 'no', 'n'].some(falsy => flag.toString().toLowerCase() === falsy)) {
     return false;
   }
-
   // the rest is enabled (but could contain a value like 'canary' or 'ADMIN')
   return true;
 };

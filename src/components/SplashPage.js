@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 
 const SplashPage = compose(withTheme)(({ theme, children, stealth = false }) => (
   <div
@@ -28,7 +27,7 @@ const SplashPage = compose(withTheme)(({ theme, children, stealth = false }) => 
             -webkit-text-fill-color: transparent;
           `}
         >
-          <Trans>Kids First Data Resource Portal</Trans>
+          Kids First Data Resource Portal
         </h1>
         <div css={theme.card}>{children}</div>
       </React.Fragment>

@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import Dropdown from 'uikit/Dropdown';
-import { Trans } from 'react-i18next';
 import {
   NavbarDropdownWrapper,
   NavbarKidsFirstDropdown,
@@ -35,7 +34,7 @@ export default () => (
           >
             <DropdownRow alignItems="center" color={'#c03299'}>
               <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
-              <Trans>Data Resource Portal</Trans>
+              Data Resource Portal
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
@@ -46,7 +45,7 @@ export default () => (
           >
             <DropdownRow alignItems="center">
               <AllAppsWebsiteIcon width="14px" height="13px" />
-              <Trans>Website</Trans>
+              Website
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
@@ -57,7 +56,7 @@ export default () => (
           >
             <DropdownRow alignItems="center">
               <AllAppsStudiesIcon width="15" height="15" />
-              <Trans>Studies and Access</Trans>
+              Studies and Access
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
@@ -68,7 +67,7 @@ export default () => (
           >
             <DropdownRow alignItems="center">
               <AllAppsSupportIcon width="15px" height="15px" />
-              <Trans>Support</Trans>
+              Support
             </DropdownRow>
           </DropdownExternalLink>,
           <DropdownExternalLink
@@ -79,11 +78,11 @@ export default () => (
           >
             <DropdownRow alignItems="center">
               <AllAppsContactIcon width="16px" height="11px" />
-              <Trans>Contact</Trans>
+              Contact
             </DropdownRow>
           </DropdownExternalLink>,
         ]}
-        ItemWrapperComponent={props => <Fragment key={props.key} children={props.children} />}
+        ItemWrapperComponent={props => <Fragment key={'ItemWrapper'} children={props.children} />}
         ContainerComponent={NavbarDropdownWrapper}
         OptionsContainerComponent={NavbarKidsFirstDropdown}
         LabelContainer={MenuLabelContainer}

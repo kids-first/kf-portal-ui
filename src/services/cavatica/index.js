@@ -36,7 +36,7 @@ export const getUser = async () => {
     });
     data = response.data;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return data;
 };
@@ -58,7 +58,7 @@ export const getBillingGroups = async () => {
     });
     items = response.data.items;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return items;
 };
@@ -80,7 +80,7 @@ export const getProjects = async () => {
     });
     items = response.data.items;
   } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return items;
 };
@@ -113,21 +113,7 @@ const createProject = async ({ name, billing_group, description = '' }) => {
     });
     data = response.data;
   } catch (error) {
-    console.warn(error);
-  }
-  return data;
-};
-
-export const getFiles = async () => {
-  let data;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/files',
-      method: 'GET',
-    });
-    data = response.data;
-  } catch (error) {
-    console.warn(error);
+    throw error;
   }
   return data;
 };
@@ -176,7 +162,6 @@ export const getTaskLink = ({ project, status }) => {
  */
 export const convertFenceUuids = async ({ ids, fence }) => {
   let items = [];
-
   /* ABOUT THE CHUNKS:
    * Cavatica has a limit of how many items it can take at one time,
    *  so we batch a list of ids into chunks of size 75
@@ -205,7 +190,7 @@ export const convertFenceUuids = async ({ ids, fence }) => {
       });
       items.push(...response.data.items);
     } catch (error) {
-      console.warn(error);
+      throw error;
     }
   }
   return items;
@@ -219,7 +204,6 @@ export const convertFenceUuids = async ({ ids, fence }) => {
  */
 export const copyFiles = async ({ project, ids }) => {
   let data = [];
-
   //Cavatica times out if copying too many files at a time,
   // chunk it into groups of 75 to accomodate.
   const chunks = makeChunks(ids, 75);
@@ -235,7 +219,7 @@ export const copyFiles = async ({ project, ids }) => {
       });
       data.push(response.data);
     } catch (error) {
-      console.warn(error);
+      throw error;
     }
   }
   return data;
@@ -256,20 +240,24 @@ const getProjectDescriptionTemplate = memoize(() =>
 export const saveProject = async ({ projectName, billingGroupId }) => {
   const USER_NAME_TEMPLATE_STRING = '<username>';
   const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
-  const [descriptionTemplate, { username }] = await Promise.all([
-    getProjectDescriptionTemplate(),
-    getUser(),
-  ]);
-  const projectDescription = descriptionTemplate
-    .split(PROJECT_NAME_TEMPLATE_STRING)
-    .join(projectName)
-    .split(USER_NAME_TEMPLATE_STRING)
-    .join(username);
-  return createProject({
-    billing_group: billingGroupId,
-    name: projectName,
-    description: projectDescription,
-  });
+  try {
+    const [descriptionTemplate, { username }] = await Promise.all([
+      getProjectDescriptionTemplate(),
+      getUser(),
+    ]);
+    const projectDescription = descriptionTemplate
+      .split(PROJECT_NAME_TEMPLATE_STRING)
+      .join(projectName)
+      .split(USER_NAME_TEMPLATE_STRING)
+      .join(username);
+    return createProject({
+      billing_group: billingGroupId,
+      name: projectName,
+      description: projectDescription,
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const isValidKey = key => {

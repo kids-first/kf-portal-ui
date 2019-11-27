@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { Trans } from 'react-i18next';
 import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 
@@ -13,7 +12,11 @@ import { FileRepoH3 as H3 } from 'uikit/Headings';
 import { TableHeader } from 'uikit/Table';
 import { withApi } from 'services/api';
 
-const enhance = compose(withTheme, injectState, withApi);
+const enhance = compose(
+  withTheme,
+  injectState,
+  withApi,
+);
 
 const UploadIdsModal = ({
   api,
@@ -42,12 +45,8 @@ const UploadIdsModal = ({
     }}
     uploadableFields={uploadableFields}
     uploadInstructionText={<Paragraph>Or choose file to upload</Paragraph>}
-    browseButtonText={<Trans>Upload csv</Trans>}
-    matchHeaderText={
-      <H3 mb="0.8em">
-        <Trans>Matching files in the Kids First Data Repository</Trans>
-      </H3>
-    }
+    browseButtonText={'Upload csv'}
+    matchHeaderText={<H3 mb="0.8em">Matching files in the Kids First Data Repository</H3>}
     ButtonComponent={TealActionButton}
   >
     {({ hasResults, saveSet }) => (

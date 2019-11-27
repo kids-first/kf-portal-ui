@@ -89,8 +89,12 @@ export const fenceTokensUri = getApplicationEnvVar('FENCE_TOKENS_URI') || '';
 export const reactApiDataVersionApi: string = getApplicationEnvVar('DATA_VERSION_API') || null;
 export const reactApiDataVersionFallback: string =
   getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';
+export const reactApiSearchMembersApi = getApplicationEnvVar('SEARCH_MEMBERS_API') || null;
 
 // Public Stats
 export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
 
 export const arrangerAdminApiRoot = getApplicationEnvVar('ARRANGER_ADMIN_ROOT') || null;
+
+// Reports API
+export const reportsApiRoot = getApplicationEnvVar('REPORTS_API') || '';

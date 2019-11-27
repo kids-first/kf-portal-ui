@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose, withState, withHandlers, defaultProps, withPropsOnChange } from 'recompose';
 import { trim } from 'lodash';
-import { Trans } from 'react-i18next';
 
 import { withTheme } from 'emotion-theming';
 
@@ -152,9 +151,7 @@ export default compose(
               >
                 Save
               </button>
-              <button onClick={handleCancel}>
-                <Trans>Cancel</Trans>
-              </button>
+              <button onClick={handleCancel}>Cancel</button>
             </span>
           )}
           {renderButtons &&

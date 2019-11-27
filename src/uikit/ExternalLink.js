@@ -17,12 +17,12 @@ export default withTheme(
   }): React.Element => {
     return (
       <a
-        style={{whiteSpace: "pre", ...(props.style)}}
+        style={{ whiteSpace: 'pre', ...props.style }}
         {...props}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${theme.externalLink} ${className} test-external-link`}
+        className={`${theme.externalLink} ${className}`}
         onClick={e => {
           trackExternalLink(href);
           onClick(e);

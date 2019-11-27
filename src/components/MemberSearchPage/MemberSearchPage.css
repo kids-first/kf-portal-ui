@@ -1,0 +1,64 @@
+.grid-container {
+  width: 100%;
+  padding: 25px 50px 25px 50px;
+}
+
+.member-list-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+}
+
+.member-list {
+  margin: 20px;
+}
+
+.interest-container {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.member-list-col {
+    align-content: center;
+    align-items: center;
+}
+
+.format-label {
+    padding-right: 5px;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+div.flex {
+    display: flex;
+}
+
+.comma:not(:last-of-type):after {
+    content: ",";
+}
+.comma:nth-last-of-type(2):before {
+    content: none;
+}
+.comma:nth-last-of-type(2):after {
+    content: " and ";
+}
+
+.background-container {
+    background-color: rgb(244, 245, 248);
+}
+
+.tag-role {
+    border-radius: 14px;
+    height: 28px;
+    display: flex;
+    color: white;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.86;
+    text-align: left;
+    text-transform: capitalize;
+    padding: 0 16px 0 0;
+    width: 220px;
+}

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import flattenDeep from 'lodash/flattenDeep';
 import { pickData } from './utils';
 
 export const particpantBiospecimenColumns = [
@@ -13,7 +13,7 @@ export const particpantBiospecimenColumns = [
 ];
 
 export const toParticpantBiospecimenData = data =>
-  _.flattenDeep(
+  flattenDeep(
     data.participants.hits.edges.map(nodes => {
       const p = nodes.node;
 

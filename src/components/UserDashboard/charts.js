@@ -1,6 +1,6 @@
 import React from 'react';
 import { withTheme } from 'emotion-theming';
-import _ from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 import { titleCase } from 'common/displayFormatters';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
@@ -86,15 +86,10 @@ export const studiesChart = compose(
       },
     };
 
-    const modifiedSqons = setSqonValueAtIndex(
-      getDefaultSqon(),
-      0,
-      newSqon,
-      {
-        operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
-        values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
-      },
-    );
+    const modifiedSqons = setSqonValueAtIndex(getDefaultSqon(), 0, newSqon, {
+      operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
+      values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+    });
     setSqons(modifiedSqons);
   };
 
@@ -137,7 +132,7 @@ export const UserInterestsChart = withTheme(({ data, theme }) => {
   const filteredInterests = data.filter(interest =>
     ALLOWED_INTERESTS.includes(interest.name.toLowerCase()),
   );
-  const sortedInterests = _.orderBy(filteredInterests, ['count', 'name'], ['desc', 'asc'])
+  const sortedInterests = orderBy(filteredInterests, ['count', 'name'], ['desc', 'asc'])
     .slice(0, 10)
     .map(interest => ({
       id: titleCase(interest.name),
@@ -160,7 +155,6 @@ export const topDiagnoseChart = compose(
   withRouter,
   withTheme,
 )(({ data, theme, setSqons, virtualStudy, history }) => {
-
   const onClick = barData => {
     trackBarClick(diagnosesChartCategory, barData);
     resetVirtualStudy();
@@ -177,15 +171,10 @@ export const topDiagnoseChart = compose(
       },
     };
 
-    const modifiedSqons = setSqonValueAtIndex(
-      getDefaultSqon(),
-      0,
-      newSqon,
-      {
-        operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
-        values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
-      },
-    );
+    const modifiedSqons = setSqonValueAtIndex(getDefaultSqon(), 0, newSqon, {
+      operator: MERGE_OPERATOR_STRATEGIES.OVERRIDE_OPERATOR,
+      values: MERGE_VALUES_STRATEGIES.OVERRIDE_VALUES,
+    });
     setSqons(modifiedSqons);
   };
 

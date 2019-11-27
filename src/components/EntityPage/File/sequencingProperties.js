@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import get from 'lodash/get';
 
 export const hasSequencingReadProperties = data => {
-  return _.get(data, 'sequencing_experiments.hits.edges[0].node', null) !== null;
+  return get(data, 'sequencing_experiments.hits.edges[0].node', null) !== null;
 };
 
 export const toSequencingReadProperties = data => {
-  const experiments = _.get(data, 'sequencing_experiments.hits.edges[0].node');
+  const experiments = get(data, 'sequencing_experiments.hits.edges[0].node');
 
   if (!experiments) return [];
 

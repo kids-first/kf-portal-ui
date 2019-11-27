@@ -3,7 +3,6 @@ import { css } from 'emotion';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
 import styled from 'react-emotion';
 
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
@@ -125,7 +124,7 @@ const AggregationSidebar = compose(
                   })
                 }
               >
-                <Trans>Browse All</Trans>
+                {'Browse All'}
               </BrowseAllButton>
             ) : null}
             {!expanded ? (

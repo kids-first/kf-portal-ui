@@ -1,6 +1,6 @@
-import _ from 'lodash';
+import truncate from 'lodash/truncate';
 
-export const truncateText = (string = '', length = 5) => _.truncate(string, { length: length });
+export const truncateText = (string = '', length = 5) => truncate(string, { length: length });
 
 export const maxValues = (data, keys) => {
   const values = {};

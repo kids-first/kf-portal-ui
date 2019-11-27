@@ -4,7 +4,6 @@ import { compose } from 'recompose';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
 import styled from 'react-emotion';
-import { Trans } from 'react-i18next';
 import { injectState } from 'freactal';
 import { get } from 'lodash';
 
@@ -70,7 +69,7 @@ const FenceProjectList = compose(
     get(fenceStudies, `${fence}.authorizedStudies`, []).map(({ id, studyShortName }) => {
       const sqon = sqonForStudy(id);
       return (
-        <ItemRowContainer>
+        <ItemRowContainer key={id}>
           <Column justifyContent="center" p={15}>
             <StackIcon width={20} />
           </Column>
@@ -84,7 +83,7 @@ const FenceProjectList = compose(
               <Span
                 onClick={() => history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)}
               >
-                <Trans>View data files</Trans> <RightChevron width={10} fill={theme.primary} />
+                {'View data files'} <RightChevron width={10} fill={theme.primary} />
               </Span>
             </ExternalLink>
           </Column>
@@ -114,7 +113,7 @@ const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
           <Row>
             <PromptMessageContainer warning mb={0} width={'100%'}>
               <Span className="title" fontWeight={'bold'}>
-                <Trans>You do not have access to any studies.</Trans>
+                {'You do not have access to any studies.'}
               </Span>
             </PromptMessageContainer>
           </Row>

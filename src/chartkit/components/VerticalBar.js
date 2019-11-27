@@ -140,7 +140,7 @@ class VerticalBar extends Component {
       tooltipFormatter,
       axisLeftLegend = '',
       axisBottomLegend = '',
-      axisLeftFormat = v => Number.isInteger(Number(v)) ? v.toLocaleString() : "",
+      axisLeftFormat = v => (Number.isInteger(Number(v)) ? v.toLocaleString() : ''),
       axisBottomFormat = v => v.toLocaleString(),
       bottomLegendOffset = 35,
       leftLegendOffset = -40,
@@ -246,7 +246,7 @@ VerticalBar.propTypes = {
   data: PropTypes.array,
   keys: PropTypes.arrayOf(PropTypes.string),
   colors: PropTypes.arrayOf(PropTypes.string),
-  sortBy: PropTypes.func,
+  sortBy: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   sortByKeys: PropTypes.arrayOf(PropTypes.string),
   sortOrder: (props, propName, componentName) => {
     if (props[propName] && !/(a|de)sc(ending)?/i.test(props[propName])) {

@@ -10,6 +10,7 @@ import { Box, Span } from 'uikit/Core';
 
 import { GOOGLE, FACEBOOK, ORCID } from 'common/constants';
 import gicon from 'assets/google-icon.png';
+import { css } from 'emotion';
 
 const GoogleIcon = styled('img')`
   height: 26px;
@@ -33,8 +34,10 @@ const Status = styled(Span)`
   font-size: 16px;
 `;
 
+const boxExtraCss = css({ display: 'flex', alignItems: 'center' });
+
 const ConnectedWithBadge = withTheme(({ theme, provider, Icon = icons[provider] }) => (
-  <Box>
+  <Box className={boxExtraCss}>
     {identityProviders.includes(provider) && (
       <Fragment>
         <Status>

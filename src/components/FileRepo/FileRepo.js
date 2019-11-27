@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { withTheme } from 'emotion-theming';
 import { isObject } from 'lodash';
-import { Trans } from 'react-i18next';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
 import Tooltip from 'uikit/Tooltip';
@@ -245,7 +244,7 @@ const FileRepo = ({
                                     margin-right: 9px;
                                   `}
                                 />
-                                <Trans>Export TSV</Trans>
+                                {'Export TSV'}
                               </React.Fragment>
                             }
                           />

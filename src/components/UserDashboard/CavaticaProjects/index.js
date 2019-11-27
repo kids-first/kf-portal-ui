@@ -14,11 +14,63 @@ import {
   setUserDimension,
   TRACKING_EVENTS,
 } from 'services/analyticsTracking';
-
+import { Result } from 'antd';
+import { getMsgFromErrorOrElse } from 'utils';
 const isValidKey = key => {
   return key && key.length > 0;
 };
+const generateTabsContent = ({
+  isConnected,
+  projectsError,
+  tabToCreate,
+  projects,
+  loading,
+  onProjectCreated,
+  onProjectCreationCanceled,
+  refresh,
+}) => {
+  if (projectsError) {
+    return [
+      {
+        headerComponent: cardProps => <CardHeader title="Cavatica Projects" badge={null} />,
+        title: 'Cavatica Projects',
+        component: cardProps => (
+          <Result
+            style={{ width: '100%' }}
+            status="error"
+            title={getMsgFromErrorOrElse(projectsError)}
+          />
+        ),
+      },
+    ];
+  }
 
+  return isConnected
+    ? [
+        {
+          nav: 'Projects',
+          headerComponent: cardProps => (
+            <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
+          ),
+          component: cardProps => (
+            <Connected tabToCreate={tabToCreate(cardProps)} projects={projects} loading={loading} />
+          ),
+        },
+        {
+          nav: 'Create',
+          headerComponent: cardProps => (
+            <CardHeader title="Create a Cavatica Project" badge={null} />
+          ),
+          component: cardProps => (
+            <Create
+              onProjectCreated={onProjectCreated({ cardProps, refresh })}
+              onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
+            />
+          ),
+        },
+      ]
+    : [{ title: 'Cavatica Projects', component: cardProps => <NotConnected /> }];
+};
 const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } }) => {
   const isConnected = isValidKey(integrationTokens[CAVATICA]);
 
@@ -53,43 +105,22 @@ const CavaticaProjects = compose(injectState)(({ state: { integrationTokens } })
 
   return (
     <CavaticaProvider isConnected={isConnected}>
-      {({ projects, loading, refresh }) => {
+      {({ projects, loading, refresh, projectsError }) => {
         setUserDimension('dimension6', JSON.stringify(projects));
         return (
           <DashboardMulticard
             inactive={!isConnected}
             scrollable={isConnected}
-            tabs={
-              isConnected
-                ? [
-                    {
-                      nav: 'Projects',
-                      headerComponent: cardProps => (
-                        <CardHeader title="Cavatica Projects" badge={projects && projects.length} />
-                      ),
-                      component: cardProps => (
-                        <Connected
-                          tabToCreate={tabToCreate(cardProps)}
-                          projects={projects}
-                          loading={loading}
-                        />
-                      ),
-                    },
-                    {
-                      nav: 'Create',
-                      headerComponent: cardProps => (
-                        <CardHeader title="Create a Cavatica Project" badge={null} />
-                      ),
-                      component: cardProps => (
-                        <Create
-                          onProjectCreated={onProjectCreated({ cardProps, refresh })}
-                          onProjectCreationCancelled={onProjectCreationCanceled(cardProps)}
-                        />
-                      ),
-                    },
-                  ]
-                : [{ title: 'Cavatica Projects', component: cardProps => <NotConnected /> }]
-            }
+            tabs={generateTabsContent({
+              isConnected,
+              projectsError,
+              tabToCreate,
+              projects,
+              loading,
+              onProjectCreated,
+              onProjectCreationCanceled,
+              refresh,
+            })}
           />
         );
       }}

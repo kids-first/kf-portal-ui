@@ -3,16 +3,15 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withTheme } from 'emotion-theming';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { Trans } from 'react-i18next';
-import { withApi } from '../services/api';
+import { withApi } from 'services/api';
 
-import Login from 'components/Login';
+import Login from 'components/Login/Login';
 import SplashPage from 'components/SplashPage';
 
 import { Link, Section } from 'uikit/Core';
-import { JoinH2 } from '../uikit/Headings';
+import { JoinH2 } from 'uikit/Headings';
 
-import './Login/index.css';
+import './index.css';
 
 const LoginPage = compose(
   withRouter,
@@ -22,7 +21,7 @@ const LoginPage = compose(
   <SplashPage stealth={stealth}>
     {stealth ? null : (
       <JoinH2 mt="9px" mb={0}>
-        <Trans>Log in</Trans>
+        Log in
       </JoinH2>
     )}
 
@@ -40,9 +39,9 @@ const LoginPage = compose(
 
     {stealth ? null : (
       <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
-        <Trans>New to Kids First Data Resource Portal?</Trans>{' '}
+        {'New to Kids First Data Resource Portal? '}
         <Link to="/join" className="bare primary bold">
-          <Trans>Join now</Trans>
+          Join now
           <RightIcon />
         </Link>
       </Section>

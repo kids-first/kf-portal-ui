@@ -28,6 +28,17 @@ const enhance = compose(
   withState('invalidToken', 'setInvalidToken', false),
 );
 
+const onCavaticaUserFailure = ({ setIntegrationToken, onFail }) => {
+  setIntegrationToken(CAVATICA, null);
+  deleteSecret({ service: CAVATICA });
+  trackUserInteraction({
+    category: TRACKING_EVENTS.categories.user.profile,
+    action: TRACKING_EVENTS.actions.integration.failed,
+    label: TRACKING_EVENTS.labels.cavatica,
+  });
+  onFail();
+};
+
 const submitCavaticaToken = async ({
   token,
   setIntegrationToken,
@@ -36,24 +47,21 @@ const submitCavaticaToken = async ({
   onFail,
 }) => {
   await setSecret({ service: CAVATICA, secret: token });
-  const userData = await getCavaticaUser(token);
-  if (userData) {
-    setIntegrationToken(CAVATICA, JSON.stringify(userData));
-    trackUserInteraction({
-      category: TRACKING_EVENTS.categories.user.profile,
-      action: TRACKING_EVENTS.actions.integration.connected,
-      label: TRACKING_EVENTS.labels.cavatica,
-    });
-    onSuccess();
-  } else {
-    setIntegrationToken(CAVATICA, null);
-    deleteSecret({ service: CAVATICA });
-    trackUserInteraction({
-      category: TRACKING_EVENTS.categories.user.profile,
-      action: TRACKING_EVENTS.actions.integration.failed,
-      label: TRACKING_EVENTS.labels.cavatica,
-    });
-    onFail();
+  try {
+    const userData = await getCavaticaUser(token);
+    if (userData) {
+      setIntegrationToken(CAVATICA, JSON.stringify(userData));
+      trackUserInteraction({
+        category: TRACKING_EVENTS.categories.user.profile,
+        action: TRACKING_EVENTS.actions.integration.connected,
+        label: TRACKING_EVENTS.labels.cavatica,
+      });
+      onSuccess();
+    } else {
+      onCavaticaUserFailure({ setIntegrationToken, onFail });
+    }
+  } catch (error) {
+    onCavaticaUserFailure({ setIntegrationToken, onFail });
   }
 };
 

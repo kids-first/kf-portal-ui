@@ -3,8 +3,6 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { css } from 'emotion';
 import { withTheme } from 'emotion-theming';
-import { Trans } from 'react-i18next';
-
 import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
 import LoadingOnClick from 'components/LoadingOnClick';
@@ -76,9 +74,9 @@ const DownloadFileButton = compose(
                       font-size: 16px;
                     `}
                   >
-                    <Trans>Failed!</Trans>
+                    Failed!
                   </div>
-                  <Trans>Unable to download file</Trans>
+                  Unable to download file
                   <div
                     css={`
                       color: 'red';
@@ -87,9 +85,7 @@ const DownloadFileButton = compose(
                     `}
                   >
                     <span>
-                      <Trans i18nKey="fileRepoSidebar.missingDownloadPermissions">
-                        Your account does not have the required permission to download this file.
-                      </Trans>
+                      Your account does not have the required permission to download this file.
                     </span>
                   </div>
                 </div>

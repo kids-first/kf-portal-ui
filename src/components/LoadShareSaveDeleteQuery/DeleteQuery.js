@@ -1,7 +1,6 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import DeleteIcon from 'react-icons/lib/fa/trash';
-import { Trans } from 'react-i18next';
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 import { WhiteButton } from 'uikit/Button';
 import styled from 'react-emotion';
@@ -45,7 +44,7 @@ export default injectState(
           }
         >
           <AlignedDeleteIcon />
-          &nbsp;<Trans>delete</Trans>
+          &nbsp;delete
         </WhiteButton>
       );
     }

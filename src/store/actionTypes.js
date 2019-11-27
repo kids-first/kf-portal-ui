@@ -26,3 +26,6 @@ export const LOGOUT = 'LOGOUT';
 
 export const MODAL_OPEN = 'MODAL_OPEN';
 export const MODAL_CLOSE = 'MODAL_CLOSE';
+
+export const ERROR_DISPLAY = 'ERROR_DISPLAY';
+export const ERROR_DISMISSED = 'ERROR_DISMISSED';
