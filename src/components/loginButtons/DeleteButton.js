@@ -8,7 +8,11 @@ import { shortUrlApi } from 'common/injectGlobals';
 import urlJoin from 'url-join';
 import { withApi } from 'services/api';
 
-export default compose(injectState, withRouter, withApi)(
+export default compose(
+  injectState,
+  withRouter,
+  withApi,
+)(
   ({
     history,
     state: { loggedInUser },
@@ -37,8 +41,9 @@ export default compose(injectState, withRouter, withApi)(
               ),
             ),
           )
+          .then(() => uiLogout({ setUser, setToken, clearIntegrationTokens, api }))
           .then(() => {
-            uiLogout({ history, setUser, setToken, clearIntegrationTokens, api });
+            history.push('/');
           });
       }}
       {...props}

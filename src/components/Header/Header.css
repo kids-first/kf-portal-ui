@@ -1,4 +1,98 @@
-/* components.navLink */
+/*******************************************************************/
+/* Header Menu                                                     */
+/*******************************************************************/
+.headerContainer {
+  background: #ffffff;
+  box-shadow: 0 0 4.9px 0.1px #a0a0a3;
+  flex: none;
+  z-index: 2;
+}
+
+.gradientAccent {
+  width: 100%;
+  height: 5px;
+  background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
+}
+
+.headerContent {
+  padding: 10px;
+  justify-content: space-between;
+}
+
+/*******************************************************************/
+/* Header Dropdown Menus (antd)                                    */
+/*******************************************************************/
+.headerMenuDropdown {
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.headerMenuDropdown > img,
+.headerMenuDropdown > svg {
+  margin-right: 10px;
+}
+
+.headerMenuMenuContainer .ant-dropdown-menu-item {
+  padding: 10px 20px;
+  border: 2px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  color: rgb(61, 61, 61);
+}
+
+.headerMenuMenuContainer .ant-dropdown-menu-item svg,
+.headerMenuMenuContainer .ant-dropdown-menu-item img {
+  margin-right: 10px;
+  fill: rgb(169, 173, 192);
+}
+
+.headerMenuMenuContainer .ant-dropdown-menu-item:hover {
+  background-color: transparent;
+  color: rgb(192, 50, 153);
+  fill: rgb(192, 50, 153);
+  border-left-color: rgb(192, 50, 153);
+}
+
+.headerMenuMenuContainer .ant-dropdown-menu-item:hover > a,
+.headerMenuMenuContainer .ant-dropdown-menu-item:hover img,
+.headerMenuMenuContainer .ant-dropdown-menu-item:hover svg {
+  color: rgb(192, 50, 153);
+  fill: rgb(192, 50, 153);
+}
+
+/* User Menu */
+.headerProfilePicture {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  padding: 2px;
+  background-color: #ffffff;
+  border: 1px solid #cacbcf;
+  margin: 5px;
+}
+
+/*******************************************************************/
+/* Header Main Menu  (uikit)                                       */
+/*******************************************************************/
+.navBarList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  font-weight: 500;
+  text-align: left;
+  color: #90278e;
+}
+
 .navLink {
   display: block;
   color: rgb(144, 39, 142);
@@ -15,15 +109,13 @@
   border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
   color: #ffffff;
 }
-/* mixins.linkButtonActive */
-.linkButtonActive {
+.navLink.active {
   border-radius: 19px;
   background-color: #404c9a; /* ${colors.primaryHover}; */
   border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
   color: #ffffff;
 }
 
-/* components.linkAsButton */
 .linkAsButton {
   font-size: 12px;
   line-height: 2.17;
@@ -47,155 +139,4 @@
   background-color: #404c9a; /* ${colors.primaryHover}; */
   border: solid 2px #cacbcf; /* ${colors.borderGrey}; */
   color: #ffffff;
-}
-
-/*******************************************************************/
-/*  */
-/*******************************************************************/
-.navBarList {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 14px;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-  font-weight: 500;
-  text-align: left;
-  color: #90278e;
-}
-
-.navbarDropdownOptionsContainer {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  min-width: 100%;
-  z-index: 200;
-  cursor: pointer;
-  right: auto;
-  top: 100%;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 4.9px 0.1px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  left: -40px;
-  background: rgb(255, 255, 255);
-  border-radius: 6px;
-}
-
-.navbarDropdownOptionsContainer::after,
-.navbarDropdownOptionsContainer::before {
-  bottom: 100%;
-  left: 50%;
-  content: ' ';
-  height: 0px;
-  width: 0px;
-  position: absolute;
-  pointer-events: none;
-  border-width: initial;
-  border-style: solid;
-  border-color: transparent;
-  border-image: initial;
-}
-
-.navbarDropdownOptionsContainer::before {
-  margin-left: -7px;
-  border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(202, 203, 207);
-  border-width: 7px;
-}
-
-.navbarDropdownOptionsContainer::after {
-  margin-left: -6px;
-  border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgb(255, 255, 255);
-  border-width: 6px;
-}
-
-.navbarDropdownWrapper {
-  border: 0;
-  color: #c03299;
-
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-
-  line-height: 1.86;
-  letter-spacing: 0.2px;
-  padding-right: 10px;
-}
-
-.navbarDropdownRow {
-  align-items: center;
-}
-.navbarDropdownRow img,
-.navbarDropdownRow svg {
-  margin-right: 12px;
-}
-
-.dropdownLink {
-  color: rgb(61, 61, 61);
-  text-decoration: none;
-  padding: 10px 20px;
-  border-top: none;
-  border-left: solid 2px #ffffff;
-}
-.dropdownLink.separated {
-  border-top: 1px solid #cacbcf;
-}
-.dropdownLink:hover {
-  color: #c03299;
-  border-left: solid 2px #c03299;
-}
-.dropdownLink svg {
-  fill: #a9adc0;
-}
-.dropdownLink:hover svg {
-  fill: #c03299;
-}
-
-.headerContainer {
-  background: #ffffff;
-  box-shadow: 0 0 4.9px 0.1px #a0a0a3;
-  flex: none;
-  z-index: 2;
-}
-
-.gradientAccent {
-  width: 100%;
-  height: 5px;
-  background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
-}
-
-.headerContent {
-  padding: 10px;
-  justify-content: space-between;
-}
-
-.headerProfilePicture {
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-  padding: 2px;
-  background-color: #ffffff;
-  border: 1px solid #cacbcf;
-  margin: 5px;
-}
-
-.menuLabelContainer {
-  align-items: center;
-  color: #90278e;
-}
-.menuLabelContainer:hover {
-  color: #c03299;
-}
-.menuLabelContainer svg {
-  fill: #90278e;
-}
-.menuLabelContainer:hover svg {
-  fill: #c03299;
-}
-.menuLabelContainer.open {
-  color: #c03299;
 }

@@ -10,7 +10,8 @@
       "services/*": ["src/services/*"],
       "uikit/*": ["src/uikit/*"],
       "assets/*": ["src/assets/*"],
-      "common/*": ["src/common"]
+      "common/*": ["src/common/*"],
+      "shapes/*": ["src/shapes/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const svg = ({ width = '12px', height = '12px', ...props }) => (
+const svg = ({ size = '12px', width = size, height = size, ...props }) => (
   <svg
     id="_7c_H"
     data-name="7c H"
@@ -8,10 +8,6 @@ const svg = ({ width = '12px', height = '12px', ...props }) => (
     viewBox="0 0 93.82 94.25"
     width={width}
     height={height}
-    css={`
-      margin-right: 10px;
-      fill: #a9adc0;
-    `}
     {...props}
   >
     <defs />
