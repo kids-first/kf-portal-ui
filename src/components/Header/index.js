@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import autobind from 'auto-bind-es5';
 import { compose } from 'recompose';
 import HouseIcon from 'react-icons/lib/fa/home';
@@ -24,6 +24,8 @@ import UserMenu from './UserMenu';
 
 import './Header.css';
 
+import { dismissError } from 'store/actionCreators/errors';
+
 const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
 
 const showPublicProfileInvite = (user = {}) => {
@@ -37,13 +39,59 @@ const showPublicProfileInvite = (user = {}) => {
   );
 };
 
-const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
-// TODO REMOVE DUP
+const onClosePublicProfileInviteAlert = () =>
+  localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
+
+const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
+  if (currentError) {
+    return (
+      <Alert
+        message={
+          <Fragment>
+            <span style={{ fontWeight: 'bold' }}>Error: </span>
+            <span>{currentError.message}</span>
+          </Fragment>
+        }
+        type="error"
+        banner
+        closable
+        onClose={() => dismissError(currentError.uuid)}
+      />
+    );
+  }
+
+  if (showPublicProfileInvite(loggedInUser)) {
+    return (
+      <Alert
+        message={
+          <Fragment>
+            <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
+            {' so that other members can view it!'}
+          </Fragment>
+        }
+        type="info"
+        banner
+        closable
+        onClose={onClosePublicProfileInviteAlert}
+      />
+    );
+  }
+
+  return null;
+};
+
+const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
 
 class Header extends React.Component {
   static propTypes = {
+    // redux
     loggedInUser: loggedInUserShape,
+    currentError: PropTypes.shape({
+      uuid: PropTypes.string.isRequired,
+      message: PropTypes.string.isRequired,
+    }),
+    dismissError: PropTypes.func.isRequired,
     // react-router-dom
     history: PropTypes.shape({
       location: PropTypes.shape({
@@ -62,6 +110,8 @@ class Header extends React.Component {
 
   render() {
     const {
+      currentError,
+      dismissError,
       loggedInUser,
       history,
       match: { path },
@@ -78,20 +128,7 @@ class Header extends React.Component {
 
     return (
       <div className="headerContainer">
-        {showPublicProfileInvite(loggedInUser) && (
-          <Alert
-            message={
-              <Fragment>
-                <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
-                {' so that other members can view it!'}
-              </Fragment>
-            }
-            type="info"
-            banner
-            closable
-            onClose={onCloseAlert}
-          />
-        )}
+        {renderAlertIfAny(loggedInUser, currentError, dismissError)}
         <div className="gradientAccent" />
         <Row className="headerContent">
           <Row>
@@ -168,6 +205,11 @@ class Header extends React.Component {
 
 const mapStateToProps = state => ({
   loggedInUser: state.user.loggedInUser,
+  currentError: state.errors.currentError,
 });
 
-export default compose(withRouter, withApi, connect(mapStateToProps))(Header);
+const mapDispatchToProps = {
+  dismissError,
+};
+
+export default compose(withRouter, withApi, connect(mapStateToProps, mapDispatchToProps))(Header);

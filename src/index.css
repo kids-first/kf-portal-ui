@@ -41,6 +41,9 @@ a.primary {
   box-sizing: border-box;
   font-family: Montserrat, sans-serif;
 }
+h3.filter-title {
+  font-weight: 700;
+}
 
 /* Temporary fix for the aggregation cards overflow */
 .aggregation-card span.bucket-link {

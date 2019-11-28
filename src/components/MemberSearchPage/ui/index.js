@@ -1,9 +1,15 @@
-import styled from 'react-emotion';
-import Gravtar from 'uikit/Gravatar';
+import React from 'react';
+import Gravatar from 'uikit/Gravatar';
 
-export const MemberImage = styled(Gravtar)`
-  height: 75px;
-  width: 75px;
-  border-radius: 50%;
-  border: 5px solid #fff;
-`;
+export const MemberImage = ({ style = {}, ...props }) => (
+  <Gravatar
+    style={{
+      height: '75px',
+      width: '75px',
+      borderRadius: '50%',
+      border: '5px solid #fff',
+      ...style,
+    }}
+    {...props}
+  />
+);

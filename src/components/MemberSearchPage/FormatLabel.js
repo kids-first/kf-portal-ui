@@ -51,7 +51,7 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
 };
 
 FormatLabel.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   highLightValues: PropTypes.array,
   classname: PropTypes.string,
   index: PropTypes.number.isRequired,

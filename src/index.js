@@ -1,10 +1,11 @@
+import 'babel-polyfill';
+import './antd-kf-theme.css';
+import 'index.css';
+// [NEXT] This css sheet should be brought back locally instead, in the long run
+import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
-// import 'antd/dist/antd.css';
-import './antd-kf-theme.css';
-import './index.css';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';

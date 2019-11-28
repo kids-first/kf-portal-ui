@@ -1,6 +1,6 @@
 .grid-container {
   width: 100%;
-  padding: 25px 150px 25px 150px;
+  padding: 25px 50px 25px 50px;
 }
 
 .member-list-container {
@@ -43,4 +43,23 @@ div.flex {
 }
 .comma:nth-last-of-type(2):after {
     content: " and ";
+}
+
+.background-container {
+    background-color: rgb(244, 245, 248);
+    width: 100%;
+}
+
+.tag-role {
+    border-radius: 14px;
+    height: 28px;
+    display: flex;
+    color: white;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.86;
+    text-align: left;
+    text-transform: capitalize;
+    padding: 0 16px 0 0;
+    width: 220px;
 }

@@ -29,7 +29,6 @@ const AuthorizedStudies = compose(
 
     const inactive = !fenceConnectionsInitialized;
     return (
-      // TODO EXTRACT DashboardCard to UserDashboard/index.js
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
           <ChartContentSpinner />
@@ -47,7 +46,7 @@ const AuthorizedStudies = compose(
               }
             >
               <TealActionButton>
-                <Link to={`/user/${loggedInUser.egoId}#settings`}>Settings</Link>
+                <Link to={`/user/${loggedInUser._id}#settings`}>Settings</Link>
               </TealActionButton>
             </AccessGate>
             <Info

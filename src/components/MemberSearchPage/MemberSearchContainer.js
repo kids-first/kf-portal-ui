@@ -2,97 +2,138 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
 import { bindActionCreators } from 'redux';
-import { Icon, Input, Tooltip } from 'antd';
+import { Icon, Input, Layout, Tooltip } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
-import { withTheme } from 'emotion-theming';
+import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
+import {
+  requestCurrentPageUpdate,
+  requestMemberPerPageUpdate,
+  requestQueryStringUpdate,
+} from 'components/MemberSearchPage/actions';
+import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 
 class MemberSearchContainer extends Component {
-  state = {
-    queryString: '',
-    currentPage: 1,
-    membersPerPage: 10,
-  };
-
   static propTypes = {
-    pending: PropTypes.bool.isRequired,
+    pending: PropTypes.bool,
     error: PropTypes.object,
     count: PropTypes.object,
-    members: PropTypes.arrayOf(PropTypes.object),
-  };
-
-  getCurrentStart = (page = this.state.currentPage, pageSize = this.state.membersPerPage) => {
-    return pageSize * (page - 1);
-  };
-
-  getCurrentEnd = (page = this.state.currentPage, pageSize = this.state.membersPerPage) => {
-    return page * pageSize;
+    queryString: PropTypes.string.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    membersPerPage: PropTypes.number.isRequired,
+    rolesFilter: PropTypes.object.isRequired,
+    interestsFilter: PropTypes.object.isRequired,
+    fetchListOfMembers: PropTypes.func.isRequired,
+    currentPageUpdate: PropTypes.func.isRequired,
   };
 
   handleChange = e => {
-    this.props.fetchListOfMembers(e.target.value, {
-      start: this.getCurrentStart(this.state.currentPage),
-      end: this.getCurrentEnd(this.state.currentPage),
+    const {
+      membersPerPage,
+      fetchListOfMembers,
+      queryStringUpdate,
+      currentPageUpdate,
+      currentPage,
+      rolesFilter,
+      interestsFilter,
+    } = this.props;
+
+    fetchListOfMembers(e.target.value, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
-    this.setState({ queryString: e.target.value, currentPage: 1 });
+
+    queryStringUpdate(e.target.value);
+    currentPageUpdate(1);
   };
 
   componentDidMount() {
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(this.state.currentPage),
-      end: this.getCurrentEnd(this.state.currentPage),
+    const { membersPerPage, fetchListOfMembers, queryString, currentPage } = this.props;
+
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
     });
   }
 
   handlePageChange = async page => {
-    const maxPage = this.props.count.public / this.state.membersPerPage;
+    const {
+      count,
+      membersPerPage,
+      fetchListOfMembers,
+      queryString,
+      rolesFilter,
+      interestsFilter,
+      currentPageUpdate,
+    } = this.props;
+    const maxPage = count.public / membersPerPage;
 
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
 
-    this.setState({ currentPage: page });
+    currentPageUpdate(page);
 
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(page),
-      end: this.getCurrentEnd(page),
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(page, membersPerPage),
+      end: getCurrentEnd(page, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
   };
 
   handleShowSizeChange = async (current, pageSize) => {
-    this.setState({ membersPerPage: pageSize, currentPage: current });
+    const {
+      currentPageUpdate,
+      membersPerPageUpdate,
+      fetchListOfMembers,
+      queryString,
+      rolesFilter,
+      interestsFilter,
+    } = this.props;
 
-    this.props.fetchListOfMembers(this.state.queryString, {
-      start: this.getCurrentStart(current, pageSize),
-      end: this.getCurrentEnd(current, pageSize),
+    currentPageUpdate(current);
+    membersPerPageUpdate(pageSize);
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(current, pageSize),
+      end: getCurrentEnd(current, pageSize),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
     });
   };
 
   render() {
+    const { members, count, currentPage, membersPerPage, pending } = this.props;
+
     return (
-      <div style={{ backgroundColor: this.props.theme.backgroundGrey, width: '100%' }}>
-        <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
-          <Input
-            style={{ borderRadius: 30 }}
-            onChange={this.handleChange}
-            placeholder="Member Name, Email, Interests,..."
-            prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            allowClear={true}
-            suffix={
-              <Tooltip title="Enter text to search for members">
-                <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
-              </Tooltip>
-            }
-          />
-          <MemberTable
-            memberList={this.props.members}
-            count={this.props.count}
-            currentPage={this.state.currentPage}
-            membersPerPage={this.state.membersPerPage}
-            handlePageChange={this.handlePageChange}
-            handleShowSizeChange={this.handleShowSizeChange}
-            pending={this.props.pending}
-          />
-        </MemberSearchBorder>
+      <div className="background-container">
+        <Layout style={{ minHeight: '100vh' }}>
+          <FilterDrawer />
+          <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
+            <Input
+              style={{ borderRadius: 30 }}
+              onChange={this.handleChange}
+              placeholder="Member Name, Email, Interests,..."
+              prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              allowClear={true}
+              suffix={
+                <Tooltip title="Enter text to search for members">
+                  <Icon type="info-circle" style={{ color: 'rgba(0,0,0,.45)' }} />
+                </Tooltip>
+              }
+            />
+            <MemberTable
+              memberList={members}
+              count={count}
+              currentPage={currentPage}
+              membersPerPage={membersPerPage}
+              handlePageChange={this.handlePageChange}
+              handleShowSizeChange={this.handleShowSizeChange}
+              pending={pending}
+            />
+          </MemberSearchBorder>
+        </Layout>
       </div>
     );
   }
@@ -104,19 +145,22 @@ const mapStateToProps = state => ({
   count: state.ui.memberSearchPageReducer.count,
   pending: state.ui.memberSearchPageReducer.pending,
   loggedInUser: state.user.loggedInUser,
+  queryString: state.ui.memberSearchPageReducer.queryString,
+  currentPage: state.ui.memberSearchPageReducer.currentPage,
+  membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
+  rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
+  interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchListOfMembers: fetchListOfMembersAction,
+      queryStringUpdate: queryString => dispatch(requestQueryStringUpdate(queryString)),
+      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
+      membersPerPageUpdate: membersPerPage => dispatch(requestMemberPerPageUpdate(membersPerPage)),
     },
     dispatch,
   );
 
-const MemberSearchContainerWithTheme = withTheme(MemberSearchContainer);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MemberSearchContainerWithTheme);
+export default connect(mapStateToProps, mapDispatchToProps)(MemberSearchContainer);
