@@ -9,8 +9,10 @@ import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
 import {
   requestCurrentPageUpdate,
+  requestInterestsFilterUpdate,
   requestMemberPerPageUpdate,
   requestQueryStringUpdate,
+  requestRolesFilterUpdate,
 } from 'components/MemberSearchPage/actions';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 import { find } from 'lodash';
@@ -33,6 +35,8 @@ class MemberSearchContainer extends Component {
     interestsFilter: PropTypes.object.isRequired,
     fetchListOfMembers: PropTypes.func.isRequired,
     currentPageUpdate: PropTypes.func.isRequired,
+    updateRolesFilter: PropTypes.func.isRequired,
+    updateInterestsFilter: PropTypes.func.isRequired,
   };
 
   handleChange = e => {
@@ -110,6 +114,37 @@ class MemberSearchContainer extends Component {
     });
   };
 
+  clearTag = (value, type) => e => {
+    e.preventDefault();
+
+    const filter = { [value]: false };
+    const {
+      fetchListOfMembers,
+      queryString,
+      currentPage,
+      membersPerPage,
+      rolesFilter,
+      interestsFilter,
+      updateInterestsFilter,
+      updateRolesFilter,
+    } = this.props;
+
+    console.log({ ...interestsFilter, ...filter });
+
+    fetchListOfMembers(queryString, {
+      start: getCurrentStart(currentPage, membersPerPage),
+      end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter(type === 'role' ? { ...rolesFilter, ...filter } : rolesFilter),
+      interests: getSelectedFilter(
+        type === 'interest' ? { ...interestsFilter, ...filter } : interestsFilter,
+      ),
+    });
+
+    type === 'role'
+      ? updateRolesFilter({ ...rolesFilter, ...filter })
+      : updateInterestsFilter({ ...interestsFilter, ...filter });
+  };
+
   render() {
     const { members, count, currentPage, membersPerPage, pending } = this.props;
     const filters = {
@@ -135,12 +170,18 @@ class MemberSearchContainer extends Component {
                   <Col span={6}>
                     <Row>Role Filters</Row>
                     <Row>
-                      <Divider style={{marginBottom: 16, marginTop: 8}} />
+                      <Divider style={{ marginBottom: 16, marginTop: 8 }} />
                     </Row>
-                    <Row type="flex" justify="start"  align="middle" style={{ paddingBottom: 10 }}>
+                    <Row type="flex" justify="start" align="middle" style={{ paddingBottom: 10 }}>
                       {filters.roles.map(f => (
-                        <Tag>
-                          {userRoleDisplayName(f)} <Icon style={{ color: 'white' }} type="close" />
+                        <Tag key={f}>
+                          {userRoleDisplayName(f)}{' '}
+                          <Icon
+                            key={f}
+                            onClick={this.clearTag(f, 'role')}
+                            style={{ color: 'white' }}
+                            type="close"
+                          />
                         </Tag>
                       ))}
                     </Row>
@@ -151,11 +192,17 @@ class MemberSearchContainer extends Component {
                 {filters.interests.length > 0 ? (
                   <Col span={18}>
                     <Row>Interests Filters</Row>
-                    <Divider style={{marginBottom: 16, marginTop: 8}} />
-                    <Row type="flex" justify="start"  align="middle">
+                    <Divider style={{ marginBottom: 16, marginTop: 8 }} />
+                    <Row type="flex" justify="start" align="middle">
                       {filters.interests.map(f => (
-                        <Tag>
-                          {f} <Icon style={{ color: 'white' }} type="close" />
+                        <Tag key={f}>
+                          {f}{' '}
+                          <Icon
+                            key={f}
+                            onClick={this.clearTag(f, 'interest')}
+                            style={{ color: 'white' }}
+                            type="close"
+                          />
                         </Tag>
                       ))}
                     </Row>
@@ -204,6 +251,9 @@ const mapDispatchToProps = dispatch =>
       queryStringUpdate: queryString => dispatch(requestQueryStringUpdate(queryString)),
       currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
       membersPerPageUpdate: membersPerPage => dispatch(requestMemberPerPageUpdate(membersPerPage)),
+      updateInterestsFilter: interestsFilter =>
+        dispatch(requestInterestsFilterUpdate(interestsFilter)),
+      updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
     },
     dispatch,
   );
