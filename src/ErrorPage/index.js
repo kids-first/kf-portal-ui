@@ -5,10 +5,10 @@ import backgroundScene from 'assets/background-scene.png';
 import logo from 'assets/logo-kids-first-drc.svg';
 import { kfWebRoot } from 'common/injectGlobals';
 
-import { maintenancePageContainer } from '../MaintenancePage/MaintenancePage.module.css';
+import '../MaintenancePage/MaintenancePage.css';
 
 const ErrorPage = ({ title, description }) => (
-  <div className={maintenancePageContainer}>
+  <div className="maintenancePageContainer">
     <img className="background-img" src={backgroundScene} alt="background" />
 
     <div className="content-container">

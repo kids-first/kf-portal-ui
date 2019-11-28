@@ -4,10 +4,10 @@ import backgroundScene from './background-scene.png';
 import logo from './logo-kids-first-drc.svg';
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 
-import { maintenancePageContainer } from './MaintenancePage.module.css';
+import './MaintenancePage.css';
 
 export default () => (
-  <div className={maintenancePageContainer}>
+  <div className="maintenancePageContainer">
     <img className="background-img" src={backgroundScene} alt="background" />
 
     <div className="content-container">

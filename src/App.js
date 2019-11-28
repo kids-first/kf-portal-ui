@@ -13,10 +13,10 @@ import UserDashboard from 'components/UserDashboard';
 // import Join from 'components/Login/Join';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
-// import FileEntity from './components/EntityPage/File';
-// import ParticipantEntity from './components/EntityPage/Participant';
-// import CohortBuilder from './components/CohortBuilder';
-// import MemberSearchPage from './components/MemberSearchPage';
+// import FileEntity from 'components/EntityPage/File';
+// import ParticipantEntity from 'components/EntityPage/Participant';
+// import CohortBuilder from 'components/CohortBuilder';
+// import MemberSearchPage from 'components/MemberSearchPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
@@ -132,6 +132,9 @@ const App = compose(
           }
         />
         <Route path={ROUTES.redirected} exact component={() => null} />
+        */}
+
+        {/*
         <Route
           path={ROUTES.cohortBuilder}
           exact
@@ -139,13 +142,19 @@ const App = compose(
             forceSelectRole({
               isLoadingUser,
               Component: CohortBuilder,
+              // TODO REMOVE?
               loggedInUser,
+              // TODO REMOVE?
               index: props.match.params.index,
+              // TODO REMOVE?
               graphqlField: props.match.params.index,
               ...props,
             })
           }
         />
+        */}
+
+        {/*
         <Route
           path={ROUTES.searchMember}
           exact
