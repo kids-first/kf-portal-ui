@@ -7,6 +7,7 @@ import {
   REQUEST_CURRENTPAGE_UPDATE,
   REQUEST_MEMBER_PER_PAGE_UPDATE,
   REQUEST_INTERESTS_FILTER_UPDATE,
+  REQUEST_STORE_RESET,
 } from './constants';
 
 const initialState = {
@@ -44,6 +45,8 @@ export default function memberSearchPageReducer(state = initialState, action) {
       return { ...state, currentPage: action.payload };
     case REQUEST_MEMBER_PER_PAGE_UPDATE:
       return { ...state, membersPerPage: action.payload };
+    case REQUEST_STORE_RESET:
+      return initialState;
     default:
       return state;
   }

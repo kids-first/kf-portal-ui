@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Divider, Icon, Row, Tag } from 'antd';
+import { Divider, Icon, Row, Tag } from 'antd';
 import { find } from 'lodash';
 import { ROLES } from 'common/constants';
 

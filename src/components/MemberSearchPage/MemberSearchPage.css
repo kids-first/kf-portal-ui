@@ -41,8 +41,16 @@ div.flex {
 .comma:nth-last-of-type(2):before {
     content: none;
 }
+
 .comma:nth-last-of-type(2):after {
     content: " and ";
+}
+
+.comma-address:not(:last-of-type):after {
+    content: ",";
+}
+.comma-address:nth-last-of-type(2):before {
+    content: none;
 }
 
 .background-container {

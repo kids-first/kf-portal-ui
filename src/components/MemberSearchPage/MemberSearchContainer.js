@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
 import { bindActionCreators } from 'redux';
-import { Col, Divider, Icon, Input, Layout, Row, Tag } from 'antd';
+import { Icon, Input, Layout } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
@@ -13,10 +13,9 @@ import {
   requestMemberPerPageUpdate,
   requestQueryStringUpdate,
   requestRolesFilterUpdate,
+  requestResetStore,
 } from 'components/MemberSearchPage/actions';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
-import { find } from 'lodash';
-import { ROLES } from 'common/constants';
 import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
 
 class MemberSearchContainer extends Component {
@@ -64,6 +63,11 @@ class MemberSearchContainer extends Component {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
     });
+  }
+
+  componentWillUnmount() {
+    console.log("Component has unmounted");
+    this.props.resetStore()
   }
 
   handlePageChange = async page => {
@@ -202,6 +206,7 @@ const mapDispatchToProps = dispatch =>
       updateInterestsFilter: interestsFilter =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
       updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
+      resetStore: () => dispatch(requestResetStore()),
     },
     dispatch,
   );
