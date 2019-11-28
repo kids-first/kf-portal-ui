@@ -6,7 +6,7 @@
 .member-list-container {
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 2px solid lightgrey;
+  border: solid 1px #d4d6dd;;
   border-radius: 5px;
 }
 

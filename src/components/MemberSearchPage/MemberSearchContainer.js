@@ -17,11 +17,7 @@ import {
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 import { find } from 'lodash';
 import { ROLES } from 'common/constants';
-
-const userRoleDisplayName = userRole => {
-  const role = find(ROLES, { type: userRole });
-  return role ? role.displayName : userRole;
-};
+import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
 
 class MemberSearchContainer extends Component {
   static propTypes = {
@@ -129,8 +125,6 @@ class MemberSearchContainer extends Component {
       updateRolesFilter,
     } = this.props;
 
-    console.log({ ...interestsFilter, ...filter });
-
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
@@ -165,56 +159,10 @@ class MemberSearchContainer extends Component {
             />
             {(filters.roles && filters.roles.length > 0) ||
             (filters.interests && filters.interests.length > 0) ? (
-              <Row gutter={16} style={{ borderRadius: 5, backgroundColor: 'white', margin: 0 }}>
-                {filters.roles.length > 0 ? (
-                  <Col span={6}>
-                    <Row>Role Filters</Row>
-                    <Row>
-                      <Divider style={{ marginBottom: 16, marginTop: 8 }} />
-                    </Row>
-                    <Row type="flex" justify="start" align="middle" style={{ paddingBottom: 10 }}>
-                      {filters.roles.map(f => (
-                        <Tag key={f}>
-                          {userRoleDisplayName(f)}{' '}
-                          <Icon
-                            key={f}
-                            onClick={this.clearTag(f, 'role')}
-                            style={{ color: 'white' }}
-                            type="close"
-                          />
-                        </Tag>
-                      ))}
-                    </Row>
-                  </Col>
-                ) : (
-                  ''
-                )}
-                {filters.interests.length > 0 ? (
-                  <Col span={18}>
-                    <Row>Interests Filters</Row>
-                    <Divider style={{ marginBottom: 16, marginTop: 8 }} />
-                    <Row type="flex" justify="start" align="middle">
-                      {filters.interests.map(f => (
-                        <Tag key={f}>
-                          {f}{' '}
-                          <Icon
-                            key={f}
-                            onClick={this.clearTag(f, 'interest')}
-                            style={{ color: 'white' }}
-                            type="close"
-                          />
-                        </Tag>
-                      ))}
-                    </Row>
-                  </Col>
-                ) : (
-                  ''
-                )}
-              </Row>
+              <FilterTagContainer filters={filters} clearTag={this.clearTag} />
             ) : (
               ''
             )}
-
             <MemberTable
               memberList={members}
               count={count}
