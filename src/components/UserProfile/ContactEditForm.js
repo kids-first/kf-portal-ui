@@ -56,6 +56,7 @@ class ContactEditForm extends Component {
                 Cancel
               </Button>
               <Button
+                type="primary"
                 icon="edit"
                 shape="round"
                 htmlType="submit"
