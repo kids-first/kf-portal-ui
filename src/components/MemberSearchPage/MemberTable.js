@@ -1,7 +1,5 @@
-import { Col, Divider, List, Row, Tag, Typography } from 'antd';
+import { Col, Divider, List, Row, Typography } from 'antd';
 import React from 'react';
-import { find, get } from 'lodash';
-import { ROLES } from 'common/constants';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
@@ -9,43 +7,42 @@ import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
+import ProfilePill from 'components/MemberSearchPage/ProfilePill';
 
 const { Text } = Typography;
 
-const roleLookup = ROLES.reduce((acc, { type, ...x }) => ({ ...acc, [type]: x }), {});
-const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayName;
-const RoleIcon = userRole => get(roleLookup, [userRole, 'icon'], 'ResearchIcon');
-const background = userRole => get(roleLookup, [userRole, 'color'], 'red').toString();
-const getTagColor = userRole => {
-  if (userRole === 'research') {
-    return 'blue';
-  } else if (userRole === 'health') {
-    return 'cyan';
-  } else if (userRole === 'patient') {
-    return 'magenta';
-  } else if (userRole === 'community') {
-    return 'geekblue';
-  } else {
-    return 'red';
-  }
-};
 const Address = ({ item }) => (
   <div className={'flex'}>
-    <FormatLabel
-      value={item.city}
-      highLightValues={item.highlight ? item.highlight.city : null}
-      index={1}
-    />
-    <FormatLabel
-      value={item.state}
-      highLightValues={item.highlight ? item.highlight.state : null}
-      index={2}
-    />
-    <FormatLabel
-      value={item.country}
-      highLightValues={item.highlight ? item.highlight.country : null}
-      index={3}
-    />
+    {item.city ? (
+      <FormatLabel
+        classname={'comma-address'}
+        value={item.city}
+        highLightValues={item.highlight ? item.highlight.city : null}
+        index={1}
+      />
+    ) : (
+      ''
+    )}
+    {item.state ? (
+      <FormatLabel
+        classname={'comma-address'}
+        value={item.state}
+        highLightValues={item.highlight ? item.highlight.state : null}
+        index={2}
+      />
+    ) : (
+      ''
+    )}
+    {item.country ? (
+      <FormatLabel
+        classname={'comma-address'}
+        value={item.country}
+        highLightValues={item.highlight ? item.highlight.country : null}
+        index={3}
+      />
+    ) : (
+      ''
+    )}
   </div>
 );
 
@@ -86,7 +83,6 @@ const MemberTable = props => {
         dataSource={props.memberList}
         loading={props.pending}
         renderItem={item => {
-          const FixedRoleIcon = RoleIcon(item.roles[0]);
           return (
             <List.Item key={item._id}>
               <Row type="flex" justify="start" align="middle" gutter={20}>
@@ -102,18 +98,7 @@ const MemberTable = props => {
                   sm={8}
                   style={{ width: 'auto' }}
                 >
-                  {item.roles[0] ? (
-                    <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
-                      <div style={{ display: 'flex' }}>
-                        <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
-                        <div style={{ color: `${background(item.roles[0])}` }}>
-                          { userRoleDisplayName(item.roles[0]) }
-                        </div>
-                      </div>
-                    </Tag>
-                  ) : (
-                    ''
-                  )}
+                  {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
                 </Col>
                 <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>

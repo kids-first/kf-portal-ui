@@ -31,7 +31,7 @@ import {
 } from './ui';
 import AppsMenu, { DropDownState } from './AppsMenu';
 import { isFeatureEnabled } from 'common/featuresToggles';
-import { Alert } from 'antd';
+import { Alert, Badge } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 
@@ -147,7 +147,13 @@ const Header = ({
                   {isSearchMemberFeatEnabled && (
                     <li>
                       <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
-                        <UserIcon /> Members
+                        <Badge
+                          count={'New'}
+                          style={{ backgroundColor: '#52c41a' }}
+                          offset={[25, -10]}
+                        >
+                          <UserIcon /> Members
+                        </Badge>
                       </NavLink>
                     </li>
                   )}

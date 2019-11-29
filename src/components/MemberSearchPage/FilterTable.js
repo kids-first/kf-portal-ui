@@ -13,6 +13,7 @@ const FilterTable = props => {
     title,
     handleClear,
     handleChangeFilterString,
+    showClear
   } = props;
   return (
     //TODO move all styles in classes or modify ant design theme
@@ -42,7 +43,7 @@ const FilterTable = props => {
             {title}
           </Title>
         }
-        extra={<a onClick={handleClear}>clear</a>}
+        extra={showClear ? <a onClick={handleClear}>clear</a> : ''}
       >
         {showSearchDefault && (
           <div>

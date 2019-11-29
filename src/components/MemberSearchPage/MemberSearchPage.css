@@ -6,7 +6,7 @@
 .member-list-container {
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 2px solid lightgrey;
+  border: solid 1px #d4d6dd;;
   border-radius: 5px;
 }
 
@@ -41,8 +41,16 @@ div.flex {
 .comma:nth-last-of-type(2):before {
     content: none;
 }
+
 .comma:nth-last-of-type(2):after {
     content: " and ";
+}
+
+.comma-address:not(:last-of-type):after {
+    content: ",";
+}
+.comma-address:nth-last-of-type(2):before {
+    content: none;
 }
 
 .background-container {
