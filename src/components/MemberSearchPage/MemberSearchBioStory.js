@@ -1,20 +1,20 @@
 import React from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Divider, Typography } from 'antd';
+import { Typography } from 'antd';
 
-const { Paragraph } = Typography;
+const { Paragraph, Title } = Typography;
 
 const regex = /<\/?em>/gi;
 
 const MemberSearchBioStory = ({ bio, story }) => {
-
   return (
     <div>
       <Paragraph style={{ color: 'inherit' }}>
         {bio && bio.length > 0 ? (
-          <div>
-            <Divider style={{ margin: 5 }} />
-            <div style={{ fontStyle: 'italic' }}>Member Biography: &nbsp;</div>
+          <div style={{ paddingBottom: 24 }}>
+            <Title level={3} style={{ paddingBottom: 16, marginBottom: 0 }}>
+              Member Biography:
+            </Title>
             <FormatLabel
               value={bio[0].replace(regex, '')}
               highLightValues={bio}
@@ -27,8 +27,9 @@ const MemberSearchBioStory = ({ bio, story }) => {
         )}
         {story && story.length > 0 ? (
           <div>
-            <Divider style={{ margin: 5 }} />
-            <div style={{ fontStyle: 'italic' }}>Member Story: &nbsp;</div>
+            <Title level={3} style={{ paddingBottom: 16, marginBottom: 0 }}>
+              Member Story:
+            </Title>
             <FormatLabel
               value={story[0].replace(regex, '')}
               highLightValues={story}

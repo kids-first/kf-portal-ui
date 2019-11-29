@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Icon, Row, Typography } from 'antd';
+import { Col, Icon, Row, Typography } from 'antd';
 import { bind } from '../../utils';
 import PropTypes from 'prop-types';
 
@@ -61,26 +61,42 @@ class MemberInterests extends Component {
   render() {
     const { filter } = this.state;
     const mergedInterests = this.getMergedInterests();
-    const populatedList = filter ? mergedInterests.slice(0, 3) : mergedInterests;
+    const populatedList = filter ? mergedInterests.slice(0, 10) : mergedInterests;
     return (
       <div>
-        {/*TODO remove style with Ant Design theme*/}
-        <Title level={3}>Research Interests:</Title>
-        <Paragraph className={'interest-container'} style={{ display:'flex', alignItems:'center', color: 'inherit' }}>
+        <Title level={3} style={{ paddingBottom: 16, marginBottom: 0 }}>
+          Research Interests:
+        </Title>
+        <Paragraph
+          className={'interest-container'}
+          style={{ display: 'flex', alignItems: 'center', color: 'inherit', marginBottom: 0  }}
+        >
           {populatedList.map((item, index) => (
-            <Row style={{display: 'flex'}}>
-              <Icon type="check-circle" theme="twoTone" style={{paddingRight:8}} />
-              <div style={{paddingRight: 16}}>{item.original}</div>
+            <Row
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                paddingRight: 11,
+              }}
+            >
+              <Col>
+                <Icon
+                  type="check-circle"
+                  theme="filled"
+                  style={{ paddingRight: 8, color: 'rgba(57, 69, 146, 0.5)' }}
+                />
+              </Col>
+              <Col>
+                <FormatLabel
+                  value={item.original}
+                  highLightValues={item.highlighted ? [item.highlighted] : null}
+                  key={index}
+                  index={index}
+                />
+              </Col>
             </Row>
-            // <FormatLabel
-            //   value={item.original}
-            //   highLightValues={item.highlighted ? [item.highlighted] : null}
-            //   key={index}
-            //   index={index}
-            //   classname={'comma'}
-            // />
           ))}
-          {mergedInterests.length > 3 ? (
+          {mergedInterests.length > 10 ? (
             <a
               style={{ margin: 0 }}
               className="ant-typography-expand"

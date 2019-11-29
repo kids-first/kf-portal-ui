@@ -1,4 +1,4 @@
-import { Col, Divider, List, Row, Typography } from 'antd';
+import { Col, Icon, List, Row, Typography } from 'antd';
 import React from 'react';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
@@ -8,14 +8,20 @@ import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
 import ProfilePill from 'components/MemberSearchPage/ProfilePill';
-import AddressIcon from 'icons/AddressIcon';
-import InstitutionIcon from 'icons/InstitutionIcon';
 
 const { Text } = Typography;
 
 const Address = ({ item }) => (
-  <div className={'flex'} style={{paddingBottom: 24}}>
-    {item.city || item.state || item.country ? <AddressIcon /> : ''}
+  <div className={'flex'} style={{ alignItems: 'center', paddingBottom: 24 }}>
+    {item.city || item.state || item.country ? (
+      <Icon
+        type="environment"
+        theme="filled"
+        style={{ paddingRight: 8, color: 'rgba(57, 69, 146, 0.5)' }}
+      />
+    ) : (
+      ''
+    )}
     {item.city ? (
       <FormatLabel
         classname={'comma-address'}
@@ -89,7 +95,7 @@ const MemberTable = props => {
           return (
             <List.Item key={item._id}>
               <Row style={{ display: 'inline-flex' }} justify="center" align="middle" gutter={32}>
-                <Col style={{ textAlign: 'center' }}>
+                <Col style={{ textAlign: 'center', width: 160 }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
                   {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
                 </Col>
@@ -115,10 +121,13 @@ const MemberTable = props => {
                       />
                     </div>
                   </Link>
-                  {/*TODO remove style with Ant Design Theme*/}
                   {item.institution ? (
-                    <Row>
-                      <InstitutionIcon />
+                    <Row style={{ display: 'flex', alignItems: 'center' }}>
+                      <Icon
+                        type="bank"
+                        theme="filled"
+                        style={{ paddingRight: 8, color: 'rgba(57, 69, 146, 0.5)' }}
+                      />
                       <Text style={{ color: 'inherit' }}>{item.institution}</Text>
                     </Row>
                   ) : (
@@ -126,16 +135,14 @@ const MemberTable = props => {
                   )}
 
                   <Address item={item} />
-                  <div style={{ color: 'inherit' }}>
+                  <div style={{ color: 'inherit', paddingBottom: 24}}>
                     {item.interests.length < 1 ? (
                       ''
                     ) : (
-                      <div>
-                        <MemberInterests
-                          interests={item.interests}
-                          highlights={(item.highlight || {}).interests || []}
-                        />
-                      </div>
+                      <MemberInterests
+                        interests={item.interests}
+                        highlights={(item.highlight || {}).interests || []}
+                      />
                     )}
                   </div>
                   <MemberSearchBioStory

@@ -17,7 +17,7 @@ const regex = /<\/?em>/gi;
 const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
   if (!highLightValues) {
     return (
-      <div key={index} className={`format-label ${classname}`}>
+      <div key={index} className={`format-label ${classname}`} style={{maxWidth: 350}}>
         {value}
       </div>
     );
@@ -35,7 +35,7 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
     const [first = '', second = '', third = ''] = arr;
 
     return (
-      <div key={index} className={`format-label ${classname}`}>
+      <div key={index} className={`format-label ${classname}`}  style={{maxWidth: 350}}>
         {first}
         <b>{second}</b>
         {third}
@@ -43,7 +43,7 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
     );
   } else {
     return (
-      <div key={index} className={`format-label ${classname}`}>
+      <div key={index} className={`format-label ${classname}`} style={{maxWidth: 350}}>
         {value}
       </div>
     );
