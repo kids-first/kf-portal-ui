@@ -32,6 +32,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
               />
               {canEdit && (
                 <Button
+                  type={'primary'}
                   style={{ transform: 'translateX(-18px)' }}
                   size="small"
                   icon={'edit'}

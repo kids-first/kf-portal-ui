@@ -39,8 +39,8 @@ class ContactEditForm extends Component {
       <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
           loading={isProfileUpdating}
-          title={<Title level={1}>Contact Information</Title>}
-          style={{
+          title={<Title level={1} style={{ marginBottom: 0 }}>Contact Information</Title>}
+           style={{
             width: '1200px',
           }}
           bodyStyle={{

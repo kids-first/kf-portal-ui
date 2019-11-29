@@ -47,6 +47,7 @@ const ContactReadOnly = props => {
       extra={
         canEdit ? (
           <Button
+            type="primary"
             icon="edit"
             shape="round"
             onClick={onClickEditCb}
