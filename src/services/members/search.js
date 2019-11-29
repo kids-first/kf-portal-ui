@@ -2,6 +2,8 @@ import { initializeApi } from 'services/api';
 import urljoin from 'url-join';
 import { reactApiSearchMembersApi } from 'common/injectGlobals';
 
+const URL = 'http://localhost:9001';
+
 const api = initializeApi({
   onError: console.err,
   onUnauthorized: response => {
@@ -20,7 +22,8 @@ export const searchMembers = async (searchTerm, searchParams) => {
     response = await api({
       method: 'GET',
       url: urljoin(
-        reactApiSearchMembersApi,
+        // reactApiSearchMembersApi,
+        URL,
         'searchmembers',
         `?queryString=${searchTerm}&start=${start}&end=${end}${enhanceWithFilter(
           roles,

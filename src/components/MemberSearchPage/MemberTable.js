@@ -8,11 +8,14 @@ import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
 import ProfilePill from 'components/MemberSearchPage/ProfilePill';
+import AddressIcon from 'icons/AddressIcon';
+import InstitutionIcon from 'icons/InstitutionIcon';
 
 const { Text } = Typography;
 
 const Address = ({ item }) => (
-  <div className={'flex'}>
+  <div className={'flex'} style={{paddingBottom: 24}}>
+    {item.city || item.state || item.country ? <AddressIcon /> : ''}
     {item.city ? (
       <FormatLabel
         classname={'comma-address'}
@@ -85,24 +88,14 @@ const MemberTable = props => {
         renderItem={item => {
           return (
             <List.Item key={item._id}>
-              <Row type="flex" justify="start" align="middle" gutter={20}>
-                <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{ width: 'auto' }}>
+              <Row style={{ display: 'inline-flex' }} justify="center" align="middle" gutter={32}>
+                <Col style={{ textAlign: 'center' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
-                </Col>
-                <Col
-                  className={'member-list-col'}
-                  xxl={4}
-                  xl={6}
-                  lg={6}
-                  md={6}
-                  sm={8}
-                  style={{ width: 'auto' }}
-                >
                   {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
                 </Col>
-                <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
+                <Col style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
-                    <div className={'flex'}>
+                    <div className={'flex'} style={{ fontWeight: 'bold', paddingBottom: 16 }}>
                       {item.title ? (
                         <div key={0} style={{ paddingRight: 5 }}>
                           {item.title[0].toUpperCase() + item.title.slice(1) + '.'}
@@ -123,14 +116,21 @@ const MemberTable = props => {
                     </div>
                   </Link>
                   {/*TODO remove style with Ant Design Theme*/}
-                  <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                  {item.institution ? (
+                    <Row>
+                      <InstitutionIcon />
+                      <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                    </Row>
+                  ) : (
+                    ''
+                  )}
+
                   <Address item={item} />
                   <div style={{ color: 'inherit' }}>
                     {item.interests.length < 1 ? (
                       ''
                     ) : (
                       <div>
-                        <Divider style={{ margin: 5 }} />
                         <MemberInterests
                           interests={item.interests}
                           highlights={(item.highlight || {}).interests || []}

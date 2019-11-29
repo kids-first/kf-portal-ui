@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Typography } from 'antd';
+import { Icon, Row, Typography } from 'antd';
 import { bind } from '../../utils';
 import PropTypes from 'prop-types';
 
-const { Paragraph } = Typography;
+const { Paragraph, Title } = Typography;
 
 const regex = /<\/?em>/gi;
 
@@ -65,16 +65,20 @@ class MemberInterests extends Component {
     return (
       <div>
         {/*TODO remove style with Ant Design theme*/}
-        <Paragraph className={'interest-container'} style={{ color: 'inherit' }}>
-          <div style={{ fontStyle: 'italic' }}>Research Interests: &nbsp; </div>
+        <Title level={3}>Research Interests:</Title>
+        <Paragraph className={'interest-container'} style={{ display:'flex', alignItems:'center', color: 'inherit' }}>
           {populatedList.map((item, index) => (
-            <FormatLabel
-              value={item.original}
-              highLightValues={item.highlighted ? [item.highlighted] : null}
-              key={index}
-              index={index}
-              classname={'comma'}
-            />
+            <Row style={{display: 'flex'}}>
+              <Icon type="check-circle" theme="twoTone" style={{paddingRight:8}} />
+              <div style={{paddingRight: 16}}>{item.original}</div>
+            </Row>
+            // <FormatLabel
+            //   value={item.original}
+            //   highLightValues={item.highlighted ? [item.highlighted] : null}
+            //   key={index}
+            //   index={index}
+            //   classname={'comma'}
+            // />
           ))}
           {mergedInterests.length > 3 ? (
             <a
