@@ -12,7 +12,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
       <Paragraph style={{ color: 'inherit' }}>
         {bio && bio.length > 0 ? (
           <div style={{ paddingBottom: 24 }}>
-            <Title level={3} style={{ paddingBottom: 16, marginBottom: 0 }}>
+            <Title className={'member-info-title'} level={3} style={{ marginBottom: 0 }}>
               Member Biography:
             </Title>
             <FormatLabel
@@ -27,7 +27,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
         )}
         {story && story.length > 0 ? (
           <div>
-            <Title level={3} style={{ paddingBottom: 16, marginBottom: 0 }}>
+            <Title  className={'member-info-title'} level={3} style={{ marginBottom: 0 }}>
               Member Story:
             </Title>
             <FormatLabel

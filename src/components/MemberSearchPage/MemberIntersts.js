@@ -64,26 +64,26 @@ class MemberInterests extends Component {
     const populatedList = filter ? mergedInterests.slice(0, 10) : mergedInterests;
     return (
       <div>
-        <Title level={3} style={{ paddingBottom: 16, marginBottom: 0 }}>
+        <Title className={'member-info-title'} level={3} style={{ marginBottom: 0 }}>
           Research Interests:
         </Title>
         <Paragraph
-          className={'interest-container'}
-          style={{ display: 'flex', alignItems: 'center', color: 'inherit', marginBottom: 0  }}
+          className={'interest-container flex'}
+          style={{ color: 'inherit', marginBottom: 0 }}
         >
           {populatedList.map((item, index) => (
             <Row
+              className={'flex'}
               style={{
-                display: 'flex',
-                alignItems: 'center',
                 paddingRight: 11,
               }}
             >
               <Col>
                 <Icon
+                  className={'icon-color'}
                   type="check-circle"
                   theme="filled"
-                  style={{ paddingRight: 8, color: 'rgba(57, 69, 146, 0.5)' }}
+                  style={{ paddingRight: 8 }}
                 />
               </Col>
               <Col>

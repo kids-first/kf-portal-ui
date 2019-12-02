@@ -32,7 +32,10 @@ const ProfilePill = props => {
         margin: 'auto',
       }}
     >
-      <Icon height={'inherit'} fill="#fff" style={{marginRight:8}} />
+      <Icon
+        fill="#fff"
+        style={{ height: 20, marginRight: 8, position: 'relative', left: 2, bottom: -2 }}
+      />
       <div
         style={{
           display: 'flex',

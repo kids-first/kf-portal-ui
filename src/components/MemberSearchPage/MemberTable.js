@@ -9,15 +9,16 @@ import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
 import ProfilePill from 'components/MemberSearchPage/ProfilePill';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const Address = ({ item }) => (
   <div className={'flex'} style={{ alignItems: 'center', paddingBottom: 24 }}>
     {item.city || item.state || item.country ? (
       <Icon
+        className={'icon-color'}
         type="environment"
         theme="filled"
-        style={{ paddingRight: 8, color: 'rgba(57, 69, 146, 0.5)' }}
+        style={{ paddingRight: 8 }}
       />
     ) : (
       ''
@@ -65,14 +66,16 @@ const MemberTable = props => {
         itemLayout={'vertical'}
         header={
           <Row>
-            <Col span={12} style={{ textAlign: 'left' }}>{`Showing ${firstItem} - ${Math.min(
-              lastItem,
-              props.count.public,
-            )} of ${props.count.public} public members`}</Col>
-            <Col
-              span={12}
-              style={{ textAlign: 'right' }}
-            >{`${props.count.total} members total (public & private)`}</Col>
+            <Col span={12} style={{ textAlign: 'left' }}>
+              <Title level={3}>
+                {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+                  props.count.public
+                } public members`}
+              </Title>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right' }}>
+              <Title level={3}>{`${props.count.total} members total (public & private)`}</Title>
+            </Col>
           </Row>
         }
         gutter={20}
@@ -94,14 +97,22 @@ const MemberTable = props => {
         renderItem={item => {
           return (
             <List.Item key={item._id}>
-              <Row style={{ display: 'inline-flex' }} justify="center" align="middle" gutter={32}>
-                <Col style={{ textAlign: 'center', width: 160 }}>
+              <Row type={'flex'} justify="center" align="middle" gutter={32}>
+                <Col xl={3} lg={6} md={6} style={{ textAlign: 'center' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
-                  {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
+                  <div style={{ paddingTop: 10 }}>
+                    {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
+                  </div>
                 </Col>
-                <Col style={{ left: 0, right: 0 }}>
+                <Col
+                  xl={21}
+                  lg={18}
+                  md={18}
+                  style={{ left: 0, right: 0 }}
+                  scroll={{ x: 'max-content' }}
+                >
                   <Link to={`${ROUTES.user}/${item._id}`}>
-                    <div className={'flex'} style={{ fontWeight: 'bold', paddingBottom: 16 }}>
+                    <div className={'flex member-info-title'}>
                       {item.title ? (
                         <div key={0} style={{ paddingRight: 5 }}>
                           {item.title[0].toUpperCase() + item.title.slice(1) + '.'}
@@ -122,11 +133,12 @@ const MemberTable = props => {
                     </div>
                   </Link>
                   {item.institution ? (
-                    <Row style={{ display: 'flex', alignItems: 'center' }}>
+                    <Row className={'flex'}>
                       <Icon
+                        className={'icon-color'}
                         type="bank"
                         theme="filled"
-                        style={{ paddingRight: 8, color: 'rgba(57, 69, 146, 0.5)' }}
+                        style={{ paddingRight: 8 }}
                       />
                       <Text style={{ color: 'inherit' }}>{item.institution}</Text>
                     </Row>
@@ -135,7 +147,7 @@ const MemberTable = props => {
                   )}
 
                   <Address item={item} />
-                  <div style={{ color: 'inherit', paddingBottom: 24}}>
+                  <div style={{ color: 'inherit', paddingBottom: 24 }}>
                     {item.interests.length < 1 ? (
                       ''
                     ) : (
