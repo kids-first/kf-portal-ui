@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Col, Icon, Row, Typography } from 'antd';
 import chunk from 'lodash/chunk';
 import { toKebabCase } from 'utils';
+import './style.css';
 
 const { Text } = Typography;
 
@@ -15,18 +16,18 @@ const ResearchInterest = ({ interests }) => {
     return (
       <Row
         key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}
-        style={{ paddingBottom: '15px' }}
+        className={'ri-row'}
       >
         <Col span={12}>
           <Text>
-            <Icon type="check-circle" theme="filled" style={{ paddingRight: '5px' }} />
+            <Icon type="check-circle" theme="filled" className={'ri-icon'} />
             {interestLeft}
           </Text>
         </Col>
         <Col span={12}>
           {Boolean(interestRight) && (
             <Text>
-              <Icon type="check-circle" theme="filled" style={{ paddingRight: '5px' }} />
+              <Icon type="check-circle" theme="filled" className={'ri-icon'} />
               {interestRight}
             </Text>
           )}

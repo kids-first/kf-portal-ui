@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import { Card, Col, Row, Typography } from 'antd';
-import ExternalLink from 'uikit/ExternalLink';
 import { cavaticaWebRoot } from 'common/injectGlobals';
 
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import CavaticaIntegrationContainer from './CavaticaIntegration';
+import './style.css';
+import style from './style';
 
 const { Title } = Typography;
 
@@ -12,30 +13,13 @@ const ApplicationIntegration = () => {
   return (
     <Card
       title={
-        <Title
-          level={3}
-          style={{
-            color: 'rgb(43, 56, 143)',
-          }}
-        >
+        <Title level={1} className={'card-title'}>
           Application Integrations
         </Title>
       }
-      style={{
-        width: '1200px',
-        borderRadius: '10px',
-      }}
-      headStyle={{
-        color: 'rgb(43, 56, 143)',
-        backgroundColor: 'rgb(237,238,241)',
-        paddingBottom: '14px',
-        paddingTop: '14px',
-        paddingLeft: '32px',
-        paddingRight: '32px',
-      }}
-      bodyStyle={{
-        padding: '32px',
-      }}
+      className={'card'}
+      headStyle={style.cardHeadStyle}
+      bodyStyle={style.cardBodyStyle}
     >
       <Row>
         <Col span={12}>
@@ -46,7 +30,10 @@ const ApplicationIntegration = () => {
                 {
                   'Analyze data quickly by connecting your account to the cloud compute environment,  '
                 }
-                <ExternalLink href={cavaticaWebRoot}>Cavatica</ExternalLink>.
+                <a target="_blank" rel="noopener noreferrer" href={cavaticaWebRoot}>
+                  Cavatica
+                </a>
+                .
               </Fragment>
             }
           />

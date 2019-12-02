@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { socialItems } from 'components/UserProfile/utils';
 import { List, Row, Typography } from 'antd';
+import './style.css';
 
 const { Title, Text } = Typography;
 
@@ -11,14 +12,7 @@ const FindMeReadOnly = props => {
   const { keys, prototype } = Object;
   if (isEmpty(findMe)) {
     return (
-      <Text
-        style={{
-          fontStyle: 'italic',
-          borderLeft: '1px solid rgb(237,238,241)',
-          marginTop: '144px',
-          paddingLeft: '48px',
-        }}
-      >
+      <Text className={'find-me-text-if-empty'}>
         {` Click Edit to add links to your personal channels such as Google Scholar, ORCID ID, GitHub, LinkedIn, Twitter and Facebook.`}
       </Text>
     );
@@ -30,13 +24,10 @@ const FindMeReadOnly = props => {
     .map(key => ({ ...socialItemsWithSized[key], value: findMe[key] }));
 
   return (
-    <div style={{ borderLeft: '1px solid rgb(237,238,241)', paddingLeft: '48px' }}>
+    <div className={'find-me-social-icons-wrapper'}>
       <Row>
         <Title
           level={4}
-          style={{
-            color: 'rgb(43, 56, 143)',
-          }}
         >
           Find me on...
         </Title>

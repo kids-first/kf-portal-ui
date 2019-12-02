@@ -24,6 +24,7 @@ import {
   trackProfileInteraction,
   trackUserInteraction,
 } from 'services/analyticsTracking';
+import './style.css';
 
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
@@ -124,13 +125,8 @@ class UserProfilePageContainer extends React.Component {
 
     if (isLoading) {
       return (
-        <Layout
-          style={{
-            justifyContent: 'center',
-            background: '#fff',
-          }}
-        >
-          <Spin indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
+        <Layout className={'up-is-loading-layout'}>
+          <Spin indicator={<Icon type="loading" className={'up-spin'} spin />} />
         </Layout>
       );
     } else if (error) {
@@ -171,8 +167,5 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 )(UserProfilePageContainer);

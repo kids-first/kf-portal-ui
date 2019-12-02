@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 import IntegrationItemErrorRow from './IntegrationItemErrorRow';
 import { compose, setPropTypes } from 'recompose';
 import { withRouter } from 'react-router';
+import './style.css';
 
 const { Paragraph } = Typography;
 
@@ -31,13 +32,7 @@ const IntegrationItem = props => {
   } = props;
   const { onClick, label, icon } = actionButtonWhenConnected;
   return (
-    <Card
-      style={{
-        width: '500px',
-        height: '225px',
-        borderRadius: '10px',
-      }}
-    >
+    <Card className={'ii-card'}>
       {hasAtLeastOneError(errorConnect, errorDisconnect) ? (
         <IntegrationItemErrorRow
           errorConnect={errorConnect}
@@ -52,7 +47,7 @@ const IntegrationItem = props => {
           <Row>
             <Col span={12}>{logo}</Col>
           </Row>
-          <Row style={{ paddingTop: '24px', paddingBottom: '24px' }}>
+          <Row className={'ii-description-row'}>
             <Paragraph>{description}</Paragraph>
           </Row>
           <Row>
@@ -60,7 +55,7 @@ const IntegrationItem = props => {
               <Button
                 shape="round"
                 loading={loading}
-                style={{ color: 'white', backgroundColor: '#90278e' }}
+                className={'ii-button'}
                 onClick={connected ? onClickDisconnectCb : onClickConnectCb}
                 icon={connected ? 'disconnect' : 'api'}
               >
@@ -69,12 +64,7 @@ const IntegrationItem = props => {
             </Col>
             {connected && (
               <Col span={12}>
-                <Button
-                  shape="round"
-                  style={{ color: 'white', backgroundColor: '#90278e' }}
-                  onClick={onClick}
-                  icon={icon}
-                >
+                <Button shape="round" className={'ii-button'} onClick={onClick} icon={icon}>
                   {label}
                 </Button>
               </Col>

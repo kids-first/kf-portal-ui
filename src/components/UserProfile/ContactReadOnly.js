@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, Card, Col, Divider, Row, Typography } from 'antd';
 import FindMeReadOnly from './FindMeReadOnly';
 import { extractFindMeFromProfile } from './utils';
+import './style.css';
+import style from './style';
 
 const { Text, Title } = Typography;
 
@@ -28,59 +30,60 @@ const getInstitutionLabelGivenRole = data => {
   return '';
 };
 
+const generateContactValueStyle = info => {
+  return Boolean(info) ? '' : 'contact-info-value';
+};
+
+const DEFAULT_IF_EMPTY = 'Edit Card to Add Details';
+
 const ContactReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
   return (
     <Card
       loading={isProfileUpdating}
       title={
-        <Title level={1} style={{ marginBottom: 0 }}>
+        <Title level={1} className={'card-title'}>
           Contact Information
         </Title>
       }
-      style={{
-        width: '1200px',
-      }}
-      bodyStyle={{
-        padding: '32px',
-      }}
+      className={'card'}
+      bodyStyle={style.cardBodyStyle}
       extra={
         canEdit ? (
-          <Button
-            type="primary"
-            icon="edit"
-            shape="round"
-            onClick={onClickEditCb}
-          >
+          <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
             Edit
           </Button>
         ) : null
       }
     >
       <Row>
-        <Col span={14} style={{ paddingRight: '72px' }}>
+        <Col span={14} className={'main-left-col'}>
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Email'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.email) ? null : { fontStyle: 'italic' }}>
-                {data.email || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.email)}>
+                {Boolean(data.email) ? (
+                  <a href={`mailto:${data.email}`}>{data.email}</a>
+                ) : (
+                  DEFAULT_IF_EMPTY
+                )}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact.divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Address'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.addressLine1) ? null : { fontStyle: 'italic' }}>
-                {data.addressLine1 || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.addressLine1)}>
+                {data.addressLine1 || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact-divider'} />
           {showInstitution(data) && (
             <Fragment>
               <Row type={'flex'} justify="space-between" align="bottom">
@@ -88,12 +91,12 @@ const ContactReadOnly = props => {
                   <Text>{'Institution'}</Text>
                 </Col>
                 <Col span={8}>
-                  <Text style={Boolean(data.institution) ? null : { fontStyle: 'italic' }}>
-                    {getInstitutionLabelGivenRole(data) || 'Edit Card to Add Details'}
+                  <Text className={generateContactValueStyle(data.institution)}>
+                    {getInstitutionLabelGivenRole(data) || DEFAULT_IF_EMPTY}
                   </Text>
                 </Col>
               </Row>
-              <Divider style={{ margin: '18px 0' }} />
+              <Divider className={'contact-divider'} />
             </Fragment>
           )}
           {isResearcher(data) && (
@@ -103,12 +106,12 @@ const ContactReadOnly = props => {
                   <Text>{'Job Title'}</Text>
                 </Col>
                 <Col span={8}>
-                  <Text style={Boolean(data.jobTitle) ? null : { fontStyle: 'italic' }}>
-                    {data.jobTitle || 'Edit Card to Add Details'}
+                  <Text className={generateContactValueStyle(data.jobTitle)}>
+                    {data.jobTitle || DEFAULT_IF_EMPTY}
                   </Text>
                 </Col>
               </Row>
-              <Divider style={{ margin: '18px 0' }} />
+              <Divider className={'contact-divider'} />
             </Fragment>
           )}
           <Row type={'flex'} justify="space-between" align="bottom">
@@ -116,74 +119,68 @@ const ContactReadOnly = props => {
               <Text>{'City'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.city) ? null : { fontStyle: 'italic' }}>
-                {data.city || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.city)}>
+                {data.city || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Country'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.country) ? null : { fontStyle: 'italic' }}>
-                {data.country || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.country)}>
+                {data.country || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'State'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.state) ? null : { fontStyle: 'italic' }}>
-                {data.state || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.state)}>
+                {data.state || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Phone'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.phone) ? null : { fontStyle: 'italic' }}>
-                {data.phone || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.phone)}>
+                {data.phone || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Institutional Email'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.institutionalEmail) ? null : { fontStyle: 'italic' }}>
-                {data.institutionalEmail || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.institutionalEmail)}>
+                {data.institutionalEmail || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
-          <Divider style={{ margin: '18px 0' }} />
+          <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text>{'Zip'}</Text>
             </Col>
             <Col span={8}>
-              <Text style={Boolean(data.zip) ? null : { fontStyle: 'italic' }}>
-                {data.zip || 'Edit Card to Add Details'}
+              <Text className={generateContactValueStyle(data.zip)}>
+                {data.zip || DEFAULT_IF_EMPTY}
               </Text>
             </Col>
           </Row>
         </Col>
-        <Col
-          span={10}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
+        <Col span={10} className={'find-me-col'}>
           <FindMeReadOnly findMe={extractFindMeFromProfile(data)} />
         </Col>
       </Row>

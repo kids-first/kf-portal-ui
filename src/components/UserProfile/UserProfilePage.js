@@ -4,6 +4,7 @@ import { Layout, Menu } from 'antd';
 import AboutMe from './AboutMe';
 import HeaderBannerContainer from './HeaderBannerContainer';
 import Settings from './Settings';
+import './style.css';
 
 const KEY_ABOUT_ME = '#aboutMe';
 const KEY_SETTINGS = '#settings';
@@ -39,43 +40,22 @@ function UserProfilePage(props) {
 
   return (
     <Layout>
-      <Header style={{ backgroundColor: 'transparent', height: 240, padding: 0 }}>
+      <Header className={'up-header'}>
         <HeaderBannerContainer canEdit={canEdit} />
       </Header>
       <Layout>
-        <Sider
-          width={350}
-          style={{
-            background: '#fff',
-            borderRight: '1px solid rgb(237,238,241)',
-            paddingTop: '25px',
-          }}
-        >
+        <Sider width={350} className={'up-sider'}>
           <Menu mode="inline" defaultSelectedKeys={[currentMenuItem]} onClick={handleMenuClickCb}>
             <Menu.Item
               key={KEY_ABOUT_ME}
               style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
             >
-              <div
-                style={{
-                  textAlign: 'right',
-                  paddingRight: '10px',
-                  fontSize: '24px',
-                  paddingBottom: '10px',
-                }}
-              >
+              <div className={'up-anchor-wrapper'}>
                 <a href="#aboutMe">About Me</a>
               </div>
             </Menu.Item>
             <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
-              <div
-                style={{
-                  textAlign: 'right',
-                  paddingRight: '10px',
-                  fontSize: '24px',
-                  paddingBottom: '10px',
-                }}
-              >
+              <div className={'up-anchor-wrapper'}>
                 <a href="#settings">Settings</a>
               </div>
             </Menu.Item>

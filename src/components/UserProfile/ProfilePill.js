@@ -29,33 +29,15 @@ const ProfilePill = props => {
 
   return (
     <div
+      className={'pp-main'}
       style={{
-        display: 'flex',
         height,
-        borderRadius: '21px',
         backgroundColor,
-        color: 'white',
-        fontSize: '10px',
-        fontWeight: '300',
-        lineHeight: 1.86,
-        letterSpacing: '0.2px',
-        textAlign: 'left',
-        textTransform: 'capitalize',
-        padding: ' 0 16px 0 0',
         width,
       }}
     >
       <Icon height={`${height}px`} fill="#fff" />
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          fontWeight: 'bold',
-        }}
-      >
-        {roleName}
-      </div>
+      <div className={'pp-role-name-wrapper'}>{roleName}</div>
     </div>
   );
 };

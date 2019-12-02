@@ -1,0 +1,199 @@
+/** card */
+.main-left-col {
+    padding-right: 72px;
+}
+
+.card {
+    width: 1200px;
+    border-radius: 10px;
+}
+
+.card-title {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+/** contact */
+.contact-info-value {
+    font-style: italic;
+}
+
+.contact-divider {
+    margin: 18px 0;
+}
+
+/** find me */
+.find-me-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.find-me-social-icons-wrapper {
+    border-left: 1px solid rgb(237,238,241);
+    padding-left: 48px;
+}
+
+.find-me-text-if-empty {
+    font-style: italic;
+    border-left: 1px solid rgb(237,238,241);
+    margin-top: 144px;
+    padding-left: 48px;
+}
+
+/** profile */
+.bio-story {
+    font-style: italic;
+    padding-bottom: 24px;
+}
+
+.profile-divider {
+    margin-bottom: 24px;
+}
+
+.text-when-no-interests {
+    font-style: italic;
+}
+
+/** research interests (ri) */
+.ri-icon {
+    padding-right: 5px;
+}
+
+.ri-row {
+    padding-bottom: 15px;
+}
+
+/** about me (am) */
+.am-main-layout {
+    display: flex;
+    align-items: center;
+    padding: 38px;
+    background: #fff;
+}
+
+.am-profile-row {
+    padding-bottom: 40px;
+}
+
+/** integration item (ii) */
+.ii-card {
+    width: 500px;
+    height: 225px;
+    border-radius: 10px;
+}
+
+.ii-description-row {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.ii-button {
+    color: white;
+    background-color: #90278e;
+}
+
+.ii-error-msg-row {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+.ii-error-button-row {
+    padding-top: 10px;
+}
+
+.ii-error-button {
+    margin-right: 5px;
+}
+
+/** header */
+.hd-main-row {
+    height: 100%;
+}
+
+.hd-user-info-wrapper {
+    display: flex;
+    align-items: flex-end;
+}
+
+.hd-edit-button {
+    transform: translateX(-18px);
+}
+
+.hd-text {
+    color: white;
+}
+
+.hd-switch-bg-is-public {
+    background-color: chartreuse;
+}
+
+.hd-switch-bg-is-not-public {
+    background-color: darkgrey;
+}
+
+/** profile pill (pp) */
+.pp-role-name-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-weight: bold;
+}
+
+.pp-main {
+    display: flex;
+    border-radius: 21px;
+    color: white;
+    font-size: 10px;
+    font-weight: 300;
+    line-height: 1.86;
+    letter-spacing: 2px;
+    text-align: left;
+    text-transform: capitalize;
+    padding: 0 16px 0 0;
+}
+
+/** repository integration (ri) */
+.ri-divider {
+    margin-bottom: 24px;
+}
+
+/** settings */
+.settings-row-but-last {
+    padding-bottom: 48px;
+}
+
+.settings-layout {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    background: #fff;
+    height: 100%;
+}
+
+/** user profile (up)*/
+.up-is-loading-layout {
+    justify-content: center;
+    background: #fff;
+}
+
+.up-spin {
+    font-size: 48px;
+}
+
+.up-header {
+    background-color: transparent;
+    height: 240px;
+    padding: 0;
+}
+
+.up-sider {
+    background: #fff;
+    border-right: 1px solid rgb(237, 238, 241);
+}
+
+.up-anchor-wrapper {
+    text-align: right;
+    padding-right: 10px;
+    font-size: 24px;
+    padding-bottom: 10px;
+}

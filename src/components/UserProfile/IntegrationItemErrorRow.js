@@ -2,6 +2,7 @@ import { Button, Row, Typography } from 'antd';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ROUTES from 'common/routes';
+import './style.css';
 
 const { Text } = Typography;
 
@@ -52,36 +53,21 @@ const IntegrationItemErrorRow = props => {
   });
   return (
     <Fragment>
-      <Row
-        type={'flex'}
-        align={'middle'}
-        justify={'center'}
-        style={{ paddingTop: '24px', paddingBottom: '24px' }}
-      >
+      <Row type={'flex'} align={'middle'} justify={'center'} className={'ii-error-msg-row'}>
         <Text type="danger">The following error occurred :</Text>
       </Row>
-      <Row
-        type={'flex'}
-        align={'middle'}
-        justify={'center'}
-        style={{ paddingTop: '24px', paddingBottom: '24px' }}
-      >
+      <Row type={'flex'} align={'middle'} justify={'center'} className={'ii-error-msg-row'}>
         <Text>{errorMsg}</Text>
       </Row>
-      <Row
-        type={'flex'}
-        align={'middle'}
-        justify={'center'}
-        style={{ paddingTop: '10px' }}
-      >
-        <Button shape="round" onClick={onClick} key={'errorButton'} style={{ marginRight: '5px' }}>
+      <Row type={'flex'} align={'middle'} justify={'center'} className={'ii-error-button-row'}>
+        <Button shape="round" onClick={onClick} key={'errorButton'} className={'ii-error-button'}>
           {buttonLabel}
         </Button>
         <Button
           shape="round"
           key="abort"
           onClick={onClickResetErrorsCb}
-          style={{ marginLeft: '5px' }}
+          className={'ii-error-button'}
         >
           Abort
         </Button>

@@ -8,6 +8,7 @@ import OrcidIcon from 'icons/OrcidIcon';
 
 import { FACEBOOK, GOOGLE, ORCID } from 'common/constants';
 import gicon from 'assets/google-icon.png';
+import './style.css';
 
 const { Text } = Typography;
 
@@ -33,12 +34,7 @@ const ConnectionProvider = props => {
     return null;
   }
   return (
-    <Card
-      style={{
-        width: '1200px',
-        borderRadius: '10px',
-      }}
-    >
+    <Card className={'card'}>
       <React.Fragment>
         <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
         <Text> {`You are connected with ${loginProvider}`} </Text>

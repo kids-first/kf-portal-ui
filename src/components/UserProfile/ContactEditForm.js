@@ -3,6 +3,9 @@ import { Button, Card, Col, Form, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
 import FindMeEditable from './FindMeEditable';
+import './style.css';
+import style from './style';
+
 const { Title } = Typography;
 
 const reshapeForProfile = fields => {
@@ -31,52 +34,35 @@ class ContactEditForm extends Component {
     onClickSaveCb();
   };
 
-  state = {};
-
   render() {
     const { data, onClickCancelCb, form, isProfileUpdating } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
           loading={isProfileUpdating}
-          title={<Title level={1} style={{ marginBottom: 0 }}>Contact Information</Title>}
-           style={{
-            width: '1200px',
-          }}
-          bodyStyle={{
-            padding: '32px',
-          }}
+          title={
+            <Title level={1} className={'card-title'}>
+              Contact Information
+            </Title>
+          }
+          className={'card'}
+          bodyStyle={style.cardBodyStyle}
           extra={
             <Fragment>
-              <Button
-                icon="edit"
-                shape="round"
-                onClick={onClickCancelCb}
-              >
+              <Button icon="edit" shape="round" onClick={onClickCancelCb}>
                 Cancel
               </Button>
-              <Button
-                type="primary"
-                icon="edit"
-                shape="round"
-                htmlType="submit"
-              >
+              <Button type="primary" icon="edit" shape="round" htmlType="submit">
                 Save
               </Button>
             </Fragment>
           }
         >
           <Row>
-            <Col span={16} style={{ paddingRight: '72px' }}>
+            <Col span={16} className={'main-left-col'}>
               <ContactInformationEditable data={data} parentForm={form} />
             </Col>
-            <Col
-              span={8}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+            <Col span={8} className={'find-me-col'}>
               <FindMeEditable parentForm={form} data={data} />
             </Col>
           </Row>

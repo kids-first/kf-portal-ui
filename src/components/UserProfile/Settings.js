@@ -11,23 +11,15 @@ const { Content } = Layout;
 const Settings = props => {
   const { userEmail } = props;
   return (
-    <Layout
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: '25px',
-        background: '#fff',
-        height: '100%',
-      }}
-    >
+    <Layout className={'settings-layout'}>
       <Content>
-        <Row style={{ paddingBottom: '48px' }}>
+        <Row className={'settings-row-but-last'}>
           <ConnectionProvider userEmail={userEmail} />
         </Row>
-        <Row style={{ paddingBottom: '48px' }}>
+        <Row className={'settings-row-but-last'}>
           <RepositoryIntegration />
         </Row>
-        <Row style={{ paddingBottom: '48px' }}>
+        <Row className={'settings-row-but-last'}>
           <ApplicationIntegration />
         </Row>
         {localStorage.getItem('SHOW_DELETE_ACCOUNT') && (
@@ -45,4 +37,3 @@ Settings.propTypes = {
 };
 
 export default Settings;
-

@@ -12,9 +12,9 @@ const { Content } = Layout;
 const AboutMe = props => {
   const { canEdit, profile, updateProfileCb, isProfileUpdating } = props;
   return (
-    <Layout style={{ display: 'flex', alignItems: 'center', padding: 48, background: '#fff' }}>
+    <Layout className={'am-main-layout'}>
       <Content>
-        <Row align={'middle'} style={{ paddingBottom: '40px' }}>
+        <Row align={'middle'} className={'am-profile-row'}>
           <Col span={24}>
             <EditToggle
               isProfileUpdating={isProfileUpdating}

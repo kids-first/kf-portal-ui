@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { socialItems } from 'components/UserProfile/utils';
 import { Form, Input, Row } from 'antd';
 import { isUrl } from 'utils';
+import './style.css';
 
 const validateInput = (rule, value, callback) => {
   if (rule.field === 'orchid') {
@@ -15,8 +16,8 @@ const validateInput = (rule, value, callback) => {
 
 function FindMeEditable(props) {
   const { entries } = Object;
-  const socialItemsWithSized = socialItems(18, 18);
-  const socialIcons = entries(socialItemsWithSized).map(([key, value]) => {
+  const socialItemsWithSize = socialItems(18, 18);
+  const socialIcons = entries(socialItemsWithSize).map(([key, value]) => {
     return {
       id: key,
       label: value.name,
@@ -29,7 +30,7 @@ function FindMeEditable(props) {
   const { getFieldDecorator } = parentForm;
 
   return (
-    <div style={{ borderLeft: '1px solid rgb(237,238,241)', paddingLeft: '48px' }}>
+    <div className={'find-me-social-icons-wrapper'}>
       {socialIcons.map(item => {
         return (
           <Row key={item.id}>

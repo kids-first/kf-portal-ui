@@ -6,6 +6,7 @@ import { injectState } from 'freactal';
 import { withRouter } from 'react-router';
 import { withApi } from 'services/api';
 import PropTypes from 'prop-types';
+import './style.css';
 
 const { Text } = Typography;
 
@@ -35,12 +36,7 @@ class DeleteAccount extends Component {
 
   render() {
     return (
-      <Card
-        style={{
-          width: '1200px',
-          borderRadius: '10px',
-        }}
-      >
+      <Card className={'card'}>
         <Row type={'flex'} align={'middle'}>
           <Col span={20}>
             <Text strong>Delete Account</Text>
@@ -56,8 +52,4 @@ class DeleteAccount extends Component {
   }
 }
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(DeleteAccount);
+export default compose(injectState, withRouter, withApi)(DeleteAccount);
