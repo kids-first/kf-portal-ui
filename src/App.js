@@ -15,7 +15,7 @@ import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
 // import FileEntity from 'components/EntityPage/File';
 // import ParticipantEntity from 'components/EntityPage/Participant';
-// import CohortBuilder from 'components/CohortBuilder';
+import CohortBuilder from 'components/CohortBuilder';
 import MemberSearchPage from 'components/MemberSearchPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
@@ -134,7 +134,6 @@ const App = compose(
         <Route path={ROUTES.redirected} exact component={() => null} />
         */}
 
-        {/*
         <Route
           path={ROUTES.cohortBuilder}
           exact
@@ -152,7 +151,6 @@ const App = compose(
             })
           }
         />
-        */}
 
         <Route
           path={ROUTES.searchMember}

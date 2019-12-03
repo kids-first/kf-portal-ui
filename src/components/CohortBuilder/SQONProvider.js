@@ -133,10 +133,4 @@ const mapDispatchToProps = {
   resetVirtualStudy,
 };
 
-export default compose(
-  withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(SQONProvider);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(SQONProvider);

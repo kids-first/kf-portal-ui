@@ -1,0 +1,53 @@
+.barChartContainer {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 40px;
+}
+
+.longCard {
+  width: 100%;
+  height: 100%;
+}
+
+.mediumCard {
+  height: 305px;
+  min-height: 305px;
+  padding: 15px 20px;
+}
+
+.cohortHeaderWrapper {
+  padding-bottom: 12px;
+}
+
+.cohortCardHeader {
+  font-size: 16px;
+}
+
+.cohortCardHeader .cardBadge {
+  line-height: 20px;
+  height: 20px;
+  min-width: 20px;
+}
+
+.cohortCardLoader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}
+
+.pieChartContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}

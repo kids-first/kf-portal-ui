@@ -1,14 +1,5 @@
 .flex {
   display: flex;
-  /*
-  ${flexStyles};
-  ${alignItems};
-  ${justifyContent};
-  ${flexWrap};
-  ${flexBasis};
-  ${flexDirection};
-  ${flexGrow};
-  */
 }
 
 /* .link {

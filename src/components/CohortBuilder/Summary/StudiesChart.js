@@ -1,15 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import { get, size } from 'lodash';
+import get from 'lodash/get';
+import size from 'lodash/size';
 import gql from 'graphql-tag';
+
+import theme from 'theme/defaultTheme';
 import { withApi } from 'services/api';
 import QueriesResolver from '../QueriesResolver';
 import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
-import { connect } from 'react-redux';
-import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from '../../../common/sqonUtils';
+import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
 
 const studiesToolTip = data => {
   const { familyMembers, probands, name } = data;
@@ -104,7 +106,7 @@ class StudiesChart extends React.Component {
   };
 
   render() {
-    const { studies, sqon, theme, api, isLoading: isParentLoading } = this.props;
+    const { studies, sqon, api, isLoading: isParentLoading } = this.props;
     return (
       <QueriesResolver
         name="GQL_STUDIES_CHART"
@@ -178,11 +180,4 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export default compose(
-  withTheme,
-  withApi,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(StudiesChart);
+export default compose(withApi, connect(mapStateToProps, mapDispatchToProps))(StudiesChart);

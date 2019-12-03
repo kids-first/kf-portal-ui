@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'react-emotion';
+import { compose, withProps } from 'recompose';
+import noop from 'lodash/noop';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+
 import { withApi } from 'services/api';
-import Column from 'uikit/Column';
-import { compose, lifecycle, withState, withProps } from 'recompose';
-import Dropdown, { withDropdownState } from 'uikit/Dropdown';
-import Filter from './Filter';
-import { SQONdiff } from '../../Utils';
-import CategoryRowDisplay from './CategoryRowDisplay';
-import { arrangerProjectId } from 'common/injectGlobals';
-import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import Column from 'uikit/Column';
+import Dropdown, { withDropdownState } from 'uikit/Dropdown';
+import { arrangerProjectId } from 'common/injectGlobals';
+import { SQONdiff, styleComponent } from 'components/Utils';
+import Filter from './Filter';
+import CategoryRowDisplay from './CategoryRowDisplay';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 const trackCategoryAction = ({ category, subCategory, action, label }) => {
   trackUserInteraction({
@@ -23,103 +24,34 @@ const trackCategoryAction = ({ category, subCategory, action, label }) => {
   });
 };
 
-const Container = styled(Column)`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  border-right: 1px solid ${({ theme }) => theme.greyScale8};
-  border-top: 4px solid ${({ color }) => (color ? color : 'white')};
-  position: relative;
-  white-space: nowrap;
-  z-index: 1;
-`;
-
 /**
  * Flip dropdown side on smaller screens
  */
-const OptionsWrapper = compose(
-  withState('shouldFlip', 'setShouldFlip', false),
-  withProps(() => ({
-    optionsRef: React.createRef(),
-  })),
-  lifecycle({
-    componentDidMount() {
-      const { optionsRef, setShouldFlip } = this.props;
-      const boundingRect = optionsRef.current.getBoundingClientRect();
-      const shouldFlip = boundingRect.x + boundingRect.width > window.innerWidth;
-      setShouldFlip(shouldFlip);
-    },
-  }),
-)(({ children, optionsRef, shouldFlip }) => (
-  <Options innerRef={optionsRef} shouldFlip={shouldFlip}>
-    {children}
-  </Options>
-));
-
-const Options = styled('div')`
-  ${({ shouldFlip }) =>
-    shouldFlip
-      ? css`
-          right: 0;
-        `
-      : css`
-          left: 0;
-        `};
-
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  cursor: pointer;
-  text-align: left;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 0 5.9px 0.1px #bbbbbb;
-
-  > div:not(:last-child) {
-    border-bottom: 1px solid #d4d6dd;
-  }
-`;
-
-const ItemWrapper = styled('div')`
-  display: flex;
-  padding: 8px 20px;
-  font-size: 12px;
-  color: #343434;
-  font-weight: 500;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.backgroundGrey};
-  }
-`;
-
-const Title = styled('h3')`
-  margin: 7px 0 0 0;
-  text-align: center;
-  font-family: ${({ theme }) => theme.fonts.default}, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.filterPurple};
-`;
-
-const CategoryButton = styled(Column)`
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.backgroundGrey};
+class OptionsWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef();
   }
 
-  ${({ isOpen, theme }) =>
-    isOpen
-      ? css`
-          background-color: ${theme.backgroundGrey};
-          box-shadow: 0 0 5.9px 0.1px ${theme.lighterShadow};
-        `
-      : null}
-`;
+  render() {
+    const { children } = this.props;
+    const boundingRect = this.ref.current && this.ref.current.getBoundingClientRect();
+    const shouldFlip = boundingRect
+      ? boundingRect.x + boundingRect.width > window.innerWidth
+      : false;
+
+    return (
+      <div
+        className={`cb-category-options ${shouldFlip ? 'shouldFlip' : ''}`}
+        ref={el => (this.ref = el)}
+      >
+        {children}
+      </div>
+    );
+  }
+}
+
+const ItemWrapper = styleComponent('div', 'cb-category-ItemWrapper');
 
 const CategoryRow = compose(withApi)(({ api, field, active }) => (
   <ExtendedMappingProvider
@@ -137,8 +69,6 @@ const CategoryRow = compose(withApi)(({ api, field, active }) => (
     )}
   </ExtendedMappingProvider>
 ));
-
-const noop = () => {};
 
 const Category = compose(
   withDropdownState,
@@ -234,21 +164,31 @@ const Category = compose(
             />
           )),
           ContainerComponent: ({ children, ...props }) => (
-            <Container {...props} color={color}>
+            <Column
+              {...props}
+              style={{
+                flex: '1',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRight: '1px solid #d4d6dd',
+                borderTop: `4px solid ${color ? color : 'white'}`,
+                position: 'relative',
+                whiteSpace: 'nowrap',
+                zIndex: '1',
+              }}
+            >
               {children}
-            </Container>
+            </Column>
           ),
           ItemWrapperComponent: ItemWrapper,
           OptionsContainerComponent: OptionsWrapper,
         }}
       >
-        <CategoryButton isOpen={isOpen}>
-          <Column alignItems="center">
-            {' '}
-            {children}
-            <Title> {title}</Title>
-          </Column>
-        </CategoryButton>
+        <Column className={`cb-category-Button ${isOpen ? 'isOpen' : ''}`}>
+          {' '}
+          {children}
+          <h3>{title}</h3>
+        </Column>
       </Dropdown>
     );
   },

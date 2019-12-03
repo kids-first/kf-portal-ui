@@ -3,8 +3,6 @@ import { sumBy, uniq } from 'lodash';
 import { injectState } from 'freactal';
 import { compose, lifecycle, withState } from 'recompose';
 import { withFormik } from 'formik';
-import { withTheme } from 'emotion-theming';
-import { css } from 'emotion';
 import Spinner from 'react-spinkit';
 import filesize from 'filesize';
 import formatNumber from '@kfarranger/components/dist/utils/formatNumber';
@@ -13,8 +11,8 @@ import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
 import CheckCircleIcon from 'icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
-import { fileManifestParticipantsAndFamily } from '../../services/downloadData';
-import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
+import { fileManifestParticipantsAndFamily } from 'services/downloadData';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';
@@ -25,11 +23,11 @@ import {
   familyMembersStatVisual,
 } from './statVisuals';
 
-import { dataTableStyle, modalContentStyle } from './style';
 import { FileRepoH3 as H3, TableHeader } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
 
-import { flexColumn, flexRow } from '../../theme/tempTheme.module.css';
+import { flexColumn, flexRow } from 'theme/tempTheme.module.css';
+import './FamilyManifestModal.css';
 
 const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
   return sqon
@@ -57,53 +55,41 @@ const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
 
 const fileSizeToString = fileSize => filesize(fileSize || 0).toUpperCase();
 
-const DataText = css`
-  font-size: 15px;
-  line-height: 28px;
-  font-family: 'Open Sans', sans serif;
-  color: #343434;
-`;
-
-const ManifestTableDataRow = compose(withTheme)(
-  ({
-    theme,
-    fileType,
-    members,
-    files,
-    fileSize,
-    isChecked,
-    showCheckbox,
-    leftComponent,
-    className = '',
-    ...rest
-  }) => (
-    <div className={`row ${isChecked ? 'selected' : ''} ${flexRow} ${className}`} {...rest}>
-      <div className={`tableCell ${flexRow}`}>
-        {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
-        {leftComponent && <div className={`left`}>{leftComponent}</div>}
-        {fileType}
-      </div>
-      <div className={`tableCell ${flexRow} ${DataText}`}>{formatNumber(members)}</div>
-      <div className={`tableCell ${flexRow} ${DataText}`}>{formatNumber(files)}</div>
-      <div className={`tableCell ${flexRow} ${DataText}`}>{fileSize}</div>
+const ManifestTableDataRow = ({
+  fileType,
+  members,
+  files,
+  fileSize,
+  isChecked,
+  showCheckbox,
+  leftComponent,
+  className = '',
+  ...rest
+}) => (
+  <div className={`row ${isChecked ? 'selected' : ''} ${flexRow} ${className}`} {...rest}>
+    <div className={`tableCell ${flexRow}`}>
+      {showCheckbox && <input type="checkbox" checked={isChecked} className={`left checkbox`} />}
+      {leftComponent && <div className={`left`}>{leftComponent}</div>}
+      {fileType}
     </div>
-  ),
+    <div className={`tableCell ${flexRow} dataText`}>{formatNumber(members)}</div>
+    <div className={`tableCell ${flexRow} dataText`}>{formatNumber(files)}</div>
+    <div className={`tableCell ${flexRow} dataText`}>{fileSize}</div>
+  </div>
 );
 
-const Table = compose(withTheme)(
-  ({ theme, stats, className = '', children, reverseColor = false }) => (
-    <div className={`${flexColumn} ${className} ${dataTableStyle({ theme, reverseColor })}`}>
-      <div className={`row ${flexRow}`}>
-        {stats.map(({ label, icon }, i) => (
-          <div key={i} className={`tableCell ${flexRow}`}>
-            <div className={`left`}>{icon}</div>
-            <TableHeader>{label}</TableHeader>
-          </div>
-        ))}
-      </div>
-      {children}
+const Table = ({ stats, className = '', children, reverseColor = false }) => (
+  <div className={`${flexColumn} ${className} dataTable ${reverseColor ? reverseColor : ''}`}>
+    <div className={`row ${flexRow}`}>
+      {stats.map(({ label, icon }, i) => (
+        <div key={i} className={`tableCell ${flexRow}`}>
+          <div className={`left`}>{icon}</div>
+          <TableHeader>{label}</TableHeader>
+        </div>
+      ))}
     </div>
-  ),
+    {children}
+  </div>
 );
 
 const spinner = (
@@ -121,18 +107,10 @@ const spinner = (
 );
 
 const Section = ({ children }) => (
-  <section
-    className={css`
-      margin-top: 10px;
-      margin-bottom: 20px;
-    `}
-  >
-    {children}
-  </section>
+  <section style={{ marginTop: '10px', marginBottom: '20px' }}>{children}</section>
 );
 
 export default compose(
-  withTheme,
   injectState,
   withApi,
   lifecycle({
@@ -155,7 +133,6 @@ export default compose(
 )(
   ({
     loading,
-    theme,
     familyMemberIds,
     participantIds,
     dataTypes,
@@ -273,7 +250,7 @@ export default compose(
               return loading ? (
                 spinner
               ) : (
-                <div className={`${flexColumn} ${modalContentStyle(theme)}`}>
+                <div className={`${flexColumn} familyManifestModal`}>
                   {!isFamilyMemberFilesAvailable && participantSection}
                   {isFamilyMemberFilesAvailable ? (
                     <FamilyDataTypesStatsQuery

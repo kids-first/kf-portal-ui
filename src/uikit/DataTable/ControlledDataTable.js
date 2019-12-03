@@ -3,9 +3,10 @@ import ReactTable from 'react-table';
 import PropTypes from 'prop-types';
 import noop from 'lodash/noop';
 
-import StyleWrapper from './Table/StyleWrapper';
 import CustomPagination from './Pagination';
 import applyTransforms from './utils/applyTransforms';
+
+import './Table/Table.css';
 
 export default class ControlledDataTable extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class ControlledDataTable extends React.Component {
     manualPagination: PropTypes.bool,
     onFetchData: PropTypes.func,
     transforms: PropTypes.arrayOf(PropTypes.func),
-    // class to be assigne to the table
+    // class to be assigned to the table
     className: PropTypes.string,
     // alternate rows color
     striped: PropTypes.bool,
@@ -68,7 +69,7 @@ export default class ControlledDataTable extends React.Component {
     const pages = Math.ceil(totalRows / pageSize);
 
     return (
-      <StyleWrapper style={{ ...style, borderRight: 'none' }}>
+      <div className="dataTable" style={{ ...style, borderRight: 'none' }}>
         <ReactTable
           columns={columns}
           loading={loading}
@@ -99,7 +100,7 @@ export default class ControlledDataTable extends React.Component {
             }
           }}
         />
-      </StyleWrapper>
+      </div>
     );
   }
 }

@@ -8,8 +8,8 @@ export default ({ children, center = false, className = '', style = {}, ...props
   <Flex
     className={`${flexRow} ${center ? flexCenter : ''} ${className}`}
     style={{
-      ...style,
       minHeight: 0,
+      ...style,
     }}
     {...props}
   >

@@ -11,7 +11,8 @@
       "uikit/*": ["src/uikit/*"],
       "assets/*": ["src/assets/*"],
       "common/*": ["src/common/*"],
-      "shapes/*": ["src/shapes/*"]
+      "shapes/*": ["src/shapes/*"],
+      "store/*": ["src/store/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

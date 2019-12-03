@@ -1,0 +1,46 @@
+.survivalChart-card-content {
+  overflow: visible;
+}
+
+.survivalChart-card-header {
+  margin-top: -10px;
+  padding: 4px 0 4px 8px;
+  background-color: #eee;
+  font-size: 11px;
+}
+
+.survivalChart-styledChard .axis line,
+.survivalChart-styledChard .axis path {
+  fill: none;
+  stroke: #e6dede;
+  shape-rendering: crispEdges;
+}
+.survivalChart-styledChard .axis .tick text {
+  fill: #888;
+  font-size: 10px;
+  padding-bottom: 10px;
+}
+.survivalChart-styledChard .axis .axis-label {
+  font-size: 12px;
+  font-weight: 500;
+  fill: #2b388f;
+}
+.survivalChart-styledChard text.axis-label {
+  text-anchor: middle !important;
+}
+.survivalChart-styledChard .axis:first-child .axis-label {
+  transform: translateY(7px);
+}
+.survivalChart-styledChard .axis:nth-child(2) .axis-label {
+  transform: rotate(-90deg) translatex(0px) translatey(8px);
+}
+.survivalChart-styledChard .line {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+.survivalChart-styledChard .brush .extent {
+  stroke: #fff;
+  fill: #edf8ff;
+  shape-rendering: crispEdges;
+}

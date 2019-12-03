@@ -1,36 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import tinygradient from 'tinygradient';
 import { ResponsivePie } from '@nivo/pie';
+
 import Tooltip from './Tooltip';
 
-const PieWrapper = styled('div')`
-  height: 100%;
-  display: block;
-  text-align: center;
-`;
-
-const PieTitle = styled('div')`
-  font-size: 14px;
-  margin-left: -14px;
-  font-weight: 600;
-  color: #404c9a;
-  margin-bottom: 5px;
-`;
-
-const StyleTooltip = styled(Tooltip)`
-  text-align: left;
-  justify: left;
-  font-size: 12px;
-  color: #2b388f;
-`;
+import './Pie.css';
 
 const PieTooltip = ({ id, value, label }) => (
-  <StyleTooltip key={id}>
+  <Tooltip className="pieTooltip" key={id}>
     <div>{label || id}</div>
     <div>{`${value} Participants`}</div>
-  </StyleTooltip>
+  </Tooltip>
 );
 
 class Pie extends Component {
@@ -65,8 +46,8 @@ class Pie extends Component {
     }));
 
     return (
-      <PieWrapper style={this.props.style}>
-        {this.props.title ? <PieTitle>{this.props.title}</PieTitle> : null}
+      <div className="pieWrapper" style={this.props.style}>
+        {this.props.title ? <div className="pieTitle">{this.props.title}</div> : null}
         <ResponsivePie
           {...this.props}
           data={colorData}
@@ -75,7 +56,7 @@ class Pie extends Component {
           onMouseLeave={this.onMouseLeave}
           fill={[{ match: x => x.data.index === this.state.highlightedIndex, id: 'lines' }]}
         />
-      </PieWrapper>
+      </div>
     );
   }
 }

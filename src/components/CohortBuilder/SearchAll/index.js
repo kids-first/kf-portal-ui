@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import SearchIcon from 'react-icons/lib/fa/search';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
 import { debounce, isObject, mapKeys } from 'lodash';
@@ -32,61 +30,6 @@ const trackCohortBuilderAction = ({ action, label, category }) => {
     ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
   });
 };
-
-const SearchAllContainer = styled('div')`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  z-index: 1;
-
-  .query-container {
-    height: 100%;
-    padding-top: 17px;
-    padding-left: 12px;
-    padding-right: 14px;
-  }
-
-  .results-container: {
-    position: absolute;
-    top: 100%;
-  }
-`;
-
-const QueryContainer = styled(Column)`
-  display: flex;
-  flex-shrink: 0;
-  border-top: 4px solid ${({ borderColor }) => borderColor};
-  border-right: 1px solid ${({ theme }) => theme.greyScale8};
-  padding: 7px;
-  width: 100%;
-
-  .query-content {
-    border-radius: 10px;
-    border: solid 2px ${({ theme }) => theme.greyScale8};
-
-    & input {
-      font-family: ${({ theme }) => theme.fonts.details};
-      font-weight: bold;
-      font-size: 14px;
-      color: ${({ theme }) => theme.greyScale1};
-    }
-
-    &:hover {
-      box-shadow: 0 0 10px skyblue;
-    }
-  }
-
-  .input-icon {
-    color: ${({ theme }) => theme.greyScale11};
-
-    &.icon-right {
-      color: ${({ theme }) => theme.greyScale1};
-    }
-  }
-`;
 
 const toGqlFieldPath = fieldPath => fieldPath.replace(/\./g, '__');
 
@@ -175,9 +118,7 @@ class SearchAll extends React.Component {
     this.setState(state);
 
     trackCohortBuilderAction({
-      category: `${
-        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
-      } - Search All`,
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
       action:
         state.debouncedQuery !== ''
           ? TRACKING_EVENTS.actions.search
@@ -196,9 +137,7 @@ class SearchAll extends React.Component {
     this.close();
 
     trackCohortBuilderAction({
-      category: `${
-        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
-      } - Search All`,
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
       action: TRACKING_EVENTS.actions.clear,
       label: debouncedQuery,
     });
@@ -230,9 +169,7 @@ class SearchAll extends React.Component {
     const { displayName, name } = field;
 
     trackCohortBuilderAction({
-      category: `${
-        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
-      } - Search All`,
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
       action: `${TRACKING_EVENTS.actions.filter} Selected`,
       label: {
         type: 'filter',
@@ -279,9 +216,7 @@ class SearchAll extends React.Component {
      * after the new filters are applied
      */
     trackCohortBuilderAction({
-      category: `${
-        TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
-      } - Search All`,
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - Search All`,
       action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
       label: { added_sqon: SQONdiff(newSqon, sqon), result_sqon: newSqon },
     });
@@ -293,7 +228,7 @@ class SearchAll extends React.Component {
   }
 
   render() {
-    const { api, sqon, color, title, fields, theme } = this.props;
+    const { api, sqon, color, title, fields } = this.props;
     const { query, debouncedQuery, selections, isOpen } = this.state;
 
     return (
@@ -324,7 +259,7 @@ class SearchAll extends React.Component {
                 }
 
                 if (extendedMappingIsLoading || isLoading) {
-                  return <LoadingSpinner color={theme.greyScale11} size={'30px'} />;
+                  return <LoadingSpinner color="#a9adc0" size="30px" />;
                 }
 
                 // filter both the fields and their buckets
@@ -336,11 +271,14 @@ class SearchAll extends React.Component {
                 return (
                   <Downshift isOpen={isOpen} onOuterClick={() => this.setState({ isOpen: false })}>
                     {({ getRootProps, isOpen }) => (
-                      <SearchAllContainer
+                      <div
                         className="search-all-filter"
                         {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
                       >
-                        <QueryContainer borderColor={color} className="query-container">
+                        <Column
+                          className="query-container"
+                          style={{ borderTop: `4px solid ${color}` }}
+                        >
                           <div className="query-content">
                             <span className={'input-icon icon-left'}>
                               <SearchIcon />
@@ -358,7 +296,7 @@ class SearchAll extends React.Component {
                               </span>
                             )}
                           </div>
-                        </QueryContainer>
+                        </Column>
                         {isOpen ? (
                           <QueryResults
                             query={debouncedQuery}
@@ -371,7 +309,7 @@ class SearchAll extends React.Component {
                             onSearchField={this.handleSearchByField}
                           />
                         ) : null}
-                      </SearchAllContainer>
+                      </div>
                     )}
                   </Downshift>
                 );
@@ -397,7 +335,4 @@ SearchAll.propTypes = {
   title: PropTypes.string,
 };
 
-export default compose(
-  withApi,
-  withTheme,
-)(SearchAll);
+export default compose(withApi)(SearchAll);

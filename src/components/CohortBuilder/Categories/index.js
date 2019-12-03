@@ -1,7 +1,4 @@
 import React from 'react';
-import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
-import { compose } from 'recompose';
 import autobind from 'auto-bind-es5';
 import SearchAll from '../SearchAll';
 import Category from './Category';
@@ -20,15 +17,9 @@ import { isFeatureEnabled } from 'common/featuresToggles';
 import { openModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
+import theme from 'theme/defaultTheme';
 
 import './styles.scss';
-
-const Container = styled(Row)`
-  height: 72px;
-  width: 100%;
-  border-left: 1px solid ${({ theme }) => theme.greyScale8};
-  background-color: white;
-`;
 
 // Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.
 //  Check fields on display to make sure they are in alphabetical order.
@@ -146,7 +137,7 @@ const CATEGORY_NAMES = {
 
 const excludedCategories = ['searchAll', 'quickSearch'];
 
-class Categories extends React.Component {
+export default class Categories extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -186,11 +177,11 @@ class Categories extends React.Component {
     });
 
   render() {
-    const { theme, sqon } = this.props;
+    const { sqon } = this.props;
     const { currentSearchField, currentCategory } = this.state;
 
     return (
-      <Container className="virtual-Studies-categories">
+      <Row className="virtual-Studies-categories">
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
@@ -293,9 +284,7 @@ class Categories extends React.Component {
             <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
           </ActionCategory>
         )}
-      </Container>
+      </Row>
     );
   }
 }
-
-export default compose(withTheme)(Categories);

@@ -1,47 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 
 import { TealActionButton, WhiteButton } from 'uikit/Button';
-
 import QueryResultsBody from './QueryResultsBody';
 
-const ResultsContainer = styled('div')`
-  position: absolute;
-  display: none;
-
-  top: 100%;
-  width: 290px;
-  left: 0px;
-
-  border: 1px solid ${({ theme }) => theme.greyScale5};
-  border-radius: 5px;
-  box-shadow: 0 0 4.9px 0.1px ${({ theme }) => theme.lighterShadow};
-  background-color: white;
-  padding: 0;
-
-  &.open {
-    display: block;
-  }
-
-  .results-content {
-    padding: 0;
-
-    .results-header {
-      font-family: ${({ theme }) => theme.fonts.details};
-      font-style: italic;
-      font-size: 12px;
-      color: ${({ theme }) => theme.greyScale1};
-      width: 100%;
-      border-bottom: 1px solid ${({ theme }) => theme.greyScale5};
-    }
-
-    .results-footer {
-      background-color: ${({ theme }) => theme.greyScale5};
-      border-top: 1px solid ${({ theme }) => theme.greyScale5};
-    }
-  }
-`;
+import './SearchAll.css';
 
 const countResults = filteredFields => {
   const totalResults = filteredFields.reduce(
@@ -62,7 +25,7 @@ const QueryResults = props => {
   const header = isLoading ? 'Searching...' : countResults(filteredFields);
 
   return (
-    <ResultsContainer className={`results-container ${isOpen ? 'open' : ''}`}>
+    <div className={`results-container ${isOpen ? 'open' : ''}`}>
       <div className="results-content">
         <div className="results-section results-header">{header}</div>
         <QueryResultsBody {...props} />
@@ -73,7 +36,7 @@ const QueryResults = props => {
           </TealActionButton>
         </div>
       </div>
-    </ResultsContainer>
+    </div>
   );
 };
 

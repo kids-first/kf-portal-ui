@@ -1,8 +1,8 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 // [NEXT] TODO - REMOVE react-grid-system in favor of whatever else we have
 import { Col, Row } from 'react-grid-system';
+
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import DemographicChart, { demographicQuery } from './DemographicChart';
@@ -11,12 +11,11 @@ import StudiesChart, { studiesQuery } from './StudiesChart';
 import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
 import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
-import styled from 'react-emotion';
 import { CohortCard } from './ui';
 
-const PaddedColumn = styled(Col)`
-  padding: 4px !important;
-`;
+const PaddedColumn = ({ children }) => (
+  <Col style={{ padding: '4px !important' }}> {children} </Col>
+);
 
 const spacing = {
   md: 6,
@@ -111,7 +110,4 @@ const Summary = ({
   </QueriesResolver>
 );
 
-export default compose(
-  withApi,
-  withTheme,
-)(Summary);
+export default compose(withApi)(Summary);

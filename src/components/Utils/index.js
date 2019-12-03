@@ -86,7 +86,6 @@ export const styleComponent = (Component, classes = '') => ({
   const joinedClasses = `${classes} ${className}`;
 
   if (typeof Component === 'string') {
-    // causes huge perf issues
     const { styles, attributes } = splitStylesFromAttributes(props);
     return (
       <Component

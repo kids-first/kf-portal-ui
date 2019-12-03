@@ -1,8 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
@@ -16,36 +14,12 @@ import SQONProvider from './SQONProvider';
 import VirtualStudiesMenu from './VirtualStudiesMenu';
 import ParticipantIcon from 'icons/ParticipantIcon';
 
-const Container = styled('div')`
-  width: 100%;
-  background-color: ${({ theme }) => theme.backgroundGrey};
-`;
-
-const FullWidthWhite = styled('div')`
-  width: 100%;
-  background: white;
-`;
-
-const SqonBuilderContainer = styled('div')`
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 30px;
-  padding-right: 30px;
-  border-top: solid 1px rgb(212, 214, 221);
-  box-shadow: 0 3px 5px -3px ${({ theme }) => theme.lighterShadow};
-`;
-
-const Content = styled(ContentBar)`
-  padding-left: 30px;
-  padding-right: 30px;
-  margin-top: 0;
-`;
+import './CohortBuilder.css';
 
 const CohortBuilder = compose(
   withApi,
-  withTheme,
   injectState,
-)(({ api, state: { loggedInUser }, theme }) => (
+)(({ api, state: { loggedInUser } }) => (
   <SQONProvider>
     {({
       sqons: syntheticSqons,
@@ -110,42 +84,36 @@ const CohortBuilder = compose(
       };
 
       return (
-        <Container>
+        <div className="cb-container">
           <VirtualStudiesMenu />
 
-          <FullWidthWhite>
-            <Content>
-              <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
-            </Content>
-            <SqonBuilderContainer
-              css={`
-                .sqonView {
-                  margin-right: 60px;
-                }
-              `}
-            >
-              <SqonBuilder
-                syntheticSqons={syntheticSqons}
-                activeSqonIndex={activeSqonIndex}
-                onChange={sqonBuilderSqonsChange}
-                onActiveSqonSelect={sqonBuilderActiveSqonSelect}
-                emptyEntryMessage="Use the filters above to build a query"
-                ResultCountIcon={ParticipantIcon}
-                resultCountIconProps={{
-                  height: 18,
-                  width: 18,
-                  fill: theme.greyScale11,
-                }}
-              />
-            </SqonBuilderContainer>
-          </FullWidthWhite>
+          {/* <div className="cb-fullWidth"> */}
+          <ContentBar className="cb-categories-container">
+            <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
+          </ContentBar>
+          <div className="cb-sqonBuilder-container">
+            <SqonBuilder
+              syntheticSqons={syntheticSqons}
+              activeSqonIndex={activeSqonIndex}
+              onChange={sqonBuilderSqonsChange}
+              onActiveSqonSelect={sqonBuilderActiveSqonSelect}
+              emptyEntryMessage="Use the filters above to build a query"
+              ResultCountIcon={ParticipantIcon}
+              resultCountIconProps={{
+                height: 18,
+                width: 18,
+                fill: '#a9adc0',
+              }}
+            />
+          </div>
+          {/* </div> */}
 
           <Results
             sqon={executableSqon}
             activeSqonIndex={activeSqonIndex}
             onRemoveFromCohort={createNewSqonExcludingParticipants}
           />
-        </Container>
+        </div>
       );
     }}
   </SQONProvider>

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 
 import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
@@ -13,15 +12,11 @@ import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
 import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 
 /**
- * This compoponent also assumes we are only modifying the first level of sqon
+ * This component also assumes we are only modifying the first level of sqon
  */
-const Filter = compose(
-  withApi,
-  withTheme,
-)(
+const Filter = compose(withApi)(
   ({
     api,
-    theme,
     initialSqon = {
       op: 'and',
       content: [],
@@ -44,7 +39,7 @@ const Filter = compose(
         if (loading) {
           return (
             <FieldFilterContainer applyEnabled={false} onCancel={onCancel} onBack={onBack}>
-              <LoadingSpinner color={theme.greyScale11} size={'30px'} />
+              <LoadingSpinner color="#a9adc0" size="30px" />
             </FieldFilterContainer>
           );
         }

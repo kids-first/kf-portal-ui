@@ -1,23 +1,14 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import OpenIcon from 'react-icons/lib/fa/folder-open';
+
 import Tooltip from 'uikit/Tooltip';
 import { WhiteButton } from 'uikit/Button';
-import styled from 'react-emotion';
+import { styleComponent } from 'components/Utils';
 
-const ItemRow = styled('div')`
-  padding: 2px 10px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.greyScale6};
-  }
-`;
+import './LoadShareSaveDeleteQuery.css';
 
-const AlignedLoadIcon = styled(OpenIcon)`
-  margin-top: -2px;
-`;
+const ItemRow = styleComponent('div', 'query-item-row');
 
 export default injectState(
   class extends React.Component {
@@ -79,7 +70,7 @@ export default injectState(
               </div>
             }
           >
-            <AlignedLoadIcon />
+            <OpenIcon style={{ marginTop: '-2px' }} />
             &nbsp;open
           </Tooltip>
         </WhiteButton>

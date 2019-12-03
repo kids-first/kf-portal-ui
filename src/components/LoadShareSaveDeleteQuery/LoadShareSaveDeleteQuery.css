@@ -1,0 +1,27 @@
+.query-bubble { 
+  background-color: #90278e;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
+.query-item-row { 
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.query-item-row:hover {
+  background-color: rgb(245,245,245);
+}
+
+.query-item-row {
+  padding: 2px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.query-item-row:hover {
+  background-color: rgb(245,245,245);
+}

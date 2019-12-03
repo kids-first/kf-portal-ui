@@ -1,0 +1,15 @@
+.rowCss {
+  display: 'flex';
+  flex-wrap: 'nowrap';
+  align-items: 'flex-start';
+  align-content: 'stretch';
+}
+
+.participantTable .nbFilesLink img {
+  top: 2px;
+  position: relative;
+}
+
+.participantTable div.rt-noData {
+  display: none !important;
+}

@@ -1,0 +1,3 @@
+import { styleComponent } from 'components/Utils';
+
+import theme from 'theme/defaultTheme';
