@@ -1,6 +1,8 @@
 import React from 'react';
-import { Col, Row } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import FilterTagContent from 'components/MemberSearchPage/FilterTagContent';
+
+const { Title } = Typography;
 
 const FilterTagContainer = ({ filters, clearTag }) => {
   return (
@@ -13,7 +15,7 @@ const FilterTagContainer = ({ filters, clearTag }) => {
         <Col span={6}>
           <FilterTagContent
             filters={filters.roles}
-            title={'Role Filters'}
+            title={<Title level={3}>Role Filter</Title>}
             type={'role'}
             clearTag={clearTag}
           />
@@ -25,7 +27,7 @@ const FilterTagContainer = ({ filters, clearTag }) => {
         <Col span={18}>
           <FilterTagContent
             filters={filters.interests}
-            title={'Interests Filters'}
+            title={<Title level={3}>Interests Filters</Title>}
             type={'interest'}
             clearTag={clearTag}
           />

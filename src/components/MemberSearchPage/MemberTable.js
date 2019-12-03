@@ -1,4 +1,4 @@
-import { Col, Icon, List, Row, Typography } from 'antd';
+import { Col, Icon, List, Row, Spin, Typography } from 'antd';
 import React from 'react';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
@@ -65,18 +65,22 @@ const MemberTable = props => {
       <List
         itemLayout={'vertical'}
         header={
-          <Row>
-            <Col span={12} style={{ textAlign: 'left' }}>
-              <Title level={3}>
-                {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
-                  props.count.public
-                } public members`}
-              </Title>
-            </Col>
-            <Col span={12} style={{ textAlign: 'right' }}>
-              <Title level={3}>{`${props.count.total} members total (public & private)`}</Title>
-            </Col>
-          </Row>
+          props.pending ? (
+            <Spin />
+          ) : (
+            <Row>
+              <Col span={12} style={{ textAlign: 'left' }}>
+                <Title level={3}>
+                  {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+                    props.count.public
+                  } public members`}
+                </Title>
+              </Col>
+              <Col span={12} style={{ textAlign: 'right' }}>
+                <Title level={3}>{`${props.count.total} members total (public & private)`}</Title>
+              </Col>
+            </Row>
+          )
         }
         gutter={20}
         style={{ color: '#343434' }} //TODO remove with Ant Design Theme

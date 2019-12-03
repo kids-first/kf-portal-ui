@@ -73,6 +73,7 @@ class MemberInterests extends Component {
         >
           {populatedList.map((item, index) => (
             <Row
+              key={index}
               className={'flex'}
               style={{
                 paddingRight: 11,
