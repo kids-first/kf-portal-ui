@@ -15,8 +15,8 @@ const FilterTagContent = ({ filters, title, type, clearTag }) => {
       <Divider style={{ marginBottom: 16, marginTop: 10 }} />
       <Row type="flex" justify="start" align="middle" style={{ paddingBottom: 10 }}>
         {filters.map(f => (
-          <Tag key={f} style={{ maxWidth: 300 }}>
-            {userRoleDisplayName(f)}{' '}
+          <Tag className={'tag-round flex'} key={f}>
+            <div style={{ maxWidth: 350, overflow: 'hidden' }}>{userRoleDisplayName(f)} </div>
             <Icon key={f} onClick={clearTag(f, type)} style={{ color: 'white' }} type="close" />
           </Tag>
         ))}

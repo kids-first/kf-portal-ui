@@ -1,4 +1,4 @@
-import { Col, Divider, List, Row, Typography } from 'antd';
+import { Col, Icon, List, Row, Spin, Typography } from 'antd';
 import React from 'react';
 import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
@@ -9,10 +9,20 @@ import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
 import ProfilePill from 'components/MemberSearchPage/ProfilePill';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const Address = ({ item }) => (
-  <div className={'flex'}>
+  <div className={'flex'} style={{ alignItems: 'center', paddingBottom: 24 }}>
+    {item.city || item.state || item.country ? (
+      <Icon
+        className={'icon-color'}
+        type="environment"
+        theme="filled"
+        style={{ paddingRight: 8 }}
+      />
+    ) : (
+      ''
+    )}
     {item.city ? (
       <FormatLabel
         classname={'comma-address'}
@@ -55,16 +65,22 @@ const MemberTable = props => {
       <List
         itemLayout={'vertical'}
         header={
-          <Row>
-            <Col span={12} style={{ textAlign: 'left' }}>{`Showing ${firstItem} - ${Math.min(
-              lastItem,
-              props.count.public,
-            )} of ${props.count.public} public members`}</Col>
-            <Col
-              span={12}
-              style={{ textAlign: 'right' }}
-            >{`${props.count.total} members total (public & private)`}</Col>
-          </Row>
+          props.pending ? (
+            <Spin />
+          ) : (
+            <Row>
+              <Col span={12} style={{ textAlign: 'left' }}>
+                <Title level={3}>
+                  {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+                    props.count.public
+                  } public members`}
+                </Title>
+              </Col>
+              <Col span={12} style={{ textAlign: 'right' }}>
+                <Title level={3}>{`${props.count.total} members total (public & private)`}</Title>
+              </Col>
+            </Row>
+          )
         }
         gutter={20}
         style={{ color: '#343434' }} //TODO remove with Ant Design Theme
@@ -85,24 +101,22 @@ const MemberTable = props => {
         renderItem={item => {
           return (
             <List.Item key={item._id}>
-              <Row type="flex" justify="start" align="middle" gutter={20}>
-                <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{ width: 'auto' }}>
+              <Row type={'flex'} justify="center" align="middle" gutter={32}>
+                <Col xl={3} lg={6} md={6} style={{ textAlign: 'center' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
+                  <div style={{ paddingTop: 10 }}>
+                    {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
+                  </div>
                 </Col>
                 <Col
-                  className={'member-list-col'}
-                  xxl={4}
-                  xl={6}
-                  lg={6}
-                  md={6}
-                  sm={8}
-                  style={{ width: 'auto' }}
+                  xl={21}
+                  lg={18}
+                  md={18}
+                  style={{ left: 0, right: 0 }}
+                  scroll={{ x: 'max-content' }}
                 >
-                  {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
-                </Col>
-                <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
-                    <div className={'flex'}>
+                    <div className={'flex member-info-title'}>
                       {item.title ? (
                         <div key={0} style={{ paddingRight: 5 }}>
                           {item.title[0].toUpperCase() + item.title.slice(1) + '.'}
@@ -122,20 +136,29 @@ const MemberTable = props => {
                       />
                     </div>
                   </Link>
-                  {/*TODO remove style with Ant Design Theme*/}
-                  <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                  {item.institution ? (
+                    <Row className={'flex'}>
+                      <Icon
+                        className={'icon-color'}
+                        type="bank"
+                        theme="filled"
+                        style={{ paddingRight: 8 }}
+                      />
+                      <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                    </Row>
+                  ) : (
+                    ''
+                  )}
+
                   <Address item={item} />
-                  <div style={{ color: 'inherit' }}>
+                  <div style={{ color: 'inherit', paddingBottom: 24 }}>
                     {item.interests.length < 1 ? (
                       ''
                     ) : (
-                      <div>
-                        <Divider style={{ margin: 5 }} />
-                        <MemberInterests
-                          interests={item.interests}
-                          highlights={(item.highlight || {}).interests || []}
-                        />
-                      </div>
+                      <MemberInterests
+                        interests={item.interests}
+                        highlights={(item.highlight || {}).interests || []}
+                      />
                     )}
                   </div>
                   <MemberSearchBioStory

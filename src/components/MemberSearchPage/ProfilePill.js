@@ -17,8 +17,8 @@ const ProfilePill = props => {
   return (
     <div
       style={{
-        display: 'flex',
-        height: 40,
+        display: 'inline-flex',
+        height: 24,
         borderRadius: '21px',
         backgroundColor,
         color: 'white',
@@ -28,18 +28,20 @@ const ProfilePill = props => {
         letterSpacing: '0.2px',
         textAlign: 'left',
         textTransform: 'capitalize',
-        padding: ' 0 16px 0 0',
-        width: 190,
+        padding: ' 0 10px 0 0',
+        margin: 'auto',
       }}
     >
-      <Icon height={'inherit'} fill="#fff" />
+      <Icon
+        fill="#fff"
+        style={{ height: 20, marginRight: 8, position: 'relative', left: 2, bottom: -2 }}
+      />
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          width: '100%',
           fontWeight: 'bold',
-          fontSize: 14,
+          fontSize: 10,
         }}
       >
         {roleName}

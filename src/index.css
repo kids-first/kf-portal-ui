@@ -41,3 +41,7 @@ h3.filter-title {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.tag-round {
+  border-radius: 10px;
+}
