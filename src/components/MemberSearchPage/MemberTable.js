@@ -12,7 +12,7 @@ import ProfilePill from 'components/MemberSearchPage/ProfilePill';
 const { Text, Title } = Typography;
 
 const Address = ({ item }) => (
-  <div className={'flex'} style={{ alignItems: 'center', paddingBottom: 24 }}>
+  <div className={'flex'} style={{ alignItems: 'center' }}>
     {item.city || item.state || item.country ? (
       <Icon
         className={'icon-color'}
@@ -100,21 +100,15 @@ const MemberTable = props => {
         loading={props.pending}
         renderItem={item => {
           return (
-            <List.Item key={item._id}>
-              <Row type={'flex'} justify="center" align="middle" gutter={32}>
+            <List.Item key={item._id} style={{ paddingBottom: 40, paddingTop: 50 }}>
+              <Row type={'flex'} justify="center" align="top" gutter={32}>
                 <Col xl={3} lg={6} md={6} style={{ textAlign: 'center' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
                   <div style={{ paddingTop: 10 }}>
                     {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
                   </div>
                 </Col>
-                <Col
-                  xl={21}
-                  lg={18}
-                  md={18}
-                  style={{ left: 0, right: 0 }}
-                  scroll={{ x: 'max-content' }}
-                >
+                <Col xl={21} lg={18} md={18} style={{ left: 0, right: 0 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
                     <div className={'flex member-info-title'}>
                       {item.title ? (
@@ -136,31 +130,35 @@ const MemberTable = props => {
                       />
                     </div>
                   </Link>
-                  {item.institution ? (
-                    <Row className={'flex'}>
-                      <Icon
-                        className={'icon-color'}
-                        type="bank"
-                        theme="filled"
-                        style={{ paddingRight: 8 }}
-                      />
-                      <Text style={{ color: 'inherit' }}>{item.institution}</Text>
-                    </Row>
-                  ) : (
-                    ''
-                  )}
-
-                  <Address item={item} />
-                  <div style={{ color: 'inherit', paddingBottom: 24 }}>
-                    {item.interests.length < 1 ? (
-                      ''
+                  <div style={{ paddingTop: 16 }}>
+                    {item.institution ? (
+                      <Row className={'flex'}>
+                        <Icon
+                          className={'icon-color'}
+                          type="bank"
+                          theme="filled"
+                          style={{ paddingRight: 8 }}
+                        />
+                        <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                      </Row>
                     ) : (
+                      ''
+                    )}
+
+                    <Address item={item} />
+                  </div>
+
+                  {item.interests.length < 1 ? (
+                    ''
+                  ) : (
+                    <div style={{ color: 'inherit', paddingTop: 24 }}>
                       <MemberInterests
                         interests={item.interests}
                         highlights={(item.highlight || {}).interests || []}
                       />
-                    )}
-                  </div>
+                    </div>
+                  )}
+
                   <MemberSearchBioStory
                     bio={(item.highlight || {}).bio || []}
                     story={(item.highlight || {}).story || []}

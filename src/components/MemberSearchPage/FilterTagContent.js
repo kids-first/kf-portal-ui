@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Icon, Row, Tag } from 'antd';
+import { Icon, Row, Tag } from 'antd';
 import { find } from 'lodash';
 import { ROLES } from 'common/constants';
 
@@ -8,12 +8,10 @@ const userRoleDisplayName = userRole => {
   return role ? role.displayName : userRole;
 };
 
-const FilterTagContent = ({ filters, title, type, clearTag }) => {
+const FilterTagContent = ({ filters, type, clearTag }) => {
   return (
     <div>
-      <Row style={{ textTransform: 'uppercase', fontWeight: 'bold', paddingTop: 8 }}>{title}</Row>
-      <Divider style={{ marginBottom: 16, marginTop: 10 }} />
-      <Row type="flex" justify="start" align="middle" style={{ paddingBottom: 10 }}>
+      <Row type="flex no-padding" justify="start" align="middle">
         {filters.map(f => (
           <Tag className={'tag-round flex'} key={f}>
             <div style={{ maxWidth: 350, overflow: 'hidden' }}>{userRoleDisplayName(f)} </div>

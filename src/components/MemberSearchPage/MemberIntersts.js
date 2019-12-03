@@ -64,7 +64,11 @@ class MemberInterests extends Component {
     const populatedList = filter ? mergedInterests.slice(0, 10) : mergedInterests;
     return (
       <div>
-        <Title className={'member-info-title'} level={3} style={{ marginBottom: 0 }}>
+        <Title
+          className={'member-info-title'}
+          level={3}
+          style={{ marginBottom: 0, paddingBottom: 16 }}
+        >
           Research Interests:
         </Title>
         <Paragraph
@@ -104,7 +108,17 @@ class MemberInterests extends Component {
               aria-label="Expand"
               onClick={this.onClick}
             >
-              {filter ? 'Expand' : 'Close'}
+              {filter ? (
+                <div className={'flex'}>
+                  <div style={{paddingRight: 8}}>Expand</div>
+                  <Icon type="plus-circle" />
+                </div>
+              ) : (
+                <div className={'flex'}>
+                  <div style={{paddingRight: 8}}>Close</div>
+                  <Icon type="minus-circle" />
+                </div>
+              )}
             </a>
           ) : (
             ''

@@ -4,8 +4,8 @@
 }
 
 .member-list-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 32px;
+  margin-bottom: 32px;
   border: solid 1px #d4d6dd;;
   border-radius: 5px;
 }
@@ -36,13 +36,16 @@
     align-items: center;
 }
 
+.no-padding {
+    padding: 0;
+}
+
 .icon-color {
     color: rgba(57, 69, 146, 0.5);
 }
 
 .member-info-title {
     font-weight: bold;
-    padding-bottom: 16px;
 }
 
 .comma:not(:last-of-type):after {
