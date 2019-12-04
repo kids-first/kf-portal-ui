@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
+import noop from 'lodash/noop';
 
 import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
@@ -10,6 +11,7 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import { withApi } from 'services/api';
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
 import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { sqonShape } from 'shapes';
 
 /**
  * This component also assumes we are only modifying the first level of sqon
@@ -21,9 +23,9 @@ const Filter = compose(withApi)(
       op: 'and',
       content: [],
     },
-    onSubmit = () => {},
-    onCancel = () => {},
-    onBack = () => {},
+    onSubmit = noop,
+    onCancel = noop,
+    onBack = noop,
     field,
     arrangerProjectId = ARRANGER_PROJECT_ID,
     arrangerProjectIndex = ARRANGER_API_PARTICIPANT_INDEX_NAME,
@@ -100,11 +102,8 @@ const Filter = compose(withApi)(
   ),
 );
 
-Filter.proptype = {
-  initialSqon: PropTypes.shape({
-    op: PropTypes.string,
-    content: PropTypes.array,
-  }),
+Filter.propTypes = {
+  initialSqon: sqonShape,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   onBack: PropTypes.func,

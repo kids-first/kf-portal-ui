@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, withProps } from 'recompose';
-import noop from 'lodash/noop';
+import autobind from 'auto-bind-es5';
+import { Dropdown } from 'antd';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 
-import { withApi } from 'services/api';
+import { sqonShape } from 'shapes';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Column from 'uikit/Column';
-import Dropdown, { withDropdownState } from 'uikit/Dropdown';
 import { arrangerProjectId } from 'common/injectGlobals';
-import { SQONdiff, styleComponent } from 'components/Utils';
+import { SQONdiff } from 'components/Utils';
 import Filter from './Filter';
-import CategoryRowDisplay from './CategoryRowDisplay';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+
+import CategoryMenu from './CategoryMenu';
+
+import '../CohortBuilder.css';
 
 const trackCategoryAction = ({ category, subCategory, action, label }) => {
   trackUserInteraction({
@@ -24,184 +26,118 @@ const trackCategoryAction = ({ category, subCategory, action, label }) => {
   });
 };
 
-/**
- * Flip dropdown side on smaller screens
- */
-class OptionsWrapper extends React.Component {
+export default class Category extends React.Component {
   constructor(props) {
     super(props);
-    this.ref = React.createRef();
+    this.state = {
+      visible: false,
+      selectedField: null,
+    };
+    this.initialSqon = props.sqon;
+    autobind(this);
+  }
+
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    sqon: sqonShape.isRequired,
+    color: PropTypes.string.isRequired,
+    fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onSqonUpdate: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+  };
+
+  handleDropdownVisibleChange(visible) {
+    this.setState({ visible });
+  }
+
+  handleMenuItemSelected(selectedField) {
+    this.setState({ selectedField });
+  }
+
+  handleCloseFilter(keepCategoryOpen = false) {
+    this.setState({
+      selectedField: null,
+      visible: keepCategoryOpen,
+    });
+    this.props.onClose();
+  }
+
+  renderMenu(extendedMapping) {
+    const { fields, sqon } = this.props;
+    return (
+      <CategoryMenu
+        fields={fields}
+        sqon={sqon}
+        extendedMapping={extendedMapping}
+        onMenuItemSelected={this.handleMenuItemSelected}
+      />
+    );
+  }
+
+  renderFilter(field, title = field) {
+    if (!field) return null;
+
+    const { sqon, onSqonUpdate } = this.props;
+
+    return (
+      <Filter
+        initialSqon={sqon}
+        onSubmit={sqon => {
+          const addedSQON = SQONdiff(sqon, this.initialSqon);
+          trackCategoryAction({
+            category: title,
+            action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+            label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
+          });
+          this.initialSqon = sqon;
+          onSqonUpdate(sqon);
+          this.handleCloseFilter(false);
+        }}
+        onBack={() => {
+          this.handleCloseFilter(true);
+        }}
+        onCancel={() => {
+          this.handleCloseFilter(false);
+        }}
+        field={field}
+        arrangerProjectId={arrangerProjectId}
+        arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+      />
+    );
   }
 
   render() {
-    const { children } = this.props;
-    const boundingRect = this.ref.current && this.ref.current.getBoundingClientRect();
-    const shouldFlip = boundingRect
-      ? boundingRect.x + boundingRect.width > window.innerWidth
-      : false;
+    // TODO: either replace `children` by `Icon` and `iconProps`,
+    //  or let `children` be the whole content of `Dropdown`
+    const { children, title, color } = this.props;
+    const { visible, selectedField } = this.state;
 
     return (
-      <div
-        className={`cb-category-options ${shouldFlip ? 'shouldFlip' : ''}`}
-        ref={el => (this.ref = el)}
+      <ExtendedMappingProvider
+        projectId={arrangerProjectId}
+        graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
       >
-        {children}
-      </div>
+        {({ extendedMapping = [] }) => {
+          const overlay = selectedField
+            ? this.renderFilter(selectedField, title)
+            : this.renderMenu(extendedMapping);
+
+          return (
+            <Dropdown
+              overlay={overlay}
+              trigger={['click']}
+              visible={visible}
+              onVisibleChange={this.handleDropdownVisibleChange}
+              overlayClassName="cb-category-overlay-container"
+            >
+              <Column className="cb-category-button" style={{ borderTopColor: color }}>
+                {children}
+                <h3>{title}</h3>
+              </Column>
+            </Dropdown>
+          );
+        }}
+      </ExtendedMappingProvider>
     );
   }
 }
-
-const ItemWrapper = styleComponent('div', 'cb-category-ItemWrapper');
-
-const CategoryRow = compose(withApi)(({ api, field, active }) => (
-  <ExtendedMappingProvider
-    api={api}
-    projectId={arrangerProjectId}
-    graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-    field={field}
-    useCache={true}
-  >
-    {({ extendedMapping = [] }) => (
-      <CategoryRowDisplay
-        active={active}
-        title={extendedMapping[0] ? extendedMapping[0].displayName : field}
-      />
-    )}
-  </ExtendedMappingProvider>
-));
-
-const Category = compose(
-  withDropdownState,
-  withProps(({ fields, currentSearchField = '', category, currentCategory }) => {
-    const index = fields.indexOf(currentSearchField);
-    return index > -1 && category === currentCategory
-      ? { showExpanded: true, activeIndex: index }
-      : {};
-  }),
-)(
-  ({
-    title,
-    children,
-    color,
-    toggleDropdown,
-    isDropdownVisible,
-    setDropdownVisibility,
-    activeIndex,
-    setExpanded = noop,
-    showExpanded,
-    fields,
-    setActiveCategory,
-    sqon = {
-      op: 'and',
-      content: [],
-    },
-    onSqonUpdate = noop,
-    onClose = noop,
-    category = '',
-  }) => {
-    const isFieldInSqon = fieldId =>
-      sqon.content.some(({ content: { field } }) => field === fieldId);
-
-    const currentSQON = sqon;
-    const isOpen = isDropdownVisible || activeIndex >= 0;
-
-    return (
-      <Dropdown
-        {...{
-          multiLevel: true,
-          onOuterClick: () => {
-            setActiveCategory({ category, fieldName: '' });
-            setDropdownVisibility(false);
-            onClose();
-            trackCategoryAction({ category: title, action: 'Close' });
-          },
-          isOpen,
-          onToggle: (...args) => {
-            trackCategoryAction({ category: title, action: !isDropdownVisible ? 'Open' : 'Close' });
-            toggleDropdown(...args);
-          },
-          setActiveIndex: index => setActiveCategory({ fieldName: fields[index], category }),
-          activeIndex,
-          setExpanded,
-          showExpanded: showExpanded
-            ? (...args) => {
-                showExpanded(...args);
-                trackCategoryAction({
-                  category: title,
-                  subCategory: fields[args.item.key],
-                  action: 'Open',
-                });
-              }
-            : undefined,
-          showArrow: false,
-          items: (fields || []).map(field => (
-            <CategoryRow active={isFieldInSqon(field)} field={field} />
-          )),
-          expandedItems: (fields || []).map((field, i) => (
-            <Filter
-              initialSqon={sqon}
-              onSubmit={sqon => {
-                let addedSQON = SQONdiff(sqon, currentSQON);
-                trackCategoryAction({
-                  category: title,
-                  action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
-                  label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
-                });
-                onSqonUpdate(sqon);
-                setDropdownVisibility(false);
-                onClose();
-              }}
-              onBack={() => {
-                onClose();
-              }}
-              onCancel={() => {
-                setDropdownVisibility(false);
-                onClose();
-              }}
-              field={field}
-              arrangerProjectId={arrangerProjectId}
-              arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-            />
-          )),
-          ContainerComponent: ({ children, ...props }) => (
-            <Column
-              {...props}
-              style={{
-                flex: '1',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRight: '1px solid #d4d6dd',
-                borderTop: `4px solid ${color ? color : 'white'}`,
-                position: 'relative',
-                whiteSpace: 'nowrap',
-                zIndex: '1',
-              }}
-            >
-              {children}
-            </Column>
-          ),
-          ItemWrapperComponent: ItemWrapper,
-          OptionsContainerComponent: OptionsWrapper,
-        }}
-      >
-        <Column className={`cb-category-Button ${isOpen ? 'isOpen' : ''}`}>
-          {' '}
-          {children}
-          <h3>{title}</h3>
-        </Column>
-      </Dropdown>
-    );
-  },
-);
-
-Category.propTypes = {
-  title: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  sqon: PropTypes.object.isRequired,
-  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
-  currentSearchField: PropTypes.string,
-  onClose: PropTypes.func,
-  onSqonUpdate: PropTypes.func,
-};
-
-export default Category;

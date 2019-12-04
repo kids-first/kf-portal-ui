@@ -1,5 +1,6 @@
 import React from 'react';
 import autobind from 'auto-bind-es5';
+
 import SearchAll from '../SearchAll';
 import Category from './Category';
 import ActionCategory from './ActionCategory';
@@ -19,7 +20,7 @@ import { store } from '../../../store';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
 import theme from 'theme/defaultTheme';
 
-import './styles.scss';
+import '../CohortBuilder.css';
 
 // Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.
 //  Check fields on display to make sure they are in alphabetical order.
@@ -178,10 +179,11 @@ export default class Categories extends React.Component {
 
   render() {
     const { sqon } = this.props;
-    const { currentSearchField, currentCategory } = this.state;
+    const { currentSearchField } = this.state;
+
 
     return (
-      <Row className="virtual-Studies-categories">
+      <Row className="cb-categories-content">
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
@@ -198,9 +200,6 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.quickSearch}
           currentSearchField={currentSearchField}
           color={theme.filterPurple}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.quickSearch}
-          currentCategory={currentCategory}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
         </Category>
@@ -212,9 +211,6 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.study}
           currentSearchField={currentSearchField}
           color={theme.studyRed}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.study}
-          currentCategory={currentCategory}
         >
           <StudyIcon fill={theme.studyRed} />
         </Category>
@@ -226,9 +222,6 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.demographic}
           currentSearchField={currentSearchField}
           color={theme.demographicPurple}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.demographic}
-          currentCategory={currentCategory}
         >
           <DemographicIcon fill={theme.demographicPurple} width="14px" height="17px" />
         </Category>
@@ -240,9 +233,6 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.clinical}
           currentSearchField={currentSearchField}
           color={theme.clinicalBlue}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.clinical}
-          currentCategory={currentCategory}
         >
           <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
         </Category>
@@ -254,9 +244,6 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.biospecimen}
           currentSearchField={currentSearchField}
           color={theme.biospecimenOrange}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.biospecimen}
-          currentCategory={currentCategory}
         >
           <BiospecimenIcon fill={theme.biospecimenOrange} />
         </Category>
@@ -268,13 +255,9 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.availableData}
           currentSearchField={currentSearchField}
           color={theme.dataBlue}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.availableData}
-          currentCategory={currentCategory}
         >
           <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>
-
         {isFeatureEnabled('searchByIds') && (
           <ActionCategory
             title="Upload IDs"

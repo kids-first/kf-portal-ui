@@ -36,6 +36,13 @@
   background-color: transparent;
 }
 
+.cb-contentBar .cb-categories-content {
+  height: 72px;
+  width: 100%;
+  border-left: 1px solid #d4d6dd;
+  background-color: white;
+}
+
 .cb-modalContentSection {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -119,24 +126,52 @@
   background-color: #f4f5f8;
 }
 
-.cb-category-Button {
+.cb-category-button {
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
+  border-top: 4px solid transparent;
+  border-right: 1px solid rgb(212, 214, 221);
+  cursor: pointer;
 }
-.cb-category-Button:hover {
-  background-color: #f4f5f8;
-}
-.cb-category-Button.isOpen {
+.cb-category-button:hover {
   background-color: #f4f5f8;
   box-shadow: 0 0 5.9px 0.1px #bbbbbb;
 }
-.cb-category-Button h3 {
+.cb-category-button h3 {
   margin: 7px 0 0 0;
   text-align: center;
   font-family: Montserrat, sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #404c9a;
+  white-space: normal;
+}
+
+/* Category dropdown content */
+.cb-category-overlay-container {
+  box-shadow: rgb(187, 187, 187) 0px 0px 5.9px 0.1px;
+  border-radius: 5px;
+}
+.cb-category-overlay-container > ul {
+  border-radius: 5px;
+}
+.cb-category-overlay-container .ant-menu-item.cb-category-menuItem {
+  min-width: 282px;
+  margin: 0;
+  padding: 8px 20px;
+  height: 34px;
+  line-height: 20px;
+
+  font-size: 12px;
+  font-family: Montserrat, sans-serif;
+  color: rgb(52, 52, 52);
+  font-weight: 500;
+  box-sizing: border-box;
+
+  transition: none;
+}
+.cb-category-overlay-container .ant-menu-item.cb-category-menuItem:hover {
+  background-color: rgb(244, 245, 248);
 }
