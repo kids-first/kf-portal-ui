@@ -30,7 +30,6 @@ export default class Category extends React.Component {
     color: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSqonUpdate: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
   };
 
   handleDropdownVisibleChange(visible) {
@@ -46,7 +45,6 @@ export default class Category extends React.Component {
       selectedField: null,
       visible: keepCategoryOpen,
     });
-    this.props.onClose();
   }
 
   renderMenu(extendedMapping) {

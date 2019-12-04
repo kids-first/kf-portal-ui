@@ -41,7 +41,7 @@ const QueryResultsBody = ({
               <label>
                 <input
                   type="checkbox"
-                  checked={selections[field.name].indexOf(key) > -1}
+                  checked={selections[field.name] && selections[field.name].indexOf(key) > -1}
                   className="selection"
                   onChange={evt => {
                     onSelectionChange(evt, field, key);

@@ -129,24 +129,9 @@ const CATEGORY_FIELDS = {
   ],
 };
 
-const CATEGORY_NAMES = {
-  quickSearch: 'quickSearch',
-  study: 'study',
-  clinical: 'clinical',
-  biospecimen: 'biospecimen',
-  demographic: 'demographic',
-  availableData: 'availableData',
-};
-
-const excludedCategories = ['searchAll', 'quickSearch'];
-
 export default class Categories extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentSearchField: '',
-      currentCategory: null,
-    };
     this.initialSqon = props.sqon;
     registerModal('SearchByIdModal', SearchByIdModal);
     autobind(this);
@@ -167,45 +152,21 @@ export default class Categories extends React.Component {
 
   handleSqonUpdate(title, ...args) {
     this.trackCategoryAction(title);
-
-    this.setState({ currentSearchField: '' });
     this.props.onSqonUpdate(...args);
-  }
-
-  // searching should not open quick filters
-  handleSearchField(fieldName) {
-    const currentCategoryKey = Object.keys(CATEGORY_FIELDS)
-      .filter(key => !excludedCategories.includes(key))
-      .find(key => CATEGORY_FIELDS[key].includes(fieldName));
-    const currentCategory = CATEGORY_NAMES[currentCategoryKey];
-    this.setState({ currentSearchField: fieldName, currentCategory });
-  }
-
-  handleCategoryClose() {
-    this.setActiveCategory({ fieldName: '', category: null });
   }
 
   handleUploadIdsClick() {
     store.dispatch(openModal('SearchByIdModal', {}, 'search-by-id-modal'));
   }
 
-  setActiveCategory = ({ category, fieldName }) =>
-    this.setState({
-      currentCategory: category,
-      currentSearchField: fieldName,
-    });
-
   render() {
     const { sqon } = this.props;
-    const { currentSearchField } = this.state;
-
 
     return (
       <Row className="cb-categories-content">
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
-          onSearchField={this.handleSearchField}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.searchAll}
           color={theme.filterViolet}
@@ -214,9 +175,7 @@ export default class Categories extends React.Component {
           title="Quick Filters"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.quickSearch}
-          currentSearchField={currentSearchField}
           color={theme.filterPurple}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
@@ -225,9 +184,7 @@ export default class Categories extends React.Component {
           title="Study"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.study}
-          currentSearchField={currentSearchField}
           color={theme.studyRed}
         >
           <StudyIcon fill={theme.studyRed} />
@@ -236,9 +193,7 @@ export default class Categories extends React.Component {
           title="Demographic"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.demographic}
-          currentSearchField={currentSearchField}
           color={theme.demographicPurple}
         >
           <DemographicIcon fill={theme.demographicPurple} width="14px" height="17px" />
@@ -247,9 +202,7 @@ export default class Categories extends React.Component {
           title="Clinical"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.clinical}
-          currentSearchField={currentSearchField}
           color={theme.clinicalBlue}
         >
           <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
@@ -258,9 +211,7 @@ export default class Categories extends React.Component {
           title="Biospecimens"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.biospecimen}
-          currentSearchField={currentSearchField}
           color={theme.biospecimenOrange}
         >
           <BiospecimenIcon fill={theme.biospecimenOrange} />
@@ -269,9 +220,7 @@ export default class Categories extends React.Component {
           title="Available Data"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.availableData}
-          currentSearchField={currentSearchField}
           color={theme.dataBlue}
         >
           <FileIcon width="11px" height="14px" fill={theme.dataBlue} />

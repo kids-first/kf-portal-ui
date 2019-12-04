@@ -107,7 +107,7 @@ Filter.propTypes = {
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   onBack: PropTypes.func,
-  field: PropTypes.string.required,
+  field: PropTypes.string.isRequired,
   arrangerProjectId: PropTypes.string,
   arrangerProjectIndex: PropTypes.string,
 };

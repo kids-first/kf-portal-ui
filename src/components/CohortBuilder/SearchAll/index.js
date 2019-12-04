@@ -5,23 +5,25 @@ import { compose } from 'recompose';
 import autobind from 'auto-bind-es5';
 import memoizeOne from 'memoize-one';
 import { debounce, isObject, mapKeys } from 'lodash';
-import { SQONdiff } from '../../Utils';
+import Downshift from 'downshift';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
-
-import { withApi } from 'services/api';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
+
+import { SQONdiff } from '../../Utils';
+import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import Filter from '../Categories/Filter';
 
 import QueriesResolver from '../QueriesResolver';
 import { searchAllQueries } from './queries';
 import QueryResults from './QueryResults';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { sqonShape } from 'shapes';
 
 import './SearchAll.css';
-import Downshift from 'downshift';
 
 const trackCohortBuilderAction = ({ action, label, category }) => {
   trackUserInteraction({
@@ -74,43 +76,67 @@ const getFilteredFields = memoizeOne((query, fields, aggFieldsValues) => {
   return filterFields(query, orderedFields);
 });
 
+const DISPLAY_MODE = {
+  CLOSED: 'CLOSED',
+  RESULTS: 'RESULTS',
+  FILTER: 'FILTER',
+};
+
 class SearchAll extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       query: '',
       debouncedQuery: '',
+      fieldName: '',
       selections: initializeSelection(props.fields, props.sqon),
-      isOpen: false,
+      displayMode: DISPLAY_MODE.CLOSED,
     };
     autobind(this);
     this.setQueryDebounced = debounce(this.setQueryDebounced, 200);
   }
 
+  static propTypes = {
+    title: PropTypes.string,
+    sqon: sqonShape.isRequired,
+    onSqonUpdate: PropTypes.func.isRequired,
+    fields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    color: PropTypes.string,
+  };
+
+  static defaultProps = {
+    color: 'white',
+    title: 'search',
+  };
+
   close() {
     this.setState({
       query: '',
       debouncedQuery: '',
-      isOpen: false,
+      fieldName: '',
+      displayMode: DISPLAY_MODE.CLOSED,
+      isFilterShown: false,
       selections: {},
     });
   }
 
   setQuery(query) {
-    const { isOpen } = this.state;
+    const { displayMode } = this.state;
     const { fields, sqon } = this.props;
     const selections =
-      !isOpen && query.length > 0 ? initializeSelection(fields, sqon) : this.state.selections;
+      displayMode !== DISPLAY_MODE.CLOSED && query.length > 0
+        ? initializeSelection(fields, sqon)
+        : this.state.selections;
 
     this.setState({
       query,
-      isOpen: query !== '',
+      displayMode: query === '' ? DISPLAY_MODE.CLOSED : DISPLAY_MODE.RESULTS,
       selections,
     });
 
     this.setQueryDebounced({
       debouncedQuery: query,
-      isOpen: query !== '',
+      displayMode: query === '' ? DISPLAY_MODE.CLOSED : DISPLAY_MODE.RESULTS,
     });
   }
 
@@ -141,6 +167,70 @@ class SearchAll extends React.Component {
       action: TRACKING_EVENTS.actions.clear,
       label: debouncedQuery,
     });
+  }
+
+  renderSearchResults(isLoading, data, selections) {
+    const { fields } = this.props;
+    const { debouncedQuery } = this.state;
+
+    // filter both the fields and their buckets
+    //  to keep only the field values matching the query
+    const filteredFields = debouncedQuery ? getFilteredFields(debouncedQuery, fields, data[0]) : [];
+
+    return (
+      <QueryResults
+        query={debouncedQuery}
+        isLoading={isLoading}
+        filteredFields={filteredFields}
+        selections={selections}
+        onSelectionChange={this.handleSelectionChange}
+        onApplyFilter={this.handleApplyFilter}
+        onClearQuery={this.handleClearQuery}
+        onSearchField={this.handleSearchByField}
+      />
+    );
+  }
+
+  renderFilter() {
+    const { sqon, onSqonUpdate } = this.props;
+    const { fieldName } = this.state;
+
+    return (
+      <div className="results-container open">
+        <Filter
+          initialSqon={sqon}
+          onSubmit={sqon => {
+            onSqonUpdate(fieldName, sqon);
+            this.close();
+          }}
+          onBack={() => {
+            this.close();
+          }}
+          onCancel={() => {
+            this.close();
+          }}
+          field={fieldName}
+          arrangerProjectId={arrangerProjectId}
+          arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+        />
+      </div>
+    );
+  }
+
+  renderOverlay(isLoading, data) {
+    const { selections, displayMode } = this.state;
+
+    switch (displayMode) {
+      case DISPLAY_MODE.CLOSED:
+        return null;
+      case DISPLAY_MODE.RESULTS:
+        return this.renderSearchResults(isLoading, data, selections);
+      case DISPLAY_MODE.FILTER:
+        return this.renderFilter();
+      default:
+        console.warn(`[SearchAll] Unhandled display mode ${displayMode}`);
+        return null;
+    }
   }
 
   handleSelectionChange(evt, field, value) {
@@ -185,7 +275,7 @@ class SearchAll extends React.Component {
 
   handleApplyFilter() {
     const { sqon, fields, onSqonUpdate } = this.props;
-    const { selections } = this.state;
+    const { selections, fieldName } = this.state;
 
     const newSqonPerField = fields
       .filter(field => selections[field].length > 0)
@@ -208,11 +298,11 @@ class SearchAll extends React.Component {
         .concat(newSqonPerField),
     };
 
-    onSqonUpdate(newSqon);
+    onSqonUpdate(fieldName, newSqon);
 
     this.close();
     /**
-     * trakcs both the added SQON and the final result/composite sqon
+     * tracks both the added SQON and the final result/composite sqon
      * after the new filters are applied
      */
     trackCohortBuilderAction({
@@ -223,13 +313,19 @@ class SearchAll extends React.Component {
   }
 
   handleSearchByField(fieldName) {
-    this.props.onSearchField(fieldName, this.state.selections[fieldName]);
-    this.close();
+    this.setState({
+      query: '',
+      debouncedQuery: '',
+      displayMode: DISPLAY_MODE.FILTER,
+      fieldName,
+      isFilterShown: false,
+      selections: {},
+    });
   }
 
   render() {
     const { api, sqon, color, title, fields } = this.props;
-    const { query, debouncedQuery, selections, isOpen } = this.state;
+    const { query, displayMode } = this.state;
 
     return (
       // Extract the metadata & data fetching to a component
@@ -262,18 +358,16 @@ class SearchAll extends React.Component {
                   return <LoadingSpinner color="#a9adc0" size="30px" />;
                 }
 
-                // filter both the fields and their buckets
-                //  to keep only the field values matching the query
-                const filteredFields = debouncedQuery
-                  ? getFilteredFields(debouncedQuery, fields, data[0])
-                  : [];
-
                 return (
-                  <Downshift isOpen={isOpen} onOuterClick={() => this.setState({ isOpen: false })}>
-                    {({ getRootProps, isOpen }) => (
+                  <Downshift
+                    isOpen={displayMode !== DISPLAY_MODE.CLOSED}
+                    onOuterClick={() => this.close()}
+                  >
+                    {({ getRootProps }) => (
                       <div
                         className="search-all-filter"
-                        {...getRootProps({ refKey: 'innerRef' }, { suppressRefError: true })}
+                        // TODO : REMOVE ref stuff?
+                        {...getRootProps({ refKey: 'ref' }, { suppressRefError: true })}
                       >
                         <Column
                           className="query-container"
@@ -297,18 +391,7 @@ class SearchAll extends React.Component {
                             )}
                           </div>
                         </Column>
-                        {isOpen ? (
-                          <QueryResults
-                            query={debouncedQuery}
-                            isLoading={isLoading}
-                            filteredFields={filteredFields}
-                            selections={selections}
-                            onSelectionChange={this.handleSelectionChange}
-                            onApplyFilter={this.handleApplyFilter}
-                            onClearQuery={this.handleClearQuery}
-                            onSearchField={this.handleSearchByField}
-                          />
-                        ) : null}
+                        {this.renderOverlay(isLoading, data)}
                       </div>
                     )}
                   </Downshift>
@@ -321,18 +404,5 @@ class SearchAll extends React.Component {
     );
   }
 }
-
-SearchAll.defaultProps = {
-  color: 'white',
-  title: 'search',
-};
-
-SearchAll.propTypes = {
-  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSearchField: PropTypes.func.isRequired,
-  sqon: PropTypes.object.isRequired,
-  color: PropTypes.string,
-  title: PropTypes.string,
-};
 
 export default compose(withApi)(SearchAll);
