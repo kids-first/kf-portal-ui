@@ -2,28 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Dropdown } from 'antd';
 import autobind from 'auto-bind-es5';
+import noop from 'lodash/noop';
 
 import { DropdownArrowIcon } from 'uikit/Dropdown';
 
 export default class HeaderMenu extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    menuItems: PropTypes.arrayOf(
-      PropTypes.oneOf([
-        PropTypes.element,
-        PropTypes.shape({
-          key: PropTypes.string.isRequired,
-          label: PropTypes.string.isRequired,
-        }),
-      ]).isRequired,
-    ).isRequired,
-    onClick: PropTypes.func.isRequired,
+    menuItems: PropTypes.arrayOf(PropTypes.element).isRequired,
+    onClick: PropTypes.func,
     showArrow: PropTypes.bool,
   };
 
   static defaultProps = {
     className: '',
     showArrow: true,
+    onClick: noop,
   };
 
   constructor(props) {

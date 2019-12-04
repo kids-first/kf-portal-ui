@@ -73,7 +73,7 @@ class UserMenu extends React.Component {
     const menuItems = [
       <Menu.Item key="profile">My Profile</Menu.Item>,
       <Menu.Item key="settings">Settings</Menu.Item>,
-      <Menu.Divider />,
+      <Menu.Divider key="divider 1" />,
       <Menu.Item key="logout">Logout</Menu.Item>,
     ];
 

@@ -452,7 +452,6 @@ export default compose(withApi, injectState, connect(null, mapDispatchToProps))(
 const DownloadButtonUI = ({
   onClick,
   content = () => 'Download',
-  buttonRef = React.createRef(),
   disabled = false,
   onBlur = noop,
 }) => {
@@ -460,9 +459,6 @@ const DownloadButtonUI = ({
     <TealActionButton
       className="downloadButton"
       onClick={onClick}
-      innerRef={ref => {
-        buttonRef.current = ref;
-      }}
       disabled={disabled}
       onBlur={onBlur}
     >

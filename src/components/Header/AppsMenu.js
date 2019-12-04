@@ -14,33 +14,33 @@ import HeaderMenu from './HeaderMenu';
 
 export default () => {
   const menuItems = [
-    <Menu.Item>
+    <Menu.Item key="Data Resource Portal">
       <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
       Data Resource Portal
     </Menu.Item>,
 
-    <Menu.Item>
+    <Menu.Item key="Website">
       <Link to="https://kidsfirstdrc.org/" target="_blank">
         <AllAppsWebsiteIcon size="14px" />
         Website
       </Link>
     </Menu.Item>,
 
-    <Menu.Item>
+    <Menu.Item key="Studies and Access">
       <Link to={`${kfWebRoot}/support/studies-and-access/`} target="_blank">
         <AllAppsStudiesIcon size="15px" />
         Studies and Access
       </Link>
     </Menu.Item>,
 
-    <Menu.Item>
+    <Menu.Item key="Support">
       <Link to={`${kfWebRoot}/support/getting-started/`} target="_blank">
         <AllAppsSupportIcon size="15px" />
         Support
       </Link>
     </Menu.Item>,
 
-    <Menu.Item>
+    <Menu.Item key="Contact">
       <Link to={`${kfWebRoot}/contact`} target="_blank">
         <AllAppsContactIcon width="16px" height="11px" />
         Contact
