@@ -12,8 +12,10 @@ import ClinicalIcon from 'icons/ClinicalIcon';
 import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
+import { SQONdiff } from 'components/Utils';
 import { registerModal } from '../../Modal/modalFactory';
 import { isFeatureEnabled } from 'common/featuresToggles';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { openModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
@@ -145,11 +147,27 @@ export default class Categories extends React.Component {
       currentSearchField: '',
       currentCategory: null,
     };
+    this.initialSqon = props.sqon;
     registerModal('SearchByIdModal', SearchByIdModal);
     autobind(this);
   }
 
-  handleSqonUpdate(...args) {
+  trackCategoryAction(title) {
+    const { sqon } = this.props;
+    const addedSQON = SQONdiff(sqon, this.initialSqon);
+
+    trackUserInteraction({
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
+      action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+      label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
+    });
+
+    this.initialSqon = sqon;
+  }
+
+  handleSqonUpdate(title, ...args) {
+    this.trackCategoryAction(title);
+
     this.setState({ currentSearchField: '' });
     this.props.onSqonUpdate(...args);
   }

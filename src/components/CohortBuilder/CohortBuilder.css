@@ -175,3 +175,12 @@
 .cb-category-overlay-container .ant-menu-item.cb-category-menuItem:hover {
   background-color: rgb(244, 245, 248);
 }
+
+.cb-category-overlay-container
+  .ant-menu-item.cb-category-menuItem
+  .cb-category-menuItem-icon-rightArrow
+  svg {
+  vertical-align: middle;
+  top: -2px;
+  position: relative;
+}

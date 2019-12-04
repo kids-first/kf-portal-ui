@@ -5,26 +5,13 @@ import { Dropdown } from 'antd';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
 
 import { sqonShape } from 'shapes';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Column from 'uikit/Column';
 import { arrangerProjectId } from 'common/injectGlobals';
-import { SQONdiff } from 'components/Utils';
 import Filter from './Filter';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
-
 import CategoryMenu from './CategoryMenu';
 
 import '../CohortBuilder.css';
-
-const trackCategoryAction = ({ category, subCategory, action, label }) => {
-  trackUserInteraction({
-    category: `${
-      TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters
-    } - ${category} ${subCategory ? '- ' + subCategory : ''}`,
-    action,
-    label,
-  });
-};
 
 export default class Category extends React.Component {
   constructor(props) {
@@ -83,14 +70,7 @@ export default class Category extends React.Component {
       <Filter
         initialSqon={sqon}
         onSubmit={sqon => {
-          const addedSQON = SQONdiff(sqon, this.initialSqon);
-          trackCategoryAction({
-            category: title,
-            action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
-            label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
-          });
-          this.initialSqon = sqon;
-          onSqonUpdate(sqon);
+          onSqonUpdate(title, sqon);
           this.handleCloseFilter(false);
         }}
         onBack={() => {
@@ -107,8 +87,6 @@ export default class Category extends React.Component {
   }
 
   render() {
-    // TODO: either replace `children` by `Icon` and `iconProps`,
-    //  or let `children` be the whole content of `Dropdown`
     const { children, title, color } = this.props;
     const { visible, selectedField } = this.state;
 

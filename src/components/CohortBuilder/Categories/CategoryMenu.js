@@ -7,6 +7,7 @@ import { Menu } from 'antd';
 import { sqonShape } from 'shapes';
 import Row from 'uikit/Row';
 import CheckmarkIcon from 'icons/CheckmarkIcon';
+import { extendedMappingShape } from 'shapes';
 
 import '../CohortBuilder.css';
 
@@ -19,7 +20,7 @@ export default class CategoryMenu extends React.Component {
   static propTypes = {
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     sqon: sqonShape.isRequired,
-    extendedMapping: PropTypes.arrayOf(PropTypes.any),
+    extendedMapping: extendedMappingShape,
     onMenuItemSelected: PropTypes.func.isRequired,
   };
 
@@ -36,11 +37,15 @@ export default class CategoryMenu extends React.Component {
 
     return (
       <Menu.Item className="cb-category-menuItem" key={field}>
-        <Row>
-          {fieldIsInSqon ? <CheckmarkIcon style={{ marginRight: '5px' }} /> : null}
-          {this.getFieldDisplayName(field)}
+        <Row style={{ justifyContent: 'space-between' }}>
+          <div>
+            {fieldIsInSqon ? <CheckmarkIcon style={{ margin: '0 5px 4px 0px' }} /> : null}
+            {this.getFieldDisplayName(field)}
+          </div>
+          <div className="cb-category-menuItem-icon-rightArrow">
+            <RightIcon />
+          </div>
         </Row>
-        <RightIcon />
       </Menu.Item>
     );
   }
