@@ -14,7 +14,7 @@ const ProfileReadOnly = props => {
     <Card
       loading={isProfileUpdating}
       title={
-        <Title level={1} className={'card-title'}>
+        <Title level={3} strong>
           Profile
         </Title>
       }
@@ -30,21 +30,21 @@ const ProfileReadOnly = props => {
     >
       <Row>
         <Col span={24}>
-          <Title level={4}>My Bio</Title>
+          <Title level={3}>My Bio</Title>
           <Text className={'bio-story'}>{data.bio || bioMsgWhenEmpty}</Text>
           <Divider className={'profile-divider'} />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Title level={4}>My Story</Title>
+          <Title level={3}>My Story</Title>
           <Text className={'bio-story'}>{data.story || storyMsgWhenEmpty}</Text>
           <Divider className={'profile-divider'} />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Title level={4}>Research Interests</Title>
+          <Title level={3}>Research Interests</Title>
           {Array.isArray(data.interests) && data.interests.length > 0 ? (
             <ResearchInterest interests={data.interests} />
           ) : (

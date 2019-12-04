@@ -5,14 +5,30 @@ import ContactInformationEditable from 'components/UserProfile/ContactInformatio
 import FindMeEditable from './FindMeEditable';
 import './style.css';
 import style from './style';
+import { findMeFields } from './constants';
 
 const { Title } = Typography;
 
 const reshapeForProfile = fields => {
-  if (fields.roles && !Array.isArray(fields.roles)) {
-    return { ...fields, roles: [fields.roles] };
-  }
-  return fields;
+  const { entries } = Object;
+  return entries(fields).reduce(
+    (acc, [key, value]) => {
+      if (key === 'roles' && !Array.isArray(value)) {
+        return {
+          ...acc,
+          roles: [value],
+        };
+      }
+      if (findMeFields.includes(key)) {
+        return {
+          ...acc,
+          [key]: (value || {}).inputVal,
+        };
+      }
+      return acc;
+    },
+    { ...fields },
+  );
 };
 
 class ContactEditForm extends Component {
@@ -29,7 +45,6 @@ class ContactEditForm extends Component {
     const { form, onClickSaveCb, updateProfileCb } = this.props;
 
     const fieldsValues = form.getFieldsValue();
-
     updateProfileCb(reshapeForProfile(fieldsValues));
     onClickSaveCb();
   };
@@ -40,29 +55,31 @@ class ContactEditForm extends Component {
       <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
           loading={isProfileUpdating}
-          title={
-            <Title level={1} className={'card-title'}>
-              Contact Information
-            </Title>
-          }
+          title={<Title level={3}>Contact Information</Title>}
           className={'card'}
-          bodyStyle={style.cardBodyStyle}
+          bodyStyle={style.cardHeadStyleWhenEditing}
           extra={
             <Fragment>
-              <Button icon="edit" shape="round" onClick={onClickCancelCb}>
+              <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
                 Cancel
               </Button>
-              <Button type="primary" icon="edit" shape="round" htmlType="submit">
+              <Button
+                className={'extra-button'}
+                type="primary"
+                icon="check"
+                shape="round"
+                htmlType="submit"
+              >
                 Save
               </Button>
             </Fragment>
           }
         >
           <Row>
-            <Col span={16} className={'main-left-col'}>
+            <Col span={12} className={'main-left-col'}>
               <ContactInformationEditable data={data} parentForm={form} />
             </Col>
-            <Col span={8} className={'find-me-col'}>
+            <Col span={12} className={'find-me-col'}>
               <FindMeEditable parentForm={form} data={data} />
             </Col>
           </Row>

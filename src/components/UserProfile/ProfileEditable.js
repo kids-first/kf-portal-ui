@@ -52,19 +52,19 @@ class ProfileEditable extends Component {
         <Card
           loading={isProfileUpdating}
           title={
-            <Title level={1} className={'card-title'}>
+            <Title level={3} strong>
               Profile
             </Title>
           }
           className={'card'}
           headStyle={style.cardHeadStyle}
-          bodyStyle={style.cardBodyStyle}
+          bodyStyle={style.cardHeadStyleWhenEditing}
           extra={
             <Fragment>
-              <Button icon="edit" shape="round" onClick={onClickCancelCb}>
+              <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
                 Cancel
               </Button>
-              <Button type="primary" icon="edit" shape="round" htmlType="submit">
+              <Button className={'extra-button'} type="primary" icon="check" shape="round" htmlType="submit">
                 Save
               </Button>
             </Fragment>
@@ -72,7 +72,7 @@ class ProfileEditable extends Component {
         >
           <Row>
             <Col span={24}>
-              <Title level={4}>My Bio</Title>
+              <Title level={3}>My Bio</Title>
               <Form.Item>
                 {getFieldDecorator('bio', {
                   initialValue: data.bio,
@@ -83,7 +83,7 @@ class ProfileEditable extends Component {
           </Row>
           <Row>
             <Col span={24}>
-              <Title level={4}>My Story</Title>
+              <Title level={3}>My Story</Title>
               <Form.Item>
                 {getFieldDecorator('story', {
                   initialValue: data.story,
@@ -94,7 +94,7 @@ class ProfileEditable extends Component {
           </Row>
           <Row>
             <Col span={24}>
-              <Title level={4}>Research Interests</Title>
+              <Title level={3}>Research Interests</Title>
               <ResearchInterestsEditable initialInterest={data.interests} parentForm={form} />
             </Col>
           </Row>

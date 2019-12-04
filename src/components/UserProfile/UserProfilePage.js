@@ -11,6 +11,26 @@ const KEY_SETTINGS = '#settings';
 
 const { Header, Content, Sider } = Layout;
 
+const ShowOtherUserProfile = ({ canEdit, profile, updateProfileCb, isProfileUpdating }) => {
+  return (
+    <Layout>
+      <Header className={'up-header'}>
+        <HeaderBannerContainer canEdit={canEdit} />
+      </Header>
+      <Layout>
+        <Content>
+          <AboutMe
+            canEdit={canEdit}
+            profile={profile}
+            updateProfileCb={updateProfileCb}
+            isProfileUpdating={isProfileUpdating}
+          />
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
+
 function UserProfilePage(props) {
   const {
     profile,
@@ -20,6 +40,17 @@ function UserProfilePage(props) {
     updateProfileCb,
     isProfileUpdating,
   } = props;
+
+  if (!canEdit) {
+    return (
+      <ShowOtherUserProfile
+        canEdit={canEdit}
+        profile={profile}
+        updateProfileCb={updateProfileCb}
+        isProfileUpdating={isProfileUpdating}
+      />
+    );
+  }
 
   const isAboutMeSelected = currentMenuItem === KEY_ABOUT_ME;
   const isSettingsSelected = currentMenuItem === KEY_SETTINGS;
@@ -45,7 +76,12 @@ function UserProfilePage(props) {
       </Header>
       <Layout>
         <Sider width={350} className={'up-sider'}>
-          <Menu mode="inline" defaultSelectedKeys={[currentMenuItem]} onClick={handleMenuClickCb}>
+          <Menu
+            mode="inline"
+            defaultSelectedKeys={[currentMenuItem]}
+            onClick={handleMenuClickCb}
+            className={'menu-vertical-offset'}
+          >
             <Menu.Item
               key={KEY_ABOUT_ME}
               style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}

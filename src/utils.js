@@ -26,18 +26,6 @@ export function bind(target, name, descriptor) {
   };
 }
 
-export const extractErrorMessage = (response, indexError = 0) => {
-  if (!response) {
-    return;
-  }
-  const data = response.data || {};
-  const errors = data.errors;
-  if (!Array.isArray(errors)) {
-    return;
-  }
-  return (errors[indexError] || {}).message;
-};
-
 export const getMsgFromErrorOrElse = (error, defaultIfNone = 'An Error Occurred') =>
   typeof error === 'object' && Object.prototype.hasOwnProperty.call(error, 'message')
     ? error.message
@@ -159,36 +147,20 @@ export const computeGravatarSrcFromEmail = (email, options) => {
   return `https://www.gravatar.com/avatar/${emailToHash}?s=${size}&d=${defaultImage}`;
 };
 
-// copied from https://github.com/segmentio/is-url/blob/master/index.js
-const protocolAndDomainRE = /^(?:\w+:)?\/\/(\S+)$/;
-
-const localhostDomainRE = /^localhost[\:?\d]*(?:[^\:?\d]\S*)?$/;
-const nonLocalhostDomainRE = /^[^\s\.]+\.\S{2,}$/;
 
 /**
+ * copied : https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url/43467144
  * Loosely validate a URL `string`.
  *
- * @param {String} string
+ * @param {String} str
  * @return {Boolean}
  */
-
-export function isUrl(string) {
-  if (typeof string !== 'string') {
-    return false;
-  }
-
-  const match = string.match(protocolAndDomainRE);
-  if (!match) {
-    return false;
-  }
-
-  const everythingAfterProtocol = match[1];
-  if (!everythingAfterProtocol) {
-    return false;
-  }
-
-  return (
-    localhostDomainRE.test(everythingAfterProtocol) ||
-    nonLocalhostDomainRE.test(everythingAfterProtocol)
-  );
+export function isUrl(str) {
+  const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
 }

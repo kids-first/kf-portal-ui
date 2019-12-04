@@ -44,8 +44,8 @@ const AddressEditForm = props => {
           })(<Input />)}
         </Form.Item>
       </Row>
-      <Row>
-        <Col span={12}>
+      <Row type={'flex'} justify={'space-between'}>
+        <Col span={11}>
           <Form.Item label="State/Province">
             {getFieldDecorator('state', {
               initialValue: state,
@@ -57,7 +57,7 @@ const AddressEditForm = props => {
             })(<Input />)}
           </Form.Item>
         </Col>
-        <Col span={12}>
+        <Col span={11}>
           <Form.Item label="Zip/Postal Code">
             {getFieldDecorator('zip', {
               initialValue: zip,

@@ -1,22 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { socialItems } from 'components/UserProfile/utils';
-import { Form, Input, Row } from 'antd';
+import { Form, Row, Typography } from 'antd';
 import { isUrl } from 'utils';
 import './style.css';
+import FindMeInput from 'components/UserProfile/FindMeInput';
+
+const { Title } = Typography;
 
 const validateInput = (rule, value, callback) => {
-  if (rule.field === 'orchid') {
-    callback();
-  } else if (!value || isUrl(value)) {
-    callback();
+  if (['orchid', 'github', 'twitter'].includes(rule.field)) {
+    return callback();
+  } else if (!value || !value.inputVal || isUrl(value.inputVal)) {
+    return callback();
   }
-  callback('Invalid Url');
+  return callback('Invalid Url');
 };
 
 function FindMeEditable(props) {
   const { entries } = Object;
-  const socialItemsWithSize = socialItems(18, 18);
+  const socialItemsWithSize = socialItems(28, 28);
   const socialIcons = entries(socialItemsWithSize).map(([key, value]) => {
     return {
       id: key,
@@ -30,20 +33,25 @@ function FindMeEditable(props) {
   const { getFieldDecorator } = parentForm;
 
   return (
-    <div className={'find-me-social-icons-wrapper'}>
+    <div className={'find-me-social-icons-wrapper-edit'}>
+      <Row className={'find-me-on-edit-label'}>
+        <Title level={3}>Find me on...</Title>
+      </Row>
       {socialIcons.map(item => {
         return (
           <Row key={item.id}>
-            <Form.Item label={item.label}>
+            <Form.Item>
               {getFieldDecorator(item.id, {
-                initialValue: data[item.id],
+                initialValue: { inputVal: data[item.id], protocol: '' },
                 rules: [
                   { required: false },
                   {
                     validator: validateInput,
                   },
                 ],
-              })(<Input prefix={item.icon} placeholder={item.placeHolder} />)}
+              })(
+                <FindMeInput item={item} />,
+              )}
             </Form.Item>
           </Row>
         );

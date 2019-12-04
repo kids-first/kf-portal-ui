@@ -4,6 +4,7 @@ import { Form, Input, Row, Select } from 'antd';
 import { ROLES } from 'common/constants';
 import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComplete';
 import AddressEditForm from 'components/UserProfile/AddressEditForm';
+import './style.css';
 
 const { Option } = Select;
 
@@ -118,7 +119,7 @@ class ContactInformationEditable extends Component {
             <ContactEditablePlacesAutoComplete setAddressCb={this.setNewAddress} />
           </Form.Item>
         </Row>
-        <Row>
+        <Row className={'contact-edit-address-wrapper'}>
           <AddressEditForm
             parentForm={parentForm}
             addressLine1={data.addressLine1}

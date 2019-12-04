@@ -45,8 +45,9 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           </Col>
           <Col span={12}>
             <Title
-              level={1}
+              level={2}
               style={{ color: 'white' }}
+              strong
             >{`${profile.firstName} ${profile.lastName}`}</Title>
           </Col>
         </Row>
@@ -54,7 +55,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
       {canEdit &&
       isFeatureEnabled('searchMembers') && ( // isFeatureEnabled remove me one day :)
           <Col span={4} offset={12} pull={1}>
-            <Row type={'flex'} justify={'center'}>
+            <Row type={'flex'} justify={'center'} className={'profile-status-row'}>
               <Col span={8} offset={12}>
                 <Text className={'hd-text'}>Profile Status</Text>
               </Col>
@@ -69,14 +70,16 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
                 </span>
               </Col>
             </Row>
-            <Row type={'flex'} justify={'center'}>
+            <Row type={'flex'} justify={'center'} align={'top'}>
               <Col span={5} offset={10}>
                 <Text className={'hd-text'}>Private</Text>
               </Col>
               <Col span={4}>
                 <Switch
                   loading={isLoading}
-                  className={profile.isPublic ? 'hd-switch-bg-is-public' : 'hd-switch-bg-is-not-public'}
+                  className={
+                    profile.isPublic ? 'hd-switch-bg-is-public' : 'hd-switch-bg-is-not-public'
+                  }
                   defaultChecked
                   onChange={onChangePrivacyStatusCb}
                   checked={profile.isPublic}

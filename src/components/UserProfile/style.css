@@ -1,199 +1,233 @@
 /** card */
 .main-left-col {
-    padding-right: 72px;
+  padding-right: 72px;
+
+  border-right: 1px solid rgb(237, 238, 241);
+  padding-left: 24px;
 }
 
 .card {
-    width: 1200px;
-    border-radius: 10px;
+  width: 1200px;
 }
 
 .card-title {
-    margin-bottom: 0;
-    margin-top: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.extra-button {
+  margin: 2px;
 }
 
 /** contact */
 .contact-info-value {
-    font-style: italic;
+  font-style: italic;
 }
 
 .contact-divider {
-    margin: 18px 0;
+  margin: 18px 0;
+}
+
+.contact-col-value {
+  text-align: right;
+}
+
+.contact-edit-address-wrapper {
+  background-color: rgb(237, 238, 241);
+  border-radius: 10px;
+  padding: 24px;
 }
 
 /** find me */
 .find-me-col {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .find-me-social-icons-wrapper {
-    border-left: 1px solid rgb(237,238,241);
-    padding-left: 48px;
+ /* border-left: 1px solid rgb(237, 238, 241);*/
+  padding-left: 96px;
+}
+
+.find-me-social-icons-wrapper-edit {
+  /*border-left: 1px solid rgb(237, 238, 241);*/
+  padding-left: 96px;
 }
 
 .find-me-text-if-empty {
-    font-style: italic;
-    border-left: 1px solid rgb(237,238,241);
-    margin-top: 144px;
-    padding-left: 48px;
+  font-style: italic;
+  border-left: 1px solid rgb(237, 238, 241);
+  margin-top: 144px;
+  padding-left: 48px;
+}
+
+.find-me-on-edit-label {
+  padding-bottom: 24px;
 }
 
 /** profile */
 .bio-story {
-    font-style: italic;
-    padding-bottom: 24px;
+  font-style: italic;
+  padding-bottom: 24px;
 }
 
 .profile-divider {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .text-when-no-interests {
-    font-style: italic;
+  font-style: italic;
+}
+
+.profile-status-row {
+  height: 32px;
 }
 
 /** research interests (ri) */
 .ri-icon {
-    padding-right: 5px;
+  padding-right: 5px;
 }
 
 .ri-row {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 /** about me (am) */
 .am-main-layout {
-    display: flex;
-    align-items: center;
-    padding: 38px;
-    background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 38px;
+  background: #fff;
 }
 
 .am-profile-row {
-    padding-bottom: 40px;
+  padding-bottom: 40px;
 }
 
 /** integration item (ii) */
 .ii-card {
-    width: 500px;
-    height: 225px;
-    border-radius: 10px;
+  width: 500px;
+  height: 225px;
+  border-radius: 10px;
 }
 
 .ii-description-row {
-    padding-top: 24px;
-    padding-bottom: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 .ii-button {
-    color: white;
-    background-color: #90278e;
+  color: white;
+  background-color: #90278e;
 }
 
 .ii-error-msg-row {
-    padding-top: 24px;
-    padding-bottom: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 .ii-error-button-row {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .ii-error-button {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 /** header */
 .hd-main-row {
-    height: 100%;
+  height: 100%;
 }
 
 .hd-user-info-wrapper {
-    display: flex;
-    align-items: flex-end;
+  display: flex;
+  align-items: flex-end;
 }
 
 .hd-edit-button {
-    transform: translateX(-18px);
+  transform: translateX(-18px);
 }
 
 .hd-text {
-    color: white;
+  color: white;
 }
 
 .hd-switch-bg-is-public {
-    background-color: chartreuse;
+  background-color: chartreuse;
 }
 
 .hd-switch-bg-is-not-public {
-    background-color: darkgrey;
+  background-color: darkgrey;
 }
 
 /** profile pill (pp) */
 .pp-role-name-wrapper {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    font-weight: bold;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
 }
 
 .pp-main {
-    display: flex;
-    border-radius: 21px;
-    color: white;
-    font-size: 10px;
-    font-weight: 300;
-    line-height: 1.86;
-    letter-spacing: 2px;
-    text-align: left;
-    text-transform: capitalize;
-    padding: 0 16px 0 0;
+  display: flex;
+  border-radius: 21px;
+  color: white;
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1.86;
+  letter-spacing: 2px;
+  text-align: left;
+  text-transform: capitalize;
+  padding: 0 16px 0 0;
 }
 
 /** repository integration (ri) */
 .ri-divider {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 /** settings */
 .settings-row-but-last {
-    padding-bottom: 48px;
+  padding-bottom: 48px;
 }
 
 .settings-layout {
-    display: flex;
-    align-items: center;
-    padding: 25px;
-    background: #fff;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 25px;
+  background: #fff;
+  height: 100%;
 }
 
 /** user profile (up)*/
 .up-is-loading-layout {
-    justify-content: center;
-    background: #fff;
+  justify-content: center;
+  background: #fff;
 }
 
 .up-spin {
-    font-size: 48px;
+  font-size: 48px;
 }
 
 .up-header {
-    background-color: transparent;
-    height: 240px;
-    padding: 0;
+  background-color: transparent;
+  height: 240px;
+  padding: 0;
 }
 
 .up-sider {
-    background: #fff;
-    border-right: 1px solid rgb(237, 238, 241);
+  background: #fff;
+  border-right: 1px solid rgb(237, 238, 241);
 }
 
 .up-anchor-wrapper {
-    text-align: right;
-    padding-right: 10px;
-    font-size: 24px;
-    padding-bottom: 10px;
+  text-align: right;
+  padding-right: 10px;
+  font-size: 24px;
+  padding-bottom: 10px;
+}
+
+/** menu */
+.menu-vertical-offset {
+  padding-top: 38px;
 }

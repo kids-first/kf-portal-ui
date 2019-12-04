@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input, Button } from 'antd';
+import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { debounce, difference } from 'lodash';
@@ -13,6 +13,15 @@ const { Option } = Select;
 const MIN_NUM_OF_CHAR_TO_CHECK = 2;
 
 const generateFieldNameFromInterest = interest => toKebabCase(`tag ${interest}`);
+
+const generateStyleForOtherInterestIcon = input => {
+  if (input && input.length >= MIN_NUM_OF_CHAR_TO_CHECK) {
+    return {
+      color: 'green',
+    };
+  }
+  return null;
+};
 
 // Let's inject tags into the form so we can have access to them in the parent.
 class ResearchInterestsEditable extends Component {
@@ -137,6 +146,11 @@ class ResearchInterestsEditable extends Component {
     }
   };
 
+  onPressEnter = e => {
+    e.preventDefault();
+    this.onClickCheck();
+  };
+
   render() {
     const { parentForm } = this.props;
     const { getFieldDecorator } = parentForm;
@@ -147,7 +161,7 @@ class ResearchInterestsEditable extends Component {
 
     return (
       <Row>
-        <Col span={10}>
+        <Col span={8}>
           <Row>
             <Form.Item label="Kids First Disease Areas">
               {getFieldDecorator('diseaseArea', {
@@ -174,25 +188,26 @@ class ResearchInterestsEditable extends Component {
             <Form.Item
               label="Other areas of interests"
               validateStatus={Boolean(errorFetchingTags) ? 'error' : ''}
-              help={Boolean(errorFetchingTags) ? 'Unable to fetch suggestions but you can still add an interest' : ''}
+              help={
+                Boolean(errorFetchingTags)
+                  ? 'Unable to fetch suggestions but you can still add an interest'
+                  : ''
+              }
             >
               {getFieldDecorator('otherAreasOfInterests', {
                 rules: [{ required: false }],
               })(
-                <AutoComplete
-                  dataSource={dataSource}
-                  onSearch={this.onSearch}
-                  placeholder="Search for interests"
-                >
+                <AutoComplete dataSource={dataSource} onSearch={this.onSearch}>
                   <Input
+                    onPressEnter={this.onPressEnter}
+                    placeholder="Search for interests"
+                    prefix={<Icon type="search" />}
                     suffix={
-                      <Button
-                        size={'small'}
+                      <Icon
+                        type="check"
                         onClick={this.onClickCheck}
-                        disabled={autoCompleteCurrentValue.length < MIN_NUM_OF_CHAR_TO_CHECK}
-                      >
-                        <Icon type="check" />
-                      </Button>
+                        style={generateStyleForOtherInterestIcon(autoCompleteCurrentValue)}
+                      />
                     }
                   />
                 </AutoComplete>,
@@ -200,7 +215,7 @@ class ResearchInterestsEditable extends Component {
             </Form.Item>
           </Row>
         </Col>
-        <Col offset={2} span={12} style={{ paddingTop: '32px' }}>
+        <Col offset={4} span={12} style={{ paddingTop: '32px' }}>
           {this.generateTags()}
         </Col>
       </Row>

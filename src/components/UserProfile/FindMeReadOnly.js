@@ -26,11 +26,7 @@ const FindMeReadOnly = props => {
   return (
     <div className={'find-me-social-icons-wrapper'}>
       <Row>
-        <Title
-          level={4}
-        >
-          Find me on...
-        </Title>
+        <Title level={3}>Find me on...</Title>
       </Row>
       <Row>
         <List
@@ -41,7 +37,14 @@ const FindMeReadOnly = props => {
             const { service, icon, value, href } = item;
             return (
               <List.Item>
-                <List.Item.Meta avatar={icon} title={<a href={href(value)}>{service}</a>} />
+                <List.Item.Meta
+                  avatar={icon}
+                  title={
+                    <a target="_blank" rel="noopener noreferrer" href={href(value)} style={{ color: '#90278e' }}>
+                        {service}
+                    </a>
+                  }
+                />
               </List.Item>
             );
           }}

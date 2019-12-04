@@ -8,45 +8,55 @@ import orchidIcon from 'assets/icon-findemeon-orchid.png';
 import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
+import { findMeFields } from './constants';
+
+const addWebProtocolToUrlIfNeeded = value => {
+  if (!value || value.startsWith('http://') || value.startsWith('https://')) {
+    return value;
+  }
+  return `https://${value}`;
+};
+
+const href = v => addWebProtocolToUrlIfNeeded(v);
 
 export const socialItems = (width = 32, height = 32) => {
   const commonSize = { height, width };
   return {
     website: {
       icon: <WebsiteIcon {...commonSize} />,
-      name: 'Website URL:',
+      name: 'Website URL',
       placeholder: 'e.g. kidsfirstdrc.org',
       type: 'text',
       service: 'Website',
-      href: v => v,
+      href,
     },
     googleScholarId: {
       icon: <GoogleScholarIcon {...commonSize} />,
-      name: 'Google Scholar URL:',
+      name: 'Google Scholar URL',
       placeholder: 'e.g. scholar.google.com/citations?user=CsD2_4MAAAAJ',
       type: 'text',
       service: 'Google Scholar',
-      href: v => v,
+      href,
     },
     linkedin: {
       icon: <LinkedInIcon {...commonSize} />,
-      name: 'LinkedIn URL:',
+      name: 'LinkedIn URL',
       placeholder: 'e.g. linkedin.com/in/acresnick',
       type: 'text',
       service: 'LinkedIn',
-      href: v => v,
+      href,
     },
     facebook: {
       icon: <SocialIcon url={kfFacebook} style={{ ...commonSize }} />,
-      name: 'Facebook URL:',
+      name: 'Facebook URL',
       placeholder: 'e.g. facebook.com/kidsfirstDRC',
       type: 'text',
       service: 'Facebook',
-      href: v => v,
+      href,
     },
     twitter: {
       icon: <SocialIcon url={kfTwitter} style={{ ...commonSize }} />,
-      name: 'Twitter handle/username:',
+      name: 'Twitter handle/username',
       placeholder: 'e.g. @kidsfirstDRC',
       type: 'text',
       href: v => `https://twitter.com/${v}`,
@@ -55,7 +65,7 @@ export const socialItems = (width = 32, height = 32) => {
     },
     github: {
       icon: <SocialIcon url={kfGithub} style={{ ...commonSize }} />,
-      name: 'Github username:',
+      name: 'Github username',
       placeholder: 'e.g. kids-first',
       type: 'text',
       href: v => `https://github.com/${v}`,
@@ -63,13 +73,13 @@ export const socialItems = (width = 32, height = 32) => {
     },
     orchid: {
       icon: <img alt="ORCHID" src={orchidIcon} {...commonSize} />,
-      name: 'ORCID ID:',
+      name: 'ORCID ID',
       placeholder: 'e.g. 0000-0003-0436-4189',
       type: 'text',
       href: v => `https://orcid.org/${v}`,
       service: 'Orchid',
     },
-  }
+  };
 };
 export const userProfileBackground = (
   profile,
@@ -92,7 +102,6 @@ export const userProfileBackground = (
 };
 
 export const extractFindMeFromProfile = (profile = {}) => {
-  const findMeFields = ['github', 'googleScholarId', 'linkedin', 'orchid', 'twitter', 'facebook'];
   return Object.entries(profile).reduce((accFindMe, [profileKey, profileValue]) => {
     if (findMeFields.includes(profileKey) && Boolean(profileValue)) {
       return { ...accFindMe, [profileKey]: profileValue };

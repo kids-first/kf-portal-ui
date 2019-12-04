@@ -14,7 +14,7 @@ const RepositoryIntegration = () => {
   return (
     <Card
       title={
-        <Title level={1} className={'card-title'}>
+        <Title level={3} strong>
           Data Repository Integrations
         </Title>
       }

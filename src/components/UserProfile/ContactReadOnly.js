@@ -42,7 +42,7 @@ const ContactReadOnly = props => {
     <Card
       loading={isProfileUpdating}
       title={
-        <Title level={1} className={'card-title'}>
+        <Title level={3} strong>
           Contact Information
         </Title>
       }
@@ -60,9 +60,11 @@ const ContactReadOnly = props => {
         <Col span={14} className={'main-left-col'}>
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'Email'}</Text>
+              <Text type="secondary" strong>
+                {'Email'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.email)}>
                 {Boolean(data.email) ? (
                   <a href={`mailto:${data.email}`}>{data.email}</a>
@@ -75,9 +77,11 @@ const ContactReadOnly = props => {
           <Divider className={'contact.divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'Address'}</Text>
+              <Text type="secondary" strong>
+                {'Address'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.addressLine1)}>
                 {data.addressLine1 || DEFAULT_IF_EMPTY}
               </Text>
@@ -88,9 +92,11 @@ const ContactReadOnly = props => {
             <Fragment>
               <Row type={'flex'} justify="space-between" align="bottom">
                 <Col span={4}>
-                  <Text>{'Institution'}</Text>
+                  <Text type="secondary" strong>
+                    {'Institution'}
+                  </Text>
                 </Col>
-                <Col span={8}>
+                <Col span={8} className={'contact-col-value'}>
                   <Text className={generateContactValueStyle(data.institution)}>
                     {getInstitutionLabelGivenRole(data) || DEFAULT_IF_EMPTY}
                   </Text>
@@ -103,9 +109,11 @@ const ContactReadOnly = props => {
             <Fragment>
               <Row type={'flex'} justify="space-between" align="bottom">
                 <Col span={4}>
-                  <Text>{'Job Title'}</Text>
+                  <Text type="secondary" strong>
+                    {'Job Title'}
+                  </Text>
                 </Col>
-                <Col span={8}>
+                <Col span={8} className={'contact-col-value'}>
                   <Text className={generateContactValueStyle(data.jobTitle)}>
                     {data.jobTitle || DEFAULT_IF_EMPTY}
                   </Text>
@@ -116,9 +124,11 @@ const ContactReadOnly = props => {
           )}
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'City'}</Text>
+              <Text type="secondary" strong>
+                {'City'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.city)}>
                 {data.city || DEFAULT_IF_EMPTY}
               </Text>
@@ -127,9 +137,11 @@ const ContactReadOnly = props => {
           <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'Country'}</Text>
+              <Text type="secondary" strong>
+                {'Country'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.country)}>
                 {data.country || DEFAULT_IF_EMPTY}
               </Text>
@@ -138,9 +150,11 @@ const ContactReadOnly = props => {
           <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'State'}</Text>
+              <Text type="secondary" strong>
+                {'State'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.state)}>
                 {data.state || DEFAULT_IF_EMPTY}
               </Text>
@@ -149,9 +163,11 @@ const ContactReadOnly = props => {
           <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'Phone'}</Text>
+              <Text type="secondary" strong>
+                {'Phone'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.phone)}>
                 {data.phone || DEFAULT_IF_EMPTY}
               </Text>
@@ -160,9 +176,11 @@ const ContactReadOnly = props => {
           <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'Institutional Email'}</Text>
+              <Text type="secondary" strong>
+                {'Institutional Email'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.institutionalEmail)}>
                 {data.institutionalEmail || DEFAULT_IF_EMPTY}
               </Text>
@@ -171,9 +189,11 @@ const ContactReadOnly = props => {
           <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
-              <Text>{'Zip'}</Text>
+              <Text type="secondary" strong>
+                {'Zip'}
+              </Text>
             </Col>
-            <Col span={8}>
+            <Col span={8} className={'contact-col-value'}>
               <Text className={generateContactValueStyle(data.zip)}>
                 {data.zip || DEFAULT_IF_EMPTY}
               </Text>

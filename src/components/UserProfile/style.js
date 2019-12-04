@@ -1,11 +1,16 @@
 const style = {
   cardBodyStyle: {
-    padding: '32px',
+    paddingTop: '48px',
+    paddingBottom: '32px',
+    paddingRight: '32px',
+    paddingLeft: '32px',
   },
   cardHeadStyle: {
     backgroundColor: 'rgb(237,238,241)',
-    marginBottom: 0,
   },
+  cardHeadStyleWhenEditing: {
+    backgroundColor: 'ghostwhite',
+  }
 };
 
 export default style;
