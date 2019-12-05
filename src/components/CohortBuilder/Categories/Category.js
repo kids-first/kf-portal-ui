@@ -32,6 +32,13 @@ export default class Category extends React.Component {
     onSqonUpdate: PropTypes.func.isRequired,
   };
 
+  componentDidMount() {
+    this.setState({
+      visible: false,
+      selectedField: null,
+    });
+  }
+
   handleDropdownVisibleChange(visible) {
     this.setState({ visible });
   }
