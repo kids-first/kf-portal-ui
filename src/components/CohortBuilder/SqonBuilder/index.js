@@ -17,6 +17,8 @@ import {
 import { SQONdiff } from '../../Utils';
 import { ModalFooter } from 'components/Modal';
 
+import './SqonBuilder.css';
+
 const trackSQONaction = ({ category, action, label }) => {
   trackUserInteraction({ category, action, label: JSON.stringify(label) });
 };
