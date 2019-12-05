@@ -68,16 +68,19 @@ const MemberTable = props => {
           props.pending ? (
             <Spin />
           ) : (
-            <Row>
+            <Row style={{ marginTop: 12, marginBottom: 12 }}>
               <Col span={12} style={{ textAlign: 'left' }}>
-                <Title level={3}>
+                <Title level={3} style={{ margin: 0 }}>
                   {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
                     props.count.public
                   } public members`}
                 </Title>
               </Col>
               <Col span={12} style={{ textAlign: 'right' }}>
-                <Title level={3}>{`${props.count.total} members total (public & private)`}</Title>
+                <Title
+                  level={3}
+                  style={{ margin: 0 }}
+                >{`${props.count.total} members total (public & private)`}</Title>
               </Col>
             </Row>
           )
@@ -101,10 +104,7 @@ const MemberTable = props => {
         renderItem={item => {
           const hasAddress = item.city || item.state || item.country;
           return (
-            <List.Item
-              key={item._id}
-              style={{ paddingBottom: 40, paddingTop: 50 }}
-            >
+            <List.Item key={item._id} style={{ paddingBottom: 32, paddingTop: 32 }}>
               <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
                   <MemberImage email={item.email || ''} d={'mp'} />
