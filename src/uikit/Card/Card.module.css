@@ -16,6 +16,9 @@
 }
 
 .cardBadge {
+  line-height: 20px;
+  height: 20px;
+  min-width: 20px;
   margin-left: 9px;
   display: inline-block;
   color: white;
@@ -28,9 +31,6 @@
   background-color: #404c9a;
   border-radius: 50px;
   position: relative;
-  height: 25px;
-  min-width: 25px;
-  line-height: 25px;
   padding: 0 0.4em;
 }
 
