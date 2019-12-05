@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Col, Divider, Row, Typography, Form, Input } from 'antd';
+import { Card, Col, Divider, Row, Typography, Form, Input } from 'antd';
 import ResearchInterestsEditable from './ResearchInterestsEditable';
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
 import './style.css';
-import style from './style';
+import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 
 const { Title } = Typography;
 
@@ -50,25 +50,13 @@ class ProfileEditable extends Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <Card
-          loading={isProfileUpdating}
-          title={
-            <Title level={3} strong>
-              Profile
-            </Title>
-          }
-          className={'card'}
-          headStyle={style.cardHeadStyle}
-          bodyStyle={style.cardHeadStyleWhenEditing}
-          extra={
-            <Fragment>
-              <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
-                Cancel
-              </Button>
-              <Button className={'extra-button'} type="primary" icon="check" shape="round" htmlType="submit">
-                Save
-              </Button>
-            </Fragment>
-          }
+          {...{
+            ...makeCommonCardPropsEditing({
+              title: 'Profile',
+              onClickCancelCb,
+              isProfileUpdating,
+            }),
+          }}
         >
           <Row>
             <Col span={24}>

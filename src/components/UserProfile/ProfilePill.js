@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ROLES } from 'common/constants';
+import { extractInfoFromRoles } from 'common/profile';
 
 const MAX_N_OF_CHARACTER = 10;
 
@@ -15,15 +16,7 @@ const computeSizeGivenRole = displayName => {
 
 const ProfilePill = props => {
   const { roles } = props;
-  if (!Array.isArray(roles) || roles.length === 0) {
-    return null;
-  }
-
-  const role = roles[0];
-  const displayInfo = ROLES.find(r => r.type === role);
-  const Icon = displayInfo.icon;
-  const backgroundColor = displayInfo.color;
-  const roleName = displayInfo.displayName;
+  const { Icon, backgroundColor, roleName } = extractInfoFromRoles(roles);
 
   const { height, width } = computeSizeGivenRole(roleName);
 

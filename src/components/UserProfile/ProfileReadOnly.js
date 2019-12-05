@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Col, Divider, Row, Typography } from 'antd';
+import { Card, Col, Divider, Row, Typography } from 'antd';
 import ResearchInterest from './ResearchInterests';
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
 import './style.css';
-import style from './style';
+import { makeCommonCardPropsReadOnly } from 'components/UserProfile/utils';
 
 const { Title, Text } = Typography;
 
@@ -12,21 +12,12 @@ const ProfileReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
   return (
     <Card
-      loading={isProfileUpdating}
-      title={
-        <Title level={3} strong>
-          Profile
-        </Title>
-      }
-      className={'card'}
-      bodyStyle={style.cardBodyStyle}
-      extra={
-        canEdit ? (
-          <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
-            Edit
-          </Button>
-        ) : null
-      }
+      {...makeCommonCardPropsReadOnly({
+        isProfileUpdating,
+        title: 'Profile',
+        onClickEditCb,
+        canEdit,
+      })}
     >
       <Row>
         <Col span={24}>

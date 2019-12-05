@@ -1,24 +1,16 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Card, Col, Divider, Row, Typography } from 'antd';
+import { Card, Col, Divider, Row, Typography } from 'antd';
 import FindMeReadOnly from './FindMeReadOnly';
-import { extractFindMeFromProfile } from './utils';
+import {
+  extractFindMeFromProfile,
+  isResearcher,
+  showInstitution,
+  makeCommonCardPropsReadOnly,
+} from './utils';
 import './style.css';
-import style from './style';
 
-const { Text, Title } = Typography;
-
-const isResearcher = data => {
-  return data.roles[0] === 'research';
-};
-
-const isCommunity = data => {
-  return data.roles[0] === 'community';
-};
-
-const showInstitution = data => {
-  return isResearcher(data) || isCommunity(data);
-};
+const { Text } = Typography;
 
 const getInstitutionLabelGivenRole = data => {
   const role = data.roles[0];
@@ -34,27 +26,25 @@ const generateContactValueStyle = info => {
   return Boolean(info) ? '' : 'contact-info-value';
 };
 
+const mergeAddresses = (a1, a2) => {
+  if (a1 && a2) {
+    return `${a1}, ${a2}`;
+  }
+  return a1 || a2;
+};
+
 const DEFAULT_IF_EMPTY = 'Edit Card to Add Details';
 
 const ContactReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
   return (
     <Card
-      loading={isProfileUpdating}
-      title={
-        <Title level={3} strong>
-          Contact Information
-        </Title>
-      }
-      className={'card'}
-      bodyStyle={style.cardBodyStyle}
-      extra={
-        canEdit ? (
-          <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
-            Edit
-          </Button>
-        ) : null
-      }
+      {...makeCommonCardPropsReadOnly({
+        isProfileUpdating,
+        title: 'Contact Information',
+        onClickEditCb,
+        canEdit,
+      })}
     >
       <Row>
         <Col span={14} className={'main-left-col'}>
@@ -75,30 +65,34 @@ const ContactReadOnly = props => {
             </Col>
           </Row>
           <Divider className={'contact.divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'Address'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.addressLine1)}>
-                {data.addressLine1 || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
           {showInstitution(data) && (
             <Fragment>
               <Row type={'flex'} justify="space-between" align="bottom">
                 <Col span={4}>
                   <Text type="secondary" strong>
-                    {'Institution'}
+                    {getInstitutionLabelGivenRole(data)}
                   </Text>
                 </Col>
                 <Col span={8} className={'contact-col-value'}>
                   <Text className={generateContactValueStyle(data.institution)}>
-                    {getInstitutionLabelGivenRole(data) || DEFAULT_IF_EMPTY}
+                    {data.institution || DEFAULT_IF_EMPTY}
+                  </Text>
+                </Col>
+              </Row>
+              <Divider className={'contact-divider'} />
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Col span={4}>
+                  <Text type="secondary" strong>
+                    {'Institutional Email'}
+                  </Text>
+                </Col>
+                <Col span={8} className={'contact-col-value'}>
+                  <Text className={generateContactValueStyle(data.institutionalEmail)}>
+                    {Boolean(data.institutionalEmail) ? (
+                      <a href={`mailto:${data.institutionalEmail}`}>{data.institutionalEmail}</a>
+                    ) : (
+                      DEFAULT_IF_EMPTY
+                    )}
                   </Text>
                 </Col>
               </Row>
@@ -122,6 +116,23 @@ const ContactReadOnly = props => {
               <Divider className={'contact-divider'} />
             </Fragment>
           )}
+          <Row type={'flex'} justify="space-between" align="bottom">
+            <Col span={4}>
+              <Text type="secondary" strong>
+                {'Address'}
+              </Text>
+            </Col>
+            <Col span={8} className={'contact-col-value'}>
+              <Text
+                className={generateContactValueStyle(
+                  mergeAddresses(data.addressLine1, data.addressLine2),
+                )}
+              >
+                {mergeAddresses(data.addressLine1, data.addressLine2) || DEFAULT_IF_EMPTY}
+              </Text>
+            </Col>
+          </Row>
+          <Divider className={'contact-divider'} />
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text type="secondary" strong>
@@ -177,19 +188,6 @@ const ContactReadOnly = props => {
           <Row type={'flex'} justify="space-between" align="bottom">
             <Col span={4}>
               <Text type="secondary" strong>
-                {'Institutional Email'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.institutionalEmail)}>
-                {data.institutionalEmail || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
                 {'Zip'}
               </Text>
             </Col>
@@ -201,7 +199,7 @@ const ContactReadOnly = props => {
           </Row>
         </Col>
         <Col span={10} className={'find-me-col'}>
-          <FindMeReadOnly findMe={extractFindMeFromProfile(data)} />
+          <FindMeReadOnly canEdit={canEdit} findMe={extractFindMeFromProfile(data)} />
         </Col>
       </Row>
     </Card>

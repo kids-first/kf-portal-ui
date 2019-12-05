@@ -14,10 +14,7 @@ const ResearchInterest = ({ interests }) => {
   return chunks.map((chunk, index) => {
     const [interestLeft, interestRight] = chunk;
     return (
-      <Row
-        key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}
-        className={'ri-row'}
-      >
+      <Row key={toKebabCase(`${index}${interestLeft} ${interestRight}`)} className={'ri-row'}>
         <Col span={12}>
           <Text>
             <Icon type="check-circle" theme="filled" className={'ri-icon'} />

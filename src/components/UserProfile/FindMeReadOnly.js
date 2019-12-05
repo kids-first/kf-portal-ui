@@ -8,14 +8,14 @@ import './style.css';
 const { Title, Text } = Typography;
 
 const FindMeReadOnly = props => {
-  const { findMe } = props;
+  const { findMe, canEdit } = props;
   const { keys, prototype } = Object;
   if (isEmpty(findMe)) {
-    return (
+    return canEdit ? (
       <Text className={'find-me-text-if-empty'}>
         {` Click Edit to add links to your personal channels such as Google Scholar, ORCID ID, GitHub, LinkedIn, Twitter and Facebook.`}
       </Text>
-    );
+    ) : null;
   }
 
   const socialItemsWithSized = socialItems();
@@ -40,8 +40,13 @@ const FindMeReadOnly = props => {
                 <List.Item.Meta
                   avatar={icon}
                   title={
-                    <a target="_blank" rel="noopener noreferrer" href={href(value)} style={{ color: '#90278e' }}>
-                        {service}
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={href(value)}
+                      style={{ color: '#90278e' }}
+                    >
+                      {service}
                     </a>
                   }
                 />
@@ -56,6 +61,7 @@ const FindMeReadOnly = props => {
 
 FindMeReadOnly.propTypes = {
   findMe: PropTypes.object.isRequired,
+  canEdit: PropTypes.bool.isRequired,
 };
 
 export default FindMeReadOnly;

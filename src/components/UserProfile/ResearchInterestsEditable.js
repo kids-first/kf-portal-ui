@@ -1,26 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input } from 'antd';
+import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input, Button, Spin } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
-import { debounce, difference } from 'lodash';
-import { compose } from 'recompose';
-import { withApi } from 'services/api';
-import { getTags } from 'services/profiles';
+import { debounce } from 'lodash';
+import './style.css';
+import { searchInterests } from 'services/members/search';
 
 const { Option } = Select;
 
 const MIN_NUM_OF_CHAR_TO_CHECK = 2;
+const WAIT_IN_MS = 500;
 
 const generateFieldNameFromInterest = interest => toKebabCase(`tag ${interest}`);
 
-const generateStyleForOtherInterestIcon = input => {
+const generateClassNameForOtherInterestIcon = input => {
   if (input && input.length >= MIN_NUM_OF_CHAR_TO_CHECK) {
-    return {
-      color: 'green',
-    };
+    return 'ri-check-icon';
   }
-  return null;
+  return '';
 };
 
 // Let's inject tags into the form so we can have access to them in the parent.
@@ -28,7 +26,6 @@ class ResearchInterestsEditable extends Component {
   static propTypes = {
     initialInterest: PropTypes.arrayOf(PropTypes.string).isRequired,
     parentForm: PropTypes.object.isRequired,
-    api: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -39,6 +36,7 @@ class ResearchInterestsEditable extends Component {
     interests: [...this.props.initialInterest],
     dataSource: [],
     errorFetchingTags: null,
+    isLoadingSuggestions: false,
   };
 
   setFieldForEveryInterests = (interests = []) => {
@@ -56,7 +54,7 @@ class ResearchInterestsEditable extends Component {
     this.setFieldForEveryInterests(interests);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     const { interests } = this.state;
     // We can only add or remove so there is not need to check the content
     if (interests.length !== prevState.interests.length) {
@@ -82,13 +80,19 @@ class ResearchInterestsEditable extends Component {
             {getFieldDecorator(generateFieldNameFromInterest(interest), {
               rules: [{ required: false }],
             })(
-              <Tag
-                key={toKebabCase(`${index} ${interest}`)}
-                closable
-                onClose={this.onDeleteInterest(interest)}
-              >
-                {interest}
-              </Tag>,
+              <Fragment>
+                <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
+                  {interest}
+                </Tag>
+                <Button
+                  size={'small'}
+                  icon={'close'}
+                  type="danger"
+                  ghost
+                  shape="circle"
+                  onClick={this.onDeleteInterest(interest)}
+                />
+              </Fragment>,
             )}
           </Form.Item>
         </Row>
@@ -114,18 +118,19 @@ class ResearchInterestsEditable extends Component {
   };
 
   getSuggestions = debounce(async filter => {
-    const { api } = this.props;
     const { interests } = this.state;
-
     try {
-      const suggestions = await getTags(api)({ filter, size: 5 });
-      const loweredSuggestions = [...new Set(suggestions.values.map(x => x.value.toLowerCase()))];
-      const uniqueSuggestions = difference(loweredSuggestions, interests);
-      this.setState({ dataSource: uniqueSuggestions });
+      this.setState({ isLoadingSuggestions: true });
+
+      const response = await searchInterests(filter);
+      const loweredSuggestions = response.interests.map(i => i.toLowerCase());
+      const suggestionsExceptExisting = loweredSuggestions.filter(sug => !interests.includes(sug));
+
+      this.setState({ dataSource: suggestionsExceptExisting, isLoadingSuggestions: false });
     } catch (e) {
-      //FIXME when backend is fixed add error management by adding this line =>this.setState({ errorFetchingTags: e });
+      this.setState({ errorFetchingTags: e, isLoadingSuggestions: false });
     }
-  }, 200);
+  }, WAIT_IN_MS);
 
   onSearch = searchText => {
     if (!searchText || searchText.length < MIN_NUM_OF_CHAR_TO_CHECK) {
@@ -157,7 +162,7 @@ class ResearchInterestsEditable extends Component {
 
     const autoCompleteCurrentValue = parentForm.getFieldsValue().otherAreasOfInterests || '';
 
-    const { dataSource, errorFetchingTags } = this.state;
+    const { dataSource, errorFetchingTags, isLoadingSuggestions } = this.state;
 
     return (
       <Row>
@@ -186,7 +191,7 @@ class ResearchInterestsEditable extends Component {
           </Row>
           <Row>
             <Form.Item
-              label="Other areas of interests"
+              label="Other areas of interest"
               validateStatus={Boolean(errorFetchingTags) ? 'error' : ''}
               help={
                 Boolean(errorFetchingTags)
@@ -197,16 +202,19 @@ class ResearchInterestsEditable extends Component {
               {getFieldDecorator('otherAreasOfInterests', {
                 rules: [{ required: false }],
               })(
-                <AutoComplete dataSource={dataSource} onSearch={this.onSearch}>
+                <AutoComplete
+                  dataSource={isLoadingSuggestions ? ['...loading suggestions'] : dataSource}
+                  onSearch={this.onSearch}
+                >
                   <Input
                     onPressEnter={this.onPressEnter}
                     placeholder="Search for interests"
-                    prefix={<Icon type="search" />}
+                    prefix={isLoadingSuggestions ? <Spin /> : <Icon type="search" />}
                     suffix={
                       <Icon
                         type="check"
                         onClick={this.onClickCheck}
-                        style={generateStyleForOtherInterestIcon(autoCompleteCurrentValue)}
+                        className={generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)}
                       />
                     }
                   />
@@ -223,4 +231,4 @@ class ResearchInterestsEditable extends Component {
   }
 }
 
-export default compose(withApi)(ResearchInterestsEditable);
+export default ResearchInterestsEditable;

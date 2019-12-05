@@ -5,6 +5,7 @@ import { ROLES } from 'common/constants';
 import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComplete';
 import AddressEditForm from 'components/UserProfile/AddressEditForm';
 import './style.css';
+import { isResearcher, showInstitution } from './utils';
 
 const { Option } = Select;
 
@@ -83,24 +84,36 @@ class ContactInformationEditable extends Component {
               rules: [{ required: true, message: 'last name is required' }],
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="Institution/Organization">
-            {getFieldDecorator('institution', {
-              initialValue: data.institution,
-              rules: [{ required: false }],
-            })(<Input />)}
-          </Form.Item>
           <Form.Item label="Suborganization/Department">
             {getFieldDecorator('department', {
               initialValue: data.department,
               rules: [{ required: false }],
             })(<Input />)}
           </Form.Item>
-          <Form.Item label="Institutional Email Address">
-            {getFieldDecorator('institutionalEmail', {
-              initialValue: data.institutionalEmail,
-              rules: [{ required: false }],
-            })(<Input />)}
-          </Form.Item>
+          {showInstitution(data) && (
+            <Fragment>
+              <Form.Item label="Institution/Organization">
+                {getFieldDecorator('institution', {
+                  initialValue: data.institution,
+                  rules: [{ required: false }],
+                })(<Input />)}
+              </Form.Item>
+              <Form.Item label="Institutional Email Address">
+                {getFieldDecorator('institutionalEmail', {
+                  initialValue: data.institutionalEmail,
+                  rules: [{ required: false }],
+                })(<Input />)}
+              </Form.Item>
+            </Fragment>
+          )}
+          {isResearcher(data) && (
+            <Form.Item label="Job Title">
+              {getFieldDecorator('jobTitle', {
+                initialValue: data.jobTitle,
+                rules: [{ required: false }],
+              })(<Input />)}
+            </Form.Item>
+          )}
           <Form.Item label="Phone">
             {getFieldDecorator('phone', {
               initialValue: data.phone,
@@ -108,7 +121,7 @@ class ContactInformationEditable extends Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="ERA Commons ID">
-            {getFieldDecorator('phone', {
+            {getFieldDecorator('eraCommonsID', {
               initialValue: data.eraCommonsID,
               rules: [{ required: false }],
             })(<Input />)}

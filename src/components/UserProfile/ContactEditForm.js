@@ -1,13 +1,11 @@
-import React, { Component, Fragment } from 'react';
-import { Button, Card, Col, Form, Row, Typography } from 'antd';
+import React, { Component } from 'react';
+import { Card, Col, Form, Row } from 'antd';
 import PropTypes from 'prop-types';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
 import FindMeEditable from './FindMeEditable';
 import './style.css';
-import style from './style';
 import { findMeFields } from './constants';
-
-const { Title } = Typography;
+import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 
 const reshapeForProfile = fields => {
   const { entries } = Object;
@@ -54,26 +52,11 @@ class ContactEditForm extends Component {
     return (
       <Form onSubmit={this.handleSubmit} layout={'vertical'}>
         <Card
-          loading={isProfileUpdating}
-          title={<Title level={3}>Contact Information</Title>}
-          className={'card'}
-          bodyStyle={style.cardHeadStyleWhenEditing}
-          extra={
-            <Fragment>
-              <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
-                Cancel
-              </Button>
-              <Button
-                className={'extra-button'}
-                type="primary"
-                icon="check"
-                shape="round"
-                htmlType="submit"
-              >
-                Save
-              </Button>
-            </Fragment>
-          }
+          {...makeCommonCardPropsEditing({
+            title: 'Contact Information',
+            onClickCancelCb,
+            isProfileUpdating,
+          })}
         >
           <Row>
             <Col span={12} className={'main-left-col'}>

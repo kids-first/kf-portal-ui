@@ -45,7 +45,7 @@
 }
 
 .find-me-social-icons-wrapper {
- /* border-left: 1px solid rgb(237, 238, 241);*/
+  /* border-left: 1px solid rgb(237, 238, 241);*/
   padding-left: 96px;
 }
 
@@ -90,6 +90,15 @@
 
 .ri-row {
   padding-bottom: 15px;
+}
+
+.ri-tag {
+  max-width: 550px;
+  border-radius: 10px;
+}
+
+.ri-check-icon {
+  color: green;
 }
 
 /** about me (am) */

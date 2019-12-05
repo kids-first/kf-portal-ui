@@ -25,6 +25,7 @@ import {
   trackUserInteraction,
 } from 'services/analyticsTracking';
 import './style.css';
+import { KEY_ABOUT_ME } from './constants';
 
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
@@ -46,7 +47,7 @@ class UserProfilePageContainer extends React.Component {
   };
 
   state = {
-    currentMenuItem: this.props.location.hash,
+    currentMenuItem: this.props.location.hash || KEY_ABOUT_ME,
   };
 
   componentDidMount() {
@@ -65,7 +66,6 @@ class UserProfilePageContainer extends React.Component {
     }
 
     const hasHashChanged = prevProps.location.hash !== hash;
-
     if (hasHashChanged) {
       this.setState({ currentMenuItem: hash });
     }
@@ -79,14 +79,13 @@ class UserProfilePageContainer extends React.Component {
   submit = async values => {
     const { profile, onUpdateProfile } = this.props;
 
-    const isRoleChanged = Object.prototype.hasOwnProperty.call(values, 'roles');
-
     const mergedProfile = {
       ...profile,
       ...values,
     };
     const roles = mergedProfile.roles;
 
+    const isRoleChanged = Object.prototype.hasOwnProperty.call(values, 'roles');
     if (isRoleChanged) {
       await trackUserInteraction({
         category: TRACKING_EVENTS.categories.user.profile,

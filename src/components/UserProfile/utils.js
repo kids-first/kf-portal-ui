@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import { css } from 'emotion';
 import { ROLES } from 'common/constants';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { SocialIcon } from 'react-social-icons';
 import { kfFacebook, kfGithub, kfTwitter } from 'common/injectGlobals';
 import orchidIcon from 'assets/icon-findemeon-orchid.png';
@@ -9,6 +9,10 @@ import WebsiteIcon from 'icons/WebsiteIcon';
 import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
 import { findMeFields } from './constants';
+import style from 'components/UserProfile/style';
+import { Button, Typography } from 'antd';
+
+const { Title } = Typography;
 
 const addWebProtocolToUrlIfNeeded = value => {
   if (!value || value.startsWith('http://') || value.startsWith('https://')) {
@@ -108,4 +112,70 @@ export const extractFindMeFromProfile = (profile = {}) => {
     }
     return accFindMe;
   }, {});
+};
+
+export const isResearcher = data => {
+  return data.roles[0] === 'research';
+};
+
+export const isCommunity = data => {
+  return data.roles[0] === 'community';
+};
+
+export const showInstitution = data => {
+  return isResearcher(data) || isCommunity(data);
+};
+
+export const makeCommonCardPropsReadOnly = ({
+  isProfileUpdating,
+  title,
+  onClickEditCb,
+  canEdit,
+}) => {
+  return {
+    loading: isProfileUpdating,
+    title: (
+      <Title level={3} strong>
+        {title}
+      </Title>
+    ),
+    className: 'card',
+    headStyle: style.cardHeadStyle,
+    bodyStyle: style.cardBodyStyle,
+    extra: canEdit ? (
+      <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
+        Edit
+      </Button>
+    ) : null,
+  };
+};
+
+export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCancelCb }) => {
+  return {
+    loading: isProfileUpdating,
+    title: (
+      <Title level={3} strong>
+        {title}
+      </Title>
+    ),
+    className: 'card',
+    headStyle: style.cardHeadStyle,
+    bodyStyle: style.cardBodyStyleWhenEditing,
+    extra: (
+      <Fragment>
+        <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
+          Cancel
+        </Button>
+        <Button
+          className={'extra-button'}
+          type="primary"
+          icon="check"
+          shape="round"
+          htmlType="submit"
+        >
+          Save
+        </Button>
+      </Fragment>
+    ),
+  };
 };

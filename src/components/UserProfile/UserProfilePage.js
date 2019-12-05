@@ -5,9 +5,7 @@ import AboutMe from './AboutMe';
 import HeaderBannerContainer from './HeaderBannerContainer';
 import Settings from './Settings';
 import './style.css';
-
-const KEY_ABOUT_ME = '#aboutMe';
-const KEY_SETTINGS = '#settings';
+import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
 
@@ -52,22 +50,7 @@ function UserProfilePage(props) {
     );
   }
 
-  const isAboutMeSelected = currentMenuItem === KEY_ABOUT_ME;
   const isSettingsSelected = currentMenuItem === KEY_SETTINGS;
-
-  let contentDisplay = null;
-  if (isAboutMeSelected) {
-    contentDisplay = (
-      <AboutMe
-        canEdit={canEdit}
-        profile={profile}
-        updateProfileCb={updateProfileCb}
-        isProfileUpdating={isProfileUpdating}
-      />
-    );
-  } else if (isSettingsSelected) {
-    contentDisplay = <Settings userEmail={profile.email} />;
-  }
 
   return (
     <Layout>
@@ -87,17 +70,28 @@ function UserProfilePage(props) {
               style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
             >
               <div className={'up-anchor-wrapper'}>
-                <a href="#aboutMe">About Me</a>
+                <a href={KEY_ABOUT_ME}>About Me</a>
               </div>
             </Menu.Item>
             <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
               <div className={'up-anchor-wrapper'}>
-                <a href="#settings">Settings</a>
+                <a href={KEY_SETTINGS}>Settings</a>
               </div>
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content>{contentDisplay}</Content>
+        <Content>
+          {isSettingsSelected ? (
+            <Settings userEmail={profile.email} />
+          ) : (
+            <AboutMe
+              canEdit={canEdit}
+              profile={profile}
+              updateProfileCb={updateProfileCb}
+              isProfileUpdating={isProfileUpdating}
+            />
+          )}
+        </Content>
       </Layout>
     </Layout>
   );

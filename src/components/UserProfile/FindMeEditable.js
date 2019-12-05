@@ -49,9 +49,7 @@ function FindMeEditable(props) {
                     validator: validateInput,
                   },
                 ],
-              })(
-                <FindMeInput item={item} />,
-              )}
+              })(<FindMeInput item={item} />)}
             </Form.Item>
           </Row>
         );
