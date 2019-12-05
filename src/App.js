@@ -41,7 +41,7 @@ import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 import isEmpty from 'lodash/isEmpty';
 import { Spin, Icon } from 'antd';
-import { isAdminToken, validateJWT } from 'utils';
+import { isAdminToken, validateJWT, isSelfInUrlWhenLoggedIn } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -73,10 +73,7 @@ const AppContainer = styled('div')`
 `;
 
 const ShowLoader = (
-  <Page
-    Component={Spin}
-    indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />}
-  />
+  <Page Component={Spin} indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
 );
 
 const App = compose(
@@ -248,16 +245,20 @@ const App = compose(
         <Route
           path={`${ROUTES.user}/:userID`}
           exact
-          render={props =>
-            forceSelectRole({
+          render={props => {
+            const userIdUrlParam = props.match.params.userID;
+            return forceSelectRole({
               api,
               isLoadingUser,
               Component: UserProfile,
               loggedInUser,
-              userID: props.match.params.userID,
+              userInfo: {
+                userID: userIdUrlParam,
+                isSelf: isSelfInUrlWhenLoggedIn(userIdUrlParam, loggedInUser),
+              },
               ...props,
-            })
-          }
+            });
+          }}
         />
         <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
         <Route

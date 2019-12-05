@@ -1,16 +1,16 @@
 /* https://catalinxyz.com/create-the-@bind-decorator-to-help-with-react-events-and-callback-props */
-import { get, isArrayLikeObject, toLower } from 'lodash';
-
+import { get, isArrayLikeObject, toLower, trim } from 'lodash';
+import md5 from 'md5';
 import jwtDecode from 'jwt-decode';
 
-import { getProfile, createProfile } from 'services/profiles';
+import { createProfile, getProfile } from 'services/profiles';
 import { getUser as getCavaticaUser } from 'services/cavatica';
-import { FENCES, CAVATICA } from 'common/constants';
+import { CAVATICA, FENCES } from 'common/constants';
 import { getAccessToken } from 'services/fence';
 import { createExampleQueries } from 'services/riffQueries';
 
 import { store } from 'store';
-import { loginSuccess, loginFailure } from 'store/actionCreators/user';
+import { loginFailure, loginSuccess } from 'store/actionCreators/user';
 
 export function bind(target, name, descriptor) {
   return {
@@ -25,18 +25,6 @@ export function bind(target, name, descriptor) {
     },
   };
 }
-
-export const extractErrorMessage = (response, indexError = 0) => {
-  if (!response) {
-    return;
-  }
-  const data = response.data || {};
-  const errors = data.errors;
-  if (!Array.isArray(errors)) {
-    return;
-  }
-  return (errors[indexError] || {}).message;
-};
 
 export const getMsgFromErrorOrElse = (error, defaultIfNone = 'An Error Occurred') =>
   typeof error === 'object' && Object.prototype.hasOwnProperty.call(error, 'message')
@@ -133,3 +121,46 @@ export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
       });
   });
 };
+
+export const isSelfInUrlWhenLoggedIn = (userIdFromUrl, loggedInUser) => {
+  if (!loggedInUser || Object.keys(loggedInUser).length === 0) {
+    return true;
+  }
+  return loggedInUser._id === userIdFromUrl;
+};
+
+//#Source https://bit.ly/2neWfJ2
+export const toKebabCase = str => {
+  return (
+    str &&
+    str
+      .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+      .map(x => x.toLowerCase())
+      .join('-')
+  );
+};
+
+export const computeGravatarSrcFromEmail = (email, options) => {
+  const size = (options || {}).size || 100;
+  const defaultImage = (options || {}).d || '';
+  const emailToHash = md5(trim((email || '').toLowerCase()));
+  return `https://www.gravatar.com/avatar/${emailToHash}?s=${size}&d=${defaultImage}`;
+};
+
+
+/**
+ * copied : https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url/43467144
+ * Loosely validate a URL `string`.
+ *
+ * @param {String} str
+ * @return {Boolean}
+ */
+export function isUrl(str) {
+  const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}

@@ -1938,7 +1938,7 @@ html {
   padding: 0 15px;
   font-size: 14px;
   border-radius: 4px;
-  color: rgba(0, 0, 0, 0.65);
+  color: #009bb8;
   background-color: #fff;
   border-color: #d9d9d9;
 }
@@ -1991,9 +1991,9 @@ html {
 }
 .ant-btn:hover,
 .ant-btn:focus {
-  color: #40a9ff;
+  color: #1fb1c4;
   background-color: #fff;
-  border-color: #40a9ff;
+  border-color: #1fb1c4;
 }
 .ant-btn:hover > a:only-child,
 .ant-btn:focus > a:only-child {
@@ -2011,9 +2011,9 @@ html {
 }
 .ant-btn:active,
 .ant-btn.active {
-  color: #096dd9;
+  color: #007791;
   background-color: #fff;
-  border-color: #096dd9;
+  border-color: #007791;
 }
 .ant-btn:active > a:only-child,
 .ant-btn.active > a:only-child {
@@ -2104,9 +2104,9 @@ html {
   pointer-events: none;
 }
 .ant-btn-primary {
-  color: #fff;
-  background-color: #1890ff;
-  border-color: #1890ff;
+  color: #ffffff;
+  background-color: #009bb8;
+  border-color: #009bb8;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
@@ -2124,9 +2124,9 @@ html {
 }
 .ant-btn-primary:hover,
 .ant-btn-primary:focus {
-  color: #fff;
-  background-color: #40a9ff;
-  border-color: #40a9ff;
+  color: #ffffff;
+  background-color: #1fb1c4;
+  border-color: #1fb1c4;
 }
 .ant-btn-primary:hover > a:only-child,
 .ant-btn-primary:focus > a:only-child {
@@ -2144,9 +2144,9 @@ html {
 }
 .ant-btn-primary:active,
 .ant-btn-primary.active {
-  color: #fff;
-  background-color: #096dd9;
-  border-color: #096dd9;
+  color: #ffffff;
+  background-color: #007791;
+  border-color: #007791;
 }
 .ant-btn-primary:active > a:only-child,
 .ant-btn-primary.active > a:only-child {
@@ -2263,9 +2263,9 @@ html {
 }
 .ant-btn-ghost:hover,
 .ant-btn-ghost:focus {
-  color: #40a9ff;
+  color: #1fb1c4;
   background-color: transparent;
-  border-color: #40a9ff;
+  border-color: #1fb1c4;
 }
 .ant-btn-ghost:hover > a:only-child,
 .ant-btn-ghost:focus > a:only-child {
@@ -2283,9 +2283,9 @@ html {
 }
 .ant-btn-ghost:active,
 .ant-btn-ghost.active {
-  color: #096dd9;
+  color: #007791;
   background-color: transparent;
-  border-color: #096dd9;
+  border-color: #007791;
 }
 .ant-btn-ghost:active > a:only-child,
 .ant-btn-ghost.active > a:only-child {
@@ -2363,7 +2363,7 @@ html {
   content: '';
 }
 .ant-btn-dashed {
-  color: rgba(0, 0, 0, 0.65);
+  color: #009bb8;
   background-color: #fff;
   border-color: #d9d9d9;
   border-style: dashed;
@@ -2382,9 +2382,9 @@ html {
 }
 .ant-btn-dashed:hover,
 .ant-btn-dashed:focus {
-  color: #40a9ff;
+  color: #1fb1c4;
   background-color: #fff;
-  border-color: #40a9ff;
+  border-color: #1fb1c4;
 }
 .ant-btn-dashed:hover > a:only-child,
 .ant-btn-dashed:focus > a:only-child {
@@ -2402,9 +2402,9 @@ html {
 }
 .ant-btn-dashed:active,
 .ant-btn-dashed.active {
-  color: #096dd9;
+  color: #007791;
   background-color: #fff;
-  border-color: #096dd9;
+  border-color: #007791;
 }
 .ant-btn-dashed:active > a:only-child,
 .ant-btn-dashed.active > a:only-child {
@@ -2621,9 +2621,9 @@ html {
 }
 .ant-btn-link:hover,
 .ant-btn-link:focus {
-  color: #40a9ff;
+  color: #1fb1c4;
   background-color: transparent;
-  border-color: #40a9ff;
+  border-color: #1fb1c4;
 }
 .ant-btn-link:hover > a:only-child,
 .ant-btn-link:focus > a:only-child {
@@ -2641,9 +2641,9 @@ html {
 }
 .ant-btn-link:active,
 .ant-btn-link.active {
-  color: #096dd9;
+  color: #007791;
   background-color: transparent;
-  border-color: #096dd9;
+  border-color: #007791;
 }
 .ant-btn-link:active > a:only-child,
 .ant-btn-link.active > a:only-child {
@@ -3025,9 +3025,9 @@ html {
   border-color: #fff;
 }
 .ant-btn-background-ghost.ant-btn-primary {
-  color: #1890ff;
+  color: #009bb8;
   background-color: transparent;
-  border-color: #1890ff;
+  border-color: #009bb8;
   text-shadow: none;
 }
 .ant-btn-background-ghost.ant-btn-primary > a:only-child {
@@ -3044,9 +3044,9 @@ html {
 }
 .ant-btn-background-ghost.ant-btn-primary:hover,
 .ant-btn-background-ghost.ant-btn-primary:focus {
-  color: #40a9ff;
+  color: #1fb1c4;
   background-color: transparent;
-  border-color: #40a9ff;
+  border-color: #1fb1c4;
 }
 .ant-btn-background-ghost.ant-btn-primary:hover > a:only-child,
 .ant-btn-background-ghost.ant-btn-primary:focus > a:only-child {
@@ -3064,9 +3064,9 @@ html {
 }
 .ant-btn-background-ghost.ant-btn-primary:active,
 .ant-btn-background-ghost.ant-btn-primary.active {
-  color: #096dd9;
+  color: #007791;
   background-color: transparent;
-  border-color: #096dd9;
+  border-color: #007791;
 }
 .ant-btn-background-ghost.ant-btn-primary:active > a:only-child,
 .ant-btn-background-ghost.ant-btn-primary.active > a:only-child {
@@ -3645,7 +3645,7 @@ a.ant-btn-sm {
   font-feature-settings: 'tnum';
   position: relative;
   background: #fff;
-  border-radius: 2px;
+  border-radius: 10px;
   transition: all 0.3s;
 }
 .ant-card-hoverable {
@@ -3661,13 +3661,13 @@ a.ant-btn-sm {
 .ant-card-head {
   min-height: 48px;
   margin-bottom: -1px;
-  padding: 0 24px;
+  padding: 0 32px;
   color: #2b388f;
   font-weight: 500;
   font-size: 16px;
-  background: transparent;
+  background: #edeef1;
   border-bottom: 1px solid #e8e8e8;
-  border-radius: 2px 2px 0 0;
+  border-radius: 10px 10px 0 0;
   zoom: 1;
 }
 .ant-card-head::before,
@@ -3717,7 +3717,7 @@ a.ant-btn-sm {
   font-size: 14px;
 }
 .ant-card-body {
-  padding: 24px;
+  padding: 32px;
   zoom: 1;
 }
 .ant-card-body::before,
@@ -3743,7 +3743,7 @@ a.ant-btn-sm {
 .ant-card-grid {
   float: left;
   width: 33.33%;
-  padding: 24px;
+  padding: 32px;
   border: 0;
   border-radius: 0;
   box-shadow: 1px 0 0 0 #e8e8e8, 0 1px 0 0 #e8e8e8, 1px 1px 0 0 #e8e8e8, 1px 0 0 0 #e8e8e8 inset, 0 1px 0 0 #e8e8e8 inset;
@@ -3766,7 +3766,7 @@ a.ant-btn-sm {
   width: 100%;
 }
 .ant-card-cover img {
-  border-radius: 2px 2px 0 0;
+  border-radius: 10px 10px 0 0;
 }
 .ant-card-actions {
   margin: 0;
@@ -3830,7 +3830,7 @@ a.ant-btn-sm {
   border-right: 1px solid #e8e8e8;
 }
 .ant-card-type-inner .ant-card-head {
-  padding: 0 24px;
+  padding: 0 32px;
   background: #fafafa;
 }
 .ant-card-type-inner .ant-card-head-title {
@@ -3838,7 +3838,7 @@ a.ant-btn-sm {
   font-size: 14px;
 }
 .ant-card-type-inner .ant-card-body {
-  padding: 16px 24px;
+  padding: 16px 32px;
 }
 .ant-card-type-inner .ant-card-extra {
   padding: 13.5px 0;
@@ -3898,7 +3898,7 @@ a.ant-btn-sm {
   margin: 4px 0;
   background: linear-gradient(90deg, rgba(207, 216, 220, 0.2), rgba(207, 216, 220, 0.4), rgba(207, 216, 220, 0.2));
   background-size: 600% 600%;
-  border-radius: 2px;
+  border-radius: 10px;
   animation: card-loading 1.4s ease infinite;
 }
 @keyframes card-loading {
@@ -3912,7 +3912,7 @@ a.ant-btn-sm {
 }
 .ant-card-small > .ant-card-head {
   min-height: 36px;
-  padding: 0 12px;
+  padding: 0 16px;
   font-size: 14px;
 }
 .ant-card-small > .ant-card-head > .ant-card-head-wrapper > .ant-card-head-title {
@@ -3923,7 +3923,7 @@ a.ant-btn-sm {
   font-size: 14px;
 }
 .ant-card-small > .ant-card-body {
-  padding: 12px;
+  padding: 16px;
 }
 .ant-carousel {
   box-sizing: border-box;
@@ -5306,9 +5306,9 @@ a.ant-btn-sm {
   touch-action: manipulation;
   height: 32px;
   padding: 0 15px;
-  color: #fff;
-  background-color: #1890ff;
-  border-color: #1890ff;
+  color: #ffffff;
+  background-color: #009bb8;
+  border-color: #009bb8;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
   height: 24px;
@@ -5366,9 +5366,9 @@ a.ant-btn-sm {
 }
 .ant-calendar .ant-calendar-ok-btn:hover,
 .ant-calendar .ant-calendar-ok-btn:focus {
-  color: #fff;
-  background-color: #40a9ff;
-  border-color: #40a9ff;
+  color: #ffffff;
+  background-color: #1fb1c4;
+  border-color: #1fb1c4;
 }
 .ant-calendar .ant-calendar-ok-btn:hover > a:only-child,
 .ant-calendar .ant-calendar-ok-btn:focus > a:only-child {
@@ -5386,9 +5386,9 @@ a.ant-btn-sm {
 }
 .ant-calendar .ant-calendar-ok-btn:active,
 .ant-calendar .ant-calendar-ok-btn.active {
-  color: #fff;
-  background-color: #096dd9;
-  border-color: #096dd9;
+  color: #ffffff;
+  background-color: #007791;
+  border-color: #007791;
 }
 .ant-calendar .ant-calendar-ok-btn:active > a:only-child,
 .ant-calendar .ant-calendar-ok-btn.active > a:only-child {
@@ -15294,7 +15294,7 @@ span.ant-radio + * {
   height: 32px;
   margin: 0;
   padding: 0 15px;
-  color: rgba(0, 0, 0, 0.65);
+  color: #009bb8;
   line-height: 30px;
   background: #fff;
   border: 1px solid #d9d9d9;
@@ -15304,7 +15304,7 @@ span.ant-radio + * {
   transition: color 0.3s, background 0.3s, border-color 0.3s;
 }
 .ant-radio-button-wrapper a {
-  color: rgba(0, 0, 0, 0.65);
+  color: #009bb8;
 }
 .ant-radio-button-wrapper > .ant-radio-button {
   display: block;
