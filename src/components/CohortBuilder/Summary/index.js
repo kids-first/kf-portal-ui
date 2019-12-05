@@ -13,18 +13,13 @@ import SurvivalChart from './SurvivalChart';
 import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
 import { CohortCard } from './ui';
 
-const PaddedColumn = ({ children }) => (
-  <Col style={{ padding: '4px !important' }}> {children} </Col>
+const CardSlot = ({ children }) => (
+  <Col style={{ padding: '4px' }} sm={12} md={6} lg={6} xl={4}>
+    {children}
+  </Col>
 );
 
-const spacing = {
-  md: 6,
-  lg: 4,
-  xl: 3,
-};
-
 const Summary = ({
-  theme,
   sqon = {
     op: 'and',
     content: [],
@@ -57,53 +52,46 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          <Col xl={12}>
-            <Row nogutter>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <CohortCard title="Available Data" loading={isLoading}>
-                  <div
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                      display: 'flex',
-                      flexFlow: 'column wrap',
-                    }}
-                  >
-                    <DataTypeChart
-                      data={dataTypesData}
-                      axisLeftLegend={'# Participants'}
-                      axisBottomLegend={'Data Type'}
-                      isLoading={isLoading}
-                    />
-                    <DataTypeChart
-                      data={experimentalStrategyData}
-                      axisLeftLegend={'# Participants'}
-                      axisBottomLegend={'Experimental Strategy'}
-                      isLoading={isLoading}
-                    />
-                  </div>
-                </CohortCard>
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <DemographicChart data={demographicData} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
-              </PaddedColumn>
-              <PaddedColumn md={spacing.md} lg={spacing.lg}>
-                <SurvivalChart sqon={sqon} />
-              </PaddedColumn>
-            </Row>
-          </Col>
-          {/* <PaddedColumn xl={spacing.xl}>
-            <PhenotypeBreakdown sqon={sqon} />
-          </PaddedColumn>  */}
+          <CardSlot>
+            <CohortCard title="Available Data" loading={isLoading}>
+              <div
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  display: 'flex',
+                  flexFlow: 'column wrap',
+                }}
+              >
+                <DataTypeChart
+                  data={dataTypesData}
+                  axisLeftLegend={'# Participants'}
+                  axisBottomLegend={'Data Type'}
+                  isLoading={isLoading}
+                />
+                <DataTypeChart
+                  data={experimentalStrategyData}
+                  axisLeftLegend={'# Participants'}
+                  axisBottomLegend={'Experimental Strategy'}
+                  isLoading={isLoading}
+                />
+              </div>
+            </CohortCard>
+          </CardSlot>
+          <CardSlot>
+            <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
+          </CardSlot>
+          <CardSlot>
+            <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
+          </CardSlot>
+          <CardSlot>
+            <DemographicChart data={demographicData} isLoading={isLoading} />
+          </CardSlot>
+          <CardSlot>
+            <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
+          </CardSlot>
+          <CardSlot>
+            <SurvivalChart sqon={sqon} />
+          </CardSlot>
         </Row>
       );
     }}
