@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Divider, Row, Typography } from 'antd';
+import {Card, Col, Divider, Form, Input, Row, Typography} from 'antd';
 import FindMeReadOnly from './FindMeReadOnly';
 import {
   extractFindMeFromProfile,
@@ -76,6 +76,19 @@ const ContactReadOnly = props => {
                 <Col span={8} className={'contact-col-value'}>
                   <Text className={generateContactValueStyle(data.institution)}>
                     {data.institution || DEFAULT_IF_EMPTY}
+                  </Text>
+                </Col>
+              </Row>
+              <Divider className={'contact-divider'} />
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Col span={4}>
+                  <Text type="secondary" strong>
+                    {'Suborganization/Department'}
+                  </Text>
+                </Col>
+                <Col span={8} className={'contact-col-value'}>
+                  <Text className={generateContactValueStyle(data.department)}>
+                    {data.department || DEFAULT_IF_EMPTY}
                   </Text>
                 </Col>
               </Row>
