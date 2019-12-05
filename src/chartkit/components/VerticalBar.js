@@ -219,7 +219,7 @@ class VerticalBar extends Component {
 
     // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
-      <div style={{ height: '90%' }}>
+      <div style={{ height: '100%' }}>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
         <TextBugWrapper>
           <ChartDisplayContainer>

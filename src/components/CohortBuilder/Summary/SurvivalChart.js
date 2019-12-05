@@ -14,6 +14,8 @@ import { SizeProvider, styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
 import { CohortCard } from './ui';
 
+import './SurvivalChart.css';
+
 const formatDataset = data => {
   return [
     {
@@ -67,6 +69,7 @@ class SurvivalPlot extends React.Component {
   };
 
   static defaultProps = {
+    className: '',
     palette: ['#1880b2', '#c20127', '#00005d', 'purple'],
     censoredStatuses: ['alive'],
     onMouseEnterDonors(event, donors) {},
@@ -145,7 +148,7 @@ class SurvivalPlot extends React.Component {
   };
 
   render() {
-    return <div ref={c => (this._container = c)} className={this.props.className || ''} />;
+    return <div ref={c => (this._container = c)} className={this.props.className} />;
   }
 }
 
@@ -264,10 +267,9 @@ export class SurvivalChart extends React.Component {
     };
 
     const header = {
-      display: 'flex',
-      justifyContent: 'space-between',
       position: 'absolute',
-      width: '92%',
+      right: '-2px',
+      top: '-40px',
     };
 
     const dragZoom = {
@@ -278,37 +280,41 @@ export class SurvivalChart extends React.Component {
       height: '13px',
     };
 
+    const resetZoomIcon = (
+      <div style={header}>
+        {zoomDisabled ? (
+          <ResetIcon css={{ marginTop: -4 }} size={25} color="grey" />
+        ) : (
+          <Tooltip html={<span>Reset zoom</span>}>
+            <ResetIcon
+              css={{ marginTop: -5 }}
+              size={25}
+              color="#22AFE9"
+              onClick={this.handleClick}
+            />
+          </Tooltip>
+        )}
+      </div>
+    );
+
     return (
       <SizeProvider>
         {({ size }) => (
           <CohortCard
             Content={SurvivalCardContent}
-            title={
-              <div style={header}>
-                <div>Overall Survival</div>
-                {!zoomDisabled && (
-                  <Tooltip html={<span>Reset zoom</span>}>
-                    <ResetIcon
-                      css={{ marginTop: -5 }}
-                      size={25}
-                      color="#22AFE9"
-                      onClick={this.handleClick}
-                    />
-                  </Tooltip>
-                )}
-                {zoomDisabled && <ResetIcon css={{ marginTop: -4 }} size={25} color="grey" />}
-              </div>
-            }
+            title="Overall Survival"
             loading={this.state.isLoading}
           >
+            {resetZoomIcon}
             <div style={{ marginTop: '10px' }}>
-              <div>
+              <div className="survivalChart-card-header">
                 Applicable survival data for{' '}
-                <span style={{ color: theme.chartColors.blue, textDecoration: 'underline' }}>
+                <span style={{ color: theme.chartColors.blue }}>
                   {get(data, '[0].donors.length', 0)} Participants
                 </span>
               </div>
               <div style={dragZoom}>{zoomDisabled && <div>Drag to zoom</div>}</div>
+
               <SurvivalPlot
                 className="survivalChart-styledChard"
                 size={size}
