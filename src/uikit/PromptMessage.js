@@ -2,6 +2,7 @@ import React from 'react';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import { Div, Flex } from 'uikit/Core';
+import omit from 'lodash/omit';
 
 import ErrorSvg from 'icons/ErrorIcon';
 import WarningSvg from 'icons/WarningIcon';
@@ -77,7 +78,7 @@ export const PromptMessageContainer = ({
 }) => (
   <MessageWrapper {...{ error, warning, info, success, className, ...rest }}>
     <Row>
-      <Flex flex={1} mr={10}>
+      <Flex mr={10}>
         {error ? (
           <ErrorSvg width={26} height={26} fill={COLORS.ERROR.border} />
         ) : warning ? (
@@ -93,9 +94,10 @@ export const PromptMessageContainer = ({
   </MessageWrapper>
 );
 
+const filterOutProps = props => omit(props, ['error', 'warning', 'info', 'success']);
 export default ({ heading, content, className = '', ...props }) => (
   <PromptMessageContainer className={className} {...props}>
-    <PromptMessageHeading {...props}>{heading}</PromptMessageHeading>
-    <PromptMessageContent {...props}>{content}</PromptMessageContent>
+    <PromptMessageHeading {...filterOutProps(props)}>{heading}</PromptMessageHeading>
+    <PromptMessageContent {...filterOutProps(props)}>{content}</PromptMessageContent>
   </PromptMessageContainer>
 );
