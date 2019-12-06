@@ -32,7 +32,8 @@ export default ({
     <CavaticaButton disabled={disabled} style={style}>
       <Row className={`${flexCenter} buttonContent`}>
         <CavaticaLogo
-          width="28"
+          width="20"
+          height="28"
           fill={disabled ? '#cacbcf' : 'white'}
           style={{ marginRight: '7px' }}
         />
