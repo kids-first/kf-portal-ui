@@ -19,3 +19,36 @@
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.afv-container {
+  flex: 1;
+  display: flex;
+  position: relative;
+}
+
+.afv-container .advancedFacetViewWrapper {
+  padding: 0px;
+}
+
+.afv-container .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
+  border-bottom: none;
+}
+
+.afv-container .advancedFacetViewWrapper .facetViewWrapper .facetsPanel {
+  flex: 3;
+}
+
+.afv-container .advancedFacetViewWrapper .facetViewWrapper .facetsPanel .bucket-count {
+  display: none;
+}
+
+.afv-container .afvStatContainer .statContainer {
+  background: none;
+  padding: none;
+  border: none;
+}
+
+.afv-container .afvStatContainer .statContainer .stat {
+  padding-left: 10px;
+  padding-right: 10px;
+}

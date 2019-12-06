@@ -45,11 +45,7 @@ export default injectState(
             }}
             interactive
             html={
-              <div
-                css={`
-                  width: 200px;
-                `}
-              >
+              <div style={{ width: '200px' }}>
                 <React.Fragment>
                   {studies.map(({ virtualStudyId, name }) => {
                     if (!selection || selection.virtualStudyId !== virtualStudyId) {

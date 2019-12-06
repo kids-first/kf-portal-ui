@@ -1,4 +1,4 @@
-.modalHeader {
+.cavatica-modalHeader {
   font-size: 15px;
   font-weight: 600;
   line-height: 1.87;
@@ -6,11 +6,36 @@
   color: rgb(52, 52, 52);
 }
 
-.buttonContent {
+.cavaticaButton .buttonContent {
   padding: 0 5px;
 }
-.buttonContent img {
+.cavaticaButton .buttonContent img {
   width: 20px;
+}
+
+.cavaticaButton {
+  background: #90278e;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  /*
+  ${({ buttonStyle }) => (buttonStyle ? buttonStyle : null)}
+  */
+}
+.cavaticaButton:hover {
+  background-color: #a42c90;
+}
+.cavaticaButton.disabled,
+.cavaticaButton.disabled:hover,
+.cavaticaButton[disabled],
+.cavaticaButton[disabled]:hover {
+  background: #d4d6dd;
+  color: #cacbcf;
+  cursor: not-allowed;
 }
 
 /********************************************************************/

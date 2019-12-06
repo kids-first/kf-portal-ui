@@ -5,18 +5,19 @@ import { Route } from 'react-router-dom';
 import urlJoin from 'url-join';
 import Spinner from 'react-spinkit';
 import SaveIcon from 'react-icons/lib/fa/floppy-o';
+
 import Tooltip from 'uikit/Tooltip';
-import theme from 'theme/defaultTheme';
+import { H3 } from 'uikit/Headings';
+import { WhiteButton } from 'uikit/Button';
 import { ModalFooter } from 'components/Modal';
 import { arrangerApiRoot } from 'common/injectGlobals';
 import sqonToName from 'common/sqonToName';
 import shortenApi from './shortenApi';
-import { SaveQueryHeading } from './ui';
-import { WhiteButton } from 'uikit/Button';
 
 import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
 
-import { niceWhiteButton } from '../../theme/tempTheme.module.css';
+import { niceWhiteButton } from 'theme/tempTheme.module.css';
+import './LoadShareSaveDeleteQuery.css';
 
 export default injectState(
   class extends React.Component {
@@ -105,42 +106,15 @@ export default injectState(
                   html={
                     <Component
                       initialState={{ saved: false }}
+                      className="saveQuery-tooltip-container"
                       render={({ state, setState }) => (
-                        <div
-                          css={`
-                            position: relative;
-                            height: 225px;
-                          `}
-                        >
+                        <div className="saveQuery-tooltip-content">
                           <div
-                            css={`
-                              transform: translateX(-100%);
-                              transition: transform 0.3s ease;
-                              color: red;
-                              position: absolute;
-                              color: red;
-                              width: 100%;
-                              height: 100%;
-                              background-color: #00afee;
-                              z-index: 1;
-                              text-align: center;
-                            `}
-                            style={{
-                              ...(state.saved && this.state.link
-                                ? { transform: 'translateX(0%)' }
-                                : {}),
-                            }}
+                            className={`saveQuery-tooltip-confirmation ${
+                              state.saved && this.state.link ? 'saved' : ''
+                            }`}
                           >
-                            <div
-                              css={`
-                                color: white;
-                                font-size: 20px;
-                                padding: 20px;
-                                font-weight: bold;
-                              `}
-                            >
-                              Query saved succesfully!
-                            </div>
+                            <div className="textWrapper">Query saved succesfully!</div>
                             <div
                               onClick={() => {
                                 trackUserInteraction({
@@ -153,7 +127,7 @@ export default injectState(
                               <button className={niceWhiteButton}>View in My Saved Queries</button>
                             </div>
                           </div>
-                          <SaveQueryHeading>
+                          <H3 className="saveQuery-heading">
                             Save Query
                             {this.state.loading && (
                               <Spinner
@@ -168,42 +142,12 @@ export default injectState(
                                 }}
                               />
                             )}
-                          </SaveQueryHeading>
-                          <div
-                            css={`
-                              padding: 0 9px;
-                              font-style: italic;
-                              color: ${theme.greyScale2};
-                            `}
-                          >
-                            Save the current configuration of filters
-                          </div>
-                          <div
-                            css={`
-                              font-weight: bold;
-                              margin-top: 10px;
-                              padding: 0 9px;
-                              color: ${theme.greyScale2};
-                            `}
-                          >
-                            Enter a name for your saved query:
-                          </div>
-                          <div
-                            css={`
-                              margin-bottom: 85px;
-                            `}
-                          >
+                          </H3>
+                          <div className="someText1">Save the current configuration of filters</div>
+                          <div className="someText2">Enter a name for your saved query:</div>
+                          <div style={{ marginBottom: '85px' }}>
                             <input
-                              css={`
-                                border-radius: 10px;
-                                background-color: #ffffff;
-                                border: solid 1px #cacbcf;
-                                padding: 5px;
-                                font-size: 1em;
-                                margin: 10px;
-                                margin-bottom: 0px;
-                                width: calc(100% - 30px);
-                              `}
+                              className="someText3"
                               type="text"
                               value={this.state.queryName}
                               ref={input => {

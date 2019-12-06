@@ -12,7 +12,7 @@ import Column from 'uikit/Column';
 import QuickSearchBox from './QuickSearchBox';
 import { FilterInput } from '../../../uikit/Input';
 
-import Tabs from 'components/Tabs';
+import Tabs, { ShowIf } from 'components/Tabs';
 
 import styles from './AggregationSidebar.module.css';
 

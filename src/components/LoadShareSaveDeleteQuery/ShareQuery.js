@@ -81,17 +81,9 @@ export default injectState(
             }}
             interactive
             html={
-              <div
-                css={`
-                  width: 200px;
-                `}
-              >
+              <div style={{ width: '200px' }}>
                 {!this.state.link ? (
-                  <ItemRow
-                    css={`
-                      justify-content: center;
-                    `}
-                  >
+                  <ItemRow style={{ justifyContent: 'center' }}>
                     {this.state.error ? (
                       'Sorry something went wrong.'
                     ) : (

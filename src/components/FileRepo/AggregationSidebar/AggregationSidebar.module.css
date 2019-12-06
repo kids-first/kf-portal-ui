@@ -36,3 +36,29 @@
   height: 30px;
   width: 30px;
 }
+
+/**********************************************************/
+/* AggregationSidebar                                     */
+/**********************************************************/
+.collapsibleAggregationWrapper {
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 0 4.9px 0.2px rgba(0, 0, 0, 0.5);
+  border-color: #e0e1e6;
+  border-style: solid;
+  border-width: 0 1px 0 0;
+  flex: 1 1 auto;
+  background: #f4f5f8;
+  /* swap the above and below if issues */
+  transition: all 0.25s;
+  min-width: 37px;
+  flex: inherit;
+  overflow: hidden;
+}
+
+.aggregationHeader {
+  display: flex;
+  align-items: center;
+  padding: 15px 7px 15px 12px;
+}

@@ -23,7 +23,7 @@ import {
   familyMembersStatVisual,
 } from './statVisuals';
 
-import { FileRepoH3 as H3, TableHeader } from 'uikit/Headings';
+import { H3, TableHeader } from 'uikit/Headings';
 import { Paragraph } from 'uikit/Core';
 
 import { flexColumn, flexRow } from 'theme/tempTheme.module.css';
@@ -220,7 +220,9 @@ export default compose(
               const participantSection = (
                 <Section>
                   <ModalSubHeader className={`modalSubHeader`}>
-                    <H3 display="inline-block">{'Participants Summary'}</H3>
+                    <H3 style={{ fontSize: '16px', display: 'inline-block' }}>
+                      {'Participants Summary'}
+                    </H3>
                     <span>
                       {' '}
                       <Paragraph display="inline-block">
@@ -279,7 +281,9 @@ export default compose(
                               {participantSection}
                               <Section>
                                 <ModalSubHeader className={`modalSubHeader`}>
-                                  <H3 display="inline-block">Family Summary</H3>
+                                  <H3 style={{ fontSize: '16px', display: 'inline-block' }}>
+                                    Family Summary
+                                  </H3>
                                   <span>
                                     {' '}
                                     <Paragraph display="inline-block">

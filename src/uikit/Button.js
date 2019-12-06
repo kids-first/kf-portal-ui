@@ -11,6 +11,7 @@ import {
   largeTealActionButton,
 } from './Button.module.css';
 import { flexRow } from '../../src/theme/tempTheme.module.css';
+export { disabledButtonStyles };
 
 const Button = ({ children, className = '', ...props }) => (
   <button className={`${baseButton} ${className}`} {...props}>

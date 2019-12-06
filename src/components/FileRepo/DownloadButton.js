@@ -22,7 +22,6 @@ import {
   clinicalDataFamily,
   downloadBiospecimen,
 } from 'services/downloadData';
-// import { DownloadButton as DownloadButtonUI } from './ui';
 import { withApi } from 'services/api';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 import {

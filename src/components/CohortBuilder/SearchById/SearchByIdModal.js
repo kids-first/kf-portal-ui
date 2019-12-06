@@ -128,7 +128,7 @@ class SearchByIdModal extends React.Component {
       <React.Fragment>
         <ModalTitle>Upload a List of Identifiers</ModalTitle>
         <CloseIcon
-          css="cursor:pointer; width:22px; height:22px;"
+          style={{ cursor: 'pointer', width: '22px', height: '22px' }}
           fill="black"
           onClick={this.handleClose}
         />
@@ -223,7 +223,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = { closeModal, setSqons };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchByIdModal);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchByIdModal);

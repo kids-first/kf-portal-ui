@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { truncate } from 'lodash';
 
 import PlusIcon from 'icons/PlusCircleIcon';
 import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
-import { cssFileSummaryRoot } from './css';
+import theme from 'theme/defaultTheme';
 
-import { modalHeader } from './cavatica.module.css';
+import './cavatica.css';
+import './CavaticaFileSummary.css';
 
 class CavaticaFileSummary extends React.Component {
   state = {
@@ -17,7 +16,6 @@ class CavaticaFileSummary extends React.Component {
   };
   render() {
     const {
-      theme,
       unauthorizedFiles,
       authorizedFiles,
       fileAuthInitialized,
@@ -31,8 +29,8 @@ class CavaticaFileSummary extends React.Component {
     const showAuth = Boolean(authorizedFiles) && (authorizedFilesCombined.length > 0 || showUnauth);
     return (
       <div>
-        <span css={modalHeader}>File Summary:</span>
-        <div css={cssFileSummaryRoot(theme)}>
+        <span className="cavatica-modalHeader">File Summary:</span>
+        <div className="cssFileSummaryRoot">
           <div className="filePermissions">
             {!fileAuthInitialized && (
               <Spinner
@@ -160,4 +158,4 @@ class CavaticaFileSummary extends React.Component {
   }
 }
 
-export default compose(withTheme)(CavaticaFileSummary);
+export default CavaticaFileSummary;

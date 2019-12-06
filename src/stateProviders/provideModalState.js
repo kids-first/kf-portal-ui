@@ -11,6 +11,7 @@ const initialState = {
   title: null,
   component: null,
   classNames: null,
+  style: null,
 };
 
 export default provideState({
@@ -18,9 +19,9 @@ export default provideState({
     modalState: initialState,
   }),
   effects: {
-    setModal: (effects, { title, component, classNames }) => state => {
+    setModal: (effects, { title, component, classNames, style }) => state => {
       internalState.unlisten = history.listen(effects.unsetModal);
-      const modalState = { title, component, classNames };
+      const modalState = { title, component, classNames, style };
       trackUserInteraction({
         category: TRACKING_EVENTS.categories.modals,
         action: TRACKING_EVENTS.actions.open,

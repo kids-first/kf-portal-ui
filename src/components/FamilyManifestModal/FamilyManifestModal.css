@@ -5,12 +5,19 @@
   color: #343434;
 }
 
+.dataTable {
+  font-family: 'Open Sans', sans-serif;
+  color: rgb(52, 52, 52);
+  border-right: 1px solid rgb(224, 225, 230);
+  padding: 10px;
+}
+
 .dataTable table {
-      border: solid 1px #e0e1e6;
+  border: solid 1px #e0e1e6;
 }
 
 .dataTable table.total.row:first-child {
-  background-color: #E5F6FD;
+  background-color: #e5f6fd;
   color: black;
 }
 
@@ -21,7 +28,7 @@
 
 .dataTable table.row:nth-child(2n),
 .dataTable table.row.reverseColor:nth-child(2n + 1) {
-  background-color: rgb(237,238,241);
+  background-color: rgb(237, 238, 241);
 }
 
 .dataTable table.row:first-child {
@@ -32,7 +39,7 @@
 }
 
 .dataTable table.row.selected {
-  background-color: #E5F6FD;
+  background-color: #e5f6fd;
 }
 .dataTable table.row .tableCell {
   padding-right: 20px;

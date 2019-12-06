@@ -283,15 +283,10 @@ export class SurvivalChart extends React.Component {
     const resetZoomIcon = (
       <div style={header}>
         {zoomDisabled ? (
-          <ResetIcon css={{ marginTop: -4 }} size={25} color="grey" />
+          <ResetIcon size={25} color="grey" />
         ) : (
           <Tooltip html={<span>Reset zoom</span>}>
-            <ResetIcon
-              css={{ marginTop: -5 }}
-              size={25}
-              color="#22AFE9"
-              onClick={this.handleClick}
-            />
+            <ResetIcon size={25} color="#22AFE9" onClick={this.handleClick} />
           </Tooltip>
         )}
       </div>

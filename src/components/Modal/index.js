@@ -32,7 +32,13 @@ const ModalHeader = ({ title, unsetModal }) => (
   <div className={`${styles.modalHeader}`}>
     <ModalTitle>{title}</ModalTitle>
     <CloseIcon
-      css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
+      style={{
+        cursor: 'pointer',
+        width: '22px',
+        height: '22px',
+        marginTop: '-10px',
+        marginRight: '-10px',
+      }}
       fill="black"
       onClick={() => unsetModal()}
     />
@@ -86,13 +92,14 @@ const ModalView = ({
   isFooterShown = true,
   effects: { setModal, unsetModal },
   state: {
-    modalState: { component, title, classNames },
+    modalState: { component, title, classNames, style },
   },
   ...props
 }) => (
   <Modal
     isFooterShown={isFooterShown}
     className={`${classNames ? classNames.modal : ''}`}
+    style={style || {}}
     overlayClassName={`${classNames ? classNames.overlay : ''} ${styles.modalOverlay}`}
     {...{
       appElement: getAppElement(),

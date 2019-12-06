@@ -10,7 +10,7 @@
 }
 .viewLink.active {
   color: #cc3399;
-  border-bottom: #cc3399;
+  border-bottom-color: #cc3399;
 }
 
 .viewLink:hover {

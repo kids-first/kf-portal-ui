@@ -1,64 +1,24 @@
 import React from 'react';
-import { css } from 'emotion';
 import { compose, withState } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 
+import theme from 'theme/defaultTheme';
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { ScrollbarSize } from 'components/ContextProvider/ScrollbarSizeProvider';
 import { config as statsConfig } from 'components/Stats';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
-import Column from 'uikit/Column';
+import { H2 } from 'uikit/Headings';
 import { withApi } from 'services/api';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
 import { TealActionButton } from 'uikit/Button';
 import LeftChevron from 'icons/DoubleChevronLeftIcon';
 import RightChevron from 'icons/DoubleChevronRightIcon';
 
-const AggregationWrapper = styled(Column)`
-  width: calc(20% + ${({ scrollbarWidth }) => scrollbarWidth}px);
-  max-width: ${({ scrollbarWidth }) => 300 + scrollbarWidth}px;
-  min-width: ${({ scrollbarWidth }) => 200 + scrollbarWidth}px;
-  box-shadow: 0 0 4.9px 0.2px ${({ theme }) => theme.shadow};
-  border-color: ${({ theme }) => theme.greyScale5};
-  border-style: solid;
-  border-width: 0 1px 0 0;
-  flex: 1 1 auto;
-  background: ${({ theme }) => theme.backgroundGrey};
-`;
-
-const AggregationHeader = styled('div')`
-  display: flex;
-  align-items: center;
-  padding: 15px 7px 15px 12px;
-`;
-
-const OpenActionChevron = styled(RightChevron)`
-  margin-top: 10px;
-  min-width: 14px;
-`;
-
-const CloseActionChevron = styled(LeftChevron)`
-  margin-left: auto;
-`;
-
-const BrowseAllButton = styled(TealActionButton)`
-  margin-left: 10px;
-`;
-
-const CollapsibleAggregationWrapper = styled(AggregationWrapper)`
-  transition: all 0.25s;
-  min-width: 37px;
-  flex: inherit;
-  width: ${({ expanded }) => (expanded ? `100%` : `0%`)} !important;
-  overflow: hidden;
-`;
+import { collapsibleAggregationWrapper, aggregationHeader } from './AggregationSidebar.module.css';
 
 const AggregationSidebar = compose(
   injectState,
-  withTheme,
   withApi,
   withState('expanded', 'setExpanded', true),
 )(
@@ -66,7 +26,6 @@ const AggregationSidebar = compose(
     api,
     state,
     effects,
-    theme,
     setSQON,
     translateSQONValue,
     trackFileRepoInteraction,
@@ -78,22 +37,26 @@ const AggregationSidebar = compose(
   }) => (
     <ScrollbarSize>
       {({ scrollbarWidth }) => (
-        <CollapsibleAggregationWrapper
-          {...{ scrollbarWidth, expanded, innerRef: aggregationsWrapperRef }}
+        <div
+          className={collapsibleAggregationWrapper}
+          ref={aggregationsWrapperRef}
+          style={{
+            maxWidth: `${300 + scrollbarWidth}px`,
+            width: `${expanded ? '100%' : '0%'}`,
+          }}
         >
-          <AggregationHeader>
+          <div className={aggregationHeader}>
             {expanded ? <H2>Filter</H2> : null}
             {expanded ? (
-              <BrowseAllButton
+              <TealActionButton
+                style={{ marginLeft: '10px' }}
                 onClick={() =>
                   effects.setModal({
                     title: 'All Filters',
-                    classNames: {
-                      modal: css`
-                        width: 80%;
-                        height: 90%;
-                        max-width: initial;
-                      `,
+                    style: {
+                      width: '80%',
+                      height: '90%',
+                      maxWidth: 'initial',
                     },
                     component: (
                       <AdvancedFacetViewModalContent
@@ -121,22 +84,27 @@ const AggregationSidebar = compose(
                 }
               >
                 {'Browse All'}
-              </BrowseAllButton>
+              </TealActionButton>
             ) : null}
             {!expanded ? (
-              <OpenActionChevron
+              <RightChevron
+                style={{
+                  marginTop: '10px',
+                  minWidth: '14px',
+                }}
                 width={14}
                 onClick={() => setExpanded(!expanded)}
                 fill={theme.secondary}
               />
             ) : (
-              <CloseActionChevron
+              <LeftChevron
+                style={{ marginLeft: 'auto' }}
                 onClick={() => setExpanded(!expanded)}
                 width={14}
                 fill={theme.secondary}
               />
             )}
-          </AggregationHeader>
+          </div>
           {expanded ? (
             <CustomAggregationsPanel
               {...{
@@ -163,7 +131,7 @@ const AggregationSidebar = compose(
               }}
             />
           ) : null}
-        </CollapsibleAggregationWrapper>
+        </div>
       )}
     </ScrollbarSize>
   ),

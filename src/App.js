@@ -9,7 +9,7 @@ import Modal from 'components/Modal';
 import GlobalModal from 'components/Modal/GlobalModal';
 // import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
-// import FileRepo from 'components/FileRepo';
+import FileRepo from 'components/FileRepo';
 // import Join from 'components/Login/Join';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
@@ -20,7 +20,7 @@ import MemberSearchPage from 'components/MemberSearchPage';
 import AuthRedirect from 'components/AuthRedirect';
 import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
-// import { FixedFooterPage } from 'components/Page';
+import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
@@ -193,6 +193,7 @@ const App = compose(
             })
           }
         />
+        */}
         <Route
           path={`${ROUTES.search}/:index`}
           exact
@@ -208,6 +209,7 @@ const App = compose(
             })
           }
         />
+        {/*
         <Route
           path={ROUTES.profile}
           exact

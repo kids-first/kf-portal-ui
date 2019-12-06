@@ -1,6 +1,6 @@
 .downloadButton {
   justify-content: flex-start;
-  color: auto;
+  /* color: auto; */
   background: #008199;
   width: 100%;
   padding: 0px 10px;
@@ -14,6 +14,11 @@
 .downloadButton[disabled]:hover {
   color: white;
   background: #d4d6dd;
+}
+.downloadButton img {
+  width: 13px;
+  height: 28px;
+  margin-right: 9px;
 }
 
 .downloadButtonDropdownOptionsContainer {

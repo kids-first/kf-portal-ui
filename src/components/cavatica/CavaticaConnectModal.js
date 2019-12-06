@@ -15,14 +15,7 @@ import { cavaticaWebRoot, cavaticaWebRegistrationRoot } from 'common/injectGloba
 import { injectState } from 'freactal';
 import RightArrows from 'react-icons/lib/fa/angle-double-right';
 
-import {
-  numberBullet,
-  tokenTitle,
-  tokenInput,
-  formErrorMessage,
-  demoImage,
-  integrationStepsModalContent,
-} from './cavatica.module.css';
+import './cavatica.css';
 
 const enhance = compose(
   injectState,
@@ -67,7 +60,7 @@ const submitCavaticaToken = async ({
   }
 };
 
-const NumberBullet = ({ children }) => <span className={numberBullet}>{children}</span>;
+const NumberBullet = ({ children }) => <span className="numberBullet">{children}</span>;
 
 const CavaticaConnectModal = ({
   state,
@@ -83,7 +76,7 @@ const CavaticaConnectModal = ({
   ...props
 }) => {
   return (
-    <div className={integrationStepsModalContent}>
+    <div className="integrationStepsModalContent">
       <div>
         {props.withWarning && (
           <ModalWarning>
@@ -118,7 +111,7 @@ const CavaticaConnectModal = ({
             </Paragraph>
           </div>
           <img
-            className={demoImage}
+            className="demoImage"
             src={step2Screenshot}
             alt="Screenshot of Cavatica's Developer Den"
           />
@@ -134,15 +127,15 @@ const CavaticaConnectModal = ({
             </Paragraph>
           </div>
         </div>
-        <div css="display:flex; flex-direction:column; margin-left:74px;">
-          <span className={tokenTitle}>Cavatica Authentication Token:</span>
+        <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '74px' }}>
+          <span className="tokenTitle">Cavatica Authentication Token:</span>
           <Input
             id="cavaticaKey"
             type="text"
             value={cavaticaKey}
             name="cavatica"
             placeholder="Cavatica Key"
-            className={tokenInput}
+            className="tokenInput"
             onChange={e => {
               setCavaticaKey(e.target.value);
               setInvalidToken(false);
@@ -154,7 +147,7 @@ const CavaticaConnectModal = ({
               });
             }}
           />
-          <div className={formErrorMessage} id="cavaticaTokenErrorMsg">
+          <div className="formErrorMessage" id="cavaticaTokenErrorMsg">
             {invalidToken ? 'The provided Cavatica Token is invalid. Update and try again.' : ' '}
           </div>
         </div>

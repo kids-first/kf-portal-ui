@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { withTheme } from 'emotion-theming';
 import DownloadIcon from 'icons/DownloadIcon';
 import { TealActionButton } from 'uikit/Button';
@@ -32,9 +32,9 @@ const DownloadButton = compose(withTheme)(
       >
         <DownloadIcon
           fill={disabled ? theme.borderGrey : 'white'}
-          className={css`
-            margin-right: 9px;
-          `}
+          width={'13px'}
+          height={'28px'}
+          style={{ marginRight: '9px' }}
         />
         <span style={{ textTransform: 'uppercase' }}>{content()}</span>
       </StyledActionButton>

@@ -1,50 +1,22 @@
 import * as React from 'react';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
+import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
 
 import { ModalFooter } from '../Modal/index.js';
-import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
 import { provideLocalSqon } from 'stateProviders';
 import { FilterInput } from 'uikit/Input';
 import { TRACKING_EVENTS } from '../../services/analyticsTracking';
 
+import './style.css';
+
 const enhance = compose(provideLocalSqon, injectState);
 
-const AfvContainer = styled('div')`
-  flex: 1;
-  display: flex;
-  position: relative;
-
-  .advancedFacetViewWrapper {
-    padding: 0px;
-  }
-  .advancedFacetViewWrapper .facetViewWrapper .treeViewPanel {
-    border-bottom: none;
-  }
-
-  & .advancedFacetViewWrapper .facetViewWrapper .facetsPanel {
-    flex: 3;
-    & .bucket-count {
-      display: none;
-    }
-  }
-
-  .afvStatContainer .statContainer {
-    background: none;
-    padding: none;
-    border: none;
-  }
-
-  .afvStatContainer .statContainer .stat {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-`;
-
-const CustomFilterInput = styled(FilterInput)`
-  width: auto;
-`;
+const CustomFilterInput = ({ children, style = {}, ...props }) => (
+  <FilterInput style={{ width: 'auto', ...style }} {...props}>
+    {children}
+  </FilterInput>
+);
 
 class AdvancedFacetViewModalContent extends React.Component {
   onOverlayClick = e => {
@@ -66,7 +38,7 @@ class AdvancedFacetViewModalContent extends React.Component {
     } = this.props;
     return (
       <React.Fragment>
-        <AfvContainer>
+        <div className="afv-container">
           <AdvancedFacetView
             {...props}
             InputComponent={CustomFilterInput}
@@ -121,7 +93,7 @@ class AdvancedFacetViewModalContent extends React.Component {
               }
             }}
           />
-        </AfvContainer>
+        </div>
         <ModalFooter
           {...{
             unsetModal: closeModal,

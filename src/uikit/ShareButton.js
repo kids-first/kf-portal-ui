@@ -71,11 +71,7 @@ class ShareButton extends React.Component {
             }}
             interactive
             html={
-              <div
-                css={`
-                  width: 200px;
-                `}
-              >
+              <div style={{ width: '200px' }}>
                 <React.Fragment>
                   <ItemRow>
                     <CopyToClipboard

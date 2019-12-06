@@ -166,7 +166,7 @@ class Results extends React.Component {
                     ) : (
                       <React.Fragment>
                         <H2>Cohort Results</H2>
-                        <h3 className="cb-sub-heading" style={{ 'font-weight': 'normal' }}>
+                        <h3 className="cb-sub-heading" style={{ fontWeight: 'normal' }}>
                           for Query {activeSqonIndex + 1}
                         </h3>
                       </React.Fragment>

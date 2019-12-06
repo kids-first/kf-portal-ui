@@ -1,17 +1,13 @@
 import React from 'react';
-import { css } from 'react-emotion';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
-
-const buttonStyle = props =>
-  css`
-    width: auto;
-    margin-right: 10px;
-  `;
 
 export default ({ fileId, disabled, hasFilePermission, file, sourceLocation }) => (
   <CavaticaCopyButton
     text="ANALYZE FILE IN CAVATICA"
-    buttonStyle={buttonStyle}
+    style={{
+      width: 'auto',
+      marginRight: '10px',
+    }}
     fileIds={[fileId]}
     sqon={{
       op: 'and',

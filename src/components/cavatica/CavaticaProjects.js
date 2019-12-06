@@ -15,7 +15,7 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import { Result } from 'antd';
 import { getMsgFromErrorOrElse } from 'utils';
 
-import './cavatica.module.css';
+import './cavatica.css';
 
 const enhance = compose(
   injectState,
