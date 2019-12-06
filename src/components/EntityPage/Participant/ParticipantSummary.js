@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
+import get from 'lodash/get';
+
 import VariableSummaryTable from 'uikit/SummaryTable/VariableSummaryTable';
 import { EntityContentDivider, EntityContentSection } from '../';
 import ExternalLink from 'uikit/ExternalLink';
@@ -9,16 +9,14 @@ import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTrackin
 import Holder from './Utils/Holder';
 import SequencingDataTable from './Utils/SequencingDataTable';
 import OtherDataTypesSummaryTable from './Utils/OtherDataTypesSummaryTable';
-import { get } from 'lodash';
 import sanitize from './Utils/sanitize';
 import { NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import HistologicalDiagnosisTable from '../Histological/histologicalDiagnosisTable.js';
 import prettifyAge from './Utils/prettifyAge';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import Tooltip from 'uikit/Tooltip';
+import theme from 'theme/defaultTheme';
 //https://kf-qa.netlify.com/participant/PT_CMB6TASJ#summary
-
-const enhance = compose(withTheme);
 
 /**
  * Sometimes, intermediate nested fields are missing.
@@ -193,7 +191,7 @@ const getSanitizedSpecimenDxsData = specimen =>
       }),
     );
 
-const ParticipantSummary = ({ participant, theme }) => {
+const ParticipantSummary = ({ participant }) => {
   const specimens = get(participant, 'biospecimens.hits.edges', []);
   const hasFile = get(participant, 'files.hits.edges', []).length > 0;
   let wrongTypes = ['Aligned Reads', 'gVCF', 'Unaligned Reads', 'Variant Calls'];
@@ -291,4 +289,4 @@ const ParticipantSummary = ({ participant, theme }) => {
   );
 };
 
-export default enhance(ParticipantSummary);
+export default ParticipantSummary;

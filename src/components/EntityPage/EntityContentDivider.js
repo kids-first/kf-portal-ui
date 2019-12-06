@@ -1,9 +1,11 @@
-import { withTheme } from 'emotion-theming';
+import React from 'react';
 
-import styled from 'react-emotion';
-
-export default withTheme(styled('hr')`
-  border: 0px;
-  border-top: 2px dotted ${({ theme }) => theme.greyScale5};
-  width: 100%;
-`);
+export default () => (
+  <hr
+    style={{
+      border: 'none',
+      borderTop: '2px dotted #e0e1e6',
+      width: '100%',
+    }}
+  />
+);

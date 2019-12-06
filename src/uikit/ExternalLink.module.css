@@ -1,7 +1,6 @@
 .externalLink {
   color: #90278e;
   cursor: pointer;
-  white-space: pre;
 }
 .externalLink:hover,
 .externalLink.active {

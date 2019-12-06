@@ -1,8 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 
-import { applyDefaultStyles } from 'uikit/Core';
 import Column from 'uikit/Column';
 import Chip from 'uikit/Chip';
 import Row from 'uikit/Row';
@@ -10,16 +8,7 @@ import CircleIcon from 'uikit/CircleIcon';
 import FileIcon from 'icons/FileIcon';
 import participantSvg from 'icons/ParticipantIcon';
 
-const Title = applyDefaultStyles(styled('h1')`
-  display: flex;
-  font-family: ${({ theme }) => theme.fonts.default};
-  font-size: 28px;
-  font-weight: 500;
-  text-align: left;
-  color: ${({ theme }) => theme.cardTitle};
-  margin: 0;
-  padding-left: 20px;
-`);
+import './EntityPage.css';
 
 const entityIcon = type => {
   switch (type) {
@@ -36,7 +25,7 @@ const EntityTitle = ({ icon, title, tags = [] }) => (
   <Row>
     {entityIcon(icon)}
     <Column style={{ justifyContent: 'center' }}>
-      <Title>{title}</Title>
+      <h1 className="entityTitle">{title}</h1>
     </Column>
     {tags ? tags.map((tag, i) => <Chip key={`${i}${tag}`}>{tag}</Chip>) : null}
   </Row>

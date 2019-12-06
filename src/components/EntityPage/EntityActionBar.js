@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { Flex } from 'uikit/Core';
 import { ContentContainer } from 'theme/tempTheme';
-import { entityPageActionBar } from './EntityPage.module.css';
+import './EntityPage.css';
 
 export default ({ children }) => (
-  <Flex className={entityPageActionBar}>
+  <Flex className="entityPageActionBar">
     <ContentContainer
       style={{
         alignItems: 'center',

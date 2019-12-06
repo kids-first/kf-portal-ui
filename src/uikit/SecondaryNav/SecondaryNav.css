@@ -27,13 +27,12 @@
   color: #90278e;
   font-weight: 500;
   padding: 10px 40px;
+  border-bottom: 5px solid transparent;
   text-decoration: none;
 }
 .secondaryNav li a:hover,
 .secondaryNav li a.active {
   cursor: pointer;
   color: #e83a9c;
-  font-weight: 500;
   border-bottom: 5px solid #e83a9c;
-  text-decoration: none;
 }

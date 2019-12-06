@@ -1,48 +1,21 @@
 import React from 'react';
-import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { mq } from 'uikit/BreakpointHelper';
 // [NEXT] TODO - REMOVE react-grid-system in favor of whatever else we have
 import { Visible } from 'react-grid-system';
 import Tables from './Tables';
 
-const SummaryTableWrapper = styled('div')`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.greyScale5};
-
-  > div {
-    border: none;
-    margin-bottom: 5px;
-  }
-
-  ${mq[1]} {
-    flex-direction: row;
-    border: none;
-
-    > div {
-      border: 1px solid ${({ theme }) => theme.greyScale5};
-      margin-right: 20px;
-      align-self: flex-start;
-    }
-
-    > div:last-child {
-      margin-right: 0;
-    }
-  }
-`;
+import './VariableSummaryTable.css';
 
 const VariableSummaryTable = ({ rows, nbOfTables }) => (
-  <SummaryTableWrapper>
+  <div className={`summaryTable-container ${mq[1] ? 'medium' : ''}`}>
     <Visible xs sm>
       <Tables rows={rows} amount={1} />
     </Visible>
     <Visible md lg xl>
       <Tables rows={rows} amount={nbOfTables} />
     </Visible>
-  </SummaryTableWrapper>
+  </div>
 );
 
 VariableSummaryTable.propTypes = {
@@ -51,6 +24,7 @@ VariableSummaryTable.propTypes = {
       title: PropTypes.string,
     }),
   ).isRequired,
+  nbOfTables: PropTypes.number,
 };
 
 export default VariableSummaryTable;

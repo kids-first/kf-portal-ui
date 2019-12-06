@@ -78,7 +78,6 @@ const colors = {
   uploadYellow: '#edb500',
   borderPurple: '#cc3399',
   linkPurple: '#cc3399',
-  defaultChip: '#404c9a',
 
   // table
   backgroundRowOdd: '#fff',

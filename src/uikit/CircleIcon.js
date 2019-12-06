@@ -1,45 +1,25 @@
 import React from 'react';
-import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 
-const IconWrapper = styled('div')`
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #e0e1e6;
-  background-color: #fff;
-`;
+import './CircleIcon.css';
 
-const IconBackground = styled('div')`
-  background-color: #aaaec1;
-  border-radius: 50%;
-  padding: 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CircleIcon = ({ color, fill, size, iconSize, Icon }) => (
-  <IconWrapper style={{ height: size, width: size }}>
-    <IconBackground style={{ backgroundColor: color, height: size - 10, width: size - 10 }}>
-      <Icon
-        width={`${iconSize || size - 32}px`}
-        height={`${iconSize || size - 32}px`}
-        fill={fill || '#fff'}
-      />
-    </IconBackground>
-  </IconWrapper>
+const CircleIcon = ({ color, fill = '#fff', size, iconSize = size - 32, Icon }) => (
+  <div className="circleIcon-container" style={{ height: size, width: size }}>
+    <div
+      className="circleIcon-content"
+      style={{ backgroundColor: color, height: size - 10, width: size - 10 }}
+    >
+      <Icon width={`${iconSize}px`} height={`${iconSize}px`} fill={fill} />
+    </div>
+  </div>
 );
 
 CircleIcon.propTypes = {
-  color: PropTypes.string,
+  color: PropTypes.string.isRequired,
   fill: PropTypes.string,
-  size: PropTypes.number,
+  size: PropTypes.number.isRequired,
   iconSize: PropTypes.number,
-  Icon: PropTypes.elementType,
+  Icon: PropTypes.elementType.isRequired,
 };
 
 export default CircleIcon;

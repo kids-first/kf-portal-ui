@@ -1,23 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
-import { css } from 'emotion';
 
-export const Container = styled('div')`
-  overflow-y: hidden;
-  flex-grow: 0;
-  flex-shrink: 1;
-  width: 100%;
-  min-width: 265px;
-  height: 100%;
-  // background: ${({ theme }) => theme.backgroundGrey};
-`;
-const tabIdRightIconWrapper = css({
-  display: 'flex',
-  alignItems: 'center',
-});
-
-const rightIconCss = css({ marginLeft: '10px' });
+import '../../EntityPage.css';
 
 //needs to be a class to use setState to do the hovering. Would do in CSS, but with emotion it's too complicated and hacky
 class TabButton extends React.Component {
@@ -36,23 +19,15 @@ class TabButton extends React.Component {
     //uses a fake Link: we want the same style as a SecondaryNavMenu, and this is the key to it
     return (
       <div
-        style={{
-          flexGrow: 0,
-          padding: '10px',
-          marginRight: '5px',
-          marginBottom: '5px',
-          border: changeColor ? 'thin solid #e83a9c' : 'thin solid rgb(224, 225, 230)',
-          borderRadius: '1em',
-          cursor: 'pointer',
-        }}
+        className={`entityParticipant-tabButton ${changeColor ? 'changeColor' : ''}`}
         onClick={this.onClick}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
         {rightIcon ? (
-          <div className={tabIdRightIconWrapper}>
+          <div className="rightIcon">
             <div>{tabId}</div>
-            <div className={rightIconCss}>{rightIcon}</div>
+            <div style={{ marginLeft: '10px' }}>{rightIcon}</div>
           </div>
         ) : (
           tabId
@@ -62,7 +37,7 @@ class TabButton extends React.Component {
   }
 }
 
-class Holder extends React.Component {
+export default class Holder extends React.Component {
   constructor(props) {
     super(props);
 
@@ -87,7 +62,7 @@ class Holder extends React.Component {
 
     return (
       <div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className="entityParticipant-tabs-container">
           {tabIDs.map(tabId => {
             return (
               <TabButton
@@ -100,10 +75,10 @@ class Holder extends React.Component {
             );
           })}
         </div>
-        <Container>{children.find(child => child.key === this.state.activeTab)}</Container>
+        <div className="entityParticipant-holder-container">
+          {children.find(child => child.key === this.state.activeTab)}
+        </div>
       </div>
     );
   }
 }
-
-export default withTheme(Holder);

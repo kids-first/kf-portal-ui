@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { get, isNull } from 'lodash';
-import styled from 'react-emotion';
 
 import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';
 import Column from 'uikit/Column';
@@ -17,12 +16,7 @@ import { fetchParticipant } from './actionCreators';
 import Spinner from 'react-spinkit';
 import ParticipantActionBar from './Utils/ParticipantActionBar';
 
-const Container = styled(Column)`
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-`;
+import '../EntityPage.css';
 
 const getTags = participant => {
   const probandTag = participant.is_proband ? 'Proband' : 'Family Member';
@@ -91,7 +85,7 @@ class ParticipantEntity extends React.Component {
     }
 
     return (
-      <Container>
+      <Column className="entityParticipant-container">
         <EntityTitleBar>
           <EntityTitle
             icon="participant"
@@ -101,7 +95,10 @@ class ParticipantEntity extends React.Component {
         </EntityTitleBar>
         <ParticipantActionBar style={{ backgroundColor: 'red' }}>
           <SecondaryNavMenu
-            tabs={[{ name: 'Summary', hash: 'summary' }, { name: 'Clinical', hash: 'clinical' }]}
+            tabs={[
+              { name: 'Summary', hash: 'summary' },
+              { name: 'Clinical', hash: 'clinical' },
+            ]}
             defaultHash="summary"
             location={location}
           />
@@ -114,7 +111,7 @@ class ParticipantEntity extends React.Component {
             <ParticipantClinical participant={participant} />
           </SecondaryNavContent>
         </EntityContent>
-      </Container>
+      </Column>
     );
   }
 }
@@ -132,7 +129,4 @@ const mapDispatchToProps = {
   fetchParticipant,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ParticipantEntity);
+export default connect(mapStateToProps, mapDispatchToProps)(ParticipantEntity);
