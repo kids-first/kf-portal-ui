@@ -2,13 +2,13 @@
   color: 'rgb(107,98,98)';
   align-items: center;
 }
-.filterInputWrapper .icon-left {
+.iconLeft {
   margin-right: 5px;
 }
-.filterInputWrapper .icon-right {
+.iconRight {
   cursor: pointer;
 }
-.filterInputWrapper input {
+.filterInput {
   border: none;
   flex: 1;
 }

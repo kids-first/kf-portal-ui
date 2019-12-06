@@ -6,7 +6,7 @@ import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
 import omit from 'lodash/omit';
 
 import { input, flex } from '../theme/tempTheme.module.css';
-import { filterInputWrapper } from './Input.module.css';
+import { filterInputWrapper, filterInput, iconLeft, iconRight } from './Input.module.css';
 
 /*
 this component should implement the same interface as <input> from react-dom
@@ -45,9 +45,14 @@ export const FilterInput = ({
   };
   return (
     <FilterInputWrapper disabled={disabled} className={className}>
-      {LeftIcon && <LeftIcon className={'icon-left'} />}
-      <input {...{ value, disabled, ...omit(props, ['componentRef']) }} ref={ref} autoFocus />
-      {value && value.length && <RightIcon className={'icon-right'} onClick={clearInput} />}
+      {LeftIcon && <LeftIcon className={iconLeft} />}
+      <input
+        className={filterInput}
+        {...{ value, disabled, ...omit(props, ['componentRef']) }}
+        ref={ref}
+        autoFocus
+      />
+      {value && value.length && <RightIcon className={iconRight} onClick={clearInput} />}
     </FilterInputWrapper>
   );
 };

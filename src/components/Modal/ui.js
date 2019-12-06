@@ -35,13 +35,14 @@ export const ModalActionButton = ({ children }) => (
 //   </ModalActionButton>
 // );
 
-export const Modal = ({ children, className, isFooterShown, ...props }) => (
+export const Modal = ({ children, className, isFooterShown, style = {}, ...props }) => (
   <ReactModal
     className={`${modal} ${className}`}
     {...props}
     style={{
       content: {
         paddingBottom: isFooterShown ? '75px' : '',
+        ...style,
       },
     }}
   >
