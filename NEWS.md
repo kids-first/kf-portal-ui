@@ -13,6 +13,10 @@ This release includes a new _Members_ page and alterations to the profile page, 
 - [#2158](https://github.com/kids-first/kf-portal-ui/issues/2158) Member page: Filter member search by interests or role
 - [#2124](https://github.com/kids-first/kf-portal-ui/pull/2124) Make sure other members profile can be viewed but not edited
 -->
+## 2019-11-27 kf-portal-ui 2.12.1
+Hot fix on user creation issue due to regression when working on:
+ - [#1042](https://github.com/kids-first/kf-portal-ui/issues/1042) Fix bump on login when user already has a token
+ The code had been reverted, therefore issue #1042 is unresolved.
 
 ## 2019-11-27 kf-portal-ui 2.12.0
 
