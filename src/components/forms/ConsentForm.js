@@ -243,7 +243,7 @@ export default compose(
                   action: TRACKING_EVENTS.actions.signedUp,
                   label: `Join Completion: egoId ${loggedInUser.egoId}`,
                 });
-                history.push(`/user/${loggedInUser.egoId}`);
+                history.push(`/user/${loggedInUser._id}`);
               }
             }}
           >
