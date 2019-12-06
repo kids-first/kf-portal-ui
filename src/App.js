@@ -14,6 +14,7 @@ import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
+import { isAdminToken, validateJWT } from 'utils';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
 import FileEntity from 'components/EntityPage/File';
@@ -34,38 +35,28 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
+import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3 } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
-import isEmpty from 'lodash/isEmpty';
-import { Spin, Icon } from 'antd';
-import { isAdminToken, validateJWT } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
-    if ((!loggedInUser || isEmpty(loggedInUser)) && requireLogin) {
+    if (!loggedInUser && requireLogin) {
         return isLoadingUser ? null : (
             <SideImagePage
+                {...{ ...props }}
                 logo={logo}
                 sideImage={loginImage}
                 Component={LoginPage}
                 Footer={LoginFooter}
-            />
+                />
         );
     } else if (
         loggedInUser &&
         (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms)
     ) {
-        const { Component, ...rest } = props;
-        return (
-            <SideImagePage
-                {...rest}
-                backgroundImage={scienceBgPath}
-                logo={logo}
-                Component={Join}
-                sideImage={joinImage}
-            />
-        );
+        return <Redirect to="/join" />;
     } else {
         return <WrapperPage {...props} />;
     }
@@ -80,26 +71,12 @@ const AppContainer = styled('div')`
   }
 `;
 
-const ShowLoader = (
-    <Page Component={Spin} indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
-);
-
 const App = compose(
     injectState,
     withApi,
     withTheme,
 )(({ state, api }) => {
     const { loggedInUser, toast, isLoadingUser } = state;
-
-    const showPageIfLoggedInElseDashboard = props => {
-        return forceSelectRole({
-            api,
-            isLoadingUser,
-            Component: UserDashboard,
-            loggedInUser,
-            ...props,
-        });
-    };
 
     return (
         <AppContainer>
@@ -264,28 +241,51 @@ const App = compose(
                         })
                     }
                 />
-                <Route path={ROUTES.dashboard} exact render={showPageIfLoggedInElseDashboard} />
+                <Route
+                    path={ROUTES.dashboard}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            api,
+                            isLoadingUser,
+                            Component: UserDashboard,
+                            loggedInUser,
+                            ...props,
+                        })
+                    }
+                />
                 <Route
                     path={ROUTES.join}
                     exact
                     render={props => {
-                        if (isEmpty(loggedInUser) && requireLogin) {
-                            if (isLoadingUser) {
-                                return ShowLoader;
-                            }
-                        }
-                        return showPageIfLoggedInElseDashboard(props);
+                        return (
+                            <ApiContext.Provider
+                                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+                            >
+                                <SideImagePage
+                                    backgroundImage={scienceBgPath}
+                                    logo={logo}
+                                    Component={Join}
+                                    sideImage={joinImage}
+                                    {...props}
+                                />
+                            </ApiContext.Provider>
+                        );
                     }}
                 />
                 <Route
                     path="/"
                     exact
-                    render={props => {
-                        if (isLoadingUser) {
-                            return ShowLoader;
-                        }
-                        return showPageIfLoggedInElseDashboard(props);
-                    }}
+                    render={props => (
+                        <SideImagePage
+                            logo={logo}
+                            backgroundImage={scienceBgPath}
+                            Component={LoginPage}
+                            Footer={LoginFooter}
+                            sideImage={loginImage}
+                            {...props}
+                        />
+                    )}
                 />
                 <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
                 <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
