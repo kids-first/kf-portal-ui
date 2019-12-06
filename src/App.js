@@ -34,7 +34,6 @@ import joinImage from 'assets/smiling-boy.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
-import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3 } from 'common/constants';
 import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
@@ -44,23 +43,32 @@ import { Spin, Icon } from 'antd';
 import { isAdminToken, validateJWT } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
-  if (!loggedInUser && requireLogin) {
-    return isLoadingUser ? null : (
-      <SideImagePage
-        logo={logo}
-        sideImage={loginImage}
-        Component={LoginPage}
-        Footer={LoginFooter}
-      />
-    );
-  } else if (
-    loggedInUser &&
-    (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms)
-  ) {
-    return <Redirect to="/join" />;
-  } else {
-    return <WrapperPage {...props} />;
-  }
+    if ((!loggedInUser || isEmpty(loggedInUser)) && requireLogin) {
+        return isLoadingUser ? null : (
+            <SideImagePage
+                logo={logo}
+                sideImage={loginImage}
+                Component={LoginPage}
+                Footer={LoginFooter}
+            />
+        );
+    } else if (
+        loggedInUser &&
+        (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms)
+    ) {
+        const { Component, ...rest } = props;
+        return (
+            <SideImagePage
+                {...rest}
+                backgroundImage={scienceBgPath}
+                logo={logo}
+                Component={Join}
+                sideImage={joinImage}
+            />
+        );
+    } else {
+        return <WrapperPage {...props} />;
+    }
 };
 
 const AppContainer = styled('div')`
@@ -73,257 +81,229 @@ const AppContainer = styled('div')`
 `;
 
 const ShowLoader = (
-  <Page
-    Component={Spin}
-    indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />}
-  />
+    <Page Component={Spin} indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
 );
 
 const App = compose(
-  injectState,
-  withApi,
-  withTheme,
+    injectState,
+    withApi,
+    withTheme,
 )(({ state, api }) => {
-  const { loggedInUser, toast, isLoadingUser } = state;
+    const { loggedInUser, toast, isLoadingUser } = state;
 
-  const showDashboardIfLoggedIn = props => {
-    return forceSelectRole({
-      api,
-      isLoadingUser,
-      Component: UserDashboard,
-      loggedInUser,
-      ...props,
-    });
-  };
+    const showPageIfLoggedInElseDashboard = props => {
+        return forceSelectRole({
+            api,
+            isLoadingUser,
+            Component: UserDashboard,
+            loggedInUser,
+            ...props,
+        });
+    };
 
-  return (
-    <AppContainer>
-      <Switch>
-        <Route
-          path={ROUTES.admin}
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              WrapperPage: FixedFooterPage,
-              Component: ({ match, ...props }) => {
-                return !isAdminToken({
-                  validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
-                }) ? (
-                  <Redirect to={ROUTES.dashboard} />
-                ) : (
-                  <ArrangerAdmin baseRoute={match.url} failRedirect={'/'} />
-                );
-              },
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route
-          // TODO: left here for convenience during roll out of the new admin
-          path={ROUTES.adminLegacy}
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              WrapperPage: FixedFooterPage,
-              Component: ({ match, ...props }) => {
-                return !isAdminToken({
-                  validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
-                }) ? (
-                  <Redirect to={ROUTES.dashboard} />
-                ) : (
-                  <ArrangerDashboardLegacy basename={match.url} {...props} />
-                );
-              },
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
-        <Route
-          path={ROUTES.orcid}
-          exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              Footer={LoginFooter}
-              sideImage={loginImage}
-              stealth={true} // hide some of the visuals of the page during redirection
-              {...props}
-            />
-          )}
-        />
-        <Route path={ROUTES.redirected} exact component={() => null} />
-        <Route
-          path={ROUTES.cohortBuilder}
-          exact
-          render={props =>
-            forceSelectRole({
-              isLoadingUser,
-              Component: CohortBuilder,
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path={ROUTES.searchMember}
-          exact
-          render={props =>
-            forceSelectRole({
-              isLoadingUser,
-              Component: MemberSearchPage,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path={`${ROUTES.file}/:fileId`}
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: FileEntity,
-              loggedInUser,
-              fileId: props.match.params.fileId,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path={`${ROUTES.participant}/:participantId`}
-          exact
-          render={props =>
-            forceSelectRole({
-              isLoadingUser,
-              loggedInUser,
-              Component: ParticipantEntity,
-              participantId: props.match.params.participantId,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path={`${ROUTES.search}/:index`}
-          exact
-          render={props =>
-            forceSelectRole({
-              isLoadingUser,
-              Component: FileRepo,
-              WrapperPage: FixedFooterPage,
-              loggedInUser,
-              index: props.match.params.index,
-              graphqlField: props.match.params.index,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path={ROUTES.profile}
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserProfile,
-              loggedInUser,
-              userID: null,
-              ...props,
-            })
-          }
-        />
-        <Route
-          path={`${ROUTES.user}/:userID`}
-          exact
-          render={props =>
-            forceSelectRole({
-              api,
-              isLoadingUser,
-              Component: UserProfile,
-              loggedInUser,
-              userID: props.match.params.userID,
-              ...props,
-            })
-          }
-        />
-        <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
-        <Route
-          path={ROUTES.join}
-          exact
-          render={props => {
-            if (isEmpty(loggedInUser) && requireLogin) {
-              if (isLoadingUser) {
-                return ShowLoader;
-              }
-              return (
-                <ApiContext.Provider
-                  value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
-                >
-                  <SideImagePage
-                    backgroundImage={scienceBgPath}
-                    logo={logo}
-                    Component={Join}
-                    sideImage={joinImage}
-                    {...props}
-                  />
-                </ApiContext.Provider>
-              );
-            }
-            return showDashboardIfLoggedIn(props);
-          }}
-        />
-        <Route
-          path="/"
-          exact
-          render={props => {
-            if (isEmpty(loggedInUser) && requireLogin) {
-              if (isLoadingUser) {
-                return ShowLoader;
-              }
-              return (
-                <SideImagePage
-                  logo={logo}
-                  backgroundImage={scienceBgPath}
-                  Component={LoginPage}
-                  Footer={LoginFooter}
-                  sideImage={loginImage}
-                  {...props}
+    return (
+        <AppContainer>
+            <Switch>
+                <Route
+                    path={ROUTES.admin}
+                    render={props =>
+                        forceSelectRole({
+                            api,
+                            isLoadingUser,
+                            WrapperPage: FixedFooterPage,
+                            Component: ({ match, ...props }) => {
+                                return !isAdminToken({
+                                    validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                                }) ? (
+                                    <Redirect to={ROUTES.dashboard} />
+                                ) : (
+                                    <ArrangerAdmin baseRoute={match.url} failRedirect={'/'} />
+                                );
+                            },
+                            loggedInUser,
+                            index: props.match.params.index,
+                            graphqlField: props.match.params.index,
+                            ...props,
+                        })
+                    }
                 />
-              );
-            }
-            return showDashboardIfLoggedIn(props);
-          }}
-        />
-        <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
-        <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
-        <Route path={ROUTES.error} exact render={() => <Error />} />
-        <Redirect from="*" to={ROUTES.dashboard} />
-      </Switch>
-      <Modal />
-      <GlobalModal />
-      <Toast {...toast}>{toast.component}</Toast>
-    </AppContainer>
-  );
+                <Route
+                    // TODO: left here for convenience during roll out of the new admin
+                    path={ROUTES.adminLegacy}
+                    render={props =>
+                        forceSelectRole({
+                            api,
+                            isLoadingUser,
+                            WrapperPage: FixedFooterPage,
+                            Component: ({ match, ...props }) => {
+                                return !isAdminToken({
+                                    validatedPayload: validateJWT({ jwt: state.loggedInUserToken }),
+                                }) ? (
+                                    <Redirect to={ROUTES.dashboard} />
+                                ) : (
+                                    <ArrangerDashboardLegacy basename={match.url} {...props} />
+                                );
+                            },
+                            loggedInUser,
+                            index: props.match.params.index,
+                            graphqlField: props.match.params.index,
+                            ...props,
+                        })
+                    }
+                />
+                <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+                <Route
+                    path={ROUTES.orcid}
+                    exact
+                    render={props => (
+                        <SideImagePage
+                            logo={logo}
+                            backgroundImage={scienceBgPath}
+                            Component={LoginPage}
+                            Footer={LoginFooter}
+                            sideImage={loginImage}
+                            stealth={true} // hide some of the visuals of the page during redirection
+                            {...props}
+                        />
+                    )}
+                />
+                <Route path={ROUTES.redirected} exact component={() => null} />
+                <Route
+                    path={ROUTES.cohortBuilder}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            isLoadingUser,
+                            Component: CohortBuilder,
+                            loggedInUser,
+                            index: props.match.params.index,
+                            graphqlField: props.match.params.index,
+                            ...props,
+                        })
+                    }
+                />
+                <Route
+                    path={ROUTES.searchMember}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            isLoadingUser,
+                            Component: MemberSearchPage,
+                            loggedInUser,
+                            ...props,
+                        })
+                    }
+                />
+                <Route
+                    path={`${ROUTES.file}/:fileId`}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            api,
+                            isLoadingUser,
+                            Component: FileEntity,
+                            loggedInUser,
+                            fileId: props.match.params.fileId,
+                            ...props,
+                        })
+                    }
+                />
+                <Route
+                    path={`${ROUTES.participant}/:participantId`}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            isLoadingUser,
+                            loggedInUser,
+                            Component: ParticipantEntity,
+                            participantId: props.match.params.participantId,
+                            ...props,
+                        })
+                    }
+                />
+                <Route
+                    path={`${ROUTES.search}/:index`}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            isLoadingUser,
+                            Component: FileRepo,
+                            WrapperPage: FixedFooterPage,
+                            loggedInUser,
+                            index: props.match.params.index,
+                            graphqlField: props.match.params.index,
+                            ...props,
+                        })
+                    }
+                />
+                <Route
+                    path={ROUTES.profile}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            api,
+                            isLoadingUser,
+                            Component: UserProfile,
+                            loggedInUser,
+                            userID: null,
+                            ...props,
+                        })
+                    }
+                />
+                <Route
+                    path={`${ROUTES.user}/:userID`}
+                    exact
+                    render={props =>
+                        forceSelectRole({
+                            api,
+                            isLoadingUser,
+                            Component: UserProfile,
+                            loggedInUser,
+                            userID: props.match.params.userID,
+                            ...props,
+                        })
+                    }
+                />
+                <Route path={ROUTES.dashboard} exact render={showPageIfLoggedInElseDashboard} />
+                <Route
+                    path={ROUTES.join}
+                    exact
+                    render={props => {
+                        if (isEmpty(loggedInUser) && requireLogin) {
+                            if (isLoadingUser) {
+                                return ShowLoader;
+                            }
+                        }
+                        return showPageIfLoggedInElseDashboard(props);
+                    }}
+                />
+                <Route
+                    path="/"
+                    exact
+                    render={props => {
+                        if (isLoadingUser) {
+                            return ShowLoader;
+                        }
+                        return showPageIfLoggedInElseDashboard(props);
+                    }}
+                />
+                <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
+                <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
+                <Route path={ROUTES.error} exact render={() => <Error />} />
+                <Redirect from="*" to={ROUTES.dashboard} />
+            </Switch>
+            <Modal />
+            <GlobalModal />
+            <Toast {...toast}>{toast.component}</Toast>
+        </AppContainer>
+    );
 });
 
 const enhanceApp = () => (
-  <ErrorBoundary>
-    <ContextProvider>
-      <App />
-    </ContextProvider>
-  </ErrorBoundary>
+    <ErrorBoundary>
+        <ContextProvider>
+            <App />
+        </ContextProvider>
+    </ErrorBoundary>
 );
 export default hot(module)(enhanceApp);
