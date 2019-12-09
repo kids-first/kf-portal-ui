@@ -58,6 +58,7 @@ const ExploreDataIconStyled = styled(ExploreDataIcon)`
 
 const onClosePublicProfileInviteAlert = () =>
   localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
+
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
 const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
@@ -109,11 +110,11 @@ const Header = ({
 }) => {
   const canSeeProtectedRoutes =
     loggedInUser &&
-    (loggedInUser.roles &&
+    loggedInUser.roles &&
       loggedInUser.roles[0] &&
       loggedInUser.acceptedTerms &&
       path !== '/join' &&
-      path !== '/');
+      path !== '/';
   const currentPathName = history.location.pathname;
 
   return (
@@ -211,7 +212,7 @@ const Header = ({
                   OptionsContainerComponent={NavbarDropdownOptionsContainer}
                   LabelContainer={MenuLabelContainer}
                 >
-                  <NavigationGravatar email={loggedInUser.email || ''} size={39} />
+                  <NavigationGravatar email={loggedInUser.email || ''} d={'mp'} size={39} />
                   <DropdownRow>{loggedInUser.firstName}</DropdownRow>
                 </Dropdown>
               )}
@@ -235,8 +236,5 @@ export default compose(
   injectState,
   withRouter,
   withApi,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 )(Header);

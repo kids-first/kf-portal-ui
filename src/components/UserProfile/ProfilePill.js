@@ -11,7 +11,7 @@ const computeSizeGivenRole = displayName => {
   );
   const isSmallFit = rolesThatFitSmallSize.includes(displayName);
 
-  return { height: isSmallFit ? 24 : 34, width: isSmallFit ? '65%' : '75%' };
+  return { height: isSmallFit ? 24 : 34, width: isSmallFit ? '65%' : '80%' };
 };
 
 const ProfilePill = props => {

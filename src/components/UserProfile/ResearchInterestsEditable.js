@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input, Button, Spin } from 'antd';
+import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input, Button } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { debounce } from 'lodash';
@@ -203,13 +203,13 @@ class ResearchInterestsEditable extends Component {
                 rules: [{ required: false }],
               })(
                 <AutoComplete
-                  dataSource={isLoadingSuggestions ? ['...loading suggestions'] : dataSource}
+                  dataSource={isLoadingSuggestions ? [] : dataSource}
                   onSearch={this.onSearch}
                 >
                   <Input
                     onPressEnter={this.onPressEnter}
                     placeholder="Search for interests"
-                    prefix={isLoadingSuggestions ? <Spin /> : <Icon type="search" />}
+                    prefix={<Icon type="search" />}
                     suffix={
                       <Icon
                         type="check"
