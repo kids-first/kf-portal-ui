@@ -9,7 +9,7 @@ const CircleIcon = ({ color, fill = '#fff', size, iconSize = size - 32, Icon }) 
       className="circleIcon-content"
       style={{ backgroundColor: color, height: size - 10, width: size - 10 }}
     >
-      <Icon width={`${iconSize}px`} height={`${iconSize}px`} fill={fill} />
+      <Icon width={`${iconSize}`} height={`${iconSize}`} fill={fill} />
     </div>
   </div>
 );

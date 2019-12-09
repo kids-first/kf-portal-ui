@@ -5,7 +5,7 @@ import Button from 'uikit/Button';
 import CavaticaOpenModalWrapper from './CavaticaOpenModalWrapper';
 import CavaticaLogo from 'icons/CavaticaLogo';
 
-import { flexRow, flexCenter, bigWhiteButton } from '../../theme/tempTheme.module.css';
+import { flexRow, flexCenter, bigWhiteButton } from 'theme/tempTheme.module.css';
 import './cavatica.css';
 
 const CavaticaButton = ({ className = '', children, ...props }) => (

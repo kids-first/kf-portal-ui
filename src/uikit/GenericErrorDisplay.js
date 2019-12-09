@@ -22,8 +22,8 @@ const splitMessageOnLines = (message, indent = 0) => {
     ? message.split(/\n/)
     : [];
   return lines.map((line, i) => (
-    <React.Fragment>
-      <span key={`error_line_${i}`}>{`${indentation}${line}`}</span>
+    <React.Fragment key={`error_line_${i}`}>
+      <span>{`${indentation}${line}`}</span>
       <br />
     </React.Fragment>
   ));
@@ -60,10 +60,13 @@ const GenericErrorDisplay = ({ error, footer = null, header = 'Oops, something w
   );
 };
 
-const messageValidator = PropTypes.oneOf([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]);
+const messageValidator = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.arrayOf(PropTypes.string),
+]);
 GenericErrorDisplay.propTypes = {
   header: PropTypes.string,
-  error: PropTypes.oneOf([
+  error: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({
       message: messageValidator,

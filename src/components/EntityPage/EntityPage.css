@@ -1,4 +1,11 @@
-.entityPageActionBar {
+.entityPage-container {
+  flex-direction: column;
+  min-height: calc(100% - 56px);
+  width: 100%;
+  align-items: center;
+}
+
+.entityPage-container .actionBar {
   height: 62px;
   width: 100%;
 
@@ -9,9 +16,48 @@
   align-items: center;
   justify-content: flex-end;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
-.entityTitleBar {
+.entityPage-container .actionBar .actionBar-container {
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.entityPage-container .tabs-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.entityPage-container .tabButton {
+  flex-grow: 0;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 1em;
+  cursor: pointer;
+  border: thin solid rgb(224, 225, 230);
+}
+.entityPage-container .tabButton.changeColor {
+  border: thin solid #e83a9c;
+}
+
+.entityPage-container .tabButton .rightIcon {
+  display: flex;
+  align-items: center;
+}
+
+.entityPage-container .holder-container {
+  overflow-y: hidden;
+  flex-grow: 0;
+  flex-shrink: 1;
+  width: 100%;
+  min-width: 265px;
+  height: 100%;
+}
+
+.entityPage-container .entityTitleBar {
   height: 104px;
   width: 100%;
   align-items: center;
@@ -21,7 +67,7 @@
   background-color: #f4f5f8;
 }
 
-.entityTitle {
+.entityPage-container .entityTitle {
   display: flex;
   font-family: Montserrat, sans-serif;
   font-size: 28px;
@@ -32,11 +78,11 @@
   padding-left: 20px;
 }
 
-.entityContentSection-container {
+.entityPage-container .entityContentSection-container {
   padding: 25px 0;
 }
 
-.entityContentSection-title {
+.entityPage-container .entityContentSection-title {
   display: inline-block;
   font-family: Montserrat, sans-serif;
   font-size: 20px;
@@ -45,72 +91,25 @@
   color: #404c9a;
   margin: 0;
 }
-.entityContentSection-title.small {
+.entityPage-container .entityContentSection-title.small {
   font-size: 16px;
 }
 
-.entityContentSection-content {
+.entityPage-container .entityContentSection-content {
   padding-top: 15px;
+}
+.entityPage-container .entityContentSection-content .tableToolbar-toolbar {
+  border: 1px solid #e0e1e6;
+  border-bottom: none;
+}
+.entityPage-container .entityContentSection-content .dataTable {
+  border: 1px solid #e0e1e6;
+  border-top: none;
 }
 
 /**************************************************/
 /* Participant                                    */
 /**************************************************/
-.entityParticipant-container {
-  flex-direction: column;
-  min-height: calc(100% - 56px);
-  width: 100%;
-  align-items: center;
-}
-
-.entityParticipant-actionBar {
-  height: 62px;
-  width: 100%;
-
-  box-shadow: 0 4.9px 4.9px -4.9px #bbbbbb;
-  border: solid 1px #e0e1e6;
-  background-color: #ffffff;
-
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.entityParticipant-actionBar-container {
-  align-items: center;
+.entityParticipant-container.entityPage-container .actionBar .actionBar-container {
   justify-content: flex-start;
-  height: 100%;
-}
-
-.entityParticipant-tabButton {
-  flex-grow: 0;
-  padding: 10px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  border-radius: 1em;
-  cursor: pointer;
-  border: thin solid rgb(224, 225, 230);
-}
-.entityParticipant-tabButton.changeColor {
-  border: thin solid #e83a9c;
-}
-
-.entityParticipant-tabButton .rightIcon {
-  display: flex;
-  align-items: center;
-}
-
-.entityParticipant-tabs-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.entityParticipant-holder-container {
-  overflow-y: hidden;
-  flex-grow: 0;
-  flex-shrink: 1;
-  width: 100%;
-  min-width: 265px;
-  height: 100%;
 }

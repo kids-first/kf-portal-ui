@@ -16,6 +16,7 @@
 .cavaticaButton {
   background: #90278e;
   width: 100%;
+  height: 100%;
   text-transform: uppercase;
   font-weight: 600;
   color: #ffffff;
@@ -23,6 +24,8 @@
   font-size: 12px;
   letter-spacing: 0.2px;
   border: 1px solid rgb(212, 214, 221);
+  border-radius: 25px;
+  padding: 0 5px;
 }
 .cavaticaButton:hover {
   background-color: #a42c90;
@@ -31,7 +34,7 @@
 .cavaticaButton.disabled:hover,
 .cavaticaButton[disabled],
 .cavaticaButton[disabled]:hover {
-  background: #d4d6dd;
+  background: rgb(244, 245, 248);
   color: #cacbcf;
   cursor: not-allowed;
 }

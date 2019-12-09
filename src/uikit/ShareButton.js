@@ -7,51 +7,29 @@ import TwitterIcon from 'react-icons/lib/fa/twitter';
 import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
+
 import Tooltip from 'uikit/Tooltip';
 import { WhiteButton } from 'uikit/Button';
-import styled from 'react-emotion';
 import Row from 'uikit/Row';
+import { styleComponent } from 'components/Utils';
 
-import { flexCenter } from '../theme/tempTheme.module.css';
+import { flexCenter } from 'theme/tempTheme.module.css';
+import './ShareButton.css';
 
 const track = (channel, trackingFunc) => trackingFunc(channel);
 
-const ButtonContainer = ({ children }) => (
-  <Row className={flexCenter} style={{ padding: '10px 5px' }}>
-    {children}
-  </Row>
-);
+const Bubble = styleComponent('span', 'bubble');
 
-const Bubble = styled(`span`)`
-  background-color: ${({ theme }) => theme.primary};
-  color: white;
-  padding: 4px 6px;
-  border-radius: 100%;
-  margin-right: 10px;
-`;
-
-const ItemRow = styled('div')`
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.greyScale6};
-  }
-`;
-
-const Button = styled(WhiteButton)`
-  padding: 6px 10px;
-`;
+const ItemRow = styleComponent('div', 'itemRow');
 
 class ShareButton extends React.Component {
   state = { copied: false, open: false };
 
   render() {
-    const { link, trackShare = x => x, disabled } = this.props;
+    const { link, trackShare = x => x, disabled = false } = this.props;
     return (
-      <ButtonContainer>
-        <Button
+      <Row className={`share-button ${flexCenter}`}>
+        <WhiteButton
           disabled={disabled}
           onClick={
             disabled
@@ -120,14 +98,16 @@ class ShareButton extends React.Component {
             <ShareIcon />
             &nbsp;share
           </Tooltip>
-        </Button>
-      </ButtonContainer>
+        </WhiteButton>
+      </Row>
     );
   }
 }
 
 ShareButton.propTypes = {
   link: PropTypes.string.isRequired,
+  trackShare: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default ShareButton;

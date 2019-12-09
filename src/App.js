@@ -13,7 +13,7 @@ import FileRepo from 'components/FileRepo';
 // import Join from 'components/Login/Join';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
-// import FileEntity from 'components/EntityPage/File';
+import FileEntity from 'components/EntityPage/File';
 import ParticipantEntity from 'components/EntityPage/Participant';
 import CohortBuilder from 'components/CohortBuilder';
 import MemberSearchPage from 'components/MemberSearchPage';
@@ -165,7 +165,6 @@ const App = compose(
           }
         />
 
-        {/*
         <Route
           path={`${ROUTES.file}/:fileId`}
           exact
@@ -180,7 +179,6 @@ const App = compose(
             })
           }
         />
-        */}
         <Route
           path={`${ROUTES.participant}/:participantId`}
           exact

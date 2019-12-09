@@ -5,15 +5,7 @@ import { ContentContainer } from 'theme/tempTheme';
 import './EntityPage.css';
 
 export default ({ children }) => (
-  <Flex className="entityPageActionBar">
-    <ContentContainer
-      style={{
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        height: '100%',
-      }}
-    >
-      {children}
-    </ContentContainer>
+  <Flex className="actionBar">
+    <ContentContainer className="actionBar-container">{children}</ContentContainer>
   </Flex>
 );

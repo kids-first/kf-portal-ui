@@ -19,7 +19,7 @@ class TabButton extends React.Component {
     //uses a fake Link: we want the same style as a SecondaryNavMenu, and this is the key to it
     return (
       <div
-        className={`entityParticipant-tabButton ${changeColor ? 'changeColor' : ''}`}
+        className={`tabButton ${changeColor ? 'changeColor' : ''}`}
         onClick={this.onClick}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
@@ -62,7 +62,7 @@ export default class Holder extends React.Component {
 
     return (
       <div>
-        <div className="entityParticipant-tabs-container">
+        <div className="tabs-container">
           {tabIDs.map(tabId => {
             return (
               <TabButton
@@ -75,7 +75,7 @@ export default class Holder extends React.Component {
             );
           })}
         </div>
-        <div className="entityParticipant-holder-container">
+        <div className="holder-container">
           {children.find(child => child.key === this.state.activeTab)}
         </div>
       </div>
