@@ -2,12 +2,13 @@ import React from 'react';
 import { Field } from 'formik';
 // import { width, space } from 'styled-system';
 
-import { input } from '../../theme/tempTheme.module.css';
+import { input, buttonsDiv } from 'theme/tempTheme.module.css';
+import { styleComponent } from 'components/Utils/index';
 
 export const FieldInput = ({ children, className, ...props }) => (
-  // ${width};
-  // ${space};
   <Field className={`${input} ${className}`} {...props}>
     {children}
   </Field>
 );
+
+export const ButtonsDiv = styleComponent('div', buttonsDiv);

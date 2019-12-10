@@ -1,0 +1,39 @@
+.selectRoleForm-container form {
+  justify-content: space-around;
+}
+
+.selectRoleForm-container .roleBubble {
+  width: 560px;
+  padding: 5px;
+  margin-top: 10px;
+  line-height: 1.67;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: rgb(36, 36, 36);
+  font-size: 12px;
+  justify-content: flex-start;
+}
+
+.selectRoleForm-container .role-label {
+  display: block;
+  text-transform: capitalize;
+  border: none;
+  line-height: 1.33;
+  margin: 0;
+}
+
+.selectRoleForm-container label.field-label {
+  width: 215px;
+  padding-right: 3px;
+  text-decoration: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 2;
+  color: rgb(52, 52, 52);
+}
+
+.selectRoleForm-container label.checkbox-label {
+  font-size: 14px;
+  margin-left: 10px;
+}

@@ -1,80 +1,47 @@
-// @flow
 import React from 'react';
-import { injectState } from 'freactal';
+import PropTypes from 'prop-types';
 import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
-import { css } from 'react-emotion';
-import { withTheme } from 'emotion-theming';
-import { trackPageView } from 'services/analyticsTracking';
 import { withRouter } from 'react-router';
+import cx from 'classnames';
+
+import { trackPageView } from 'services/analyticsTracking';
 import Column from 'uikit/Column';
 
-import { flexRow } from '../theme/tempTheme.module.css';
+import './Wizard.css';
 
-const BAR_STEP_WIDTH = 320;
-const WizardProgress = compose(withTheme)(({ index, steps, setIndex, theme }) => (
-  <div className={flexRow}>
-    {steps
-      .map((step, i) => ({
-        ...step,
-        status: i === index ? 'active' : (i === steps.length - 1 && 'last') || 'inactive',
-      }))
-      .map(({ title, status }, i) => (
-        <div key={i}>
+const WizardProgress = ({ index, steps, setIndex }) => {
+  return (
+    <div className="wizard-progress-content">
+      {steps
+        .map((step, i) => ({
+          ...step,
+          first: i === 0,
+          last: i === steps.length - 1,
+          past: i < index,
+          current: i === index,
+          future: i > index,
+          other: i !== index,
+        }))
+        .map(({ title, inactive, first, last, past, current, future, other }, i) => (
           <div
-            onClick={() => i < index && (steps[i] || { canGoBack: false }).canGoBack && setIndex(i)}
-            key={title}
-            className={css`
-              padding: 0
-                ${i === 0 || i === steps.length - 1
-                  ? `${BAR_STEP_WIDTH / 2}px`
-                  : `${BAR_STEP_WIDTH}px`}
-                0 0;
-              border-top: 6px solid ${i <= index ? theme.active : theme.inactive};
-            `}
+            className={`wizard-step ${cx({ inactive, first, last, past, current, future, other })}`}
+            key={i}
           >
             <div
-              className={css`
-                color: white;
-                position: relative;
-                top: -12px;
-                left: ${i === 0 ? '-1px' : `${BAR_STEP_WIDTH / 2 + 1}px`};
-                padding: 4px 8px;
-                border-radius: 10px;
-                font-size: 10px;
-                font-weight: bold;
-                display: inline-block;
-                background-color: ${i <= index ? theme.active : theme.inactive};
-              `}
+              onClick={() => past && (steps[i] || { canGoBack: false }).canGoBack && setIndex(i)}
+              key={title}
+              className="progress-bar"
             >
-              {i + 1}
+              <div className="progress-bar-step">{i + 1}</div>
             </div>
+            <div className="progress-bar-step-title">{title}</div>
           </div>
-          <div
-            className={css`
-              position: relative;
-              top: 0;
-              left: ${i === 0 ? '-20px' : `${BAR_STEP_WIDTH / 2 - 20}px`};
-              font-size: 10px;
-              font-weight: bold;
-              display: inline-block;
-              font-size: 14px;
-              font-weight: 600;
-              line-height: 2.14;
-              letter-spacing: 0.2px;
-              text-align: center;
-              color: ${i <= index ? theme.greyScale1 : theme.inactive};
-            `}
-          >
-            {title}
-          </div>
-        </div>
-      ))}
-  </div>
-));
+        ))}
+    </div>
+  );
+};
 
-export default compose(
-  injectState,
-  withTheme,
+const Wizard = compose(
   withRouter,
   withState('index', 'setIndex', 0),
   withState('nextDisabled', 'setNextDisabled', false),
@@ -93,7 +60,6 @@ export default compose(
 )(
   ({
     steps,
-    state,
     index,
     nextStep,
     prevStep,
@@ -101,49 +67,18 @@ export default compose(
     setIndex,
     nextDisabled,
     setNextDisabled,
-    theme,
     customStepMessage,
     setCustomStepMessage,
     HeaderComponent,
-    FooterComponent,
     getContentClassName = () => '',
-  }: {
-    steps: Array<{
-      title: string,
-      canGoBack: boolean,
-      Component?: any,
-      render?: Function,
-      renderButtons?: Function,
-    }>,
-    state: string,
-    index: number,
-    setIndex: Function,
-    currentStep: any,
-    nextStep: Function,
-    prevStep: Function,
-    setIndex: Function,
-    nextDisabled: boolean,
-    setNextDisabled: Function,
-    customStepMessage: string,
-    setCustomStepMessage: Function,
-    HeaderComponent: Function,
-    FooterComponent: Function,
-    getContentClassName: Function,
   }) => {
     const disableNextStep = setNextDisabled;
     const prevDisabled = index - 1 < 0 || !steps[index - 1].canGoBack;
     return (
-      <Column position="relative">
+      <Column className="wizard-container">
         <Column className={getContentClassName({ index })}>
           {HeaderComponent && <HeaderComponent />}
-          <div
-            className={css`
-              display: flex;
-              justify-content: center;
-              border-bottom: 1px solid ${theme.greyScale4};
-              min-height: 60px;
-            `}
-          >
+          <div className="wizard-progress-container">
             <WizardProgress setIndex={setIndex} index={index} steps={steps} />
           </div>
           {currentStep.render
@@ -162,3 +97,28 @@ export default compose(
     );
   },
 );
+
+Wizard.propTypes = {
+  steps: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      canGoBack: PropTypes.bool.isRequired,
+      Component: PropTypes.any,
+      render: PropTypes.func,
+      renderButtons: PropTypes.func,
+    }),
+  ),
+  index: PropTypes.number.isRequired,
+  setIndex: PropTypes.func.isRequired,
+  currentStep: PropTypes.any.isRequired,
+  nextStep: PropTypes.func.isRequired,
+  prevStep: PropTypes.func.isRequired,
+  nextDisabled: PropTypes.bool.isRequired,
+  setNextDisabled: PropTypes.func.isRequired,
+  customStepMessage: PropTypes.string.isRequired,
+  setCustomStepMessage: PropTypes.func.isRequired,
+  HeaderComponent: PropTypes.func.isRequired,
+  getContentClassName: PropTypes.func.isRequired,
+};
+
+export default Wizard;

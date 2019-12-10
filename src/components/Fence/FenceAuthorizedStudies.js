@@ -99,7 +99,7 @@ const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
       <Column>
         {fenceUser && fenceUser.projects && Object.keys(fenceUser.projects).length ? (
           <Fragment>
-            <Row my={10}>
+            <Row style={{ margin: '10px 0' }}>
               <Span className="title" fontWeight={'bold'}>
                 {' '}
                 You have access to controlled datasets from the following studies:

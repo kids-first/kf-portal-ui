@@ -2,15 +2,20 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Toast from 'uikit/Toast';
-// import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
+import isEmpty from 'lodash/isEmpty';
+import { Spin, Icon } from 'antd';
 
+// import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
+// import ArrangerAdmin from 'components/ArrangerAdmin';
+// import { isAdminToken, validateJWT } from 'utils';
+
+import Toast from 'uikit/Toast';
 import Modal from 'components/Modal';
 import GlobalModal from 'components/Modal/GlobalModal';
 // import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
-// import Join from 'components/Login/Join';
+import Join from 'components/Login/Join';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
 import FileEntity from 'components/EntityPage/File';
@@ -26,20 +31,15 @@ import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
 import loginImage from 'assets/smiling-girl.jpg';
-// import joinImage from 'assets/smiling-boy.jpg';
+import joinImage from 'assets/smiling-boy.jpg';
 import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
-// import { initializeApi, ApiContext } from 'services/api';
+import { initializeApi, ApiContext } from 'services/api';
 import { DCF, GEN3 } from 'common/constants';
-// import ArrangerAdmin from 'components/ArrangerAdmin';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
-
-import isEmpty from 'lodash/isEmpty';
-import { Spin, Icon } from 'antd';
-// import { isAdminToken, validateJWT } from 'utils';
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (!loggedInUser && requireLogin) {
@@ -131,8 +131,9 @@ const App = compose(
             })
           }
         />
+      */}
+
         <Route path={ROUTES.redirected} exact component={() => null} />
-        */}
 
         <Route
           path={ROUTES.cohortBuilder}
@@ -238,7 +239,7 @@ const App = compose(
         />
         */}
         <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
-        {/*}
+
         <Route
           path={ROUTES.join}
           exact
@@ -263,7 +264,7 @@ const App = compose(
             }
             return showDashboardIfLoggedIn(props);
           }}
-        */}
+        />
 
         {/* Root route */}
         <Route

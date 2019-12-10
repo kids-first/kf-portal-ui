@@ -1,18 +1,16 @@
 import React, { Fragment } from 'react';
 import { injectState } from 'freactal';
 import { compose, withState } from 'recompose';
-import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { get } from 'lodash';
+import { Link } from 'react-router-dom';
 
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import { updateProfile } from 'services/profiles';
-import { Link } from 'react-router-dom';
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { ButtonsDiv } from 'components/Join';
+import { ButtonsDiv } from './components';
 import { personaApiRoot } from 'common/injectGlobals';
 
 import CheckboxBubble from 'uikit/CheckboxBubble';
@@ -23,32 +21,15 @@ import { Paragraph } from 'uikit/Core';
 import { ActionButton } from 'uikit/Button';
 
 import { wizardButton } from './forms.module.css';
-import { flexRow } from '../../theme/tempTheme.module.css';
+import { flexRow } from 'theme/tempTheme.module.css';
+import { styleComponent } from 'components/Utils/index';
 
-const ConsentContainer = styled(Column)`
-  justify-content: space-between;
-  align-items: center;
-`;
+import './ConsentForm.css';
 
-const Terms = styled('div')`
-  font-family: Open Sans, sans-serif;
-  height: 250px;
-  overflow-y: scroll;
-`;
-
-const Label = styled('label')`
-  margin-left: 10px;
-  font-size: 14px;
-`;
-
-const FormParagraph = styled(Paragraph)`
-  line-height: 26px;
-  font-size: 14px;
-`;
+const FormParagraph = styleComponent(Paragraph, 'formParagraph');
 
 const Consent = compose(
   injectState,
-  withTheme,
   withState('accepted', 'setAccepted', ({ state: { loggedInUser }, disableNextStep }) => {
     const accepted = get(loggedInUser, 'acceptedTerms', false);
     disableNextStep(!accepted);
@@ -58,7 +39,6 @@ const Consent = compose(
   ({
     state: { loggedInUser },
     effects: { setUser },
-    theme,
     disableNextStep,
     accepted,
     setAccepted,
@@ -67,8 +47,8 @@ const Consent = compose(
     return (
       <Fragment>
         <H3>{'Read and consent to our terms and conditions'}</H3>
-        <ConsentContainer>
-          <Terms>
+        <Column className="consent-container">
+          <div className="terms">
             <FormParagraph fontWeight="600">{'Last Update Date: 7/13/18'}</FormParagraph>{' '}
             <FormParagraph>
               As a user of the Kids First DRC Website, Portal and/or other Services you agree that
@@ -107,7 +87,7 @@ const Consent = compose(
                 </li>
               </ol>
             </FormParagraph>
-            <FormParagraph mt="14px">
+            <FormParagraph style={{ margin: '14px 0 0 0' }}>
               DRC terms and conditions may be changed at any time via a public posting of revisions
               to the Services. As a user, you agree to review the Terms & Conditions and Privacy
               Policies each time you use the Services so that you are aware of any modifications
@@ -115,7 +95,7 @@ const Consent = compose(
               bound by all of the terms and conditions and policies as posted on the Services at the
               time of your access or use, including the Privacy Policies then in effect.
             </FormParagraph>
-            <FormParagraph my="14px">
+            <FormParagraph style={{ margin: '14px 0' }}>
               For documents and/or data available from the Services, the DRC does not warrant or
               assume any legal liability or responsibility for the accuracy, completeness, or
               usefulness of any information, apparatus, product, or process. No specific medical
@@ -123,7 +103,7 @@ const Consent = compose(
               consult with a qualified physician for diagnosis and for answers to personal
               questions.
             </FormParagraph>
-            <FormParagraph my="14px">
+            <FormParagraph style={{ margin: '14px 0' }}>
               {' '}
               If you have any questions about these terms, conditions or the practices of this site
               or any of the other Services, please contact us at{' '}
@@ -136,7 +116,7 @@ const Consent = compose(
               </ExternalLink>
               .
             </FormParagraph>
-          </Terms>
+          </div>
           <CheckboxBubble
             mt={2}
             mb={2}
@@ -162,16 +142,16 @@ const Consent = compose(
             }}
           >
             <input type="checkbox" checked={accepted} />
-            <Label>
+            <label>
               <FormParagraph>
                 {' '}
                 {
                   'I have read and agreed to the Kids First Data Research Portal Term and Conditions'
                 }
               </FormParagraph>{' '}
-            </Label>
+            </label>
           </CheckboxBubble>
-        </ConsentContainer>
+        </Column>
       </Fragment>
     );
   },

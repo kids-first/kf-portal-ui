@@ -1,0 +1,72 @@
+/* Wizard */
+.wizard-container {
+  position: relative;
+}
+
+/* Wizard progress bar */
+.wizard-progress-container {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgb(212, 214, 221);
+  min-height: 60px;
+}
+
+.wizard-progress-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.wizard-progress-content .wizard-step .progress-bar {
+  padding: 0;
+  padding-right: 320px;
+  border-top: 6px solid #dedfe4;
+}
+.wizard-progress-content .wizard-step.current .progress-bar {
+  border-color: #00afed;
+}
+.wizard-progress-content .wizard-step.first .progress-bar,
+.wizard-progress-content .wizard-step.last .progress-bar {
+  padding-right: calc(320px / 2);
+}
+
+.wizard-progress-content .wizard-step .progress-bar-step {
+  color: white;
+  position: relative;
+  top: -12px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  display: inline-block;
+  background-color: #dedfe4;
+  left: calc(320px / 2 + 1px);
+}
+.wizard-progress-content .wizard-step.past .progress-bar-step,
+.wizard-progress-content .wizard-step.current .progress-bar-step {
+  background-color: #00afed;
+}
+.wizard-progress-content .wizard-step.current .progress-bar-step {
+  left: -1px;
+}
+
+.wizard-progress-content .wizard-step .progress-bar-step-title {
+  position: relative;
+  top: 0;
+  left: calc(320px / 2 - 20px);
+  font-size: 10px;
+  font-weight: bold;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 2.14;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: #dedfe4;
+}
+.wizard-progress-content .wizard-step.first .progress-bar-step-title {
+  left: -20px;
+}
+.wizard-progress-content .wizard-step.past .progress-bar-step-title,
+.wizard-progress-content .wizard-step.current .progress-bar-step-title {
+  color: rgb(52, 52, 52);
+}
