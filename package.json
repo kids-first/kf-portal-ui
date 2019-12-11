@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "private": true,
   "dependencies": {
     "@kfarranger/components": "^1.4.2",
@@ -77,40 +77,6 @@
     "trailingComma": "all",
     "singleQuote": true
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,mjs}"
-    ],
-    "setupFiles": [
-      "<rootDir>/config/polyfills.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
-    ],
-    "testEnvironment": "node",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node",
-      "mjs"
-    ]
-  },
   "babel": {
     "presets": [
       "react-app"
@@ -118,6 +84,9 @@
   },
   "devDependencies": {
     "@babel/register": "^7.7.4",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.3",
+    "@testing-library/user-event": "^7.1.2",
     "chai": "^4.2.0",
     "less": "^3.10.3",
     "mocha": "^6.2.2",
