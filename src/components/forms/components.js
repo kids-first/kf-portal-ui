@@ -1,6 +1,5 @@
 import React from 'react';
 import { Field } from 'formik';
-// import { width, space } from 'styled-system';
 
 import { input, buttonsDiv } from 'theme/tempTheme.module.css';
 import { styleComponent } from 'components/Utils/index';

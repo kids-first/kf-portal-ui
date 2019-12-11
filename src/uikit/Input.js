@@ -2,7 +2,6 @@ import React from 'react';
 import Row from 'uikit/Row';
 import SearchIcon from 'react-icons/lib/fa/search';
 import FaTimesCircleO from 'react-icons/lib/fa/times-circle';
-// import { flex } from 'styled-system';
 import omit from 'lodash/omit';
 
 import { input, flex } from '../theme/tempTheme.module.css';
