@@ -232,14 +232,15 @@ class Results extends React.Component {
         {({ isLoading, data, error }) => {
           const resultsData = data[0];
           const participantCount = get(resultsData, 'participantCount', null);
-          const filesCount = get(resultsData, 'filesCount', null);
           const familiesCount = get(resultsData, 'familiesCount', null);
           const cohortIsEmpty =
-            (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+            (!isLoading && !resultsData) || participantCount === 0;
 
           const filesCountHeading = resultsData
             ? `${Number(data[0].filesCount || 0).toLocaleString()}`
             : '';
+
+          const hasNoFile = resultsData ? data[0].filesCount === 0 : true;
 
           return error ? (
             <TableErrorView error={error} />
@@ -280,22 +281,30 @@ class Results extends React.Component {
                       <div className={`${summaryEntityStyle}`}>
                         <SubHeading>
                           <div className={`${summaryFilesStyle}`}>
-                            <div>
-                              <FilesIcon />
-                              {isEmpty(sqon.content) ? (
-                                <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
-                              ) : (
-                                <PurpleLinkWithLoader
-                                  replaceText={false}
-                                  getLink={() =>
-                                    generateAllFilesLink(state.loggedInUser, api, data[0].files)
-                                  }
-                                >
-                                  {filesCountHeading}
-                                </PurpleLinkWithLoader>
-                              )}
-                            </div>
-                            <div>Files</div>
+                            {hasNoFile ? (
+                              <div>
+                                <FilesIcon /> {'0 File'}
+                              </div>
+                            ) : (
+                              <React.Fragment>
+                                <div>
+                                  <FilesIcon />
+                                  {isEmpty(sqon.content) ? (
+                                    <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
+                                  ) : (
+                                    <PurpleLinkWithLoader
+                                      replaceText={false}
+                                      getLink={() =>
+                                        generateAllFilesLink(state.loggedInUser, api, data[0].files)
+                                      }
+                                    >
+                                      {filesCountHeading}
+                                    </PurpleLinkWithLoader>
+                                  )}
+                                </div>
+                                <div>Files</div>
+                              </React.Fragment>
+                            )}
                           </div>
                         </SubHeading>
                       </div>
@@ -347,8 +356,5 @@ export default compose(
   withTheme,
   withApi,
   injectState,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 )(Results);
