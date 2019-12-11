@@ -1,0 +1,19 @@
+.fenceAuthorizedStudies-container table {
+  border-collapse: collapse;
+}
+
+.fenceAuthorizedStudies-container span.title {
+  font-weight: bold;
+  padding: 15px;
+}
+
+.itemRowContainer {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-height: 50px;
+  padding-right: 10%;
+}
+
+.itemRowContainer:not(:last-child) {
+  border-bottom: solid 1px #cacbcf;
+}

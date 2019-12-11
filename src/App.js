@@ -11,11 +11,11 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Toast from 'uikit/Toast';
 import Modal from 'components/Modal';
 import GlobalModal from 'components/Modal/GlobalModal';
-// import UserProfile from 'components/UserProfile';
+import UserProfile from 'components/UserProfile';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
-// import { isSelfInUrlWhenLoggedIn } from 'utils';
+import { isSelfInUrlWhenLoggedIn } from 'utils';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
 import FileEntity from 'components/EntityPage/File';
@@ -284,7 +284,6 @@ const App = compose(
         <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
 
         {/* User Profile */}
-        {/*
         <Route
           path={ROUTES.profile}
           exact
@@ -317,7 +316,6 @@ const App = compose(
             });
           }}
         />
-        */}
 
         {/* Error page */}
         <Route path={ROUTES.error} exact render={() => <Error />} />

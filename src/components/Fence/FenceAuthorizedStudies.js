@@ -1,11 +1,7 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
-
-import { css } from 'emotion';
-import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import Row from 'uikit/Row';
@@ -18,25 +14,7 @@ import StackIcon from 'icons/StackIcon';
 import { withHistory } from 'services/history';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
-const styles = css`
-  table {
-    border-collapse: collapse;
-  }
-  span.title {
-    font-weight: bold;
-    padding: 15px;
-  }
-`;
-
-const ItemRowContainer = styled(Row)`
-  padding-top: 5px;
-  padding-bottom: 5px;
-  min-height: 50px;
-  padding-right: 10%;
-  &:not(:last-child) {
-    border-bottom: solid 1px ${({ theme }) => theme.borderGrey};
-  }
-`;
+import './FenceAuthorizedStudies.css';
 
 const Spinner = () => (
   <Row justifyContent={'center'}>
@@ -58,18 +36,17 @@ const sqonForStudy = studyId => ({
 });
 
 const FenceProjectList = compose(
-  withTheme,
   withHistory,
   injectState,
   fenceConnectionInitializeHoc,
-)(({ fence, theme, history, state: { fenceStudies, fenceConnectionsInitialized } }) =>
+)(({ fence, history, state: { fenceStudies, fenceConnectionsInitialized } }) =>
   !fenceConnectionsInitialized ? (
     <Spinner />
   ) : (
     get(fenceStudies, `${fence}.authorizedStudies`, []).map(({ id, studyShortName }) => {
       const sqon = sqonForStudy(id);
       return (
-        <ItemRowContainer key={id}>
+        <Row className="itemRowContainer" key={id}>
           <Column justifyContent="center" p={15}>
             <StackIcon width={20} />
           </Column>
@@ -83,11 +60,11 @@ const FenceProjectList = compose(
               <Span
                 onClick={() => history.push(`/search/file?sqon=${encodeURI(JSON.stringify(sqon))}`)}
               >
-                {'View data files'} <RightChevron width={10} fill={theme.primary} />
+                {'View data files'} <RightChevron width={10} fill={'#90278e'} />
               </Span>
             </ExternalLink>
           </Column>
-        </ItemRowContainer>
+        </Row>
       );
     })
   ),
@@ -95,7 +72,7 @@ const FenceProjectList = compose(
 
 const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
   return (
-    <div css={styles}>
+    <div className="fenceAuthorizedStudies-container">
       <Column>
         {fenceUser && fenceUser.projects && Object.keys(fenceUser.projects).length ? (
           <Fragment>

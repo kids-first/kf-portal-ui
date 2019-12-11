@@ -42,7 +42,7 @@ const RepositoryIntegration = () => {
           <Integration
             fence={GEN3}
             logo={
-              <a href={gen3WebRoot} target="_blank">
+              <a href={gen3WebRoot} target="_blank" rel="noopener noreferrer">
                 <img
                   src={kfFrameworkServicesLogo}
                   alt="Kids First Framework Services logo"
@@ -57,7 +57,7 @@ const RepositoryIntegration = () => {
           <Integration
             fence={DCF}
             logo={
-              <a href={dcfWebRoot} target="_blank">
+              <a href={dcfWebRoot} target="_blank" rel="noopener noreferrer">
                 <img src={dcfLogo} alt="Data Commons Framework Logo" height="45px" />
               </a>
             }
