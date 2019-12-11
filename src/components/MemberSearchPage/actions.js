@@ -5,7 +5,9 @@ import {
   REQUEST_ROLES_FILTER_UPDATE,
   REQUEST_QUERYSTRING_UPDATE,
   REQUEST_CURRENTPAGE_UPDATE,
-  REQUEST_MEMBER_PER_PAGE_UPDATE, REQUEST_INTERESTS_FILTER_UPDATE,
+  REQUEST_MEMBER_PER_PAGE_UPDATE,
+  REQUEST_INTERESTS_FILTER_UPDATE,
+  REQUEST_STORE_RESET
 } from './constants';
 
 export const fetchMatchingListOfMembers = () => {
@@ -60,5 +62,12 @@ export const requestError = error => {
   return {
     type: REQUEST_MATCHING_LIST_OF_MEMBERS_ERROR,
     error,
+  };
+};
+
+export const requestResetStore = () => {
+  return {
+    type: REQUEST_STORE_RESET,
+    payload: null,
   };
 };

@@ -15,7 +15,7 @@ import { withApi } from 'services/api';
 import { NavLink, LinkAsButton, NavBarList } from './ui';
 import AppsMenu from './AppsMenu';
 import { isFeatureEnabled } from 'common/featuresToggles';
-import { Alert } from 'antd';
+import { Alert, Badge } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 import { loggedInUserShape } from 'shapes/index';
@@ -41,6 +41,7 @@ const showPublicProfileInvite = (user = {}) => {
 
 const onClosePublicProfileInviteAlert = () =>
   localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
+
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
 const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
@@ -80,8 +81,6 @@ const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
 
   return null;
 };
-
-const onCloseAlert = () => localStorage.setItem(KEY_PUBLIC_PROFILE_INVITE_IS_SEEN, true);
 
 class Header extends React.Component {
   static propTypes = {
@@ -162,7 +161,13 @@ class Header extends React.Component {
                 {isSearchMemberFeatEnabled && (
                   <li>
                     <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
-                      <UserIcon /> Members
+                      <Badge
+                        count={'New'}
+                        style={{ backgroundColor: '#52c41a' }}
+                        offset={[25, -10]}
+                      >
+                        <UserIcon /> Members
+                      </Badge>
                     </NavLink>
                   </li>
                 )}
@@ -184,20 +189,6 @@ class Header extends React.Component {
             {canSeeProtectedRoutes ? <UserMenu loggedInUser={loggedInUser} /> : null}
           </NavBarList>
         </Row>
-        {showPublicProfileInvite(loggedInUser) && (
-          <Alert
-            message={
-              <Fragment>
-                <Link to={getUrlForUser(loggedInUser, '#settings')}>Make your profile public</Link>
-                {' so that other members can view it!'}
-              </Fragment>
-            }
-            type="info"
-            banner
-            closable
-            onClose={onCloseAlert}
-          />
-        )}
       </div>
     );
   }

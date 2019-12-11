@@ -26,7 +26,7 @@ export const ROLES = [
   },
   {
     type: 'health',
-    displayName: 'Healthcare Professional',
+    displayName: 'Healthcare',
     description:
       'Map patients in your disease of interest by disease characteristics and view molecular profiling',
     icon: HealthIcon,
@@ -41,7 +41,7 @@ export const ROLES = [
   },
   {
     type: 'patient',
-    displayName: 'Patient/Family Member',
+    displayName: 'Patient/Family',
     description:
       'Learn about disease-specific research, become a Kids First partner, and support data sharing',
     icon: PatientIcon,
@@ -56,7 +56,7 @@ export const ROLES = [
   },
   {
     type: 'community',
-    displayName: 'Community Member',
+    displayName: 'Community',
     description:
       'Learn about scientific discoveries in pediatric cancer and structural birth defects',
     icon: CommunityIcon,

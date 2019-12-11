@@ -222,9 +222,9 @@ export default compose(
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.join,
                   action: TRACKING_EVENTS.actions.signedUp,
-                  label: `Join Completion: egoId ${loggedInUser.egoId}`,
+                  label: `Join Completion: egoId ${loggedInUser._id}`,
                 });
-                history.push(`/user/${loggedInUser.egoId}`);
+                history.push(`/user/${loggedInUser._id}`);
               }
             }}
           >

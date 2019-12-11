@@ -1,35 +1,39 @@
-import * as React from 'react';
-import { compose, withState } from 'recompose';
-import { withTheme } from 'emotion-theming';
+import React from 'react';
+import { Layout, Row } from 'antd';
+import PropTypes from 'prop-types';
+import RepositoryIntegration from './RepositoryIntegration';
+import ApplicationIntegration from './ApplicationIntegration';
+import ConnectionProvider from './ConnectionProvider';
+import DeleteAccount from 'components/UserProfile/DeleteAccount';
 
-// temporarily unused dependencies
-// import { Container, NavContainer, NavList, NavItem } from './ui'; unused dependencies for now
+const { Content } = Layout;
 
-import { Container } from './ui';
-import Account from './Account';
-import Privacy from './Privacy';
-import { Flex } from 'uikit/Core';
+const Settings = props => {
+  const { userEmail } = props;
+  return (
+    <Layout className={'settings-layout'}>
+      <Content>
+        <Row className={'settings-row-but-last'}>
+          <ConnectionProvider userEmail={userEmail} />
+        </Row>
+        <Row className={'settings-row-but-last'}>
+          <RepositoryIntegration />
+        </Row>
+        <Row className={'settings-row-but-last'}>
+          <ApplicationIntegration />
+        </Row>
+        {localStorage.getItem('SHOW_DELETE_ACCOUNT') && (
+          <Row>
+            <DeleteAccount />
+          </Row>
+        )}
+      </Content>
+    </Layout>
+  );
+};
 
-export default compose(
-  withTheme,
-  withState('mode', 'setMode', 'account'),
-)(({ profile, theme, submit, mode, setMode }) => (
-  <Flex justifyContent="center" pt={4} pb={4}>
-    <Container row alignItems="flex-start">
-      {/*
-           * Will be added once privacy page is available
-           * 
-           
-          <NavContainer>
-            <NavList>
-              <NavItem active={mode === 'account'} onClick={() => setMode('account')}>
-                Settings
-              </NavItem>
-            </NavList>
-          </NavContainer>
-          */}
-      {mode === 'account' && <Account profile={profile} submit={submit} />}
-      {mode === 'privacy' && <Privacy profile={profile} submit={submit} />}
-    </Container>
-  </Flex>
-));
+Settings.propTypes = {
+  userEmail: PropTypes.string.isRequired,
+};
+
+export default Settings;

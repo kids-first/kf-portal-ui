@@ -28,8 +28,6 @@ import { handleJWT, fetchIntegrationTokens } from './utils';
 import './Login.module.css';
 import { loginContainer, loginError } from './Login.module.css';
 
-// Rendu ICI
-
 class Component extends React.Component {
   static propTypes = {
     effects: PropTypes.object,
@@ -230,8 +228,4 @@ class Component extends React.Component {
   }
 }
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(Component);
+export default compose(injectState, withRouter, withApi)(Component);

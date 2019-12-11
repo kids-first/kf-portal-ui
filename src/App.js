@@ -2,8 +2,7 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
-import { Spin, Icon } from 'antd';
+// import { Spin, Icon } from 'antd';
 
 // import { Dashboard as ArrangerDashboardLegacy } from '@kfarranger/components/dist';
 // import ArrangerAdmin from 'components/ArrangerAdmin';
@@ -16,6 +15,7 @@ import GlobalModal from 'components/Modal/GlobalModal';
 import UserDashboard from 'components/UserDashboard';
 import FileRepo from 'components/FileRepo';
 import Join from 'components/Login/Join';
+// import { isSelfInUrlWhenLoggedIn } from 'utils';
 import LoginPage from 'components/Login/LoginPage';
 import LoginFooter from 'components/Login/LoginFooter';
 import FileEntity from 'components/EntityPage/File';
@@ -28,7 +28,7 @@ import Page from 'components/Page';
 import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
-import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
+// import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
@@ -37,7 +37,7 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-import { DCF, GEN3 } from 'common/constants';
+// import { DCF, GEN3 } from 'common/constants';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 
@@ -61,9 +61,19 @@ const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...p
   }
 };
 
-const ShowLoader = (
-  <Page Component={Spin} indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
-);
+// const ShowLoader = (
+//   <Page Component={Spin} indicator={<Icon type="loading" style={{ fontSize: 48 }} spin />} />
+// );
+
+// const showDashboardIfLoggedIn = props => {
+//   return forceSelectRole({
+//     api,
+//     isLoadingUser,
+//     Component: UserDashboard,
+//     loggedInUser,
+//     ...props,
+//   });
+// };
 
 const App = compose(
   injectState,
@@ -71,20 +81,11 @@ const App = compose(
 )(({ state, api }) => {
   const { loggedInUser, toast, isLoadingUser } = state;
 
-  const showDashboardIfLoggedIn = props => {
-    return forceSelectRole({
-      api,
-      isLoadingUser,
-      Component: UserDashboard,
-      loggedInUser,
-      ...props,
-    });
-  };
-
   return (
     <div className="appContainer">
       <Switch>
-        {/* <Route
+        {/*
+        <Route
           path={ROUTES.admin}
           render={props =>
             forceSelectRole({
@@ -131,9 +132,9 @@ const App = compose(
             })
           }
         />
-      */}
+        */}
 
-        <Route path={ROUTES.redirected} exact component={() => null} />
+        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
 
         <Route
           path={ROUTES.cohortBuilder}
@@ -180,6 +181,7 @@ const App = compose(
             })
           }
         />
+
         <Route
           path={`${ROUTES.participant}/:participantId`}
           exact
@@ -193,6 +195,7 @@ const App = compose(
             })
           }
         />
+
         <Route
           path={`${ROUTES.search}/:index`}
           exact
@@ -208,6 +211,84 @@ const App = compose(
             })
           }
         />
+
+        <Route
+          path={ROUTES.dashboard}
+          exact
+          render={props =>
+            forceSelectRole({
+              api,
+              isLoadingUser,
+              Component: UserDashboard,
+              loggedInUser,
+              ...props,
+            })
+          }
+        />
+
+        <Route
+          path={ROUTES.join}
+          exact
+          render={props => {
+            return (
+              <ApiContext.Provider
+                value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
+              >
+                <SideImagePage
+                  backgroundImage={scienceBgPath}
+                  logo={logo}
+                  Component={Join}
+                  sideImage={joinImage}
+                  {...props}
+                />
+              </ApiContext.Provider>
+            );
+          }}
+        />
+
+        {/* Root route */}
+        <Route
+          path="/"
+          exact
+          render={props => (
+            <SideImagePage
+              logo={logo}
+              backgroundImage={scienceBgPath}
+              Component={LoginPage}
+              Footer={LoginFooter}
+              sideImage={loginImage}
+              {...props}
+            />
+          )}
+        />
+
+        {/* Authentication related routes */}
+        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
+
+        <Route
+          path={ROUTES.orcid}
+          exact
+          render={props => (
+            <SideImagePage
+              logo={logo}
+              backgroundImage={scienceBgPath}
+              Component={LoginPage}
+              Footer={LoginFooter}
+              sideImagePath={loginImage}
+              stealth={true} // hide some of the visuals of the page during redirection
+              {...props}
+            />
+          )}
+        />
+
+        <Route path={ROUTES.redirected} exact component={() => null} />
+
+        {/*
+        <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
+        <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
+        */}
+
+        {/* User Profile */}
         {/*
         <Route
           path={ROUTES.profile}
@@ -226,89 +307,22 @@ const App = compose(
         <Route
           path={`${ROUTES.user}/:userID`}
           exact
-          render={props =>
-            forceSelectRole({
+          render={props => {
+            const userIdUrlParam = props.match.params.userID;
+            return forceSelectRole({
               api,
               isLoadingUser,
               Component: UserProfile,
               loggedInUser,
-              userID: props.match.params.userID,
+              userInfo: {
+                userID: userIdUrlParam,
+                isSelf: isSelfInUrlWhenLoggedIn(userIdUrlParam, loggedInUser),
+              },
               ...props,
-            })
-          }
+            });
+          }}
         />
         */}
-        <Route path={ROUTES.dashboard} exact render={showDashboardIfLoggedIn} />
-
-        <Route
-          path={ROUTES.join}
-          exact
-          render={props => {
-            if (isEmpty(loggedInUser) && requireLogin) {
-              if (isLoadingUser) {
-                return ShowLoader;
-              }
-              return (
-                <ApiContext.Provider
-                  value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
-                >
-                  <SideImagePage
-                    backgroundImage={scienceBgPath}
-                    logo={logo}
-                    Component={Join}
-                    sideImagePath={joinImage}
-                    {...props}
-                  />
-                </ApiContext.Provider>
-              );
-            }
-            return showDashboardIfLoggedIn(props);
-          }}
-        />
-
-        {/* Root route */}
-        <Route
-          path="/"
-          exact
-          render={props => {
-            if (isEmpty(loggedInUser) && requireLogin) {
-              if (isLoadingUser) {
-                return ShowLoader;
-              }
-              return (
-                <SideImagePage
-                  logo={logo}
-                  backgroundImage={scienceBgPath}
-                  Component={LoginPage}
-                  Footer={LoginFooter}
-                  sideImagePath={loginImage}
-                  {...props}
-                />
-              );
-            }
-            return showDashboardIfLoggedIn(props);
-          }}
-        />
-
-        {/* Authentication related routes */}
-        <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
-        <Route
-          path={ROUTES.orcid}
-          exact
-          render={props => (
-            <SideImagePage
-              logo={logo}
-              backgroundImage={scienceBgPath}
-              Component={LoginPage}
-              Footer={LoginFooter}
-              sideImagePath={loginImage}
-              stealth={true} // hide some of the visuals of the page during redirection
-              {...props}
-            />
-          )}
-        />
-        <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
-        <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
 
         {/* Error page */}
         <Route path={ROUTES.error} exact render={() => <Error />} />

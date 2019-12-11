@@ -77,6 +77,7 @@ class InterestsFilter extends Component {
           borderLeftColor={'#00afed'}
           showSearchDefault={true}
           handleChangeFilterString={this.handleChangeFilterString}
+          showClear={getSelectedFilter(interestsFilter).length > 0}
         >
           <FilterTableList
             dataSource={count ? count.interests : {}}

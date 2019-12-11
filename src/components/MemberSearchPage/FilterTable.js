@@ -1,4 +1,4 @@
-import { Collapse, Divider, Input, Typography, Button } from 'antd';
+import { Collapse, Divider, Input, Typography } from 'antd';
 import React from 'react';
 
 const { Title } = Typography;
@@ -13,6 +13,7 @@ const FilterTable = props => {
     title,
     handleClear,
     handleChangeFilterString,
+    showClear,
   } = props;
   return (
     //TODO move all styles in classes or modify ant design theme
@@ -43,9 +44,13 @@ const FilterTable = props => {
           </Title>
         }
         extra={
-          <Button type="link" onClick={handleClear} style={{ height: 'initial' }}>
-            clear
-          </Button>
+          showClear ? (
+            <button type="link" onClick={handleClear}>
+              clear
+            </button>
+          ) : (
+            ''
+          )
         }
       >
         {showSearchDefault && (
