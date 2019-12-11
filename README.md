@@ -35,19 +35,9 @@ Copy `.env.schema` to `.env.local` and configure it with appropriate endpoints.
 
 ### Analyzing the build
 
-To run webpack bundle analyzer, first generate a prodution build with the associated stats files (`build/stats.json`):
-
 ```
-NODE_ENV=production NODE_PATH=src ./node_modules/.bin/webpack -p --config config/webpack.config.prod.js --profile --json > build/stats.json
+npm run analyze
 ```
-
-Then launch the webpack-bundle-analyzer consuming that stats file:
-
-```
-./node_modules/.bin/webpack-bundle-analyzer build/stats.json build/
-```
-
-Finally, visit http://127.0.0.1:8888/ to see it in action.
 
 #### See
 
