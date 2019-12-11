@@ -28,7 +28,8 @@ import Page from 'components/Page';
 import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
 import Error from 'components/Error';
-// import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
+import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
+import { DCF, GEN3 } from 'common/constants';
 
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
@@ -37,7 +38,6 @@ import logo from 'assets/logo-kids-first-data-portal.svg';
 import { requireLogin } from './common/injectGlobals';
 import { withApi } from 'services/api';
 import { initializeApi, ApiContext } from 'services/api';
-// import { DCF, GEN3 } from 'common/constants';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 
@@ -264,7 +264,6 @@ const App = compose(
 
         {/* Authentication related routes */}
         <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
-
         <Route
           path={ROUTES.orcid}
           exact
@@ -280,13 +279,9 @@ const App = compose(
             />
           )}
         />
-
         <Route path={ROUTES.redirected} exact component={() => null} />
-
-        {/*
         <Route path={ROUTES.gen3Redirect} exact render={() => <FenceAuthRedirect fence={GEN3} />} />
         <Route path={ROUTES.dcfRedirect} exact render={() => <FenceAuthRedirect fence={DCF} />} />
-        */}
 
         {/* User Profile */}
         {/*
