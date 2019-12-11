@@ -9,8 +9,8 @@ import { chartErrorContainer } from './Charts.module.css';
 export default () => {
   return (
     <div className={chartErrorContainer}>
-      <PromptMessageContainer error mb={'8px'}>
-        <PromptMessageHeading error mb={10}>
+      <PromptMessageContainer error style={{ marginBottom: '8px' }}>
+        <PromptMessageHeading style={{ marginBottom: '10px' }}>
           Oops, something went wrong.
         </PromptMessageHeading>
         <PromptMessageContent>
