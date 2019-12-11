@@ -47,10 +47,12 @@
     "yup": "^0.27.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "prepare": "npm run theme",
+    "start": "react-scripts start",
+    "test": "react-scripts test",
     "test:unit": "cross-env NODE_ENV=\"test\" NODE_PATH=\"src\" nyc --reporter=html mocha -w --require babel-core/register src/**/*.unit.js",
     "theme": "lessc --js src/antdTheme.less src/antd-kf-theme.css"
   },
@@ -112,5 +114,9 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "less": "^3.10.3",
+    "source-map-explorer": "^2.1.2"
   }
 }
