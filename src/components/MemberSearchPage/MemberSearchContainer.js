@@ -66,7 +66,6 @@ class MemberSearchContainer extends Component {
   }
 
   componentWillUnmount() {
-    console.log('Component has unmounted');
     this.props.resetStore();
   }
 

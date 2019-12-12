@@ -13,7 +13,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
         <div style={{ color: 'inherit', paddingTop: 24, marginBottom: 0 }}>
           <Title
             className={'member-info-title'}
-            level={3}
+            level={4}
             style={{ marginBottom: 0, paddingBottom: 16 }}
           >
             Member Biography:
@@ -27,7 +27,7 @@ const MemberSearchBioStory = ({ bio, story }) => {
         <div>
           <Title
             className={'member-info-title'}
-            level={3}
+            level={4}
             style={{ marginBottom: 0, paddingTop: 24, paddingBottom: 16 }}
           >
             Member Story:

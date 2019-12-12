@@ -26,7 +26,7 @@ const ProfilePill = props => {
     >
       <Icon
         fill="#fff"
-        style={{ height: 20, marginRight: 8, position: 'relative', left: 2, bottom: -2 }}
+        style={{ fontSize: 20, marginRight: 8, position: 'relative', left: 2, bottom: -2 }}
       />
       <div
         style={{

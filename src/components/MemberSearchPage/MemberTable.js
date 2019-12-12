@@ -70,7 +70,7 @@ const MemberTable = props => {
           ) : (
             <Row style={{ marginTop: 12, marginBottom: 12 }}>
               <Col span={12} style={{ textAlign: 'left' }}>
-                <Title level={3} style={{ margin: 0 }}>
+                <Title level={4} style={{ margin: 0 }}>
                   {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
                     props.count.public
                   } public members`}
@@ -78,7 +78,7 @@ const MemberTable = props => {
               </Col>
               <Col span={12} style={{ textAlign: 'right' }}>
                 <Title
-                  level={3}
+                  level={4}
                   style={{ margin: 0 }}
                 >{`${props.count.total} members total (public & private)`}</Title>
               </Col>

@@ -33,7 +33,7 @@ const FilterTable = props => {
         key={1}
         header={
           <Title
-            level={3}
+            level={4}
             className={'filter-title'}
             style={{
               margin: 0,
