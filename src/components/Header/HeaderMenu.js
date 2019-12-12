@@ -35,7 +35,11 @@ export default class HeaderMenu extends React.Component {
     const { isOpen } = this.state;
 
     const menu = (
-      <Menu className="headerMenuMenuContainer" onClick={onClick}>
+      <Menu
+        className="headerMenuMenuContainer"
+        defaultActiveFirst={true} // have the appearance of the first item as if it was hovered
+        onClick={onClick}
+      >
         {menuItems.map(item =>
           React.isValidElement(item) ? item : <Menu.Item key={item.key}>{item.label}</Menu.Item>,
         )}

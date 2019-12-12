@@ -51,16 +51,16 @@
   fill: rgb(169, 173, 192);
 }
 
-.headerMenuMenuContainer .ant-dropdown-menu-item:hover {
+.headerMenuMenuContainer .ant-dropdown-menu-item-active {
   background-color: transparent;
   color: rgb(192, 50, 153);
   fill: rgb(192, 50, 153);
   border-left-color: rgb(192, 50, 153);
 }
 
-.headerMenuMenuContainer .ant-dropdown-menu-item:hover > a,
-.headerMenuMenuContainer .ant-dropdown-menu-item:hover img,
-.headerMenuMenuContainer .ant-dropdown-menu-item:hover svg {
+.headerMenuMenuContainer .ant-dropdown-menu-item-active > a,
+.headerMenuMenuContainer .ant-dropdown-menu-item-active img,
+.headerMenuMenuContainer .ant-dropdown-menu-item-active svg {
   color: rgb(192, 50, 153);
   fill: rgb(192, 50, 153);
 }
