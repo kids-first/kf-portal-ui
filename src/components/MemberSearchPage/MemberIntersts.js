@@ -67,7 +67,7 @@ class MemberInterests extends Component {
       <div>
         <Title
           className={'member-info-title'}
-          level={3}
+          level={4}
           style={{ marginBottom: 0, paddingBottom: 16 }}
         >
           Research Interests:
@@ -103,7 +103,7 @@ class MemberInterests extends Component {
             </Row>
           ))}
           {mergedInterests.length > 10 ? (
-            <button
+            <div
               style={{ margin: 0 }}
               type="link"
               className="ant-typography-expand"
@@ -121,7 +121,7 @@ class MemberInterests extends Component {
                   <Icon type="minus-circle" />
                 </div>
               )}
-            </button>
+            </div>
           ) : (
             ''
           )}

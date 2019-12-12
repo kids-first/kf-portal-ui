@@ -29,7 +29,7 @@ class FilterDrawer extends Component {
       >
         <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
           <Title
-            level={2}
+            level={3}
             style={{
               display: collapsed ? 'none' : 'block',
             }}
