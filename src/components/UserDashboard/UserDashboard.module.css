@@ -1,0 +1,72 @@
+.userDashboardContainer {
+  min-height: calc(100% - 56px);
+  display: flex;
+}
+
+.userDashboardContent {
+  width: 100%;
+  min-height: 600px;
+  background-color: #f4f5f8;
+}
+
+.dashboardTitle {
+  font-family: Montserrat, sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  text-align: left;
+  color: #2b388f;
+  margin-top: 26px;
+  margin-bottom: 24px;
+  padding-left: 30px;
+}
+
+/*******************************************************/
+/* Info */
+/*******************************************************/
+.infoLink {
+  font-size: 14px;
+  font-family: Open Sans, sans-serif;
+  margin-bottom: 0;
+  text-decoration: underline;
+}
+
+.infoMessage {
+  font-size: 14px;
+  color: #343434;
+  font-family: Open Sans, sans-serif;
+  margin-bottom: 0;
+}
+
+/*******************************************************/
+/* DashboardCard */
+/*******************************************************/
+.dashboardCard {
+  height: 404px;
+}
+
+.noteList {
+  padding-left: 18px;
+}
+.noteList li {
+  margin-top: 5px;
+}
+
+/* // TODO REMOVE, UNUSED? */
+.promptMessageContainer {
+}
+.promptMessageContent {
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  line-height: normal;
+}
+.promptMessageContent ul {
+  padding-left: '18px';
+}
+.promptMessageContent li {
+  margin-top: 5px;
+}
+.promptMessageHeading {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}

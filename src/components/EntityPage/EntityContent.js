@@ -1,11 +1,13 @@
 import * as React from 'react';
 
-import styled from 'react-emotion';
-import Column from 'uikit/Column';
+import { ContentContainerColumn } from 'theme/tempTheme';
 
-const Container = styled(Column)`
-  ${({ theme }) => theme.contentContainer}
-  padding: 10px 0;
-`;
-
-export default ({ children }) => <Container>{children}</Container>;
+export default ({ children }) => (
+  <ContentContainerColumn
+    style={{
+      padding: '10px 0',
+    }}
+  >
+    {children}
+  </ContentContainerColumn>
+);

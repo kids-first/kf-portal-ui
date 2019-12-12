@@ -14316,7 +14316,7 @@ textarea.ant-mentions {
   padding-right: 12px;
   color: #2b388f;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 32px;
 }
 .ant-page-header-heading .ant-avatar {
@@ -20736,7 +20736,7 @@ h1.ant-typography,
   margin-bottom: 0.5em;
   color: #2b388f;
   font-weight: 500;
-  font-size: 28px;
+  font-size: 38px;
   line-height: 1.23;
 }
 h2.ant-typography,
@@ -20744,7 +20744,7 @@ h2.ant-typography,
   margin-bottom: 0.5em;
   color: #2b388f;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 28px;
   line-height: 1.35;
 }
 h3.ant-typography,
@@ -20752,7 +20752,7 @@ h3.ant-typography,
   margin-bottom: 0.5em;
   color: #2b388f;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 18px;
   line-height: 1.35;
 }
 h4.ant-typography,
@@ -20760,7 +20760,7 @@ h4.ant-typography,
   margin-bottom: 0.5em;
   color: #2b388f;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1.4;
 }
 .ant-typography + h1.ant-typography,

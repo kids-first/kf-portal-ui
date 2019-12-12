@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
 import { injectState } from 'freactal';
-import { css } from 'react-emotion';
-import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 
 import { getProjects as getCavaticaProjects } from 'services/cavatica';
 
@@ -18,9 +15,10 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import { Result } from 'antd';
 import { getMsgFromErrorOrElse } from 'utils';
 
+import './cavatica.css';
+
 const enhance = compose(
   injectState,
-  withTheme,
   withState('isLoadingProjects', 'setIsLoadingProject', false),
   withState('projectSearchValue', 'setProjectSearchValue', ''),
   withState('projectList', 'setProjectList', []),
@@ -42,69 +40,6 @@ const enhance = compose(
     },
   }),
 );
-
-const styles = theme => css`
-  border: solid 1px ${theme.greyScale5};
-
-  .header,
-  .footer {
-    background-color: ${theme.greyScale10};
-    color: ${theme.greyScale9};
-  }
-
-  .header {
-    display: flex;
-    padding: 5px;
-    justify-content: space-between;
-  }
-
-  .body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .footer {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-`;
-
-const ProjectSelector = styled.div`
-  border: none;
-  overflow-y: auto;
-  overflow-x: none;
-  cursor: default;
-
-  height: 9em;
-
-  div.projectOption {
-    ${props => props.theme.row};
-    padding: 8px;
-    border-bottom: solid 1px ${props => props.theme.greyScale5};
-    font-size: 14px;
-    color: ${props => props.theme.primary};
-  }
-
-  div.projectOption:hover,
-  div.selected {
-    background-color: ${props => props.theme.optionSelected};
-    color: black;
-  }
-
-  div.checkSymbol {
-    width: 20px;
-    padding-top: 2px;
-    margin-bottom: -2px;
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const ProjectHeader = styled(TableHeader)`
-  line-height: 2.55;
-  text-transform: uppercase;
-`;
 
 const CavaticaProjects = ({
   theme,
@@ -133,9 +68,9 @@ const CavaticaProjects = ({
   }
 
   return (
-    <div css={styles(theme)}>
+    <div className="cavaticaProjectsContainer">
       <div className="header">
-        <ProjectHeader>Cavatica Projects:</ProjectHeader>{' '}
+        <TableHeader>Cavatica Projects:</TableHeader>{' '}
         {
           <Box position="relative">
             <FilterInput
@@ -151,7 +86,7 @@ const CavaticaProjects = ({
       <div className="body">
         {isLoadingProjects && <LoadingSpinner size={'35px'} />}
         {!isLoadingProjects && Array.isArray(projectList) && projectList.length > 0 && (
-          <ProjectSelector onChange={() => {}}>
+          <div className="projectSelector" onChange={() => {}}>
             {projectList
               .filter(project => {
                 if (project.id === selectedProject) return true;
@@ -175,7 +110,7 @@ const CavaticaProjects = ({
                   </div>
                 );
               })}
-          </ProjectSelector>
+          </div>
         )}
       </div>
       <div className="footer">

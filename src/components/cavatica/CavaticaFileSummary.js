@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { truncate } from 'lodash';
 
 import PlusIcon from 'icons/PlusCircleIcon';
 import CheckIcon from 'icons/CircleCheckIcon';
 import SlashIcon from 'icons/CircleSlashIcon';
 import Spinner from 'react-spinkit';
-import { cssFileSummaryRoot } from './css';
+import theme from 'theme/defaultTheme';
+
+import './cavatica.css';
+import './CavaticaFileSummary.css';
 
 class CavaticaFileSummary extends React.Component {
   state = {
@@ -15,7 +16,6 @@ class CavaticaFileSummary extends React.Component {
   };
   render() {
     const {
-      theme,
       unauthorizedFiles,
       authorizedFiles,
       fileAuthInitialized,
@@ -29,8 +29,8 @@ class CavaticaFileSummary extends React.Component {
     const showAuth = Boolean(authorizedFiles) && (authorizedFilesCombined.length > 0 || showUnauth);
     return (
       <div>
-        <span css={theme.modalHeader}>File Summary:</span>
-        <div css={cssFileSummaryRoot(theme)}>
+        <span className="cavatica-modalHeader">File Summary:</span>
+        <div className="cssFileSummaryRoot">
           <div className="filePermissions">
             {!fileAuthInitialized && (
               <Spinner
@@ -128,11 +128,11 @@ class CavaticaFileSummary extends React.Component {
                   <PlusIcon
                     width={10}
                     height={10}
-                    css={`
-                      fill: ${theme.primary};
-                      margin-top: 1px;
-                      margin-right: 4px;
-                    `}
+                    style={{
+                      fill: theme.primary,
+                      marginTop: '1px',
+                      marginRight: '4px',
+                    }}
                   />
                   Close Details
                 </div>
@@ -141,11 +141,11 @@ class CavaticaFileSummary extends React.Component {
                   <PlusIcon
                     width={10}
                     height={10}
-                    css={`
-                      fill: ${theme.primary};
-                      margin-top: 1px;
-                      margin-right: 4px;
-                    `}
+                    style={{
+                      fill: theme.primary,
+                      marginTop: '1px',
+                      marginRight: '4px',
+                    }}
                   />
                   File Details
                 </div>
@@ -158,4 +158,4 @@ class CavaticaFileSummary extends React.Component {
   }
 }
 
-export default compose(withTheme)(CavaticaFileSummary);
+export default CavaticaFileSummary;

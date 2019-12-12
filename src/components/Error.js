@@ -1,16 +1,10 @@
 import React from 'react';
-import SplashPage from 'components/SplashPage';
 import PropTypes from 'prop-types';
+import SplashPage from 'components/SplashPage';
 
 const Error = ({ text = 'An error has occurred, please try again later' }) => (
   <SplashPage>
-    <div
-      css={`
-        text-align: center;
-      `}
-    >
-      {text}
-    </div>
+    <div style={{ textAlign: 'center' }}>{text}</div>
   </SplashPage>
 );
 

@@ -33,7 +33,7 @@ class SaveVirtualStudiesModalContent extends React.Component {
     saveAs: PropTypes.bool.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.saving = false;
   }
 
@@ -138,8 +138,5 @@ const mapDispatchToProps = {
 
 export default compose(
   injectState,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 )(SaveVirtualStudiesModalContent);

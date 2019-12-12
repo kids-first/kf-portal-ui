@@ -1,29 +1,16 @@
 import React from 'react';
-import styled from 'react-emotion';
 
 import Column from 'uikit/Column';
 import ExternalLink from 'uikit/ExternalLink';
 
-const Link = styled(ExternalLink)`
-  font-size: 14px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  margin-bottom: 0;
-  text-decoration: underline;
-`;
-
-const Message = styled('p')`
-  font-size: 14px;
-  color: #343434;
-  font-family: ${({ theme }) => theme.fonts.details};
-  margin-bottom: 0;
-`;
+import { infoLink, infoMessage } from './UserDashboard.module.css';
 
 const Info = ({ link, message = 'Visit our website for more information on' }) => (
   <Column alignItems="center">
-    <Message>{message}</Message>
-    <Link href={link.url} hasExternalIcon={false}>
+    <p className={infoMessage}>{message}</p>
+    <ExternalLink href={link.url} hasExternalIcon={false} className={infoLink}>
       {link.text}
-    </Link>
+    </ExternalLink>
   </Column>
 );
 export default Info;

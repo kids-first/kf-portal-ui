@@ -1,0 +1,43 @@
+.sideImagePageContainer {
+  position: relative;
+  height: 100vh;
+  overflow-y: hidden;
+  min-width: 1024;
+  background-image: url('../assets/background-science.jpg');
+}
+
+.gradientBar {
+  width: 100%;
+  height: 5px;
+  background-image: linear-gradient(to right, #90278e, #cc3399 35%, #be1e2d 66%, #f6921e);
+}
+
+.backgroundGradient {
+  background-repeat: repeat;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(to bottom, #fff 400px, transparent 100%);
+}
+
+.sideImageContainer {
+  background: #ffffff;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  width: 573px;
+  height: 100%;
+  box-shadow: 0 0 6px 0.1px #bbbbbb;
+}
+
+.pageContent {
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  overflow: scroll;
+  min-width: 830px;
+}
+
+.logoImage {
+  width: 275px;
+  position: absolute;
+  margin: 20px;
+}

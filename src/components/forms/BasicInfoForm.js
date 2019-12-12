@@ -6,7 +6,6 @@ import { withFormik, Field } from 'formik';
 import { withTheme } from 'emotion-theming';
 import { get } from 'lodash';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
-import { width, space } from 'styled-system';
 import SearchIcon from 'react-icons/lib/fa/search';
 
 import scriptjs from 'scriptjs';
@@ -23,13 +22,17 @@ import {
   trackUserInteraction,
   addStateInfo as updateTrackingInfo,
 } from 'services/analyticsTracking';
-import Gravtar from 'uikit/Gravatar';
+import Gravatar from 'uikit/Gravatar';
 import ExternalLink from 'uikit/ExternalLink';
 import { ModalFooter } from '../Modal/index.js';
 import { withApi } from 'services/api';
 import { Box } from 'uikit/Core';
-import { WhiteButton } from '../../uikit/Button.js';
-import { FilterInput } from '../../uikit/Input.js';
+import { WhiteButton } from 'uikit/Button.js';
+import { FilterInput } from 'uikit/Input.js';
+import { FieldInput } from './components';
+
+import { select, hollowSelect } from './forms.module.css';
+import { flexColumn, flexRow } from '../../theme/tempTheme.module.css';
 
 const labelStyle = `
   font-size: 14px;
@@ -56,12 +59,6 @@ const AddressRow = styled(Row)`
 
 const FormItem = styled(Column)`
   padding: 5px 0 5px;
-`;
-
-const FieldInput = styled(Field)`
-  ${({ theme }) => theme.input};
-  ${width};
-  ${space};
 `;
 
 const SearchLocationIcon = styled(SearchIcon)`
@@ -228,7 +225,7 @@ export default compose(
           `}
         >
           <Column>
-            <Gravtar
+            <Gravatar
               email={values.email || ''}
               size={143}
               css={`
@@ -256,13 +253,13 @@ export default compose(
         >
           <div
             css={`
-              ${theme.row};
+              ${flexRow};
               justify-content: space-between;
             `}
           >
             <FormItem>
               <StyledLabel>Title:</StyledLabel>
-              <Field component="select" name="title" css={theme.select}>
+              <Field component="select" name="title" className={select}>
                 <option value="" selected disabled hidden>
                   -- select an option --
                 </option>
@@ -275,11 +272,11 @@ export default compose(
             </FormItem>
             <div
               css={`
-                ${theme.row} align-self: flex-end;
+                ${flexRow} align-self: flex-end;
               `}
             >
               <div
-                className={`${theme.column} ${css`
+                className={`${flexColumn} ${css`
                   justify-content: center;
                 `}`}
               >
@@ -290,10 +287,10 @@ export default compose(
                   (acc, { type, icon, color }) => ({
                     ...acc,
                     [type]: icon({
-                      height: '45px',
-                      className: css`
-                        margin: 5px 5px 5px 5px;
-                      `,
+                      size: '45px',
+                      style: {
+                        margin: '5px 5px 5px 5px',
+                      },
                       fill: color,
                     }),
                   }),
@@ -302,7 +299,7 @@ export default compose(
                 values.roles,
               )}
               <div
-                className={`${theme.column} ${css`
+                className={`${flexColumn} ${css`
                   justify-content: center;
                 `}`}
               >
@@ -313,7 +310,7 @@ export default compose(
                   className={`${css`
                     ${labelStyle};
                     color: ${theme.secondary};
-                  `} ${theme.hollowSelect}`}
+                  `} ${hollowSelect}`}
                 >
                   {ROLES.map(({ type, displayName }) => (
                     <option value={type} key={type}>

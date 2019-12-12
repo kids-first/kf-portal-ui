@@ -1,0 +1,26 @@
+.splashPageContainer {
+  width: 630px;
+  margin: auto;
+}
+
+.splashPageContainer h1 {
+  background-image: linear-gradient(to right, #404c9a, #009bb8 51%, #02b0ed),
+    linear-gradient(#2b388f, #2b388f);
+  font-size: 36px;
+  font-weight: 500;
+  margin: 10px 0;
+  letter-spacing: 0.5px;
+  text-align: center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.splashPageContainer .card {
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding: 30px;
+  box-shadow: 0 0 4.9px 0.1px #bbbbbb;
+  border: solid 1px #e0e1e6;
+  color: rgb(52, 52, 52);
+}

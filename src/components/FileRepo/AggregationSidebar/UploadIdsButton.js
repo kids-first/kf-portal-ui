@@ -1,15 +1,8 @@
 import React from 'react';
-import styled from 'react-emotion';
-import { css } from 'emotion';
 
 import UploadIdsModal from 'components/UploadIdsModal';
 import { ActionButton } from 'uikit/Button';
 import UploadIcon from 'icons/UploadIcon';
-
-const UploadButton = styled(ActionButton)`
-  border-radius: 100px;
-  margin: 0px;
-`;
 
 const UploadIdsButton = ({
   theme,
@@ -21,7 +14,11 @@ const UploadIdsButton = ({
   setSQON,
   ...props
 }) => (
-  <UploadButton
+  <ActionButton
+    style={{
+      borderRadius: '100px',
+      margin: '0px',
+    }}
     onClick={() =>
       effects.setModal({
         title: modalTitle,
@@ -35,13 +32,9 @@ const UploadIdsButton = ({
       })
     }
   >
-    <UploadIcon
-      className={css`
-        margin-right: 5px;
-      `}
-    />
+    <UploadIcon width="13px" height="16px" style={{ marginRight: '5px' }} />
     {'UPLOAD YOUR LIST OF IDS'}
-  </UploadButton>
+  </ActionButton>
 );
 
 export default UploadIdsButton;

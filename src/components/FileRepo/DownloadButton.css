@@ -1,0 +1,57 @@
+.downloadButton {
+  justify-content: flex-start;
+  /* color: auto; */
+  background: #008199;
+  width: 100%;
+  padding: 0px 10px;
+  margin-top: 3px;
+  font-size: 11px;
+}
+.downloadButton:hover {
+  background-color: #009bb8;
+}
+.downloadButton[disabled],
+.downloadButton[disabled]:hover {
+  color: white;
+  background: #d4d6dd;
+}
+.downloadButton img {
+  width: 13px;
+  height: 28px;
+  margin-right: 9px;
+}
+
+.downloadButtonDropdownOptionsContainer {
+  position: absolute;
+  width: 300px;
+  top: 32px;
+  left: 4px;
+}
+
+.downloadButtonOptionRow {
+  padding: 5px;
+  font-size: 10px;
+  color: 'auto';
+  background: white;
+  border-top: solid 1px #cacbcf;
+}
+
+.downloadButtonOptionRow[disabled] {
+  color: rgb(52, 52, 52);
+  background: rgb(237, 238, 241);
+}
+
+.downloadButtonOptionRow:first-child {
+  border-top: none;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.downloadButtonOptionRow:last-child {
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.downloadButtonOptionRow:hover {
+  background: rgb(237, 238, 241);
+}

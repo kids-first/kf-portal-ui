@@ -1,63 +1,26 @@
-// @flow
-
-// Vendor
 import React from 'react';
 import PropTypes from 'prop-types';
+import noop from 'lodash/noop';
 import { compose, withState, shouldUpdate, mapProps } from 'recompose';
 import CloseIcon from 'react-icons/lib/md/close';
-import { withTheme } from 'emotion-theming';
 import { PromptMessageContainer } from 'uikit/PromptMessage';
-import styled from 'react-emotion';
 
-/*----------------------------------------------------------------------------*/
+import './Toast.css';
 
-const ToastContent = styled('div')`
-  position: relative;
-  pointer-events: all;
-  width: 500px;
-  max-width: 100%;
-`;
-
-const ToastContainer = styled(`div`)`
-  position: fixed;
-  top: 10px;
-  width: 100vw;
-  z-index: 100;
-  pointer-events: none;
-  text-align: center;
-  word-break: break-word;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const CloseButton = styled(CloseIcon)`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-  :hover: {
-    color: red;
-  }
-`;
-
-const ToastMessage = styled(PromptMessageContainer)`
-  pointer-events: all;
-  transition: transform 0.25s ease;
-  transform: ${({ visible }) => (visible ? `translateY(0)` : `translateY(-140%)`)};
-`;
-
-const Toast = ({ style, theme, visible, action, close, closed, children, className }) => (
-  <ToastContainer>
-    <ToastMessage visible={visible} {...{ [action]: true }}>
-      <CloseButton onClick={close} />
-      <ToastContent>{children}</ToastContent>
-    </ToastMessage>
-  </ToastContainer>
-);
+const Toast = ({ visible = false, action = null, close = noop, children = null }) => {
+  const childProps = action !== null ? { [action]: true } : {};
+  return (
+    <div className="toastContainer">
+      <PromptMessageContainer
+        className={`toastMessage ${visible ? 'visible' : ''}`}
+        {...childProps}
+      >
+        <CloseIcon className="closeButton" onClick={close} />
+        <div className="toastContent">{children}</div>
+      </PromptMessageContainer>
+    </div>
+  );
+};
 
 Toast.propTypes = {
   style: PropTypes.object,
@@ -73,7 +36,6 @@ let timeoutId;
 let pageload = false;
 
 const enhance = compose(
-  withTheme,
   withState('visible', 'setState', false),
   shouldUpdate((props, nextProps) => {
     // Do not render on the first prop update, such as store rehydration
@@ -87,7 +49,7 @@ const enhance = compose(
 
     // Do not render if the notification is not up and its children don't change.
     // This catches prop changes that should not affect the notification
-    if (props.id === nextProps.id && (!props.visible && !nextProps.visible)) {
+    if (props.id === nextProps.id && !props.visible && !nextProps.visible) {
       return false;
     }
 
@@ -123,7 +85,5 @@ const enhance = compose(
     ...rest,
   })),
 );
-
-/*----------------------------------------------------------------------------*/
 
 export default enhance(Toast);

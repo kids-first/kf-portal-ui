@@ -1,34 +1,6 @@
 import { css } from 'emotion';
 
-export const cssCopyModalRoot = theme => {
-  return css`
-  .wrapper {
-    border-radius: 10px;
-    background-color: #ffffff;
-    border: solid 1px #cacbcf;
-  
-    input:focus,
-    select:focus,
-    textarea:focus,
-    button:focus {
-      outline: none;
-    }
-  }
-  
-  div.verticalCenter {
-    display:flex;
-    flex-direction:vertical:
-    align-items:center;
-  }
-  
-  div.content {
-    margin: 1em 0em;
-    ${theme.column}
-  }
-  
-  }
-  `;
-};
+// TODO : REMOVE This file to ensure it is unused
 
 export const cssFileSummaryRoot = theme => css`
   border: solid 1px ${theme.greyScale5};
@@ -49,9 +21,12 @@ export const cssFileSummaryRoot = theme => css`
     padding: 15px;
   }
   .summary {
-    ${theme.row};
+    display: flex;
+    flex-direction: row;
+
     .block {
-      ${theme.row};
+      display: flex;
+      flex-direction: row;
     }
   }
   .block {
@@ -81,7 +56,8 @@ export const cssFileSummaryRoot = theme => css`
     padding: 3px;
   }
   .details {
-    ${theme.row};
+    display: flex;
+    flex-direction: row;
     border-top: solid 1px ${theme.greyScale5};
     .block {
       padding-bottom: 0px;

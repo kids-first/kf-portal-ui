@@ -1,64 +1,19 @@
 import React, { Component } from 'react';
 import { compose, withState } from 'recompose';
-import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
+import { injectState } from 'freactal';
+import { Result, Button } from 'antd';
 
 import Row from 'uikit/Row';
 import Input from 'uikit/Input';
-import { injectState } from 'freactal';
-import { getBillingGroups, saveProject } from 'services/cavatica';
-import PlusIcon from 'icons/PlusCircleIcon';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Select from 'uikit/Select';
+import { getBillingGroups, saveProject } from 'services/cavatica';
+import PlusIcon from 'icons/PlusCircleIcon';
 import { getMsgFromErrorOrElse } from 'utils';
-import { Result, Button } from 'antd';
 
-const Container = styled(Row)`
-  align-items: center;
-  flex: 1;
-  & > *:not(:first-child) {
-    margin-left: 10px;
-  }
-`;
+import './CavaticaAddProject.css';
 
-const CreateButton = styled(WhiteButton)`
-  font-size: 11.5px;
-  border-radius: 19px;
-
-  &:hover {
-    svg {
-      fill: ${({ theme }) => theme.white};
-    }
-  }
-`;
-
-const InputLabel = styled(Row)`
-  font-size: 12px;
-  line-height: 2.39;
-  align-items: center;
-  color: ${({ theme }) => theme.tertiary};
-  text-transform: uppercase;
-  min-width: 15%;
-  &::after {
-    margin-left: 13px;
-    font-size: 1.5rem;
-    content: '›';
-    margin-top: -4px;
-  }
-`;
-
-const AddIcon = styled(PlusIcon)`
-  margin-top: 1px;
-  margin-right: 4px;
-  min-width: 1%;
-  fill: ${({ theme }) => theme.tertiary};
-`;
-
-const enhance = compose(
-  injectState,
-  withTheme,
-  withState('billingGroup', 'selectBillingGroup', null),
-);
+const enhance = compose(injectState, withState('billingGroup', 'selectBillingGroup', null));
 
 const defaultState = {
   projectName: '',
@@ -128,8 +83,6 @@ class CavaticaAddProject extends Component {
     this.setState({ ...defaultState });
   };
   render() {
-    console.log('ok');
-    const { theme } = this.props;
     const {
       error,
       addingProject,
@@ -151,11 +104,13 @@ class CavaticaAddProject extends Component {
           }
         />
       );
-    } else if (addingProject) {
+    }
+
+    if (addingProject) {
       return (
-        <Container>
-          <AddIcon width={15} height={15} fill={theme.tertiary} />
-          <InputLabel>Create a project</InputLabel>
+        <Row className="cavaticaAddProject-container">
+          <PlusIcon className="addIcon" width="15px" height="15px" fill="#009bb8" />
+          <Row className="inputLabel">Create a project</Row>
           <Input
             italic
             type="text"
@@ -174,18 +129,19 @@ class CavaticaAddProject extends Component {
             Save
           </TealActionButton>
           <WhiteButton onClick={this.onCancelClick}>Cancel</WhiteButton>
-        </Container>
+        </Row>
       );
     } else if (!addingProject) {
       return (
-        <Container>
-          <CreateButton onClick={this.onCreateButtonClick}>
-            <AddIcon width={12} height={12} />
+        <Row className="cavaticaAddProject-container">
+          <WhiteButton className="createButton" onClick={this.onWhiteButtonClick}>
+            <PlusIcon className="addIcon" width="12px" height="12px" />
             Create a project
-          </CreateButton>{' '}
-        </Container>
+          </WhiteButton>{' '}
+        </Row>
       );
     }
+
     return null;
   }
 }

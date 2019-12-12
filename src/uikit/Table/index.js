@@ -1,9 +1,5 @@
-import styled from 'react-emotion';
-import { applyDefaultStyles } from '../Core';
+import { styleComponent } from 'components/Utils';
 
-export const TableHeader = applyDefaultStyles(styled('th')`
-  font-size: 13px;
-  font-family: ${({ theme }) => theme.fonts.default};
-  font-weight: 700;
-  color: ${({ theme }) => theme.secondary};
-`);
+import { tableHeader } from './table.module.css';
+
+export const TableHeader = styleComponent('th', tableHeader);

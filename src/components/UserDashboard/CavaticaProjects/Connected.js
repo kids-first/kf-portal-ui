@@ -2,13 +2,13 @@ import React from 'react';
 
 import Column from 'uikit/Column';
 import { Box } from 'uikit/Core';
+import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import ProjectList from './ProjectList';
 import NoProjects from './NoProjects';
-import { CardContentSpinner } from '../styles';
 
 const Connected = ({ loading, projects, tabToCreate }) => {
   return loading ? (
-    <CardContentSpinner />
+    <ChartContentSpinner />
   ) : (
     <Column>
       {projects && projects.length > 0 ? (

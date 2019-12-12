@@ -1,13 +1,13 @@
 import React from 'react';
-import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
-import { get } from 'lodash';
+import { connect } from 'react-redux';
+import get from 'lodash/get';
 import gql from 'graphql-tag';
+
+import theme from 'theme/defaultTheme';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
-import { connect } from 'react-redux';
-import { setSqonValueAtIndex } from '../../../common/sqonUtils';
+import { setSqonValueAtIndex } from 'common/sqonUtils';
 
 const ageAtDiagnosisTooltip = data => {
   return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -67,7 +67,7 @@ class AgeDiagChart extends React.Component {
   };
 
   render() {
-    const { data, theme, isLoading: isParentLoading } = this.props;
+    const { data, isLoading: isParentLoading } = this.props;
     return (
       <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
         <VerticalBar
@@ -194,10 +194,4 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export default compose(
-  withTheme,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(AgeDiagChart);
+export default connect(mapStateToProps, mapDispatchToProps)(AgeDiagChart);

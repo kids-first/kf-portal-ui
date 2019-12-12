@@ -1,6 +1,9 @@
-import styled from 'react-emotion';
+import React from 'react';
 
-export default styled('textarea')`
-  ${({ theme }) => theme.input};
-  ${({ theme }) => theme.textarea};
-`;
+import styles from '../theme/tempTheme.module.css';
+
+export default ({ children, className = '', ...props }) => (
+  <textarea className={`${styles.input} ${styles.textarea} ${className}`} {...props}>
+    {children}
+  </textarea>
+);

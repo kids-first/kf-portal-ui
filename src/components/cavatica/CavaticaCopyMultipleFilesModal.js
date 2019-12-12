@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 import { withRouter } from 'react-router-dom';
 import { graphql } from 'services/arranger';
 import { withApi } from 'services/api';
 import { ModalFooter } from 'components/Modal/index.js';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { SuccessToastComponent } from './CavaticaSuccessToast';
-import { cssCopyModalRoot } from './css';
 import { copyToProject } from './api';
 import CavaticaProjects from './CavaticaProjects';
 import { Link } from 'react-router-dom';
@@ -20,6 +18,9 @@ import flatten from 'lodash/flatten';
 import { FENCES } from 'common/constants';
 import { Alert } from 'antd';
 
+import './cavatica.css';
+import './CavaticaCopyMultipleFilesModal.css';
+
 const shapeStudyAggs = (studyAggs = []) =>
   studyAggs
     .filter(({ files }) => files.length > 0)
@@ -29,12 +30,7 @@ const shapeStudyAggs = (studyAggs = []) =>
     }))
     .sort(({ count }, { count: nextCount }) => nextCount - count);
 
-const enhance = compose(
-  injectState,
-  withTheme,
-  withRouter,
-  withApi,
-);
+const enhance = compose(injectState, withRouter, withApi);
 
 const getSqonOrDefault = (
   sqon,
@@ -148,7 +144,6 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     const {
       state,
       effects: { unsetModal, setToast },
-      theme,
       onComplete,
     } = this.props;
 
@@ -168,11 +163,11 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     const unauthFilesWarning = unauthorizedFiles && unauthorizedFiles.length > 0;
     const { error } = this.state;
     return (
-      <div css={cssCopyModalRoot(theme)}>
+      <div className="copyModalRoot">
         {error && (
           <Alert
             message="Error"
-            description="An error occured. Please try again or contact our support."
+            description="An error occurred. Please try again or contact our support."
             type="error"
             closable
             showIcon
@@ -180,14 +175,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
         )}
         {unauthFilesWarning && (
           <ModalWarning>
-            <span
-              css={`
-                font-size: 16px;
-                font-weight: 500;
-              `}
-            >
-              Access Error
-            </span>
+            <span style={{ fontSize: '16px', fontWeight: '500' }}>Access Error</span>
             <span>
               <br />
               You are attempting to copy files that you are not authorized to access.
@@ -217,7 +205,9 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
           </div>
         )}
         <div className="content">
-          <span css={theme.modalHeader}>Select which Cavatica project you want to copy to:</span>
+          <span className="cavatica-modalHeader">
+            Select which Cavatica project you want to copy to:
+          </span>
           <CavaticaProjects
             onAddProject={() => {
               this.setState({ addingProject: true });
@@ -240,7 +230,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                 setToast({
                   id: `${Date.now()}`,
                   action: 'success',
-                  component: SuccessToastComponent({ theme, selectedProjectData }),
+                  component: SuccessToastComponent({ selectedProjectData }),
                 });
 
                 trackUserInteraction({

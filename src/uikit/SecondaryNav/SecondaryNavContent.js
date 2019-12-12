@@ -6,7 +6,7 @@ const SecondaryNavContent = ({ children, target, location: { hash = '' } }) => {
 
 SecondaryNavContent.propTypes = {
   target: PropTypes.string.isRequired,
-  location: PropTypes.objectOf({ hash: PropTypes.string }).isRequired,
+  location: PropTypes.shape({ hash: PropTypes.string }).isRequired,
 };
 
 export default SecondaryNavContent;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import autobind from 'auto-bind-es5';
 
 import { defaultTheme } from '../themes';
@@ -11,10 +10,6 @@ import { truncateText } from '../utils';
 import { TextBugWrapper } from '../styles';
 import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
-const VerticalBarWrapper = styled('div')`
-  height: 90%;
-`;
 
 class VerticalBar extends Component {
   constructor(props) {
@@ -224,9 +219,9 @@ class VerticalBar extends Component {
 
     // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
-      <VerticalBarWrapper>
+      <div style={{ height: '100%' }}>
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="central">
+        <TextBugWrapper>
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />
@@ -235,7 +230,7 @@ class VerticalBar extends Component {
             )}
           </ChartDisplayContainer>
         </TextBugWrapper>
-      </VerticalBarWrapper>
+      </div>
     );
   }
 }

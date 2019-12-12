@@ -3,8 +3,6 @@ import { withRouter } from 'react-router';
 import { injectState } from 'freactal';
 import { compose, withPropsOnChange } from 'recompose';
 import { withFormik, Field } from 'formik';
-import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
 
 import { ROLES } from 'common/constants';
 import { updateProfile } from 'services/profiles';
@@ -16,60 +14,19 @@ import {
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { ButtonsDiv } from '../Login/Join';
+import { ButtonsDiv } from './components';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
-import { JoinH3 } from '../../uikit/Headings';
-import { Paragraph } from '../../uikit/Core';
+import { H3 } from 'uikit/Headings';
+import { Paragraph } from 'uikit/Core';
+import { ActionButton } from 'uikit/Button';
+import { FieldInput } from './components';
 
-const SelectRoleForm = styled('form')`
-  justify-content: space-around;
-`;
-
-const FieldInput = styled(Field)`
-  ${({ theme }) => theme.input};
-  width: 374px;
-`;
-
-const RoleBubble = styled(CheckboxBubble)`
-  width: 560px;
-  padding: 5px;
-  margin-top: 10px;
-  line-height: 1.67;
-  letter-spacing: 0.2px;
-  text-align: left;
-  color: ${({ theme }) => theme.greyScale0};
-  font-size: 12px;
-  justify-content: flex-start;
-`;
-
-const RoleLabel = styled(JoinH3)`
-  display: block;
-  text-transform: capitalize;
-  border: none;
-  line-height: 1.33;
-  margin: 0;
-`;
-
-const Label = styled('label')`
-  width: 215px;
-  padding-right: 3px;
-  text-decoration: none;
-  border: none;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 2;
-  color: ${({ theme }) => theme.greyScale1};
-`;
-
-const CheckboxLabel = styled(`label`)`
-  font-size: 14px;
-  margin-left: 10px;
-`;
+import { wizardButton } from './forms.module.css';
+import './SelectRoleForm.css';
 
 export const enhance = compose(
-  withTheme,
   injectState,
   withRouter,
   withFormik({
@@ -162,7 +119,6 @@ export const enhance = compose(
 
 export default enhance(
   ({
-    theme,
     errors,
     touched,
     handleSubmit,
@@ -177,34 +133,36 @@ export default enhance(
     prevDisabled,
   }) => {
     return (
-      <Column>
-        <SelectRoleForm onSubmit={handleSubmit}>
+      <Column className="selectRoleForm-container">
+        <form onSubmit={handleSubmit}>
           <Row>
-            <Label>My first name is:</Label>
+            <label className="field-label">My first name is:</label>
             <Column>
               <FieldInput
                 name="firstName"
                 placeholder="First Name"
                 value={values.firstName}
                 onBlur={submitForm}
+                style={{ width: '374px' }}
               />
               {touched.firstName && errors.firstName && <div>{errors.firstName}</div>}
             </Column>
           </Row>
           <Row mt={2}>
-            <Label>My last name is:</Label>
+            <label className="field-label">My last name is:</label>
             <Column>
               <FieldInput
                 name="lastName"
                 placeholder="Last Name"
                 value={values.lastName}
                 onBlur={submitForm}
+                style={{ width: '374px' }}
               />
               {touched.lastName && errors.lastName && <div>{errors.lastName}</div>}
             </Column>
           </Row>
           <Row mt={2}>
-            <Label>My email address is:</Label>
+            <label className="field-label">My email address is:</label>
             <Column>
               <FieldInput
                 type="email"
@@ -212,14 +170,16 @@ export default enhance(
                 value={values.email}
                 placeholder="Email"
                 disabled="true"
+                style={{ width: '374px' }}
               />
             </Column>
           </Row>
           <Row mt={2}>
-            <Label>Best describes my needs:</Label>
+            <label className="field-label">Best describes my needs:</label>
             <Column>
               {ROLES.map(({ type, description, displayName, icon, color }) => (
-                <RoleBubble
+                <CheckboxBubble
+                  className="roleBubble"
                   key={type}
                   active={values.roles === type}
                   onClick={() => {
@@ -239,14 +199,14 @@ export default enhance(
                     checked={values.roles.toLowerCase() === type}
                     name="roles"
                   />
-                  {icon({ width: '64px', fill: color, style: { padding: '8px' } })}
+                  {icon({ size: '64px', fill: color, style: { padding: '8px' } })}
                   <div>
-                    <RoleLabel>{displayName}</RoleLabel>
+                    <H3>{displayName}</H3>
                     <Paragraph lineHeight="26px" fontSize="14px">
                       {description}
                     </Paragraph>
                   </div>
-                </RoleBubble>
+                </CheckboxBubble>
               ))}
             </Column>
             {touched.roles && errors.roles && <div>{errors.roles}</div>}
@@ -259,13 +219,13 @@ export default enhance(
               id="acceptedKfOptIn"
               name="acceptedKfOptIn"
             />
-            <CheckboxLabel htmlFor="acceptedKfOptIn">
+            <label className="checkbox-label" htmlFor="acceptedKfOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
                 I would like to receive the Kids First Data Resource Center quarterly newsletter to
                 get the latest DRC news including recent study updates, new investigators and
                 partners added to the effort.
               </Paragraph>
-            </CheckboxLabel>
+            </label>
           </Row>
           <Row mt={2} pb={2}>
             <Field
@@ -275,12 +235,12 @@ export default enhance(
               id="acceptedNihOptIn"
               name="acceptedNihOptIn"
             />
-            <CheckboxLabel htmlFor="acceptedNihOptIn">
+            <label className="checkbox-label" htmlFor="acceptedNihOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
                 I would like to receive updates from the NIH Kids First program including funding
                 updates and news about the program.
               </Paragraph>
-            </CheckboxLabel>
+            </label>
           </Row>
           <Row mt={2}>
             <Field
@@ -290,31 +250,31 @@ export default enhance(
               id="acceptedDatasetSubscriptionKfOptIn"
               name="acceptedDatasetSubscriptionKfOptIn"
             />
-            <CheckboxLabel htmlFor="acceptedDatasetSubscriptionKfOptIn">
+            <label className="checkbox-label" htmlFor="acceptedDatasetSubscriptionKfOptIn">
               <Paragraph lineHeight="26px" fontSize="14px">
                 The Gabriella Miller Kids First Data Resource Center is constantly improving the
                 availability and quality of new datasets added to the Data Resource Portal. Sign up
                 below to opt-in to receive updates and announcements when new datasets are available
                 in the Portal.
               </Paragraph>
-            </CheckboxLabel>
+            </label>
           </Row>
-        </SelectRoleForm>
+        </form>
         <ButtonsDiv>
-          <DeleteButton className={theme.wizardButton} disabled={prevDisabled}>
+          <DeleteButton className={wizardButton} disabled={prevDisabled}>
             <LeftIcon />
             Back
           </DeleteButton>
           <Row>
             <DeleteButton
-              css={`
-                ${theme.wizardButton} font-weight: 300;
-              `}
+              className={wizardButton}
+              style={{
+                fontWeight: 300,
+              }}
             >
               Cancel
             </DeleteButton>
-            <button
-              className={theme.actionButton}
+            <ActionButton
               onClick={() => {
                 submitForm();
                 nextStep();
@@ -323,7 +283,7 @@ export default enhance(
             >
               Next
               <RightIcon />
-            </button>
+            </ActionButton>
           </Row>
         </ButtonsDiv>
       </Column>

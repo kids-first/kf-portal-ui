@@ -1,21 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import { isEqual, defaults, get, has } from 'lodash';
 import { renderPlot } from '@oncojs/survivalplot/index.dist';
-import { CohortCard } from './ui';
-import { fetchSurvivalData } from 'services/arranger';
 import md5 from 'md5';
-import CardContent from 'uikit/Card/CardContent';
-import { SizeProvider } from 'components/Utils';
 import { compose } from 'recompose';
-import { withApi } from 'services/api';
 import ResetIcon from 'react-icons/lib/md/replay';
-import Tooltip from 'uikit/Tooltip';
 
-const SurvivalChartWrapper = styled('div')`
-  margin-top: 10px;
-`;
+import { fetchSurvivalData } from 'services/arranger';
+import { withApi } from 'services/api';
+import CardContent from 'uikit/Card/CardContent';
+import Tooltip from 'uikit/Tooltip';
+import { SizeProvider, styleComponent } from 'components/Utils';
+import theme from 'theme/defaultTheme';
+import { CohortCard } from './ui';
+
+import './SurvivalChart.css';
 
 const formatDataset = data => {
   return [
@@ -70,6 +69,7 @@ class SurvivalPlot extends React.Component {
   };
 
   static defaultProps = {
+    className: '',
     palette: ['#1880b2', '#c20127', '#00005d', 'purple'],
     censoredStatuses: ['alive'],
     onMouseEnterDonors(event, donors) {},
@@ -148,61 +148,11 @@ class SurvivalPlot extends React.Component {
   };
 
   render() {
-    return <div ref={c => (this._container = c)} className={this.props.className || ''} />;
+    return <div ref={c => (this._container = c)} className={this.props.className} />;
   }
 }
 
-const SurvivalCardContent = styled(CardContent)`
-  overflow: visible;
-`;
-
-const SurvivalChartHeader = styled('div')`
-  margin-top: -10px;
-  padding: 4px 0 4px 8px;
-  background-color: #eee;
-  font-size: 11px;
-  & a {
-    color: ${({ theme }) => theme.chartColors.blue};
-  }
-`;
-
-const StyledSurvivalPlot = styled(SurvivalPlot)`
-  .axis line,
-  .axis path {
-    fill: none;
-    stroke: #e6dede;
-    shape-rendering: crispEdges;
-  }
-  .axis .tick text {
-    fill: #888;
-    font-size: 10px;
-    padding-bottom: 10px;
-  }
-  .axis .axis-label {
-    font-size: 12px;
-    font-weight: 500;
-    fill: ${({ theme }) => theme.secondary};
-  }
-  text.axis-label {
-    text-anchor: middle !important;
-  }
-  .axis:first-child .axis-label {
-    transform: translateY(7px);
-  }
-  .axis:nth-child(2) .axis-label {
-    transform: rotate(-90deg) translatex(0px) translatey(8px);
-  }
-  .line {
-    fill: none;
-    stroke-width: 1.5px;
-  }
-
-  .brush .extent {
-    stroke: #fff;
-    fill: #edf8ff;
-    shape-rendering: crispEdges;
-  }
-`;
+const SurvivalCardContent = styleComponent(CardContent, 'survivalChart-card-content');
 
 export class SurvivalChart extends React.Component {
   constructor(props) {
@@ -317,10 +267,9 @@ export class SurvivalChart extends React.Component {
     };
 
     const header = {
-      display: 'flex',
-      justifyContent: 'space-between',
       position: 'absolute',
-      width: '92%',
+      right: '-2px',
+      top: '-40px',
     };
 
     const dragZoom = {
@@ -331,39 +280,38 @@ export class SurvivalChart extends React.Component {
       height: '13px',
     };
 
+    const resetZoomIcon = (
+      <div style={header}>
+        {zoomDisabled ? (
+          <ResetIcon size={25} color="grey" />
+        ) : (
+          <Tooltip html={<span>Reset zoom</span>}>
+            <ResetIcon size={25} color="#22AFE9" onClick={this.handleClick} />
+          </Tooltip>
+        )}
+      </div>
+    );
+
     return (
       <SizeProvider>
         {({ size }) => (
           <CohortCard
             Content={SurvivalCardContent}
-            title={
-              <div style={header}>
-                <div>Overall Survival</div>
-                  { !zoomDisabled && (
-                    <Tooltip html={<span>Reset zoom</span>}>
-                      <ResetIcon
-                        css={{ marginTop: -5 }}
-                        size={25}
-                        color='#22AFE9'
-                        onClick={this.handleClick}
-                      />
-                    </Tooltip> )}
-                { zoomDisabled && (
-                  <ResetIcon
-                    css={{ marginTop: -4 }}
-                    size={25}
-                    color='grey'
-                  />)}
-              </div>
-            }
+            title="Overall Survival"
             loading={this.state.isLoading}
           >
-            <SurvivalChartWrapper>
-              <SurvivalChartHeader>
-                Applicable survival data for <a>{get(data, '[0].donors.length', 0)} Participants</a>
-              </SurvivalChartHeader>
+            {resetZoomIcon}
+            <div style={{ marginTop: '10px' }}>
+              <div className="survivalChart-card-header">
+                Applicable survival data for{' '}
+                <span style={{ color: theme.chartColors.blue }}>
+                  {get(data, '[0].donors.length', 0)} Participants
+                </span>
+              </div>
               <div style={dragZoom}>{zoomDisabled && <div>Drag to zoom</div>}</div>
-              <StyledSurvivalPlot
+
+              <SurvivalPlot
+                className="survivalChart-styledChard"
                 size={size}
                 dataSets={data}
                 onMouseLeaveDonors={this.handleMouseLeaveDonors}
@@ -381,7 +329,7 @@ export class SurvivalChart extends React.Component {
                   <div>Survival Time: {donor.time} days </div>
                 )}
               </div>
-            </SurvivalChartWrapper>
+            </div>
           </CohortCard>
         )}
       </SizeProvider>

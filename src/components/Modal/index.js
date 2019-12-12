@@ -1,8 +1,6 @@
 import React from 'react';
 import { injectState } from 'freactal';
 import CloseIcon from 'react-icons/lib/md/close';
-import { css } from 'emotion';
-import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
 import { getAppElement } from '../../services/globalDomNodes.js';
 import LoadingOnClick from 'components/LoadingOnClick';
@@ -12,10 +10,9 @@ import { PromptMessageContainer, PromptMessageContent } from 'uikit/PromptMessag
 import { ModalFooterContainer, ModalFooterContent, Modal, ModalContent, ModalTitle } from './ui';
 import { WhiteButton, TealActionButton } from '../../uikit/Button.js';
 
-const enhance = compose(
-  withTheme,
-  injectState,
-);
+import styles from './Modal.module.css';
+
+const enhance = compose(injectState);
 
 const defaultLoadingContent = (
   <Spinner
@@ -31,34 +28,33 @@ const defaultLoadingContent = (
   />
 );
 
-const ModalHeader = ({ theme, title, unsetModal }) => (
-  <div
-    css={`
-      ${theme.row} justify-content: space-between;
-      border-bottom: 1px solid #d4d6dd;
-      margin-bottom: 1.5em;
-    `}
-  >
+const ModalHeader = ({ title, unsetModal }) => (
+  <div className={`${styles.modalHeader}`}>
     <ModalTitle>{title}</ModalTitle>
     <CloseIcon
-      css="cursor:pointer; width:22px; height:22px; margin-top:-10px; margin-right:-10px;"
+      style={{
+        cursor: 'pointer',
+        width: '22px',
+        height: '22px',
+        marginTop: '-10px',
+        marginRight: '-10px',
+      }}
       fill="black"
       onClick={() => unsetModal()}
     />
   </div>
 );
 
-export const ModalWarning = enhance(({ theme, content, ...props }) => {
+export const ModalWarning = enhance(({ children }) => {
   return (
     <PromptMessageContainer error>
-      <PromptMessageContent>{props.children}</PromptMessageContent>
+      <PromptMessageContent>{children}</PromptMessageContent>
     </PromptMessageContainer>
   );
 });
 
 export const ModalFooter = enhance(
   ({
-    theme,
     effects: { setModal, unsetModal },
     showSubmit = true,
     submitText = 'Save',
@@ -68,7 +64,6 @@ export const ModalFooter = enhance(
     handleCancelClick = unsetModal,
     submitDisabled = false,
     children,
-    ...props
   }) => {
     return (
       <ModalFooterContainer>
@@ -95,37 +90,28 @@ export const ModalFooter = enhance(
 
 const ModalView = ({
   isFooterShown = true,
-  theme,
   effects: { setModal, unsetModal },
   state: {
-    modalState: { component, title, classNames },
+    modalState: { component, title, classNames, style },
   },
   ...props
 }) => (
   <Modal
     isFooterShown={isFooterShown}
     className={`${classNames ? classNames.modal : ''}`}
-    overlayClassName={`${css`
-      position: fixed;
-      top: 0px;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: block;
-      z-index: 1000;
-    `} ${classNames ? classNames.overlay : ''}`}
+    style={style || {}}
+    overlayClassName={`${classNames ? classNames.overlay : ''} ${styles.modalOverlay}`}
     {...{
       appElement: getAppElement(),
       isOpen: !!component,
       ...props,
     }}
   >
-    {!!title ? <ModalHeader {...{ theme, title, unsetModal, ...props }} /> : null}
+    {!!title ? <ModalHeader {...{ title, unsetModal, ...props }} /> : null}
     <ModalContent className={`${classNames ? classNames.content : ''}`}>{component}</ModalContent>
   </Modal>
 );
 
-export default enhance(ModalView);
+export default compose(injectState)(ModalView);
 export { ModalActionButton } from './ui';
 export { ModalSubHeader } from './ui';

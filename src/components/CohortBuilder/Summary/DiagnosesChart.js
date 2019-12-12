@@ -1,19 +1,21 @@
 import React from 'react';
-import { withTheme } from 'emotion-theming';
 import { compose } from 'recompose';
+import gql from 'graphql-tag';
+import get from 'lodash/get';
+import startCase from 'lodash/startCase';
+import { connect } from 'react-redux';
+
+import theme from 'theme/defaultTheme';
 import { BarChartContainer, CohortCard, getCohortBarColors } from './ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import gql from 'graphql-tag';
-import _, { get, startCase } from 'lodash';
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
 import { setSqons } from 'store/actionCreators/virtualStudies';
-import { connect } from 'react-redux';
 import {
   setSqonValueAtIndex,
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
-} from '../../../common/sqonUtils';
+} from 'common/sqonUtils';
 
 const mostFrequentDiagnosisTooltip = data => {
   const participants = data.familyMembers + data.probands;
@@ -112,7 +114,7 @@ class DiagnosesChart extends React.Component {
   };
 
   render() {
-    const { topDiagnoses, sqon, theme, api, isLoading: isParentLoading } = this.props;
+    const { topDiagnoses, sqon, api, isLoading: isParentLoading } = this.props;
     return (
       <QueriesResolver
         name="GQL_DIAGNOSIS_CHART"
@@ -186,12 +188,12 @@ export const diagnosesQuery = sqon => ({
       data,
       'data.participant.aggregations.diagnoses__mondo_id_diagnosis.buckets',
     );
-    return _(buckets)
-      .orderBy(bucket => bucket.doc_count, 'desc')
-      .map(diag => diag.key)
-      .difference(['No Match', '__missing__'])
-      .take(10)
-      .value();
+
+    return buckets
+      .filter(bucket => !['No Match', '__missing__'].includes(bucket.key))
+      .sort((a, b) => b.doc_count - a.doc_count)
+      .map(bucket => bucket.key)
+      .slice(0, 10);
   },
 });
 
@@ -203,11 +205,4 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export default compose(
-  withApi,
-  withTheme,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(DiagnosesChart);
+export default compose(withApi, connect(mapStateToProps, mapDispatchToProps))(DiagnosesChart);

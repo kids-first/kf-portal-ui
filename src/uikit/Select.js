@@ -1,7 +1,10 @@
-import styled from 'react-emotion';
+import React from 'react';
 import { applyDefaultStyles } from './Core';
 
-export default applyDefaultStyles(styled('select')`
-  ${({ theme }) => theme.select};
-  ${({ theme }) => theme.input};
-`);
+import { input, select } from '../theme/tempTheme.module.css';
+
+export default applyDefaultStyles(({ children, className = '', style = {}, ...props }) => (
+  <select className={`${select} ${input} ${className}`} {...props}>
+    {children}
+  </select>
+));

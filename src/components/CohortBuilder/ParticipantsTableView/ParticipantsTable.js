@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { message } from 'antd';
 import autobind from 'auto-bind-es5';
 
@@ -17,14 +16,15 @@ import {
 } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
-import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from 'uikit/DataTable/utils/columns';
+import { trackUserInteraction } from 'services/analyticsTracking';
 import DownloadButton from 'components/FileRepo/DownloadButton';
 import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
-import { css } from 'emotion';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
+
+import './ParticipantTableView.css';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   return (
@@ -42,13 +42,6 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   );
 };
 
-const rowCss = css({
-  display: 'flex',
-  flexWrap: 'nowrap',
-  alignItems: 'flex-start',
-  alignContent: 'stretch',
-});
-
 const isMondo = datum => typeof datum === 'string' && datum.includes('MONDO');
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
@@ -65,7 +58,7 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   const hasManyValues = sizeOfCleanData > 1;
 
   return (
-    <div className={`${rowCss}`}>
+    <div className="rowCss">
       <div style={{ display: 'flex', flexDirection: 'column', flex: '4' }}>
         {cleanedUniquifiedData.slice(0, displayedRowCount).map((datum, index) => {
           if (isMondo(datum)) {
@@ -98,48 +91,37 @@ const CollapsibleMultiLineCell = enhance(({ value: data, collapsed, setCollapsed
   );
 });
 
-const NbFilesCell = compose(
-  withTheme(({ value: nbFiles, row, theme }) => {
-    const encodedSqon = encodeURI(
-      JSON.stringify(
-        {
-          op: 'and',
-          content: [
-            {
-              op: 'in',
-              content: {
-                field: 'participants.kf_id',
-                value: [row.participantId],
-              },
+const NbFilesCell = compose(({ value: nbFiles, row }) => {
+  const encodedSqon = encodeURI(
+    JSON.stringify(
+      {
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: {
+              field: 'participants.kf_id',
+              value: [row.participantId],
             },
-          ],
-        },
-        null,
-        0,
-      ),
-    );
+          },
+        ],
+      },
+      null,
+      0,
+    ),
+  );
 
-    return (
-      <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
-        <FileIcon
-          className={css`
-            margin-right: 5px;
-          `}
-          width={8}
-          height={13}
-          fill={theme.greyScale11}
-        />
-        {`${nbFiles} Files`}
-      </Link>
-    );
-  }),
-);
+  return (
+    <Link to={`/search/file?sqon=${encodedSqon}`} className="nbFilesLink">
+      <FileIcon style={{ marginRight: '5px' }} width="8px" height="13px" fill="#a9adc0" />
+      {`${nbFiles} Files`}
+    </Link>
+  );
+});
 
-const ParticipantIdLink = compose(
-  withTheme(({ value: idParticipant }) => {
-    return <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>;
-  }),
-);
+const ParticipantIdLink = compose(({ value: idParticipant }) => {
+  return <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>;
+});
 
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
@@ -238,16 +220,6 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   },
 ];
 
-const cssClass = css({
-  '.nbFilesLink img': {
-    top: '2px',
-    position: 'relative',
-  },
-  'div.rt-noData': {
-    display: 'none !important',
-  },
-});
-
 class ParticipantsTable extends Component {
   static defaultProps = {
     sqon: {
@@ -329,8 +301,6 @@ class ParticipantsTable extends Component {
           <Fragment>
             <ToolbarGroup style={{ border: 'none' }}>
               <Fragment>
-                {/* Analyze in Cavatica */}
-                {/* Download */}
                 {/*
                 <RemoveFromCohortButton
                   onClick={() => handleRemoveFromCohort()}
@@ -402,7 +372,7 @@ class ParticipantsTable extends Component {
           columns={columns}
           data={data}
           loading={loading}
-          className={`${cssClass}`}
+          className="participantTable"
           onFetchData={onFetchData}
           dataTotalCount={dataTotalCount}
         />

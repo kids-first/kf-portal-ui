@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import { Col, Icon, Row, Typography } from 'antd';
-import { bind } from '../../utils';
 import PropTypes from 'prop-types';
+import autobind from 'auto-bind-es5';
 
 const { Paragraph, Title } = Typography;
 
@@ -15,23 +15,25 @@ const compare = (a, b) => {
 };
 
 class MemberInterests extends Component {
-  state = {
-    filter: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: true,
+    };
+    autobind(this);
+  }
 
   static propTypes = {
     interests: PropTypes.array.isRequired,
     highlights: PropTypes.array.isRequired,
   };
 
-  @bind
   onClick() {
     this.setState(prevState => ({
       filter: !prevState.filter,
     }));
   }
 
-  @bind
   testIfHighlighted(originalInterest) {
     const { highlights } = this.props;
     const matched = highlights.find(hl => {
@@ -40,7 +42,6 @@ class MemberInterests extends Component {
     return matched || null;
   }
 
-  @bind
   getMergedInterests() {
     const { interests } = this.props;
     return interests
@@ -102,24 +103,25 @@ class MemberInterests extends Component {
             </Row>
           ))}
           {mergedInterests.length > 10 ? (
-            <a
+            <button
               style={{ margin: 0 }}
+              type="link"
               className="ant-typography-expand"
               aria-label="Expand"
               onClick={this.onClick}
             >
               {filter ? (
                 <div className={'flex'}>
-                  <div style={{paddingRight: 8}}>Expand</div>
+                  <div style={{ paddingRight: 8 }}>Expand</div>
                   <Icon type="plus-circle" />
                 </div>
               ) : (
                 <div className={'flex'}>
-                  <div style={{paddingRight: 8}}>Close</div>
+                  <div style={{ paddingRight: 8 }}>Close</div>
                   <Icon type="minus-circle" />
                 </div>
               )}
-            </a>
+            </button>
           ) : (
             ''
           )}

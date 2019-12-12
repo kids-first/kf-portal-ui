@@ -66,8 +66,8 @@ class MemberSearchContainer extends Component {
   }
 
   componentWillUnmount() {
-    console.log("Component has unmounted");
-    this.props.resetStore()
+    console.log('Component has unmounted');
+    this.props.resetStore();
   }
 
   handlePageChange = async page => {
@@ -151,7 +151,7 @@ class MemberSearchContainer extends Component {
     };
 
     return (
-      <div className={'background-container'} style={{ width: '100%' }}>
+      <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer />
           <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
@@ -211,7 +211,4 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MemberSearchContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MemberSearchContainer);

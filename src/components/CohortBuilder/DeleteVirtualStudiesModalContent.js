@@ -20,7 +20,7 @@ class DeleteVirtualStudiesModalContent extends React.Component {
     errorMessage: null,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.deleting = false;
   }
 
@@ -91,8 +91,5 @@ const mapDispatchToProps = {
 
 export default compose(
   injectState,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
 )(DeleteVirtualStudiesModalContent);

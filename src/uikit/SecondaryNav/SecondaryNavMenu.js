@@ -1,16 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'emotion-theming';
-import styled from 'react-emotion';
 import { isEmpty } from 'lodash';
 
 import SecondaryNavTab from './SecondaryNavTab';
+import './SecondaryNav.css';
 
-const MenuWrapper = styled('ul')`
-  ${({ theme }) => theme.secondaryNav}
-`;
-
-class SecondaryNavMenu extends React.Component {
+export default class SecondaryNavMenu extends React.Component {
   hashes = [];
   constructor(props) {
     super(props);
@@ -28,7 +23,7 @@ class SecondaryNavMenu extends React.Component {
 
   render() {
     return (
-      <MenuWrapper>
+      <ul className="secondaryNav">
         {this.props.tabs.map((tab, i) => (
           <SecondaryNavTab
             key={`${i}_${tab.hash}`}
@@ -37,7 +32,7 @@ class SecondaryNavMenu extends React.Component {
             location={this.props.location}
           />
         ))}
-      </MenuWrapper>
+      </ul>
     );
   }
 
@@ -46,10 +41,10 @@ class SecondaryNavMenu extends React.Component {
 
 SecondaryNavMenu.propTypes = {
   tabs: PropTypes.arrayOf(
-    PropTypes.objectOf({ name: PropTypes.string.isRequired, hash: PropTypes.string.isRequired })
-      .isRequired,
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      hash: PropTypes.string.isRequired,
+    }).isRequired,
   ).isRequired,
   defaultHash: PropTypes.string,
 };
-
-export default withTheme(SecondaryNavMenu);

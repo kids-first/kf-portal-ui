@@ -1,4 +1,5 @@
-import styled from 'react-emotion';
+import React from 'react';
+import { textBugWrapper } from './chartkit.module.css';
 
 /**
  * Ref: https://github.com/kids-first/kf-portal-ui/pull/1006
@@ -6,10 +7,4 @@ import styled from 'react-emotion';
  * Nivo uses alignment-baseline which FF does not support
  * TextBugWrapper provides FF with correct attribute
  */
-export const TextBugWrapper = styled('div')`
-  width: 100%;
-  height: 100%;
-  & text {
-    dominant-baseline: ${({ baseline }) => baseline};
-  }
-`;
+export const TextBugWrapper = ({ children }) => <div className={textBugWrapper}>{children}</div>;

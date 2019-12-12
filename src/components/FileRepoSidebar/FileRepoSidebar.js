@@ -21,7 +21,7 @@ import {
   DownloadButtonsContainer,
 } from './ui';
 import ClinicalDownloadButton from './ClinicalDownloadButton';
-import { FileRepoH2 as H2, FileRepoH3 as H3 } from '../../uikit/Headings';
+import { H2, H3 } from 'uikit/Headings';
 import FamilyManifestModal from '../FamilyManifestModal';
 
 const FileManifestsDownloadButton = compose(injectState)(({ effects: { setModal }, ...props }) => (
@@ -84,7 +84,7 @@ const FileRepoSidebar = compose(
               <LeftChevron width={14} fill={theme.secondary} />
             )}{' '}
           </Span>
-          <H2 display="inline-block">Actions</H2>
+          <H2 style={{ fontSize: '18px', display: 'inline-block' }}>Actions</H2>
         </Titlebar>
         <Content {...{ expanded, contentSidePadding, containerWidth }}>
           <Section>
@@ -95,11 +95,11 @@ const FileRepoSidebar = compose(
             </Text>
           </Section>
           <Section>
-            <H3 mb="15px">Data Analysis</H3>
+            <H3 style={{ fontSize: '16px', marginBottom: '15px' }}>Data Analysis</H3>
             <CavaticaCopyButton {...props} />
           </Section>
           <Section>
-            <H3 mb="15px">Download</H3>
+            <H3 style={{ fontSize: '16px', marginBottom: '15px' }}>Download</H3>
             <DownloadButtonsContainer>
               <FileManifestsDownloadButton {...props} />
               <BioSpecimentDownloadButton {...props} isFileRepo={true} />

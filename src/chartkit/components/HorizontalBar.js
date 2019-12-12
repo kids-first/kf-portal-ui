@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import autobind from 'auto-bind-es5';
 
 import { defaultTheme } from '../themes';
@@ -11,11 +10,6 @@ import { truncateText } from '../utils';
 import { TextBugWrapper } from '../styles';
 import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-
-const HorizontalBarWrapper = styled('div')`
-  height: 100%;
-  width: 100%;
-`;
 
 class HorizontalBar extends Component {
   constructor(props) {
@@ -139,7 +133,7 @@ class HorizontalBar extends Component {
       indexBy = 'id',
       height,
       tooltipFormatter,
-      axisBottomFormat = v => Number.isInteger(Number(v)) ? v.toLocaleString() : "",
+      axisBottomFormat = v => (Number.isInteger(Number(v)) ? v.toLocaleString() : ''),
       axisLeftFormat = v => v.toLocaleString(),
     } = this.props;
 
@@ -214,9 +208,14 @@ class HorizontalBar extends Component {
 
     // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712
     return (
-      <HorizontalBarWrapper>
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+        }}
+      >
         {!legends ? null : <Legend legends={legends} theme={defaultTheme.legend} />}
-        <TextBugWrapper baseline="central">
+        <TextBugWrapper>
           <ChartDisplayContainer>
             {height ? (
               <ResponsiveBar {...chartData} height={height} />
@@ -225,7 +224,7 @@ class HorizontalBar extends Component {
             )}
           </ChartDisplayContainer>
         </TextBugWrapper>
-      </HorizontalBarWrapper>
+      </div>
     );
   }
 }

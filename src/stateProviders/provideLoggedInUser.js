@@ -6,7 +6,7 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { setCookie, removeCookie } from 'services/cookie';
-import { validateJWT, handleJWT } from 'utils';
+import { validateJWT, handleJWT } from 'components/Login/utils';
 
 import {
   TRACKING_EVENTS,

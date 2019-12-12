@@ -10,11 +10,11 @@ export const config = [
       <img
         src={require('../assets/icon-files.svg')}
         alt=""
-        css={`
-          width: 16px;
-          height: 20px;
-          margin-right: 10px;
-        `}
+        style={{
+          width: '16px',
+          height: '20px',
+          marginRight: '10px',
+        }}
       />
     ),
   },
@@ -25,11 +25,11 @@ export const config = [
       <img
         src={require('../assets/icon-participants.svg')}
         alt=""
-        css={`
-          width: 21px;
-          height: 26px;
-          margin-right: 10px;
-        `}
+        style={{
+          width: '21px',
+          height: '26px',
+          marginRight: '10px',
+        }}
       />
     ),
   },
@@ -40,11 +40,11 @@ export const config = [
       <img
         src={require('../assets/icon-families-grey.svg')}
         alt=""
-        css={`
-          width: 26px;
-          height: 23px;
-          margin-right: 10px;
-        `}
+        style={{
+          width: '26px',
+          height: '23px',
+          marginRight: '10px',
+        }}
       />
     ),
   },
@@ -57,11 +57,11 @@ export const config = [
       <img
         src={require('../assets/icon-database.svg')}
         alt=""
-        css={`
-          width: 18px;
-          height: 22px;
-          margin-right: 10px;
-        `}
+        style={{
+          width: '18px',
+          height: '22px',
+          marginRight: '10px',
+        }}
       />
     ),
   },

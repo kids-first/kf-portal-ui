@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import uniq from 'lodash/uniq';
@@ -11,19 +10,20 @@ import Component from 'react-component-component';
 import autobind from 'auto-bind-es5';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 
+import DownloadIcon from 'icons/DownloadIcon';
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
+import { TealActionButton } from 'uikit/Button';
 import Row from 'uikit/Row';
 import { DropdownOptionsContainer } from 'uikit/Dropdown';
+import Tooltip from 'uikit/Tooltip';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import {
   clinicalDataParticipants,
   clinicalDataFamily,
   downloadBiospecimen,
 } from 'services/downloadData';
-import { DownloadButton as DownloadButtonUI } from './ui';
 import { withApi } from 'services/api';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
-import Tooltip from 'uikit/Tooltip';
 import {
   clinicalDataReport,
   familyClinicalDataReport,
@@ -31,48 +31,30 @@ import {
 } from 'services/reports';
 import { isFeatureEnabled } from 'common/featuresToggles';
 import { displayError } from 'store/actionCreators/errors';
+import { styleComponent } from 'components/Utils';
 
-const StyledDropdownOptionsContainer = styled(DropdownOptionsContainer)`
-  position: absolute;
-  width: 300px;
-  top: 32px;
-  left: 4px;
-`;
+import './DownloadButton.css';
 
-const OptionRow = styled(Row)`
-  padding: 5px;
-  font-size: 10px;
-  color: ${({ theme, disabled }) => (disabled ? theme.greyScale1 : 'auto')};
-  background: ${({ theme, disabled }) => (disabled ? theme.greyScale10 : theme.white)};
-  border-top: solid 1px ${({ theme }) => theme.borderGrey};
-  &:first-child {
-    border-top: none;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
-  }
-  &:last-child {
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-  }
-  &:hover {
-    background: ${({ theme }) => theme.greyScale10};
-  }
-`;
+const StyledDropdownOptionsContainer = styleComponent(
+  DropdownOptionsContainer,
+  'downloadButtonDropdownOptionsContainer',
+);
 
-const isFamilyDownloadAvailable = async ({ api, sqon }) => {
-  const { familyMembersWithoutParticipantIds } = await familyMemberAndParticipantIds({
-    api,
-    sqon,
-  });
-  return Boolean((familyMembersWithoutParticipantIds || []).length);
-};
+const OptionRow = styleComponent(Row, 'downloadButtonOptionRow');
 
 const FamilyDownloadAvailabilityProvider = compose(withApi)(({ render, api, sqon }) => {
+  const isFamilyDownloadAvailable = async () => {
+    const { familyMembersWithoutParticipantIds } = await familyMemberAndParticipantIds({
+      api,
+      sqon,
+    });
+    return Boolean((familyMembersWithoutParticipantIds || []).length);
+  };
   return (
     <Component
       initialState={{ isLoading: true, available: false }}
       didMount={async ({ state, setState }) =>
-        setState({ isLoading: false, available: await isFamilyDownloadAvailable({ api, sqon }) })
+        setState({ isLoading: false, available: await isFamilyDownloadAvailable() })
       }
     >
       {({ state }) => render(state)}
@@ -464,11 +446,28 @@ const mapDispatchToProps = {
   displayError,
 };
 
-export default compose(
-  withApi,
-  injectState,
-  connect(
-    null,
-    mapDispatchToProps,
-  ),
-)(DownloadButton);
+export default compose(withApi, injectState, connect(null, mapDispatchToProps))(DownloadButton);
+
+const DownloadButtonUI = ({
+  onClick,
+  content = () => 'Download',
+  disabled = false,
+  onBlur = noop,
+}) => {
+  return (
+    <TealActionButton
+      className="downloadButton"
+      onClick={onClick}
+      disabled={disabled}
+      onBlur={onBlur}
+    >
+      <DownloadIcon
+        style={{
+          height: '28px',
+          marginRight: '9px',
+        }}
+      />
+      <span style={{ textTransform: 'uppercase' }}>{content()}</span>
+    </TealActionButton>
+  );
+};

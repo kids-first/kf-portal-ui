@@ -1,5 +1,4 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -7,95 +6,31 @@ import ExternalLink from 'uikit/ExternalLink';
 import { getTaskLink } from 'services/cavatica';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-const Project = styled(Column)`
-  justify-content: center;
-  margin: 0;
-  padding: 10px 10px 10px 0;
-  padding-bottom: 16px;
-  border-bottom: solid 1px ${({ theme }) => theme.greyScale5};
-`;
+import './CavaticaProjects.css';
 
-const Members = styled('div')`
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 12px;
-  color: #74757d;
-`;
-
-const MemberCount = styled('span')`
-  font-size: 12px;
-  color: #343434;
-  font-family: ${({ theme }) => theme.fonts.details};
-`;
-
-const Link = styled(ExternalLink)`
-  text-decoration: underline;
-  font-size: 14px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-weight: 600;
-`;
-
-const taskStyle = props => css`
-  display: inline-block;
-  border-radius: 7.5px;
-  margin-left: 8px;
-  font-size: 12px;
-  font-family: ${props.theme.fonts.details};
-  padding: 2px 5px;
-  font-weight: 600;
-`;
-
-const completedTaskStyle = props =>
-  css`
-    background-color: #dcfbf3;
-    color: #0e906f;
-  `;
-
-const runningTaskStyle = props =>
-  css`
-    background-color: #daecfb;
-    color: #1163a7;
-  `;
-
-const failedTaskStyle = props =>
-  css`
-    background-color: #fbdada;
-    color: #a71111;
-  `;
-
-const TaskLink = styled('a')`
-  ${taskStyle};
-  ${props => props.displayStyle};
-  text-decoration: none;
-`;
-
-const TaskSpan = styled('span')`
-  ${taskStyle};
-  ${props => props.displayStyle};
-`;
-
-const TaskBreakdown = styled('div')`
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-weight: 600;
-`;
-
-const Task = ({ tasks, status, projectId, ...props }) => {
+const Task = ({ tasks, status, projectId, displayStyle = '' }) => {
   const text = `${tasks} ${status}`;
 
   return tasks > 0 ? (
-    <TaskLink href={getTaskLink({ project: projectId, status: status })} target="_blank" {...props}>
+    <a
+      className={`task taskLink ${displayStyle}`}
+      href={getTaskLink({ project: projectId, status: status })}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       {text}
-    </TaskLink>
+    </a>
   ) : (
-    <TaskSpan {...props}>{text}</TaskSpan>
+    <span className={`task ${displayStyle}`}>{text}</span>
   );
 };
 
 const ProjectList = ({ projects }) =>
   projects.map((p, i) => (
-    <Project key={i}>
-      <Row justifyContent="space-between" pl={0}>
-        <Link
+    <Column className="cavaticaProjects" key={i}>
+      <Row className="cavaticaProjectsProject">
+        <ExternalLink
+          className="link"
           onClick={() => {
             trackUserInteraction({
               category: TRACKING_EVENTS.categories.integration.cavatica,
@@ -107,40 +42,35 @@ const ProjectList = ({ projects }) =>
           iconSize={11}
         >
           {p.name}
-        </Link>
+        </ExternalLink>
         <div>
-          <Members>
-            <MemberCount>{p.members}</MemberCount>
+          <div className="members">
+            <span className="membersCount">{p.members}</span>
             {`${p.members > 1 ? ' people' : ' person'}`}
-          </Members>
+          </div>
         </div>
       </Row>
       {Object.keys(p.tasks).reduce((prev, key) => prev + p.tasks[key], 0) === 0 ? null : (
-        <Row mt={'10px'} pl={0}>
-          <TaskBreakdown>
+        <Row className="cavaticaProjectsTasks">
+          <div className="taskBreakdown">
             Task Breakdown:{' '}
             <Task
               tasks={p.tasks.completed}
               projectId={p.id}
               status="COMPLETED"
-              displayStyle={completedTaskStyle}
+              displayStyle="completed"
             />
-            <Task
-              tasks={p.tasks.failed}
-              projectId={p.id}
-              status="FAILED"
-              displayStyle={failedTaskStyle}
-            />
+            <Task tasks={p.tasks.failed} projectId={p.id} status="FAILED" displayStyle="failed" />
             <Task
               tasks={p.tasks.running}
               projectId={p.id}
               status="RUNNING"
-              displayStyle={runningTaskStyle}
+              displayStyle="running"
             />
-          </TaskBreakdown>
+          </div>
         </Row>
       )}
-    </Project>
+    </Column>
   ));
 
 export default ProjectList;

@@ -1,35 +1,22 @@
 import React from 'react';
 import { compose } from 'recompose';
-import styled from 'react-emotion';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import { WhiteButton, TealActionButton } from 'uikit/Button';
 import Input from 'uikit/Input';
 import { getBillingGroups, saveProject } from 'services/cavatica';
+
 import { Result, Button } from 'antd';
 import { getMsgFromErrorOrElse } from 'utils';
 
-const StyledLabel = styled('label')`
-  font-size: 14px;
-  text-align: left;
-  font-weight: 600;
-  font-family: ${({ theme }) => theme.fonts.details};
-  color: #343434;
-  margin: 10px 0;
-`;
+import { styleComponent } from 'components/Utils';
 
-const BillingGroupSelect = styled('select')`
-  ${({ theme }) => theme.select};
-  ${({ theme }) => theme.input};
-`;
+import { input, select } from '../../../theme/tempTheme.module.css';
+import './CavaticaProjects.css';
 
-const enhance = compose(
-  injectState,
-  withTheme,
-);
+const StyledLabel = styleComponent('label', 'CavaticaStyledLabel');
 
 const defaultState = {
   projectName: '',
@@ -118,14 +105,13 @@ class Create extends React.Component {
           onChange={this.onProjectNameChange}
         />
         <StyledLabel>Billing Group:</StyledLabel>
-        <BillingGroupSelect onChange={this.onBillingGroupSelect}>
+        <select className={`${select} ${input}`} onChange={this.onBillingGroupSelect}>
           {(billingGroups || []).map((bg, i) => (
             <option key={i} value={bg.id}>
               {bg.name}
             </option>
           ))}
-        </BillingGroupSelect>
-
+        </select>
         <Row mt="20px" justifyContent="space-between">
           <WhiteButton onClick={this.onCancelClick({ projectName })}>Cancel</WhiteButton>
           <TealActionButton onClick={this.onSaveButtonClick} disabled={isSaveButtonDisabled}>
@@ -136,4 +122,5 @@ class Create extends React.Component {
     );
   }
 }
-export default enhance(Create);
+
+export default compose(injectState)(Create);

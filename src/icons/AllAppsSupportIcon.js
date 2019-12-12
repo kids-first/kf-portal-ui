@@ -1,6 +1,6 @@
 import React from 'react';
 
-const svg = ({ width = '12px', height = '12px', ...props }) => (
+const svg = ({ size = '12px', width = size, height = size, ...props }) => (
   <svg
     id="Layer_1"
     data-name="Layer 1"

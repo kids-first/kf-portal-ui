@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Component from 'react-component-component';
-import styled from 'react-emotion';
 import { get, intersection } from 'lodash';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import Query from '@kfarranger/components/dist/Query';
+
+import theme from 'theme/defaultTheme';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import { arrangerGqlRecompose } from 'services/arranger';
 import { withApi } from 'services/api';
@@ -20,17 +20,9 @@ import CavaticaLogo from 'icons/CavaticaLogo';
 import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapper';
 import { ACTIONS_COLUMNS } from 'common/constants';
 
-const enhance = compose(
-  withApi,
-  withTheme,
-);
+const enhance = compose(withApi);
 
-const ButtonWrapper = styled(Column)`
-  flex: 1;
-  align-items: center;
-`;
-
-const FenceDownloadButton = ({ fence, kfId, theme }) =>
+const FenceDownloadButton = ({ fence, kfId }) =>
   // DCF files currently aren't available to download, so we show tooltip and grey out button
   fence === DCF ? (
     <Tooltip
@@ -62,12 +54,12 @@ const FenceDownloadButton = ({ fence, kfId, theme }) =>
     />
   );
 
-const ActionItems = ({ value, fence, hasAccess, theme, file }) => {
+const ActionItems = ({ value, fence, hasAccess, file }) => {
   return (
     <React.Fragment>
-      <ButtonWrapper>
+      <Column style={{ flex: '1', alignItems: 'center' }}>
         {hasAccess ? (
-          <FenceDownloadButton fence={fence} kfId={value} theme={theme} />
+          <FenceDownloadButton fence={fence} kfId={value} />
         ) : (
           <Tooltip
             position="bottom"
@@ -77,8 +69,8 @@ const ActionItems = ({ value, fence, hasAccess, theme, file }) => {
             <ControlledIcon fill={theme.lightBlue} />
           </Tooltip>
         )}
-      </ButtonWrapper>
-      <ButtonWrapper>
+      </Column>
+      <Column style={{ flex: '1', alignItems: 'center' }}>
         {hasAccess && (
           <CavaticaOpenModalWrapper
             fileIds={[value]}
@@ -87,12 +79,12 @@ const ActionItems = ({ value, fence, hasAccess, theme, file }) => {
             <CavaticaLogo fill={theme.lightBlue} width={16} />
           </CavaticaOpenModalWrapper>
         )}
-      </ButtonWrapper>
+      </Column>
     </React.Fragment>
   );
 };
 
-const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
+const ActionsColumn = ({ value, api, fenceAcls }) => (
   <Component
     initialState={{ shouldFetch: true }}
     didUpdate={({ state, setState, props, prevProps }) => {
@@ -146,13 +138,7 @@ const ActionsColumn = ({ value, api, theme, fenceAcls }) => (
               {loadingQuery ? (
                 <TableSpinner style={{ width: 15, height: 15 }} />
               ) : (
-                <ActionItems
-                  value={value}
-                  fence={repository}
-                  hasAccess={hasAccess}
-                  theme={theme}
-                  file={file}
-                />
+                <ActionItems value={value} fence={repository} hasAccess={hasAccess} file={file} />
               )}
             </Row>
           );

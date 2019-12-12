@@ -1,13 +1,12 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
-import styled from 'react-emotion';
 import Spinner from 'react-spinkit';
 
 import { QuickSearch, AggsWrapper } from '@kfarranger/components/dist/Arranger';
 import { TextHighlight } from '@kfarranger/components/dist';
 
+import theme from 'theme/defaultTheme';
 import Row from 'uikit/Row';
 import { FilterInput } from 'uikit/Input';
 import UploadIdsButton from './UploadIdsButton';
@@ -15,35 +14,37 @@ import FlaskSvg from 'icons/FlaskIcon';
 import ParticipantSvg from 'icons/ParticipantIcon';
 import FileSvg from 'icons/FileIcon';
 
-const IconContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 1000px;
-  margin: 10px;
-  height: 30px;
-  width: 30px;
-  border: solid 2px ${({ borderColor }) => borderColor};
-  background: ${({ backgroundColor }) => backgroundColor};
-`;
+import styles from './AggregationSidebar.module.css';
 
-const ParticipantIcon = withTheme(({ theme }) => (
+const IconContainer = ({ children, borderColor, backgroundColor, ...props }) => (
+  <div
+    className={styles.iconContainer}
+    style={{
+      border: `solid 2px ${borderColor}`,
+      background: backgroundColor,
+    }}
+  >
+    {children}
+  </div>
+);
+
+const ParticipantIcon = () => (
   <IconContainer borderColor={theme.white} backgroundColor={theme.highlight}>
     <ParticipantSvg width={15} height={15} fill={theme.white} />
   </IconContainer>
-));
+);
 
-const BiospecimenIcon = withTheme(({ theme }) => (
+const BiospecimenIcon = () => (
   <IconContainer borderColor={theme.white} backgroundColor={theme.orange}>
     <FlaskSvg width={15} height={15} />
   </IconContainer>
-));
+);
 
-const FileIcon = withTheme(({ theme }) => (
+const FileIcon = () => (
   <IconContainer borderColor={theme.white} backgroundColor={theme.tertiary}>
-    <FileSvg width={15} height={15} fill={theme.white} />
+    <FileSvg size="15px" fill={theme.white} />
   </IconContainer>
-));
+);
 
 const DropdownItemComponent = ({ inputValue, result, primaryKey, IconComponent, onMouseDown }) => (
   // onMouseDown because the quicksearch input's onBlur would prevent onClick from triggering
@@ -58,12 +59,11 @@ const DropdownItemComponent = ({ inputValue, result, primaryKey, IconComponent, 
   </div>
 );
 
-const QuickSearchBox = compose(withTheme, injectState)(
+const QuickSearchBox = compose(injectState)(
   ({
     effects,
     state,
     header,
-    theme,
     setSQON,
     translateSQONValue,
     graphqlField,
@@ -87,7 +87,9 @@ const QuickSearchBox = compose(withTheme, injectState)(
               IconComponent={
                 entityName === 'Participants'
                   ? ParticipantIcon
-                  : entityName === 'Biospecimens' ? BiospecimenIcon : FileIcon
+                  : entityName === 'Biospecimens'
+                  ? BiospecimenIcon
+                  : FileIcon
               }
               {...props}
             />

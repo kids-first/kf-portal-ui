@@ -6,7 +6,6 @@ import {
   PromptMessageContainer,
   PromptMessageHeading,
   PromptMessageContent,
-  NotePoints,
   NoteList,
 } from '../styles';
 import Info from '../Info';
@@ -20,11 +19,11 @@ const NoProjects = ({ tabToCreate }) => (
       </PromptMessageHeading>
       <PromptMessageContent>
         <NoteList>
-          <NotePoints>
+          <li>
             <CardLink onClick={tabToCreate}>Create a Cavatica Project</CardLink> easily from the
             portal.
-          </NotePoints>
-          <NotePoints>
+          </li>
+          <li>
             Or join one of the{' '}
             <ExternalLink
               href={'https://cavatica.sbgenomics.com/public/controlled-projects#q'}
@@ -32,7 +31,7 @@ const NoProjects = ({ tabToCreate }) => (
             >
               Cavatica public controlled projects
             </ExternalLink>
-          </NotePoints>
+          </li>
         </NoteList>
       </PromptMessageContent>
     </PromptMessageContainer>

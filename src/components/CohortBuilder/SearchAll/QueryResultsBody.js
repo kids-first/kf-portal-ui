@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'emotion-theming';
 
 import TextHighlight from '@kfarranger/components/dist/TextHighlight';
 import LoadingSpinner from 'uikit/LoadingSpinner';
@@ -10,7 +9,6 @@ const QueryResultsBody = ({
   query,
   selections,
   isLoading,
-  theme,
   onSelectionChange,
   onSearchField,
 }) => {
@@ -43,7 +41,7 @@ const QueryResultsBody = ({
               <label>
                 <input
                   type="checkbox"
-                  checked={selections[field.name].indexOf(key) > -1}
+                  checked={selections[field.name] && selections[field.name].indexOf(key) > -1}
                   className="selection"
                   onChange={evt => {
                     onSelectionChange(evt, field, key);
@@ -57,7 +55,7 @@ const QueryResultsBody = ({
         </div>
       ))}
       <div className={`loader-container ${isLoading ? 'loading' : ''}`}>
-        <LoadingSpinner color={theme.greyScale11} size={'50px'} />
+        <LoadingSpinner color="#a9adc0" size="50px" />
       </div>
     </div>
   );
@@ -83,4 +81,4 @@ QueryResultsBody.propTypes = {
   onSearchField: PropTypes.func.isRequired,
 };
 
-export default withTheme(QueryResultsBody);
+export default QueryResultsBody;
