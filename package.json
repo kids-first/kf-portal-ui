@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@kfarranger/admin-ui": "~1.3.1",
-    "@kfarranger/components": "^1.4.0",
+    "@kfarranger/components": "1.4.3",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",
