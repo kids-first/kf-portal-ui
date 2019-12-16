@@ -27,7 +27,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           <Col span={6} offset={6}>
             <div className={'hd-user-info-wrapper'}>
               <Avatar
-                src={computeGravatarSrcFromEmail(profile.email, { size: 80, d: 'mp' })}
+                src={computeGravatarSrcFromEmail(profile.hashedEmail, { size: 80, d: 'mp' })}
                 size={80}
               />
               {canEdit && (

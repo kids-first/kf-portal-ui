@@ -43,6 +43,7 @@ const DEFAULT_FIELDS_SELF = `
     type
     setId
   }
+  hashedEmail
 `;
 
 const DEFAULT_FIELDS_OTHER_USER = `
@@ -83,6 +84,7 @@ const DEFAULT_FIELDS_OTHER_USER = `
     type
     setId
   }
+  hashedEmail
 `;
 
 const url = urlJoin(personaApiRoot, 'graphql');

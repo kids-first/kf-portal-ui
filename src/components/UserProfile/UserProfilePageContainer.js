@@ -29,7 +29,15 @@ import { KEY_ABOUT_ME } from './constants';
 
 class UserProfilePageContainer extends React.Component {
   static propTypes = {
-    profile: PropTypes.object,
+    profile: PropTypes.shape({
+      /** There are other fields, as well. */
+      hashedEmail: PropTypes.string,
+      roles: PropTypes.arrayOf(PropTypes.string),
+      isPublic: PropTypes.bool,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+      email: PropTypes.string,
+    }),
     onFetchProfile: PropTypes.func.isRequired,
     onUpdateProfile: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,

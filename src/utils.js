@@ -1,6 +1,5 @@
 /* https://catalinxyz.com/create-the-@bind-decorator-to-help-with-react-events-and-callback-props */
-import { get, isArrayLikeObject, toLower, trim } from 'lodash';
-import md5 from 'md5';
+import { get, isArrayLikeObject, toLower } from 'lodash';
 import jwtDecode from 'jwt-decode';
 
 import { createProfile, getProfile } from 'services/profiles';
@@ -152,11 +151,10 @@ export const toKebabCase = str => {
   );
 };
 
-export const computeGravatarSrcFromEmail = (email, options) => {
+export const computeGravatarSrcFromEmail = (hashedEmail, options) => {
   const size = (options || {}).size || 100;
   const defaultImage = (options || {}).d || '';
-  const emailToHash = md5(trim((email || '').toLowerCase()));
-  return `https://www.gravatar.com/avatar/${emailToHash}?s=${size}&d=${defaultImage}`;
+  return `https://www.gravatar.com/avatar/${hashedEmail}?s=${size}&d=${defaultImage}`;
 };
 
 /**
