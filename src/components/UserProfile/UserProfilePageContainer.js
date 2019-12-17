@@ -56,6 +56,7 @@ class UserProfilePageContainer extends React.Component {
 
   state = {
     currentMenuItem: this.props.location.hash || KEY_ABOUT_ME,
+    collapsed: false,
   };
 
   componentDidMount() {
@@ -118,6 +119,10 @@ class UserProfilePageContainer extends React.Component {
     });
   };
 
+  onBreakPoint = (broken) => {
+    return this.setState({ collapsed: broken });
+  };
+
   render() {
     const {
       isLoading,
@@ -128,7 +133,7 @@ class UserProfilePageContainer extends React.Component {
       isProfileUpdating,
     } = this.props;
 
-    const { currentMenuItem } = this.state;
+    const { currentMenuItem, collapsed } = this.state;
 
     if (isLoading) {
       return (
@@ -152,6 +157,8 @@ class UserProfilePageContainer extends React.Component {
         handleMenuClickCb={this.handleMenuClick}
         currentMenuItem={currentMenuItem}
         isProfileUpdating={isProfileUpdating}
+        collapsed={collapsed}
+        onBreakPointCb={this.onBreakPoint}
       />
     );
   }

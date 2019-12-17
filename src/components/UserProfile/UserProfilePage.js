@@ -37,6 +37,8 @@ function UserProfilePage(props) {
     currentMenuItem,
     updateProfileCb,
     isProfileUpdating,
+    collapsed,
+    onBreakPointCb,
   } = props;
 
   if (!canEdit) {
@@ -57,8 +59,13 @@ function UserProfilePage(props) {
       <Header className={'up-header'}>
         <HeaderBannerContainer canEdit={canEdit} />
       </Header>
-      <Layout>
-        <Sider width={350} className={'up-sider'}>
+      <Layout className={'main-layout'}>
+        <Sider
+          breakpoint="xl"
+          width={collapsed ? 100 : 340}
+          className={'up-sider'}
+          onBreakpoint={onBreakPointCb}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={[currentMenuItem]}
@@ -70,17 +77,35 @@ function UserProfilePage(props) {
               style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
             >
               <div className={'up-anchor-wrapper'}>
-                <a href={KEY_ABOUT_ME}>About Me</a>
+                <a
+                  href={KEY_ABOUT_ME}
+                  className={`${
+                    isSettingsSelected
+                      ? 'up-menu-item-when-not-selected'
+                      : `up-menu-item-when-selected`
+                  }`}
+                >
+                  {'About Me'}
+                </a>
               </div>
             </Menu.Item>
             <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
               <div className={'up-anchor-wrapper'}>
-                <a href={KEY_SETTINGS}>Settings</a>
+                <a
+                  href={KEY_SETTINGS}
+                  className={`${
+                    isSettingsSelected
+                      ? 'up-menu-item-when-selected'
+                      : `up-menu-item-when-not-selected`
+                  }`}
+                >
+                  {'Settings'}
+                </a>
               </div>
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content>
+        <Content className={'vertical-offset horizontal-offset'}>
           {isSettingsSelected ? (
             <Settings userEmail={profile.email} />
           ) : (
@@ -105,6 +130,8 @@ UserProfilePage.propTypes = {
   currentMenuItem: PropTypes.string.isRequired,
   updateProfileCb: PropTypes.func.isRequired,
   isProfileUpdating: PropTypes.bool.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  onBreakPointCb: PropTypes.func.isRequired,
 };
 
 export default UserProfilePage;

@@ -1,13 +1,13 @@
-import { Col, Icon, List, Row, Spin, Typography } from 'antd';
+import { Col, Icon, List, Row, Spin, Typography, Avatar } from 'antd';
 import React from 'react';
-import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
-import ProfilePill from 'components/MemberSearchPage/ProfilePill';
+import ProfilePill from 'uikit/ProfilePill';
+import { computeGravatarSrcFromEmail } from 'utils';
 
 const { Text, Title } = Typography;
 
@@ -107,7 +107,10 @@ const MemberTable = props => {
             <List.Item key={item._id} style={{ paddingBottom: 32, paddingTop: 32 }}>
               <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
-                  <MemberImage email={item.email || ''} d={'mp'} />
+                    <Avatar
+                        src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
+                        size={60}
+                    />
                   <div style={{ paddingTop: 10 }}>
                     {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
                   </div>

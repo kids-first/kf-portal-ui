@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {Card, Col, Divider, Row, Typography} from 'antd';
+import { Card, Divider, Row, Typography } from 'antd';
 import FindMeReadOnly from './FindMeReadOnly';
 import {
   extractFindMeFromProfile,
@@ -33,10 +33,15 @@ const mergeAddresses = (a1, a2) => {
   return a1 || a2;
 };
 
+const showWhenHasDataOrCanEdit = (data, canEdit) => {
+  return Boolean(data) || canEdit;
+};
+
 const DEFAULT_IF_EMPTY = 'Edit Card to Add Details';
 
 const ContactReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
+  const mergedAddresses = mergeAddresses(data.addressLine1, data.addressLine2);
   return (
     <Card
       {...makeCommonCardPropsReadOnly({
@@ -46,175 +51,168 @@ const ContactReadOnly = props => {
         canEdit,
       })}
     >
-      <Row>
-        <Col span={14} className={'main-left-col'}>
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'Email'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.email)}>
-                {Boolean(data.email) ? (
-                  <a href={`mailto:${data.email}`}>{data.email}</a>
-                ) : (
-                  DEFAULT_IF_EMPTY
-                )}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact.divider'} />
+      <div className={'find-me-main'}>
+        <div className={'find-me-col-contact-info'}>
+          {showWhenHasDataOrCanEdit(data.email, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'Email'}
+                </Text>
+                <Text className={generateContactValueStyle(data.email)}>
+                  {Boolean(data.email) ? (
+                    <a href={`mailto:${data.email}`}>{data.email}</a>
+                  ) : (
+                    DEFAULT_IF_EMPTY
+                  )}
+                </Text>
+              </Row>
+              <Divider className={'contact.divider'} />
+            </Fragment>
+          )}
           {showInstitution(data) && (
             <Fragment>
-              <Row type={'flex'} justify="space-between" align="bottom">
-                <Col span={4}>
-                  <Text type="secondary" strong>
-                    {getInstitutionLabelGivenRole(data)}
-                  </Text>
-                </Col>
-                <Col span={8} className={'contact-col-value'}>
-                  <Text className={generateContactValueStyle(data.institution)}>
-                    {data.institution || DEFAULT_IF_EMPTY}
-                  </Text>
-                </Col>
-              </Row>
-              <Divider className={'contact-divider'} />
-              <Row type={'flex'} justify="space-between" align="bottom">
-                <Col span={4}>
-                  <Text type="secondary" strong>
-                    {'Suborganization/Department'}
-                  </Text>
-                </Col>
-                <Col span={8} className={'contact-col-value'}>
-                  <Text className={generateContactValueStyle(data.department)}>
-                    {data.department || DEFAULT_IF_EMPTY}
-                  </Text>
-                </Col>
-              </Row>
-              <Divider className={'contact-divider'} />
-              <Row type={'flex'} justify="space-between" align="bottom">
-                <Col span={4}>
-                  <Text type="secondary" strong>
-                    {'Institutional Email'}
-                  </Text>
-                </Col>
-                <Col span={8} className={'contact-col-value'}>
-                  <Text className={generateContactValueStyle(data.institutionalEmail)}>
-                    {Boolean(data.institutionalEmail) ? (
-                      <a href={`mailto:${data.institutionalEmail}`}>{data.institutionalEmail}</a>
-                    ) : (
-                      DEFAULT_IF_EMPTY
-                    )}
-                  </Text>
-                </Col>
-              </Row>
-              <Divider className={'contact-divider'} />
+              {showWhenHasDataOrCanEdit(data.institution, canEdit) && (
+                <Fragment>
+                  <Row type={'flex'} justify="space-between" align="bottom">
+                    <Text type="secondary" strong>
+                      {getInstitutionLabelGivenRole(data)}
+                    </Text>
+                    <Text className={generateContactValueStyle(data.institution)}>
+                      {data.institution || DEFAULT_IF_EMPTY}
+                    </Text>
+                  </Row>
+                  <Divider className={'contact-divider'} />
+                </Fragment>
+              )}
+              {showWhenHasDataOrCanEdit(data.department, canEdit) && (
+                <Fragment>
+                  <Row type={'flex'} justify="space-between" align="bottom">
+                    <Text type="secondary" strong>
+                      {'Suborganization/Department'}
+                    </Text>
+                    <Text className={generateContactValueStyle(data.department)}>
+                      {data.department || DEFAULT_IF_EMPTY}
+                    </Text>
+                  </Row>
+                  <Divider className={'contact-divider'} />
+                </Fragment>
+              )}
+              {showWhenHasDataOrCanEdit(data.institutionalEmail, canEdit) && (
+                <Fragment>
+                  <Row type={'flex'} justify="space-between" align="bottom">
+                    <Text type="secondary" strong>
+                      {'Institutional Email'}
+                    </Text>
+                    <Text className={generateContactValueStyle(data.institutionalEmail)}>
+                      {Boolean(data.institutionalEmail) ? (
+                        <a href={`mailto:${data.institutionalEmail}`}>{data.institutionalEmail}</a>
+                      ) : (
+                        DEFAULT_IF_EMPTY
+                      )}
+                    </Text>
+                  </Row>
+                  <Divider className={'contact-divider'} />
+                </Fragment>
+              )}
             </Fragment>
           )}
-          {isResearcher(data) && (
+          {showWhenHasDataOrCanEdit(data.jobTitle, canEdit) && isResearcher(data) && (
             <Fragment>
               <Row type={'flex'} justify="space-between" align="bottom">
-                <Col span={4}>
-                  <Text type="secondary" strong>
-                    {'Job Title'}
-                  </Text>
-                </Col>
-                <Col span={8} className={'contact-col-value'}>
-                  <Text className={generateContactValueStyle(data.jobTitle)}>
-                    {data.jobTitle || DEFAULT_IF_EMPTY}
-                  </Text>
-                </Col>
+                <Text type="secondary" strong>
+                  {'Job Title'}
+                </Text>
+                <Text className={generateContactValueStyle(data.jobTitle)}>
+                  {data.jobTitle || DEFAULT_IF_EMPTY}
+                </Text>
               </Row>
               <Divider className={'contact-divider'} />
             </Fragment>
           )}
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'Address'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text
-                className={generateContactValueStyle(
-                  mergeAddresses(data.addressLine1, data.addressLine2),
-                )}
-              >
-                {mergeAddresses(data.addressLine1, data.addressLine2) || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'City'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.city)}>
-                {data.city || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'Country'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.country)}>
-                {data.country || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'State'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.state)}>
-                {data.state || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'Phone'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.phone)}>
-                {data.phone || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-          <Divider className={'contact-divider'} />
-          <Row type={'flex'} justify="space-between" align="bottom">
-            <Col span={4}>
-              <Text type="secondary" strong>
-                {'Zip'}
-              </Text>
-            </Col>
-            <Col span={8} className={'contact-col-value'}>
-              <Text className={generateContactValueStyle(data.zip)}>
-                {data.zip || DEFAULT_IF_EMPTY}
-              </Text>
-            </Col>
-          </Row>
-        </Col>
-        <Col span={10} className={'find-me-col'}>
+          {showWhenHasDataOrCanEdit(mergedAddresses, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'Address'}
+                </Text>
+                <Text className={generateContactValueStyle(mergedAddresses)}>
+                  {mergedAddresses || DEFAULT_IF_EMPTY}
+                </Text>
+              </Row>
+              <Divider className={'contact-divider'} />
+            </Fragment>
+          )}
+          {showWhenHasDataOrCanEdit(data.city, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'City'}
+                </Text>
+                <Text className={generateContactValueStyle(data.city)}>
+                  {data.city || DEFAULT_IF_EMPTY}
+                </Text>
+              </Row>
+              <Divider className={'contact-divider'} />
+            </Fragment>
+          )}
+          {showWhenHasDataOrCanEdit(data.country, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'Country'}
+                </Text>
+                <Text className={generateContactValueStyle(data.country)}>
+                  {data.country || DEFAULT_IF_EMPTY}
+                </Text>
+              </Row>
+              <Divider className={'contact-divider'} />
+            </Fragment>
+          )}
+          {showWhenHasDataOrCanEdit(data.state, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'State'}
+                </Text>
+                <Text className={generateContactValueStyle(data.state)}>
+                  {data.state || DEFAULT_IF_EMPTY}
+                </Text>
+              </Row>
+              <Divider className={'contact-divider'} />
+            </Fragment>
+          )}
+          {showWhenHasDataOrCanEdit(data.phone, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'Phone'}
+                </Text>
+                <Text className={generateContactValueStyle(data.phone)}>
+                  {data.phone || DEFAULT_IF_EMPTY}
+                </Text>
+              </Row>
+              <Divider className={'contact-divider'} />
+            </Fragment>
+          )}
+          {showWhenHasDataOrCanEdit(data.zip, canEdit) && (
+            <Fragment>
+              <Row type={'flex'} justify="space-between" align="bottom">
+                <Text type="secondary" strong>
+                  {'Zip'}
+                </Text>
+                <Text className={generateContactValueStyle(data.zip)}>
+                  {data.zip || DEFAULT_IF_EMPTY}
+                </Text>
+              </Row>
+              <Divider className={'contact-divider'} />
+            </Fragment>
+          )}
+        </div>
+        <div className={'find-me-col-social'}>
           <FindMeReadOnly canEdit={canEdit} findMe={extractFindMeFromProfile(data)} />
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Card>
   );
 };

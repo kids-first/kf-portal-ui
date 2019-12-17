@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Input, Row, Tooltip } from 'antd';
+import { Input, Tooltip } from 'antd';
+import './style.css';
 
 //based on : https://ant.design/components/form/?locale=en-US#header
 class FindMeInput extends Component {
@@ -39,9 +40,9 @@ class FindMeInput extends Component {
     const { item } = this.props;
     const { inputVal } = this.state;
     return (
-      <Row type={'flex'}>
-        <Col span={2}>{item.icon}</Col>
-        <Col span={20}>
+      <div className={'fmi-main-wrapper'}>
+        <div>{item.icon}</div>
+        <div className={'fmi-icon-wrapper'}>
           <Tooltip trigger={['focus']} title={item.label} placement="topLeft">
             <Input
               placeholder={item.placeHolder}
@@ -51,8 +52,8 @@ class FindMeInput extends Component {
               onChange={this.onChange}
             />
           </Tooltip>
-        </Col>
-      </Row>
+        </div>
+      </div>
     );
   }
 }
