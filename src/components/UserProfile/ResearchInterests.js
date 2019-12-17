@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Icon, Row, Typography } from 'antd';
 import chunk from 'lodash/chunk';
+import capitalize from 'lodash/capitalize';
 import { toKebabCase } from 'utils';
 import './style.css';
 
@@ -18,14 +19,14 @@ const ResearchInterest = ({ interests }) => {
         <Col span={12}>
           <Text>
             <Icon type="check-circle" theme="filled" className={'ri-icon'} />
-            {interestLeft}
+            {capitalize(interestLeft)}
           </Text>
         </Col>
         <Col span={12}>
           {Boolean(interestRight) && (
             <Text>
               <Icon type="check-circle" theme="filled" className={'ri-icon'} />
-              {interestRight}
+              {capitalize(interestRight)}
             </Text>
           )}
         </Col>

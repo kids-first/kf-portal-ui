@@ -139,12 +139,17 @@ export const makeCommonCardPropsReadOnly = ({
         {title}
       </Title>
     ),
-    className: 'card',
+    className: 'main-card',
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyle,
     extra: canEdit ? (
-      <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
-        Edit
+      <Button
+        icon="edit"
+        shape="round"
+        onClick={onClickEditCb}
+        style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
+      >
+        EDIT
       </Button>
     ) : null,
   };
@@ -158,22 +163,27 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
         {title}
       </Title>
     ),
-    className: 'card',
+    className: 'main-card',
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyleWhenEditing,
     extra: (
       <Fragment>
-        <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
-          Cancel
+        <Button
+          className={'extra-button'}
+          shape="round"
+          onClick={onClickCancelCb}
+          style={{ color: 'rgb(144, 38, 142)' }}
+        >
+          CANCEL
         </Button>
         <Button
           className={'extra-button'}
-          type="primary"
           icon="check"
           shape="round"
+          style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
           htmlType="submit"
         >
-          Save
+          SAVE
         </Button>
       </Fragment>
     ),
