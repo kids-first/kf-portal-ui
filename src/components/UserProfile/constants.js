@@ -3,3 +3,4 @@ export const bioMsgWhenEmpty = 'Share information about your professional backgr
 export const findMeFields = ['website', 'github', 'googleScholarId', 'linkedin', 'orchid', 'twitter', 'facebook'];
 export const KEY_ABOUT_ME = '#aboutMe';
 export const KEY_SETTINGS = '#settings';
+export const EDIT_CARD_TO_ADD_DETAILS = 'Edit Card to Add Details';

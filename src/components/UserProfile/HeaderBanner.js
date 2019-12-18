@@ -15,7 +15,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           align={'middle'}
           type={'flex'}
           justify={'space-between'}
-          className={`${userProfileBackground(profile)}  hd-main-row`}
+          className={`${userProfileBackground(profile)} hd-main-row`}
       >
         <div className={'hd-user-info-wrapper'}>
           <div className={'hd-profile-wrapper'}>
@@ -34,7 +34,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
                   shape={'circle'}
                   href="https://en.gravatar.com/site/login"
                   target="_blank"
-                  style={canEdit ? null : { display: 'hidden' }} /** avoids breaking dimensions */
+                  style={canEdit ? null : { visibility: 'hidden' }} /** avoids breaking dimensions */
               />
             </div>
             <Title level={2} style={{ color: 'white' }} strong>
@@ -51,7 +51,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
                   align={'middle'}
                   className={'hd-profile-status-row'}
               >
-                <Text className={'hd-text hd-profile-status'}>Profile Status</Text>
+                <Text className={'hd-profile-status'}>Profile Status</Text>
                 <span className={'hd-tooltip-wrapper'}>
                 <Tooltip
                     placement="topLeft"

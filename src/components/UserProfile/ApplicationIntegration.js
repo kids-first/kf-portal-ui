@@ -1,24 +1,21 @@
 import React, { Fragment } from 'react';
-import { Card, Row, Typography } from 'antd';
+import { Card, Row } from 'antd';
 import { cavaticaWebRoot } from 'common/injectGlobals';
 import cavaticaLogo from 'assets/logo-cavatica.svg';
 import CavaticaIntegrationContainer from './CavaticaIntegration';
 import './style.css';
-import style from './style';
-
-const { Title } = Typography;
+import { makeCommonCardPropsReadOnly } from 'components/UserProfile/utils';
 
 const ApplicationIntegration = () => {
   return (
     <Card
-      title={
-        <Title level={3} strong>
-          Application Integrations
-        </Title>
-      }
-      className={'card'}
-      headStyle={style.cardHeadStyle}
-      bodyStyle={style.cardBodyStyle}
+      {...{
+        ...makeCommonCardPropsReadOnly({
+          title: 'Application Integrations',
+          canEdit: false,
+          isProfileUpdating: false,
+        }),
+      }}
     >
       <Row>
         <CavaticaIntegrationContainer

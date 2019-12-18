@@ -17,7 +17,7 @@ const AddressEditForm = props => {
                 required: false,
               },
             ],
-          })(<Input />)}
+          })(<Input size={'large'} />)}
         </Form.Item>
       </Row>
       <Row>
@@ -29,7 +29,7 @@ const AddressEditForm = props => {
                 required: false,
               },
             ],
-          })(<Input />)}
+          })(<Input size={'large'} />)}
         </Form.Item>
       </Row>
       <Row>
@@ -41,7 +41,7 @@ const AddressEditForm = props => {
                 required: false,
               },
             ],
-          })(<Input />)}
+          })(<Input size={'large'} />)}
         </Form.Item>
       </Row>
       <Row type={'flex'} justify={'space-between'}>
@@ -54,7 +54,7 @@ const AddressEditForm = props => {
                   required: false,
                 },
               ],
-            })(<Input />)}
+            })(<Input size={'large'} />)}
           </Form.Item>
         </Col>
         <Col span={11}>
@@ -66,7 +66,7 @@ const AddressEditForm = props => {
                   required: false,
                 },
               ],
-            })(<Input />)}
+            })(<Input size={'large'} />)}
           </Form.Item>
         </Col>
       </Row>
@@ -79,7 +79,7 @@ const AddressEditForm = props => {
                 required: false,
               },
             ],
-          })(<Input />)}
+          })(<Input size={'large'} />)}
         </Form.Item>
       </Row>
     </Fragment>

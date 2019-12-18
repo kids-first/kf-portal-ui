@@ -5,17 +5,17 @@ import { socialItems } from 'components/UserProfile/utils';
 import { List, Row, Typography } from 'antd';
 import './style.css';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const FindMeReadOnly = props => {
-  const { findMe, canEdit } = props;
+  const { findMe } = props;
   const { keys, prototype } = Object;
   if (isEmpty(findMe)) {
-    return canEdit ? (
+    return (
       <Text className={'find-me-text-if-empty'}>
         {` Click Edit to add links to your personal channels such as Google Scholar, ORCID ID, GitHub, LinkedIn, Twitter and Facebook.`}
       </Text>
-    ) : null;
+    );
   }
 
   const socialItemsWithSized = socialItems();
@@ -26,11 +26,12 @@ const FindMeReadOnly = props => {
   return (
     <div className={'find-me-social-icons-wrapper'}>
       <Row>
-        <Title level={3}>Find me on...</Title>
+        <Text className={'section-text'}>Find me on...</Text>
       </Row>
+      <br />
       <Row>
         <List
-          size="large"
+          size="small"
           itemLayout="horizontal"
           dataSource={userSocialItems}
           renderItem={item => {
@@ -61,7 +62,6 @@ const FindMeReadOnly = props => {
 
 FindMeReadOnly.propTypes = {
   findMe: PropTypes.object.isRequired,
-  canEdit: PropTypes.bool.isRequired,
 };
 
 export default FindMeReadOnly;

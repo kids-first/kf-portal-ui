@@ -9,16 +9,16 @@ import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
 
-const ShowOtherUserProfile = ({ canEdit, profile, updateProfileCb, isProfileUpdating }) => {
+const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) => {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={canEdit} />
+        <HeaderBannerContainer canEdit={false} />
       </Header>
       <Layout>
-        <Content>
+        <Content className={'vertical-offset horizontal-offset'}>
           <AboutMe
-            canEdit={canEdit}
+            canEdit={false}
             profile={profile}
             updateProfileCb={updateProfileCb}
             isProfileUpdating={isProfileUpdating}
@@ -74,7 +74,10 @@ function UserProfilePage(props) {
           >
             <Menu.Item
               key={KEY_ABOUT_ME}
-              style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
+              style={{
+                backgroundColor: 'inherit' /* remove background when selected*/,
+                marginBottom: '32px',
+              }}
             >
               <div className={'up-anchor-wrapper'}>
                 <a
@@ -83,13 +86,16 @@ function UserProfilePage(props) {
                     isSettingsSelected
                       ? 'up-menu-item-when-not-selected'
                       : `up-menu-item-when-selected`
-                  }`}
+                  } up-menu-item-text`}
                 >
                   {'About Me'}
                 </a>
               </div>
             </Menu.Item>
-            <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
+            <Menu.Item
+              key={KEY_SETTINGS}
+              style={{ backgroundColor: 'inherit', marginBottom: '32px' }}
+            >
               <div className={'up-anchor-wrapper'}>
                 <a
                   href={KEY_SETTINGS}
@@ -97,7 +103,7 @@ function UserProfilePage(props) {
                     isSettingsSelected
                       ? 'up-menu-item-when-selected'
                       : `up-menu-item-when-not-selected`
-                  }`}
+                  } up-menu-item-text`}
                 >
                   {'Settings'}
                 </a>
