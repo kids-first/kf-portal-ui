@@ -92,13 +92,14 @@ export default class Category extends React.Component {
   }
 
   render() {
-    const { children, title, color } = this.props;
+    const { children, title, color, anchorId } = this.props;
     const { visible, selectedField } = this.state;
 
     return (
       <ExtendedMappingProvider
         projectId={arrangerProjectId}
         graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
+
       >
         {({ extendedMapping = [] }) => {
           const overlay = selectedField
@@ -106,18 +107,20 @@ export default class Category extends React.Component {
             : this.renderMenu(extendedMapping);
 
           return (
-            <Dropdown
-              overlay={overlay}
-              trigger={['click']}
-              visible={visible}
-              onVisibleChange={this.handleDropdownVisibleChange}
-              overlayClassName="cb-category-overlay-container"
-            >
-              <Column className="cb-category-button" style={{ borderTopColor: color }}>
-                {children}
-                <h3>{title}</h3>
-              </Column>
-            </Dropdown>
+              <Dropdown
+                overlay={overlay}
+                trigger={['click']}
+                visible={visible}
+                onVisibleChange={this.handleDropdownVisibleChange}
+                overlayClassName="cb-category-overlay-container"
+                getPopupContainer={() => document.getElementById(anchorId)}
+              >
+                <Column className="cb-category-button" style={{ borderTopColor: color }}>
+                  {children}
+                  <h3 id={anchorId} style={{position:'relative'}}>{title}</h3>
+                </Column>
+              </Dropdown>
+
           );
         }}
       </ExtendedMappingProvider>
