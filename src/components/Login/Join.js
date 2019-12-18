@@ -49,7 +49,7 @@ const JoinContent = compose(
       startAnalyticsTiming(TRACKING_EVENTS.labels.joinProcess);
     },
   }),
-)(({ effects: { setToast, closeToast }, history, api }) => (
+)(({ history, api }) => (
   <Column style={{ width: '830px', margin: 'auto' }}>
     <Card showHeader={false}>
       <Wizard
