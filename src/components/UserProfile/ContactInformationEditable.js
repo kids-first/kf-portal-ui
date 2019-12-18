@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Row, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 import { ROLES } from 'common/constants';
 import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComplete';
 import AddressEditForm from 'components/UserProfile/AddressEditForm';
@@ -42,14 +42,14 @@ class ContactInformationEditable extends Component {
     const { getFieldDecorator } = parentForm;
 
     return (
-      <Fragment>
-        <Row>
+      <div>
+        <div>
           <Form.Item label="Title">
             {getFieldDecorator('title', {
               initialValue: data.title,
               rules: [{ required: true }],
             })(
-              <Select>
+              <Select size={'large'}>
                 <Option value="">N/A</Option>
                 <Option value="mr">Mr.</Option>
                 <Option value="ms">Ms.</Option>
@@ -63,7 +63,7 @@ class ContactInformationEditable extends Component {
               initialValue: data.roles[0],
               rules: [{ required: true }],
             })(
-              <Select>
+              <Select size={'large'}>
                 {ROLES.map(({ type, displayName }) => (
                   <Option value={type} key={type}>
                     {displayName}
@@ -76,19 +76,19 @@ class ContactInformationEditable extends Component {
             {getFieldDecorator('firstName', {
               initialValue: data.firstName,
               rules: [{ required: true, message: 'first name is required' }],
-            })(<Input />)}
+            })(<Input size="large" />)}
           </Form.Item>
           <Form.Item label="Last Name">
             {getFieldDecorator('lastName', {
               initialValue: data.lastName,
               rules: [{ required: true, message: 'last name is required' }],
-            })(<Input />)}
+            })(<Input size="large" />)}
           </Form.Item>
           <Form.Item label="Suborganization/Department">
             {getFieldDecorator('department', {
               initialValue: data.department,
               rules: [{ required: false }],
-            })(<Input />)}
+            })(<Input size="large" />)}
           </Form.Item>
           {showInstitution(data) && (
             <Fragment>
@@ -96,13 +96,13 @@ class ContactInformationEditable extends Component {
                 {getFieldDecorator('institution', {
                   initialValue: data.institution,
                   rules: [{ required: false }],
-                })(<Input />)}
+                })(<Input size="large" />)}
               </Form.Item>
               <Form.Item label="Institutional Email Address">
                 {getFieldDecorator('institutionalEmail', {
                   initialValue: data.institutionalEmail,
                   rules: [{ required: false }],
-                })(<Input />)}
+                })(<Input size="large" />)}
               </Form.Item>
             </Fragment>
           )}
@@ -111,28 +111,28 @@ class ContactInformationEditable extends Component {
               {getFieldDecorator('jobTitle', {
                 initialValue: data.jobTitle,
                 rules: [{ required: false }],
-              })(<Input />)}
+              })(<Input size="large" />)}
             </Form.Item>
           )}
           <Form.Item label="Phone">
             {getFieldDecorator('phone', {
               initialValue: data.phone,
               rules: [{ required: false }],
-            })(<Input />)}
+            })(<Input size="large" />)}
           </Form.Item>
           <Form.Item label="ERA Commons ID">
             {getFieldDecorator('eraCommonsID', {
               initialValue: data.eraCommonsID,
               rules: [{ required: false }],
-            })(<Input />)}
+            })(<Input size="large" />)}
           </Form.Item>
-        </Row>
-        <Row>
+        </div>
+        <div>
           <Form.Item label={'Search Location'}>
             <ContactEditablePlacesAutoComplete setAddressCb={this.setNewAddress} />
           </Form.Item>
-        </Row>
-        <Row className={'contact-edit-address-wrapper'}>
+        </div>
+        <div className={'contact-edit-address-wrapper'}>
           <AddressEditForm
             parentForm={parentForm}
             addressLine1={data.addressLine1}
@@ -142,8 +142,8 @@ class ContactInformationEditable extends Component {
             state={data.state}
             zip={data.zip}
           />
-        </Row>
-      </Fragment>
+        </div>
+      </div>
     );
   }
 }

@@ -12,7 +12,7 @@ import { findMeFields } from './constants';
 import style from 'components/UserProfile/style';
 import { Button, Typography } from 'antd';
 
-const { Title } = Typography;
+const { Text } = Typography;
 
 const addWebProtocolToUrlIfNeeded = value => {
   if (!value || value.startsWith('http://') || value.startsWith('https://')) {
@@ -134,12 +134,7 @@ export const makeCommonCardPropsReadOnly = ({
 }) => {
   return {
     loading: isProfileUpdating,
-    title: (
-      <Title level={3} strong>
-        {title}
-      </Title>
-    ),
-    className: 'main-card',
+    title: <Text className={'header-title'}>{title}</Text>,
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyle,
     extra: canEdit ? (
@@ -158,12 +153,8 @@ export const makeCommonCardPropsReadOnly = ({
 export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCancelCb }) => {
   return {
     loading: isProfileUpdating,
-    title: (
-      <Title level={3} strong>
-        {title}
-      </Title>
-    ),
-    className: 'main-card',
+    title: <Text className={'header-title'}>{title}</Text>,
+    className: '',
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyleWhenEditing,
     extra: (
@@ -188,4 +179,8 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
       </Fragment>
     ),
   };
+};
+
+export const showWhenHasDataOrCanEdit = (data, canEdit) => {
+  return Boolean(data) || canEdit;
 };

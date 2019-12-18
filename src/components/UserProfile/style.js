@@ -4,6 +4,7 @@ const style = {
   },
   cardHeadStyle: {
     backgroundColor: 'rgb(237,238,241)',
+    height: '65px',
   },
   cardBodyStyleWhenEditing: {
     backgroundColor: 'ghostwhite',

@@ -6,20 +6,20 @@ import kfFrameworkServicesLogo from 'assets/kids-first-framework-services.svg';
 import dcfLogo from 'assets/logo-dcf.svg';
 import { DCF, GEN3 } from 'common/constants';
 import './style.css';
-import style from './style';
+import { makeCommonCardPropsReadOnly } from 'components/UserProfile/utils';
 
-const { Title, Paragraph } = Typography;
+const { Paragraph } = Typography;
 
 const RepositoryIntegration = () => {
   return (
     <Card
-      title={
-        <Title level={3} strong>
-          Data Repository Integrations
-        </Title>
-      }
-      headStyle={style.cardHeadStyle}
-      bodyStyle={style.cardBodyStyle}
+        {...{
+          ...makeCommonCardPropsReadOnly({
+            title: ' Data Repository Integrations',
+            canEdit: false,
+            isProfileUpdating: false,
+          }),
+        }}
     >
       <Row type={'flex'}>
         <Paragraph>

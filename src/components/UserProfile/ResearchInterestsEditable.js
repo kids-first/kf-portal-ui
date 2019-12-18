@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input, Button } from 'antd';
+import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { debounce } from 'lodash';
@@ -73,6 +73,10 @@ class ResearchInterestsEditable extends Component {
     const { parentForm } = this.props;
     const { getFieldDecorator } = parentForm;
     const formItemStyle = { margin: 0 };
+    const iconStyle = {
+      paddingLeft: '10px',
+      paddingRight: '10px',
+    };
     return interests.map((interest, index) => {
       return (
         <Row key={index}>
@@ -83,15 +87,13 @@ class ResearchInterestsEditable extends Component {
               <Fragment>
                 <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
                   {interest}
+                  <Icon
+                    type="close-circle"
+                    theme={'filled'}
+                    style={iconStyle}
+                    onClick={this.onDeleteInterest(interest)}
+                  />
                 </Tag>
-                <Button
-                  size={'small'}
-                  icon={'close'}
-                  type="danger"
-                  ghost
-                  shape="circle"
-                  onClick={this.onDeleteInterest(interest)}
-                />
               </Fragment>,
             )}
           </Form.Item>
@@ -168,22 +170,22 @@ class ResearchInterestsEditable extends Component {
       <Row>
         <Col span={8}>
           <Row>
-            <Form.Item label="Kids First Disease Areas">
+            <Form.Item label="Kids First Disease Areas" className={'form-item-no-margin'}>
               {getFieldDecorator('diseaseArea', {
                 rules: [{ required: false }],
               })(
-                <Select placeholder="Select an option" onChange={this.handleSelectChange}>
+                <Select placeholder="Select an option" onChange={this.handleSelectChange} size={'large'}>
                   {this.generateOptions(DISEASE_AREAS)}
                 </Select>,
               )}
             </Form.Item>
           </Row>
           <Row>
-            <Form.Item label="Kids First Studies">
+            <Form.Item label="Kids First Studies" className={'form-item-no-margin'}>
               {getFieldDecorator('studyShortNames', {
                 rules: [{ required: false }],
               })(
-                <Select placeholder="Select an option" onChange={this.handleSelectChange}>
+                <Select placeholder="Select an option" onChange={this.handleSelectChange} size={'large'}>
                   {this.generateOptions(STUDY_SHORT_NAMES)}
                 </Select>,
               )}
@@ -198,6 +200,7 @@ class ResearchInterestsEditable extends Component {
                   ? 'Unable to fetch suggestions but you can still add an interest'
                   : ''
               }
+              className={'form-item-no-margin'}
             >
               {getFieldDecorator('otherAreasOfInterests', {
                 rules: [{ required: false }],
@@ -217,6 +220,7 @@ class ResearchInterestsEditable extends Component {
                         className={generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)}
                       />
                     }
+                    size={'large'}
                   />
                 </AutoComplete>,
               )}

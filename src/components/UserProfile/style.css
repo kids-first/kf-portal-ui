@@ -1,3 +1,10 @@
+.header-title {
+  height: 21px;
+  color: rgb(57, 69, 146);
+  font-size: 18px;
+  font-weight: bold;
+}
+
 /** card */
 .main-left-col {
   padding-right: 72px;
@@ -52,9 +59,13 @@
   padding-left: 48px;
 }
 
-.find-me-main {
+.contact-main {
   display: flex;
   justify-content: space-around;
+}
+
+.contact-main-no-find-me {
+  display: flex;
 }
 
 .find-me-col-contact-info {
@@ -76,10 +87,12 @@
 .bio-story {
   font-style: italic;
   padding-bottom: 24px;
+  color: rgba(57, 69, 146, 0.7);
 }
 
 .profile-divider {
   margin-bottom: 24px;
+  color: rgba(57, 69, 146, 0.7);
 }
 
 .text-when-no-interests {
@@ -105,7 +118,20 @@
 
 .ri-tag {
   max-width: 550px;
-  border-radius: 10px;
+  border-radius: 12px;
+  height: 24px;
+  background: rgba(57, 69, 146, 0.08);
+  color: rgb(144, 38, 142);
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 0.17px;
+  line-height: 21px;
+}
+
+ri-close-icon {
+  color: rgb(144, 38, 142);
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .ri-check-icon {
@@ -172,7 +198,8 @@
 
 .hd-profile-status {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
+  color: white;
 }
 
 .hd-profile-status-row {
@@ -181,6 +208,7 @@
 
 .hd-text {
   color: white;
+  font-size: 14px;
 }
 
 .hd-switch-bg-is-public {
@@ -246,7 +274,7 @@
 
 .up-header {
   background-color: transparent;
-  height: 310px;
+  height: 210px;
   padding: 0;
 }
 
@@ -264,11 +292,14 @@
 
 .up-menu-item-when-selected {
   color: rgb(232, 55, 155);
-  padding-right: 20px;
 }
 
 .up-menu-item-when-not-selected {
   color: rgb(57, 69, 146);
+}
+
+.up-menu-item-text {
+  font-size: 18px;
   padding-right: 20px;
 }
 
@@ -298,4 +329,20 @@
 
 .fmi-main-wrapper {
   display: flex;
+}
+
+.form-item-no-margin {
+  margin: 0;
+}
+
+.section-text {
+  font-size: 16px;
+  color: rgb(57, 69, 146);
+  font-weight: bold;
+  height: 16px;
+}
+
+.contact-info-title {
+  color: rgba(57, 69, 146, 0.7);
+  font-size: 14px;
 }
