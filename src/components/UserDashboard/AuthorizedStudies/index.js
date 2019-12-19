@@ -1,10 +1,7 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
-import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { isEmpty } from 'lodash';
-
-import { TealActionButton } from 'uikit/Button';
 import CardHeader from 'uikit/Card/CardHeader';
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import DownloadController from 'icons/DownloadController';
@@ -15,6 +12,7 @@ import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnect
 import AccessGate from '../../AccessGate';
 import { DashboardCard } from '../styles';
 import Info from '../Info';
+import { Button } from 'antd';
 
 const AuthorizedStudies = compose(
   injectState,
@@ -45,9 +43,9 @@ const AuthorizedStudies = compose(
                 </span>
               }
             >
-              <TealActionButton>
-                <Link to={`/user/${loggedInUser._id}#settings`}>Settings</Link>
-              </TealActionButton>
+              <Button type={'primary'} shape={'round'} href={`/user/${loggedInUser._id}#settings`}>
+                SETTINGS
+              </Button>
             </AccessGate>
             <Info
               link={{

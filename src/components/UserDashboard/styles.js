@@ -30,7 +30,7 @@ export const CardLink = styleComponent('a', cardLink);
 export const ConnectButton = ({ external = true, ...props }) => (
   <TealActionButton maxWidth={160} {...props}>
     {external ? <ExternalLinkIcon size={12} position="relative" right={5} /> : null}
-    Connect
+    <div style={{paddingLeft: 5, paddingRight:5}}>Connect</div>
     <RightIcon size={14} position="relative" left={5} />
   </TealActionButton>
 );

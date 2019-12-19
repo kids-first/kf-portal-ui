@@ -7,7 +7,8 @@ import Cavatica from 'icons/Cavatica';
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import { analyticsTrigger, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Info from '../Info';
-import { ConnectButton } from '../styles';
+import { Button } from 'antd';
+import Icon from 'antd/es/icon';
 
 const NotConnected = compose(injectState)(({ effects }) => (
   <Fragment>
@@ -17,7 +18,10 @@ const NotConnected = compose(injectState)(({ effects }) => (
       title="Collaborative Analysis"
       detail="To analyze Kids First data on the cloud, connect to Cavatica."
     >
-      <ConnectButton
+      <Button
+        type={'primary'}
+        icon="api"
+        shape="round"
         onClick={() => {
           analyticsTrigger({
             property: 'portal',
@@ -33,7 +37,10 @@ const NotConnected = compose(injectState)(({ effects }) => (
             ),
           });
         }}
-      />
+      >
+        CONNECT
+        <Icon type="right" />
+      </Button>
     </AccessGate>
     <Info
       link={{

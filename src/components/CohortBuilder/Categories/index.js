@@ -177,6 +177,7 @@ export default class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.quickSearch}
           color={theme.filterPurple}
+          anchorId={'anchor-quick-filters'}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
         </Category>
@@ -186,6 +187,7 @@ export default class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.study}
           color={theme.studyRed}
+          anchorId={'anchor-study'}
         >
           <StudyIcon fill={theme.studyRed} />
         </Category>
@@ -195,6 +197,7 @@ export default class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.demographic}
           color={theme.demographicPurple}
+          anchorId={'anchor-demographic'}
         >
           <DemographicIcon fill={theme.demographicPurple} width="14px" height="17px" />
         </Category>
@@ -204,6 +207,7 @@ export default class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.clinical}
           color={theme.clinicalBlue}
+          anchorId={'anchor-clinical'}
         >
           <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
         </Category>
@@ -213,6 +217,7 @@ export default class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.biospecimen}
           color={theme.biospecimenOrange}
+          anchorId={'anchor-biospecimens'}
         >
           <BiospecimenIcon fill={theme.biospecimenOrange} />
         </Category>
@@ -222,6 +227,7 @@ export default class Categories extends React.Component {
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.availableData}
           color={theme.dataBlue}
+          anchorId={'anchor-available-data'}
         >
           <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>

@@ -26,6 +26,15 @@
   width: 300px;
   top: 32px;
   left: 4px;
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  z-index: 200;
+  cursor: pointer;
+  right: auto;
+  box-shadow: rgba(0, 0, 0, 0.5) 0 0 4.9px 0.1px;
+  background: rgb(255, 255, 255);
+  border-radius: 2px;
 }
 
 .downloadButtonOptionRow {

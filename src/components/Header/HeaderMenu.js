@@ -53,10 +53,11 @@ export default class HeaderMenu extends React.Component {
         trigger={['click']}
         overlay={menu}
       >
-        <div onClick={this.handleDropdownClick}>
+        {/*eslint-disable-next-line*/}
+        <a onClick={this.handleDropdownClick} href="#">
           {children}
           {showArrow ? <DropdownArrowIcon isOpen={isOpen} /> : null}
-        </div>
+        </a>
       </Dropdown>
     );
   }

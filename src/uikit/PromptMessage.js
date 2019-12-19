@@ -47,7 +47,13 @@ const MessageWrapper = ({
   info = false,
   ...props
 }) => {
-  const severity = error ? 'error' : warning ? 'warning' : success ? 'success' : 'info';
+  const severity = error
+    ? styles.error
+    : warning
+    ? styles.warning
+    : success
+    ? styles.success
+    : styles.info;
   return (
     <Column className={`${styles.messageWrapper} ${severity} ${className}`} {...props}>
       {children}
