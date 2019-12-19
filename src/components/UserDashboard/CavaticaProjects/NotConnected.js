@@ -38,7 +38,7 @@ const NotConnected = compose(injectState)(({ effects }) => (
           });
         }}
       >
-        Connect
+        CONNECT
         <Icon type="right" />
       </Button>
     </AccessGate>
