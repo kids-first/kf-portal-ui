@@ -6,7 +6,7 @@ import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/const
 import './style.css';
 import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 
-const { Title } = Typography;
+const { Text } = Typography;
 
 const { TextArea } = Input;
 
@@ -60,7 +60,9 @@ class ProfileEditable extends Component {
         >
           <Row>
             <Col span={24}>
-              <Title level={3}>My Bio</Title>
+              <Text className={'section-text'}>My Bio</Text>
+              <br />
+              <br />
               <Form.Item>
                 {getFieldDecorator('bio', {
                   initialValue: data.bio,
@@ -71,7 +73,9 @@ class ProfileEditable extends Component {
           </Row>
           <Row>
             <Col span={24}>
-              <Title level={3}>My Story</Title>
+              <Text className={'section-text'}>My Story</Text>
+              <br />
+              <br />
               <Form.Item>
                 {getFieldDecorator('story', {
                   initialValue: data.story,
@@ -82,7 +86,7 @@ class ProfileEditable extends Component {
           </Row>
           <Row>
             <Col span={24}>
-              <Title level={3}>Research Interests</Title>
+              <Text className={'section-text'}>Research Interests</Text>
               <ResearchInterestsEditable initialInterest={data.interests} parentForm={form} />
             </Col>
           </Row>

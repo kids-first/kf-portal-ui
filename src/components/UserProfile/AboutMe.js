@@ -1,45 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Row, Col } from 'antd';
+import { Row } from 'antd';
 import ContactReadOnly from 'components/UserProfile/ContactReadOnly';
 import ContactEditForm from 'components/UserProfile/ContactEditForm';
 import EditToggle from 'components/UserProfile/EditToggle';
 import ProfileReadOnly from './ProfileReadOnly';
 import ProfileEditable from './ProfileEditable';
 
-const { Content } = Layout;
+
 
 const AboutMe = props => {
   const { canEdit, profile, updateProfileCb, isProfileUpdating } = props;
   return (
-    <Layout className={'am-main-layout'}>
-      <Content>
+      <React.Fragment>
         <Row align={'middle'} className={'am-profile-row'}>
-          <Col span={24}>
-            <EditToggle
+          <EditToggle
               isProfileUpdating={isProfileUpdating}
               data={profile}
               canEdit={canEdit}
               ReadOnlyComponent={ProfileReadOnly}
               EditableComponent={ProfileEditable}
               updateProfileCb={updateProfileCb}
-            />
-          </Col>
+          />
         </Row>
         <Row>
-          <Col span={24}>
-            <EditToggle
+          <EditToggle
               isProfileUpdating={isProfileUpdating}
               data={profile}
               canEdit={canEdit}
               ReadOnlyComponent={ContactReadOnly}
               EditableComponent={ContactEditForm}
               updateProfileCb={updateProfileCb}
-            />
-          </Col>
+          />
         </Row>
-      </Content>
-    </Layout>
+      </React.Fragment>
   );
 };
 

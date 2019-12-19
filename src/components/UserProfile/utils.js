@@ -12,7 +12,7 @@ import { findMeFields } from './constants';
 import style from 'components/UserProfile/style';
 import { Button, Typography } from 'antd';
 
-const { Title } = Typography;
+const { Text } = Typography;
 
 const addWebProtocolToUrlIfNeeded = value => {
   if (!value || value.startsWith('http://') || value.startsWith('https://')) {
@@ -134,17 +134,17 @@ export const makeCommonCardPropsReadOnly = ({
 }) => {
   return {
     loading: isProfileUpdating,
-    title: (
-      <Title level={3} strong>
-        {title}
-      </Title>
-    ),
-    className: 'card',
+    title: <Text className={'header-title'}>{title}</Text>,
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyle,
     extra: canEdit ? (
-      <Button type="primary" icon="edit" shape="round" onClick={onClickEditCb}>
-        Edit
+      <Button
+        icon="edit"
+        shape="round"
+        onClick={onClickEditCb}
+        style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
+      >
+        EDIT
       </Button>
     ) : null,
   };
@@ -153,29 +153,34 @@ export const makeCommonCardPropsReadOnly = ({
 export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCancelCb }) => {
   return {
     loading: isProfileUpdating,
-    title: (
-      <Title level={3} strong>
-        {title}
-      </Title>
-    ),
-    className: 'card',
+    title: <Text className={'header-title'}>{title}</Text>,
+    className: '',
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyleWhenEditing,
     extra: (
       <Fragment>
-        <Button className={'extra-button'} shape="round" onClick={onClickCancelCb}>
-          Cancel
+        <Button
+          className={'extra-button'}
+          shape="round"
+          onClick={onClickCancelCb}
+          style={{ color: 'rgb(144, 38, 142)' }}
+        >
+          CANCEL
         </Button>
         <Button
           className={'extra-button'}
-          type="primary"
           icon="check"
           shape="round"
+          style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
           htmlType="submit"
         >
-          Save
+          SAVE
         </Button>
       </Fragment>
     ),
   };
+};
+
+export const showWhenHasDataOrCanEdit = (data, canEdit) => {
+  return Boolean(data) || canEdit;
 };

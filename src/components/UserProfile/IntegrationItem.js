@@ -1,4 +1,4 @@
-import { Card, Col, Row, Typography, Button } from 'antd';
+import { Card, Row, Typography, Button } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import IntegrationItemErrorRow from './IntegrationItemErrorRow';
@@ -12,8 +12,13 @@ const hasAtLeastOneError = (...potentialErrors) => {
   return potentialErrors.some(e => Boolean(e));
 };
 
-const generateLabelForConnect = isLoading => {
-  return isLoading ? 'Connecting' : 'Connect';
+const generateLabelForConnect = ({ loading, connected }) => {
+  if (loading) {
+    return 'Connecting';
+  } else if (connected) {
+    return 'Disconnect';
+  }
+  return 'Connect';
 };
 
 const IntegrationItem = props => {
@@ -44,30 +49,24 @@ const IntegrationItem = props => {
         />
       ) : (
         <Fragment>
-          <Row>
-            <Col span={12}>{logo}</Col>
-          </Row>
+          <Row>{logo}</Row>
           <Row className={'ii-description-row'}>
             <Paragraph>{description}</Paragraph>
           </Row>
-          <Row>
-            <Col span={12}>
-              <Button
-                shape="round"
-                loading={loading}
-                className={'ii-button'}
-                onClick={connected ? onClickDisconnectCb : onClickConnectCb}
-                icon={connected ? 'disconnect' : 'api'}
-              >
-                {connected ? 'Disconnect' : generateLabelForConnect(loading)}
-              </Button>
-            </Col>
+          <Row type={'flex'} justify={'space-between'}>
+            <Button
+              shape="round"
+              loading={loading}
+              type={connected && !loading ? 'danger' : 'primary'}
+              onClick={connected ? onClickDisconnectCb : onClickConnectCb}
+              icon={connected ? 'disconnect' : 'api'}
+            >
+              {generateLabelForConnect({ loading, connected })}
+            </Button>
             {connected && (
-              <Col span={12}>
-                <Button shape="round" className={'ii-button'} onClick={onClick} icon={icon}>
-                  {label}
-                </Button>
-              </Col>
+              <Button shape="round" className={'ii-button'} onClick={onClick} icon={icon}>
+                {label}
+              </Button>
             )}
           </Row>
         </Fragment>

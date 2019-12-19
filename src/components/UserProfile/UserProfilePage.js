@@ -9,16 +9,16 @@ import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
 
-const ShowOtherUserProfile = ({ canEdit, profile, updateProfileCb, isProfileUpdating }) => {
+const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) => {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={canEdit} />
+        <HeaderBannerContainer canEdit={false} />
       </Header>
       <Layout>
-        <Content>
+        <Content className={'vertical-offset horizontal-offset'}>
           <AboutMe
-            canEdit={canEdit}
+            canEdit={false}
             profile={profile}
             updateProfileCb={updateProfileCb}
             isProfileUpdating={isProfileUpdating}
@@ -37,6 +37,8 @@ function UserProfilePage(props) {
     currentMenuItem,
     updateProfileCb,
     isProfileUpdating,
+    collapsed,
+    onBreakPointCb,
   } = props;
 
   if (!canEdit) {
@@ -57,8 +59,13 @@ function UserProfilePage(props) {
       <Header className={'up-header'}>
         <HeaderBannerContainer canEdit={canEdit} />
       </Header>
-      <Layout>
-        <Sider width={350} className={'up-sider'}>
+      <Layout className={'main-layout'}>
+        <Sider
+          breakpoint="xl"
+          width={collapsed ? 100 : 340}
+          className={'up-sider'}
+          onBreakpoint={onBreakPointCb}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={[currentMenuItem]}
@@ -66,21 +73,47 @@ function UserProfilePage(props) {
             className={'menu-vertical-offset'}
           >
             <Menu.Item
+              className={'menu-border-right-override'}
               key={KEY_ABOUT_ME}
-              style={{ backgroundColor: 'inherit' /* remove background when selected*/ }}
+              style={{
+                backgroundColor: 'inherit' /* remove background when selected*/,
+                marginBottom: '32px',
+              }}
             >
               <div className={'up-anchor-wrapper'}>
-                <a href={KEY_ABOUT_ME}>About Me</a>
+                <a
+                  href={KEY_ABOUT_ME}
+                  className={`${
+                    isSettingsSelected
+                      ? 'up-menu-item-when-not-selected'
+                      : `up-menu-item-when-selected`
+                  } up-menu-item-text`}
+                >
+                  {'About Me'}
+                </a>
               </div>
             </Menu.Item>
-            <Menu.Item key={KEY_SETTINGS} style={{ backgroundColor: 'inherit' }}>
+            <Menu.Item
+              className={'menu-border-right-override'}
+              key={KEY_SETTINGS}
+              style={{ backgroundColor: 'inherit', marginBottom: '32px' }}
+            >
               <div className={'up-anchor-wrapper'}>
-                <a href={KEY_SETTINGS}>Settings</a>
+                <a
+                  href={KEY_SETTINGS}
+                  className={`${
+                    isSettingsSelected
+                      ? 'up-menu-item-when-selected'
+                      : `up-menu-item-when-not-selected`
+                  } up-menu-item-text`}
+                >
+                  {'Settings'}
+                </a>
               </div>
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content>
+        <Content className={'vertical-offset horizontal-offset'}>
           {isSettingsSelected ? (
             <Settings userEmail={profile.email} />
           ) : (
@@ -105,6 +138,8 @@ UserProfilePage.propTypes = {
   currentMenuItem: PropTypes.string.isRequired,
   updateProfileCb: PropTypes.func.isRequired,
   isProfileUpdating: PropTypes.bool.isRequired,
+  collapsed: PropTypes.bool.isRequired,
+  onBreakPointCb: PropTypes.func.isRequired,
 };
 
 export default UserProfilePage;
