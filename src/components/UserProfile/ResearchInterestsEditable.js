@@ -67,11 +67,7 @@ class ResearchInterestsEditable extends Component {
     const interestFiltered = interests.filter(i => i !== tag);
     this.setState({ interests: interestFiltered });
   };
-  /*
-                 white-space: nowrap;
-                 overflow: hidden;
-                 text-overflow: ellipsis;
-                 */
+
   generateTags = () => {
     const { interests } = this.state;
     const { parentForm } = this.props;
@@ -83,29 +79,29 @@ class ResearchInterestsEditable extends Component {
     };
     return interests.map((interest, index) => {
       return (
-        <Row key={index}>
-          <Form.Item style={formItemStyle}>
-            {getFieldDecorator(generateFieldNameFromInterest(interest), {
-              rules: [{ required: false }],
-            })(
-              <Fragment>
-                <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
-                  <div className={'ri-tag-content'}>
-                    <div className={'ri-text-wrapper'}>{interest}</div>
-                    <div>
-                      <Icon
-                        type="close-circle"
-                        theme={'filled'}
-                        style={iconStyle}
-                        onClick={this.onDeleteInterest(interest)}
-                      />
-                    </div>
-                  </div>
-                </Tag>
-              </Fragment>,
-            )}
-          </Form.Item>
-        </Row>
+          <Row key={index}>
+            <Form.Item style={formItemStyle}>
+              {getFieldDecorator(generateFieldNameFromInterest(interest), {
+                rules: [{ required: false }],
+              })(
+                  <Fragment>
+                    <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
+                      <div className={'ri-tag-content'}>
+                        <div className={'ri-text-wrapper'}>{interest}</div>
+                        <div>
+                          <Icon
+                              type="close-circle"
+                              theme={'filled'}
+                              style={iconStyle}
+                              onClick={this.onDeleteInterest(interest)}
+                          />
+                        </div>
+                      </div>
+                    </Tag>
+                  </Fragment>,
+              )}
+            </Form.Item>
+          </Row>
       );
     });
   };
@@ -119,12 +115,12 @@ class ResearchInterestsEditable extends Component {
   generateOptions = arrToFilter => {
     const { interests } = this.state;
     return arrToFilter
-      .filter(area => !interests.includes(area.toLowerCase()))
-      .map(area => (
-        <Option value={area} key={toKebabCase(area)}>
-          {area}
-        </Option>
-      ));
+        .filter(area => !interests.includes(area.toLowerCase()))
+        .map(area => (
+            <Option value={area} key={toKebabCase(area)}>
+              {area}
+            </Option>
+        ));
   };
 
   getSuggestions = debounce(async filter => {
@@ -175,78 +171,78 @@ class ResearchInterestsEditable extends Component {
     const { dataSource, errorFetchingTags, isLoadingSuggestions } = this.state;
 
     return (
-      <Row>
-        <Col span={8}>
-          <Row>
-            <Form.Item label="Kids First Disease Areas" className={'form-item-no-margin'}>
-              {getFieldDecorator('diseaseArea', {
-                rules: [{ required: false }],
-              })(
-                <Select
-                  placeholder="Select an option"
-                  onChange={this.handleSelectChange}
-                  size={'large'}
-                >
-                  {this.generateOptions(DISEASE_AREAS)}
-                </Select>,
-              )}
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item label="Kids First Studies" className={'form-item-no-margin'}>
-              {getFieldDecorator('studyShortNames', {
-                rules: [{ required: false }],
-              })(
-                <Select
-                  placeholder="Select an option"
-                  onChange={this.handleSelectChange}
-                  size={'large'}
-                >
-                  {this.generateOptions(STUDY_SHORT_NAMES)}
-                </Select>,
-              )}
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item
-              label="Other areas of interest"
-              validateStatus={Boolean(errorFetchingTags) ? 'error' : ''}
-              help={
-                Boolean(errorFetchingTags)
-                  ? 'Unable to fetch suggestions but you can still add an interest'
-                  : ''
-              }
-              className={'form-item-no-margin'}
-            >
-              {getFieldDecorator('otherAreasOfInterests', {
-                rules: [{ required: false }],
-              })(
-                <AutoComplete
-                  dataSource={isLoadingSuggestions ? [] : dataSource}
-                  onSearch={this.onSearch}
-                >
-                  <Input
-                    onPressEnter={this.onPressEnter}
-                    placeholder="Search for interests"
-                    prefix={<Icon type="search" />}
-                    suffix={
-                      <Icon
-                        type="check"
-                        onClick={this.onClickCheck}
-                        className={generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)}
+        <Row>
+          <Col span={8}>
+            <Row>
+              <Form.Item label="Kids First Disease Areas" className={'form-item-no-margin'}>
+                {getFieldDecorator('diseaseArea', {
+                  rules: [{ required: false }],
+                })(
+                    <Select
+                        placeholder="Select an option"
+                        onChange={this.handleSelectChange}
+                        size={'large'}
+                    >
+                      {this.generateOptions(DISEASE_AREAS)}
+                    </Select>,
+                )}
+              </Form.Item>
+            </Row>
+            <Row>
+              <Form.Item label="Kids First Studies" className={'form-item-no-margin'}>
+                {getFieldDecorator('studyShortNames', {
+                  rules: [{ required: false }],
+                })(
+                    <Select
+                        placeholder="Select an option"
+                        onChange={this.handleSelectChange}
+                        size={'large'}
+                    >
+                      {this.generateOptions(STUDY_SHORT_NAMES)}
+                    </Select>,
+                )}
+              </Form.Item>
+            </Row>
+            <Row>
+              <Form.Item
+                  label="Other areas of interest"
+                  validateStatus={Boolean(errorFetchingTags) ? 'error' : ''}
+                  help={
+                    Boolean(errorFetchingTags)
+                        ? 'Unable to fetch suggestions but you can still add an interest'
+                        : ''
+                  }
+                  className={'form-item-no-margin'}
+              >
+                {getFieldDecorator('otherAreasOfInterests', {
+                  rules: [{ required: false }],
+                })(
+                    <AutoComplete
+                        dataSource={isLoadingSuggestions ? [] : dataSource}
+                        onSearch={this.onSearch}
+                    >
+                      <Input
+                          onPressEnter={this.onPressEnter}
+                          placeholder="Search for interests"
+                          prefix={<Icon type="search" />}
+                          suffix={
+                            <Icon
+                                type="check"
+                                onClick={this.onClickCheck}
+                                className={generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)}
+                            />
+                          }
+                          size={'large'}
                       />
-                    }
-                    size={'large'}
-                  />
-                </AutoComplete>,
-              )}
-            </Form.Item>
-          </Row>
-        </Col>
-        <Col offset={4} span={12} style={{ paddingTop: '32px' }}>
-          {this.generateTags()}
-        </Col>
-      </Row>
+                    </AutoComplete>,
+                )}
+              </Form.Item>
+            </Row>
+          </Col>
+          <Col offset={4} span={12} style={{ paddingTop: '32px' }}>
+            {this.generateTags()}
+          </Col>
+        </Row>
     );
   }
 }
