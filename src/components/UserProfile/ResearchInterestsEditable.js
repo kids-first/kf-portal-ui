@@ -67,7 +67,11 @@ class ResearchInterestsEditable extends Component {
     const interestFiltered = interests.filter(i => i !== tag);
     this.setState({ interests: interestFiltered });
   };
-
+  /*
+                 white-space: nowrap;
+                 overflow: hidden;
+                 text-overflow: ellipsis;
+                 */
   generateTags = () => {
     const { interests } = this.state;
     const { parentForm } = this.props;
@@ -86,13 +90,17 @@ class ResearchInterestsEditable extends Component {
             })(
               <Fragment>
                 <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
-                  {interest}
-                  <Icon
-                    type="close-circle"
-                    theme={'filled'}
-                    style={iconStyle}
-                    onClick={this.onDeleteInterest(interest)}
-                  />
+                  <div className={'ri-tag-content'}>
+                    <div className={'ri-text-wrapper'}>{interest}</div>
+                    <div>
+                      <Icon
+                        type="close-circle"
+                        theme={'filled'}
+                        style={iconStyle}
+                        onClick={this.onDeleteInterest(interest)}
+                      />
+                    </div>
+                  </div>
                 </Tag>
               </Fragment>,
             )}
@@ -174,7 +182,11 @@ class ResearchInterestsEditable extends Component {
               {getFieldDecorator('diseaseArea', {
                 rules: [{ required: false }],
               })(
-                <Select placeholder="Select an option" onChange={this.handleSelectChange} size={'large'}>
+                <Select
+                  placeholder="Select an option"
+                  onChange={this.handleSelectChange}
+                  size={'large'}
+                >
                   {this.generateOptions(DISEASE_AREAS)}
                 </Select>,
               )}
@@ -185,7 +197,11 @@ class ResearchInterestsEditable extends Component {
               {getFieldDecorator('studyShortNames', {
                 rules: [{ required: false }],
               })(
-                <Select placeholder="Select an option" onChange={this.handleSelectChange} size={'large'}>
+                <Select
+                  placeholder="Select an option"
+                  onChange={this.handleSelectChange}
+                  size={'large'}
+                >
                   {this.generateOptions(STUDY_SHORT_NAMES)}
                 </Select>,
               )}

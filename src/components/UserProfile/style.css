@@ -116,6 +116,21 @@
   padding-bottom: 15px;
 }
 
+.ri-tag-content {
+  display: flex;
+}
+
+.ri-text-wrapper {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 2px;
+}
+
+.ri-ro-text-wrapper {
+  flex: 50%;
+}
+
 .ri-tag {
   max-width: 550px;
   border-radius: 12px;
@@ -345,4 +360,11 @@ ri-close-icon {
 .contact-info-title {
   color: rgba(57, 69, 146, 0.7);
   font-size: 14px;
+}
+
+.menu-border-right-override.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 3px solid rgb(232, 55, 155);
 }

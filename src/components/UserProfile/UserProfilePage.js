@@ -73,6 +73,7 @@ function UserProfilePage(props) {
             className={'menu-vertical-offset'}
           >
             <Menu.Item
+              className={'menu-border-right-override'}
               key={KEY_ABOUT_ME}
               style={{
                 backgroundColor: 'inherit' /* remove background when selected*/,
@@ -93,6 +94,7 @@ function UserProfilePage(props) {
               </div>
             </Menu.Item>
             <Menu.Item
+              className={'menu-border-right-override'}
               key={KEY_SETTINGS}
               style={{ backgroundColor: 'inherit', marginBottom: '32px' }}
             >

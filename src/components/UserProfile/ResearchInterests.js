@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Col, Icon, Row, Typography } from 'antd';
+import { Icon, Row, Typography } from 'antd';
 import chunk from 'lodash/chunk';
 import capitalize from 'lodash/capitalize';
 import { toKebabCase } from 'utils';
@@ -15,21 +15,27 @@ const ResearchInterest = ({ interests }) => {
   return chunks.map((chunk, index) => {
     const [interestLeft, interestRight] = chunk;
     return (
-      <Row key={toKebabCase(`${index}${interestLeft} ${interestRight}`)} className={'ri-row'}>
-        <Col span={12}>
+      <Row
+        type={'flex'}
+        justify={'space-around'}
+        align={'center'}
+        key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}
+        className={'ri-row'}
+      >
+        <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
           <Text>
             <Icon type="check-circle" theme="filled" className={'ri-icon'} />
             {capitalize(interestLeft)}
           </Text>
-        </Col>
-        <Col span={12}>
+        </div>
+        <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
           {Boolean(interestRight) && (
             <Text>
               <Icon type="check-circle" theme="filled" className={'ri-icon'} />
               {capitalize(interestRight)}
             </Text>
           )}
-        </Col>
+        </div>
       </Row>
     );
   });
