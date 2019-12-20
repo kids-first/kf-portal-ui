@@ -18,7 +18,7 @@ const ResearchInterest = ({ interests }) => {
       <Row
         type={'flex'}
         justify={'space-around'}
-        align={'center'}
+        align={'middle'}
         key={toKebabCase(`${index}${interestLeft} ${interestRight}`)}
         className={'ri-row'}
       >
