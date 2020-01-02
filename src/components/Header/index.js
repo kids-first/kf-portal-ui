@@ -185,7 +185,7 @@ class Header extends React.Component {
               </li>
             )}
 
-            <AppsMenu loggedInUser={loggedInUser} />
+            <AppsMenu />
             {canSeeProtectedRoutes ? <UserMenu loggedInUser={loggedInUser} /> : null}
           </NavBarList>
         </Row>
