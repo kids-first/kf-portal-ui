@@ -40,3 +40,5 @@ export const FAILURE_IS_PUBLIC_TOGGLE = 'FAILURE_IS_PUBLIC_TOGGLE';
 
 export const ERROR_DISPLAY = 'ERROR_DISPLAY';
 export const ERROR_DISMISSED = 'ERROR_DISMISSED';
+
+export const UPDATE_LOGGED_IN_USER = 'UPDATE_LOGGED_IN_USER'; //backward compatibility.
