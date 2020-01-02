@@ -71,6 +71,7 @@ const FilterTableList = ({
                   className={'flex'}
                   checked={checkboxes[key] ? checkboxes[key] : false}
                   onChange={onChange(key)}
+                  disabled={!item[key]}
                 >
                   <div style={{ wordBreak: 'break-word' }}>{displayName}</div>
                 </Checkbox>
