@@ -115,12 +115,11 @@ export default class Category extends React.Component {
                 overlayClassName="cb-category-overlay-container"
                 getPopupContainer={() => document.getElementById(anchorId)}
               >
-                <Column className="cb-category-button" style={{ borderTopColor: color }}>
+                <Column id={anchorId} className="cb-category-button" style={{ borderTopColor: color }}>
                   {children}
-                  <h3 id={anchorId} style={{position:'relative'}}>{title}</h3>
+                  <h3 style={{position:'relative'}}>{title}</h3>
                 </Column>
               </Dropdown>
-
           );
         }}
       </ExtendedMappingProvider>
