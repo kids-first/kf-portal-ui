@@ -13,7 +13,6 @@ import {
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
 } from '../actionTypes';
-import loggedInUser from '../../shapes/loggedInUser';
 
 const initialState = {
   loggedInUser: null,
@@ -60,7 +59,7 @@ export default (state = initialState, action) => {
       const copyOfProfile = { ...state.profile };
       copyOfProfile.isPublic = !isPublicBeforeToggle;
 
-      const copyOfLoggedInUser = Boolean(loggedInUser) ? { ...loggedInUser } : {};
+      const copyOfLoggedInUser = Boolean(state.loggedInUser) ? { ...state.loggedInUser } : {};
       copyOfLoggedInUser.isPublic = !isPublicBeforeToggle;
 
       return {
