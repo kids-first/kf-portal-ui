@@ -5,16 +5,16 @@ import { socialItems } from 'components/UserProfile/utils';
 import { List, Row, Typography } from 'antd';
 import './style.css';
 
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 const FindMeReadOnly = props => {
   const { findMe } = props;
   const { keys, prototype } = Object;
   if (isEmpty(findMe)) {
     return (
-      <Text className={'find-me-text-if-empty'}>
+      <Paragraph className={'find-me-text-if-empty'}>
         {` Click Edit to add links to your personal channels such as Google Scholar, ORCID ID, GitHub, LinkedIn, Twitter and Facebook.`}
-      </Text>
+      </Paragraph>
     );
   }
 

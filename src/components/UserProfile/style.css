@@ -54,14 +54,12 @@
 
 .find-me-text-if-empty {
   font-style: italic;
-  border-left: 1px solid rgb(237, 238, 241);
-  margin-top: 144px;
-  padding-left: 48px;
+  text-align: center;
+  margin: 0 25px 25px;
 }
 
 .contact-main {
   display: flex;
-  justify-content: space-around;
 }
 
 .contact-main-no-find-me {

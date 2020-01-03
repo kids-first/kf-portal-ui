@@ -80,7 +80,7 @@ const ContactReadOnly = props => {
   }
 
   const findMeData = extractFindMeFromProfile(data);
-  const hasFindMe = Object.keys(findMeData).length === 0;
+  const hasFindMe = Object.keys(findMeData).length > 0;
   const mergedAddresses = [
     data.addressLine1,
     data.addressLine2,
@@ -88,6 +88,7 @@ const ContactReadOnly = props => {
     data.state,
     data.country,
   ]
+    .map(e => e && e.trim())
     .filter(Boolean)
     .join(', ');
 
@@ -207,7 +208,7 @@ const ContactReadOnly = props => {
         </div>
         {(hasFindMe || canEdit) && (
           <div className={'find-me-col-social'}>
-            <FindMeReadOnly findMe={extractFindMeFromProfile(findMeData)} />
+            <FindMeReadOnly findMe={findMeData} />
           </div>
         )}
       </div>
