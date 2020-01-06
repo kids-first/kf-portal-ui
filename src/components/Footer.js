@@ -4,7 +4,7 @@ import urlJoin from 'url-join';
 // [NEXT] 'react-icons' have these icons, 'react-social-icons' is not necessary here
 // e.g. https://fontawesome.com/icons/twitter
 import { SocialIcon } from 'react-social-icons';
-import { DataVersionProvider } from 'services/dataVersion';
+import DataVersionProvider from './DataVersionProvider';
 
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
@@ -37,7 +37,7 @@ const Footer = () => (
       {' | '}
       {`UI: ${UI_VERSION}`}
       {', '}
-      {'Data Release:'}
+      {'Data Release: '}
       <DataVersionProvider />
     </Row>
     <div className={socialIconsContainer}>
