@@ -12,38 +12,46 @@ import PropTypes from 'prop-types';
  * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
  */
 
-const regex = /<\/?em>/gi;
+
+const regex = /<.+?>(.+?)<\/.+?>/g;
+const regexTag = /<\/?em>/gi;
 
 const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
   if (!highLightValues) {
     return (
-      <div key={index} className={`format-label ${classname}`} style={{maxWidth: 350}}>
+      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: 350 }}>
         {value}
       </div>
     );
   }
 
   const isHighlight = hit => {
-    return value === hit.replace(regex, '');
+    return value === hit.replace(regexTag, '');
   };
 
   // eslint-disable-next-line no-unused-vars
   const [head, ...tail] = highLightValues.filter(isHighlight);
 
   if (head) {
-    const arr = head.split(regex);
-    const [first = '', second = '', third = ''] = arr;
+
+    const arr2 = head.split(regex);
 
     return (
-      <div key={index} className={`format-label ${classname}`}  style={{maxWidth: 350}}>
-        {first}
-        <b>{second}</b>
-        {third}
+      <div
+        key={index}
+        className={`format-label ${classname}`}
+        style={{ maxWidth: 350, display: 'flex', whiteSpace: 'pre-wrap' }}
+      >
+        <span>
+          {arr2.map((text, index) => {
+            return index % 2 ? <b>{text}</b> : text;
+          })}
+        </span>
       </div>
     );
   } else {
     return (
-      <div key={index} className={`format-label ${classname}`} style={{maxWidth: 350}}>
+      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: 350 }}>
         {value}
       </div>
     );
