@@ -53,9 +53,7 @@ class UserMenu extends React.Component {
         history.push(getUrlForUser(loggedInUser, '#settings'));
         break;
       case 'logout':
-        uiLogout({ setToken, setUser, clearIntegrationTokens, api }).then(() => {
-          history.push('/');
-        });
+        uiLogout({ setToken, setUser, clearIntegrationTokens, api, history });
         break;
       default:
         console.warn(`Unhandled menu item with key "${key}"`);

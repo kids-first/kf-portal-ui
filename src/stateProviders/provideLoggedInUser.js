@@ -15,8 +15,6 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
-import { store } from '../store';
-import { updateLoggedInUser } from '../store/actionCreators/user';
 
 const setEgoTokenCookie = token => {
   const { exp } = jwtDecode(token);
@@ -107,7 +105,6 @@ export default provideState({
             });
           }
           trackUserSession({ ...user, egoGroups });
-          store.dispatch(updateLoggedInUser(user)); //sadly, there exists at least 2 sources for user : redux store + this provider.
           return {
             ...state,
             isLoadingUser: false,

@@ -14,7 +14,6 @@ import {
 import DeleteButton from 'components/loginButtons/DeleteButton';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { ButtonsDiv } from './components';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import CheckboxBubble from 'uikit/CheckboxBubble';
@@ -260,12 +259,14 @@ export default enhance(
             </label>
           </Row>
         </form>
-        <ButtonsDiv>
-          <DeleteButton className={wizardButton} disabled={prevDisabled}>
-            <LeftIcon />
-            Back
-          </DeleteButton>
-          <Row>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <DeleteButton className={wizardButton} disabled={prevDisabled}>
+              <LeftIcon />
+              Back
+            </DeleteButton>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <DeleteButton
               className={wizardButton}
               style={{
@@ -284,8 +285,8 @@ export default enhance(
               Next
               <RightIcon />
             </ActionButton>
-          </Row>
-        </ButtonsDiv>
+          </div>
+        </div>
       </Column>
     );
   },

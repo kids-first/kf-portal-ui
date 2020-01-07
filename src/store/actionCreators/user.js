@@ -12,7 +12,6 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
-  UPDATE_LOGGED_IN_USER,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
 import { getOtherUserProfile, getUserLoggedInProfile, updateProfile } from 'services/profiles';
@@ -31,13 +30,6 @@ export const loginFailure = () => {
   return {
     type: LOGIN_FAILURE,
     payload: null,
-  };
-};
-
-export const updateLoggedInUser = user => {
-  return {
-    type: UPDATE_LOGGED_IN_USER,
-    payload: user,
   };
 };
 
