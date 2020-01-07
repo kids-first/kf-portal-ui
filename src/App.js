@@ -45,6 +45,16 @@ const userIsRequiredToLogIn = loggedInUser => {
   );
 };
 
+const userIsNotLoggedInOrMustCompleteJoinForm = loggedInUser => {
+  return (
+    !loggedInUser ||
+    isEmpty(loggedInUser) ||
+    !loggedInUser.roles ||
+    !loggedInUser.roles[0] ||
+    !loggedInUser.acceptedTerms
+  );
+};
+
 const userIsLoggedInButMustCompleteJoinForm = loggedInUser => {
   return (
     isPlainObject(loggedInUser) &&
@@ -168,7 +178,7 @@ const App = compose(
           path={ROUTES.join}
           exact
           render={props => {
-            if (userIsLoggedInButMustCompleteJoinForm(loggedInUser)) {
+            if (userIsNotLoggedInOrMustCompleteJoinForm(loggedInUser)) {
               return (
                 <ApiContext.Provider
                   value={initializeApi({ onUnauthorized: () => props.history.push('/login') })}
@@ -183,6 +193,7 @@ const App = compose(
                 </ApiContext.Provider>
               );
             }
+
             return forceSelectRole({
               api,
               isLoadingUser,

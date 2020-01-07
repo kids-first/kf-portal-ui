@@ -12,7 +12,6 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
-  UPDATE_LOGGED_IN_USER,
 } from '../actionTypes';
 
 const initialState = {
@@ -76,12 +75,6 @@ export default (state = initialState, action) => {
         isTogglingProfileStatus: false,
         isTogglingProfileStatusInError: action.payload,
       };
-    case UPDATE_LOGGED_IN_USER: {
-      return {
-        ...state,
-        loggedInUser: action.payload,
-      };
-    }
     default:
       return state;
   }
