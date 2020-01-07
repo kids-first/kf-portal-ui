@@ -108,7 +108,7 @@ const MemberTable = props => {
         renderItem={item => {
           const hasAddress = item.city || item.state || item.country;
           return (
-            <List.Item key={item._id} style={{ paddingBottom: 32, paddingTop: 32 }}>
+            <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
               <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
                   <Avatar

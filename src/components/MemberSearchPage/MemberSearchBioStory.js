@@ -13,7 +13,8 @@ const MemberSearchBioStory = ({ bio, story }) => {
             highLightValues={bio}
             key={1}
             index={1}
-            prepend={'Member Biography:'}
+            prepend={'Biography:'}
+            fullWidth={true}
           />
         </div>
       ) : (
@@ -26,7 +27,8 @@ const MemberSearchBioStory = ({ bio, story }) => {
             highLightValues={story}
             key={2}
             index={2}
-            prepend={'Member Story:'}
+            prepend={'Story:'}
+            fullWidth={true}
           />
         </div>
       ) : (

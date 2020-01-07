@@ -15,10 +15,12 @@ import PropTypes from 'prop-types';
 const regex = /<.+?>(.+?)<\/.+?>/g;
 const regexTag = /<\/?em>/gi;
 
-const FormatLabel = ({ value, highLightValues, classname = '', index, prepend }) => {
+const FormatLabel = ({ value, highLightValues, classname = '', index, prepend, fullWidth }) => {
+  const _width = fullWidth ? null : 350;
+
   if (!highLightValues) {
     return (
-      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: 350 }}>
+      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: _width }}>
         {value}
       </div>
     );
@@ -38,11 +40,11 @@ const FormatLabel = ({ value, highLightValues, classname = '', index, prepend })
       <div
         key={index}
         className={`format-label ${classname}`}
-        style={{ maxWidth: 350, display: 'flex', whiteSpace: 'pre-wrap' }}
+        style={{ maxWidth: _width, display: 'flex', whiteSpace: 'pre-wrap' }}
       >
         <span>
           {prepend ? (
-            <span style={{ color: '#2b388f', fontWeight: 500, fontSize: 14, lineHeight: 1.4 }}>
+            <span className={'local-title'}>
               {prepend}{' '}
             </span>
           ) : (
@@ -56,7 +58,7 @@ const FormatLabel = ({ value, highLightValues, classname = '', index, prepend })
     );
   } else {
     return (
-      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: 350 }}>
+      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: _width }}>
         {value}
       </div>
     );
@@ -66,6 +68,7 @@ const FormatLabel = ({ value, highLightValues, classname = '', index, prepend })
 FormatLabel.propTypes = {
   value: PropTypes.string,
   prepend: PropTypes.string,
+  fullWidth: PropTypes.bool,
   highLightValues: PropTypes.array,
   classname: PropTypes.string,
   index: PropTypes.number.isRequired,
