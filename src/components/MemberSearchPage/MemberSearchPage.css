@@ -14,6 +14,13 @@
   margin: 0 32px 18px 32px;
 }
 
+.local-title{
+  color: #2b388f;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4px;
+}
+
 .interest-container {
   display: flex;
   align-items: baseline;

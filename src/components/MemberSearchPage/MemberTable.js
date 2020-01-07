@@ -71,9 +71,13 @@ const MemberTable = props => {
             <Row style={{ marginTop: 12, marginBottom: 12 }}>
               <Col span={12} style={{ textAlign: 'left' }}>
                 <Title level={4} style={{ margin: 0 }}>
-                  {`Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
-                    props.count.public
-                  } public members`}
+                  {props.count.public > props.membersPerPage
+                    ? `Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+                        props.count.public
+                      } public members`
+                    : `Showing ${props.count.public} public ${
+                        props.count.public < 2 ? 'member' : 'members'
+                      } `}
                 </Title>
               </Col>
               <Col span={12} style={{ textAlign: 'right' }}>
@@ -86,7 +90,7 @@ const MemberTable = props => {
           )
         }
         gutter={20}
-        style={{ color: '#343434' }} //TODO remove with Ant Design Theme
+        style={{ color: '#343434' }}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
@@ -104,13 +108,13 @@ const MemberTable = props => {
         renderItem={item => {
           const hasAddress = item.city || item.state || item.country;
           return (
-            <List.Item key={item._id} style={{ paddingBottom: 32, paddingTop: 32 }}>
+            <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
               <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
-                    <Avatar
-                        src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
-                        size={60}
-                    />
+                  <Avatar
+                    src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
+                    size={60}
+                  />
                   <div style={{ paddingTop: 10 }}>
                     {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
                   </div>

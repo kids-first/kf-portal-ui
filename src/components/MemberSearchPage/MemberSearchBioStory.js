@@ -1,8 +1,5 @@
 import React from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Typography } from 'antd';
-
-const { Title } = Typography;
 
 const regex = /<\/?em>/gi;
 
@@ -11,32 +8,27 @@ const MemberSearchBioStory = ({ bio, story }) => {
     <div>
       {bio && bio.length > 0 ? (
         <div style={{ color: 'inherit', paddingTop: 24, marginBottom: 0 }}>
-          <Title
-            className={'member-info-title'}
-            level={4}
-            style={{ marginBottom: 0, paddingBottom: 16 }}
-          >
-            Member Biography:
-          </Title>
-          <FormatLabel value={bio[0].replace(regex, '')} highLightValues={bio} key={1} index={1} />
+          <FormatLabel
+            value={bio[0].replace(regex, '')}
+            highLightValues={bio}
+            key={1}
+            index={1}
+            prepend={'Biography:'}
+            fullWidth={true}
+          />
         </div>
       ) : (
         ''
       )}
       {story && story.length > 0 ? (
-        <div>
-          <Title
-            className={'member-info-title'}
-            level={4}
-            style={{ marginBottom: 0, paddingTop: 24, paddingBottom: 16 }}
-          >
-            Member Story:
-          </Title>
+        <div style={{ color: 'inherit', paddingTop: 24, marginBottom: 0 }}>
           <FormatLabel
             value={story[0].replace(regex, '')}
             highLightValues={story}
             key={2}
             index={2}
+            prepend={'Story:'}
+            fullWidth={true}
           />
         </div>
       ) : (
