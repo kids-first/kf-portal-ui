@@ -12,11 +12,10 @@ import PropTypes from 'prop-types';
  * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
  */
 
-
 const regex = /<.+?>(.+?)<\/.+?>/g;
 const regexTag = /<\/?em>/gi;
 
-const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
+const FormatLabel = ({ value, highLightValues, classname = '', index, prepend }) => {
   if (!highLightValues) {
     return (
       <div key={index} className={`format-label ${classname}`} style={{ maxWidth: 350 }}>
@@ -33,7 +32,6 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
   const [head, ...tail] = highLightValues.filter(isHighlight);
 
   if (head) {
-
     const arr2 = head.split(regex);
 
     return (
@@ -43,6 +41,13 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
         style={{ maxWidth: 350, display: 'flex', whiteSpace: 'pre-wrap' }}
       >
         <span>
+          {prepend ? (
+            <span style={{ color: '#2b388f', fontWeight: 500, fontSize: 14, lineHeight: 1.4 }}>
+              {prepend}{' '}
+            </span>
+          ) : (
+            ''
+          )}
           {arr2.map((text, index) => {
             return index % 2 ? <b>{text}</b> : text;
           })}
@@ -60,6 +65,7 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
 
 FormatLabel.propTypes = {
   value: PropTypes.string,
+  prepend: PropTypes.string,
   highLightValues: PropTypes.array,
   classname: PropTypes.string,
   index: PropTypes.number.isRequired,
