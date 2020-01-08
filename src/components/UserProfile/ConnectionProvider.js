@@ -9,6 +9,7 @@ import OrcidIcon from 'icons/OrcidIcon';
 import { FACEBOOK, GOOGLE, ORCID } from 'common/constants';
 import gicon from 'assets/google-icon.png';
 import './style.css';
+import capitalize from 'lodash/capitalize';
 
 const { Text } = Typography;
 
@@ -37,7 +38,7 @@ const ConnectionProvider = props => {
     <Card className={'card'}>
       <React.Fragment>
         <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />
-        <Text> {`You are connected with ${loginProvider}`} </Text>
+        <Text> {`You are connected with ${capitalize(loginProvider)}`} </Text>
         {icons[loginProvider]}
         <Text> {` using this email address : ${userEmail}`} </Text>
       </React.Fragment>

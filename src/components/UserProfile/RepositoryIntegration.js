@@ -42,7 +42,7 @@ const RepositoryIntegration = () => {
               <img
                 src={kfFrameworkServicesLogo}
                 alt="Kids First Framework Services logo"
-                height="45px"
+                height="40px"
               />
             </a>
           }
@@ -52,7 +52,7 @@ const RepositoryIntegration = () => {
           fence={DCF}
           logo={
             <a href={dcfWebRoot} target="_blank" rel="noopener noreferrer">
-              <img src={dcfLogo} alt="Data Commons Framework Logo" height="45px" />
+              <img src={dcfLogo} alt="Data Commons Framework Logo" height="40px" />
             </a>
           }
           description={`Access select NCI controlled access data by connecting your account using your NIH login credentials.`}

@@ -52,7 +52,6 @@ const ProfileReadOnly = props => {
           <Col span={24}>
             <Text className={'section-text'}>My Bio</Text>
             <br />
-            <br />
             <Text className={'bio-story'}>{data.bio || bioMsgWhenEmpty}</Text>
             <Divider className={'profile-divider'} />
           </Col>
@@ -63,7 +62,6 @@ const ProfileReadOnly = props => {
           <Col span={24}>
             <Text className={'section-text'}>My Story</Text>
             <br />
-            <br />
             <Text className={'bio-story'}>{data.story || storyMsgWhenEmpty}</Text>
             <Divider className={'profile-divider'} />
           </Col>
@@ -73,7 +71,6 @@ const ProfileReadOnly = props => {
         <Row>
           <Col span={24}>
             <Text className={'section-text'}>Research Interests</Text>
-            <br />
             <br />
             {hasInterests(data) ? (
               <ResearchInterest interests={data.interests} />

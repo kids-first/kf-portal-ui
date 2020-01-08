@@ -15,7 +15,7 @@ const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) =
       <Header className={'up-header'}>
         <HeaderBannerContainer canEdit={false} />
       </Header>
-      <Layout>
+      <Layout className={'main-layout'}>
         <Content className={'vertical-offset horizontal-offset'}>
           <AboutMe
             canEdit={false}

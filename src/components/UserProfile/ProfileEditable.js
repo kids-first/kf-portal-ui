@@ -62,7 +62,6 @@ class ProfileEditable extends Component {
             <Col span={24}>
               <Text className={'section-text'}>My Bio</Text>
               <br />
-              <br />
               <Form.Item>
                 {getFieldDecorator('bio', {
                   initialValue: data.bio,
@@ -74,7 +73,6 @@ class ProfileEditable extends Component {
           <Row>
             <Col span={24}>
               <Text className={'section-text'}>My Story</Text>
-              <br />
               <br />
               <Form.Item>
                 {getFieldDecorator('story', {

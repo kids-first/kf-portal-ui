@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Tooltip } from 'antd';
-import './style.css';
+import { Input } from 'antd';
 
 //based on : https://ant.design/components/form/?locale=en-US#header
 class FindMeInput extends Component {
@@ -40,20 +39,13 @@ class FindMeInput extends Component {
     const { item } = this.props;
     const { inputVal } = this.state;
     return (
-      <div className={'fmi-main-wrapper'}>
-        <div>{item.icon}</div>
-        <div className={'fmi-icon-wrapper'}>
-          <Tooltip trigger={['focus']} title={item.label} placement="topLeft">
-            <Input
-              placeholder={item.placeHolder}
-              size={'large'}
-              value={inputVal}
-              type="text"
-              onChange={this.onChange}
-            />
-          </Tooltip>
-        </div>
-      </div>
+        <Input
+            placeholder={item.placeHolder}
+            size={'small'}
+            value={inputVal}
+            type="text"
+            onChange={this.onChange}
+        />
     );
   }
 }

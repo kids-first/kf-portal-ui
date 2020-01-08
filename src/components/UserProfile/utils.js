@@ -139,6 +139,7 @@ export const makeCommonCardPropsReadOnly = ({
     bodyStyle: style.cardBodyStyle,
     extra: canEdit ? (
       <Button
+        size={'small'}
         icon="edit"
         shape="round"
         onClick={onClickEditCb}
@@ -160,6 +161,7 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
     extra: (
       <Fragment>
         <Button
+          size={'small'}
           className={'extra-button'}
           shape="round"
           onClick={onClickCancelCb}
@@ -168,6 +170,7 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
           CANCEL
         </Button>
         <Button
+          size={'small'}
           className={'extra-button'}
           icon="check"
           shape="round"
