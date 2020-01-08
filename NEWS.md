@@ -29,6 +29,8 @@ It also fix the data release number in the footer and the bump on the login.
 - [#2158](https://github.com/kids-first/kf-portal-ui/issues/2158) Member page: Filter member search by interests or role
 - [#2185](https://github.com/kids-first/kf-portal-ui/issues/2185) Cohort Builder : Need to click twice on a menu element to open it 
 - [#2167](https://github.com/kids-first/kf-portal-ui/issues/2167) Add a loader while downloading a clinical data report 
+- [#9](https://github.com/kids-first/kf-api-portal-reports/issues/9) Add and reorder columns to Diagnoses / Histological Diagnoses tabs 
+
 
 ### Technical / Other changes
 - [#2017](https://github.com/kids-first/kf-portal-ui/issues/2017) Security : upgrade axios 
