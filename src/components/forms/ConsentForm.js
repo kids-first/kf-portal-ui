@@ -35,7 +35,7 @@ const Consent = compose(
   }),
 )(({ disableNextStep, accepted, setAccepted }) => {
   return (
-    <Fragment>
+    <div className={'terms-paragraph'}>
       <H3>{'Read and consent to our terms and conditions'}</H3>
       <Column className="consent-container">
         <div className="terms">
@@ -120,6 +120,7 @@ const Consent = compose(
             setAccepted(active);
             disableNextStep(!active);
           }}
+          className={''}
         >
           <input type="checkbox" checked={accepted} />
           <label>
@@ -130,7 +131,7 @@ const Consent = compose(
           </label>
         </CheckboxBubble>
       </Column>
-    </Fragment>
+    </div>
   );
 });
 
