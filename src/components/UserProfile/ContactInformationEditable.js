@@ -49,7 +49,7 @@ class ContactInformationEditable extends Component {
               initialValue: data.title,
               rules: [{ required: true }],
             })(
-              <Select size={'large'}>
+              <Select size={'small'}>
                 <Option value="">N/A</Option>
                 <Option value="mr">Mr.</Option>
                 <Option value="ms">Ms.</Option>
@@ -63,7 +63,7 @@ class ContactInformationEditable extends Component {
               initialValue: data.roles[0],
               rules: [{ required: true }],
             })(
-              <Select size={'large'}>
+              <Select size={'small'}>
                 {ROLES.map(({ type, displayName }) => (
                   <Option value={type} key={type}>
                     {displayName}
@@ -72,60 +72,62 @@ class ContactInformationEditable extends Component {
               </Select>,
             )}
           </Form.Item>
-          <Form.Item label="First Name">
-            {getFieldDecorator('firstName', {
-              initialValue: data.firstName,
-              rules: [{ required: true, message: 'first name is required' }],
-            })(<Input size="large" />)}
-          </Form.Item>
-          <Form.Item label="Last Name">
-            {getFieldDecorator('lastName', {
-              initialValue: data.lastName,
-              rules: [{ required: true, message: 'last name is required' }],
-            })(<Input size="large" />)}
-          </Form.Item>
-          <Form.Item label="Suborganization/Department">
-            {getFieldDecorator('department', {
-              initialValue: data.department,
-              rules: [{ required: false }],
-            })(<Input size="large" />)}
-          </Form.Item>
-          {showInstitution(data) && (
-            <Fragment>
-              <Form.Item label="Institution/Organization">
-                {getFieldDecorator('institution', {
-                  initialValue: data.institution,
-                  rules: [{ required: false }],
-                })(<Input size="large" />)}
-              </Form.Item>
-              <Form.Item label="Institutional Email Address">
-                {getFieldDecorator('institutionalEmail', {
-                  initialValue: data.institutionalEmail,
-                  rules: [{ required: false }],
-                })(<Input size="large" />)}
-              </Form.Item>
-            </Fragment>
-          )}
-          {isResearcher(data) && (
-            <Form.Item label="Job Title">
-              {getFieldDecorator('jobTitle', {
-                initialValue: data.jobTitle,
-                rules: [{ required: false }],
-              })(<Input size="large" />)}
+          <Input.Group>
+            <Form.Item label="First Name">
+              {getFieldDecorator('firstName', {
+                initialValue: data.firstName,
+                rules: [{ required: true, message: 'first name is required' }],
+              })(<Input size="small" />)}
             </Form.Item>
-          )}
-          <Form.Item label="Phone">
-            {getFieldDecorator('phone', {
-              initialValue: data.phone,
-              rules: [{ required: false }],
-            })(<Input size="large" />)}
-          </Form.Item>
-          <Form.Item label="ERA Commons ID">
-            {getFieldDecorator('eraCommonsID', {
-              initialValue: data.eraCommonsID,
-              rules: [{ required: false }],
-            })(<Input size="large" />)}
-          </Form.Item>
+            <Form.Item label="Last Name">
+              {getFieldDecorator('lastName', {
+                initialValue: data.lastName,
+                rules: [{ required: true, message: 'last name is required' }],
+              })(<Input size="small" />)}
+            </Form.Item>
+            <Form.Item label="Suborganization/Department">
+              {getFieldDecorator('department', {
+                initialValue: data.department,
+                rules: [{ required: false }],
+              })(<Input size="small" />)}
+            </Form.Item>
+            {showInstitution(data) && (
+              <Fragment>
+                <Form.Item label="Institution/Organization">
+                  {getFieldDecorator('institution', {
+                    initialValue: data.institution,
+                    rules: [{ required: false }],
+                  })(<Input size="small" />)}
+                </Form.Item>
+                <Form.Item label="Institutional Email Address">
+                  {getFieldDecorator('institutionalEmail', {
+                    initialValue: data.institutionalEmail,
+                    rules: [{ required: false }],
+                  })(<Input size="small" />)}
+                </Form.Item>
+              </Fragment>
+            )}
+            {isResearcher(data) && (
+              <Form.Item label="Job Title">
+                {getFieldDecorator('jobTitle', {
+                  initialValue: data.jobTitle,
+                  rules: [{ required: false }],
+                })(<Input size="small" />)}
+              </Form.Item>
+            )}
+            <Form.Item label="Phone">
+              {getFieldDecorator('phone', {
+                initialValue: data.phone,
+                rules: [{ required: false }],
+              })(<Input size="small" />)}
+            </Form.Item>
+            <Form.Item label="ERA Commons ID">
+              {getFieldDecorator('eraCommonsID', {
+                initialValue: data.eraCommonsID,
+                rules: [{ required: false }],
+              })(<Input size="small" />)}
+            </Form.Item>
+          </Input.Group>
         </div>
         <div>
           <Form.Item label={'Search Location'}>

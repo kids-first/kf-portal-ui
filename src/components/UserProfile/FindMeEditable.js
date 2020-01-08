@@ -39,8 +39,11 @@ function FindMeEditable(props) {
       </Row>
       {socialIcons.map(item => {
         return (
-          <Row key={item.id}>
-            <Form.Item>
+          <Row key={item.id} type={'flex'} align={'middle'}>
+            <div className={'fmi-icon-wrapper'}>
+              {item.icon}
+            </div>
+            <Form.Item label={item.label}>
               {getFieldDecorator(item.id, {
                 initialValue: { inputVal: data[item.id], protocol: '' },
                 rules: [

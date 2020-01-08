@@ -232,6 +232,7 @@ const FileRepo = ({
                                 <DownloadIcon
                                   fill={theme.greyScale3}
                                   width={12}
+                                  height={18}
                                   style={{ marginRight: '9px' }}
                                 />
                                 {'Export TSV'}
