@@ -210,54 +210,69 @@ export default enhance(
             </Column>
             {touched.roles && errors.roles && <div>{errors.roles}</div>}
           </Row>
-          <Row mt={2}>
-            <Field
-              type="checkbox"
-              value={values.acceptedKfOptIn}
-              checked={values.acceptedKfOptIn}
-              id="acceptedKfOptIn"
-              name="acceptedKfOptIn"
-            />
-            <label className="checkbox-label" htmlFor="acceptedKfOptIn">
-              <Paragraph lineHeight="26px" fontSize="14px">
-                I would like to receive the Kids First Data Resource Center quarterly newsletter to
-                get the latest DRC news including recent study updates, new investigators and
-                partners added to the effort.
-              </Paragraph>
-            </label>
-          </Row>
-          <Row mt={2} pb={2}>
-            <Field
-              type="checkbox"
-              value={values.acceptedNihOptIn}
-              checked={values.acceptedNihOptIn}
-              id="acceptedNihOptIn"
-              name="acceptedNihOptIn"
-            />
-            <label className="checkbox-label" htmlFor="acceptedNihOptIn">
-              <Paragraph lineHeight="26px" fontSize="14px">
-                I would like to receive updates from the NIH Kids First program including funding
-                updates and news about the program.
-              </Paragraph>
-            </label>
-          </Row>
-          <Row mt={2}>
-            <Field
-              type="checkbox"
-              value={values.acceptedDatasetSubscriptionKfOptIn}
-              checked={values.acceptedDatasetSubscriptionKfOptIn}
-              id="acceptedDatasetSubscriptionKfOptIn"
-              name="acceptedDatasetSubscriptionKfOptIn"
-            />
-            <label className="checkbox-label" htmlFor="acceptedDatasetSubscriptionKfOptIn">
-              <Paragraph lineHeight="26px" fontSize="14px">
-                The Gabriella Miller Kids First Data Resource Center is constantly improving the
-                availability and quality of new datasets added to the Data Resource Portal. Sign up
-                below to opt-in to receive updates and announcements when new datasets are available
-                in the Portal.
-              </Paragraph>
-            </label>
-          </Row>
+          <div className={'checkbox-container'}>
+            <Column>
+              <Field
+                type="checkbox"
+                value={values.acceptedKfOptIn}
+                checked={values.acceptedKfOptIn}
+                id="acceptedKfOptIn"
+                name="acceptedKfOptIn"
+                className={'field-checkbox'}
+              />
+            </Column>
+            <Column>
+              <label className="checkbox-label" htmlFor="acceptedKfOptIn">
+                <Paragraph lineHeight="26px" fontSize="14px">
+                  I would like to receive the Kids First Data Resource Center quarterly newsletter
+                  to get the latest DRC news including recent study updates, new investigators and
+                  partners added to the effort.
+                </Paragraph>
+              </label>
+            </Column>
+          </div>
+          <div className={'checkbox-container'}>
+            <Column>
+              <Field
+                type="checkbox"
+                value={values.acceptedNihOptIn}
+                checked={values.acceptedNihOptIn}
+                id="acceptedNihOptIn"
+                name="acceptedNihOptIn"
+                className={'field-checkbox'}
+              />
+            </Column>
+            <Column>
+              <label className="checkbox-label" htmlFor="acceptedNihOptIn">
+                <Paragraph lineHeight="26px" fontSize="14px">
+                  I would like to receive updates from the NIH Kids First program including funding
+                  updates and news about the program.
+                </Paragraph>
+              </label>
+            </Column>
+          </div>
+          <div className={'checkbox-container'}>
+            <Column>
+              <Field
+                type="checkbox"
+                value={values.acceptedDatasetSubscriptionKfOptIn}
+                checked={values.acceptedDatasetSubscriptionKfOptIn}
+                id="acceptedDatasetSubscriptionKfOptIn"
+                name="acceptedDatasetSubscriptionKfOptIn"
+                className={'field-checkbox'}
+              />
+            </Column>
+            <Column>
+              <label className="checkbox-label" htmlFor="acceptedDatasetSubscriptionKfOptIn">
+                <Paragraph lineHeight="26px" fontSize="14px">
+                  The Gabriella Miller Kids First Data Resource Center is constantly improving the
+                  availability and quality of new datasets added to the Data Resource Portal. Sign
+                  up below to opt-in to receive updates and announcements when new datasets are
+                  available in the Portal.
+                </Paragraph>
+              </label>
+            </Column>
+          </div>
         </form>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>

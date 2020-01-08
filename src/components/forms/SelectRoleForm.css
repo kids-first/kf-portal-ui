@@ -37,3 +37,11 @@
   font-size: 14px;
   margin-left: 10px;
 }
+
+.selectRoleForm-container .checkbox-container {
+  display: flex;
+}
+
+.field-checkbox {
+  margin-top: 5px;
+}

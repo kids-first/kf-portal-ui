@@ -5,7 +5,7 @@
 
 .consent-container .terms {
   font-family: Open Sans, sans-serif;
-  height: 250px;
+  height: 300px;
   overflow-y: scroll;
 }
 
@@ -17,4 +17,9 @@
 .consent-container .formParagraph {
   line-height: 26px;
   font-size: 14px;
+}
+
+.terms-paragraph {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
