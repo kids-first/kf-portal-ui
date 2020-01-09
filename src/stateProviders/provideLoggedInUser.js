@@ -15,8 +15,6 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
-import { store } from '../store';
-import { updateLoggedInUser } from '../store/actionCreators/user';
 
 const setEgoTokenCookie = token => {
   const { exp } = jwtDecode(token);
@@ -83,39 +81,38 @@ export default provideState({
     },
     setUser: (effects, { api, egoGroups, ...user }) => {
       return getAllFieldNamesPromise(api)
-        .then(({ data }) => {
-          return get(data, '__type.fields', [])
-            .filter(field => field && field.name !== 'sets')
-            .map(field => field.name);
-        })
-        .then(fields => state => {
-          const userRole = user.roles ? user.roles[0] : null;
-          const userRoleProfileFields =
-            userRole && userRole !== 'research'
-              ? without(fields, 'institution', 'jobTitle')
-              : fields;
-          const profile = pick(omit(user, 'sets'), userRoleProfileFields);
-          const filledFields = Object.values(profile || {}).filter(
-            v => (isArray(v) && v.length) || (!isArray(v) && v),
-          );
-          const percentageFilled = filledFields.length / userRoleProfileFields.length;
-          if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.user.profile,
-              action: TRACKING_EVENTS.actions.completedProfile,
-              label: user.roles[0],
-            });
-          }
-          trackUserSession({ ...user, egoGroups });
-          store.dispatch(updateLoggedInUser(user)); //sadly, there exists at least 2 sources for user : redux store + this provider.
-          return {
-            ...state,
-            isLoadingUser: false,
-            loggedInUser: user,
-            percentageFilled,
-          };
-        })
-        .catch(err => console.log(err));
+          .then(({ data }) => {
+            return get(data, '__type.fields', [])
+                .filter(field => field && field.name !== 'sets')
+                .map(field => field.name);
+          })
+          .then(fields => state => {
+            const userRole = user.roles ? user.roles[0] : null;
+            const userRoleProfileFields =
+                userRole && userRole !== 'research'
+                    ? without(fields, 'institution', 'jobTitle')
+                    : fields;
+            const profile = pick(omit(user, 'sets'), userRoleProfileFields);
+            const filledFields = Object.values(profile || {}).filter(
+                v => (isArray(v) && v.length) || (!isArray(v) && v),
+            );
+            const percentageFilled = filledFields.length / userRoleProfileFields.length;
+            if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
+              trackUserInteraction({
+                category: TRACKING_EVENTS.categories.user.profile,
+                action: TRACKING_EVENTS.actions.completedProfile,
+                label: user.roles[0],
+              });
+            }
+            trackUserSession({ ...user, egoGroups });
+            return {
+              ...state,
+              isLoadingUser: false,
+              loggedInUser: user,
+              percentageFilled,
+            };
+          })
+          .catch(err => console.log(err));
     },
     addUserSet: (effects, { api, ...set }) => state => {
       const {
