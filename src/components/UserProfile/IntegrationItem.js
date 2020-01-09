@@ -1,4 +1,4 @@
-import { Card, Row, Typography, Button } from 'antd';
+import { Typography, Button } from 'antd';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import IntegrationItemErrorRow from './IntegrationItemErrorRow';
@@ -36,8 +36,9 @@ const IntegrationItem = props => {
     actionButtonWhenConnected,
   } = props;
   const { onClick, label, icon } = actionButtonWhenConnected;
+
   return (
-    <Card className={'ii-card'}>
+    <Fragment>
       {hasAtLeastOneError(errorConnect, errorDisconnect) ? (
         <IntegrationItemErrorRow
           errorConnect={errorConnect}
@@ -49,29 +50,39 @@ const IntegrationItem = props => {
         />
       ) : (
         <Fragment>
-          <Row>{logo}</Row>
-          <Row className={'ii-description-row'}>
-            <Paragraph>{description}</Paragraph>
-          </Row>
-          <Row type={'flex'} justify={'space-between'}>
-            <Button
-              shape="round"
-              loading={loading}
-              type={connected && !loading ? 'danger' : 'primary'}
-              onClick={connected ? onClickDisconnectCb : onClickConnectCb}
-              icon={connected ? 'disconnect' : 'api'}
-            >
-              {generateLabelForConnect({ loading, connected })}
-            </Button>
-            {connected && (
-              <Button shape="round" className={'ii-button'} onClick={onClick} icon={icon}>
-                {label}
-              </Button>
-            )}
-          </Row>
+          <div className={'ii-row'}>
+            <div>{logo}</div>
+            <div>
+              <Paragraph>{description}</Paragraph>
+            </div>
+            <div className={'ii-button-container'}>
+                <Button
+                    size={'small'}
+                    shape="round"
+                    className={'ii-button-common ii-connect-button'}
+                    loading={loading}
+                    type={connected && !loading ? 'danger' : 'primary'}
+                    onClick={connected ? onClickDisconnectCb : onClickConnectCb}
+                    icon={connected ? 'disconnect' : 'api'}
+                >
+                    {generateLabelForConnect({ loading, connected })}
+                </Button>
+                {connected && (
+                    <Button
+                        shape="round"
+                        className={'ii-button-common ii-button-action'}
+                        onClick={onClick}
+                        icon={icon}
+                        size={'small'}
+                    >
+                        {label}
+                    </Button>
+                )}
+            </div>
+          </div>
         </Fragment>
       )}
-    </Card>
+    </Fragment>
   );
 };
 

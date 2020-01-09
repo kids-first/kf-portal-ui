@@ -13,13 +13,13 @@ const { Paragraph } = Typography;
 const RepositoryIntegration = () => {
   return (
     <Card
-        {...{
-          ...makeCommonCardPropsReadOnly({
-            title: ' Data Repository Integrations',
-            canEdit: false,
-            isProfileUpdating: false,
-          }),
-        }}
+      {...{
+        ...makeCommonCardPropsReadOnly({
+          title: ' Data Repository Integrations',
+          canEdit: false,
+          isProfileUpdating: false,
+        }),
+      }}
     >
       <Row type={'flex'}>
         <Paragraph>
@@ -34,7 +34,7 @@ const RepositoryIntegration = () => {
         </Paragraph>
         <Divider className={'ri-divider'} />
       </Row>
-      <Row type={'flex'} justify={'space-around'}>
+      <div>
         <Integration
           fence={GEN3}
           logo={
@@ -48,6 +48,7 @@ const RepositoryIntegration = () => {
           }
           description={`Access all released Kids First controlled access data by connecting your account using your NIH login credentials.`}
         />
+        <Divider />
         <Integration
           fence={DCF}
           logo={
@@ -57,7 +58,7 @@ const RepositoryIntegration = () => {
           }
           description={`Access select NCI controlled access data by connecting your account using your NIH login credentials.`}
         />
-      </Row>
+      </div>
     </Card>
   );
 };

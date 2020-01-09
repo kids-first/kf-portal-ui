@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Divider, Row, Typography } from 'antd';
+import { Card, Divider, Typography } from 'antd';
 import FindMeReadOnly from './FindMeReadOnly';
 import {
   extractFindMeFromProfile,
@@ -38,7 +38,6 @@ const RESEARCHER_SPECIFIC_PROPERTIES = [
 ];
 const COMMON_PROPERTIES = [
   'email',
-  'institution',
   'zip',
   'phone',
   'addressLine1',
@@ -61,7 +60,6 @@ const hasData = data => {
 
 const ContactReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
-
   if (!hasData(data)) {
     return (
       <Card
@@ -105,7 +103,7 @@ const ContactReadOnly = props => {
         <div className={'find-me-col-contact-info'}>
           {showWhenHasDataOrCanEdit(data.email, canEdit) && (
             <Fragment>
-              <Row type={'flex'} justify="space-between" align="bottom">
+              <div className={'contact-grid'}>
                 <Text className={'contact-info-title'}>{'Email'}</Text>
                 <Text className={generateContactValueStyle(data.email)}>
                   {Boolean(data.email) ? (
@@ -114,39 +112,39 @@ const ContactReadOnly = props => {
                     EDIT_CARD_TO_ADD_DETAILS
                   )}
                 </Text>
-              </Row>
-              <Divider className={'contact.divider'} />
+              </div>
+              <Divider className={'contact-divider'} />
             </Fragment>
           )}
           {showInstitution(data) && (
             <Fragment>
               {showWhenHasDataOrCanEdit(data.institution, canEdit) && (
                 <Fragment>
-                  <Row type={'flex'} justify="space-between" align="bottom">
+                  <div className={'contact-grid'}>
                     <Text className={'contact-info-title'}>
                       {getInstitutionLabelGivenRole(data)}
                     </Text>
                     <Text className={generateContactValueStyle(data.institution)}>
                       {data.institution || EDIT_CARD_TO_ADD_DETAILS}
                     </Text>
-                  </Row>
+                  </div>
                   <Divider className={'contact-divider'} />
                 </Fragment>
               )}
               {showWhenHasDataOrCanEdit(data.department, canEdit) && (
                 <Fragment>
-                  <Row type={'flex'} justify="space-between" align="bottom">
+                  <div className={'contact-grid'}>
                     <Text className={'contact-info-title'}>{'Suborganization/Department'}</Text>
                     <Text className={generateContactValueStyle(data.department)}>
                       {data.department || EDIT_CARD_TO_ADD_DETAILS}
                     </Text>
-                  </Row>
+                  </div>
                   <Divider className={'contact-divider'} />
                 </Fragment>
               )}
               {showWhenHasDataOrCanEdit(data.institutionalEmail, canEdit) && (
                 <Fragment>
-                  <Row type={'flex'} justify="space-between" align="bottom">
+                  <div className={'contact-grid'}>
                     <Text className={'contact-info-title'}>{'Institutional Email'}</Text>
                     <Text className={generateContactValueStyle(data.institutionalEmail)}>
                       {Boolean(data.institutionalEmail) ? (
@@ -155,7 +153,7 @@ const ContactReadOnly = props => {
                         EDIT_CARD_TO_ADD_DETAILS
                       )}
                     </Text>
-                  </Row>
+                  </div>
                   <Divider className={'contact-divider'} />
                 </Fragment>
               )}
@@ -163,45 +161,45 @@ const ContactReadOnly = props => {
           )}
           {showWhenHasDataOrCanEdit(data.jobTitle, canEdit) && isResearcher(data) && (
             <Fragment>
-              <Row type={'flex'} justify="space-between" align="bottom">
+              <div className={'contact-grid'}>
                 <Text className={'contact-info-title'}>{'Job Title'}</Text>
                 <Text className={generateContactValueStyle(data.jobTitle)}>
                   {data.jobTitle || EDIT_CARD_TO_ADD_DETAILS}
                 </Text>
-              </Row>
+              </div>
               <Divider className={'contact-divider'} />
             </Fragment>
           )}
           {showWhenHasDataOrCanEdit(mergedAddresses, canEdit) && (
             <Fragment>
-              <Row type={'flex'} justify="space-between" align="bottom">
+              <div className={'contact-grid'}>
                 <Text className={'contact-info-title'}>{'Address'}</Text>
                 <Text className={generateContactValueStyle(mergedAddresses)}>
                   {mergedAddresses || EDIT_CARD_TO_ADD_DETAILS}
                 </Text>
-              </Row>
+              </div>
               <Divider className={'contact-divider'} />
             </Fragment>
           )}
           {showWhenHasDataOrCanEdit(data.zip, canEdit) && (
             <Fragment>
-              <Row type={'flex'} justify="space-between" align="bottom">
+              <div className={'contact-grid'}>
                 <Text className={'contact-info-title'}>{'Zip'}</Text>
                 <Text className={generateContactValueStyle(data.zip)}>
                   {data.zip || EDIT_CARD_TO_ADD_DETAILS}
                 </Text>
-              </Row>
+              </div>
               <Divider className={'contact-divider'} />
             </Fragment>
           )}
           {showWhenHasDataOrCanEdit(data.phone, canEdit) && (
             <Fragment>
-              <Row type={'flex'} justify="space-between" align="bottom">
+              <div className={'contact-grid'}>
                 <Text className={'contact-info-title'}>{'Phone'}</Text>
                 <Text className={generateContactValueStyle(data.phone)}>
                   {data.phone || EDIT_CARD_TO_ADD_DETAILS}
                 </Text>
-              </Row>
+              </div>
               <Divider className={'contact-divider'} />
             </Fragment>
           )}

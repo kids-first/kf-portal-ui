@@ -23,7 +23,7 @@
 }
 
 .contact-divider {
-  margin: 18px 0;
+  margin: 10px 0;
 }
 
 [class~='contact-divider']:last-of-type {
@@ -44,12 +44,12 @@
 
 .find-me-social-icons-wrapper {
   /* border-left: 1px solid rgb(237, 238, 241);*/
-  padding-left: 96px;
+  margin-left: 20px;
 }
 
 .find-me-social-icons-wrapper-edit {
   /*border-left: 1px solid rgb(237, 238, 241);*/
-  padding-left: 96px;
+  margin-left: 20px;
 }
 
 .find-me-text-if-empty {
@@ -66,15 +66,20 @@
   display: flex;
 }
 
+
 .find-me-col-contact-info {
-  width: 65%;
-  margin-right: 50px;
+  flex: 1;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .find-me-col-social {
-  width: 35%;
   border-left: 1px solid rgb(237, 238, 241);
-  margin-left: 50px;
+  width: 35%;
+  margin-left: 15px;
 }
 
 .find-me-on-edit-label {
@@ -105,8 +110,7 @@
 .ri-icon {
   width: 16px;
   height: 16px;
-  color: rgb(57, 69, 146);
-  opacity: 50%;
+  color: rgba(57, 69, 146, 0.5);
   padding-right: 25px;
 }
 
@@ -141,12 +145,6 @@
   line-height: 21px;
 }
 
-ri-close-icon {
-  color: rgb(144, 38, 142);
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 .ri-check-icon {
   color: green;
 }
@@ -156,33 +154,51 @@ ri-close-icon {
   padding-bottom: 20px;
 }
 
+@media (min-width: 1680px) {
+  .card-container {
+    width: 70%;
+  }
+}
+
+@media (max-width: 1679px) {
+  .card-container {
+    width: 100%;
+  }
+}
+
 /** integration item (ii) */
 .ii-card {
   max-width: 500px;
   border-radius: 10px;
 }
 
-.ii-description-row {
-  padding-top: 8px;
-  padding-bottom: 8px;
+.ii-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 300px;
+  grid-gap: 10px;
 }
 
-.ii-button {
+.ii-button-container {
+  display: grid;
+}
+
+.ii-connect-button {
+  margin-bottom: 5px;
+}
+
+.ii-button-common {
+  justify-self: center;
+  min-width: 150px;
+}
+
+.ii-button-action {
   color: white;
   background-color: #90278e;
 }
 
-.ii-error-msg-row {
-  padding-top: 24px;
-  padding-bottom: 24px;
-}
-
-.ii-error-button-row {
-  padding-top: 10px;
-}
-
 .ii-error-button {
   margin-right: 5px;
+  margin-top: 15px;
 }
 
 /** header */
@@ -331,8 +347,12 @@ ri-close-icon {
 }
 
 .horizontal-offset {
-  padding-left: 115px;
-  padding-right: 115px;
+  margin-left: 115px;
+  margin-right: 115px;
+}
+
+.content-about-me-settings {
+  max-width: 1300px;
 }
 
 /* find me input */
@@ -352,8 +372,9 @@ ri-close-icon {
 }
 
 .contact-info-title {
-  color: rgba(57, 69, 146, 0.7);
+  color: rgba(57, 69, 146);
   font-size: 14px;
+  font-weight: bold;
 }
 
 .menu-border-right-override.ant-menu-vertical .ant-menu-item::after,

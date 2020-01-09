@@ -145,7 +145,7 @@ function Integration(props) {
         actionCb: viewDetails,
         actionCbParam: { fence, fenceUser: get(fenceConnections, fence, {}), effects },
         buttonIcon: 'book',
-        buttonLabel: 'Authorized studies',
+        buttonLabel: 'View studies',
       }}
       connection={{
         connectCb: connect,
