@@ -16,7 +16,7 @@ const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) =
         <HeaderBannerContainer canEdit={false} />
       </Header>
       <Layout className={'main-layout'}>
-        <Content className={'vertical-offset horizontal-offset'}>
+        <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
           <AboutMe
             canEdit={false}
             profile={profile}
@@ -113,7 +113,7 @@ function UserProfilePage(props) {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Content className={'vertical-offset horizontal-offset'}>
+        <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
           {isSettingsSelected ? (
             <Settings userEmail={profile.email} />
           ) : (

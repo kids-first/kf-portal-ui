@@ -38,6 +38,8 @@ const ProfileReadOnly = props => {
     );
   }
 
+  const hasInterestBlock = hasInterests(data) || canEdit;
+
   return (
     <Card
       {...makeCommonCardPropsReadOnly({
@@ -53,7 +55,9 @@ const ProfileReadOnly = props => {
             <Text className={'section-text'}>My Bio</Text>
             <br />
             <Text className={'bio-story'}>{data.bio || bioMsgWhenEmpty}</Text>
-            <Divider className={'profile-divider'} />
+            {(hasInterestBlock || showWhenHasDataOrCanEdit(data.story, canEdit)) && (
+              <Divider className={'profile-divider'} />
+            )}
           </Col>
         </Row>
       )}
@@ -63,11 +67,11 @@ const ProfileReadOnly = props => {
             <Text className={'section-text'}>My Story</Text>
             <br />
             <Text className={'bio-story'}>{data.story || storyMsgWhenEmpty}</Text>
-            <Divider className={'profile-divider'} />
+            {hasInterestBlock && <Divider className={'profile-divider'} />}
           </Col>
         </Row>
       )}
-      {(hasInterests(data) || canEdit) && (
+      {hasInterestBlock && (
         <Row>
           <Col span={24}>
             <Text className={'section-text'}>Research Interests</Text>

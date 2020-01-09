@@ -59,7 +59,7 @@ function CavaticaIntegration(props) {
         actionCb: edit,
         actionCbParam: { effects },
         buttonIcon: 'edit',
-        buttonLabel: 'Edit',
+        buttonLabel: 'Settings',
       }}
       connection={{
         connectCb: connect,

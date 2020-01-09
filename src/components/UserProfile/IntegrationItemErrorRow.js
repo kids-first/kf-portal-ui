@@ -53,13 +53,10 @@ const IntegrationItemErrorRow = props => {
   });
   return (
     <Fragment>
-      <Row type={'flex'} align={'middle'} justify={'center'} className={'ii-error-msg-row'}>
-        <Text type="danger">The following error occurred :</Text>
+      <Row type={'flex'} align={'middle'} justify={'center'}>
+        <Text type="danger">The following error occurred : {errorMsg}</Text>
       </Row>
-      <Row type={'flex'} align={'middle'} justify={'center'} className={'ii-error-msg-row'}>
-        <Text>{errorMsg}</Text>
-      </Row>
-      <Row type={'flex'} align={'middle'} justify={'center'} className={'ii-error-button-row'}>
+      <Row type={'flex'} align={'middle'} justify={'center'}>
         <Button shape="round" onClick={onClick} key={'errorButton'} className={'ii-error-button'}>
           {buttonLabel}
         </Button>

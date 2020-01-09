@@ -15,7 +15,8 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           align={'middle'}
           type={'flex'}
           justify={'space-between'}
-          className={`${userProfileBackground(profile)} hd-main-row`}
+          style={userProfileBackground(profile)}
+          className={`hd-main-row`}
       >
         <div className={'hd-user-info-wrapper'}>
           <div className={'hd-profile-wrapper'}>

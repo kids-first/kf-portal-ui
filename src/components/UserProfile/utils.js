@@ -1,5 +1,4 @@
 import { get } from 'lodash';
-import { css } from 'emotion';
 import { ROLES } from 'common/constants';
 import React, { Fragment } from 'react';
 import { SocialIcon } from 'react-social-icons';
@@ -92,17 +91,18 @@ export const userProfileBackground = (
   const role = ROLES.find(x => x.type === get(profile, 'roles[0]', '')) || {};
   const banner = get(role, 'banner', '');
   const profileColors = get(role, 'profileColors', {});
-  return css`
-    background-position-x: right;
-    background-repeat: no-repeat;
-    background-image: ${showBanner ? `url(${banner}), ` : ``}
+  return {
+    backgroundPositionX: 'right',
+    backgroundRepeat: 'no-repeat',
+    backgroundImage: ` ${showBanner ? `url(${banner}), ` : ``}
       linear-gradient(
         to ${gradientDirection},
         ${profileColors.gradientDark} 33%,
         ${profileColors.gradientMid} 66%,
         ${profileColors.gradientLight}
-      );
-  `;
+      )`
+
+  };
 };
 
 export const extractFindMeFromProfile = (profile = {}) => {
@@ -135,6 +135,7 @@ export const makeCommonCardPropsReadOnly = ({
   return {
     loading: isProfileUpdating,
     title: <Text className={'header-title'}>{title}</Text>,
+    className: 'card-container',
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyle,
     extra: canEdit ? (
@@ -155,7 +156,7 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
   return {
     loading: isProfileUpdating,
     title: <Text className={'header-title'}>{title}</Text>,
-    className: '',
+    className: 'card-container',
     headStyle: style.cardHeadStyle,
     bodyStyle: style.cardBodyStyleWhenEditing,
     extra: (
