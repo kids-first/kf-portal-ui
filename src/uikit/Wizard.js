@@ -1,42 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compose, withState, withPropsOnChange, withHandlers } from 'recompose';
+import { compose, withHandlers, withPropsOnChange, withState } from 'recompose';
 import { withRouter } from 'react-router';
-import cx from 'classnames';
 
 import { trackPageView } from 'services/analyticsTracking';
 import Column from 'uikit/Column';
 
-import './Wizard.css';
+import { Divider, Steps } from 'antd';
 
-const WizardProgress = ({ index, steps, setIndex }) => {
+const { Step } = Steps;
+
+const WizardProgress = ({ index, steps }) => {
   return (
-    <div className="wizard-progress-content">
-      {steps
-        .map((step, i) => ({
-          ...step,
-          first: i === 0,
-          last: i === steps.length - 1,
-          past: i < index,
-          current: i === index,
-          future: i > index,
-          other: i !== index,
-        }))
-        .map(({ title, inactive, first, last, past, current, future, other }, i) => (
-          <div
-            className={`wizard-step ${cx({ inactive, first, last, past, current, future, other })}`}
-            key={i}
-          >
-            <div
-              onClick={() => past && (steps[i] || { canGoBack: false }).canGoBack && setIndex(i)}
-              key={title}
-              className="progress-bar"
-            >
-              <div className="progress-bar-step">{i + 1}</div>
-            </div>
-            <div className="progress-bar-step-title">{title}</div>
-          </div>
+    <div style={{ width: '100%' }}>
+      <Steps current={index}>
+        {steps.map(item => (
+          <Step key={item.title} title={item.title} />
         ))}
+      </Steps>
+      <Divider />
     </div>
   );
 };

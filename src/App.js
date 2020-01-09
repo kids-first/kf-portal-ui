@@ -187,7 +187,7 @@ const App = compose(
                     backgroundImage={scienceBgPath}
                     logo={logo}
                     Component={Join}
-                    sideImage={joinImage}
+                    sideImagePath={joinImage}
                     {...props}
                   />
                 </ApiContext.Provider>
