@@ -27,7 +27,7 @@ const toggles = Array.from(Object.entries(process.env))
   .filter(env => env[0].startsWith(featureTogglePrefix))
   .reduce(
     (allToggles, toggle) => {
-      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[1]);
+      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0], toggle[1]);
       return allToggles;
     },
     {
