@@ -104,7 +104,7 @@ const CavaticaConnectModal = ({
           <div className="stepText">
             <Paragraph>
               You will need to retrieve your authentication token from the Cavatica{' '}
-              <ExternalLink href={`${cavaticaWebRoot}/developer#token`}>
+              <ExternalLink href={`${cavaticaWebRoot}developer#token`}>
                 Developer Dashboard
               </ExternalLink>
               . From the Dashboard, click on the "Auth Token" tab.
