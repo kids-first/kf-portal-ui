@@ -14,7 +14,6 @@ import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { SQONdiff } from 'components/Utils';
 import { registerModal } from '../../Modal/modalFactory';
-import { isFeatureEnabled } from 'common/featuresToggles';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { openModal } from '../../../store/actionCreators/ui/modalComponent';
@@ -231,7 +230,6 @@ export default class Categories extends React.Component {
         >
           <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>
-        {isFeatureEnabled('searchByIds') && (
           <ActionCategory
             title="Upload IDs"
             color={theme.uploadYellow}
@@ -239,7 +237,6 @@ export default class Categories extends React.Component {
           >
             <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
           </ActionCategory>
-        )}
       </Row>
     );
   }
