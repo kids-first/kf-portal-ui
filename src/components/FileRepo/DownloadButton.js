@@ -29,7 +29,6 @@ import {
   familyClinicalDataReport,
   biospecimenDataReport,
 } from 'services/reports';
-import { isFeatureEnabled } from 'common/featuresToggles';
 import { displayError } from 'store/actionCreators/errors';
 import { styleComponent } from 'components/Utils';
 
@@ -74,7 +73,7 @@ const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
   trackDownload('Clinical (Participant)');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
+  if (isFileRepo ) {
     const { participantIds } = await familyMemberAndParticipantIds({
       api,
       sqon,
@@ -103,7 +102,7 @@ const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () =>
   trackDownload('Clinical (Participant and family)');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
+  if (isFileRepo ) {
     const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
       api,
       sqon,
@@ -133,7 +132,7 @@ const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
   trackDownload('Biospecimen');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
+  if (isFileRepo ) {
     let downloadConfig = { sqon, columns: columnState.columns, isFileRepo };
     const downloader = downloadBiospecimen(downloadConfig);
     return downloader();
@@ -184,7 +183,7 @@ class DownloadButton extends React.Component {
       isDropdownVisible: false,
     };
 
-    if (this.props.isFileRepo || !isFeatureEnabled('clinicalDataReport')) {
+    if (this.props.isFileRepo ) {
       // nothing for now
     } else {
       // check if the family report is available
@@ -434,7 +433,7 @@ class DownloadButton extends React.Component {
 
     return (
       <div style={{ position: 'relative', marginLeft: '15px' }}>
-        {isFileRepo || !isFeatureEnabled('clinicalDataReport')
+        {isFileRepo
           ? this.fileRepoRender()
           : this.cohortBuilderRender()}
       </div>
