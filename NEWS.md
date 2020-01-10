@@ -20,6 +20,7 @@ It also fix the data release number in the footer and the bump on the login.
 - [#727](https://github.com/kids-first/kf-portal-ui/issues/727) Incorrect cursor on disabled button hover
 - [#839](https://github.com/kids-first/kf-portal-ui/issues/839) Release # in footer not working  
 - [#1042](https://github.com/kids-first/kf-portal-ui/issues/1042) Fix bump on login when user already has a token
+- [#1734](https://github.com/kids-first/kf-portal-ui/issues/1734) Can't search by biospecimen ID
 - [#1881](https://github.com/kids-first/kf-portal-ui/issues/1881) Member page: List member pages
 - [#1887](https://github.com/kids-first/kf-portal-ui/issues/1887) Member page: Search members
 - [#1954](https://github.com/kids-first/kf-portal-ui/issues/1954) Member page: Invite members to make their profile public
