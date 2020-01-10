@@ -3,6 +3,7 @@ import camelCase from 'lodash/camelCase';
 import { getApplicationEnvVar } from 'common/injectGlobals';
 
 const featureTogglePrefix = 'REACT_APP_FT';
+const togglePrefix = 'REACT_APP_';
 
 const isEnabled = (featureName, defaultValue = true) => {
   const flag = getApplicationEnvVar(featureName);
@@ -27,7 +28,7 @@ const toggles = Array.from(Object.entries(process.env))
   .filter(env => env[0].startsWith(featureTogglePrefix))
   .reduce(
     (allToggles, toggle) => {
-      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0], toggle[1]);
+      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0].slice(togglePrefix.length));
       return allToggles;
     },
     {
