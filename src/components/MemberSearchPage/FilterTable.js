@@ -13,6 +13,7 @@ const FilterTable = props => {
     title,
     handleClear,
     handleChangeFilterString,
+    showClear,
   } = props;
   return (
     //TODO move all styles in classes or modify ant design theme
@@ -32,7 +33,7 @@ const FilterTable = props => {
         key={1}
         header={
           <Title
-            level={3}
+            level={4}
             className={'filter-title'}
             style={{
               margin: 0,
@@ -42,7 +43,15 @@ const FilterTable = props => {
             {title}
           </Title>
         }
-        extra={<a onClick={handleClear}>clear</a>}
+        extra={
+          showClear ? (
+            <button type="link" onClick={handleClear}>
+              clear
+            </button>
+          ) : (
+            ''
+          )
+        }
       >
         {showSearchDefault && (
           <div>

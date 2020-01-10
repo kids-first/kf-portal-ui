@@ -9,12 +9,15 @@ import TwitterIcon from 'react-icons/lib/fa/twitter';
 import LIIcon from 'react-icons/lib/fa/linkedin';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FacebookShareButton, LinkedinShareButton, TwitterShareButton } from 'react-share';
+
 import Tooltip from 'uikit/Tooltip';
+import { WhiteButton } from 'uikit/Button';
 import { shortUrlResolveRoot } from 'common/injectGlobals';
 import shortenApi from './shortenApi';
-import { trackUserInteraction, TRACKING_EVENTS } from '../../services/analyticsTracking';
-import { WhiteButton } from 'uikit/Button';
-import styled from 'react-emotion';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { styleComponent } from 'components/Utils';
+
+import './LoadShareSaveDeleteQuery.css';
 
 const trackQueryShare = channel => {
   trackUserInteraction({
@@ -24,27 +27,8 @@ const trackQueryShare = channel => {
   });
 };
 
-let AlignedShareIcon = styled(ShareIcon)`
-  margin-top: -2px;
-`;
-
-let Bubble = styled(`span`)`
-  background-color: ${({ theme }) => theme.primary};
-  color: white;
-  padding: 4px 6px;
-  border-radius: 100%;
-  margin-right: 10px;
-`;
-
-let ItemRow = styled('div')`
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${({ theme }) => theme.greyScale6};
-  }
-`;
+const Bubble = styleComponent('span', 'query-bubble');
+const ItemRow = styleComponent('div', 'query-item-row');
 
 export default injectState(
   class extends React.Component {
@@ -97,17 +81,9 @@ export default injectState(
             }}
             interactive
             html={
-              <div
-                css={`
-                  width: 200px;
-                `}
-              >
+              <div style={{ width: '200px' }}>
                 {!this.state.link ? (
-                  <ItemRow
-                    css={`
-                      justify-content: center;
-                    `}
-                  >
+                  <ItemRow style={{ justifyContent: 'center' }}>
                     {this.state.error ? (
                       'Sorry something went wrong.'
                     ) : (
@@ -179,7 +155,7 @@ export default injectState(
               </div>
             }
           >
-            <AlignedShareIcon />
+            <ShareIcon style={{ marginTop: '-2px' }} />
             &nbsp;share
           </Tooltip>
         </WhiteButton>

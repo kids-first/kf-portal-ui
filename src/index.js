@@ -1,11 +1,16 @@
 import 'babel-polyfill';
 import './antd-kf-theme.css';
 import 'index.css';
+// [NEXT] This css sheet should be brought back locally instead, in the long run
+import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { initStore, getPreloadedState } from './store/index';
-import App from './App';
 import { getAppElement } from './services/globalDomNodes.js';
 import googleSDK from 'services/googleSDK';
 import facebookSDK from 'services/facebookSDK';
@@ -39,13 +44,7 @@ if (maintenanceMode) {
   );
 }
 
-navigator.serviceWorker.getRegistrations().then(registrations => {
-  registrations.forEach(r => r.unregister());
-});
-
-// webpack Hot Module Replacement API
-if (module.hot) {
-  module.hot.accept('./App', () => {
-    render(App);
-  });
-}
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

@@ -1,0 +1,74 @@
+.tableCell .dataText {
+  font-size: 15px;
+  line-height: 28px;
+  font-family: Open Sans, sans serif;
+  color: #343434;
+}
+
+.dataTable {
+  font-family: 'Open Sans', sans-serif;
+  color: rgb(52, 52, 52);
+  border-right: 1px solid rgb(224, 225, 230);
+  padding: 10px;
+}
+
+.dataTable table {
+  border: solid 1px #e0e1e6;
+}
+
+.dataTable table.total.row:first-child {
+  background-color: #e5f6fd;
+  color: black;
+}
+
+.dataTable table.row {
+  padding: 15px;
+  padding-left: 50px;
+}
+
+.dataTable table.row:nth-child(2n),
+.dataTable table.row.reverseColor:nth-child(2n + 1) {
+  background-color: rgb(237, 238, 241);
+}
+
+.dataTable table.row:first-child {
+  font-weight: bold;
+  color: #2b388f;
+  background-color: #edeef1;
+  border-bottom: solid 1px #e0e1e6;
+}
+
+.dataTable table.row.selected {
+  background-color: #e5f6fd;
+}
+.dataTable table.row .tableCell {
+  padding-right: 20px;
+  position: relative;
+  flex: 1;
+}
+.dataTable table.row .tableCell .checkMark {
+  width: 20px;
+  height: 20px;
+  margin-right: 13px;
+}
+.dataTable table.row .tableCell .checkbox {
+  margin-right: 20px;
+}
+.dataTable table.row .tableCell .left {
+  position: absolute;
+  right: 100%;
+}
+
+.dataTable table.row:not(:first-child) .tableCell:first-child {
+  font-weight: bold;
+}
+
+.familyManifestModal .modalSubHeader {
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.familyManifestModal .modalSubHeader .highlight {
+  font-weight: bold;
+  color: #2b388f;
+}

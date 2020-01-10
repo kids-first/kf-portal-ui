@@ -1,5 +1,5 @@
 import * as React from 'react';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
 

@@ -15,7 +15,7 @@ const ParticipantDataTable = ({ columns, data }) => {
       dataTotalCount={-1}
       onFetchData={() => null}
       showPagination={false}
-      style={{padding: 0}}
+      style={{ padding: 0 }}
     />
   );
 };

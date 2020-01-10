@@ -1,13 +1,13 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { compose } from 'recompose';
-import { css } from 'emotion';
 import { omit } from 'lodash';
 import { memoize } from 'lodash';
 import { injectState } from 'freactal';
 import AdvancedSqonBuilder from '@kfarranger/components/dist/AdvancedSqonBuilder';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';
+
 import { withApi } from 'services/api';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { arrangerProjectId } from 'common/injectGlobals';
 import {
   FieldFilterContainer,
@@ -16,7 +16,8 @@ import {
 } from '../common';
 import { SQONdiff } from '../../Utils';
 import { ModalFooter } from 'components/Modal';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+
+import './SqonBuilder.css';
 
 const trackSQONaction = ({ category, action, label }) => {
   trackUserInteraction({ category, action, label: JSON.stringify(label) });
@@ -28,26 +29,6 @@ const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
     return acc;
   }, {}),
 );
-
-const Container = styled('div')`
-  border: solid 1px ${({ theme }) => theme.greyScale4};
-  > .sqonBuilder .sqonEntry .actionButtonsContainer {
-    box-sizing: border-box;
-  }
-
-  .sqonBuilder .sqonListActionButton {
-    background-color: transparent;
-  }
-
-  .sqonBuilder .actionHeaderContainer button {
-    background-color: transparent;
-  }
-`;
-
-const StyledFieldFilterContainer = styled(FieldFilterContainer)`
-  left: auto;
-  right: 0px;
-`;
 
 const ClearAllModalContent = ({ onConfirmed }) => (
   <React.Fragment>
@@ -86,9 +67,7 @@ const SqonBuilder = compose(
       effects.setModal({
         title: 'Clear All Queries',
         classNames: {
-          modal: css`
-            max-width: 500px;
-          `,
+          modal: 'clearAll-modal',
         },
         component: (
           <ClearAllModalContent
@@ -105,7 +84,7 @@ const SqonBuilder = compose(
   };
 
   return (
-    <Container>
+    <div className="sqonBuilder-container">
       <ExtendedMappingProvider
         api={api}
         projectId={arrangerProjectId}
@@ -121,7 +100,7 @@ const SqonBuilder = compose(
               arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
               FieldOpModifierContainer={props => {
-                return <StyledFieldFilterContainer showHeader={false} {...props} />;
+                return <FieldFilterContainer className="" showHeader={false} {...props} />;
               }}
               fieldDisplayNameMap={extendedMappingToDisplayNameMap(extendedMapping)}
               onChange={handleAction}
@@ -130,7 +109,7 @@ const SqonBuilder = compose(
           )
         }
       </ExtendedMappingProvider>
-    </Container>
+    </div>
   );
 });
 

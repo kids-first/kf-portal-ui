@@ -68,9 +68,10 @@ const FilterTableList = ({
             >
               <Col span={20}>
                 <Checkbox
+                  className={'flex'}
                   checked={checkboxes[key] ? checkboxes[key] : false}
                   onChange={onChange(key)}
-                  style={{ display: 'flex', alignItems: 'center' }}
+                  disabled={!item[key]}
                 >
                   <div style={{ wordBreak: 'break-word' }}>{displayName}</div>
                 </Checkbox>

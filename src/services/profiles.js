@@ -1,5 +1,6 @@
 import urlJoin from 'url-join';
 import { personaApiRoot } from 'common/injectGlobals';
+import { apiInitialized } from 'services/api';
 
 const DEFAULT_FIELDS_SELF = `
   _id
@@ -42,6 +43,7 @@ const DEFAULT_FIELDS_SELF = `
     type
     setId
   }
+  hashedEmail
 `;
 
 const DEFAULT_FIELDS_OTHER_USER = `
@@ -82,41 +84,61 @@ const DEFAULT_FIELDS_OTHER_USER = `
     type
     setId
   }
+  hashedEmail
 `;
 
 const url = urlJoin(personaApiRoot, 'graphql');
 
-export const getProfile = api => async id => {
-  const isOtherUser = Boolean(id);
-  const params = isOtherUser
-    ? {
-        url,
-        body: {
-          variables: { _id: id },
-          query: `
-      query($_id: MongoID!){
-        user(_id:$_id){
-            ${DEFAULT_FIELDS_OTHER_USER}
-        }
-      }
-    `,
-        },
-      }
-    : {
-        url,
-        body: {
-          query: `
+export const getProfile = api => async () => {
+  const {
+    data: { self },
+  } = await api({
+    url,
+    body: {
+      query: `
         query {
           self {
             ${DEFAULT_FIELDS_SELF}
           }
         }
       `,
-        },
-      };
+    },
+  });
 
-  const response = await api(params);
-  return response.data[isOtherUser ? 'user' : 'self'];
+  return self;
+};
+
+export const getOtherUserProfile = async id => {
+  const response = await apiInitialized({
+    url,
+    body: {
+      variables: { _id: id },
+      query: `
+      query($_id: MongoID!){
+        user(_id:$_id){
+            ${DEFAULT_FIELDS_OTHER_USER}
+        }
+      }
+    `,
+    },
+  });
+  return response.data.user;
+};
+
+export const getUserLoggedInProfile = async () => {
+  const response = await apiInitialized({
+    url,
+    body: {
+      query: `
+        query {
+          self {
+            ${DEFAULT_FIELDS_SELF}
+          }
+        }
+      `,
+    },
+  });
+  return response.data.self;
 };
 
 export const createProfile = api => async ({ egoId, lastName, firstName, email }) => {

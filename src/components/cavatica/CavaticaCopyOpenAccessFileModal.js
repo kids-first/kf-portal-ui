@@ -1,15 +1,16 @@
 import * as React from 'react';
+import { Alert } from 'antd';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
+import { injectState } from 'freactal';
 
 import { ModalFooter } from 'components/Modal/index.js';
-import { injectState } from 'freactal';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { SuccessToastComponent } from './CavaticaSuccessToast';
-import { cssCopyModalRoot } from './css';
 import { copyToProject } from './api';
 import CavaticaProjects from './CavaticaProjects';
-import { Alert } from 'antd';
+
+import './cavatica.css';
+import './CavaticaCopyMultipleFilesModal.css';
 
 class CavaticaCopyOpenAccessFileModal extends React.Component {
   state = {
@@ -20,7 +21,6 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
   render() {
     const {
       effects: { setToast },
-      theme,
       fileId,
       onComplete,
       file,
@@ -28,8 +28,9 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
 
     const { addingProject, selectedProjectData } = this.state;
     const { error } = this.state;
+
     return (
-      <div css={cssCopyModalRoot(theme)}>
+      <div className="copyModalRoot">
         {error && (
           <Alert
             message="Error"
@@ -40,7 +41,9 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
           />
         )}
         <div className="content">
-          <span css={theme.modalHeader}>Select which Cavatica project you want to copy to:</span>
+          <span className="cavatica-modalHeader">
+            Select which Cavatica project you want to copy to:
+          </span>
           <CavaticaProjects
             onAddProject={() => {
               this.setState({ addingProject: true });
@@ -69,7 +72,7 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
                 setToast({
                   id: `${Date.now()}`,
                   action: 'success',
-                  component: SuccessToastComponent({ theme, selectedProjectData }),
+                  component: SuccessToastComponent({ selectedProjectData }),
                 });
 
                 trackUserInteraction({
@@ -97,7 +100,4 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
   }
 }
 
-export default compose(
-  injectState,
-  withTheme,
-)(CavaticaCopyOpenAccessFileModal);
+export default compose(injectState)(CavaticaCopyOpenAccessFileModal);

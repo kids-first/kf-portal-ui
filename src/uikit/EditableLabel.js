@@ -1,10 +1,10 @@
 import React from 'react';
 import { compose, withState, withHandlers, defaultProps, withPropsOnChange } from 'recompose';
 import { trim } from 'lodash';
-
 import { withTheme } from 'emotion-theming';
-
 import PencilIcon from 'react-icons/lib/fa/pencil';
+
+import { input } from '../theme/tempTheme.module.css';
 
 export default compose(
   withTheme,
@@ -70,10 +70,8 @@ export default compose(
           {options.length === 0 &&
             (type === 'input' ? (
               <input
-                css={`
-                  ${theme.input};
-                  width: 85%;
-                `}
+                className={input}
+                style={{ width: '85%' }}
                 value={inputValue}
                 onChange={e => {
                   setInputValue(e.target.value);
@@ -96,15 +94,15 @@ export default compose(
             ) : (
               <textarea
                 autoFocus={autoFocus}
-                css={`
-                  width: 100%;
-                  min-height: 144px;
-                  border-radius: 10px;
-                  transition: all 0.2s ease;
-                  resize: none;
-                  border: solid 1px #cacbcf;
-                  font-size: 14px;
-                `}
+                style={{
+                  width: '100%',
+                  minHeight: '144px',
+                  borderRadius: '10px',
+                  transition: 'all 0.2s ease',
+                  resize: 'none',
+                  border: 'solid 1px #cacbcf',
+                  fontSize: '14px',
+                }}
                 value={inputValue}
                 onChange={e => {
                   setInputValue(e.target.value);
@@ -164,18 +162,16 @@ export default compose(
       ) : (
         <div
           onClick={disabled ? () => {} : e => toggleEditingAndSave(e)}
-          style={{
-            cursor: 'text',
-          }}
+          style={{ cursor: 'text' }}
         >
           <span
-            css={`
-              white-space: pre-line;
-              font-family: 'Open Sans', sans-serif;
-              font-size: 14px;
-              line-height: 26px;
-              color: #343434;
-            `}
+            style={{
+              whiteSpace: 'pre-line',
+              fontFamily: 'Open Sans, sans-serif',
+              fontSize: '14px',
+              lineHeight: '26px',
+              color: '#343434',
+            }}
           >
             {trim(inputValue)
               ? renderNonEditing

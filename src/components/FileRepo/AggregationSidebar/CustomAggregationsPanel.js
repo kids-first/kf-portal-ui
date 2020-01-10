@@ -1,10 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 import Component from 'react-component-component';
-import styled from 'react-emotion';
-import isNumber from 'lodash/isNumber';
 
 import { AggregationsList } from '@kfarranger/components/dist/Arranger';
 import Query from '@kfarranger/components/dist/Query';
@@ -14,90 +11,19 @@ import { withApi } from 'services/api';
 import Column from 'uikit/Column';
 import QuickSearchBox from './QuickSearchBox';
 import { FilterInput } from '../../../uikit/Input';
-import Row from 'uikit/Row';
-import { Span } from 'uikit/Core';
 
-const TabsRow = styled(({ className, ...props }) => (
-  <Row flexStrink={0} {...props} className={`${className} tabs-titles`} />
-))`
-  padding-left: 10px;
-  border-bottom: solid 3px ${({ theme }) => theme.primaryHover};
-  text-align: center;
-  font-size: 14px;
-`;
-const Tab = styled(({ className, selected, ...props }) => (
-  <Row
-    {...props}
-    center
-    width={'100%'}
-    className={`tabs-title ${className} ${selected ? 'active-tab' : ''}`}
-  />
-))`
-  padding: 5px;
-`;
+import Tabs, { ShowIf } from 'components/Tabs';
 
-export const TabsBadge = styled(({ className, selected, ...props }) => (
-  <Badge {...props} selected={selected} />
-))``;
+import styles from './AggregationSidebar.module.css';
 
-const Badge = styled('div')`
-  background-color: ${({ selected, theme }) => `${selected ? '#f4f5f8' : theme.defaultBadge}`};
-  font-family: ${({ theme }) => theme.fonts.details};
-  color: ${({ selected, theme }) => `${selected ? theme.defaultBadge : '#f4f5f8'}`};
-  font-weight: 500;
-  text-align: center;
-  min-width: 25px;
-  line-height: 25px;
-  padding: 0 0.4em;
-  border-radius: 50px;
-  position: relative;
-  height: 25px;
-`;
-
-export const Tabs = ({ selectedTab, onTabSelect, options }) => (
-  <TabsRow>
-    {options.map(({ id, display, total }) => (
-      <Tab onClick={() => onTabSelect({ id })} selected={selectedTab === id} key={id}>
-        <Span style={{ width: '80%' }}>{display}</Span>
-        {isNumber(total) && <TabsBadge selected={selectedTab === id}>{total}</TabsBadge>}
-      </Tab>
-    ))}
-  </TabsRow>
-);
-
-const AggsListWrapper = styled('div')`
-  position: relative;
-  flex: 1 1 auto;
-  height: 100%;
-`;
-
-const Container = styled('div')`
-  height: 100%;
-`;
-
-const Scroll = styled('div')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: auto;
-`;
-
-export const ShowIf = ({ condition, children, ...rest }) => (
-  /*
-    NOTE: this style-based conditional rendering is an optimization strategy to
-    prevent re-rendering of AggregationsList which results in extra
-    fetching and visual flash
-  */
-  <div style={{ display: condition ? 'block' : 'none' }} {...rest}>
+const ScrollY = ({ children, className = '', ...props }) => (
+  <div className={`${styles.scrollY} ${className}`} {...props}>
     {children}
   </div>
 );
 
 export default compose(
   injectState,
-  withTheme,
   withApi,
 )(
   ({
@@ -109,7 +35,6 @@ export default compose(
     projectId,
     graphqlField,
     translateSQONValue,
-    theme,
     state,
     effects,
     hidden = false,
@@ -118,17 +43,17 @@ export default compose(
     <Component initialState={{ selectedTab: 'CLINICAL' }}>
       {({ state: { selectedTab }, setState }) => (
         // css rather than conditional rendering to prevent rerender
-        <Container style={{ display: hidden ? 'none' : 'block' }}>
+        <div className={`${styles.aggregationPanelContainer} ${hidden ? 'hidden' : ''} `}>
           <Tabs
             selectedTab={selectedTab}
             options={[
               { id: 'CLINICAL', display: 'Clinical Filters' },
               { id: 'FILE', display: 'File Filters' },
             ]}
-            onTabSelect={({ id }) => setState({ selectedTab: id })}
+            onTabSelect={id => setState({ selectedTab: id })}
           />
-          <AggsListWrapper>
-            <Scroll>
+          <div className={styles.aggsListWrapper}>
+            <ScrollY>
               <Query
                 renderError
                 shouldFetch={true}
@@ -265,9 +190,9 @@ export default compose(
                   }
                 }}
               />
-            </Scroll>
-          </AggsListWrapper>
-        </Container>
+            </ScrollY>
+          </div>
+        </div>
       )}
     </Component>
   ),

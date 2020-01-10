@@ -12,38 +12,53 @@ import PropTypes from 'prop-types';
  * @return {Object} (ex. <div>xx <b>abc</b> yy</div>
  */
 
-const regex = /<\/?em>/gi;
+const regex = /<.+?>(.+?)<\/.+?>/g;
+const regexTag = /<\/?em>/gi;
 
-const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
+const FormatLabel = ({ value, highLightValues, classname = '', index, prepend, fullWidth }) => {
+  const _width = fullWidth ? null : 350;
+
   if (!highLightValues) {
     return (
-      <div key={index} className={`format-label ${classname}`}>
+      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: _width }}>
         {value}
       </div>
     );
   }
 
   const isHighlight = hit => {
-    return value === hit.replace(regex, '');
+    return value === hit.replace(regexTag, '');
   };
 
   // eslint-disable-next-line no-unused-vars
   const [head, ...tail] = highLightValues.filter(isHighlight);
 
   if (head) {
-    const arr = head.split(regex);
-    const [first = '', second = '', third = ''] = arr;
+    const arr2 = head.split(regex);
 
     return (
-      <div key={index} className={`format-label ${classname}`}>
-        {first}
-        <b>{second}</b>
-        {third}
+      <div
+        key={index}
+        className={`format-label ${classname}`}
+        style={{ maxWidth: _width, display: 'flex', whiteSpace: 'pre-wrap' }}
+      >
+        <span>
+          {prepend ? (
+            <span className={'local-title'}>
+              {prepend}{' '}
+            </span>
+          ) : (
+            ''
+          )}
+          {arr2.map((text, index) => {
+            return index % 2 ? <b>{text}</b> : text;
+          })}
+        </span>
       </div>
     );
   } else {
     return (
-      <div key={index} className={`format-label ${classname}`}>
+      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: _width }}>
         {value}
       </div>
     );
@@ -52,6 +67,8 @@ const FormatLabel = ({ value, highLightValues, classname = '', index }) => {
 
 FormatLabel.propTypes = {
   value: PropTypes.string,
+  prepend: PropTypes.string,
+  fullWidth: PropTypes.bool,
   highLightValues: PropTypes.array,
   classname: PropTypes.string,
   index: PropTypes.number.isRequired,

@@ -1,51 +1,58 @@
-import { Col, Divider, List, Row, Tag, Typography } from 'antd';
+import { Col, Icon, List, Row, Spin, Typography, Avatar } from 'antd';
 import React from 'react';
-import { find, get } from 'lodash';
-import { ROLES } from 'common/constants';
-import { MemberImage } from 'components/MemberSearchPage/ui';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
+import ProfilePill from 'uikit/ProfilePill';
+import { computeGravatarSrcFromEmail } from 'utils';
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
-const roleLookup = ROLES.reduce((acc, { type, ...x }) => ({ ...acc, [type]: x }), {});
-const userRoleDisplayName = userRole => find(ROLES, { type: userRole }).displayName;
-const RoleIcon = userRole => get(roleLookup, [userRole, 'icon'], 'ResearchIcon');
-const background = userRole => get(roleLookup, [userRole, 'color'], 'red').toString();
-const getTagColor = userRole => {
-  if (userRole === 'research') {
-    return 'blue';
-  } else if (userRole === 'health') {
-    return 'cyan';
-  } else if (userRole === 'patient') {
-    return 'magenta';
-  } else if (userRole === 'community') {
-    return 'geekblue';
-  } else {
-    return 'red';
-  }
-};
 const Address = ({ item }) => (
-  <div className={'flex'}>
-    <FormatLabel
-      value={item.city}
-      highLightValues={item.highlight ? item.highlight.city : null}
-      index={1}
-    />
-    <FormatLabel
-      value={item.state}
-      highLightValues={item.highlight ? item.highlight.state : null}
-      index={2}
-    />
-    <FormatLabel
-      value={item.country}
-      highLightValues={item.highlight ? item.highlight.country : null}
-      index={3}
-    />
+  <div className={'flex'} style={{ alignItems: 'center' }}>
+    {item.city || item.state || item.country ? (
+      <Icon
+        className={'icon-color'}
+        type="environment"
+        theme="filled"
+        style={{ paddingRight: 8 }}
+      />
+    ) : (
+      ''
+    )}
+    {item.city ? (
+      <FormatLabel
+        classname={'comma-address'}
+        value={item.city}
+        highLightValues={item.highlight ? item.highlight.city : null}
+        index={1}
+      />
+    ) : (
+      ''
+    )}
+    {item.state ? (
+      <FormatLabel
+        classname={'comma-address'}
+        value={item.state}
+        highLightValues={item.highlight ? item.highlight.state : null}
+        index={2}
+      />
+    ) : (
+      ''
+    )}
+    {item.country ? (
+      <FormatLabel
+        classname={'comma-address'}
+        value={item.country}
+        highLightValues={item.highlight ? item.highlight.country : null}
+        index={3}
+      />
+    ) : (
+      ''
+    )}
   </div>
 );
 
@@ -58,19 +65,32 @@ const MemberTable = props => {
       <List
         itemLayout={'vertical'}
         header={
-          <Row>
-            <Col span={12} style={{ textAlign: 'left' }}>{`Showing ${firstItem} - ${Math.min(
-              lastItem,
-              props.count.public,
-            )} of ${props.count.public} public members`}</Col>
-            <Col
-              span={12}
-              style={{ textAlign: 'right' }}
-            >{`${props.count.total} members total (public & private)`}</Col>
-          </Row>
+          props.pending ? (
+            <Spin />
+          ) : (
+            <Row style={{ marginTop: 12, marginBottom: 12 }}>
+              <Col span={12} style={{ textAlign: 'left' }}>
+                <Title level={4} style={{ margin: 0 }}>
+                  {props.count.public > props.membersPerPage
+                    ? `Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
+                        props.count.public
+                      } public members`
+                    : `Showing ${props.count.public} public ${
+                        props.count.public < 2 ? 'member' : 'members'
+                      } `}
+                </Title>
+              </Col>
+              <Col span={12} style={{ textAlign: 'right' }}>
+                <Title
+                  level={4}
+                  style={{ margin: 0 }}
+                >{`${props.count.total} members total (public & private)`}</Title>
+              </Col>
+            </Row>
+          )
         }
         gutter={20}
-        style={{ color: '#343434' }} //TODO remove with Ant Design Theme
+        style={{ color: '#343434' }}
         pagination={{
           defaultPageSize: 10,
           showSizeChanger: true,
@@ -86,38 +106,22 @@ const MemberTable = props => {
         dataSource={props.memberList}
         loading={props.pending}
         renderItem={item => {
-          const FixedRoleIcon = RoleIcon(item.roles[0]);
+          const hasAddress = item.city || item.state || item.country;
           return (
-            <List.Item key={item._id}>
-              <Row type="flex" justify="start" align="middle" gutter={20}>
-                <Col xxl={2} xl={3} lg={3} md={3} sm={4} style={{ width: 'auto' }}>
-                  <MemberImage email={item.email || ''} d={'mp'} />
+            <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
+              <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
+                <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
+                  <Avatar
+                    src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
+                    size={60}
+                  />
+                  <div style={{ paddingTop: 10 }}>
+                    {item.roles[0] ? <ProfilePill roles={item.roles} /> : ''}
+                  </div>
                 </Col>
-                <Col
-                  className={'member-list-col'}
-                  xxl={4}
-                  xl={6}
-                  lg={6}
-                  md={6}
-                  sm={8}
-                  style={{ width: 'auto' }}
-                >
-                  {item.roles[0] ? (
-                    <Tag className={'tag-role'} color={getTagColor(item.roles[0])}>
-                      <div style={{ display: 'flex' }}>
-                        <FixedRoleIcon height="26px" fill={background(item.roles[0])} />
-                        <div style={{ color: `${background(item.roles[0])}` }}>
-                          { userRoleDisplayName(item.roles[0]) }
-                        </div>
-                      </div>
-                    </Tag>
-                  ) : (
-                    ''
-                  )}
-                </Col>
-                <Col xxl={18} xl={15} lg={15} md={15} sm={12} style={{ left: 0, right: 0 }}>
+                <Col style={{ left: 0, right: 0, flex: 1 }}>
                   <Link to={`${ROUTES.user}/${item._id}`}>
-                    <div className={'flex'}>
+                    <div className={'flex member-info-title'}>
                       {item.title ? (
                         <div key={0} style={{ paddingRight: 5 }}>
                           {item.title[0].toUpperCase() + item.title.slice(1) + '.'}
@@ -137,22 +141,38 @@ const MemberTable = props => {
                       />
                     </div>
                   </Link>
-                  {/*TODO remove style with Ant Design Theme*/}
-                  <Text style={{ color: 'inherit' }}>{item.institution}</Text>
-                  <Address item={item} />
-                  <div style={{ color: 'inherit' }}>
-                    {item.interests.length < 1 ? (
-                      ''
-                    ) : (
-                      <div>
-                        <Divider style={{ margin: 5 }} />
-                        <MemberInterests
-                          interests={item.interests}
-                          highlights={(item.highlight || {}).interests || []}
-                        />
-                      </div>
-                    )}
-                  </div>
+                  {hasAddress || item.institution ? (
+                    <div style={{ paddingTop: 10 }}>
+                      {item.institution ? (
+                        <Row className={'flex'}>
+                          <Icon
+                            className={'icon-color'}
+                            type="bank"
+                            theme="filled"
+                            style={{ paddingRight: 8 }}
+                          />
+                          <Text style={{ color: 'inherit' }}>{item.institution}</Text>
+                        </Row>
+                      ) : (
+                        ''
+                      )}
+
+                      <Address item={item} />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {item.interests.length < 1 ? (
+                    ''
+                  ) : (
+                    <div style={{ color: 'inherit', paddingTop: 24 }}>
+                      <MemberInterests
+                        interests={item.interests}
+                        highlights={(item.highlight || {}).interests || []}
+                      />
+                    </div>
+                  )}
+
                   <MemberSearchBioStory
                     bio={(item.highlight || {}).bio || []}
                     story={(item.highlight || {}).story || []}

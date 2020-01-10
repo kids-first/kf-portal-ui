@@ -1,0 +1,25 @@
+.share-button {
+  padding: 10px 5px;
+}
+
+.share-button .bubble {
+  background-color: #90278e;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
+.share-button .itemRow {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.share-button .itemRow:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.share-button button {
+  padding: 6px 10px;
+}

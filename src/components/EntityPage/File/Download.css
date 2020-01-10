@@ -1,0 +1,29 @@
+.controlled-download {
+  color: #008199;
+  font-size: 14px;
+  font-weight: 500;
+}
+.controlled-download a {
+  color: #a42c90;
+  white-space: pre;
+}
+
+.controlled-download .lockedText {
+  margin-left: 8px;
+  margin-right: 1px;
+}
+
+.download-button {
+  height: 30px;
+  padding: 0 13px;
+  align-items: center;
+  margin-right: 10px;
+  font-weight: 600;
+}
+.download-button[disabled] {
+  background: rgb(244, 245, 248);
+  color: #cacbcf;
+  cursor: not-allowed;
+  height: auto;
+  border: 1px solid rgb(212, 214, 221);
+}

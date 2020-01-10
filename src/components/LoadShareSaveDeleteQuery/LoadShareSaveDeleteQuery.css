@@ -1,0 +1,88 @@
+.query-bubble {
+  background-color: #90278e;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
+.query-item-row {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.query-item-row:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.query-item-row {
+  padding: 2px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.query-item-row:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+/* SaveQuery */
+.saveQuery-heading {
+  font-size: 16px;
+  border-bottom: 1px solid rgb(212, 214, 221);
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.saveQuery-tooltip-container .saveQuery-tooltip-content {
+  position: relative;
+  height: 225px;
+}
+
+.saveQuery-tooltip-container .saveQuery-tooltip-confirmation {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  color: red;
+  position: absolute;
+  color: red;
+  width: 100%;
+  height: 100%;
+  background-color: #00afee;
+  z-index: 1;
+  text-align: center;
+}
+.saveQuery-tooltip-container .saveQuery-tooltip-confirmation.saved {
+  transform: translateX(0%);
+}
+.saveQuery-tooltip-container .saveQuery-tooltip-confirmation .textWrapper {
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+  font-weight: bold;
+}
+
+.saveQuery-tooltip-container .someText1 {
+  padding: 0 9px;
+  font-style: italic;
+  color: rgb(61, 61, 61);
+}
+
+.saveQuery-tooltip-container .someText2 {
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 0 9px;
+  color: rgb(61, 61, 61);
+}
+
+.saveQuery-tooltip-container .someText3 {
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: solid 1px #cacbcf;
+  padding: 5px;
+  font-size: 1em;
+  margin: 10px;
+  margin-bottom: 0px;
+  width: calc(100% - 30px);
+}

@@ -4,6 +4,8 @@ import noop from 'lodash/noop';
 
 import Column from 'uikit/Column';
 
+import '../CohortBuilder.css';
+
 export default class ActionCategory extends React.PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
@@ -22,7 +24,7 @@ export default class ActionCategory extends React.PureComponent {
 
     return (
       <Column
-        className={`category-button ${className}`}
+        className={`cb-category-button ${className}`}
         onClick={onClick}
         style={{
           borderTop: `4px solid ${color}`,

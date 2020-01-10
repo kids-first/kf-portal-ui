@@ -1,18 +1,45 @@
-<!--
 # Release notes for kf-portal-ui
 
-## 2019-12-?? kf-portal-ui 2.??.??
-
-This release includes a new _Members_ page and alterations to the profile page, allowing to search for other members that made their user profile public.
+<!--
+## 2020-01-?? kf-portal-ui 2.??.??
 
 ### Features
 
-- [#1954](https://github.com/kids-first/kf-portal-ui/issues/1954) Member page: Invite members to make their profile public
+### Technical / Other changes
+
+-->
+
+## 2020-01-09 kf-portal-ui 2.13.0
+
+This release includes a new _Members_ page and alterations to the profile page, allowing to search for other members that made their user profile public.
+
+It also fix the data release number in the footer and the bump on the login.
+
+### Features
+
+- [#727](https://github.com/kids-first/kf-portal-ui/issues/727) Incorrect cursor on disabled button hover
+- [#839](https://github.com/kids-first/kf-portal-ui/issues/839) Release # in footer not working  
+- [#1042](https://github.com/kids-first/kf-portal-ui/issues/1042) Fix bump on login when user already has a token
+- [#1734](https://github.com/kids-first/kf-portal-ui/issues/1734) Can't search by biospecimen ID
 - [#1881](https://github.com/kids-first/kf-portal-ui/issues/1881) Member page: List member pages
 - [#1887](https://github.com/kids-first/kf-portal-ui/issues/1887) Member page: Search members
-- [#2158](https://github.com/kids-first/kf-portal-ui/issues/2158) Member page: Filter member search by interests or role
+- [#1954](https://github.com/kids-first/kf-portal-ui/issues/1954) Member page: Invite members to make their profile public
+- [#2037](https://github.com/kids-first/kf-portal-ui/issues/2037) Cohort Builder: Participant table empty where filter "Available Data Type" = "No data" is applied 
 - [#2124](https://github.com/kids-first/kf-portal-ui/pull/2124) Make sure other members profile can be viewed but not edited
--->
+- [#2130](https://github.com/kids-first/kf-portal-ui/issues/2130) Redesign User Profile using Ant Design
+- [#2158](https://github.com/kids-first/kf-portal-ui/issues/2158) Member page: Filter member search by interests or role
+- [#2185](https://github.com/kids-first/kf-portal-ui/issues/2185) Cohort Builder : Need to click twice on a menu element to open it 
+- [#2167](https://github.com/kids-first/kf-portal-ui/issues/2167) Add a loader while downloading a clinical data report 
+- [#9](https://github.com/kids-first/kf-api-portal-reports/issues/9) Add and reorder columns to Diagnoses / Histological Diagnoses tabs 
+
+
+### Technical / Other changes
+- [#2017](https://github.com/kids-first/kf-portal-ui/issues/2017) Security : upgrade axios 
+- [#2018](https://github.com/kids-first/kf-portal-ui/issues/2018) Security : upgrade eslint 
+- [#2063](https://github.com/kids-first/kf-portal-ui/issues/2063) Reduce kf front-end bundle size 
+- [#2126](https://github.com/kids-first/kf-portal-ui/issues/2126) Add custom theme for the antd library 
+- [#2133](https://github.com/kids-first/kf-portal-ui/issues/2133) Update babel to modernize the build system
+
 ## 2019-11-27 kf-portal-ui 2.12.1
 Hot fix on user creation issue due to regression when working on:
  - [#1042](https://github.com/kids-first/kf-portal-ui/issues/1042) Fix bump on login when user already has a token

@@ -1,0 +1,59 @@
+.multicardTitle {
+  display: inline-block;
+  font-family: Montserrat, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+  color: #404c9a;
+  margin: 0;
+}
+
+.multicardBadge {
+  margin-left: 9px;
+  display: inline-block;
+  padding: 0;
+  color: white;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  font-family: Open Sans, sans-serif;
+  background-color: #404c9a;
+  border-radius: 50px;
+  position: relative;
+  height: 25px;
+  min-width: 25px;
+  line-height: 25px;
+  padding: 0 0.4em;
+}
+
+.multicardTabMenuHeader {
+  margin-left: 26px;
+  font-family: Montserrat, sans-serif;
+  font-size: 12px;
+  padding-bottom: 2px;
+  color: #a6278f;
+  border-bottom: none;
+}
+.multicardTabMenuHeader.active {
+  color: #cc3399;
+  border-bottom: 2px solid #cc3399;
+}
+.multicardTabMenuHeader:hover {
+  cursor: pointer;
+}
+
+.multicardIndexCircle {
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+  background-color: #a6278f;
+  margin-left: 6px;
+}
+.multicardIndexCircle.active {
+  background-color: #cc3399;
+}
+.multicardIndexCircle:hover {
+  cursor: pointer;
+}

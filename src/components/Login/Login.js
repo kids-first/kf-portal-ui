@@ -1,12 +1,8 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-
-import reactStringReplace from 'react-string-replace';
 
 import FacebookLogin from 'components/loginButtons/FacebookLogin';
 import GoogleLogin from 'components/loginButtons/GoogleLogin';
@@ -27,24 +23,10 @@ import { googleLogin, facebookLogin } from 'services/login';
 import { allRedirectUris, egoApiRoot, orcidAuthAppId } from 'common/injectGlobals';
 import { GOOGLE, FACEBOOK, ORCID, LOGIN_ERROR_DETAILS } from 'common/constants';
 
-import { handleJWT, fetchIntegrationTokens } from 'utils';
+import { handleJWT, fetchIntegrationTokens } from './utils';
 
-const LoginContainer = styled(Column)`
-  ${({ theme }) => theme.center};
-  background-color: ${({ theme }) => theme.white};
-  height: 100%;
-  width: 100%;
-  padding-bottom: 10px;
-  margin-top: ${props => (props.disabled ? '11px' : '40px')};
-`;
-
-const LoginError = styled(Box)`
-  color: ${({ theme }) => theme.greyScale1};
-  font-weight: 600;
-  font-family: ${({ theme }) => theme.fonts.details};
-  font-size: 14px;
-  line-height: 1.7;
-`;
+import './Login.module.css';
+import { loginContainer, loginError } from './Login.module.css';
 
 class Component extends React.Component {
   static propTypes = {
@@ -112,16 +94,20 @@ class Component extends React.Component {
   getErrorMessage = () => {
     const { thirdPartyDataError, unknownError } = this.state;
     if (unknownError) {
-      return reactStringReplace(LOGIN_ERROR_DETAILS.unknown, 'Contact us', (match, i) => (
-        <ExternalLink
-          hasExternalIcon={false}
-          href="https://kidsfirstdrc.org/contact"
-          target="_blank"
-          key={`link-${i}`}
-        >
-          Contact us
-        </ExternalLink>
-      ));
+      // [NEXT] TEST THIS (see if a space is lost around 'Contact us')
+      return (
+        <React.Fragment>
+          Uh oh, looks like something went wrong.
+          <ExternalLink
+            hasExternalIcon={false}
+            href="https://kidsfirstdrc.org/contact"
+            target="_blank"
+          >
+            &nbsp;Contact us&nbsp;
+          </ExternalLink>
+          and we will help investigate why you are unable to sign in.
+        </React.Fragment>
+      );
     } else if (thirdPartyDataError) {
       return LOGIN_ERROR_DETAILS.thirdPartyData;
     } else {
@@ -131,9 +117,9 @@ class Component extends React.Component {
 
   renderSecurityError() {
     return (
-      <Box maxWidth={600}>
+      <Box style={{ maxWidth: '600px' }}>
         Connection to ego failed, you may need to visit
-        <a target="_blank" href={egoApiRoot}>
+        <a target="_blank" rel="noopener noreferrer" href={egoApiRoot}>
           {{ egoApiRoot }}
         </a>
         in a new tab and accept the warning
@@ -178,7 +164,7 @@ class Component extends React.Component {
         {disabled ? (
           <PromptMessageContainer p="15px" pr="26px" mb="15px" mr="0" error>
             <PromptMessageContent pt={0}>
-              <LoginError>{this.getErrorMessage()} </LoginError>
+              <Box className={`${loginError} greyScale1`}>{this.getErrorMessage()}</Box>
             </PromptMessageContent>
           </PromptMessageContainer>
         ) : null}
@@ -234,12 +220,12 @@ class Component extends React.Component {
       content = <RedirectLogin onLogin={({ token }) => this.handleJWT(token)} />;
     }
 
-    return <LoginContainer disabled={disabled}>{content}</LoginContainer>;
+    return (
+      <Column className={`${loginContainer} ${disabled ? 'disabled' : ''}`} disabled={disabled}>
+        {content}
+      </Column>
+    );
   }
 }
 
-export default compose(
-  injectState,
-  withRouter,
-  withApi,
-)(Component);
+export default compose(injectState, withRouter, withApi)(Component);

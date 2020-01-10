@@ -1,59 +1,19 @@
 import React from 'react';
-import styled from 'react-emotion';
 import { compose, withState } from 'recompose';
-import Row from 'uikit/Row';
-import { Div } from 'uikit/Core';
-
-import { TealActionButton, WhiteButton } from 'uikit/Button';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 
-export const ModalContentSection = styled(Div)`
-  padding-top: 10px;
-  padding-bottom: 10px;
-`;
+import Row from 'uikit/Row';
+import { Div } from 'uikit/Core';
+import { TealActionButton, WhiteButton } from 'uikit/Button';
 
-const FilterCont = styled('div')`
-  color: black;
-  display: flex;
-  flex-direction: column;
-  cursor: default;
-  text-align: left;
-  border-radius: 5px;
-  box-shadow: 0 0 5.9px 0.1px #bbbbbb;
-  border: 1px solid #e0e1e6;
-  z-index: 1;
-  min-width: 315px;
+import { styleComponent } from 'components/Utils';
 
-  input[type='number'] {
-    padding: 0 7px;
-  }
-`;
+import './CohortBuilder.css';
 
-const Header = styled('div')`
-  background-color: white;
-  border-bottom: 1px solid #d4d6dd;
-  padding: 5px;
-`;
-
-const Content = styled('div')`
-  flex: 1;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  &.filterContainer {
-    border: none;
-    box-shadow: none;
-    margin: 0px;
-    width: 100%;
-    border-radius: 0px;
-  }
-`;
-
-const Footer = styled(Row)`
-  justify-content: space-between;
-  background-color: #e0e1e6;
-  padding: 5px;
-`;
+export const ModalContentSection = styleComponent(Div, 'cb-modalContentSection');
+const FilterContainer = styleComponent('div', 'cb-filterContainer');
+const Header = styleComponent('div', 'cb-filterContainer-header');
+const Footer = styleComponent(Row, 'cb-filterContainer-footer');
 
 export const FieldFilterContainer = compose(withState('isDisabled', 'setDisabled', true))(
   ({
@@ -91,7 +51,7 @@ export const FieldFilterContainer = compose(withState('isDisabled', 'setDisabled
       );
     };
     return (
-      <FilterCont className={className}>
+      <FilterContainer className={className}>
         {showHeader && (
           <Header>
             <WhiteButton onClick={onBack}>
@@ -100,7 +60,7 @@ export const FieldFilterContainer = compose(withState('isDisabled', 'setDisabled
             </WhiteButton>
           </Header>
         )}
-        <Content
+        <div
           className="filterContainer"
           onClick={e => {
             const eventTarget = e.target;
@@ -116,14 +76,14 @@ export const FieldFilterContainer = compose(withState('isDisabled', 'setDisabled
           }}
         >
           {children}
-        </Content>
+        </div>
         <Footer>
           <WhiteButton onClick={onCancel}>Cancel</WhiteButton>
           <TealActionButton disabled={!applyEnabled || isDisabled} onClick={onSqonSubmit}>
             Apply
           </TealActionButton>
         </Footer>
-      </FilterCont>
+      </FilterContainer>
     );
   },
 );

@@ -1,0 +1,39 @@
+.promptMessageContainer {
+}
+.promptMessageContent {
+  font-family: Open Sans, sans-serif;
+  font-size: 14px;
+  line-height: normal;
+}
+.promptMessageContent ul {
+  padding-left: '18px';
+}
+.promptMessageContent li {
+  margin-top: 5px;
+}
+.promptMessageHeading {
+  font-family: Montserrat, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/*********************************************************/
+/* ChartError */
+/*********************************************************/
+.chartErrorContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/**********************************************************/
+/* CardContentSpinner */
+/**********************************************************/
+.chartSpinnerContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.5;
+}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import { injectState } from 'freactal';
 
 import { MatchBox } from '@kfarranger/components/dist/Arranger';
@@ -8,19 +7,13 @@ import graphql from 'services/arranger';
 import { ModalFooter } from './Modal';
 import { TealActionButton } from 'uikit/Button';
 import { Paragraph } from 'uikit/Core';
-import { FileRepoH3 as H3 } from 'uikit/Headings';
-import { TableHeader } from 'uikit/Table';
+import { H3, TableHeader } from 'uikit/Headings';
 import { withApi } from 'services/api';
 
-const enhance = compose(
-  withTheme,
-  injectState,
-  withApi,
-);
+const enhance = compose(injectState, withApi);
 
 const UploadIdsModal = ({
   api,
-  theme,
   state: { loggedInUser },
   effects: { addUserSet, unsetModal },
   setSQON,
@@ -46,7 +39,11 @@ const UploadIdsModal = ({
     uploadableFields={uploadableFields}
     uploadInstructionText={<Paragraph>Or choose file to upload</Paragraph>}
     browseButtonText={'Upload csv'}
-    matchHeaderText={<H3 mb="0.8em">Matching files in the Kids First Data Repository</H3>}
+    matchHeaderText={
+      <H3 style={{ fontSize: '16px' }} mb="0.8em">
+        Matching files in the Kids First Data Repository
+      </H3>
+    }
     ButtonComponent={TealActionButton}
   >
     {({ hasResults, saveSet }) => (

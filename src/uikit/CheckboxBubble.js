@@ -1,23 +1,10 @@
 import React from 'react';
-import { isNil } from 'lodash';
-import styled from 'react-emotion';
+import cx from 'classnames';
+import isNil from 'lodash/isNil';
 import { compose, withState } from 'recompose';
 
 import Row from './Row';
-
-const CheckboxBubble = styled(Row)`
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  background-color: ${({ active, theme }) => (active ? theme.optionSelected : theme.white)};
-  border: solid 1px ${({ active, theme }) => (active ? theme.active : theme.greyScale4)};
-  padding: 10px;
-  width: 100%;
-  cursor: pointer;
-  * {
-    cursor: pointer;
-  }
-`;
+import './CheckboxBubble.css';
 
 export default compose(withState('_active', '_setActive', false))(
   ({
@@ -27,10 +14,11 @@ export default compose(withState('_active', '_setActive', false))(
     isControlled = !isNil(active),
     isActive = isControlled ? active : _active,
     onClick,
+    className = '',
     ...props
   }) => (
-    <CheckboxBubble
-      active={isActive}
+    <Row
+      className={cx('checkboxBubble', className, { active: isActive })}
       onClick={
         isControlled
           ? onClick

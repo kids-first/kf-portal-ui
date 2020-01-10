@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
+import noop from 'lodash/noop';
 
 import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
@@ -11,24 +11,21 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 import { withApi } from 'services/api';
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
 import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { sqonShape } from 'shapes';
 
 /**
- * This compoponent also assumes we are only modifying the first level of sqon
+ * This component also assumes we are only modifying the first level of sqon
  */
-const Filter = compose(
-  withApi,
-  withTheme,
-)(
+const Filter = compose(withApi)(
   ({
     api,
-    theme,
     initialSqon = {
       op: 'and',
       content: [],
     },
-    onSubmit = () => {},
-    onCancel = () => {},
-    onBack = () => {},
+    onSubmit = noop,
+    onCancel = noop,
+    onBack = noop,
     field,
     arrangerProjectId = ARRANGER_PROJECT_ID,
     arrangerProjectIndex = ARRANGER_API_PARTICIPANT_INDEX_NAME,
@@ -44,7 +41,7 @@ const Filter = compose(
         if (loading) {
           return (
             <FieldFilterContainer applyEnabled={false} onCancel={onCancel} onBack={onBack}>
-              <LoadingSpinner color={theme.greyScale11} size={'30px'} />
+              <LoadingSpinner color="#a9adc0" size="30px" />
             </FieldFilterContainer>
           );
         }
@@ -105,15 +102,12 @@ const Filter = compose(
   ),
 );
 
-Filter.proptype = {
-  initialSqon: PropTypes.shape({
-    op: PropTypes.string,
-    content: PropTypes.array,
-  }),
+Filter.propTypes = {
+  initialSqon: sqonShape,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   onBack: PropTypes.func,
-  field: PropTypes.string.required,
+  field: PropTypes.string.isRequired,
   arrangerProjectId: PropTypes.string,
   arrangerProjectIndex: PropTypes.string,
 };

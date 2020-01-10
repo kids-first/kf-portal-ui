@@ -1,0 +1,80 @@
+.cb-summary {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 2;
+}
+
+.cb-summary-entity {
+  padding: 0 10px 0 10px;
+  border-left: 1px solid #a9adc0;
+}
+
+.cb-summary-files {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.cb-detail {
+  align-items: center;
+  flex: 2;
+}
+
+.cb-view-links > div:not(:last-child) {
+  margin-right: 30px;
+}
+
+.cb-active-view {
+  width: 100%;
+  padding: 0 26px 36px 26px;
+  margin-top: 19px;
+  position: relative;
+}
+
+.cb-active-view.summary > div:nth-child(2) {
+  display: none !important;
+}
+
+.cb-active-view.table > div:first-child {
+  display: none !important;
+}
+
+.cb-sub-heading {
+  font-weight: 600;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  padding: 0 3px;
+  margin: 0;
+  color: #2b388f;
+}
+
+.cb-purple-link {
+  color: #a6278f;
+}
+.cb-purple-link:hover {
+  color: #cc3399;
+}
+
+/* EmptyCohortOverlay */
+.cb-empty-overlay {
+  background-color: rgba(255, 255, 255, 0.75);
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  left: 0;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.cb-empty-overlay-message {
+  margin-top: 100px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px 35px;
+  font-weight: 600;
+  background-color: #fff;
+  max-height: fit-content;
+  font-size: 14px;
+  font-family: Montserrat, sans-serif;
+  height: 50px;
+}

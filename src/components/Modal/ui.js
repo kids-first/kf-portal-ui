@@ -1,82 +1,57 @@
-import styled from 'react-emotion';
+import React from 'react';
+// [NEXT] 'react-modal' should be replaced by antd equivalent
 import ReactModal from 'react-modal';
 
 import { ActionButton } from 'uikit/Button';
 import Column from 'uikit/Column';
 import { H2 } from 'uikit/Headings';
 
-export const ModalFooterContainer = styled('div')`
-  ${({ theme }) => theme.row};
-  background-color: ${({ theme }) => theme.greyScale10};
-  border-radius: 5px;
-  padding: 1em;
-  margin-top: 1em;
-  justify-content: space-between;
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  align-items: center;
-`;
+import {
+  modalFooterContainer,
+  modalFooterContent,
+  modalActionButton,
+  // modalCancelButton,
+  modal,
+  modalContent,
+  modalSubHeader,
+  // modalTitle,
+} from './Modal.module.css';
 
-export const ModalFooterContent = styled('div')`
-  ${({ theme }) => theme.center};
-  flex: 1;
-`;
+export const ModalFooterContainer = ({ children }) => (
+  <div className={`${modalFooterContainer} bg-greyScale10`}>{children}</div>
+);
 
-export const ModalActionButton = styled(ActionButton)`
-  font-size: 14px;
-  height: auto;
-`;
+export const ModalFooterContent = ({ children }) => (
+  <div className={modalFooterContent}>{children}</div>
+);
 
-export const CancelButton = styled(ModalActionButton)`
-  ${({ theme }) => theme.wizardButton};
-  padding: 0px 16px;
-  height: auto;
-  text-transform: none;
-`;
+export const ModalActionButton = ({ children }) => (
+  <ActionButton className={modalActionButton}>{children}</ActionButton>
+);
 
-export const Modal = styled(ReactModal)`
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  position: absolute;
-  border: 1px solid ${({ theme }) => theme.borderGrey};
-  background: ${({ theme }) => theme.white};
-  border-radius: 4px;
-  transform: translate(-50%, -50%);
-  width: 95%;
-  padding: 20px 20px;
-  max-width: 1000px;
-  max-height: 85%;
-  min-height: 0;
-  box-shadow: ${({ theme }) => theme.shadow} 0px 5px 15px;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: ${({ isFooterShown }) => (isFooterShown ? '75px' : '')};
-  & * {
-    box-sizing: border-box;
-  }
-`;
+// export const CancelButton = ({ children }) => (
+//   <ModalActionButton className={`${modalCancelButton} color-tertiary`}>
+//     {children}
+//   </ModalActionButton>
+// );
 
-export const ModalContent = styled(Column)`
-  z-index: 1000;
-  flex: 1;
-  height: 100%;
-  min-height: 0;
-`;
+export const Modal = ({ children, className, isFooterShown, style = {}, ...props }) => (
+  <ReactModal
+    className={`${modal} ${className}`}
+    {...props}
+    style={{
+      content: {
+        paddingBottom: isFooterShown ? '75px' : '',
+        ...style,
+      },
+    }}
+  >
+    {children}
+  </ReactModal>
+);
 
-export const ModalSubHeader = styled('div')`
-  ${({ theme }) => theme.modalHeader};
-  margin-bottom: 9px;
-`;
+export const ModalContent = ({ children }) => <Column className={modalContent}>{children}</Column>;
 
-export const ModalTitle = styled(H2)`
-  line-height: 1.3;
-  letter-spacing: 0.3px;
-  margin-bottom: 0.8em;
-  display: flex;
-  justify-content: space-between;
-`;
+export const ModalSubHeader = ({ children }) => <div className={modalSubHeader}>{children}</div>;
+
+export const ModalTitle = ({ children }) => <H2 className={modalSubHeader}>{children}</H2>;

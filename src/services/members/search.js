@@ -34,3 +34,19 @@ export const searchMembers = async (searchTerm, searchParams) => {
   }
   return response;
 };
+
+export const searchInterests = async searchTerm => {
+  try {
+    return await api({
+      method: 'GET',
+      url: urljoin(
+        reactApiSearchMembersApi,
+        'interests',
+        `?queryString=${searchTerm}
+        `,
+      ),
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+};

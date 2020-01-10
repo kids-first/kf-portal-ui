@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
+import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
+
 import ContentBar from './ContentBar';
 import Summary from './Summary';
 import Row from 'uikit/Row';
 import ViewLink from 'uikit/ViewLink';
-import styled, { css } from 'react-emotion';
 import { H2 } from 'uikit/Headings';
 import ParticipantsTableView from './ParticipantsTableView';
 import SummaryIcon from 'icons/AllAppsMenuIcon';
@@ -18,114 +21,24 @@ import TableErrorView from './ParticipantsTableView/TableErrorView';
 import QueriesResolver from './QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
-import { isEmpty } from 'lodash';
 import LinkWithLoader from 'uikit/LinkWithLoader';
 import { createFileRepoLink } from './util';
 import { injectState } from 'freactal';
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import graphql from 'services/arranger';
-import { get } from 'lodash';
-import { Link } from 'react-router-dom';
 import FilesIcon from 'icons/FilesIcon';
 import familyMembers from 'assets/icon-families-grey.svg';
 import { setActiveView } from './actionCreators';
-import { connect } from 'react-redux';
+
+import { styleComponent } from 'components/Utils';
+
+import './Results.css';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
 
-const summaryStyle = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  flex: '2',
-});
-
-const summaryEntityStyle = css({
-  padding: '0 10px 0 10px',
-  borderLeft: `1px solid #a9adc0`,
-});
-
-const summaryFilesStyle = css({
-  display: 'grid',
-  gridTemplateColumns: 'auto auto',
-});
-
-const ViewLinks = styled(Row)`
-  > div:not(:last-child) {
-    margin-right: 30px;
-  }
-`;
-
-const Detail = styled(Row)`
-  align-items: center;
-  flex: 2;
-`;
-
-const Heading = styled(H2)`
-  color: ${({ theme }) => theme.secondary};
-`;
-
-const ActiveView = styled('div')`
-  width: 100%;
-  padding: 0 26px 36px 26px;
-  margin-top: 19px;
-  position: relative;
-
-  ${({ activeView }) =>
-    activeView === SUMMARY
-      ? css`
-          > div:nth-child(2) {
-            display: none !important;
-          }
-        `
-      : css`
-          > div:first-child {
-            display: none !important;
-          }
-        `}
-`;
-
-const SubHeadingStyle = props => {
-  const { fontWeight, theme } = props;
-  return css`
-    font-weight: ${fontWeight ? fontWeight : 600};
-    font-family: ${theme.default};
-    font-size: 16px;
-    padding: 0 3px;
-    margin: 0;
-  `;
-};
-
-const SubHeading = styled('h3')`
-  ${SubHeadingStyle};
-  color: ${({ color, theme }) => (color ? color : theme.secondary)};
-`;
-
-const purpleLinkStyle = props => css`
-  color: ${props.theme.purple};
-  &:hover {
-    color: ${props.theme.linkPurple};
-  }
-`;
-
-const PurpleLinkWithLoader = styled(LinkWithLoader)`
-  ${purpleLinkStyle};
-  ${SubHeadingStyle};
-`;
-
-const PurpleLink = styled(Link)`
-  ${purpleLinkStyle};
-  ${SubHeadingStyle};
-`;
-
-const ResultsHeading = styled('div')`
-  display: flex;
-  margin-right: 14px;
-`;
-
-const Content = styled(ContentBar)`
-  padding: 0 30px 0 34px;
-`;
+const PurpleLinkWithLoader = styleComponent(LinkWithLoader, 'cb-purple-link cb-sub-heading');
+const PurpleLink = styleComponent(Link, 'cb-purple-link cb-sub-heading');
 
 const generateAllFilesLink = async (user, api, files) => {
   const sqon = {
@@ -232,77 +145,86 @@ class Results extends React.Component {
         {({ isLoading, data, error }) => {
           const resultsData = data[0];
           const participantCount = get(resultsData, 'participantCount', null);
-          const filesCount = get(resultsData, 'filesCount', null);
           const familiesCount = get(resultsData, 'familiesCount', null);
-          const cohortIsEmpty =
-            (!isLoading && !resultsData) || participantCount === 0 || filesCount === 0;
+          const cohortIsEmpty = (!isLoading && !resultsData) || participantCount === 0;
 
           const filesCountHeading = resultsData
             ? `${Number(data[0].filesCount || 0).toLocaleString()}`
             : '';
 
+          const hasNoFile = resultsData ? data[0].filesCount === 0 : true;
+
           return error ? (
             <TableErrorView error={error} />
           ) : (
             <React.Fragment>
-              <Content>
-                <Detail>
-                  <ResultsHeading>
+              <ContentBar style={{ padding: '0 30px 0 34px' }}>
+                <Row className="cb-detail">
+                  <div style={{ display: 'flex', marginRight: '14px' }}>
                     {isEmpty(sqon.content) ? (
-                      <Heading>All Data</Heading>
+                      <H2>All Data</H2>
                     ) : (
                       <React.Fragment>
-                        <Heading>Cohort Results</Heading>
-                        <SubHeading fontWeight={'normal'}>
+                        <H2>Cohort Results</H2>
+                        <h3 className="cb-sub-heading" style={{ fontWeight: 'normal' }}>
                           for Query {activeSqonIndex + 1}
-                        </SubHeading>
+                        </h3>
                       </React.Fragment>
                     )}
-                  </ResultsHeading>{' '}
+                  </div>{' '}
                   {isLoading ? (
                     <LoadingSpinner />
                   ) : (
-                    <div className={`${summaryStyle}`}>
-                      <div className={`${summaryEntityStyle}`}>
-                        <SubHeading>
-                          <DemographicIcon />
+                    <div className="cb-summary">
+                      <div className="cb-summary-entity">
+                        <h3 className="cb-sub-heading">
+                          <DemographicIcon width="14px" height="17px" />
                           {Number(participantCount || 0).toLocaleString()}{' '}
                           {participantCount === 1 ? 'Participant' : 'Participants'}
-                        </SubHeading>
+                        </h3>
                       </div>
-                      <div className={`${summaryEntityStyle}`}>
-                        <SubHeading>
+                      <div className="cb-summary-entity">
+                        <h3 className="cb-sub-heading">
                           <img src={familyMembers} alt="" height="13px" />{' '}
                           {Number(familiesCount || 0).toLocaleString()}{' '}
                           {familiesCount === 1 ? 'Family' : 'Families'}
-                        </SubHeading>
+                        </h3>
                       </div>
-                      <div className={`${summaryEntityStyle}`}>
-                        <SubHeading>
-                          <div className={`${summaryFilesStyle}`}>
-                            <div>
-                              <FilesIcon />
-                              {isEmpty(sqon.content) ? (
-                                <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
-                              ) : (
-                                <PurpleLinkWithLoader
-                                  replaceText={false}
-                                  getLink={() =>
-                                    generateAllFilesLink(state.loggedInUser, api, data[0].files)
-                                  }
-                                >
-                                  {filesCountHeading}
-                                </PurpleLinkWithLoader>
-                              )}
-                            </div>
-                            <div>Files</div>
+                      <div className="cb-summary-entity">
+                        <h3 className="cb-sub-heading">
+                          <div className="cb-summary-files">
+                            {hasNoFile ? (
+                              <div>
+                                <FilesIcon style={{ marginRight: '6px' }} /> {'0 File'}
+                              </div>
+                            ) : (
+                              <React.Fragment>
+                                <div>
+                                  <FilesIcon />
+                                  {isEmpty(sqon.content) ? (
+                                    <PurpleLink to="/search/file">{filesCountHeading} </PurpleLink>
+                                  ) : (
+                                    <PurpleLinkWithLoader
+                                      replaceText={false}
+                                      getLink={() =>
+                                        generateAllFilesLink(state.loggedInUser, api, data[0].files)
+                                      }
+                                    >
+                                      {filesCountHeading}
+                                    </PurpleLinkWithLoader>
+                                  )}
+                                </div>
+                                <div>Files</div>
+                              </React.Fragment>
+                            )}
                           </div>
-                        </SubHeading>
+                        </h3>
                       </div>
                     </div>
                   )}
-                </Detail>
-                <ViewLinks>
+                </Row>
+
+                <Row className="cb-view-links">
                   <ViewLink
                     onClick={() => setActiveView(SUMMARY)}
                     active={activeView === SUMMARY}
@@ -317,13 +239,13 @@ class Results extends React.Component {
                   >
                     Table View
                   </ViewLink>
-                </ViewLinks>
-              </Content>
-              <ActiveView activeView={activeView}>
+                </Row>
+              </ContentBar>
+              <div className={`cb-active-view ${activeView}`}>
                 <Summary sqon={sqon} />
                 <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
                 {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
-              </ActiveView>
+              </div>
             </React.Fragment>
           );
         }}
@@ -343,12 +265,4 @@ const mapDispatchToProps = {
   setActiveView,
 };
 
-export default compose(
-  withTheme,
-  withApi,
-  injectState,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(Results);
+export default compose(withApi, injectState, connect(mapStateToProps, mapDispatchToProps))(Results);

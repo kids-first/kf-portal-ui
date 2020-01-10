@@ -25,6 +25,13 @@
   color: #cc3399;
 }
 
+.loginJoinMessage {
+  text-align: center;
+  border-top: 1px solid #d4d6dd;
+  margin-top: 8px;
+  padding: 8px;
+}
+
 /*
 * Login Buttons
 */
@@ -43,12 +50,6 @@
 
 .login-buttons-container .login-button:hover {
   box-shadow: 0 0 3px 3px rgba(66, 133, 244, 0.3);
-}
-
-.login-buttons-container .google-login-button {
-}
-
-.login-buttons-container .fb-login-button {
 }
 
 .login-buttons-container .orcid-login-button {
@@ -99,4 +100,24 @@
 .login-buttons-container .orcid-login-button button > span > em {
   font-style: normal;
   font-weight: 600;
+}
+
+.loginH2 {
+  color: #2b388f;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 0.87;
+  letter-spacing: 0.4px;
+  text-align: center;
+  margin-bottom: 0px;
+  margin-top: 9px;
+}
+
+.loginH3 {
+  font-family: Montserrat, sans-serif;
+  color: #2b388f;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.44;
+  letter-spacing: 0;
 }

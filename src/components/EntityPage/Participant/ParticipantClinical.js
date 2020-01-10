@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
+import flatMap from 'lodash/flatMap';
+import isEmpty from 'lodash/isEmpty';
+
+import theme from 'theme/defaultTheme';
 import { EntityContentDivider, EntityContentSection } from '../';
 import FamilyTable from './Utils/FamilyTable';
 import sanitize from './Utils/sanitize';
 import ParticipantDataTable from './Utils/ParticipantDataTable';
 import graphql from 'services/arranger';
 import { initializeApi } from '../../../services/api';
-import { Link } from 'react-router-dom';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import {
   getDefaultSqon,
@@ -14,16 +19,12 @@ import {
   MERGE_VALUES_STRATEGIES,
   setSqonValueAtIndex,
 } from '../../../common/sqonUtils';
-import { withRouter } from 'react-router';
 import { resetVirtualStudy } from '../../../store/actionCreators/virtualStudies';
 import { store } from '../../../store';
 import prettifyAge from './Utils/prettifyAge';
-import { flatMap } from 'lodash/collection';
 import { HPOLink, SNOMEDLink, MONDOLink, NCITLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import ClinicalIcon from 'icons/ClinicalIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
-import { withTheme } from 'emotion-theming';
-import isEmpty from 'lodash/isEmpty';
 import Tooltip from 'uikit/Tooltip';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 
@@ -38,7 +39,7 @@ class ParticipantClinical extends React.Component {
     this.dataIntoState();
   }
 
-  diagHeads = theme => [
+  diagHeads = [
     {
       Header: 'Diagnosis Category',
       accessor: 'diagnosis_category',
@@ -54,14 +55,9 @@ class ParticipantClinical extends React.Component {
               style={{ marginRight: '10px' }}
             >
               {hasNoBioSpecimenIds ? (
-                <ClinicalIcon width={18} height={18} fill={theme.clinicalBlue} alt="clinical" />
+                <ClinicalIcon size="18px" fill={theme.clinicalBlue} alt="clinical" />
               ) : (
-                <BiospecimenIcon
-                  width={18}
-                  height={18}
-                  fill={theme.biospecimenOrange}
-                  alt="histological"
-                />
+                <BiospecimenIcon size="18px" fill={theme.biospecimenOrange} alt="histological" />
               )}
             </Tooltip>
             <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{category}</div>
@@ -110,7 +106,7 @@ class ParticipantClinical extends React.Component {
     },
   ];
 
-  phenoHeads = () => [
+  phenoHeads = [
     {
       Header: 'Phenotype (HPO)',
       accessor: 'hpo',
@@ -294,7 +290,7 @@ class ParticipantClinical extends React.Component {
   render() {
     if (!this.state.hasLoadedPhenotypes || !this.state.hasLoadedDxs) {
       //make sure all data is loaded before deciding what to display.
-      return <LoadingSpinner color={this.props.theme.greyScale11} size={'50px'} />;
+      return <LoadingSpinner color="#a9adc0" size="50px" />;
     }
     const participant = this.props.participant;
     const diagnoses = this.state.diagnoses;
@@ -312,12 +308,12 @@ class ParticipantClinical extends React.Component {
       <React.Fragment>
         {hasDxs && (
           <EntityContentSection title="Diagnoses">
-            <ParticipantDataTable columns={this.diagHeads(this.props.theme)} data={diagnoses} />
+            <ParticipantDataTable columns={this.diagHeads} data={diagnoses} />
           </EntityContentSection>
         )}
         {hasPhenotype && (
           <EntityContentSection title="Phenotypes">
-            <ParticipantDataTable columns={this.phenoHeads()} data={phenotypes} />
+            <ParticipantDataTable columns={this.phenoHeads} data={phenotypes} />
           </EntityContentSection>
         )}
         {participant.family_id && (
@@ -331,7 +327,4 @@ class ParticipantClinical extends React.Component {
   }
 }
 
-const ParticipantClinicalWithRouter = withRouter(ParticipantClinical);
-const ParticipantClinicalWithRouterAndTheme = withTheme(ParticipantClinicalWithRouter);
-
-export default ParticipantClinicalWithRouterAndTheme;
+export default withRouter(ParticipantClinical);

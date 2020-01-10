@@ -1,0 +1,38 @@
+/* component.secondaryNav */
+.secondaryNav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  border-left: 1px solid #e0e1e6;
+}
+.secondaryNav li {
+  height: 100%;
+  display: flex;
+  box-sizing: content-box;
+  border-right: 1px solid #e0e1e6;
+}
+.secondaryNav li a {
+  height: 100%;
+  display: block;
+  font-size: 16px;
+  line-height: 1.86;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #90278e;
+  font-weight: 500;
+  padding: 10px 40px;
+  border-bottom: 5px solid transparent;
+  text-decoration: none;
+}
+.secondaryNav li a:hover,
+.secondaryNav li a.active {
+  cursor: pointer;
+  color: #e83a9c;
+  border-bottom: 5px solid #e83a9c;
+}

@@ -99,6 +99,7 @@ class RolesFilter extends Component {
           showAll={showAll}
           toggleShowAll={this.toggleShowAll}
           handleChangeFilterString={this.handleChangeFilterString}
+          showClear={getSelectedFilter(rolesFilter).length > 0}
         >
           <FilterTableList
             dataSource={count && count.roles ? count.roles : {}}

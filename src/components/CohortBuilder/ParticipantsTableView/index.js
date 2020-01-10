@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
-import { withTheme } from 'emotion-theming';
 
 import { withApi } from 'services/api';
 import { participantsQuery } from './queries';
@@ -16,7 +15,6 @@ import { SORTABLE_FIELDS_MAPPING } from './queries';
 
 const enhance = compose(
   withApi,
-  withTheme,
   withState('pageSize', 'setPageSize', 10),
   withState('pageIndex', 'setPageIndex', 0),
   withState('selectedRows', 'setSelectedRows', []),

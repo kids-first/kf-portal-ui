@@ -1,11 +1,13 @@
 import React from 'react';
-import backgroundScene from 'assets/background-scene.png';
-import logo from 'assets/logo-kids-first-drc.svg';
+
+import backgroundScene from './background-scene.png';
+import logo from './logo-kids-first-drc.svg';
 import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
-import {PageContainer } from 'common/errorBoundary';
+
+import './MaintenancePage.css';
 
 export default () => (
-  <PageContainer>
+  <div className="maintenancePageContainer">
     <img className="background-img" src={backgroundScene} alt="background" />
 
     <div className="content-container">
@@ -38,5 +40,5 @@ export default () => (
 
       <p className="teal-copy">Go outside and play for a while!</p>
     </div>
-  </PageContainer>
+  </div>
 );

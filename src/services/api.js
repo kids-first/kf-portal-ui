@@ -33,3 +33,10 @@ export const ApiContext = React.createContext(null);
 export const withApi = WrappedComponent => props => (
   <ApiContext.Consumer>{api => <WrappedComponent {...{ api, ...props }} />}</ApiContext.Consumer>
 );
+
+export const apiInitialized = initializeApi({
+  onError: console.err,
+  onUnauthorized: response => {
+    console.warn('Unauthorized', response);
+  },
+});

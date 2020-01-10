@@ -1,30 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import gql from 'graphql-tag';
-import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
-import { compose } from 'recompose';
-import { get, startCase } from 'lodash';
+import get from 'lodash/get';
+import startCase from 'lodash/startCase';
+
+import theme from 'theme/defaultTheme';
 import Pie from 'chartkit/components/Pie';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
-import { connect } from 'react-redux';
 import {
   setSqonValueAtIndex,
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
-} from '../../../common/sqonUtils';
+} from 'common/sqonUtils';
+import { styleComponent } from 'components/Utils';
 
-const PieChartContainer = styled('div')`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-`;
+const PieChartContainer = styleComponent('div', 'pieChartContainer');
 
 class DemographicChart extends React.Component {
   addSqon = (field, value) => {
@@ -51,7 +42,7 @@ class DemographicChart extends React.Component {
   };
 
   render() {
-    const { data, theme, isLoading: isParentLoading } = this.props;
+    const { data, isLoading: isParentLoading } = this.props;
     return (
       <CohortCard showHeader={false} loading={isParentLoading}>
         <PieChartContainer>
@@ -173,10 +164,4 @@ const mapDispatchToProps = {
   setSqons,
 };
 
-export default compose(
-  withTheme,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
-)(DemographicChart);
+export default connect(mapStateToProps, mapDispatchToProps)(DemographicChart);

@@ -1,0 +1,155 @@
+.cavatica-modalHeader {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.87;
+  letter-spacing: 0.2px;
+  color: rgb(52, 52, 52);
+}
+
+.cavaticaButton .buttonContent {
+  padding: 0 5px;
+}
+.cavaticaButton .buttonContent img {
+  width: 20px;
+}
+
+.cavaticaButton {
+  background: #90278e;
+  width: 100%;
+  height: 100%;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  border: 1px solid rgb(212, 214, 221);
+  border-radius: 25px;
+  padding: 0 5px;
+}
+.cavaticaButton:hover {
+  background-color: #a42c90;
+}
+.cavaticaButton.disabled,
+.cavaticaButton.disabled:hover,
+.cavaticaButton[disabled],
+.cavaticaButton[disabled]:hover {
+  background: rgb(244, 245, 248);
+  color: #cacbcf;
+  cursor: not-allowed;
+}
+
+/********************************************************************/
+
+.numberBullet {
+  color: white;
+  background: #00afed;
+  width: 14px;
+  border-radius: 50%;
+  margin: 20px;
+  padding: 10px;
+  height: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tokenTitle {
+  color: #2b388f;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tokenInput {
+  width: 35em;
+  max-width: 90%;
+}
+
+.formErrorMessage {
+  color: #e45562;
+  padding: 10px;
+  padding-left: 20px;
+  height: 1.6em;
+}
+
+.demoImage {
+  height: 210px;
+  border: solid 2px #cacbcf;
+}
+
+.integrationStepsModalContent div.stepText {
+  line-height: 1.6em;
+}
+.integrationStepsModalContent .stepRow {
+  display: flex;
+  flex-direction: row;
+}
+.integrationStepsModalContent .stepText {
+  padding-top: 20px;
+}
+
+/********************************************************************/
+
+.cavaticaProjectsContainer {
+  border: solid 1px #e0e1e6;
+}
+
+.cavaticaProjectsContainer .header,
+.cavaticaProjectsContainer .footer {
+  background-color: #e0e1e6;
+  color: #74757d;
+}
+
+.cavaticaProjectsContainer .header {
+  display: flex;
+  padding: 5px;
+  justify-content: space-between;
+}
+
+.cavaticaProjectsContainer th {
+  line-height: 2.55;
+  text-transform: uppercase;
+}
+
+.cavaticaProjectsContainer .body {
+  display: flex;
+  flex-direction: column;
+}
+
+.cavaticaProjectsContainer .body .projectSelector {
+  border: none;
+  overflow-y: auto;
+  overflow-x: none;
+  cursor: default;
+  height: 9em;
+}
+
+.cavaticaProjectsContainer .body .projectSelector .projectOption {
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  border-bottom: solid 1px #e0e1e6;
+  font-size: 14px;
+  color: #90278e;
+}
+
+.cavaticaProjectsContainer .body .projectSelector .projectOption:hover,
+.cavaticaProjectsContainer .body .projectSelector .selected {
+  background-color: #e5f6fd;
+  color: black;
+}
+
+.cavaticaProjectsContainer .body .projectSelector .checkSymbol {
+  width: 20px;
+  padding-top: 2px;
+  margin-bottom: -2px;
+  display: flex;
+  align-items: center;
+}
+
+.cavaticaProjectsContainer .footer {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,9 +1,66 @@
 .search-all-filter {
   position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  z-index: 1;
 }
 
 .search-all-filter .query-container {
   overflow: hidden;
+  height: 100%;
+  padding-top: 17px;
+  padding-left: 12px;
+  padding-right: 14px;
+
+  display: flex;
+  flex-shrink: 0;
+  border-top: 4px solid transparent;
+  border-right: 1px solid #d4d6dd;
+  width: 100%;
+}
+
+.search-all-filter .query-container .input-icon {
+  color: #a9adc0;
+}
+.search-all-filter .query-container .input-icon.icon-right {
+  color: rgb(52, 52, 52);
+}
+
+.search-all-filter .results-container {
+  position: absolute;
+  display: none;
+  
+  top: 100%;
+  left: 0px;
+  width: 290px;
+  padding: 0;
+
+  border: 1px solid #e0e1e6;
+  border-radius: 5px;
+  box-shadow: 0 0 4.9px 0.1px #bbbbbb;
+  background-color: white;
+}
+.search-all-filter .results-container.open {
+  display: block;
+}
+.search-all-filter .results-container .results-content {
+  padding: 0;
+}
+.search-all-filter .results-container .results-content .results-header {
+  font-family: Open Sans, sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  color: rgb(52, 52, 52);
+  width: 100%;
+  border-bottom: 1px solid #e0e1e6;
+}
+.search-all-filter .results-container .results-content .results-footer {
+  background-color: #e0e1e6;
+  border-top: 1px solid #e0e1e6;
 }
 
 /***** INPUT FIELD *****/
@@ -13,15 +70,19 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 2px;
-  border: solid 1px black;
   padding: 5px;
   padding-right: 2em;
   background: white;
+
+  /* border-radius: 2px;
+  border: solid 1px black; */
+  border-radius: 10px;
+  border: solid 2px #d4d6dd;
 }
 
 .query-content:hover {
-  box-shadow: 0 0 10px lightgrey;
+  /* box-shadow: 0 0 10px lightgrey; */
+  box-shadow: 0 0 10px skyblue;
 }
 
 .query-content .input-icon {
@@ -41,6 +102,10 @@
 }
 
 .query-content input {
+  font-family: Open Sans, sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: rgb(52, 52, 52);
   flex: 1 1 0%;
   border: none;
 }

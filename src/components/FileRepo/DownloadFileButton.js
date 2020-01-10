@@ -1,12 +1,11 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { css } from 'emotion';
-import { withTheme } from 'emotion-theming';
+
+import theme from 'theme/defaultTheme';
 import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
 import LoadingOnClick from 'components/LoadingOnClick';
-
 import { GEN3 } from 'common/constants';
 import { downloadFileFromFence } from 'services/fence';
 import { getFilesById } from 'services/arranger';
@@ -28,9 +27,8 @@ const downloadFile = async ({ kfId, api }) => {
 
 const DownloadFileButton = compose(
   injectState,
-  withTheme,
   withApi,
-)(({ kfId, fence, theme, effects: { setToast }, api, render, onSuccess, onError }) => (
+)(({ kfId, fence, effects: { setToast }, api, render, onSuccess, onError }) => (
   <LoadingOnClick
     onClick={() =>
       downloadFile({ kfId, fence, api })
@@ -58,31 +56,16 @@ const DownloadFileButton = compose(
             id: `${Date.now()}`,
             action: 'error',
             component: (
-              <div
-                css={`
-                  display: flex;
-                `}
-              >
-                <div
-                  css={`
-                    display: flex;
-                    flex-direction: column;
-                  `}
-                >
-                  <div
-                    css={`
-                      font-size: 16px;
-                    `}
-                  >
-                    Failed!
-                  </div>
+              <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ fontSize: '16px' }}>Failed!</div>
                   Unable to download file
                   <div
-                    css={`
-                      color: 'red';
-                      margin-bottom: 20px;
-                      padding: 20px;
-                    `}
+                    style={{
+                      color: 'red',
+                      marginBottom: '20px',
+                      padding: '20px',
+                    }}
                   >
                     <span>
                       Your account does not have the required permission to download this file.
@@ -106,9 +89,7 @@ const DownloadFileButton = compose(
                   {...{ onClick }}
                   width={13}
                   fill={theme.lightBlue}
-                  className={css`
-                    cursor: pointer;
-                  `}
+                  style={{ cursor: 'pointer' }}
                 />
               )}
             />

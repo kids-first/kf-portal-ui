@@ -8,7 +8,7 @@ const MemberSearchBorder = props => {
   return (
     <div className={'grid-container'}>
       <Row>
-        <Title level={1}>Kids First Membership</Title>
+        <Title level={2}>Kids First Membership</Title>
       </Row>
       <Row>
         <Col span={24}>{props.children}</Col>

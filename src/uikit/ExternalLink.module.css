@@ -1,0 +1,12 @@
+.externalLink {
+  color: #90278e;
+  cursor: pointer;
+}
+.externalLink:hover,
+.externalLink.active {
+  color: #e83a9c;
+}
+
+.externalLinkIcon {
+  margin-right: 0.2rem;
+}

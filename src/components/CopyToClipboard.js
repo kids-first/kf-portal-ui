@@ -1,9 +1,8 @@
-import React from 'react';
-import { css } from 'emotion';
-import { withTheme } from 'emotion-theming';
-import { compose } from 'recompose';
+// import React from 'react';
 
-import CopyToClipboardIcon from '../icons/CopyToClipboardIcon';
+// import CopyToClipboardIcon from '../icons/CopyToClipboardIcon';
+
+// import { copyToClipboardButton } from './CopyToClipboard.module.css';
 
 export const copyValueToClipboard = ({ value, copyRef }) => {
   const textArea = document.createElement('textarea');
@@ -25,39 +24,19 @@ export const copyValueToClipboard = ({ value, copyRef }) => {
   selection.addRange(range);
 };
 
-const CopyToClipboard = compose(withTheme)(
-  ({
-    theme,
-    value,
-    className,
-    buttonType = theme.actionButton,
-    copyRef = React.createRef(),
-    ...props
-  }) => (
-    <button
-      className={css`
-        ${buttonType};
-        ${className};
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      `}
-      {...props}
-      onClick={() => {
-        copyValueToClipboard({ value, copyRef });
-      }}
-    >
-      <CopyToClipboardIcon {...{ fill: '#fff' }} />
-      <span
-        ref={copyRef}
-        className={css`
-          margin-left: 10px;
-        `}
-      >
-        {value}
-      </span>
-    </button>
-  ),
-);
+// const CopyToClipboard = ({ value, copyRef = React.createRef(), ...props }) => (
+//   <button
+//     className={copyToClipboardButton}
+//     {...props}
+//     onClick={() => {
+//       copyValueToClipboard({ value, copyRef });
+//     }}
+//   >
+//     <CopyToClipboardIcon {...{ fill: '#fff' }} />
+//     <span ref={copyRef} className="label">
+//       {value}
+//     </span>
+//   </button>
+// );
 
-export default CopyToClipboard;
+// export default CopyToClipboard;

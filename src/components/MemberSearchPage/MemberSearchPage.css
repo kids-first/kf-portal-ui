@@ -4,14 +4,21 @@
 }
 
 .member-list-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border: 2px solid lightgrey;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  border: solid 1px #d4d6dd;
   border-radius: 5px;
 }
 
 .member-list {
-  margin: 20px;
+  margin: 0 32px 18px 32px;
+}
+
+.local-title{
+  color: #2b388f;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4px;
 }
 
 .interest-container {
@@ -22,43 +29,64 @@
 }
 
 .member-list-col {
-    align-content: center;
-    align-items: center;
+  align-content: center;
+  align-items: center;
 }
 
 .format-label {
-    padding-right: 5px;
-    word-wrap: break-word;
-    max-width: 100%;
+  padding-right: 5px;
+  word-wrap: break-word;
+  max-width: 100%;
 }
-div.flex {
-    display: flex;
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.icon-color {
+  color: rgba(57, 69, 146, 0.5);
+}
+
+.member-info-title {
+  font-weight: bold;
 }
 
 .comma:not(:last-of-type):after {
-    content: ",";
+  content: ',';
 }
 .comma:nth-last-of-type(2):before {
-    content: none;
+  content: none;
 }
+
 .comma:nth-last-of-type(2):after {
-    content: " and ";
+  content: ' and ';
+}
+
+.comma-address:not(:last-of-type):after {
+  content: ',';
+}
+.comma-address:nth-last-of-type(2):before {
+  content: none;
 }
 
 .background-container {
-    background-color: rgb(244, 245, 248);
+  background-color: rgb(244, 245, 248);
 }
 
 .tag-role {
-    border-radius: 14px;
-    height: 28px;
-    display: flex;
-    color: white;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.86;
-    text-align: left;
-    text-transform: capitalize;
-    padding: 0 16px 0 0;
-    width: 220px;
+  border-radius: 14px;
+  height: 28px;
+  display: flex;
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.86;
+  text-align: left;
+  text-transform: capitalize;
+  padding: 0 16px 0 0;
+  width: 220px;
 }

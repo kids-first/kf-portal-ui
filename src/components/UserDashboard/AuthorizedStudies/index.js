@@ -1,36 +1,25 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
-import { Link } from 'react-router-dom';
 import { injectState } from 'freactal';
-import { withTheme } from 'emotion-theming';
 import { isEmpty } from 'lodash';
-
 import CardHeader from 'uikit/Card/CardHeader';
+import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import DownloadController from 'icons/DownloadController';
 
-import { withApi } from 'services/api';
 import StudiesConnected from './StudiesConnected';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 
 import AccessGate from '../../AccessGate';
-import { DashboardCard, CardContentSpinner } from '../styles';
-
+import { DashboardCard } from '../styles';
 import Info from '../Info';
-
-import { CardActionButton } from '../styles';
+import { Button } from 'antd';
 
 const AuthorizedStudies = compose(
-  withApi,
   injectState,
-  withTheme,
   fenceConnectionInitializeHoc,
 )(
   ({
     state: { loggedInUser, fenceConnectionsInitialized, fenceConnections, fenceAuthStudies },
-    effects,
-    theme,
-    api,
-    ...props
   }) => {
     const Header = (
       <CardHeader title="Authorized Studies" badge={fenceAuthStudies.length || null} />
@@ -40,7 +29,7 @@ const AuthorizedStudies = compose(
     return (
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
-          <CardContentSpinner />
+          <ChartContentSpinner />
         ) : isEmpty(fenceConnections) ? (
           <Fragment>
             <AccessGate
@@ -54,9 +43,9 @@ const AuthorizedStudies = compose(
                 </span>
               }
             >
-              <CardActionButton>
-                <Link to={`/user/${loggedInUser._id}#settings`}>Settings</Link>
-              </CardActionButton>
+              <Button type={'primary'} shape={'round'} href={`/user/${loggedInUser._id}#settings`}>
+                SETTINGS
+              </Button>
             </AccessGate>
             <Info
               link={{

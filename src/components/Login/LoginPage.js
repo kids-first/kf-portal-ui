@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { withTheme } from 'emotion-theming';
 import RightIcon from 'react-icons/lib/fa/angle-right';
 import { withApi } from 'services/api';
 
@@ -9,20 +8,18 @@ import Login from 'components/Login/Login';
 import SplashPage from 'components/SplashPage';
 
 import { Link, Section } from 'uikit/Core';
-import { JoinH2 } from 'uikit/Headings';
 
 import './index.css';
 
 const LoginPage = compose(
   withRouter,
-  withTheme,
   withApi,
-)(({ history, location, theme, api, stealth = false }) => (
+)(({ history, location, api, stealth = false }) => (
   <SplashPage stealth={stealth}>
     {stealth ? null : (
-      <JoinH2 mt="9px" mb={0}>
+      <h2 className="loginH2" mt="9px" mb={0}>
         Log in
-      </JoinH2>
+      </h2>
     )}
 
     <Login
@@ -38,7 +35,7 @@ const LoginPage = compose(
     />
 
     {stealth ? null : (
-      <Section textAlign="center" borderTop={`1px solid ${theme.greyScale8}`} mt={2} p={2}>
+      <Section className="loginJoinMessage">
         {'New to Kids First Data Resource Portal? '}
         <Link to="/join" className="bare primary bold">
           Join now

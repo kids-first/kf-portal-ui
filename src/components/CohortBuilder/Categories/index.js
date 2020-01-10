@@ -1,8 +1,6 @@
 import React from 'react';
-import styled from 'react-emotion';
-import { withTheme } from 'emotion-theming';
-import { compose } from 'recompose';
 import autobind from 'auto-bind-es5';
+
 import SearchAll from '../SearchAll';
 import Category from './Category';
 import ActionCategory from './ActionCategory';
@@ -14,21 +12,17 @@ import ClinicalIcon from 'icons/ClinicalIcon';
 import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
+import { SQONdiff } from 'components/Utils';
 import { registerModal } from '../../Modal/modalFactory';
 import { isFeatureEnabled } from 'common/featuresToggles';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 import { openModal } from '../../../store/actionCreators/ui/modalComponent';
 import { store } from '../../../store';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
+import theme from 'theme/defaultTheme';
 
-import './styles.scss';
-
-const Container = styled(Row)`
-  height: 72px;
-  width: 100%;
-  border-left: 1px solid ${({ theme }) => theme.greyScale8};
-  background-color: white;
-`;
+import '../CohortBuilder.css';
 
 // Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.
 //  Check fields on display to make sure they are in alphabetical order.
@@ -135,66 +129,44 @@ const CATEGORY_FIELDS = {
   ],
 };
 
-const CATEGORY_NAMES = {
-  quickSearch: 'quickSearch',
-  study: 'study',
-  clinical: 'clinical',
-  biospecimen: 'biospecimen',
-  demographic: 'demographic',
-  availableData: 'availableData',
-};
-
-const excludedCategories = ['searchAll', 'quickSearch'];
-
-class Categories extends React.Component {
+export default class Categories extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentSearchField: '',
-      currentCategory: null,
-    };
+    this.initialSqon = props.sqon;
     registerModal('SearchByIdModal', SearchByIdModal);
     autobind(this);
   }
 
-  handleSqonUpdate(...args) {
-    this.setState({ currentSearchField: '' });
+  trackCategoryAction(title) {
+    const { sqon } = this.props;
+    const addedSQON = SQONdiff(sqon, this.initialSqon);
+
+    trackUserInteraction({
+      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
+      action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+      label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
+    });
+
+    this.initialSqon = sqon;
+  }
+
+  handleSqonUpdate(title, ...args) {
+    this.trackCategoryAction(title);
     this.props.onSqonUpdate(...args);
-  }
-
-  // searching should not open quick filters
-  handleSearchField(fieldName) {
-    const currentCategoryKey = Object.keys(CATEGORY_FIELDS)
-      .filter(key => !excludedCategories.includes(key))
-      .find(key => CATEGORY_FIELDS[key].includes(fieldName));
-    const currentCategory = CATEGORY_NAMES[currentCategoryKey];
-    this.setState({ currentSearchField: fieldName, currentCategory });
-  }
-
-  handleCategoryClose() {
-    this.setActiveCategory({ fieldName: '', category: null });
   }
 
   handleUploadIdsClick() {
     store.dispatch(openModal('SearchByIdModal', {}, 'search-by-id-modal'));
   }
 
-  setActiveCategory = ({ category, fieldName }) =>
-    this.setState({
-      currentCategory: category,
-      currentSearchField: fieldName,
-    });
-
   render() {
-    const { theme, sqon } = this.props;
-    const { currentSearchField, currentCategory } = this.state;
+    const { sqon } = this.props;
 
     return (
-      <Container className="virtual-Studies-categories">
+      <Row className="cb-categories-content">
         <SearchAll
           title={'Search all filters'}
           sqon={sqon}
-          onSearchField={this.handleSearchField}
           onSqonUpdate={this.handleSqonUpdate}
           fields={CATEGORY_FIELDS.searchAll}
           color={theme.filterViolet}
@@ -203,13 +175,9 @@ class Categories extends React.Component {
           title="Quick Filters"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.quickSearch}
-          currentSearchField={currentSearchField}
           color={theme.filterPurple}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.quickSearch}
-          currentCategory={currentCategory}
+          anchorId={'anchor-quick-filters'}
         >
           <QuickFilterIcon fill={theme.filterPurple} />
         </Category>
@@ -217,13 +185,9 @@ class Categories extends React.Component {
           title="Study"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.study}
-          currentSearchField={currentSearchField}
           color={theme.studyRed}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.study}
-          currentCategory={currentCategory}
+          anchorId={'anchor-study'}
         >
           <StudyIcon fill={theme.studyRed} />
         </Category>
@@ -231,41 +195,29 @@ class Categories extends React.Component {
           title="Demographic"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.demographic}
-          currentSearchField={currentSearchField}
           color={theme.demographicPurple}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.demographic}
-          currentCategory={currentCategory}
+          anchorId={'anchor-demographic'}
         >
-          <DemographicIcon fill={theme.demographicPurple} />
+          <DemographicIcon fill={theme.demographicPurple} width="14px" height="17px" />
         </Category>
         <Category
           title="Clinical"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.clinical}
-          currentSearchField={currentSearchField}
           color={theme.clinicalBlue}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.clinical}
-          currentCategory={currentCategory}
+          anchorId={'anchor-clinical'}
         >
-          <ClinicalIcon width={18} height={17} fill={theme.clinicalBlue} />
+          <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
         </Category>
         <Category
           title="Biospecimens"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.biospecimen}
-          currentSearchField={currentSearchField}
           color={theme.biospecimenOrange}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.biospecimen}
-          currentCategory={currentCategory}
+          anchorId={'anchor-biospecimens'}
         >
           <BiospecimenIcon fill={theme.biospecimenOrange} />
         </Category>
@@ -273,29 +225,22 @@ class Categories extends React.Component {
           title="Available Data"
           sqon={sqon}
           onSqonUpdate={this.handleSqonUpdate}
-          onClose={this.handleCategoryClose}
           fields={CATEGORY_FIELDS.availableData}
-          currentSearchField={currentSearchField}
           color={theme.dataBlue}
-          setActiveCategory={this.setActiveCategory}
-          category={CATEGORY_NAMES.availableData}
-          currentCategory={currentCategory}
+          anchorId={'anchor-available-data'}
         >
-          <FileIcon width={11} height={14} fill={theme.dataBlue} />
+          <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>
-
         {isFeatureEnabled('searchByIds') && (
           <ActionCategory
             title="Upload IDs"
             color={theme.uploadYellow}
             onClick={this.handleUploadIdsClick}
           >
-            <UploadIcon fill={theme.uploadYellow} />
+            <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
           </ActionCategory>
         )}
-      </Container>
+      </Row>
     );
   }
 }
-
-export default compose(withTheme)(Categories);

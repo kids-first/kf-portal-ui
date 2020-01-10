@@ -1,0 +1,132 @@
+.CavaticaStyledLabel {
+  font-size: 14px;
+  text-align: left;
+  font-weight: 600;
+  font-family: Open Sans, sans-serif;
+  color: #343434;
+  margin: 10px 0;
+}
+
+.projectItem {
+  justify-content: center;
+  margin: 0;
+  padding: 10px 10px 10px 0;
+  padding-bottom: 16px;
+  border-bottom: solid 1px #e0e1e6;
+}
+.members {
+  font-family: Open Sans, sans-serif;
+  font-size: 12px;
+  line-height: 21px;
+  color: #74757d;
+}
+.members span {
+  color: #343434;
+}
+
+.projectLink {
+  text-decoration: underline;
+  font-size: 14px;
+  font-family: Open Sans, sans-serif;
+  font-weight: 600;
+}
+
+.tasksBreakdown {
+  font-size: 12px;
+  font-family: Open Sans, sans-serif;
+  font-weight: 600;
+}
+
+.task {
+  display: inline-block;
+  border-radius: 7.5px;
+  margin-left: 8px;
+  font-size: 12px;
+  font-family: Open Sans, sans-serif;
+  padding: 2px 5px;
+  font-weight: 600;
+}
+a.task {
+  text-decoration: none;
+}
+.task.completed {
+  background-color: #dcfbf3;
+  color: #0e906f;
+}
+.task.failed {
+  background-color: #fbdada;
+  color: #a71111;
+}
+.task.running {
+  background-color: #daecfb;
+  color: #1163a7;
+}
+
+/********************************************************************/
+
+.cavaticaProjects {
+  justify-content: center;
+  margin: 0;
+  padding: 10px 10px 10px 0;
+  padding-bottom: 16px;
+  border-bottom: solid 1px #e5f6fd;
+}
+
+.cavaticaProjects .cavaticaProjectsProject {
+  justify-content: space-between;
+  padding-left: 0px;
+}
+
+.cavaticaProjects .link {
+  text-decoration: underline;
+  font-size: 14px;
+  font-family: Open Sans, sans-serif;
+  font-weight: 600;
+}
+
+.cavaticaProjects .members {
+  font-family: Open Sans, sans-serif;
+  font-size: 12px;
+  color: #74757d;
+}
+
+.cavaticaProjects .membersCount {
+  font-family: Open Sans, sans-serif;
+  font-size: 12px;
+  color: #343434;
+}
+
+.cavaticaProjects .cavaticaProjectsTasks {
+  margin-top: 10px;
+  padding-left: 0;
+}
+
+.cavaticaProjects .taskBreakdown {
+  font-family: Open Sans, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+.cavaticaProjects .taskBreakdown .task {
+  display: inline-block;
+  border-radius: 7.5px;
+  margin-left: 8px;
+  font-size: 12px;
+  font-family: Open Sans, sans-serif;
+  padding: 2px 5px;
+  font-weight: 600;
+}
+.cavaticaProjects .taskBreakdown .task.taskLink {
+  text-decoration: none;
+}
+.cavaticaProjects .taskBreakdown .task.completed {
+  background-color: #dcfbf3;
+  color: #0e906f;
+}
+.cavaticaProjects .taskBreakdown .task.failed {
+  background-color: #fbdada;
+  color: #a71111;
+}
+.cavaticaProjects .taskBreakdown .task.running {
+  background-color: #daecfb;
+  color: #1163a7;
+}

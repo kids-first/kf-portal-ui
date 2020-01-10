@@ -23,3 +23,87 @@ export const SQONdiff = (object, base) => {
   }
   return changes(object, base);
 };
+
+const validStylesMap = new Set(Object.keys(document.createElement('div').style));
+const shorthandSpacersRegex = /^((m|p)[trbl]?)$/;
+const shorthandSpacers = {
+  p: 'padding',
+  pt: 'paddingTop',
+  pr: 'paddingRight',
+  pb: 'paddingBottom',
+  pl: 'paddingLeft',
+  m: 'margin',
+  mt: 'marginTop',
+  mr: 'marginRight',
+  mb: 'marginBottom',
+  ml: 'marginLeft',
+};
+const splitStylesFromAttributes = props => {
+  if (typeof props !== 'object') {
+    return { styles: {}, attributes: {} };
+  }
+
+  return Object.keys(props).reduce(
+    (result, key) => {
+      const value = props[key];
+
+      // filter some property that should not be forwarded
+      if (['style', 'innerRef'].includes(key)) {
+        return result;
+      }
+
+      // shorthand properties
+      const results = shorthandSpacersRegex.exec(key);
+      if (results !== null) {
+        result.styles[shorthandSpacers[key]] = value;
+        return result;
+      }
+
+      // check if its a valid style
+      if (validStylesMap.has(key)) {
+        result.styles[key] = value;
+        return result;
+      }
+
+      // pass as a standard attribute
+      result.attributes[key] = value;
+      return result;
+    },
+    { styles: {}, attributes: {} },
+  );
+};
+
+/**
+ * Decorates a Component with classes.
+ * @param {object|string|Function} Component - The component to add styles to
+ * @param {string} classes - a string of classNames
+ */
+export const styleComponent = (Component, classes = '') => ({
+  children = null,
+  className = '',
+  ...props
+}) => {
+  const joinedClasses = `${classes} ${className}`;
+
+  if (typeof Component === 'string') {
+    const { styles, attributes } = splitStylesFromAttributes(props);
+    return (
+      <Component
+        className={joinedClasses}
+        {...attributes}
+        style={{
+          ...(props.style || {}),
+          ...styles,
+        }}
+      >
+        {children}
+      </Component>
+    );
+  }
+
+  return (
+    <Component className={joinedClasses} {...props}>
+      {children}
+    </Component>
+  );
+};

@@ -11,7 +11,10 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import TabMenu from './TabMenu';
 import IndexDots from './IndexDots';
-import SliderStyleWrapper from './SliderStyleWrapper';
+
+// for react-slick
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 class Multicard extends Component {
   constructor(props) {
@@ -81,7 +84,7 @@ class Multicard extends Component {
     };
 
     return (
-      <SliderStyleWrapper>
+      <div style={{ height: '100%' }}>
         {loading ? (
           <LoadingSpinner />
         ) : (
@@ -119,11 +122,11 @@ class Multicard extends Component {
               </Slider>
             </CardContent>
             {inactive ? null : (
-              <IndexDots index={currentTabIndex} items={tabs.length} setIndex={this.setIndex} />
+              <IndexDots index={currentTabIndex} items={tabs} setIndex={this.setIndex} />
             )}
           </CardWrapper>
         )}
-      </SliderStyleWrapper>
+      </div>
     );
   }
 }

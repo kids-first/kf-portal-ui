@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { ActionsColumn, FileIdColumn,ParticipantIdColumn } from './CustomColumns';
+import { ActionsColumn, FileIdColumn, ParticipantIdColumn } from './CustomColumns';
+import theme from 'theme/defaultTheme';
 
-export default ({ theme, fenceAcls }) => [
+export default ({ fenceAcls }) => [
   {
     index: 0,
     content: {
