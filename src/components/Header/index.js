@@ -19,14 +19,16 @@ import { Alert, Badge } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 import { loggedInUserShape } from 'shapes/index';
+import  queryString  from 'query-string'
 
 import UserMenu from './UserMenu';
 
 import './Header.css';
 
 import { dismissError } from 'store/actionCreators/errors';
+import { enableFeature } from 'store/actionCreators/enableFeatures';
 
-const isSearchMemberFeatEnabled = isFeatureEnabled('searchMembers'); //TODO : remove me one day :)
+const isSearchMemberFeatEnabled = (queryString) => isFeatureEnabled('searchMembers', queryString); //TODO : remove me one day :)
 
 const showPublicProfileInvite = (user = {}) => {
   if (!isSearchMemberFeatEnabled) {
@@ -107,6 +109,12 @@ class Header extends React.Component {
     autobind(this);
   }
 
+  componentDidMount() {
+    const queries = queryString.parse(this.props.location.search);
+
+    enableFeature('TOTO')
+  }
+
   render() {
     const {
       currentError,
@@ -158,7 +166,7 @@ class Header extends React.Component {
                     <DatabaseIcon /> File Repository
                   </NavLink>
                 </li>
-                {isSearchMemberFeatEnabled && (
+                {isSearchMemberFeatEnabled(queryString.parse(this.props.location.search)) && (
                   <li>
                     <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
                       <Badge
@@ -197,10 +205,12 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   loggedInUser: state.user.loggedInUser,
   currentError: state.errors.currentError,
+  enabledFeatures: state.queries,
 });
 
 const mapDispatchToProps = {
   dismissError,
+  enableFeature,
 };
 
 export default compose(withRouter, withApi, connect(mapStateToProps, mapDispatchToProps))(Header);

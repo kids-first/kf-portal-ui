@@ -5,7 +5,7 @@ import { getApplicationEnvVar } from 'common/injectGlobals';
 const featureTogglePrefix = 'REACT_APP_FT';
 const togglePrefix = 'REACT_APP_';
 
-const isEnabled = (featureName, defaultValue = true) => {
+const isEnabled = (featureName, enabledFeatured = [], defaultValue = true) => {
   const flag = getApplicationEnvVar(featureName);
 
   // missing feature flags defaults to their default
@@ -13,22 +13,22 @@ const isEnabled = (featureName, defaultValue = true) => {
 
   // any casing for 'false', false, 0 and '0' are all disabled
   // eslint-disable-next-line eqeqeq
-  if (flag === false || flag.toString().toLowerCase() === 'false' || flag == 0) {
-    return false;
+  if (flag === false || flag.toString().toLowerCase() === 'false' || flag === 0) {
+    return enabledFeatured.includes(featureName);
   }
 
   // the rest is enabled (but could contain a value like 'canary' or 'ADMIN')
   return true;
 };
 
-const toggles = Array.from(Object.entries(process.env))
+const toggles = (queryStrings) => Array.from(Object.entries(process.env))
   .filter(env => {
     return typeof env[1] === 'string';
   })
   .filter(env => env[0].startsWith(featureTogglePrefix))
   .reduce(
     (allToggles, toggle) => {
-      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0].slice(togglePrefix.length));
+      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0].slice(togglePrefix.length), queryStrings['enableFeature']);
       return allToggles;
     },
     {
@@ -40,6 +40,7 @@ const toggles = Array.from(Object.entries(process.env))
 /**
  * Checks if a feature is enabled or not.
  * @param {String} featureName - The name of the feature, as defined in the feature toggles configuration.
+ * @param queryStrings
  * @returns {Boolean} `true` if the name feature exists and is enabled; `false` otherwise.
  */
-export const isFeatureEnabled = featureName => toggles[featureName] === true;
+export const isFeatureEnabled = (featureName, queryStrings) => toggles(queryStrings)[featureName] === true;
