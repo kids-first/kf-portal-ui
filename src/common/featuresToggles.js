@@ -5,7 +5,7 @@ import { getApplicationEnvVar } from 'common/injectGlobals';
 const featureTogglePrefix = 'REACT_APP_FT';
 const togglePrefix = 'REACT_APP_';
 
-const isEnabled = (featureName, enabledFeatured = [], defaultValue = true) => {
+const isEnabled = (featureName, enabledFeatures = {}, defaultValue = true) => {
   const flag = getApplicationEnvVar(featureName);
 
   // missing feature flags defaults to their default
@@ -14,7 +14,7 @@ const isEnabled = (featureName, enabledFeatured = [], defaultValue = true) => {
   // any casing for 'false', false, 0 and '0' are all disabled
   // eslint-disable-next-line eqeqeq
   if (flag === false || flag.toString().toLowerCase() === 'false' || flag === 0) {
-    return enabledFeatured.includes(featureName);
+    return enabledFeatures[featureName] === true;
   }
 
   // the rest is enabled (but could contain a value like 'canary' or 'ADMIN')
@@ -28,7 +28,7 @@ const toggles = (queryStrings) => Array.from(Object.entries(process.env))
   .filter(env => env[0].startsWith(featureTogglePrefix))
   .reduce(
     (allToggles, toggle) => {
-      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0].slice(togglePrefix.length), queryStrings['enableFeature']);
+      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0].slice(togglePrefix.length), queryStrings);
       return allToggles;
     },
     {
@@ -40,7 +40,7 @@ const toggles = (queryStrings) => Array.from(Object.entries(process.env))
 /**
  * Checks if a feature is enabled or not.
  * @param {String} featureName - The name of the feature, as defined in the feature toggles configuration.
- * @param queryStrings
+ * @param features
  * @returns {Boolean} `true` if the name feature exists and is enabled; `false` otherwise.
  */
-export const isFeatureEnabled = (featureName, queryStrings) => toggles(queryStrings)[featureName] === true;
+export const isFeatureEnabled = (featureName, features = {}) => toggles(features)[featureName] === true;

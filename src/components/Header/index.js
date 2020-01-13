@@ -28,10 +28,10 @@ import './Header.css';
 import { dismissError } from 'store/actionCreators/errors';
 import { enableFeature } from 'store/actionCreators/enableFeatures';
 
-const isSearchMemberFeatEnabled = (queryString) => isFeatureEnabled('searchMembers', queryString); //TODO : remove me one day :)
+const isSearchMemberFeatEnabled = features => isFeatureEnabled('searchMembers', features); //TODO : remove me one day :)
 
 const showPublicProfileInvite = (user = {}) => {
-  if (!isSearchMemberFeatEnabled) {
+  if (!isSearchMemberFeatEnabled) { //FIXME
     return false;
   }
   return (
@@ -102,6 +102,7 @@ class Header extends React.Component {
     match: PropTypes.shape({
       path: PropTypes.string.isRequired,
     }).isRequired,
+    enabledFeatures: PropTypes.object,
   };
 
   constructor(props) {
@@ -111,8 +112,7 @@ class Header extends React.Component {
 
   componentDidMount() {
     const queries = queryString.parse(this.props.location.search);
-
-    enableFeature('TOTO')
+    this.props.enableFeature(queries)
   }
 
   render() {
@@ -166,7 +166,7 @@ class Header extends React.Component {
                     <DatabaseIcon /> File Repository
                   </NavLink>
                 </li>
-                {isSearchMemberFeatEnabled(queryString.parse(this.props.location.search)) && (
+                {isSearchMemberFeatEnabled(this.props.features) && (
                   <li>
                     <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
                       <Badge
@@ -205,7 +205,7 @@ class Header extends React.Component {
 const mapStateToProps = state => ({
   loggedInUser: state.user.loggedInUser,
   currentError: state.errors.currentError,
-  enabledFeatures: state.queries,
+  features: state.enableFeatures.enableFeatures,
 });
 
 const mapDispatchToProps = {
