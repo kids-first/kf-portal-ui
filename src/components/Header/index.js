@@ -30,8 +30,8 @@ import { enableFeature } from 'store/actionCreators/enableFeatures';
 
 const isSearchMemberFeatEnabled = features => isFeatureEnabled('searchMembers', features); //TODO : remove me one day :)
 
-const showPublicProfileInvite = (user = {}) => {
-  if (!isSearchMemberFeatEnabled) { //FIXME
+const showPublicProfileInvite = (user = {}, features = {}) => {
+  if (!isSearchMemberFeatEnabled(features)) {
     return false;
   }
   return (
@@ -46,7 +46,7 @@ const onClosePublicProfileInviteAlert = () =>
 
 const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
-const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
+const renderAlertIfAny = (loggedInUser, currentError, dismissError, features) => {
   if (currentError) {
     return (
       <Alert
@@ -64,7 +64,7 @@ const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
     );
   }
 
-  if (showPublicProfileInvite(loggedInUser)) {
+  if (showPublicProfileInvite(loggedInUser, features)) {
     return (
       <Alert
         message={
@@ -121,6 +121,7 @@ class Header extends React.Component {
       dismissError,
       loggedInUser,
       history,
+      features,
       match: { path },
     } = this.props;
 
@@ -135,7 +136,7 @@ class Header extends React.Component {
 
     return (
       <div className="headerContainer">
-        {renderAlertIfAny(loggedInUser, currentError, dismissError)}
+        {renderAlertIfAny(loggedInUser, currentError, dismissError, features)}
         <div className="gradientAccent" />
         <Row className="headerContent">
           <Row>
