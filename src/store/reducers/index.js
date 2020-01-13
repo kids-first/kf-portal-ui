@@ -5,6 +5,7 @@ import currentVirtualStudy from './currentVirtualStudy';
 import user from './user';
 import ui from './ui';
 import errors from './errors';
+import enableFeatures from './enableFeatures';
 
 export default combineReducers({
   virtualStudies,
@@ -12,4 +13,5 @@ export default combineReducers({
   user,
   ui,
   errors,
+  enableFeatures,
 });
