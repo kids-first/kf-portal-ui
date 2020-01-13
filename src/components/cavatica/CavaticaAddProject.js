@@ -45,12 +45,12 @@ class CavaticaAddProject extends Component {
 
     try {
       this.setState({ isSaveButtonDisabled: true });
-      const { id } = await saveProject({
+      const project = await saveProject({
         projectName,
         selectedBillingGroup,
         billingGroups,
       });
-      setSelectedProject(id);
+      setSelectedProject(project);
       onSuccess();
       this.setState({
         projectName: '',
@@ -134,7 +134,7 @@ class CavaticaAddProject extends Component {
     } else if (!addingProject) {
       return (
         <Row className="cavaticaAddProject-container">
-          <WhiteButton className="createButton" onClick={this.onWhiteButtonClick}>
+          <WhiteButton className="createButton" onClick={this.onCreateButtonClick}>
             <PlusIcon className="addIcon" width="12px" height="12px" />
             Create a project
           </WhiteButton>{' '}
