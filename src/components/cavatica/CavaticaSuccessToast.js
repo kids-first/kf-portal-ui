@@ -13,7 +13,7 @@ export const SuccessToastComponent = ({ selectedProjectData }) => (
       <div style={{ color: theme.secondary, marginBottom: '20px' }}>{selectedProjectData.name}</div>
       <ExternalLink
         style={{ fontSize: '14px' }}
-        href={`${cavaticaWebRoot}/u/${selectedProjectData.id}`}
+        href={`${cavaticaWebRoot}u/${selectedProjectData.id}`}
       >
         Open project in Cavatica
         <RightArrows fill={theme.primary} width="10px" style={{ marginLeft: '4px' }} />
