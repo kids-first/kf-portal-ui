@@ -14,7 +14,7 @@ import { FilterInput } from 'uikit/Input';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import { Result } from 'antd';
 import { getMsgFromErrorOrElse } from 'utils';
-
+import theme from 'theme/defaultTheme';
 import './cavatica.css';
 
 const enhance = compose(
@@ -42,7 +42,6 @@ const enhance = compose(
 );
 
 const CavaticaProjects = ({
-  theme,
   projectSearchValue,
   setProjectSearchValue,
   projectList,

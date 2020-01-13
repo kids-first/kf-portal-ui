@@ -4,7 +4,7 @@ import Input from 'uikit/Input';
 
 export const NumberBullet = styled.span`
   color: white;
-  background: ${props => props.theme.active};
+  background: green;
   width: 14px;
   border-radius: 50%;
   margin: 20px;

@@ -9,6 +9,17 @@
 
 -->
 
+## 2020-01-13 kf-portal-ui 2.13.1
+
+### Features
+
+This release is a hot fix. We were not able to push files to Cavatica anymore, due to react-emotion removal. 
+
+We also fixed this issue:
+- [#2232](https://github.com/kids-first/kf-portal-ui/issues/2232) Cavatica modal : Link to cavatica token page is broken
+
+
+
 ## 2020-01-09 kf-portal-ui 2.13.0
 
 This release includes a new _Members_ page and alterations to the profile page, allowing to search for other members that made their user profile public.
