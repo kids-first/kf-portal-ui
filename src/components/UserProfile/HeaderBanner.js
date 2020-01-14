@@ -6,10 +6,12 @@ import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from 'uikit/ProfilePill';
 import { isFeatureEnabled } from 'common/featuresToggles';
 import './style.css';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 const { Title, Text } = Typography;
 
-const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canEdit }) => {
+const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canEdit, features }) => {
   return (
       <Row
           align={'middle'}
@@ -44,7 +46,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
           </div>
         </div>
         {canEdit &&
-        isFeatureEnabled('searchMembers') && ( //remove me one day :)
+        isFeatureEnabled('searchMembers', features) && ( //remove me one day :)
             <div className={'hd-switch-wrapper'}>
               <Row
                   type={'flex'}
@@ -99,4 +101,8 @@ HeaderBanner.propTypes = {
   canEdit: PropTypes.bool.isRequired,
 };
 
-export default HeaderBanner;
+const mapStateToProps = state => ({
+  features: state.enableFeatures.enableFeatures,
+});
+
+export default compose(connect(mapStateToProps))(HeaderBanner);

@@ -9,6 +9,19 @@
 
 -->
 
+## 2020-01-14 kf-portal-ui 2.13.2
+
+### Features
+
+This feature includes : 
+
+#### kf-portal-ui
+- [#2233](https://github.com/kids-first/kf-portal-ui/issues/2233) Change label when disconnecting
+- [#2236](https://github.com/kids-first/kf-portal-ui/issues/2236) Enable feature toggles with url parameters
+
+#### kf-api-portal-reports
+- [#14](https://github.com/kids-first/kf-api-portal-reports/issues/14) Add `Method of Sample Procurement` to biospecimen report download
+
 ## 2020-01-13 kf-portal-ui 2.13.1
 
 ### Features
