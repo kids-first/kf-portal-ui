@@ -90,6 +90,7 @@
     "chai": "^4.2.0",
     "less": "^3.10.3",
     "mocha": "^6.2.2",
+    "prettier": "1.19.1",
     "source-map-explorer": "^2.1.2"
   }
 }
