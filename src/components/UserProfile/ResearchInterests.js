@@ -31,7 +31,7 @@ const ResearchInterest = ({ interests }) => {
           {Boolean(interestRight) && (
             <Text>
               <Icon type="check-circle" theme="filled" className={'ri-icon'} />
-              {interestLeft}
+              {interestRight}
             </Text>
           )}
         </div>
