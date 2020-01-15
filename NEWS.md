@@ -8,6 +8,14 @@
 ### Technical / Other changes
 
 -->
+## 2020-01-13 kf-portal-ui 2.13.3
+
+This feature includes : 
+
+### Features
+- [#2245](https://github.com/kids-first/kf-portal-ui/issues/2245) Add validation to member information
+- [#2192](https://github.com/kids-first/kf-portal-ui/issues/2192) Change fence integration due to an upgrade in Gen3
+
 
 ## 2020-01-14 kf-portal-ui 2.13.2
 
