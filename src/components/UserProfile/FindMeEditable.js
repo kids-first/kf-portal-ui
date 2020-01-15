@@ -5,16 +5,21 @@ import { Form, Row, Typography } from 'antd';
 import { isUrl } from 'utils';
 import './style.css';
 import FindMeInput from 'components/UserProfile/FindMeInput';
+import { ERROR_INVALID_URL, ERROR_TOO_MANY_CHARACTERS } from './constants';
 
 const { Title } = Typography;
 
+const URL_MAX_LENGTH = 1024;
+
 const validateInput = (rule, value, callback) => {
-  if (['orchid', 'github', 'twitter'].includes(rule.field)) {
+  if (value && value.inputVal && value.inputVal.length > URL_MAX_LENGTH) {
+    return callback(ERROR_TOO_MANY_CHARACTERS);
+  } else if (['orchid', 'github', 'twitter'].includes(rule.field)) {
     return callback();
   } else if (!value || !value.inputVal || isUrl(value.inputVal)) {
     return callback();
   }
-  return callback('Invalid Url');
+  return callback(ERROR_INVALID_URL);
 };
 
 function FindMeEditable(props) {
@@ -40,9 +45,7 @@ function FindMeEditable(props) {
       {socialIcons.map(item => {
         return (
           <Row key={item.id} type={'flex'} align={'middle'}>
-            <div className={'fmi-icon-wrapper'}>
-              {item.icon}
-            </div>
+            <div className={'fmi-icon-wrapper'}>{item.icon}</div>
             <Form.Item label={item.label}>
               {getFieldDecorator(item.id, {
                 initialValue: { inputVal: data[item.id], protocol: '' },

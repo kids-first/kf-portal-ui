@@ -5,10 +5,21 @@ import ResearchInterestsEditable from './ResearchInterestsEditable';
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
 import './style.css';
 import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
+import { ERROR_TOO_MANY_CHARACTERS } from './constants';
+import { hasFieldInError } from './utils';
 
 const { Text } = Typography;
 
 const { TextArea } = Input;
+
+const MAX_LENGTH_BIO_STORY = 1024;
+
+const validateBioStory = (rule, value, callback) => {
+  if (value && value.length > MAX_LENGTH_BIO_STORY) {
+    return callback(ERROR_TOO_MANY_CHARACTERS);
+  }
+  return callback();
+};
 
 const retrieveInterestsFromForm = formFields => {
   return Object.entries(formFields).reduce((acc, [key, value]) => {
@@ -46,15 +57,19 @@ class ProfileEditable extends Component {
 
   render() {
     const { data, form, onClickCancelCb, isProfileUpdating } = this.props;
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator, getFieldsError } = form;
+
+    const hasFormError = hasFieldInError(getFieldsError(['bio', 'story', 'otherAreasOfInterests']));
+
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={hasFormError ? undefined : this.handleSubmit}>
         <Card
           {...{
             ...makeCommonCardPropsEditing({
               title: 'Profile',
               onClickCancelCb,
               isProfileUpdating,
+              disableSaveButton: hasFormError,
             }),
           }}
         >
@@ -65,6 +80,7 @@ class ProfileEditable extends Component {
               <Form.Item>
                 {getFieldDecorator('bio', {
                   initialValue: data.bio,
+                  rules: [{ required: false }, { validator: validateBioStory }],
                 })(<TextArea rows={4} placeholder={bioMsgWhenEmpty} />)}
               </Form.Item>
               <Divider className={'profile-divider'} />
@@ -77,6 +93,7 @@ class ProfileEditable extends Component {
               <Form.Item>
                 {getFieldDecorator('story', {
                   initialValue: data.story,
+                  rules: [{ required: false }, { validator: validateBioStory }],
                 })(<TextArea rows={4} placeholder={storyMsgWhenEmpty} />)}
               </Form.Item>
               <Divider className={'profile-divider'} />
