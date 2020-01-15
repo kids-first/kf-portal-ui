@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 import { Form, Row, Input, Col } from 'antd';
 
 const AddressEditForm = props => {
-  const { parentForm, addressLine1, addressLine2, city, country, state, zip } = props;
+  const {
+    parentForm,
+    addressLine1,
+    addressLine2,
+    city,
+    country,
+    state,
+    zip,
+    validateFieldsCB,
+  } = props;
+
   const { getFieldDecorator } = parentForm;
 
   return (
@@ -16,6 +26,7 @@ const AddressEditForm = props => {
               {
                 required: false,
               },
+              { validator: validateFieldsCB },
             ],
           })(<Input size={'small'} />)}
         </Form.Item>
@@ -28,6 +39,7 @@ const AddressEditForm = props => {
               {
                 required: false,
               },
+              { validator: validateFieldsCB },
             ],
           })(<Input size={'small'} />)}
         </Form.Item>
@@ -40,6 +52,7 @@ const AddressEditForm = props => {
               {
                 required: false,
               },
+              { validator: validateFieldsCB },
             ],
           })(<Input size={'small'} />)}
         </Form.Item>
@@ -53,6 +66,7 @@ const AddressEditForm = props => {
                 {
                   required: false,
                 },
+                { validator: validateFieldsCB },
               ],
             })(<Input size={'small'} />)}
           </Form.Item>
@@ -65,6 +79,7 @@ const AddressEditForm = props => {
                 {
                   required: false,
                 },
+                { validator: validateFieldsCB },
               ],
             })(<Input size={'small'} />)}
           </Form.Item>
@@ -78,6 +93,7 @@ const AddressEditForm = props => {
               {
                 required: false,
               },
+              { validator: validateFieldsCB },
             ],
           })(<Input size={'small'} />)}
         </Form.Item>
@@ -94,6 +110,7 @@ AddressEditForm.propTypes = {
   state: PropTypes.string,
   zip: PropTypes.string,
   country: PropTypes.string,
+  validateFieldsCB: PropTypes.func.isRequired,
 };
 
 export default AddressEditForm;

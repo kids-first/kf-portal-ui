@@ -6,8 +6,18 @@ import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComple
 import AddressEditForm from 'components/UserProfile/AddressEditForm';
 import './style.css';
 import { isResearcher, showInstitution } from './utils';
+import { ERROR_TOO_MANY_CHARACTERS } from "./constants";
 
 const { Option } = Select;
+
+const MAX_LENGTH_FIELD = 100;
+
+const validateFields = (rule, value, callback) => {
+  if (value && value.length > MAX_LENGTH_FIELD) {
+    return callback(ERROR_TOO_MANY_CHARACTERS);
+  }
+  return callback();
+};
 
 class ContactInformationEditable extends Component {
   static propTypes = {
@@ -76,19 +86,19 @@ class ContactInformationEditable extends Component {
             <Form.Item label="First Name">
               {getFieldDecorator('firstName', {
                 initialValue: data.firstName,
-                rules: [{ required: true, message: 'first name is required' }],
+                rules: [{ required: true, message: 'first name is required' }, { validator: validateFields }],
               })(<Input size="small" />)}
             </Form.Item>
             <Form.Item label="Last Name">
               {getFieldDecorator('lastName', {
                 initialValue: data.lastName,
-                rules: [{ required: true, message: 'last name is required' }],
+                rules: [{ required: true, message: 'last name is required' }, { validator: validateFields }],
               })(<Input size="small" />)}
             </Form.Item>
             <Form.Item label="Suborganization/Department">
               {getFieldDecorator('department', {
                 initialValue: data.department,
-                rules: [{ required: false }],
+                rules: [{ required: false }, { validator: validateFields }],
               })(<Input size="small" />)}
             </Form.Item>
             {showInstitution(data) && (
@@ -96,13 +106,13 @@ class ContactInformationEditable extends Component {
                 <Form.Item label="Institution/Organization">
                   {getFieldDecorator('institution', {
                     initialValue: data.institution,
-                    rules: [{ required: false }],
+                    rules: [{ required: false }, { validator: validateFields }],
                   })(<Input size="small" />)}
                 </Form.Item>
                 <Form.Item label="Institutional Email Address">
                   {getFieldDecorator('institutionalEmail', {
                     initialValue: data.institutionalEmail,
-                    rules: [{ required: false }],
+                    rules: [{ required: false }, { validator: validateFields }],
                   })(<Input size="small" />)}
                 </Form.Item>
               </Fragment>
@@ -111,20 +121,20 @@ class ContactInformationEditable extends Component {
               <Form.Item label="Job Title">
                 {getFieldDecorator('jobTitle', {
                   initialValue: data.jobTitle,
-                  rules: [{ required: false }],
+                  rules: [{ required: false }, { validator: validateFields }],
                 })(<Input size="small" />)}
               </Form.Item>
             )}
             <Form.Item label="Phone">
               {getFieldDecorator('phone', {
                 initialValue: data.phone,
-                rules: [{ required: false }],
+                rules: [{ required: false }, { validator: validateFields }],
               })(<Input size="small" />)}
             </Form.Item>
             <Form.Item label="ERA Commons ID">
               {getFieldDecorator('eraCommonsID', {
                 initialValue: data.eraCommonsID,
-                rules: [{ required: false }],
+                rules: [{ required: false }, { validator: validateFields }],
               })(<Input size="small" />)}
             </Form.Item>
           </Input.Group>
@@ -137,6 +147,7 @@ class ContactInformationEditable extends Component {
         <div className={'contact-edit-address-wrapper'}>
           <AddressEditForm
             parentForm={parentForm}
+            validateFieldsCB={validateFields}
             addressLine1={data.addressLine1}
             addressLine2={data.addressLine2}
             city={data.city}
