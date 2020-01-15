@@ -100,8 +100,7 @@ export const userProfileBackground = (
         ${profileColors.gradientDark} 33%,
         ${profileColors.gradientMid} 66%,
         ${profileColors.gradientLight}
-      )`
-
+      )`,
   };
 };
 
@@ -152,7 +151,12 @@ export const makeCommonCardPropsReadOnly = ({
   };
 };
 
-export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCancelCb }) => {
+export const makeCommonCardPropsEditing = ({
+  isProfileUpdating,
+  title,
+  onClickCancelCb,
+  disableSaveButton,
+}) => {
   return {
     loading: isProfileUpdating,
     title: <Text className={'header-title'}>{title}</Text>,
@@ -175,7 +179,11 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
           className={'extra-button'}
           icon="check"
           shape="round"
-          style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
+          style={{
+            backgroundColor: Boolean(disableSaveButton) ? 'lightgrey' : 'rgb(144, 38, 142)',
+            color: 'white',
+          }}
+          disabled={Boolean(disableSaveButton)}
           htmlType="submit"
         >
           SAVE
@@ -188,3 +196,6 @@ export const makeCommonCardPropsEditing = ({ isProfileUpdating, title, onClickCa
 export const showWhenHasDataOrCanEdit = (data, canEdit) => {
   return Boolean(data) || canEdit;
 };
+
+export const hasFieldInError = fields =>
+  Object.entries(fields || {}).some(([, value]) => Array.isArray(value) && value.length > 0);

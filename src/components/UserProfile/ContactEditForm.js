@@ -5,7 +5,7 @@ import ContactInformationEditable from 'components/UserProfile/ContactInformatio
 import FindMeEditable from './FindMeEditable';
 import './style.css';
 import { findMeFields } from './constants';
-import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
+import { makeCommonCardPropsEditing, hasFieldInError } from 'components/UserProfile/utils';
 
 const reshapeForProfile = fields => {
   const { entries } = Object;
@@ -49,13 +49,18 @@ class ContactEditForm extends Component {
 
   render() {
     const { data, onClickCancelCb, form, isProfileUpdating } = this.props;
+    const { getFieldsError } = form;
+
+    const hasFormError = hasFieldInError(getFieldsError());
+
     return (
-      <Form onSubmit={this.handleSubmit} layout={'vertical'}>
+      <Form onSubmit={hasFormError ? undefined : this.handleSubmit} layout={'vertical'}>
         <Card
           {...makeCommonCardPropsEditing({
             title: 'Contact Information',
             onClickCancelCb,
             isProfileUpdating,
+            disableSaveButton: hasFormError,
           })}
         >
           <Row>

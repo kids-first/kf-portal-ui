@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Row, Typography } from 'antd';
 import chunk from 'lodash/chunk';
-import capitalize from 'lodash/capitalize';
 import { toKebabCase } from 'utils';
 import './style.css';
 
@@ -25,14 +24,14 @@ const ResearchInterest = ({ interests }) => {
         <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
           <Text>
             <Icon type="check-circle" theme="filled" className={'ri-icon'} />
-            {capitalize(interestLeft)}
+            {interestLeft}
           </Text>
         </div>
         <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
           {Boolean(interestRight) && (
             <Text>
               <Icon type="check-circle" theme="filled" className={'ri-icon'} />
-              {capitalize(interestRight)}
+              {interestRight}
             </Text>
           )}
         </div>
