@@ -12,7 +12,7 @@ const { Text } = Typography;
 
 const { TextArea } = Input;
 
-const MAX_LENGTH_BIO_STORY = 1024;
+const MAX_LENGTH_BIO_STORY = 2000;
 
 const validateBioStory = (rule, value, callback) => {
   if (value && value.length > MAX_LENGTH_BIO_STORY) {
