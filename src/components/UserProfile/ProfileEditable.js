@@ -16,7 +16,7 @@ const MAX_LENGTH_BIO_STORY = 1024;
 
 const validateBioStory = (rule, value, callback) => {
   if (value && value.length > MAX_LENGTH_BIO_STORY) {
-    return callback(ERROR_TOO_MANY_CHARACTERS);
+    return callback(`${ERROR_TOO_MANY_CHARACTERS} ( max: ${MAX_LENGTH_BIO_STORY} ) `);
   }
   return callback();
 };

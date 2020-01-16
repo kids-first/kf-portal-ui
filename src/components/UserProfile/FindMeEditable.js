@@ -13,7 +13,7 @@ const URL_MAX_LENGTH = 1024;
 
 const validateInput = (rule, value, callback) => {
   if (value && value.inputVal && value.inputVal.length > URL_MAX_LENGTH) {
-    return callback(ERROR_TOO_MANY_CHARACTERS);
+    return callback(`${ERROR_TOO_MANY_CHARACTERS} ( max: ${URL_MAX_LENGTH} ) `);
   } else if (['orchid', 'github', 'twitter'].includes(rule.field)) {
     return callback();
   } else if (!value || !value.inputVal || isUrl(value.inputVal)) {

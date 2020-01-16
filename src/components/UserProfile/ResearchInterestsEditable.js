@@ -6,7 +6,7 @@ import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { debounce } from 'lodash';
 import './style.css';
 import { searchInterests } from 'services/members/search';
-import { ERROR_TOO_MANY_CHARACTERS } from "./constants";
+import { ERROR_TOO_MANY_CHARACTERS } from './constants';
 
 const { Option } = Select;
 
@@ -25,7 +25,7 @@ const generateClassNameForOtherInterestIcon = input => {
 
 const validateUserInterest = (rule, value, callback) => {
   if (value && value.length > MAX_LENGTH_FOR_INTEREST) {
-    return callback(ERROR_TOO_MANY_CHARACTERS);
+    return callback(`${ERROR_TOO_MANY_CHARACTERS} ( max: ${MAX_LENGTH_FOR_INTEREST} ) `);
   }
   return callback();
 };
@@ -252,7 +252,11 @@ class ResearchInterestsEditable extends Component {
                       <Icon
                         type="check"
                         onClick={this.onClickCheck}
-                        className={mustCorrectError ? '' : generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)}
+                        className={
+                          mustCorrectError
+                            ? ''
+                            : generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)
+                        }
                       />
                     }
                     size={'small'}
