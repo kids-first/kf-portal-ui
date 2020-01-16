@@ -6,7 +6,7 @@ import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComple
 import AddressEditForm from 'components/UserProfile/AddressEditForm';
 import './style.css';
 import { isResearcher, showInstitution } from './utils';
-import { ERROR_TOO_MANY_CHARACTERS } from "./constants";
+import { ERROR_TOO_MANY_CHARACTERS } from './constants';
 
 const { Option } = Select;
 
@@ -14,7 +14,7 @@ const MAX_LENGTH_FIELD = 100;
 
 const validateFields = (rule, value, callback) => {
   if (value && value.length > MAX_LENGTH_FIELD) {
-    return callback(ERROR_TOO_MANY_CHARACTERS);
+    return callback(`${ERROR_TOO_MANY_CHARACTERS} ( max: ${MAX_LENGTH_FIELD} ) `);
   }
   return callback();
 };
@@ -86,13 +86,19 @@ class ContactInformationEditable extends Component {
             <Form.Item label="First Name">
               {getFieldDecorator('firstName', {
                 initialValue: data.firstName,
-                rules: [{ required: true, message: 'first name is required' }, { validator: validateFields }],
+                rules: [
+                  { required: true, message: 'first name is required' },
+                  { validator: validateFields },
+                ],
               })(<Input size="small" />)}
             </Form.Item>
             <Form.Item label="Last Name">
               {getFieldDecorator('lastName', {
                 initialValue: data.lastName,
-                rules: [{ required: true, message: 'last name is required' }, { validator: validateFields }],
+                rules: [
+                  { required: true, message: 'last name is required' },
+                  { validator: validateFields },
+                ],
               })(<Input size="small" />)}
             </Form.Item>
             <Form.Item label="Suborganization/Department">

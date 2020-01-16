@@ -8,6 +8,15 @@
 ### Technical / Other changes
 
 -->
+## 2020-01-13 kf-portal-ui 2.13.4
+
+This feature includes : 
+
+### Features
+- [#2245](https://github.com/kids-first/kf-portal-ui/issues/2249) improve interests suggestion in member page
+- [#2252](https://github.com/kids-first/kf-portal-ui/issues/2252) Change maxlength of bio and story 
+- [#2253](https://github.com/kids-first/kf-portal-ui/issues/2253) Edit Profile : Display max number characters in error message
+ 
 ## 2020-01-13 kf-portal-ui 2.13.3
 
 This feature includes : 
