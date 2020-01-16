@@ -120,7 +120,7 @@ class Component extends React.Component {
       <Box style={{ maxWidth: '600px' }}>
         Connection to ego failed, you may need to visit
         <a target="_blank" rel="noopener noreferrer" href={egoApiRoot}>
-          {{ egoApiRoot }}
+          { egoApiRoot }
         </a>
         in a new tab and accept the warning
       </Box>
