@@ -199,3 +199,51 @@ export const showWhenHasDataOrCanEdit = (data, canEdit) => {
 
 export const hasFieldInError = fields =>
   Object.entries(fields || {}).some(([, value]) => Array.isArray(value) && value.length > 0);
+
+const buildLabelMessageForWord = (field, valBefore, valNow) => {
+  if (!valBefore && valNow) {
+    return `${field} was added with value : ' ${valNow}  '`;
+  } else if (valBefore && !valNow) {
+    return `${field} was removed`;
+  }
+  return `${field} changed : from ' ${valBefore || 'empty'} ' to ' ${valNow || 'empty'} '`;
+};
+
+const difference = (a, b) => new Set([...a].filter(x => !b.has(x)));
+
+const buildLabelMessageForArray = (field, before, now) => {
+  const beforeSet = new Set(before || []);
+  const nowSet = new Set(now || []);
+
+  const removedMessages = [...difference(beforeSet, nowSet)].map(
+    rE => `${field} ' ${rE} ' was removed `,
+  );
+  const addedMessages = [...difference(nowSet, beforeSet)].map(
+    aE => `${field} ' ${aE} ' was added `,
+  );
+
+  return removedMessages.concat(addedMessages);
+};
+
+export const generateLabelsFromFormChange = (currentProfile, formFields) => {
+  //Objects value to compare are of types : string | undefined | null | array of strings
+  const labels = Object.entries(formFields || {}).reduce((acc, [formKey, formValue]) => {
+    const valueInProfile = currentProfile[formKey] || undefined;
+    const formValueCleaned = formValue || undefined;
+    if (Array.isArray(valueInProfile)) {
+      const isArrayContentSame =
+        Array.isArray(formValueCleaned) &&
+        formValueCleaned.length === valueInProfile.length &&
+        valueInProfile.every(e => formValueCleaned.includes(e));
+      return isArrayContentSame
+        ? acc
+        : [...acc, ...buildLabelMessageForArray(formKey, valueInProfile, formValue)];
+    }
+
+    const isValueSame = valueInProfile === formValueCleaned;
+    return isValueSame
+      ? acc
+      : [...acc, buildLabelMessageForWord(formKey, valueInProfile, formValue)];
+  }, []);
+  return labels.length > 0 ? labels : ['no change detected'];
+};

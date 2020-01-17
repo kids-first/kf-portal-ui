@@ -9,6 +9,7 @@ import {
 } from 'components/UserProfile/constants';
 import './style.css';
 import { makeCommonCardPropsReadOnly, showWhenHasDataOrCanEdit } from './utils';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const { Text } = Typography;
 
@@ -18,8 +19,21 @@ const hasData = data => {
   return Boolean(data.bio) || Boolean(data.story) || hasInterests(data);
 };
 
+const onClickEditTrack = async () => {
+  await trackUserInteraction({
+    category: TRACKING_EVENTS.categories.user.profileAboutMe,
+    action: TRACKING_EVENTS.actions.editOpened,
+    label: TRACKING_EVENTS.labels.aboutMeMyProfile,
+  });
+};
+
 const ProfileReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
+
+  const onClickEdit = async () => {
+    await onClickEditTrack();
+    onClickEditCb();
+  };
 
   if (!hasData(data)) {
     return (
@@ -27,7 +41,7 @@ const ProfileReadOnly = props => {
         {...makeCommonCardPropsReadOnly({
           isProfileUpdating,
           title: 'Profile',
-          onClickEditCb,
+          onClickEditCb: onClickEdit,
           canEdit,
         })}
       >
@@ -45,7 +59,7 @@ const ProfileReadOnly = props => {
       {...makeCommonCardPropsReadOnly({
         isProfileUpdating,
         title: 'Profile',
-        onClickEditCb,
+        onClickEditCb: onClickEdit,
         canEdit,
       })}
     >

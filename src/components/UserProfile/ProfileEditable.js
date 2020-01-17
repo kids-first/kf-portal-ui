@@ -6,7 +6,8 @@ import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/const
 import './style.css';
 import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 import { ERROR_TOO_MANY_CHARACTERS } from './constants';
-import { hasFieldInError } from './utils';
+import { hasFieldInError, generateLabelsFromFormChange } from './utils';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const { Text } = Typography;
 
@@ -40,23 +41,49 @@ class ProfileEditable extends Component {
     isProfileUpdating: PropTypes.bool.isRequired,
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { form, onClickSaveCb, updateProfileCb } = this.props;
-
+  shapeValuesForUpdate = () => {
+    const { form } = this.props;
     const fieldsValues = form.getFieldsValue();
 
-    const valuesToUpdate = {
+    return {
       bio: fieldsValues.bio,
       story: fieldsValues.story,
       interests: retrieveInterestsFromForm(fieldsValues),
     };
+  };
+
+  handleSubmit = async e => {
+    e.preventDefault();
+    const { onClickSaveCb, updateProfileCb, data } = this.props;
+
+    const valuesToUpdate = this.shapeValuesForUpdate();
+
+    await trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.profileAboutMe,
+      action: TRACKING_EVENTS.actions.save,
+      label: generateLabelsFromFormChange(data, valuesToUpdate).join(', '),
+    });
+
     updateProfileCb(valuesToUpdate);
     onClickSaveCb();
   };
 
+  onClickCancel = async () => {
+    const { onClickCancelCb, data } = this.props;
+
+    const valuesToUpdate = this.shapeValuesForUpdate();
+
+    await trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.profileAboutMe,
+      action: TRACKING_EVENTS.actions.cancelled,
+      label: generateLabelsFromFormChange(data, valuesToUpdate).join(', '),
+    });
+
+    onClickCancelCb();
+  };
+
   render() {
-    const { data, form, onClickCancelCb, isProfileUpdating } = this.props;
+    const { data, form, isProfileUpdating } = this.props;
     const { getFieldDecorator, getFieldsError } = form;
 
     const hasFormError = hasFieldInError(getFieldsError(['bio', 'story', 'otherAreasOfInterests']));
@@ -67,7 +94,7 @@ class ProfileEditable extends Component {
           {...{
             ...makeCommonCardPropsEditing({
               title: 'Profile',
-              onClickCancelCb,
+              onClickCancelCb: this.onClickCancel,
               isProfileUpdating,
               disableSaveButton: hasFormError,
             }),
@@ -111,6 +138,9 @@ class ProfileEditable extends Component {
   }
 }
 
-const ProfileForm = Form.create({ name: 'profile_form' })(ProfileEditable);
+const ProfileForm = Form.create({
+  name: 'profile_form',
+})(ProfileEditable);
 
 export default ProfileForm;
+

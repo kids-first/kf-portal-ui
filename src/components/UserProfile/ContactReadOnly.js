@@ -11,6 +11,7 @@ import {
 } from './utils';
 import './style.css';
 import { EDIT_CARD_TO_ADD_DETAILS } from './constants';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
 const { Text } = Typography;
 
@@ -58,15 +59,29 @@ const hasData = data => {
   return fieldsToCheckFor.some(f => Boolean(data[f]));
 };
 
+const onClickEditTrack = async () => {
+  await trackUserInteraction({
+    category: TRACKING_EVENTS.categories.user.profileAboutMe,
+    action: TRACKING_EVENTS.actions.editOpened,
+    label: TRACKING_EVENTS.labels.aboutMeMyProfile,
+  });
+};
+
 const ContactReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
+
+  const onClickEdit = async () => {
+    await onClickEditTrack();
+    onClickEditCb();
+  };
+
   if (!hasData(data)) {
     return (
       <Card
         {...makeCommonCardPropsReadOnly({
           isProfileUpdating,
           title: 'Contact Information',
-          onClickEditCb,
+          onClickEditCb: onClickEdit,
           canEdit,
         })}
       >
@@ -95,7 +110,7 @@ const ContactReadOnly = props => {
       {...makeCommonCardPropsReadOnly({
         isProfileUpdating,
         title: 'Contact Information',
-        onClickEditCb,
+        onClickEditCb: onClickEdit,
         canEdit,
       })}
     >

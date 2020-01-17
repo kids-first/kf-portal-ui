@@ -6,6 +6,8 @@ import FindMeEditable from './FindMeEditable';
 import './style.css';
 import { findMeFields } from './constants';
 import { makeCommonCardPropsEditing, hasFieldInError } from 'components/UserProfile/utils';
+import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { generateLabelsFromFormChange } from './utils';
 
 const reshapeForProfile = fields => {
   const { entries } = Object;
@@ -38,17 +40,45 @@ class ContactEditForm extends Component {
     isProfileUpdating: PropTypes.bool.isRequired,
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { form, onClickSaveCb, updateProfileCb } = this.props;
-
+  shapeValuesForUpdate = () => {
+    const { form } = this.props;
     const fieldsValues = form.getFieldsValue();
-    updateProfileCb(reshapeForProfile(fieldsValues));
+
+    return reshapeForProfile(fieldsValues);
+  };
+
+  handleSubmit = async e => {
+    e.preventDefault();
+    const { onClickSaveCb, updateProfileCb, data } = this.props;
+
+    const reshapedFields = this.shapeValuesForUpdate();
+
+    await trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.profileAboutMe,
+      action: TRACKING_EVENTS.actions.save,
+      label: generateLabelsFromFormChange(data, reshapedFields).join(', '),
+    });
+
+    updateProfileCb(reshapedFields);
     onClickSaveCb();
   };
 
+  onClickCancel = async () => {
+    const { onClickCancelCb, data } = this.props;
+
+    const reshapedFields = this.shapeValuesForUpdate();
+
+    await trackUserInteraction({
+      category: TRACKING_EVENTS.categories.user.profileAboutMe,
+      action: TRACKING_EVENTS.actions.cancelled,
+      label: generateLabelsFromFormChange(data, reshapedFields).join(', '),
+    });
+
+    onClickCancelCb();
+  };
+
   render() {
-    const { data, onClickCancelCb, form, isProfileUpdating } = this.props;
+    const { data, form, isProfileUpdating } = this.props;
     const { getFieldsError } = form;
 
     const hasFormError = hasFieldInError(getFieldsError());
@@ -58,7 +88,7 @@ class ContactEditForm extends Component {
         <Card
           {...makeCommonCardPropsEditing({
             title: 'Contact Information',
-            onClickCancelCb,
+            onClickCancelCb: this.onClickCancel,
             isProfileUpdating,
             disableSaveButton: hasFormError,
           })}
@@ -77,6 +107,8 @@ class ContactEditForm extends Component {
   }
 }
 
-const ContactForm = Form.create({ name: 'contact_form' })(ContactEditForm);
+const ContactForm = Form.create({
+  name: 'contact_form',
+})(ContactEditForm);
 
 export default ContactForm;

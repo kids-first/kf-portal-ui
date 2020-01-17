@@ -15,6 +15,7 @@ export const TRACKING_EVENTS = {
       },
     },
     user: {
+      profileAboutMe: 'User profile : About me',
       profile: 'User Profile',
       dashboard: {
         widgets: {
@@ -90,12 +91,17 @@ export const TRACKING_EVENTS = {
     search: 'Search',
     clear: 'Clear',
     apply: 'Apply',
+    editOpened: 'Edit Opened',
+    editClosed: 'Edit Closed',
+    cancelled: 'Cancelled'
   },
   labels: {
     joinProcess: 'Join Process',
     gen3: 'Gen3',
     dcf: 'DCF',
     cavatica: 'Cavatica',
+    aboutMeMyProfile: '{Bio | Story | Research Interests}',
+    aboutMeContact: '{ Contact Information | Find Me}',
   },
   timings: {
     modal: 'MODAL__',
