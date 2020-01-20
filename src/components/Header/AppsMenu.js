@@ -1,6 +1,5 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
 
 import AllAppsContactIcon from 'icons/AllAppsContactIcon';
 import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
@@ -18,33 +17,37 @@ export default () => {
       <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
       Data Resource Portal
     </Menu.Item>,
-
     <Menu.Item key="Website">
-      <Link to="https://kidsfirstdrc.org/" target="_blank">
+      <a href="https://kidsfirstdrc.org/" target={'_blank'} rel={'noopener noreferrer'}>
         <AllAppsWebsiteIcon size="14px" />
         Website
-      </Link>
+      </a>
     </Menu.Item>,
-
     <Menu.Item key="Studies and Access">
-      <Link to={`${kfWebRoot}/support/studies-and-access/`} target="_blank">
+      <a
+        href={`${kfWebRoot}/support/studies-and-access/`}
+        target={'_blank'}
+        rel={'noopener noreferrer'}
+      >
         <AllAppsStudiesIcon size="15px" />
         Studies and Access
-      </Link>
+      </a>
     </Menu.Item>,
-
     <Menu.Item key="Support">
-      <Link to={`${kfWebRoot}/support/getting-started/`} target="_blank">
+      <a
+        href={`${kfWebRoot}/support/getting-started/`}
+        target={'_blank'}
+        rel={'noopener noreferrer'}
+      >
         <AllAppsSupportIcon size="15px" />
         Support
-      </Link>
+      </a>
     </Menu.Item>,
-
     <Menu.Item key="Contact">
-      <Link to={`${kfWebRoot}/contact`} target="_blank">
+      <a href={`${kfWebRoot}/contact`} target={'_blank'} rel={'noopener noreferrer'}>
         <AllAppsContactIcon width="16px" height="11px" />
         Contact
-      </Link>
+      </a>
     </Menu.Item>,
   ];
 
