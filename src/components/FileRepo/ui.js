@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Spinner from 'react-spinkit';
 
-import { css } from 'emotion';
-
 // [NEXT] beagle import moved to ./index.css
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
 
@@ -43,53 +41,3 @@ export const TableSpinner = ({ props, style = {} }) => (
     {...props}
   />
 );
-
-// const StyledActionButton = styled(TealActionButton)`
-//   justify-content: flex-start;
-//   color: ${({ theme, disabled }) => (disabled ? theme.white : 'auto')};
-//   background: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.lightBlue)};
-//   width: 100%;
-//   &:hover {
-//     background-color: ${({ theme, disabled }) => (disabled ? theme.greyScale8 : theme.tertiary)};
-//   }
-//   padding: 0px 10px;
-//   margin-top: 3px;
-//   font-size: 11px;
-// `;
-
-export const cavaticaCopyButtonStyle = props => css`
-  justify-content: flex-start;
-  margin-top: 3px;
-  font-size: 11px;
-  & img {
-    width: 20px;
-  }
-`;
-
-// export const DownloadButton = ({
-//   onClick,
-//   content = () => 'Download',
-//   buttonRef = React.createRef(),
-//   disabled = false,
-//   onBlur = noop,
-// }) => {
-//   return (
-//     <StyledActionButton
-//       className="downloadButtonWrapper"
-//       onClick={onClick}
-//       innerRef={ref => {
-//         buttonRef.current = ref;
-//       }}
-//       disabled={disabled}
-//       onBlur={onBlur}
-//     >
-//       <DownloadIcon
-//         className={css`
-//           height: 28px;
-//           margin-right: 9px;
-//         `}
-//       />
-//       <span style={{ textTransform: 'uppercase' }}>{content()}</span>
-//     </StyledActionButton>
-//   );
-// };
