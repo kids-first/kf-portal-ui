@@ -101,12 +101,6 @@ class ContactInformationEditable extends Component {
                 ],
               })(<Input size="small" />)}
             </Form.Item>
-            <Form.Item label="Suborganization/Department">
-              {getFieldDecorator('department', {
-                initialValue: data.department,
-                rules: [{ required: false }, { validator: validateFields }],
-              })(<Input size="small" />)}
-            </Form.Item>
             {showInstitution(data) && (
               <Fragment>
                 <Form.Item label="Institution/Organization">
@@ -123,6 +117,12 @@ class ContactInformationEditable extends Component {
                 </Form.Item>
               </Fragment>
             )}
+            <Form.Item label="Suborganization/Department">
+              {getFieldDecorator('department', {
+                initialValue: data.department,
+                rules: [{ required: false }, { validator: validateFields }],
+              })(<Input size="small" />)}
+            </Form.Item>
             {isResearcher(data) && (
               <Form.Item label="Job Title">
                 {getFieldDecorator('jobTitle', {
