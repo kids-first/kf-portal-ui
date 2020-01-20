@@ -25,18 +25,6 @@ export function bind(target, name, descriptor) {
   };
 }
 
-export const extractErrorMessage = (response, indexError = 0) => {
-  if (!response) {
-    return;
-  }
-  const data = response.data || {};
-  const errors = data.errors;
-  if (!Array.isArray(errors)) {
-    return;
-  }
-  return (errors[indexError] || {}).message;
-};
-
 export const getMsgFromErrorOrElse = (error, defaultIfNone = 'An Error Occurred') =>
   typeof error === 'object' && Object.prototype.hasOwnProperty.call(error, 'message')
     ? error.message
@@ -176,3 +164,5 @@ export function isUrl(str) {
   ); // fragment locator
   return !!pattern.test(str);
 }
+
+export const difference = (a, b) => new Set([...a].filter(x => !b.has(x)));

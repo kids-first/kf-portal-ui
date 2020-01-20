@@ -6,8 +6,7 @@ import FindMeEditable from './FindMeEditable';
 import './style.css';
 import { findMeFields } from './constants';
 import { makeCommonCardPropsEditing, hasFieldInError } from 'components/UserProfile/utils';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { generateLabelsFromFormChange } from './utils';
+import { onCancelTrack, onSummitTrack } from './common';
 
 const reshapeForProfile = fields => {
   const { entries } = Object;
@@ -53,11 +52,7 @@ class ContactEditForm extends Component {
 
     const reshapedFields = this.shapeValuesForUpdate();
 
-    await trackUserInteraction({
-      category: TRACKING_EVENTS.categories.user.profileAboutMe,
-      action: TRACKING_EVENTS.actions.save,
-      label: generateLabelsFromFormChange(data, reshapedFields).join(', '),
-    });
+    await onSummitTrack(data, reshapedFields);
 
     updateProfileCb(reshapedFields);
     onClickSaveCb();
@@ -68,11 +63,7 @@ class ContactEditForm extends Component {
 
     const reshapedFields = this.shapeValuesForUpdate();
 
-    await trackUserInteraction({
-      category: TRACKING_EVENTS.categories.user.profileAboutMe,
-      action: TRACKING_EVENTS.actions.cancelled,
-      label: generateLabelsFromFormChange(data, reshapedFields).join(', '),
-    });
+    await onCancelTrack(data, reshapedFields);
 
     onClickCancelCb();
   };

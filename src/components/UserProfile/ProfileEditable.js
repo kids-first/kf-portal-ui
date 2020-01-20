@@ -6,8 +6,8 @@ import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/const
 import './style.css';
 import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
 import { ERROR_TOO_MANY_CHARACTERS } from './constants';
-import { hasFieldInError, generateLabelsFromFormChange } from './utils';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { hasFieldInError } from './utils';
+import { onSummitTrack, onCancelTrack } from './common';
 
 const { Text } = Typography;
 
@@ -58,11 +58,7 @@ class ProfileEditable extends Component {
 
     const valuesToUpdate = this.shapeValuesForUpdate();
 
-    await trackUserInteraction({
-      category: TRACKING_EVENTS.categories.user.profileAboutMe,
-      action: TRACKING_EVENTS.actions.save,
-      label: generateLabelsFromFormChange(data, valuesToUpdate).join(', '),
-    });
+    await onSummitTrack(data, valuesToUpdate);
 
     updateProfileCb(valuesToUpdate);
     onClickSaveCb();
@@ -73,11 +69,7 @@ class ProfileEditable extends Component {
 
     const valuesToUpdate = this.shapeValuesForUpdate();
 
-    await trackUserInteraction({
-      category: TRACKING_EVENTS.categories.user.profileAboutMe,
-      action: TRACKING_EVENTS.actions.cancelled,
-      label: generateLabelsFromFormChange(data, valuesToUpdate).join(', '),
-    });
+    await onCancelTrack(data, valuesToUpdate);
 
     onClickCancelCb();
   };
@@ -143,4 +135,3 @@ const ProfileForm = Form.create({
 })(ProfileEditable);
 
 export default ProfileForm;
-

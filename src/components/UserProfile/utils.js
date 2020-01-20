@@ -10,6 +10,7 @@ import LinkedInIcon from 'icons/LinkedInIcon';
 import { findMeFields } from './constants';
 import style from 'components/UserProfile/style';
 import { Button, Typography } from 'antd';
+import { difference } from 'utils';
 
 const { Text } = Typography;
 
@@ -209,8 +210,6 @@ const buildLabelMessageForWord = (field, valBefore, valNow) => {
   return `${field} changed : from ' ${valBefore || 'empty'} ' to ' ${valNow || 'empty'} '`;
 };
 
-const difference = (a, b) => new Set([...a].filter(x => !b.has(x)));
-
 const buildLabelMessageForArray = (field, before, now) => {
   const beforeSet = new Set(before || []);
   const nowSet = new Set(now || []);
@@ -245,5 +244,6 @@ export const generateLabelsFromFormChange = (currentProfile, formFields) => {
       ? acc
       : [...acc, buildLabelMessageForWord(formKey, valueInProfile, formValue)];
   }, []);
+
   return labels.length > 0 ? labels : ['no change detected'];
 };

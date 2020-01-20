@@ -9,7 +9,7 @@ import {
 } from 'components/UserProfile/constants';
 import './style.css';
 import { makeCommonCardPropsReadOnly, showWhenHasDataOrCanEdit } from './utils';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { onClickEditTrack } from "./common";
 
 const { Text } = Typography;
 
@@ -19,32 +19,24 @@ const hasData = data => {
   return Boolean(data.bio) || Boolean(data.story) || hasInterests(data);
 };
 
-const onClickEditTrack = async () => {
-  await trackUserInteraction({
-    category: TRACKING_EVENTS.categories.user.profileAboutMe,
-    action: TRACKING_EVENTS.actions.editOpened,
-    label: TRACKING_EVENTS.labels.aboutMeMyProfile,
-  });
-};
-
 const ProfileReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
 
-  const onClickEdit = async () => {
-    await onClickEditTrack();
-    onClickEditCb();
+  const common = {
+    ...makeCommonCardPropsReadOnly({
+      isProfileUpdating,
+      title: 'Profile',
+      onClickEditCb: async () => {
+        await onClickEditTrack();
+        onClickEditCb();
+      },
+      canEdit,
+    }),
   };
 
   if (!hasData(data)) {
     return (
-      <Card
-        {...makeCommonCardPropsReadOnly({
-          isProfileUpdating,
-          title: 'Profile',
-          onClickEditCb: onClickEdit,
-          canEdit,
-        })}
-      >
+      <Card {...common}>
         <Text className={'contact-info-value'}>
           {canEdit ? EDIT_CARD_TO_ADD_DETAILS : 'No Data'}
         </Text>
@@ -55,14 +47,7 @@ const ProfileReadOnly = props => {
   const hasInterestBlock = hasInterests(data) || canEdit;
 
   return (
-    <Card
-      {...makeCommonCardPropsReadOnly({
-        isProfileUpdating,
-        title: 'Profile',
-        onClickEditCb: onClickEdit,
-        canEdit,
-      })}
-    >
+    <Card {...common}>
       {showWhenHasDataOrCanEdit(data.bio, canEdit) && (
         <Row>
           <Col span={24}>

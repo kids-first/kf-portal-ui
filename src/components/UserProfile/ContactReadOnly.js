@@ -11,7 +11,7 @@ import {
 } from './utils';
 import './style.css';
 import { EDIT_CARD_TO_ADD_DETAILS } from './constants';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { onClickEditTrack } from "./common";
 
 const { Text } = Typography;
 
@@ -59,32 +59,24 @@ const hasData = data => {
   return fieldsToCheckFor.some(f => Boolean(data[f]));
 };
 
-const onClickEditTrack = async () => {
-  await trackUserInteraction({
-    category: TRACKING_EVENTS.categories.user.profileAboutMe,
-    action: TRACKING_EVENTS.actions.editOpened,
-    label: TRACKING_EVENTS.labels.aboutMeMyProfile,
-  });
-};
-
 const ContactReadOnly = props => {
   const { data, canEdit, onClickEditCb, isProfileUpdating } = props;
 
-  const onClickEdit = async () => {
-    await onClickEditTrack();
-    onClickEditCb();
+  const common = {
+    ...makeCommonCardPropsReadOnly({
+      isProfileUpdating,
+      title: 'Contact Information',
+      onClickEditCb: async () => {
+        await onClickEditTrack();
+        onClickEditCb();
+      },
+      canEdit,
+    }),
   };
 
   if (!hasData(data)) {
     return (
-      <Card
-        {...makeCommonCardPropsReadOnly({
-          isProfileUpdating,
-          title: 'Contact Information',
-          onClickEditCb: onClickEdit,
-          canEdit,
-        })}
-      >
+      <Card {...common}>
         <Text className={'contact-info-value'}>
           {canEdit ? EDIT_CARD_TO_ADD_DETAILS : 'No Data'}
         </Text>
@@ -106,14 +98,7 @@ const ContactReadOnly = props => {
     .join(', ');
 
   return (
-    <Card
-      {...makeCommonCardPropsReadOnly({
-        isProfileUpdating,
-        title: 'Contact Information',
-        onClickEditCb: onClickEdit,
-        canEdit,
-      })}
-    >
+    <Card {...common}>
       <div className={'contact-main'}>
         <div className={'find-me-col-contact-info'}>
           {showWhenHasDataOrCanEdit(data.email, canEdit) && (
