@@ -18,12 +18,6 @@ import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
 import { withRouter } from 'react-router-dom';
 import { Icon, Layout, Spin } from 'antd';
-import {
-  addStateInfo as updateTrackingInfo,
-  TRACKING_EVENTS,
-  trackProfileInteraction,
-  trackUserInteraction,
-} from 'services/analyticsTracking';
 import './style.css';
 import { KEY_ABOUT_ME } from './constants';
 
@@ -92,23 +86,6 @@ class UserProfilePageContainer extends React.Component {
       ...profile,
       ...values,
     };
-    const roles = mergedProfile.roles;
-
-    const isRoleChanged = Object.prototype.hasOwnProperty.call(values, 'roles');
-    if (isRoleChanged) {
-      await trackUserInteraction({
-        category: TRACKING_EVENTS.categories.user.profile,
-        action: `${TRACKING_EVENTS.actions.userRoleSelected} to`,
-        label: roles[0],
-      });
-      updateTrackingInfo({ userRoles: roles });
-    }
-
-    await trackProfileInteraction({
-      action: 'Profile',
-      value: false,
-      type: TRACKING_EVENTS.actions.save,
-    });
 
     onUpdateProfile(mergedProfile);
   };
