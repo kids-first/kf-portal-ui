@@ -58,7 +58,7 @@ const HeaderBanner = ({ profile, onChangePrivacyStatusCb, isLoading, error, canE
                 <span className={'hd-tooltip-wrapper'}>
                 <Tooltip
                     placement="topLeft"
-                    title="When your profile is public, other members can see various information about you such as your bio, story, interests, contact information, ..."
+                    title="When your profile is public, other members can see information about you that includes your bio, story, research interests and contact information."
                 >
                   <Icon type="info-circle" style={{ color: 'white' }} />
                 </Tooltip>

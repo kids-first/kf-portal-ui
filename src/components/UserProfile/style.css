@@ -87,10 +87,14 @@
 }
 
 /** profile */
-.bio-story {
+.bio-story-when-empty {
   font-style: italic;
   padding-bottom: 24px;
   color: rgba(57, 69, 146, 0.7);
+}
+
+.bio-story {
+  text-align: justify;
 }
 
 .profile-divider {
