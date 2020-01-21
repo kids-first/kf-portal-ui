@@ -10,7 +10,7 @@ import {
 import './style.css';
 import { makeCommonCardPropsReadOnly, showWhenHasDataOrCanEdit } from './utils';
 
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 const hasInterests = data => Array.isArray(data.interests) && data.interests.length > 0;
 
@@ -49,12 +49,13 @@ const ProfileReadOnly = props => {
         canEdit,
       })}
     >
+
       {showWhenHasDataOrCanEdit(data.bio, canEdit) && (
         <Row>
           <Col span={24}>
             <Text className={'section-text'}>My Bio</Text>
             <br />
-            <Text className={'bio-story'}>{data.bio || bioMsgWhenEmpty}</Text>
+            <Paragraph className={Boolean(data.bio) ? 'bio-story': 'bio-story-when-empty'}>{data.bio || bioMsgWhenEmpty}</Paragraph>
             {(hasInterestBlock || showWhenHasDataOrCanEdit(data.story, canEdit)) && (
               <Divider className={'profile-divider'} />
             )}
@@ -66,7 +67,7 @@ const ProfileReadOnly = props => {
           <Col span={24}>
             <Text className={'section-text'}>My Story</Text>
             <br />
-            <Text className={'bio-story'}>{data.story || storyMsgWhenEmpty}</Text>
+            <Paragraph className={Boolean(data.story) ? 'bio-story' : 'bio-story-when-empty'}>{data.story || storyMsgWhenEmpty}</Paragraph>
             {hasInterestBlock && <Divider className={'profile-divider'} />}
           </Col>
         </Row>

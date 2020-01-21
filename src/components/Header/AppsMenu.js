@@ -4,7 +4,6 @@ import { Menu } from 'antd';
 import AllAppsContactIcon from 'icons/AllAppsContactIcon';
 import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
 import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
-import AllAppsPortalIcon from 'icons/AllAppsPortalIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
 import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
 import { kfWebRoot } from 'common/injectGlobals';
@@ -13,10 +12,6 @@ import HeaderMenu from './HeaderMenu';
 
 export default () => {
   const menuItems = [
-    <Menu.Item key="Data Resource Portal">
-      <AllAppsPortalIcon width="12px" height="14px" fill="#c03299" />
-      Data Resource Portal
-    </Menu.Item>,
     <Menu.Item key="Website">
       <a href="https://kidsfirstdrc.org/" target={'_blank'} rel={'noopener noreferrer'}>
         <AllAppsWebsiteIcon size="14px" />

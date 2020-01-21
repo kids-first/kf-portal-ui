@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Select } from 'antd';
 import { ROLES } from 'common/constants';
@@ -47,8 +47,24 @@ class ContactInformationEditable extends Component {
     setFieldsValue({ ...addressWithNonEmptyFields, addressLine2: undefined });
   };
 
+  updateProfileWithSelectedRole = profile => {
+    /*
+     * Some fields are hidden according to the role.
+     * E.g : role researcher has more fields than community.
+     * So, if someone's role is community but is changed in the form to researcher,
+     * than make sure fields for researcher shows up dynamically.
+     * */
+    const { parentForm } = this.props;
+    const selectedRole = parentForm.getFieldValue('roles');
+    if (!selectedRole || (profile.roles || []).includes(selectedRole)) {
+      return profile;
+    }
+    return { ...profile, roles: [selectedRole] };
+  };
+
   render() {
-    const { data, parentForm } = this.props;
+    const { parentForm } = this.props;
+    const data = this.updateProfileWithSelectedRole(this.props.data);
     const { getFieldDecorator } = parentForm;
 
     return (
@@ -102,20 +118,12 @@ class ContactInformationEditable extends Component {
               })(<Input size="small" />)}
             </Form.Item>
             {showInstitution(data) && (
-              <Fragment>
-                <Form.Item label="Institution/Organization">
-                  {getFieldDecorator('institution', {
-                    initialValue: data.institution,
-                    rules: [{ required: false }, { validator: validateFields }],
-                  })(<Input size="small" />)}
-                </Form.Item>
-                <Form.Item label="Institutional Email Address">
-                  {getFieldDecorator('institutionalEmail', {
-                    initialValue: data.institutionalEmail,
-                    rules: [{ required: false }, { validator: validateFields }],
-                  })(<Input size="small" />)}
-                </Form.Item>
-              </Fragment>
+              <Form.Item label="Institution/Organization">
+                {getFieldDecorator('institution', {
+                  initialValue: data.institution,
+                  rules: [{ required: false }, { validator: validateFields }],
+                })(<Input size="small" />)}
+              </Form.Item>
             )}
             <Form.Item label="Suborganization/Department">
               {getFieldDecorator('department', {
@@ -123,6 +131,14 @@ class ContactInformationEditable extends Component {
                 rules: [{ required: false }, { validator: validateFields }],
               })(<Input size="small" />)}
             </Form.Item>
+            {showInstitution(data) && (
+              <Form.Item label="Institutional Email Address">
+                {getFieldDecorator('institutionalEmail', {
+                  initialValue: data.institutionalEmail,
+                  rules: [{ required: false }, { validator: validateFields }],
+                })(<Input size="small" />)}
+              </Form.Item>
+            )}
             {isResearcher(data) && (
               <Form.Item label="Job Title">
                 {getFieldDecorator('jobTitle', {
