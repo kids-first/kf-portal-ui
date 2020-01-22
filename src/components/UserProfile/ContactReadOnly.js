@@ -131,6 +131,17 @@ const ContactReadOnly = props => {
                   <Divider className={'contact-divider'} />
                 </Fragment>
               )}
+              {showWhenHasDataOrCanEdit(data.department, canEdit) && (
+                <Fragment>
+                  <div className={'contact-grid'}>
+                    <Text className={'contact-info-title'}>{'Suborganization/Department'}</Text>
+                    <Text className={generateContactValueStyle(data.department)}>
+                      {data.department || EDIT_CARD_TO_ADD_DETAILS}
+                    </Text>
+                  </div>
+                  <Divider className={'contact-divider'} />
+                </Fragment>
+              )}
               {showWhenHasDataOrCanEdit(data.institutionalEmail, canEdit) && (
                   <Fragment>
                     <div className={'contact-grid'}>
@@ -145,17 +156,6 @@ const ContactReadOnly = props => {
                     </div>
                     <Divider className={'contact-divider'} />
                   </Fragment>
-              )}
-              {showWhenHasDataOrCanEdit(data.department, canEdit) && (
-                <Fragment>
-                  <div className={'contact-grid'}>
-                    <Text className={'contact-info-title'}>{'Suborganization/Department'}</Text>
-                    <Text className={generateContactValueStyle(data.department)}>
-                      {data.department || EDIT_CARD_TO_ADD_DETAILS}
-                    </Text>
-                  </div>
-                  <Divider className={'contact-divider'} />
-                </Fragment>
               )}
             </Fragment>
           )}
