@@ -8,6 +8,23 @@
 ### Technical / Other changes
 
 -->
+## 2020-01-22 kf-portal-ui 2.13.5
+
+This feature includes :
+
+### Features
+
+- [#2187](https://github.com/kids-first/kf-portal-ui/issues/2187) Add Histological Diagnoses filters in the file repository
+
+### Technical / Other changes
+
+- [#2261](https://github.com/kids-first/kf-portal-ui/issues/2261) Fix broken link in the resource menu
+- [#2262](https://github.com/kids-first/kf-portal-ui/issues/2262) Change order of some fields in the contact information form
+- [#2265](https://github.com/kids-first/kf-portal-ui/issues/2265) Set recommended colour for the disconnect button in the profile settings
+- [#2270](https://github.com/kids-first/kf-portal-ui/issues/2270) Use more concise wording for public/private tooltip in the profile page
+- [#2271](https://github.com/kids-first/kf-portal-ui/issues/2271) Make sure correct access is shown when viewing file details
+
+
 ## 2020-01-13 kf-portal-ui 2.13.4
 
 This feature includes : 
