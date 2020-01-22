@@ -74,6 +74,10 @@ class ResearchInterestsEditable extends Component {
   onDeleteInterest = tag => () => {
     const { interests } = this.state;
     const interestFiltered = interests.filter(i => i !== tag);
+
+    const { parentForm } = this.props;
+    parentForm.resetFields(generateFieldNameFromInterest(tag));//clean form, for it was added dynamically.
+
     this.setState({ interests: interestFiltered });
   };
 
