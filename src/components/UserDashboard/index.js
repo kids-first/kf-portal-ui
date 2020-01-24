@@ -1,11 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { compose, branch, renderComponent } from 'recompose';
+import { branch, compose, renderComponent } from 'recompose';
 import { injectState } from 'freactal';
-// [NEXT] replace by antd's grid system
-import { Row, Col } from 'react-grid-system';
-
 import { withApi } from 'services/api';
 
 import SavedQueries from './SavedQueries';
@@ -13,19 +10,19 @@ import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
 
 import { DashboardCard } from './styles';
-import { SizeProvider } from 'components/Utils';
 
 import {
-  MostFrequentDiagnosesChart,
   MemberResearchInterestsChart,
+  MostFrequentDiagnosesChart,
   MostParticipantsStudiesChart,
 } from 'components/Charts';
 
 import {
+  dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
-  dashboardTitle,
 } from './UserDashboard.module.css';
+import { Col, Row } from 'antd';
 
 const Container = ({ className = '', children }) => (
   // This is to cancel out the negative margin set by react-grid-system
@@ -38,23 +35,6 @@ Container.prototype = {
   children: PropTypes.arrayOf(PropTypes.element),
   className: PropTypes.string.isRequired,
 };
-
-const ContainerRow = ({ currentWidth = NaN, children }) => (
-  <Container
-    style={{
-      paddingLeft: `${currentWidth < 500 ? 0 : 15}px`,
-      paddingRight: `${currentWidth < 500 ? 0 : 15}px`,
-    }}
-  >
-    {children}
-  </Container>
-);
-
-const CardSlot = ({ className = '', children, ...props }) => (
-  <Col style={{ paddingBottom: '30px' }} {...props}>
-    {children}
-  </Col>
-);
 
 export default compose(
   injectState,
@@ -69,36 +49,32 @@ export default compose(
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
-      <SizeProvider>
-        {({ size }) => (
-          <ContainerRow currentWidth={size.width}>
-            <CardSlot sm={12} md={6} lg={6} xl={4}>
-              <SavedQueries {...{ api, loggedInUser }} />
-            </CardSlot>
-            <CardSlot sm={12} md={6} lg={6} xl={4}>
-              <AuthorizedStudies />
-            </CardSlot>
-            <CardSlot sm={12} md={6} lg={6} xl={4}>
-              <CavaticaProjects />
-            </CardSlot>
-            <CardSlot sm={12} md={6} lg={6} xl={4}>
-              <DashboardCard showHeader={false}>
-                <MostParticipantsStudiesChart />
-              </DashboardCard>
-            </CardSlot>
-            <CardSlot sm={12} md={6} lg={6} xl={4}>
-              <DashboardCard title="Member Research Interests">
-                <MemberResearchInterestsChart />
-              </DashboardCard>
-            </CardSlot>
-            <CardSlot sm={12} md={6} lg={6} xl={4}>
-              <DashboardCard title="Most Frequent Diagnoses">
-                <MostFrequentDiagnosesChart />
-              </DashboardCard>
-            </CardSlot>
-          </ContainerRow>
-        )}
-      </SizeProvider>
+      <Row gutter={[30, 30]} align={'top'} style={{paddingLeft: 15, paddingRight: 15, top:-15}}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <SavedQueries {...{ api, loggedInUser }} />
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <AuthorizedStudies />
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <CavaticaProjects />
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <DashboardCard showHeader={false}>
+            <MostParticipantsStudiesChart />
+          </DashboardCard>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <DashboardCard title="Member Research Interests">
+            <MemberResearchInterestsChart />
+          </DashboardCard>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <DashboardCard title="Most Frequent Diagnoses">
+            <MostFrequentDiagnosesChart />
+          </DashboardCard>
+        </Col>
+      </Row>
     </div>
   </div>
 ));
