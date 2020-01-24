@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { cardContent, cardScrollY, cardFader } from './Card.module.css';
+import { cardContent, cardScrollY, cardFader, scrollable as scrollableCss, visible } from './Card.module.css';
 
 const isScrolledToBottom = domElement => {
   const { scrollTop, scrollHeight, offsetHeight } = domElement;
@@ -26,13 +26,13 @@ class CardContent extends React.Component {
       <div className={`${cardContent} ${className}`}>
         <div
           onScroll={this.handleScroll}
-          className={`${cardScrollY} ${scrollable ? 'scrollable' : ''}`}
+          className={`${cardScrollY} ${scrollable ? scrollableCss : ''}`}
         >
           {children}
         </div>
         <div
           className={`${cardFader} ${
-            scrollable && showsContentFader && !this.state.isAtBottom ? 'visible' : ''
+            scrollable && showsContentFader && !this.state.isAtBottom ? visible : ''
           }`}
         />
       </div>
