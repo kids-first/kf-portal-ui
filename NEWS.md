@@ -8,6 +8,12 @@
 ### Technical / Other changes
 
 -->
+## 2020-01-27 kf-portal-ui 2.13.6
+
+This feature is a hotfix for this issue :
+- [#2275](https://github.com/kids-first/kf-portal-ui/issues/2275) Can't scroll in dashboard
+
+
 ## 2020-01-22 kf-portal-ui 2.13.5
 
 This feature includes :
