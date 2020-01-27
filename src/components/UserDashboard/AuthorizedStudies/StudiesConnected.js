@@ -28,7 +28,7 @@ const NoAuthorizedStudiesMessage = ({ user }) => (
       <Link
         className="color-primary"
         to={{
-          pathname: `/user/${user.egoId}`,
+          pathname: `/user/${user._id}`,
           hash: '#settings',
         }}
       >
