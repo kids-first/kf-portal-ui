@@ -8,6 +8,11 @@
 ### Technical / Other changes
 
 -->
+## 2020-01-28 kf-portal-ui 2.13.7
+
+This feature is a hotfix for this issue :
+- [#2296](https://github.com/kids-first/kf-portal-ui/issues/2296) Participant page : cPortalBio link is broken for PNOC study
+
 ## 2020-01-27 kf-portal-ui 2.13.6
 
 This feature is a hotfix for this issue :
