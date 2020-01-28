@@ -119,7 +119,7 @@ function summaryTableData(participant) {
           title: 'PedcBioPortal',
           summary: (
             <ExternalLink
-              href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_pnoc003&caseId${getIt(
+              href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_pnoc003&caseId=${getIt(
                 'kf_id',
               )}`}
               onClick={e => {
