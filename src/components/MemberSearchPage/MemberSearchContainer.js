@@ -153,7 +153,7 @@ class MemberSearchContainer extends Component {
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer />
-          <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
+          <MemberSearchBorder loggedInUser={this.props.loggedInUser} isAdmin={this.props.isAdmin}>
             <Input
               onChange={this.handleChange}
               placeholder="Member Name, Address, Email, Interests, Member Biography or Story"

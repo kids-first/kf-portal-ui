@@ -6,7 +6,7 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { setCookie, removeCookie } from 'services/cookie';
-import { validateJWT, handleJWT } from 'components/Login/utils';
+import { validateJWT, handleJWT, isAdminToken } from 'components/Login/utils';
 
 import {
   TRACKING_EVENTS,
@@ -109,6 +109,7 @@ export default provideState({
               ...state,
               isLoadingUser: false,
               loggedInUser: user,
+              isAdmin: isAdminToken({validatedPayload: jwtDecode(state.loggedInUserToken)}), //FIXME should no be done here i think
               percentageFilled,
             };
           })
