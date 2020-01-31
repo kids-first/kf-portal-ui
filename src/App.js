@@ -111,12 +111,12 @@ const App = compose(
           path={ROUTES.searchMember}
           exact
           render={props => {
-            const isAdmin = state.isAdmin;
             return forceSelectRole({
               isLoadingUser,
               Component: MemberSearchPage,
               loggedInUser,
-              isAdmin,
+              isAdmin: state.isAdmin,
+              loggedInUserToken: state.loggedInUserToken,
               ...props,
             });
           }}
