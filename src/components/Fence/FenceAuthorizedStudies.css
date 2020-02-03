@@ -1,10 +1,8 @@
-.fenceAuthorizedStudies-container table {
-  border-collapse: collapse;
-}
-
-.fenceAuthorizedStudies-container span.title {
+.fenceAuthorizedStudiesContainer {
   font-weight: bold;
   padding: 15px;
+  border-collapse: collapse;
+  overflow-y: auto;
 }
 
 .itemRowContainer {
