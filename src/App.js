@@ -110,14 +110,16 @@ const App = compose(
         <Route
           path={ROUTES.searchMember}
           exact
-          render={props =>
-            forceSelectRole({
+          render={props => {
+            return forceSelectRole({
               isLoadingUser,
               Component: MemberSearchPage,
               loggedInUser,
+              isAdmin: state.isAdmin,
+              loggedInUserToken: state.loggedInUserToken,
               ...props,
-            })
-          }
+            });
+          }}
         />
         <Route
           path={`${ROUTES.file}/:fileId`}

@@ -149,11 +149,16 @@ class MemberSearchContainer extends Component {
       interests: [...getSelectedFilter(this.props.interestsFilter)],
     };
 
+    const { isAdmin, loggedInUser, loggedInUserToken } = this.props;
     return (
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
           <FilterDrawer />
-          <MemberSearchBorder loggedInUser={this.props.loggedInUser}>
+          <MemberSearchBorder
+            loggedInUser={loggedInUser}
+            isAdmin={isAdmin}
+            loggedInUserToken={loggedInUserToken}
+          >
             <Input
               onChange={this.handleChange}
               placeholder="Member Name, Address, Email, Interests, Member Biography or Story"

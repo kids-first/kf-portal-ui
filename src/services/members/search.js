@@ -1,6 +1,7 @@
 import { initializeApi } from 'services/api';
 import urljoin from 'url-join';
-import { reactApiSearchMembersApi } from 'common/injectGlobals';
+import { reactApiSearchMembersApi, personaApiRoot } from 'common/injectGlobals';
+import downloader from '../../common/downloader';
 
 const api = initializeApi({
   onError: console.err,
@@ -33,6 +34,17 @@ export const searchMembers = async (searchTerm, searchParams) => {
     throw new Error(err);
   }
   return response;
+};
+
+export const getAllMembers = async token => {
+  return downloader({
+    url: urljoin(personaApiRoot, 'userList'),
+    method: 'GET',
+    responseType: 'blob',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+  });
 };
 
 export const searchInterests = async searchTerm => {

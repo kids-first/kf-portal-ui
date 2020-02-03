@@ -6,7 +6,7 @@ import { setToken } from 'services/ajax';
 import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { setCookie, removeCookie } from 'services/cookie';
-import { validateJWT, handleJWT } from 'components/Login/utils';
+import { validateJWT, handleJWT, isAdminToken } from 'components/Login/utils';
 
 import {
   TRACKING_EVENTS,
@@ -81,38 +81,41 @@ export default provideState({
     },
     setUser: (effects, { api, egoGroups, ...user }) => {
       return getAllFieldNamesPromise(api)
-          .then(({ data }) => {
-            return get(data, '__type.fields', [])
-                .filter(field => field && field.name !== 'sets')
-                .map(field => field.name);
-          })
-          .then(fields => state => {
-            const userRole = user.roles ? user.roles[0] : null;
-            const userRoleProfileFields =
-                userRole && userRole !== 'research'
-                    ? without(fields, 'institution', 'jobTitle')
-                    : fields;
-            const profile = pick(omit(user, 'sets'), userRoleProfileFields);
-            const filledFields = Object.values(profile || {}).filter(
-                v => (isArray(v) && v.length) || (!isArray(v) && v),
-            );
-            const percentageFilled = filledFields.length / userRoleProfileFields.length;
-            if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
-              trackUserInteraction({
-                category: TRACKING_EVENTS.categories.user.profile,
-                action: TRACKING_EVENTS.actions.completedProfile,
-                label: user.roles[0],
-              });
-            }
-            trackUserSession({ ...user, egoGroups });
-            return {
-              ...state,
-              isLoadingUser: false,
-              loggedInUser: user,
-              percentageFilled,
-            };
-          })
-          .catch(err => console.log(err));
+        .then(({ data }) => {
+          return get(data, '__type.fields', [])
+            .filter(field => field && field.name !== 'sets')
+            .map(field => field.name);
+        })
+        .then(fields => state => {
+          const userRole = user.roles ? user.roles[0] : null;
+          const userRoleProfileFields =
+            userRole && userRole !== 'research'
+              ? without(fields, 'institution', 'jobTitle')
+              : fields;
+          const profile = pick(omit(user, 'sets'), userRoleProfileFields);
+          const filledFields = Object.values(profile || {}).filter(
+            v => (isArray(v) && v.length) || (!isArray(v) && v),
+          );
+          const percentageFilled = filledFields.length / userRoleProfileFields.length;
+          if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
+            trackUserInteraction({
+              category: TRACKING_EVENTS.categories.user.profile,
+              action: TRACKING_EVENTS.actions.completedProfile,
+              label: user.roles[0],
+            });
+          }
+          trackUserSession({ ...user, egoGroups });
+          return {
+            ...state,
+            isLoadingUser: false,
+            loggedInUser: user,
+            isAdmin: state.loggedInUserToken
+              ? isAdminToken({ validatedPayload: jwtDecode(state.loggedInUserToken) })
+              : false,
+            percentageFilled,
+          };
+        })
+        .catch(err => console.log(err));
     },
     addUserSet: (effects, { api, ...set }) => state => {
       const {
