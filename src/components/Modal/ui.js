@@ -4,18 +4,18 @@ import ReactModal from 'react-modal';
 
 import { ActionButton } from 'uikit/Button';
 import Column from 'uikit/Column';
-import { H2 } from 'uikit/Headings';
+import { Typography } from 'antd';
 
 import {
   modalFooterContainer,
   modalFooterContent,
   modalActionButton,
-  // modalCancelButton,
   modal,
   modalContent,
   modalSubHeader,
-  // modalTitle,
 } from './Modal.module.css';
+
+const { Title } = Typography;
 
 export const ModalFooterContainer = ({ children }) => (
   <div className={`${modalFooterContainer} bg-greyScale10`}>{children}</div>
@@ -28,12 +28,6 @@ export const ModalFooterContent = ({ children }) => (
 export const ModalActionButton = ({ children }) => (
   <ActionButton className={modalActionButton}>{children}</ActionButton>
 );
-
-// export const CancelButton = ({ children }) => (
-//   <ModalActionButton className={`${modalCancelButton} color-tertiary`}>
-//     {children}
-//   </ModalActionButton>
-// );
 
 export const Modal = ({ children, className, isFooterShown, style = {}, ...props }) => (
   <ReactModal
@@ -54,4 +48,4 @@ export const ModalContent = ({ children }) => <Column className={modalContent}>{
 
 export const ModalSubHeader = ({ children }) => <div className={modalSubHeader}>{children}</div>;
 
-export const ModalTitle = ({ children }) => <H2 className={modalSubHeader}>{children}</H2>;
+export const ModalTitle = ({ children }) => <Title level={3}>{children}</Title>;

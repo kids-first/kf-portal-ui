@@ -94,7 +94,7 @@ const FenceAuthorizedStudies = compose(
           <Row>
             <PromptMessageContainer warning mb={0} width={'100%'}>
               <Span className="title" fontWeight={'bold'}>
-                {'You do not have access to any studies.'}
+                {'You don\'t have access to any study-controlled datasets.'}
               </Span>
             </PromptMessageContainer>
           </Row>
