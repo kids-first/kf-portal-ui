@@ -2,6 +2,7 @@
   "extends": "react-app",
   "plugins": ["react-hooks"],
   "rules": {
+    "default-case": 0,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }

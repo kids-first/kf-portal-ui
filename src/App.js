@@ -64,8 +64,14 @@ const userIsLoggedInButMustCompleteJoinForm = loggedInUser => {
 };
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
-  if (userIsRequiredToLogIn(loggedInUser)) {
-    return isLoadingUser ? null : (
+  if (isLoadingUser) {
+    // All page rendering should be stop for now while the user is loading
+    // Error to do so, will create api unauthorized exception that will trigger
+    // a force log out (??)
+    // We should replace this with a loading page
+    return null;
+  } else if (userIsRequiredToLogIn(loggedInUser)) {
+    return (
       <SideImagePage
         logo={logo}
         sideImagePath={loginImage}

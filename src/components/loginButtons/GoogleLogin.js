@@ -8,12 +8,9 @@ import DisabledGoogleLogin from './DisabledGoogleLogin';
 const COOKIES_NOT_ENABLED = 'Cookies are not enabled in current environment.';
 
 class GoogleButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      disabled: false,
-    };
-  }
+  state = {
+    disabled: false,
+  };
 
   async componentDidMount() {
     const { onLogin, onError } = this.props;

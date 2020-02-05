@@ -1,4 +1,4 @@
-import { provideState } from 'freactal';
+import { provideState, mergeIntoState } from 'freactal';
 import { isArray, pick, without, omit, get } from 'lodash';
 import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@kfarranger/components/dist';
@@ -7,6 +7,7 @@ import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
 import { SERVICES, EGO_JWT_KEY } from 'common/constants';
 import { setCookie, removeCookie } from 'services/cookie';
 import { validateJWT, handleJWT, isAdminToken } from 'components/Login/utils';
+import { refreshToken } from 'services/login';
 
 import {
   TRACKING_EVENTS,
@@ -50,7 +51,8 @@ export default provideState({
             window.location.reload();
           },
         });
-        if (validateJWT({ jwt })) {
+
+        const processJWT = jwt => {
           handleJWT({
             provider,
             jwt,
@@ -74,10 +76,42 @@ export default provideState({
             }
           });
           setEgoTokenCookie(jwt);
-          return { ...state, isLoadingUser: true };
+        };
+
+        if (validateJWT({ jwt })) {
+          processJWT(jwt);
+        } else {
+          // Token possibly out of date
+          refreshToken(provider)
+            .then(response => {
+              if (response.type === 'redirect') {
+                effects.clearIntegrationTokens();
+                effects.setToken();
+                return { ...state, isLoadingUser: true };
+              }
+              const refreshedJwt = response.data;
+              if (validateJWT({ jwt: refreshedJwt })) {
+                processJWT(refreshedJwt);
+                return { ...state, isLoadingUser: false };
+              }
+            })
+            .catch(e => {
+              return effects.loggOut();
+            });
         }
+        return { ...state, isLoadingUser: true };
+      } else {
+        return { ...state, isLoadingUser: false };
       }
-      return { ...state, isLoadingUser: false };
+    },
+    loggOut: effects => state => {
+      const newState = effects.clearIntegrationTokens();
+      newState.loggedInUser = null;
+      return mergeIntoState({
+        ...newState,
+        ...effects.setToken(),
+        isLoadingUser: false,
+      });
     },
     setUser: (effects, { api, egoGroups, ...user }) => {
       return getAllFieldNamesPromise(api)
