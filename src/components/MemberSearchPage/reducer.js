@@ -7,6 +7,7 @@ import {
   REQUEST_CURRENTPAGE_UPDATE,
   REQUEST_MEMBER_PER_PAGE_UPDATE,
   REQUEST_INTERESTS_FILTER_UPDATE,
+  REQUEST_ADMIN_FILTER_UPDATE,
   REQUEST_STORE_RESET,
 } from './constants';
 
@@ -20,6 +21,7 @@ const initialState = {
   queryString: '',
   currentPage: 1,
   membersPerPage: 10,
+  adminOptionsFilter: {},
 };
 
 export default function memberSearchPageReducer(state = initialState, action) {
@@ -39,6 +41,8 @@ export default function memberSearchPageReducer(state = initialState, action) {
       return { ...state, rolesFilter: action.payload };
     case REQUEST_INTERESTS_FILTER_UPDATE:
       return { ...state, interestsFilter: action.payload };
+    case REQUEST_ADMIN_FILTER_UPDATE:
+      return { ...state, adminOptionsFilter: action.payload };
     case REQUEST_QUERYSTRING_UPDATE:
       return { ...state, queryString: action.payload };
     case REQUEST_CURRENTPAGE_UPDATE:

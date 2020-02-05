@@ -13,6 +13,7 @@ import {
   requestMemberPerPageUpdate,
   requestQueryStringUpdate,
   requestRolesFilterUpdate,
+  requestADMINOptionsUpdate,
   requestResetStore,
 } from 'components/MemberSearchPage/actions';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
@@ -153,7 +154,7 @@ class MemberSearchContainer extends Component {
     return (
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
-          <FilterDrawer />
+          <FilterDrawer isAdmin={isAdmin} />
           <MemberSearchBorder
             loggedInUser={loggedInUser}
             isAdmin={isAdmin}
@@ -210,6 +211,8 @@ const mapDispatchToProps = dispatch =>
       updateInterestsFilter: interestsFilter =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
       updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
+      updateADMINOptionsFilter: adminOptionsFilter =>
+        dispatch(requestADMINOptionsUpdate(adminOptionsFilter)),
       resetStore: () => dispatch(requestResetStore()),
     },
     dispatch,

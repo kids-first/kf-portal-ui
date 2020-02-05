@@ -3,6 +3,7 @@ import './MemberSearchPage.css';
 import { Icon, Layout, Typography } from 'antd';
 import RolesFilter from 'components/MemberSearchPage/RolesFilter';
 import InterestsFilter from 'components/MemberSearchPage/InterestsFilter';
+import AllMembersFilter from './AllMembersFilter';
 
 const { Sider } = Layout;
 const { Title } = Typography;
@@ -44,6 +45,7 @@ class FilterDrawer extends Component {
         </div>
         <RolesFilter collapsed={collapsed} />
         <InterestsFilter collapsed={collapsed} />
+        {this.props.isAdmin ? <AllMembersFilter collapsed={collapsed} /> : ''}
       </Sider>
     );
   }
