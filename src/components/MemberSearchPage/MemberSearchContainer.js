@@ -44,6 +44,7 @@ class MemberSearchContainer extends Component {
       currentPage,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
     } = this.props;
 
     fetchListOfMembers(e.target.value, {
@@ -51,6 +52,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter)
     });
 
     queryStringUpdate(e.target.value);
@@ -78,6 +80,7 @@ class MemberSearchContainer extends Component {
       queryString,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
       currentPageUpdate,
     } = this.props;
     const maxPage = count.public / membersPerPage;
@@ -91,6 +94,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(page, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
   };
 
@@ -102,6 +106,7 @@ class MemberSearchContainer extends Component {
       queryString,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
     } = this.props;
 
     currentPageUpdate(current);
@@ -111,6 +116,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(current, pageSize),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
   };
 
@@ -148,6 +154,7 @@ class MemberSearchContainer extends Component {
     const filters = {
       roles: [...getSelectedFilter(this.props.rolesFilter)],
       interests: [...getSelectedFilter(this.props.interestsFilter)],
+      adminMemberOptions: [...getSelectedFilter(this.props.adminOptionsFilter)],
     };
 
     const { isAdmin, loggedInUser, loggedInUserToken } = this.props;
@@ -180,6 +187,7 @@ class MemberSearchContainer extends Component {
               handlePageChange={this.handlePageChange}
               handleShowSizeChange={this.handleShowSizeChange}
               pending={pending}
+              showAll={{}} //TODO
             />
           </MemberSearchBorder>
         </Layout>
@@ -199,6 +207,7 @@ const mapStateToProps = state => ({
   membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
   rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
   interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
+  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
 });
 
 const mapDispatchToProps = dispatch =>

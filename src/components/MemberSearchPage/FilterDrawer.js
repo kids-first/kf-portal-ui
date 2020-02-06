@@ -3,7 +3,7 @@ import './MemberSearchPage.css';
 import { Icon, Layout, Typography } from 'antd';
 import RolesFilter from 'components/MemberSearchPage/RolesFilter';
 import InterestsFilter from 'components/MemberSearchPage/InterestsFilter';
-import AllMembersFilter from './AllMembersFilter';
+import AllMembersFilter from './ADMINFilter';
 
 const { Sider } = Layout;
 const { Title } = Typography;

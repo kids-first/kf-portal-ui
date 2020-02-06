@@ -49,13 +49,14 @@ class RolesFilter extends Component {
   }
 
   onChange = type => e => {
-    const { queryString, membersPerPage, currentPage, rolesFilter, interestsFilter, updateRolesFilter, fetchListOfMembers } = this.props;
+    const { queryString, membersPerPage, currentPage, rolesFilter, interestsFilter, updateRolesFilter, fetchListOfMembers, adminOptionsFilter } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: getSelectedFilter({ ...rolesFilter, [type]: e.target.checked }),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter)
     });
 
     updateRolesFilter({ ...rolesFilter, [type]: e.target.checked });
@@ -63,13 +64,14 @@ class RolesFilter extends Component {
 
   handleClear = event => {
     event.stopPropagation();
-    const { queryString, membersPerPage, currentPage, updateRolesFilter, fetchListOfMembers, interestsFilter } = this.props;
+    const { queryString, membersPerPage, currentPage, updateRolesFilter, fetchListOfMembers, interestsFilter, adminOptionsFilter } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: [],
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter)
     });
 
     updateRolesFilter(roleLookup);
@@ -121,6 +123,7 @@ const mapStateToProps = state => ({
   count: state.ui.memberSearchPageReducer.count,
   rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
   interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
+  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
   queryString: state.ui.memberSearchPageReducer.queryString,
   currentPage: state.ui.memberSearchPageReducer.currentPage,
   membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,

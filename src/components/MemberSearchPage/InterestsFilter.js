@@ -29,13 +29,14 @@ class InterestsFilter extends Component {
 
   onChange = type => e => {
     e.preventDefault();
-    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, interestsFilter, updateInterestsFilter } = this.props;
+    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, interestsFilter, updateInterestsFilter, adminOptionsFilter } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter({ ...interestsFilter, [type]: e.target.checked }),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
     updateInterestsFilter({ ...interestsFilter, [type]: e.target.checked });
@@ -43,13 +44,14 @@ class InterestsFilter extends Component {
 
   handleClear = event => {
     event.stopPropagation();
-    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, updateInterestsFilter } = this.props;
+    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, updateInterestsFilter, adminOptionsFilter } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: [],
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
     updateInterestsFilter();
@@ -98,6 +100,7 @@ const mapStateToProps = state => ({
   count: state.ui.memberSearchPageReducer.count,
   rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
   interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
+  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
   queryString: state.ui.memberSearchPageReducer.queryString,
   currentPage: state.ui.memberSearchPageReducer.currentPage,
   membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,

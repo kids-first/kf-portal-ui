@@ -12,7 +12,7 @@ const ADMIN_OPTIONS = {
   allMembers: 'All Members',
 };
 
-class AllMembersFilter extends Component {
+class ADMINFilter extends Component {
   state = {
     showAll: false,
     filterSearchString: '',
@@ -127,4 +127,4 @@ const mapDispatchToProps = dispatch =>
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllMembersFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(ADMINFilter);
