@@ -10,10 +10,7 @@ import FilterTable from 'components/MemberSearchPage/FilterTable';
 import FilterTableList from 'components/MemberSearchPage/FilterTableList';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 import PropTypes from 'prop-types';
-
-const ADMIN_OPTIONS = {
-  allMembers: 'All Members',
-};
+import { ADMIN_OPTIONS } from 'common/constants';
 
 class ADMINFilter extends Component {
   state = {

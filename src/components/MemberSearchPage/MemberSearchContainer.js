@@ -8,13 +8,13 @@ import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
 import {
+  requestADMINOptionsUpdate,
   requestCurrentPageUpdate,
   requestInterestsFilterUpdate,
   requestMemberPerPageUpdate,
   requestQueryStringUpdate,
-  requestRolesFilterUpdate,
-  requestADMINOptionsUpdate,
   requestResetStore,
+  requestRolesFilterUpdate,
 } from 'components/MemberSearchPage/actions';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
@@ -135,9 +135,14 @@ class MemberSearchContainer extends Component {
       membersPerPage,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
       updateInterestsFilter,
       updateRolesFilter,
+      updateADMINOptionsFilter,
     } = this.props;
+
+    console.log(value, 'value', type, 'Type', 'In clear tag');
+    console.log(adminOptionsFilter, 'adminOptionsFilter');
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
@@ -146,11 +151,21 @@ class MemberSearchContainer extends Component {
       interests: getSelectedFilter(
         type === 'interest' ? { ...interestsFilter, ...filter } : interestsFilter,
       ),
+      adminMemberOptions: getSelectedFilter(
+        type === 'adminMemberOptions' ? { ...adminOptionsFilter, ...filter } : adminOptionsFilter,
+      ),
     });
 
-    type === 'role'
-      ? updateRolesFilter({ ...rolesFilter, ...filter })
-      : updateInterestsFilter({ ...interestsFilter, ...filter });
+    switch (type) {
+      case 'role':
+        updateRolesFilter({ ...rolesFilter, ...filter });
+        break;
+      case 'adminMemberOptions':
+        updateADMINOptionsFilter({ ...adminOptionsFilter, ...filter });
+        break;
+      default:
+        updateInterestsFilter({ ...interestsFilter, ...filter });
+    }
   };
 
   render() {
@@ -181,7 +196,8 @@ class MemberSearchContainer extends Component {
               allowClear={true}
             />
             {(filters.roles && filters.roles.length > 0) ||
-            (filters.interests && filters.interests.length > 0) ? (
+            (filters.interests && filters.interests.length > 0) ||
+            (filters.adminMemberOptions && filters.adminMemberOptions.length > 0) ? (
               <FilterTagContainer filters={filters} clearTag={this.clearTag} />
             ) : (
               ''
