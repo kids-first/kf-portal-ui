@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import { requestADMINOptionsUpdate } from 'components/MemberSearchPage/actions';
+import {
+  requestADMINOptionsUpdate,
+  requestCurrentPageUpdate,
+} from 'components/MemberSearchPage/actions';
 import FilterTable from 'components/MemberSearchPage/FilterTable';
 import FilterTableList from 'components/MemberSearchPage/FilterTableList';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
@@ -37,22 +40,23 @@ class ADMINFilter extends Component {
     const {
       fetchListOfMembers,
       queryString,
-      currentPage,
       membersPerPage,
       rolesFilter,
       interestsFilter,
       adminOptionsFilter,
       updateADMINOptionsFilter,
+      currentPageUpdate,
     } = this.props;
 
     fetchListOfMembers(queryString, {
-      start: getCurrentStart(currentPage, membersPerPage),
-      end: getCurrentEnd(currentPage, membersPerPage),
+      start: getCurrentStart(1, membersPerPage),
+      end: getCurrentEnd(1, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
       adminMemberOptions: getSelectedFilter({ ...adminOptionsFilter, [type]: e.target.checked }),
     });
 
+    currentPageUpdate(1);
     updateADMINOptionsFilter({ ...adminOptionsFilter, [type]: e.target.checked });
   };
 
@@ -123,6 +127,7 @@ const mapDispatchToProps = dispatch =>
       fetchListOfMembers: fetchListOfMembersAction,
       updateADMINOptionsFilter: adminOptionsFilter =>
         dispatch(requestADMINOptionsUpdate(adminOptionsFilter)),
+      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
     },
     dispatch,
   );

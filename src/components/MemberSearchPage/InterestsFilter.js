@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import { requestInterestsFilterUpdate } from 'components/MemberSearchPage/actions';
+import {
+  requestCurrentPageUpdate,
+  requestInterestsFilterUpdate,
+} from 'components/MemberSearchPage/actions';
 import FilterTable from 'components/MemberSearchPage/FilterTable';
 import FilterTableList from 'components/MemberSearchPage/FilterTableList';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
@@ -29,7 +32,17 @@ class InterestsFilter extends Component {
 
   onChange = type => e => {
     e.preventDefault();
-    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, interestsFilter, updateInterestsFilter, adminOptionsFilter } = this.props;
+    const {
+      fetchListOfMembers,
+      queryString,
+      currentPage,
+      membersPerPage,
+      rolesFilter,
+      interestsFilter,
+      updateInterestsFilter,
+      currentPageUpdate,
+      adminOptionsFilter,
+    } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
@@ -39,12 +52,21 @@ class InterestsFilter extends Component {
       adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
+    currentPageUpdate(1);
     updateInterestsFilter({ ...interestsFilter, [type]: e.target.checked });
   };
 
   handleClear = event => {
     event.stopPropagation();
-    const { fetchListOfMembers, queryString, currentPage, membersPerPage, rolesFilter, updateInterestsFilter, adminOptionsFilter } = this.props;
+    const {
+      fetchListOfMembers,
+      queryString,
+      currentPage,
+      membersPerPage,
+      rolesFilter,
+      updateInterestsFilter,
+      adminOptionsFilter,
+    } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
@@ -62,7 +84,7 @@ class InterestsFilter extends Component {
   };
 
   toggleShowAll = () => {
-    const {showAll} = this.state;
+    const { showAll } = this.state;
     this.setState({ showAll: !showAll });
   };
 
@@ -112,11 +134,9 @@ const mapDispatchToProps = dispatch =>
       fetchListOfMembers: fetchListOfMembersAction,
       updateInterestsFilter: interestsFilter =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
+      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
     },
     dispatch,
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(InterestsFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(InterestsFilter);

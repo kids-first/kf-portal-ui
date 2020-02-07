@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import { requestRolesFilterUpdate } from 'components/MemberSearchPage/actions';
+import { requestCurrentPageUpdate, requestRolesFilterUpdate } from 'components/MemberSearchPage/actions';
 import { ROLES } from 'common/constants';
 import FilterTable from 'components/MemberSearchPage/FilterTable';
 import FilterTableList from 'components/MemberSearchPage/FilterTableList';
-import { getSelectedFilter, getCurrentStart, getCurrentEnd } from './utils';
+import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 import PropTypes from 'prop-types';
 
 const roleLookup = ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {});
@@ -49,29 +49,47 @@ class RolesFilter extends Component {
   }
 
   onChange = type => e => {
-    const { queryString, membersPerPage, currentPage, rolesFilter, interestsFilter, updateRolesFilter, fetchListOfMembers, adminOptionsFilter } = this.props;
+    const {
+      queryString,
+      membersPerPage,
+      rolesFilter,
+      interestsFilter,
+      updateRolesFilter,
+      fetchListOfMembers,
+      adminOptionsFilter,
+      currentPageUpdate,
+    } = this.props;
 
     fetchListOfMembers(queryString, {
-      start: getCurrentStart(currentPage, membersPerPage),
-      end: getCurrentEnd(currentPage, membersPerPage),
+      start: getCurrentStart(1, membersPerPage),
+      end: getCurrentEnd(1, membersPerPage),
       roles: getSelectedFilter({ ...rolesFilter, [type]: e.target.checked }),
       interests: getSelectedFilter(interestsFilter),
-      adminMemberOptions: getSelectedFilter(adminOptionsFilter)
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
+    currentPageUpdate(1);
     updateRolesFilter({ ...rolesFilter, [type]: e.target.checked });
   };
 
   handleClear = event => {
     event.stopPropagation();
-    const { queryString, membersPerPage, currentPage, updateRolesFilter, fetchListOfMembers, interestsFilter, adminOptionsFilter } = this.props;
+    const {
+      queryString,
+      membersPerPage,
+      currentPage,
+      updateRolesFilter,
+      fetchListOfMembers,
+      interestsFilter,
+      adminOptionsFilter,
+    } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: [],
       interests: getSelectedFilter(interestsFilter),
-      adminMemberOptions: getSelectedFilter(adminOptionsFilter)
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
     updateRolesFilter(roleLookup);
@@ -82,7 +100,7 @@ class RolesFilter extends Component {
   };
 
   toggleShowAll = () => {
-    const {showAll} = this.state;
+    const { showAll } = this.state;
     this.setState({ showAll: !showAll });
   };
 
@@ -107,11 +125,7 @@ class RolesFilter extends Component {
             dataSource={count && count.roles ? count.roles : {}}
             checkboxes={rolesFilter}
             onChange={this.onChange}
-            keyDisplayNames={
-              count && count.roles
-                ? getKeyDisplayNames(count.roles)
-                : {}
-            }
+            keyDisplayNames={count && count.roles ? getKeyDisplayNames(count.roles) : {}}
           />
         </FilterTable>
       </div>
@@ -134,11 +148,9 @@ const mapDispatchToProps = dispatch =>
     {
       fetchListOfMembers: fetchListOfMembersAction,
       updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
+      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
     },
     dispatch,
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RolesFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(RolesFilter);
