@@ -29,6 +29,7 @@ class MemberSearchContainer extends Component {
     membersPerPage: PropTypes.number.isRequired,
     rolesFilter: PropTypes.object.isRequired,
     interestsFilter: PropTypes.object.isRequired,
+    adminOptionsFilter: PropTypes.object,
     fetchListOfMembers: PropTypes.func.isRequired,
     currentPageUpdate: PropTypes.func.isRequired,
     updateRolesFilter: PropTypes.func.isRequired,
@@ -52,7 +53,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
-      adminMemberOptions: getSelectedFilter(adminOptionsFilter)
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
     queryStringUpdate(e.target.value);
@@ -83,7 +84,10 @@ class MemberSearchContainer extends Component {
       adminOptionsFilter,
       currentPageUpdate,
     } = this.props;
-    const maxPage = count.public / membersPerPage;
+
+    const showAll = adminOptionsFilter['allMembers'] && this.props.isAdmin;
+
+    const maxPage = (showAll ? count.total : count.public) / membersPerPage;
 
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
 
@@ -158,6 +162,9 @@ class MemberSearchContainer extends Component {
     };
 
     const { isAdmin, loggedInUser, loggedInUserToken } = this.props;
+    const showAll =
+      filters.adminMemberOptions && filters.adminMemberOptions.includes('allMembers') && isAdmin;
+
     return (
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
@@ -187,7 +194,7 @@ class MemberSearchContainer extends Component {
               handlePageChange={this.handlePageChange}
               handleShowSizeChange={this.handleShowSizeChange}
               pending={pending}
-              showAll={{}} //TODO
+              showAll={showAll}
             />
           </MemberSearchBorder>
         </Layout>

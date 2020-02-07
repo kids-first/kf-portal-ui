@@ -60,6 +60,8 @@ const MemberTable = props => {
   const firstItem = props.currentPage * props.membersPerPage - props.membersPerPage + 1;
   const lastItem = props.currentPage * props.membersPerPage;
 
+  const memberShowThisPage = props.showAll ? props.count.total : props.count.public;
+
   return (
     <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
       <List
@@ -71,12 +73,12 @@ const MemberTable = props => {
             <Row style={{ marginTop: 12, marginBottom: 12 }}>
               <Col span={12} style={{ textAlign: 'left' }}>
                 <Title level={4} style={{ margin: 0 }}>
-                  {props.count.public > props.membersPerPage
-                    ? `Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
-                        props.count.public
-                      } public members`
-                    : `Showing ${props.count.public} public ${
-                        props.count.public < 2 ? 'member' : 'members'
+                  {memberShowThisPage > props.membersPerPage
+                    ? `Showing ${firstItem} - ${Math.min(lastItem, memberShowThisPage)} of ${
+                        memberShowThisPage
+                      } ${props.showAll ? 'members' : 'public members' }`
+                    : `Showing ${memberShowThisPage} ${props.showAll ? '' : 'public'} ${
+                        memberShowThisPage < 2 ? 'member' : 'members'
                       } `}
                 </Title>
               </Col>
@@ -97,7 +99,7 @@ const MemberTable = props => {
           pageSizeOptions: ['10', '20', '50'],
           defaultCurrent: 1,
           current: props.currentPage,
-          total: props.count.public,
+          total: memberShowThisPage,
           pageSize: props.membersPerPage,
           onChange: props.handlePageChange,
           onShowSizeChange: props.handleShowSizeChange,
