@@ -68,6 +68,8 @@ class ADMINFilter extends Component {
       currentPage,
       membersPerPage,
       rolesFilter,
+      updateADMINOptionsFilter,
+      currentPageUpdate,
     } = this.props;
 
     fetchListOfMembers(queryString, {
@@ -77,6 +79,9 @@ class ADMINFilter extends Component {
       interests: [],
       adminMemberOptions: [],
     });
+
+    currentPageUpdate(1);
+    updateADMINOptionsFilter();
   };
 
   handleChangeFilterString = event => {

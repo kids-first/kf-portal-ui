@@ -1,4 +1,4 @@
-import { Collapse, Divider, Input, Typography } from 'antd';
+import { Button, Collapse, Divider, Input, Typography } from 'antd';
 import React from 'react';
 
 const { Title } = Typography;
@@ -45,9 +45,9 @@ const FilterTable = props => {
         }
         extra={
           showClear ? (
-            <button type="link" onClick={handleClear}>
+            <Button type="link" onClick={handleClear}>
               clear
-            </button>
+            </Button>
           ) : (
             ''
           )
