@@ -56,28 +56,38 @@ const Address = ({ item }) => (
   </div>
 );
 
-const MemberTable = props => {
-  const firstItem = props.currentPage * props.membersPerPage - props.membersPerPage + 1;
-  const lastItem = props.currentPage * props.membersPerPage;
+const MemberTable = ({
+  currentPage,
+  membersPerPage,
+  showAll,
+  count,
+  pending,
+  memberList,
+  handlePageChange,
+  handleShowSizeChange,
+}) => {
+  const firstItem = currentPage * membersPerPage - membersPerPage + 1;
+  const lastItem = currentPage * membersPerPage;
 
-  const memberShowThisPage = props.showAll ? props.count.total : props.count.public;
+  const memberShowThisPage = showAll ? count.total : count.public;
 
   return (
     <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
       <List
         itemLayout={'vertical'}
         header={
-          props.pending ? (
+          pending ? (
             <Spin />
           ) : (
             <Row style={{ marginTop: 12, marginBottom: 12 }}>
               <Col span={12} style={{ textAlign: 'left' }}>
                 <Title level={4} style={{ margin: 0 }}>
-                  {memberShowThisPage > props.membersPerPage
-                    ? `Showing ${firstItem} - ${Math.min(lastItem, memberShowThisPage)} of ${
-                        memberShowThisPage
-                      } ${props.showAll ? 'members' : 'public members' }`
-                    : `Showing ${memberShowThisPage} ${props.showAll ? '' : 'public'} ${
+                  {memberShowThisPage > membersPerPage
+                    ? `Showing ${firstItem} - ${Math.min(
+                        lastItem,
+                        memberShowThisPage,
+                      )} of ${memberShowThisPage} ${showAll ? 'members' : 'public members'}`
+                    : `Showing ${memberShowThisPage} ${showAll ? '' : 'public'} ${
                         memberShowThisPage < 2 ? 'member' : 'members'
                       } `}
                 </Title>
@@ -86,7 +96,7 @@ const MemberTable = props => {
                 <Title
                   level={4}
                   style={{ margin: 0 }}
-                >{`${props.count.total} members total (public & private)`}</Title>
+                >{`${count.total} members total (public & private)`}</Title>
               </Col>
             </Row>
           )
@@ -98,15 +108,15 @@ const MemberTable = props => {
           showSizeChanger: true,
           pageSizeOptions: ['10', '20', '50'],
           defaultCurrent: 1,
-          current: props.currentPage,
+          current: currentPage,
           total: memberShowThisPage,
-          pageSize: props.membersPerPage,
-          onChange: props.handlePageChange,
-          onShowSizeChange: props.handleShowSizeChange,
+          pageSize: membersPerPage,
+          onChange: handlePageChange,
+          onShowSizeChange: handleShowSizeChange,
         }}
         className={'member-list'}
-        dataSource={props.memberList}
-        loading={props.pending}
+        dataSource={memberList}
+        loading={pending}
         renderItem={item => {
           const hasAddress = item.city || item.state || item.country;
           return (

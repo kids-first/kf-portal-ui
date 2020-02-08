@@ -83,9 +83,10 @@ class MemberSearchContainer extends Component {
       interestsFilter,
       adminOptionsFilter,
       currentPageUpdate,
+      isAdmin,
     } = this.props;
 
-    const showAll = adminOptionsFilter['allMembers'] && this.props.isAdmin;
+    const showAll = adminOptionsFilter.allMembers && isAdmin;
 
     const maxPage = (showAll ? count.total : count.public) / membersPerPage;
 
@@ -140,9 +141,6 @@ class MemberSearchContainer extends Component {
       updateRolesFilter,
       updateADMINOptionsFilter,
     } = this.props;
-
-    console.log(value, 'value', type, 'Type', 'In clear tag');
-    console.log(adminOptionsFilter, 'adminOptionsFilter');
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
