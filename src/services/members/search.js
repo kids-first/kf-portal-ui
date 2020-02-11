@@ -15,7 +15,7 @@ const enhanceWithFilter = (filters, filterType) => {
 };
 
 export const searchMembers = async (searchTerm, searchParams) => {
-  const { start = 0, end = 50, roles = [], interests = [] } = searchParams;
+  const { start = 0, end = 50, roles = [], interests = [], adminMemberOptions = [] } = searchParams;
   let response;
   try {
     response = await api({
@@ -26,7 +26,9 @@ export const searchMembers = async (searchTerm, searchParams) => {
         `?queryString=${searchTerm}&start=${start}&end=${end}${enhanceWithFilter(
           roles,
           'role',
-        )}${enhanceWithFilter(interests, 'interest')}
+        )}${enhanceWithFilter(interests, 'interest')}${
+          adminMemberOptions.includes('allMembers') ? '&qAllMembers=true' : ''
+        }
         `,
       ),
     });
@@ -42,7 +44,7 @@ export const getAllMembers = async token => {
     method: 'GET',
     responseType: 'blob',
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
   });
 };

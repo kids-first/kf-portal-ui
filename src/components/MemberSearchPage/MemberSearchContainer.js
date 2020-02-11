@@ -8,12 +8,13 @@ import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
 import FilterDrawer from 'components/MemberSearchPage/FilterDrawer';
 import {
+  requestADMINOptionsUpdate,
   requestCurrentPageUpdate,
   requestInterestsFilterUpdate,
   requestMemberPerPageUpdate,
   requestQueryStringUpdate,
-  requestRolesFilterUpdate,
   requestResetStore,
+  requestRolesFilterUpdate,
 } from 'components/MemberSearchPage/actions';
 import { getCurrentEnd, getCurrentStart, getSelectedFilter } from './utils';
 import FilterTagContainer from 'components/MemberSearchPage/FilterTagContainer';
@@ -28,6 +29,7 @@ class MemberSearchContainer extends Component {
     membersPerPage: PropTypes.number.isRequired,
     rolesFilter: PropTypes.object.isRequired,
     interestsFilter: PropTypes.object.isRequired,
+    adminOptionsFilter: PropTypes.object,
     fetchListOfMembers: PropTypes.func.isRequired,
     currentPageUpdate: PropTypes.func.isRequired,
     updateRolesFilter: PropTypes.func.isRequired,
@@ -43,6 +45,7 @@ class MemberSearchContainer extends Component {
       currentPage,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
     } = this.props;
 
     fetchListOfMembers(e.target.value, {
@@ -50,6 +53,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(currentPage, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
 
     queryStringUpdate(e.target.value);
@@ -77,9 +81,14 @@ class MemberSearchContainer extends Component {
       queryString,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
       currentPageUpdate,
+      isAdmin,
     } = this.props;
-    const maxPage = count.public / membersPerPage;
+
+    const showAll = adminOptionsFilter.allMembers && isAdmin;
+
+    const maxPage = (showAll ? count.total : count.public) / membersPerPage;
 
     if (!maxPage || page < 1 || page > Math.ceil(maxPage)) return;
 
@@ -90,6 +99,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(page, membersPerPage),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
   };
 
@@ -101,6 +111,7 @@ class MemberSearchContainer extends Component {
       queryString,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
     } = this.props;
 
     currentPageUpdate(current);
@@ -110,6 +121,7 @@ class MemberSearchContainer extends Component {
       end: getCurrentEnd(current, pageSize),
       roles: getSelectedFilter(rolesFilter),
       interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
   };
 
@@ -124,8 +136,10 @@ class MemberSearchContainer extends Component {
       membersPerPage,
       rolesFilter,
       interestsFilter,
+      adminOptionsFilter,
       updateInterestsFilter,
       updateRolesFilter,
+      updateADMINOptionsFilter,
     } = this.props;
 
     fetchListOfMembers(queryString, {
@@ -135,11 +149,21 @@ class MemberSearchContainer extends Component {
       interests: getSelectedFilter(
         type === 'interest' ? { ...interestsFilter, ...filter } : interestsFilter,
       ),
+      adminMemberOptions: getSelectedFilter(
+        type === 'adminMemberOptions' ? { ...adminOptionsFilter, ...filter } : adminOptionsFilter,
+      ),
     });
 
-    type === 'role'
-      ? updateRolesFilter({ ...rolesFilter, ...filter })
-      : updateInterestsFilter({ ...interestsFilter, ...filter });
+    switch (type) {
+      case 'role':
+        updateRolesFilter({ ...rolesFilter, ...filter });
+        break;
+      case 'adminMemberOptions':
+        updateADMINOptionsFilter({ ...adminOptionsFilter, ...filter });
+        break;
+      default:
+        updateInterestsFilter({ ...interestsFilter, ...filter });
+    }
   };
 
   render() {
@@ -147,13 +171,17 @@ class MemberSearchContainer extends Component {
     const filters = {
       roles: [...getSelectedFilter(this.props.rolesFilter)],
       interests: [...getSelectedFilter(this.props.interestsFilter)],
+      adminMemberOptions: [...getSelectedFilter(this.props.adminOptionsFilter)],
     };
 
     const { isAdmin, loggedInUser, loggedInUserToken } = this.props;
+    const showAll =
+      filters.adminMemberOptions && filters.adminMemberOptions.includes('allMembers') && isAdmin;
+
     return (
       <div className="background-container">
         <Layout style={{ minHeight: '100vh' }}>
-          <FilterDrawer />
+          <FilterDrawer isAdmin={isAdmin} />
           <MemberSearchBorder
             loggedInUser={loggedInUser}
             isAdmin={isAdmin}
@@ -166,7 +194,8 @@ class MemberSearchContainer extends Component {
               allowClear={true}
             />
             {(filters.roles && filters.roles.length > 0) ||
-            (filters.interests && filters.interests.length > 0) ? (
+            (filters.interests && filters.interests.length > 0) ||
+            (filters.adminMemberOptions && filters.adminMemberOptions.length > 0) ? (
               <FilterTagContainer filters={filters} clearTag={this.clearTag} />
             ) : (
               ''
@@ -179,6 +208,7 @@ class MemberSearchContainer extends Component {
               handlePageChange={this.handlePageChange}
               handleShowSizeChange={this.handleShowSizeChange}
               pending={pending}
+              showAll={showAll}
             />
           </MemberSearchBorder>
         </Layout>
@@ -198,6 +228,7 @@ const mapStateToProps = state => ({
   membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
   rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
   interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
+  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
 });
 
 const mapDispatchToProps = dispatch =>
@@ -210,6 +241,8 @@ const mapDispatchToProps = dispatch =>
       updateInterestsFilter: interestsFilter =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
       updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
+      updateADMINOptionsFilter: adminOptionsFilter =>
+        dispatch(requestADMINOptionsUpdate(adminOptionsFilter)),
       resetStore: () => dispatch(requestResetStore()),
     },
     dispatch,

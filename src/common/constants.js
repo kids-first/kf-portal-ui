@@ -8,6 +8,10 @@ import CommunityBanner from 'assets/user-banner-community.png';
 import PatientBanner from 'assets/user-banner-patient.png';
 import packageJson from '../../package.json';
 
+export const ADMIN_OPTIONS = {
+  allMembers: 'All Members',
+};
+
 export const ROLES = [
   {
     type: 'research',
@@ -126,12 +130,13 @@ export const STUDY_SHORT_NAMES = [
   'Congenital Diaphragmatic Hernia',
 ];
 
+const protocol = window.location.protocol;
+const host = window.location.host;
+
 export const EXAMPLE_QUERIES = [
   {
     queryName: 'All Harmonized Data',
-    url: `${window.location.protocol}://${
-      window.location.host
-    }/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D`,
+    url: `${protocol}://${host}/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D`,
     stats: {
       Files: 9194,
       Participants: 3698,
@@ -143,9 +148,7 @@ export const EXAMPLE_QUERIES = [
   {
     queryName:
       'Female probands with cleft palate (HP:0000175) and parents with harmonized aligned reads',
-    url: `${window.location.protocol}://${
-      window.location.host
-    }/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"data_type"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"%3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
+    url: `${protocol}://${host}/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"data_type"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"%3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
     stats: {
       Files: 218,
       Participants: 101,
@@ -156,9 +159,7 @@ export const EXAMPLE_QUERIES = [
   },
   {
     queryName: 'Data from oral samples of probands with full trio data',
-    url: `${window.location.protocol}://${
-      window.location.host
-    }/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.biospecimens.composition"%2C"value"%3A%5B"Cheek%20Swab"%2C"Mouth%20Wash"%2C"Saliva"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.is_proband"%2C"value"%3A%5B"true"%5D%7D%7D%5D%7D`,
+    url: `${protocol}://${host}/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.biospecimens.composition"%2C"value"%3A%5B"Cheek%20Swab"%2C"Mouth%20Wash"%2C"Saliva"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.is_proband"%2C"value"%3A%5B"true"%5D%7D%7D%5D%7D`,
     stats: {
       Files: 1434,
       Participants: 478,

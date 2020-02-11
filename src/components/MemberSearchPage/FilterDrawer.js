@@ -3,6 +3,7 @@ import './MemberSearchPage.css';
 import { Icon, Layout, Typography } from 'antd';
 import RolesFilter from 'components/MemberSearchPage/RolesFilter';
 import InterestsFilter from 'components/MemberSearchPage/InterestsFilter';
+import AllMembersFilter from './AdminFilter';
 
 const { Sider } = Layout;
 const { Title } = Typography;
@@ -24,7 +25,7 @@ class FilterDrawer extends Component {
         width={314}
         collapsedWidth={37}
         collapsible
-        collapsed={this.state.collapsed}
+        collapsed={collapsed}
         style={{ boxShadow: '0 0 4.9px 0.2px rgba(0,0,0,0.5)' }}
       >
         <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
@@ -42,8 +43,11 @@ class FilterDrawer extends Component {
             onClick={this.onCollapse}
           />
         </div>
-        <RolesFilter collapsed={collapsed} />
-        <InterestsFilter collapsed={collapsed} />
+        <div>
+          <RolesFilter collapsed={collapsed} />
+          <InterestsFilter collapsed={collapsed} />
+          {this.props.isAdmin ? <AllMembersFilter collapsed={collapsed} /> : ''}
+        </div>
       </Sider>
     );
   }

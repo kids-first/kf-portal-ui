@@ -7,6 +7,7 @@ import {
   REQUEST_CURRENTPAGE_UPDATE,
   REQUEST_MEMBER_PER_PAGE_UPDATE,
   REQUEST_INTERESTS_FILTER_UPDATE,
+  REQUEST_ADMIN_FILTER_UPDATE,
   REQUEST_STORE_RESET
 } from './constants';
 
@@ -33,6 +34,13 @@ export const requestRolesFilterUpdate = (filter = {}) => {
 export const requestInterestsFilterUpdate = (filter = {}) => {
   return {
     type: REQUEST_INTERESTS_FILTER_UPDATE,
+    payload: filter,
+  };
+};
+
+export const requestADMINOptionsUpdate = (filter = {}) => {
+  return {
+    type: REQUEST_ADMIN_FILTER_UPDATE,
     payload: filter,
   };
 };
