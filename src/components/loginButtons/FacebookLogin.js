@@ -1,35 +1,28 @@
-import React from 'react';
-import omit from 'lodash/omit';
-
-import facebookSDK from 'services/facebookSDK';
+import React, { Component } from 'react';
 
 import DisabledFacebookLogin from './DisabledFacebookLogin';
+import { facebookStatus } from 'services/login';
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      disabled: false,
-    };
-  }
+export default class extends Component {
+  state = {
+    disabled: false,
+  };
 
-  async componentDidMount() {
-    try {
-      await facebookSDK();
-
-      global.FB.getLoginStatus(response => {
+  componentDidMount() {
+    facebookStatus()
+      .then(response => {
         if (response.authResponse) {
           this.props.onLogin(response);
         } else {
           global.FB.XFBML.parse();
           global.FB.Event.subscribe('auth.login', this.props.onLogin);
         }
+      })
+      .catch(err => {
+        console.warn('unable to get fb login status: ', err);
+        this.props.onError('facebookError');
+        this.setState({ disabled: true });
       });
-    } catch (err) {
-      console.warn('unable to get fb login status: ', err);
-      this.props.onError('facebookError');
-      this.setState({ disabled: true });
-    }
   }
 
   componentWillUnmount() {
@@ -45,7 +38,6 @@ export default class extends React.Component {
       <DisabledFacebookLogin />
     ) : (
       <div
-        {...omit(this.props, ['onLogin', 'onError'])}
         className="fb-login-button login-button"
         style={{ height: '40px' }}
         data-max-rows="1"
