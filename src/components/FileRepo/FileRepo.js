@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
 import FilterIcon from 'react-icons/lib/fa/filter';
 
 import Tooltip from 'uikit/Tooltip';
@@ -187,6 +187,7 @@ const FileRepo = ({
                           <Table
                             {...props}
                             {...url}
+                            keepSelectedOnPageChange
                             customHeaderContent={
                               <TableHeaderContent
                                 {...props}
