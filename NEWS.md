@@ -8,6 +8,12 @@
 ### Technical / Other changes
 
 -->
+## 2020-02-17 kf-portal-ui 2.13.8
+
+This feature is a hotfix for this issue :
+- [#2314](https://github.com/kids-first/kf-portal-ui/issues/2314) DCF : can not connect to the DCF fence
+
+
 ## 2020-01-28 kf-portal-ui 2.13.7
 
 This feature is a hotfix for this issue :
