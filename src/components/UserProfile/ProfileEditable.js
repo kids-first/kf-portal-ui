@@ -38,6 +38,7 @@ class ProfileEditable extends Component {
     form: PropTypes.object.isRequired,
     updateProfileCb: PropTypes.func.isRequired,
     isProfileUpdating: PropTypes.bool.isRequired,
+    loggedInUser: PropTypes.object.isRequired,
   };
 
   handleSubmit = e => {

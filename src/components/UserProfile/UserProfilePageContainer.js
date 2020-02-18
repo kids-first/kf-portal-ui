@@ -7,6 +7,7 @@ import {
   selectIsProfileLoading,
   selectErrorProfile,
   selectIsProfileUpdating,
+  selectLoggedInUser,
 } from '../../store/selectors/users';
 import {
   fetchProfileIfNeeded,
@@ -52,6 +53,11 @@ class UserProfilePageContainer extends React.Component {
       hash: PropTypes.string.isRequired,
     }).isRequired,
     isProfileUpdating: PropTypes.bool.isRequired,
+    loggedInUser: PropTypes.object,
+  };
+
+  static defaultProps = {
+    loggedInUser: {}
   };
 
   state = {
@@ -131,6 +137,7 @@ class UserProfilePageContainer extends React.Component {
       userInfo,
       location: { hash },
       isProfileUpdating,
+      loggedInUser,
     } = this.props;
 
     const { currentMenuItem, collapsed } = this.state;
@@ -159,6 +166,7 @@ class UserProfilePageContainer extends React.Component {
         isProfileUpdating={isProfileUpdating}
         collapsed={collapsed}
         onBreakPointCb={this.onBreakPoint}
+        loggedInUser={loggedInUser}
       />
     );
   }
@@ -169,6 +177,7 @@ const mapStateToProps = state => ({
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
   isProfileUpdating: selectIsProfileUpdating(state),
+  loggedInUser: selectLoggedInUser(state),
 });
 
 const mapDispatchToProps = dispatch => {

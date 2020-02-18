@@ -7,33 +7,33 @@ import EditToggle from 'components/UserProfile/EditToggle';
 import ProfileReadOnly from './ProfileReadOnly';
 import ProfileEditable from './ProfileEditable';
 
-
-
 const AboutMe = props => {
-  const { canEdit, profile, updateProfileCb, isProfileUpdating } = props;
+  const { canEdit, profile, updateProfileCb, isProfileUpdating, loggedInUser } = props;
   return (
-      <React.Fragment>
-        <Row align={'middle'} className={'am-profile-row'}>
-          <EditToggle
-              isProfileUpdating={isProfileUpdating}
-              data={profile}
-              canEdit={canEdit}
-              ReadOnlyComponent={ProfileReadOnly}
-              EditableComponent={ProfileEditable}
-              updateProfileCb={updateProfileCb}
-          />
-        </Row>
-        <Row>
-          <EditToggle
-              isProfileUpdating={isProfileUpdating}
-              data={profile}
-              canEdit={canEdit}
-              ReadOnlyComponent={ContactReadOnly}
-              EditableComponent={ContactEditForm}
-              updateProfileCb={updateProfileCb}
-          />
-        </Row>
-      </React.Fragment>
+    <React.Fragment>
+      <Row align={'middle'} className={'am-profile-row'}>
+        <EditToggle
+          isProfileUpdating={isProfileUpdating}
+          data={profile}
+          canEdit={canEdit}
+          loggedInUser={loggedInUser}
+          ReadOnlyComponent={ProfileReadOnly}
+          EditableComponent={ProfileEditable}
+          updateProfileCb={updateProfileCb}
+        />
+      </Row>
+      <Row>
+        <EditToggle
+          isProfileUpdating={isProfileUpdating}
+          data={profile}
+          canEdit={canEdit}
+          loggedInUser={loggedInUser}
+          ReadOnlyComponent={ContactReadOnly}
+          EditableComponent={ContactEditForm}
+          updateProfileCb={updateProfileCb}
+        />
+      </Row>
+    </React.Fragment>
   );
 };
 
@@ -42,6 +42,7 @@ AboutMe.propTypes = {
   updateProfileCb: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   isProfileUpdating: PropTypes.bool.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default AboutMe;
