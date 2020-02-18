@@ -65,6 +65,7 @@ const MemberTable = ({
   memberList,
   handlePageChange,
   handleShowSizeChange,
+  isAdmin,
 }) => {
   const firstItem = currentPage * membersPerPage - membersPerPage + 1;
   const lastItem = currentPage * membersPerPage;
@@ -121,7 +122,13 @@ const MemberTable = ({
           const hasAddress = item.city || item.state || item.country;
           return (
             <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
-              <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
+              <Row
+                type={'flex'}
+                justify="center"
+                align="top"
+                gutter={32}
+                style={{ position: 'relative', margin: 0 }}
+              >
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
                   <Avatar
                     src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
@@ -190,6 +197,31 @@ const MemberTable = ({
                     story={(item.highlight || {}).story || []}
                   />
                 </Col>
+                {isAdmin ? (
+                  <Row
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div className={`icon-color ${item.isPublic ? 'public' : ''}`}>
+                      {item.isPublic ? 'Public' : 'Private'}
+                    </div>
+                    <Icon
+                      className={`icon-color ${item.isPublic ? 'public' : ''}`}
+                      style={{
+                        paddingLeft: 5,
+                      }}
+                      type={`${item.isPublic ? 'eye' : 'eye-invisible'}`}
+                      theme="filled"
+                    />
+                  </Row>
+                ) : (
+                  ''
+                )}
               </Row>
             </List.Item>
           );

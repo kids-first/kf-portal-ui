@@ -209,6 +209,7 @@ class MemberSearchContainer extends Component {
               handleShowSizeChange={this.handleShowSizeChange}
               pending={pending}
               showAll={showAll}
+              isAdmin={isAdmin}
             />
           </MemberSearchBorder>
         </Layout>

@@ -16,7 +16,6 @@ const FilterTable = props => {
     showClear,
   } = props;
   return (
-    //TODO move all styles in classes or modify ant design theme
     <Collapse
       className={'aggregation-card search-members-Filter'}
       defaultActiveKey={['1']}
