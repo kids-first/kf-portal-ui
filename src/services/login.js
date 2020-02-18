@@ -28,6 +28,8 @@ export const refreshToken = async provider => {
       return facebookRefreshToken();
     case ORCID:
       return orcidRefreshToken();
+    default:
+      return null;
   }
 };
 
