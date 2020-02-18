@@ -9,14 +9,23 @@
   border-left: 1px solid #a9adc0;
 }
 
+.cb-summary-entity:last-child {
+  padding: 0 0 0 10px;
+}
+
 .cb-summary-files {
   display: grid;
   grid-template-columns: auto auto;
 }
 
 .cb-detail {
-  align-items: center;
-  flex: 2;
+  align-items: baseline;
+  align-content: space-between;
+  justify-content: flex-end;
+}
+
+.cb-detail > :first-child {
+  margin-right: 10px;
 }
 
 .cb-view-links > div:not(:last-child) {
@@ -42,9 +51,12 @@
   font-weight: 600;
   font-family: Montserrat, sans-serif;
   font-size: 16px;
-  padding: 0 3px;
   margin: 0;
   color: #2b388f;
+}
+
+.cb-sub-heading :first-child {
+  margin-right: 10px;
 }
 
 .cb-purple-link {
