@@ -1,6 +1,6 @@
 import { initializeApi } from 'services/api';
 import urljoin from 'url-join';
-import { reactApiSearchMembersApi, personaApiRoot } from 'common/injectGlobals';
+import { personaApiRoot, reactApiSearchMembersApi } from 'common/injectGlobals';
 import downloader from '../../common/downloader';
 
 const api = initializeApi({
