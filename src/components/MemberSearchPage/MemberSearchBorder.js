@@ -22,7 +22,7 @@ const MemberSearchBorder = props => {
               style={{ marginBottom: 14 }}
               onClick={() => getAllMembers(props.loggedInUserToken)}
             >
-              Download
+              All Members
             </Button>
           ) : (
             ''
