@@ -9,7 +9,7 @@ import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
 
-const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) => {
+const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating, loggedInUser }) => {
   return (
     <Layout>
       <Header className={'up-header'}>
@@ -22,6 +22,7 @@ const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) =
             profile={profile}
             updateProfileCb={updateProfileCb}
             isProfileUpdating={isProfileUpdating}
+            loggedInUser={loggedInUser}
           />
         </Content>
       </Layout>
@@ -39,6 +40,7 @@ function UserProfilePage(props) {
     isProfileUpdating,
     collapsed,
     onBreakPointCb,
+    loggedInUser,
   } = props;
 
   if (!canEdit) {
@@ -48,6 +50,7 @@ function UserProfilePage(props) {
         profile={profile}
         updateProfileCb={updateProfileCb}
         isProfileUpdating={isProfileUpdating}
+        loggedInUser={loggedInUser}
       />
     );
   }
@@ -122,6 +125,7 @@ function UserProfilePage(props) {
               profile={profile}
               updateProfileCb={updateProfileCb}
               isProfileUpdating={isProfileUpdating}
+              loggedInUser={loggedInUser}
             />
           )}
         </Content>
@@ -140,6 +144,7 @@ UserProfilePage.propTypes = {
   isProfileUpdating: PropTypes.bool.isRequired,
   collapsed: PropTypes.bool.isRequired,
   onBreakPointCb: PropTypes.func.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default UserProfilePage;

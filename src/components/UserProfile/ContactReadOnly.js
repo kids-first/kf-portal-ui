@@ -219,6 +219,7 @@ ContactReadOnly.propTypes = {
   canEdit: PropTypes.bool.isRequired,
   onClickEditCb: PropTypes.func.isRequired,
   isProfileUpdating: PropTypes.bool.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default ContactReadOnly;
