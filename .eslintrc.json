@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "react-app",
+    "eslint:recommended"
+  ],
+  "parser": "babel-eslint",
+  "plugins": [
+    "react-hooks"
+  ],
+  "rules": {
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "complexity": [
+      "error",
+      16
+    ],
+    "template-curly-spacing": "off",
+    "indent": "off",
+    "default-case": 0,
+    "no-console": 1,
+    "prefer-spread": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}
