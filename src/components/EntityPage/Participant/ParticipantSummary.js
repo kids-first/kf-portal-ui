@@ -93,36 +93,15 @@ function summaryTableData(participant) {
         { title: 'Disease Related', summary: getIt('outcome.disease_related') },
       ];
 
-      if (getIt('study.kf_id') === 'SD_BHJXBDQK') {
+      if (['SD_BHJXBDQK', 'SD_M3DBXD12'].includes(getIt('study.kf_id'))) {
         summaryList.push({
           title: 'PedcBioPortal',
           summary: (
             <ExternalLink
-              href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_cbttc&caseId=${getIt(
+              href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_all&caseId=${getIt(
                 'kf_id',
               )}`}
-              onClick={e => {
-                trackUserInteraction({
-                  category: TRACKING_EVENTS.categories.entityPage.file,
-                  action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
-                  label: `${participant.study.short_name} (${getIt('study.kf_id')})`,
-                });
-              }}
-            >
-              {getIt('kf_id')}
-            </ExternalLink>
-          ),
-        });
-        return summaryList;
-      } else if (getIt('study.kf_id') === 'SD_M3DBXD12') {
-        summaryList.push({
-          title: 'PedcBioPortal',
-          summary: (
-            <ExternalLink
-              href={`https://pedcbioportal.kidsfirstdrc.org/patient?studyId=pbta_pnoc003&caseId=${getIt(
-                'kf_id',
-              )}`}
-              onClick={e => {
+              onClick={() => {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.entityPage.file,
                   action: TRACKING_EVENTS.actions.click + `: File Property: Study`,
