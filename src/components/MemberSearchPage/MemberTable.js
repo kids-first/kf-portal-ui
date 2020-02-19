@@ -56,6 +56,29 @@ const Address = ({ item }) => (
   </div>
 );
 
+const iconClassName = ({isPublic, isActive}) => {
+  // if(!isActive) {
+  //   return {
+  //     icon: 'warning',
+  //     className: 'inactive',
+  //     text: 'Deactivated'
+  //   }
+  // }
+  if(isPublic) {
+    return {
+      icon: 'eye',
+      className: 'public',
+      text: 'Public'
+    }
+  } else {
+    return {
+      icon: 'eye-invisible',
+      className: '',
+      text: 'Private'
+    }
+  }
+};
+
 const MemberTable = ({
   currentPage,
   membersPerPage,
@@ -207,15 +230,15 @@ const MemberTable = ({
                       alignItems: 'center',
                     }}
                   >
-                    <div className={`icon-color ${item.isPublic ? 'public' : ''}`}>
-                      {item.isPublic ? 'Public' : 'Private'}
+                    <div className={`icon-color ${iconClassName(item).className}`}>
+                      {iconClassName(item).text}
                     </div>
                     <Icon
-                      className={`icon-color ${item.isPublic ? 'public' : ''}`}
+                      className={`icon-color ${iconClassName(item).className}`}
                       style={{
                         paddingLeft: 5,
                       }}
-                      type={`${item.isPublic ? 'eye' : 'eye-invisible'}`}
+                      type={`${iconClassName(item).icon}`}
                       theme="filled"
                     />
                   </Row>

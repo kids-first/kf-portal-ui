@@ -55,6 +55,10 @@
   color: #32CD32;
 }
 
+.icon-color.inactive {
+  color: rgb(255,69,0);
+}
+
 .member-info-title {
   font-weight: bold;
 }
