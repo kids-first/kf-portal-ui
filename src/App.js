@@ -271,6 +271,7 @@ const App = compose(
                 userID: userIdUrlParam,
                 isSelf: isSelfInUrlWhenLoggedIn(userIdUrlParam, loggedInUser),
               },
+              isAdmin: state.isAdmin,
               ...props,
             });
           }}

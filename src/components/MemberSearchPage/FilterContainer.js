@@ -65,9 +65,6 @@ const Filter = ({
       handleClear={handleClear}
       collapsed={collapsed}
       showSearchDefault={showSearchDefault}
-      searchString={searchString}
-      showAll={showAll}
-      toggleShowAll={toggleShowAll}
       handleChangeFilterString={handleChangeFilterString}
       showClear={getSelectedFilter(filter).length > 0}
     >
@@ -76,6 +73,9 @@ const Filter = ({
         checkboxes={filter}
         onChange={onChange}
         keyDisplayNames={keyDisplayNames}
+        showAll={showAll}
+        toggleShowAll={toggleShowAll}
+        searchString={searchString}
       />
     </FilterTable>
   );

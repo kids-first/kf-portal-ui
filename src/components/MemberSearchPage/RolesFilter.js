@@ -49,7 +49,7 @@ class RolesFilter extends Component {
         title={'Member Categories'}
         filter={rolesFilter}
         showSearchDefault={false}
-        searchString={{}}
+        searchString={''}
         showAll={false}
         handleChangeFilterString={{}}
         dataSource={count && count.roles ? count.roles : {}}
