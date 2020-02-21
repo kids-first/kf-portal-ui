@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Avatar, Button, Icon, Popconfirm, Row, Switch, Tooltip, Typography } from 'antd';
-import { userProfileBackground } from './utils';
+import { userProfileBackground, getMsgFromAccessError } from './utils';
 import PropTypes from 'prop-types';
 import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from 'uikit/ProfilePill';
@@ -111,7 +111,10 @@ const HeaderBanner = ({
               <Row>
                 <Alert
                   message="Error"
-                  description="An error occurred while updating the profile"
+                  description={getMsgFromAccessError(
+                    error,
+                    'An error occurred while updating the profile',
+                  )}
                   type="error"
                   closable
                 />
