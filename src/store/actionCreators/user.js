@@ -12,6 +12,7 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  CLEAN_ERRORS,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
 import { getOtherUserProfile, getUserLoggedInProfile, updateProfile } from 'services/profiles';
@@ -79,8 +80,8 @@ const fetchProfile = userInfo => {
     dispatch(requestProfile());
     try {
       const fetchedProfile = await (userInfo.isSelf
-          ? getUserLoggedInProfile()
-          : getOtherUserProfile(userInfo.userID));
+        ? getUserLoggedInProfile()
+        : getOtherUserProfile(userInfo.userID));
       return onSuccess(fetchedProfile);
     } catch (e) {
       return onError(e);
@@ -167,3 +168,5 @@ export const toggleIsPublic = user => {
 export const deleteProfile = () => {
   return dispatch => dispatch({ type: DELETE_PROFILE });
 };
+
+export const cleanErrors = () => ({ type: CLEAN_ERRORS });

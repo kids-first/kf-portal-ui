@@ -12,6 +12,7 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  CLEAN_ERRORS,
 } from '../actionTypes';
 
 const initialState = {
@@ -74,6 +75,12 @@ export default (state = initialState, action) => {
         ...state,
         isTogglingProfileStatus: false,
         isTogglingProfileStatusInError: action.payload,
+      };
+    case CLEAN_ERRORS:
+      return {
+        ...state,
+        errorProfile: null,
+        isTogglingProfileStatusInError: null,
       };
     default:
       return state;
