@@ -200,3 +200,7 @@ export const showWhenHasDataOrCanEdit = (data, canEdit) => {
 
 export const hasFieldInError = fields =>
   Object.entries(fields || {}).some(([, value]) => Array.isArray(value) && value.length > 0);
+
+//When persona throws an AccessError, show details to user.
+export const getMsgFromAccessError = (rawError, defaultMsgIfNotFound = '') =>
+  rawError?.response?.data?.message || defaultMsgIfNotFound;
