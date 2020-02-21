@@ -9,11 +9,11 @@ import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
 
-const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating, loggedInUser }) => {
+const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating, loggedInUser, isAdmin }) => {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={false} />
+        <HeaderBannerContainer canEdit={false} isAdmin={isAdmin}/>
       </Header>
       <Layout className={'main-layout'}>
         <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
@@ -41,6 +41,7 @@ function UserProfilePage(props) {
     collapsed,
     onBreakPointCb,
     loggedInUser,
+    isAdmin,
   } = props;
 
   if (!canEdit) {
@@ -51,6 +52,7 @@ function UserProfilePage(props) {
         updateProfileCb={updateProfileCb}
         isProfileUpdating={isProfileUpdating}
         loggedInUser={loggedInUser}
+        isAdmin={isAdmin}
       />
     );
   }
@@ -60,7 +62,7 @@ function UserProfilePage(props) {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={canEdit} />
+        <HeaderBannerContainer canEdit={canEdit} isAdmin={isAdmin}/>
       </Header>
       <Layout className={'main-layout'}>
         <Sider

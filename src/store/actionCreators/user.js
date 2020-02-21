@@ -12,12 +12,16 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  REQUEST_IS_ACTIVE_TOGGLE,
+  RECEIVE_IS_ACTIVE_TOGGLE,
+  FAILURE_IS_ACTIVE_TOGGLE,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
-import { getOtherUserProfile, getUserLoggedInProfile, updateProfile } from 'services/profiles';
+import { getOtherUserProfile, getUserLoggedInProfile, updateProfile, toggleActiveProfileAsAdmin } from 'services/profiles';
 import { selectProfile } from '../selectors/users';
 
 const updateProfileFromUser = updateProfile(apiInitialized);
+const toggleActiveProfileFromUser = toggleActiveProfileAsAdmin(apiInitialized);
 
 export const loginSuccess = loggedInUser => {
   return {
@@ -137,15 +141,34 @@ export const requestIsPublicToggle = () => {
   };
 };
 
+export const requestIsActiveToggle = () => {
+  return {
+    type: REQUEST_IS_ACTIVE_TOGGLE,
+  };
+};
+
 export const receiveIsPublicToggle = () => {
   return {
     type: RECEIVE_IS_PUBLIC_TOGGLE,
   };
 };
 
+export const receiveIsActiveToggle = () => {
+  return {
+    type: RECEIVE_IS_ACTIVE_TOGGLE,
+  };
+};
+
 export const failureIsPublicToggle = error => {
   return {
     type: FAILURE_IS_PUBLIC_TOGGLE,
+    payload: error,
+  };
+};
+
+export const failureIsActiveToggle = error => {
+  return {
+    type: FAILURE_IS_ACTIVE_TOGGLE,
     payload: error,
   };
 };
@@ -160,6 +183,20 @@ export const toggleIsPublic = user => {
       return dispatch(receiveIsPublicToggle());
     } catch (e) {
       return dispatch(failureIsPublicToggle(e));
+    }
+  };
+};
+
+export const toggleIsActive = user => {
+  return async dispatch => {
+    dispatch(requestIsActiveToggle());
+    try {
+      await toggleActiveProfileFromUser({
+        user,
+      });
+      return dispatch(receiveIsActiveToggle());
+    } catch (e) {
+      return dispatch(failureIsActiveToggle(e));
     }
   };
 };

@@ -92,6 +92,7 @@ export const userProfileBackground = (
   const banner = get(role, 'banner', '');
   const profileColors = get(role, 'profileColors', {});
   return {
+    position: 'relative',
     backgroundPositionX: 'right',
     backgroundRepeat: 'no-repeat',
     backgroundImage: ` ${showBanner ? `url(${banner}), ` : ``}

@@ -57,13 +57,13 @@ const Address = ({ item }) => (
 );
 
 const iconClassName = ({isPublic, isActive}) => {
-  // if(!isActive) {
-  //   return {
-  //     icon: 'warning',
-  //     className: 'inactive',
-  //     text: 'Deactivated'
-  //   }
-  // }
+  if(!isActive) {
+    return {
+      icon: 'warning',
+      className: 'inactive',
+      text: 'Deactivated'
+    }
+  }
   if(isPublic) {
     return {
       icon: 'eye',

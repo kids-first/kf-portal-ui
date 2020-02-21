@@ -138,6 +138,7 @@ class UserProfilePageContainer extends React.Component {
       location: { hash },
       isProfileUpdating,
       loggedInUser,
+      isAdmin,
     } = this.props;
 
     const { currentMenuItem, collapsed } = this.state;
@@ -167,6 +168,7 @@ class UserProfilePageContainer extends React.Component {
         collapsed={collapsed}
         onBreakPointCb={this.onBreakPoint}
         loggedInUser={loggedInUser}
+        isAdmin={isAdmin}
       />
     );
   }

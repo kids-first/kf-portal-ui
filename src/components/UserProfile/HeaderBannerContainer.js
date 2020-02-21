@@ -7,7 +7,7 @@ import {
   selectProfile,
   selectErrorIsToggleProfileStatus,
 } from '../../store/selectors/users';
-import { toggleIsPublic } from '../../store/actionCreators/user';
+import { toggleIsPublic, toggleIsActive } from '../../store/actionCreators/user';
 import HeaderBanner from 'components/UserProfile/HeaderBanner';
 
 class HeaderBannerContainer extends React.Component {
@@ -15,9 +15,11 @@ class HeaderBannerContainer extends React.Component {
     /** we must always have a non empty profile here */
     profile: PropTypes.object,
     onToggleIsPublic: PropTypes.func.isRequired,
+    onToggleIsActive: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     error: PropTypes.object,
     canEdit: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
   };
 
   onChangePrivacyStatus = () => {
@@ -28,15 +30,25 @@ class HeaderBannerContainer extends React.Component {
     });
   };
 
+  onChangeActivityStatus = () => {
+    const { profile, onToggleIsActive } = this.props;
+    onToggleIsActive({
+      ...profile,
+      ...{ isActive: !profile.isActive },
+    });
+  };
+
   render() {
-    const { isLoading, error, profile, canEdit } = this.props;
+    const { isLoading, error, profile, canEdit, isAdmin } = this.props;
     return (
       <HeaderBanner
         onChangePrivacyStatusCb={this.onChangePrivacyStatus}
+        onChangeActivityStatusCb={this.onChangeActivityStatus}
         profile={profile}
         isLoading={isLoading}
         error={error}
         canEdit={canEdit}
+        isAdmin={isAdmin}
       />
     );
   }
@@ -51,6 +63,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     onToggleIsPublic: profile => dispatch(toggleIsPublic(profile)),
+    onToggleIsActive: profile => dispatch(toggleIsActive(profile)),
   };
 };
 
