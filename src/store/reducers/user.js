@@ -12,6 +12,7 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  CLEAN_ERRORS,
   REQUEST_IS_ACTIVE_TOGGLE,
   RECEIVE_IS_ACTIVE_TOGGLE,
   FAILURE_IS_ACTIVE_TOGGLE,
@@ -92,6 +93,12 @@ export default (state = initialState, action) => {
         profile: copyOfProfile,
       };
     }
+    case CLEAN_ERRORS:
+      return {
+        ...state,
+        errorProfile: null,
+        isTogglingProfileStatusInError: null,
+      };
     default:
       return state;
   }

@@ -12,6 +12,7 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  CLEAN_ERRORS,
   REQUEST_IS_ACTIVE_TOGGLE,
   RECEIVE_IS_ACTIVE_TOGGLE,
   FAILURE_IS_ACTIVE_TOGGLE,
@@ -83,8 +84,8 @@ const fetchProfile = userInfo => {
     dispatch(requestProfile());
     try {
       const fetchedProfile = await (userInfo.isSelf
-          ? getUserLoggedInProfile()
-          : getOtherUserProfile(userInfo.userID));
+        ? getUserLoggedInProfile()
+        : getOtherUserProfile(userInfo.userID));
       return onSuccess(fetchedProfile);
     } catch (e) {
       return onError(e);
@@ -204,3 +205,5 @@ export const toggleIsActive = user => {
 export const deleteProfile = () => {
   return dispatch => dispatch({ type: DELETE_PROFILE });
 };
+
+export const cleanErrors = () => ({ type: CLEAN_ERRORS });
