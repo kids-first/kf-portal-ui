@@ -1,6 +1,6 @@
 import React from 'react';
-import { Alert, Avatar, Button, Icon, Popconfirm, Row, Switch, Tooltip, Typography } from 'antd';
-import { userProfileBackground, getMsgFromAccessError } from './utils';
+import { Avatar, Button, Icon, Popconfirm, Row, Switch, Tooltip, Typography } from 'antd';
+import { userProfileBackground } from './utils';
 import PropTypes from 'prop-types';
 import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from 'uikit/ProfilePill';
@@ -16,7 +16,6 @@ const HeaderBanner = ({
   onChangePrivacyStatusCb,
   onChangeActivityStatusCb,
   isLoading,
-  error,
   canEdit,
   features,
   isAdmin,
@@ -107,19 +106,6 @@ const HeaderBanner = ({
               />
               <Text className={'hd-text'}>Public</Text>
             </Row>
-            {Boolean(error) && Object.keys(error).length > 0 && (
-              <Row>
-                <Alert
-                  message="Error"
-                  description={getMsgFromAccessError(
-                    error,
-                    'An error occurred while updating the profile',
-                  )}
-                  type="error"
-                  closable
-                />
-              </Row>
-            )}
           </div>
         )}
     </Row>
@@ -130,7 +116,6 @@ HeaderBanner.propTypes = {
   profile: PropTypes.object.isRequired,
   onChangePrivacyStatusCb: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.object,
   canEdit: PropTypes.bool.isRequired,
 };
 
