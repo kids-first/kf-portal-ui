@@ -2,7 +2,7 @@ import { Col, Icon, List, Row, Spin, Typography, Avatar } from 'antd';
 import React from 'react';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
+import MemberInterests from 'components/MemberSearchPage/MemberInterests';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
