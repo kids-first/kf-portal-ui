@@ -38,7 +38,7 @@ const HeaderBannerContainer = props => {
         onClose: () => onCleanErrors(),
       });
     }
-  }, [error]);
+  }, [error, onCleanErrors]);
 
   return (
     <HeaderBanner
