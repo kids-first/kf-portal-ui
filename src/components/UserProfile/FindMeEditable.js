@@ -5,7 +5,7 @@ import { Form, Row, Typography } from 'antd';
 import { isUrl } from 'utils';
 import './style.css';
 import FindMeInput from 'components/UserProfile/FindMeInput';
-import { ERROR_INVALID_URL, ERROR_TOO_MANY_CHARACTERS } from './constants';
+import { PLEASE_ENTER_A_VALID_URL, ERROR_TOO_MANY_CHARACTERS } from './constants';
 
 const { Title } = Typography;
 
@@ -19,7 +19,7 @@ const validateInput = (rule, value, callback) => {
   } else if (!value || !value.inputVal || isUrl(value.inputVal)) {
     return callback();
   }
-  return callback(ERROR_INVALID_URL);
+  return callback(PLEASE_ENTER_A_VALID_URL);
 };
 
 function FindMeEditable(props) {
