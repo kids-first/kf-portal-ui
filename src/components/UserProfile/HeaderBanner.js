@@ -54,7 +54,7 @@ const HeaderBanner = ({
           {isAdmin ? (
             <Popconfirm
               placement="leftTop"
-              title={'Are you sure?'}
+              title={'You will Activate/Deactivate member. Are you sure?'}
               onConfirm={onChangeActivityStatusCb}
             >
               <Switch
