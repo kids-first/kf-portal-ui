@@ -2,17 +2,15 @@
 /* AggregationPanel */
 /**********************************************************/
 .aggregationPanelContainer {
-  display: block;
-  height: 100%;
-}
-.aggregationPanelContainer.hidden {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
 }
 
 .aggsListWrapper {
   position: relative;
   flex: 1 1 auto;
-  height: 100%;
 }
 
 .scrollY {
@@ -55,6 +53,12 @@
   min-width: 37px;
   flex: inherit;
   overflow: hidden;
+}
+
+.collapsibleAggregationWrapper > div {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
 }
 
 .aggregationHeader {
