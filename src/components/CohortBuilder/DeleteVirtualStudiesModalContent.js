@@ -5,7 +5,7 @@ import autobind from 'auto-bind-es5';
 import { injectState } from 'freactal';
 
 import { ModalFooter } from 'components/Modal/index.js';
-import { ModalContentSection } from './common';
+import { ModalContentSection } from './ModalContentSection.tsx';
 import PromptMessage from 'uikit/PromptMessage';
 import { deleteVirtualStudy } from '../../store/actionCreators/virtualStudies';
 
