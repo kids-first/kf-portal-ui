@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
-import {
-  requestCurrentPageUpdate,
-  requestInterestsFilterUpdate,
-} from 'components/MemberSearchPage/actions';
+import { requestADMINOptionsUpdate, requestCurrentPageUpdate } from 'components/MemberSearchPage/actions';
 import PropTypes from 'prop-types';
 import FilterContainer from './FilterContainer';
+import { ADMIN_OPTIONS } from '../../common/constants';
 
-class InterestsFilter extends Component {
+class AdminFilter extends Component {
   state = {
     showAll: false,
     filterSearchString: '',
@@ -24,36 +22,27 @@ class InterestsFilter extends Component {
     membersPerPage: PropTypes.number.isRequired,
     rolesFilter: PropTypes.object.isRequired,
     interestsFilter: PropTypes.object.isRequired,
+    adminOptionsFilter: PropTypes.object.isRequired,
     fetchListOfMembers: PropTypes.func.isRequired,
-    updateInterestsFilter: PropTypes.func.isRequired,
+    updateADMINOptionsFilter: PropTypes.func.isRequired,
   };
 
-  handleChangeFilterString = event => {
-    this.setState({ filterSearchString: event.target.value });
-  };
-
-  toggleShowAll = () => {
-    const { showAll } = this.state;
-    this.setState({ showAll: !showAll });
-  };
 
   render() {
-    const { count, interestsFilter, updateInterestsFilter } = this.props;
-    const { showAll, filterSearchString } = this.state;
+    const { count, updateADMINOptionsFilter, adminOptionsFilter } = this.props;
 
     return (
       <FilterContainer
-        title={'Research Interests'}
-        filter={interestsFilter}
-        showSearchDefault={true}
-        searchString={filterSearchString}
-        showAll={showAll}
-        handleChangeFilterString={this.handleChangeFilterString}
-        dataSource={count ? count.interests : {}}
-        keyDisplayNames={{}}
-        filterBoxName={'interests'}
-        updateFilter={updateInterestsFilter}
-        toggleShowAll={this.toggleShowAll}
+        title={'Member Search Options'}
+        filter={adminOptionsFilter}
+        showSearchDefault={false}
+        handleChangeFilterString={{}}
+        dataSource={{
+          allMembers: `${count.total}`,
+        }}
+        keyDisplayNames={ADMIN_OPTIONS}
+        filterBoxName={'adminMemberOptions'}
+        updateFilter={updateADMINOptionsFilter}
         {...this.props}
       />
     );
@@ -64,21 +53,21 @@ const mapStateToProps = state => ({
   count: state.ui.memberSearchPageReducer.count,
   rolesFilter: state.ui.memberSearchPageReducer.rolesFilter,
   interestsFilter: state.ui.memberSearchPageReducer.interestsFilter,
-  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
   queryString: state.ui.memberSearchPageReducer.queryString,
   currentPage: state.ui.memberSearchPageReducer.currentPage,
   membersPerPage: state.ui.memberSearchPageReducer.membersPerPage,
+  adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
 });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       fetchListOfMembers: fetchListOfMembersAction,
-      updateInterestsFilter: interestsFilter =>
-        dispatch(requestInterestsFilterUpdate(interestsFilter)),
+      updateADMINOptionsFilter: adminOptionsFilter =>
+        dispatch(requestADMINOptionsUpdate(adminOptionsFilter)),
       currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
     },
     dispatch,
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterestsFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminFilter);

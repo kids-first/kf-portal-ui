@@ -2,7 +2,7 @@ import { Col, Icon, List, Row, Spin, Typography, Avatar } from 'antd';
 import React from 'react';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
+import MemberInterests from 'components/MemberSearchPage/MemberInterests';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
@@ -56,27 +56,63 @@ const Address = ({ item }) => (
   </div>
 );
 
-const MemberTable = props => {
-  const firstItem = props.currentPage * props.membersPerPage - props.membersPerPage + 1;
-  const lastItem = props.currentPage * props.membersPerPage;
+const iconClassName = ({isPublic, isActive}) => {
+  if(!isActive) {
+    return {
+      icon: 'warning',
+      className: 'inactive',
+      text: 'Deactivated'
+    }
+  }
+  if(isPublic) {
+    return {
+      icon: 'eye',
+      className: 'public',
+      text: 'Public'
+    }
+  } else {
+    return {
+      icon: 'eye-invisible',
+      className: '',
+      text: 'Private'
+    }
+  }
+};
+
+const MemberTable = ({
+  currentPage,
+  membersPerPage,
+  showAll,
+  count,
+  pending,
+  memberList,
+  handlePageChange,
+  handleShowSizeChange,
+  isAdmin,
+}) => {
+  const firstItem = currentPage * membersPerPage - membersPerPage + 1;
+  const lastItem = currentPage * membersPerPage;
+
+  const memberShowThisPage = showAll ? count.total : count.public;
 
   return (
     <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
       <List
         itemLayout={'vertical'}
         header={
-          props.pending ? (
+          pending ? (
             <Spin />
           ) : (
             <Row style={{ marginTop: 12, marginBottom: 12 }}>
               <Col span={12} style={{ textAlign: 'left' }}>
                 <Title level={4} style={{ margin: 0 }}>
-                  {props.count.public > props.membersPerPage
-                    ? `Showing ${firstItem} - ${Math.min(lastItem, props.count.public)} of ${
-                        props.count.public
-                      } public members`
-                    : `Showing ${props.count.public} public ${
-                        props.count.public < 2 ? 'member' : 'members'
+                  {memberShowThisPage > membersPerPage
+                    ? `Showing ${firstItem} - ${Math.min(
+                        lastItem,
+                        memberShowThisPage,
+                      )} of ${memberShowThisPage} ${showAll ? 'members' : 'public members'}`
+                    : `Showing ${memberShowThisPage} ${showAll ? '' : 'public'} ${
+                        memberShowThisPage < 2 ? 'member' : 'members'
                       } `}
                 </Title>
               </Col>
@@ -84,7 +120,7 @@ const MemberTable = props => {
                 <Title
                   level={4}
                   style={{ margin: 0 }}
-                >{`${props.count.total} members total (public & private)`}</Title>
+                >{`${count.total} members total (public & private)`}</Title>
               </Col>
             </Row>
           )
@@ -96,20 +132,26 @@ const MemberTable = props => {
           showSizeChanger: true,
           pageSizeOptions: ['10', '20', '50'],
           defaultCurrent: 1,
-          current: props.currentPage,
-          total: props.count.public,
-          pageSize: props.membersPerPage,
-          onChange: props.handlePageChange,
-          onShowSizeChange: props.handleShowSizeChange,
+          current: currentPage,
+          total: memberShowThisPage,
+          pageSize: membersPerPage,
+          onChange: handlePageChange,
+          onShowSizeChange: handleShowSizeChange,
         }}
         className={'member-list'}
-        dataSource={props.memberList}
-        loading={props.pending}
+        dataSource={memberList}
+        loading={pending}
         renderItem={item => {
           const hasAddress = item.city || item.state || item.country;
           return (
             <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
-              <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
+              <Row
+                type={'flex'}
+                justify="center"
+                align="top"
+                gutter={32}
+                style={{ position: 'relative', margin: 0 }}
+              >
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
                   <Avatar
                     src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
@@ -178,6 +220,31 @@ const MemberTable = props => {
                     story={(item.highlight || {}).story || []}
                   />
                 </Col>
+                {isAdmin ? (
+                  <Row
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div className={`icon-color ${iconClassName(item).className}`}>
+                      {iconClassName(item).text}
+                    </div>
+                    <Icon
+                      className={`icon-color ${iconClassName(item).className}`}
+                      style={{
+                        paddingLeft: 5,
+                      }}
+                      type={`${iconClassName(item).icon}`}
+                      theme="filled"
+                    />
+                  </Row>
+                ) : (
+                  ''
+                )}
               </Row>
             </List.Item>
           );

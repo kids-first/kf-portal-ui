@@ -36,6 +36,7 @@ class ContactEditForm extends Component {
     onClickSaveCb: PropTypes.func.isRequired,
     form: PropTypes.object.isRequired,
     isProfileUpdating: PropTypes.bool.isRequired,
+    loggedInUser: PropTypes.object.isRequired,
   };
 
   handleSubmit = e => {

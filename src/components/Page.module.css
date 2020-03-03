@@ -6,3 +6,7 @@
   width: 100%;
   background-repeat: repeat;
 }
+
+.layoutContainer {
+  height: 100vh;
+}

@@ -14,7 +14,7 @@
   margin: 0 32px 18px 32px;
 }
 
-.local-title{
+.local-title {
   color: #2b388f;
   font-weight: 500;
   font-size: 14px;
@@ -49,6 +49,14 @@
 
 .icon-color {
   color: rgba(57, 69, 146, 0.5);
+}
+
+.icon-color.public {
+  color: #32CD32;
+}
+
+.icon-color.inactive {
+  color: rgb(255,69,0);
 }
 
 .member-info-title {
@@ -89,4 +97,10 @@
   text-transform: capitalize;
   padding: 0 16px 0 0;
   width: 220px;
+}
+
+.search-members-Filter {
+  padding: 0;
+  border-radius: 0;
+  border-bottom-width: 0;
 }

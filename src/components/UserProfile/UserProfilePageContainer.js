@@ -7,11 +7,13 @@ import {
   selectIsProfileLoading,
   selectErrorProfile,
   selectIsProfileUpdating,
+  selectLoggedInUser,
 } from '../../store/selectors/users';
 import {
   fetchProfileIfNeeded,
   updateUserProfile,
   deleteProfile,
+  cleanErrors,
 } from '../../store/actionCreators/user';
 import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
@@ -52,6 +54,12 @@ class UserProfilePageContainer extends React.Component {
       hash: PropTypes.string.isRequired,
     }).isRequired,
     isProfileUpdating: PropTypes.bool.isRequired,
+    loggedInUser: PropTypes.object,
+    onCleanErrors: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    loggedInUser: {},
   };
 
   state = {
@@ -81,7 +89,8 @@ class UserProfilePageContainer extends React.Component {
   }
 
   componentWillUnmount() {
-    const { onDeleteProfile } = this.props;
+    const { onDeleteProfile, onCleanErrors } = this.props;
+    onCleanErrors();
     onDeleteProfile();
   }
 
@@ -119,7 +128,7 @@ class UserProfilePageContainer extends React.Component {
     });
   };
 
-  onBreakPoint = (broken) => {
+  onBreakPoint = broken => {
     return this.setState({ collapsed: broken });
   };
 
@@ -131,6 +140,8 @@ class UserProfilePageContainer extends React.Component {
       userInfo,
       location: { hash },
       isProfileUpdating,
+      loggedInUser,
+      isAdmin,
     } = this.props;
 
     const { currentMenuItem, collapsed } = this.state;
@@ -159,6 +170,8 @@ class UserProfilePageContainer extends React.Component {
         isProfileUpdating={isProfileUpdating}
         collapsed={collapsed}
         onBreakPointCb={this.onBreakPoint}
+        loggedInUser={loggedInUser}
+        isAdmin={isAdmin}
       />
     );
   }
@@ -169,6 +182,7 @@ const mapStateToProps = state => ({
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
   isProfileUpdating: selectIsProfileUpdating(state),
+  loggedInUser: selectLoggedInUser(state),
 });
 
 const mapDispatchToProps = dispatch => {
@@ -176,6 +190,7 @@ const mapDispatchToProps = dispatch => {
     onFetchProfile: userInfo => dispatch(fetchProfileIfNeeded(userInfo)),
     onUpdateProfile: user => dispatch(updateUserProfile(user)),
     onDeleteProfile: () => dispatch(deleteProfile()),
+    onCleanErrors: () => dispatch(cleanErrors()),
   };
 };
 

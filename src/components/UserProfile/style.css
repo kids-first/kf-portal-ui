@@ -251,6 +251,16 @@
   background-color: darkgrey;
 }
 
+.hd-switch-bg-is-active {
+  width: 85px;
+  background-color: chartreuse;
+}
+
+.hd-switch-bg-is-not-active {
+  width: 85px;
+  background-color: red;
+}
+
 .hd-user-info-group {
   display: flex;
   align-items: center;

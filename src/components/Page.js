@@ -2,8 +2,11 @@ import React from 'react';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Column from 'uikit/Column';
+import { Layout } from 'antd';
 
-import { pageContainer } from './Page.module.css';
+import { pageContainer, layoutContainer } from './Page.module.css';
+
+const { Content, Footer: Ft } = Layout;
 
 const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
   <Column className={pageContainer}>
@@ -21,11 +24,21 @@ const Page = ({ Head = Header, Foot = Footer, Component, ...props }) => (
 );
 
 export const FixedFooterPage = ({ Head = Header, Foot = Footer, Component, ...props }) => (
-  <Column className={pageContainer} style={{ height: 'auto' }}>
+  <Layout className={layoutContainer}>
     <Head />
-    <Component {...props} />
-    <Foot />
-  </Column>
+    <Content
+      style={{
+        display: 'flex',
+        alignItems: 'stretch',
+        flexDirection: 'column',
+      }}
+    >
+      <Component {...props} />
+    </Content>
+    <Ft style={{ padding: '0' }}>
+      <Foot />
+    </Ft>
+  </Layout>
 );
 
 export default Page;

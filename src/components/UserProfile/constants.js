@@ -6,3 +6,4 @@ export const KEY_SETTINGS = '#settings';
 export const EDIT_CARD_TO_ADD_DETAILS = 'Edit Card to Add Details';
 export const ERROR_TOO_MANY_CHARACTERS = 'Too many characters';
 export const ERROR_INVALID_URL = 'Invalid Url/Identifier';
+export const PLEASE_ENTER_A_VALID_URL = 'Please enter a valid url/identifier';

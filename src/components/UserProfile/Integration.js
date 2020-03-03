@@ -51,13 +51,12 @@ const trackFenceAction = async ({ fence, fenceDetails, category, action, label }
   await trackUserInteraction({ category, action, label });
 };
 
-const viewDetails = ({ fence, fenceUser, effects }) => {
+const viewDetails = ({ fence, effects }) => {
   return effects.setModal({
     title: 'Authorized Studies',
     component: (
       <FenceAuthorizedStudies
         fence={fence}
-        fenceUser={fenceUser}
         onComplete={effects.unsetModal}
         onCancel={effects.unsetModal}
       />
@@ -143,7 +142,7 @@ function Integration(props) {
       isLoadingBeforeConnecting={!fenceConnectionsInitialized}
       actionWhenConnected={{
         actionCb: viewDetails,
-        actionCbParam: { fence, fenceUser: get(fenceConnections, fence, {}), effects },
+        actionCbParam: { fence, effects },
         buttonIcon: 'book',
         buttonLabel: 'View studies',
       }}

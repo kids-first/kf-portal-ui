@@ -35,18 +35,14 @@ const sqonForStudy = studyId => ({
   ],
 });
 
-const FenceProjectList = compose(
-  withHistory,
-  injectState,
-  fenceConnectionInitializeHoc,
-)(({ fence, history, state: { fenceStudies, fenceConnectionsInitialized } }) =>
+const FenceProjectList = ({ history, fenceConnectionsInitialized, authStudies }) =>
   !fenceConnectionsInitialized ? (
     <Spinner />
   ) : (
-    get(fenceStudies, `${fence}.authorizedStudies`, []).map(({ id, studyShortName }) => {
+    authStudies.map(({ id, studyShortName }) => {
       const sqon = sqonForStudy(id);
       return (
-        <Row className="itemRowContainer" key={id}>
+        <Row className={'itemRowContainer'} key={id}>
           <Column justifyContent="center" p={15}>
             <StackIcon width={20} />
           </Column>
@@ -67,14 +63,18 @@ const FenceProjectList = compose(
         </Row>
       );
     })
-  ),
-);
+  );
 
-const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
+const FenceAuthorizedStudies = compose(
+  withHistory,
+  injectState,
+  fenceConnectionInitializeHoc,
+)(({ fence, history, state: { fenceStudies, fenceConnectionsInitialized } }) => {
+  const authStudies = get(fenceStudies, `${fence}.authorizedStudies`, []);
   return (
-    <div className="fenceAuthorizedStudies-container">
+    <div className={'fenceAuthorizedStudiesContainer'}>
       <Column>
-        {fenceUser && fenceUser.projects && Object.keys(fenceUser.projects).length ? (
+        {authStudies.length ? (
           <Fragment>
             <Row style={{ margin: '10px 0' }}>
               <Span className="title" fontWeight={'bold'}>
@@ -83,14 +83,18 @@ const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
               </Span>
             </Row>
             <Column pl={15}>
-              <FenceProjectList fence={fence} />
+              <FenceProjectList
+                authStudies={authStudies}
+                history={history}
+                fenceConnectionsInitialized={fenceConnectionsInitialized}
+              />
             </Column>
           </Fragment>
         ) : (
           <Row>
             <PromptMessageContainer warning mb={0} width={'100%'}>
               <Span className="title" fontWeight={'bold'}>
-                {'You do not have access to any studies.'}
+                {'You don\'t have access to any study-controlled datasets.'}
               </Span>
             </PromptMessageContainer>
           </Row>
@@ -98,6 +102,6 @@ const FenceAuthorizedStudies = ({ fence, fenceUser }) => {
       </Column>
     </div>
   );
-};
+});
 
 export default FenceAuthorizedStudies;

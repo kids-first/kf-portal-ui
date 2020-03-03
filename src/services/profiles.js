@@ -37,6 +37,7 @@ const DEFAULT_FIELDS_SELF = `
   acceptedNihOptIn
   acceptedDatasetSubscriptionKfOptIn
   isPublic
+  isActive
   sets {
     name
     size
@@ -78,6 +79,7 @@ const DEFAULT_FIELDS_OTHER_USER = `
   acceptedNihOptIn
   acceptedDatasetSubscriptionKfOptIn
   isPublic
+  isActive
   sets {
     name
     size
@@ -187,6 +189,21 @@ export const updateProfile = api => async ({ user }) => {
 
   return record;
 };
+
+export const toggleActiveProfileAsAdmin = api => async ({ user }) => {
+  return api({
+    url: urlJoin(personaApiRoot, 'graphql'),
+    body: {
+      query: `
+      mutation{
+        userUpdateAdmin(_id:"${user._id}") {
+          ${DEFAULT_FIELDS_OTHER_USER}
+        }   
+      }`,
+    },
+  });
+};
+
 
 export const deleteProfile = api => async ({ user }) => {
   const {

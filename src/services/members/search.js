@@ -1,6 +1,7 @@
 import { initializeApi } from 'services/api';
 import urljoin from 'url-join';
-import { reactApiSearchMembersApi } from 'common/injectGlobals';
+import { personaApiRoot, reactApiSearchMembersApi } from 'common/injectGlobals';
+import downloader from '../../common/downloader';
 
 const api = initializeApi({
   onError: console.err,
@@ -14,7 +15,7 @@ const enhanceWithFilter = (filters, filterType) => {
 };
 
 export const searchMembers = async (searchTerm, searchParams) => {
-  const { start = 0, end = 50, roles = [], interests = [] } = searchParams;
+  const { start = 0, end = 50, roles = [], interests = [], adminMemberOptions = [] } = searchParams;
   let response;
   try {
     response = await api({
@@ -25,7 +26,9 @@ export const searchMembers = async (searchTerm, searchParams) => {
         `?queryString=${searchTerm}&start=${start}&end=${end}${enhanceWithFilter(
           roles,
           'role',
-        )}${enhanceWithFilter(interests, 'interest')}
+        )}${enhanceWithFilter(interests, 'interest')}${
+          adminMemberOptions.includes('allMembers') ? '&qAllMembers=true' : ''
+        }
         `,
       ),
     });
@@ -33,6 +36,17 @@ export const searchMembers = async (searchTerm, searchParams) => {
     throw new Error(err);
   }
   return response;
+};
+
+export const getAllMembers = async token => {
+  return downloader({
+    url: urljoin(personaApiRoot, 'userList'),
+    method: 'GET',
+    responseType: 'blob',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const searchInterests = async searchTerm => {

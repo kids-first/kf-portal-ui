@@ -4,7 +4,8 @@
 .headerContainer {
   background: #ffffff;
   box-shadow: 0 0 4.9px 0.1px #a0a0a3;
-  flex: none;
+  height: auto;
+  padding: 0;
   z-index: 2;
 }
 

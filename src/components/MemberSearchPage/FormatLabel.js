@@ -43,26 +43,19 @@ const FormatLabel = ({ value, highLightValues, classname = '', index, prepend, f
         style={{ maxWidth: _width, display: 'flex', whiteSpace: 'pre-wrap' }}
       >
         <span>
-          {prepend ? (
-            <span className={'local-title'}>
-              {prepend}{' '}
-            </span>
-          ) : (
-            ''
-          )}
+          {prepend ? <span className={'local-title'}>{prepend} </span> : ''}
           {arr2.map((text, index) => {
-            return index % 2 ? <b>{text}</b> : text;
+            return index % 2 ? <b key={index}>{text}</b> : text;
           })}
         </span>
       </div>
     );
-  } else {
-    return (
-      <div key={index} className={`format-label ${classname}`} style={{ maxWidth: _width }}>
-        {value}
-      </div>
-    );
   }
+  return (
+    <div key={index} className={`format-label ${classname}`} style={{ maxWidth: _width }}>
+      {value}
+    </div>
+  );
 };
 
 FormatLabel.propTypes = {

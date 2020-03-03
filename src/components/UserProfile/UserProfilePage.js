@@ -9,11 +9,11 @@ import { KEY_ABOUT_ME, KEY_SETTINGS } from './constants';
 
 const { Header, Content, Sider } = Layout;
 
-const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) => {
+const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating, loggedInUser, isAdmin }) => {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={false} />
+        <HeaderBannerContainer canEdit={false} isAdmin={isAdmin}/>
       </Header>
       <Layout className={'main-layout'}>
         <Content className={'content-about-me-settings vertical-offset horizontal-offset'}>
@@ -22,6 +22,7 @@ const ShowOtherUserProfile = ({ profile, updateProfileCb, isProfileUpdating }) =
             profile={profile}
             updateProfileCb={updateProfileCb}
             isProfileUpdating={isProfileUpdating}
+            loggedInUser={loggedInUser}
           />
         </Content>
       </Layout>
@@ -39,6 +40,8 @@ function UserProfilePage(props) {
     isProfileUpdating,
     collapsed,
     onBreakPointCb,
+    loggedInUser,
+    isAdmin,
   } = props;
 
   if (!canEdit) {
@@ -48,6 +51,8 @@ function UserProfilePage(props) {
         profile={profile}
         updateProfileCb={updateProfileCb}
         isProfileUpdating={isProfileUpdating}
+        loggedInUser={loggedInUser}
+        isAdmin={isAdmin}
       />
     );
   }
@@ -57,7 +62,7 @@ function UserProfilePage(props) {
   return (
     <Layout>
       <Header className={'up-header'}>
-        <HeaderBannerContainer canEdit={canEdit} />
+        <HeaderBannerContainer canEdit={canEdit} isAdmin={isAdmin}/>
       </Header>
       <Layout className={'main-layout'}>
         <Sider
@@ -122,6 +127,7 @@ function UserProfilePage(props) {
               profile={profile}
               updateProfileCb={updateProfileCb}
               isProfileUpdating={isProfileUpdating}
+              loggedInUser={loggedInUser}
             />
           )}
         </Content>
@@ -140,6 +146,7 @@ UserProfilePage.propTypes = {
   isProfileUpdating: PropTypes.bool.isRequired,
   collapsed: PropTypes.bool.isRequired,
   onBreakPointCb: PropTypes.func.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default UserProfilePage;
