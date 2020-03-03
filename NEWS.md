@@ -11,7 +11,7 @@
 ## 2020-03-03 kf-portal-ui 2.14.0
 ​
 ### Features
-​
+​- [#2283](https://github.com/kids-first/kf-portal-ui/issues/2283) Admins can inactivate accounts
 - [#2393](https://github.com/kids-first/kf-portal-ui/issues/2293) Enable an Admin user to see all members (private or public)
 - [#2284](https://github.com/kids-first/kf-portal-ui/issues/2284) Add 'Report Member' button (under a non-dynamic feature toggle)
 - [#2277](https://github.com/kids-first/kf-portal-ui/issues/2277) Add 'Relationship' tab in clinical data xls report
