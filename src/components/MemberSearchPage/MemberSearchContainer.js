@@ -189,7 +189,7 @@ class MemberSearchContainer extends Component {
           >
             <Input
               onChange={this.handleChange}
-              placeholder="Member Name, Address, Email, Interests, Member Biography or Story"
+              placeholder="Member Name, Address, Institution/Organization, Interests, Member Biography or Story"
               prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
               allowClear={true}
             />
@@ -209,6 +209,7 @@ class MemberSearchContainer extends Component {
               handleShowSizeChange={this.handleShowSizeChange}
               pending={pending}
               showAll={showAll}
+              isAdmin={isAdmin}
             />
           </MemberSearchBorder>
         </Layout>

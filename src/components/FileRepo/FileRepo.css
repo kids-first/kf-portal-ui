@@ -6,7 +6,7 @@
 }
 
 .arranger-container {
-  min-height: calc(100vh - 56px);
+  background-color: #ffffff;
 }
 .arranger-container .ReactTable .rt-thead .rt-th.-sort-desc,
 .arranger-container .ReactTable .rt-thead .rt-td.-sort-desc {

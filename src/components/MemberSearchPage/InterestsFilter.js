@@ -39,14 +39,14 @@ class InterestsFilter extends Component {
 
   render() {
     const { count, interestsFilter, updateInterestsFilter } = this.props;
-    const { showAll } = this.state;
+    const { showAll, filterSearchString } = this.state;
 
     return (
       <FilterContainer
         title={'Research Interests'}
         filter={interestsFilter}
         showSearchDefault={true}
-        searchString={{}}
+        searchString={filterSearchString}
         showAll={showAll}
         handleChangeFilterString={this.handleChangeFilterString}
         dataSource={count ? count.interests : {}}

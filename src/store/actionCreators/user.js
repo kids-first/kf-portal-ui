@@ -12,80 +12,74 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  CLEAN_ERRORS,
+  REQUEST_IS_ACTIVE_TOGGLE,
+  RECEIVE_IS_ACTIVE_TOGGLE,
+  FAILURE_IS_ACTIVE_TOGGLE,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
-import { getOtherUserProfile, getUserLoggedInProfile, updateProfile } from 'services/profiles';
+import {
+  getOtherUserProfile,
+  getUserLoggedInProfile,
+  updateProfile,
+  toggleActiveProfileAsAdmin,
+} from 'services/profiles';
 import { selectProfile } from '../selectors/users';
 
 const updateProfileFromUser = updateProfile(apiInitialized);
+const toggleActiveProfileFromUser = toggleActiveProfileAsAdmin(apiInitialized);
 
-export const loginSuccess = loggedInUser => {
-  return {
-    type: LOGIN_SUCCESS,
-    payload: loggedInUser,
+export const loginSuccess = loggedInUser => ({
+  type: LOGIN_SUCCESS,
+  payload: loggedInUser,
+});
+
+export const loginFailure = () => ({
+  type: LOGIN_FAILURE,
+  payload: null,
+});
+
+export const logout = () => ({
+  type: LOGOUT,
+  payload: null,
+});
+
+export const requestProfile = () => ({
+  type: REQUEST_PROFILE,
+});
+
+export const receiveProfile = fetchedProfile => ({
+  type: RECEIVE_PROFILE,
+  payload: fetchedProfile,
+});
+
+export const failureProfile = error => ({
+  type: FAILURE_PROFILE,
+  payload: error,
+});
+
+export const updateProfileSuccess = updatedProfile => ({
+  type: UPDATE_USER_SUCCESS,
+  payload: updatedProfile,
+});
+
+const fetchProfile = userInfo => async dispatch => {
+  const onSuccess = profile => {
+    return dispatch(receiveProfile(profile));
   };
-};
-
-export const loginFailure = () => {
-  return {
-    type: LOGIN_FAILURE,
-    payload: null,
+  const onError = error => {
+    return dispatch(failureProfile(error));
   };
-};
 
-export const logout = () => {
-  return {
-    type: LOGOUT,
-    payload: null,
-  };
-};
-
-export const requestProfile = () => {
-  return {
-    type: REQUEST_PROFILE,
-  };
-};
-
-export const receiveProfile = fetchedProfile => {
-  return {
-    type: RECEIVE_PROFILE,
-    payload: fetchedProfile,
-  };
-};
-
-export const failureProfile = error => {
-  return {
-    type: FAILURE_PROFILE,
-    payload: error,
-  };
-};
-
-export const updateProfileSuccess = updatedProfile => {
-  return {
-    type: UPDATE_USER_SUCCESS,
-    payload: updatedProfile,
-  };
-};
-
-const fetchProfile = userInfo => {
-  return async dispatch => {
-    const onSuccess = profile => {
-      return dispatch(receiveProfile(profile));
-    };
-    const onError = error => {
-      return dispatch(failureProfile(error));
-    };
-
-    dispatch(requestProfile());
-    try {
-      const fetchedProfile = await (userInfo.isSelf
-          ? getUserLoggedInProfile()
-          : getOtherUserProfile(userInfo.userID));
-      return onSuccess(fetchedProfile);
-    } catch (e) {
-      return onError(e);
-    }
-  };
+  dispatch(requestProfile());
+  try {
+    const fetchedProfile = await (userInfo.isSelf
+      ? getUserLoggedInProfile()
+      : getOtherUserProfile(userInfo.userID));
+    return onSuccess(fetchedProfile);
+  } catch (e) {
+    return onError(e);
+  }
 };
 
 const shouldFetchProfile = (state, userInfo) => {
@@ -96,74 +90,83 @@ const shouldFetchProfile = (state, userInfo) => {
   return profileInStore._id !== userInfo.userID;
 };
 
-export const fetchProfileIfNeeded = userInfo => {
-  return (dispatch, getState) => {
-    if (shouldFetchProfile(getState(), userInfo)) {
-      return dispatch(fetchProfile(userInfo));
-    }
-  };
+export const fetchProfileIfNeeded = userInfo => (dispatch, getState) => {
+  if (shouldFetchProfile(getState(), userInfo)) {
+    return dispatch(fetchProfile(userInfo));
+  }
 };
 
-export const requestUpdateProfile = () => {
-  return {
-    type: REQUEST_PROFILE_UPDATE,
-  };
+export const requestUpdateProfile = () => ({
+  type: REQUEST_PROFILE_UPDATE,
+});
+
+export const failureUpdateProfile = error => ({
+  type: FAILURE_UPDATE,
+  payload: error,
+});
+
+export const updateUserProfile = user => async dispatch => {
+  dispatch(requestUpdateProfile());
+  try {
+    const updatedProfile = await updateProfileFromUser({
+      user,
+    });
+    return dispatch(updateProfileSuccess(updatedProfile));
+  } catch (e) {
+    return dispatch(failureUpdateProfile(e));
+  }
 };
 
-export const failureUpdateProfile = error => {
-  return {
-    type: FAILURE_UPDATE,
-    payload: error,
-  };
+export const requestIsPublicToggle = () => ({
+  type: REQUEST_IS_PUBLIC_TOGGLE,
+});
+
+export const requestIsActiveToggle = () => ({
+  type: REQUEST_IS_ACTIVE_TOGGLE,
+});
+
+export const receiveIsPublicToggle = () => ({
+  type: RECEIVE_IS_PUBLIC_TOGGLE,
+});
+
+export const receiveIsActiveToggle = () => ({
+  type: RECEIVE_IS_ACTIVE_TOGGLE,
+});
+
+export const failureIsPublicToggle = error => ({
+  type: FAILURE_IS_PUBLIC_TOGGLE,
+  payload: error,
+});
+
+export const failureIsActiveToggle = error => ({
+  type: FAILURE_IS_ACTIVE_TOGGLE,
+  payload: error,
+});
+
+export const toggleIsPublic = user => async dispatch => {
+  dispatch(requestIsPublicToggle());
+  try {
+    await updateProfileFromUser({
+      user,
+    });
+    return dispatch(receiveIsPublicToggle());
+  } catch (e) {
+    return dispatch(failureIsPublicToggle(e));
+  }
 };
 
-export const updateUserProfile = user => {
-  return async dispatch => {
-    dispatch(requestUpdateProfile());
-    try {
-      const updatedProfile = await updateProfileFromUser({
-        user,
-      });
-      return dispatch(updateProfileSuccess(updatedProfile));
-    } catch (e) {
-      return dispatch(failureUpdateProfile(e));
-    }
-  };
+export const toggleIsActive = user => async dispatch => {
+  dispatch(requestIsActiveToggle());
+  try {
+    await toggleActiveProfileFromUser({
+      user,
+    });
+    return dispatch(receiveIsActiveToggle());
+  } catch (e) {
+    return dispatch(failureIsActiveToggle(e));
+  }
 };
 
-export const requestIsPublicToggle = () => {
-  return {
-    type: REQUEST_IS_PUBLIC_TOGGLE,
-  };
-};
+export const deleteProfile = () => dispatch => dispatch({ type: DELETE_PROFILE });
 
-export const receiveIsPublicToggle = () => {
-  return {
-    type: RECEIVE_IS_PUBLIC_TOGGLE,
-  };
-};
-
-export const failureIsPublicToggle = error => {
-  return {
-    type: FAILURE_IS_PUBLIC_TOGGLE,
-    payload: error,
-  };
-};
-
-export const toggleIsPublic = user => {
-  return async dispatch => {
-    dispatch(requestIsPublicToggle());
-    try {
-      await updateProfileFromUser({
-        user,
-      });
-      return dispatch(receiveIsPublicToggle());
-    } catch (e) {
-      return dispatch(failureIsPublicToggle(e));
-    }
-  };
-};
-
-export const deleteProfile = () => {
-  return dispatch => dispatch({ type: DELETE_PROFILE });
-};
+export const cleanErrors = () => ({ type: CLEAN_ERRORS });

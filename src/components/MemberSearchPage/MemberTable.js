@@ -2,7 +2,7 @@ import { Col, Icon, List, Row, Spin, Typography, Avatar } from 'antd';
 import React from 'react';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import MemberInterests from 'components/MemberSearchPage/MemberIntersts';
+import MemberInterests from 'components/MemberSearchPage/MemberInterests';
 import { Link } from 'uikit/Core';
 import ROUTES from 'common/routes';
 import MemberSearchBioStory from 'components/MemberSearchPage/MemberSearchBioStory';
@@ -56,6 +56,29 @@ const Address = ({ item }) => (
   </div>
 );
 
+const iconClassName = ({isPublic, isActive}) => {
+  if(!isActive) {
+    return {
+      icon: 'warning',
+      className: 'inactive',
+      text: 'Deactivated'
+    }
+  }
+  if(isPublic) {
+    return {
+      icon: 'eye',
+      className: 'public',
+      text: 'Public'
+    }
+  } else {
+    return {
+      icon: 'eye-invisible',
+      className: '',
+      text: 'Private'
+    }
+  }
+};
+
 const MemberTable = ({
   currentPage,
   membersPerPage,
@@ -65,6 +88,7 @@ const MemberTable = ({
   memberList,
   handlePageChange,
   handleShowSizeChange,
+  isAdmin,
 }) => {
   const firstItem = currentPage * membersPerPage - membersPerPage + 1;
   const lastItem = currentPage * membersPerPage;
@@ -121,7 +145,13 @@ const MemberTable = ({
           const hasAddress = item.city || item.state || item.country;
           return (
             <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>
-              <Row type={'flex'} justify="center" align="top" gutter={32} style={{ margin: 0 }}>
+              <Row
+                type={'flex'}
+                justify="center"
+                align="top"
+                gutter={32}
+                style={{ position: 'relative', margin: 0 }}
+              >
                 <Col className={'flex'} style={{ width: 130, flexFlow: 'column nowrap' }}>
                   <Avatar
                     src={computeGravatarSrcFromEmail(item.hashedEmail, { d: 'mp' })}
@@ -190,6 +220,31 @@ const MemberTable = ({
                     story={(item.highlight || {}).story || []}
                   />
                 </Col>
+                {isAdmin ? (
+                  <Row
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div className={`icon-color ${iconClassName(item).className}`}>
+                      {iconClassName(item).text}
+                    </div>
+                    <Icon
+                      className={`icon-color ${iconClassName(item).className}`}
+                      style={{
+                        paddingLeft: 5,
+                      }}
+                      type={`${iconClassName(item).icon}`}
+                      theme="filled"
+                    />
+                  </Row>
+                ) : (
+                  ''
+                )}
               </Row>
             </List.Item>
           );

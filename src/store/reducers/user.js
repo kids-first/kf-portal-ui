@@ -12,6 +12,10 @@ import {
   REQUEST_IS_PUBLIC_TOGGLE,
   RECEIVE_IS_PUBLIC_TOGGLE,
   FAILURE_IS_PUBLIC_TOGGLE,
+  CLEAN_ERRORS,
+  REQUEST_IS_ACTIVE_TOGGLE,
+  RECEIVE_IS_ACTIVE_TOGGLE,
+  FAILURE_IS_ACTIVE_TOGGLE,
 } from '../actionTypes';
 
 const initialState = {
@@ -51,6 +55,7 @@ export default (state = initialState, action) => {
       return { ...state, profile: action.payload, isProfileUpdating: false };
     case DELETE_PROFILE:
       return { ...state, profile: null };
+    case REQUEST_IS_ACTIVE_TOGGLE:
     case REQUEST_IS_PUBLIC_TOGGLE:
       return { ...state, isTogglingProfileStatus: true };
     case RECEIVE_IS_PUBLIC_TOGGLE: {
@@ -69,11 +74,30 @@ export default (state = initialState, action) => {
         loggedInUser: copyOfLoggedInUser,
       };
     }
+    case FAILURE_IS_ACTIVE_TOGGLE:
     case FAILURE_IS_PUBLIC_TOGGLE:
       return {
         ...state,
         isTogglingProfileStatus: false,
         isTogglingProfileStatusInError: action.payload,
+      };
+    case RECEIVE_IS_ACTIVE_TOGGLE: {
+      const isActiveBeforeToggle = state.profile.isActive;
+
+      const copyOfProfile = { ...state.profile };
+      copyOfProfile.isActive = !isActiveBeforeToggle;
+
+      return {
+        ...state,
+        isTogglingProfileStatus: false,
+        profile: copyOfProfile,
+      };
+    }
+    case CLEAN_ERRORS:
+      return {
+        ...state,
+        errorProfile: null,
+        isTogglingProfileStatusInError: null,
       };
     default:
       return state;
