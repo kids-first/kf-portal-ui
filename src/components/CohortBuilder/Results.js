@@ -125,7 +125,6 @@ const Results = ({
   sqon = { op: 'and', content: [] },
   api,
   state,
-  onRemoveFromCohort,
 }) => (
   <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
@@ -231,7 +230,7 @@ const Results = ({
           </ContentBar>
           <div className={`cb-active-view ${activeView}`}>
             <Summary sqon={sqon} />
-            <ParticipantsTableView sqon={sqon} onRemoveFromCohort={onRemoveFromCohort} />
+            <ParticipantsTableView sqon={sqon} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </div>
         </Fragment>
@@ -243,7 +242,6 @@ const Results = ({
 Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
   sqon: PropTypes.object,
-  onRemoveFromCohort: PropTypes.func.isRequired,
   setActiveView: PropTypes.func.isRequired,
   activeView: PropTypes.string.isRequired,
 };

@@ -276,7 +276,6 @@ class ParticipantsTable extends Component {
       dataTotalCount,
       onFetchData,
       onClearSelected,
-      // onRemoveFromCohort,
       analyticsTracking = null,
       downloadName = 'data',
       selectedRows,
@@ -288,12 +287,6 @@ class ParticipantsTable extends Component {
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
     const projectId = arrangerProjectId;
-
-    /*
-    const handleRemoveFromCohort = () => {
-      onRemoveFromCohort();
-    };
-    */
 
     return (
       <Fragment>
@@ -396,7 +389,6 @@ ParticipantsTable.propTypes = {
   downloadName: PropTypes.string,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
-  onRemoveFromCohort: PropTypes.func.isRequired,
 };
 
 export default ParticipantsTable;
