@@ -24,3 +24,24 @@ export const FILE_FILTERS = [
   'file_format',
   'participants__family__family_compositions__available_data_types',
 ];
+
+export const aggsConfig = (data, graphqlField) => {
+  const {
+    __schema: { types },
+  } = data;
+
+  const gqlAggregationFields = types.find(({ name }) => name === `${graphqlField}Aggregations`)
+    .fields;
+
+  const typeAggsConfig = type =>
+    type.map(fieldName => ({
+      field: fieldName,
+      show: true,
+      type: gqlAggregationFields.find(fileAggField => fieldName === fileAggField.name).type.name,
+    }));
+
+  return {
+    FILE: typeAggsConfig(FILE_FILTERS),
+    CLINICAL: typeAggsConfig(CLINICAL_FILTERS),
+  };
+};

@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import isObject from 'lodash/isObject';
 import FilterIcon from 'react-icons/lib/fa/filter';
+import { Layout } from 'antd';
 
 import Tooltip from 'uikit/Tooltip';
 import { FilterInput } from 'uikit/Input';
@@ -140,110 +141,102 @@ const FileRepo = ({
                     })
                   : url.sqon;
                 return (
-                  <React.Fragment>
-                    <Row className="arranger-container">
-                      <AggregationSidebar
-                        {...{ ...props, ...url, translateSQONValue }}
-                        trackFileRepoInteraction={trackFileRepoInteraction}
-                      />
-                      <Column className="arranger-table-container">
-                        <Row mb={url.sqon ? 3 : 0}>
-                          <CurrentSQON
+                  <Layout className="arranger-container">
+                    <AggregationSidebar
+                      {...{ ...props, ...url, translateSQONValue }}
+                      trackFileRepoInteraction={trackFileRepoInteraction}
+                    />
+                    <Column className="arranger-table-container">
+                      <Row mb={url.sqon ? 3 : 0}>
+                        <CurrentSQON
+                          {...props}
+                          {...url}
+                          {...{ translateSQONValue }}
+                          onClear={() => {
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                              action: TRACKING_EVENTS.actions.query.clear,
+                            });
+                            trackFileRepoInteraction({
+                              category: 'File Repo',
+                              action: TRACKING_EVENTS.actions.query.abandoned,
+                              label: 'cleared SQON',
+                              value: 1,
+                            });
+                          }}
+                        />
+                        {url.sqon && Object.keys(url.sqon).length > 0 && (
+                          <FileRepoStatsQuery
                             {...props}
                             {...url}
-                            {...{ translateSQONValue }}
-                            onClear={() => {
-                              trackFileRepoInteraction({
-                                category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                action: TRACKING_EVENTS.actions.query.clear,
-                              });
-                              trackFileRepoInteraction({
-                                category: 'File Repo',
-                                action: TRACKING_EVENTS.actions.query.abandoned,
-                                label: 'cleared SQON',
-                                value: 1,
-                              });
-                            }}
-                          />
-                          {url.sqon && Object.keys(url.sqon).length > 0 && (
-                            <FileRepoStatsQuery
-                              {...props}
-                              {...url}
-                              render={({ data: stats, loading: disabled }) => (
-                                <Row className="querySharing-container">
-                                  <SaveShareButtonContainer>
-                                    <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
-                                  </SaveShareButtonContainer>
-                                  <SaveShareButtonContainer>
-                                    <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
-                                  </SaveShareButtonContainer>
-                                </Row>
-                              )}
-                            />
-                          )}
-                        </Row>
-                        <FileRepoStats {...props} sqon={selectionSQON} style={{ flex: 'none' }} />
-                        <Column className="arranger-table-wrapper">
-                          <Table
-                            {...props}
-                            {...url}
-                            keepSelectedOnPageChange
-                            customHeaderContent={
-                              <TableHeaderContent
-                                {...props}
-                                sqon={selectionSQON}
-                                disabled={false}
-                              />
-                            }
-                            customTypes={customTableTypes}
-                            showFilterInput={false}
-                            InputComponent={props => (
-                              <FilterInput {...props} LeftIcon={FilterIcon} />
+                            render={({ data: stats, loading: disabled }) => (
+                              <Row className="querySharing-container">
+                                <SaveShareButtonContainer>
+                                  <ShareQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                </SaveShareButtonContainer>
+                                <SaveShareButtonContainer>
+                                  <SaveQuery api={props.api} {...url} {...{ stats, disabled }} />
+                                </SaveShareButtonContainer>
+                              </Row>
                             )}
-                            customColumns={customTableColumns({
-                              theme,
-                              userProjectIds,
-                              fenceAcls: state.fenceAcls,
-                            })}
-                            filterInputPlaceholder={'Filter table'}
-                            columnDropdownText="Columns"
-                            fieldTypesForFilter={['text', 'keyword', 'id']}
-                            maxPagesOptions={5}
-                            onFilterChange={val => {
-                              if (val !== '') {
-                                trackFileRepoInteraction({
-                                  category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                  action: TRACKING_EVENTS.actions.filter,
-                                  label: val,
-                                });
-                              }
-                              if (props.onFilterChange) {
-                                props.onFilterChange(val);
-                              }
-                            }}
-                            onTableExport={({ files }) => {
+                          />
+                        )}
+                      </Row>
+                      <FileRepoStats {...props} sqon={selectionSQON} style={{ flex: 'none' }} />
+                      <Column className="arranger-table-wrapper">
+                        <Table
+                          {...props}
+                          {...url}
+                          keepSelectedOnPageChange
+                          customHeaderContent={
+                            <TableHeaderContent {...props} sqon={selectionSQON} disabled={false} />
+                          }
+                          customTypes={customTableTypes}
+                          showFilterInput={false}
+                          InputComponent={props => <FilterInput {...props} LeftIcon={FilterIcon} />}
+                          customColumns={customTableColumns({
+                            theme,
+                            userProjectIds,
+                            fenceAcls: state.fenceAcls,
+                          })}
+                          filterInputPlaceholder={'Filter table'}
+                          columnDropdownText="Columns"
+                          fieldTypesForFilter={['text', 'keyword', 'id']}
+                          maxPagesOptions={5}
+                          onFilterChange={val => {
+                            if (val !== '') {
                               trackFileRepoInteraction({
                                 category: TRACKING_EVENTS.categories.fileRepo.dataTable,
-                                action: 'Export TSV',
-                                label: files,
+                                action: TRACKING_EVENTS.actions.filter,
+                                label: val,
                               });
-                            }}
-                            exportTSVText={
-                              <React.Fragment>
-                                <DownloadIcon
-                                  fill={theme.greyScale3}
-                                  width={12}
-                                  height={18}
-                                  style={{ marginRight: '9px' }}
-                                />
-                                {'Export TSV'}
-                              </React.Fragment>
                             }
-                          />
-                        </Column>
+                            if (props.onFilterChange) {
+                              props.onFilterChange(val);
+                            }
+                          }}
+                          onTableExport={({ files }) => {
+                            trackFileRepoInteraction({
+                              category: TRACKING_EVENTS.categories.fileRepo.dataTable,
+                              action: 'Export TSV',
+                              label: files,
+                            });
+                          }}
+                          exportTSVText={
+                            <React.Fragment>
+                              <DownloadIcon
+                                fill={theme.greyScale3}
+                                width={12}
+                                height={18}
+                                style={{ marginRight: '9px' }}
+                              />
+                              {'Export TSV'}
+                            </React.Fragment>
+                          }
+                        />
                       </Column>
-                    </Row>
-                  </React.Fragment>
+                    </Column>
+                  </Layout>
                 );
               }}
             />

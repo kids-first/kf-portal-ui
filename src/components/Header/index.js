@@ -8,6 +8,7 @@ import HouseIcon from 'react-icons/lib/fa/home';
 import DatabaseIcon from 'react-icons/lib/fa/database';
 import UserIcon from 'react-icons/lib/fa/user';
 import ExploreDataIcon from 'icons/ExploreDataIcon';
+import { Layout } from 'antd';
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Row from 'uikit/Row';
@@ -19,7 +20,7 @@ import { Alert, Badge } from 'antd';
 import { KEY_PUBLIC_PROFILE_INVITE_IS_SEEN } from 'common/constants';
 import ROUTES from 'common/routes';
 import { loggedInUserShape } from 'shapes/index';
-import  queryString  from 'query-string'
+import queryString from 'query-string';
 
 import UserMenu from './UserMenu';
 
@@ -27,6 +28,8 @@ import './Header.css';
 
 import { dismissError } from 'store/actionCreators/errors';
 import { enableFeature } from 'store/actionCreators/enableFeatures';
+
+const { Header: AntHeader } = Layout;
 
 const isSearchMemberFeatEnabled = features => isFeatureEnabled('searchMembers', features); //TODO : remove me one day :)
 
@@ -112,7 +115,7 @@ class Header extends React.Component {
 
   componentDidMount() {
     const queries = queryString.parse(this.props.location.search);
-    this.props.enableFeature(queries)
+    this.props.enableFeature(queries);
   }
 
   render() {
@@ -135,7 +138,7 @@ class Header extends React.Component {
     const currentPathName = history.location.pathname;
 
     return (
-      <div className="headerContainer">
+      <AntHeader className="headerContainer">
         {renderAlertIfAny(loggedInUser, currentError, dismissError, features)}
         <div className="gradientAccent" />
         <Row className="headerContent">
@@ -198,7 +201,7 @@ class Header extends React.Component {
             {canSeeProtectedRoutes ? <UserMenu loggedInUser={loggedInUser} /> : null}
           </NavBarList>
         </Row>
-      </div>
+      </AntHeader>
     );
   }
 }
