@@ -8,6 +8,27 @@
 ### Technical / Other changes
 
 -->
+## 2020-03-03 kf-portal-ui 2.14.0
+​
+### Features
+​
+- [#2393](https://github.com/kids-first/kf-portal-ui/issues/2293) Enable an Admin user to see all members (private or public)
+- [#2284](https://github.com/kids-first/kf-portal-ui/issues/2284) Add 'Report Member' button (under a non-dynamic feature toggle)
+- [#2277](https://github.com/kids-first/kf-portal-ui/issues/2277) Add 'Relationship' tab in clinical data xls report
+​- [#2285](https://github.com/kids-first/kf-portal-ui/issues/2285) Improve design of result header in cohort builder
+​
+### Technical / Other changes
+​- [#2334](https://github.com/kids-first/kf-portal-ui/issues/2334) Fix File Repository page truncated
+- [#2298](https://github.com/kids-first/kf-portal-ui/issues/2298) Fix scrolling in 'Authorized Studies' Card in Dashboard
+- [#1546](https://github.com/kids-first/kf-portal-ui/issues/1546) Change message when no access to any study
+- [#2278](https://github.com/kids-first/kf-portal-ui/issues/2278) Do not show login page when already logged in
+
+## 2020-03-02 kf-portal-ui 2.13.8
+
+This feature is a hotfix for this issue :
+- [#2323](https://github.com/kids-first/kf-portal-ui/issues/2323) Change pedcbioportal link
+
+
 ## 2020-02-17 kf-portal-ui 2.13.8
 
 This feature is a hotfix for this issue :
