@@ -143,7 +143,7 @@ const FileRepo = ({
                 return (
                   <Layout className="arranger-container">
                     <AggregationSidebar
-                      {...{ ...props, ...url, translateSQONValue }}
+                      {...{ ...props, ...url, translateSQONValue, effects }}
                       trackFileRepoInteraction={trackFileRepoInteraction}
                     />
                     <Column className="arranger-table-container">
