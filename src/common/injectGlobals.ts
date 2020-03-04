@@ -1,3 +1,4 @@
+// @ts-nocheck
 import queryString from 'querystring';
 
 export const getApplicationEnvVar = envVarName => process.env[`REACT_APP_${envVarName}`];

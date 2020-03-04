@@ -1,16 +1,16 @@
-/* @flow */
+// @ts-nocheck
 
 type TGetValues = (filters: Object, sets: Object) => string;
 
-type TFiltersToName = ({
-  filters: ?Object,
-  max?: number,
-  sets: Object,
-  length?: number,
-}) => string;
+// type TFiltersToName = ({
+//   filters?: Object,
+//   max?: number,
+//   sets: Object,
+//   length?: number,
+// }) => string;
 
 const getValues: TGetValues = (filters, sets) => {
-  const content: ?Array<Object> = filters.content;
+  const content: Array<Object> | undefined = filters.content;
   if (!content) {
     return [];
   } else if (Array.isArray(content)) {
@@ -19,11 +19,10 @@ const getValues: TGetValues = (filters, sets) => {
     return [
       []
         .concat(content.value || [])
-        .map(
-          v =>
-            typeof v === 'string' && v.includes('set_id:')
-              ? sets[v.replace('set_id:', '')] || 'input set'
-              : v,
+        .map(v =>
+          typeof v === 'string' && v.includes('set_id:')
+            ? sets[v.replace('set_id:', '')] || 'input set'
+            : v,
         ),
     ];
   }
@@ -31,14 +30,13 @@ const getValues: TGetValues = (filters, sets) => {
 
 const MAX_VALUES = 6;
 
-const filtersToName: TFiltersToName = ({
-  filters,
-  max = MAX_VALUES,
-  sets = {},
-  length = Infinity,
-}) => {
+// extend TFiltersToName
+const filtersToName = ({ filters, max = MAX_VALUES, sets = {}, length = Infinity }) => {
   if (!filters) return '';
-  const values = getValues(filters, Object.values(sets).reduce((a, b) => ({ ...a, ...b }), {}));
+  const values = getValues(
+    filters,
+    Object.values(sets).reduce((a, b) => ({ ...a, ...b }), {}),
+  );
 
   let total = 0;
   const name = values

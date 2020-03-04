@@ -9,11 +9,9 @@ import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedM
 import { withApi } from 'services/api';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { arrangerProjectId } from 'common/injectGlobals';
-import {
-  FieldFilterContainer,
-  ModalContentSection,
-  ARRANGER_API_PARTICIPANT_INDEX_NAME,
-} from '../common';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { FieldFilterContainer } from '../FieldFilterContainer';
+import { ModalContentSection } from '../ModalContentSection.tsx';
 import { SQONdiff } from '../../Utils';
 import { ModalFooter } from 'components/Modal';
 
