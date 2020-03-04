@@ -2,10 +2,6 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 
-import saveSet from '@kfarranger/components/dist/utils/saveSet';
-import graphql from 'services/arranger';
-import { withApi } from 'services/api';
-
 import Categories from './Categories';
 import ContentBar from './ContentBar';
 import Results from './Results';
@@ -16,10 +12,7 @@ import ParticipantIcon from 'icons/ParticipantIcon';
 
 import './CohortBuilder.css';
 
-const CohortBuilder = compose(
-  withApi,
-  injectState,
-)(({ api, state: { loggedInUser } }) => (
+const CohortBuilder = compose(injectState)(({ state: { loggedInUser } }) => (
   <SQONProvider>
     {({
       sqons: syntheticSqons,
@@ -40,54 +33,10 @@ const CohortBuilder = compose(
         mergeSqonToActiveIndex(newSqon);
       };
 
-      const createNewSqonExcludingParticipants = participantIds => {
-        saveSet({
-          type: 'participant',
-          sqon: {
-            op: 'and',
-            content: [
-              {
-                op: 'in',
-                content: {
-                  field: 'kf_id',
-                  value: participantIds,
-                },
-              },
-            ],
-          },
-          userId: loggedInUser.egoId,
-          path: 'kf_id',
-          api: graphql(api),
-        })
-          .then(({ data }) => {
-            const newSqon = {
-              op: 'and',
-              content: [
-                activeSqonIndex,
-                {
-                  op: 'not-in',
-                  content: {
-                    field: 'kf_id',
-                    value: [`set_id:${data.saveSet.setId}`],
-                  },
-                },
-              ],
-            };
-            const newSqons = [...syntheticSqons, newSqon];
-            setSqons(newSqons);
-            return newSqons.length - 1;
-          })
-          .then(newSqonIndex => {
-            setActiveSqonIndex(newSqonIndex);
-          })
-          .catch(console.error);
-      };
-
       return (
         <div className="cb-container">
           <VirtualStudiesMenu />
 
-          {/* <div className="cb-fullWidth"> */}
           <ContentBar className="cb-categories-container">
             <Categories sqon={executableSqon} onSqonUpdate={categoriesSqonUpdate} />
           </ContentBar>
@@ -106,13 +55,8 @@ const CohortBuilder = compose(
               }}
             />
           </div>
-          {/* </div> */}
 
-          <Results
-            sqon={executableSqon}
-            activeSqonIndex={activeSqonIndex}
-            onRemoveFromCohort={createNewSqonExcludingParticipants}
-          />
+          <Results sqon={executableSqon} activeSqonIndex={activeSqonIndex} />
         </div>
       );
     }}
