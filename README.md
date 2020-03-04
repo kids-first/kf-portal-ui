@@ -45,18 +45,68 @@ npm run analyze
 
 ### Contributing
 
-- ### Branches
+#### Branches
 
-  All new development should happen on a supporting branch rather than directly on `next` or `master`. Supporting branches should be formatted as `<type>/##-couple-words` or `<type>/very-short-description`, where <type> denotes a change type that is one of the below:
+All new development should happen on a supporting branch on the developper fork rather than directly on `dev` or `master`.
 
-  - feat (feature)
-  - bug (bug fix)
-  - docs (documentation)
-  - refactor
-  - test (when adding missing tests)
-  - chore (maintain)
+Once development is complete for the scope defined by the supporting branch, a pull request can be made for the `dev` branch against upstream for code review.
 
-  Once development is complete for the scope defined by the supporting branch, a pull request can be made for the `next` branch for code review.
+1. Fork kf-portal-ui | go to [kids first portal repo](https://github.com/kids-first/kf-portal-ui) then follow [these instruction](https://help.github.com/en/github/getting-started-with-github/fork-a-repo#fork-an-example-repository)
+
+2. Clone
+
+   ```
+   git clone git@github.com:kids-first/kf-portal-ui.git
+   git remote add [unique_name] git@github.com:[your fork]
+   ```
+
+3. Create a new task branch
+
+   ```sh
+   git fetch --all
+   git checkout -B [my_branch] origin/dev
+   ```
+
+4. Rebase against origin dev before creating a push request
+
+   ```
+   git fetch --all
+   git rebase -i origin/dev
+   ```
+
+5. Create a push request
+
+   ```
+    git push [unique_name] [my_branch]
+   ```
+
+6. go to [kids first portal repo](https://github.com/kids-first/kf-portal-ui) and create the push request
+
+#### Commit
+
+Commit message should follow a customized [conventional commits specification](https://www.conventionalcommits.org/en/v1.0.0/)
+
+Message structure is `type([scope]): #[github ticker number] message`
+
+e.g.
+
+```
+"fix(CohortBuild): #23432 Resolve issue with ..."
+
+"feat: #23423 Member can now do ..."
+```
+
+Supported types:
+
+- **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- **ci**: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- **docs**: Documentation only changes
+- **feat**: A new feature
+- **fix**: A bug fix
+- **perf**: A code change that improves performance
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **test**: Adding missing tests or correcting existing tests
 
 ### Acknowledgement
 
