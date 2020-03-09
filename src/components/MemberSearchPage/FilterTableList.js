@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Button, Checkbox, Col, List, Row, Tag } from 'antd';
 
 const FilterTableList = ({
@@ -35,7 +36,7 @@ const FilterTableList = ({
           <Button
             style={{ float: 'right', height: 30, padding: 0 }}
             type="link"
-            icon={showAll ? 'minus-circle' : 'plus-circle'}
+            icon={<LegacyIcon type={showAll ? 'minus-circle' : 'plus-circle'} />}
             onClick={toggleShowAll}
           >
             {showAll ? 'less' : 'more'}

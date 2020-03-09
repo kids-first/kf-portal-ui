@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Row, Tag, Select, Form, AutoComplete, Icon, Input } from 'antd';
+import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { CheckOutlined, SearchOutlined } from '@ant-design/icons';
+import { Col, Row, Tag, Select, AutoComplete, Input } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import { debounce } from 'lodash';
@@ -90,8 +93,7 @@ class ResearchInterestsEditable extends Component {
       paddingLeft: '10px',
       paddingRight: '10px',
     };
-    return interests.map((interest, index) => {
-      return (
+    return interests.map((interest, index) => (
         <Row key={index}>
           <Form.Item style={formItemStyle}>
             {getFieldDecorator(generateFieldNameFromInterest(interest), {
@@ -102,7 +104,7 @@ class ResearchInterestsEditable extends Component {
                   <div className={'ri-tag-content'}>
                     <div className={'ri-text-wrapper'}>{interest}</div>
                     <div>
-                      <Icon
+                      <LegacyIcon
                         type="close-circle"
                         theme={'filled'}
                         style={iconStyle}
@@ -115,8 +117,7 @@ class ResearchInterestsEditable extends Component {
             )}
           </Form.Item>
         </Row>
-      );
-    });
+      ));
   };
 
   handleSelectChange = value => {
@@ -237,8 +238,8 @@ class ResearchInterestsEditable extends Component {
           <Row>
             <Form.Item
               label="Other areas of interest"
-              validateStatus={Boolean(helpInfo) ? 'error' : ''}
-              help={Boolean(helpInfo) ? helpInfo.msg : ''}
+              validateStatus={helpInfo ? 'error' : ''}
+              help={helpInfo ? helpInfo.msg : ''}
               className={'form-item-no-margin'}
             >
               {getFieldDecorator('otherAreasOfInterests', {
@@ -251,17 +252,15 @@ class ResearchInterestsEditable extends Component {
                   <Input
                     onPressEnter={this.onPressEnter}
                     placeholder="Search for interests"
-                    prefix={<Icon type="search" />}
+                    prefix={<SearchOutlined />}
                     suffix={
-                      <Icon
-                        type="check"
+                      <CheckOutlined
                         onClick={this.onClickCheck}
                         className={
                           mustCorrectError
                             ? ''
                             : generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)
-                        }
-                      />
+                        } />
                     }
                     size={'small'}
                   />

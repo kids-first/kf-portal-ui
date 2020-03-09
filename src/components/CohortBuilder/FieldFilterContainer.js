@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Row from 'uikit/Row';
+import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import './CohortBuilder.css';
@@ -47,7 +48,7 @@ export const FieldFilterContainer = ({
     <FilterContainer className={className}>
       {showHeader && (
         <Header>
-          <Button onClick={onBack} icon="left">
+          <Button onClick={onBack} icon={<LeftOutlined />}>
             Back
           </Button>
         </Header>

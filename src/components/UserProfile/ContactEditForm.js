@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Card, Col, Form, Row } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Col, Row } from 'antd';
 import PropTypes from 'prop-types';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
 import FindMeEditable from './FindMeEditable';

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Row, Typography } from 'antd';
+import { CheckCircleFilled } from '@ant-design/icons';
+import { Row, Typography } from 'antd';
 import chunk from 'lodash/chunk';
 import { toKebabCase } from 'utils';
 import './style.css';
@@ -23,14 +24,14 @@ const ResearchInterest = ({ interests }) => {
       >
         <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
           <Text>
-            <Icon type="check-circle" theme="filled" className={'ri-icon'} />
+            <CheckCircleFilled className={'ri-icon'} />
             {interestLeft}
           </Text>
         </div>
         <div className={'ri-ro-text-wrapper ri-text-wrapper'}>
           {Boolean(interestRight) && (
             <Text>
-              <Icon type="check-circle" theme="filled" className={'ri-icon'} />
+              <CheckCircleFilled className={'ri-icon'} />
               {interestRight}
             </Text>
           )}

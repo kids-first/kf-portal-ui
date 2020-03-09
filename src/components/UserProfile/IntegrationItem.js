@@ -1,3 +1,4 @@
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import {Typography, Button} from 'antd';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
@@ -8,9 +9,7 @@ import './style.css';
 
 const {Paragraph} = Typography;
 
-const hasAtLeastOneError = (...potentialErrors) => {
-    return potentialErrors.some(e => Boolean(e));
-};
+const hasAtLeastOneError = (...potentialErrors) => potentialErrors.some(e => Boolean(e));
 
 const generateLabelForConnect = ({loading, connected}) => {
     if (loading) {
@@ -63,7 +62,7 @@ const IntegrationItem = props => {
                                 loading={loading}
                                 type={connected && !loading ? 'danger' : 'primary'}
                                 onClick={connected ? onClickDisconnectCb : onClickConnectCb}
-                                icon={connected ? 'disconnect' : 'api'}
+                                icon={<LegacyIcon type={connected ? 'disconnect' : 'api'} />}
                             >
                                 {generateLabelForConnect({loading, connected})}
                             </Button>
@@ -72,7 +71,7 @@ const IntegrationItem = props => {
                                     shape="round"
                                     className={'ii-button-common ii-button-action'}
                                     onClick={onClick}
-                                    icon={icon}
+                                    icon={<LegacyIcon type={icon} />}
                                     size={'small'}
                                 >
                                     {label}

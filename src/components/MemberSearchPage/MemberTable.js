@@ -1,4 +1,6 @@
-import { Col, Icon, List, Row, Spin, Typography, Avatar } from 'antd';
+import { BankFilled, EnvironmentFilled } from '@ant-design/icons';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Col, List, Row, Spin, Typography, Avatar } from 'antd';
 import React from 'react';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
@@ -14,12 +16,7 @@ const { Text, Title } = Typography;
 const Address = ({ item }) => (
   <div className={'flex'} style={{ alignItems: 'center' }}>
     {item.city || item.state || item.country ? (
-      <Icon
-        className={'icon-color'}
-        type="environment"
-        theme="filled"
-        style={{ paddingRight: 8 }}
-      />
+      <EnvironmentFilled className={'icon-color'} style={{ paddingRight: 8 }} />
     ) : (
       ''
     )}
@@ -187,12 +184,7 @@ const MemberTable = ({
                     <div style={{ paddingTop: 10 }}>
                       {item.institution ? (
                         <Row className={'flex'}>
-                          <Icon
-                            className={'icon-color'}
-                            type="bank"
-                            theme="filled"
-                            style={{ paddingRight: 8 }}
-                          />
+                          <BankFilled className={'icon-color'} style={{ paddingRight: 8 }} />
                           <Text style={{ color: 'inherit' }}>{item.institution}</Text>
                         </Row>
                       ) : (
@@ -233,7 +225,7 @@ const MemberTable = ({
                     <div className={`icon-color ${iconClassName(item).className}`}>
                       {iconClassName(item).text}
                     </div>
-                    <Icon
+                    <LegacyIcon
                       className={`icon-color ${iconClassName(item).className}`}
                       style={{
                         paddingLeft: 5,

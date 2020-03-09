@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
-import { Col, Icon, Row, Typography } from 'antd';
+import { CheckCircleFilled, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { Col, Row, Typography } from 'antd';
 import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
 
@@ -36,9 +37,7 @@ class MemberInterests extends Component {
 
   testIfHighlighted(originalInterest) {
     const { highlights } = this.props;
-    const matched = highlights.find(hl => {
-      return hl.replace(regex, '') === originalInterest;
-    });
+    const matched = highlights.find(hl => hl.replace(regex, '') === originalInterest);
     return matched || null;
   }
 
@@ -85,12 +84,7 @@ class MemberInterests extends Component {
               }}
             >
               <Col>
-                <Icon
-                  className={'icon-color'}
-                  type="check-circle"
-                  theme="filled"
-                  style={{ paddingRight: 8 }}
-                />
+                <CheckCircleFilled className={'icon-color'} style={{ paddingRight: 8 }} />
               </Col>
               <Col>
                 <FormatLabel
@@ -113,12 +107,12 @@ class MemberInterests extends Component {
               {filter ? (
                 <div className={'flex'}>
                   <div style={{ paddingRight: 8 }}>Expand</div>
-                  <Icon type="plus-circle" />
+                  <PlusCircleOutlined />
                 </div>
               ) : (
                 <div className={'flex'}>
                   <div style={{ paddingRight: 8 }}>Close</div>
-                  <Icon type="minus-circle" />
+                  <MinusCircleOutlined />
                 </div>
               )}
             </div>
