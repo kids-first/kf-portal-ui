@@ -4,23 +4,26 @@ import Row from 'uikit/Row';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
-import './CohortBuilder.css';
+import { container, containerContent, footer, header } from './FieldFilterContainer.module.css';
 
-const FilterContainer = props => <div class="cb-filterContainer">{props.children}</div>;
-const Header = props => <div class="cb-filterContainer-header">{props.children}</div>;
-const Footer = props => <Row className="cb-filterContainer-footer">{props.children}</Row>;
+const FilterContainer = props => (
+  <div className={`${container} ${props.className}`}>{props.children}</div>
+);
+const Header = props => <div className={header}>{props.children}</div>;
+const Footer = props => <Row className={footer}>{props.children}</Row>;
 
 export const FieldFilterContainer = ({
   children,
   onSubmit: onSqonSubmit,
   onCancel,
   onBack,
+  showOntologyBrowserButton,
+  onOntologyClicked,
   applyEnabled = true,
   showHeader = true,
   className = '',
 }) => {
   const [isDisabled, setDisabled] = useState(true);
-
   const hasSelectedElements = handler => {
     const checkboxes = handler.parentElement.parentElement.parentElement.querySelectorAll(
       'input[type="checkbox"]:checked',
@@ -51,10 +54,15 @@ export const FieldFilterContainer = ({
           <Button onClick={onBack} icon={<LeftOutlined />}>
             Back
           </Button>
+          {showOntologyBrowserButton && (
+            <Button type="dashed" onClick={onOntologyClicked}>
+              Ontology Browser
+            </Button>
+          )}
         </Header>
       )}
       <div
-        className="filterContainer"
+        className={`${containerContent} filterContainer`}
         onClick={e => {
           const eventTarget = e.target;
           setTimeout(() => {

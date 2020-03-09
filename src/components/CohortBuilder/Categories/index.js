@@ -140,9 +140,10 @@ export default class Categories extends React.Component {
     const { sqon } = this.props;
     const addedSQON = SQONdiff(sqon, this.initialSqon);
 
+    const { categories, actions } = TRACKING_EVENTS;
     trackUserInteraction({
-      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
-      action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+      category: `${categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
+      action: `${actions.apply} Selected Filters`,
       label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
     });
 
@@ -230,13 +231,13 @@ export default class Categories extends React.Component {
         >
           <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>
-          <ActionCategory
-            title="Upload IDs"
-            color={theme.uploadYellow}
-            onClick={this.handleUploadIdsClick}
-          >
-            <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
-          </ActionCategory>
+        <ActionCategory
+          title="Upload IDs"
+          color={theme.uploadYellow}
+          onClick={this.handleUploadIdsClick}
+        >
+          <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
+        </ActionCategory>
       </Row>
     );
   }

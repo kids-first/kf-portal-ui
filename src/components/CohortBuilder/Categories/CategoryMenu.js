@@ -26,7 +26,7 @@ export default class CategoryMenu extends React.Component {
 
   getFieldDisplayName(fieldName) {
     const { extendedMapping } = this.props;
-    return extendedMapping.find(mapping => mapping.field === fieldName).displayName || fieldName;
+    return extendedMapping.find(mapping => mapping.field === fieldName)?.displayName || fieldName;
   }
 
   getMenuItem(field) {

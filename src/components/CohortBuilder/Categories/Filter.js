@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import noop from 'lodash/noop';
 
 import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
@@ -24,9 +23,11 @@ const Filter = compose(withApi)(
       op: 'and',
       content: [],
     },
-    onSubmit = noop,
-    onCancel = noop,
-    onBack = noop,
+    onSubmit = () => {},
+    onCancel = () => {},
+    onBack = () => {},
+    showOntologyBrowserButton = false,
+    onOntologyClicked,
     field,
     arrangerProjectId = ARRANGER_PROJECT_ID,
     arrangerProjectIndex = ARRANGER_API_PARTICIPANT_INDEX_NAME,
@@ -41,7 +42,13 @@ const Filter = compose(withApi)(
       {({ extendedMapping, loading }) => {
         if (loading) {
           return (
-            <FieldFilterContainer applyEnabled={false} onCancel={onCancel} onBack={onBack}>
+            <FieldFilterContainer
+              applyEnabled={false}
+              onCancel={onCancel}
+              onBack={onBack}
+              showOntologyBrowserButton={showOntologyBrowserButton}
+              onOntologyClicked={onOntologyClicked}
+            >
               <LoadingSpinner color="#a9adc0" size="30px" />
             </FieldFilterContainer>
           );
@@ -95,7 +102,14 @@ const Filter = compose(withApi)(
             field={field}
             arrangerProjectId={arrangerProjectId}
             arrangerProjectIndex={arrangerProjectIndex}
-            ContainerComponent={props => <FieldFilterContainer {...props} onBack={onBack} />}
+            ContainerComponent={props => (
+              <FieldFilterContainer
+                {...props}
+                showOntologyBrowserButton={showOntologyBrowserButton}
+                onOntologyClicked={onOntologyClicked}
+                onBack={onBack}
+              />
+            )}
           />
         );
       }}
