@@ -39,6 +39,7 @@ const Tab = ({
   containerRef,
   graphqlField,
   translateSQONValue,
+  index,
 }) => {
   const customItems = QUICKSEARCH_FIELDS[type].map(
     ({ entityField, header, uploadableField, inputPlaceholder, modalTitle }, i) => ({
@@ -57,6 +58,7 @@ const Tab = ({
             setSQON,
             translateSQONValue,
             projectId,
+            index,
           }}
         />
       ),
