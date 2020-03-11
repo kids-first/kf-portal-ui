@@ -13,7 +13,7 @@
       "as-needed"
     ],
     "complexity": [
-      "error",
+      "warn",
       16
     ],
     "template-curly-spacing": "off",

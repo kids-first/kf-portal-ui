@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Col, Divider, Row, Typography, Form, Input } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Card, Col, Divider, Row, Typography, Input } from 'antd';
 import ResearchInterestsEditable from './ResearchInterestsEditable';
 import { bioMsgWhenEmpty, storyMsgWhenEmpty } from 'components/UserProfile/constants';
 import './style.css';
@@ -21,14 +23,12 @@ const validateBioStory = (rule, value, callback) => {
   return callback();
 };
 
-const retrieveInterestsFromForm = formFields => {
-  return Object.entries(formFields).reduce((acc, [key, value]) => {
+const retrieveInterestsFromForm = formFields => Object.entries(formFields).reduce((acc, [key, value]) => {
     if (!key.startsWith('tag')) {
       return acc;
     }
     return [value, ...acc];
   }, []);
-};
 
 class ProfileEditable extends Component {
   static propTypes = {

@@ -9,6 +9,7 @@ import GoogleScholarIcon from 'icons/GoogleScholarIcon';
 import LinkedInIcon from 'icons/LinkedInIcon';
 import { findMeFields } from './constants';
 import style from 'components/UserProfile/style';
+import { CheckOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Typography } from 'antd';
 
 const { Text } = Typography;
@@ -105,34 +106,25 @@ export const userProfileBackground = (
   };
 };
 
-export const extractFindMeFromProfile = (profile = {}) => {
-  return Object.entries(profile).reduce((accFindMe, [profileKey, profileValue]) => {
+export const extractFindMeFromProfile = (profile = {}) => Object.entries(profile).reduce((accFindMe, [profileKey, profileValue]) => {
     if (findMeFields.includes(profileKey) && Boolean(profileValue)) {
       return { ...accFindMe, [profileKey]: profileValue };
     }
     return accFindMe;
   }, {});
-};
 
-export const isResearcher = data => {
-  return data.roles[0] === 'research';
-};
+export const isResearcher = data => data.roles[0] === 'research';
 
-export const isCommunity = data => {
-  return data.roles[0] === 'community';
-};
+export const isCommunity = data => data.roles[0] === 'community';
 
-export const showInstitution = data => {
-  return isResearcher(data) || isCommunity(data);
-};
+export const showInstitution = data => isResearcher(data) || isCommunity(data);
 
 export const makeCommonCardPropsReadOnly = ({
   isProfileUpdating,
   title,
   onClickEditCb,
   canEdit,
-}) => {
-  return {
+}) => ({
     loading: isProfileUpdating,
     title: <Text className={'header-title'}>{title}</Text>,
     className: 'card-container',
@@ -141,7 +133,7 @@ export const makeCommonCardPropsReadOnly = ({
     extra: canEdit ? (
       <Button
         size={'small'}
-        icon="edit"
+        icon={<EditOutlined />}
         shape="round"
         onClick={onClickEditCb}
         style={{ backgroundColor: 'rgb(144, 38, 142)', color: 'white' }}
@@ -149,16 +141,14 @@ export const makeCommonCardPropsReadOnly = ({
         EDIT
       </Button>
     ) : null,
-  };
-};
+  });
 
 export const makeCommonCardPropsEditing = ({
   isProfileUpdating,
   title,
   onClickCancelCb,
   disableSaveButton,
-}) => {
-  return {
+}) => ({
     loading: isProfileUpdating,
     title: <Text className={'header-title'}>{title}</Text>,
     className: 'card-container',
@@ -178,10 +168,10 @@ export const makeCommonCardPropsEditing = ({
         <Button
           size={'small'}
           className={'extra-button'}
-          icon="check"
+          icon={<CheckOutlined />}
           shape="round"
           style={{
-            backgroundColor: Boolean(disableSaveButton) ? 'lightgrey' : 'rgb(144, 38, 142)',
+            backgroundColor: disableSaveButton ? 'lightgrey' : 'rgb(144, 38, 142)',
             color: 'white',
           }}
           disabled={Boolean(disableSaveButton)}
@@ -191,12 +181,9 @@ export const makeCommonCardPropsEditing = ({
         </Button>
       </Fragment>
     ),
-  };
-};
+  });
 
-export const showWhenHasDataOrCanEdit = (data, canEdit) => {
-  return Boolean(data) || canEdit;
-};
+export const showWhenHasDataOrCanEdit = (data, canEdit) => Boolean(data) || canEdit;
 
 export const hasFieldInError = fields =>
   Object.entries(fields || {}).some(([, value]) => Array.isArray(value) && value.length > 0);

@@ -7,6 +7,7 @@ import Cavatica from 'icons/Cavatica';
 import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import { analyticsTrigger, TRACKING_EVENTS } from 'services/analyticsTracking';
 import Info from '../Info';
+import { ApiOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import Icon from 'antd/es/icon';
 
@@ -20,7 +21,7 @@ const NotConnected = compose(injectState)(({ effects }) => (
     >
       <Button
         type={'primary'}
-        icon="api"
+        icon={<ApiOutlined />}
         shape="round"
         onClick={() => {
           analyticsTrigger({

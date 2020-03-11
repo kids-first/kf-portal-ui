@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './MemberSearchPage.css';
-import { Icon, Layout, Typography } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Layout, Typography } from 'antd';
 import RolesFilter from 'components/MemberSearchPage/RolesFilter';
 import InterestsFilter from 'components/MemberSearchPage/InterestsFilter';
 import AllMembersFilter from './AdminFilter';
@@ -37,7 +38,7 @@ class FilterDrawer extends Component {
           >
             Filters
           </Title>
-          <Icon
+          <LegacyIcon
             style={{ width: '100%', textAlign: 'end', fontSize: 20, color: 'rgb(43, 56, 143)' }}
             type={collapsed ? 'double-right' : 'double-left'}
             onClick={this.onCollapse}

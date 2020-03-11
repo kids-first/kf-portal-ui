@@ -1,5 +1,7 @@
 import React from 'react';
-import { Avatar, Button, Icon, Popconfirm, Row, Switch, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Avatar, Button, Popconfirm, Row, Switch, Tooltip, Typography } from 'antd';
 import { userProfileBackground } from './utils';
 import PropTypes from 'prop-types';
 import { computeGravatarSrcFromEmail } from 'utils';
@@ -19,8 +21,7 @@ const HeaderBanner = ({
   canEdit,
   features,
   isAdmin,
-}) => {
-  return (
+}) => (
     <Row
       align={'middle'}
       type={'flex'}
@@ -41,7 +42,7 @@ const HeaderBanner = ({
             <Button
               type={'primary'}
               className={'hd-edit-button'}
-              icon={'edit'}
+              icon={<LegacyIcon type={'edit'} />}
               shape={'circle'}
               href="https://en.gravatar.com/site/login"
               target="_blank"
@@ -89,7 +90,7 @@ const HeaderBanner = ({
                   placement="topLeft"
                   title="When your profile is public, other members can see information about you that includes your bio, story, research interests and contact information."
                 >
-                  <Icon type="info-circle" style={{ color: 'white' }} />
+                  <InfoCircleOutlined style={{ color: 'white' }} />
                 </Tooltip>
               </span>
             </Row>
@@ -110,7 +111,6 @@ const HeaderBanner = ({
         )}
     </Row>
   );
-};
 
 HeaderBanner.propTypes = {
   profile: PropTypes.object.isRequired,
