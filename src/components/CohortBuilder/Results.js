@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { compose } from 'recompose';
 import isEmpty from 'lodash/isEmpty';
@@ -12,9 +11,6 @@ import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import Row from 'uikit/Row';
 import ViewLink from 'uikit/ViewLink';
 import { H2 } from 'uikit/Headings';
-import LoadingSpinner from 'uikit/LoadingSpinner';
-import LinkWithLoader from 'uikit/LinkWithLoader';
-
 import SummaryIcon from 'icons/AllAppsMenuIcon';
 import TableViewIcon from 'icons/TableViewIcon';
 import DemographicIcon from 'icons/DemographicIcon';
@@ -32,88 +28,155 @@ import { createFileRepoLink } from './util';
 import ContentBar from './ContentBar';
 import Summary from './Summary';
 import { setActiveView } from './actionCreators';
-
+import { isFeatureEnabled } from 'common/featuresToggles';
 import './Results.css';
+import { Spin, notification } from 'antd';
+import LinkWithLoader from '../../ui/LinkWithLoader';
+import { CARDINALITY_PRECISION_THRESHOLD } from '../../common/constants';
+import { roundIntToChosenPowerOfTen } from '../../utils';
+import capitalize from 'lodash/capitalize';
+
+const useLegacyLink = isFeatureEnabled('useLegacyCohortBuilderToFileRepoLink'); //FIXME remove me one day :)
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
+const LABELS = {
+  participant: {
+    singular: 'participant',
+    plural: 'participants',
+  },
+  family: {
+    singular: 'family',
+    plural: 'families',
+  },
+  file: {
+    singular: 'file',
+    plural: 'files',
+  },
+};
 
-const generateAllFilesLink = async (user, api, files) => {
-  const sqon = {
-    op: 'and',
-    content: [
-      {
-        op: 'in',
-        content: { field: 'kf_id', value: files },
-      },
-    ],
-  };
+const formatCountResult = (cardinality, labelKey) => {
+  const isZero = cardinality === 0;
+  if (isZero) {
+    return `No ${capitalize(LABELS[labelKey].singular)}`;
+  }
 
-  const fileSet = await saveSet({
-    type: 'file',
-    sqon: sqon || {},
-    userId: user.egoId,
-    path: 'kf_id',
-    api: graphql(api),
+  const hasMany = cardinality > 1;
+  const label = hasMany
+    ? capitalize(LABELS[labelKey].plural)
+    : capitalize(LABELS[labelKey].singular);
+
+  const isApproximation =
+    cardinality >= CARDINALITY_PRECISION_THRESHOLD && labelKey !== 'participant';
+  if (isApproximation) {
+    const approxSymbol = '\u2248';
+    return `${approxSymbol} ${roundIntToChosenPowerOfTen(cardinality)} ${label}`;
+  }
+  return `${cardinality} ${label}`;
+};
+
+const showErrorNotification = () =>
+  notification.error({
+    message: 'Error',
+    description: 'Unable to create a link to access file repository',
   });
 
-  const setId = get(fileSet, 'data.saveSet.setId');
+const generateAllFilesLink = async (user, api, originalSqon) => {
+  try {
+    const fileSet = await saveSet({
+      type: 'participant',
+      sqon: originalSqon || {},
+      userId: user.egoId,
+      path: 'kf_id',
+      api: graphql(api),
+    });
 
-  const fileSqon = {
-    op: 'and',
-    content: [
-      {
-        op: 'in',
-        content: {
-          field: 'kf_id',
-          value: `set_id:${setId}`,
+    const setId = get(fileSet, 'data.saveSet.setId');
+
+    return createFileRepoLink({
+      op: 'and',
+      content: [
+        {
+          op: 'in',
+          content: {
+            field: 'participants.kf_id',
+            value: `set_id:${setId}`,
+          },
         },
-      },
-    ],
-  };
-
-  const fileRepoLink = createFileRepoLink(fileSqon);
-  return fileRepoLink;
+      ],
+    });
+  } catch (e) {
+    showErrorNotification();
+  }
 };
 
 const cohortResultsQuery = sqon => ({
-  query: gql`
-    query($sqon: JSON) {
-      participant {
-        hits(filters: $sqon) {
-          total
-        }
-        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-          files__kf_id {
-            buckets {
-              key
+  query: useLegacyLink
+    ? gql`
+        query($sqon: JSON) {
+          participant {
+            hits(filters: $sqon) {
+              total
+            }
+            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+              files__kf_id {
+                buckets {
+                  key
+                }
+              }
+            }
+            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+              family_id {
+                buckets {
+                  doc_count
+                  key
+                }
+              }
             }
           }
         }
-        aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-          family_id {
-            buckets {
-              doc_count
-              key
+      `
+    : gql`
+        query($sqon: JSON) {
+          participant {
+            hits(filters: $sqon) {
+              total
+            }
+            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+              files__kf_id {
+                cardinality(precision_threshold: ${CARDINALITY_PRECISION_THRESHOLD})
+              }
+            }
+            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
+              family_id {
+                cardinality(precision_threshold: ${CARDINALITY_PRECISION_THRESHOLD})
+              }
             }
           }
         }
-      }
-    }
-  `,
-
+      `,
   variables: { sqon },
   transform: data => {
-    const participants = get(data, 'data.participant.hits.total', 0);
-    const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
-      b => b.key,
-    );
-    const families = get(data, 'data.participant.aggregations.family_id.buckets', []);
+    if (useLegacyLink) {
+      const participants = get(data, 'data.participant.hits.total', 0);
+      const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
+        b => b.key,
+      );
+      const families = get(data, 'data.participant.aggregations.family_id.buckets', []);
+      return {
+        participantCount: participants,
+        filesCardinality: files.length,
+        familiesCountCardinality: families.filter(item => item.key !== '__missing__').length,
+      };
+    }
+    const participantCount = get(data, 'data.participant.hits.total', 0);
+    const filesCardinality = data?.data?.participant?.aggregations?.files__kf_id?.cardinality || 0;
+    const familiesCountCardinality =
+      data?.data?.participant?.aggregations?.family_id?.cardinality || 0;
     return {
-      files,
-      participantCount: participants,
-      filesCount: files.length,
-      familiesCount: families.filter(item => item.key !== '__missing__').length,
+      participantCount,
+      filesCardinality,
+      familiesCountCardinality,
     };
   },
 });
@@ -126,22 +189,41 @@ const Results = ({
   api,
   state,
 }) => (
-  <QueriesResolver name="GQL_RESULT_QUERIES" api={api} queries={[cohortResultsQuery(sqon)]}>
+  <QueriesResolver
+    name={useLegacyLink ? 'GQL_RESULT_QUERIES_LEGACY' : 'GQL_RESULT_QUERIES'}
+    api={api}
+    queries={[cohortResultsQuery(sqon)]}
+  >
     {({ isLoading, data, error }) => {
+      if (error) {
+        return <TableErrorView error={error} />;
+      }
+
       const resultsData = data[0];
+
       const participantCount = get(resultsData, 'participantCount', null);
-      const familiesCount = get(resultsData, 'familiesCount', null);
+      const familiesCount = get(resultsData, 'familiesCountCardinality', null);
       const cohortIsEmpty = (!isLoading && !resultsData) || participantCount === 0;
+      const filesCardinality = get(resultsData, 'filesCardinality', 0);
 
-      const filesCountHeading = resultsData
-        ? `${Number(data[0].filesCount || 0).toLocaleString()}`
-        : '';
+      const hasNoFile = filesCardinality === 0;
+      const hasNoCohortQuery = isEmpty(sqon.content);
 
-      const hasNoFile = resultsData ? data[0].filesCount === 0 : true;
+      const showDetailsHeader = () => {
+        if (hasNoCohortQuery) {
+          return <H2>All Data</H2>;
+        }
+        return (
+          <Fragment>
+            <H2>Cohort Results</H2>
+            <h3 className="cb-sub-heading" style={{ fontWeight: 'normal', marginRight: '10px' }}>
+              for Query {activeSqonIndex + 1}
+            </h3>
+          </Fragment>
+        );
+      };
 
-      return error ? (
-        <TableErrorView error={error} />
-      ) : (
+      return (
         <Fragment>
           <ContentBar style={{ padding: '0 30px 0 34px' }}>
             <Row className="cb-view-links">
@@ -161,64 +243,47 @@ const Results = ({
               </ViewLink>
             </Row>
             <Row className="cb-detail">
-              {isEmpty(sqon.content) ? (
-                <H2>All Data</H2>
-              ) : (
-                <Fragment>
-                  <H2>Cohort Results</H2>
-                  <h3 className="cb-sub-heading" style={{ fontWeight: 'normal' }}>
-                    for Query {activeSqonIndex + 1}
-                  </h3>
-                </Fragment>
-              )}
+              {showDetailsHeader()}
               {isLoading ? (
-                <LoadingSpinner />
+                <div className={'cb-summary-is-loading'}>
+                  <Spin size={'small'} />
+                </div>
               ) : (
                 <div className="cb-summary">
                   <div className="cb-summary-entity">
                     <h3 className="cb-sub-heading">
                       <DemographicIcon width="14px" height="17px" />
-                      {`${Number(participantCount || 0).toLocaleString()} ${
-                        participantCount === 1 ? 'Participant' : 'Participants'
-                      }`}
+                      {formatCountResult(participantCount, 'participant')}
                     </h3>
                   </div>
                   <div className="cb-summary-entity">
                     <h3 className="cb-sub-heading">
                       <img src={familyMembers} alt="" height="13px" />
-                      {`${Number(familiesCount || 0).toLocaleString()} ${
-                        familiesCount === 1 ? 'Family' : 'Families'
-                      }`}
+                      {formatCountResult(familiesCount, 'family')}
                     </h3>
                   </div>
                   <div className="cb-summary-entity">
-                    <h3 className="cb-sub-heading">
+                    <h3 className="cb-sub-heading-without-count">
                       <div className="cb-summary-files">
                         {hasNoFile ? (
                           <div>
-                            <FilesIcon style={{ marginRight: '6px' }} /> {'0 File'}
+                            <FilesIcon style={{ marginRight: '6px' }} /> {'No File'}
                           </div>
                         ) : (
                           <Fragment>
                             <div>
                               <FilesIcon />
-                              {isEmpty(sqon.content) ? (
-                                <Link className="cb-purple-link cb-sub-heading" to="/search/file">
-                                  {filesCountHeading}{' '}
-                                </Link>
-                              ) : (
-                                <LinkWithLoader
-                                  className="cb-purple-link cb-sub-heading"
-                                  replaceText={false}
-                                  getLink={() =>
-                                    generateAllFilesLink(state.loggedInUser, api, data[0].files)
-                                  }
-                                >
-                                  {filesCountHeading}
-                                </LinkWithLoader>
-                              )}
+                              <LinkWithLoader
+                                linkClassname="cb-purple-link cb-sub-heading-without-count"
+                                getLink={
+                                  hasNoCohortQuery
+                                    ? () => '/search/file'
+                                    : () => generateAllFilesLink(state.loggedInUser, api, sqon)
+                                }
+                              >
+                                {formatCountResult(filesCardinality, 'file')}
+                              </LinkWithLoader>
                             </div>
-                            <div>Files</div>
                           </Fragment>
                         )}
                       </div>

@@ -47,6 +47,18 @@
   display: none !important;
 }
 
+.cb-sub-heading-without-count {
+  font-weight: 600;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  color: #2b388f;
+}
+
+.cb-sub-heading-without-count :first-child {
+  margin-right: 5px;
+}
+
 .cb-sub-heading {
   font-weight: 600;
   font-family: Montserrat, sans-serif;
@@ -89,4 +101,8 @@
   font-size: 14px;
   font-family: Montserrat, sans-serif;
   height: 50px;
+}
+
+.cb-summary-is-loading {
+  margin-left: 10px;
 }
