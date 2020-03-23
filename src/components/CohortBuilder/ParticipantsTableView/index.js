@@ -115,7 +115,6 @@ const ParticipantsTableView = ({
 
 ParticipantsTableView.propTypes = {
   sqon: PropTypes.object.isRequired,
-  onRemoveFromCohort: PropTypes.func.isRequired,
 };
 
 export default enhance(ParticipantsTableView);
