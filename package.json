@@ -9,7 +9,7 @@
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",
     "@oncojs/survivalplot": "^0.7.2",
-    "antd": "^4.0.2",
+    "antd": "^4.0.4",
     "auto-bind-es5": "^1.1.0",
     "axios": "^0.19.2",
     "file-saver": "^2.0.2",
@@ -54,9 +54,6 @@
     "test:unit": "cross-env NODE_ENV=\"test\" NODE_PATH=\"src\" nyc --reporter=html mocha --watch --require ./node_modules/@babel/register src/**/*.unit.js",
     "theme": "lessc --js src/antdTheme.less src/antd-kf-theme.css"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -96,8 +93,10 @@
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
     "husky": "^4.2.3",
