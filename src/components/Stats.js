@@ -1,6 +1,6 @@
 import React from 'react';
 import filesize from 'filesize';
-import { Stats, CombinedStatsQuery } from '@kfarranger/components/dist/Arranger';
+import { CombinedStatsQuery } from '@kfarranger/components/dist/Arranger';
 
 export const config = [
   {
@@ -68,5 +68,3 @@ export const config = [
 ];
 
 export const FileRepoStatsQuery = props => <CombinedStatsQuery {...props} stats={config} />;
-
-export const FileRepoStats = props => <Stats {...props} stats={config} />;
