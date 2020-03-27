@@ -7,12 +7,7 @@ import {
   buildStatQueriesForParticipant,
 } from './statsQueries';
 
-import {
-  familyStatTag,
-  file_stat_tag,
-  fileSizeStatTag,
-  participantStatTag,
-} from './statsConstants';
+import { Tags } from './statsConstants';
 import './FileRepo.css';
 
 interface Props {
@@ -26,7 +21,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
   <div className={'stats-bar-container'}>
     <Stat
       api={api}
-      tag={file_stat_tag}
+      tag={Tags.FILE_STAT}
       queries={buildStatQueriesForFileHits(sqon)}
       label={'Files'}
       icon={
@@ -44,7 +39,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
     {separator}
     <Stat
       api={api}
-      tag={participantStatTag}
+      tag={Tags.PARTICIPANT_STAT}
       queries={buildStatQueriesForParticipant(sqon)}
       label={'Participants'}
       icon={
@@ -62,7 +57,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
     {separator}
     <Stat
       api={api}
-      tag={familyStatTag}
+      tag={Tags.FAMILY_STAT}
       queries={buildStatQueriesForFamily(sqon)}
       label={'Families'}
       icon={
@@ -80,7 +75,7 @@ const StatsBar: FunctionComponent<Props> = ({ api, sqon }) => (
     {separator}
     <Stat
       api={api}
-      tag={fileSizeStatTag}
+      tag={Tags.FILE_STAT_SIZE}
       queries={buildStatQueriesForFile(sqon)}
       label={'Size'}
       icon={

@@ -4,16 +4,14 @@ import filesize from 'filesize';
 
 const formatCount = (numOrString: number | string): string => numOrString.toLocaleString();
 
-const fromSqonValueToVariables = (content: any): any => {
-  if (!content) {
-    return;
-  }
-  return {
-    sqon: content,
-  };
-};
+const fromSqonValueToVariables = (content: any): any =>
+  content
+    ? {
+        sqon: content,
+      }
+    : undefined;
 
-const queryFileStat: string = `
+const queryFileStat = `
   query($sqon: JSON) {
     data: file {
       hits(filters: $sqon) {
@@ -23,7 +21,7 @@ const queryFileStat: string = `
   }
 `;
 
-const getFileStatHits = (rawData: any): string => formatCount(rawData?.data?.data?.hits?.total);
+const getFileStatHits = (rawData: any) => formatCount(rawData?.data?.data?.hits?.total);
 
 export const buildStatQueriesForFileHits = (sqonContent: Object): Queries => [
   {
@@ -33,7 +31,7 @@ export const buildStatQueriesForFileHits = (sqonContent: Object): Queries => [
   },
 ];
 
-const queryParticipantStat: string = `
+const queryParticipantStat = `
   query($sqon: JSON) {
     data: file {
       aggregations(filters: $sqon, include_missing: false, aggregations_filter_themselves: true) {
@@ -45,7 +43,7 @@ const queryParticipantStat: string = `
   }
 `;
 
-const getParticipantStatCardinality = (rawData: any): string =>
+const getParticipantStatCardinality = (rawData: any) =>
   formatCount(rawData?.data?.data?.aggregations?.participants__kf_id?.cardinality);
 
 export const buildStatQueriesForParticipant = (sqonContent: Object): Queries => [
@@ -56,7 +54,7 @@ export const buildStatQueriesForParticipant = (sqonContent: Object): Queries => 
   },
 ];
 
-const queryFamilyStat: string = `
+const queryFamilyStat = `
   query($sqon: JSON) {
     data: file {
       aggregations(filters: $sqon, include_missing: false, aggregations_filter_themselves: true) {
@@ -68,7 +66,7 @@ const queryFamilyStat: string = `
   }
 `;
 
-const getFamilyStatCardinality = (rawData: any): string =>
+const getFamilyStatCardinality = (rawData: any) =>
   formatCount(rawData?.data?.data?.aggregations?.participants__family_id?.cardinality);
 
 export const buildStatQueriesForFamily = (sqonContent: Object): Queries => [
@@ -79,7 +77,7 @@ export const buildStatQueriesForFamily = (sqonContent: Object): Queries => [
   },
 ];
 
-const queryFileSizeStat: string = `
+const queryFileSizeStat = `
 query ($sqon: JSON) {
   data: file {
     aggregations(filters: $sqon, include_missing: false, aggregations_filter_themselves: true) {
@@ -93,7 +91,7 @@ query ($sqon: JSON) {
 }
 `;
 
-const getFileStats = (rawData: any): string => {
+const getFileStats = (rawData: any) => {
   const sum = rawData?.data?.data?.aggregations?.size?.stats?.sum || 0;
   return filesize(sum).toUpperCase();
 };

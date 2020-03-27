@@ -1,4 +1,6 @@
-export const file_stat_tag = 'STAT_FILE_TOTAL';
-export const participantStatTag = 'STAT_PARTICIPANT_CARDINALITY';
-export const familyStatTag = 'STAT_FAMILY_CARDINALITY';
-export const fileSizeStatTag = 'STAT_FILE_SIZE';
+export enum Tags {
+  FILE_STAT = 'STAT_FILE_TOTAL',
+  PARTICIPANT_STAT = 'STAT_PARTICIPANT_CARDINALITY',
+  FAMILY_STAT = 'STAT_FAMILY_CARDINALITY',
+  FILE_STAT_SIZE = 'STAT_FILE_SIZE',
+}
