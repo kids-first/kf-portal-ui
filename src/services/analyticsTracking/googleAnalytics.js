@@ -1,7 +1,8 @@
 import ReactGA from 'react-ga';
 import { gaTrackingID, devDebug, debugGoogleAnalytics } from 'common/injectGlobals';
 import history from '../history';
-import { merge, isObject } from 'lodash';
+import merge from 'lodash/merge';
+import isObject from 'lodash/isObject';
 import { TRACKING_EVENTS } from './trackingEventConstants';
 
 const devTrackingID = localStorage.getItem('DEV_GA_TRACKING_ID');

@@ -1,6 +1,6 @@
 import ExternalLink from 'uikit/ExternalLink';
 import * as React from 'react';
-import { isFunction } from 'lodash';
+import isFunction from 'lodash/isFunction';
 
 const style = { wordBreak: 'break-word', textTransform: 'capitalize' };
 

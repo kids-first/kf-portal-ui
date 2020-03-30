@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import get from 'lodash/get';
 import gql from 'graphql-tag';
 
 export const SORTABLE_FIELDS_MAPPING = new Map([

@@ -1,7 +1,8 @@
 import ajax from 'services/ajax';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
-import { flatten, get } from 'lodash';
+import flatten from 'lodash/flatten';
+import get from 'lodash/get';
 
 export const MISSING_DATA = '__missing__';
 

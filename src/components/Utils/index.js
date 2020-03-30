@@ -1,6 +1,8 @@
 import React from 'react';
 import { SizeMe } from 'react-sizeme';
-import { isObject, transform, isEqual } from 'lodash';
+import isObject from 'lodash/isObject';
+import transform from 'lodash/transform';
+import isEqual from 'lodash/isEqual';
 
 export const SizeProvider = props => <SizeMe refreshRate={100} {...props} />;
 export const withSize = Wrapped => props => (

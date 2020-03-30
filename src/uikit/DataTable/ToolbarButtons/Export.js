@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import QueriesResolver from 'components/CohortBuilder/QueriesResolver';
 import LoadingSpinner from 'uikit/LoadingSpinner';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import {
   participantQueryExport,
   participantsQuery,

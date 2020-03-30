@@ -1,5 +1,7 @@
 import { isNumber } from 'util';
-import { pick, cloneDeep, get } from 'lodash';
+import pick from 'lodash/pick';
+import cloneDeep from 'lodash/cloneDeep';
+import get from 'lodash/get';
 import urlJoin from 'url-join';
 import gql from 'graphql-tag';
 import { print } from 'graphql/language/printer';

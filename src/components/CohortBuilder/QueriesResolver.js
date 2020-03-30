@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { arrangerProjectId, arrangerApiRoot } from 'common/injectGlobals';
 import urlJoin from 'url-join';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { print } from 'graphql/language/printer';
 
 /**

@@ -6,7 +6,7 @@ import { CheckOutlined, SearchOutlined } from '@ant-design/icons';
 import { Col, Row, Tag, Select, AutoComplete, Input } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import './style.css';
 import { searchInterests } from 'services/members/search';
 import { ERROR_TOO_MANY_CHARACTERS } from './constants';

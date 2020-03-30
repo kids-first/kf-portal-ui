@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { get, isNull } from 'lodash';
+import get from 'lodash/get';
+import isNull from 'lodash/isNull';
 import Spinner from 'react-spinkit';
 
 import { SecondaryNavMenu, SecondaryNavContent } from 'uikit/SecondaryNav';

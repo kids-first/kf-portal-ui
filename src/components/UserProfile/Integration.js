@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
 import { withApi } from 'services/api';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import {
   convertTokenToUser,

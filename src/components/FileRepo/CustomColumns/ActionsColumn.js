@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Component from 'react-component-component';
-import { get, intersection } from 'lodash';
+import get from 'lodash/get';
+import intersection from 'lodash/intersection';
 import { compose } from 'recompose';
 import Query from '@kfarranger/components/dist/Query';
 

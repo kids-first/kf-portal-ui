@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import get from 'lodash/get';
 import graphql, { buildSqonForIds, getErrorMessageFromResponse } from 'services/arranger';
 import participantQuery from './participantEntityQuery';
 
