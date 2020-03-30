@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
 import { MODAL_OPEN, MODAL_CLOSE } from '../../actionTypes';
 
 /**

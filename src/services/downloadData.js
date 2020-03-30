@@ -1,4 +1,4 @@
-import { startCase } from 'lodash';
+import startCase from 'lodash/startCase';
 import { format } from 'date-fns';
 import saveTSV from '@kfarranger/components/dist/DataTable/TableToolbar/saveTSV';
 import urlJoin from 'url-join';

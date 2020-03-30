@@ -1,8 +1,8 @@
 import ajax from 'services/ajax';
 import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
-import { chunk as makeChunks } from 'lodash';
+import makeChunks from 'lodash/chunk';
 import projectDescriptionPath from './projectDescription.md';
-import { memoize } from 'lodash';
+import memoize from 'lodash/memoize';
 import { CAVATICA_DATASET_MAPPING } from 'common/constants';
 
 // All these services call out to a proxy service

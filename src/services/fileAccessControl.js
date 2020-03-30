@@ -1,4 +1,7 @@
-import { isObject, keys, get, flatten } from 'lodash';
+import isObject from 'lodash/isObject';
+import keys from 'lodash/keys';
+import get from 'lodash/get';
+import flatten from 'lodash/flatten';
 import { getFenceUser } from 'services/fence';
 import { graphql } from 'services/arranger';
 

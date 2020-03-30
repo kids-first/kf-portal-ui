@@ -1,4 +1,5 @@
-import { get, endsWith } from 'lodash';
+import get from 'lodash/get';
+import endsWith from 'lodash/endsWith';
 import urlJoin from 'url-join';
 
 import { egoApiRoot, egoAppId } from 'common/injectGlobals';

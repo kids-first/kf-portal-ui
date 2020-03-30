@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 
 import SecondaryNavTab from './SecondaryNavTab';
 import './SecondaryNav.css';

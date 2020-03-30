@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { sumBy, uniq } from 'lodash';
+import sumBy from 'lodash/sumBy';
+import uniq from 'lodash/uniq';
 import { injectState } from 'freactal';
 import { compose, lifecycle, withState } from 'recompose';
 import { withFormik } from 'formik';

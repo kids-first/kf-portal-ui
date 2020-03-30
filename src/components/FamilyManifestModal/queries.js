@@ -1,4 +1,5 @@
-import { get, difference } from 'lodash';
+import get from 'lodash/get';
+import difference from 'lodash/difference';
 import graphql from 'services/arranger';
 
 export const participantsFilesCountAndSize = async ({ api, sqon }) => {

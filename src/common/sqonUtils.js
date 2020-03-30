@@ -1,4 +1,7 @@
-import { cloneDeep, merge, union, isEqual } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import merge from 'lodash/merge';
+import union from 'lodash/union';
+import isEqual from 'lodash/isEqual';
 
 import { BOOLEAN_OPS, isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
 

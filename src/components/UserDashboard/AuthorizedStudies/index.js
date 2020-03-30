@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import CardHeader from 'uikit/Card/CardHeader';
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import DownloadController from 'icons/DownloadController';

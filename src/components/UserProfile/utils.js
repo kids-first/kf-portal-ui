@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { ROLES } from 'common/constants';
 import React, { Fragment } from 'react';
 import { SocialIcon } from 'react-social-icons';

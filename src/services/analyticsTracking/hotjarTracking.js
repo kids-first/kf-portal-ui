@@ -1,4 +1,5 @@
-import { lowerCase, snakeCase } from 'lodash';
+import lowerCase from 'lodash/lowerCase';
+import snakeCase from 'lodash/snakeCase';
 
 export const HJVirtualPageView = path => {
   if (window.hj) {

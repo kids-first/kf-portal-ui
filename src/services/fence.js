@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import { FENCES, GEN3, DCF } from 'common/constants';
 import ajax from 'services/ajax';
 import {

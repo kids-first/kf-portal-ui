@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   FETCH_VIRTUAL_STUDIES_REQUESTED,
   FETCH_VIRTUAL_STUDIES_SUCCESS,

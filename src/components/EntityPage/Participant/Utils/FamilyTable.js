@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { get, flatMap } from 'lodash';
+import get from 'lodash/get';
+import flatMap from 'lodash/flatMap';
 import { Link } from 'react-router-dom';
 import sanitize from './sanitize';
 import ParticipantDataTable from './ParticipantDataTable';

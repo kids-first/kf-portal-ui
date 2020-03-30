@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { isEqual, defaults, get, has } from 'lodash';
+import isEqual from 'lodash/isEqual';
+import defaults from 'lodash/defaults';
+import get from 'lodash/get';
+import has from 'lodash/has';
 import { renderPlot } from '@oncojs/survivalplot/index.dist';
 import md5 from 'md5';
 import { compose } from 'recompose';

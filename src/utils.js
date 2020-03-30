@@ -1,5 +1,7 @@
 /* https://catalinxyz.com/create-the-@bind-decorator-to-help-with-react-events-and-callback-props */
-import { get, isArrayLikeObject, toLower } from 'lodash';
+import get from 'lodash/get';
+import isArrayLikeObject from 'lodash/isArrayLikeObject';
+import toLower from 'lodash/toLower';
 import jwtDecode from 'jwt-decode';
 
 import { createProfile, getProfile } from 'services/profiles';

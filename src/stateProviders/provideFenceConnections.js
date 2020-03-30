@@ -1,6 +1,10 @@
 import { injectState, provideState, update } from 'freactal';
 import { compose, lifecycle } from 'recompose';
-import { keys, omit, isEmpty, flatMap, flatten } from 'lodash';
+import keys from 'lodash/keys';
+import omit from 'lodash/omit';
+import isEmpty from 'lodash/isEmpty';
+import flatMap from 'lodash/flatMap';
+import flatten from 'lodash/flatten';
 
 import { getFenceUser } from 'services/fence';
 import { FENCES } from 'common/constants';
