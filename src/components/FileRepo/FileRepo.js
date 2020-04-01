@@ -19,7 +19,7 @@ import theme from 'theme/defaultTheme';
 import SQONURL from 'components/SQONURL';
 import SaveQuery from 'components/LoadShareSaveDeleteQuery/SaveQuery';
 import ShareQuery from 'components/LoadShareSaveDeleteQuery/ShareQuery';
-import { FileRepoStats, FileRepoStatsQuery } from 'components/Stats';
+import { FileRepoStatsQuery } from 'components/Stats';
 import ArrangerConnectionGuard from 'components/ArrangerConnectionGuard';
 import AggregationSidebar from 'components/FileRepo/AggregationSidebar';
 import DownloadIcon from 'icons/DownloadIcon';
@@ -30,9 +30,9 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import { ControlledIcon, OpenIcon, TableSpinner, SaveShareButtonContainer } from './ui';
 import customTableColumns from './customTableColumns';
-
 import { fillCenter } from 'theme/tempTheme.module.css';
 import './FileRepo.css';
+import StatsBar from './StatsBar';
 
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
@@ -182,7 +182,7 @@ const FileRepo = ({
                           />
                         )}
                       </Row>
-                      <FileRepoStats {...props} sqon={selectionSQON} style={{ flex: 'none' }} />
+                      <StatsBar api={props.api} sqon={selectionSQON} />
                       <Column className="arranger-table-wrapper">
                         <Table
                           {...props}

@@ -19,7 +19,8 @@ import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
 import { withRouter } from 'react-router-dom';
-import { Icon, Layout, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Layout, Spin } from 'antd';
 import {
   addStateInfo as updateTrackingInfo,
   TRACKING_EVENTS,
@@ -128,9 +129,7 @@ class UserProfilePageContainer extends React.Component {
     });
   };
 
-  onBreakPoint = broken => {
-    return this.setState({ collapsed: broken });
-  };
+  onBreakPoint = broken => this.setState({ collapsed: broken });
 
   render() {
     const {
@@ -149,7 +148,7 @@ class UserProfilePageContainer extends React.Component {
     if (isLoading) {
       return (
         <Layout className={'up-is-loading-layout'}>
-          <Spin indicator={<Icon type="loading" className={'up-spin'} spin />} />
+          <Spin indicator={<LoadingOutlined className={'up-spin'} spin />} />
         </Layout>
       );
     } else if (error) {
@@ -185,14 +184,12 @@ const mapStateToProps = state => ({
   loggedInUser: selectLoggedInUser(state),
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
+const mapDispatchToProps = dispatch => ({
     onFetchProfile: userInfo => dispatch(fetchProfileIfNeeded(userInfo)),
     onUpdateProfile: user => dispatch(updateUserProfile(user)),
     onDeleteProfile: () => dispatch(deleteProfile()),
     onCleanErrors: () => dispatch(cleanErrors()),
-  };
-};
+  });
 
 export default compose(
   withRouter,

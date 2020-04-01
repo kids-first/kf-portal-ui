@@ -66,7 +66,7 @@ export default class ReportMemberDlg extends React.Component {
     return (
       <Modal
         centered
-        title="Report Member for inappropriate content"
+        title="Report member for inappropriate content"
         visible={true}
         onOk={this.handleOk}
         width={720}

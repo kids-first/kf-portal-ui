@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutoComplete from 'components/UserProfile/PlacesAutoComplete';
-import { Icon, Input, List } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Input, List } from 'antd';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 
 class ContactEditablePlacesAutoComplete extends Component {
@@ -55,7 +56,7 @@ class ContactEditablePlacesAutoComplete extends Component {
         {({ getInputProps, getSuggestionItemProps, suggestions, loading }) => (
           <React.Fragment>
             <Input
-              prefix={<Icon type="search" />}
+              prefix={<SearchOutlined />}
               {...getInputProps({
                 id: 'address-input',
               })}

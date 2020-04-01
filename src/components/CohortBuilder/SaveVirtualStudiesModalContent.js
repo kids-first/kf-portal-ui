@@ -9,7 +9,7 @@ import Input from 'uikit/Input';
 import TextArea from 'uikit/TextArea';
 import PromptMessage from 'uikit/PromptMessage';
 import { ModalFooter } from 'components/Modal/index.js';
-import { ModalContentSection } from './common';
+import { ModalContentSection } from './ModalContentSection.tsx';
 
 import { saveVirtualStudy } from '../../store/actionCreators/virtualStudies';
 import { createVirtualStudy } from 'services/virtualStudies';

@@ -6,8 +6,19 @@
 ### Features
 
 ### Technical / Other changes
-
 -->
+## 2020-04-01 kf-portal-ui 2.15.0
+
+### Features
+- [#2338](https://github.com/kids-first/kf-portal-ui/issues/2338) Performance/Bug fix(Cohort Builder): show summary results using cardinality.
+- [#2371](https://github.com/kids-first/kf-portal-ui/issues/2371) Performance (File Repo): show statistics results using cardinality.
+- [#2283](https://github.com/kids-first/kf-portal-ui/issues/2283) Feature (Member Page, Admin): add a button to "inactivate" a member".
+
+### Technical / Other changes
+- [#2241](https://github.com/kids-first/kf-portal-ui/issues/2241) Build (App): remove unused code.
+- [#2353](https://github.com/kids-first/kf-portal-ui/issues/2353) Build (App): update arranger-components to fix some security warnings.
+- [#2379](https://github.com/kids-first/kf-portal-ui/issues/2379) Performance (App): use module-import style when using lodash for potential benefits.
+
 ## 2020-03-03 kf-portal-ui 2.14.0
 ​
 ### Features

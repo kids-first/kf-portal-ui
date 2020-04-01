@@ -10,7 +10,8 @@ import LoadingSpinner from 'uikit/LoadingSpinner';
 
 import { withApi } from 'services/api';
 import { arrangerProjectId as ARRANGER_PROJECT_ID } from 'common/injectGlobals';
-import { FieldFilterContainer, ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
+import { FieldFilterContainer } from '../FieldFilterContainer';
 import { sqonShape } from 'shapes';
 
 /**

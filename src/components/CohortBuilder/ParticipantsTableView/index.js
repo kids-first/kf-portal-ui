@@ -24,7 +24,6 @@ const enhance = compose(
 
 const ParticipantsTableView = ({
   sqon,
-  onRemoveFromCohort,
   api,
   pageIndex,
   setPageIndex,
@@ -104,13 +103,6 @@ const ParticipantsTableView = ({
                 setAllRowsSelected(s => false);
                 setSelectedRows(s => []);
               }}
-              onRemoveFromCohort={() => {
-                // remove the selected participants from the cohort
-                onRemoveFromCohort(selectedRows);
-                // clear selection
-                setAllRowsSelected(s => false);
-                setSelectedRows(s => []);
-              }}
               selectedRows={selectedRows}
               allRowsSelected={allRowsSelected}
             />
@@ -123,7 +115,6 @@ const ParticipantsTableView = ({
 
 ParticipantsTableView.propTypes = {
   sqon: PropTypes.object.isRequired,
-  onRemoveFromCohort: PropTypes.func.isRequired,
 };
 
 export default enhance(ParticipantsTableView);

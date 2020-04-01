@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import fetchListOfMembersAction from 'components/MemberSearchPage/fetchListOfMembers';
 import { bindActionCreators } from 'redux';
-import { Icon, Input, Layout } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Input, Layout } from 'antd';
 import MemberTable from './MemberTable';
 import PropTypes from 'prop-types';
 import MemberSearchBorder from 'components/MemberSearchPage/MemberSearchBorder';
@@ -190,7 +191,7 @@ class MemberSearchContainer extends Component {
             <Input
               onChange={this.handleChange}
               placeholder="Member Name, Address, Institution/Organization, Interests, Member Biography or Story"
-              prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               allowClear={true}
             />
             {(filters.roles && filters.roles.length > 0) ||

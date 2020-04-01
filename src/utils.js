@@ -176,3 +176,30 @@ export function isUrl(str) {
   ); // fragment locator
   return !!pattern.test(str);
 }
+
+/**
+ * @param {Integer} rawInteger
+ * @param {Integer} positionToKeepFromLeft
+ * @return {Integer}
+ *
+ * @examples
+ *
+ * roundIntToChosenPowerOfTen(1, 2) => 1
+ * roundIntToChosenPowerOfTen(4889832) => 4800000
+ * roundIntToChosenPowerOfTen(78,1) => 70
+ * roundIntToChosenPowerOfTen(63409,3) => 63400
+ *
+ * Note: positionToKeepFromLeft is the portion of the digit not to be rounded to a power of ten.
+ * For instance, the keeping of the third position from the left of 63409 will result 63400
+ */
+export const roundIntToChosenPowerOfTen = (rawInteger, positionToKeepFromLeft = 2) => {
+  const strRepresentation = rawInteger.toString();
+  const numOfDigits = strRepresentation.length;
+  if (numOfDigits < positionToKeepFromLeft) {
+    return rawInteger;
+  }
+  const powerOfTenMultiplier = numOfDigits - positionToKeepFromLeft;
+  const strMostSignificantDigits = strRepresentation.slice(0, positionToKeepFromLeft);
+  const mostSignificantDigits = parseInt(strMostSignificantDigits,10);
+  return mostSignificantDigits * Math.pow(10, powerOfTenMultiplier);
+};

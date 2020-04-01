@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Select } from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, Select } from 'antd';
 import { ROLES } from 'common/constants';
 import ContactEditablePlacesAutoComplete from './ContactEditablePlacesAutoComplete';
 import AddressEditForm from 'components/UserProfile/AddressEditForm';

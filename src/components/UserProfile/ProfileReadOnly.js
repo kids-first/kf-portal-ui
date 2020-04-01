@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { Card, Col, Divider, Row, Typography, Button } from 'antd';
 import ResearchInterest from './ResearchInterests';
 import {
@@ -14,9 +15,7 @@ import ReportMemberDlg from './ReportMemberDlg';
 
 const hasInterests = data => Array.isArray(data.interests) && data.interests.length > 0;
 
-const hasData = data => {
-  return Boolean(data.bio) || Boolean(data.story) || hasInterests(data);
-};
+const hasData = data => Boolean(data.bio) || Boolean(data.story) || hasInterests(data);
 
 const showReportMemberButton = isLoggedUserViewingOtherPage =>
   !isLoggedUserViewingOtherPage && isFeatureEnabled('reportMember');
@@ -63,7 +62,7 @@ export default class ProfileReadOnly extends React.Component {
           {oldExtra}
           <Button
             size={'small'}
-            icon="exclamation-circle"
+            icon={<ExclamationCircleOutlined />}
             style={{ color: 'rgb(144, 38, 142)' }}
             type="link"
             ghost
@@ -121,7 +120,7 @@ export default class ProfileReadOnly extends React.Component {
               <Col span={24}>
                 <Text className={'section-text'}>My Bio</Text>
                 <br />
-                <Paragraph className={Boolean(data.bio) ? 'bio-story' : 'bio-story-when-empty'}>
+                <Paragraph className={data.bio ? 'bio-story' : 'bio-story-when-empty'}>
                   {data.bio || bioMsgWhenEmpty}
                 </Paragraph>
                 {(hasInterestBlock || showWhenHasDataOrCanEdit(data.story, canEdit)) && (
@@ -135,7 +134,7 @@ export default class ProfileReadOnly extends React.Component {
               <Col span={24}>
                 <Text className={'section-text'}>My Story</Text>
                 <br />
-                <Paragraph className={Boolean(data.story) ? 'bio-story' : 'bio-story-when-empty'}>
+                <Paragraph className={data.story ? 'bio-story' : 'bio-story-when-empty'}>
                   {data.story || storyMsgWhenEmpty}
                 </Paragraph>
                 {hasInterestBlock && <Divider className={'profile-divider'} />}
