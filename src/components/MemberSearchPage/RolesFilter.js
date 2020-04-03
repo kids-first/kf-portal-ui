@@ -10,8 +10,8 @@ import { ROLES } from 'common/constants';
 import PropTypes from 'prop-types';
 import FilterContainer from './FilterContainer';
 
-const getKeyDisplayNames = originalObjectFromES => {
-  return Object.entries(originalObjectFromES).reduce((acc, [keyEs]) => {
+const getKeyDisplayNames = originalObjectFromES =>
+  Object.entries(originalObjectFromES).reduce((acc, [keyEs]) => {
     const translation = ROLES.find(r => r.type === keyEs);
     if (translation) {
       return {
@@ -21,7 +21,6 @@ const getKeyDisplayNames = originalObjectFromES => {
     }
     return acc;
   }, []);
-};
 
 class RolesFilter extends Component {
   static propTypes = {
@@ -38,8 +37,13 @@ class RolesFilter extends Component {
   };
 
   componentDidMount() {
-    const { updateRolesFilter } = this.props;
-    updateRolesFilter(ROLES.reduce((acc, { type }) => ({ ...acc, [type]: false }), {}));
+    const { updateRolesFilter, rolesFilter } = this.props;
+    updateRolesFilter(
+      ROLES.reduce(
+        (acc, { type }) => ({ ...acc, [type]: rolesFilter[type] ? rolesFilter[type] : false }),
+        {},
+      ),
+    );
   }
 
   render() {
