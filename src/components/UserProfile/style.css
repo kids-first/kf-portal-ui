@@ -118,6 +118,11 @@
   padding-right: 25px;
 }
 
+.ri-row-form-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .ri-row {
   padding-bottom: 15px;
 }
@@ -147,6 +152,7 @@
   font-weight: normal;
   letter-spacing: 0.17px;
   line-height: 21px;
+  margin-top: 10px;
 }
 
 .ri-check-icon {
@@ -374,10 +380,6 @@
   margin-right: 10px;
 }
 
-.form-item-no-margin {
-  margin: 0;
-}
-
 .section-text {
   font-size: 16px;
   color: rgb(57, 69, 146);
@@ -396,4 +398,8 @@
 .ant-menu-vertical-right .ant-menu-item::after,
 .ant-menu-inline .ant-menu-item::after {
   border-right: 3px solid rgb(232, 55, 155);
+}
+
+.form-card {
+  width: 100%
 }
