@@ -1,21 +1,26 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Icon as LegacyIcon } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { CheckOutlined, SearchOutlined } from '@ant-design/icons';
-import { Col, Row, Tag, Select, AutoComplete, Input } from 'antd';
+import { CheckOutlined, SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
+import { Col, Row, Tag, Select, AutoComplete, Input, Button, Form } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
 import debounce from 'lodash/debounce';
 import './style.css';
 import { searchInterests } from 'services/members/search';
-import { ERROR_TOO_MANY_CHARACTERS } from './constants';
 
 const { Option } = Select;
 
 const MIN_NUM_OF_CHAR_TO_CHECK = 2;
 const WAIT_IN_MS = 500;
 const MAX_LENGTH_FOR_INTEREST = 60;
+
+const STYLE_NO_BORDER = { border: 'none' };
+
+const TAG_ICON_STYLE = {
+  paddingLeft: '10px',
+  paddingRight: '10px',
+  paddingBottom: '5px',
+};
 
 const generateFieldNameFromInterest = interest => toKebabCase(`tag ${interest}`);
 
@@ -26,255 +31,208 @@ const generateClassNameForOtherInterestIcon = input => {
   return '';
 };
 
-const validateUserInterest = (rule, value, callback) => {
-  if (value && value.length > MAX_LENGTH_FOR_INTEREST) {
-    return callback(`${ERROR_TOO_MANY_CHARACTERS} ( max: ${MAX_LENGTH_FOR_INTEREST} ) `);
-  }
-  return callback();
+const setFieldForEveryInterests = (interests = [], form) => {
+  //Inject dynamically tags into the form
+  interests.forEach(interest => {
+    const fieldNameForTag = generateFieldNameFromInterest(interest);
+    form.setFieldsValue({ [fieldNameForTag]: interest });
+  });
 };
 
+const shapeSuggestionsAsOptions = suggestions => suggestions.map(s => ({ value: s }));
+
 // Let's inject tags into the form so we can have access to them in the parent.
-class ResearchInterestsEditable extends Component {
-  static propTypes = {
-    initialInterest: PropTypes.arrayOf(PropTypes.string).isRequired,
-    parentForm: PropTypes.object.isRequired,
-  };
+const ResearchInterestsEditable = props => {
+  const { parentForm, charactersLengthValidator, initialInterests } = props;
 
-  static defaultProps = {
-    initialInterest: [],
-  };
+  const { resetFields } = parentForm;
 
-  state = {
-    interests: [...this.props.initialInterest],
-    dataSource: [],
-    errorFetchingTags: null,
-    isLoadingSuggestions: false,
-  };
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+  const [errorFetchingTags, setErrorFetchingTags] = useState(null);
+  const [dataSource, setDataSource] = useState([]);
+  const [interests, setInterests] = useState(initialInterests || []);
 
-  setFieldForEveryInterests = (interests = []) => {
-    const { parentForm } = this.props;
-    //Inject dynamically tags into the form
-    interests.forEach(interest => {
-      const fieldNameForTag = generateFieldNameFromInterest(interest);
-      parentForm.setFieldsValue({ [fieldNameForTag]: interest });
-    });
-  };
+  useEffect(() => {
+    setFieldForEveryInterests(interests, parentForm);
+    // code to run on component mount
+  });
 
-  componentDidMount() {
-    const { interests } = this.state;
-    //Inject dynamically initial tags into the form
-    this.setFieldForEveryInterests(interests);
-  }
+  const generateTags = () =>
+    interests.map((interest, index) => {
+      const interestName = generateFieldNameFromInterest(interest);
+      return (
+        <Row key={`${index}-${interestName}`}>
+          <Form.Item name={interestName} rules={[{ required: false }]}>
+            <Fragment>
+              <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
+                <div className={'ri-tag-content'}>
+                  <div className={'ri-text-wrapper'}>{interest}</div>
+                  <div>
+                    <Button
+                      size={'small'}
+                      shape={'circle'}
+                      style={STYLE_NO_BORDER}
+                      type={'ghost'}
+                      onClick={() => {
+                        const interestFiltered = interests.filter(i => i !== interest);
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { interests } = this.state;
-    // We can only add or remove so there is not need to check the content
-    if (interests.length !== prevState.interests.length) {
-      this.setFieldForEveryInterests(interests);
-    }
-  }
+                        resetFields([interestName]); //clean form, for it was added dynamically.
 
-  onDeleteInterest = tag => () => {
-    const { interests } = this.state;
-    const interestFiltered = interests.filter(i => i !== tag);
-
-    const { parentForm } = this.props;
-    parentForm.resetFields(generateFieldNameFromInterest(tag));//clean form, for it was added dynamically.
-
-    this.setState({ interests: interestFiltered });
-  };
-
-  generateTags = () => {
-    const { interests } = this.state;
-    const { parentForm } = this.props;
-    const { getFieldDecorator } = parentForm;
-    const formItemStyle = { margin: 0 };
-    const iconStyle = {
-      paddingLeft: '10px',
-      paddingRight: '10px',
-    };
-    return interests.map((interest, index) => (
-        <Row key={index}>
-          <Form.Item style={formItemStyle}>
-            {getFieldDecorator(generateFieldNameFromInterest(interest), {
-              rules: [{ required: false }],
-            })(
-              <Fragment>
-                <Tag className={'ri-tag'} key={toKebabCase(`${index} ${interest}`)}>
-                  <div className={'ri-tag-content'}>
-                    <div className={'ri-text-wrapper'}>{interest}</div>
-                    <div>
-                      <LegacyIcon
-                        type="close-circle"
-                        theme={'filled'}
-                        style={iconStyle}
-                        onClick={this.onDeleteInterest(interest)}
-                      />
-                    </div>
+                        setInterests(interestFiltered);
+                      }}
+                      icon={<CloseCircleTwoTone style={TAG_ICON_STYLE} twoToneColor="#90268E" />}
+                    />
                   </div>
-                </Tag>
-              </Fragment>,
-            )}
+                </div>
+              </Tag>
+            </Fragment>
           </Form.Item>
         </Row>
-      ));
-  };
+      );
+    });
 
-  handleSelectChange = value => {
-    const { interests } = this.state;
+  const handleSelectChange = value => {
     const cleanedValue = value.toLowerCase();
-    this.setState({ interests: [cleanedValue, ...interests] });
+    setInterests([cleanedValue, ...interests]);
   };
 
-  generateOptions = arrToFilter => {
-    const { interests } = this.state;
-    return arrToFilter
+  const generateOptions = arrToFilter =>
+    arrToFilter
       .filter(area => !interests.includes(area.toLowerCase()))
       .map(area => (
         <Option value={area} key={toKebabCase(area)}>
           {area}
         </Option>
       ));
-  };
 
-  getSuggestions = debounce(async filter => {
-    const { interests } = this.state;
+  const getSuggestions = debounce(async filter => {
     try {
-      this.setState({ isLoadingSuggestions: true });
+      setIsLoadingSuggestions(true);
 
       const response = await searchInterests(filter);
       const loweredSuggestions = response.interests.map(i => i.toLowerCase());
       const suggestionsExceptExisting = loweredSuggestions.filter(sug => !interests.includes(sug));
 
-      this.setState({ dataSource: suggestionsExceptExisting, isLoadingSuggestions: false });
+      setDataSource(shapeSuggestionsAsOptions(suggestionsExceptExisting));
+
+      setIsLoadingSuggestions(false);
     } catch (e) {
-      this.setState({ errorFetchingTags: e, isLoadingSuggestions: false });
+      setIsLoadingSuggestions(false);
+      setErrorFetchingTags(e);
     }
   }, WAIT_IN_MS);
 
-  onSearch = searchText => {
-    if (!searchText || searchText.length < MIN_NUM_OF_CHAR_TO_CHECK) {
-      return null;
-    }
-    this.getSuggestions(searchText);
-  };
-
-  onClickCheck = () => {
-    const { parentForm } = this.props;
+  const onClickCheck = () => {
     const error = parentForm.getFieldError('otherAreasOfInterests');
     const interestFromAutoComplete = parentForm.getFieldValue('otherAreasOfInterests');
-    if (!error && interestFromAutoComplete) {
+    const hasNoError = !error || (Array.isArray(error) && error.length === 0);
+    if (hasNoError && interestFromAutoComplete) {
       const cleanedInterest = interestFromAutoComplete.trim().toLowerCase();
-      const { interests } = this.state;
       if (!interests.some(i => i === cleanedInterest)) {
-        this.setState({ interests: [cleanedInterest, ...interests] });
+        setInterests([cleanedInterest, ...interests]);
       }
     }
   };
 
-  onPressEnter = e => {
-    e.preventDefault();
-    this.onClickCheck();
-  };
+  const autoCompleteCurrentValue = parentForm.getFieldsValue().otherAreasOfInterests || '';
 
-  render() {
-    const { parentForm } = this.props;
+  const errorOtherAreasOfInterests = parentForm.getFieldError('otherAreasOfInterests') || [];
+  const helpInfo = [
+    {
+      isError: Boolean(errorOtherAreasOfInterests[0]),
+      msg: errorOtherAreasOfInterests[0],
+      mustCorrect: true,
+    },
+    {
+      isError: Boolean(errorFetchingTags),
+      msg: 'Unable to fetch suggestions but you can still add an interest',
+      mustCorrect: false,
+    },
+  ].find(e => e.isError); // max character exceeded msg > broken api msg
 
-    const { getFieldDecorator } = parentForm;
+  const mustCorrectError = Boolean(helpInfo) && helpInfo.mustCorrect; //disable clicking and green check
 
-    const autoCompleteCurrentValue = parentForm.getFieldsValue().otherAreasOfInterests || '';
+  return (
+    <Row>
+      <Col span={8}>
+        <Form.Item
+          name="diseaseArea"
+          label={'Kids First Disease Areas'}
+          rules={[{ required: false }]}
+        >
+          <Select placeholder="Select an option" onChange={handleSelectChange} size={'small'}>
+            {generateOptions(DISEASE_AREAS)}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="studyShortNames"
+          label={'Kids First Studies'}
+          rules={[{ required: false }]}
+        >
+          <Select placeholder="Select an option" onChange={handleSelectChange} size={'small'}>
+            {generateOptions(STUDY_SHORT_NAMES)}
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name={'otherAreasOfInterests'}
+          label={'otherAreasOfInterests'}
+          validateStatus={helpInfo ? 'error' : ''}
+          help={helpInfo ? helpInfo.msg : ''}
+          rules={[
+            { required: false },
+            () => ({
+              validator: charactersLengthValidator(MAX_LENGTH_FOR_INTEREST),
+            }),
+          ]}
+        >
+          <AutoComplete
+            options={isLoadingSuggestions ? [] : dataSource}
+            onSearch={searchText => {
+              if (!searchText || searchText.length < MIN_NUM_OF_CHAR_TO_CHECK) {
+                return null;
+              }
+              getSuggestions(searchText);
+            }}
+          >
+            <Input
+              onPressEnter={e => {
+                e.preventDefault();
+                onClickCheck();
+              }}
+              placeholder="Search for interests"
+              prefix={<SearchOutlined />}
+              suffix={
+                <Button
+                  style={STYLE_NO_BORDER}
+                  type={'ghost'}
+                  onClick={onClickCheck}
+                  icon={
+                    <CheckOutlined
+                      className={
+                        mustCorrectError
+                          ? ''
+                          : generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)
+                      }
+                    />
+                  }
+                />
+              }
+              size={'small'}
+            />
+          </AutoComplete>
+        </Form.Item>
+      </Col>
+      <Col offset={4} span={12} style={{ paddingTop: '32px' }}>
+        {generateTags()}
+      </Col>
+    </Row>
+  );
+};
 
-    const { dataSource, errorFetchingTags, isLoadingSuggestions } = this.state;
-
-    const errorOtherAreasOfInterests = parentForm.getFieldError('otherAreasOfInterests') || [];
-    const helpInfo = [
-      {
-        isError: Boolean(errorOtherAreasOfInterests[0]),
-        msg: errorOtherAreasOfInterests[0],
-        mustCorrect: true,
-      },
-      {
-        isError: Boolean(errorFetchingTags),
-        msg: 'Unable to fetch suggestions but you can still add an interest',
-        mustCorrect: false,
-      },
-    ].find(e => e.isError); // max character exceeded msg > broken api msg
-
-    const mustCorrectError = Boolean(helpInfo) && helpInfo.mustCorrect; //disable clicking and green check
-
-    return (
-      <Row>
-        <Col span={8}>
-          <Row>
-            <Form.Item label="Kids First Disease Areas" className={'form-item-no-margin'}>
-              {getFieldDecorator('diseaseArea', {
-                rules: [{ required: false }],
-              })(
-                <Select
-                  placeholder="Select an option"
-                  onChange={this.handleSelectChange}
-                  size={'small'}
-                >
-                  {this.generateOptions(DISEASE_AREAS)}
-                </Select>,
-              )}
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item label="Kids First Studies" className={'form-item-no-margin'}>
-              {getFieldDecorator('studyShortNames', {
-                rules: [{ required: false }],
-              })(
-                <Select
-                  placeholder="Select an option"
-                  onChange={this.handleSelectChange}
-                  size={'small'}
-                >
-                  {this.generateOptions(STUDY_SHORT_NAMES)}
-                </Select>,
-              )}
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item
-              label="Other areas of interest"
-              validateStatus={helpInfo ? 'error' : ''}
-              help={helpInfo ? helpInfo.msg : ''}
-              className={'form-item-no-margin'}
-            >
-              {getFieldDecorator('otherAreasOfInterests', {
-                rules: [{ required: false }, { validator: validateUserInterest }],
-              })(
-                <AutoComplete
-                  dataSource={isLoadingSuggestions ? [] : dataSource}
-                  onSearch={this.onSearch}
-                >
-                  <Input
-                    onPressEnter={this.onPressEnter}
-                    placeholder="Search for interests"
-                    prefix={<SearchOutlined />}
-                    suffix={
-                      <CheckOutlined
-                        onClick={this.onClickCheck}
-                        className={
-                          mustCorrectError
-                            ? ''
-                            : generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)
-                        } />
-                    }
-                    size={'small'}
-                  />
-                </AutoComplete>,
-              )}
-            </Form.Item>
-          </Row>
-        </Col>
-        <Col offset={4} span={12} style={{ paddingTop: '32px' }}>
-          {this.generateTags()}
-        </Col>
-      </Row>
-    );
-  }
-}
+ResearchInterestsEditable.propTypes = {
+  initialInterests: PropTypes.arrayOf(PropTypes.string).isRequired,
+  parentForm: PropTypes.object.isRequired,
+  charactersLengthValidator: PropTypes.func.isRequired,
+};
 
 export default ResearchInterestsEditable;

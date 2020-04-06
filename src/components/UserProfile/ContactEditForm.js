@@ -1,17 +1,26 @@
-import React, { Component } from 'react';
-import { Form } from '@ant-design/compatible';
-import '@ant-design/compatible/assets/index.css';
-import { Card, Col, Row } from 'antd';
+import React, { useState } from 'react';
+import { Card, Col, Row, Form } from 'antd';
 import PropTypes from 'prop-types';
 import ContactInformationEditable from 'components/UserProfile/ContactInformationEditable';
 import FindMeEditable from './FindMeEditable';
 import './style.css';
 import { findMeFields } from './constants';
-import { makeCommonCardPropsEditing, hasFieldInError } from 'components/UserProfile/utils';
+import { makeCommonCardPropsEditing } from 'components/UserProfile/utils';
+import { socialItems } from 'components/UserProfile/utils';
 
-const reshapeForProfile = fields => {
-  const { entries } = Object;
-  return entries(fields).reduce(
+const { entries } = Object;
+
+const buildInitialValuesForFindMe = profile =>
+  entries(socialItems()).reduce(
+    (acc, [serviceName]) => ({
+      ...acc,
+      key: { inputVal: profile[serviceName], protocol: '' },
+    }),
+    {},
+  );
+
+const reshapeForProfile = fields =>
+  entries(fields).reduce(
     (acc, [key, value]) => {
       if (key === 'roles' && !Array.isArray(value)) {
         return {
@@ -29,57 +38,96 @@ const reshapeForProfile = fields => {
     },
     { ...fields },
   );
-};
 
-class ContactEditForm extends Component {
-  static propTypes = {
-    data: PropTypes.object.isRequired,
-    onClickCancelCb: PropTypes.func.isRequired,
-    onClickSaveCb: PropTypes.func.isRequired,
-    form: PropTypes.object.isRequired,
-    isProfileUpdating: PropTypes.bool.isRequired,
-    loggedInUser: PropTypes.object.isRequired,
-  };
+const ContactEditForm = props => {
+  const [form] = Form.useForm();
+  const { onClickSaveCb, updateProfileCb, data, onClickCancelCb, isProfileUpdating } = props;
+  const { getFieldValue } = form;
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { form, onClickSaveCb, updateProfileCb } = this.props;
+  const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
+  const [selectedRole, updateSelectedRole] = useState({ roles: data.roles[0] });
 
-    const fieldsValues = form.getFieldsValue();
-    updateProfileCb(reshapeForProfile(fieldsValues));
+  const handleSubmit = formFields => {
+    updateProfileCb(reshapeForProfile(formFields));
     onClickSaveCb();
   };
 
-  render() {
-    const { data, onClickCancelCb, form, isProfileUpdating } = this.props;
-    const { getFieldsError } = form;
+  return (
+    <Form
+      name={'contact_form'}
+      form={form}
+      layout={'vertical'}
+      initialValues={{
+        title: data.title,
+        roles: data.roles[0],
+        firstName: data.firstName,
+        lastName: data.lastName,
+        institution: data.institution,
+        department: data.department,
+        institutionalEmail: data.institutionalEmail,
+        jobTitle: data.jobTitle,
+        phone: data.phone,
+        eraCommonsID: data.eraCommonsID,
+        addressLine1: data.addressLine1,
+        addressLine2: data.addressLine2,
+        city: data.city,
+        state: data.state,
+        zip: data.zip,
+        country: data.country,
+        ...buildInitialValuesForFindMe(data),
+      }}
+      className={'form-card'}
+      onFinish={handleSubmit}
+      onFieldsChange={props => {
+        /*
+         * Some fields are hidden according to the role.
+         * E.g : role researcher has more fields than community.
+         * So, if someone's role is community but is changed in the form to researcher,
+         * than make sure fields for researcher shows up dynamically.
+         * */
+        const hasRolesFieldChanged = (props[0]?.name || []).includes('roles');
+        if (hasRolesFieldChanged) {
+          const roleValueFromForm = getFieldValue('roles');
+          const hasRoleChanged = roleValueFromForm !== selectedRole;
+          if (hasRoleChanged) {
+            updateSelectedRole({ roles: [roleValueFromForm] });
+          }
+        }
+      }}
+    >
+      <Card
+        {...makeCommonCardPropsEditing({
+          title: 'Contact Information',
+          onClickCancelCb,
+          isProfileUpdating,
+          disableSaveButton: isSaveButtonDisabled,
+        })}
+      >
+        <Row>
+          <Col span={12} className={'main-left-col'}>
+            <ContactInformationEditable
+              data={data}
+              setIsSaveButtonDisabledCB={setIsSaveButtonDisabled}
+              parentForm={form}
+              selectedRole={selectedRole}
+            />
+          </Col>
+          <Col span={12} className={'find-me-col'}>
+            <FindMeEditable setIsSaveButtonDisabledCB={setIsSaveButtonDisabled} />
+          </Col>
+        </Row>
+      </Card>
+    </Form>
+  );
+};
 
-    const hasFormError = hasFieldInError(getFieldsError());
+ContactEditForm.propTypes = {
+  data: PropTypes.object.isRequired,
+  onClickCancelCb: PropTypes.func.isRequired,
+  onClickSaveCb: PropTypes.func.isRequired,
+  isProfileUpdating: PropTypes.bool.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
+  updateProfileCb: PropTypes.func.isRequired,
+};
 
-    return (
-      <Form onSubmit={hasFormError ? undefined : this.handleSubmit} layout={'vertical'}>
-        <Card
-          {...makeCommonCardPropsEditing({
-            title: 'Contact Information',
-            onClickCancelCb,
-            isProfileUpdating,
-            disableSaveButton: hasFormError,
-          })}
-        >
-          <Row>
-            <Col span={12} className={'main-left-col'}>
-              <ContactInformationEditable data={data} parentForm={form} />
-            </Col>
-            <Col span={12} className={'find-me-col'}>
-              <FindMeEditable parentForm={form} data={data} />
-            </Col>
-          </Row>
-        </Card>
-      </Form>
-    );
-  }
-}
-
-const ContactForm = Form.create({ name: 'contact_form' })(ContactEditForm);
-
-export default ContactForm;
+export default ContactEditForm;
