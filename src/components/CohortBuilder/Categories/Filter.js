@@ -26,8 +26,6 @@ const Filter = compose(withApi)(
     onSubmit = () => {},
     onCancel = () => {},
     onBack = () => {},
-    showOntologyBrowserButton = false,
-    onOntologyClicked,
     field,
     arrangerProjectId = ARRANGER_PROJECT_ID,
     arrangerProjectIndex = ARRANGER_API_PARTICIPANT_INDEX_NAME,
@@ -42,13 +40,7 @@ const Filter = compose(withApi)(
       {({ extendedMapping, loading }) => {
         if (loading) {
           return (
-            <FieldFilterContainer
-              applyEnabled={false}
-              onCancel={onCancel}
-              onBack={onBack}
-              showOntologyBrowserButton={showOntologyBrowserButton}
-              onOntologyClicked={onOntologyClicked}
-            >
+            <FieldFilterContainer applyEnabled={false} onCancel={onCancel} onBack={onBack}>
               <LoadingSpinner color="#a9adc0" size="30px" />
             </FieldFilterContainer>
           );
@@ -102,14 +94,7 @@ const Filter = compose(withApi)(
             field={field}
             arrangerProjectId={arrangerProjectId}
             arrangerProjectIndex={arrangerProjectIndex}
-            ContainerComponent={props => (
-              <FieldFilterContainer
-                {...props}
-                showOntologyBrowserButton={showOntologyBrowserButton}
-                onOntologyClicked={onOntologyClicked}
-                onBack={onBack}
-              />
-            )}
+            ContainerComponent={props => <FieldFilterContainer {...props} onBack={onBack} />}
           />
         );
       }}

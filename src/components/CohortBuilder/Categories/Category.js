@@ -39,7 +39,10 @@ export default class Category extends React.Component {
   }
 
   handleMenuItemSelected(selectedField) {
-    this.setState({ selectedField });
+    this.setState({
+      selectedField: selectedField,
+      isOntologyModalVisible: selectedField === 'observed_phenotype.name',
+    });
   }
 
   handleCloseFilter(keepCategoryOpen = false) {
@@ -94,8 +97,6 @@ export default class Category extends React.Component {
         onCancel={() => {
           this.handleCloseFilter(false);
         }}
-        showOntologyBrowserButton={field === 'phenotype.hpo_phenotype_observed'}
-        onOntologyClicked={this.onOntologyClicked}
         field={field}
         arrangerProjectId={arrangerProjectId}
         arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
@@ -108,7 +109,7 @@ export default class Category extends React.Component {
     const { isOntologyModalVisible, visible, selectedField } = this.state;
     return (
       <Fragment>
-        {selectedField === 'phenotype.hpo_phenotype_observed' && (
+        {selectedField === 'observed_phenotype.name' && (
           <OntologyModal
             isVisible={isOntologyModalVisible}
             onCloseModal={this.onOntologyModalClose}
@@ -129,9 +130,10 @@ export default class Category extends React.Component {
             let overlay = <div />;
 
             if (!isOntologyModalVisible) {
-              overlay = selectedField
-                ? this.renderFilter(selectedField, title)
-                : this.renderMenu(extendedMapping);
+              overlay =
+                selectedField && selectedField !== 'observed_phenotype.name'
+                  ? this.renderFilter(selectedField, title)
+                  : this.renderMenu(extendedMapping);
             }
 
             return (

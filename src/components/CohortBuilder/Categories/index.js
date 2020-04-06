@@ -100,7 +100,7 @@ const CATEGORY_FIELDS = {
     'family.family_compositions.shared_hpo_ids',
     'outcome.disease_related',
     'phenotype.hpo_phenotype_not_observed',
-    'phenotype.hpo_phenotype_observed',
+    'observed_phenotype.name',
     'phenotype.source_text_phenotype',
     'diagnoses.source_text_tumor_location',
     'outcome.vital_status',

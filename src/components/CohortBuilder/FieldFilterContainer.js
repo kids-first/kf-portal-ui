@@ -17,8 +17,6 @@ export const FieldFilterContainer = ({
   onSubmit: onSqonSubmit,
   onCancel,
   onBack,
-  showOntologyBrowserButton,
-  onOntologyClicked,
   applyEnabled = true,
   showHeader = true,
   className = '',
@@ -54,11 +52,6 @@ export const FieldFilterContainer = ({
           <Button onClick={onBack} icon={<LeftOutlined />}>
             Back
           </Button>
-          {showOntologyBrowserButton && (
-            <Button type="dashed" onClick={onOntologyClicked}>
-              Ontology Browser
-            </Button>
-          )}
         </Header>
       )}
       <div
