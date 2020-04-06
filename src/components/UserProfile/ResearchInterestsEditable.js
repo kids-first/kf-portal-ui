@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { CheckOutlined, SearchOutlined, CloseCircleTwoTone } from '@ant-design/icons';
+import { SearchOutlined, CloseCircleTwoTone, PlusCircleTwoTone } from '@ant-design/icons';
 import { Col, Row, Tag, Select, AutoComplete, Input, Button, Form } from 'antd';
 import { toKebabCase } from 'utils';
 import { DISEASE_AREAS, STUDY_SHORT_NAMES } from 'common/constants';
@@ -23,13 +23,6 @@ const TAG_ICON_STYLE = {
 };
 
 const generateFieldNameFromInterest = interest => toKebabCase(`tag ${interest}`);
-
-const generateClassNameForOtherInterestIcon = input => {
-  if (input && input.length >= MIN_NUM_OF_CHAR_TO_CHECK) {
-    return 'ri-check-icon';
-  }
-  return '';
-};
 
 const setFieldForEveryInterests = (interests = [], form) => {
   //Inject dynamically tags into the form
@@ -114,7 +107,6 @@ const ResearchInterestsEditable = props => {
       const suggestionsExceptExisting = loweredSuggestions.filter(sug => !interests.includes(sug));
 
       setDataSource(shapeSuggestionsAsOptions(suggestionsExceptExisting));
-
       setIsLoadingSuggestions(false);
     } catch (e) {
       setIsLoadingSuggestions(false);
@@ -133,8 +125,6 @@ const ResearchInterestsEditable = props => {
       }
     }
   };
-
-  const autoCompleteCurrentValue = parentForm.getFieldsValue().otherAreasOfInterests || '';
 
   const errorOtherAreasOfInterests = parentForm.getFieldError('otherAreasOfInterests') || [];
   const helpInfo = [
@@ -175,7 +165,7 @@ const ResearchInterestsEditable = props => {
         </Form.Item>
         <Form.Item
           name={'otherAreasOfInterests'}
-          label={'otherAreasOfInterests'}
+          label={'Other Areas of Interests'}
           validateStatus={helpInfo ? 'error' : ''}
           help={helpInfo ? helpInfo.msg : ''}
           rules={[
@@ -205,15 +195,13 @@ const ResearchInterestsEditable = props => {
                 <Button
                   style={STYLE_NO_BORDER}
                   type={'ghost'}
-                  onClick={onClickCheck}
+                  onClick={mustCorrectError ? undefined : onClickCheck}
                   icon={
-                    <CheckOutlined
-                      className={
-                        mustCorrectError
-                          ? ''
-                          : generateClassNameForOtherInterestIcon(autoCompleteCurrentValue)
-                      }
-                    />
+                    mustCorrectError ? (
+                      <CloseCircleTwoTone twoToneColor={'#eb2f96'} />
+                    ) : (
+                      <PlusCircleTwoTone twoToneColor={'#52c41a'} />
+                    )
                   }
                 />
               }
