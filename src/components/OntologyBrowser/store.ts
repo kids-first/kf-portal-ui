@@ -1,6 +1,4 @@
-// import { findIndex } from 'lodash/findIndex';
-import { flatMockData } from './mockData';
-import { graphql } from 'services/arranger';
+import { graphql } from '../../services/arranger';
 
 type PhenotypeSource = {
   key: string;
@@ -12,21 +10,24 @@ type PhenotypeSource = {
 };
 
 export type TreeNode = {
-  title?: React.ReactElement | string;
+  title: React.ReactElement | string;
   key: string;
   hasChildren?: boolean;
   children: TreeNode[];
   results?: number;
+  hidden?: boolean;
 };
 
 export class PhenotypeStore {
+  // Flat representation of phenotype from graphql source
   phenotypes: PhenotypeSource[] = [];
+  // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
   fetch = () => {
     return this.getPhenotypes().then((data: PhenotypeSource[]) => {
-      this.remoteSingleRootNode(data);
-      this.phenotypes = data;
+      const stripedData = this.remoteSingleRootNode(data);
+      this.phenotypes = stripedData;
       this.tree = this.generateTree();
       return true;
     });
@@ -82,14 +83,6 @@ export class PhenotypeStore {
   getPhenotypes = async (sqon?: any) => {
     const body = {
       query: this.buildPhenotypeQuery(),
-      variables: {
-        sqon: {
-          op: 'and',
-          content: [
-            { content: { field: 'observed_phenotype.age_at_event_days', value: [1] }, op: '>=' },
-          ],
-        },
-      },
     };
     try {
       const { data } = await graphql()(body);
@@ -100,5 +93,16 @@ export class PhenotypeStore {
     }
   };
 
-  remoteSingleRootNode = (data: PhenotypeSource[]) => {};
+  remoteSingleRootNode = (phenotypes: PhenotypeSource[]) => {
+    return phenotypes
+      .map(p => (p.key !== 'All (HP:0000001)' ? p : null))
+      .filter((p): p is PhenotypeSource => p !== null)
+      .map(p => {
+        const index = p.top_hits.parents.indexOf('All (HP:0000001)');
+        if (!index) {
+          p.top_hits.parents.splice(index, 1);
+        }
+        return p;
+      });
+  };
 }

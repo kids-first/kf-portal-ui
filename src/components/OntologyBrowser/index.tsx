@@ -1,17 +1,49 @@
+import * as React from 'react';
+import { connect } from 'react-redux';
 import { Modal, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
-import * as React from 'react';
+import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
+import { setSqons } from '../../store/actionCreators/virtualStudies';
 
 import './index.css';
 
 type ModalProps = {
   isVisible: boolean;
   onCloseModal: Function;
-  initialSqon: object;
+  initialSqon: Sqon;
   onSqonUpdate: Function;
   title: string;
+  setSqons: Function;
+};
+
+type SqonFilters = {
+  op: string;
+  content: { field: string; value: string[] };
+};
+
+type Sqon = {
+  op: string;
+  content: SqonFilters[];
+};
+
+const updateSqons = (initialSqon: Sqon, value: string[]) => {
+  const index = findIndex(initialSqon?.content, c => c.content.field === 'observed_phenotype.name');
+  if (index >= 0) {
+    const currentValue = initialSqon.content[index].content.value;
+    initialSqon.content[index].content.value = [...currentValue, ...value];
+  } else {
+    initialSqon.content.push({
+      op: 'in',
+      content: {
+        field: 'observed_phenotype.name',
+        value,
+      },
+    });
+  }
+
+  return [initialSqon];
 };
 
 class OntologyModal extends React.Component<ModalProps, {}> {
@@ -25,14 +57,40 @@ class OntologyModal extends React.Component<ModalProps, {}> {
   constructor(props: ModalProps) {
     super(props);
     this.ontologyStore = new PhenotypeStore();
-    this.ontologyStore.fetch().then(this.updatePhenotypes);
+    this.ontologyStore.fetch().then(() => {
+      this.updatePhenotypes();
+      this.setState({ targetKeys: this.getKeysFromSqon() });
+    });
   }
 
-  onApply = (e: React.MouseEvent) => {
-    const { onSqonUpdate, title, initialSqon } = this.props;
-    console.log('onsubmit : ', initialSqon, ' title ', title);
-    onSqonUpdate(title, initialSqon);
-    // this.handleCloseFilter(false);
+  getKeyFromTreeId = (treeId: string) => {
+    const values = treeId.split('-');
+    return treeId.split('-')[values.length - 1];
+  };
+
+  getKeysFromSqon = () => {
+    const keys: Set<string> = new Set();
+
+    const findTreeKey = (treeNode: TreeNode) => {
+      this.props.initialSqon.content.forEach(v => {
+        if (v.content.value.indexOf(treeNode.title as string) >= 0) {
+          keys.add(treeNode.key);
+        }
+        if (treeNode.children.length > 0) {
+          treeNode.children.forEach(t => findTreeKey(t));
+        }
+      });
+    };
+    this.ontologyStore.tree.forEach(treeNode => {
+      findTreeKey(treeNode);
+    });
+    return Array.from(keys);
+  };
+
+  onApply = (keys: string[]) => {
+    const { initialSqon, setSqons } = this.props;
+    const valuesId = keys.map(this.getKeyFromTreeId);
+    setSqons(updateSqons(initialSqon, valuesId));
     this.props.onCloseModal();
   };
 
@@ -74,7 +132,7 @@ class OntologyModal extends React.Component<ModalProps, {}> {
         style={{ height: '80vh' }}
         title="HPO Onthology Browser"
         visible={this.props.isVisible}
-        onOk={this.onApply}
+        onOk={e => this.onApply(this.state.targetKeys)}
         okText="Add"
         onCancel={this.onCancel}
         cancelText="Cancel"
@@ -91,14 +149,18 @@ class OntologyModal extends React.Component<ModalProps, {}> {
           {({ direction, onItemSelect, selectedKeys }) => {
             if (direction === 'left') {
               const checkedKeys = [...selectedKeys, ...this.state.targetKeys];
-              return (
-                <SelectionTree
-                  dataSource={this.state.treeSource || []}
-                  onItemSelect={onItemSelect}
-                  checkedKeys={checkedKeys}
-                  targetKeys={this.state.targetKeys}
-                />
-              );
+              if (this.state.treeSource) {
+                return (
+                  <SelectionTree
+                    dataSource={this.state.treeSource || []}
+                    onItemSelect={onItemSelect}
+                    checkedKeys={checkedKeys}
+                    targetKeys={this.state.targetKeys}
+                  />
+                );
+              } else {
+                return null;
+              }
             }
           }}
         </Transfer>
@@ -107,4 +169,7 @@ class OntologyModal extends React.Component<ModalProps, {}> {
   }
 }
 
-export default OntologyModal;
+const mapDispatchToProps = {
+  setSqons,
+};
+export default connect(null, mapDispatchToProps)(OntologyModal);
