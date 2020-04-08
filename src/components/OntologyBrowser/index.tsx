@@ -33,7 +33,6 @@ const updateSqons = (initialSqon: Sqon, value: string[]) => {
   if (index >= 0 && value.length === 0) {
     initialSqon.content.splice(index, 1);
   } else if (index >= 0) {
-    const currentValue = initialSqon.content[index].content.value;
     initialSqon.content[index].content.value = value;
   } else if (value.length > 0) {
     initialSqon.content.push({
