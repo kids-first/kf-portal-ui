@@ -63,7 +63,7 @@ export default class Category extends React.Component {
   onOntologyModalClose = () => {
     this.setState({
       isOntologyModalVisible: false,
-      visible: true,
+      visible: false,
     });
   };
 
