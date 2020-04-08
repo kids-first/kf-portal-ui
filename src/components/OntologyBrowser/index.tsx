@@ -30,10 +30,12 @@ type Sqon = {
 
 const updateSqons = (initialSqon: Sqon, value: string[]) => {
   const index = findIndex(initialSqon?.content, c => c.content.field === 'observed_phenotype.name');
-  if (index >= 0) {
+  if (index >= 0 && value.length === 0) {
+    initialSqon.content.splice(index, 1);
+  } else if (index >= 0) {
     const currentValue = initialSqon.content[index].content.value;
-    initialSqon.content[index].content.value = [...currentValue, ...value];
-  } else {
+    initialSqon.content[index].content.value = value;
+  } else if (value.length > 0) {
     initialSqon.content.push({
       op: 'in',
       content: {
@@ -133,7 +135,7 @@ class OntologyModal extends React.Component<ModalProps, {}> {
         title="HPO Onthology Browser"
         visible={this.props.isVisible}
         onOk={e => this.onApply(this.state.targetKeys)}
-        okText="Add"
+        okText="Apply"
         onCancel={this.onCancel}
         cancelText="Cancel"
         width="90%"
