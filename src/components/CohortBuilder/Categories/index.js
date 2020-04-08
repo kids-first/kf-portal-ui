@@ -52,7 +52,7 @@ const CATEGORY_FIELDS = {
     'outcome.disease_related',
     'phenotype.source_text_phenotype',
     'phenotype.hpo_phenotype_not_observed',
-    'phenotype.hpo_phenotype_observed',
+    'observed_phenotype.name',
     'diagnoses.source_text_tumor_location',
     'outcome.vital_status',
 
@@ -81,7 +81,7 @@ const CATEGORY_FIELDS = {
     'available_data_types',
     'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_not_observed',
-    'phenotype.hpo_phenotype_observed',
+    'observed_phenotype.name',
     'is_proband',
     'study.short_name',
   ],
