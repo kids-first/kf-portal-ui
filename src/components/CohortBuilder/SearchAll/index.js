@@ -84,6 +84,8 @@ const DISPLAY_MODE = {
   FILTER: 'FILTER',
 };
 
+const N_OF_CHARS_BEFORE_SEARCHING = 2;
+
 class SearchAll extends React.Component {
   constructor(props) {
     super(props);
@@ -177,13 +179,16 @@ class SearchAll extends React.Component {
 
     // filter both the fields and their buckets
     //  to keep only the field values matching the query
-    const filteredFields = debouncedQuery ? getFilteredFields(debouncedQuery, fields, data[0]) : [];
+    const canStartSearch = debouncedQuery && debouncedQuery.length >= N_OF_CHARS_BEFORE_SEARCHING;
+    if (!canStartSearch) {
+      return null;
+    }
 
     return (
       <QueryResults
         query={debouncedQuery}
         isLoading={isLoading}
-        filteredFields={filteredFields}
+        filteredFields={getFilteredFields(debouncedQuery, fields, data[0])}
         selections={selections}
         onSelectionChange={this.handleSelectionChange}
         onApplyFilter={this.handleApplyFilter}
