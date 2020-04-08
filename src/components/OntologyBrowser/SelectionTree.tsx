@@ -18,8 +18,10 @@ type SelectionTreeState = {
   expandedKeys: string[]
 };
 
+const AUTO_EXPAND_TREE = 2
+
 const getAllKeys = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
-  if (counter < 3) {
+  if (counter < AUTO_EXPAND_TREE) {
     data.map(node => {
       counter++;
       collectedKeys.push(node.key);
