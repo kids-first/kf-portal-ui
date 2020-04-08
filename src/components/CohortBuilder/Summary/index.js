@@ -54,6 +54,13 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
+          {isFeatureEnabled('showHpoSunburst') && ( //TODO : remove me one day :)
+            <CardSlot>
+              <CohortCard long={false} title="Observed Phenotypes" loading={false} badge={'Demo'}>
+                <Sunburst />
+              </CohortCard>
+            </CardSlot>
+          )}
           <CardSlot>
             <CohortCard title="Available Data" loading={isLoading}>
               <div
@@ -94,13 +101,6 @@ const Summary = ({
           <CardSlot>
             <SurvivalChart sqon={sqon} />
           </CardSlot>
-          {isFeatureEnabled('showHpoSunburst') && ( //TODO : remove me one day :)
-            <CardSlot>
-              <CohortCard long={true} title="Observed Phenotypes" loading={false}>
-                <Sunburst />
-              </CohortCard>
-            </CardSlot>
-          )}
         </Row>
       );
     }}
