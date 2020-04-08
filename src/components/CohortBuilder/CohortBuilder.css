@@ -44,46 +44,6 @@
   padding-bottom: 10px;
 }
 
-.cb-filterContainer {
-  color: black;
-  display: flex;
-  flex-direction: column;
-  cursor: default;
-  text-align: left;
-  border-radius: 5px;
-  box-shadow: 0 0 5.9px 0.1px #bbbbbb;
-  border: 1px solid #e0e1e6;
-  z-index: 1;
-  min-width: 315px;
-}
-.cb-filterContainer input[type='number'] {
-  padding: 0 7px;
-}
-
-.cb-filterContainer-header {
-  background-color: white;
-  border-bottom: 1px solid #d4d6dd;
-  padding: 5px;
-}
-
-.cb-filterContainer .filterContainer {
-  flex: 1;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  border: none;
-  box-shadow: none;
-  margin: 0px;
-  width: 100%;
-  border-radius: 0px;
-}
-
-.cb-filterContainer-footer {
-  justify-content: space-between;
-  background-color: #e0e1e6;
-  padding: 5px;
-}
-
 /* Category */
 .cb-category-options {
   display: flex;

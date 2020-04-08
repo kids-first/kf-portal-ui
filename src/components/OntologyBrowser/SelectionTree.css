@@ -1,0 +1,34 @@
+.ant-tree.hide-file-icon .ant-tree-switcher-line-icon span.ant-tree-switcher-noop {
+  background: transparent;
+}
+
+.ant-tree.ant-tree-show-line.hide-file-icon span.ant-tree-switcher-noop {
+  color: transparent;
+  height: 0px;
+}
+
+.ant-tree .ant-tree-title span.ant-tag {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.ant-tree .ant-tree-list .ant-tree-treenode {
+  width: 100%;
+}
+
+.ant-tree .ant-tree-treenode .ant-tree-node-content-wrapper {
+  flex-grow: 1;
+}
+
+.ant-tree .ant-tree-treenode .ant-tree-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ant-tree .ant-tree-list {
+  overflow-y: hidden;
+}
+
+.ant-tree .ant-tree-title span.ant-tag.label-document-count {
+  background-color: #e0e0e0;
+  height: fit-content;
+}

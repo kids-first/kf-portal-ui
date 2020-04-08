@@ -1,0 +1,42 @@
+.container {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  text-align: left;
+  border-radius: 5px;
+  box-shadow: 0 0 5.9px 0.1px #bbbbbb;
+  border: 1px solid #e0e1e6;
+  z-index: 1;
+  min-width: 315px;
+}
+.container input[type='number'] {
+  padding: 0 7px;
+}
+
+.header {
+  background-color: white;
+  border-bottom: 1px solid #d4d6dd;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.containerContent {
+  background-color: white;
+  border: none;
+  border-radius: 0px;
+  box-shadow: none;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0px;
+  width: 100%;
+}
+
+.footer {
+  justify-content: space-between;
+  background-color: #e0e1e6;
+  padding: 5px;
+}

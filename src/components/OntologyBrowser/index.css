@@ -1,0 +1,17 @@
+.ant-modal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-modal .ant-modal-content .ant-modal-body .ant-transfer {
+  height: 100%;
+}
+
+.ant-transfer .ant-transfer-list {
+  height: 60vh;
+  width: 49%;
+}
+
+.ant-transfer .ant-transfer-list .ant-transfer-list-body {
+  overflow: auto;
+}
