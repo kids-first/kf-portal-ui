@@ -7,6 +7,7 @@ import { geocodeByPlaceId } from 'react-places-autocomplete';
 
 const ContactEditablePlacesAutoComplete = ({ setAddressCb }) => {
   const [address, setAddress] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [errorFetchingPlaces, setErrorFetchingPlaces] = useState(null); //FIXME manage error
 
   const handleAddressChange = addr => {
