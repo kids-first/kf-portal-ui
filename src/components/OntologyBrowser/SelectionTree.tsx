@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, Fragment } from 'react';
+import { Component, Fragment, useState } from 'react';
 import { Input, Tag, Tree } from 'antd';
 import { TreeNode } from './store';
 
@@ -15,16 +15,34 @@ type SelectionTreeProps = {
 
 type SelectionTreeState = {
   treeData: TreeNode[];
+  expandedKeys: string[]
+};
+
+const getAllKeys = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
+  if (counter < 3) {
+    data.map(node => {
+      counter++;
+      collectedKeys.push(node.key);
+      if (node.children) {
+        getAllKeys(node.children, collectedKeys, counter);
+      }
+    });
+  }
+  return collectedKeys;
 };
 
 export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeState> {
   state = {
     treeData: [],
+    expandedKeys: []
   };
 
   componentDidMount() {
     const { dataSource, targetKeys } = this.props;
-    this.setState({ treeData: dataSource });
+    this.setState({
+      treeData: dataSource,
+      expandedKeys: getAllKeys(dataSource)
+    });
   }
 
   generateTree = (
@@ -82,9 +100,15 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     return match;
   };
 
+  onExpand = (expand: (string | number)[], info: Object) => {
+    this.setState({
+      expandedKeys: expand.map(v => v.toString())
+    });
+  };
+
   render() {
     const { dataSource, checkedKeys, onItemSelect, targetKeys } = this.props;
-    const { treeData } = this.state;
+    const { treeData, expandedKeys } = this.state;
     return (
       <Fragment>
         <Search
@@ -106,6 +130,8 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           onSelect={(_, { node: { key } }) => {
             onItemSelect(key, !this.isChecked(checkedKeys, key));
           }}
+          expandedKeys={expandedKeys}
+          onExpand={this.onExpand}
         />
       </Fragment>
     );
