@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component, Fragment, useState } from 'react';
+import { Component, Fragment } from 'react';
 import { Input, Tag, Tree } from 'antd';
 import { TreeNode } from './store';
 
@@ -20,13 +20,13 @@ type SelectionTreeState = {
 
 const AUTO_EXPAND_TREE = 2
 
-const getAllKeys = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
+const getInitialKeysForExpand = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
   if (counter < AUTO_EXPAND_TREE) {
-    data.map(node => {
+    data.forEach(node => {
       counter++;
       collectedKeys.push(node.key);
       if (node.children) {
-        getAllKeys(node.children, collectedKeys, counter);
+        getInitialKeysForExpand(node.children, collectedKeys, counter);
       }
     });
   }
@@ -40,10 +40,10 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   componentDidMount() {
-    const { dataSource, targetKeys } = this.props;
+    const { dataSource } = this.props;
     this.setState({
       treeData: dataSource,
-      expandedKeys: getAllKeys(dataSource)
+      expandedKeys: getInitialKeysForExpand(dataSource)
     });
   }
 
@@ -83,9 +83,9 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   searchInTree = (searchText: string, treeNode: TreeNode) => {
-    const regex = new RegExp(searchText, 'i');
+    const regex = new RegExp(searchText, 'gi');
     const text = treeNode.title as string;
-    const result = !text.search(regex);
+    const result = text.search(regex) >= 0;
     let match = searchText === '' || result;
 
     if (treeNode.children.length > 0) {
@@ -109,7 +109,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   render() {
-    const { dataSource, checkedKeys, onItemSelect, targetKeys } = this.props;
+    const { checkedKeys, onItemSelect, targetKeys } = this.props;
     const { treeData, expandedKeys } = this.state;
     return (
       <Fragment>
