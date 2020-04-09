@@ -12,8 +12,6 @@ import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
 import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
 import { CohortCard } from './ui';
-import { Sunburst } from './SunburstChart';
-import { isFeatureEnabled } from 'common/featuresToggles';
 
 const CardSlot = ({ children }) => (
   <Col style={{ padding: '4px' }} sm={12} md={6} lg={6} xl={4}>
@@ -54,13 +52,6 @@ const Summary = ({
         <Row nogutter> no data</Row>
       ) : (
         <Row nogutter>
-          {isFeatureEnabled('showHpoSunburst') && ( //TODO : remove me one day :)
-            <CardSlot>
-              <CohortCard long={false} title="Observed Phenotypes" loading={false} badge={'Demo'}>
-                <Sunburst />
-              </CohortCard>
-            </CardSlot>
-          )}
           <CardSlot>
             <CohortCard title="Available Data" loading={isLoading}>
               <div

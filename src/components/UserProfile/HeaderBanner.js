@@ -5,10 +5,7 @@ import { userProfileBackground } from './utils';
 import PropTypes from 'prop-types';
 import { computeGravatarSrcFromEmail } from 'utils';
 import ProfilePill from 'uikit/ProfilePill';
-import { isFeatureEnabled } from 'common/featuresToggles';
 import './style.css';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 
 const { Title, Text } = Typography;
 
@@ -18,7 +15,6 @@ const HeaderBanner = ({
   onChangeActivityStatusCb,
   isLoading,
   canEdit,
-  features,
   isAdmin,
 }) => (
   <Row
@@ -72,35 +68,34 @@ const HeaderBanner = ({
         )}
       </div>
     </div>
-    {canEdit &&
-    isFeatureEnabled('searchMembers', features) && ( //remove me one day :)
-        <div className={'hd-switch-wrapper'}>
-          <Row type={'flex'} justify={'start'} align={'middle'} className={'hd-profile-status-row'}>
-            <Text className={'hd-profile-status'}>Profile Status</Text>
-            <span className={'hd-tooltip-wrapper'}>
-              <Tooltip
-                placement="topLeft"
-                title="When your profile is public, other members can see information about you that includes your bio, story, research interests and contact information."
-              >
-                <InfoCircleOutlined style={{ color: 'white' }} />
-              </Tooltip>
-            </span>
-          </Row>
-          <Row type={'flex'} justify={'space-around'} align={'middle'}>
-            <Text className={'hd-text'}>Private</Text>
-            <Switch
-              loading={isLoading}
-              className={`${
-                profile.isPublic ? 'hd-switch-bg-is-public' : 'hd-switch-bg-is-not-public'
-              } hd-switch`}
-              defaultChecked
-              onChange={onChangePrivacyStatusCb}
-              checked={profile.isPublic}
-            />
-            <Text className={'hd-text'}>Public</Text>
-          </Row>
-        </div>
-      )}
+    {canEdit && (
+      <div className={'hd-switch-wrapper'}>
+        <Row type={'flex'} justify={'start'} align={'middle'} className={'hd-profile-status-row'}>
+          <Text className={'hd-profile-status'}>Profile Status</Text>
+          <span className={'hd-tooltip-wrapper'}>
+            <Tooltip
+              placement="topLeft"
+              title="When your profile is public, other members can see information about you that includes your bio, story, research interests and contact information."
+            >
+              <InfoCircleOutlined style={{ color: 'white' }} />
+            </Tooltip>
+          </span>
+        </Row>
+        <Row type={'flex'} justify={'space-around'} align={'middle'}>
+          <Text className={'hd-text'}>Private</Text>
+          <Switch
+            loading={isLoading}
+            className={`${
+              profile.isPublic ? 'hd-switch-bg-is-public' : 'hd-switch-bg-is-not-public'
+            } hd-switch`}
+            defaultChecked
+            onChange={onChangePrivacyStatusCb}
+            checked={profile.isPublic}
+          />
+          <Text className={'hd-text'}>Public</Text>
+        </Row>
+      </div>
+    )}
   </Row>
 );
 
@@ -113,8 +108,4 @@ HeaderBanner.propTypes = {
   isAdmin: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
-  features: state.enableFeatures.enableFeatures,
-});
-
-export default compose(connect(mapStateToProps))(HeaderBanner);
+export default HeaderBanner;

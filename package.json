@@ -1,6 +1,6 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.15.1",
+  "version": "2.15.2",
   "private": true,
   "dependencies": {
     "@ant-design/compatible": "^1.0.1",
@@ -35,7 +35,6 @@
     "react-sizeme": "^2.6.12",
     "react-slick": "^0.23.2",
     "react-social-icons": "^4.1.0",
-    "react-vis": "^1.11.7",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
