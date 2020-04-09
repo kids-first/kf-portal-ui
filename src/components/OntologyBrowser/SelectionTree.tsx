@@ -109,18 +109,18 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   render() {
-    const { checkedKeys, onItemSelect, targetKeys } = this.props;
-    const { treeData, expandedKeys } = this.state;
+    const { checkedKeys, dataSource, onItemSelect, targetKeys } = this.props;
+    const { expandedKeys } = this.state;
     return (
       <Fragment>
         <Search
           style={{ marginBottom: 8 }}
           placeholder="Search"
-          onChange={e => this.onChange(e, treeData)}
+          onChange={e => this.onChange(e, dataSource)}
         />
         <Tree
           className="hide-file-icon"
-          treeData={this.generateTree(treeData, targetKeys)}
+          treeData={this.generateTree(dataSource, targetKeys)}
           defaultExpandAll
           showLine
           showIcon={false}

@@ -72,13 +72,12 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     return values[values.length - 1];
   };
 
-  getKeysFromSqon = () => {
-    const keys: Set<string> = new Set(); // make sure their is no duplicate
-
+  getKeysFromSqon = (): string[] => {
+    const results: any = {};
     const findTreeKey = (treeNode: TreeNode) => {
       this.props.initialSqon.content.forEach(v => {
         if (v.content.value.indexOf(treeNode.title as string) >= 0) {
-          keys.add(treeNode.key);
+          results[treeNode.title as string] = treeNode.key;
         }
         if (treeNode.children.length > 0) {
           treeNode.children.forEach(t => findTreeKey(t));
@@ -88,7 +87,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     this.ontologyStore.tree.forEach(treeNode => {
       findTreeKey(treeNode);
     });
-    return Array.from(keys);
+    return Object.values(results);
   };
 
   onApply = (keys: string[]) => {
@@ -124,16 +123,13 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   updateData = () => {
     this.ontologyStore.fetch(this.props.initialSqon).then(() => {
-      this.updatePhenotypes();
-      this.setState({ targetKeys: this.getKeysFromSqon() });
-    });
-  };
-
-  updatePhenotypes = () => {
-    this.transfertDataSource = [];
-    this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
-    this.setState({
-      treeSource: this.ontologyStore.tree,
+      this.transfertDataSource = [];
+      this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
+      const newTargetKeys = this.getKeysFromSqon();
+      this.setState({
+        treeSource: this.ontologyStore.tree,
+        targetKeys: newTargetKeys,
+      });
     });
   };
 
