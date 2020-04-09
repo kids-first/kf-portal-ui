@@ -21,21 +21,25 @@ const isEnabled = (featureName, enabledFeatures = {}, defaultValue = true) => {
   return true;
 };
 
-const toggles = (queryStrings) => Array.from(Object.entries(process.env))
-  .filter(env => {
-    return typeof env[1] === 'string';
-  })
-  .filter(env => env[0].startsWith(featureTogglePrefix))
-  .reduce(
-    (allToggles, toggle) => {
-      allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(toggle[0].slice(togglePrefix.length), queryStrings);
-      return allToggles;
-    },
-    {
-      // anotherFeature: getApplicationEnvVar('SOME_KEY') === 'SOME VALUE',
-      // yetAnotherFeature: typeof getApplicationEnvVar('SOME_KEY') !== 'undefined',
-    },
-  );
+const toggles = queryStrings =>
+  Array.from(Object.entries(process.env))
+    .filter(env => {
+      return typeof env[1] === 'string';
+    })
+    .filter(env => env[0].startsWith(featureTogglePrefix))
+    .reduce(
+      (allToggles, toggle) => {
+        allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(
+          toggle[0].slice(togglePrefix.length),
+          queryStrings,
+        );
+        return allToggles;
+      },
+      {
+        // anotherFeature: getApplicationEnvVar('SOME_KEY') === 'SOME VALUE',
+        // yetAnotherFeature: typeof getApplicationEnvVar('SOME_KEY') !== 'undefined',
+      },
+    );
 
 /**
  * Checks if a feature is enabled or not.
@@ -43,4 +47,5 @@ const toggles = (queryStrings) => Array.from(Object.entries(process.env))
  * @param features
  * @returns {Boolean} `true` if the name feature exists and is enabled; `false` otherwise.
  */
-export const isFeatureEnabled = (featureName, features = {}) => toggles(features)[featureName] === true;
+export const isFeatureEnabled = (featureName, features = {}) =>
+  toggles(features)[featureName] === true;
