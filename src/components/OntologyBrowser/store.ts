@@ -24,8 +24,10 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = () => {
-    return this.getPhenotypes().then((data: PhenotypeSource[]) => {
+  fetch = (sqon: any) => {
+    this.phenotypes = [];
+    this.tree = [];
+    return this.getPhenotypes(sqon).then((data: PhenotypeSource[]) => {
       const stripedData = this.remoteSingleRootNode(data);
       this.phenotypes = stripedData;
       this.tree = this.generateTree();
@@ -65,9 +67,9 @@ export class PhenotypeStore {
     return workingTree;
   };
 
-  buildPhenotypeQuery = () => `query {
+  buildPhenotypeQuery = () => `query($sqon: JSON) {
     participant {
-      aggregations(aggregations_filter_themselves: false) {
+      aggregations(filters: $sqon, aggregations_filter_themselves: false) {
         observed_phenotype__name {
           buckets{
             key,
@@ -81,8 +83,12 @@ export class PhenotypeStore {
   `;
 
   getPhenotypes = async (sqon?: any) => {
+    console.log('sqon : ', sqon);
     const body = {
       query: this.buildPhenotypeQuery(),
+      variables: JSON.stringify({
+        sqon: sqon,
+      }),
     };
     try {
       const { data } = await graphql()(body);

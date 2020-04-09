@@ -15,10 +15,10 @@ type SelectionTreeProps = {
 
 type SelectionTreeState = {
   treeData: TreeNode[];
-  expandedKeys: string[]
+  expandedKeys: string[];
 };
 
-const AUTO_EXPAND_TREE = 2
+const AUTO_EXPAND_TREE = 2;
 
 const getInitialKeysForExpand = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
   if (counter < AUTO_EXPAND_TREE) {
@@ -36,14 +36,14 @@ const getInitialKeysForExpand = (data: TreeNode[], collectedKeys: string[] = [],
 export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeState> {
   state = {
     treeData: [],
-    expandedKeys: []
+    expandedKeys: [],
   };
 
   componentDidMount() {
     const { dataSource } = this.props;
     this.setState({
       treeData: dataSource,
-      expandedKeys: getInitialKeysForExpand(dataSource)
+      expandedKeys: getInitialKeysForExpand(dataSource),
     });
   }
 
@@ -104,7 +104,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
 
   onExpand = (expand: (string | number)[], info: Object) => {
     this.setState({
-      expandedKeys: expand.map(v => v.toString())
+      expandedKeys: expand.map(v => v.toString()),
     });
   };
 
