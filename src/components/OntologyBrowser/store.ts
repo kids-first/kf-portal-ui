@@ -24,7 +24,7 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (sqon: any) => {
+  fetch = (sqon?: any) => {
     this.phenotypes = [];
     this.tree = [];
     return this.getPhenotypes(sqon).then((data: PhenotypeSource[]) => {
