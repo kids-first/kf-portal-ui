@@ -18,6 +18,12 @@ type ModalProps = {
   setSqons: Function;
 };
 
+type ModalState = {
+  selectedKeys: string[];
+  treeSource?: TreeNode[];
+  targetKeys: string[];
+};
+
 type SqonFilters = {
   op: string;
   content: { field: string; value: string[] };
@@ -47,8 +53,8 @@ const updateSqons = (initialSqon: Sqon, value: string[]) => {
   return [initialSqon];
 };
 
-class OntologyModal extends React.Component<ModalProps, {}> {
-  state: { selectedKeys: string[]; treeSource?: TreeNode[]; targetKeys: string[] } = {
+class OntologyModal extends React.Component<ModalProps, ModalState> {
+  state: ModalState = {
     selectedKeys: [],
     targetKeys: [],
   };
@@ -58,19 +64,16 @@ class OntologyModal extends React.Component<ModalProps, {}> {
   constructor(props: ModalProps) {
     super(props);
     this.ontologyStore = new PhenotypeStore();
-    this.ontologyStore.fetch().then(() => {
-      this.updatePhenotypes();
-      this.setState({ targetKeys: this.getKeysFromSqon() });
-    });
+    this.updateData();
   }
 
   getKeyFromTreeId = (treeId: string) => {
     const values = treeId.split('-');
-    return treeId.split('-')[values.length - 1];
+    return values[values.length - 1];
   };
 
   getKeysFromSqon = () => {
-    const keys: Set<string> = new Set();
+    const keys: Set<string> = new Set(); // make sure their is no duplicate
 
     const findTreeKey = (treeNode: TreeNode) => {
       this.props.initialSqon.content.forEach(v => {
@@ -119,13 +122,33 @@ class OntologyModal extends React.Component<ModalProps, {}> {
     });
   };
 
+  updateData = () => {
+    this.ontologyStore.fetch(this.props.initialSqon).then(() => {
+      this.updatePhenotypes();
+      this.setState({ targetKeys: this.getKeysFromSqon() });
+    });
+  };
+
   updatePhenotypes = () => {
+    this.transfertDataSource = [];
     this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
     this.setState({
-      transfertSource: this.ontologyStore.phenotypes,
       treeSource: this.ontologyStore.tree,
     });
   };
+
+  shouldComponentUpdate(nextProps: ModalProps, nextState: ModalState) {
+    const { isVisible } = this.props;
+    if (nextProps.isVisible && !isVisible) {
+      // opening the modal again
+      this.updateData();
+      return false;
+    } else if (!nextProps.isVisible && !isVisible) {
+      // Closing the modal
+      return false;
+    }
+    return true;
+  }
 
   render() {
     return (
