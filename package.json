@@ -1,9 +1,8 @@
 {
   "name": "kf-portal-ui",
-  "version": "2.15.2",
+  "version": "2.15.3",
   "private": true,
   "dependencies": {
-    "@ant-design/compatible": "^1.0.1",
     "@kfarranger/components": "^1.6.1",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",

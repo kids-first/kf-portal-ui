@@ -8,6 +8,7 @@ import { deleteSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
 import { isValidKey } from 'services/cavatica';
 import IntegrationManager from 'components/UserProfile/IntegrationManager';
+import { EditOutlined } from '@ant-design/icons';
 
 const edit = ({ effects }) => {
   effects.setModal({
@@ -58,7 +59,7 @@ function CavaticaIntegration(props) {
       actionWhenConnected={{
         actionCb: edit,
         actionCbParam: { effects },
-        buttonIcon: 'edit',
+        buttonIcon: <EditOutlined />,
         buttonLabel: 'Settings',
       }}
       connection={{
@@ -85,11 +86,6 @@ const Enhanced = compose(
     connecting: PropTypes.bool,
     state: PropTypes.object.isRequired,
     effects: PropTypes.object.isRequired,
-    actionButtonWhenConnected: PropTypes.shape({
-      onClick: PropTypes.func.isRequired,
-      icon: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
   }),
 )(CavaticaIntegration);
 

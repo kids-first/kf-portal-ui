@@ -1,7 +1,6 @@
 import React from 'react';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Button, Checkbox, Col, List, Row, Tag } from 'antd';
-
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 const FilterTableList = ({
   dataSource,
   checkboxes,
@@ -17,7 +16,10 @@ const FilterTableList = ({
     ? dataKeys.filter(key => key.includes(searchString))
     : dataKeys;
 
-  const reorderData = [...filteredDataKeys.filter(f => checkboxes[f]), ...filteredDataKeys.filter(f => !checkboxes[f] )];
+  const reorderData = [
+    ...filteredDataKeys.filter(f => checkboxes[f]),
+    ...filteredDataKeys.filter(f => !checkboxes[f]),
+  ];
 
   const displayDataArray = showAll ? reorderData : reorderData.slice(0, 5);
 
@@ -36,7 +38,7 @@ const FilterTableList = ({
           <Button
             style={{ float: 'right', height: 30, padding: 0 }}
             type="link"
-            icon={<LegacyIcon type={showAll ? 'minus-circle' : 'plus-circle'} />}
+            icon={showAll ? <MinusCircleOutlined /> : <PlusCircleOutlined />}
             onClick={toggleShowAll}
           >
             {showAll ? 'less' : 'more'}

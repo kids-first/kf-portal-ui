@@ -1,7 +1,12 @@
-import { BankFilled, EnvironmentFilled } from '@ant-design/icons';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Col, List, Row, Spin, Typography, Avatar } from 'antd';
-import React from 'react';
+import {
+  BankFilled,
+  EnvironmentFilled,
+  EyeFilled,
+  EyeInvisibleFilled,
+  WarningFilled,
+} from '@ant-design/icons';
+import { Avatar, Col, List, Row, Spin, Typography } from 'antd';
+import React, { Fragment } from 'react';
 import './MemberSearchPage.css';
 import FormatLabel from 'components/MemberSearchPage/FormatLabel';
 import MemberInterests from 'components/MemberSearchPage/MemberInterests';
@@ -53,27 +58,29 @@ const Address = ({ item }) => (
   </div>
 );
 
-const iconClassName = ({isPublic, isActive}) => {
-  if(!isActive) {
-    return {
-      icon: 'warning',
-      className: 'inactive',
-      text: 'Deactivated'
-    }
+const displayItemStatus = ({ isPublic, isActive }) => {
+  if (!isActive) {
+    return (
+      <Fragment>
+        <div className={`item-icon-status icon-color inactive`}>Deactivated</div>
+        <WarningFilled className={`icon-color inactive`} />
+      </Fragment>
+    );
   }
-  if(isPublic) {
-    return {
-      icon: 'eye',
-      className: 'public',
-      text: 'Public'
-    }
-  } else {
-    return {
-      icon: 'eye-invisible',
-      className: '',
-      text: 'Private'
-    }
+  if (isPublic) {
+    return (
+      <Fragment>
+        <div className={`item-icon-status icon-color public`}>Public</div>
+        <EyeFilled className={`icon-color public`} />
+      </Fragment>
+    );
   }
+  return (
+    <Fragment>
+      <div className={`item-icon-status icon-color`}>Private</div>
+      <EyeInvisibleFilled className={`icon-color`} />
+    </Fragment>
+  );
 };
 
 const MemberTable = ({
@@ -222,17 +229,7 @@ const MemberTable = ({
                       alignItems: 'center',
                     }}
                   >
-                    <div className={`icon-color ${iconClassName(item).className}`}>
-                      {iconClassName(item).text}
-                    </div>
-                    <LegacyIcon
-                      className={`icon-color ${iconClassName(item).className}`}
-                      style={{
-                        paddingLeft: 5,
-                      }}
-                      type={`${iconClassName(item).icon}`}
-                      theme="filled"
-                    />
+                    {displayItemStatus(item)}
                   </Row>
                 ) : (
                   ''
