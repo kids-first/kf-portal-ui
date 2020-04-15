@@ -1,6 +1,6 @@
-import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Typography, Button } from 'antd';
 import PropTypes from 'prop-types';
+import { DisconnectOutlined, ApiOutlined } from '@ant-design/icons';
 import React, { Fragment } from 'react';
 import IntegrationItemErrorRow from './IntegrationItemErrorRow';
 import { compose, setPropTypes } from 'recompose';
@@ -62,7 +62,7 @@ const IntegrationItem = props => {
                 loading={loading}
                 type={connected && !loading ? 'danger' : 'primary'}
                 onClick={connected ? onClickDisconnectCb : onClickConnectCb}
-                icon={<LegacyIcon type={connected ? 'disconnect' : 'api'} />}
+                icon={connected ? <DisconnectOutlined /> : <ApiOutlined />}
               >
                 {generateLabelForConnect({ loading, connected })}
               </Button>
@@ -71,7 +71,7 @@ const IntegrationItem = props => {
                   shape="round"
                   className={'ii-button-common ii-button-action'}
                   onClick={onClick}
-                  icon={<LegacyIcon type={icon} />}
+                  icon={icon}
                   size={'small'}
                 >
                   {label}
@@ -94,7 +94,7 @@ const Enhanced = compose(
     loading: PropTypes.bool.isRequired,
     actionButtonWhenConnected: PropTypes.shape({
       onClick: PropTypes.func.isRequired,
-      icon: PropTypes.string.isRequired,
+      icon: PropTypes.element.isRequired,
       label: PropTypes.string.isRequired,
     }).isRequired,
     onClickDisconnectCb: PropTypes.func.isRequired,

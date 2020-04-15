@@ -1,57 +1,58 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './MemberSearchPage.css';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Layout, Typography } from 'antd';
+import PropTypes from 'prop-types';
+import { Button, Layout, Typography } from 'antd';
 import RolesFilter from 'components/MemberSearchPage/RolesFilter';
 import InterestsFilter from 'components/MemberSearchPage/InterestsFilter';
 import AllMembersFilter from './AdminFilter';
+import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 
 const { Sider } = Layout;
 const { Title } = Typography;
 
-class FilterDrawer extends Component {
-  state = {
-    collapsed: false,
+const FilterDrawer = ({ isAdmin }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const onCollapse = () => {
+    setCollapsed(!collapsed);
   };
 
-  onCollapse = () => {
-    this.setState({ collapsed: !this.state.collapsed });
-  };
+  return (
+    <Sider
+      trigger={null}
+      width={314}
+      collapsedWidth={37}
+      collapsible
+      collapsed={collapsed}
+      style={{ boxShadow: '0 0 4.9px 0.2px rgba(0,0,0,0.5)' }}
+    >
+      <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
+        <Title
+          level={3}
+          style={{
+            display: collapsed ? 'none' : 'block',
+          }}
+        >
+          Filters
+        </Title>
+        <Button
+          style={{ width: '100%', textAlign: 'end', fontSize: 20, color: 'rgb(43, 56, 143)' }}
+          type="link"
+          icon={collapsed ? <DoubleRightOutlined /> : <DoubleLeftOutlined />}
+          onClick={onCollapse}
+        />
+      </div>
+      <div>
+        <RolesFilter collapsed={collapsed} />
+        <InterestsFilter collapsed={collapsed} />
+        {isAdmin ? <AllMembersFilter collapsed={collapsed} /> : ''}
+      </div>
+    </Sider>
+  );
+};
 
-  render() {
-    const { collapsed } = this.state;
-    return (
-      <Sider
-        trigger={null}
-        width={314}
-        collapsedWidth={37}
-        collapsible
-        collapsed={collapsed}
-        style={{ boxShadow: '0 0 4.9px 0.2px rgba(0,0,0,0.5)' }}
-      >
-        <div style={{ height: 50, display: 'flex', padding: '15px 7px 15px 12px' }}>
-          <Title
-            level={3}
-            style={{
-              display: collapsed ? 'none' : 'block',
-            }}
-          >
-            Filters
-          </Title>
-          <LegacyIcon
-            style={{ width: '100%', textAlign: 'end', fontSize: 20, color: 'rgb(43, 56, 143)' }}
-            type={collapsed ? 'double-right' : 'double-left'}
-            onClick={this.onCollapse}
-          />
-        </div>
-        <div>
-          <RolesFilter collapsed={collapsed} />
-          <InterestsFilter collapsed={collapsed} />
-          {this.props.isAdmin ? <AllMembersFilter collapsed={collapsed} /> : ''}
-        </div>
-      </Sider>
-    );
-  }
-}
+FilterDrawer.propTypes = {
+  isAdmin: PropTypes.bool,
+};
 
 export default FilterDrawer;
