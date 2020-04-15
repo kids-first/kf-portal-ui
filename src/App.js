@@ -35,6 +35,8 @@ import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
+import { Alert } from 'antd';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const userIsRequiredToLogIn = loggedInUser => {
   return (
@@ -94,6 +96,19 @@ const App = compose(
 
   return (
     <div className="appContainer">
+      {isFeatureEnabled('showEraCommonsMaintenanceMsg') && (
+        <Alert
+          message={`
+          Connecting to Kids First data repositories using\
+          eRa Commons will be unavailable from April 17,\
+          2020 at 12:00 PM to April 21, 2020 AM UTC due to eRA's maintenance\
+          scheduled within that time period.\
+          Downloads & Cavatica transfers may be impacted during this window.
+          `}
+          banner
+          closable
+        />
+      )}
       <Switch>
         <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
         <Route
