@@ -16,6 +16,7 @@ type ModalProps = {
   onSqonUpdate: Function;
   title: string;
   setSqons: Function;
+  selectedField: string;
 };
 
 type ModalState = {
@@ -76,7 +77,8 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const results: any = {};
     const findTreeKey = (treeNode: TreeNode) => {
       this.props.initialSqon.content.forEach(v => {
-        if (v.content.value.indexOf(treeNode.title as string) >= 0) {
+        if (v.content.value.indexOf(treeNode.title as string) >= 0
+          && v.content.field === this.props.selectedField) {
           results[treeNode.title as string] = treeNode.key;
         }
         if (treeNode.children.length > 0) {

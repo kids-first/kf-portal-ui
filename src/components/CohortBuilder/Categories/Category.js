@@ -119,6 +119,7 @@ export default class Category extends React.Component {
               this.handleCloseFilter(false);
             }}
             title={title}
+            selectedField={selectedField}
           />
         )}
 
