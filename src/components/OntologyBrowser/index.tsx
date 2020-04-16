@@ -111,7 +111,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
       });
     } else if (direction === 'left') {
       this.setState({
-        targetKeys: targetKeys.filter(key => !!moveKeys.indexOf(key)),
+        targetKeys: targetKeys.filter(key => !moveKeys.indexOf(key)),
       });
     }
   };
