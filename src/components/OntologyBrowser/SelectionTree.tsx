@@ -19,6 +19,7 @@ type SelectionTreeState = {
 };
 
 const AUTO_EXPAND_TREE = 2;
+const MIN_SEARCH_TEXT_LENGTH = 3;
 
 const getInitialKeysForExpand = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
   if (counter < AUTO_EXPAND_TREE) {
@@ -78,11 +79,27 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     selectedKeys.indexOf(eventKey.toString()) !== -1;
 
   onChange = (e: React.ChangeEvent<HTMLInputElement>, treeData: TreeNode[]) => {
-    treeData.forEach(node => this.searchInTree(e.target.value, node));
-    this.setState({ treeData });
+    const hits: string[] = []
+
+    if(e.target.value.length >= MIN_SEARCH_TEXT_LENGTH){
+      treeData
+        .forEach(node => this.searchInTree(e.target.value, node, hits))
+
+      this.setState({
+        treeData:treeData,
+        expandedKeys: hits,
+      })
+    } else {
+      treeData
+        .forEach(node => this.unhideAll(node))
+      this.setState({
+        treeData: treeData,
+        expandedKeys: getInitialKeysForExpand(treeData),
+      });
+    }
   };
 
-  searchInTree = (searchText: string, treeNode: TreeNode) => {
+  searchInTree = (searchText: string, treeNode: TreeNode, hitTreeNodes: string[] = []) => {
     const regex = new RegExp(searchText, 'gi');
     const text = treeNode.title as string;
     const result = text.search(regex) >= 0;
@@ -91,15 +108,26 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     if (treeNode.children.length > 0) {
       let matchChild = searchText === '' || false;
       treeNode.children.forEach((child: TreeNode) => {
-        if (this.searchInTree(searchText, child)) {
+        if (this.searchInTree(searchText, child, hitTreeNodes)) {
           matchChild = true;
         }
       });
       match = matchChild || match;
     }
-
     treeNode.hidden = !match;
+    if(!treeNode.hidden) hitTreeNodes.push(treeNode.key)
     return match;
+  };
+
+  unhideAll = (treeNode: TreeNode) => {
+    treeNode.hidden = false
+
+    if (treeNode.children.length > 0) {
+      treeNode.children.forEach((child: TreeNode) => {
+          this.unhideAll(child)
+      });
+    }
+    return null;
   };
 
   onExpand = (expand: (string | number)[], info: Object) => {
