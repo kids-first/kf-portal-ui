@@ -4,7 +4,6 @@ import { Input, Tag, Tree } from 'antd';
 import { TreeNode } from './store';
 
 import './SelectionTree.css';
-const { Search } = Input;
 
 type SelectionTreeProps = {
   dataSource: TreeNode[];
@@ -66,6 +65,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         return {
           key: key,
           title: renderedTitle,
+          text: title,
           disabled: isDisabled,
           children: this.generateTree(children, checkedKeys, isDisabled),
           hasChildren: true,
@@ -100,8 +100,8 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   searchInTree = (searchText: string, treeNode: TreeNode, hitTreeNodes: string[] = []) => {
-    const regex = new RegExp(searchText, 'gi');
-    const text = treeNode.title as string;
+    let regex = new RegExp('\\b(\\w*' + searchText + '\\w*)\\b', 'gi')
+    const text = treeNode.text;
     const result = text.search(regex) >= 0;
     let match = searchText === '' || result;
 
@@ -115,12 +115,20 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
       match = matchChild || match;
     }
     treeNode.hidden = !match;
-    if(!treeNode.hidden) hitTreeNodes.push(treeNode.key)
+
+    if(!treeNode.hidden) {
+      hitTreeNodes.push(treeNode.key)
+      if(result) {
+        const [ before, hit, after ] = treeNode.text.split(regex)
+        treeNode.title = <span>{before}<b>{hit}</b>{after}</span>
+      }
+    }
     return match;
   };
 
   unhideAll = (treeNode: TreeNode) => {
     treeNode.hidden = false
+    treeNode.title = treeNode.text
 
     if (treeNode.children.length > 0) {
       treeNode.children.forEach((child: TreeNode) => {
@@ -141,10 +149,11 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     const { expandedKeys } = this.state;
     return (
       <Fragment>
-        <Search
+        <Input
           style={{ marginBottom: 8 }}
-          placeholder="Search"
+          placeholder="Search for ontology term - Min 3 characters"
           onChange={e => this.onChange(e, dataSource)}
+          allowClear
         />
         <Tree
           className="hide-file-icon"
