@@ -83,7 +83,6 @@ export class PhenotypeStore {
   `;
 
   getPhenotypes = async (sqon?: any) => {
-    console.log('sqon : ', sqon);
     const body = {
       query: this.buildPhenotypeQuery(),
       variables: JSON.stringify({
