@@ -32,6 +32,8 @@ export default class Category extends React.Component {
     color: PropTypes.string.isRequired,
     fields: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSqonUpdate: PropTypes.func.isRequired,
+    children: PropTypes.element.isRequired,
+    anchorId: PropTypes.node.isRequired,
   };
 
   handleDropdownVisibleChange(visible) {
@@ -87,7 +89,6 @@ export default class Category extends React.Component {
       <Filter
         initialSqon={sqon}
         onSubmit={sqon => {
-          console.log('onsubmit : ', sqon, ' title ', title);
           onSqonUpdate(title, sqon);
           this.handleCloseFilter(false);
         }}
