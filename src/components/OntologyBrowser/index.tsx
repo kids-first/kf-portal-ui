@@ -207,9 +207,9 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
             showSelectAll={false}
             locale={{
               notFoundContent: this.isLoadingOrEmpty() ? (
-                'Select items from the panel on the left in order to add them to your query'
-              ) : (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              ) : (
+                'Select items from the panel on the left in order to add them to your query'
               ),
             }}
           >
