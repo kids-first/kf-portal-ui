@@ -231,7 +231,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
             }}
           >
             {({ direction, onItemSelect, selectedKeys }) => {
-              if (isLoading) {
+              if (direction === 'left' && isLoading) {
                 return displaySpinner();
               }
               if (direction === 'left' && treeSource) {
