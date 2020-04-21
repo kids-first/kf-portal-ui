@@ -80,23 +80,22 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
 
   onChange = (e: React.ChangeEvent<HTMLInputElement>, treeData: TreeNode[]) => {
     const hits: string[] = []
+    let newExpandNode: string[] = []
 
     if(e.target.value.length >= MIN_SEARCH_TEXT_LENGTH){
       treeData
         .forEach(node => this.searchInTree(e.target.value, node, hits))
-
-      this.setState({
-        treeData:treeData,
-        expandedKeys: hits,
-      })
+      newExpandNode = hits;
     } else {
       treeData
         .forEach(node => this.showAll(node))
-      this.setState({
-        treeData: treeData,
-        expandedKeys: getInitialKeysForExpand(treeData),
-      });
+      newExpandNode = getInitialKeysForExpand(treeData);
     }
+
+    this.setState({
+      treeData: treeData,
+      expandedKeys:  newExpandNode,
+    });
   };
 
   searchInTree = (searchText: string, treeNode: TreeNode, hitTreeNodes: string[] = []) => {
@@ -136,7 +135,6 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           this.showAll(child)
       });
     }
-    return null;
   };
 
   onExpand = (expand: (string | number)[], info: Object) => {

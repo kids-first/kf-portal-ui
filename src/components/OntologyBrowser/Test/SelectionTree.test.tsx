@@ -16,13 +16,14 @@ describe('In SelectionTree', () => {
   beforeAll(() => {
   });
 
-  it('should renders without crashing', () => {
+  it('should renders selection tree', () => {
     const component = mount(<SelectionTree
       dataSource={dataSource}
       checkedKeys={checkedKeys}
       onItemSelect={onItemSelect}
       targetKeys={targetKeys}
     />);
+    expect(component.exists()).toBe(true)
     component.unmount();
   });
 
