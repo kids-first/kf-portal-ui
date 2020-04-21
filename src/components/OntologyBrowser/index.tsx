@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Transfer } from 'antd';
+import { Modal, Transfer, Spin, Empty, Result } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
@@ -23,6 +23,8 @@ type ModalState = {
   selectedKeys: string[];
   treeSource?: TreeNode[];
   targetKeys: string[];
+  isLoading: boolean;
+  error?: Error | null;
 };
 
 type SqonFilters = {
@@ -54,17 +56,48 @@ const updateSqons = (initialSqon: Sqon, value: string[]) => {
   return [initialSqon];
 };
 
-class OntologyModal extends React.Component<ModalProps, ModalState> {
-  state: ModalState = {
-    selectedKeys: [],
-    targetKeys: [],
-  };
-  transfertDataSource: TransferItem[] = [];
-  ontologyStore: PhenotypeStore;
+const generateMsgWhenHasDataButNoSelection = (hasData: boolean, isLoading: boolean) => {
+  if (isLoading || !hasData) {
+    return null;
+  }
+  return 'Select items from the panel on the left in order to add them to your query';
+};
 
+const displaySpinner = () => (
+  <div
+    style={{
+      position: 'absolute',
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%, -50%)',
+    }}
+  >
+    <Spin size={'large'} />
+  </div>
+);
+
+const displayError = () => (
+  <Result status="error" title="An error occurred" subTitle="Please cancel and try again." />
+);
+
+class OntologyModal extends React.Component<ModalProps, ModalState> {
   constructor(props: ModalProps) {
     super(props);
     this.ontologyStore = new PhenotypeStore();
+  }
+
+  state: ModalState = {
+    selectedKeys: [],
+    targetKeys: [],
+    isLoading: false,
+    error: null,
+  };
+
+  transfertDataSource: TransferItem[] = [];
+
+  ontologyStore: PhenotypeStore;
+
+  componentDidMount(): void {
     this.updateData();
   }
 
@@ -76,9 +109,12 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   getKeysFromSqon = (): string[] => {
     const results: any = {};
     const findTreeKey = (treeNode: TreeNode) => {
-      this.props.initialSqon.content.forEach(v => {
-        if (v.content.value.indexOf(treeNode.title as string) >= 0
-          && v.content.field === this.props.selectedField) {
+      const { initialSqon, selectedField } = this.props;
+      initialSqon.content.forEach(v => {
+        if (
+          v.content.value.indexOf(treeNode.title as string) >= 0 &&
+          v.content.field === selectedField
+        ) {
           results[treeNode.title as string] = treeNode.key;
         }
         if (treeNode.children.length > 0) {
@@ -92,15 +128,21 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     return Object.values(results);
   };
 
+  closeAndCleanModal = () => {
+    const { onCloseModal } = this.props;
+    this.setState({ error: null });
+    onCloseModal();
+  };
+
   onApply = (keys: string[]) => {
     const { initialSqon, setSqons } = this.props;
     const valuesId = keys.map(this.getKeyFromTreeId);
     setSqons(updateSqons(initialSqon, valuesId));
-    this.props.onCloseModal();
+    this.closeAndCleanModal();
   };
 
-  onCancel = (e: React.MouseEvent) => {
-    this.props.onCloseModal();
+  onCancel = () => {
+    this.closeAndCleanModal();
   };
 
   onChange = (nextTargetKeys: string[], direction: string, moveKeys: string[]) => {
@@ -123,16 +165,22 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     });
   };
 
-  updateData = () => {
-    this.ontologyStore.fetch(this.props.initialSqon).then(() => {
+  updateData = async () => {
+    this.setState({ isLoading: true });
+    const { initialSqon } = this.props;
+    try {
+      await this.ontologyStore.fetch(initialSqon);
       this.transfertDataSource = [];
       this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
       const newTargetKeys = this.getKeysFromSqon();
       this.setState({
         treeSource: this.ontologyStore.tree,
         targetKeys: newTargetKeys,
+        isLoading: false,
       });
-    });
+    } catch (e) {
+      this.setState({ error: e, isLoading: false });
+    }
   };
 
   shouldComponentUpdate(nextProps: ModalProps, nextState: ModalState) {
@@ -149,43 +197,57 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   }
 
   render() {
+    const { isVisible } = this.props;
+    const { error, targetKeys, isLoading, treeSource } = this.state;
+    const dataSource = this.transfertDataSource;
+    const hasData = dataSource.length > 0;
+    const hasError = error != null;
     return (
       <Modal
         style={{ height: '80vh' }}
         title="HPO Onthology Browser"
-        visible={this.props.isVisible}
-        onOk={e => this.onApply(this.state.targetKeys)}
-        okText="Apply"
+        visible={isVisible}
+        onOk={() => this.onApply(targetKeys)}
+        okText={'Apply'}
+        okButtonProps={{ disabled: hasError }}
         onCancel={this.onCancel}
         cancelText="Cancel"
         width="90%"
       >
-        <Transfer
-          dataSource={this.transfertDataSource}
-          targetKeys={this.state.targetKeys}
-          onChange={this.onChange}
-          render={(item: TransferItem): RenderResult => item.title || item.key}
-          disabled={false}
-          showSelectAll={false}
-        >
-          {({ direction, onItemSelect, selectedKeys }) => {
-            if (direction === 'left') {
-              const checkedKeys = [...selectedKeys, ...this.state.targetKeys];
-              if (this.state.treeSource) {
+        {hasError ? (
+          displayError()
+        ) : (
+          <Transfer
+            dataSource={dataSource}
+            targetKeys={targetKeys}
+            onChange={this.onChange}
+            render={(item: TransferItem): RenderResult => item.title || item.key}
+            disabled={false}
+            showSelectAll={false}
+            locale={{
+              notFoundContent: generateMsgWhenHasDataButNoSelection(hasData, isLoading) || (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              ),
+            }}
+          >
+            {({ direction, onItemSelect, selectedKeys }) => {
+              if (isLoading) {
+                return displaySpinner();
+              }
+              if (direction === 'left' && treeSource) {
+                const checkedKeys = [...selectedKeys, ...targetKeys];
                 return (
                   <SelectionTree
-                    dataSource={this.state.treeSource || []}
+                    dataSource={treeSource || []}
                     onItemSelect={onItemSelect}
                     checkedKeys={checkedKeys}
-                    targetKeys={this.state.targetKeys}
+                    targetKeys={targetKeys}
                   />
                 );
-              } else {
-                return null;
               }
-            }
-          }}
-        </Transfer>
+            }}
+          </Transfer>
+        )}
       </Modal>
     );
   }
