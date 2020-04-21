@@ -15,3 +15,10 @@
 .ant-transfer .ant-transfer-list .ant-transfer-list-body {
   overflow: auto;
 }
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
