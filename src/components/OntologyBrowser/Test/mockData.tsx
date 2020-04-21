@@ -1,3 +1,5 @@
+import { TreeNode } from '../store';
+
 export const flatMockData = [
   {
     key: 'All (HP:0000001)',
@@ -148,5 +150,66 @@ export const flatMockData = [
     top_hits: {
       parents: ['Abnormality of nervous system physiology (HP:0012638)'],
     },
+  },
+];
+
+export const treeData = [
+  {
+    title: 'Abnormality of the integument (HP:0001574)',
+    text: 'Abnormality of the integument (HP:0001574)',
+    key: 'Abnormality of the integument (HP:0001574)',
+    children: [
+      {
+        title: 'Abnormality of the skin (HP:0000951)',
+        text: 'Abnormality of the skin (HP:0000951)',
+        key: 'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)',
+        children: [
+          {
+            title: 'Abnormality of skin morphology (HP:0011121)',
+            text: 'Abnormality of skin morphology (HP:0011121)',
+            key:
+              'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)' +
+              '-Abnormality of skin morphology (HP:0011121)',
+            children: [],
+          },
+        ],
+      },
+      {
+        title: 'Abnormality of skin adnexa morphology (HP:0011138)',
+        text: 'Abnormality of skin adnexa morphology (HP:0011138)',
+        key:
+          'Abnormality of the integument (HP:0001574)-' +
+          'Abnormality of skin adnexa morphology (HP:0011138)',
+        children: [
+          {
+            title: 'Skin appendage neoplasm (HP:0012842)',
+            text: 'Skin appendage neoplasm (HP:0012842)',
+            key:
+              'Abnormality of the integument (HP:0001574)-' +
+              'Abnormality of skin adnexa morphology (HP:0011138)-' +
+              'Skin appendage neoplasm (HP:0012842)',
+            children: [],
+          },
+          {
+            title: 'Abnormal hair morphology (HP:0001595)',
+            text: 'Abnormal hair morphology (HP:0001595)',
+            key:
+              'Abnormality of the integument (HP:0001574)-' +
+              'Abnormality of skin adnexa morphology (HP:0011138)-' +
+              'Abnormal hair morphology (HP:0001595)',
+            children: [],
+          },
+          {
+            title: 'Custom term xyz',
+            text: 'Custom term xyz',
+            key:
+              'Abnormality of the integument (HP:0001574)-' +
+              'Abnormality of skin adnexa morphology (HP:0011138)-' +
+              'Custom term xyz',
+            children: [],
+          },
+        ],
+      },
+    ],
   },
 ];

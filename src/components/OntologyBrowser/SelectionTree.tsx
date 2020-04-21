@@ -91,7 +91,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
       })
     } else {
       treeData
-        .forEach(node => this.unhideAll(node))
+        .forEach(node => this.showAll(node))
       this.setState({
         treeData: treeData,
         expandedKeys: getInitialKeysForExpand(treeData),
@@ -100,15 +100,16 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   searchInTree = (searchText: string, treeNode: TreeNode, hitTreeNodes: string[] = []) => {
-    let regex = new RegExp('\\b(\\w*' + searchText + '\\w*)\\b', 'gi')
+    const cleanSearchText = searchText.replace(/[-/\\^$*+?.()|[\]{}]/g, '');
+    const regex = new RegExp('\\b(\\w*' + cleanSearchText + '\\w*)\\b', 'gi');
     const text = treeNode.text;
     const result = text.search(regex) >= 0;
-    let match = searchText === '' || result;
+    let match = cleanSearchText === '' || result;
 
     if (treeNode.children.length > 0) {
-      let matchChild = searchText === '' || false;
+      let matchChild = cleanSearchText === '' || false;
       treeNode.children.forEach((child: TreeNode) => {
-        if (this.searchInTree(searchText, child, hitTreeNodes)) {
+        if (this.searchInTree(cleanSearchText, child, hitTreeNodes)) {
           matchChild = true;
         }
       });
@@ -126,13 +127,13 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     return match;
   };
 
-  unhideAll = (treeNode: TreeNode) => {
+  showAll = (treeNode: TreeNode) => {
     treeNode.hidden = false
     treeNode.title = treeNode.text
 
     if (treeNode.children.length > 0) {
       treeNode.children.forEach((child: TreeNode) => {
-          this.unhideAll(child)
+          this.showAll(child)
       });
     }
     return null;
@@ -149,29 +150,29 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     const { expandedKeys } = this.state;
     return (
       <Fragment>
-        <Input
-          style={{ marginBottom: 8 }}
-          placeholder="Search for ontology term - Min 3 characters"
-          onChange={e => this.onChange(e, dataSource)}
-          allowClear
-        />
-        <Tree
-          className="hide-file-icon"
-          treeData={this.generateTree(dataSource, targetKeys)}
-          defaultExpandAll
-          showLine
-          showIcon={false}
-          checkable
-          onCheck={(_, { node: { key } }) => {
-            onItemSelect(key, !this.isChecked(checkedKeys, key));
-          }}
-          checkedKeys={checkedKeys}
-          onSelect={(_, { node: { key } }) => {
-            onItemSelect(key, !this.isChecked(checkedKeys, key));
-          }}
-          expandedKeys={expandedKeys}
-          onExpand={this.onExpand}
-        />
+          <Input
+            style={{ marginBottom: 8, position: 'sticky', top: 0, zIndex: 2 }}
+            placeholder="Search for ontology term - Min 3 characters"
+            onChange={e => this.onChange(e, dataSource)}
+            allowClear
+          />
+          <Tree
+            className="hide-file-icon"
+            treeData={this.generateTree(dataSource, targetKeys)}
+            defaultExpandAll
+            showLine
+            showIcon={false}
+            checkable
+            onCheck={(_, { node: { key } }) => {
+              onItemSelect(key, !this.isChecked(checkedKeys, key));
+            }}
+            checkedKeys={checkedKeys}
+            onSelect={(_, { node: { key } }) => {
+              onItemSelect(key, !this.isChecked(checkedKeys, key));
+            }}
+            expandedKeys={expandedKeys}
+            onExpand={this.onExpand}
+          />
       </Fragment>
     );
   }
