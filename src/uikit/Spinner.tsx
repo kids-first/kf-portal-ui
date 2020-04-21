@@ -8,10 +8,10 @@ type SpinnerProps = SpinProps & {
 };
 
 export const Spinner: FunctionComponent<SpinnerProps> = props => {
-  const { className = '', size } = props;
+  const { className = '', size, children } = props;
   return (
     <div className={className}>
-      <Spin size={size} />
+      <Spin size={size}>{children}</Spin>
     </div>
   );
 };
