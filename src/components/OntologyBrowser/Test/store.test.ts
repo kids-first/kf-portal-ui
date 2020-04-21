@@ -1,6 +1,6 @@
 import React from 'react';
 // import { render } from '@testing-library/react';
-import { PhenotypeStore, TreeNode } from './store';
+import { PhenotypeStore, TreeNode } from '../store';
 import { flatMockData } from './mockData';
 
 describe('Phenotype Store', () => {

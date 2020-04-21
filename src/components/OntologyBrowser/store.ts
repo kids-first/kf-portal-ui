@@ -11,6 +11,7 @@ type PhenotypeSource = {
 
 export type TreeNode = {
   title: React.ReactElement | string;
+  text: string;
   key: string;
   hasChildren?: boolean;
   children: TreeNode[];
@@ -37,6 +38,7 @@ export class PhenotypeStore {
 
   createNodeFromSource = (ontologySource: PhenotypeSource, parent?: TreeNode) => ({
     title: ontologySource.key,
+    text:ontologySource.key,
     key: parent ? `${parent.key}-${ontologySource.key}` : ontologySource.key,
     children: [],
     results: ontologySource.doc_count,
