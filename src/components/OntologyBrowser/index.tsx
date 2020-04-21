@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Transfer, Spin, Empty, Result } from 'antd';
+import { Modal, Transfer, Empty, Result } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
 import { setSqons } from '../../store/actionCreators/virtualStudies';
+import { Spinner } from '../../uikit/Spinner';
 
 import './index.css';
 
@@ -56,30 +57,6 @@ const updateSqons = (initialSqon: Sqon, value: string[]) => {
   return [initialSqon];
 };
 
-const generateMsgWhenHasDataButNoSelection = (hasData: boolean, isLoading: boolean) => {
-  if (isLoading || !hasData) {
-    return null;
-  }
-  return 'Select items from the panel on the left in order to add them to your query';
-};
-
-const displaySpinner = () => (
-  <div
-    style={{
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%)',
-    }}
-  >
-    <Spin size={'large'} />
-  </div>
-);
-
-const displayError = () => (
-  <Result status="error" title="An error occurred" subTitle="Please cancel and try again." />
-);
-
 class OntologyModal extends React.Component<ModalProps, ModalState> {
   constructor(props: ModalProps) {
     super(props);
@@ -129,9 +106,8 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   };
 
   closeAndCleanModal = () => {
-    const { onCloseModal } = this.props;
     this.setState({ error: null });
-    onCloseModal();
+    this.props.onCloseModal();
   };
 
   onApply = (keys: string[]) => {
@@ -165,22 +141,21 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     });
   };
 
-  updateData = async () => {
+  updateData = () => {
     this.setState({ isLoading: true });
-    const { initialSqon } = this.props;
-    try {
-      await this.ontologyStore.fetch(initialSqon);
-      this.transfertDataSource = [];
-      this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
-      const newTargetKeys = this.getKeysFromSqon();
-      this.setState({
-        treeSource: this.ontologyStore.tree,
-        targetKeys: newTargetKeys,
-        isLoading: false,
-      });
-    } catch (e) {
-      this.setState({ error: e, isLoading: false });
-    }
+    this.ontologyStore
+      .fetch(this.props.initialSqon)
+      .then(() => {
+        this.transfertDataSource = [];
+        this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
+        const newTargetKeys = this.getKeysFromSqon();
+        this.setState({
+          treeSource: this.ontologyStore.tree,
+          targetKeys: newTargetKeys,
+          isLoading: false,
+        });
+      })
+      .catch(error => this.setState({ isLoading: false, error }));
   };
 
   shouldComponentUpdate(nextProps: ModalProps, nextState: ModalState) {
@@ -196,12 +171,14 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     return true;
   }
 
+  isLoadingOrEmpty = (): boolean => this.state.isLoading || this.transfertDataSource.length === 0;
+
   render() {
     const { isVisible } = this.props;
     const { error, targetKeys, isLoading, treeSource } = this.state;
     const dataSource = this.transfertDataSource;
-    const hasData = dataSource.length > 0;
     const hasError = error != null;
+
     return (
       <Modal
         style={{ height: '80vh' }}
@@ -215,7 +192,11 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
         width="90%"
       >
         {hasError ? (
-          displayError()
+          <Result
+            status="error"
+            title="An error occurred"
+            subTitle="Please cancel and try again."
+          />
         ) : (
           <Transfer
             dataSource={dataSource}
@@ -225,14 +206,16 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
             disabled={false}
             showSelectAll={false}
             locale={{
-              notFoundContent: generateMsgWhenHasDataButNoSelection(hasData, isLoading) || (
+              notFoundContent: this.isLoadingOrEmpty() ? (
+                'Select items from the panel on the left in order to add them to your query'
+              ) : (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
               ),
             }}
           >
             {({ direction, onItemSelect, selectedKeys }) => {
               if (direction === 'left' && isLoading) {
-                return displaySpinner();
+                return <Spinner className={'spinner'} size={'large'} />;
               }
               if (direction === 'left' && treeSource) {
                 const checkedKeys = [...selectedKeys, ...targetKeys];
