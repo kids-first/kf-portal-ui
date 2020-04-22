@@ -123,9 +123,20 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   onChange = (nextTargetKeys: string[], direction: string, moveKeys: string[]) => {
     const { targetKeys } = this.state;
+    // Children should be removed from target since only the upper most phenotype should be keep
+    let cleanedTargetKeys = nextTargetKeys;
     if (direction === 'right') {
+      moveKeys.forEach(mk => {
+        const node = this.ontologyStore.getTreeNodeForKey(mk);
+        if (node) {
+          const childrenKeys = this.ontologyStore.getChildrenKeys(node, true);
+          cleanedTargetKeys = nextTargetKeys.filter(k => !childrenKeys.includes(k));
+        } else {
+          cleanedTargetKeys = nextTargetKeys;
+        }
+      });
       this.setState({
-        targetKeys: [...targetKeys, ...moveKeys],
+        targetKeys: cleanedTargetKeys,
       });
     } else if (direction === 'left') {
       this.setState({

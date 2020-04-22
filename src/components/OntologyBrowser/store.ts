@@ -1,4 +1,5 @@
 import { graphql } from '../../services/arranger';
+import { TreeNode } from 'antd/lib/tree-select';
 
 type PhenotypeSource = {
   key: string;
@@ -67,6 +68,32 @@ export class PhenotypeStore {
       }
     });
     return workingTree;
+  };
+
+  getTreeNodeForKey = (key: string, treeNode = this.tree): TreeNode | null => {
+    let result: TreeNode | null = null;
+    for (let i = 0; i < treeNode.length; i++) {
+      if (treeNode[i].key === key) {
+        result = treeNode[i];
+        break;
+      }
+      result = this.getTreeNodeForKey(key, treeNode[i].children);
+      if (result) {
+        break;
+      }
+    }
+    return result;
+  };
+
+  getChildrenKeys = (node: TreeNode, root = false) => {
+    let nKeys: string[] = [];
+    node.children.forEach(i => {
+      nKeys = nKeys.concat(this.getChildrenKeys(i));
+    });
+    if (!root) {
+      nKeys.push(node.key);
+    }
+    return nKeys;
   };
 
   buildPhenotypeQuery = () => `query($sqon: JSON) {
