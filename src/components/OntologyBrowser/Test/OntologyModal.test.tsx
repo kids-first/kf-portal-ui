@@ -12,7 +12,7 @@ describe('Ontology Modal', () => {
     initialSqon: { op: 'and', content: [] },
     title: 'Clinical',
     selectedField: 'observed_phenotype.name',
-    onSqonUpdateCB: jest.fn(),
+    onSqonUpdate: jest.fn(),
     onCloseModal: jest.fn(),
   };
 
