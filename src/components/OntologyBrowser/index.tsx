@@ -12,7 +12,7 @@ type ModalProps = {
   isVisible: boolean;
   onCloseModal: Function;
   initialSqon: Sqon;
-  onSqonUpdateCB: Function;
+  onSqonUpdate: Function;
   title: string;
   selectedField: string;
 };
@@ -108,10 +108,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   };
 
   onApply = (keys: string[]) => {
-    const { initialSqon, onSqonUpdateCB } = this.props;
+    const { initialSqon, onSqonUpdate } = this.props;
     const valuesId = keys.map(this.getKeyFromTreeId);
     const updatedSqons = updateSqons(initialSqon, valuesId);
-    onSqonUpdateCB(updatedSqons);
+    onSqonUpdate(updatedSqons);
     this.closeAndCleanModal();
   };
 
