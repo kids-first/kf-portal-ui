@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { Modal, Transfer, Empty, Result } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
-import { setSqons } from '../../store/actionCreators/virtualStudies';
 import { Spinner } from '../../uikit/Spinner';
 
 import './index.css';
@@ -14,9 +12,8 @@ type ModalProps = {
   isVisible: boolean;
   onCloseModal: Function;
   initialSqon: Sqon;
-  onSqonUpdate: Function;
+  onSqonUpdateCB: Function;
   title: string;
-  setSqons: Function;
   selectedField: string;
 };
 
@@ -54,7 +51,7 @@ const updateSqons = (initialSqon: Sqon, value: string[]) => {
     });
   }
 
-  return [initialSqon];
+  return initialSqon;
 };
 
 class OntologyModal extends React.Component<ModalProps, ModalState> {
@@ -111,9 +108,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   };
 
   onApply = (keys: string[]) => {
-    const { initialSqon, setSqons } = this.props;
+    const { initialSqon, onSqonUpdateCB } = this.props;
     const valuesId = keys.map(this.getKeyFromTreeId);
-    setSqons(updateSqons(initialSqon, valuesId));
+    const updatedSqons = updateSqons(initialSqon, valuesId);
+    onSqonUpdateCB(updatedSqons);
     this.closeAndCleanModal();
   };
 
@@ -247,7 +245,4 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   }
 }
 
-const mapDispatchToProps = {
-  setSqons,
-};
-export default connect(null, mapDispatchToProps)(OntologyModal);
+export default OntologyModal;

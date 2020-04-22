@@ -115,7 +115,7 @@ export default class Category extends React.Component {
             isVisible={isOntologyModalVisible}
             onCloseModal={this.onOntologyModalClose}
             initialSqon={sqon}
-            onSqonUpdate={sqon => {
+            onSqonUpdateCB={sqon => {
               onSqonUpdate(title, sqon);
               this.handleCloseFilter(false);
             }}
