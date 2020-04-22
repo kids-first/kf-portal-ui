@@ -26,6 +26,10 @@
   right: unset;
 }
 
+.sqonEntry .participantsCountContainer.loading {
+  color: #2b388f;
+}
+
 .sqonBuilder-container .fieldFilter-container {
   left: auto;
   right: 0px;
