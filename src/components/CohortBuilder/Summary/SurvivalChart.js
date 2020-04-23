@@ -35,19 +35,6 @@ const formatDataset = data => [
 
 const SurvivalCardContent = styleComponent(CardContent, 'survivalChart-card-content');
 
-const header = {
-  position: 'absolute',
-  right: '-2px',
-  top: '-40px',
-};
-
-const dragZoom = {
-  fontSize: '10px',
-  textAlign: 'right',
-  color: '#888',
-  marginBottom: '-10px',
-  height: '13px',
-};
 
 export class SurvivalChart extends React.Component {
   state = {
@@ -102,7 +89,7 @@ export class SurvivalChart extends React.Component {
         }
       })
       .catch(err => {
-        console.log(`Error fetching survival data: ${err}`);
+        console.error(`Error fetching survival data: ${err}`);
         this.setState({ data: [], isLoading: false });
         // should be an error state, but for now /survival endpoint not handling [] well
       });
@@ -165,7 +152,7 @@ export class SurvivalChart extends React.Component {
     };
 
     const resetZoomIcon = (
-      <div style={header}>
+      <div className={'survival-chart-reset-zoom-icon-header'}>
         {zoomDisabled ? (
           <ResetIcon size={25} color="grey" />
         ) : (
@@ -192,7 +179,9 @@ export class SurvivalChart extends React.Component {
                   {get(data, '[0].donors.length', 0)} Participants
                 </span>
               </div>
-              <div style={dragZoom}>{zoomDisabled && <div>Drag to zoom</div>}</div>
+              <div className={'survival-chart-drag-zoom'}>
+                {zoomDisabled && <div>Drag to zoom</div>}
+              </div>
 
               <SurvivalPlot
                 className="survivalChart-styledChard"
