@@ -164,6 +164,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           className="hide-file-icon"
           treeData={this.generateTree(dataSource, checkedKeys, targetKeys)}
           defaultExpandAll
+          selectedKeys={[]}
           showLine
           showIcon={false}
           checkable
