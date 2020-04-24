@@ -1,14 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import defaults from 'lodash/defaults';
 import get from 'lodash/get';
 import has from 'lodash/has';
-import { renderPlot } from '@oncojs/survivalplot/index.dist';
 import md5 from 'md5';
 import { compose } from 'recompose';
 import ResetIcon from 'react-icons/lib/md/replay';
-
 import { fetchSurvivalData } from 'services/arranger';
 import { withApi } from 'services/api';
 import CardContent from 'uikit/Card/CardContent';
@@ -16,166 +13,50 @@ import Tooltip from 'uikit/Tooltip';
 import { SizeProvider, styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
 import { CohortCard } from './ui';
-
+import SurvivalPlot from './SurvivalPlot';
 import './SurvivalChart.css';
 
-const formatDataset = data => {
-  return [
-    {
-      meta: {
-        id: '38144623-cbef-435f-9627-e13df0a6ba35',
-        state: 'FINISHED',
-        count: get(data, 'donors.length', 0),
-        name: 'PAEN-IT',
-        description: '',
-        type: 'DONOR',
-        version: 2,
-        timestamp: Date.now(),
-        subtype: 'NORMAL',
-      },
-      donors: get(data, 'donors', []),
+const formatDataset = data => [
+  {
+    meta: {
+      id: '38144623-cbef-435f-9627-e13df0a6ba35',
+      state: 'FINISHED',
+      count: get(data, 'donors.length', 0),
+      name: 'PAEN-IT',
+      description: '',
+      type: 'DONOR',
+      version: 2,
+      timestamp: Date.now(),
+      subtype: 'NORMAL',
     },
-  ];
-};
-
-function isElementFullScreen(element) {
-  return (
-    [
-      document.fullscreenElement,
-      document.webkitFullscreenElement,
-      document.mozFullscreenElement,
-    ].indexOf(element) >= 0
-  );
-}
-
-class SurvivalPlot extends React.Component {
-  state = {
-    xDomain: undefined,
-    disabledDataSets: undefined,
-  };
-
-  static propTypes = {
-    className: PropTypes.string,
-    dataSets: PropTypes.array.isRequired,
-    palette: PropTypes.array,
-    censoredStatuses: PropTypes.array,
-    onMouseEnterDonor: PropTypes.func,
-    onMouseLeaveDonor: PropTypes.func,
-    onClickDonor: PropTypes.func,
-    disableResetButton: PropTypes.func,
-    margins: PropTypes.object,
-    xAxisLabel: PropTypes.string,
-    yAxisLabel: PropTypes.string,
-    getSetSymbol: PropTypes.func,
-    sqon: PropTypes.object,
-    resetZoom: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    className: '',
-    palette: ['#1880b2', '#c20127', '#00005d', 'purple'],
-    censoredStatuses: ['alive'],
-    onMouseEnterDonors(event, donors) {},
-    onMouseLeaveDonors() {},
-    disableResetButton() {},
-    onClickDonors(e, donors) {},
-    xAxisLabel: 'Survival Rate',
-    yAxisLabel: 'Duration (days)',
-  };
-
-  stateStack = [];
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
-  }
-
-  componentDidUpdate() {
-    this.update();
-  }
-
-  componentDidMount() {
-    this.update();
-  }
-
-  updateState = newState => {
-    this.stateStack = this.stateStack.concat(this.state);
-    this.setState(newState);
-  };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.resetZoom !== this.props.resetZoom) {
-      const newState = { xDomain: undefined };
-      this.setState(newState);
-    }
-  }
-
-  update = params => {
-    var state = this.state;
-    var container = this._container;
-    renderPlot(
-      defaults(
-        {
-          container,
-          dataSets: this.props.dataSets,
-          disabledDataSets: state.disabledDataSets,
-          palette: this.props.palette,
-          xDomain: state.xDomain,
-          yAxisLabel: 'Survival Rate',
-          xAxisLabel: 'Duration (days)',
-          height: isElementFullScreen(container) ? window.innerHeight - 100 : 205,
-          getSetSymbol: this.props.getSetSymbol,
-          onMouseEnterDonor:
-            this.props.onMouseEnterDonor && this.props.onMouseEnterDonor.bind(this),
-          onMouseLeaveDonor:
-            this.props.onMouseLeaveDonor && this.props.onMouseLeaveDonor.bind(this),
-          onClickDonor: this.props.onClickDonor,
-          onMouseEnterDonors:
-            this.props.onMouseEnterDonors && this.props.onMouseEnterDonors.bind(this),
-          onMouseLeaveDonors:
-            this.props.onMouseLeaveDonors && this.props.onMouseLeaveDonors.bind(this),
-          onClickDonors: this.props.onClickDonors,
-          onDomainChange: newXDomain => {
-            this.props.disableResetButton() && this.props.disableResetButton.bind(this);
-            this.updateState({ xDomain: newXDomain });
-          },
-          margins: {
-            top: 15,
-            right: 20,
-            bottom: 50,
-            left: 42,
-          },
-        },
-        params,
-      ),
-    );
-  };
-
-  render() {
-    return <div ref={c => (this._container = c)} className={this.props.className} />;
-  }
-}
+    donors: get(data, 'donors', []),
+  },
+];
 
 const SurvivalCardContent = styleComponent(CardContent, 'survivalChart-card-content');
 
-export class SurvivalChart extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      tooltip: {
-        donor: {},
-        x: 0,
-        y: 0,
-        isVisible: false,
-      },
-      isLoading: true,
-      data: [],
-      resetZoom: false,
-      zoomDisabled: true,
-    };
-  }
+export class SurvivalChart extends React.Component {
+  state = {
+    tooltip: {
+      donor: {},
+      x: 0,
+      y: 0,
+      isVisible: false,
+    },
+    isLoading: true,
+    data: [],
+    resetZoom: false,
+    zoomDisabled: true,
+  };
+
+  static propTypes = {
+    api: PropTypes.func.isRequired,
+    sqon: PropTypes.object.isRequired,
+  };
 
   queryCacheMap = {};
+
   cachedFetch = () => {
     const { api, sqon } = this.props;
     const hash = md5(JSON.stringify(sqon));
@@ -208,7 +89,7 @@ export class SurvivalChart extends React.Component {
         }
       })
       .catch(err => {
-        console.log(`Error fetching survival data: ${err}`);
+        console.error(`Error fetching survival data: ${err}`);
         this.setState({ data: [], isLoading: false });
         // should be an error state, but for now /survival endpoint not handling [] well
       });
@@ -238,7 +119,7 @@ export class SurvivalChart extends React.Component {
     }));
   };
 
-  handleMouseLeaveDonors = (event, donors) => {
+  handleMouseLeaveDonors = () => {
     this.setState(prevState => ({
       tooltip: { ...prevState.tooltip, isVisible: false },
     }));
@@ -256,6 +137,7 @@ export class SurvivalChart extends React.Component {
     const { tooltip, data = [], resetZoom, zoomDisabled } = this.state;
 
     const donor = tooltip.donor;
+
     const tooltipStyle = {
       border: '2px solid #CCC',
       borderRadius: '10px',
@@ -269,22 +151,8 @@ export class SurvivalChart extends React.Component {
       fontSize: '10px',
     };
 
-    const header = {
-      position: 'absolute',
-      right: '-2px',
-      top: '-40px',
-    };
-
-    const dragZoom = {
-      fontSize: '10px',
-      textAlign: 'right',
-      color: '#888',
-      marginBottom: '-10px',
-      height: '13px',
-    };
-
     const resetZoomIcon = (
-      <div style={header}>
+      <div className={'survival-chart-reset-zoom-icon-header'}>
         {zoomDisabled ? (
           <ResetIcon size={25} color="grey" />
         ) : (
@@ -311,7 +179,9 @@ export class SurvivalChart extends React.Component {
                   {get(data, '[0].donors.length', 0)} Participants
                 </span>
               </div>
-              <div style={dragZoom}>{zoomDisabled && <div>Drag to zoom</div>}</div>
+              <div className={'survival-chart-drag-zoom'}>
+                {zoomDisabled && <div>Drag to zoom</div>}
+              </div>
 
               <SurvivalPlot
                 className="survivalChart-styledChard"

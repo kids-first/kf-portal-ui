@@ -123,7 +123,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         treeNode.title = (
           <span>
             {before}
-            <b>{hit}</b>
+            <div className={'highlight'} style={{display: 'inherit'}}>{hit}</div>
             {after}
           </span>
         );
@@ -164,6 +164,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           className="hide-file-icon"
           treeData={this.generateTree(dataSource, checkedKeys, targetKeys)}
           defaultExpandAll
+          selectedKeys={[]}
           showLine
           showIcon={false}
           checkable
