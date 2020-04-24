@@ -44,3 +44,17 @@
   fill: #edf8ff;
   shape-rendering: crispEdges;
 }
+
+.survival-chart-reset-zoom-icon-header {
+  position: absolute;
+  right: -2px;
+  top: -40px;
+}
+
+.survival-chart-drag-zoom {
+  font-size: 10px;
+  text-align: right;
+  color: #888;
+  margin-bottom: -10px;
+  height: 13px;
+}
