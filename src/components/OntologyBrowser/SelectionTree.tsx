@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { Input, Tag, Tree } from 'antd';
+import { Button, Col, Input, Row, Tag, Tree } from 'antd';
 import { TreeNode } from './store';
 
 import './SelectionTree.css';
@@ -10,6 +10,7 @@ type SelectionTreeProps = {
   checkedKeys: Array<string>;
   onItemSelect: Function;
   targetKeys: Array<string>;
+  onItemSelectAll: Function;
 };
 
 type SelectionTreeState = {
@@ -149,17 +150,27 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     });
   };
 
+
   render() {
-    const { checkedKeys, dataSource, onItemSelect, targetKeys } = this.props;
+    const { checkedKeys, dataSource, onItemSelect, targetKeys, onItemSelectAll } = this.props;
     const { expandedKeys } = this.state;
     return (
       <Fragment>
-        <Input
-          style={{ marginBottom: 8, position: 'sticky', top: 0, zIndex: 2 }}
-          placeholder="Search for ontology term - Min 3 characters"
-          onChange={e => this.onChange(e, dataSource)}
-          allowClear
-        />
+        <Col style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: '#fff' }}>
+          <Row >
+            <Input
+              placeholder="Search for ontology term - Min 3 characters"
+              onChange={e => this.onChange(e, dataSource)}
+              allowClear
+            />
+          </Row>
+          <Row justify='start'>
+            <Button type="link" onClick={(e) => {
+              e.preventDefault()
+              onItemSelectAll(checkedKeys, false)
+            }}>clear</Button>
+          </Row>
+        </Col>
         <Tree
           className="hide-file-icon"
           treeData={this.generateTree(dataSource, checkedKeys, targetKeys)}
