@@ -26,3 +26,8 @@
 .ant-transfer-list-content-item-checked {
   background-color: transparent;
 }
+
+.ant-btn-link {
+  padding-left: 0;
+  padding-right: 0;
+}
