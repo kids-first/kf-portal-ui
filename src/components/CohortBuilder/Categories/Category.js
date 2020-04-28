@@ -43,7 +43,8 @@ export default class Category extends React.Component {
   handleMenuItemSelected(selectedField) {
     this.setState({
       selectedField: selectedField,
-      isOntologyModalVisible: selectedField === 'observed_phenotype.name',
+      isOntologyModalVisible:
+        selectedField === 'observed_phenotype.name' || selectedField === 'mondo_diagnosis.name',
     });
   }
 
@@ -53,14 +54,6 @@ export default class Category extends React.Component {
       visible: keepCategoryOpen,
     });
   }
-
-  onOntologyClicked = () => {
-    const isModalVisible = true;
-    this.setState({
-      isOntologyModalVisible: isModalVisible,
-      visible: !isModalVisible,
-    });
-  };
 
   onOntologyModalClose = () => {
     this.setState({
@@ -88,7 +81,7 @@ export default class Category extends React.Component {
     return (
       <Filter
         initialSqon={sqon}
-        onSubmit={sqon => {
+        onSubmit={(sqon) => {
           onSqonUpdate(title, sqon);
           this.handleCloseFilter(false);
         }}
@@ -110,17 +103,23 @@ export default class Category extends React.Component {
     const { isOntologyModalVisible, visible, selectedField } = this.state;
     return (
       <Fragment>
-        {selectedField === 'observed_phenotype.name' && (
+        {(selectedField === 'observed_phenotype.name' ||
+          selectedField === 'mondo_diagnosis.name') && (
           <OntologyModal
             isVisible={isOntologyModalVisible}
             onCloseModal={this.onOntologyModalClose}
             initialSqon={sqon}
-            onSqonUpdate={sqon => {
+            onSqonUpdate={(sqon) => {
               onSqonUpdate(title, sqon);
               this.handleCloseFilter(false);
             }}
-            title={title}
+            title={
+              selectedField === 'observed_phenotype.name'
+                ? 'HPO Onthology Browser'
+                : 'MONDO Onthology Browser'
+            }
             selectedField={selectedField}
+            key={selectedField}
           />
         )}
 
@@ -133,7 +132,9 @@ export default class Category extends React.Component {
 
             if (!isOntologyModalVisible) {
               overlay =
-                selectedField && selectedField !== 'observed_phenotype.name'
+                selectedField &&
+                selectedField !== 'observed_phenotype.name' &&
+                selectedField !== 'mondo_diagnosis.name'
                   ? this.renderFilter(selectedField, title)
                   : this.renderMenu(extendedMapping);
             }

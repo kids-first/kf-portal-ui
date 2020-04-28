@@ -28,6 +28,8 @@ type ModalState = {
 
 const { Title } = Typography;
 
+const ontologyRegex = new RegExp('([A-Za-z_]+).name');
+
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
   const index = findIndex(initialSqon?.content, c => c.content.field === selectedField);
   if (index >= 0 && value.length === 0) {
@@ -65,7 +67,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   ontologyStore: PhenotypeStore;
 
   componentDidMount(): void {
-    this.updateData();
+    const match: RegExpMatchArray | null = this.props.selectedField.match(ontologyRegex)
+    if(match) {
+      this.updateData(match[1]);
+    }
   }
 
   getKeyFromTreeId = (treeId: string) => {
@@ -143,10 +148,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     });
   };
 
-  updateData = () => {
+  updateData = (field: string) => {
     this.setState({ isLoading: true });
     this.ontologyStore
-      .fetch(this.props.initialSqon)
+      .fetch(field, this.props.initialSqon)
       .then(() => {
         this.transfertDataSource = [];
         this.flattenDataSource(this.ontologyStore.tree as TransferItem[]);
@@ -164,7 +169,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const { isVisible } = this.props;
     if (nextProps.isVisible && !isVisible) {
       // opening the modal again
-      this.updateData();
+      const match: RegExpMatchArray | null = this.props.selectedField.match(ontologyRegex)
+      if(match){
+        this.updateData(match[1]);
+      }
       return false;
     } else if (!nextProps.isVisible && !isVisible) {
       // Closing the modal
@@ -176,7 +184,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   isLoadingOrEmpty = (): boolean => this.state.isLoading || this.transfertDataSource.length === 0;
 
   render() {
-    const { isVisible } = this.props;
+    const { isVisible, title } = this.props;
     const { error, targetKeys, isLoading, treeSource } = this.state;
     const dataSource = this.transfertDataSource;
     const hasError = error != null;
@@ -184,7 +192,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     return (
       <Modal
         style={{ height: '80vh', maxWidth: 1400 }}
-        title={<Title level={3}>Observed Phenotype (HPO) Browser</Title>}
+        title={title}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
         okText={'Apply'}
