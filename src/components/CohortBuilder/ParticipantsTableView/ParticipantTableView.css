@@ -13,3 +13,23 @@
 .participantTable div.rt-noData {
   display: none !important;
 }
+
+.export-btn {
+  margin-right: 5px;
+  margin-left: 8px;
+}
+
+.cols-picker-btn {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.download-btn {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.action-btns-layout {
+  display: flex;
+  align-items: center;
+}
