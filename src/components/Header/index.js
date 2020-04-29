@@ -72,7 +72,7 @@ const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
   return null;
 };
 
-const Header = props => {
+const Header = (props) => {
   const {
     currentError,
     dismissError,
@@ -112,6 +112,14 @@ const Header = props => {
                     style={{ top: '3px', position: 'relative', fill: 'currentColor' }}
                   />{' '}
                   Explore Data
+                </NavLink>
+              </li>
+              <li>
+                <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
+                  <ExploreDataIcon
+                    style={{ top: '3px', position: 'relative', fill: 'currentColor' }}
+                  />{' '}
+                  Variant DB
                 </NavLink>
               </li>
               <li>
@@ -168,7 +176,7 @@ Header.propTypes = {
   enabledFeatures: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loggedInUser: state.user.loggedInUser,
   currentError: state.errors.currentError,
 });

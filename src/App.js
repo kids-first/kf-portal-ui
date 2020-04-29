@@ -35,33 +35,25 @@ import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
+import VariantDb from './components/VariantDb';
 
-const userIsRequiredToLogIn = loggedInUser => {
-  return (
-    (loggedInUser === null ||
-      loggedInUser === undefined ||
-      (isPlainObject(loggedInUser) && isEmpty(loggedInUser))) &&
-    requireLogin
-  );
-};
+const userIsRequiredToLogIn = (loggedInUser) =>
+  (loggedInUser === null ||
+    loggedInUser === undefined ||
+    (isPlainObject(loggedInUser) && isEmpty(loggedInUser))) &&
+  requireLogin;
 
-const userIsNotLoggedInOrMustCompleteJoinForm = loggedInUser => {
-  return (
-    !loggedInUser ||
-    isEmpty(loggedInUser) ||
-    !loggedInUser.roles ||
-    !loggedInUser.roles[0] ||
-    !loggedInUser.acceptedTerms
-  );
-};
+const userIsNotLoggedInOrMustCompleteJoinForm = (loggedInUser) =>
+  !loggedInUser ||
+  isEmpty(loggedInUser) ||
+  !loggedInUser.roles ||
+  !loggedInUser.roles[0] ||
+  !loggedInUser.acceptedTerms;
 
-const userIsLoggedInButMustCompleteJoinForm = loggedInUser => {
-  return (
-    isPlainObject(loggedInUser) &&
-    !isEmpty(loggedInUser) &&
-    (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms)
-  );
-};
+const userIsLoggedInButMustCompleteJoinForm = (loggedInUser) =>
+  isPlainObject(loggedInUser) &&
+  !isEmpty(loggedInUser) &&
+  (!loggedInUser.roles || !loggedInUser.roles[0] || !loggedInUser.acceptedTerms);
 
 const forceSelectRole = ({ loggedInUser, isLoadingUser, WrapperPage = Page, ...props }) => {
   if (isLoadingUser) {
@@ -99,7 +91,7 @@ const App = compose(
         <Route
           path={ROUTES.cohortBuilder}
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               isLoadingUser,
               Component: CohortBuilder,
@@ -116,21 +108,35 @@ const App = compose(
         <Route
           path={ROUTES.searchMember}
           exact
-          render={props => {
-            return forceSelectRole({
+          render={(props) =>
+            forceSelectRole({
               isLoadingUser,
               Component: MemberSearchPage,
               loggedInUser,
               isAdmin: state.isAdmin,
               loggedInUserToken: state.loggedInUserToken,
               ...props,
-            });
-          }}
+            })
+          }
+        />
+        <Route
+          path={ROUTES.variantDb}
+          exact
+          render={(props) =>
+            forceSelectRole({
+              isLoadingUser,
+              Component: VariantDb,
+              loggedInUser,
+              isAdmin: state.isAdmin,
+              loggedInUserToken: state.loggedInUserToken,
+              ...props,
+            })
+          }
         />
         <Route
           path={`${ROUTES.file}/:fileId`}
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               api,
               isLoadingUser,
@@ -144,7 +150,7 @@ const App = compose(
         <Route
           path={`${ROUTES.participant}/:participantId`}
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               isLoadingUser,
               loggedInUser,
@@ -157,7 +163,7 @@ const App = compose(
         <Route
           path={`${ROUTES.search}/:index`}
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               isLoadingUser,
               Component: FileRepo,
@@ -172,7 +178,7 @@ const App = compose(
         <Route
           path={ROUTES.dashboard}
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               api,
               isLoadingUser,
@@ -185,7 +191,7 @@ const App = compose(
         <Route
           path={ROUTES.join}
           exact
-          render={props => {
+          render={(props) => {
             if (userIsNotLoggedInOrMustCompleteJoinForm(loggedInUser)) {
               return (
                 <ApiContext.Provider
@@ -214,7 +220,7 @@ const App = compose(
         <Route
           path="/"
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               api,
               isLoadingUser,
@@ -228,7 +234,7 @@ const App = compose(
         <Route
           path={ROUTES.orcid}
           exact
-          render={props => (
+          render={(props) => (
             <SideImagePage
               logo={logo}
               backgroundImage={scienceBgPath}
@@ -246,7 +252,7 @@ const App = compose(
         <Route
           path={ROUTES.profile}
           exact
-          render={props =>
+          render={(props) =>
             forceSelectRole({
               api,
               isLoadingUser,
@@ -260,7 +266,7 @@ const App = compose(
         <Route
           path={`${ROUTES.user}/:userID`}
           exact
-          render={props => {
+          render={(props) => {
             const userIdUrlParam = props.match.params.userID;
             return forceSelectRole({
               api,
