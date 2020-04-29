@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import Table from './Table';
 import TableToolbar from './TableToolbar';
 import ColumnFilter from './ToolbarButtons/ColumnFilter';
-import Export from './ToolbarButtons/Export';
 import { trackUserInteraction } from 'services/analyticsTracking';
 import { configureCols } from './utils/columns';
 import applyTransforms from './utils/applyTransforms';
+import { Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import exportTSV from './ToolbarButtons/exportTSV';
+import './BaseDataTable.css';
 
 const enhance = compose(
   withState('pageSize', 'setPageSize', props => (props.showPagination ? 10 : props.data.length)),
@@ -36,28 +39,29 @@ const BaseDataTable = ({
     {header ? (
       <TableToolbar pageSize={pageSize} page={pageIndex} total={data ? data.length : 0}>
         <ColumnFilter
+          colsPickerBtnClassName={'cols-picker-btn'}
           columns={columns}
-          onChange={item => {
-            const index = columns.findIndex(c => c.index === item.index);
-            const cols = columns.map((col, i) =>
-              i === index ? { ...col, ...{ show: !item.show } } : col,
-            );
-            const colActedUpon = cols[index];
-            if (analyticsTracking) {
+          defaultCols={[...columns]}
+          onChange={(updatedCols, updatedCol) => {
+            if (analyticsTracking && updatedCol) {
               trackUserInteraction({
                 category: analyticsTracking.category,
                 action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                  colActedUpon.show ? 'show' : 'hide'
+                  updatedCol.show ? 'show' : 'hide'
                 }`,
-                label: colActedUpon.Header,
+                label: updatedCol.Header,
               });
             }
-
-            setColumns(cols);
+            setColumns(updatedCols);
           }}
         />
-
-        <Export {...{ columns, data: data || [], downloadName }}>export</Export>
+        <Button
+          className={'export-btn'}
+          icon={<DownloadOutlined />}
+          onClick={() => exportTSV(data || [], columns, downloadName)}
+        >
+          Export
+        </Button>
       </TableToolbar>
     ) : null}
     <Table
@@ -66,7 +70,7 @@ const BaseDataTable = ({
       loading={loading}
       data={applyTransforms(data || [], transforms)}
       onPageChange={pageIndex => setPageIndex(pageIndex)}
-      onPageSizeChange={(pageSize, pageIndex) => setPageSize(pageSize)}
+      onPageSizeChange={(pageSize, _) => setPageSize(pageSize)}
       className={className}
     />
   </Fragment>
@@ -81,6 +85,18 @@ BaseDataTable.propTypes = {
     }),
   ).isRequired,
   data: PropTypes.array.isRequired,
+  loading: PropTypes.bool,
+  transforms: PropTypes.object,
+  setColumns: PropTypes.func.isRequired,
+  header: PropTypes.bool,
+  className: PropTypes.string,
+  showPagination: PropTypes.bool,
+  analyticsTracking: PropTypes.object,
+  downloadName: PropTypes.string,
+  setPageIndex: PropTypes.func,
+  setPageSize: PropTypes.func,
+  pageIndex: PropTypes.number,
+  pageSize: PropTypes.number,
 };
 
 export default enhance(BaseDataTable);

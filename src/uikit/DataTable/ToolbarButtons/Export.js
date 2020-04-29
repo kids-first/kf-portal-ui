@@ -1,87 +1,96 @@
 import React, { Component } from 'react';
-import { ToolbarItem, ToolbarButton, FileDownloadIcon } from './styles';
-import { saveAs } from 'file-saver';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import QueriesResolver from 'components/CohortBuilder/QueriesResolver';
-import LoadingSpinner from 'uikit/LoadingSpinner';
+import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import {
   participantQueryExport,
   participantsQuery,
 } from 'components/CohortBuilder/ParticipantsTableView/queries';
+import { Button, notification } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 
-const exportTSV = (data, columns, filename) => {
-  const visibleCols = columns.filter(c => c.show && !c.skipExport);
-  const headers = visibleCols.map(h => h.exportHeader || h.Header).join('\t');
-  const rows = data.map(d => visibleCols.map(header => d[header.accessor]).join('\t')).join('\n');
+import { arrangerApiRoot, arrangerProjectId } from 'common/injectGlobals';
+import urlJoin from 'url-join';
+import { print } from 'graphql/language/printer';
+import exportTSV from './exportTSV';
 
-  const blob = new Blob([headers + '\n' + rows], { type: 'data:text/tab-separated-values' });
-  trackUserInteraction({
-    category: TRACKING_EVENTS.categories.entityPage.file,
-    action: TRACKING_EVENTS.actions.download.report,
-    label: filename,
-  });
-  saveAs(blob, `${filename}.tsv`);
-};
+const formatDataForExport = result => (result ? result.nodes.map(node => ({ ...node })) : []);
 
 export default class Export extends Component {
-  constructor(props) {
-    super(props);
-    this.triggerExport = false;
-    this.state = {};
-  }
+  static propTypes = {
+    downloadName: PropTypes.string,
+    selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+    columns: PropTypes.array.isRequired,
+    api: PropTypes.func.isRequired,
+    sqon: PropTypes.object.isRequired,
+    dataTotalCount: PropTypes.number.isRequired,
+    sort: PropTypes.array,
+    exportBtnClassName: PropTypes.string,
+  };
 
-  handleClick = () => {
-    this.triggerExport = true;
-    this.setState({});
+  static defaultProps = {
+    exportBtnClassName: '',
+  };
+
+  state = {
+    data: [],
+    isLoading: false,
+  };
+
+  fetchData = async () => {
+    this.setState({ isLoading: true, error: null });
+    try {
+      const { selectedRows, dataTotalCount, sqon, sort, api, columns, downloadName } = this.props;
+
+      const queries = isEmpty(selectedRows)
+        ? [participantsQuery(sqon, sort, dataTotalCount, '')]
+        : [participantQueryExport(sqon, selectedRows.length)];
+
+      const rawData = await api({
+        method: 'POST',
+        url: urlJoin(
+          arrangerApiRoot,
+          `/${arrangerProjectId}/graphql/GQL_PARTICIPANTS_TABLE_EXPORT`,
+        ),
+        body: JSON.stringify(
+          queries.map(q => ({
+            query: typeof q.query === 'string' ? q.query : print(q.query),
+            variables: q.variables,
+          })),
+        ),
+      });
+
+      const data = rawData.map((d, i) => {
+        const transform = queries[i].transform;
+        return transform ? transform(d) : d;
+      });
+
+      exportTSV(formatDataForExport(data[0]), columns, downloadName);
+    } catch (error) {
+      notification.error({
+        message: 'Export Table',
+        description: 'An error occurred. The table can not be exported. Please try again.',
+        duration: 5,
+      });
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  };
+
+  handleClick = async () => {
+    await this.fetchData();
   };
 
   render() {
-    const {
-      data,
-      columns,
-      downloadName,
-      selectedRows,
-      api,
-      sqon,
-      sort,
-      dataTotalCount,
-    } = this.props;
-
+    const { exportBtnClassName } = this.props;
     return (
-      <ToolbarItem
-        onClick={isEmpty(data) ? this.handleClick : () => exportTSV(data, columns, downloadName)}
+      <Button
+        className={exportBtnClassName}
+        loading={this.state.isLoading}
+        icon={<DownloadOutlined />}
+        onClick={this.handleClick}
       >
-        <FileDownloadIcon width="12" height="12px" fill="#008299" style={{ marginRight: '7px' }} />
-        <ToolbarButton>EXPORT</ToolbarButton>
-
-        {this.triggerExport && isEmpty(data) && (
-          <QueriesResolver
-            name="GQL_PARTICIPANTS_TABLE_EXPORT"
-            api={api}
-            queries={
-              isEmpty(selectedRows)
-                ? [participantsQuery(sqon, sort, dataTotalCount, '')]
-                : [participantQueryExport(sqon, selectedRows.length)]
-            }
-          >
-            {({ isLoading, data, error }) => {
-              if (error) {
-                console.log('error', error);
-              }
-              if (isLoading) {
-                return <LoadingSpinner />;
-              }
-              const dataExport = data[0] ? data[0].nodes.map(node => ({ ...node })) : [];
-              if (!isEmpty(dataExport)) {
-                exportTSV(dataExport, columns, downloadName);
-                this.triggerExport = false;
-              }
-              return '';
-            }}
-          </QueriesResolver>
-        )}
-      </ToolbarItem>
+        Export
+      </Button>
     );
   }
 }

@@ -9,10 +9,7 @@ import uniqueId from 'lodash/uniqueId';
 import Component from 'react-component-component';
 import autobind from 'auto-bind-es5';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
-
-import DownloadIcon from 'icons/DownloadIcon';
 import { familyMemberAndParticipantIds } from '../FamilyManifestModal';
-import { TealActionButton } from 'uikit/Button';
 import Row from 'uikit/Row';
 import { DropdownOptionsContainer } from 'uikit/Dropdown';
 import Tooltip from 'uikit/Tooltip';
@@ -33,6 +30,9 @@ import { displayError } from 'store/actionCreators/errors';
 import { styleComponent } from 'components/Utils';
 
 import './DownloadButton.css';
+
+import { DownloadOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 
 const StyledDropdownOptionsContainer = styleComponent(
   DropdownOptionsContainer,
@@ -73,7 +73,7 @@ const participantDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
   trackDownload('Clinical (Participant)');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo ) {
+  if (isFileRepo) {
     const { participantIds } = await familyMemberAndParticipantIds({
       api,
       sqon,
@@ -102,7 +102,7 @@ const familyDownloader = ({ api, sqon, columnState, isFileRepo }) => async () =>
   trackDownload('Clinical (Participant and family)');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo ) {
+  if (isFileRepo) {
     const { familyMemberIds, participantIds } = await familyMemberAndParticipantIds({
       api,
       sqon,
@@ -132,7 +132,7 @@ const biospecimenDownloader = ({ api, sqon, columnState, isFileRepo }) => async 
   trackDownload('Biospecimen');
 
   // Keep legacy code for File Repository Download button until the endpoint supports it
-  if (isFileRepo ) {
+  if (isFileRepo) {
     let downloadConfig = { sqon, columns: columnState.columns, isFileRepo };
     const downloader = downloadBiospecimen(downloadConfig);
     return downloader();
@@ -183,7 +183,7 @@ class DownloadButton extends React.Component {
       isDropdownVisible: false,
     };
 
-    if (this.props.isFileRepo ) {
+    if (this.props.isFileRepo) {
       // nothing for now
     } else {
       // check if the family report is available
@@ -205,12 +205,13 @@ class DownloadButton extends React.Component {
       setModal: PropTypes.func.isRequired,
     }).isRequired,
     // passed down as props
-    sqon: PropTypes.object.isRequired,
+    sqon: PropTypes.object,
     projectId: PropTypes.string.isRequired, // required only if isFileRepo is true
     disabled: PropTypes.bool,
     isFileRepo: PropTypes.bool,
     onDownloadStarts: PropTypes.func,
     onDownloadEnds: PropTypes.func,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
@@ -218,6 +219,7 @@ class DownloadButton extends React.Component {
     isFileRepo: false,
     onDownloadStarts: noop,
     onDownloadEnds: noop,
+    className: '',
   };
 
   renderReportDropdownItem(report) {
@@ -293,6 +295,7 @@ class DownloadButton extends React.Component {
           }}
           onClick={() => this.setState({ isDropdownVisible: !this.state.isDropdownVisible })}
           disabled={disabled}
+          className={this.props.className}
         />
         {isDropdownVisible ? (
           <StyledDropdownOptionsContainer hideTip>
@@ -351,6 +354,7 @@ class DownloadButton extends React.Component {
                 }}
                 onClick={() => this.setState({ isDropdownVisible: !this.state.isDropdownVisible })}
                 disabled={disabled}
+                className={this.props.className}
               />
               {isDropdownVisible ? (
                 <StyledDropdownOptionsContainer hideTip>
@@ -433,9 +437,7 @@ class DownloadButton extends React.Component {
 
     return (
       <div style={{ position: 'relative', marginLeft: '15px' }}>
-        {isFileRepo
-          ? this.fileRepoRender()
-          : this.cohortBuilderRender()}
+        {isFileRepo ? this.fileRepoRender() : this.cohortBuilderRender()}
       </div>
     );
   }
@@ -447,26 +449,32 @@ const mapDispatchToProps = {
 
 export default compose(withApi, injectState, connect(null, mapDispatchToProps))(DownloadButton);
 
-const DownloadButtonUI = ({
-  onClick,
-  content = () => 'Download',
-  disabled = false,
-  onBlur = noop,
-}) => {
+const DownloadButtonUI = ({ onClick, content, disabled, onBlur, className }) => {
   return (
-    <TealActionButton
-      className="downloadButton"
+    <Button
+      className={className}
+      type={'primary'}
       onClick={onClick}
       disabled={disabled}
       onBlur={onBlur}
+      icon={<DownloadOutlined />}
     >
-      <DownloadIcon
-        style={{
-          height: '28px',
-          marginRight: '9px',
-        }}
-      />
-      <span style={{ textTransform: 'uppercase' }}>{content()}</span>
-    </TealActionButton>
+      {content()}
+    </Button>
   );
+};
+
+DownloadButtonUI.defaultProps = {
+  content: () => 'Download',
+  onBlur: () => {},
+  className: '',
+  disabled: false,
+};
+
+DownloadButtonUI.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  content: PropTypes.func,
+  onBlur: PropTypes.func,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
 };

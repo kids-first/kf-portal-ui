@@ -8,12 +8,7 @@ import autobind from 'auto-bind-es5';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSelectionCount,
-  ToolbarDownload,
-} from 'uikit/DataTable/TableToolbar/styles';
+import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { configureCols } from 'uikit/DataTable/utils/columns';
@@ -294,11 +289,6 @@ class ParticipantsTable extends Component {
           <Fragment>
             <ToolbarGroup style={{ border: 'none' }}>
               <Fragment>
-                {/*
-                <RemoveFromCohortButton
-                  onClick={() => handleRemoveFromCohort()}
-                  disabled={allRowsSelected || selectedRows.length === 0}
-                />*/}
                 {selectedRowsCount > 0 ? (
                   <ToolbarSelectionCount>
                     <Fragment>
@@ -314,34 +304,30 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
-            <ToolbarDownload>
+            <div className={'action-btns-layout'}>
               <DownloadButton
+                className={'download-btn'}
                 sqon={sqon}
                 {...this.props}
                 projectId={projectId}
                 onDownloadStarts={this.handleDownloadStarted}
                 onDownloadEnds={this.handleDownloadCompleted}
               />
-            </ToolbarDownload>
-            <ToolbarGroup>
               <ColumnFilter
+                colsPickerBtnClassName={'cols-picker-btn'}
                 columns={columns}
-                onChange={item => {
-                  const index = columns.findIndex(c => c.index === item.index);
-                  const cols = columns.map((col, i) =>
-                    i === index ? { ...col, ...{ show: !item.show } } : col,
-                  );
-                  const colActedUpon = cols[index];
-                  if (analyticsTracking) {
+                defaultCols={[...columns]}
+                onChange={(updatedCols, updatedCol) => {
+                  if (analyticsTracking && updatedCol) {
                     trackUserInteraction({
                       category: analyticsTracking.category,
                       action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                        colActedUpon.show ? 'show' : 'hide'
+                        updatedCol.show ? 'show' : 'hide'
                       }`,
-                      label: colActedUpon.Header,
+                      label: updatedCol.Header,
                     });
                   }
-                  this.setState({ columns: cols });
+                  this.setState({ columns: updatedCols });
                 }}
               />
               <Export
@@ -353,12 +339,10 @@ class ParticipantsTable extends Component {
                   sqon: sqon,
                   sort,
                   dataTotalCount,
-                  data: [],
+                  exportBtnClassName: 'export-btn',
                 }}
-              >
-                export
-              </Export>
-            </ToolbarGroup>
+              />
+            </div>
           </Fragment>
         </Toolbar>
         <ControlledDataTable
@@ -389,6 +373,7 @@ ParticipantsTable.propTypes = {
   downloadName: PropTypes.string,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
+  api: PropTypes.func.isRequired,
 };
 
 export default ParticipantsTable;
