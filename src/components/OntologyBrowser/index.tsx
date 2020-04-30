@@ -1,5 +1,6 @@
+import { Sqon } from '../../types';
 import * as React from 'react';
-import { Modal, Transfer, Empty, Result, Typography } from 'antd';
+import { Empty, Modal, Result, Transfer, Typography } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
@@ -25,20 +26,10 @@ type ModalState = {
   error?: Error | null;
 };
 
-type SqonFilters = {
-  op: string;
-  content: { field: string; value: string[] };
-};
-
-type Sqon = {
-  op: string;
-  content: SqonFilters[];
-};
-
 const { Title } = Typography;
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
-  const index = findIndex(initialSqon?.content, (c) => c.content.field === selectedField);
+  const index = findIndex(initialSqon?.content, c => c.content.field === selectedField);
   if (index >= 0 && value.length === 0) {
     initialSqon.content.splice(index, 1);
   } else if (index >= 0) {
@@ -86,7 +77,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const results: any = {};
     const findTreeKey = (treeNode: TreeNode) => {
       const { initialSqon, selectedField } = this.props;
-      initialSqon.content.forEach((v) => {
+      initialSqon.content.forEach(v => {
         if (
           v.content.value.indexOf(treeNode.title as string) >= 0 &&
           v.content.field === selectedField
@@ -94,11 +85,11 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           results[treeNode.title as string] = treeNode.key;
         }
         if (treeNode.children.length > 0) {
-          treeNode.children.forEach((t) => findTreeKey(t));
+          treeNode.children.forEach(t => findTreeKey(t));
         }
       });
     };
-    this.ontologyStore.tree.forEach((treeNode) => {
+    this.ontologyStore.tree.forEach(treeNode => {
       findTreeKey(treeNode);
     });
     return Object.values(results);
@@ -126,11 +117,11 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     // Children should be removed from target since only the upper most phenotype should be keep
     let cleanedTargetKeys = nextTargetKeys;
     if (direction === 'right') {
-      moveKeys.forEach((mk) => {
+      moveKeys.forEach(mk => {
         const node = this.ontologyStore.getTreeNodeForKey(mk);
         if (node) {
           const childrenKeys = this.ontologyStore.getChildrenKeys(node, true);
-          cleanedTargetKeys = nextTargetKeys.filter((k) => !childrenKeys.includes(k));
+          cleanedTargetKeys = nextTargetKeys.filter(k => !childrenKeys.includes(k));
         } else {
           cleanedTargetKeys = nextTargetKeys;
         }
@@ -140,7 +131,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
       });
     } else if (direction === 'left') {
       this.setState({
-        targetKeys: targetKeys.filter((key) => moveKeys.indexOf(key) < 0),
+        targetKeys: targetKeys.filter(key => moveKeys.indexOf(key) < 0),
       });
     }
   };
@@ -166,7 +157,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           isLoading: false,
         });
       })
-      .catch((error) => this.setState({ isLoading: false, error }));
+      .catch(error => this.setState({ isLoading: false, error }));
   };
 
   shouldComponentUpdate(nextProps: ModalProps, nextState: ModalState) {

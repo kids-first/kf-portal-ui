@@ -4,6 +4,7 @@ import * as React from 'react';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { treeData } from './mockData';
+import { jestPatchMatchMedia } from '../../../utils';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -14,21 +15,7 @@ describe('In SelectionTree', () => {
   const onItemSelectAll = jest.fn();
   const dataSource: TreeNode[] = treeData;
 
-  beforeAll(() => {
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: jest.fn().mockImplementation((query) => ({
-        matches: false,
-        media: query,
-        onchange: null,
-        addListener: jest.fn(), // deprecated
-        removeListener: jest.fn(), // deprecated
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-      })),
-    });
-  });
+  beforeAll(() => jestPatchMatchMedia());
 
   let wrapper: Enzyme.ShallowWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
 
@@ -75,11 +62,11 @@ describe('In SelectionTree', () => {
           {
             title: (
               <span>
-                Abnormality of skin{' '}
+                {'Abnormality of skin '}
                 <div className="highlight" style={{ display: 'inherit' }}>
                   adnexa
-                </div>{' '}
-                morphology (HP:0011138)
+                </div>
+                {' morphology (HP:0011138)'}
               </span>
             ),
             text: 'Abnormality of skin adnexa morphology (HP:0011138)',
