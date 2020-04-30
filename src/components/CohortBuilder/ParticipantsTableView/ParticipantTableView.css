@@ -29,6 +29,12 @@
   margin-left: 8px;
 }
 
+.save-set-btn {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+
 .action-btns-layout {
   display: flex;
   align-items: center;

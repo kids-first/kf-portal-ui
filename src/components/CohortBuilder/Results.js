@@ -251,7 +251,7 @@ const Results = ({
           </ContentBar>
           <div className={`cb-active-view ${activeView}`}>
             <Summary sqon={sqon} />
-            <ParticipantsTableView sqon={sqon} />
+            <ParticipantsTableView sqon={sqon} loggedInUser={state.loggedInUser} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </div>
         </Fragment>

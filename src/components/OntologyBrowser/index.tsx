@@ -5,6 +5,7 @@ import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
 import { Spinner } from '../../uikit/Spinner';
+import { Sqon } from '../../types';
 
 import './index.css';
 
@@ -24,18 +25,6 @@ type ModalState = {
   isLoading: boolean;
   error?: Error | null;
 };
-
-type SqonFilters = {
-  op: string;
-  content: { field: string; value: string[] };
-};
-
-type Sqon = {
-  op: string;
-  content: SqonFilters[];
-};
-
-const { Title } = Typography;
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
   const index = findIndex(initialSqon?.content, (c) => c.content.field === selectedField);

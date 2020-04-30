@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import autobind from 'auto-bind-es5';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
@@ -18,8 +18,9 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-
+import SaveSetModal from './SaveSetModal';
 import './ParticipantTableView.css';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   return (
@@ -235,6 +236,7 @@ class ParticipantsTable extends Component {
           ? { ...field, sortable: true }
           : { ...field, sortable: false },
       ),
+      showModal: false,
     };
     autobind(this);
   }
@@ -276,6 +278,7 @@ class ParticipantsTable extends Component {
       selectedRows,
       allRowsSelected,
       sqon,
+      loggedInUser,
     } = this.props;
     // I know. Sometimes, you gotta do what you gotta do.
     this.dirtyHack.allRowsSelected = allRowsSelected;
@@ -285,6 +288,18 @@ class ParticipantsTable extends Component {
 
     return (
       <Fragment>
+        {this.state.showModal && (
+          <SaveSetModal
+            api={api}
+            sqon={sqon}
+            user={loggedInUser}
+            hideModalCb={() =>
+              this.setState({
+                showModal: false,
+              })
+            }
+          />
+        )}
         <Toolbar style={{ border: 'none' }}>
           <Fragment>
             <ToolbarGroup style={{ border: 'none' }}>
@@ -305,6 +320,18 @@ class ParticipantsTable extends Component {
               </Fragment>
             </ToolbarGroup>
             <div className={'action-btns-layout'}>
+              {isFeatureEnabled('variantsDb') && (
+                <Button
+                  className={'save-set-btn'}
+                  onClick={() =>
+                    this.setState({
+                      showModal: true,
+                    })
+                  }
+                >
+                  Save participants set
+                </Button>
+              )}
               <DownloadButton
                 className={'download-btn'}
                 sqon={sqon}
@@ -374,6 +401,7 @@ ParticipantsTable.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default ParticipantsTable;

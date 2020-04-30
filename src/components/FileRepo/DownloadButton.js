@@ -434,12 +434,7 @@ class DownloadButton extends React.Component {
 
   render() {
     const { isFileRepo = false } = this.props;
-
-    return (
-      <div style={{ position: 'relative', marginLeft: '15px' }}>
-        {isFileRepo ? this.fileRepoRender() : this.cohortBuilderRender()}
-      </div>
-    );
+    return isFileRepo ? this.fileRepoRender() : this.cohortBuilderRender();
   }
 }
 
