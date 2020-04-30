@@ -19,21 +19,10 @@
   margin-left: 8px;
 }
 
-.cols-picker-btn {
+.cols-picker-btn, .download-btn, .save-set-btn {
   margin-right: 8px;
   margin-left: 8px;
 }
-
-.download-btn {
-  margin-right: 8px;
-  margin-left: 8px;
-}
-
-.save-set-btn {
-  margin-right: 8px;
-  margin-left: 8px;
-}
-
 
 .action-btns-layout {
   display: flex;
