@@ -3,17 +3,12 @@ import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import autobind from 'auto-bind-es5';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
 import { Link } from 'uikit/Core';
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSelectionCount,
-  ToolbarDownload,
-} from 'uikit/DataTable/TableToolbar/styles';
+import { Toolbar, ToolbarGroup, ToolbarSelectionCount } from 'uikit/DataTable/TableToolbar/styles';
 import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { configureCols } from 'uikit/DataTable/utils/columns';
@@ -23,8 +18,9 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
-
+import SaveSetModal from './SaveSetModal';
 import './ParticipantTableView.css';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   return (
@@ -240,6 +236,7 @@ class ParticipantsTable extends Component {
           ? { ...field, sortable: true }
           : { ...field, sortable: false },
       ),
+      showModal: false,
     };
     autobind(this);
   }
@@ -281,6 +278,7 @@ class ParticipantsTable extends Component {
       selectedRows,
       allRowsSelected,
       sqon,
+      loggedInUser,
     } = this.props;
     // I know. Sometimes, you gotta do what you gotta do.
     this.dirtyHack.allRowsSelected = allRowsSelected;
@@ -290,15 +288,22 @@ class ParticipantsTable extends Component {
 
     return (
       <Fragment>
+        {this.state.showModal && (
+          <SaveSetModal
+            api={api}
+            sqon={sqon}
+            user={loggedInUser}
+            hideModalCb={() =>
+              this.setState({
+                showModal: false,
+              })
+            }
+          />
+        )}
         <Toolbar style={{ border: 'none' }}>
           <Fragment>
             <ToolbarGroup style={{ border: 'none' }}>
               <Fragment>
-                {/*
-                <RemoveFromCohortButton
-                  onClick={() => handleRemoveFromCohort()}
-                  disabled={allRowsSelected || selectedRows.length === 0}
-                />*/}
                 {selectedRowsCount > 0 ? (
                   <ToolbarSelectionCount>
                     <Fragment>
@@ -314,34 +319,42 @@ class ParticipantsTable extends Component {
                 ) : null}
               </Fragment>
             </ToolbarGroup>
-            <ToolbarDownload>
+            <div className={'action-btns-layout'}>
+              {isFeatureEnabled('variantsDb') && (
+                <Button
+                  className={'save-set-btn'}
+                  onClick={() =>
+                    this.setState({
+                      showModal: true,
+                    })
+                  }
+                >
+                  Save participants set
+                </Button>
+              )}
               <DownloadButton
+                className={'download-btn'}
                 sqon={sqon}
                 {...this.props}
                 projectId={projectId}
                 onDownloadStarts={this.handleDownloadStarted}
                 onDownloadEnds={this.handleDownloadCompleted}
               />
-            </ToolbarDownload>
-            <ToolbarGroup>
               <ColumnFilter
+                colsPickerBtnClassName={'cols-picker-btn'}
                 columns={columns}
-                onChange={item => {
-                  const index = columns.findIndex(c => c.index === item.index);
-                  const cols = columns.map((col, i) =>
-                    i === index ? { ...col, ...{ show: !item.show } } : col,
-                  );
-                  const colActedUpon = cols[index];
-                  if (analyticsTracking) {
+                defaultCols={[...columns]}
+                onChange={(updatedCols, updatedCol) => {
+                  if (analyticsTracking && updatedCol) {
                     trackUserInteraction({
                       category: analyticsTracking.category,
                       action: `Datatable: ${analyticsTracking.title}: Column Filter: ${
-                        colActedUpon.show ? 'show' : 'hide'
+                        updatedCol.show ? 'show' : 'hide'
                       }`,
-                      label: colActedUpon.Header,
+                      label: updatedCol.Header,
                     });
                   }
-                  this.setState({ columns: cols });
+                  this.setState({ columns: updatedCols });
                 }}
               />
               <Export
@@ -353,12 +366,10 @@ class ParticipantsTable extends Component {
                   sqon: sqon,
                   sort,
                   dataTotalCount,
-                  data: [],
+                  exportBtnClassName: 'export-btn',
                 }}
-              >
-                export
-              </Export>
-            </ToolbarGroup>
+              />
+            </div>
           </Fragment>
         </Toolbar>
         <ControlledDataTable
@@ -389,6 +400,8 @@ ParticipantsTable.propTypes = {
   downloadName: PropTypes.string,
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
+  api: PropTypes.func.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
 export default ParticipantsTable;

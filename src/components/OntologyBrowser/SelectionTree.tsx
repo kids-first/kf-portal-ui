@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { Input, Tag, Tree } from 'antd';
+import { Button, Col, Input, Row, Tag, Tree } from 'antd';
 import { TreeNode } from './store';
 
 import './SelectionTree.css';
@@ -10,6 +10,7 @@ type SelectionTreeProps = {
   checkedKeys: Array<string>;
   onItemSelect: Function;
   targetKeys: Array<string>;
+  onItemSelectAll: Function;
 };
 
 type SelectionTreeState = {
@@ -22,7 +23,7 @@ const MIN_SEARCH_TEXT_LENGTH = 3;
 
 const getInitialKeysForExpand = (data: TreeNode[], collectedKeys: string[] = [], counter = 1) => {
   if (counter < AUTO_EXPAND_TREE) {
-    data.forEach(node => {
+    data.forEach((node) => {
       counter++;
       collectedKeys.push(node.key);
       if (node.children) {
@@ -74,7 +75,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           hidden,
         } as TreeNode;
       })
-      .filter(node => (node.hidden ? false : !node.hidden));
+      .filter((node) => (node.hidden ? false : !node.hidden));
   };
 
   isChecked = (selectedKeys: Array<string>, eventKey: string | number) =>
@@ -85,10 +86,10 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     let newExpandNode: string[] = [];
 
     if (e.target.value.length >= MIN_SEARCH_TEXT_LENGTH) {
-      treeData.forEach(node => this.searchInTree(e.target.value, node, hits));
+      treeData.forEach((node) => this.searchInTree(e.target.value, node, hits));
       newExpandNode = hits;
     } else {
-      treeData.forEach(node => this.showAll(node));
+      treeData.forEach((node) => this.showAll(node));
       newExpandNode = getInitialKeysForExpand(treeData);
     }
 
@@ -123,7 +124,9 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         treeNode.title = (
           <span>
             {before}
-            <div className={'highlight'} style={{display: 'inherit'}}>{hit}</div>
+            <div className={'highlight'} style={{ display: 'inherit' }}>
+              {hit}
+            </div>
             {after}
           </span>
         );
@@ -145,21 +148,35 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
 
   onExpand = (expand: (string | number)[], info: Object) => {
     this.setState({
-      expandedKeys: expand.map(v => v.toString()),
+      expandedKeys: expand.map((v) => v.toString()),
     });
   };
 
   render() {
-    const { checkedKeys, dataSource, onItemSelect, targetKeys } = this.props;
+    const { checkedKeys, dataSource, onItemSelect, targetKeys, onItemSelectAll } = this.props;
     const { expandedKeys } = this.state;
     return (
       <Fragment>
-        <Input
-          style={{ marginBottom: 8, position: 'sticky', top: 0, zIndex: 2 }}
-          placeholder="Search for ontology term - Min 3 characters"
-          onChange={e => this.onChange(e, dataSource)}
-          allowClear
-        />
+        <Col style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: '#fff' }}>
+          <Row>
+            <Input
+              placeholder="Search for ontology term - Min 3 characters"
+              onChange={(e) => this.onChange(e, dataSource)}
+              allowClear
+            />
+          </Row>
+          <Row justify="start">
+            <Button
+              type="link"
+              onClick={(e) => {
+                e.preventDefault();
+                onItemSelectAll(checkedKeys, false);
+              }}
+            >
+              Clear
+            </Button>
+          </Row>
+        </Col>
         <Tree
           className="hide-file-icon"
           treeData={this.generateTree(dataSource, checkedKeys, targetKeys)}

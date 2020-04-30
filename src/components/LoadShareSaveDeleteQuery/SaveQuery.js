@@ -31,9 +31,9 @@ export default injectState(
       };
     }
 
-    componentWillReceiveProps(next) {
-      if (next.sqon !== this.props.sqon) {
-        this.setState({ queryName: sqonToName({ filters: next.sqon }) });
+    componentDidUpdate(prevProps) {
+      if (prevProps.sqon !== this.props.sqon) {
+        this.setState({ queryName: sqonToName({ filters: this.props.sqon }) });
       }
     }
 

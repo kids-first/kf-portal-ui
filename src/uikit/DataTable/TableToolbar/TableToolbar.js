@@ -13,7 +13,7 @@ const TableToolbar = ({ page = 0, pageSize = 0, total = 0, children }) => {
           total,
         ).toLocaleString()} of ${total.toLocaleString()}`}
       </div>
-      <Row className="toolbar-group">{children}</Row>
+      <Row>{children}</Row>
     </Row>
   );
 };

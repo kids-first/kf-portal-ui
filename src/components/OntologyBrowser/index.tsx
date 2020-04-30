@@ -1,5 +1,6 @@
+import { Sqon } from '../../types';
 import * as React from 'react';
-import { Modal, Transfer, Empty, Result } from 'antd';
+import { Empty, Modal, Result, Transfer, Typography } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
@@ -25,18 +26,10 @@ type ModalState = {
   error?: Error | null;
 };
 
-type SqonFilters = {
-  op: string;
-  content: { field: string; value: string[] };
-};
+const { Title } = Typography;
 
-type Sqon = {
-  op: string;
-  content: SqonFilters[];
-};
-
-const updateSqons = (initialSqon: Sqon, value: string[]) => {
-  const index = findIndex(initialSqon?.content, c => c.content.field === 'observed_phenotype.name');
+const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
+  const index = findIndex(initialSqon?.content, c => c.content.field === selectedField);
   if (index >= 0 && value.length === 0) {
     initialSqon.content.splice(index, 1);
   } else if (index >= 0) {
@@ -45,7 +38,7 @@ const updateSqons = (initialSqon: Sqon, value: string[]) => {
     initialSqon.content.push({
       op: 'in',
       content: {
-        field: 'observed_phenotype.name',
+        field: selectedField,
         value,
       },
     });
@@ -108,9 +101,9 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   };
 
   onApply = (keys: string[]) => {
-    const { initialSqon, onSqonUpdate } = this.props;
+    const { initialSqon, onSqonUpdate, selectedField } = this.props;
     const valuesId = keys.map(this.getKeyFromTreeId);
-    const updatedSqons = updateSqons(initialSqon, valuesId);
+    const updatedSqons = updateSqons(initialSqon, valuesId, selectedField);
     onSqonUpdate(updatedSqons);
     this.closeAndCleanModal();
   };
@@ -191,7 +184,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     return (
       <Modal
         style={{ height: '80vh' }}
-        title="HPO Onthology Browser"
+        title={<Title level={3}>Observed Phenotype (HPO) Browser</Title>}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
         okText={'Apply'}
@@ -222,7 +215,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
               ),
             }}
           >
-            {({ direction, onItemSelect, selectedKeys }) => {
+            {({ direction, onItemSelect, onItemSelectAll, selectedKeys }) => {
               if (direction === 'left' && isLoading) {
                 return <Spinner className={'spinner'} size={'large'} />;
               }
@@ -234,6 +227,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                     onItemSelect={onItemSelect}
                     checkedKeys={checkedKeys}
                     targetKeys={targetKeys}
+                    onItemSelectAll={onItemSelectAll}
                   />
                 );
               }

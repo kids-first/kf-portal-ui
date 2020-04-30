@@ -138,8 +138,8 @@ class StudiesChart extends React.Component {
                     { title: 'Other Participants', color: theme.chartColors.purple },
                   ]}
                   padding={0.5}
-                  onClick={data => {
-                    this.addSqon('study.short_name', data.indexValue);
+                  onClick={({ data }) => {
+                    this.addSqon('study.short_name', data.label);
                   }}
                 />
               </BarChartContainer>
