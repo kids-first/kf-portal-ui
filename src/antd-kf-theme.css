@@ -23895,3 +23895,6 @@ div.ant-typography-edit-content.ant-typography-rtl {
 * modifyVars
 *     example : @primary-color: red;
 */
+.ant-btn-link > span {
+  text-decoration: underline;
+}
