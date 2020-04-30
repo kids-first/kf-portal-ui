@@ -62,11 +62,11 @@ describe('In SelectionTree', () => {
           {
             title: (
               <span>
-                Abnormality of skin{' '}
+                {'Abnormality of skin '}
                 <div className="highlight" style={{ display: 'inherit' }}>
                   adnexa
-                </div>{' '}
-                morphology (HP:0011138)
+                </div>
+                {' morphology (HP:0011138)'}
               </span>
             ),
             text: 'Abnormality of skin adnexa morphology (HP:0011138)',
