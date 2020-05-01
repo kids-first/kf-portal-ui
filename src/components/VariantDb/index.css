@@ -10,3 +10,6 @@
 .middle-align {
     text-align: center;
 }
+.ant-list-header{
+    padding: 0;
+}

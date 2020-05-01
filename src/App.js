@@ -127,6 +127,7 @@ const App = compose(
               isLoadingUser,
               Component: VariantDb,
               loggedInUser,
+              WrapperPage: FixedFooterPage,
               isAdmin: state.isAdmin,
               loggedInUserToken: state.loggedInUserToken,
               ...props,

@@ -35,15 +35,17 @@ class VariantDb extends React.Component {
   render() {
     return (
       <div className="background-container" style={{ padding: 32 }}>
-        <Row>
+        <Row style={{ paddingBottom: 32 }}>
           <Col flex={'auto'} span={16}>
-            <Title level={2}>Germline Small Variant Database</Title>
-            <Title level={4}>
+            <Title level={2} style={{ marginBottom: 8 }}>
+              Germline Small Variant Database
+            </Title>
+            <Title level={4} style={{ margin: 0 }}>
               The Kids First germline small variant data warehouse contains harmonized variant calls
               and clinical data on probands and their parents.
             </Title>
           </Col>
-          <Col span={8}></Col>
+          <Col span={8} />
         </Row>
         <Row justify={'center'} gutter={24}>
           <Col span={16}>
@@ -63,24 +65,29 @@ class VariantDb extends React.Component {
               </Button>
             </div>
           </Col>
-          <Col className={'white-background'} span={8}>
-            <List
-              header={
-                <Row justify={'space-between'}>
-                  <Title level={4}>Data Release 1</Title>
-                  <div>May 13, 2020</div>
-                </Row>
-              }
-              dataSource={this.data}
-              renderItem={(item) => (
-                <List.Item>
-                  <Row style={{ display: 'contents' }}>
-                    <Col>{item.name}:</Col>
-                    <Col>{item.value}</Col>
+          <Col span={8}>
+            <div
+              className={'white-background'}
+              style={{ paddingTop: 16, paddingLeft: 24, paddingRight: 24, paddingBottom: 8 }}
+            >
+              <List
+                header={
+                  <Row justify={'space-between'} style={{ padding: 0 }}>
+                    <Title level={4}>Data Release 1</Title>
+                    <div>May 13, 2020</div>
                   </Row>
-                </List.Item>
-              )}
-            />
+                }
+                dataSource={this.data}
+                renderItem={(item) => (
+                  <List.Item>
+                    <Row style={{ display: 'contents' }}>
+                      <Col>{item.name}:</Col>
+                      <Col>{item.value}</Col>
+                    </Row>
+                  </List.Item>
+                )}
+              />
+            </div>
           </Col>
         </Row>
       </div>
