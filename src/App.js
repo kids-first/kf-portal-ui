@@ -124,6 +124,7 @@ const App = compose(
           exact
           render={(props) =>
             forceSelectRole({
+              api,
               isLoadingUser,
               Component: VariantDb,
               loggedInUser,

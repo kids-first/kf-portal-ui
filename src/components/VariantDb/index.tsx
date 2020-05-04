@@ -1,14 +1,33 @@
 import * as React from 'react';
 import { Button, Col, List, Row } from 'antd';
 import { Typography } from 'antd';
-import { RocketOutlined } from '@ant-design/icons';
+import { RocketOutlined, LoadingOutlined } from '@ant-design/icons';
 import azicon from 'assets/appache-zeppelin.png';
+import { launchCluster, getStatus } from './fetchVariantCluster';
 
 import './index.css';
 
 const { Title } = Typography;
+const MAX_MINUTES_TRY = 10; //minutes
+const INCREMENT = 3000;
 
-class VariantDb extends React.Component {
+type VariantDbProps = {
+  api: Function;
+  isAdmin: boolean;
+  loggedInUserToken: string;
+};
+
+type VariantDbState = {
+  clusterStared: boolean;
+  isFetching: boolean;
+};
+
+class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
+  state = {
+    clusterStared: false,
+    isFetching: false,
+  };
+
   data = [
     {
       name: 'Studies',
@@ -32,7 +51,60 @@ class VariantDb extends React.Component {
     },
   ];
 
+  getCluster = (api: Function) => {
+    let interval: NodeJS.Timeout;
+    let counter = 1;
+
+    const verifyStatus = () => {
+      if (counter * INCREMENT > MAX_MINUTES_TRY * 60 * 1000) {
+        this.setState({
+          clusterStared: false,
+          isFetching: false,
+        });
+        clearInterval(interval);
+      }
+
+      getStatus(api).then((res) => {
+        if (res.status === 'CREATE_COMPLETE') {
+          this.setState({
+            clusterStared: true,
+            isFetching: false,
+          });
+          console.log(res, counter);
+          clearInterval(interval);
+        } else {
+          console.log(res, counter);
+          counter++;
+        }
+      });
+    };
+
+    interval = setInterval(verifyStatus, INCREMENT);
+  };
+
+  handleClick = () => {
+    const { clusterStared, isFetching } = this.state;
+    const { api } = this.props;
+
+    if (!isFetching && !clusterStared) {
+      this.setState({
+        isFetching: true,
+      });
+      launchCluster(api).then((res) => {
+        // if (res.state === 'CREATE_IN_PROGRESS') this.getCluster(api);
+        console.log(res.status, 'STATUS b4');
+        this.getCluster(api);
+      });
+    } else if (clusterStared) {
+      console.log('Launching cluster');
+      //launch cluster
+    } else {
+      console.log('Waiting fo cluster the be build');
+    }
+  };
+
   render() {
+    const { clusterStared, isFetching } = this.state;
     return (
       <div className="background-container" style={{ padding: 32 }}>
         <Row style={{ paddingBottom: 32 }}>
@@ -60,7 +132,11 @@ class VariantDb extends React.Component {
                 datasets. Using Zeppelin, bioinformaticians can create interactive data analytics
                 and collaborative documents with SQL, Scala, Python, and more..
               </div>
-              <Button type={'primary'} icon={<RocketOutlined />}>
+              <Button
+                type={'primary'}
+                icon={isFetching ? <LoadingOutlined /> : <RocketOutlined />}
+                onClick={this.handleClick}
+              >
                 Launch your SPARK cluster with Zeppelin
               </Button>
             </div>
