@@ -3,7 +3,7 @@
   "version": "2.16.2",
   "private": true,
   "dependencies": {
-    "@kfarranger/components": "^1.6.4",
+    "@kfarranger/components": "^1.7.1",
     "@nivo/bar": "^0.51.0",
     "@nivo/core": "^0.51.0",
     "@nivo/pie": "^0.51.0",

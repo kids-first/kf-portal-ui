@@ -3,6 +3,9 @@ import { Button, Form, Input, Modal, notification } from 'antd';
 import { FormInstance } from 'antd/lib/form';
 import { LoggedInUser, Sqon } from '../../../types';
 import { Store } from 'antd/lib/form/interface';
+// @ts-ignore
+import saveSet from '@kfarranger/components/dist/utils/saveSet';
+import graphql from 'services/arranger';
 
 export const MAX_LENGTH_NAME = 50;
 const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_]*$/;
@@ -46,14 +49,15 @@ export default class SaveSetModal extends React.Component<Props, State> {
 
   formRef = React.createRef<FormInstance>();
 
-  createSaveSet = async () =>
-    //fake implementation
-    setTimeout(() => {
-      this.setState({
-        isVisible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
+  createSaveSet = async (tag: string) =>
+    await saveSet({
+      type: 'participant',
+      path: 'kf_id',
+      api: graphql(this.props.api),
+      sqon: this.props.sqon || {},
+      userId: this.props.user.egoId,
+      tag,
+    });
 
   onFinish = async (values: Store) => {
     this.setState({
@@ -61,7 +65,7 @@ export default class SaveSetModal extends React.Component<Props, State> {
     });
     const { nameSet } = values;
     try {
-      await this.createSaveSet();
+      await this.createSaveSet(nameSet);
       notification.success({
         message: 'Success',
         description: `Your participant set has been saved.`,
