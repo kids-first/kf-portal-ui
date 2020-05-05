@@ -1,31 +1,27 @@
 import * as React from 'react';
-import { Button, Col, List, Row } from 'antd';
-import { Typography } from 'antd';
-import { RocketOutlined, LoadingOutlined } from '@ant-design/icons';
-import azicon from 'assets/appache-zeppelin.png';
-import { launchCluster, getStatus } from './fetchVariantCluster';
+import { Button, Col, List, notification, Row, Typography } from 'antd';
+import { deleteCluster, getStatus, launchCluster } from './fetchVariantCluster';
+import { MAX_MINUTES_TRY, INCREMENT, clusterStatus, isInterimState } from './store';
 
 import './index.css';
+import LaunchClusterCard from './LaunchClusterCard';
 
 const { Title } = Typography;
-const MAX_MINUTES_TRY = 10; //minutes
-const INCREMENT = 3000;
 
 type VariantDbProps = {
   api: Function;
   isAdmin: boolean;
-  loggedInUserToken: string;
 };
 
 type VariantDbState = {
-  clusterStared: boolean;
-  isFetching: boolean;
+  status: string;
+  modalVisible: boolean;
 };
 
 class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
   state = {
-    clusterStared: false,
-    isFetching: false,
+    status: '',
+    modalVisible: false,
   };
 
   data = [
@@ -51,60 +47,138 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     },
   ];
 
-  getCluster = (api: Function) => {
+  errorNotification = (message: string, decription: string) => {
+    notification.error({
+      message: message,
+      description: decription,
+    });
+  };
+
+  async componentDidMount() {
+    const { api } = this.props;
+    try {
+      const res = await getStatus(api);
+
+      if (isInterimState(res.status)) {
+        this.resolveInterimState(api);
+      } else if (res.status === clusterStatus.rollback) {
+        await deleteCluster(api);
+        this.resolveInterimState(api);
+      }
+
+      this.setState({
+        status: res.status,
+      });
+    } catch (e) {
+      this.errorNotification(`Error ${e.response.status}`, 'Cannot connect with cluster');
+    }
+  }
+
+  resolveInterimState = (api: Function) => {
     let interval: NodeJS.Timeout;
     let counter = 1;
 
-    const verifyStatus = () => {
+    const verifyStatus = async () => {
       if (counter * INCREMENT > MAX_MINUTES_TRY * 60 * 1000) {
         this.setState({
-          clusterStared: false,
-          isFetching: false,
+          status: clusterStatus.stopped,
         });
-        clearInterval(interval);
+        clearInterval(interval); // throw timeout exception
       }
 
-      getStatus(api).then((res) => {
-        if (res.status === 'CREATE_COMPLETE') {
+      try {
+        const res = await getStatus(api);
+
+        if (!isInterimState(res.status)) {
           this.setState({
-            clusterStared: true,
-            isFetching: false,
+            status: res.status,
           });
-          console.log(res, counter);
           clearInterval(interval);
         } else {
-          console.log(res, counter);
           counter++;
         }
-      });
+      } catch (e) {
+        this.errorNotification(`Error ${e.response.status}`, 'Cannot connect with cluster');
+      }
     };
 
     interval = setInterval(verifyStatus, INCREMENT);
   };
 
-  handleClick = () => {
-    const { clusterStared, isFetching } = this.state;
+  handleClick = async () => {
+    const { status } = this.state;
     const { api } = this.props;
 
-    if (!isFetching && !clusterStared) {
+    if (status === clusterStatus.stopped) {
       this.setState({
-        isFetching: true,
+        status: clusterStatus.createInProgress,
       });
-      launchCluster(api).then((res) => {
-        // if (res.state === 'CREATE_IN_PROGRESS') this.getCluster(api);
-        console.log(res.status, 'STATUS b4');
-        this.getCluster(api);
-      });
-    } else if (clusterStared) {
-      console.log('Launching cluster');
-      //launch cluster
-    } else {
-      console.log('Waiting fo cluster the be build');
+
+      this.openNotification();
+
+      try {
+        await launchCluster(api);
+        this.resolveInterimState(api);
+      } catch (e) {
+        this.errorNotification(`Error ${e.response.status}`, 'Cannot launch cluster');
+      }
     }
+    // else if (status === clusterStatus.createComplete) {
+    //   //launch cluster
+    // }
+  };
+
+  openNotification = () => {
+    const key = `open${Date.now()}`;
+    const btn = (
+      <Button type="primary" size="small" onClick={() => notification.close(key)}>
+        OK
+      </Button>
+    );
+    notification.open({
+      message: 'Building the cluster, please wait',
+      description:
+        'The Spark cluster is being build. This can take up to 10 min to complete. ' +
+        'You can continue using the portal and come back to this page once this operation ' +
+        'has completed',
+      duration: 15,
+      btn,
+      key,
+    });
+  };
+
+  showModal = () => {
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  hideModal = () => {
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
+  hideModalOk = async () => {
+    const { api } = this.props;
+    this.setState({
+      status: clusterStatus.deleteInProgress,
+    });
+    try {
+      await deleteCluster(api);
+    } catch (e) {
+      this.errorNotification(`Error ${e.response.status}`, 'Error deleting the cluster');
+    }
+
+    this.setState({
+      modalVisible: false,
+    });
+
+    this.resolveInterimState(api);
   };
 
   render() {
-    const { clusterStared, isFetching } = this.state;
+    const { status, modalVisible } = this.state;
     return (
       <div className="background-container" style={{ padding: 32 }}>
         <Row style={{ paddingBottom: 32 }}>
@@ -121,25 +195,14 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
         </Row>
         <Row justify={'center'} gutter={24}>
           <Col span={16}>
-            <div
-              className={'white-background middle-align'}
-              style={{ height: '100%', paddingTop: 24, paddingBottom: 24 }}
-            >
-              <img alt="AppacheZeppelin" src={azicon} />
-              <div style={{ paddingTop: 24, paddingBottom: 24 }}>
-                Kids First is providing members with their own SPARK cluster running a web-based
-                Zeppelin notrebooks dansbox to explore, query and visualize its germline variant
-                datasets. Using Zeppelin, bioinformaticians can create interactive data analytics
-                and collaborative documents with SQL, Scala, Python, and more..
-              </div>
-              <Button
-                type={'primary'}
-                icon={isFetching ? <LoadingOutlined /> : <RocketOutlined />}
-                onClick={this.handleClick}
-              >
-                Launch your SPARK cluster with Zeppelin
-              </Button>
-            </div>
+            <LaunchClusterCard
+              status={status}
+              modalVisible={modalVisible}
+              hideModalOk={this.hideModalOk}
+              hideModal={this.hideModal}
+              showModal={this.showModal}
+              handleClick={this.handleClick}
+            />
           </Col>
           <Col span={8}>
             <div
