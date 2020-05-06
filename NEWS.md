@@ -7,6 +7,20 @@
 
 ### Technical / Other changes
 -->
+## 2020-05-06 kf-portal-ui 2.17.0
+
+### Features
+- [2342](https://github.com/kids-first/kf-portal-ui/issues/2342) Feature(Ontology Browser): HPO browser to explore data conveniently.
+- [2448](https://github.com/kids-first/kf-portal-ui/issues/2448) Feature(Antd): update library to the latest version.
+- [2391](https://github.com/kids-first/kf-portal-ui/issues/2391) Feature(Profile, Edit form): improve some form fields.
+
+### Technical / Other changes
+- [2432](https://github.com/kids-first/kf-portal-ui/issues/2432) Fix (CohortBuilder, Study Chart): make sure when we click a study the correct filter is added.
+- [2387](https://github.com/kids-first/kf-portal-ui/issues/2387) Fix (Profile, About Me, Edit): fix visual regression.
+- [2454](https://github.com/kids-first/kf-portal-ui/issues/2454) Refactor: remove some deprecated warnings.
+- [2404](https://github.com/kids-first/kf-portal-ui/issues/2404) Performance: remove the need for antd-icon legacy library.
+- [2399](https://github.com/kids-first/kf-portal-ui/issues/2399) Performance (Search filter): start searching only after a minimum of characters are typed.
+
 ## 2020-04-01 kf-portal-ui 2.15.0
 
 ### Features
