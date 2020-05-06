@@ -72,7 +72,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           children: this.generateTree(children, checkedKeys, targetKeys, childrenShouldBeDisabled),
           hasChildren: true,
           results: 324,
-          hidden,
+          hidden
         } as TreeNode;
       })
       .filter((node) => (node.hidden ? false : !node.hidden));
