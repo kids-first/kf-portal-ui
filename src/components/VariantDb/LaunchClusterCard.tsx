@@ -54,6 +54,7 @@ const LaunchClusterCard = (props: Props) => {
       <Row justify={'center'} gutter={24}>
         <Col>
           <Button
+            id="createClusterButton"
             type={status === clusterStatus.createComplete ? 'primary' : 'default'}
             icon={buttonIcon}
             onClick={handleClick}
@@ -65,7 +66,13 @@ const LaunchClusterCard = (props: Props) => {
         <Col>
           {canBeDeleted(status) ? (
             <div>
-              <Button type={'primary'} danger icon={<DeleteOutlined />} onClick={showModal}>
+              <Button
+                id={'deleteClusterButton'}
+                type={'primary'}
+                danger
+                icon={<DeleteOutlined />}
+                onClick={showModal}
+              >
                 Delete Cluster
               </Button>
               <Modal

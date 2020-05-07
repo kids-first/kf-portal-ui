@@ -10,7 +10,6 @@ const { Title } = Typography;
 
 type VariantDbProps = {
   api: Function;
-  isAdmin: boolean;
 };
 
 type VariantDbState = {
@@ -58,7 +57,6 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     const { api } = this.props;
     try {
       const res = await getStatus(api);
-
       if (isInterimState(res.status)) {
         this.resolveInterimState(api);
       } else if (res.status === clusterStatus.rollback) {
@@ -70,7 +68,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
         status: res.status,
       });
     } catch (e) {
-      this.errorNotification(`Error ${e.response.status}`, 'Cannot connect with cluster');
+      this.errorNotification(`Error ${e.response?.status || ''}`, 'Cannot connect with cluster');
     }
   }
 
@@ -98,10 +96,9 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
           counter++;
         }
       } catch (e) {
-        this.errorNotification(`Error ${e.response.status}`, 'Cannot connect with cluster');
+        this.errorNotification(`Error ${e.response?.status || ''}`, 'Cannot connect with cluster');
       }
     };
-
     interval = setInterval(verifyStatus, INCREMENT);
   };
 
@@ -110,17 +107,15 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     const { api } = this.props;
 
     if (status === clusterStatus.stopped) {
-      this.setState({
-        status: clusterStatus.createInProgress,
-      });
-
-      this.openNotification();
-
       try {
         await launchCluster(api);
+        this.setState({
+          status: clusterStatus.createInProgress,
+        });
+        this.openNotification();
         this.resolveInterimState(api);
       } catch (e) {
-        this.errorNotification(`Error ${e.response.status}`, 'Cannot launch cluster');
+        this.errorNotification(`Error ${e.response?.status || ''}`, 'Cannot launch cluster');
       }
     }
     // else if (status === clusterStatus.createComplete) {
@@ -167,7 +162,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     try {
       await deleteCluster(api);
     } catch (e) {
-      this.errorNotification(`Error ${e.response.status}`, 'Error deleting the cluster');
+      this.errorNotification(`Error ${e.response?.status || ''}`, 'Error deleting the cluster');
     }
 
     this.setState({

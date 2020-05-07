@@ -9,8 +9,7 @@ export const launchCluster = async (api: Function) =>
 export const getStatus = async (api: Function) =>
   await api({
     method: 'GET',
-    // url: kfVariantCluster,
-    url: 'https://kf-api-variant-cluster-qa.kidsfirstdrc.org/sstack',
+    url: kfVariantCluster,
   });
 
 export const deleteCluster = async (api: Function) =>
