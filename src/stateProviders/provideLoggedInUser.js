@@ -1,5 +1,9 @@
 import { provideState, mergeIntoState } from 'freactal';
-import { isArray, pick, without, omit, get } from 'lodash';
+import isArray from 'lodash/isArray';
+import pick from 'lodash/pick';
+import without from 'lodash/without';
+import omit from 'lodash/omit';
+import get from 'lodash/get';
 import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@kfarranger/components/dist';
 import { setToken } from 'services/ajax';

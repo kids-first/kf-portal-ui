@@ -3,7 +3,7 @@ import { injectState } from 'freactal';
 import { compose, withState } from 'recompose';
 import LeftIcon from 'react-icons/lib/fa/angle-left';
 import RightIcon from 'react-icons/lib/fa/angle-right';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { Link } from 'react-router-dom';
 
 import DeleteButton from 'components/loginButtons/DeleteButton';

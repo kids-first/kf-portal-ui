@@ -1,6 +1,6 @@
 import React from 'react';
 import md5 from 'md5';
-import { trim } from 'lodash';
+import trim from 'lodash/trim';
 
 export default ({ email = '', d = '', size = 100, ...props }) => (
   <img

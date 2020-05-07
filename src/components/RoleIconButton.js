@@ -1,5 +1,6 @@
 import React from 'react';
-import { get, find } from 'lodash';
+import get from 'lodash/get';
+import find from 'lodash/find';
 import { ROLES } from 'common/constants';
 
 import {

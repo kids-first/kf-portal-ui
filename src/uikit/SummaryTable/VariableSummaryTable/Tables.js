@@ -1,5 +1,5 @@
 import React from 'react';
-import { chunk } from 'lodash';
+import chunk from 'lodash/chunk';
 
 import './VariableSummaryTable.css';
 

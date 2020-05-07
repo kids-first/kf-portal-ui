@@ -42,7 +42,7 @@ const CATEGORY_FIELDS = {
     'affected_status',
     'diagnoses.age_at_event_days',
     'outcome.age_at_event_days',
-    'phenotype.age_at_event_days',
+    'observed_phenotype.age_at_event_days',
     'diagnoses.mondo_id_diagnosis',
     'diagnoses.ncit_id_diagnosis',
     'diagnoses.source_text_diagnosis',
@@ -52,7 +52,7 @@ const CATEGORY_FIELDS = {
     'outcome.disease_related',
     'phenotype.source_text_phenotype',
     'phenotype.hpo_phenotype_not_observed',
-    'phenotype.hpo_phenotype_observed',
+    'observed_phenotype.name',
     'diagnoses.source_text_tumor_location',
     'outcome.vital_status',
 
@@ -81,7 +81,7 @@ const CATEGORY_FIELDS = {
     'available_data_types',
     'diagnoses.diagnosis_category',
     'phenotype.hpo_phenotype_not_observed',
-    'phenotype.hpo_phenotype_observed',
+    'observed_phenotype.name',
     'is_proband',
     'study.short_name',
   ],
@@ -91,7 +91,7 @@ const CATEGORY_FIELDS = {
     'affected_status',
     'diagnoses.age_at_event_days',
     'outcome.age_at_event_days',
-    'phenotype.age_at_event_days',
+    'observed_phenotype.age_at_event_days',
     'diagnoses.mondo_id_diagnosis',
     'diagnoses.ncit_id_diagnosis',
     'diagnoses.source_text_diagnosis',
@@ -100,7 +100,7 @@ const CATEGORY_FIELDS = {
     'family.family_compositions.shared_hpo_ids',
     'outcome.disease_related',
     'phenotype.hpo_phenotype_not_observed',
-    'phenotype.hpo_phenotype_observed',
+    'observed_phenotype.name',
     'phenotype.source_text_phenotype',
     'diagnoses.source_text_tumor_location',
     'outcome.vital_status',
@@ -140,9 +140,10 @@ export default class Categories extends React.Component {
     const { sqon } = this.props;
     const addedSQON = SQONdiff(sqon, this.initialSqon);
 
+    const { categories, actions } = TRACKING_EVENTS;
     trackUserInteraction({
-      category: `${TRACKING_EVENTS.categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
-      action: `${TRACKING_EVENTS.actions.apply} Selected Filters`,
+      category: `${categories.cohortBuilder.filters._cohortBuilderFilters} - ${title}`,
+      action: `${actions.apply} Selected Filters`,
       label: JSON.stringify({ added_sqon: addedSQON, result_sqon: sqon }),
     });
 
@@ -230,13 +231,13 @@ export default class Categories extends React.Component {
         >
           <FileIcon width="11px" height="14px" fill={theme.dataBlue} />
         </Category>
-          <ActionCategory
-            title="Upload IDs"
-            color={theme.uploadYellow}
-            onClick={this.handleUploadIdsClick}
-          >
-            <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
-          </ActionCategory>
+        <ActionCategory
+          title="Upload IDs"
+          color={theme.uploadYellow}
+          onClick={this.handleUploadIdsClick}
+        >
+          <UploadIcon fill={theme.uploadYellow} width="13px" height="16px" />
+        </ActionCategory>
       </Row>
     );
   }

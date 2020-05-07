@@ -35,6 +35,7 @@ const ParticipantsTableView = ({
   setAllRowsSelected,
   sort,
   setSort,
+  loggedInUser,
 }) => {
   return (
     <QueriesResolver
@@ -105,6 +106,7 @@ const ParticipantsTableView = ({
               }}
               selectedRows={selectedRows}
               allRowsSelected={allRowsSelected}
+              loggedInUser={loggedInUser}
             />
           </Card>
         );

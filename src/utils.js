@@ -1,5 +1,7 @@
 /* https://catalinxyz.com/create-the-@bind-decorator-to-help-with-react-events-and-callback-props */
-import { get, isArrayLikeObject, toLower } from 'lodash';
+import get from 'lodash/get';
+import isArrayLikeObject from 'lodash/isArrayLikeObject';
+import toLower from 'lodash/toLower';
 import jwtDecode from 'jwt-decode';
 
 import { createProfile, getProfile } from 'services/profiles';
@@ -200,6 +202,22 @@ export const roundIntToChosenPowerOfTen = (rawInteger, positionToKeepFromLeft = 
   }
   const powerOfTenMultiplier = numOfDigits - positionToKeepFromLeft;
   const strMostSignificantDigits = strRepresentation.slice(0, positionToKeepFromLeft);
-  const mostSignificantDigits = parseInt(strMostSignificantDigits,10);
+  const mostSignificantDigits = parseInt(strMostSignificantDigits, 10);
   return mostSignificantDigits * Math.pow(10, powerOfTenMultiplier);
 };
+
+//https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+export const jestPatchMatchMedia = () =>
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // deprecated
+      removeListener: jest.fn(), // deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });

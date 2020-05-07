@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { truncate } from 'lodash';
+import truncate from 'lodash/truncate';
 
 import PlusIcon from 'icons/PlusCircleIcon';
 import CheckIcon from 'icons/CircleCheckIcon';

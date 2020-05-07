@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode';
-import { uniq } from 'lodash';
+import uniq from 'lodash/uniq';
 import { FENCES, GEN3, DCF } from 'common/constants';
 import ajax from 'services/ajax';
 import {
@@ -9,7 +9,6 @@ import {
   gen3ApiRoot,
   dcfApiRoot,
 } from 'common/injectGlobals';
-import { isFeatureEnabled } from 'common/featuresToggles';
 
 const RESPONSE_TYPE = 'code';
 
@@ -114,24 +113,15 @@ export const convertTokenToUser = accessToken => {
 /*
  * Get User
  */
-const isFenceInFeatureToggle = fence => {
-  //Gen3 or DCF
-  const composedFeatureName = `${fence}Update`;
-  return isFeatureEnabled(composedFeatureName);
-};
-
 export const getFenceUser = async (api, fence) => {
   const accessToken = await getAccessToken(api, fence);
-  if (isFenceInFeatureToggle(fence)) {
-    const { fenceUri } = PROVIDERS[fence];
-    const response = await ajax.get(`${fenceUri}user/user`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    /** @namespace data.project_access*/
-    const data = response.data;
-    return { ...data, projects: data.project_access }; //Backward compatibility.
-  }
-  return convertTokenToUser(accessToken);
+  const { fenceUri } = PROVIDERS[fence];
+  const response = await ajax.get(`${fenceUri}user/user`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  /** @namespace data.project_access*/
+  const data = response.data;
+  return { ...data, projects: data.project_access }; //Backward compatibility.
 };
 
 /*

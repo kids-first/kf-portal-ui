@@ -1,32 +1,20 @@
 {
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true,
+    "jest": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
   "parser": "babel-eslint",
-  "plugins": [
-    "react-hooks",
-    "@typescript-eslint",
-    "prettier"
-  ],
+  "plugins": ["react-hooks", "@typescript-eslint", "prettier"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
     }
   },
   "rules": {
-    "arrow-body-style": [
-      "error",
-      "as-needed"
-    ],
-    "complexity": [
-      "warn",
-      16
-    ],
+    "arrow-body-style": ["error", "as-needed"],
+    "complexity": ["warn", 16],
     "template-curly-spacing": "off",
     "indent": "off",
     "default-case": 0,
@@ -39,9 +27,7 @@
     ],
     "no-console": 1,
     "prefer-spread": "error",
-    "prettier/prettier": [
-      "error"
-    ],
+    "prettier/prettier": ["error"],
     "react/prop-types": 1,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"

@@ -28,15 +28,12 @@ import { createFileRepoLink } from './util';
 import ContentBar from './ContentBar';
 import Summary from './Summary';
 import { setActiveView } from './actionCreators';
-import { isFeatureEnabled } from 'common/featuresToggles';
 import './Results.css';
 import { Spin, notification } from 'antd';
 import LinkWithLoader from '../../ui/LinkWithLoader';
 import { CARDINALITY_PRECISION_THRESHOLD } from '../../common/constants';
 import { roundIntToChosenPowerOfTen } from '../../utils';
 import capitalize from 'lodash/capitalize';
-
-const useLegacyLink = isFeatureEnabled('useLegacyCohortBuilderToFileRepoLink'); //FIXME remove me one day :)
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -111,32 +108,7 @@ const generateAllFilesLink = async (user, api, originalSqon) => {
 };
 
 const cohortResultsQuery = sqon => ({
-  query: useLegacyLink
-    ? gql`
-        query($sqon: JSON) {
-          participant {
-            hits(filters: $sqon) {
-              total
-            }
-            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-              files__kf_id {
-                buckets {
-                  key
-                }
-              }
-            }
-            aggregations(filters: $sqon, aggregations_filter_themselves: true) {
-              family_id {
-                buckets {
-                  doc_count
-                  key
-                }
-              }
-            }
-          }
-        }
-      `
-    : gql`
+  query: gql`
         query($sqon: JSON) {
           participant {
             hits(filters: $sqon) {
@@ -157,18 +129,6 @@ const cohortResultsQuery = sqon => ({
       `,
   variables: { sqon },
   transform: data => {
-    if (useLegacyLink) {
-      const participants = get(data, 'data.participant.hits.total', 0);
-      const files = get(data, 'data.participant.aggregations.files__kf_id.buckets', []).map(
-        b => b.key,
-      );
-      const families = get(data, 'data.participant.aggregations.family_id.buckets', []);
-      return {
-        participantCount: participants,
-        filesCardinality: files.length,
-        familiesCountCardinality: families.filter(item => item.key !== '__missing__').length,
-      };
-    }
     const participantCount = get(data, 'data.participant.hits.total', 0);
     const filesCardinality = data?.data?.participant?.aggregations?.files__kf_id?.cardinality || 0;
     const familiesCountCardinality =
@@ -189,11 +149,7 @@ const Results = ({
   api,
   state,
 }) => (
-  <QueriesResolver
-    name={useLegacyLink ? 'GQL_RESULT_QUERIES_LEGACY' : 'GQL_RESULT_QUERIES'}
-    api={api}
-    queries={[cohortResultsQuery(sqon)]}
-  >
+  <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       if (error) {
         return <TableErrorView error={error} />;
@@ -295,7 +251,7 @@ const Results = ({
           </ContentBar>
           <div className={`cb-active-view ${activeView}`}>
             <Summary sqon={sqon} />
-            <ParticipantsTableView sqon={sqon} />
+            <ParticipantsTableView sqon={sqon} loggedInUser={state.loggedInUser} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </div>
         </Fragment>
@@ -309,6 +265,8 @@ Results.propTypes = {
   sqon: PropTypes.object,
   setActiveView: PropTypes.func.isRequired,
   activeView: PropTypes.string.isRequired,
+  api: PropTypes.func.isRequired,
+  state: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { omit } from 'lodash';
-import { memoize } from 'lodash';
+import omit from 'lodash/omit';
+import memoize from 'lodash/memoize';
 import { injectState } from 'freactal';
 import AdvancedSqonBuilder from '@kfarranger/components/dist/AdvancedSqonBuilder';
 import ExtendedMappingProvider from '@kfarranger/components/dist/utils/ExtendedMappingProvider';

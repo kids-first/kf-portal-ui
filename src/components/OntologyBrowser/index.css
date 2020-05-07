@@ -1,0 +1,45 @@
+.ant-modal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-modal .ant-modal-content .ant-modal-body .ant-transfer {
+  height: 100%;
+}
+
+.ant-transfer .ant-transfer-list {
+  height: 60vh;
+  width: 49%;
+}
+
+.ant-transfer .ant-transfer-list .ant-transfer-list-body {
+  overflow: auto;
+}
+
+.spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ant-transfer-list-content-item-checked {
+  background-color: transparent;
+}
+
+.ant-btn-link {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+h3.ant-typography {
+  margin-bottom: 0;
+}
+
+.ant-transfer .ant-transfer-list:first-child {
+  width: 60%;
+}
+
+.ant-transfer .ant-transfer-list:last-child {
+  width: 38%;
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import noop from 'lodash/noop';
 
 import FieldFilter from '@kfarranger/components/dist/AdvancedSqonBuilder/filterComponents';
 import { isReference } from '@kfarranger/components/dist/AdvancedSqonBuilder/utils';
@@ -24,9 +23,9 @@ const Filter = compose(withApi)(
       op: 'and',
       content: [],
     },
-    onSubmit = noop,
-    onCancel = noop,
-    onBack = noop,
+    onSubmit = () => {},
+    onCancel = () => {},
+    onBack = () => {},
     field,
     arrangerProjectId = ARRANGER_PROJECT_ID,
     arrangerProjectIndex = ARRANGER_API_PARTICIPANT_INDEX_NAME,

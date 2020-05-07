@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'querystring';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import autobind from 'auto-bind-es5';
 
 import { getOrcidToken } from 'services/ego/auth';

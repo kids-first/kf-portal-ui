@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ResponsivePie } from '@nivo/pie';
 import PropTypes from 'prop-types';
 import tinygradient from 'tinygradient';
-import { truncate } from 'lodash';
+import truncate from 'lodash/truncate';
 
 import { defaultTheme } from 'chartkit/themes';
 

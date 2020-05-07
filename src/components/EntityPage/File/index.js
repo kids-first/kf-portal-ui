@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { compose, lifecycle, withState } from 'recompose';
-import { isNull, isUndefined, get } from 'lodash';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
+import get from 'lodash/get';
 
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';

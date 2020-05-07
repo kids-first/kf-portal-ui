@@ -1,27 +1,21 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import PlacesAutoComplete from 'components/UserProfile/PlacesAutoComplete';
 import { SearchOutlined } from '@ant-design/icons';
 import { Input, List } from 'antd';
 import { geocodeByPlaceId } from 'react-places-autocomplete';
 
-class ContactEditablePlacesAutoComplete extends Component {
-  static propTypes = {
-    setAddressCb: PropTypes.func.isRequired,
+const ContactEditablePlacesAutoComplete = ({ setAddressCb }) => {
+  const [address, setAddress] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [errorFetchingPlaces, setErrorFetchingPlaces] = useState(null); //FIXME manage error
+
+  const handleAddressChange = addr => {
+    setAddress(addr);
   };
 
-  state = {
-    address: '',
-    errorFetchingPlaces: null,
-  };
-
-  handleAddressChange = address => {
-    this.setState({ address });
-  };
-
-  handleAddressSelect = async (address, placeId) => {
-    const { setAddressCb } = this.props;
-    this.setState({ address });
+  const handleAddressSelect = async (addr, placeId) => {
+    setAddress(addr);
     const defaultObject = { long_name: '' };
     try {
       const response = await geocodeByPlaceId(placeId);
@@ -40,48 +34,48 @@ class ContactEditablePlacesAutoComplete extends Component {
         zip: findAddressField('postal_code').long_name,
       });
     } catch (e) {
-      this.setState({ errorFetchingPlaces: e });
+      setErrorFetchingPlaces(e);
     }
   };
 
-  render() {
-    const { address } = this.state;
-
-    return (
-      <PlacesAutoComplete
-        onChange={this.handleAddressChange}
-        onSelect={this.handleAddressSelect}
-        value={address}
-      >
-        {({ getInputProps, getSuggestionItemProps, suggestions, loading }) => (
-          <React.Fragment>
-            <Input
-              prefix={<SearchOutlined />}
-              {...getInputProps({
-                id: 'address-input',
-              })}
-              placeholder={'e.g 3401 Civic Center Blvd.'}
-              allowClear
-              size={'small'}
+  return (
+    <PlacesAutoComplete
+      onChange={handleAddressChange}
+      onSelect={handleAddressSelect}
+      value={address}
+    >
+      {({ getInputProps, getSuggestionItemProps, suggestions, loading }) => (
+        <React.Fragment>
+          <Input
+            prefix={<SearchOutlined />}
+            {...getInputProps({
+              id: 'address-input',
+            })}
+            placeholder={'e.g 3401 Civic Center Blvd.'}
+            allowClear
+            size={'small'}
+          />
+          <div>
+            <List
+              locale={{ emptyText: <div /> }}
+              loading={loading}
+              itemLayout="horizontal"
+              dataSource={suggestions || []}
+              renderItem={item => (
+                <List.Item {...getSuggestionItemProps(item)}>
+                  <List.Item.Meta title={item.description} />
+                </List.Item>
+              )}
             />
-            <div>
-              <List
-                locale={{ emptyText: <div /> }}
-                loading={loading}
-                itemLayout="horizontal"
-                dataSource={suggestions || []}
-                renderItem={item => (
-                  <List.Item {...getSuggestionItemProps(item)}>
-                    <List.Item.Meta title={item.description} />
-                  </List.Item>
-                )}
-              />
-            </div>
-          </React.Fragment>
-        )}
-      </PlacesAutoComplete>
-    );
-  }
-}
+          </div>
+        </React.Fragment>
+      )}
+    </PlacesAutoComplete>
+  );
+};
+
+ContactEditablePlacesAutoComplete.propTypes = {
+  setAddressCb: PropTypes.func.isRequired,
+};
 
 export default ContactEditablePlacesAutoComplete;

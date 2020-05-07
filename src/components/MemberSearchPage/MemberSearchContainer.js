@@ -33,8 +33,15 @@ class MemberSearchContainer extends Component {
     adminOptionsFilter: PropTypes.object,
     fetchListOfMembers: PropTypes.func.isRequired,
     currentPageUpdate: PropTypes.func.isRequired,
+    membersPerPageUpdate: PropTypes.func.isRequired,
     updateRolesFilter: PropTypes.func.isRequired,
     updateInterestsFilter: PropTypes.func.isRequired,
+    updateADMINOptionsFilter: PropTypes.func.isRequired,
+    queryStringUpdate: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool,
+    loggedInUser: PropTypes.object,
+    loggedInUserToken: PropTypes.string.isRequired,
+    members: PropTypes.array.isRequired,
   };
 
   handleChange = e => {
@@ -62,16 +69,23 @@ class MemberSearchContainer extends Component {
   };
 
   componentDidMount() {
-    const { membersPerPage, fetchListOfMembers, queryString, currentPage } = this.props;
+    const {
+      membersPerPage,
+      fetchListOfMembers,
+      queryString,
+      currentPage,
+      rolesFilter,
+      interestsFilter,
+      adminOptionsFilter,
+    } = this.props;
 
     fetchListOfMembers(queryString, {
       start: getCurrentStart(currentPage, membersPerPage),
       end: getCurrentEnd(currentPage, membersPerPage),
+      roles: getSelectedFilter(rolesFilter),
+      interests: getSelectedFilter(interestsFilter),
+      adminMemberOptions: getSelectedFilter(adminOptionsFilter),
     });
-  }
-
-  componentWillUnmount() {
-    this.props.resetStore();
   }
 
   handlePageChange = async page => {
@@ -190,7 +204,8 @@ class MemberSearchContainer extends Component {
           >
             <Input
               onChange={this.handleChange}
-              placeholder="Member Name, Address, Institution/Organization, Interests, Member Biography or Story"
+              placeholder="Member Name, Address, Institution/Organization,
+              Interests, Member Biography or Story"
               prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               allowClear={true}
             />

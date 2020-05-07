@@ -105,7 +105,7 @@ const Enhanced = compose(
     actionWhenConnected: PropTypes.shape({
       actionCb: PropTypes.func.isRequired,
       actionCbParam: PropTypes.object.isRequired,
-      buttonIcon: PropTypes.string.isRequired,
+      buttonIcon: PropTypes.element.isRequired,
       buttonLabel: PropTypes.string.isRequired,
     }),
   }),

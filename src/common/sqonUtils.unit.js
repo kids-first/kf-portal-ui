@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { cyan } from 'chalk';
 
 import {

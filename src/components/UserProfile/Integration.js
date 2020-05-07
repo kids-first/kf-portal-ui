@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
 import { withApi } from 'services/api';
-import { get } from 'lodash';
+import get from 'lodash/get';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
 import {
   convertTokenToUser,
@@ -19,6 +19,7 @@ import {
 } from 'services/analyticsTracking';
 import PropTypes from 'prop-types';
 import IntegrationManager from './IntegrationManager';
+import { BookOutlined } from '@ant-design/icons';
 
 const AUTHORIZED_STUDIES_DIM = '5';
 const CAVATICA_DIM = '6';
@@ -143,7 +144,7 @@ function Integration(props) {
       actionWhenConnected={{
         actionCb: viewDetails,
         actionCbParam: { fence, effects },
-        buttonIcon: 'book',
+        buttonIcon: <BookOutlined />,
         buttonLabel: 'View studies',
       }}
       connection={{
@@ -178,11 +179,6 @@ const Enhanced = compose(
     state: PropTypes.object.isRequired,
     effects: PropTypes.object.isRequired,
     api: PropTypes.func.isRequired,
-    actionButtonWhenConnected: PropTypes.shape({
-      onClick: PropTypes.func.isRequired,
-      icon: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    }),
   }),
 )(Integration);
 

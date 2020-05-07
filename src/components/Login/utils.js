@@ -1,4 +1,6 @@
-import { get, isArrayLikeObject, toLower } from 'lodash';
+import get from 'lodash/get';
+import isArrayLikeObject from 'lodash/isArrayLikeObject';
+import toLower from 'lodash/toLower';
 import jwtDecode from 'jwt-decode';
 
 import { getProfile, createProfile } from 'services/profiles';

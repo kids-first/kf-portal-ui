@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import get from 'lodash/get';
 import gql from 'graphql-tag';
 
 const AGGREGATABLE_FIELDS_TYPES = ['boolean', 'date', 'id', 'keyword', 'text'];
