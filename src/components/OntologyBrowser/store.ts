@@ -105,8 +105,9 @@ export class PhenotypeStore {
   };
 
   getTree = (maxDepth: number = 2) => {
+    if (this.tree.length === 0) return [];
+
     const newTree = [...this.tree];
-    if (newTree.length === 0) return [];
     const cleanTree = (node: TreeNode) => {
       if (!node.depth) return;
       if (node.depth >= maxDepth) {

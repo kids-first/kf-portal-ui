@@ -11,6 +11,7 @@ import CavaticaProjects from './CavaticaProjects';
 import OntologySunburst from './Ontology';
 
 import { DashboardCard } from './styles';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 import {
   MemberResearchInterestsChart,
@@ -54,9 +55,11 @@ export default compose(
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <SavedQueries {...{ api, loggedInUser }} />
         </Col>
-        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <OntologySunburst />
-        </Col>
+        {isFeatureEnabled('ontologySunburst') && (
+          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            <OntologySunburst />
+          </Col>
+        )}
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <AuthorizedStudies />
         </Col>

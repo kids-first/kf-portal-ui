@@ -5,9 +5,10 @@ import sunburstD3 from './sunburst-d3';
 type SunburstProps = {
   data: Object;
   width?: number;
+  height?: number;
   depth?: number;
-  tooltipFormatter?: Function;
-  centerTextFormatter?: Function;
+  tooltipFormatter?: Function; // Received you data item as argument
+  centerTextFormatter?: Function; // Received you data item as argument
   colorScheme?: string; // d3 color scheme name e.g. 'schemeSet3'
 };
 
@@ -16,6 +17,7 @@ class Sunburst extends Component<SunburstProps, {}> {
   static defaultProps = {
     depth: 2,
     width: 300,
+    height: 300,
   };
   constructor(props: SunburstProps) {
     super(props);
@@ -35,13 +37,13 @@ class Sunburst extends Component<SunburstProps, {}> {
   }
 
   render() {
+    const { width, height } = this.props;
     return (
       <svg
-        id="partitionSVG"
         style={{ marginTop: '10px' }}
-        width="300"
-        height="300"
-        viewBox="0 0 300 300"
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
         ref={this.ref}
       ></svg>
     );

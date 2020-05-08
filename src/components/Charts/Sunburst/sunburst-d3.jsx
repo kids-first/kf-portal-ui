@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 const sunburstD3 = (ref, data, config, formatters) => {
   const { tooltipFormatter, centerTextFormatter } = formatters;
   const width = config.width || 300;
-  const height = width || 2;
+  const height = width || 300;
   const depth = config.depth;
   const radius = Math.min(width, height) / 6;
   const colorScheme = config.colorScheme || 'schemeSet1';
@@ -134,7 +134,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
           line = [word];
         }
         if (words.length === 0 && line.length >= 1) {
-          let newTSpan = centerText.append('tspan');
+          const newTSpan = centerText.append('tspan');
           newTSpan
             .attr('x', 0)
             .attr('y', y)
