@@ -2,7 +2,6 @@ type CardHearProps = {
   title: string;
   children: string | React.ReactElement[];
   className: string;
-  props: any;
   badge?: React.ReactElement;
 };
 
