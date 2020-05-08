@@ -17,3 +17,10 @@ export const extractInfoFromRoles = roles => {
     Icon,
   };
 };
+
+export const isPartOfGroup = (group, user) => {
+  if (!user || !group) {
+    return false;
+  }
+  return user.egoGroups ? user.egoGroups.includes(group) : false;
+};

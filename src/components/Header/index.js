@@ -26,6 +26,7 @@ import UserMenu from './UserMenu';
 import './Header.css';
 
 import { dismissError } from 'store/actionCreators/errors';
+import { isPartOfGroup } from '../../common/profile';
 
 const { Header: AntHeader } = Layout;
 
@@ -114,13 +115,15 @@ const Header = (props) => {
                   <TeamOutlined /> Explore Data
                 </NavLink>
               </li>
-              <li>
-                <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
-                  <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>
-                    <DatabaseOutlined /> Variant DB
-                  </Badge>
-                </NavLink>
-              </li>
+              {isPartOfGroup('kf-investigator', loggedInUser) && (
+                <li>
+                  <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
+                    <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>
+                      <DatabaseOutlined /> Variant DB
+                    </Badge>
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
                   <FolderOutlined /> File Repository

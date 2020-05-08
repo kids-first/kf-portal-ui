@@ -29,6 +29,13 @@ export const isAdminToken = ({ validatedPayload }) => {
     : type && type !== null && type === 'ADMIN';
 };
 
+export const getUserGroups = ({ validatedPayload }) => {
+  if (!validatedPayload) return [];
+  const jwtUser = get(validatedPayload, 'context.user', {});
+  const groups = jwtUser.groups;
+  return groups && isArrayLikeObject(groups) ? groups : [];
+};
+
 export const validateJWT = ({ jwt }) => {
   if (!jwt) return false;
   const validatedPayload = jwtDecode(jwt);
@@ -81,21 +88,21 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
  */
 export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
   getCavaticaUser()
-    .then(userData => {
+    .then((userData) => {
       setIntegrationToken(CAVATICA, JSON.stringify(userData));
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       // Could not retrieve cavatica user info, nothing to do.
     });
 
   // Get Gen3 Secret here
-  FENCES.forEach(fence => {
+  FENCES.forEach((fence) => {
     getAccessToken(api, fence)
-      .then(key => {
+      .then((key) => {
         setIntegrationToken(fence, key);
       })
-      .catch(res => {
+      .catch((res) => {
         console.error('Error getting Gen3 API Key');
         console.error(res);
       });

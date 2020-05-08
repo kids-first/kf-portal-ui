@@ -105,22 +105,35 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
   handleClick = async () => {
     const { status } = this.state;
     const { api } = this.props;
+    if (status === '') {
+      try {
+        const res = await getStatus(api);
+        this.setState({
+          status: res.status,
+        });
+      } catch (e) {
+        this.errorNotification(`Error ${e.response?.status || ''}`, 'Cannot connect with cluster');
+      }
+    }
 
     if (status === clusterStatus.stopped) {
       try {
-        await launchCluster(api);
         this.setState({
           status: clusterStatus.createInProgress,
         });
+        await launchCluster(api);
         this.openNotification();
         this.resolveInterimState(api);
       } catch (e) {
+        this.setState({
+          status: clusterStatus.stopped,
+        });
         this.errorNotification(`Error ${e.response?.status || ''}`, 'Cannot launch cluster');
       }
+    } else if (status === clusterStatus.createComplete) {
+      const res = await getStatus(api);
+      window.open(res.url, '_blank');
     }
-    // else if (status === clusterStatus.createComplete) {
-    //   //launch cluster
-    // }
   };
 
   openNotification = () => {
