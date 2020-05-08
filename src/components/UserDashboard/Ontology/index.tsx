@@ -11,6 +11,7 @@ import Sunburst from '../../Charts/Sunburst';
 type OntologySunburstProps = {};
 type OntologySunburstState = {
   data: Object | null;
+  loading: boolean;
 };
 
 type FormatterDataType = { title: string; results: number };
@@ -21,6 +22,7 @@ const centerTextFormatter = (data: FormatterDataType) => `${data.results} ${data
 class OntologySunburst extends React.Component<OntologySunburstProps, OntologySunburstState> {
   state = {
     data: null,
+    loading: true,
   };
 
   componentDidMount() {
@@ -29,10 +31,10 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
       .fetch()
       .then(() => {
         const data = ontologyStore.getTree();
-        console.log('data : ', data);
         if (data.length > 0) {
           this.setState({
             data: data[0],
+            loading: false,
           });
         }
       })
@@ -40,17 +42,14 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
   }
 
   render() {
-    const { data } = this.state;
+    const { data, loading } = this.state;
     const Header = <CardHeader title="Ontology" />;
-    const loading = false;
-
     return (
       <DashboardCard Header={Header} inactive={loading}>
         {loading ? (
           <ChartContentSpinner />
         ) : (
           <div className="card-content-center">
-            {/* <div id="D3Container" ref={this.d3ContainerRef} /> */}
             {data && (
               <Sunburst
                 data={data!}
