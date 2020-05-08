@@ -312,7 +312,7 @@ class ParticipantsTable extends Component {
                       <span>{`\u00A0participant${
                         selectedRowsCount > 1 ? 's are' : ' is'
                       } selected\u00A0`}</span>
-                      <button onClick={(evt) => onClearSelected()} className="clearSelection">
+                      <button onClick={() => onClearSelected()} className="clearSelection">
                         {'clear selection'}
                       </button>
                     </Fragment>
