@@ -1,0 +1,21 @@
+
+.ant-list-item {
+    padding: 5px;
+}
+
+.white-background {
+    background: #FFFFFF;
+}
+
+.middle-align {
+    text-align: center;
+}
+.ant-list-header{
+    padding: 0;
+}
+
+.launch-cluster-container{
+    height: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}

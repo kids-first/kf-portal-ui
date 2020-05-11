@@ -20,8 +20,9 @@ import {
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
+import { getUserGroups } from '../components/Login/utils';
 
-const setEgoTokenCookie = token => {
+const setEgoTokenCookie = (token) => {
   const { exp } = jwtDecode(token);
   const expires = new Date(exp * 1000);
   setCookie(EGO_JWT_KEY, token, {
@@ -42,28 +43,28 @@ export default provideState({
     acceptedDatasetSubscriptionKfOptIn: false,
   }),
   effects: {
-    initialize: effects => state => {
+    initialize: (effects) => (state) => {
       const { setToken, setUser } = effects;
       const provider = localStorage.getItem('LOGIN_PROVIDER');
       const jwt = localStorage.getItem(EGO_JWT_KEY);
       if (jwt) {
         const api = initializeApi({
-          onError: err => {
+          onError: () => {
             history.push('/error');
           },
-          onUnauthorized: response => {
+          onUnauthorized: () => {
             window.location.reload();
           },
         });
 
-        const processJWT = jwt => {
+        const processJWT = (jwt) => {
           handleJWT({
             provider,
             jwt,
             setToken,
             setUser,
             api,
-            onFinish: user => {
+            onFinish: (user) => {
               if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
                 history.push('/join');
               } else if (['/', '/join', '/orcid'].includes(window.location.pathname)) {
@@ -73,7 +74,7 @@ export default provideState({
           });
 
           // Get all integration keys from local storage
-          SERVICES.forEach(service => {
+          SERVICES.forEach((service) => {
             const storedToken = localStorage.getItem(`integration_${service}`);
             if (storedToken) {
               state.integrationTokens[service] = storedToken;
@@ -87,7 +88,7 @@ export default provideState({
         } else {
           // Token possibly out of date
           refreshToken(provider)
-            .then(response => {
+            .then((response) => {
               if (response.type === 'redirect') {
                 effects.clearIntegrationTokens();
                 effects.setToken();
@@ -99,7 +100,7 @@ export default provideState({
                 return { ...state, isLoadingUser: false };
               }
             })
-            .catch(e => {
+            .catch(() => {
               return effects.loggOut();
             });
         }
@@ -108,7 +109,7 @@ export default provideState({
         return { ...state, isLoadingUser: false };
       }
     },
-    loggOut: effects => state => {
+    loggOut: (effects) => () => {
       const newState = effects.clearIntegrationTokens();
       newState.loggedInUser = null;
       return mergeIntoState({
@@ -121,10 +122,10 @@ export default provideState({
       return getAllFieldNamesPromise(api)
         .then(({ data }) => {
           return get(data, '__type.fields', [])
-            .filter(field => field && field.name !== 'sets')
-            .map(field => field.name);
+            .filter((field) => field && field.name !== 'sets')
+            .map((field) => field.name);
         })
-        .then(fields => state => {
+        .then((fields) => (state) => {
           const userRole = user.roles ? user.roles[0] : null;
           const userRoleProfileFields =
             userRole && userRole !== 'research'
@@ -132,7 +133,7 @@ export default provideState({
               : fields;
           const profile = pick(omit(user, 'sets'), userRoleProfileFields);
           const filledFields = Object.values(profile || {}).filter(
-            v => (isArray(v) && v.length) || (!isArray(v) && v),
+            (v) => (isArray(v) && v.length) || (!isArray(v) && v),
           );
           const percentageFilled = filledFields.length / userRoleProfileFields.length;
           if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
@@ -150,12 +151,15 @@ export default provideState({
             isAdmin: state.loggedInUserToken
               ? isAdminToken({ validatedPayload: jwtDecode(state.loggedInUserToken) })
               : false,
+            userGroups: state.loggedInUserToken
+              ? getUserGroups({ validatedPayload: jwtDecode(state.loggedInUserToken) })
+              : [],
             percentageFilled,
           };
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     },
-    addUserSet: (effects, { api, ...set }) => state => {
+    addUserSet: (effects, { api, ...set }) => (state) => {
       const {
         loggedInUser: { email, sets, ...rest },
       } = state;
@@ -164,9 +168,9 @@ export default provideState({
           ...rest,
           sets: [...(sets || []), set],
         },
-      }).then(profile => effects.setUser({ ...profile, email, api }));
+      }).then((profile) => effects.setUser({ ...profile, email, api }));
     },
-    setToken: (effects, { token, provider } = {}) => state => {
+    setToken: (effects, { token, provider } = {}) => (state) => {
       setToken(token);
       if (token) {
         localStorage.setItem('LOGIN_PROVIDER', provider);
@@ -182,7 +186,7 @@ export default provideState({
 
       return { ...state, loggedInUserToken: token, loginProvider: provider };
     },
-    setIntegrationToken: (effects, service, token) => state => {
+    setIntegrationToken: (effects, service, token) => (state) => {
       if (SERVICES.includes(service)) {
         const tokenKey = `integration_${service}`;
         if (token) {
@@ -195,14 +199,14 @@ export default provideState({
       }
       return { ...state, integrationTokens: { ...state.integrationTokens } };
     },
-    getIntegrationToken: (effects, service) => state => {
+    getIntegrationToken: (effects, service) => () => {
       if (SERVICES.includes(service)) {
         const tokenKey = `integration_${service}`;
         return tokenKey ? localStorage.getItem(tokenKey) : null;
       }
     },
-    clearIntegrationTokens: effects => state => {
-      SERVICES.forEach(service => localStorage.removeItem(`integration_${service}`));
+    clearIntegrationTokens: () => (state) => {
+      SERVICES.forEach((service) => localStorage.removeItem(`integration_${service}`));
       return { ...state, integrationTokens: {} };
     },
   },
