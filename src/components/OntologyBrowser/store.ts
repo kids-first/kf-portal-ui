@@ -18,6 +18,7 @@ export type TreeNode = {
   children: TreeNode[];
   results?: number;
   hidden?: boolean;
+  depth?: number;
 };
 
 export class PhenotypeStore {
@@ -37,19 +38,26 @@ export class PhenotypeStore {
     });
   };
 
-  createNodeFromSource = (ontologySource: PhenotypeSource, parent?: TreeNode) => ({
+  createNodeFromSource = (
+    ontologySource: PhenotypeSource,
+    parent?: TreeNode,
+    depth: number = 0,
+  ) => ({
     title: ontologySource.key,
-    text:ontologySource.key,
+    text: ontologySource.key,
     key: parent ? `${parent.key}-${ontologySource.key}` : ontologySource.key,
     children: [],
     results: ontologySource.doc_count,
+    value: ontologySource.doc_count,
+    name: ontologySource.key,
+    depth,
   });
 
-  private populateNodeChild = (treeNode: TreeNode, source: PhenotypeSource) => {
+  private populateNodeChild = (treeNode: TreeNode, source: PhenotypeSource, depth: number = 0) => {
     this.phenotypes.forEach((phenotypeSource: PhenotypeSource) => {
       if (phenotypeSource.top_hits.parents.includes(source.key)) {
-        let childNode = this.createNodeFromSource(phenotypeSource, treeNode);
-        treeNode.children.push(this.populateNodeChild(childNode, phenotypeSource));
+        let childNode = this.createNodeFromSource(phenotypeSource, treeNode, depth);
+        treeNode.children.push(this.populateNodeChild(childNode, phenotypeSource, depth + 1));
       }
     });
     return treeNode;
@@ -59,12 +67,12 @@ export class PhenotypeStore {
     let workingTree: TreeNode[] = [];
     let workingPhenotypes = [...this.phenotypes];
 
-    workingPhenotypes.forEach(sourcePhenotype => {
+    workingPhenotypes.forEach((sourcePhenotype) => {
       let phenotype: TreeNode;
       // start from root and then look for each element inhereting from that node
       if (!sourcePhenotype.top_hits.parents.length) {
         phenotype = this.createNodeFromSource(sourcePhenotype);
-        workingTree.push(this.populateNodeChild(phenotype, sourcePhenotype));
+        workingTree.push(this.populateNodeChild(phenotype, sourcePhenotype, 1));
       }
     });
     return workingTree;
@@ -87,13 +95,31 @@ export class PhenotypeStore {
 
   getChildrenKeys = (node: TreeNode, root = false) => {
     let nKeys: string[] = [];
-    node.children.forEach(i => {
+    node.children.forEach((i) => {
       nKeys = nKeys.concat(this.getChildrenKeys(i));
     });
     if (!root) {
       nKeys.push(node.key);
     }
     return nKeys;
+  };
+
+  getTree = (maxDepth: number = 2) => {
+    if (this.tree.length === 0) return [];
+
+    const newTree = [...this.tree];
+    const cleanTree = (node: TreeNode) => {
+      if (!node.depth) return;
+      if (node.depth >= maxDepth) {
+        delete node.children;
+      } else if (node.children.length > 0) {
+        for (let n of node.children) {
+          cleanTree(n);
+        }
+      }
+    };
+    cleanTree(newTree[0]);
+    return newTree;
   };
 
   buildPhenotypeQuery = () => `query($sqon: JSON) {
@@ -129,9 +155,9 @@ export class PhenotypeStore {
 
   remoteSingleRootNode = (phenotypes: PhenotypeSource[]) => {
     return phenotypes
-      .map(p => (p.key !== 'All (HP:0000001)' ? p : null))
+      .map((p) => (p.key !== 'All (HP:0000001)' ? p : null))
       .filter((p): p is PhenotypeSource => p !== null)
-      .map(p => {
+      .map((p) => {
         const index = p.top_hits.parents.indexOf('All (HP:0000001)');
         if (!index) {
           p.top_hits.parents.splice(index, 1);

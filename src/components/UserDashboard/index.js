@@ -8,8 +8,10 @@ import { withApi } from 'services/api';
 import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
+import OntologySunburst from './Ontology';
 
 import { DashboardCard } from './styles';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 import {
   MemberResearchInterestsChart,
@@ -49,10 +51,15 @@ export default compose(
     <div className={userDashboardContent}>
       <h1 className={dashboardTitle}>My Dashboard</h1>
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
-      <Row gutter={[30, 30]} align={'top'} style={{paddingLeft: 15, paddingRight: 15, top:-15}}>
+      <Row gutter={[30, 30]} align={'top'} style={{ paddingLeft: 15, paddingRight: 15, top: -15 }}>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <SavedQueries {...{ api, loggedInUser }} />
         </Col>
+        {isFeatureEnabled('ontologySunburst') && (
+          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            <OntologySunburst />
+          </Col>
+        )}
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <AuthorizedStudies />
         </Col>

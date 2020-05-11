@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import HouseIcon from 'react-icons/lib/fa/home';
-import DatabaseIcon from 'react-icons/lib/fa/database';
-import UserIcon from 'react-icons/lib/fa/user';
-import ExploreDataIcon from 'icons/ExploreDataIcon';
 import { Alert, Badge, Layout } from 'antd';
+import {
+  DatabaseOutlined,
+  FolderOutlined,
+  UserOutlined,
+  TeamOutlined,
+  HomeOutlined,
+} from '@ant-design/icons';
 
 import logoPath from 'assets/logo-kids-first-data-portal.svg';
 import Row from 'uikit/Row';
@@ -23,6 +26,7 @@ import UserMenu from './UserMenu';
 import './Header.css';
 
 import { dismissError } from 'store/actionCreators/errors';
+import { isPartOfGroup } from '../../common/profile';
 
 const { Header: AntHeader } = Layout;
 
@@ -72,7 +76,7 @@ const renderAlertIfAny = (loggedInUser, currentError, dismissError) => {
   return null;
 };
 
-const Header = props => {
+const Header = (props) => {
   const {
     currentError,
     dismissError,
@@ -103,27 +107,31 @@ const Header = props => {
             <NavBarList ml={40}>
               <li>
                 <NavLink currentPathName={currentPathName} to={ROUTES.dashboard}>
-                  <HouseIcon /> Dashboard
+                  <HomeOutlined /> Dashboard
                 </NavLink>
               </li>
               <li>
                 <NavLink currentPathName={currentPathName} to={ROUTES.cohortBuilder}>
-                  <ExploreDataIcon
-                    style={{ top: '3px', position: 'relative', fill: 'currentColor' }}
-                  />{' '}
-                  Explore Data
+                  <TeamOutlined /> Explore Data
                 </NavLink>
               </li>
+              {isPartOfGroup('kf-investigator', loggedInUser) && (
+                <li>
+                  <NavLink currentPathName={currentPathName} to={ROUTES.variantDb}>
+                    <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[15, -15]}>
+                      <DatabaseOutlined /> Variant DB
+                    </Badge>
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <NavLink currentPathName={currentPathName} to={`${ROUTES.search}/file`}>
-                  <DatabaseIcon /> File Repository
+                  <FolderOutlined /> File Repository
                 </NavLink>
               </li>
               <li>
                 <NavLink currentPathName={currentPathName} to={ROUTES.searchMember}>
-                  <Badge count={'New'} style={{ backgroundColor: '#52c41a' }} offset={[25, -10]}>
-                    <UserIcon /> Members
-                  </Badge>
+                  <UserOutlined /> Members
                 </NavLink>
               </li>
             </NavBarList>
@@ -168,7 +176,7 @@ Header.propTypes = {
   enabledFeatures: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loggedInUser: state.user.loggedInUser,
   currentError: state.errors.currentError,
 });

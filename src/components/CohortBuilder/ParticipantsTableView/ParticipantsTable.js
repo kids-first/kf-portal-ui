@@ -20,7 +20,7 @@ import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import SaveSetModal from './SaveSetModal';
 import './ParticipantTableView.css';
-import { isFeatureEnabled } from 'common/featuresToggles';
+import { isPartOfGroup } from 'common/profile';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   return (
@@ -30,7 +30,7 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
       onChange={
         row
           ? () => onCellSelected(!checked, row)
-          : evt => {
+          : (evt) => {
               onCellSelected(evt.currentTarget.checked);
             }
       }
@@ -38,7 +38,7 @@ const SelectionCell = ({ value: checked, onCellSelected, row }) => {
   );
 };
 
-const isMondo = datum => typeof datum === 'string' && datum.includes('MONDO');
+const isMondo = (datum) => typeof datum === 'string' && datum.includes('MONDO');
 
 const enhance = compose(withState('collapsed', 'setCollapsed', true));
 
@@ -121,7 +121,7 @@ const ParticipantIdLink = compose(({ value: idParticipant }) => {
 
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
-    Header: props => {
+    Header: (props) => {
       return (
         <SelectionCell
           {...props}
@@ -130,7 +130,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
         />
       );
     },
-    Cell: props => {
+    Cell: (props) => {
       return <SelectionCell value={props.value} row={props.row} onCellSelected={onRowSelected} />;
     },
     accessor: 'selected',
@@ -143,7 +143,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Participant ID',
     accessor: 'participantId',
-    Cell: props => <ParticipantIdLink value={props.value} />,
+    Cell: (props) => <ParticipantIdLink value={props.value} />,
   },
   {
     Header: 'Study Name',
@@ -155,7 +155,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
-    Cell: props => (
+    Cell: (props) => (
       <CollapsibleMultiLineCell
         value={props.value}
         collapsed={props.collapsed}
@@ -168,7 +168,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Diagnosis (Mondo)',
     accessor: 'diagnosisMondo',
-    Cell: props => (
+    Cell: (props) => (
       <CollapsibleMultiLineCell
         value={props.value}
         collapsed={props.collapsed}
@@ -182,7 +182,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Age at Diagnosis (days)',
     accessor: 'ageAtDiagnosis',
-    Cell: props => (
+    Cell: (props) => (
       <CollapsibleMultiLineCell
         value={props.value}
         collapsed={props.collapsed}
@@ -197,7 +197,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
-    Cell: props => (
+    Cell: (props) => (
       <CollapsibleMultiLineCell
         value={props.value}
         collapsed={props.collapsed}
@@ -210,7 +210,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Files',
     accessor: 'filesCount',
-    Cell: props => <NbFilesCell value={props.value} row={props.row} />,
+    Cell: (props) => <NbFilesCell value={props.value} row={props.row} />,
     field: 'files',
     sortable: false,
   },
@@ -231,7 +231,7 @@ class ParticipantsTable extends Component {
     this.state = {
       columns: configureCols(
         participantsTableViewColumns(props.onRowSelected, props.onAllRowsSelected, this.dirtyHack),
-      ).map(field =>
+      ).map((field) =>
         field.sortable !== false && SORTABLE_FIELDS_MAPPING.has(field.accessor)
           ? { ...field, sortable: true }
           : { ...field, sortable: false },
@@ -311,7 +311,7 @@ class ParticipantsTable extends Component {
                       <span>{`\u00A0participant${
                         selectedRowsCount > 1 ? 's are' : ' is'
                       } selected\u00A0`}</span>
-                      <button onClick={evt => onClearSelected()} className="clearSelection">
+                      <button onClick={() => onClearSelected()} className="clearSelection">
                         {'clear selection'}
                       </button>
                     </Fragment>
@@ -320,7 +320,7 @@ class ParticipantsTable extends Component {
               </Fragment>
             </ToolbarGroup>
             <div className={'action-btns-layout'}>
-              {isFeatureEnabled('variantsDb') && (
+              {isPartOfGroup('kf-investigator', loggedInUser) && (
                 <Button
                   className={'save-set-btn'}
                   onClick={() =>

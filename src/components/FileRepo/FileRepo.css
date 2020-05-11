@@ -147,3 +147,7 @@
 .download-btn-file-repo {
   margin-left: 15px;
 }
+
+.relative {
+  position: relative;
+}
