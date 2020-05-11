@@ -28,7 +28,6 @@
   left: 4px;
   display: flex;
   flex-direction: column;
-  min-width: 100%;
   z-index: 200;
   cursor: pointer;
   right: auto;

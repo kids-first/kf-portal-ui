@@ -27,4 +27,5 @@
 .action-btns-layout {
   display: flex;
   align-items: center;
+  position: relative;
 }
