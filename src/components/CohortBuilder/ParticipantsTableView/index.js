@@ -12,15 +12,7 @@ import TableErrorView from './TableErrorView';
 import Card from 'uikit/Card';
 
 import { SORTABLE_FIELDS_MAPPING } from './queries';
-
-const enhance = compose(
-  withApi,
-  withState('pageSize', 'setPageSize', 10),
-  withState('pageIndex', 'setPageIndex', 0),
-  withState('selectedRows', 'setSelectedRows', []),
-  withState('allRowsSelected', 'setAllRowsSelected', false),
-  withState('sort', 'setSort', []),
-);
+import { connect } from 'react-redux';
 
 const ParticipantsTableView = ({
   sqon,
@@ -51,11 +43,11 @@ const ParticipantsTableView = ({
             </Card>
           );
         }
-        const isRowSelected = node =>
-          allRowsSelected || selectedRows.some(row => row === node.participantId);
+        const isRowSelected = (node) =>
+          allRowsSelected || selectedRows.some((row) => row === node.participantId);
 
         const dataWithRowSelection = data[0]
-          ? data[0].nodes.map(node => ({ ...node, selected: isRowSelected(node) }))
+          ? data[0].nodes.map((node) => ({ ...node, selected: isRowSelected(node) }))
           : [];
 
         const selectionSQON = selectedRows.length
@@ -77,8 +69,8 @@ const ParticipantsTableView = ({
               downloadName={'participant-table'}
               onFetchData={({ page, pageSize, sorted }) => {
                 const sorting = sorted
-                  .filter(s => SORTABLE_FIELDS_MAPPING.has(s.id))
-                  .map(s => ({
+                  .filter((s) => SORTABLE_FIELDS_MAPPING.has(s.id))
+                  .map((s) => ({
                     field: SORTABLE_FIELDS_MAPPING.get(s.id),
                     order: s.desc ? 'desc' : 'asc',
                   }));
@@ -89,20 +81,20 @@ const ParticipantsTableView = ({
               onRowSelected={(checked, row) => {
                 const rowId = row.participantId;
                 if (checked) {
-                  setSelectedRows(s => s.concat(rowId));
+                  setSelectedRows((s) => s.concat(rowId));
                   return;
                 }
-                setSelectedRows(s => s.filter(row => row !== rowId));
+                setSelectedRows((s) => s.filter((row) => row !== rowId));
               }}
-              onAllRowsSelected={checked => {
+              onAllRowsSelected={(checked) => {
                 // don't keep individual rows selected when "select all" is checked
                 //  to avoid having them selected after "unselect all"
-                setAllRowsSelected(s => checked);
-                setSelectedRows(s => []);
+                setAllRowsSelected(() => checked);
+                setSelectedRows(() => []);
               }}
               onClearSelected={() => {
-                setAllRowsSelected(s => false);
-                setSelectedRows(s => []);
+                setAllRowsSelected(() => false);
+                setSelectedRows(() => []);
               }}
               selectedRows={selectedRows}
               allRowsSelected={allRowsSelected}
@@ -117,6 +109,19 @@ const ParticipantsTableView = ({
 
 ParticipantsTableView.propTypes = {
   sqon: PropTypes.object.isRequired,
+  loggedInUser: PropTypes.object.isRequired,
 };
 
-export default enhance(ParticipantsTableView);
+const mapStateToProps = (state) => ({
+  loggedInUser: state.user.loggedInUser,
+});
+
+export default compose(
+  withApi,
+  withState('pageSize', 'setPageSize', 10),
+  withState('pageIndex', 'setPageIndex', 0),
+  withState('selectedRows', 'setSelectedRows', []),
+  withState('allRowsSelected', 'setAllRowsSelected', false),
+  withState('sort', 'setSort', []),
+  connect(mapStateToProps),
+)(ParticipantsTableView);
