@@ -58,15 +58,16 @@ const customTableTypes = {
 
 const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => {
   return (
-    <Row right>
+    <Row className={'relative'} right>
       <Tooltip
         position="top"
         hideTitle
         html={
-          <Row p={'10px'}>
+          <Row className={'relative'} p={'10px'}>
             {disabled
               ? 'Please select files in the table for this action.'
-              : 'Cavatica is a cloud processing platform where files can be linked (not duplicated) and used immediately.'}
+              : 'Cavatica is a cloud processing platform where files can be ' +
+                'linked (not duplicated) and used immediately.'}
           </Row>
         }
       >
@@ -120,7 +121,7 @@ const FileRepo = ({
   ...props
 }) => (
   <SQONURL
-    render={url => (
+    render={(url) => (
       <ArrangerConnectionGuard
         graphqlField={props.graphqlField}
         render={({ connecting, connectionError }) =>
@@ -138,7 +139,7 @@ const FileRepo = ({
             <Arranger
               {...props}
               projectId={arrangerProjectId}
-              render={props => {
+              render={(props) => {
                 const selectionSQON = props.selectedTableRows.length
                   ? replaceSQON({
                       op: 'and',
@@ -203,7 +204,9 @@ const FileRepo = ({
                           }
                           customTypes={customTableTypes}
                           showFilterInput={false}
-                          InputComponent={props => <FilterInput {...props} LeftIcon={FilterIcon} />}
+                          InputComponent={(props) => (
+                            <FilterInput {...props} LeftIcon={FilterIcon} />
+                          )}
                           customColumns={customTableColumns({
                             theme,
                             userProjectIds,
@@ -213,7 +216,7 @@ const FileRepo = ({
                           columnDropdownText="Columns"
                           fieldTypesForFilter={['text', 'keyword', 'id']}
                           maxPagesOptions={5}
-                          onFilterChange={val => {
+                          onFilterChange={(val) => {
                             if (val !== '') {
                               trackFileRepoInteraction({
                                 category: TRACKING_EVENTS.categories.fileRepo.dataTable,
