@@ -13,3 +13,9 @@
 .ant-list-header{
     padding: 0;
 }
+
+.launch-cluster-container{
+    height: 100%;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}

@@ -33,7 +33,7 @@ export const getUserGroups = ({ validatedPayload }) => {
   if (!validatedPayload) return [];
   const jwtUser = get(validatedPayload, 'context.user', {});
   const groups = jwtUser.groups;
-  return groups && isArrayLikeObject(groups) ? groups : [];
+  return groups ? groups : [];
 };
 
 export const validateJWT = ({ jwt }) => {

@@ -3,6 +3,7 @@ import { Button, Col, Modal, Row } from 'antd';
 import { DeleteOutlined, LoadingOutlined, RocketOutlined, ToolOutlined } from '@ant-design/icons';
 import * as React from 'react';
 import { clusterStatus, isInterimState, canBeDeleted } from './store';
+import './index.css';
 
 interface Props {
   status: string;
@@ -40,10 +41,7 @@ const LaunchClusterCard = (props: Props) => {
       buttonIcon = <ToolOutlined />;
   }
   return (
-    <div
-      className={'white-background middle-align'}
-      style={{ height: '100%', paddingTop: 24, paddingBottom: 24 }}
-    >
+    <div className={'white-background middle-align launch-cluster-container'}>
       <img alt="AppacheZeppelin" src={azicon} />
       <div style={{ paddingTop: 24, paddingBottom: 24 }}>
         Kids First is providing members with their own SPARK cluster running a web-based Zeppelin
@@ -64,7 +62,7 @@ const LaunchClusterCard = (props: Props) => {
           </Button>
         </Col>
         <Col>
-          {canBeDeleted(status) ? (
+          {canBeDeleted(status) && (
             <div>
               <Button
                 id={'deleteClusterButton'}
@@ -86,8 +84,6 @@ const LaunchClusterCard = (props: Props) => {
                 <p>You want to delete this cluster?</p>
               </Modal>
             </div>
-          ) : (
-            ''
           )}
         </Col>
       </Row>

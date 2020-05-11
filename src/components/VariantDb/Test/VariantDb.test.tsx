@@ -3,52 +3,48 @@ import Adapter from 'enzyme-adapter-react-16';
 import VariantDb from '../index';
 import { jestPatchMatchMedia } from '../../../utils';
 import Enzyme, { mount } from 'enzyme';
+import { clusterStatus } from '../store';
 
-// configure({ adapter: new Adapter() });
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('VariantDb', () => {
   const mockApi = jest.fn();
-  // mockApi.mockReturnValueOnce(Promise.resolve({ status: 'STOPPED' }));
 
   beforeAll(() => jestPatchMatchMedia());
 
   let wrapper: Enzyme.ShallowWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
 
-  it('should render Page', () => {
-    mockApi.mockReturnValueOnce(
-      new Promise((resolve) => {
-        setTimeout(function () {
-          resolve({ status: 'STOPPED' });
-        }, 1000);
-      }),
-    );
+  beforeEach(() => {
     wrapper = mount(<VariantDb api={mockApi} />);
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
+  it('should render Page', () => {
+    mockApi.mockResolvedValueOnce({ status: clusterStatus.stopped });
     expect(wrapper.length).toEqual(1);
   });
 
   it('should render delete button when required', () => {
     mockApi
-      .mockResolvedValue({ status: 'STOPPED' })
-      .mockResolvedValueOnce({ status: 'CREATE_IN_PROGRESS' })
-      .mockResolvedValueOnce({ status: 'CREATE_COMPLETE' })
-      .mockResolvedValueOnce({ status: 'DELETE_IN_PROGRESS' })
-      .mockResolvedValueOnce({ status: 'ROLLBACK_COMPLETE' });
+      .mockResolvedValue({ status: clusterStatus.stopped })
+      .mockResolvedValueOnce({ status: clusterStatus.createInProgress })
+      .mockResolvedValueOnce({ status: clusterStatus.createComplete })
+      .mockResolvedValueOnce({ status: clusterStatus.deleteInProgress })
+      .mockResolvedValueOnce({ status: clusterStatus.rollback });
 
-    wrapper = mount(<VariantDb api={mockApi} />);
-    wrapper.setState({ status: 'CREATE_IN_PROGRESS' });
-    expect(wrapper.find('#deleteClusterButton').length).toBeGreaterThan(0);
+    wrapper.setState({ status: clusterStatus.createInProgress });
+    expect(wrapper.find('#deleteClusterButton').length).toBe(2); //Ant <Button/> wrapper and <button/> with same id
 
-    wrapper = mount(<VariantDb api={mockApi} />);
-    wrapper.setState({ status: 'CREATE_COMPLETE' });
-    expect(wrapper.find('#deleteClusterButton').length).toBeGreaterThan(0);
+    wrapper.setState({ status: clusterStatus.createComplete });
+    expect(wrapper.find('#deleteClusterButton').length).toBe(2);
 
-    wrapper = mount(<VariantDb api={mockApi} />);
-    wrapper.setState({ status: 'DELETE_IN_PROGRESS' });
+    wrapper.setState({ status: clusterStatus.deleteInProgress });
     expect(wrapper.find('#deleteClusterButton').length).toBe(0);
 
-    wrapper = mount(<VariantDb api={mockApi} />);
-    wrapper.setState({ status: 'ROLLBACK_COMPLETE' });
-    expect(wrapper.find('#deleteClusterButton').length).toBeGreaterThan(0);
+    wrapper.setState({ status: clusterStatus.rollback });
+    expect(wrapper.find('#deleteClusterButton').length).toBe(2);
   });
 });

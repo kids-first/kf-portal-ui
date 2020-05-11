@@ -1,19 +1,19 @@
-import { kfVariantCluster } from 'common/injectGlobals';
+import { kfVariantClusterUrl } from 'common/injectGlobals';
 
 export const launchCluster = async (api: Function) =>
   await api({
     method: 'POST',
-    url: kfVariantCluster,
+    url: kfVariantClusterUrl,
   });
 
 export const getStatus = async (api: Function) =>
   await api({
     method: 'GET',
-    url: kfVariantCluster,
+    url: kfVariantClusterUrl,
   });
 
 export const deleteCluster = async (api: Function) =>
   await api({
     method: 'DELETE',
-    url: kfVariantCluster,
+    url: kfVariantClusterUrl,
   });

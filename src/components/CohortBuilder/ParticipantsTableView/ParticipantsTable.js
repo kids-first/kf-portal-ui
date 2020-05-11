@@ -286,7 +286,6 @@ class ParticipantsTable extends Component {
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
     const projectId = arrangerProjectId;
 
-    console.log(loggedInUser, 'this');
     return (
       <Fragment>
         {this.state.showModal && (

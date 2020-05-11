@@ -92,7 +92,7 @@ export const reactApiDataVersionApi: string = getApplicationEnvVar('DATA_VERSION
 export const reactApiDataVersionFallback: string =
   getApplicationEnvVar('DATA_VERSION_FALLBACK') || '';
 export const reactApiSearchMembersApi = getApplicationEnvVar('SEARCH_MEMBERS_API') || null;
-export const kfVariantCluster = getApplicationEnvVar('VARIANT_CLUSTER_API') || null;
+export const kfVariantClusterUrl = getApplicationEnvVar('VARIANT_CLUSTER_API') || null;
 
 // Public Stats
 export const publicStatsApiRoot = getApplicationEnvVar('PUBLIC_STATS_ROOT') || '';
