@@ -27,10 +27,10 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (sqon?: any) => {
+  fetch = (sqon?: any, filterThemselves?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
-    return this.getPhenotypes(sqon).then((data: PhenotypeSource[]) => {
+    return this.getPhenotypes(sqon, filterThemselves).then((data: PhenotypeSource[]) => {
       const stripedData = this.remoteSingleRootNode(data);
       this.phenotypes = stripedData;
       this.tree = this.generateTree();
@@ -66,11 +66,10 @@ export class PhenotypeStore {
   generateTree = () => {
     let workingTree: TreeNode[] = [];
     let workingPhenotypes = [...this.phenotypes];
-
     workingPhenotypes.forEach((sourcePhenotype) => {
       let phenotype: TreeNode;
       // start from root and then look for each element inhereting from that node
-      if (!sourcePhenotype.top_hits.parents.length) {
+      if (!sourcePhenotype.top_hits.parents.length || workingPhenotypes.length === 1) {
         phenotype = this.createNodeFromSource(sourcePhenotype);
         workingTree.push(this.populateNodeChild(phenotype, sourcePhenotype, 1));
       }
@@ -106,25 +105,12 @@ export class PhenotypeStore {
 
   getTree = (maxDepth: number = 2) => {
     if (this.tree.length === 0) return [];
-
-    const newTree = [...this.tree];
-    const cleanTree = (node: TreeNode) => {
-      if (!node.depth) return;
-      if (node.depth >= maxDepth) {
-        delete node.children;
-      } else if (node.children.length > 0) {
-        for (let n of node.children) {
-          cleanTree(n);
-        }
-      }
-    };
-    cleanTree(newTree[0]);
-    return newTree;
+    return [...this.tree];
   };
 
-  buildPhenotypeQuery = () => `query($sqon: JSON) {
+  buildPhenotypeQuery = (filterThemselves: boolean) => `query($sqon: JSON) {
     participant {
-      aggregations(filters: $sqon, aggregations_filter_themselves: false) {
+      aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
         observed_phenotype__name {
           buckets{
             key,
@@ -137,9 +123,9 @@ export class PhenotypeStore {
   }
   `;
 
-  getPhenotypes = async (sqon?: any) => {
+  getPhenotypes = async (sqon?: any, filterThemselves = false) => {
     const body = {
-      query: this.buildPhenotypeQuery(),
+      query: this.buildPhenotypeQuery(filterThemselves),
       variables: JSON.stringify({
         sqon: sqon,
       }),
