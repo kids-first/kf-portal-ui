@@ -21,12 +21,10 @@ const isEnabled = (featureName, enabledFeatures = {}, defaultValue = true) => {
   return true;
 };
 
-const toggles = queryStrings =>
+const toggles = (queryStrings) =>
   Array.from(Object.entries(process.env))
-    .filter(env => {
-      return typeof env[1] === 'string';
-    })
-    .filter(env => env[0].startsWith(featureTogglePrefix))
+    .filter((env) => typeof env[1] === 'string')
+    .filter((env) => env[0].startsWith(featureTogglePrefix))
     .reduce(
       (allToggles, toggle) => {
         allToggles[camelCase(toggle[0].slice(featureTogglePrefix.length))] = isEnabled(
@@ -41,6 +39,31 @@ const toggles = queryStrings =>
       },
     );
 
+const getQueryString = (key) => {
+  const urlParams = new URLSearchParams(window.location.search);
+  switch (urlParams.get(key)) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      return null;
+  }
+};
+
+const queryStringToggles = (key) => {
+  switch (getQueryString(key)) {
+    case true:
+      localStorage.setItem(key, true);
+      return true;
+    case false:
+      localStorage.removeItem(key);
+      return false;
+    default:
+      return !!localStorage.getItem(key);
+  }
+};
+
 /**
  * Checks if a feature is enabled or not.
  * @param {String} featureName - The name of the feature, as defined in the feature toggles configuration.
@@ -48,4 +71,4 @@ const toggles = queryStrings =>
  * @returns {Boolean} `true` if the name feature exists and is enabled; `false` otherwise.
  */
 export const isFeatureEnabled = (featureName, features = {}) =>
-  toggles(features)[featureName] === true;
+  toggles(features)[featureName] === true || queryStringToggles(featureName);

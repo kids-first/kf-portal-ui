@@ -1,14 +1,17 @@
-import React from 'react';
-import CardHeader from 'uikit/Card/CardHeader';
+import React, { Fragment } from 'react';
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 
 import { PhenotypeStore } from '../../OntologyBrowser/store';
 
-import { DashboardCard } from '../styles';
 import './Ontology.css';
-import Sunburst from '../../Charts/Sunburst';
+import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
+import { Sqon } from 'types';
 
-type OntologySunburstProps = {};
+type OntologySunburstProps = {
+  sqon: Sqon;
+  width?: number;
+  height?: number;
+};
 type OntologySunburstState = {
   data: Object | null;
   loading: boolean;
@@ -24,13 +27,29 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
     data: null,
     loading: true,
   };
+  ontologyStore: PhenotypeStore;
+
+  constructor(props: OntologySunburstProps) {
+    super(props);
+    this.ontologyStore = new PhenotypeStore();
+  }
 
   componentDidMount() {
-    const ontologyStore = new PhenotypeStore();
-    ontologyStore
-      .fetch()
+    this.fetchOntology();
+  }
+
+  componentDidUpdate(prevProps: OntologySunburstProps) {
+    if (prevProps.sqon !== this.props.sqon) {
+      this.fetchOntology();
+    }
+  }
+
+  fetchOntology() {
+    const sqon = this.props.sqon || null;
+    this.ontologyStore
+      .fetch(sqon)
       .then(() => {
-        const data = ontologyStore.getTree();
+        const data = this.ontologyStore.getTree();
         if (data.length > 0) {
           this.setState({
             data: data[0],
@@ -43,9 +62,10 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
 
   render() {
     const { data, loading } = this.state;
-    const Header = <CardHeader title="Ontology" />;
+    const { height, width } = this.props;
+    // const Header = <CardHeader title="Observed Phenotypes" />;
     return (
-      <DashboardCard Header={Header} inactive={loading}>
+      <Fragment>
         {loading ? (
           <ChartContentSpinner />
         ) : (
@@ -53,13 +73,15 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
             {data && (
               <Sunburst
                 data={data!}
+                height={height}
+                width={width}
                 tooltipFormatter={tooltipFormatter}
                 centerTextFormatter={centerTextFormatter}
               />
             )}
           </div>
         )}
-      </DashboardCard>
+      </Fragment>
     );
   }
 }

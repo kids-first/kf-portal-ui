@@ -8,7 +8,7 @@ import { withApi } from 'services/api';
 import SavedQueries from './SavedQueries';
 import AuthorizedStudies from './AuthorizedStudies';
 import CavaticaProjects from './CavaticaProjects';
-import OntologySunburst from './Ontology';
+import OntologySunburst from '../Charts/Ontology/OntologySunburst';
 
 import { DashboardCard } from './styles';
 import { isFeatureEnabled } from 'common/featuresToggles';
@@ -55,9 +55,11 @@ export default compose(
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <SavedQueries {...{ api, loggedInUser }} />
         </Col>
-        {isFeatureEnabled('ontologySunburst') && (
+        {isFeatureEnabled('FT_SUNBURST') && (
           <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-            <OntologySunburst />
+            <DashboardCard title="Observed Phenotypes">
+              <OntologySunburst />
+            </DashboardCard>
           </Col>
         )}
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>

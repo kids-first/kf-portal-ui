@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 const sunburstD3 = (ref, data, config, formatters) => {
   const { tooltipFormatter, centerTextFormatter } = formatters;
   const width = config.width || 300;
-  const height = width || 300;
+  const height = config.height || 300;
   const depth = config.depth;
   const radius = Math.min(width, height) / 6;
   const colorScheme = config.colorScheme || 'schemeSet1';
@@ -27,7 +27,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
   const color = d3.scaleOrdinal(d3[colorScheme]);
   root.each((d) => (d.current = d));
 
-  const svg = d3.select(ref.current).style('width', 305).style('height', 305);
+  const svg = d3.select(ref.current).style('width', width).style('height', height);
   const g = svg.append('g').attr('transform', `translate(${width / 2},${width / 2})`);
 
   const gData = g.append('g').selectAll('path').data(root.descendants().slice(1));

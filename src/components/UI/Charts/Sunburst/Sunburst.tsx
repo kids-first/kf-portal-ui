@@ -25,10 +25,11 @@ class Sunburst extends Component<SunburstProps, {}> {
   }
 
   componentDidMount() {
-    const { depth, width, tooltipFormatter, centerTextFormatter } = this.props;
+    const { depth, width, height, tooltipFormatter, centerTextFormatter } = this.props;
     const config = {
       depth,
       width,
+      height,
     };
     sunburstD3(this.ref, this.props.data as any, config, {
       tooltipFormatter,
