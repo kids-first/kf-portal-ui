@@ -1,7 +1,7 @@
 import React from 'react';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import Sunburst from 'components/Charts/Sunburst';
+import Sunburst from 'components/UI/Charts/Sunburst';
 import { treeData } from 'components/OntologyBrowser/Test/mockData';
 
 configure({ adapter: new Adapter() });

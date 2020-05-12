@@ -12,6 +12,9 @@ import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
 import SurvivalChart from './SurvivalChart';
 import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
 import { CohortCard } from './ui';
+import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
+
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 const CardSlot = ({ children }) => (
   <Col style={{ padding: '4px' }} sm={12} md={6} lg={6} xl={4}>
@@ -77,6 +80,13 @@ const Summary = ({
               </div>
             </CohortCard>
           </CardSlot>
+          {isFeatureEnabled('FT_SUNBURST') && (
+            <CardSlot>
+              <CohortCard title="Observed Phenotypes">
+                <OntologySunburst sqon={sqon} height={240} width={224} />
+              </CohortCard>
+            </CardSlot>
+          )}
           <CardSlot>
             <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
           </CardSlot>
