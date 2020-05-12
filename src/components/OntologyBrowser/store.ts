@@ -31,8 +31,7 @@ export class PhenotypeStore {
     this.phenotypes = [];
     this.tree = [];
     return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
-      const stripedData = this.remoteSingleRootNode(data);
-      this.phenotypes = stripedData;
+      this.phenotypes = this.remoteSingleRootNode(data);
       this.tree = this.generateTree();
       return true;
     });

@@ -127,6 +127,7 @@ const CATEGORY_FIELDS = {
     'family.family_compositions.available_data_types',
   ],
 };
+const CATEGORY_FIELDS_TREE_BROWSER = ['mondo_diagnosis.name', 'observed_phenotype.name'];
 
 export default class Categories extends React.Component {
   constructor(props) {
@@ -208,6 +209,7 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.clinical}
           color={theme.clinicalBlue}
           anchorId={'anchor-clinical'}
+          fieldsTreeBrowser={CATEGORY_FIELDS_TREE_BROWSER}
         >
           <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
         </Category>

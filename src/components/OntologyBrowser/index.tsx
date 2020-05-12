@@ -1,6 +1,6 @@
 import { Sqon } from '../../types';
 import * as React from 'react';
-import { Empty, Modal, Result, Transfer, Typography } from 'antd';
+import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
@@ -25,8 +25,6 @@ type ModalState = {
   isLoading: boolean;
   error?: Error | null;
 };
-
-const { Title } = Typography;
 
 const ontologyRegex = new RegExp('([A-Za-z_]+).name');
 
@@ -192,7 +190,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     return (
       <Modal
         style={{ height: '80vh', maxWidth: 1400 }}
-        title={title}
+        title={title + ' Browser'}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
         okText={'Apply'}
