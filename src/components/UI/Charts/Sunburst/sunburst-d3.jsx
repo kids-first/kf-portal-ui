@@ -98,7 +98,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
         width = parent.node().getBoundingClientRect().width,
         lineNumber = 0,
         lineHeight = 1.1, // ems
-        y = centerText.attr('y'),
+        y = centerText.attr('y') - 10,
         dy = 0;
 
       let tspan = centerText
@@ -140,7 +140,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
             .attr('y', y)
             .attr('dy', ++lineNumber * lineHeight + dy + 'em')
             .style('font', '12px sans-serif')
-            .text(line);
+            .text(line.join(' '));
         }
         tspan.text(''); // cleanup remaining parent text before quiting
       }

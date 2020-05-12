@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
+import isEqual from 'lodash/isEqual';
+
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
-
 import { PhenotypeStore } from '../../OntologyBrowser/store';
-
-import './Ontology.css';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
 import { Sqon } from 'types';
+import './Ontology.css';
 
 type OntologySunburstProps = {
   sqon: Sqon;
@@ -21,6 +21,7 @@ type FormatterDataType = { title: string; results: number };
 
 const tooltipFormatter = (data: FormatterDataType) => `${data.results}\n\n${data.title}`;
 const centerTextFormatter = (data: FormatterDataType) => `${data.results} ${data.title}`;
+const centerNoDataTextFormatter = (data: FormatterDataType) => `${data.title}`;
 
 class OntologySunburst extends React.Component<OntologySunburstProps, OntologySunburstState> {
   state = {
@@ -39,13 +40,14 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
   }
 
   componentDidUpdate(prevProps: OntologySunburstProps) {
-    if (prevProps.sqon !== this.props.sqon) {
+    if (!isEqual(prevProps.sqon, this.props.sqon)) {
       this.fetchOntology();
     }
   }
 
   fetchOntology() {
     const sqon = this.props.sqon || null;
+    this.setState({ loading: true });
     this.ontologyStore
       .fetch(sqon)
       .then(() => {
@@ -53,6 +55,11 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
         if (data.length > 0) {
           this.setState({
             data: data[0],
+            loading: false,
+          });
+        } else {
+          this.setState({
+            data: null,
             loading: false,
           });
         }
@@ -70,13 +77,20 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
           <ChartContentSpinner />
         ) : (
           <div className="card-content-center">
-            {data && (
+            {data !== null ? (
               <Sunburst
                 data={data!}
                 height={height}
                 width={width}
                 tooltipFormatter={tooltipFormatter}
                 centerTextFormatter={centerTextFormatter}
+              />
+            ) : (
+              <Sunburst
+                data={{ title: 'No Data', children: [] }}
+                height={height}
+                width={width}
+                centerTextFormatter={centerNoDataTextFormatter}
               />
             )}
           </div>
