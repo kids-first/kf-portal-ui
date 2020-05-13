@@ -183,7 +183,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
     return (
       <Modal
-        style={{ height: '80vh' }}
+        style={{ height: '80vh', maxWidth: 1400 }}
         title={<Title level={3}>Observed Phenotype (HPO) Browser</Title>}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
