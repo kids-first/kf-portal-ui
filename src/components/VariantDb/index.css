@@ -1,21 +1,25 @@
-
 .ant-list-item {
-    padding: 5px;
+  padding: 5px;
 }
 
 .white-background {
-    background: #FFFFFF;
+  background: #ffffff;
 }
 
 .middle-align {
-    text-align: center;
+  text-align: center;
 }
-.ant-list-header{
-    padding: 0;
+.ant-list-header {
+  padding: 0;
 }
 
-.launch-cluster-container{
-    height: 100%;
-    padding-top: 24px;
-    padding-bottom: 24px;
+.launch-cluster-container {
+  height: 100%;
+  padding: 24px;
+}
+
+.variantdb-container {
+  padding: 32px;
+  max-width: 1300px;
+  align-self: center;
 }
