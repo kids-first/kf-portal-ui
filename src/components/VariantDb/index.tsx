@@ -188,7 +188,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
   render() {
     const { status, modalVisible } = this.state;
     return (
-      <div className="background-container" style={{ padding: 32 }}>
+      <div className="variantdb-container" >
         <Row style={{ paddingBottom: 32 }}>
           <Col flex={'auto'} span={16}>
             <Title level={2} style={{ marginBottom: 8 }}>
