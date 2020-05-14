@@ -72,7 +72,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           children: this.generateTree(children, checkedKeys, targetKeys, childrenShouldBeDisabled),
           hasChildren: true,
           results: 324,
-          hidden
+          hidden,
         } as TreeNode;
       })
       .filter((node) => (node.hidden ? false : !node.hidden));
@@ -160,9 +160,11 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         <Col style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: '#fff' }}>
           <Row>
             <Input
+              className='custom-input'
               placeholder="Search for ontology term - Min 3 characters"
               onChange={(e) => this.onChange(e, dataSource)}
               allowClear
+              size='large'
             />
           </Row>
           <Row justify="start">
@@ -178,7 +180,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           </Row>
         </Col>
         <Tree
-          className="hide-file-icon"
+          className="hide-file-icon ant-tree-custom-TO-DELETE"
           treeData={this.generateTree(dataSource, checkedKeys, targetKeys)}
           defaultExpandAll
           selectedKeys={[]}

@@ -43,11 +43,21 @@ const LaunchClusterCard = (props: Props) => {
   return (
     <div className={'white-background middle-align launch-cluster-container'}>
       <img alt="AppacheZeppelin" src={azicon} />
-      <div style={{ paddingTop: 24, paddingBottom: 24 }}>
-        Kids First is providing members with their own SPARK cluster running a web-based Zeppelin
-        notrebooks dansbox to explore, query and visualize its germline variant datasets. Using
+      {/*Fix for good later! should remove this shortly*/}
+      <div
+        style={{
+          paddingTop: 24,
+          paddingBottom: 24,
+          fontFamily: 'Open Sans',
+          fontSize: '16px',
+          lineHeight: '24px',
+          color: '#515885',
+        }}
+      >
+        Kids First provides members with their own SPARK cluster running a web-based Zeppelin
+        notebooks dansbox to explore, query and visualize its germline variant datasets. Using
         Zeppelin, bioinformaticians can create interactive data analytics and collaborative
-        documents with SQL, Scala, Python, and more..
+        documents with SQL, Scala, Python, and more.
       </div>
       <Row justify={'center'} gutter={24}>
         <Col>
