@@ -49,7 +49,7 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
     const sqon = this.props.sqon || null;
     this.setState({ loading: true });
     this.ontologyStore
-      .fetch(sqon)
+      .fetch('observed_phenotype', sqon)
       .then(() => {
         const data = this.ontologyStore.getTree();
         if (data.length > 0) {

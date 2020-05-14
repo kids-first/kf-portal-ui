@@ -114,21 +114,21 @@ export const handleJWT = async ({ provider, jwt, onFinish, setToken, setUser, ap
  */
 export const fetchIntegrationTokens = ({ setIntegrationToken, api }) => {
   getCavaticaUser()
-    .then(userData => {
+    .then((userData) => {
       setIntegrationToken(CAVATICA, JSON.stringify(userData));
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
       // Could not retrieve cavatica user info, nothing to do.
     });
 
   // Get Gen3 Secret here
-  FENCES.forEach(fence => {
+  FENCES.forEach((fence) => {
     getAccessToken(api, fence)
-      .then(key => {
+      .then((key) => {
         setIntegrationToken(fence, key);
       })
-      .catch(res => {
+      .catch((res) => {
         console.error('Error getting Gen3 API Key');
         console.error(res);
       });
@@ -143,15 +143,12 @@ export const isSelfInUrlWhenLoggedIn = (userIdFromUrl, loggedInUser) => {
 };
 
 //#Source https://bit.ly/2neWfJ2
-export const toKebabCase = str => {
-  return (
-    str &&
-    str
-      .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
-      .map(x => x.toLowerCase())
-      .join('-')
-  );
-};
+export const toKebabCase = (str) =>
+  str &&
+  str
+    .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+    .map((x) => x.toLowerCase())
+    .join('-');
 
 export const computeGravatarSrcFromEmail = (hashedEmail, options) => {
   const size = (options || {}).size || 100;
@@ -210,7 +207,7 @@ export const roundIntToChosenPowerOfTen = (rawInteger, positionToKeepFromLeft = 
 export const jestPatchMatchMedia = () =>
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: jest.fn().mockImplementation(query => ({
+    value: jest.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -221,3 +218,6 @@ export const jestPatchMatchMedia = () =>
       dispatchEvent: jest.fn(),
     })),
   });
+
+export const getFieldDisplayName = (fieldName, extendedMapping) =>
+  extendedMapping.find((mapping) => mapping.field === fieldName)?.displayName || fieldName;

@@ -27,12 +27,11 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (sqon?: any, filterThemselves?: boolean) => {
+  fetch = ( field: string, sqon?: any, filterThemselves?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
-    return this.getPhenotypes(sqon, filterThemselves).then((data: PhenotypeSource[]) => {
-      const stripedData = this.remoteSingleRootNode(data);
-      this.phenotypes = stripedData;
+    return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
+      this.phenotypes = this.remoteSingleRootNode(data);
       this.tree = this.generateTree();
       return true;
     });
@@ -108,14 +107,14 @@ export class PhenotypeStore {
     return [...this.tree];
   };
 
-  buildPhenotypeQuery = (filterThemselves: boolean) => `query($sqon: JSON) {
+  buildPhenotypeQuery = (field: string, filterThemselves: boolean) => `query($sqon: JSON) {
     participant {
       aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
-        observed_phenotype__name {
+        ${field}__name {
           buckets{
             key,
             doc_count,
-            top_hits(_source: "observed_phenotype.parents", size: 1)
+            top_hits(_source: "${field}.parents", size: 1)
           }
         }
       }
@@ -123,16 +122,16 @@ export class PhenotypeStore {
   }
   `;
 
-  getPhenotypes = async (sqon?: any, filterThemselves = false) => {
+  getPhenotypes = async (field: string, sqon?: any, filterThemselves = false) => {
     const body = {
-      query: this.buildPhenotypeQuery(filterThemselves),
+      query: this.buildPhenotypeQuery(field, filterThemselves),
       variables: JSON.stringify({
         sqon: sqon,
       }),
     };
     try {
       const { data } = await graphql()(body);
-      return data.data.participant.aggregations.observed_phenotype__name.buckets;
+      return data.data.participant.aggregations[field + '__name'].buckets;
     } catch (error) {
       console.warn(error);
       return [];

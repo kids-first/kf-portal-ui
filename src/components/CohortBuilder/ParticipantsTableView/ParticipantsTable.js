@@ -22,21 +22,19 @@ import SaveSetModal from './SaveSetModal';
 import './ParticipantTableView.css';
 import { isPartOfGroup } from 'common/profile';
 
-const SelectionCell = ({ value: checked, onCellSelected, row }) => {
-  return (
-    <input
-      type="checkbox"
-      checked={!!checked}
-      onChange={
-        row
-          ? () => onCellSelected(!checked, row)
-          : (evt) => {
-              onCellSelected(evt.currentTarget.checked);
-            }
-      }
-    />
-  );
-};
+const SelectionCell = ({ value: checked, onCellSelected, row }) => (
+  <input
+    type="checkbox"
+    checked={!!checked}
+    onChange={
+      row
+        ? () => onCellSelected(!checked, row)
+        : (evt) => {
+            onCellSelected(evt.currentTarget.checked);
+          }
+    }
+  />
+);
 
 const isMondo = (datum) => typeof datum === 'string' && datum.includes('MONDO');
 
@@ -115,24 +113,30 @@ const NbFilesCell = compose(({ value: nbFiles, row }) => {
   );
 });
 
-const ParticipantIdLink = compose(({ value: idParticipant }) => {
-  return <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>;
-});
+const ParticipantIdLink = compose(({ value: idParticipant }) => (
+  <Link to={`/participant/${idParticipant}#summary`}>{`${idParticipant}`}</Link>
+));
+
+const CellSelectionCell = (value, row, onCellSelected) => (
+  <SelectionCell value={value} row={row} onCellSelected={onCellSelected} />
+);
+
+const HeaderSelectionCell = (props, value, onCellSelected) => (
+  <SelectionCell {...props} value={value} onCellSelected={onCellSelected} />
+);
+
+const CellCollapsibleMultiLineCell = (value, collapsed, setCollapsed) => (
+  <CollapsibleMultiLineCell value={value} collapsed={collapsed} setCollapsed={setCollapsed} />
+);
+
+const CellNbFilesCell = (value, row) => <NbFilesCell value={value} row={row} />;
+
+const CellParticipantIdLink = (value) => <ParticipantIdLink value={value} />;
 
 const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHack) => [
   {
-    Header: (props) => {
-      return (
-        <SelectionCell
-          {...props}
-          value={dirtyHack.allRowsSelected}
-          onCellSelected={onAllRowsSelected}
-        />
-      );
-    },
-    Cell: (props) => {
-      return <SelectionCell value={props.value} row={props.row} onCellSelected={onRowSelected} />;
-    },
+    Header: (props) => HeaderSelectionCell(props, dirtyHack.allRowsSelected, onAllRowsSelected),
+    Cell: (props) => CellSelectionCell(props.value, props.row, onRowSelected),
     accessor: 'selected',
     filterable: false,
     sortable: false,
@@ -143,7 +147,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Participant ID',
     accessor: 'participantId',
-    Cell: (props) => <ParticipantIdLink value={props.value} />,
+    Cell: (props) => CellParticipantIdLink(props.value),
   },
   {
     Header: 'Study Name',
@@ -155,26 +159,14 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Diagnosis Category',
     accessor: 'diagnosisCategories',
-    Cell: (props) => (
-      <CollapsibleMultiLineCell
-        value={props.value}
-        collapsed={props.collapsed}
-        setCollapsed={props.setCollapsed}
-      />
-    ),
+    Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
     field: 'diagnoses.diagnosis_category',
     sortable: false,
   },
   {
     Header: 'Diagnosis (Mondo)',
     accessor: 'diagnosisMondo',
-    Cell: (props) => (
-      <CollapsibleMultiLineCell
-        value={props.value}
-        collapsed={props.collapsed}
-        setCollapsed={props.setCollapsed}
-      />
-    ),
+    Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
     field: 'diagnoses.mondo_id_diagnosis',
     minWidth: 175,
     sortable: false,
@@ -182,13 +174,7 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Age at Diagnosis (days)',
     accessor: 'ageAtDiagnosis',
-    Cell: (props) => (
-      <CollapsibleMultiLineCell
-        value={props.value}
-        collapsed={props.collapsed}
-        setCollapsed={props.setCollapsed}
-      />
-    ),
+    Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
     field: 'diagnoses.age_at_event_days',
     sortable: false,
   },
@@ -197,20 +183,14 @@ const participantsTableViewColumns = (onRowSelected, onAllRowsSelected, dirtyHac
   {
     Header: 'Family Composition',
     accessor: 'familyCompositions',
-    Cell: (props) => (
-      <CollapsibleMultiLineCell
-        value={props.value}
-        collapsed={props.collapsed}
-        setCollapsed={props.setCollapsed}
-      />
-    ),
+    Cell: (props) => CellCollapsibleMultiLineCell(props.value, props.collapsed, props.setCollapsed),
     field: 'family.family_compositions',
     sortable: false,
   },
   {
     Header: 'Files',
     accessor: 'filesCount',
-    Cell: (props) => <NbFilesCell value={props.value} row={props.row} />,
+    Cell: (props) => CellNbFilesCell(props.value, props.row),
     field: 'files',
     sortable: false,
   },
@@ -401,7 +381,7 @@ ParticipantsTable.propTypes = {
   selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
   allRowsSelected: PropTypes.bool.isRequired,
   api: PropTypes.func.isRequired,
-  loggedInUser: PropTypes.object.isRequired,
+  loggedInUser: PropTypes.object,
 };
 
 export default ParticipantsTable;
