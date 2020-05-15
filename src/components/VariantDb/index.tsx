@@ -38,7 +38,7 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     },
     {
       name: 'Occurrences',
-      value: '70,864,456,268',
+      value: '50,381,205,319',
     },
   ];
 
