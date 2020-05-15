@@ -26,19 +26,19 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
   data = [
     {
       name: 'Studies',
-      value: 11,
+      value: 8,
     },
     {
       name: 'Participants',
-      value: <div>9,518</div>,
+      value: <div>8,100</div>,
     },
     {
       name: 'Distinct Variants',
-      value: '300,976,211',
+      value: '251,801,242',
     },
     {
       name: 'Occurrences',
-      value: '50,381,205,319',
+      value: '42,513,213,093',
     },
   ];
 

@@ -38,6 +38,10 @@ export default class Category extends React.Component {
     fieldsTreeBrowser: PropTypes.arrayOf(PropTypes.string),
   };
 
+  static defaultProps = {
+    fieldsTreeBrowser: [],
+  };
+
   handleDropdownVisibleChange(visible) {
     this.setState({ visible });
   }
