@@ -59,26 +59,27 @@ const Address = ({ item }) => (
 );
 
 const displayItemStatus = ({ isPublic, isActive }) => {
+  let cssVariation, title, description;
+  cssVariation = title = description = '';
+  let icon = null;
+
   if (!isActive) {
-    return (
-      <Fragment>
-        <div className={`item-icon-status icon-color inactive`}>Deactivated</div>
-        <WarningFilled className={`icon-color inactive`} />
-      </Fragment>
-    );
+    cssVariation = 'inactive';
+    title = 'Deactivated';
+    icon = <WarningFilled className={`icon-color inactive`} />;
+  } else if (isPublic) {
+    cssVariation = 'public';
+    title = 'Public';
+    icon = <EyeFilled className={`icon-color public`} />;
+  } else {
+    title = 'Private';
+    icon = <EyeInvisibleFilled className={`icon-color`} />;
   }
-  if (isPublic) {
-    return (
-      <Fragment>
-        <div className={`item-icon-status icon-color public`}>Public</div>
-        <EyeFilled className={`icon-color public`} />
-      </Fragment>
-    );
-  }
+
   return (
     <Fragment>
-      <div className={`item-icon-status icon-color`}>Private</div>
-      <EyeInvisibleFilled className={`icon-color`} />
+      <div className={`item-icon-status icon-color ${cssVariation}`}>{title}</div>
+      {icon}
     </Fragment>
   );
 };
@@ -93,6 +94,7 @@ const MemberTable = ({
   handlePageChange,
   handleShowSizeChange,
   isAdmin,
+  style,
 }) => {
   const firstItem = currentPage * membersPerPage - membersPerPage + 1;
   const lastItem = currentPage * membersPerPage;
@@ -100,7 +102,7 @@ const MemberTable = ({
   const memberShowThisPage = showAll ? count.total : count.public;
 
   return (
-    <div className={'member-list-container'} style={{ backgroundColor: 'white' }}>
+    <div className={'member-list-container'} style={{ ...style, backgroundColor: 'white' }}>
       <List
         itemLayout={'vertical'}
         header={
@@ -145,7 +147,7 @@ const MemberTable = ({
         className={'member-list'}
         dataSource={memberList}
         loading={pending}
-        renderItem={item => {
+        renderItem={(item) => {
           const hasAddress = item.city || item.state || item.country;
           return (
             <List.Item key={item._id} style={{ paddingBottom: 16, paddingTop: 16 }}>

@@ -44,7 +44,7 @@ class MemberSearchContainer extends Component {
     members: PropTypes.array.isRequired,
   };
 
-  handleChange = e => {
+  handleChange = (e) => {
     const {
       membersPerPage,
       fetchListOfMembers,
@@ -88,7 +88,7 @@ class MemberSearchContainer extends Component {
     });
   }
 
-  handlePageChange = async page => {
+  handlePageChange = async (page) => {
     const {
       count,
       membersPerPage,
@@ -140,7 +140,7 @@ class MemberSearchContainer extends Component {
     });
   };
 
-  clearTag = (value, type) => e => {
+  clearTag = (value, type) => (e) => {
     e.preventDefault();
 
     const filter = { [value]: false };
@@ -181,6 +181,36 @@ class MemberSearchContainer extends Component {
     }
   };
 
+  getMembers = () => {
+    const { members } = this.props;
+    // Alternative
+    // var othermembers = [];
+    // var researcherlist = [];
+    // for (let i = members.length - 1; i >= 0; i--) {
+    //   if (members[i].roles.includes('research')) {
+    //     researcherlist.push(members[i]);
+    //   } else {
+    //     othermembers.push(members[i]);
+    //   }
+    // }
+
+    console.log('members : ', members);
+
+    var othermembers = members
+      .map(function (m) {
+        if (m.roles.includes('research')) return null;
+        return m;
+      })
+      .filter(function (m) {
+        if (m !== null) return true;
+        return false;
+      });
+    var researcherlist = members.filter(function filterResearcher(m) {
+      return m.roles.includes('research') ? true : false;
+    });
+    return [othermembers, researcherlist];
+  };
+
   render() {
     const { members, count, currentPage, membersPerPage, pending } = this.props;
     const filters = {
@@ -192,6 +222,8 @@ class MemberSearchContainer extends Component {
     const { isAdmin, loggedInUser, loggedInUserToken } = this.props;
     const showAll =
       filters.adminMemberOptions && filters.adminMemberOptions.includes('allMembers') && isAdmin;
+
+    const [othermembers, researcherlist] = this.getMembers();
 
     return (
       <div className="background-container">
@@ -217,8 +249,20 @@ class MemberSearchContainer extends Component {
               ''
             )}
             <MemberTable
-              memberList={members}
-              count={count}
+              memberList={researcherlist}
+              count={{ total: researcherlist.length }}
+              currentPage={currentPage}
+              membersPerPage={membersPerPage}
+              handlePageChange={this.handlePageChange}
+              handleShowSizeChange={this.handleShowSizeChange}
+              pending={pending}
+              showAll={showAll}
+              isAdmin={isAdmin}
+              style={{ borderColor: '#23ab2f' }}
+            />
+            <MemberTable
+              memberList={othermembers}
+              count={{ total: othermembers.length }}
               currentPage={currentPage}
               membersPerPage={membersPerPage}
               handlePageChange={this.handlePageChange}
@@ -234,7 +278,7 @@ class MemberSearchContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   error: state.ui.memberSearchPageReducer.errors,
   members: state.ui.memberSearchPageReducer.members,
   count: state.ui.memberSearchPageReducer.count,
@@ -248,17 +292,18 @@ const mapStateToProps = state => ({
   adminOptionsFilter: state.ui.memberSearchPageReducer.adminOptionsFilter,
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       fetchListOfMembers: fetchListOfMembersAction,
-      queryStringUpdate: queryString => dispatch(requestQueryStringUpdate(queryString)),
-      currentPageUpdate: currentPage => dispatch(requestCurrentPageUpdate(currentPage)),
-      membersPerPageUpdate: membersPerPage => dispatch(requestMemberPerPageUpdate(membersPerPage)),
-      updateInterestsFilter: interestsFilter =>
+      queryStringUpdate: (queryString) => dispatch(requestQueryStringUpdate(queryString)),
+      currentPageUpdate: (currentPage) => dispatch(requestCurrentPageUpdate(currentPage)),
+      membersPerPageUpdate: (membersPerPage) =>
+        dispatch(requestMemberPerPageUpdate(membersPerPage)),
+      updateInterestsFilter: (interestsFilter) =>
         dispatch(requestInterestsFilterUpdate(interestsFilter)),
-      updateRolesFilter: roleFilter => dispatch(requestRolesFilterUpdate(roleFilter)),
-      updateADMINOptionsFilter: adminOptionsFilter =>
+      updateRolesFilter: (roleFilter) => dispatch(requestRolesFilterUpdate(roleFilter)),
+      updateADMINOptionsFilter: (adminOptionsFilter) =>
         dispatch(requestADMINOptionsUpdate(adminOptionsFilter)),
       resetStore: () => dispatch(requestResetStore()),
     },
