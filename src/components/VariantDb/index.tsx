@@ -30,19 +30,19 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     },
     {
       name: 'Participants',
-      value: <div>14494</div>,
+      value: <div>14,494</div>,
     },
     {
       name: 'Genes',
-      value: 21393,
+      value: '21,393',
     },
     {
       name: 'Variants',
-      value: 29848393,
+      value: '29,848,393',
     },
     {
       name: 'Exomic variants',
-      value: 2387298,
+      value: '2,387,298',
     },
   ];
 
@@ -185,18 +185,28 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
     this.resolveInterimState(api);
   };
 
+  //TODO all styles should be fixed at a later date
   render() {
     const { status, modalVisible } = this.state;
     return (
-      <div className="background-container" style={{ padding: 32 }}>
+      <div className="variantdb-container">
         <Row style={{ paddingBottom: 32 }}>
           <Col flex={'auto'} span={16}>
-            <Title level={2} style={{ marginBottom: 8 }}>
-              Germline Small Variant Database
+            <Title level={2} style={{ marginBottom: 8, color: '#2B388F' }}>
+              Kids First Germline Variant Database
             </Title>
-            <Title level={4} style={{ margin: 0 }}>
-              The Kids First germline small variant data warehouse contains harmonized variant calls
-              and clinical data on probands and their parents.
+            {/*Fix for good later! should remove this shortly*/}
+            <Title
+              level={4}
+              style={{
+                margin: 0,
+                fontFamily: 'Open Sans',
+                fontSize: 20,
+                color: '#7D84A6',
+              }}
+            >
+              The variant warehouse contains harmonized variant calls and clinical data on probands
+              and their parents.
             </Title>
           </Col>
           <Col span={8} />
@@ -220,16 +230,53 @@ class VariantDb extends React.Component<VariantDbProps, VariantDbState> {
               <List
                 header={
                   <Row justify={'space-between'} style={{ padding: 0 }}>
-                    <Title level={4}>Data Release 1</Title>
-                    <div>May 13, 2020</div>
+                    {/*Fix for good later! should remove this shortly*/}
+                    <Title
+                      level={4}
+                      style={{
+                        fontFamily: 'Open Sans',
+                        fontWeight: 600,
+                        fontSize: 16,
+                        lineHeight: '24px',
+                      }}
+                    >
+                      Data Release 1
+                    </Title>
+                    <div
+                      style={{
+                        fontFamily: 'Open Sans',
+                        fontWeight: 600,
+                        fontSize: 14,
+                        lineHeight: '22px',
+                        color: '#7D84A6',
+                      }}
+                    >
+                      May 13, 2020
+                    </div>
                   </Row>
                 }
                 dataSource={this.data}
                 renderItem={(item) => (
                   <List.Item>
                     <Row style={{ display: 'contents' }}>
-                      <Col>{item.name}:</Col>
-                      <Col>{item.value}</Col>
+                      {/*Fix for good later! should remove this shortly*/}
+                      <Col
+                        style={{
+                          fontFamily: 'Open Sans',
+                          color: '#515885',
+                        }}
+                      >
+                        {item.name}
+                      </Col>
+                      {/*Fix for good later! should remove this shortly*/}
+                      <Col
+                        style={{
+                          fontFamily: 'Open Sans',
+                          color: '#515885',
+                        }}
+                      >
+                        {item.value}
+                      </Col>
                     </Row>
                   </List.Item>
                 )}

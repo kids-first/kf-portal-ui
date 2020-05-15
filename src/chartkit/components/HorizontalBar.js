@@ -10,6 +10,8 @@ import { truncateText } from '../utils';
 import { TextBugWrapper } from '../styles';
 import ChartDisplayContainer from './ChartDisplayContainer';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { Tooltip as AntdTooltip } from 'antd';
+import './HorizontalBar.css';
 
 class HorizontalBar extends Component {
   constructor(props) {
@@ -71,31 +73,33 @@ class HorizontalBar extends Component {
 
     const highlighted = value === highlightedIndexValue ? { fill: '#2b388f' } : {};
 
-    const onLabelClick = tick => {
-      const data = this.props.data.find(d => d.label === tick.value);
+    const onLabelClick = (tick) => {
+      const data = this.props.data.find((d) => d.label === tick.value);
       if (data) {
         onClick({ data });
       }
     };
 
     return (
-      <g
-        key={key}
-        transform={`translate(${x - xOffset},${y})`}
-        style={{ cursor: highlighted ? 'pointer' : 'default' }}
-        onMouseEnter={e => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
-        onMouseLeave={this.onMouseLeave}
-      >
-        <text
-          className="tickTextAxisLeft"
-          textAnchor="start"
-          alignmentBaseline="middle"
-          style={{ ...theme.axis.ticks.text, ...highlighted }}
-          onClick={() => onLabelClick(tick)}
+      <AntdTooltip title={value}>
+        <g
+          key={key}
+          transform={`translate(${x - xOffset},${y})`}
+          style={{ cursor: highlighted ? 'pointer' : 'default' }}
+          onMouseEnter={(e) => this.onMouseEnter({ index: tickIndex, indexValue: key }, e)}
+          onMouseLeave={this.onMouseLeave}
         >
-          {text}
-        </text>
-      </g>
+          <text
+            className="tickTextAxisLeft"
+            textAnchor="start"
+            alignmentBaseline="middle"
+            style={{ ...theme.axis.ticks.text, ...highlighted }}
+            onClick={() => onLabelClick(tick)}
+          >
+            {text}
+          </text>
+        </g>
+      </AntdTooltip>
     );
   }
 
@@ -120,9 +124,12 @@ class HorizontalBar extends Component {
         : sortBy === true || sortByKeys
         ? this.defaultSort
         : null;
-    const filteredData = data.filter(x => x);
+    const filteredData = data.filter((x) => x);
     return sortFn ? filteredData.sort(sortFn) : filteredData;
   }
+
+  defaultAxisBottomFormat = (v) => (Number.isInteger(Number(v)) ? v.toLocaleString() : '');
+  defaultLeftFormat = (v) => v.toLocaleString();
 
   render() {
     const {
@@ -133,8 +140,8 @@ class HorizontalBar extends Component {
       indexBy = 'id',
       height,
       tooltipFormatter,
-      axisBottomFormat = v => (Number.isInteger(Number(v)) ? v.toLocaleString() : ''),
-      axisLeftFormat = v => v.toLocaleString(),
+      axisBottomFormat = this.defaultAxisBottomFormat,
+      axisLeftFormat = this.defaultLeftFormat,
     } = this.props;
 
     const chartData = {
@@ -165,7 +172,7 @@ class HorizontalBar extends Component {
       ],
       fill: [
         {
-          match: x => x.data.index === this.state.highlightedIndex,
+          match: (x) => x.data.index === this.state.highlightedIndex,
           id: 'lines',
         },
       ],
@@ -203,7 +210,7 @@ class HorizontalBar extends Component {
       motionDamping: 15,
       isInteractive: true,
       theme: defaultTheme,
-      tooltip: props => <Tooltip {...props} formatter={tooltipFormatter} />,
+      tooltip: (props) => <Tooltip {...props} formatter={tooltipFormatter} />,
     };
 
     // see https://github.com/plouc/nivo/issues/164#issuecomment-488939712

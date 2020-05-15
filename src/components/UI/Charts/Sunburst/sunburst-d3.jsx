@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 const sunburstD3 = (ref, data, config, formatters) => {
   const { tooltipFormatter, centerTextFormatter } = formatters;
   const width = config.width || 300;
-  const height = width || 300;
+  const height = config.height || 300;
   const depth = config.depth;
   const radius = Math.min(width, height) / 6;
   const colorScheme = config.colorScheme || 'schemeSet1';
@@ -13,13 +13,25 @@ const sunburstD3 = (ref, data, config, formatters) => {
     .arc()
     .startAngle((d) => d.x0)
     .endAngle((d) => d.x1)
-    .padAngle((d) => Math.min((d.x1 - d.x0) / 1.2, 0.05))
+    .padAngle((d) => Math.min((d.x1 - d.x0) / 1.2, 0.04))
     .padRadius(radius)
     .innerRadius((d) => (d.y1 <= 2 ? d.y0 * (radius + 28) : d.y0 * (radius + 2)))
     .outerRadius((d) => Math.max(d.y0 * radius, d.y1 * radius - 2));
 
+  // since results varies on each phenotype selection
+  // e.g. a parent can have more results than it's single child
+  // each level need to countain the concatenated sum of all its child
+  // to be use all the reprensentive radia space in the circle
+  const countResults = (d) => {
+    if (d.length === 0) return 0;
+    d.reduce((accumulator, value) => accumulator + value.results + countResults(value.children));
+  };
+
   const partition = (data) => {
-    const root = d3.hierarchy(data).sum((d) => (d.children ? 1 : 0));
+    const root = d3
+      .hierarchy(data)
+      .sum((d) => d.results + countResults(d.children))
+      .sort((a, b) => b.results - a.results);
     return d3.partition().size([2.0 * Math.PI, root.height + 1])(root);
   };
 
@@ -27,19 +39,19 @@ const sunburstD3 = (ref, data, config, formatters) => {
   const color = d3.scaleOrdinal(d3[colorScheme]);
   root.each((d) => (d.current = d));
 
-  const svg = d3.select(ref.current).style('width', 305).style('height', 305);
-  const g = svg.append('g').attr('transform', `translate(${width / 2},${width / 2})`);
+  const svg = d3.select(ref.current).style('width', width).style('height', height);
+  const g = svg.append('g').attr('transform', (d) => `translate(${[width / 2, width / 2]})`);
 
-  const gData = g.append('g').selectAll('path').data(root.descendants().slice(1));
+  const gData = g.append('g').selectAll('path').data(root.descendants());
 
   const path = gData
     .join('path')
+    .attr('d', arc)
     .attr('fill', (d) => {
       while (d.depth > 1) d = d.parent;
       return color(d.data.title);
     })
-    .attr('fill-opacity', (d) => (arcVisible(d.current) ? (d.children ? 0.8 : 0.4) : 0))
-    .attr('d', (d) => arc(d.current));
+    .attr('fill-opacity', (d) => (arcVisible(d.current) ? (d.children ? 0.8 : 0.4) : 0));
 
   path
     .filter((d) => d.children)
@@ -98,7 +110,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
         width = parent.node().getBoundingClientRect().width,
         lineNumber = 0,
         lineHeight = 1.1, // ems
-        y = centerText.attr('y'),
+        y = centerText.attr('y') - 10,
         dy = 0;
 
       let tspan = centerText
@@ -140,7 +152,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
             .attr('y', y)
             .attr('dy', ++lineNumber * lineHeight + dy + 'em')
             .style('font', '12px sans-serif')
-            .text(line);
+            .text(line.join(' '));
         }
         tspan.text(''); // cleanup remaining parent text before quiting
       }

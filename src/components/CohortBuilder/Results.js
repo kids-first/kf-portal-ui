@@ -107,7 +107,7 @@ const generateAllFilesLink = async (user, api, originalSqon) => {
   }
 };
 
-const cohortResultsQuery = sqon => ({
+const cohortResultsQuery = (sqon) => ({
   query: gql`
         query($sqon: JSON) {
           participant {
@@ -128,7 +128,7 @@ const cohortResultsQuery = sqon => ({
         }
       `,
   variables: { sqon },
-  transform: data => {
+  transform: (data) => {
     const participantCount = get(data, 'data.participant.hits.total', 0);
     const filesCardinality = data?.data?.participant?.aggregations?.files__kf_id?.cardinality || 0;
     const familiesCountCardinality =
@@ -251,7 +251,7 @@ const Results = ({
           </ContentBar>
           <div className={`cb-active-view ${activeView}`}>
             <Summary sqon={sqon} />
-            <ParticipantsTableView sqon={sqon} loggedInUser={state.loggedInUser} />
+            <ParticipantsTableView sqon={sqon} />
             {cohortIsEmpty ? <EmptyCohortOverlay /> : null}
           </div>
         </Fragment>
@@ -269,7 +269,7 @@ Results.propTypes = {
   state: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { activeView } = state.ui.cohortBuilderPage;
   return {
     activeView,

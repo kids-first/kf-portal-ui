@@ -27,12 +27,11 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = (sqon?: any) => {
+  fetch = ( field: string, sqon?: any, filterThemselves?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
-    return this.getPhenotypes(sqon).then((data: PhenotypeSource[]) => {
-      const stripedData = this.remoteSingleRootNode(data);
-      this.phenotypes = stripedData;
+    return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
+      this.phenotypes = this.remoteSingleRootNode(data);
       this.tree = this.generateTree();
       return true;
     });
@@ -66,11 +65,10 @@ export class PhenotypeStore {
   generateTree = () => {
     let workingTree: TreeNode[] = [];
     let workingPhenotypes = [...this.phenotypes];
-
     workingPhenotypes.forEach((sourcePhenotype) => {
       let phenotype: TreeNode;
       // start from root and then look for each element inhereting from that node
-      if (!sourcePhenotype.top_hits.parents.length) {
+      if (!sourcePhenotype.top_hits.parents.length || workingPhenotypes.length === 1) {
         phenotype = this.createNodeFromSource(sourcePhenotype);
         workingTree.push(this.populateNodeChild(phenotype, sourcePhenotype, 1));
       }
@@ -106,30 +104,17 @@ export class PhenotypeStore {
 
   getTree = (maxDepth: number = 2) => {
     if (this.tree.length === 0) return [];
-
-    const newTree = [...this.tree];
-    const cleanTree = (node: TreeNode) => {
-      if (!node.depth) return;
-      if (node.depth >= maxDepth) {
-        delete node.children;
-      } else if (node.children.length > 0) {
-        for (let n of node.children) {
-          cleanTree(n);
-        }
-      }
-    };
-    cleanTree(newTree[0]);
-    return newTree;
+    return [...this.tree];
   };
 
-  buildPhenotypeQuery = () => `query($sqon: JSON) {
+  buildPhenotypeQuery = (field: string, filterThemselves: boolean) => `query($sqon: JSON) {
     participant {
-      aggregations(filters: $sqon, aggregations_filter_themselves: false) {
-        observed_phenotype__name {
+      aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
+        ${field}__name {
           buckets{
             key,
             doc_count,
-            top_hits(_source: "observed_phenotype.parents", size: 1)
+            top_hits(_source: "${field}.parents", size: 1)
           }
         }
       }
@@ -137,16 +122,16 @@ export class PhenotypeStore {
   }
   `;
 
-  getPhenotypes = async (sqon?: any) => {
+  getPhenotypes = async (field: string, sqon?: any, filterThemselves = false) => {
     const body = {
-      query: this.buildPhenotypeQuery(),
+      query: this.buildPhenotypeQuery(field, filterThemselves),
       variables: JSON.stringify({
         sqon: sqon,
       }),
     };
     try {
       const { data } = await graphql()(body);
-      return data.data.participant.aggregations.observed_phenotype__name.buckets;
+      return data.data.participant.aggregations[field + '__name'].buckets;
     } catch (error) {
       console.warn(error);
       return [];

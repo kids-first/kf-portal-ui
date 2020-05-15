@@ -8,6 +8,7 @@ import { sqonShape } from 'shapes';
 import Row from 'uikit/Row';
 import CheckmarkIcon from 'icons/CheckmarkIcon';
 import { extendedMappingShape } from 'shapes';
+import { getFieldDisplayName } from '../../../utils';
 
 import '../CohortBuilder.css';
 
@@ -24,14 +25,9 @@ export default class CategoryMenu extends React.Component {
     onMenuItemSelected: PropTypes.func.isRequired,
   };
 
-  getFieldDisplayName(fieldName) {
-    const { extendedMapping } = this.props;
-    return extendedMapping.find(mapping => mapping.field === fieldName)?.displayName || fieldName;
-  }
-
   getMenuItem(field) {
-    const { sqon } = this.props;
-    const isFieldInSqon = fieldId =>
+    const { sqon, extendedMapping } = this.props;
+    const isFieldInSqon = (fieldId) =>
       sqon.content.some(({ content: { field } }) => field === fieldId);
     const fieldIsInSqon = isFieldInSqon(field);
 
@@ -40,7 +36,7 @@ export default class CategoryMenu extends React.Component {
         <Row style={{ justifyContent: 'space-between' }}>
           <div>
             {fieldIsInSqon ? <CheckmarkIcon style={{ margin: '0 5px 4px 0px' }} /> : null}
-            {this.getFieldDisplayName(field)}
+            {getFieldDisplayName(field, extendedMapping)}
           </div>
           <div className="cb-category-menuItem-icon-rightArrow">
             <RightIcon />

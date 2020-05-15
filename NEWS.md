@@ -7,6 +7,19 @@
 
 ### Technical / Other changes
 -->
+## 2020-05-15 kf-portal-ui 2.19.0
+- [2506](https://github.com/kids-first/kf-portal-ui/issues/2506) Fix (Variant Db): Improve visual of variant DB page
+- [2511](https://github.com/kids-first/kf-portal-ui/issues/2511) Fix(sunburst): Fill all space for child phenotype
+- [2383](https://github.com/kids-first/kf-portal-ui/issues/2383) Fix(sunburst): auto update on sqon changes
+
+
+## 2020-05-12 kf-portal-ui 2.18.0
+- [2495](https://github.com/kids-first/kf-portal-ui/issues/2495) Fix (Cohort builder): Visual glitch with the Download menu
+- [2465](https://github.com/kids-first/kf-portal-ui/issues/2465) Feature(cohortBuilder): add saveSet Button
+- [2468](https://github.com/kids-first/kf-portal-ui/issues/2468) Feature (Variant DB) : Add new Variant Page
+- [2383](https://github.com/kids-first/kf-portal-ui/issues/2383) Feature (CohortBuilder, Dashboard): sunburst for phenotypes ontology
+
+
 ## 2020-05-06 kf-portal-ui 2.17.0
 
 ### Features

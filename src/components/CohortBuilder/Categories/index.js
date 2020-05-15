@@ -22,9 +22,11 @@ import SearchByIdModal from '../SearchById/SearchByIdModal';
 import theme from 'theme/defaultTheme';
 
 import '../CohortBuilder.css';
+import { isFeatureEnabled } from '../../../common/featuresToggles';
 
 // Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.
 //  Check fields on display to make sure they are in alphabetical order.
+//TODO Remove all isFeatureEnabled when ready
 const CATEGORY_FIELDS = {
   // Results in the Search All will appear in that order.
   searchAll: [
@@ -43,7 +45,9 @@ const CATEGORY_FIELDS = {
     'diagnoses.age_at_event_days',
     'outcome.age_at_event_days',
     'observed_phenotype.age_at_event_days',
-    'diagnoses.mondo_id_diagnosis',
+    `${
+      isFeatureEnabled('mondoDiagnosis') ? 'mondo_diagnosis.name' : 'diagnoses.mondo_id_diagnosis'
+    }`,
     'diagnoses.ncit_id_diagnosis',
     'diagnoses.source_text_diagnosis',
     'diagnoses.diagnosis_category',
@@ -92,7 +96,9 @@ const CATEGORY_FIELDS = {
     'diagnoses.age_at_event_days',
     'outcome.age_at_event_days',
     'observed_phenotype.age_at_event_days',
-    'diagnoses.mondo_id_diagnosis',
+    `${
+      isFeatureEnabled('mondoDiagnosis') ? 'mondo_diagnosis.name' : 'diagnoses.mondo_id_diagnosis'
+    }`,
     'diagnoses.ncit_id_diagnosis',
     'diagnoses.source_text_diagnosis',
     'diagnoses.diagnosis_category',
@@ -127,6 +133,9 @@ const CATEGORY_FIELDS = {
     'family.family_compositions.available_data_types',
   ],
 };
+const CATEGORY_FIELDS_TREE_BROWSER = isFeatureEnabled('mondoDiagnosis')
+  ? ['mondo_diagnosis.name', 'observed_phenotype.name']
+  : ['observed_phenotype.name'];
 
 export default class Categories extends React.Component {
   constructor(props) {
@@ -208,6 +217,7 @@ export default class Categories extends React.Component {
           fields={CATEGORY_FIELDS.clinical}
           color={theme.clinicalBlue}
           anchorId={'anchor-clinical'}
+          fieldsTreeBrowser={CATEGORY_FIELDS_TREE_BROWSER}
         >
           <ClinicalIcon width="18px" height="17px" fill={theme.clinicalBlue} />
         </Category>
