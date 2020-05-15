@@ -7,6 +7,13 @@
 
 ### Technical / Other changes
 -->
+
+## 2020-05-15 kf-portal-ui 2.20.0
+
+### Technical / Other changes
+- [2506](https://github.com/kids-first/kf-portal-ui/issues/2514) Fix (CohortBuilder, Horizontal Bar Charts): show whole text in tooltip on left axis labels
+
+
 ## 2020-05-15 kf-portal-ui 2.19.0
 - [2506](https://github.com/kids-first/kf-portal-ui/issues/2506) Fix (Variant Db): Improve visual of variant DB page
 - [2511](https://github.com/kids-first/kf-portal-ui/issues/2511) Fix(sunburst): Fill all space for child phenotype
