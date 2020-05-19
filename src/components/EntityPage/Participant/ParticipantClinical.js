@@ -27,13 +27,38 @@ import ClinicalIcon from 'icons/ClinicalIcon';
 import BiospecimenIcon from 'icons/BiospecimenIcon';
 import Tooltip from 'uikit/Tooltip';
 import LoadingSpinner from 'uikit/LoadingSpinner';
+import PropTypes from 'prop-types';
 
-const cellBreak = wrapper => (
+const cellBreak = (wrapper) => (
   <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{wrapper.value}</div>
 );
 
+const PHENOTYPES_TABS = [
+  {
+    tabName: 'Observed',
+    accessor: 'hpo_phenotype_observed',
+  },
+  {
+    tabName: 'Not Observed',
+    accessor: 'hpo_phenotype_not_observed',
+  },
+];
+
 class ParticipantClinical extends React.Component {
-  state = { diagnoses: [], phenotypes: [], hasLoadedDxs: false, hasLoadedPhenotypes: false };
+  state = {
+    diagnoses: [],
+    phenotypes: [],
+    hasLoadedDxs: false,
+    hasLoadedPhenotypes: false,
+    activePhenotypeTab: {
+      tabName: 'Observed',
+      accessor: 'hpo_phenotype_observed',
+    },
+  };
+
+  static propTypes = {
+    participant: PropTypes.object.isRequired,
+  };
 
   componentDidMount() {
     this.dataIntoState();
@@ -43,7 +68,7 @@ class ParticipantClinical extends React.Component {
     {
       Header: 'Diagnosis Category',
       accessor: 'diagnosis_category',
-      Cell: row => {
+      Cell: (row) => {
         const category = row.value;
         const rowData = row.original;
         const biospecimensIds = rowData.biospecimens || [];
@@ -68,20 +93,21 @@ class ParticipantClinical extends React.Component {
     {
       Header: 'Diagnosis (Mondo)',
       accessor: 'mondo_id_diagnosis',
-      Cell: wrapper =>
+      Cell: (wrapper) =>
         wrapper.value === '--' ? <div>--</div> : <MONDOLink mondo={wrapper.value} />,
     },
     {
       Header: 'Diagnosis (NCIT)',
       accessor: 'ncit_id_diagnosis',
-      Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <NCITLink ncit={wrapper.value} />),
+      Cell: (wrapper) =>
+        wrapper.value === '--' ? <div>--</div> : <NCITLink ncit={wrapper.value} />,
     },
     { Header: 'Diagnosis (Source Text)', accessor: 'source_text_diagnosis', Cell: cellBreak },
     { Header: 'Age at event', accessor: 'age_at_event_days', Cell: cellBreak },
     {
       Header: 'Mondo term shared with',
       accessor: 'shared_with',
-      Cell: wrapper => {
+      Cell: (wrapper) => {
         const participant = this.showParticipantNb(wrapper, 'diagnoses.mondo_id_diagnosis', [
           wrapper.original.mondo_id_diagnosis,
         ]);
@@ -93,7 +119,7 @@ class ParticipantClinical extends React.Component {
       Header: 'Specimen IDs',
       accessor: 'biospecimens',
       width: 175,
-      Cell: row => {
+      Cell: (row) => {
         const biospecimensIds = row.value;
         return isEmpty(biospecimensIds) ? (
           <div>--</div>
@@ -109,13 +135,13 @@ class ParticipantClinical extends React.Component {
   phenoHeads = [
     {
       Header: 'Phenotype (HPO)',
-      accessor: 'hpo',
-      Cell: wrapper => (wrapper.value === '--' ? <div>--</div> : <HPOLink hpo={wrapper.value} />),
+      accessor: 'hpo_phenotype_not_observed',
+      Cell: (wrapper) => (wrapper.value === '--' ? <div>--</div> : <HPOLink hpo={wrapper.value} />),
     },
     {
       Header: 'Phenotype (SNOMED)',
       accessor: 'snomed',
-      Cell: wrapper =>
+      Cell: (wrapper) =>
         wrapper.value === '--' ? <div>--</div> : <SNOMEDLink snomed={wrapper.value} />,
     },
     { Header: 'Phenotype (Source Text)', accessor: 'source_text_phenotype', Cell: cellBreak },
@@ -124,7 +150,7 @@ class ParticipantClinical extends React.Component {
     {
       Header: 'HPO term shared with',
       accessor: 'shared_with',
-      Cell: wrapper => {
+      Cell: (wrapper) => {
         const participant = this.showParticipantNb(
           wrapper,
           wrapper.original.interpretation === 'Observed'
@@ -142,22 +168,23 @@ class ParticipantClinical extends React.Component {
     function call(diagnosis) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":
+        {"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`,
       });
     }
 
     let diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(
-      ele => Object.assign({}, get(ele, 'node', {})), //copy obj
+      (ele) => Object.assign({}, get(ele, 'node', {})), //copy obj
     );
 
     Promise.all(
       (() => {
-        const temp = diagnoses.map(diag => {
+        const temp = diagnoses.map((diag) =>
           //start ajax calls to know the shared with.
-          return call(diag.mondo_id_diagnosis);
-        });
+          call(diag.mondo_id_diagnosis),
+        );
 
-        diagnoses = diagnoses.map(diag => {
+        diagnoses = diagnoses.map((diag) => {
           //make age more readable while we wait for the calls
 
           diag.age_at_event_days = prettifyAge(diag.age_at_event_days);
@@ -167,7 +194,7 @@ class ParticipantClinical extends React.Component {
 
         return temp;
       })(),
-    ).then(nums => {
+    ).then((nums) => {
       for (let i = 0; i < nums.length; i++) {
         diagnoses[i].shared_with = this.prettySharedWith(
           get(nums[i], 'data.participant.hits.total', '--'),
@@ -183,24 +210,26 @@ class ParticipantClinical extends React.Component {
     function callObs(phenotype) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":
+        {"field":"phenotype.hpo_phenotype_observed","value":["${phenotype}"]}}]}}`,
       });
     }
 
     function callNotObs(phenotype) {
       return graphql(api)({
         query: `query($sqon: JSON) {participant {hits(filters: $sqon) {total}}}`,
-        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":{"field":"phenotype.hpo_phenotype_not_observed","value":["${phenotype}"]}}]}}`,
+        variables: `{"sqon":{"op":"and","content":[{"op":"in","content":
+        {"field":"phenotype.hpo_phenotype_not_observed","value":["${phenotype}"]}}]}}`,
       });
     }
 
     let phenotypes = get(this.props.participant, 'phenotype.hits.edges', []).map(
-      ele => Object.assign({}, get(ele, 'node', {})), //copy obj
+      (ele) => Object.assign({}, get(ele, 'node', {})), //copy obj
     );
 
     phenotypes = flatMap(
       phenotypes.sort((a, b) => a.age_at_event_days - b.age_at_event_days),
-      pheno => {
+      (pheno) => {
         //transform phenotypes while we wait for the calls
 
         if (pheno.observed) {
@@ -220,11 +249,11 @@ class ParticipantClinical extends React.Component {
     );
 
     Promise.all(
-      phenotypes.map(pheno => {
-        //start ajax calls to know the shared with.
-        return pheno.interpretation === 'Observed' ? callObs(pheno.hpo) : callNotObs(pheno.hpo);
-      }),
-    ).then(nums => {
+      //start ajax calls to know the shared with.
+      phenotypes.map((pheno) =>
+        pheno.interpretation === 'Observed' ? callObs(pheno.hpo) : callNotObs(pheno.hpo),
+      ),
+    ).then((nums) => {
       for (let i = 0; i < nums.length; i++) {
         phenotypes[i].shared_with = this.prettySharedWith(
           get(nums[i], 'data.participant.hits.total', '--'),
@@ -238,7 +267,7 @@ class ParticipantClinical extends React.Component {
   dataIntoState() {
     const api = initializeApi({
       onError: console.err,
-      onUnauthorized: response => {
+      onUnauthorized: (response) => {
         console.warn('Unauthorized', response);
       },
     });
@@ -287,6 +316,16 @@ class ParticipantClinical extends React.Component {
     );
   };
 
+  setActivePhenotypeTab = (tabKey) => {
+    const tab = PHENOTYPES_TABS.find((value) => value.accessor === tabKey);
+    this.setState({
+      activePhenotypeTab: {
+        tabName: tab.tabName,
+        accessor: tab.accessor,
+      },
+    });
+  };
+
   render() {
     if (!this.state.hasLoadedPhenotypes || !this.state.hasLoadedDxs) {
       //make sure all data is loaded before deciding what to display.
@@ -312,8 +351,18 @@ class ParticipantClinical extends React.Component {
           </EntityContentSection>
         )}
         {hasPhenotype && (
-          <EntityContentSection title="Phenotypes">
-            <ParticipantDataTable columns={this.phenoHeads} data={phenotypes} />
+          <EntityContentSection
+            title="Phenotypes"
+            tabs={PHENOTYPES_TABS}
+            activeTab={this.state.activePhenotypeTab}
+            setActiveTab={this.setActivePhenotypeTab}
+          >
+            <ParticipantDataTable
+              columns={this.phenoHeads}
+              data={phenotypes.filter(
+                (p) => p.interpretation === this.state.activePhenotypeTab.tabName,
+              )}
+            />
           </EntityContentSection>
         )}
         {participant.family_id && (
