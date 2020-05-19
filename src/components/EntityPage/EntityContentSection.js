@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import Column from 'uikit/Column';
 
 import './EntityPage.css';
-import Tabs from 'antd/es/tabs';
+import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
 
-const EntityContentSection = ({ title, children, size, tabs, activeTab, setActiveTab }) => (
+const EntityContentSection = ({ title, children, size, tabs, setActiveTab, defaultTab }) => (
   <Column className="entityContentSection-container">
     <h2 className={`entityContentSection-title ${size}`}>{title}</h2>
-    {tabs ? (
-      <Tabs defaultActiveKey={activeTab.accessor} onChange={setActiveTab}>
+    {tabs && tabs.some((t) => !t.isDisabled) ? (
+      <Tabs defaultActiveKey={defaultTab} onChange={setActiveTab}>
         {tabs.map((t) => (
-          <TabPane tab={t.tabName} key={`${t.accessor}`}>
+          <TabPane tab={t.tabName} key={t.accessor} disabled={t.isDisabled}>
             <div className="entityContentSection-content">{children}</div>
           </TabPane>
         ))}
@@ -27,11 +27,8 @@ const EntityContentSection = ({ title, children, size, tabs, activeTab, setActiv
 
 EntityContentSection.propTypes = {
   title: PropTypes.string.isRequired,
-};
-
-EntityContentSection.propTypes = {
   tabs: PropTypes.arrayOf(PropTypes.object),
-  activeTab: PropTypes.object,
+  defaultTab: PropTypes.string,
   setActiveTab: PropTypes.func,
   children: PropTypes.element.isRequired,
   size: PropTypes.string,

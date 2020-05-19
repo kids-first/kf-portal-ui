@@ -28,6 +28,7 @@ import BiospecimenIcon from 'icons/BiospecimenIcon';
 import Tooltip from 'uikit/Tooltip';
 import LoadingSpinner from 'uikit/LoadingSpinner';
 import PropTypes from 'prop-types';
+import './ParticipantClinical.css';
 
 const cellBreak = (wrapper) => (
   <div style={{ wordBreak: 'break-word', textTransform: 'capitalize' }}>{wrapper.value}</div>
@@ -343,6 +344,12 @@ class ParticipantClinical extends React.Component {
     if (!hasDataToShow) {
       return <span>{'No Clinical Data Reported'}</span>;
     }
+
+    const tabsWithActive = PHENOTYPES_TABS.map((t) => ({
+      ...t,
+      isDisabled: phenotypes.filter((p) => p.interpretation === t.tabName).length === 0,
+    }));
+
     return (
       <React.Fragment>
         {hasDxs && (
@@ -353,9 +360,10 @@ class ParticipantClinical extends React.Component {
         {hasPhenotype && (
           <EntityContentSection
             title="Phenotypes"
-            tabs={PHENOTYPES_TABS}
+            tabs={tabsWithActive}
             activeTab={this.state.activePhenotypeTab}
             setActiveTab={this.setActivePhenotypeTab}
+            defaultTab={tabsWithActive.find((t) => !t.isDisabled).accessor}
           >
             <ParticipantDataTable
               columns={this.phenoHeads}

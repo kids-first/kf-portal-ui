@@ -20922,7 +20922,7 @@ tr.ant-table-expanded-row:hover > td {
   box-sizing: border-box;
   width: 0;
   height: 2px;
-  background-color: #1890ff;
+  background-color: #e83a9c;
   transform-origin: 0 0;
 }
 .ant-tabs-bar {
@@ -21099,7 +21099,7 @@ tr.ant-table-expanded-row:hover > td {
   margin-right: 12px;
 }
 .ant-tabs-nav .ant-tabs-tab-active {
-  color: #1890ff;
+  color: #e83a9c;
   font-weight: 500;
   outline: none;
 }
