@@ -99,7 +99,7 @@ QueriesResolver.propTypes = {
   queries: PropTypes.arrayOf(
     PropTypes.shape({
       query: PropTypes.oneOfType([PropTypes.object.isRequired, PropTypes.string.isRequired]),
-      variables: PropTypes.object.isRequired,
+      variables: PropTypes.object,
       transform: PropTypes.func,
     }),
   ).isRequired,
