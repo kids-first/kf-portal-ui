@@ -7,12 +7,10 @@ import { treeData } from 'components/OntologyBrowser/Test/mockData';
 configure({ adapter: new Adapter() });
 
 describe('Sunburst', () => {
-  const props = {};
-
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<Sunburst data={treeData} />);
+    wrapper = mount(<Sunburst data={treeData[0]} />);
   });
 
   afterAll(() => {
