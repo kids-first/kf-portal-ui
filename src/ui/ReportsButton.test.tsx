@@ -13,7 +13,7 @@ const mockSqon: Sqon = {
     { op: 'in', content: { field: 'kf_id', value: ['PT_Q94JE8YB', 'PT_B8FHD6WF', 'PT_GS03DVBG'] } },
   ],
 };
-//FIXME : better testing (behaviour)
+
 describe('ButtonReports (CohortBuilder)', () => {
   let wrapper: ReactWrapper;
 
@@ -23,16 +23,7 @@ describe('ButtonReports (CohortBuilder)', () => {
     <Menu.Item key="report3">{'Report1'}</Menu.Item>,
   ];
 
-  const action = async (reportName: string, sqon: Sqon) => {
-    const reportMap: { [index: string]: Function } = {
-      report1: Promise.resolve,
-      report2: Promise.resolve,
-      report3: Promise.resolve,
-    };
-
-    const reportFn = reportMap[reportName];
-    await reportFn(sqon);
-  };
+  const action = async () => {};
 
   beforeEach(() => {
     wrapper = mount(

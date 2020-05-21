@@ -63,13 +63,14 @@ type ColumnStateRenderProps = {
   loading: boolean;
 };
 
-const trackDownload = async (label: string) =>
-  // @ts-ignore
+const trackDownload = async (label: string) => {
   await trackUserInteraction({
     category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
     action: TRACKING_EVENTS.actions.download.report,
     label,
+    value: null,
   });
+};
 
 const participantDownloader = async ({ api, sqon, columns }: DownloaderParams) => {
   await trackDownload('Clinical (Participant)');
