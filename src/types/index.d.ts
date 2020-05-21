@@ -47,3 +47,8 @@ export type LoggedInUser = {
   website?: string;
   zip?: string;
 };
+
+export type ModalStateEffects = {
+  setModal: Function;
+  unsetModal: Function;
+};

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
-import { message, Button } from 'antd';
+import { Button } from 'antd';
 import autobind from 'auto-bind-es5';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
@@ -13,14 +13,13 @@ import ColumnFilter from 'uikit/DataTable/ToolbarButtons/ColumnFilter';
 import Export from 'uikit/DataTable/ToolbarButtons/Export';
 import { configureCols } from 'uikit/DataTable/utils/columns';
 import { trackUserInteraction } from 'services/analyticsTracking';
-import DownloadButton from 'components/FileRepo/DownloadButton';
-import { arrangerProjectId } from 'common/injectGlobals';
 import { SORTABLE_FIELDS_MAPPING } from './queries';
 import FileIcon from 'icons/FileIcon';
 import { MONDOLink } from '../../Utils/DiagnosisAndPhenotypeLinks';
 import SaveSetModal from './SaveSetModal';
 import './ParticipantTableView.css';
 import { isPartOfGroup } from 'common/profile';
+import DownloadButton from './DownloadButton';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -221,29 +220,6 @@ class ParticipantsTable extends Component {
     autobind(this);
   }
 
-  handleDownloadStarted(downloadId) {
-    // `duration: 0` means "do not hide automatically"
-    message.loading({
-      content: 'Please wait while we generate your report',
-      key: downloadId,
-      duration: 0,
-    });
-  }
-
-  handleDownloadCompleted(err, downloadId) {
-    err !== null
-      ? message.error({
-          content: 'An error prevented the report from being generated, please try again later',
-          key: downloadId,
-          duration: 3,
-        })
-      : message.success({
-          content: 'Done',
-          key: downloadId,
-          duration: 3,
-        });
-  }
-
   render() {
     const {
       loading,
@@ -264,7 +240,6 @@ class ParticipantsTable extends Component {
     this.dirtyHack.allRowsSelected = allRowsSelected;
     const { columns } = this.state;
     const selectedRowsCount = allRowsSelected ? dataTotalCount : selectedRows.length;
-    const projectId = arrangerProjectId;
 
     return (
       <Fragment>
@@ -312,14 +287,7 @@ class ParticipantsTable extends Component {
                   Save participants set
                 </Button>
               )}
-              <DownloadButton
-                className={'download-btn'}
-                sqon={sqon}
-                {...this.props}
-                projectId={projectId}
-                onDownloadStarts={this.handleDownloadStarted}
-                onDownloadEnds={this.handleDownloadCompleted}
-              />
+              <DownloadButton sqon={sqon} />
               <ColumnFilter
                 colsPickerBtnClassName={'cols-picker-btn'}
                 columns={columns}
