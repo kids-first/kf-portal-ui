@@ -1,5 +1,4 @@
 import { graphql } from '../../services/arranger';
-import { TreeNode } from 'antd/lib/tree-select';
 
 type PhenotypeSource = {
   key: string;
@@ -27,7 +26,7 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = ( field: string, sqon?: any, filterThemselves?: boolean) => {
+  fetch = (field: string, sqon?: any, filterThemselves?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
     return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
@@ -55,7 +54,7 @@ export class PhenotypeStore {
   private populateNodeChild = (treeNode: TreeNode, source: PhenotypeSource, depth: number = 0) => {
     this.phenotypes.forEach((phenotypeSource: PhenotypeSource) => {
       if (phenotypeSource.top_hits.parents.includes(source.key)) {
-        let childNode = this.createNodeFromSource(phenotypeSource, treeNode, depth);
+        const childNode = this.createNodeFromSource(phenotypeSource, treeNode, depth);
         treeNode.children.push(this.populateNodeChild(childNode, phenotypeSource, depth + 1));
       }
     });
@@ -63,8 +62,8 @@ export class PhenotypeStore {
   };
 
   generateTree = () => {
-    let workingTree: TreeNode[] = [];
-    let workingPhenotypes = [...this.phenotypes];
+    const workingTree: TreeNode[] = [];
+    const workingPhenotypes = [...this.phenotypes];
     workingPhenotypes.forEach((sourcePhenotype) => {
       let phenotype: TreeNode;
       // start from root and then look for each element inhereting from that node
@@ -102,7 +101,7 @@ export class PhenotypeStore {
     return nKeys;
   };
 
-  getTree = (maxDepth: number = 2) => {
+  getTree = () => {
     if (this.tree.length === 0) return [];
     return [...this.tree];
   };
@@ -133,13 +132,13 @@ export class PhenotypeStore {
       const { data } = await graphql()(body);
       return data.data.participant.aggregations[field + '__name'].buckets;
     } catch (error) {
-      console.warn(error);
+      // console.warn(error);
       return [];
     }
   };
 
-  remoteSingleRootNode = (phenotypes: PhenotypeSource[]) => {
-    return phenotypes
+  remoteSingleRootNode = (phenotypes: PhenotypeSource[]) =>
+    phenotypes
       .map((p) => (p.key !== 'All (HP:0000001)' ? p : null))
       .filter((p): p is PhenotypeSource => p !== null)
       .map((p) => {
@@ -149,5 +148,4 @@ export class PhenotypeStore {
         }
         return p;
       });
-  };
 }

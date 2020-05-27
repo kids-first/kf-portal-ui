@@ -6,6 +6,20 @@ import { Spinner } from '../../../uikit/Spinner';
 
 configure({ adapter: new Adapter() });
 
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // deprecated
+    removeListener: jest.fn(), // deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
 describe('Ontology Modal', () => {
   const props = {
     isVisible: true,
@@ -31,7 +45,7 @@ describe('Ontology Modal', () => {
   });
 
   it('should display a Spinner when Ontology Modal is in a loading state', () => {
-    const foundOntologyModal = wrapper.find('OntologyModal');
+    const foundOntologyModal = wrapper; // .find('OntologyModal');
     foundOntologyModal.setState({
       selectedKeys: [],
       targetKeys: [],
@@ -44,7 +58,7 @@ describe('Ontology Modal', () => {
   });
 
   it('should not display a Spinner when Ontology Modal is not in a loading state', () => {
-    const foundOntologyModal = wrapper.find('OntologyModal');
+    const foundOntologyModal = wrapper; //.find('OntologyModal');
     foundOntologyModal.setState({
       selectedKeys: [],
       targetKeys: [],
