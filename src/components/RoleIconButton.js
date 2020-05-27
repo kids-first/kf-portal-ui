@@ -28,7 +28,7 @@ const RoleIconButton = ({ className = '', children, profile }) => {
         }}
       />
       <div className={roleIconDisplayName}>
-        <div className={roleIconDisplayNameLabel}>>{userRoleDisplayName}</div>
+        <div className={roleIconDisplayNameLabel}>{'>'}{userRoleDisplayName}</div>
         {children}
       </div>
     </div>
