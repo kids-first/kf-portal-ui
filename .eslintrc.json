@@ -26,11 +26,6 @@
     "import/parsers": {
       "@typescript-eslint/parser": [".ts",".tsx"]
     },
-    "import/resolver": {
-      "node": {
-        "extensions": [".js",".jsx",".ts",".tsx"]
-      }
-    },
     "react": {
       "version": "detect"
     }
@@ -44,7 +39,7 @@
     "max-len": [
       "error",
       {
-        "code": 100,
+        "code": 110,
         "ignoreComments": true
       }
     ],
