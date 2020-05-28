@@ -53,8 +53,8 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     checkedKeys: string[] = [],
     targetKeys: string[] = [],
     disabled: boolean = false,
-  ): TreeNode[] => {
-    return treeNodes
+  ): TreeNode[] =>
+    treeNodes
       .map(({ children, key, title, results, hidden }: TreeNode) => {
         const renderedTitle = (
           <Fragment>
@@ -76,7 +76,6 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         } as TreeNode;
       })
       .filter((node) => (node.hidden ? false : !node.hidden));
-  };
 
   isChecked = (selectedKeys: Array<string>, eventKey: string | number) =>
     selectedKeys.indexOf(eventKey.toString()) !== -1;
@@ -146,25 +145,52 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     }
   };
 
-  onExpand = (expand: (string | number)[], info: Object) => {
+  onExpand = (expand: (string | number)[]) => {
     this.setState({
       expandedKeys: expand.map((v) => v.toString()),
     });
   };
 
+  checkKeys = (
+    key: string | number,
+    dataSource = this.props.dataSource,
+    accu: { check: string[]; halfcheck: string[] } = {
+      check: [],
+      halfcheck: [],
+    },
+  ) => {
+    dataSource.forEach((o) => {
+      if (o.key === key) {
+        return accu.check.push(o.key);
+      }
+
+      if (accu.check.length == 0) {
+        this.checkKeys(key, o.children, accu);
+
+        if (accu.check.length > 0) {
+          accu.halfcheck.push(o.key);
+        }
+      }
+    });
+    return accu;
+  };
+
   render() {
     const { checkedKeys, dataSource, onItemSelect, targetKeys, onItemSelectAll } = this.props;
     const { expandedKeys } = this.state;
+    const halfCheckedKeys = new Set(
+      checkedKeys.map((k) => this.checkKeys(k)).flatMap((k) => k.halfcheck),
+    );
     return (
       <Fragment>
         <Col style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: '#fff' }}>
           <Row>
             <Input
-              className='custom-input'
+              className="custom-input"
               placeholder="Search for ontology term - Min 3 characters"
               onChange={(e) => this.onChange(e, dataSource)}
               allowClear
-              size='large'
+              size="large"
             />
           </Row>
           <Row justify="start">
@@ -189,14 +215,19 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           checkable
           onCheck={(_, { node }) => {
             const isChecked = !this.isChecked(checkedKeys, node.key);
+            this.checkKeys(node.key);
             onItemSelect(node.key, isChecked);
           }}
-          checkedKeys={checkedKeys}
+          checkedKeys={{
+            checked: checkedKeys,
+            halfChecked: Array.from(halfCheckedKeys),
+          }}
           onSelect={(_, { node: { key } }) => {
             onItemSelect(key, !this.isChecked(checkedKeys, key));
           }}
           expandedKeys={expandedKeys}
           onExpand={this.onExpand}
+          checkStrictly
         />
       </Fragment>
     );
