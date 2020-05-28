@@ -153,7 +153,7 @@ export const flatMockData = [
   },
 ];
 
-export const treeData = [
+export const treeData: TreeNode[] = [
   {
     title: 'Abnormality of the integument (HP:0001574)',
     text: 'Abnormality of the integument (HP:0001574)',

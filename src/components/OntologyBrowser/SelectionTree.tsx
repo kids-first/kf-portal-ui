@@ -53,8 +53,8 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     checkedKeys: string[] = [],
     targetKeys: string[] = [],
     disabled: boolean = false,
-  ): TreeNode[] => {
-    return treeNodes
+  ): TreeNode[] =>
+    treeNodes
       .map(({ children, key, title, results, hidden }: TreeNode) => {
         const renderedTitle = (
           <Fragment>
@@ -76,7 +76,6 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         } as TreeNode;
       })
       .filter((node) => (node.hidden ? false : !node.hidden));
-  };
 
   isChecked = (selectedKeys: Array<string>, eventKey: string | number) =>
     selectedKeys.indexOf(eventKey.toString()) !== -1;
@@ -146,13 +145,13 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     }
   };
 
-  onExpand = (expand: (string | number)[], info: Object) => {
+  onExpand = (expand: (string | number)[]) => {
     this.setState({
       expandedKeys: expand.map((v) => v.toString()),
     });
   };
 
-  getCheckedKeys = (
+  checkKeys = (
     key: string | number,
     dataSource = this.props.dataSource,
     accu: { check: string[]; halfcheck: string[] } = {
@@ -166,7 +165,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
       }
 
       if (accu.check.length == 0) {
-        this.getCheckedKeys(key, o.children, accu);
+        this.checkKeys(key, o.children, accu);
 
         if (accu.check.length > 0) {
           accu.halfcheck.push(o.key);
@@ -180,7 +179,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     const { checkedKeys, dataSource, onItemSelect, targetKeys, onItemSelectAll } = this.props;
     const { expandedKeys } = this.state;
     const halfCheckedKeys = new Set(
-      checkedKeys.map((k) => this.getCheckedKeys(k)).flatMap((k) => k.halfcheck),
+      checkedKeys.map((k) => this.checkKeys(k)).flatMap((k) => k.halfcheck),
     );
     return (
       <Fragment>
@@ -216,7 +215,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           checkable
           onCheck={(_, { node }) => {
             const isChecked = !this.isChecked(checkedKeys, node.key);
-            this.getCheckedKeys(node.key);
+            this.checkKeys(node.key);
             onItemSelect(node.key, isChecked);
           }}
           checkedKeys={{
