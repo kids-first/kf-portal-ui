@@ -54,6 +54,7 @@ export const TRACKING_EVENTS = {
       gen3: 'Integration: Gen3',
       dcf: 'Integration: DCF',
     },
+    reports: 'Reports (CohortBuilder, File Repo)',
   },
   actions: {
     acceptedTerms: 'Accepted Terms',

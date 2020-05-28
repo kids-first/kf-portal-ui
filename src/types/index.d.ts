@@ -1,3 +1,4 @@
+//FIXME remove that file...put that in the store
 type SqonFilters = {
   op: string;
   content: { field: string; value: string[] };

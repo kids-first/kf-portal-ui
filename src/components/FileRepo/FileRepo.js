@@ -10,7 +10,6 @@ import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
-import DownloadButton from './DownloadButton';
 
 import { Arranger, CurrentSQON, Table } from '@kfarranger/components/dist/Arranger';
 import { replaceSQON } from '@kfarranger/components/dist/SQONView/utils';
@@ -33,7 +32,8 @@ import customTableColumns from './customTableColumns';
 import { fillCenter } from 'theme/tempTheme.module.css';
 import './FileRepo.css';
 import StatsBar from './StatsBar';
-
+import DownloadButton from './DownloadButton';
+import FileManifestButton from './FileManifestButton';
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
     category: 'File Repo',
@@ -90,9 +90,13 @@ const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => 
           html={<Row>Please select files in the table for this action.</Row>}
         >
           <DownloadButton sqon={sqon} {...props} />
+          <FileManifestButton sqon={sqon} projectId={arrangerProjectId} />
         </Tooltip>
       ) : (
-        <DownloadButton sqon={sqon} {...props} />
+        <React.Fragment>
+          <DownloadButton sqon={sqon} />
+          <FileManifestButton sqon={sqon} projectId={arrangerProjectId} />
+        </React.Fragment>
       )}
     </Row>
   );
