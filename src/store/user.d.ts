@@ -1,14 +1,3 @@
-//FIXME remove that file...put that in the store
-type SqonFilters = {
-  op: string;
-  content: { field: string; value: string[] };
-};
-
-export type Sqon = {
-  op: string;
-  content: SqonFilters[];
-};
-
 export type LoggedInUser = {
   _id: string;
   roles: Array<string>;
@@ -47,9 +36,4 @@ export type LoggedInUser = {
   twitter?: string;
   website?: string;
   zip?: string;
-};
-
-export type ModalStateEffects = {
-  setModal: Function;
-  unsetModal: Function;
 };

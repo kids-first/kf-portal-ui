@@ -6,8 +6,8 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import './DownloadButton.css';
 import { Button } from 'antd';
-import { Sqon } from '../../store/sqon';
-import { ModalStateEffects } from '../../types';
+import { Sqon } from 'store/sqon';
+import { ModalStateEffects } from 'store/freactalModalState';
 import { DownloadOutlined } from '@ant-design/icons';
 import FamilyManifestModal from '../FamilyManifestModal/FamilyManifestModal';
 

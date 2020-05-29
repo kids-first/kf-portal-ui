@@ -48,42 +48,53 @@ export const checkAvailability = async (reportName: string, sqon: Sqon): Promise
   return true;
 };
 
+export const shapeSqonForParticipantRp = async (originalSqon?: Sqon) => {
+  const { getParticipantsIds } = await familyMemberAndParticipantIds(originalSqon);
+  return {
+    op: 'in',
+    content: {
+      field: 'kf_id',
+      value: getParticipantsIds(),
+    },
+  };
+};
+
+export const shapeSqonForBiospecimenRp = (originalSqon?: Sqon) => {
+  if (!originalSqon || isEmpty(originalSqon)) {
+    return {
+      op: 'and',
+      content: [],
+    };
+  }
+  const copyOfSqon = { ...originalSqon };
+  /*
+   * Assumes that the sqon structure is always the same:
+   *  {"op":"and","content":[{"op":"in","content":{"field":"kf_id","value":["id1","id2"]}}]}
+   * */
+  copyOfSqon.content[0].content.field = 'files.kf_id';
+
+  return copyOfSqon;
+};
+
+export const shapeSqonForFamilyRp = async (originalSqon?: Sqon) => {
+  const { getFamilyMembersIds, getParticipantsIds } = await familyMemberAndParticipantIds(
+    originalSqon,
+  );
+  return {
+    op: 'in',
+    content: {
+      field: 'kf_id',
+      value: uniq([...getFamilyMembersIds(), ...getParticipantsIds()]),
+    },
+  };
+};
 export const buildSqonFromFileRepoForReport = async (reportName: string, originalSqon?: Sqon) => {
   if (reportName === RP_PARTICIPANT_FILE_REPO_KEY) {
-    const { getParticipantsIds } = await familyMemberAndParticipantIds(originalSqon);
-    return {
-      op: 'in',
-      content: {
-        field: 'kf_id',
-        value: getParticipantsIds(),
-      },
-    };
+    return shapeSqonForParticipantRp(originalSqon);
   } else if (reportName === RP_BIOSPECIMEN_FILE_REPO_DATA_KEY) {
-    if (!originalSqon || isEmpty(originalSqon)) {
-      return {
-        op: 'and',
-        content: [],
-      };
-    }
-    const copyOfSqon = { ...originalSqon };
-    /*
-     * Assumes that the sqon structure is always the same:
-     *  {"op":"and","content":[{"op":"in","content":{"field":"kf_id","value":["id1","id2"]}}]}
-     * */
-    copyOfSqon.content[0].content.field = 'files.kf_id';
-
-    return copyOfSqon;
+    return shapeSqonForBiospecimenRp(originalSqon);
   } else if (reportName === RP_FAM_CLINICAL_DATA_FILE_REPO_KEY) {
-    const { getFamilyMembersIds, getParticipantsIds } = await familyMemberAndParticipantIds(
-      originalSqon,
-    );
-    return {
-      op: 'in',
-      content: {
-        field: 'kf_id',
-        value: uniq([...getFamilyMembersIds(), ...getParticipantsIds()]),
-      },
-    };
+    return shapeSqonForFamilyRp(originalSqon);
   }
   return originalSqon;
 };

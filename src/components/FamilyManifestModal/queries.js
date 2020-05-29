@@ -79,8 +79,7 @@ export const familyMemberAndParticipantIds = async ({ api, sqon, isFileRepo }) =
   const extractResults = (path) => get(response, path, []).map((b) => b.key);
   const familyMemberIds = extractResults(
     isFileRepo
-      ? // eslint-disable-next-line max-len
-        'data.file.aggregations.participants__family__family_compositions__family_members__kf_id.buckets'
+      ? 'data.file.aggregations.participants__family__family_compositions__family_members__kf_id.buckets'
       : 'data.participant.aggregations.family__family_compositions__family_members__kf_id.buckets',
   );
   const participantIds = extractResults(

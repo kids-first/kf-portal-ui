@@ -17,10 +17,7 @@ import {
 } from '../../reportTypes';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import generateReport, {
-  checkAvailability,
-  shouldCheckAvailability,
-} from '../../../services/report';
+import generateReport, { checkAvailability, shouldCheckAvailability } from 'services/report';
 
 describe('Report actions', () => {
   it('should create an action to request a message', () => {
@@ -75,16 +72,14 @@ describe('Report actions', () => {
 const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 
-jest.mock('../../../services/report');
+jest.mock('services/report');
 
-describe('Thunks (fetchReport, fetchReportIfNeeded)', () => {
+describe('fetchReport', () => {
   beforeEach(() => {
     (generateReport as jest.Mock).mockReset();
-    (shouldCheckAvailability as jest.Mock).mockReset();
-    (checkAvailability as jest.Mock).mockReset();
   });
-  // eslint-disable-next-line max-len
-  it('should generate the correct flow when successfully generating a report (fetchReport)', async () => {
+
+  it('should generate the correct flow when successfully generating a report', async () => {
     (generateReport as jest.Mock).mockImplementation(() => Promise.resolve());
     const expectedActions = [
       { type: TOGGLE_LOADING, isLoading: true },
@@ -112,7 +107,7 @@ describe('Thunks (fetchReport, fetchReportIfNeeded)', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should generate an error when unsuccessfully generating a report (fetchReport)', async () => {
+  it('should generate an error when unsuccessfully generating a report', async () => {
     (generateReport as jest.Mock).mockImplementation(() => Promise.reject('error'));
     const expectedActions = [
       { type: TOGGLE_LOADING, isLoading: true },
@@ -140,8 +135,16 @@ describe('Thunks (fetchReport, fetchReportIfNeeded)', () => {
     await store.dispatch(fetchReport({ sqon: { op: 'and', content: [] }, name: 'none' }));
     expect(store.getActions()).toEqual(expectedActions);
   });
+});
 
-  it('should not generate a report if it is not available (fetchReportIfNeeded)', async () => {
+describe('fetchReportIfNeeded', () => {
+  beforeEach(() => {
+    (generateReport as jest.Mock).mockReset();
+    (shouldCheckAvailability as jest.Mock).mockReset();
+    (checkAvailability as jest.Mock).mockReset();
+  });
+
+  it('should not generate a report if it is not available', async () => {
     (shouldCheckAvailability as jest.Mock).mockImplementation(() => true);
     (checkAvailability as jest.Mock).mockImplementation(() => false);
     const expectedActions = [
@@ -178,7 +181,7 @@ describe('Thunks (fetchReport, fetchReportIfNeeded)', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should have the correct flow when checking for availability (fetchReportIfNeeded)', async () => {
+  it('should have the correct flow when checking for availability', async () => {
     (shouldCheckAvailability as jest.Mock).mockImplementation(() => true);
     (checkAvailability as jest.Mock).mockImplementation(() => true);
     const expectedActions = [
