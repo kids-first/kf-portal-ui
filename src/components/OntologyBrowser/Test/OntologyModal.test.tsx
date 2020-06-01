@@ -86,12 +86,12 @@ describe('Ontology Modal', () => {
     };
 
     const sqon: Sqon = {
-      op: 'and',
+      op: 'single',
       content: [sqonFilter],
     };
 
     const sqonCombinedQueries = {
-      op: 'and',
+      op: 'combined',
       content: [sqon, sqon],
     };
 

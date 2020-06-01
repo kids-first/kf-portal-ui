@@ -5,7 +5,7 @@ import downloader from 'common/downloader';
 import { arrangerProjectId, reportsApiRoot } from 'common/injectGlobals';
 import { ReportConfig } from '../store/reportTypes';
 import isEmpty from 'lodash/isEmpty';
-import { Sqon } from '../store/sqon';
+import { Sqon, SqonFilters } from '../store/sqon';
 import { familyMemberAndParticipantIds } from './participants';
 import { TRACKING_EVENTS, trackUserInteraction } from './analyticsTracking';
 import uniq from 'lodash/uniq';
@@ -67,11 +67,12 @@ export const shapeSqonForBiospecimenRp = (originalSqon?: Sqon) => {
     };
   }
   const copyOfSqon = { ...originalSqon };
+
   /*
    * Assumes that the sqon structure is always the same:
    *  {"op":"and","content":[{"op":"in","content":{"field":"kf_id","value":["id1","id2"]}}]}
    * */
-  copyOfSqon.content[0].content.field = 'files.kf_id';
+  (copyOfSqon.content as SqonFilters[])[0].content.field = 'files.kf_id';
 
   return copyOfSqon;
 };

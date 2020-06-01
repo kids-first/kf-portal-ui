@@ -1,4 +1,3 @@
-import { Sqon, SqonFilters } from 'store/sqon';
 import * as React from 'react';
 import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
@@ -6,6 +5,7 @@ import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
 import { Spinner } from 'uikit/Spinner';
+import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
 
 import './index.css';
 
@@ -84,26 +84,29 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const results: any = {};
     const { initialSqon, selectedField } = this.props;
 
-    if (initialSqon.content as SqonFilters[]) {
-      const content = initialSqon.content as SqonFilters[];
-      const findTreeKey = (treeNode: TreeNode) => {
-        content.forEach((v) => {
-          if (
-            ((v.content?.value || []).indexOf(treeNode.title as string) >= 0 && v.content?.field) ||
-            null === selectedField
-          ) {
-            results[treeNode.title as string] = treeNode.key;
-          }
-
-          if (treeNode.children.length > 0) {
-            treeNode.children.forEach((t) => findTreeKey(t));
-          }
-        });
-      };
-      this.ontologyStore.tree.forEach((treeNode) => {
-        findTreeKey(treeNode);
-      });
+    //check if its a combined query
+    if (initialSqon.content[0] && !isSqonFilter(initialSqon.content[0])) {
+      return [];
     }
+
+    const content = initialSqon.content as SqonFilters[];
+    const findTreeKey = (treeNode: TreeNode) => {
+      content.forEach((v) => {
+        if (
+          ((v.content?.value || []).indexOf(treeNode.title as string) >= 0 && v.content?.field) ||
+          null === selectedField
+        ) {
+          results[treeNode.title as string] = treeNode.key;
+        }
+
+        if (treeNode.children.length > 0) {
+          treeNode.children.forEach((t) => findTreeKey(t));
+        }
+      });
+    };
+    this.ontologyStore.tree.forEach((treeNode) => {
+      findTreeKey(treeNode);
+    });
     return Object.values(results);
   };
 
