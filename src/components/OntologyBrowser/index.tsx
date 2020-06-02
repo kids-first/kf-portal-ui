@@ -84,14 +84,11 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const results: any = {};
     const { initialSqon, selectedField } = this.props;
 
-    //check if its a combined query
-    if (initialSqon.content[0] && !isSqonFilter(initialSqon.content[0])) {
-      return [];
-    }
-
     const content = initialSqon.content as SqonFilters[];
+    const filteredContent = content.filter((s) => isSqonFilter(s));
+
     const findTreeKey = (treeNode: TreeNode) => {
-      content.forEach((v) => {
+      filteredContent.forEach((v) => {
         if (
           ((v.content?.value || []).indexOf(treeNode.title as string) >= 0 && v.content?.field) ||
           null === selectedField

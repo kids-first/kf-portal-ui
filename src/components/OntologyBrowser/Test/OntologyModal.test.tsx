@@ -2,10 +2,10 @@ import React from 'react';
 import OntologyModal from '../index';
 import { configure, mount, ReactWrapper, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { Spinner } from '../../../uikit/Spinner';
-import { Sqon, SqonFilters } from '../../../types';
+import { Spinner } from 'uikit/Spinner';
 import { PhenotypeStore } from '../store';
 import { treeData } from './mockData';
+import { Sqon, SqonFilters } from 'store/sqon';
 
 configure({ adapter: new Adapter() });
 
