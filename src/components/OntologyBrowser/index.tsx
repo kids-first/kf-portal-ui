@@ -1,4 +1,3 @@
-import { Sqon } from 'store/sqon';
 import * as React from 'react';
 import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
@@ -6,6 +5,7 @@ import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
 import { Spinner } from 'uikit/Spinner';
+import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
 
 import './index.css';
 
@@ -29,19 +29,23 @@ type ModalState = {
 const ontologyRegex = new RegExp('([A-Za-z_]+).name');
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
-  const index = findIndex(initialSqon?.content, (c) => c.content.field === selectedField);
-  if (index >= 0 && value.length === 0) {
-    initialSqon.content.splice(index, 1);
-  } else if (index >= 0) {
-    initialSqon.content[index].content.value = value;
-  } else if (value.length > 0) {
-    initialSqon.content.push({
-      op: 'in',
-      content: {
-        field: selectedField,
-        value,
-      },
-    });
+  if (initialSqon.content as SqonFilters[]) {
+    const content = initialSqon.content as SqonFilters[];
+    const index = findIndex(content, (c) => c.content.field === selectedField);
+    if (index >= 0 && value.length === 0) {
+      initialSqon.content.splice(index, 1);
+    } else if (index >= 0) {
+      const valueContent = initialSqon.content[index] as SqonFilters;
+      valueContent.content.value = value;
+    } else if (value.length > 0) {
+      content.push({
+        op: 'in',
+        content: {
+          field: selectedField,
+          value,
+        },
+      });
+    }
   }
 
   return initialSqon;
@@ -78,15 +82,20 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   getKeysFromSqon = (): string[] => {
     const results: any = {};
+    const { initialSqon, selectedField } = this.props;
+
+    const content = initialSqon.content as SqonFilters[];
+    const filteredContent = content.filter((s) => isSqonFilter(s));
+
     const findTreeKey = (treeNode: TreeNode) => {
-      const { initialSqon, selectedField } = this.props;
-      initialSqon.content.forEach((v) => {
+      filteredContent.forEach((v) => {
         if (
-          v.content.value.indexOf(treeNode.title as string) >= 0 &&
-          v.content.field === selectedField
+          ((v.content?.value || []).indexOf(treeNode.title as string) >= 0 && v.content?.field) ||
+          null === selectedField
         ) {
           results[treeNode.title as string] = treeNode.key;
         }
+
         if (treeNode.children.length > 0) {
           treeNode.children.forEach((t) => findTreeKey(t));
         }
@@ -160,7 +169,9 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           isLoading: false,
         });
       })
-      .catch((error) => this.setState({ isLoading: false, error }));
+      .catch((error) => {
+        this.setState({ isLoading: false, error });
+      });
   };
 
   shouldComponentUpdate(nextProps: ModalProps) {

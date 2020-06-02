@@ -164,7 +164,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         return accu.check.push(o.key);
       }
 
-      if (accu.check.length == 0) {
+      if (accu.check.length === 0) {
         this.checkKeys(key, o.children, accu);
 
         if (accu.check.length > 0) {
