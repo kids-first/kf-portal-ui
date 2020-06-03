@@ -7,7 +7,7 @@ import { withApi } from 'services/api';
 import { ModalFooter } from 'components/Modal/index.js';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 import { SuccessToastComponent } from './CavaticaSuccessToast';
-import { copyToProject } from './api';
+import { copyToProject, isEveryFileTransferred, sumFilesTransfers } from './api';
 import CavaticaProjects from './CavaticaProjects';
 import { Link } from 'react-router-dom';
 import CavaticaFileSummary from './CavaticaFileSummary';
@@ -16,7 +16,8 @@ import { Paragraph } from 'uikit/Core';
 import { getUserStudyPermission } from 'services/fileAccessControl';
 import flatten from 'lodash/flatten';
 import { FENCES } from 'common/constants';
-import { Alert } from 'antd';
+import { notification } from 'antd';
+import PropTypes from 'prop-types';
 
 import './cavatica.css';
 import './CavaticaCopyMultipleFilesModal.css';
@@ -50,7 +51,15 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     fileStudyData: {},
     fileAuthInitialized: false,
     authorizedFilesCombined: [],
-    error: null,
+  };
+
+  propTypes = {
+    api: PropTypes.func.isRequired,
+    sqon: PropTypes.object,
+    fileIds: PropTypes.arrayOf(PropTypes.string),
+    state: PropTypes.object,
+    effects: PropTypes.object.isRequired,
+    onComplete: PropTypes.func.isRequired,
   };
 
   async componentDidMount() {
@@ -60,7 +69,6 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
       state: { fenceConnections },
       sqon,
     } = this.props;
-
     let ids = fileIds;
     if (!ids || ids.length === 0) {
       ids = await graphql(api)({
@@ -92,7 +100,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     // Authorized files needs to be broken down by repository, so lets dig deeper
     const authFiles = {};
     const fencePromises = [];
-    FENCES.forEach(fence => {
+    FENCES.forEach((fence) => {
       const fenceSqon = {
         op: 'and',
         content: [
@@ -106,7 +114,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
           },
         ],
       };
-      const promise = getUserStudyPermission(api, fenceConnections, fenceSqon).then(response => {
+      const promise = getUserStudyPermission(api, fenceConnections, fenceSqon).then((response) => {
         authFiles[fence] = response.acceptedStudiesAggs
           .reduce((acc, study) => [...acc, ...study.files], [])
           .map(({ key }) => key);
@@ -161,18 +169,8 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
     const hasFenceConnection = Object.keys(state.fenceConnections).length > 0;
     const isFilesSelected = filesSelected && filesSelected.length > 0;
     const unauthFilesWarning = unauthorizedFiles && unauthorizedFiles.length > 0;
-    const { error } = this.state;
     return (
       <div className="copyModalRoot">
-        {error && (
-          <Alert
-            message="Error"
-            description="An error occurred. Please try again or contact our support."
-            type="error"
-            closable
-            showIcon
-          />
-        )}
         {unauthFilesWarning && (
           <ModalWarning>
             <span style={{ fontSize: '16px', fontWeight: '500' }}>Access Error</span>
@@ -212,7 +210,7 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
             onAddProject={() => {
               this.setState({ addingProject: true });
             }}
-            onSelectProject={project => {
+            onSelectProject={(project) => {
               this.setState({ selectedProjectData: project });
             }}
             addingProject={addingProject}
@@ -223,22 +221,35 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
             handleSubmit: async () => {
               try {
                 const uuids = authorizedFilesCombined;
-                await copyToProject({
+                const copyResults = await copyToProject({
                   selectedProject: selectedProjectData.id,
                   selectedFiles: authorizedFiles,
                 });
-                setToast({
-                  id: `${Date.now()}`,
-                  action: 'success',
-                  component: SuccessToastComponent({ selectedProjectData }),
-                });
+
+                const failedResults = sumFilesTransfers(copyResults);
+                const numOfIdsToBeCopied = failedResults.numOfIdsToBeCopied;
+                const numOfIdsCopied = failedResults.numOfIdsCopied;
+                if (!isEveryFileTransferred(numOfIdsToBeCopied, numOfIdsCopied)) {
+                  notification.warn({
+                    message: 'Copy to Cavatica',
+                    description:
+                      `Some files could not be copied` +
+                      ` (${numOfIdsCopied} file(s) copied out of ${numOfIdsToBeCopied})`,
+                    duration: 0,
+                  });
+                } else {
+                  setToast({
+                    id: `${Date.now()}`,
+                    action: 'success',
+                    component: SuccessToastComponent({ selectedProjectData }),
+                  });
+                }
 
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Copied Files to Cavatica Project',
                   label: JSON.stringify({ files: uuids.length, uuids }),
                 });
-                onComplete();
               } catch (e) {
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
@@ -246,7 +257,13 @@ class CavaticaCopyMultipleFilesModal extends React.Component {
                   label: e.message ? e.message : null,
                 });
                 console.error(e);
-                this.setState({ error: e });
+                notification.error({
+                  message: 'Error',
+                  description: 'An error occurred. Please try again or contact our support.',
+                  duration: 0,
+                });
+              } finally {
+                onComplete();
               }
             },
             submitDisabled: !(selectedProjectData && authorizedFilesCombined.length > 0),
