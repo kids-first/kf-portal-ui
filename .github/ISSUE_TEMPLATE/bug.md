@@ -2,7 +2,7 @@
 name: Bug
 about: Bug to fix in Production
 title: ''
-labels: bug
+labels: ''
 assignees: ''
 
 ---

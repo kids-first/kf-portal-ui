@@ -22,6 +22,12 @@ A clear and concise description of what the business needs are... What does this
 
 _Your feature may include more than one scenario…_
 
+### Sub-Tasks
+List of what needs to be done  on the technical side.
+
+### Testing Strategy
+What do we need to test? Who can test it? How do we test it? What do we need to test it?
+
 ### Resources
 
 _Include any links to additional documentation, technical and/or design specs_
