@@ -23,10 +23,15 @@ A clear and concise description of what the business needs are... What does this
 _Your feature may include more than one scenario…_
 
 ### Sub-Tasks
-List of what needs to be done  on the technical side.
+_List of what needs to be done  on the technical side._
+- [ ] Sub-task 1
 
 ### Testing Strategy
-What do we need to test? Who can test it? How do we test it? What do we need to test it?
+_What do we need to test? Who can test it? How do we test it? What do we need to test it?_
+
+### Defects
+_List of defects/bugs found during QA._
+- [ ] Defect 1
 
 ### Resources
 
