@@ -37,6 +37,19 @@
   background-color: #f7ed9c;
 }
 
+.display-flex {
+  display: flex;
+}
+
+.center-space-around {
+  justify-content: space-around;
+  align-items: center;
+}
+
+.fixed-with-100{
+  width: 100px;
+}
+
 /*TO BE DELETED*/
 .ant-tree-custom-TO-DELETE div {
   font-family: 'Open Sans';

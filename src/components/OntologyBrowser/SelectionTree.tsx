@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component, Fragment } from 'react';
 import { Button, Col, Input, Row, Tag, Tree } from 'antd';
 import { TreeNode } from './store';
+import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './SelectionTree.css';
 
@@ -55,12 +56,25 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     disabled: boolean = false,
   ): TreeNode[] =>
     treeNodes
-      .map(({ children, key, title, results, hidden }: TreeNode) => {
+      .map(({ children, key, title, results, hidden, exactTagCount }: TreeNode) => {
         const renderedTitle = (
-          <Fragment>
-            <span>{title}</span>
-            <Tag className="label-document-count">{results}</Tag>
-          </Fragment>
+          <Row justify="space-between" style={{ width: '100%' }}>
+            <Col>{title}</Col>
+            <Col className={'display-flex center-space-around fixed-with-100'}>
+              <Row style={{ width: '100%' }}>
+                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Tag style={{ margin: 0 }} className="label-document-count">
+                    {exactTagCount}
+                  </Tag>
+                </Col>
+                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Tag style={{ margin: 0 }} className="label-document-count">
+                    {results}
+                  </Tag>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         );
         const isDisabled = targetKeys.includes(key || '') || disabled;
         const childrenShouldBeDisabled = checkedKeys.includes(key) || isDisabled;
@@ -193,16 +207,28 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
               size="large"
             />
           </Row>
-          <Row justify="start">
-            <Button
-              type="link"
-              onClick={(e) => {
-                e.preventDefault();
-                onItemSelectAll(checkedKeys, false);
-              }}
-            >
-              Clear
-            </Button>
+          <Row justify="space-between">
+            <Col>
+              <Button
+                type="link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onItemSelectAll(checkedKeys, false);
+                }}
+              >
+                Clear
+              </Button>
+            </Col>
+            <Col style={{ display: 'flex', alignItems: 'center', paddingRight: 4 }}>
+              <Row style={{ width: 100 }}>
+                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                  <UserOutlined style={{ color: '#515885' }} />
+                </Col>
+                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
+                  <BranchesOutlined style={{ color: '#515885' }} />
+                </Col>
+              </Row>
+            </Col>
           </Row>
         </Col>
         <Tree

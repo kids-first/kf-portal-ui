@@ -6,7 +6,11 @@ type PhenotypeSource = {
   top_hits: {
     parents: string[];
   };
-  matches?: number;
+  filter_by_term: {
+    'observed_phenotype.is_tagged.term_filter': {
+      doc_count: number;
+    };
+  };
 };
 
 export type TreeNode = {
@@ -16,6 +20,7 @@ export type TreeNode = {
   hasChildren?: boolean;
   children: TreeNode[];
   results?: number;
+  exactTagCount?: number;
   hidden?: boolean;
   depth?: number;
 };
@@ -46,6 +51,8 @@ export class PhenotypeStore {
     key: parent ? `${parent.key}-${ontologySource.key}` : ontologySource.key,
     children: [],
     results: ontologySource.doc_count,
+    exactTagCount:
+      ontologySource.filter_by_term['observed_phenotype.is_tagged.term_filter'].doc_count,
     value: ontologySource.doc_count,
     name: ontologySource.key,
     depth,
@@ -106,7 +113,10 @@ export class PhenotypeStore {
     return [...this.tree];
   };
 
-  buildPhenotypeQuery = (field: string, filterThemselves: boolean) => `query($sqon: JSON) {
+  buildPhenotypeQuery = (
+    field: string,
+    filterThemselves: boolean,
+  ) => `query($sqon: JSON, $term_filters: JSON) {
     participant {
       aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
         ${field}__name {
@@ -114,6 +124,7 @@ export class PhenotypeStore {
             key,
             doc_count,
             top_hits(_source: "${field}.parents", size: 1)
+            filter_by_term(filter: $term_filters)
           }
         }
       }
@@ -126,6 +137,12 @@ export class PhenotypeStore {
       query: this.buildPhenotypeQuery(field, filterThemselves),
       variables: JSON.stringify({
         sqon: sqon,
+        term_filters: [
+          {
+            field: 'observed_phenotype.is_tagged',
+            value: true,
+          },
+        ],
       }),
     };
     try {

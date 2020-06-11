@@ -6,6 +6,7 @@ import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
 import { Spinner } from 'uikit/Spinner';
 import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
+import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './index.css';
 
@@ -251,6 +252,10 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
             }}
           </Transfer>
         )}
+        <div style={{ color: '#515885' }}>
+          <UserOutlined /> Participants with this exact term
+          <BranchesOutlined style={{ paddingLeft: 20 }} /> Participants including descendant terms
+        </div>
       </Modal>
     );
   }

@@ -46,7 +46,7 @@ const CATEGORY_FIELDS = {
     'outcome.age_at_event_days',
     'observed_phenotype.age_at_event_days',
     `${
-      isFeatureEnabled('mondoDiagnosis') ? 'mondo_diagnosis.name' : 'diagnoses.mondo_id_diagnosis'
+      isFeatureEnabled('mondoDiagnosis') ? 'diagnoses.mondo.name' : 'diagnoses.mondo_id_diagnosis'
     }`,
     'diagnoses.ncit_id_diagnosis',
     'diagnoses.source_text_diagnosis',
@@ -97,7 +97,7 @@ const CATEGORY_FIELDS = {
     'outcome.age_at_event_days',
     'observed_phenotype.age_at_event_days',
     `${
-      isFeatureEnabled('mondoDiagnosis') ? 'mondo_diagnosis.name' : 'diagnoses.mondo_id_diagnosis'
+      isFeatureEnabled('mondoDiagnosis') ? 'diagnoses.mondo.name' : 'diagnoses.mondo_id_diagnosis'
     }`,
     'diagnoses.ncit_id_diagnosis',
     'diagnoses.source_text_diagnosis',
