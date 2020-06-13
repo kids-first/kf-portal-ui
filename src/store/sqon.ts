@@ -9,3 +9,5 @@ export type Sqon = {
 };
 
 export const isSqonFilter = (sqon: Sqon | SqonFilters) => (sqon as SqonFilters).content.field;
+
+export type setSqonArrangerCB = (s?: Sqon | null) => void;
