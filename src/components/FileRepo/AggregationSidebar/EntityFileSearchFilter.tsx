@@ -58,9 +58,10 @@ const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
 
   useEffect(() => {
     if (error) {
+      const errorMsgDescription = error.message ? `Description: ${error.message}` : '';
       notification.error({
         message: 'Error',
-        description: 'An error occurred. No query could be made. Please try again.',
+        description: `An error occurred. No query could be made. ${errorMsgDescription}`,
         duration: null,
         onClose: () => reInitializeState(entityName),
       });
@@ -74,7 +75,6 @@ const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
       disabled={!!error}
       placeholder={placeholder}
       loading={isLoading}
-      enterButton
       onSearch={(userInputId) => {
         if (canLaunchSearch(userInputId)) {
           onSearchById({ entityName, id: userInputId, setArrangerSqonCB: setSqon });

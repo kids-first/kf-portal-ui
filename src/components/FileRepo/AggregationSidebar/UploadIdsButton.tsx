@@ -41,7 +41,7 @@ const UploadIdsButton: FunctionComponent<Props> = ({
   whitelist,
 }) => (
   <div className={'upload-btn-container'}>
-    <CloudUploadOutlined />
+    <CloudUploadOutlined className={'upload-icon ant-btn-link'} />
     <Button
       size={'small'}
       type="link"

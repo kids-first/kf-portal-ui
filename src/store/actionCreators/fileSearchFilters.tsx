@@ -65,7 +65,6 @@ export const searchById = (
   if (kfId) {
     dispatch(searchByKfId({ setArrangerSqonCB, id: kfId, entityName }));
   } else {
-    // this branch is very unlikely to be valid.
-    dispatch(failureFilter(new Error('Could not transform given id into a valid id'), entityName));
+    dispatch(failureFilter(new Error('Input id is unknown'), entityName));
   }
 };

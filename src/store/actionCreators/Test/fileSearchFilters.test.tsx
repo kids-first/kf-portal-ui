@@ -140,7 +140,7 @@ describe('searchById', () => {
       { type: TOGGLE_LOADING, isLoading: false, entityName },
       {
         type: FAILURE,
-        error: new Error('Could not transform given id into a valid id'),
+        error: new Error('Input id is unknown'),
         entityName,
       },
     ];

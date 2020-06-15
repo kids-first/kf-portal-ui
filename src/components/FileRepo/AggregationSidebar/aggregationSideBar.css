@@ -1,4 +1,9 @@
 .upload-btn-container {
-  text-align: end;
-  margin-top: 1px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.upload-icon {
+  margin-right: 8px;
 }
