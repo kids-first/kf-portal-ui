@@ -35,7 +35,7 @@ export const resolveFileIdToKfId = async (rawId: string) => {
       },
     },
   });
-  //BS is associated  to one and only one participant.
+
   const firstEdge = (response?.data?.file?.hits?.edges || [])[0];
   return firstEdge?.node?.kf_id;
 };
