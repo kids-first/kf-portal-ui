@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-
 import { MatchBox } from '@kfarranger/components/dist/Arranger';
 import graphql from 'services/arranger';
 import { ModalFooter } from './Modal';
@@ -19,10 +19,15 @@ const UploadIdsModal = ({
   setSQON,
   uploadableFields = null,
   placeholderText,
-  ...props
+  closeModal,
+  graphqlField,
+  index,
+  projectId,
+  searchFields,
+  whitelist,
 }) => (
   <MatchBox
-    {...props}
+    {...{ closeModal, graphqlField, index, projectId, searchFields, whitelist }}
     instructionText={
       <Paragraph>Type or copy-and-paste a list of comma delimited identifiers</Paragraph>
     }
@@ -65,5 +70,20 @@ const UploadIdsModal = ({
     )}
   </MatchBox>
 );
+
+UploadIdsModal.propTypes = {
+  api: PropTypes.func.isRequired,
+  setSQON: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  whitelist: PropTypes.arrayOf(PropTypes.string).isRequired,
+  uploadableFields: PropTypes.arrayOf(PropTypes.string),
+  searchFields: PropTypes.string,
+  projectId: PropTypes.string,
+  index: PropTypes.string,
+  graphqlField: PropTypes.string,
+  placeholderText: PropTypes.string,
+  state: PropTypes.object.isRequired,
+  effects: PropTypes.object.isRequired,
+};
 
 export default enhance(UploadIdsModal);

@@ -2,11 +2,11 @@ import { Sqon } from './sqon';
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from './rootState';
 
-export const TOGGLE_LOADING = 'TOGGLE_LOADING';
-export const REQUEST_MESSAGE = 'REQUEST_MESSAGE';
-export const FAILURE = 'FAILURE';
-export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE';
-export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
+export const TOGGLE_LOADING = 'TOGGLE_LOADING_RP';
+export const REQUEST_MESSAGE = 'REQUEST_MESSAGE_RP';
+export const FAILURE = 'FAILURE_RP';
+export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE_RP';
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE_RP';
 
 export enum MessageType {
   INFO = 'info',
@@ -19,6 +19,7 @@ export interface Message {
   content: string;
   duration: number;
 }
+
 export interface ReportState {
   isLoading: boolean;
   error?: Error | null;
