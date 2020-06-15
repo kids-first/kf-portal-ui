@@ -134,7 +134,7 @@ const CATEGORY_FIELDS = {
   ],
 };
 const CATEGORY_FIELDS_TREE_BROWSER = isFeatureEnabled('mondoDiagnosis')
-  ? ['mondo_diagnosis.name', 'observed_phenotype.name']
+  ? ['diagnoses.mondo.name', 'observed_phenotype.name']
   : ['observed_phenotype.name'];
 
 export default class Categories extends React.Component {
