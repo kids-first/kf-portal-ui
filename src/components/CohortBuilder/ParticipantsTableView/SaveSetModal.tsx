@@ -141,6 +141,7 @@ export default class SaveSetModal extends React.Component<Props, State> {
             ]}
           >
             <Input
+              autoFocus
               maxLength={maxNumOfCharsToDisplay}
               placeholder="Enter the name of your new set"
               allowClear

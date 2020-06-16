@@ -1,30 +1,29 @@
+/* eslint-disable react/prop-types */
 import React, { FunctionComponent, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Spin } from 'antd';
-import { Link } from 'react-router-dom';
+import { ButtonProps } from 'antd/lib/button';
+import { Button } from 'antd';
 
-interface Props extends RouteComponentProps<any> {
-  getLink: () => Promise<string>;
-  label: string;
+type OwnProps = {
   children: React.ReactNode;
-  linkClassname?: string;
-}
+  getLink: () => Promise<string>;
+};
 
-const LinkWithLoader: FunctionComponent<Props> = ({
+type Props = OwnProps & RouteComponentProps & ButtonProps;
+
+const ButtonWithRouter: FunctionComponent<Props> = ({
   getLink,
   history,
   children,
-  linkClassname = '',
+  type = 'primary',
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  if (isLoading) {
-    return <Spin />;
-  }
+
   return (
-    <Link
-      className={linkClassname}
-      to={''}
-      onClick={async e => {
+    <Button
+      loading={isLoading}
+      type={type}
+      onClick={async (e) => {
         e.preventDefault();
         setIsLoading(true);
         const url = await getLink();
@@ -35,8 +34,8 @@ const LinkWithLoader: FunctionComponent<Props> = ({
       }}
     >
       {children}
-    </Link>
+    </Button>
   );
 };
 
-export default withRouter(LinkWithLoader);
+export default withRouter(ButtonWithRouter);

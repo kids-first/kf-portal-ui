@@ -72,7 +72,7 @@ export const fetchReportIfNeeded = (
   if (shouldCheckAvailability(name)) {
     dispatch(
       requestMessage({
-        content: 'Please wait while we check availability',
+        content: 'Checking for availability',
         duration: 0,
         type: MessageType.LOADING,
       }),

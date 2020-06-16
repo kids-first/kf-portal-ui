@@ -1,13 +1,13 @@
 import React from 'react';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import ReportsButton from './ReportsButton';
-import { Sqon } from '../store/sqon';
+import ReportsButton from '../ReportsButton';
+import { Sqon } from '../../store/sqon';
 import { Button as AntdButton, Menu } from 'antd';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { ReportState } from '../store/reportTypes';
+import { ReportState } from '../../store/reportTypes';
 
 configure({ adapter: new Adapter() });
 
