@@ -19,7 +19,7 @@ const trackDownload = async (label: string) => {
   });
 };
 
-export const RP_PARTICIPANT_FILE_REPO_KEY = 'participantFileRepo';
+export const RP_PARTICIPANT_FILE_REPO_KEY = 'clinicalData';
 export const RP_CLINICAL_DATA_KEY = 'clinicalData';
 export const RP_FAM_CLINICAL_DATA_KEY = 'familyClinicalData';
 export const RP_FAM_CLINICAL_DATA_FILE_REPO_KEY = 'familyClinicalDataFileRepo';

@@ -152,7 +152,7 @@ describe('fetchReportIfNeeded', () => {
       {
         type: REQUEST_MESSAGE,
         message: {
-          content: 'Please wait while we check availability',
+          content: 'Checking for availability',
           duration: 0,
           type: MessageType.LOADING,
         },
@@ -189,7 +189,7 @@ describe('fetchReportIfNeeded', () => {
       {
         type: REQUEST_MESSAGE,
         message: {
-          content: 'Please wait while we check availability',
+          content: 'Checking for availability',
           duration: 0,
           type: MessageType.LOADING,
         },
