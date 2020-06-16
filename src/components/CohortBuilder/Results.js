@@ -30,10 +30,11 @@ import Summary from './Summary';
 import { setActiveView } from './actionCreators';
 import './Results.css';
 import { Spin, notification } from 'antd';
-import LinkWithLoader from '../../ui/LinkWithLoader';
+import ButtonWithRouter from '../../ui/ButtonWithRouter';
 import { CARDINALITY_PRECISION_THRESHOLD } from '../../common/constants';
 import { roundIntToChosenPowerOfTen } from '../../utils';
 import capitalize from 'lodash/capitalize';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 const SUMMARY = 'summary';
 const TABLE = 'table';
@@ -219,31 +220,28 @@ const Results = ({
                     </h3>
                   </div>
                   <div className="cb-summary-entity">
-                    <h3 className="cb-sub-heading-without-count">
-                      <div className="cb-summary-files">
-                        {hasNoFile ? (
+                    {hasNoFile ? (
+                      <h3 className="cb-sub-heading-without-count">
+                        <div className="cb-summary-files">
                           <div>
                             <FilesIcon style={{ marginRight: '6px' }} /> {'No File'}
                           </div>
-                        ) : (
-                          <Fragment>
-                            <div>
-                              <FilesIcon />
-                              <LinkWithLoader
-                                linkClassname="cb-purple-link cb-sub-heading-without-count"
-                                getLink={
-                                  hasNoCohortQuery
-                                    ? () => '/search/file'
-                                    : () => generateAllFilesLink(state.loggedInUser, api, sqon)
-                                }
-                              >
-                                {formatCountResult(filesCardinality, 'file')}
-                              </LinkWithLoader>
-                            </div>
-                          </Fragment>
-                        )}
+                        </div>
+                      </h3>
+                    ) : (
+                      <div className="cb-summary-files">
+                        <ButtonWithRouter
+                          getLink={
+                            hasNoCohortQuery
+                              ? () => '/search/file'
+                              : () => generateAllFilesLink(state.loggedInUser, api, sqon)
+                          }
+                        >
+                          {formatCountResult(filesCardinality, 'file')}
+                          <ArrowRightOutlined />
+                        </ButtonWithRouter>
                       </div>
-                    </h3>
+                    )}
                   </div>
                 </div>
               )}
