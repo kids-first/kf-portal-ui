@@ -58,19 +58,21 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     treeNodes
       .map(({ children, key, title, results, hidden, exactTagCount }: TreeNode) => {
         const renderedTitle = (
-          <Row justify="space-between" style={{ width: '100%' }}>
+          <Row justify="space-between" className={'fixed-width-100'}>
             <Col>{title}</Col>
-            <Col className={'display-flex center-space-around fixed-with-100'}>
-              <Row style={{ width: '100%' }}>
-                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Tag style={{ margin: 0 }} className="label-document-count">
+            <Col className={'display-flex center-space-around'} style={{ width: 100 }}>
+              <Row className={'fixed-width-100'}>
+                <Col span={12} className={'flex-center'}>
+                  <Tag
+                    className={`label-document-count no-margins ${
+                      exactTagCount === 0 ? 'faded' : ''
+                    }`}
+                  >
                     {exactTagCount}
                   </Tag>
                 </Col>
-                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Tag style={{ margin: 0 }} className="label-document-count">
-                    {results}
-                  </Tag>
+                <Col span={12} className={'flex-center'}>
+                  <Tag className="label-document-count no-margins">{results}</Tag>
                 </Col>
               </Row>
             </Col>

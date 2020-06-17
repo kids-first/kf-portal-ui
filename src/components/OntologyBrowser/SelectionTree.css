@@ -46,8 +46,20 @@
   align-items: center;
 }
 
-.fixed-with-100{
-  width: 100px;
+.flex-center {
+  justify-content: center;
+  display: flex;
+}
+
+.fixed-width-100{
+  width: 100%;
+}
+
+.faded {
+  opacity: 0.4;
+}
+.no-margins{
+  margin: 0;
 }
 
 /*TO BE DELETED*/

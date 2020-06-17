@@ -165,6 +165,14 @@ class ParticipantClinical extends React.Component {
     },
   ];
 
+  filterOutParentDiagnoses(diagnosis) {
+    if ((diagnosis?.mondo?.hits?.edges || []).length > 0) {
+      return diagnosis.mondo?.hits?.edges[0]?.node?.is_tagged;
+    } else {
+      return true;
+    }
+  }
+
   diagnosisIntoState(api) {
     function call(diagnosis) {
       return graphql(api)({
@@ -173,10 +181,11 @@ class ParticipantClinical extends React.Component {
         {"field":"diagnoses.mondo_id_diagnosis","value":["${diagnosis}"]}}]}}`,
       });
     }
-
     let diagnoses = get(this.props.participant, 'diagnoses.hits.edges', []).map(
       (ele) => Object.assign({}, get(ele, 'node', {})), //copy obj
     );
+
+    diagnoses = diagnoses.filter((d) => this.filterOutParentDiagnoses(d));
 
     Promise.all(
       (() => {
@@ -192,7 +201,6 @@ class ParticipantClinical extends React.Component {
 
           return diag;
         });
-
         return temp;
       })(),
     ).then((nums) => {
@@ -201,8 +209,10 @@ class ParticipantClinical extends React.Component {
           get(nums[i], 'data.participant.hits.total', '--'),
         );
       }
-
-      this.setState({ diagnoses: sanitize(diagnoses), hasLoadedDxs: true }); //once we're ready, just tell the state, it'll do the rest
+      this.setState({
+        diagnoses: sanitize(diagnoses),
+        hasLoadedDxs: true,
+      }); //once we're ready, just tell the state, it'll do the rest
     });
   }
 
@@ -267,7 +277,7 @@ class ParticipantClinical extends React.Component {
 
   dataIntoState() {
     const api = initializeApi({
-      onError: console.err,
+      onError: (error) => console.error(error),
       onUnauthorized: (response) => {
         console.warn('Unauthorized', response);
       },
