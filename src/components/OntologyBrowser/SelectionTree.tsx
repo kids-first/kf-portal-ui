@@ -12,6 +12,7 @@ type SelectionTreeProps = {
   onItemSelect: Function;
   targetKeys: Array<string>;
   onItemSelectAll: Function;
+  selectedField: String;
 };
 
 type SelectionTreeState = {
@@ -192,7 +193,14 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
   };
 
   render() {
-    const { checkedKeys, dataSource, onItemSelect, targetKeys, onItemSelectAll } = this.props;
+    const {
+      checkedKeys,
+      dataSource,
+      onItemSelect,
+      targetKeys,
+      onItemSelectAll,
+      selectedField, //todo to be removed when mondo search is fixed
+    } = this.props;
     const { expandedKeys } = this.state;
     const halfCheckedKeys = new Set(
       checkedKeys.map((k) => this.checkKeys(k)).flatMap((k) => k.halfcheck),
@@ -201,13 +209,17 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
       <Fragment>
         <Col style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: '#fff' }}>
           <Row>
-            <Input
-              className="custom-input"
-              placeholder="Search for ontology term - Min 3 characters"
-              onChange={(e) => this.onChange(e, dataSource)}
-              allowClear
-              size="large"
-            />
+            {selectedField !== 'diagnoses.mondo.name' ? ( //todo remove when mondo search is fixed
+              <Input
+                className="custom-input"
+                placeholder="Search for ontology term - Min 3 characters"
+                onChange={(e) => this.onChange(e, dataSource)}
+                allowClear
+                size="large"
+              />
+            ) : (
+              ''
+            )}
           </Row>
           <Row justify="space-between">
             <Col>

@@ -238,6 +238,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                     checkedKeys={checkedKeys}
                     targetKeys={targetKeys}
                     onItemSelectAll={onItemSelectAll}
+                    selectedField={this.props.selectedField}
                   />
                 );
               }
