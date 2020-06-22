@@ -47,7 +47,12 @@
 }
 
 .flex-center {
-  justify-content: center;
+  justify-content: center !important;
+  display: flex !important;
+}
+
+.flex-align-items-center {
+  align-items: center ;
   display: flex;
 }
 
@@ -69,6 +74,10 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 22px !important;
+  color: #515885;
+}
+
+.text-color-TO-DELETE {
   color: #515885;
 }
 

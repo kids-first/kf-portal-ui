@@ -1,6 +1,4 @@
-import React from 'react';
-// import { render } from '@testing-library/react';
-import { PhenotypeStore, TreeNode } from '../store';
+import { PhenotypeSource, PhenotypeStore, TreeNode } from '../store';
 import { flatMockData } from './mockData';
 
 describe('Phenotype Store', () => {
@@ -9,7 +7,7 @@ describe('Phenotype Store', () => {
   beforeAll(() => {
     newStore = new PhenotypeStore();
     newStore.getPhenotypes = jest.fn().mockReturnValue(Promise.resolve(flatMockData));
-    return newStore.fetch();
+    return newStore.fetch('field');
   });
 
   it('should create first level', () => {
@@ -32,7 +30,8 @@ describe('Phenotype Store', () => {
       'Abnormality of nervous system physiology (HP:0012638)',
     );
     expect(firstChild.children[0].key).toEqual(
-      'Phenotypic abnormality (HP:0000118)-Abnormality of the nervous system (HP:0000707)-Abnormality of nervous system physiology (HP:0012638)',
+      'Phenotypic abnormality (HP:0000118)-Abnormality of the nervous system (HP:0000707)-' +
+        'Abnormality of nervous system physiology (HP:0012638)',
     );
   });
 
@@ -81,14 +80,14 @@ describe('Phenotype Store', () => {
   it('should have as much element as item multiply by parents', () => {
     // Count how many possible occurence
     const sumOfTotalInsert = newStore.phenotypes
-      .map(p => (p.top_hits.parents.length > 1 ? p.top_hits.parents.length : 1))
-      .reduceRight((p, c, i, s) => p + c);
+      .map((p) => (p.top_hits.parents.length > 1 ? p.top_hits.parents.length : 1))
+      .reduceRight((p, c) => p + c);
     expect(sumOfTotalInsert).toEqual(21);
 
     // Validate that all occurence has been added to the tree
     let insertedElements = 0;
     const computeOccurentInTree = (node: TreeNode[]) => {
-      node.forEach(p => {
+      node.forEach((p) => {
         insertedElements++;
         if (p.children.length > 0) {
           computeOccurentInTree(p.children);
@@ -100,13 +99,13 @@ describe('Phenotype Store', () => {
   });
 
   it('should remove the default root node named Phenotypic abnormality (HP:0000118)', () => {
-    const data = newStore.remoteSingleRootNode(flatMockData);
+    const data = newStore.remoteSingleRootNode(flatMockData as PhenotypeSource[]);
     expect(data.length).toEqual(flatMockData.length - 1);
     expect(data[1].top_hits.parents).toBeEmpty;
   });
 
   it('should remove the default root node named Phenotypic abnormality (HP:0000118) from parents', () => {
-    const data = newStore.remoteSingleRootNode(flatMockData);
+    const data = newStore.remoteSingleRootNode(flatMockData as PhenotypeSource[]);
     expect(data.length).toEqual(flatMockData.length - 1);
     expect(data[1].top_hits.parents).toBeEmpty;
   });
@@ -115,23 +114,32 @@ describe('Phenotype Store', () => {
     it('should return the single note for that key', () => {
       // Count how many possible occurence
       const key =
-        'Phenotypic abnormality (HP:0000118)-Abnormality of the nervous system (HP:0000707)-Abnormality of nervous system physiology (HP:0012638)';
+        'Phenotypic abnormality (HP:0000118)-Abnormality of the nervous system (HP:0000707)-' +
+        'Abnormality of nervous system physiology (HP:0012638)';
       const node = newStore.getTreeNodeForKey(key);
-      expect(node.key).toEqual(key);
+      expect(node?.key).toEqual(key);
     });
   });
   describe('when request all node children key', () => {
     it('should return a list of all children keys', () => {
       // Count how many possible occurence
       const key =
-        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)-Abnormal eye physiology (HP:0012373)-Abnormality of vision (HP:0000504)';
+        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)-' +
+        'Abnormal eye physiology (HP:0012373)-Abnormality of vision (HP:0000504)';
       const node = newStore.getTreeNodeForKey(key);
-      const childrenkeys = newStore.getChildrenKeys(node, true);
+      let childrenkeys: string[] = [];
+      if (node) {
+        childrenkeys = newStore.getChildrenKeys(node, true);
+      }
       expect(childrenkeys).toContain(
-        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)-Abnormal eye physiology (HP:0012373)-Abnormality of vision (HP:0000504)-Visual impairment (HP:0000505)',
+        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)-' +
+          'Abnormal eye physiology (HP:0012373)-Abnormality of vision (HP:0000504)-' +
+          'Visual impairment (HP:0000505)',
       );
       expect(childrenkeys).toContain(
-        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)-Abnormal eye physiology (HP:0012373)-Abnormality of vision (HP:0000504)-Visual impairment (HP:0000505)-Reduced visual acuity (HP:0007663)',
+        'Phenotypic abnormality (HP:0000118)-Abnormality of the eye (HP:0000478)-' +
+          'Abnormal eye physiology (HP:0012373)-Abnormality of vision (HP:0000504)-' +
+          'Visual impairment (HP:0000505)-Reduced visual acuity (HP:0007663)',
       );
     });
   });

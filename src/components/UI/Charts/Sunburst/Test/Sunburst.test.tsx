@@ -10,7 +10,7 @@ describe('Sunburst', () => {
   let wrapper: ReactWrapper;
 
   beforeEach(() => {
-    wrapper = mount(<Sunburst data={treeData[0]} />);
+    wrapper = mount(<Sunburst data={treeData[0]} tooltipFormatter={() => {}} />);
   });
 
   afterAll(() => {

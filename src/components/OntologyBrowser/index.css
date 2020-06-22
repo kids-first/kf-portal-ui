@@ -43,3 +43,7 @@ h3.ant-typography {
 .ant-transfer .ant-transfer-list:last-child {
   width: 38%;
 }
+
+.text-color-TO-DELETE {
+  color: #515885;
+}

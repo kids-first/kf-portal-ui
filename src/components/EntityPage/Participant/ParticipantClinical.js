@@ -45,6 +45,15 @@ const PHENOTYPES_TABS = [
   },
 ];
 
+const filterOutParentDiagnoses = (diagnosis) => {
+  const diagnosisEdges = diagnosis?.mondo?.hits?.edges || [];
+  if (diagnosisEdges.length > 0) {
+    return diagnosisEdges[0].node?.is_tagged;
+  } else {
+    return true;
+  }
+};
+
 class ParticipantClinical extends React.Component {
   state = {
     diagnoses: [],
@@ -165,14 +174,6 @@ class ParticipantClinical extends React.Component {
     },
   ];
 
-  filterOutParentDiagnoses(diagnosis) {
-    if ((diagnosis?.mondo?.hits?.edges || []).length > 0) {
-      return diagnosis.mondo?.hits?.edges[0]?.node?.is_tagged;
-    } else {
-      return true;
-    }
-  }
-
   diagnosisIntoState(api) {
     function call(diagnosis) {
       return graphql(api)({
@@ -185,7 +186,7 @@ class ParticipantClinical extends React.Component {
       (ele) => Object.assign({}, get(ele, 'node', {})), //copy obj
     );
 
-    diagnoses = diagnoses.filter((d) => this.filterOutParentDiagnoses(d));
+    diagnoses = diagnoses.filter((d) => filterOutParentDiagnoses(d));
 
     Promise.all(
       (() => {
@@ -209,6 +210,7 @@ class ParticipantClinical extends React.Component {
           get(nums[i], 'data.participant.hits.total', '--'),
         );
       }
+
       this.setState({
         diagnoses: sanitize(diagnoses),
         hasLoadedDxs: true,

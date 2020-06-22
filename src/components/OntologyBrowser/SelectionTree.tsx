@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { Button, Col, Input, Row, Tag, Tree } from 'antd';
+import { Button, Col, Input, Row, Tree } from 'antd';
 import { TreeNode } from './store';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './SelectionTree.css';
+import TermCounts from './TermCounts';
 
 type SelectionTreeProps = {
   dataSource: TreeNode[];
@@ -59,25 +60,7 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     treeNodes
       .map(({ children, key, title, results, hidden, exactTagCount }: TreeNode) => {
         const renderedTitle = (
-          <Row justify="space-between" className={'fixed-width-100'}>
-            <Col>{title}</Col>
-            <Col className={'display-flex center-space-around'} style={{ width: 100 }}>
-              <Row className={'fixed-width-100'}>
-                <Col span={12} className={'flex-center'}>
-                  <Tag
-                    className={`label-document-count no-margins ${
-                      exactTagCount === 0 ? 'faded' : ''
-                    }`}
-                  >
-                    {exactTagCount}
-                  </Tag>
-                </Col>
-                <Col span={12} className={'flex-center'}>
-                  <Tag className="label-document-count no-margins">{results}</Tag>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          <TermCounts title={title} exactTagCount={exactTagCount} results={results} />
         );
         const isDisabled = targetKeys.includes(key || '') || disabled;
         const childrenShouldBeDisabled = checkedKeys.includes(key) || isDisabled;
@@ -233,13 +216,13 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
                 Clear
               </Button>
             </Col>
-            <Col style={{ display: 'flex', alignItems: 'center', paddingRight: 4 }}>
+            <Col className={'flex-align-items-center'} style={{ paddingRight: 4 }}>
               <Row style={{ width: 100 }}>
-                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
-                  <UserOutlined style={{ color: '#515885' }} />
+                <Col span={12} className={'flex-center'}>
+                  <UserOutlined className={'text-color-TO-DELETE'} />
                 </Col>
-                <Col span={12} style={{ display: 'flex', justifyContent: 'center' }}>
-                  <BranchesOutlined style={{ color: '#515885' }} />
+                <Col span={12} className={'flex-center'}>
+                  <BranchesOutlined className={'text-color-TO-DELETE'} />
                 </Col>
               </Row>
             </Col>

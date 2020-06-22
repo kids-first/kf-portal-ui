@@ -245,7 +245,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
             }}
           </Transfer>
         )}
-        <div style={{ color: '#515885' }}>
+        <div className={'text-color-TO-DELETE'}>
           <UserOutlined /> Participants with this exact term
           <BranchesOutlined style={{ paddingLeft: 20 }} /> Participants including descendant terms
         </div>

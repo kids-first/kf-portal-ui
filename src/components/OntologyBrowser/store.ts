@@ -1,6 +1,6 @@
 import { graphql } from '../../services/arranger';
 
-type PhenotypeSource = {
+export type PhenotypeSource = {
   key: string;
   doc_count: number;
   top_hits: {
@@ -20,6 +20,8 @@ export type TreeNode = {
   hidden?: boolean;
   depth?: number;
 };
+
+const dotToUnderscore = (str: string) => str.replace('.', '__');
 
 export class PhenotypeStore {
   // Flat representation of phenotype from graphql source
@@ -79,8 +81,9 @@ export class PhenotypeStore {
     key: parent ? `${parent.key}-${ontologySource.key}` : ontologySource.key,
     children: [],
     results: ontologySource.doc_count,
-    exactTagCount:
-      ontologySource.filter_by_term[`${exactTagField}.is_tagged.term_filter`].doc_count,
+    exactTagCount: ontologySource.filter_by_term
+      ? ontologySource.filter_by_term[`${exactTagField}.is_tagged.term_filter`].doc_count
+      : 0,
     value: ontologySource.doc_count,
     name: ontologySource.key,
     depth,
@@ -123,7 +126,7 @@ export class PhenotypeStore {
   ) => `query($sqon: JSON, $term_filters: JSON) {
     participant {
       aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
-        ${field.replace('.', '__')}__name {
+        ${dotToUnderscore(field)}__name {
           buckets{
             key,
             doc_count,
@@ -151,7 +154,7 @@ export class PhenotypeStore {
     };
     try {
       const { data } = await graphql()(body);
-      return data.data.participant.aggregations[field.replace('.', '__') + '__name'].buckets;
+      return data.data.participant.aggregations[dotToUnderscore(field) + '__name'].buckets;
     } catch (error) {
       // console.warn(error);
       return [];
