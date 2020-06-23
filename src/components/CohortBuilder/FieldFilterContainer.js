@@ -1,16 +1,36 @@
 import React, { useState } from 'react';
-
+import PropTypes from 'prop-types';
 import Row from 'uikit/Row';
 import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import { container, containerContent, footer, header } from './FieldFilterContainer.module.css';
 
-const FilterContainer = props => (
+const FilterContainer = (props) => (
   <div className={`${container} ${props.className}`}>{props.children}</div>
 );
-const Header = props => <div className={header}>{props.children}</div>;
-const Footer = props => <Row className={footer}>{props.children}</Row>;
+
+FilterContainer.propTypes = {
+  children: PropTypes.element.isRequired,
+  className: PropTypes.string,
+};
+
+const Header = (props) => <div className={header}>{props.children}</div>;
+
+Header.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+const Footer = (props) => <Row className={footer}>{props.children}</Row>;
+
+Footer.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+const findAllCheckedBoxes = (el) => el.querySelectorAll('input[type="checkbox"]:checked');
+const findAllActiveToggles = (el) => el.querySelectorAll('div.toggle-button-option.active');
+const findAllRanges = (el) =>
+  el.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
 
 export const FieldFilterContainer = ({
   children,
@@ -22,29 +42,35 @@ export const FieldFilterContainer = ({
   className = '',
 }) => {
   const [isDisabled, setDisabled] = useState(true);
-  const hasSelectedElements = handler => {
-    const checkboxes = handler.parentElement.parentElement.parentElement.querySelectorAll(
-      'input[type="checkbox"]:checked',
-    );
-    const toggles = handler.parentElement.parentElement.querySelectorAll(
-      'div.toggle-button-option.active',
-    );
+
+  const hasSelectedElements = () => {
+    const termsWrapperElement = document.getElementById('terms-wrapper');
+
+    const checkboxes = findAllCheckedBoxes(termsWrapperElement);
+    const toggles = findAllActiveToggles(termsWrapperElement);
+    const rangeNodes = findAllRanges(termsWrapperElement);
+
     let ranges = 0;
-    const rangeNodes = handler.parentElement.parentElement.parentElement.querySelectorAll(
-      'div.rangeInputContainer input.rangeFilterInput:not([disabled])',
-    );
     rangeNodes.forEach((input, key) => {
       const node = rangeNodes.item(key);
       if (node.value.length > 0 && node.value > -1) {
         ranges++;
       }
     });
-    return setDisabled(
-      checkboxes.length < 1 &&
-        toggles.length < 1 &&
-        (ranges < rangeNodes.length || rangeNodes.length === 0),
-    );
+
+    const hasNoCheckedBox = checkboxes.length < 1;
+    const hasNoActiveToggle = toggles.length < 1;
+    const hasEmptyOrIncompleteRange = ranges < rangeNodes.length || rangeNodes.length === 0;
+
+    return setDisabled(hasNoCheckedBox && hasNoActiveToggle && hasEmptyOrIncompleteRange);
   };
+
+  const wrapperHandler = () => {
+    setTimeout(() => {
+      hasSelectedElements();
+    }, 50);
+  };
+
   return (
     <FilterContainer className={className}>
       {showHeader && (
@@ -55,19 +81,10 @@ export const FieldFilterContainer = ({
         </Header>
       )}
       <div
+        id={'terms-wrapper'}
         className={`${containerContent} filterContainer`}
-        onClick={e => {
-          const eventTarget = e.target;
-          setTimeout(() => {
-            hasSelectedElements(eventTarget);
-          }, 100);
-        }}
-        onKeyUp={e => {
-          const eventTarget = e.target;
-          setTimeout(() => {
-            hasSelectedElements(eventTarget);
-          }, 100);
-        }}
+        onClick={wrapperHandler}
+        onKeyUp={wrapperHandler}
       >
         {children}
       </div>
@@ -79,4 +96,14 @@ export const FieldFilterContainer = ({
       </Footer>
     </FilterContainer>
   );
+};
+
+FieldFilterContainer.propTypes = {
+  children: PropTypes.element.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onBack: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  applyEnabled: PropTypes.bool,
+  showHeader: PropTypes.bool,
 };
