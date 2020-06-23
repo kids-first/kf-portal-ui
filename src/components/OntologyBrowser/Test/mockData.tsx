@@ -158,11 +158,15 @@ export const treeData: TreeNode[] = [
     title: 'Abnormality of the integument (HP:0001574)',
     text: 'Abnormality of the integument (HP:0001574)',
     key: 'Abnormality of the integument (HP:0001574)',
+    results: 12,
+    exactTagCount: 0,
     children: [
       {
         title: 'Abnormality of the skin (HP:0000951)',
         text: 'Abnormality of the skin (HP:0000951)',
         key: 'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)',
+        results: 6,
+        exactTagCount: 2,
         children: [
           {
             title: 'Abnormality of skin morphology (HP:0011121)',
@@ -170,6 +174,8 @@ export const treeData: TreeNode[] = [
             key:
               'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)' +
               '-Abnormality of skin morphology (HP:0011121)',
+            results: 4,
+            exactTagCount: 4,
             children: [],
           },
         ],
@@ -180,6 +186,8 @@ export const treeData: TreeNode[] = [
         key:
           'Abnormality of the integument (HP:0001574)-' +
           'Abnormality of skin adnexa morphology (HP:0011138)',
+        results: 6,
+        exactTagCount: 1,
         children: [
           {
             title: 'Skin appendage neoplasm (HP:0012842)',
@@ -188,6 +196,8 @@ export const treeData: TreeNode[] = [
               'Abnormality of the integument (HP:0001574)-' +
               'Abnormality of skin adnexa morphology (HP:0011138)-' +
               'Skin appendage neoplasm (HP:0012842)',
+            results: 2,
+            exactTagCount: 2,
             children: [],
           },
           {
@@ -197,6 +207,8 @@ export const treeData: TreeNode[] = [
               'Abnormality of the integument (HP:0001574)-' +
               'Abnormality of skin adnexa morphology (HP:0011138)-' +
               'Abnormal hair morphology (HP:0001595)',
+            results: 2,
+            exactTagCount: 2,
             children: [],
           },
           {
@@ -206,6 +218,8 @@ export const treeData: TreeNode[] = [
               'Abnormality of the integument (HP:0001574)-' +
               'Abnormality of skin adnexa morphology (HP:0011138)-' +
               'Custom term xyz',
+            results: 1,
+            exactTagCount: 1,
             children: [],
           },
         ],

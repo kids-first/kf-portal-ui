@@ -71,6 +71,18 @@ export default `query ($sqon: JSON) {
                   source_text_tumor_location
                   spatial_descriptor
                   uberon_id_tumor_location
+                  is_tagged
+                  mondo {
+                    hits {
+                      edges {
+                        node {
+                          is_leaf
+                          name
+                          is_tagged
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }

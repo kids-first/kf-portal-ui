@@ -37,6 +37,36 @@
   background-color: #f7ed9c;
 }
 
+.display-flex {
+  display: flex;
+}
+
+.center-space-around {
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flex-center {
+  justify-content: center !important;
+  display: flex !important;
+}
+
+.flex-align-items-center {
+  align-items: center ;
+  display: flex;
+}
+
+.fixed-width-100{
+  width: 100%;
+}
+
+.faded {
+  opacity: 0.4;
+}
+.no-margins{
+  margin: 0;
+}
+
 /*TO BE DELETED*/
 .ant-tree-custom-TO-DELETE div {
   font-family: 'Open Sans';
@@ -44,6 +74,10 @@
   font-weight: normal;
   font-size: 14px;
   line-height: 22px !important;
+  color: #515885;
+}
+
+.text-color-TO-DELETE {
   color: #515885;
 }
 

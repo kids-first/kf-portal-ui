@@ -6,6 +6,7 @@ import { SelectionTree } from './SelectionTree';
 import { PhenotypeStore, TreeNode } from './store';
 import { Spinner } from 'uikit/Spinner';
 import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
+import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './index.css';
 
@@ -25,8 +26,6 @@ type ModalState = {
   isLoading: boolean;
   error?: Error | null;
 };
-
-const ontologyRegex = new RegExp('([A-Za-z_]+).name');
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
   if (initialSqon.content as SqonFilters[]) {
@@ -69,10 +68,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   ontologyStore: PhenotypeStore;
 
   componentDidMount(): void {
-    const match: RegExpMatchArray | null = this.props.selectedField.match(ontologyRegex);
-    if (match) {
-      this.updateData(match[1]);
-    }
+    this.updateData(this.props.selectedField.replace(/\.[^.]*$/, ''));
   }
 
   getKeyFromTreeId = (treeId: string) => {
@@ -178,10 +174,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
     const { isVisible } = this.props;
     if (nextProps.isVisible && !isVisible) {
       // opening the modal again
-      const match: RegExpMatchArray | null = this.props.selectedField.match(ontologyRegex);
-      if (match) {
-        this.updateData(match[1]);
-      }
+      this.updateData(this.props.selectedField.replace(/\.[^.]*$/, ''));
       return false;
     } else if (!nextProps.isVisible && !isVisible) {
       // Closing the modal
@@ -245,12 +238,17 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                     checkedKeys={checkedKeys}
                     targetKeys={targetKeys}
                     onItemSelectAll={onItemSelectAll}
+                    selectedField={this.props.selectedField}
                   />
                 );
               }
             }}
           </Transfer>
         )}
+        <div className={'text-color-TO-DELETE'}>
+          <UserOutlined /> Participants with this exact term
+          <BranchesOutlined style={{ paddingLeft: 20 }} /> Participants including descendant terms
+        </div>
       </Modal>
     );
   }
