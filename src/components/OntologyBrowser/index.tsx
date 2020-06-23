@@ -50,6 +50,24 @@ const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) 
   return initialSqon;
 };
 
+const termRegex = new RegExp('[^-]+$');
+
+export const removeSameTerms = (selecteKeys: string[], targetKeys: string[]) => {
+  let updatedTargetKeys = targetKeys;
+
+  selecteKeys.map((t) => {
+    const match = t.match(termRegex);
+    if (match) {
+      const term = match.pop();
+
+      //pattern of term with escaped parentheses
+      const termPattern = new RegExp(`.*${term?.replace(/(?=[()])/g, '\\')}$`);
+      updatedTargetKeys = updatedTargetKeys.filter((t) => !termPattern.test(t));
+    }
+  });
+  return [...updatedTargetKeys, ...selecteKeys];
+};
+
 class OntologyModal extends React.Component<ModalProps, ModalState> {
   constructor(props: ModalProps) {
     super(props);
@@ -135,7 +153,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
         }
       });
       this.setState({
-        targetKeys: cleanedTargetKeys,
+        targetKeys: removeSameTerms(moveKeys, cleanedTargetKeys),
       });
     } else if (direction === 'left') {
       this.setState({
@@ -230,7 +248,8 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 return <Spinner className={'spinner'} size={'large'} />;
               }
               if (direction === 'left' && treeSource) {
-                const checkedKeys = [...selectedKeys, ...targetKeys];
+                // fixme remove same terms
+                const checkedKeys = [...selectedKeys, ...removeSameTerms(selectedKeys, targetKeys)];
                 return (
                   <SelectionTree
                     dataSource={treeSource || []}
