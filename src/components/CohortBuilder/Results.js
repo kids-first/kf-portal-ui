@@ -229,7 +229,7 @@ const Results = ({
                         </div>
                       </h3>
                     ) : (
-                      <div className="cb-summary-files">
+                      <div>
                         <ButtonWithRouter
                           getLink={
                             hasNoCohortQuery
