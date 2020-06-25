@@ -19,7 +19,7 @@ const trackDownload = async (label: string) => {
   });
 };
 
-export const RP_PARTICIPANT_FILE_REPO_KEY = 'clinicalData';
+export const RP_PARTICIPANT_FILE_REPO_KEY = 'clinicalDataFileRepo';
 export const RP_CLINICAL_DATA_KEY = 'clinicalData';
 export const RP_FAM_CLINICAL_DATA_KEY = 'familyClinicalData';
 export const RP_FAM_CLINICAL_DATA_FILE_REPO_KEY = 'familyClinicalDataFileRepo';
@@ -29,7 +29,7 @@ export const RP_BIOSPECIMEN_FILE_REPO_DATA_KEY = 'biospecimenDataFileRepo';
 const entry = reportsApiRoot;
 
 const REPORTS_ROUTES = {
-  [RP_PARTICIPANT_FILE_REPO_KEY]: `${entry}/reports/clinical-data-participants-only`,
+  [RP_PARTICIPANT_FILE_REPO_KEY]: `${entry}/reports/clinical-data`,
   [RP_CLINICAL_DATA_KEY]: `${entry}/reports/clinical-data`,
   [RP_FAM_CLINICAL_DATA_KEY]: `${entry}/reports/family-clinical-data`,
   [RP_FAM_CLINICAL_DATA_FILE_REPO_KEY]: `${entry}/reports/family-clinical-data`,
