@@ -1,5 +1,5 @@
 import React from 'react';
-import OntologyModal, { removeSameTerms } from '../index';
+import OntologyModal from '../index';
 import { configure, mount, ReactWrapper, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { Spinner } from 'uikit/Spinner';
@@ -148,46 +148,5 @@ describe('Ontology Modal', () => {
 
     expect(wrapperInstance.instance().getKeysFromSqon().sort()).toEqual(expectedResult.sort());
     expect(wrapperInstanceCombine.instance().getKeysFromSqon().sort()).toEqual([]);
-  });
-
-  it('should not select multiple times the same term', () => {
-    const selecteKeys = ['one-two-this (1234)'];
-    const targetKeys = [
-      'toto-tata-this (1234)',
-      'other-someother-that (5678)',
-      'pif-paf-this (1001)',
-    ];
-
-    const selecteKeys2 = [
-      'Phenotypic abnormality (HP:0000118)-Abnormality of the skeletal system (HP:0000924)-' +
-        'Abnormality of skeletal morphology (HP:0011842)-' +
-        'Abnormal appendicular skeleton morphology (HP:0011844)-' +
-        'Abnormality of limb bone morphology (HP:0002813)-' +
-        'Abnormal lower limb bone morphology (HP:0040069)',
-    ];
-    const targetKeys2 = [
-      'Phenotypic abnormality (HP:0000118)-Abnormality of the skeletal system (HP:0000924)-' +
-        'Abnormality of skeletal morphology (HP:0011842)-' +
-        'Abnormal appendicular skeleton morphology (HP:0011844)-' +
-        'Abnormality of limb bone morphology (HP:0002813)-' +
-        'Abnormal lower limb bone morphology (HP:0040069)',
-      'Phenotypic abnormality (HP:0000118)-Abnormality of limbs (HP:0040064)-' +
-        'Abnormality of limb bone (HP:0040068)-Abnormality of limb bone morphology (HP:0002813)-' +
-        'Abnormal lower limb bone morphology (HP:0040069)',
-    ];
-
-    const res = removeSameTerms(selecteKeys, targetKeys);
-    expect(res.sort()).toEqual(
-      ['one-two-this (1234)', 'other-someother-that (5678)', 'pif-paf-this (1001)'].sort(),
-    );
-
-    const res2 = removeSameTerms(selecteKeys2, targetKeys2);
-    expect(res2).toEqual([
-      'Phenotypic abnormality (HP:0000118)-Abnormality of the skeletal system (HP:0000924)-' +
-        'Abnormality of skeletal morphology (HP:0011842)-' +
-        'Abnormal appendicular skeleton morphology (HP:0011844)-' +
-        'Abnormality of limb bone morphology (HP:0002813)-' +
-        'Abnormal lower limb bone morphology (HP:0040069)',
-    ]);
   });
 });

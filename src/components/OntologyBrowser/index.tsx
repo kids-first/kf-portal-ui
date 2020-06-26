@@ -3,7 +3,7 @@ import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
-import { PhenotypeStore, TreeNode } from './store';
+import { PhenotypeStore, TreeNode, removeSameTerms, selectSameTerms } from './store';
 import { Spinner } from 'uikit/Spinner';
 import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
@@ -27,8 +27,14 @@ type ModalState = {
   error?: Error | null;
 };
 
-//pattern of term with escaped parentheses
-const termPattern = (term: string) => new RegExp(`.*${term?.replace(/(?=[()])/g, '\\')}$`);
+const desactivateAllSameTerms = (allSameTerms: string[], transferItems: TransferItem[]) =>
+  transferItems.map((t) => {
+    if (allSameTerms.includes(t.key)) {
+      return Object.assign(t, { disabled: true });
+    } else if (t.disabled) {
+      return Object.assign(t, { disabled: !t.disabled });
+    } else return t;
+  });
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
   if (initialSqon.content as SqonFilters[]) {
@@ -51,62 +57,6 @@ const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) 
   }
 
   return initialSqon;
-};
-
-const termRegex = new RegExp('[^-]+$');
-
-//move to utils
-export const removeSameTerms = (selectedKeys: string[], targetKeys: string[]) => {
-  let updatedTargetKeys = targetKeys;
-
-  selectedKeys.forEach((t) => {
-    const match = t.match(termRegex);
-    if (match) {
-      const term = match.pop();
-
-      if (term) {
-        const pattern = termPattern(term);
-        updatedTargetKeys = updatedTargetKeys.filter((t) => !pattern.test(t));
-      }
-    }
-  });
-  return [...updatedTargetKeys, ...selectedKeys];
-};
-
-export const selectSameTerms = (selectedKeys: string[], tree: TreeNode[] | undefined) => {
-  let enhancedSelectedKeys: string[] = [];
-  if (tree) {
-    selectedKeys.forEach((k) => {
-      const match = k.match(termRegex);
-      if (match) {
-        const toto = match.pop();
-        enhancedSelectedKeys = [
-          ...enhancedSelectedKeys,
-          ...findAllSameTerms(k, toto || '', tree[0]),
-        ];
-      }
-    });
-  }
-
-  return enhancedSelectedKeys;
-};
-
-const findAllSameTerms = (
-  termKey: string,
-  searchKey: string,
-  treeNode: TreeNode,
-  sameTermKeys: string[] = [],
-) => {
-  const termPattern = new RegExp(`.*${searchKey.replace(/(?=[()])/g, '\\')}$`);
-
-  if (termPattern.test(treeNode.key) && termKey !== treeNode.key) {
-    sameTermKeys.push(treeNode.key);
-  }
-
-  if (treeNode.children.length > 0) {
-    treeNode.children.forEach((t) => findAllSameTerms(termKey, searchKey, t, sameTermKeys));
-  }
-  return sameTermKeys;
 };
 
 class OntologyModal extends React.Component<ModalProps, ModalState> {
@@ -252,18 +202,12 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
     const allSameTerms = selectSameTerms(targetKeys, treeSource);
     const dataSource = this.transfertDataSource;
-    const disabledSameTerms = dataSource.map((t) => {
-      if (allSameTerms.includes(t.key)) {
-        return Object.assign(t, { disabled: true });
-      } else if (t.disabled === true) {
-        return Object.assign(t, { disabled: !t.disabled });
-      } else return t;
-    });
+    const disabledSameTerms = desactivateAllSameTerms(allSameTerms, dataSource);
 
     return (
       <Modal
         style={{ height: '80vh', maxWidth: 1400 }}
-        title={title + ' Browser'}
+        title={`${title} Browser`}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
         okText={'Apply'}
@@ -299,7 +243,6 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 return <Spinner className={'spinner'} size={'large'} />;
               }
               if (direction === 'left' && treeSource) {
-                // fixme remove same terms
                 const checkedKeys = [...selectedKeys, ...removeSameTerms(selectedKeys, targetKeys)];
                 return (
                   <SelectionTree

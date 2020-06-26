@@ -1,5 +1,11 @@
-import { PhenotypeSource, PhenotypeStore, TreeNode } from '../store';
-import { flatMockData } from './mockData';
+import {
+  PhenotypeSource,
+  PhenotypeStore,
+  removeSameTerms,
+  selectSameTerms,
+  TreeNode,
+} from '../store';
+import { flatMockData, treeData } from './mockData';
 
 describe('Phenotype Store', () => {
   let newStore: PhenotypeStore;
@@ -142,5 +148,30 @@ describe('Phenotype Store', () => {
           'Visual impairment (HP:0000505)-Reduced visual acuity (HP:0007663)',
       );
     });
+  });
+
+  it('/removeSameTerms should prohibit selecting multiple times the same term', () => {
+    const selecteKeys = ['ONE-two-three (123)'];
+    const targetKeys = ['two-ONE-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'];
+
+    const res = removeSameTerms(selecteKeys, targetKeys);
+    expect(res.sort()).toEqual(
+      ['ONE-two-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'].sort(),
+    );
+  });
+
+  it('/selectSameTerms should return all keys of same terms from tree', () => {
+    const selectedKeys = [
+      'Abnormality of the integument (HP:0001574)-' +
+        'Abnormality of skin adnexa morphology (HP:0011138)-' +
+        'Skin appendage neoplasm (HP:0012842)',
+    ];
+    const res = selectSameTerms(selectedKeys, treeData);
+    const output = [
+      'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)' +
+        '-Abnormality of skin morphology (HP:0011121)' +
+        'Skin appendage neoplasm (HP:0012842)',
+    ];
+    expect(res).toEqual(output);
   });
 });
