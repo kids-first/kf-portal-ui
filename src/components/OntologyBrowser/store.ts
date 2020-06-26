@@ -19,6 +19,7 @@ export type TreeNode = {
   exactTagCount?: number;
   hidden?: boolean;
   depth?: number;
+  disabled?: boolean;
 };
 
 const dotToUnderscore = (str: string) => str.replace('.', '__');
@@ -87,6 +88,7 @@ export class PhenotypeStore {
     value: ontologySource.doc_count,
     name: ontologySource.key,
     depth,
+    disabled: false,
   });
 
   getTreeNodeForKey = (key: string, treeNode = this.tree): TreeNode | null => {

@@ -27,6 +27,9 @@ type ModalState = {
   error?: Error | null;
 };
 
+//pattern of term with escaped parentheses
+const termPattern = (term: string) => new RegExp(`.*${term?.replace(/(?=[()])/g, '\\')}$`);
+
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
   if (initialSqon.content as SqonFilters[]) {
     const content = initialSqon.content as SqonFilters[];
@@ -52,20 +55,58 @@ const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) 
 
 const termRegex = new RegExp('[^-]+$');
 
-export const removeSameTerms = (selecteKeys: string[], targetKeys: string[]) => {
+//move to utils
+export const removeSameTerms = (selectedKeys: string[], targetKeys: string[]) => {
   let updatedTargetKeys = targetKeys;
 
-  selecteKeys.map((t) => {
+  selectedKeys.forEach((t) => {
     const match = t.match(termRegex);
     if (match) {
       const term = match.pop();
 
-      //pattern of term with escaped parentheses
-      const termPattern = new RegExp(`.*${term?.replace(/(?=[()])/g, '\\')}$`);
-      updatedTargetKeys = updatedTargetKeys.filter((t) => !termPattern.test(t));
+      if (term) {
+        const pattern = termPattern(term);
+        updatedTargetKeys = updatedTargetKeys.filter((t) => !pattern.test(t));
+      }
     }
   });
-  return [...updatedTargetKeys, ...selecteKeys];
+  return [...updatedTargetKeys, ...selectedKeys];
+};
+
+export const selectSameTerms = (selectedKeys: string[], tree: TreeNode[] | undefined) => {
+  let enhancedSelectedKeys: string[] = [];
+  if (tree) {
+    selectedKeys.forEach((k) => {
+      const match = k.match(termRegex);
+      if (match) {
+        const toto = match.pop();
+        enhancedSelectedKeys = [
+          ...enhancedSelectedKeys,
+          ...findAllSameTerms(k, toto || '', tree[0]),
+        ];
+      }
+    });
+  }
+
+  return enhancedSelectedKeys;
+};
+
+const findAllSameTerms = (
+  termKey: string,
+  searchKey: string,
+  treeNode: TreeNode,
+  sameTermKeys: string[] = [],
+) => {
+  const termPattern = new RegExp(`.*${searchKey.replace(/(?=[()])/g, '\\')}$`);
+
+  if (termPattern.test(treeNode.key) && termKey !== treeNode.key) {
+    sameTermKeys.push(treeNode.key);
+  }
+
+  if (treeNode.children.length > 0) {
+    treeNode.children.forEach((t) => findAllSameTerms(termKey, searchKey, t, sameTermKeys));
+  }
+  return sameTermKeys;
 };
 
 class OntologyModal extends React.Component<ModalProps, ModalState> {
@@ -140,6 +181,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   onChange = (nextTargetKeys: string[], direction: string, moveKeys: string[]) => {
     const { targetKeys } = this.state;
+
     // Children should be removed from target since only the upper most phenotype should be keep
     let cleanedTargetKeys = nextTargetKeys;
     if (direction === 'right') {
@@ -206,8 +248,17 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   render() {
     const { isVisible, title } = this.props;
     const { error, targetKeys, isLoading, treeSource } = this.state;
-    const dataSource = this.transfertDataSource;
     const hasError = error != null;
+
+    const allSameTerms = selectSameTerms(targetKeys, treeSource);
+    const dataSource = this.transfertDataSource;
+    const disabledSameTerms = dataSource.map((t) => {
+      if (allSameTerms.includes(t.key)) {
+        return Object.assign(t, { disabled: true });
+      } else if (t.disabled === true) {
+        return Object.assign(t, { disabled: !t.disabled });
+      } else return t;
+    });
 
     return (
       <Modal
@@ -229,7 +280,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           />
         ) : (
           <Transfer
-            dataSource={dataSource}
+            dataSource={disabledSameTerms}
             targetKeys={targetKeys}
             onChange={this.onChange}
             render={(item: TransferItem): RenderResult => item.title || item.key}
