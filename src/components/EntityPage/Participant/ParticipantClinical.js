@@ -142,10 +142,10 @@ class ParticipantClinical extends React.Component {
     },
   ];
 
-  phenoHeads = [
+  phenoHeads = () => [
     {
       Header: 'Phenotype (HPO)',
-      accessor: 'hpo_phenotype_not_observed',
+      accessor: this.state.activePhenotypeTab.accessor,
       Cell: (wrapper) => (wrapper.value === '--' ? <div>--</div> : <HPOLink hpo={wrapper.value} />),
     },
     {
@@ -378,7 +378,7 @@ class ParticipantClinical extends React.Component {
             defaultTab={tabsWithActive.find((t) => !t.isDisabled).accessor}
           >
             <ParticipantDataTable
-              columns={this.phenoHeads}
+              columns={this.phenoHeads()}
               data={phenotypes.filter(
                 (p) => p.interpretation === this.state.activePhenotypeTab.tabName,
               )}
