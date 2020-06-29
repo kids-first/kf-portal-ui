@@ -1,6 +1,8 @@
+export type SqonContent = { field: string; value: string[] | string };
+
 export type SqonFilters = {
   op: string;
-  content: { field: string; value: string[] };
+  content: SqonContent;
 };
 
 export type Sqon = {
