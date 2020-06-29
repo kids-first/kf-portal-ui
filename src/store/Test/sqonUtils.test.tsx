@@ -11,7 +11,7 @@ import {
 
 describe('SqonUtils', () => {
   describe('removeSaveSetFilters', () => {
-    it('should remove sqon filter related to save set when there is a save set', async () => {
+    it('should remove sqon filter related to save set when there is a save set', () => {
       const sqonFilters = fileCentricSqonWithSaveSet.content;
       const sqonFiltersWithoutSaveSet = removeSaveSetFilters(sqonFilters);
       expect(sqonFiltersWithoutSaveSet).toEqual([
@@ -25,20 +25,20 @@ describe('SqonUtils', () => {
       ]);
     });
 
-    it('should keep sqon filter intact when no save set', async () => {
+    it('should keep sqon filter intact when no save set', () => {
       const sqonFilters = fileCentricSqonWithoutSaveSet.content;
       expect(removeSaveSetFilters(sqonFilters)).toEqual(sqonFilters);
     });
   });
 
   describe('extractSaveSetIdsFromSqon', () => {
-    it('should extract saveSet id when needed', async () => {
+    it('should extract saveSet id when needed', () => {
       expect(extractSaveSetIdsFromSqon(fileCentricSqonWithSaveSet)).toEqual([
         '8df9c858-c1ca-45da-a3cf-2ac07b318911',
       ]);
     });
 
-    it('should return an empty array when there is no save set', async () => {
+    it('should return an empty array when there is no save set', () => {
       expect(extractSaveSetIdsFromSqon(fileCentricSqonWithoutSaveSet)).toEqual([]);
     });
   });
