@@ -66,7 +66,7 @@ describe('In EntityContentSection', () => {
         {children}
       </EntityContentSection>,
     );
-    expect(wrapper.find('#tab-tab_1_accessor').props()['aria-disabled']).toBe('true');
+    expect(wrapper.find('#tab-tab_1_accessor')).toEqual({});
     expect(wrapper.find('#tab-tab_2_accessor').props()['aria-disabled']).toBe('false');
     wrapper.unmount();
   });
