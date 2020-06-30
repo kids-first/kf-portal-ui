@@ -273,7 +273,21 @@ class ParticipantClinical extends React.Component {
         );
       }
 
-      this.setState({ phenotypes: sanitize(phenotypes), hasLoadedPhenotypes: true }); //once we're ready, just tell the state, it'll do the rest
+      const sanitizePhenotypes = sanitize(phenotypes);
+      const hasObserved = sanitizePhenotypes.filter((t) => t.interpretation === 'Observed') > 0;
+      this.setState({
+        phenotypes: sanitizePhenotypes,
+        hasLoadedPhenotypes: true,
+        activePhenotypeTab: hasObserved
+          ? {
+              tabName: 'Observed',
+              accessor: 'hpo_phenotype_observed',
+            }
+          : {
+              tabName: 'Not Observed',
+              accessor: 'hpo_phenotype_not_observed',
+            },
+      }); //once we're ready, just tell the state, it'll do the rest
     });
   }
 

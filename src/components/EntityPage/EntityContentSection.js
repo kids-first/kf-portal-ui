@@ -13,11 +13,13 @@ const EntityContentSection = ({ title, children, size, tabs, setActiveTab, defau
     <h2 className={`entityContentSection-title ${size}`}>{title}</h2>
     {tabs && tabs.some((t) => !t.isDisabled) ? (
       <Tabs defaultActiveKey={defaultTab} onChange={setActiveTab}>
-        {tabs.map((t) => (
-          <TabPane tab={t.tabName} key={t.accessor} disabled={t.isDisabled}>
-            <div className="entityContentSection-content">{children}</div>
-          </TabPane>
-        ))}
+        {tabs
+          .filter((t) => !t.isDisabled)
+          .map((t) => (
+            <TabPane tab={t.tabName} key={t.accessor} disabled={t.isDisabled}>
+              <div className="entityContentSection-content">{children}</div>
+            </TabPane>
+          ))}
       </Tabs>
     ) : (
       <div className="entityContentSection-content">{children}</div>
