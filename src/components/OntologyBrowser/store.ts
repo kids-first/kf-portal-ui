@@ -19,9 +19,69 @@ export type TreeNode = {
   exactTagCount?: number;
   hidden?: boolean;
   depth?: number;
+  disabled?: boolean;
 };
 
 const dotToUnderscore = (str: string) => str.replace('.', '__');
+
+const termRegex = new RegExp('[^-]+$');
+
+//pattern of term with escaped parentheses
+const termPattern = (term: string) => new RegExp(`.*${term?.replace(/(?=[()])/g, '\\')}$`);
+
+export const removeSameTerms = (selectedKeys: string[], targetKeys: string[]) => {
+  let updatedTargetKeys = targetKeys;
+
+  selectedKeys.forEach((t) => {
+    const match = t.match(termRegex);
+    if (match) {
+      const term = match.pop();
+
+      if (term) {
+        const pattern = termPattern(term);
+        updatedTargetKeys = updatedTargetKeys.filter((t) => !pattern.test(t));
+      }
+    }
+  });
+  return [...updatedTargetKeys, ...selectedKeys];
+};
+
+export const selectSameTerms = (selectedKeys: string[], tree: TreeNode[] | undefined) => {
+  let enhancedSelectedKeys: string[] = [];
+
+  if (!tree) return [];
+
+  selectedKeys.forEach((k) => {
+    const match = k.match(termRegex);
+    if (match) {
+      const matched = match.pop();
+      enhancedSelectedKeys = [
+        ...enhancedSelectedKeys,
+        ...findAllSameTerms(k, matched || '', tree[0]),
+      ];
+    }
+  });
+
+  return enhancedSelectedKeys;
+};
+
+const findAllSameTerms = (
+  termKey: string,
+  searchKey: string,
+  treeNode: TreeNode,
+  sameTermKeys: string[] = [],
+) => {
+  const termPattern = new RegExp(`.*${searchKey.replace(/(?=[()])/g, '\\')}$`);
+
+  if (termPattern.test(treeNode.key) && termKey !== treeNode.key) {
+    sameTermKeys.push(treeNode.key);
+  }
+
+  if (treeNode.children.length > 0) {
+    treeNode.children.forEach((t) => findAllSameTerms(termKey, searchKey, t, sameTermKeys));
+  }
+  return sameTermKeys;
+};
 
 export class PhenotypeStore {
   // Flat representation of phenotype from graphql source
@@ -87,6 +147,7 @@ export class PhenotypeStore {
     value: ontologySource.doc_count,
     name: ontologySource.key,
     depth,
+    disabled: false,
   });
 
   getTreeNodeForKey = (key: string, treeNode = this.tree): TreeNode | null => {

@@ -55,20 +55,20 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     treeNodes: TreeNode[] = [],
     checkedKeys: string[] = [],
     targetKeys: string[] = [],
-    disabled: boolean = false,
+    treeDisabled: boolean = false,
   ): TreeNode[] =>
     treeNodes
-      .map(({ children, key, title, results, hidden, exactTagCount }: TreeNode) => {
+      .map(({ children, key, title, results, hidden, exactTagCount, disabled }: TreeNode) => {
         const renderedTitle = (
           <TermCounts title={title} exactTagCount={exactTagCount} results={results} />
         );
-        const isDisabled = targetKeys.includes(key || '') || disabled;
+        const isDisabled = targetKeys.includes(key || '') || treeDisabled;
         const childrenShouldBeDisabled = checkedKeys.includes(key) || isDisabled;
         return {
           key: key,
           title: renderedTitle,
           text: title,
-          disabled: isDisabled,
+          disabled: isDisabled || disabled,
           children: this.generateTree(children, checkedKeys, targetKeys, childrenShouldBeDisabled),
           hasChildren: true,
           results: 324,

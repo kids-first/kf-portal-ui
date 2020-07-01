@@ -88,7 +88,20 @@ describe('In SelectionTree', () => {
                 hidden: true,
                 results: 4,
                 exactTagCount: 4,
-                children: [],
+                children: [
+                  {
+                    title: 'Skin appendage neoplasm (HP:0012842)',
+                    text: 'Skin appendage neoplasm (HP:0012842)',
+                    key:
+                      'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)' +
+                      '-Abnormality of skin morphology (HP:0011121)' +
+                      'Skin appendage neoplasm (HP:0012842)',
+                    results: 2,
+                    exactTagCount: 2,
+                    children: [],
+                    hidden: true,
+                  },
+                ],
               },
             ],
           },

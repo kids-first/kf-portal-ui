@@ -3,7 +3,7 @@ import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
-import { PhenotypeStore, TreeNode } from './store';
+import { PhenotypeStore, TreeNode, removeSameTerms, selectSameTerms } from './store';
 import { Spinner } from 'uikit/Spinner';
 import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
@@ -26,6 +26,15 @@ type ModalState = {
   isLoading: boolean;
   error?: Error | null;
 };
+
+const desactivateAllSameTerms = (allSameTerms: string[], transferItems: TransferItem[]) =>
+  transferItems.map((t) => {
+    if (allSameTerms.includes(t.key)) {
+      return Object.assign(t, { disabled: true });
+    } else if (t.disabled) {
+      return Object.assign(t, { disabled: !t.disabled });
+    } else return t;
+  });
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
   if (initialSqon.content as SqonFilters[]) {
@@ -122,6 +131,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   onChange = (nextTargetKeys: string[], direction: string, moveKeys: string[]) => {
     const { targetKeys } = this.state;
+
     // Children should be removed from target since only the upper most phenotype should be keep
     let cleanedTargetKeys = nextTargetKeys;
     if (direction === 'right') {
@@ -135,7 +145,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
         }
       });
       this.setState({
-        targetKeys: cleanedTargetKeys,
+        targetKeys: removeSameTerms(moveKeys, cleanedTargetKeys),
       });
     } else if (direction === 'left') {
       this.setState({
@@ -188,13 +198,16 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   render() {
     const { isVisible, title } = this.props;
     const { error, targetKeys, isLoading, treeSource } = this.state;
-    const dataSource = this.transfertDataSource;
     const hasError = error != null;
+
+    const allSameTerms = selectSameTerms(targetKeys, treeSource);
+    const dataSource = this.transfertDataSource;
+    const disabledSameTerms = desactivateAllSameTerms(allSameTerms, dataSource);
 
     return (
       <Modal
         style={{ height: '80vh', maxWidth: 1400 }}
-        title={title + ' Browser'}
+        title={`${title} Browser`}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
         okText={'Apply'}
@@ -211,7 +224,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           />
         ) : (
           <Transfer
-            dataSource={dataSource}
+            dataSource={disabledSameTerms}
             targetKeys={targetKeys}
             onChange={this.onChange}
             render={(item: TransferItem): RenderResult => item.title || item.key}
@@ -230,7 +243,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 return <Spinner className={'spinner'} size={'large'} />;
               }
               if (direction === 'left' && treeSource) {
-                const checkedKeys = [...selectedKeys, ...targetKeys];
+                const checkedKeys = [...selectedKeys, ...removeSameTerms(selectedKeys, targetKeys)];
                 return (
                   <SelectionTree
                     dataSource={treeSource || []}
