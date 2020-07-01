@@ -243,7 +243,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 return <Spinner className={'spinner'} size={'large'} />;
               }
               if (direction === 'left' && treeSource) {
-                const checkedKeys = [...selectedKeys, ...removeSameTerms(selectedKeys, targetKeys)];
+                const checkedKeys = [...removeSameTerms(selectedKeys, targetKeys)];
                 return (
                   <SelectionTree
                     dataSource={treeSource || []}

@@ -151,12 +151,21 @@ describe('Phenotype Store', () => {
   });
 
   it('/removeSameTerms should prohibit selecting multiple times the same term', () => {
-    const selecteKeys = ['ONE-two-three (123)'];
-    const targetKeys = ['two-ONE-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'];
+    let selecteKeys = ['ONE-two-three (123)'];
+    let targetKeys = ['two-ONE-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'];
 
-    const res = removeSameTerms(selecteKeys, targetKeys);
-    expect(res.sort()).toEqual(
-      ['ONE-two-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'].sort(),
+    //not expected to change
+    const res_one = removeSameTerms(selecteKeys, targetKeys);
+    expect(res_one.sort()).toEqual(
+      ['two-ONE-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'].sort(),
+    );
+    selecteKeys = ['ONE-two-three (123)', 'two-ONE-three (123)'];
+    targetKeys = ['five-six-seven (567)', 'one-zero-zero (100)'];
+
+    //expected to add last item change
+    const res_two = removeSameTerms(selecteKeys, targetKeys);
+    expect(res_two.sort()).toEqual(
+      ['two-ONE-three (123)', 'five-six-seven (567)', 'one-zero-zero (100)'].sort(),
     );
   });
 
