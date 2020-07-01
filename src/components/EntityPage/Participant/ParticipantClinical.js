@@ -274,7 +274,7 @@ class ParticipantClinical extends React.Component {
       }
 
       const sanitizePhenotypes = sanitize(phenotypes);
-      const hasObserved = sanitizePhenotypes.filter((t) => t.interpretation === 'Observed') > 0;
+      const hasObserved = sanitizePhenotypes.some((t) => t.interpretation === 'Observed');
       this.setState({
         phenotypes: sanitizePhenotypes,
         hasLoadedPhenotypes: true,
