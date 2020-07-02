@@ -6,7 +6,8 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import EntityFilesSearchInput from '../AggregationSidebar/EntityFileSearchFilter';
 import { EntityName, FileSearchFilterSubState } from 'store/fileSearchFiltersTypes';
-import { Input } from 'antd';
+import { Button as AntdButton, Input } from 'antd';
+import { jestPatchMatchMedia } from '../../../utils';
 
 const { Search } = Input;
 
@@ -33,6 +34,8 @@ describe('File Search Filter Button', () => {
         />
       </Provider>,
     );
+
+  beforeAll(() => jestPatchMatchMedia());
 
   afterAll(() => {
     wrapper.unmount();
@@ -62,5 +65,19 @@ describe('File Search Filter Button', () => {
     wrapper = mountWithProvider(store);
     const SearchInput = wrapper.find(Search);
     expect(SearchInput.props().disabled).toBe(true);
+  });
+
+  it('should display an "antd" button with a reset label when there is an error', () => {
+    const store = mockStore({
+      fileSearchFilters: {
+        [EntityName.PARTICIPANT]: {
+          ...initialSearchFilterState,
+          error: new Error(''),
+        },
+      },
+    });
+    wrapper = mountWithProvider(store);
+    const Button = wrapper.find(AntdButton);
+    expect(Button.text()).toEqual('Reset');
   });
 });

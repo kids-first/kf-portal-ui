@@ -2,6 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
   EntityName,
+  ERROR_MSG_ID_NOT_FOUND,
   FAILURE,
   RE_INITIALIZE_STATE,
   TOGGLE_LOADING,
@@ -140,7 +141,7 @@ describe('searchById', () => {
       { type: TOGGLE_LOADING, isLoading: false, entityName },
       {
         type: FAILURE,
-        error: new Error('Input id is unknown'),
+        error: new Error(ERROR_MSG_ID_NOT_FOUND),
         entityName,
       },
     ];

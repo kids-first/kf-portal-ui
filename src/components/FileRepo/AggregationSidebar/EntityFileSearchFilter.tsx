@@ -2,6 +2,7 @@
 import {
   DispatchFileSearchFilters,
   EntityName,
+  ERROR_MSG_ID_NOT_FOUND,
   FileSearchFilterSubState,
   SearchConfig,
 } from 'store/fileSearchFiltersTypes';
@@ -13,8 +14,10 @@ import {
   selectIsFileSearchFilterLoading,
 } from 'store/selectors/fileSearchFilters';
 import { reInitializeFilterState, searchById } from 'store/actionCreators/fileSearchFilters';
-import React, { FunctionComponent, useEffect } from 'react';
-import { Input, notification } from 'antd';
+import React, { FunctionComponent } from 'react';
+import { Input, Form, Button } from 'antd';
+import './aggregationSideBar.css';
+import capitalize from 'lodash/capitalize';
 
 const { Search } = Input;
 
@@ -45,6 +48,17 @@ const MIN_N_OF_CHARACTERS_BEFORE_SEARCH = 3;
 const canLaunchSearch = (input: string | null) =>
   input && input.length >= MIN_N_OF_CHARACTERS_BEFORE_SEARCH;
 
+const displayErrorMessage = (entityName: EntityName, error?: Error | null) => {
+  if (!error) {
+    return undefined;
+  } else if (error.message === ERROR_MSG_ID_NOT_FOUND) {
+    const lowerCaseEntityName = EntityName[entityName].toLowerCase();
+    const entityPrefix = capitalize(lowerCaseEntityName);
+    return `${entityPrefix} ${ERROR_MSG_ID_NOT_FOUND}`;
+  }
+  return 'an error occurred';
+};
+
 const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
   const {
     isLoading,
@@ -56,31 +70,34 @@ const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
     placeholder,
   } = props;
 
-  useEffect(() => {
-    if (error) {
-      const errorMsgDescription = error.message ? `Description: ${error.message}` : '';
-      notification.error({
-        message: 'Error',
-        description: `An error occurred. No query could be made. ${errorMsgDescription}`,
-        duration: null,
-        onClose: () => reInitializeState(entityName),
-      });
-    }
-  }, [error, reInitializeState, entityName]);
-
   return (
-    <Search
-      size={'small'}
-      allowClear
-      disabled={!!error}
-      placeholder={placeholder}
-      loading={isLoading}
-      onSearch={(userInputId) => {
-        if (canLaunchSearch(userInputId)) {
-          onSearchById({ entityName, id: userInputId, setArrangerSqonCB: setSqon });
-        }
-      }}
-    />
+    <Form name={`form_${entityName}`}>
+      <Form.Item
+        noStyle={!error}
+        validateStatus={error ? 'error' : undefined}
+        help={displayErrorMessage(entityName, error)}
+      >
+        <Search
+          size={'small'}
+          allowClear
+          disabled={!!error}
+          placeholder={placeholder}
+          loading={isLoading}
+          onSearch={(userInputId) => {
+            if (canLaunchSearch(userInputId)) {
+              onSearchById({ entityName, id: userInputId, setArrangerSqonCB: setSqon });
+            }
+          }}
+        />
+      </Form.Item>
+      {error && (
+        <div className={'filter-reset-btn'}>
+          <Button htmlType="button" onClick={() => reInitializeState(entityName)} size={'small'}>
+            Reset
+          </Button>
+        </div>
+      )}
+    </Form>
   );
 };
 

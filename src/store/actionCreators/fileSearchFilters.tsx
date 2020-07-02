@@ -5,6 +5,7 @@ import {
   RE_INITIALIZE_STATE,
   SearchConfig,
   EntityName,
+  ERROR_MSG_ID_NOT_FOUND,
 } from '../fileSearchFiltersTypes';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from '../rootState';
@@ -65,6 +66,6 @@ export const searchById = (
   if (kfId) {
     dispatch(searchByKfId({ setArrangerSqonCB, id: kfId, entityName }));
   } else {
-    dispatch(failureFilter(new Error('Input id is unknown'), entityName));
+    dispatch(failureFilter(new Error(ERROR_MSG_ID_NOT_FOUND), entityName));
   }
 };
