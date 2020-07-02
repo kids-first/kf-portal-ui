@@ -74,7 +74,7 @@ const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
     <Form name={`form_${entityName}`}>
       <Form.Item
         noStyle={!error}
-        validateStatus={error ? 'error' : undefined}
+        validateStatus={error ? 'error' : 'validating'}
         help={displayErrorMessage(entityName, error)}
       >
         <Search
@@ -91,7 +91,7 @@ const EntityFileSearchFilter: FunctionComponent<Props> = (props) => {
         />
       </Form.Item>
       {error && (
-        <div className={'filter-reset-btn'}>
+        <div className={'wrapper-filter-reset-btn'}>
           <Button htmlType="button" onClick={() => reInitializeState(entityName)} size={'small'}>
             Reset
           </Button>
