@@ -8,6 +8,8 @@ export enum EntityName {
   FILE = 'FILE',
 }
 
+export const ERROR_MSG_ID_NOT_FOUND = 'ID not found';
+
 export const TOGGLE_LOADING = 'TOGGLE_LOADING_FILES_SEARCH';
 export const FAILURE = 'FAILURE_FILES_SEARCH';
 export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_STATE_FILES_SEARCH';
