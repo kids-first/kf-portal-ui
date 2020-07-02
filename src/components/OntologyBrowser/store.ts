@@ -26,24 +26,14 @@ const dotToUnderscore = (str: string) => str.replace('.', '__');
 
 const termRegex = new RegExp('[^-]+$');
 
-//pattern of term with escaped parentheses
-const termPattern = (term: string) => new RegExp(`.*${term?.replace(/(?=[()])/g, '\\')}$`);
-
 export const removeSameTerms = (selectedKeys: string[], targetKeys: string[]) => {
-  let updatedTargetKeys = targetKeys;
+  let allSelectedAndChecked = {};
 
-  selectedKeys.forEach((t) => {
-    const match = t.match(termRegex);
-    if (match) {
-      const term = match.pop();
-
-      if (term) {
-        const pattern = termPattern(term);
-        updatedTargetKeys = updatedTargetKeys.filter((t) => !pattern.test(t));
-      }
-    }
+  selectedKeys.concat(targetKeys).forEach((t) => {
+    allSelectedAndChecked = { ...allSelectedAndChecked, [`${t.match(termRegex)}`]: t };
   });
-  return [...updatedTargetKeys, ...selectedKeys];
+
+  return [...(Object.values(allSelectedAndChecked) as string[])];
 };
 
 export const selectSameTerms = (selectedKeys: string[], tree: TreeNode[] | undefined) => {
