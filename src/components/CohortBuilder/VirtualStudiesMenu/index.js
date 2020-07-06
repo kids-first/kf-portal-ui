@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import autobind from 'auto-bind-es5';
 import urlJoin from 'url-join';
 import { injectState } from 'freactal';
 
@@ -14,7 +13,7 @@ import {
   resetVirtualStudy,
   loadSavedVirtualStudy,
   saveVirtualStudy,
-} from '../../../store/actionCreators/virtualStudies';
+} from 'store/actionCreators/virtualStudies';
 import { createVirtualStudy } from 'services/virtualStudies';
 
 import Tooltip from 'uikit/Tooltip';
@@ -29,7 +28,6 @@ import EditIcon from 'react-icons/lib/fa/edit';
 import DeleteIcon from 'react-icons/lib/fa/trash';
 
 import SaveVirtualStudiesModalContent from '../SaveVirtualStudiesModalContent';
-import DeleteVirtualStudiesModalContent from '../DeleteVirtualStudiesModalContent';
 import GenericErrorDisplay from 'uikit/GenericErrorDisplay';
 
 import './index.scss';
@@ -53,7 +51,7 @@ const VirtualStudiesMenuButton = ({
   </Tooltip>
 );
 
-const generateDescription = content => {
+const generateDescription = (content) => {
   const descriptionLines = content.trim().split(/\n/);
   const jsx = descriptionLines.slice(0, 3).map((line, i) => (
     <p
@@ -76,11 +74,6 @@ const generateDescription = content => {
 };
 
 class VirtualStudiesMenu extends React.Component {
-  constructor(props) {
-    super(props);
-    autobind(this);
-  }
-
   componentDidMount() {
     const { uid, fetchVirtualStudiesCollection } = this.props;
     if (uid !== null) {
@@ -95,11 +88,11 @@ class VirtualStudiesMenu extends React.Component {
     }
   }
 
-  onNewClick() {
+  onNewClick = () => {
     this.props.resetVirtualStudy();
-  }
+  };
 
-  onSaveClick() {
+  onSaveClick = () => {
     const {
       loggedInUser,
       sqons,
@@ -117,12 +110,12 @@ class VirtualStudiesMenu extends React.Component {
 
     const study = createVirtualStudy(virtualStudyId, name, description, sqons, activeIndex);
 
-    return saveVirtualStudy(loggedInUser, study).catch(err => {
+    return saveVirtualStudy(loggedInUser, study).catch((err) => {
       console.error('Error while saving the virtual study', err);
     });
-  }
+  };
 
-  onEditClick() {
+  onEditClick = () => {
     this.props.effects.setModal({
       title: 'Edit Virtual Study Name and Description',
       classNames: {
@@ -130,9 +123,9 @@ class VirtualStudiesMenu extends React.Component {
       },
       component: <SaveVirtualStudiesModalContent saveAs={false} />,
     });
-  }
+  };
 
-  onSaveAsClick() {
+  onSaveAsClick = () => {
     this.props.effects.setModal({
       title: 'Save as Virtual Study',
       classNames: {
@@ -140,36 +133,31 @@ class VirtualStudiesMenu extends React.Component {
       },
       component: <SaveVirtualStudiesModalContent saveAs={true} />,
     });
-  }
+  };
 
-  onDeleteClick() {
-    this.props.effects.setModal({
-      title: `Delete Virtual Study`,
-      classNames: {
-        modal: 'virtual-study-modal',
-      },
-      component: <DeleteVirtualStudiesModalContent />,
-    });
-  }
+  onDeleteClick = () => {
+    const { setVirtualStudyToDeleteCB, setShowDelVSModalCB } = this.props;
+    setShowDelVSModalCB(true);
+    setVirtualStudyToDeleteCB({ ...this.findSelectedStudy() });
+  };
 
-  getSharableUrl({ id: virtualStudyId }) {
-    return urlJoin(
+  getSharableUrl = ({ id: virtualStudyId }) =>
+    urlJoin(
       window.location.origin,
       this.props.history.createHref({
         ...this.props.history.location,
         search: `id=${virtualStudyId}`,
       }),
     );
-  }
 
-  findSelectedStudy() {
+  findSelectedStudy = () => {
     const { virtualStudies, activeVirtualStudyId } = this.props;
-    return virtualStudies.filter(study => study.virtualStudyId === activeVirtualStudyId)[0];
-  }
+    return virtualStudies.filter((study) => study.virtualStudyId === activeVirtualStudyId)[0];
+  };
 
-  handleOpen(virtualStudyId) {
+  handleOpen = (virtualStudyId) => {
     this.props.loadSavedVirtualStudy(virtualStudyId);
-  }
+  };
 
   render() {
     const {
@@ -196,12 +184,6 @@ class VirtualStudiesMenu extends React.Component {
     const cantSaveAs = activeVirtualStudyId ? loading || areSqonsEmpty : true;
     const cantDelete = loading || !activeVirtualStudyId || !isOwner;
     const cantShare = loading || !activeVirtualStudyId || !isOwner;
-
-    // console.log('? activeVirtualStudyId', activeVirtualStudyId);
-    // console.log('  loading', loading);
-    // console.log('  || areSqonsEmpty', areSqonsEmpty);
-    // console.log(': true', true);
-    // console.log('cantSaveAs', cantSaveAs);
 
     const titleFragment = virtualStudyName ? '' : 'Explore Data';
     const title = `${titleFragment} ${virtualStudyName}${
@@ -310,7 +292,7 @@ class VirtualStudiesMenu extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { user, currentVirtualStudy, virtualStudies } = state;
   return {
     uid: user.uid,
@@ -338,10 +320,7 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  ),
+  connect(mapStateToProps, mapDispatchToProps),
   withRouter,
   injectState,
 )(VirtualStudiesMenu);
