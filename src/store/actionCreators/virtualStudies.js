@@ -15,6 +15,7 @@ import {
   SET_ACTIVE_INDEX,
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
+  VIRTUAL_STUDY_CLEAN_ERROR,
 } from '../actionTypes';
 import {
   getVirtualStudy,
@@ -23,28 +24,23 @@ import {
   updateVirtualStudy,
   deleteVirtualStudy as deleteVirtualStudyApi,
 } from '../../services/virtualStudies';
-import { initializeApi } from '../../services/api';
+import { apiInitialized } from '../../services/api';
 
-const api = initializeApi({
-  onError: console.err,
-  onUnauthorized: response => {
-    console.warn('Unauthorized', response);
-  },
-});
+const api = apiInitialized;
 
-const assertStudyId = id => {
+const assertStudyId = (id) => {
   if (typeof id !== 'string' || id.length === 0) {
     throw new Error(`Study id must be a non-empty string, but got "${id}"`);
   }
 };
 
-const assertStudyName = name => {
+const assertStudyName = (name) => {
   if (typeof name !== 'string' || name.trim().length === 0) {
     throw new Error('Study name cannot be empty');
   }
 };
 
-const assertUser = user => {
+const assertUser = (user) => {
   if (!user) {
     throw new Error('User expected');
   }
@@ -56,118 +52,110 @@ const assertUser = user => {
   }
 };
 
-export const fetchVirtualStudiesCollection = uid => {
-  return dispatch => {
-    dispatch({
-      type: FETCH_VIRTUAL_STUDIES_REQUESTED,
-      payload: uid,
-    });
+export const fetchVirtualStudiesCollection = (uid) => (dispatch) => {
+  dispatch({
+    type: FETCH_VIRTUAL_STUDIES_REQUESTED,
+    payload: uid,
+  });
 
-    return getVirtualStudies(api, uid)
-      .then(virtualStudies => {
-        dispatch({
-          type: FETCH_VIRTUAL_STUDIES_SUCCESS,
-          payload: virtualStudies,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: FETCH_VIRTUAL_STUDIES_FAILURE,
-          payload: err,
-        });
-        console.error(`Error fetching virtual studies collection for uid "${uid}"`, err.message);
+  return getVirtualStudies(api, uid)
+    .then((virtualStudies) => {
+      dispatch({
+        type: FETCH_VIRTUAL_STUDIES_SUCCESS,
+        payload: virtualStudies,
       });
-  };
+    })
+    .catch((err) => {
+      dispatch({
+        type: FETCH_VIRTUAL_STUDIES_FAILURE,
+        payload: err,
+      });
+      console.error(`Error fetching virtual studies collection for uid "${uid}"`, err.message);
+    });
 };
 
-export const loadSavedVirtualStudy = virtualStudyId => {
-  return dispatch => {
-    dispatch({
-      type: VIRTUAL_STUDY_LOAD_REQUESTED,
-      payload: virtualStudyId,
-    });
-    return getVirtualStudy(api)(virtualStudyId)
-      .then(virtualStudy => {
-        return dispatch({
-          type: VIRTUAL_STUDY_LOAD_SUCCESS,
-          payload: virtualStudy,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: VIRTUAL_STUDY_LOAD_FAILURE,
-          payload: err.message,
-        });
-        console.error(err.message);
+export const loadSavedVirtualStudy = (virtualStudyId) => (dispatch) => {
+  dispatch({
+    type: VIRTUAL_STUDY_LOAD_REQUESTED,
+    payload: virtualStudyId,
+  });
+  return getVirtualStudy(api)(virtualStudyId)
+    .then((virtualStudy) =>
+      dispatch({
+        type: VIRTUAL_STUDY_LOAD_SUCCESS,
+        payload: virtualStudy,
+      }),
+    )
+    .catch((err) => {
+      dispatch({
+        type: VIRTUAL_STUDY_LOAD_FAILURE,
+        payload: err.message,
       });
-  };
+      console.error(err.message);
+    });
 };
 
-export const saveVirtualStudy = (loggedInUser, study) => {
-  return dispatch => {
-    try {
-      assertStudyName(study.name);
-      assertUser(loggedInUser);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-
-    dispatch({
-      type: VIRTUAL_STUDY_SAVE_REQUESTED,
-      payload: study,
-    });
-
-    const saveDelegate = study.virtualStudyId ? updateVirtualStudy : createNewVirtualStudy;
-    return saveDelegate(api, loggedInUser, study)
-      .then(([newStudy, updatedStudies]) => {
-        dispatch({
-          type: VIRTUAL_STUDY_SAVE_SUCCESS,
-          payload: {
-            virtualStudyId: newStudy.virtualStudyId,
-            uid: newStudy.uid,
-            name: newStudy.name,
-            description: newStudy.description,
-          },
-        });
-        dispatch({
-          type: FETCH_VIRTUAL_STUDIES_SUCCESS,
-          payload: updatedStudies,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: VIRTUAL_STUDY_SAVE_FAILURE,
-          payload: err,
-        });
-      });
-  };
-};
-
-export const deleteVirtualStudy = ({ virtualStudyId, loggedInUser }) => {
-  return dispatch => {
-    assertStudyId(virtualStudyId);
+export const saveVirtualStudy = (loggedInUser, study) => (dispatch) => {
+  try {
+    assertStudyName(study.name);
     assertUser(loggedInUser);
+  } catch (err) {
+    return Promise.reject(err);
+  }
 
-    dispatch({
-      type: VIRTUAL_STUDY_DELETE_REQUESTED,
-      payload: virtualStudyId,
-    });
+  dispatch({
+    type: VIRTUAL_STUDY_SAVE_REQUESTED,
+    payload: study,
+  });
 
-    return deleteVirtualStudyApi({ virtualStudyId, api, loggedInUser })
-      .then(() => dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId)))
-      .then(() => {
-        dispatch({
-          type: VIRTUAL_STUDY_DELETE_SUCCESS,
-          payload: virtualStudyId,
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: VIRTUAL_STUDY_DELETE_FAILURE,
-          payload: err,
-        });
+  const saveDelegate = study.virtualStudyId ? updateVirtualStudy : createNewVirtualStudy;
+  return saveDelegate(api, loggedInUser, study)
+    .then(([newStudy, updatedStudies]) => {
+      dispatch({
+        type: VIRTUAL_STUDY_SAVE_SUCCESS,
+        payload: {
+          virtualStudyId: newStudy.virtualStudyId,
+          uid: newStudy.uid,
+          name: newStudy.name,
+          description: newStudy.description,
+        },
       });
-  };
+      dispatch({
+        type: FETCH_VIRTUAL_STUDIES_SUCCESS,
+        payload: updatedStudies,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: VIRTUAL_STUDY_SAVE_FAILURE,
+        payload: err,
+      });
+    });
+};
+
+export const deleteVirtualStudy = ({ virtualStudyId, loggedInUser }) => async (dispatch) => {
+  assertStudyId(virtualStudyId);
+  assertUser(loggedInUser);
+
+  dispatch({
+    type: VIRTUAL_STUDY_DELETE_REQUESTED,
+    payload: virtualStudyId,
+  });
+
+  return deleteVirtualStudyApi({ virtualStudyId, api, loggedInUser })
+    .then(() => dispatch(fetchVirtualStudiesCollection(loggedInUser.egoId)))
+    .then(() => {
+      dispatch({
+        type: VIRTUAL_STUDY_DELETE_SUCCESS,
+        payload: virtualStudyId,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: VIRTUAL_STUDY_DELETE_FAILURE,
+        payload: err,
+      });
+    });
 };
 
 export const resetVirtualStudy = () => ({
@@ -175,17 +163,21 @@ export const resetVirtualStudy = () => ({
   payload: null,
 });
 
-export const setActiveSqonIndex = activeIndex => ({
+export const setActiveSqonIndex = (activeIndex) => ({
   type: SET_ACTIVE_INDEX,
   payload: activeIndex,
 });
 
-export const setSqons = sqons => ({
+export const setSqons = (sqons) => ({
   type: SET_SQONS,
   payload: sqons,
 });
 
-export const setVirtualStudyId = virtualStudyId => ({
+export const setVirtualStudyId = (virtualStudyId) => ({
   type: SET_VIRTUAL_STUDY_ID,
   payload: virtualStudyId,
+});
+
+export const cleanError = () => ({
+  type: VIRTUAL_STUDY_CLEAN_ERROR,
 });

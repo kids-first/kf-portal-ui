@@ -16,6 +16,7 @@ import {
   SET_SQONS,
   SET_VIRTUAL_STUDY_ID,
   LOGOUT,
+  VIRTUAL_STUDY_CLEAN_ERROR,
 } from '../actionTypes';
 
 export const initialState = {
@@ -31,7 +32,7 @@ export const initialState = {
   error: null,
 };
 
-const currySetState = state => (diff = {}) => {
+const currySetState = (state) => (diff = {}) => {
   const newState = { ...state, ...diff };
   newState.areSqonsEmpty = isDefaultSqon(newState.sqons);
   return newState;
@@ -81,12 +82,15 @@ export default (state = initialState, action) => {
       });
 
     case VIRTUAL_STUDY_DELETE_REQUESTED:
-      return state;
+      return setState({
+        isLoading: true,
+      });
     case VIRTUAL_STUDY_DELETE_SUCCESS:
       return resetState();
     case VIRTUAL_STUDY_DELETE_FAILURE:
       return setState({
         error: action.payload,
+        isLoading: false,
       });
 
     case SET_ACTIVE_INDEX:
@@ -109,6 +113,11 @@ export default (state = initialState, action) => {
 
     case LOGOUT:
       return cloneDeep(initialState);
+
+    case VIRTUAL_STUDY_CLEAN_ERROR:
+      return setState({
+        error: null,
+      });
 
     default:
       return state;
