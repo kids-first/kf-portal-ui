@@ -1,7 +1,7 @@
 // @ts-nocheck
 import queryString from 'querystring';
 
-export const getApplicationEnvVar = envVarName => process.env[`REACT_APP_${envVarName}`];
+export const getApplicationEnvVar = (envVarName) => process.env[`REACT_APP_${envVarName}`];
 
 localStorage.setItem('debug', getApplicationEnvVar('DEBUG') || ''); // manually set because CRA doesn't allow arbitrary env variable names.
 const debug = require('debug');
@@ -65,6 +65,7 @@ export const allRedirectUris = (getApplicationEnvVar('LOGIN_REDIRECT_NOT_REQUIRE
 export const requireLogin = getApplicationEnvVar('REQUIRE_LOGIN') === 'true';
 
 export const kfWebRoot: string = getApplicationEnvVar('KF_WEB_ROOT');
+export const notionWebRoot: string = getApplicationEnvVar('NOTION_WEB_ROOT');
 export const kfFacebook: string = getApplicationEnvVar('KF_FACEBOOK');
 export const kfTwitter: string = getApplicationEnvVar('KF_TWITTER');
 export const kfGithub: string = getApplicationEnvVar('KF_GITHUB');
