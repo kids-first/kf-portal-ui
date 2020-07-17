@@ -6,7 +6,7 @@ import urlJoin from 'url-join';
 import { SocialIcon } from 'react-social-icons';
 import DataVersionProvider from './DataVersionProvider';
 
-import { kfWebRoot, kfFacebook, kfTwitter, kfGithub } from 'common/injectGlobals';
+import { kfWebRoot, kfFacebook, kfTwitter, kfGithub, notionWebRoot } from 'common/injectGlobals';
 import { UI_VERSION } from 'common/constants';
 import Row from 'uikit/Row';
 
@@ -19,6 +19,7 @@ const FooterLink = ({ href, children }) => (
 );
 FooterLink.propTypes = {
   href: PropTypes.string.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 const socialIconSize = { width: 30, height: 30 };
@@ -31,7 +32,14 @@ const Footer = () => (
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/policies')}>Policies</FooterLink>
       {' | '}
-      <FooterLink href={urlJoin(kfWebRoot, '/support/getting-started')}>Support</FooterLink>
+      <FooterLink
+        href={urlJoin(
+          notionWebRoot,
+          '/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a',
+        )}
+      >
+        Support
+      </FooterLink>
       {' | '}
       <FooterLink href={urlJoin(kfWebRoot, '/contact')}>Contact</FooterLink>
       {' | '}
