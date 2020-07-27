@@ -7,6 +7,29 @@
 
 ### Technical / Other changes
 -->
+## 2020-09-27 kf-portal-ui 2.21.0
+### Features
+- [2508](https://github.com/kids-first/kf-portal-ui/issues/2508) Feature (Participant, Clinical data): In the Participant entity page, the Observed and Not observed phenotypes are now split in two different tables.
+- [2516](https://github.com/kids-first/kf-portal-ui/issues/2516) Feature (Observed Phenotype Browser): When returning into the browser, the branches to which the selected options belong to are now checked for a better user experience.
+- [2529](https://github.com/kids-first/kf-portal-ui/issues/2529) Feature (Observed Phenotype Browser): A second column was added to separate the count of Participants with the exact term only from the count of Participants with the exact term as well as their descendants.
+- [2556](https://github.com/kids-first/kf-portal-ui/issues/2556) Feature (Observed Phenotype Browser): Terms can now only be selected once, preventing redundant display for terms with multiple paths.  
+
+### Technical / Other changes
+- [2202](https://github.com/kids-first/kf-portal-ui/issues/2202) Fix (Cohort Builder, Reporting): The system now prevents a user to request the download of another report until the first download is completed.
+- [2332](https://github.com/kids-first/kf-portal-ui/issues/2332) Refactor (File Repository, Search): Improved the behaviour for the 'Search files by Participant ID' filter.
+- [2333](https://github.com/kids-first/kf-portal-ui/issues/2333) Fix (File Repository, Cavatica): Addresses an issue where the transfer to Cavatica occasionally returned a success message even if the transfer failed.
+- [2366](https://github.com/kids-first/kf-portal-ui/issues/2366) Refactor (File Repository): Modified the format of the Clinical and Biospecimen reports from .tsv to Excel.
+- [2367](https://github.com/kids-first/kf-portal-ui/issues/2367) Fix (Cohort Builder, Menu): Fixes an issue where the Category Type menu was broken on Firefox.
+- [2539](https://github.com/kids-first/kf-portal-ui/issues/2539) Refactor (ETL): Mapping modification for Mondo diagnosis.
+- [2550](https://github.com/kids-first/kf-portal-ui/issues/2550) Test (Reporting Service): Implement automated testing.
+- [2552](https://github.com/kids-first/kf-portal-ui/issues/2552) Fix (Cohort Builder, Observed Phenotype Browser): Fixes an issue where the Observed Phenotype Browser was giving an error message when using 3 queries at a time in the Cohort Builder.
+- [2566](https://github.com/kids-first/kf-portal-ui/issues/2566) Fix (Dashboard, Virtual Studies): Fixes an issue where deleting a virtual study from the dashboard wouldn't prompt any validation popup before the deletion.
+- [2568](https://github.com/kids-first/kf-portal-ui/issues/2568) Refactor (Cohort Builder): Improved the styling of the link to the file repository to make it more intuitive.
+- [2570](https://github.com/kids-first/kf-portal-ui/issues/2570) Fix (Cohort Builder, Biospecimen Report): Fixes an issue with the Tissue Type (NCIT) column that was showing twice in the report.
+- [2574](https://github.com/kids-first/kf-portal-ui/issues/2574) Refactor (Public stats API, Authentication): Remove all logic related to authenticating with vault.
+- [2593](https://github.com/kids-first/kf-portal-ui/issues/2593) Refactor (Cohort Builder, Reporting): Improvement of the values ​​of the diagnostic category in the downloaded Participant report.
+- [2609](https://github.com/kids-first/kf-portal-ui/issues/2609) Refactor (Cohort Builder, Cards): Cards are now slightly bigger to give the content a little more breathing room.
+- [2618](https://github.com/kids-first/kf-portal-ui/issues/2618) Refactor (Portal, Support): Updated the links to the support site to point to the new documentation on Notion.
 
 ## 2020-05-15 kf-portal-ui 2.20.0
 
