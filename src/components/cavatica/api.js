@@ -1,25 +1,49 @@
 import { convertFenceUuids, copyFiles as copyCavaticaFiles } from 'services/cavatica';
 import { FENCES } from 'common/constants';
 
+export const isEveryFileTransferred = (inputLength, outputLength) => inputLength === outputLength;
+
+export const sumFilesTransfers = (copyResults = []) =>
+  copyResults.reduce(
+    (acc, copyResult) => {
+      const numOfIdsToBeCopied = copyResult.numOfIdsToBeCopied;
+      const numOfIdsCopied = copyResult.numOfIdsCopied;
+
+      if (isEveryFileTransferred(numOfIdsToBeCopied, numOfIdsCopied)) {
+        return acc;
+      }
+      return {
+        numOfIdsCopied: acc.numOfIdsCopied + numOfIdsCopied,
+        numOfIdsToBeCopied: acc.numOfIdsToBeCopied + numOfIdsToBeCopied,
+      };
+    },
+    {
+      numOfIdsCopied: 0,
+      numOfIdsToBeCopied: 0,
+    },
+  );
+
 export const copyToProject = async ({ selectedFiles, selectedProject }) => {
   const promises = Object.keys(selectedFiles)
     .filter(
-      fence => FENCES.includes(fence) && selectedFiles[fence] && selectedFiles[fence].length > 0,
+      (fence) => FENCES.includes(fence) && selectedFiles[fence] && selectedFiles[fence].length > 0,
     )
-    .map(async fence => {
-      try {
-        const convertedFence = await convertFenceUuids({
-          ids: selectedFiles[fence],
-          fence: fence,
-        });
+    .map(async (fence) => {
+      const convertedFence = await convertFenceUuids({
+        ids: selectedFiles[fence],
+        fence: fence,
+      });
 
-        await copyCavaticaFiles({
-          project: selectedProject,
-          ids: [...convertedFence.map(item => item.id)],
-        });
-      } catch (error) {
-        throw error;
-      }
+      const copiedResults = await copyCavaticaFiles({
+        project: selectedProject,
+        ids: [...convertedFence.map((item) => item.id)],
+      });
+
+      //give the caller some insight of how copying went
+      return {
+        numOfIdsToBeCopied: selectedFiles[fence].length,
+        numOfIdsCopied: copiedResults.map(Object.keys).flat().length,
+      };
     });
   return await Promise.all(promises);
 };

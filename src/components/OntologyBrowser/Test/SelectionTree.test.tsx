@@ -1,7 +1,7 @@
 import { TreeNode } from '../store';
 import { SelectionTree } from '../SelectionTree';
 import * as React from 'react';
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { mount, shallow, ShallowWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { treeData } from './mockData';
 import { jestPatchMatchMedia } from '../../../utils';
@@ -17,16 +17,42 @@ describe('In SelectionTree', () => {
 
   beforeAll(() => jestPatchMatchMedia());
 
-  let wrapper: Enzyme.ShallowWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
+  let wrapper: ShallowWrapper<
+    {},
+    {
+      treeData: TreeNode[];
+      expandedKeys: string[];
+    },
+    SelectionTree
+  >;
+
+  const wrapperInstance = shallow<SelectionTree, {}, {}>(
+    <SelectionTree
+      checkedKeys={[]}
+      dataSource={[]}
+      onItemSelect={jest.fn()}
+      onItemSelectAll={jest.fn()}
+      targetKeys={[]}
+      selectedField={''}
+    />,
+  );
 
   beforeEach(() => {
-    wrapper = shallow(
+    wrapper = shallow<
+      SelectionTree,
+      {},
+      {
+        treeData: TreeNode[];
+        expandedKeys: string[];
+      }
+    >(
       <SelectionTree
         dataSource={dataSource}
         checkedKeys={checkedKeys}
         onItemSelect={onItemSelect}
         targetKeys={targetKeys}
         onItemSelectAll={onItemSelectAll}
+        selectedField={''}
       />,
     );
   });
@@ -42,20 +68,40 @@ describe('In SelectionTree', () => {
         text: 'Abnormality of the integument (HP:0001574)',
         key: 'Abnormality of the integument (HP:0001574)',
         hidden: false,
+        results: 12,
+        exactTagCount: 0,
         children: [
           {
             title: 'Abnormality of the skin (HP:0000951)',
             text: 'Abnormality of the skin (HP:0000951)',
             key: 'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)',
             hidden: true,
+            results: 6,
+            exactTagCount: 2,
             children: [
               {
                 title: 'Abnormality of skin morphology (HP:0011121)',
                 text: 'Abnormality of skin morphology (HP:0011121)',
                 key:
-                  'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)-Abnormality of skin morphology (HP:0011121)',
+                  'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)-' +
+                  'Abnormality of skin morphology (HP:0011121)',
                 hidden: true,
-                children: [],
+                results: 4,
+                exactTagCount: 4,
+                children: [
+                  {
+                    title: 'Skin appendage neoplasm (HP:0012842)',
+                    text: 'Skin appendage neoplasm (HP:0012842)',
+                    key:
+                      'Abnormality of the integument (HP:0001574)-Abnormality of the skin (HP:0000951)' +
+                      '-Abnormality of skin morphology (HP:0011121)' +
+                      'Skin appendage neoplasm (HP:0012842)',
+                    results: 2,
+                    exactTagCount: 2,
+                    children: [],
+                    hidden: true,
+                  },
+                ],
               },
             ],
           },
@@ -73,29 +119,42 @@ describe('In SelectionTree', () => {
             key:
               'Abnormality of the integument (HP:0001574)-Abnormality of skin adnexa morphology (HP:0011138)',
             hidden: false,
+            results: 6,
+            exactTagCount: 1,
             children: [
               {
                 title: 'Skin appendage neoplasm (HP:0012842)',
                 text: 'Skin appendage neoplasm (HP:0012842)',
                 key:
-                  'Abnormality of the integument (HP:0001574)-Abnormality of skin adnexa morphology (HP:0011138)-Skin appendage neoplasm (HP:0012842)',
+                  'Abnormality of the integument (HP:0001574)-' +
+                  'Abnormality of skin adnexa morphology (HP:0011138)-' +
+                  'Skin appendage neoplasm (HP:0012842)',
                 hidden: true,
+                results: 2,
+                exactTagCount: 2,
                 children: [],
               },
               {
                 title: 'Abnormal hair morphology (HP:0001595)',
                 text: 'Abnormal hair morphology (HP:0001595)',
                 key:
-                  'Abnormality of the integument (HP:0001574)-Abnormality of skin adnexa morphology (HP:0011138)-Abnormal hair morphology (HP:0001595)',
+                  'Abnormality of the integument (HP:0001574)-' +
+                  'Abnormality of skin adnexa morphology (HP:0011138)-' +
+                  'Abnormal hair morphology (HP:0001595)',
                 hidden: true,
+                results: 2,
+                exactTagCount: 2,
                 children: [],
               },
               {
                 title: 'Custom term xyz',
                 text: 'Custom term xyz',
                 key:
-                  'Abnormality of the integument (HP:0001574)-Abnormality of skin adnexa morphology (HP:0011138)-Custom term xyz',
+                  'Abnormality of the integument (HP:0001574)-' +
+                  'Abnormality of skin adnexa morphology (HP:0011138)-Custom term xyz',
                 hidden: true,
+                results: 1,
+                exactTagCount: 1,
                 children: [],
               },
             ],
@@ -121,25 +180,65 @@ describe('In SelectionTree', () => {
     expect(wrapper.state().expandedKeys).toEqual(['Abnormality of the integument (HP:0001574)']);
   });
 
-  it('should searchInTree method should return results as expected', () => {
-    const event = {
-      target: { value: 'ad' },
-    } as React.ChangeEvent<HTMLInputElement>;
+  it('should render participants count and exact count for each term', () => {
+    const component = mount(
+      <SelectionTree
+        dataSource={treeData}
+        checkedKeys={checkedKeys}
+        onItemSelect={onItemSelect}
+        targetKeys={targetKeys}
+        onItemSelectAll={onItemSelectAll}
+        selectedField={''}
+      />,
+    );
 
+    expect(
+      component
+        .find('Tag')
+        .getElements()
+        .map((e) => e.props.children),
+    ).toMatchSnapshot();
+    component.unmount();
+  });
+
+  it('should searchInTree method should return results as expected', () => {
     //Query with from beginning of a term: 'Skin appendage neoplasm (HP:0012842)'
-    const resStart = wrapper.instance().searchInTree('Ski', dataSource[0]);
+    const resStart = wrapperInstance.instance().searchInTree('Ski', dataSource[0]);
     expect(resStart).toBe(true);
-    //Query with from beginning of a term: 'Custom term xyz'
-    const resEnd = wrapper.instance().searchInTree('xyz', dataSource[0]);
+    // Query with from beginning of a term: 'Custom term xyz'
+    const resEnd = wrapperInstance.instance().searchInTree('xyz', dataSource[0]);
     expect(resEnd).toBe(true);
     //Query with parenthesis - will be cleaned out'
-    const resParenthesis = wrapper.instance().searchInTree('(HP:0012842)', dataSource[0]);
+    const resParenthesis = wrapperInstance.instance().searchInTree('(HP:0012842)', dataSource[0]);
     expect(resParenthesis).toBe(true);
     //Query with terms not existing will return false
-    const resNotFound = wrapper.instance().searchInTree('NOTTHERE', dataSource[0]);
+    const resNotFound = wrapperInstance.instance().searchInTree('NOTTHERE', dataSource[0]);
     expect(resNotFound).toBe(false);
     //Query for multiple words: 'Abnormality of skin morphology (HP:0011121)'
-    const resMultiWords = wrapper.instance().searchInTree('skin mor', dataSource[0]);
+    const resMultiWords = wrapperInstance.instance().searchInTree('skin mor', dataSource[0]);
     expect(resMultiWords).toBe(true);
+  });
+
+  it('should get checked keys for selected items', () => {
+    const resStart = wrapperInstance
+      .instance()
+      .checkKeys(
+        'Abnormality of the integument (HP:0001574)-' +
+          'Abnormality of skin adnexa morphology (HP:0011138)-' +
+          'Skin appendage neoplasm (HP:0012842)',
+        treeData,
+      );
+    expect(resStart).toStrictEqual({
+      check: [
+        'Abnormality of the integument (HP:0001574)-' +
+          'Abnormality of skin adnexa morphology (HP:0011138)-' +
+          'Skin appendage neoplasm (HP:0012842)',
+      ],
+      halfcheck: [
+        'Abnormality of the integument (HP:0001574)-' +
+          'Abnormality of skin adnexa morphology (HP:0011138)',
+        'Abnormality of the integument (HP:0001574)',
+      ],
+    });
   });
 });

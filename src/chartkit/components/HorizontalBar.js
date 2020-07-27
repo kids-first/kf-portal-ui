@@ -81,7 +81,7 @@ class HorizontalBar extends Component {
     };
 
     return (
-      <AntdTooltip title={value}>
+      <AntdTooltip key={key} title={value}>
         <g
           key={key}
           transform={`translate(${x - xOffset},${y})`}

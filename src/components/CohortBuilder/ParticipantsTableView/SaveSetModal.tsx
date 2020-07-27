@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Button, Form, Input, Modal, notification } from 'antd';
 import { FormInstance } from 'antd/lib/form';
-import { LoggedInUser, Sqon } from '../../../types';
+import { LoggedInUser } from 'store/user';
+import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
@@ -140,6 +141,7 @@ export default class SaveSetModal extends React.Component<Props, State> {
             ]}
           >
             <Input
+              autoFocus
               maxLength={maxNumOfCharsToDisplay}
               placeholder="Enter the name of your new set"
               allowClear

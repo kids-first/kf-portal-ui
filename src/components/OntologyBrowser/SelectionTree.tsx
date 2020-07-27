@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
-import { Button, Col, Input, Row, Tag, Tree } from 'antd';
+import { Button, Col, Input, Row, Tree } from 'antd';
 import { TreeNode } from './store';
+import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './SelectionTree.css';
+import TermCounts from './TermCounts';
 
 type SelectionTreeProps = {
   dataSource: TreeNode[];
@@ -11,6 +13,7 @@ type SelectionTreeProps = {
   onItemSelect: Function;
   targetKeys: Array<string>;
   onItemSelectAll: Function;
+  selectedField: String;
 };
 
 type SelectionTreeState = {
@@ -52,23 +55,20 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     treeNodes: TreeNode[] = [],
     checkedKeys: string[] = [],
     targetKeys: string[] = [],
-    disabled: boolean = false,
-  ): TreeNode[] => {
-    return treeNodes
-      .map(({ children, key, title, results, hidden }: TreeNode) => {
+    treeDisabled: boolean = false,
+  ): TreeNode[] =>
+    treeNodes
+      .map(({ children, key, title, results, hidden, exactTagCount, disabled }: TreeNode) => {
         const renderedTitle = (
-          <Fragment>
-            <span>{title}</span>
-            <Tag className="label-document-count">{results}</Tag>
-          </Fragment>
+          <TermCounts title={title} exactTagCount={exactTagCount} results={results} />
         );
-        const isDisabled = targetKeys.includes(key || '') || disabled;
+        const isDisabled = targetKeys.includes(key || '') || treeDisabled;
         const childrenShouldBeDisabled = checkedKeys.includes(key) || isDisabled;
         return {
           key: key,
           title: renderedTitle,
           text: title,
-          disabled: isDisabled,
+          disabled: isDisabled || disabled,
           children: this.generateTree(children, checkedKeys, targetKeys, childrenShouldBeDisabled),
           hasChildren: true,
           results: 324,
@@ -76,7 +76,6 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
         } as TreeNode;
       })
       .filter((node) => (node.hidden ? false : !node.hidden));
-  };
 
   isChecked = (selectedKeys: Array<string>, eventKey: string | number) =>
     selectedKeys.indexOf(eventKey.toString()) !== -1;
@@ -146,37 +145,87 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
     }
   };
 
-  onExpand = (expand: (string | number)[], info: Object) => {
+  onExpand = (expand: (string | number)[]) => {
     this.setState({
       expandedKeys: expand.map((v) => v.toString()),
     });
   };
 
+  checkKeys = (
+    key: string | number,
+    dataSource = this.props.dataSource,
+    accu: { check: string[]; halfcheck: string[] } = {
+      check: [],
+      halfcheck: [],
+    },
+  ) => {
+    dataSource.forEach((o) => {
+      if (o.key === key) {
+        return accu.check.push(o.key);
+      }
+
+      if (accu.check.length === 0) {
+        this.checkKeys(key, o.children, accu);
+
+        if (accu.check.length > 0) {
+          accu.halfcheck.push(o.key);
+        }
+      }
+    });
+    return accu;
+  };
+
   render() {
-    const { checkedKeys, dataSource, onItemSelect, targetKeys, onItemSelectAll } = this.props;
+    const {
+      checkedKeys,
+      dataSource,
+      onItemSelect,
+      targetKeys,
+      onItemSelectAll,
+      selectedField, //todo to be removed when mondo search is fixed
+    } = this.props;
     const { expandedKeys } = this.state;
+    const halfCheckedKeys = new Set(
+      checkedKeys.map((k) => this.checkKeys(k)).flatMap((k) => k.halfcheck),
+    );
     return (
       <Fragment>
         <Col style={{ position: 'sticky', top: 0, zIndex: 2, backgroundColor: '#fff' }}>
           <Row>
-            <Input
-              className='custom-input'
-              placeholder="Search for ontology term - Min 3 characters"
-              onChange={(e) => this.onChange(e, dataSource)}
-              allowClear
-              size='large'
-            />
+            {selectedField !== 'diagnoses.mondo.name' ? ( //todo remove when mondo search is fixed
+              <Input
+                className="custom-input"
+                placeholder="Search for ontology term - Min 3 characters"
+                onChange={(e) => this.onChange(e, dataSource)}
+                allowClear
+                size="large"
+              />
+            ) : (
+              ''
+            )}
           </Row>
-          <Row justify="start">
-            <Button
-              type="link"
-              onClick={(e) => {
-                e.preventDefault();
-                onItemSelectAll(checkedKeys, false);
-              }}
-            >
-              Clear
-            </Button>
+          <Row justify="space-between">
+            <Col>
+              <Button
+                type="link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onItemSelectAll(checkedKeys, false);
+                }}
+              >
+                Clear
+              </Button>
+            </Col>
+            <Col className={'flex-align-items-center'} style={{ paddingRight: 4 }}>
+              <Row style={{ width: 100 }}>
+                <Col span={12} className={'flex-center'}>
+                  <UserOutlined className={'text-color-TO-DELETE'} />
+                </Col>
+                <Col span={12} className={'flex-center'}>
+                  <BranchesOutlined className={'text-color-TO-DELETE'} />
+                </Col>
+              </Row>
+            </Col>
           </Row>
         </Col>
         <Tree
@@ -189,14 +238,19 @@ export class SelectionTree extends Component<SelectionTreeProps, SelectionTreeSt
           checkable
           onCheck={(_, { node }) => {
             const isChecked = !this.isChecked(checkedKeys, node.key);
+            this.checkKeys(node.key);
             onItemSelect(node.key, isChecked);
           }}
-          checkedKeys={checkedKeys}
+          checkedKeys={{
+            checked: checkedKeys,
+            halfChecked: Array.from(halfCheckedKeys),
+          }}
           onSelect={(_, { node: { key } }) => {
             onItemSelect(key, !this.isChecked(checkedKeys, key));
           }}
           expandedKeys={expandedKeys}
           onExpand={this.onExpand}
+          checkStrictly
         />
       </Fragment>
     );

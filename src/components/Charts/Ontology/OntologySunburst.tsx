@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import { PhenotypeStore } from '../../OntologyBrowser/store';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
-import { Sqon } from 'types';
+import { Sqon } from 'store/sqon';
 import './Ontology.css';
 
 type OntologySunburstProps = {
@@ -70,7 +70,6 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
   render() {
     const { data, loading } = this.state;
     const { height, width } = this.props;
-    // const Header = <CardHeader title="Observed Phenotypes" />;
     return (
       <Fragment>
         {loading ? (

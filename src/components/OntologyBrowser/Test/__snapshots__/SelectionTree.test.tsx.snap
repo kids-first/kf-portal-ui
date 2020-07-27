@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`In SelectionTree should render participants count and exact count for each term 1`] = `
+Array [
+  0,
+  12,
+  2,
+  6,
+  1,
+  6,
+]
+`;

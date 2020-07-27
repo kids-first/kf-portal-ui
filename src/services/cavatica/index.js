@@ -28,17 +28,11 @@ import { CAVATICA_DATASET_MAPPING } from 'common/constants';
     }
   */
 export const getUser = async () => {
-  let data;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/user',
-      method: 'GET',
-    });
-    data = response.data;
-  } catch (error) {
-    throw error;
-  }
-  return data;
+  const response = await ajax.post(cavaticaApiRoot, {
+    path: '/user',
+    method: 'GET',
+  });
+  return response.data;
 };
 
 /**
@@ -50,17 +44,11 @@ Should return array of billing groups with the form:
   }
 */
 export const getBillingGroups = async () => {
-  let items;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/billing/groups',
-      method: 'GET',
-    });
-    items = response.data.items;
-  } catch (error) {
-    throw error;
-  }
-  return items;
+  const response = await ajax.post(cavaticaApiRoot, {
+    path: '/billing/groups',
+    method: 'GET',
+  });
+  return response.data.items;
 };
 
 /**
@@ -72,17 +60,11 @@ export const getBillingGroups = async () => {
     }
  */
 export const getProjects = async () => {
-  let items;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/projects',
-      method: 'GET',
-    });
-    items = response.data.items;
-  } catch (error) {
-    throw error;
-  }
-  return items;
+  const response = await ajax.post(cavaticaApiRoot, {
+    path: '/projects',
+    method: 'GET',
+  });
+  return response.data.items;
 };
 
 /**
@@ -104,18 +86,12 @@ export const getProjects = async () => {
  *
  */
 const createProject = async ({ name, billing_group, description = '' }) => {
-  let data;
-  try {
-    const response = await ajax.post(cavaticaApiRoot, {
-      path: '/projects',
-      method: 'POST',
-      body: { name, billing_group, description },
-    });
-    data = response.data;
-  } catch (error) {
-    throw error;
-  }
-  return data;
+  const response = await ajax.post(cavaticaApiRoot, {
+    path: '/projects',
+    method: 'POST',
+    body: { name, billing_group, description },
+  });
+  return response.data;
 };
 
 export const getMembers = async ({ project }) => {
@@ -146,9 +122,8 @@ export const getTasks = async ({ type, project }) => {
   return data;
 };
 
-export const getTaskLink = ({ project, status }) => {
-  return `${cavaticaWebRoot}u/${project}/tasks/#q?page=1&status=${status}`;
-};
+export const getTaskLink = ({ project, status }) =>
+  `${cavaticaWebRoot}u/${project}/tasks/#q?page=1&status=${status}`;
 
 /**
  * ids - array of Gen3 Ids as strings
@@ -161,7 +136,7 @@ export const getTaskLink = ({ project, status }) => {
  *    }
  */
 export const convertFenceUuids = async ({ ids, fence }) => {
-  let items = [];
+  const items = [];
   /* ABOUT THE CHUNKS:
    * Cavatica has a limit of how many items it can take at one time,
    *  so we batch a list of ids into chunks of size 75
@@ -169,29 +144,23 @@ export const convertFenceUuids = async ({ ids, fence }) => {
    */
   const chunks = makeChunks(ids, 75);
   for (const chunk of chunks) {
-    try {
-      const response = await ajax.post(cavaticaApiRoot, {
-        path: '/action/files/resolve_origin_ids',
-        method: 'POST',
-        body: {
-          type: 'dataset',
-          // The dataset to use if fence dependent, we keep a listing of them in common/constants
-          dataset: CAVATICA_DATASET_MAPPING[fence],
-          items: chunk.map(id => {
-            return {
-              id,
-            };
-          }),
-          // [
-          //   { id: 'ffe81227-2d0f-4cb0-be03-f6fa0f93de71' },
-          //   { id: 'ff697878-84cd-4ad4-b7da-b1958e9d3c98' },
-          // ],
-        },
-      });
-      items.push(...response.data.items);
-    } catch (error) {
-      throw error;
-    }
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/action/files/resolve_origin_ids',
+      method: 'POST',
+      body: {
+        type: 'dataset',
+        // The dataset to use if fence dependent, we keep a listing of them in common/constants
+        dataset: CAVATICA_DATASET_MAPPING[fence],
+        items: chunk.map((id) => ({
+          id,
+        })),
+        // [
+        //   { id: 'ffe81227-2d0f-4cb0-be03-f6fa0f93de71' },
+        //   { id: 'ff697878-84cd-4ad4-b7da-b1958e9d3c98' },
+        // ],
+      },
+    });
+    items.push(...response.data.items);
   }
   return items;
 };
@@ -203,24 +172,20 @@ export const convertFenceUuids = async ({ ids, fence }) => {
  * ids is an array of strings of the ids to copy
  */
 export const copyFiles = async ({ project, ids }) => {
-  let data = [];
+  const data = [];
   //Cavatica times out if copying too many files at a time,
   // chunk it into groups of 75 to accomodate.
   const chunks = makeChunks(ids, 75);
   for (const chunk of chunks) {
-    try {
-      const response = await ajax.post(cavaticaApiRoot, {
-        path: '/action/files/copy',
-        method: 'POST',
-        body: {
-          project: project,
-          file_ids: chunk,
-        },
-      });
-      data.push(response.data);
-    } catch (error) {
-      throw error;
-    }
+    const response = await ajax.post(cavaticaApiRoot, {
+      path: '/action/files/copy',
+      method: 'POST',
+      body: {
+        project: project,
+        file_ids: chunk,
+      },
+    });
+    data.push(response.data);
   }
   return data;
 };
@@ -229,7 +194,7 @@ export const copyFiles = async ({ project, ids }) => {
  * Fetches the content of the markdown template. Memoizes the result
  */
 const getProjectDescriptionTemplate = memoize(() =>
-  fetch(projectDescriptionPath).then(res => res.text()),
+  fetch(projectDescriptionPath).then((res) => res.text()),
 );
 
 /**
@@ -240,26 +205,20 @@ const getProjectDescriptionTemplate = memoize(() =>
 export const saveProject = async ({ projectName, billingGroupId }) => {
   const USER_NAME_TEMPLATE_STRING = '<username>';
   const PROJECT_NAME_TEMPLATE_STRING = '<project-name>';
-  try {
-    const [descriptionTemplate, { username }] = await Promise.all([
-      getProjectDescriptionTemplate(),
-      getUser(),
-    ]);
-    const projectDescription = descriptionTemplate
-      .split(PROJECT_NAME_TEMPLATE_STRING)
-      .join(projectName)
-      .split(USER_NAME_TEMPLATE_STRING)
-      .join(username);
-    return createProject({
-      billing_group: billingGroupId,
-      name: projectName,
-      description: projectDescription,
-    });
-  } catch (error) {
-    throw error;
-  }
+  const [descriptionTemplate, { username }] = await Promise.all([
+    getProjectDescriptionTemplate(),
+    getUser(),
+  ]);
+  const projectDescription = descriptionTemplate
+    .split(PROJECT_NAME_TEMPLATE_STRING)
+    .join(projectName)
+    .split(USER_NAME_TEMPLATE_STRING)
+    .join(username);
+  return createProject({
+    billing_group: billingGroupId,
+    name: projectName,
+    description: projectDescription,
+  });
 };
 
-export const isValidKey = key => {
-  return key && key.length > 0;
-};
+export const isValidKey = (key) => key && key.length > 0;

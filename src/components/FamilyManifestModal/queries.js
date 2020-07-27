@@ -76,7 +76,7 @@ export const familyMemberAndParticipantIds = async ({ api, sqon, isFileRepo }) =
     `,
     variables: { sqon },
   });
-  const extractResults = path => get(response, path, []).map(b => b.key);
+  const extractResults = (path) => get(response, path, []).map((b) => b.key);
   const familyMemberIds = extractResults(
     isFileRepo
       ? 'data.file.aggregations.participants__family__family_compositions__family_members__kf_id.buckets'

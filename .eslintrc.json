@@ -4,12 +4,30 @@
     "es6": true,
     "jest": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
-  "parser": "babel-eslint",
-  "plugins": ["react-hooks", "@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [ "@typescript-eslint", "jest", "react", "react-hooks"],
   "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
     "ecmaFeatures": {
+      "modules": true,
       "jsx": true
+    }
+  },
+  "settings": {
+    "import/extensions": [".js",".jsx",".ts",".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts",".tsx"]
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "rules": {
@@ -21,11 +39,13 @@
     "max-len": [
       "error",
       {
-        "code": 100,
+        "code": 110,
         "ignoreComments": true
       }
     ],
-    "no-console": 1,
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
     "prefer-spread": "error",
     "prettier/prettier": ["error"],
     "react/prop-types": 1,

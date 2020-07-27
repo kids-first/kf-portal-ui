@@ -6,11 +6,11 @@ import AllAppsSupportIcon from 'icons/AllAppsSupportIcon';
 import AllAppsWebsiteIcon from 'icons/AllAppsWebsiteIcon';
 import AllAppsMenuIcon from 'icons/AllAppsMenuIcon';
 import AllAppsStudiesIcon from 'icons/AllAppsStudiesIcon';
-import { kfWebRoot } from 'common/injectGlobals';
+import { kfWebRoot, notionWebRoot } from 'common/injectGlobals';
 
 import HeaderMenu from './HeaderMenu';
 
-export default () => {
+const AppsMenu = () => {
   const menuItems = [
     <Menu.Item key="Website">
       <a href="https://kidsfirstdrc.org/" target={'_blank'} rel={'noopener noreferrer'}>
@@ -20,7 +20,7 @@ export default () => {
     </Menu.Item>,
     <Menu.Item key="Studies and Access">
       <a
-        href={`${kfWebRoot}/support/studies-and-access/`}
+        href={`${notionWebRoot}/Studies-and-Access-a5d2f55a8b40461eac5bf32d9483e90f`}
         target={'_blank'}
         rel={'noopener noreferrer'}
       >
@@ -30,7 +30,7 @@ export default () => {
     </Menu.Item>,
     <Menu.Item key="Support">
       <a
-        href={`${kfWebRoot}/support/getting-started/`}
+        href={`${notionWebRoot}/Kids-First-DRC-Help-Center-c26b36ff66564417834f3f264475d10a`}
         target={'_blank'}
         rel={'noopener noreferrer'}
       >
@@ -53,3 +53,5 @@ export default () => {
     </HeaderMenu>
   );
 };
+
+export default AppsMenu;

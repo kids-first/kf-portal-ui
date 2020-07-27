@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
-import autobind from 'auto-bind-es5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
@@ -21,6 +20,7 @@ import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTrackin
 import {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
+  setVirtualStudyId,
 } from 'store/actionCreators/virtualStudies';
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
 
@@ -33,16 +33,12 @@ import {
   studyDescription,
   studySavedTime,
 } from './SavedQueries.module.css';
+import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
 
 const FileRepositoryLink = styleComponent(Link, 'color-primary');
 const Scroll = styleComponent('div', scrollY);
 
 class SavedQueries extends React.Component {
-  constructor(props) {
-    super(props);
-    autobind(this);
-  }
-
   static propTypes = {
     // from redux store
     virtualStudies: PropTypes.array.isRequired,
@@ -56,6 +52,12 @@ class SavedQueries extends React.Component {
     effects: PropTypes.shape({
       getQueries: PropTypes.func.isRequired,
     }),
+    setVirtualStudyId: PropTypes.func.isRequired,
+  };
+
+  state = {
+    showDeleteModal: false,
+    virtualStudyToDelete: null,
   };
 
   componentDidMount() {
@@ -64,7 +66,7 @@ class SavedQueries extends React.Component {
     this.props.fetchVirtualStudiesCollection(this.props.loggedInUser.egoId);
   }
 
-  deleteVirtualStudy(vs) {
+  deleteVirtualStudy = (vs) => {
     trackUserInteraction({
       category: TRACKING_EVENTS.categories.user.dashboard.widgets.savedVirtualStudies,
       action: TRACKING_EVENTS.actions.query.delete,
@@ -74,9 +76,9 @@ class SavedQueries extends React.Component {
       virtualStudyId: vs.virtualStudyId,
       loggedInUser: this.props.loggedInUser,
     });
-  }
+  };
 
-  renderParticipantQueries() {
+  renderParticipantQueries = () => {
     const { virtualStudies } = this.props;
 
     return !virtualStudies.length ? (
@@ -92,7 +94,7 @@ class SavedQueries extends React.Component {
       <Box key="virtual-studies" mt={2} mb={2}>
         <Scroll>
           {virtualStudies
-            .map(vs => (
+            .map((vs) => (
               <Flex
                 className={study}
                 key={vs.virtualStudyId}
@@ -107,7 +109,7 @@ class SavedQueries extends React.Component {
                       <span
                         className={studyDeleteWrapper}
                         onClick={() => {
-                          this.deleteVirtualStudy(vs);
+                          this.setState({ showDeleteModal: true, virtualStudyToDelete: { ...vs } });
                         }}
                       >
                         <TrashIcon />
@@ -134,9 +136,9 @@ class SavedQueries extends React.Component {
         </Scroll>
       </Box>
     );
-  }
+  };
 
-  renderFileQueries() {
+  renderFileQueries = () => {
     const {
       state: { queries: fileQueries, exampleQueries, deletingIds },
     } = this.props;
@@ -152,7 +154,7 @@ class SavedQueries extends React.Component {
           </PromptMessageContainer>
         </Box>
         <Box mt={2} mb={2}>
-          {exampleQueries.map(q => {
+          {exampleQueries.map((q) => {
             q.link = `/search${q.content.longUrl.split('/search')[1]}`;
             return (
               <QueryBlock
@@ -169,21 +171,21 @@ class SavedQueries extends React.Component {
       <Scroll key="files-queries">
         <Box mt={2} mb={2}>
           {fileQueries
-            .filter(q => q.alias && q.content.Files)
-            .map(q => ({
+            .filter((q) => q.alias && q.content.Files)
+            .map((q) => ({
               ...q,
               date: Number(new Date(q.creationDate)),
               link: `/search${q.content.longUrl.split('/search')[1]}`,
             }))
             .slice()
             .sort((a, b) => b.date - a.date)
-            .map(q => (
+            .map((q) => (
               <QueryBlock key={q.id} query={q} inactive={deletingIds.includes(q.id)} />
             ))}
         </Box>
       </Scroll>
     );
-  }
+  };
 
   render() {
     const {
@@ -193,33 +195,41 @@ class SavedQueries extends React.Component {
 
     return (
       // TODO EXTRACT DashboardCard to UserDashboard/index.js
-      <DashboardCard scrollable={true} showHeader={false} style={{ width: '100%' }}>
-        {loadingQueries ? (
-          <ChartContentSpinner />
-        ) : (
-          <div style={{ height: '100%' }}>
-            <CardHeader title="Saved Queries" style={{ margin: '0px 0 15px 0' }} />
-            <Column className={savedQueriesContainer}>
-              <Tabs
-                initialSelectedTab="PARTICIPANTS"
-                options={[
-                  {
-                    display: 'Participants',
-                    total: virtualStudies.length ? virtualStudies.length : [0],
-                  },
-                  {
-                    display: 'Files',
-                    total: fileQueries.length ? fileQueries.length : [0],
-                  },
-                ]}
-              >
-                {this.renderParticipantQueries()}
-                {this.renderFileQueries()}
-              </Tabs>
-            </Column>
-          </div>
+      <>
+        {this.state.showDeleteModal && (
+          <ConfirmDelVirtualStudy
+            virtualStudy={this.state.virtualStudyToDelete}
+            onCloseCb={() => this.setState({ showDeleteModal: false })}
+          />
         )}
-      </DashboardCard>
+        <DashboardCard scrollable={true} showHeader={false} style={{ width: '100%' }}>
+          {loadingQueries ? (
+            <ChartContentSpinner />
+          ) : (
+            <div style={{ height: '100%' }}>
+              <CardHeader title="Saved Queries" style={{ margin: '0px 0 15px 0' }} />
+              <Column className={savedQueriesContainer}>
+                <Tabs
+                  initialSelectedTab="PARTICIPANTS"
+                  options={[
+                    {
+                      display: 'Participants',
+                      total: virtualStudies.length ? virtualStudies.length : [0],
+                    },
+                    {
+                      display: 'Files',
+                      total: fileQueries.length ? fileQueries.length : [0],
+                    },
+                  ]}
+                >
+                  {this.renderParticipantQueries()}
+                  {this.renderFileQueries()}
+                </Tabs>
+              </Column>
+            </div>
+          )}
+        </DashboardCard>
+      </>
     );
   }
 }
@@ -227,9 +237,10 @@ class SavedQueries extends React.Component {
 const mapDispatchToProps = {
   fetchVirtualStudiesCollection,
   deleteVirtualStudy,
+  setVirtualStudyId,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const { virtualStudies } = state;
   return {
     virtualStudies: virtualStudies.studies,

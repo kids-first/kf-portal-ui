@@ -1,11 +1,12 @@
-import { Sqon } from '../../types';
 import * as React from 'react';
 import { Empty, Modal, Result, Transfer } from 'antd';
 import { RenderResult, TransferItem } from 'antd/lib/transfer';
 import findIndex from 'lodash/findIndex';
 import { SelectionTree } from './SelectionTree';
-import { PhenotypeStore, TreeNode } from './store';
-import { Spinner } from '../../uikit/Spinner';
+import { PhenotypeStore, TreeNode, removeSameTerms, selectSameTerms } from './store';
+import { Spinner } from 'uikit/Spinner';
+import { isSqonFilter, Sqon, SqonFilters } from 'store/sqon';
+import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './index.css';
 
@@ -26,22 +27,33 @@ type ModalState = {
   error?: Error | null;
 };
 
-const ontologyRegex = new RegExp('([A-Za-z_]+).name');
+const desactivateAllSameTerms = (allSameTerms: string[], transferItems: TransferItem[]) =>
+  transferItems.map((t) => {
+    if (allSameTerms.includes(t.key)) {
+      return Object.assign(t, { disabled: true });
+    } else if (t.disabled) {
+      return Object.assign(t, { disabled: !t.disabled });
+    } else return t;
+  });
 
 const updateSqons = (initialSqon: Sqon, value: string[], selectedField: string) => {
-  const index = findIndex(initialSqon?.content, c => c.content.field === selectedField);
-  if (index >= 0 && value.length === 0) {
-    initialSqon.content.splice(index, 1);
-  } else if (index >= 0) {
-    initialSqon.content[index].content.value = value;
-  } else if (value.length > 0) {
-    initialSqon.content.push({
-      op: 'in',
-      content: {
-        field: selectedField,
-        value,
-      },
-    });
+  if (initialSqon.content as SqonFilters[]) {
+    const content = initialSqon.content as SqonFilters[];
+    const index = findIndex(content, (c) => c.content.field === selectedField);
+    if (index >= 0 && value.length === 0) {
+      initialSqon.content.splice(index, 1);
+    } else if (index >= 0) {
+      const valueContent = initialSqon.content[index] as SqonFilters;
+      valueContent.content.value = value;
+    } else if (value.length > 0) {
+      content.push({
+        op: 'in',
+        content: {
+          field: selectedField,
+          value,
+        },
+      });
+    }
   }
 
   return initialSqon;
@@ -65,10 +77,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   ontologyStore: PhenotypeStore;
 
   componentDidMount(): void {
-    const match: RegExpMatchArray | null = this.props.selectedField.match(ontologyRegex)
-    if(match) {
-      this.updateData(match[1]);
-    }
+    this.updateData(this.props.selectedField.replace(/\.[^.]*$/, ''));
   }
 
   getKeyFromTreeId = (treeId: string) => {
@@ -78,21 +87,26 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   getKeysFromSqon = (): string[] => {
     const results: any = {};
+    const { initialSqon, selectedField } = this.props;
+
+    const content = initialSqon.content as SqonFilters[];
+    const filteredContent = content.filter((s) => isSqonFilter(s));
+
     const findTreeKey = (treeNode: TreeNode) => {
-      const { initialSqon, selectedField } = this.props;
-      initialSqon.content.forEach(v => {
+      filteredContent.forEach((v) => {
         if (
-          v.content.value.indexOf(treeNode.title as string) >= 0 &&
-          v.content.field === selectedField
+          ((v.content?.value || []).indexOf(treeNode.title as string) >= 0 && v.content?.field) ||
+          null === selectedField
         ) {
           results[treeNode.title as string] = treeNode.key;
         }
+
         if (treeNode.children.length > 0) {
-          treeNode.children.forEach(t => findTreeKey(t));
+          treeNode.children.forEach((t) => findTreeKey(t));
         }
       });
     };
-    this.ontologyStore.tree.forEach(treeNode => {
+    this.ontologyStore.tree.forEach((treeNode) => {
       findTreeKey(treeNode);
     });
     return Object.values(results);
@@ -117,24 +131,25 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
 
   onChange = (nextTargetKeys: string[], direction: string, moveKeys: string[]) => {
     const { targetKeys } = this.state;
+
     // Children should be removed from target since only the upper most phenotype should be keep
     let cleanedTargetKeys = nextTargetKeys;
     if (direction === 'right') {
-      moveKeys.forEach(mk => {
+      moveKeys.forEach((mk) => {
         const node = this.ontologyStore.getTreeNodeForKey(mk);
         if (node) {
           const childrenKeys = this.ontologyStore.getChildrenKeys(node, true);
-          cleanedTargetKeys = nextTargetKeys.filter(k => !childrenKeys.includes(k));
+          cleanedTargetKeys = nextTargetKeys.filter((k) => !childrenKeys.includes(k));
         } else {
           cleanedTargetKeys = nextTargetKeys;
         }
       });
       this.setState({
-        targetKeys: cleanedTargetKeys,
+        targetKeys: removeSameTerms(moveKeys, cleanedTargetKeys),
       });
     } else if (direction === 'left') {
       this.setState({
-        targetKeys: targetKeys.filter(key => moveKeys.indexOf(key) < 0),
+        targetKeys: targetKeys.filter((key) => moveKeys.indexOf(key) < 0),
       });
     }
   };
@@ -160,17 +175,16 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           isLoading: false,
         });
       })
-      .catch(error => this.setState({ isLoading: false, error }));
+      .catch((error) => {
+        this.setState({ isLoading: false, error });
+      });
   };
 
-  shouldComponentUpdate(nextProps: ModalProps, nextState: ModalState) {
+  shouldComponentUpdate(nextProps: ModalProps) {
     const { isVisible } = this.props;
     if (nextProps.isVisible && !isVisible) {
       // opening the modal again
-      const match: RegExpMatchArray | null = this.props.selectedField.match(ontologyRegex)
-      if(match){
-        this.updateData(match[1]);
-      }
+      this.updateData(this.props.selectedField.replace(/\.[^.]*$/, ''));
       return false;
     } else if (!nextProps.isVisible && !isVisible) {
       // Closing the modal
@@ -184,13 +198,16 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
   render() {
     const { isVisible, title } = this.props;
     const { error, targetKeys, isLoading, treeSource } = this.state;
-    const dataSource = this.transfertDataSource;
     const hasError = error != null;
+
+    const allSameTerms = selectSameTerms(targetKeys, treeSource);
+    const dataSource = this.transfertDataSource;
+    const disabledSameTerms = desactivateAllSameTerms(allSameTerms, dataSource);
 
     return (
       <Modal
         style={{ height: '80vh', maxWidth: 1400 }}
-        title={title + ' Browser'}
+        title={`${title} Browser`}
         visible={isVisible}
         onOk={() => this.onApply(targetKeys)}
         okText={'Apply'}
@@ -207,7 +224,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
           />
         ) : (
           <Transfer
-            dataSource={dataSource}
+            dataSource={disabledSameTerms}
             targetKeys={targetKeys}
             onChange={this.onChange}
             render={(item: TransferItem): RenderResult => item.title || item.key}
@@ -226,7 +243,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                 return <Spinner className={'spinner'} size={'large'} />;
               }
               if (direction === 'left' && treeSource) {
-                const checkedKeys = [...selectedKeys, ...targetKeys];
+                const checkedKeys = [...removeSameTerms(selectedKeys, targetKeys)];
                 return (
                   <SelectionTree
                     dataSource={treeSource || []}
@@ -234,12 +251,17 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
                     checkedKeys={checkedKeys}
                     targetKeys={targetKeys}
                     onItemSelectAll={onItemSelectAll}
+                    selectedField={this.props.selectedField}
                   />
                 );
               }
             }}
           </Transfer>
         )}
+        <div className={'text-color-TO-DELETE'}>
+          <UserOutlined /> Participants with this exact term
+          <BranchesOutlined style={{ paddingLeft: 20 }} /> Participants including descendant terms
+        </div>
       </Modal>
     );
   }

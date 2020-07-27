@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
-
 import virtualStudies from './virtualStudies';
 import currentVirtualStudy from './currentVirtualStudy';
 import user from './user';
 import ui from './ui';
 import errors from './errors';
 import enableFeatures from './enableFeatures';
+import report from './report';
+import fileSearchFilters from './fileSearchFilters';
 
 export default combineReducers({
   virtualStudies,
@@ -14,4 +15,6 @@ export default combineReducers({
   ui,
   errors,
   enableFeatures,
+  report,
+  fileSearchFilters,
 });

@@ -1,13 +1,12 @@
 import { graphql } from '../../services/arranger';
-import { TreeNode } from 'antd/lib/tree-select';
 
-type PhenotypeSource = {
+export type PhenotypeSource = {
   key: string;
   doc_count: number;
   top_hits: {
     parents: string[];
   };
-  matches?: number;
+  filter_by_term: any;
 };
 
 export type TreeNode = {
@@ -17,8 +16,61 @@ export type TreeNode = {
   hasChildren?: boolean;
   children: TreeNode[];
   results?: number;
+  exactTagCount?: number;
   hidden?: boolean;
   depth?: number;
+  disabled?: boolean;
+};
+
+const dotToUnderscore = (str: string) => str.replace('.', '__');
+
+const termRegex = new RegExp('[^-]+$');
+
+export const removeSameTerms = (selectedKeys: string[], targetKeys: string[]) => {
+  let allSelectedAndChecked = {};
+
+  selectedKeys.concat(targetKeys).forEach((t) => {
+    allSelectedAndChecked = { ...allSelectedAndChecked, [`${t.match(termRegex)}`]: t };
+  });
+
+  return [...(Object.values(allSelectedAndChecked) as string[])];
+};
+
+export const selectSameTerms = (selectedKeys: string[], tree: TreeNode[] | undefined) => {
+  let enhancedSelectedKeys: string[] = [];
+
+  if (!tree) return [];
+
+  selectedKeys.forEach((k) => {
+    const match = k.match(termRegex);
+    if (match) {
+      const matched = match.pop();
+      enhancedSelectedKeys = [
+        ...enhancedSelectedKeys,
+        ...findAllSameTerms(k, matched || '', tree[0]),
+      ];
+    }
+  });
+
+  return enhancedSelectedKeys;
+};
+
+const findAllSameTerms = (
+  termKey: string,
+  searchKey: string,
+  treeNode: TreeNode,
+  sameTermKeys: string[] = [],
+) => {
+  const termPattern = new RegExp(`.*${searchKey.replace(/(?=[()])/g, '\\')}$`);
+
+  if (termPattern.test(treeNode.key) && termKey !== treeNode.key) {
+    sameTermKeys.push(treeNode.key);
+  }
+
+  if (treeNode.children.length > 0) {
+    treeNode.children.forEach((t) => findAllSameTerms(termKey, searchKey, t, sameTermKeys));
+  }
+  return sameTermKeys;
 };
 
 export class PhenotypeStore {
@@ -27,18 +79,50 @@ export class PhenotypeStore {
   // Tree of Phenotype Node
   tree: TreeNode[] = [];
 
-  fetch = ( field: string, sqon?: any, filterThemselves?: boolean) => {
+  fetch = (field: string, sqon?: any, filterThemselves?: boolean) => {
     this.phenotypes = [];
     this.tree = [];
     return this.getPhenotypes(field, sqon, filterThemselves).then((data: PhenotypeSource[]) => {
       this.phenotypes = this.remoteSingleRootNode(data);
-      this.tree = this.generateTree();
+      this.tree = this.generateTree(field);
       return true;
     });
   };
 
+  private populateNodeChild = (
+    treeNode: TreeNode,
+    source: PhenotypeSource,
+    depth: number = 0,
+    field: string,
+  ) => {
+    this.phenotypes.forEach((phenotypeSource: PhenotypeSource) => {
+      if (phenotypeSource.top_hits.parents.includes(source.key)) {
+        const childNode = this.createNodeFromSource(phenotypeSource, field, treeNode, depth);
+        treeNode.children.push(
+          this.populateNodeChild(childNode, phenotypeSource, depth + 1, field),
+        );
+      }
+    });
+    return treeNode;
+  };
+
+  generateTree = (field: string) => {
+    const workingTree: TreeNode[] = [];
+    const workingPhenotypes = [...this.phenotypes];
+    workingPhenotypes.forEach((sourcePhenotype) => {
+      let phenotype: TreeNode;
+      // start from root and then look for each element inhereting from that node
+      if (!sourcePhenotype.top_hits.parents.length || workingPhenotypes.length === 1) {
+        phenotype = this.createNodeFromSource(sourcePhenotype, field);
+        workingTree.push(this.populateNodeChild(phenotype, sourcePhenotype, 1, field));
+      }
+    });
+    return workingTree;
+  };
+
   createNodeFromSource = (
     ontologySource: PhenotypeSource,
+    exactTagField: string,
     parent?: TreeNode,
     depth: number = 0,
   ) => ({
@@ -47,34 +131,14 @@ export class PhenotypeStore {
     key: parent ? `${parent.key}-${ontologySource.key}` : ontologySource.key,
     children: [],
     results: ontologySource.doc_count,
+    exactTagCount: ontologySource.filter_by_term
+      ? ontologySource.filter_by_term[`${exactTagField}.is_tagged.term_filter`].doc_count
+      : 0,
     value: ontologySource.doc_count,
     name: ontologySource.key,
     depth,
+    disabled: false,
   });
-
-  private populateNodeChild = (treeNode: TreeNode, source: PhenotypeSource, depth: number = 0) => {
-    this.phenotypes.forEach((phenotypeSource: PhenotypeSource) => {
-      if (phenotypeSource.top_hits.parents.includes(source.key)) {
-        let childNode = this.createNodeFromSource(phenotypeSource, treeNode, depth);
-        treeNode.children.push(this.populateNodeChild(childNode, phenotypeSource, depth + 1));
-      }
-    });
-    return treeNode;
-  };
-
-  generateTree = () => {
-    let workingTree: TreeNode[] = [];
-    let workingPhenotypes = [...this.phenotypes];
-    workingPhenotypes.forEach((sourcePhenotype) => {
-      let phenotype: TreeNode;
-      // start from root and then look for each element inhereting from that node
-      if (!sourcePhenotype.top_hits.parents.length || workingPhenotypes.length === 1) {
-        phenotype = this.createNodeFromSource(sourcePhenotype);
-        workingTree.push(this.populateNodeChild(phenotype, sourcePhenotype, 1));
-      }
-    });
-    return workingTree;
-  };
 
   getTreeNodeForKey = (key: string, treeNode = this.tree): TreeNode | null => {
     let result: TreeNode | null = null;
@@ -102,19 +166,23 @@ export class PhenotypeStore {
     return nKeys;
   };
 
-  getTree = (maxDepth: number = 2) => {
+  getTree = () => {
     if (this.tree.length === 0) return [];
     return [...this.tree];
   };
 
-  buildPhenotypeQuery = (field: string, filterThemselves: boolean) => `query($sqon: JSON) {
+  buildPhenotypeQuery = (
+    field: string,
+    filterThemselves: boolean,
+  ) => `query($sqon: JSON, $term_filters: JSON) {
     participant {
       aggregations(filters: $sqon, aggregations_filter_themselves: ${filterThemselves}) {
-        ${field}__name {
+        ${dotToUnderscore(field)}__name {
           buckets{
             key,
             doc_count,
-            top_hits(_source: "${field}.parents", size: 1)
+            top_hits(_source: ["${field}.parents"], size: 1)
+            filter_by_term(filter: $term_filters)
           }
         }
       }
@@ -127,19 +195,25 @@ export class PhenotypeStore {
       query: this.buildPhenotypeQuery(field, filterThemselves),
       variables: JSON.stringify({
         sqon: sqon,
+        term_filters: [
+          {
+            field: `${field}.is_tagged`,
+            value: true,
+          },
+        ],
       }),
     };
     try {
       const { data } = await graphql()(body);
-      return data.data.participant.aggregations[field + '__name'].buckets;
+      return data.data.participant.aggregations[dotToUnderscore(field) + '__name'].buckets;
     } catch (error) {
-      console.warn(error);
+      // console.warn(error);
       return [];
     }
   };
 
-  remoteSingleRootNode = (phenotypes: PhenotypeSource[]) => {
-    return phenotypes
+  remoteSingleRootNode = (phenotypes: PhenotypeSource[]) =>
+    phenotypes
       .map((p) => (p.key !== 'All (HP:0000001)' ? p : null))
       .filter((p): p is PhenotypeSource => p !== null)
       .map((p) => {
@@ -149,5 +223,4 @@ export class PhenotypeStore {
         }
         return p;
       });
-  };
 }

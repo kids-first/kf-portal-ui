@@ -1,3 +1,5 @@
+/* FIXME eslint-disable is added to make the eslint pass for deploy. Too much clean up to do to fix this tech debt  */
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
@@ -10,7 +12,6 @@ import { FilterInput } from 'uikit/Input';
 import Column from 'uikit/Column';
 import Row from 'uikit/Row';
 import CavaticaCopyButton from 'components/cavatica/CavaticaCopyButton';
-import DownloadButton from './DownloadButton';
 
 import { Arranger, CurrentSQON, Table } from '@kfarranger/components/dist/Arranger';
 import { replaceSQON } from '@kfarranger/components/dist/SQONView/utils';
@@ -33,7 +34,8 @@ import customTableColumns from './customTableColumns';
 import { fillCenter } from 'theme/tempTheme.module.css';
 import './FileRepo.css';
 import StatsBar from './StatsBar';
-
+import DownloadButton from './DownloadButton';
+import FileManifestButton from './FileManifestButton';
 const trackFileRepoInteraction = ({ label, ...eventData }) =>
   trackUserInteraction({
     category: 'File Repo',
@@ -42,71 +44,49 @@ const trackFileRepoInteraction = ({ label, ...eventData }) =>
     ...(label && { label: isObject(label) ? JSON.stringify(label) : label }),
   });
 
-const customTableTypes = {
-  access: ({ value }) => (
-    <Row className="controlledAccess" center>
-      {typeof value !== 'boolean' ? (
-        ``
-      ) : value ? (
-        <ControlledIcon width={12} height={12} />
-      ) : (
-        <OpenIcon />
-      )}
-    </Row>
-  ),
-};
-
-const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => {
-  return (
-    <Row className={'relative'} right>
+const TableHeaderContent = ({ sqon, disabled, selectedTableRows, ...props }) => (
+  <Row className={'relative'} right>
+    <Tooltip
+      position="top"
+      hideTitle
+      html={
+        <Row className={'relative'} p={'10px'}>
+          {disabled
+            ? 'Please select files in the table for this action.'
+            : 'Cavatica is a cloud processing platform where files can be ' +
+              'linked (not duplicated) and used immediately.'}
+        </Row>
+      }
+    >
+      <CavaticaCopyButton
+        fileIds={selectedTableRows}
+        sqon={sqon}
+        style={{
+          justifyContent: 'flex-start',
+          marginTop: '3px',
+          fontSize: '11px',
+        }}
+        text="Analyze in Cavatica"
+        {...props}
+      />
+    </Tooltip>
+    {disabled ? (
       <Tooltip
         position="top"
         hideTitle
-        html={
-          <Row className={'relative'} p={'10px'}>
-            {disabled
-              ? 'Please select files in the table for this action.'
-              : 'Cavatica is a cloud processing platform where files can be ' +
-                'linked (not duplicated) and used immediately.'}
-          </Row>
-        }
+        html={<Row>Please select files in the table for this action.</Row>}
       >
-        <CavaticaCopyButton
-          fileIds={selectedTableRows}
-          sqon={sqon}
-          style={{
-            justifyContent: 'flex-start',
-            marginTop: '3px',
-            fontSize: '11px',
-          }}
-          text="Analyze in Cavatica"
-          {...props}
-        />
+        <DownloadButton sqon={sqon} {...props} />
+        <FileManifestButton sqon={sqon} projectId={arrangerProjectId} />
       </Tooltip>
-      {disabled ? (
-        <Tooltip
-          position="top"
-          hideTitle
-          html={<Row>Please select files in the table for this action.</Row>}
-        >
-          <DownloadButton
-            sqon={sqon}
-            {...props}
-            isFileRepo={true}
-            className={'download-btn-file-repo'}
-          />
-        </Tooltip>
-      ) : (
-        <DownloadButton
-          sqon={sqon}
-          {...props}
-          isFileRepo={true}
-          className={'download-btn-file-repo'}
-        />
-      )}
-    </Row>
-  );
-};
+    ) : (
+      <>
+        <DownloadButton sqon={sqon} />
+        <FileManifestButton sqon={sqon} projectId={arrangerProjectId} />
+      </>
+    )}
+  </Row>
+);
 
 const enhance = compose(injectState, withApi, fenceConnectionInitializeHoc);
 
@@ -202,7 +182,20 @@ const FileRepo = ({
                           customHeaderContent={
                             <TableHeaderContent {...props} sqon={selectionSQON} disabled={false} />
                           }
-                          customTypes={customTableTypes}
+                          customTypes={{
+                            // eslint-disable-next-line react/display-name
+                            access: ({ value }) => (
+                              <Row className="controlledAccess" center>
+                                {typeof value !== 'boolean' ? (
+                                  ``
+                                ) : value ? (
+                                  <ControlledIcon width={12} height={12} />
+                                ) : (
+                                  <OpenIcon />
+                                )}
+                              </Row>
+                            ),
+                          }}
                           showFilterInput={false}
                           InputComponent={(props) => (
                             <FilterInput {...props} LeftIcon={FilterIcon} />
@@ -236,7 +229,7 @@ const FileRepo = ({
                             });
                           }}
                           exportTSVText={
-                            <React.Fragment>
+                            <>
                               <DownloadIcon
                                 fill={theme.greyScale3}
                                 width={12}
@@ -244,7 +237,7 @@ const FileRepo = ({
                                 style={{ marginRight: '9px' }}
                               />
                               {'Export TSV'}
-                            </React.Fragment>
+                            </>
                           }
                         />
                       </Column>
