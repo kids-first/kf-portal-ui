@@ -10,18 +10,17 @@ import formatNumber from '@kfarranger/components/dist/utils/formatNumber';
 import { ColumnsState } from '@kfarranger/components/dist/DataTable';
 
 import DownloadManifestModal, { DownloadManifestModalFooter } from '../DownloadManifestModal';
-import CheckCircleIcon from 'icons/CheckCircleIcon.js';
 import { ModalSubHeader } from '../Modal';
 import { fileManifestParticipantsAndFamily } from 'services/downloadData';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
 import { withApi } from 'services/api';
 import { generateFamilyManifestModalProps } from './queries';
 import FamilyDataTypesStatsQuery from './FamilyDataTypesStatsQuery';
 import {
-  participantsStatVisual,
-  fileStatVisual,
-  fileSizeStatVisual,
   familyMembersStatVisual,
+  fileSizeStatVisual,
+  fileStatVisual,
+  participantsStatVisual,
 } from './statVisuals';
 
 import { H3, TableHeader } from 'uikit/Headings';
@@ -29,9 +28,10 @@ import { Paragraph } from 'uikit/Core';
 
 import { flexColumn, flexRow } from 'theme/tempTheme.module.css';
 import './FamilyManifestModal.css';
+import { CheckCircleTwoTone } from '@ant-design/icons';
 
-const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
-  return sqon
+const sqonForDownload = ({ participantIds, fileTypes, sqon }) =>
+  sqon
     ? {
         op: 'or',
         content: [
@@ -52,9 +52,8 @@ const sqonForDownload = ({ participantIds, fileTypes, sqon }) => {
         ],
       }
     : sqon;
-};
 
-const fileSizeToString = fileSize => filesize(fileSize || 0).toUpperCase();
+const fileSizeToString = (fileSize) => filesize(fileSize || 0).toUpperCase();
 
 const ManifestTableDataRow = ({
   fileType,
@@ -120,7 +119,7 @@ export default compose(
       generateFamilyManifestModalProps({
         api: this.props.api,
         sqon: this.props.sqon,
-      }).then(x =>
+      }).then((x) =>
         this.setState({
           ...x,
           loading: false,
@@ -134,7 +133,6 @@ export default compose(
 )(
   ({
     loading,
-    familyMemberIds,
     participantIds,
     dataTypes,
     participantFilesCount,
@@ -142,14 +140,12 @@ export default compose(
     sqon,
     index,
     projectId,
-    submitForm,
     isSubmitting,
     isDisabled,
     setIsDisabled,
     checkedFileTypes,
     setCheckedFileTypes,
     api,
-    handleSubmit,
     setId,
     setSetId,
     effects: { unsetModal },
@@ -158,7 +154,7 @@ export default compose(
     const familyMemberStats = [familyMembersStatVisual, fileStatVisual, fileSizeStatVisual];
     const participantsMemberCount = (participantIds || []).length;
 
-    const filterToCheckedTypes = data =>
+    const filterToCheckedTypes = (data) =>
       data.filter(({ fileType }) => checkedFileTypes.includes(fileType));
 
     const isFamilyMemberFilesAvailable = !!(dataTypes || []).length;
@@ -170,14 +166,14 @@ export default compose(
         render={({ state: { columns } }) => (
           <DownloadManifestModal {...{ sqon, index, projectId, api }}>
             {({ setWarning }) => {
-              const createFooterComponent = participantIds => {
+              const createFooterComponent = (participantIds) => {
                 const downloadSqon = sqonForDownload({
                   sqon,
                   fileTypes: checkedFileTypes,
                   participantIds,
                 });
                 return withFormik({
-                  handleSubmit: async (value, { setSubmitting, setErrors }) => {
+                  handleSubmit: async () => {
                     fileManifestParticipantsAndFamily({
                       sqon: downloadSqon,
                       columns: columns,
@@ -244,7 +240,7 @@ export default compose(
                         files: participantFilesCount,
                         fileSize: fileSizeToString(participantFilesSize),
                         isChecked: isFamilyMemberFilesAvailable,
-                        leftComponent: <CheckCircleIcon className={`checkMark`} />,
+                        leftComponent: <CheckCircleTwoTone className={`checkMark`} />,
                       }}
                     />
                   </Table>
@@ -262,6 +258,7 @@ export default compose(
                         participantIds,
                         projectId,
                         isDisabled,
+                        // eslint-disable-next-line react/display-name
                         render: ({ loading: loadingFileTypeStats, fileTypeStats }) => {
                           const uniqueParticipantsAndFamilyMemberIds = uniq([
                             ...participantIds,
@@ -297,6 +294,7 @@ export default compose(
                                     {' '}
                                     <Paragraph>
                                       {
+                                        // eslint-disable-next-line max-len
                                         ' To include the family data in the manifest, select your desired data types below :  '
                                       }
                                     </Paragraph>
@@ -314,14 +312,16 @@ export default compose(
                                   {fileTypeStats.map(
                                     ({ fileType, members, files, fileSize }, i) => (
                                       <ManifestTableDataRow
+                                        key={i}
                                         {...{
-                                          key: i,
                                           showCheckbox: true,
-                                          onClick: e => {
+                                          onClick: (e) => {
                                             setSetId(null);
                                             setCheckedFileTypes(
                                               checkedFileTypes.includes(fileType)
-                                                ? checkedFileTypes.filter(type => type !== fileType)
+                                                ? checkedFileTypes.filter(
+                                                    (type) => type !== fileType,
+                                                  )
                                                 : [...checkedFileTypes, fileType],
                                             );
 
