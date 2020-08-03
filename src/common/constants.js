@@ -17,7 +17,8 @@ export const ROLES = [
     type: 'research',
     displayName: 'Researcher',
     description:
-      'Search, view, analyze, and identify currently accessible data along with your own to support your research',
+      'Search, view, analyze, and identify currently accessible data along with your own to support ' +
+      'your research',
     icon: ResearchIcon,
     banner: ResearchBanner,
     color: '#00afed',
@@ -82,10 +83,7 @@ export const FENCES = [GEN3, DCF];
 export const CAVATICA = 'cavatica';
 export const SERVICES = [...FENCES, CAVATICA];
 
-export const CAVATICA_DATASET_MAPPING = {
-  [DCF]: 'sevenbridges/target',
-  [GEN3]: 'sevenbridges/kids-first',
-};
+export const CAVATICA_DATASET = 'sevenbridges/kids-first';
 
 export const GOOGLE = 'google';
 export const FACEBOOK = 'facebook';
@@ -136,7 +134,9 @@ const host = window.location.host;
 export const EXAMPLE_QUERIES = [
   {
     queryName: 'All Harmonized Data',
-    url: `${protocol}://${host}/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B%22true%22%5D%7D%7D%5D%7D`,
+    url: `${protocol}://${host}/search/file?sqon=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B
+    %22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22is_harmonized%22%2C%22value%22%3A%5B
+    %22true%22%5D%7D%7D%5D%7D`,
     stats: {
       Files: 9194,
       Participants: 3698,
@@ -148,7 +148,13 @@ export const EXAMPLE_QUERIES = [
   {
     queryName:
       'Female probands with cleft palate (HP:0000175) and parents with harmonized aligned reads',
-    url: `${protocol}://${host}/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"data_type"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"%3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
+    url: `${protocol}://${host}/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"
+    %2C"content"%3A%7B"field"%3A"data_type"%2C"value"%3A%5B"Aligned%20Reads"%5D%7D%7D%2C%7B"op"
+    %3A"in"%2C"content"%3A%7B"field"%3A"is_harmonized"%2C"value"%3A%5B"true"%5D%7D%7D%2C%7B"op"
+    %3A"in"%2C"content"%3A%7B"field"%3A"participants.diagnoses.source_text_diagnosis"%2C"value"
+    %3A%5B"Cleft%20Palate"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants
+    .family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"
+    %2C"content"%3A%7B"field"%3A"participants.gender"%2C"value"%3A%5B"Female"%5D%7D%7D%5D%7D`,
     stats: {
       Files: 218,
       Participants: 101,
@@ -159,7 +165,11 @@ export const EXAMPLE_QUERIES = [
   },
   {
     queryName: 'Data from oral samples of probands with full trio data',
-    url: `${protocol}://${host}/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.biospecimens.composition"%2C"value"%3A%5B"Cheek%20Swab"%2C"Mouth%20Wash"%2C"Saliva"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.is_proband"%2C"value"%3A%5B"true"%5D%7D%7D%5D%7D`,
+    url: `${protocol}://${host}/search/file?sqon=%7B"op"%3A"and"%2C"content"%3A%5B%7B"op"%3A"in"
+    %2C"content"%3A%7B"field"%3A"participants.biospecimens.composition"%2C"value"%3A%5B
+    "Cheek%20Swab"%2C"Mouth%20Wash"%2C"Saliva"%5D%7D%7D%2C%7B"op"%3A"in"%2C"content"%3A%7B"field"
+    %3A"participants.family.family_compositions.composition"%2C"value"%3A%5B"trio"%5D%7D%7D%2C
+    %7B"op"%3A"in"%2C"content"%3A%7B"field"%3A"participants.is_proband"%2C"value"%3A%5B"true"%5D%7D%7D%5D%7D`,
     stats: {
       Files: 1434,
       Participants: 478,
@@ -172,7 +182,8 @@ export const EXAMPLE_QUERIES = [
 
 export const LOGIN_ERROR_DETAILS = {
   unknown:
-    'Uh oh, looks like something went wrong. Contact us and we will help investigate why you are unable to sign in.',
+    'Uh oh, looks like something went wrong. Contact us and we will help investigate why you are ' +
+    'unable to sign in.',
   facebook:
     'To sign in with Facebook, please whitelist Facebook in your ad blocker or other privacy settings.',
   thirdPartyData: 'To sign in with Google, please enable third party cookies in your browser.',
