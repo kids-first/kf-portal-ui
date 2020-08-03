@@ -3,7 +3,6 @@ import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import makeChunks from 'lodash/chunk';
 import projectDescriptionPath from './projectDescription.md';
 import memoize from 'lodash/memoize';
-import { CAVATICA_DATASET } from 'common/constants';
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -150,7 +149,7 @@ export const convertFenceUuids = async ({ ids }) => {
       body: {
         type: 'dataset',
         // The dataset to use if fence dependent, we keep a listing of them in common/constants
-        dataset: CAVATICA_DATASET,
+        dataset: 'sevenbridges/kids-first',
         items: chunk.map((id) => ({
           id,
         })),
