@@ -23,6 +23,7 @@ interface State {
   isVisible: boolean;
   confirmLoading: boolean;
   hasError: boolean;
+  hasSameName: boolean;
 }
 
 type NameSetValidator = {
@@ -46,6 +47,7 @@ export default class SaveSetModal extends React.Component<Props, State> {
     isVisible: true,
     confirmLoading: false,
     hasError: false,
+    hasSameName: false,
   };
 
   formRef = React.createRef<FormInstance>();
@@ -56,27 +58,63 @@ export default class SaveSetModal extends React.Component<Props, State> {
     });
     const { nameSet } = values;
     const { user, sqon, api } = this.props;
+
+    const body = {
+      query:
+        'query($sqon: JSON) {' +
+        'sets {aggregations(filters: $sqon, aggregations_filter_themselves: false) {size {stats {count}}}}' +
+        '}',
+      variables: {
+        sqon: {
+          op: 'and',
+          content: [
+            {
+              op: 'in',
+              content: { field: 'tag.keyword', value: [nameSet] },
+            },
+            {
+              op: 'in',
+              content: { field: 'userId', value: [user.egoId] },
+            },
+          ],
+        },
+      },
+    };
+
     try {
-      await saveSet({
-        type: 'participant',
-        path: 'kf_id',
-        sqon,
-        userId: user.egoId,
-        api: graphql(api),
-        tag: nameSet,
-      });
-      notification.success({
-        message: 'Success',
-        description: `Your participant set has been saved.`,
-        duration: 10,
-      });
+      const { data } = await graphql()(body);
+
+      if (data.data?.sets?.aggregations?.size?.stats?.count) {
+        this.setState({
+          hasSameName: true,
+        });
+      } else {
+        await saveSet({
+          type: 'participant',
+          path: 'kf_id',
+          sqon,
+          userId: user.egoId,
+          api: graphql(api),
+          tag: nameSet,
+        });
+        notification.success({
+          message: 'Success',
+          description: `Your participant set has been saved.`,
+          duration: 10,
+        });
+        this.setState({
+          isVisible: false,
+          confirmLoading: false,
+          hasSameName: false,
+        });
+        this.props.hideModalCb();
+      }
     } catch (e) {
       notification.error({
         message: 'Error',
         description: 'We were unable to save your participant set. Please try again.',
         duration: 10,
       });
-    } finally {
       this.setState({
         isVisible: false,
         confirmLoading: false,
@@ -95,7 +133,7 @@ export default class SaveSetModal extends React.Component<Props, State> {
   isSaveButtonDisabled = () => this.state.hasError || !this.formRef.current; //Input not touched
 
   render() {
-    const { isVisible, confirmLoading } = this.state;
+    const { isVisible, confirmLoading, hasSameName } = this.state;
     // Display one extra character than allowed max in order to show an error message by the validator.
     const maxNumOfCharsToDisplay = MAX_LENGTH_NAME + 1;
     return (
@@ -127,11 +165,13 @@ export default class SaveSetModal extends React.Component<Props, State> {
             label="Name"
             name="nameSet"
             hasFeedback
+            validateStatus={hasSameName ? 'error' : 'success'}
+            help={hasSameName ? 'A set with this name already exists' : ''}
             rules={[
               () => ({
                 validator: (_, value): Promise<any> => {
                   const { msg, err } = validateNameSetInput(value);
-                  this.setState({ hasError: err });
+                  this.setState({ hasError: err, hasSameName: false });
                   if (err) {
                     return Promise.reject(msg);
                   }
