@@ -36,7 +36,7 @@ export const createSaveSet = (
       dispatch(toggleTagNameExist(true));
     }
   } catch (error) {
-    return dispatch(failureFilter(error));
+    return dispatch(failureCreate(error));
   } finally {
     dispatch(togglePendingCreate(false));
   }
@@ -47,7 +47,7 @@ export const togglePendingCreate = (isPending: boolean): SaveSetsActionTypes => 
   isPending,
 });
 
-export const failureFilter = (error: Error): SaveSetsActionTypes => ({
+export const failureCreate = (error: Error): SaveSetsActionTypes => ({
   type: FAILURE_CREATE,
   error,
 });

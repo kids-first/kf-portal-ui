@@ -6,7 +6,7 @@ import { LoggedInUser } from 'store/user';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
-import { DispatchSaveSets, SaveSetParams, SaveSetState } from '../../../store/saveSetTypes';
+import { DispatchSaveSets, SaveSetParams, SaveSetState } from 'store/saveSetTypes';
 import {
   createSaveSet,
   reInitializeSaveSetsState,
@@ -163,7 +163,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           help={
             displayHelp ? displayHelpMessage : 'Letters, numbers, hyphens (-), and underscores (_)'
           }
-          initialValue={'untitled_participants_set'}
+          initialValue={'Save_Set_1'}
           rules={[
             () => ({
               validator: (_, value) => {
