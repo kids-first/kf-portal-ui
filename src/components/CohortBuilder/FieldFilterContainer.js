@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Row from 'uikit/Row';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined, ProfileOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import { container, containerContent, footer, header } from './FieldFilterContainer.module.css';
@@ -27,10 +27,10 @@ Footer.propTypes = {
   children: PropTypes.element.isRequired,
 };
 
-const findAllCheckedBoxes = (el) => el.querySelectorAll('input[type="checkbox"]:checked');
-const findAllActiveToggles = (el) => el.querySelectorAll('div.toggle-button-option.active');
+const findAllCheckedBoxes = (el) => el?.querySelectorAll('input[type="checkbox"]:checked');
+const findAllActiveToggles = (el) => el?.querySelectorAll('div.toggle-button-option.active');
 const findAllRanges = (el) =>
-  el.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
+  el?.querySelectorAll('div.rangeInputContainer input.rangeFilterInput:not([disabled])');
 
 export const FieldFilterContainer = ({
   children,
@@ -46,9 +46,9 @@ export const FieldFilterContainer = ({
   const hasSelectedElements = () => {
     const termsWrapperElement = document.getElementById('terms-wrapper');
 
-    const checkboxes = findAllCheckedBoxes(termsWrapperElement);
-    const toggles = findAllActiveToggles(termsWrapperElement);
-    const rangeNodes = findAllRanges(termsWrapperElement);
+    const checkboxes = findAllCheckedBoxes(termsWrapperElement) || [];
+    const toggles = findAllActiveToggles(termsWrapperElement) || [];
+    const rangeNodes = findAllRanges(termsWrapperElement) || [];
 
     let ranges = 0;
     rangeNodes.forEach((input, key) => {
@@ -77,6 +77,9 @@ export const FieldFilterContainer = ({
         <Header>
           <Button onClick={onBack} icon={<LeftOutlined />}>
             Back
+          </Button>
+          <Button onClick={onBack} icon={<ProfileOutlined />}>
+            Browser
           </Button>
         </Header>
       )}

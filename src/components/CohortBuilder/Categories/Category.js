@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import autobind from 'auto-bind-es5';
 import { Dropdown } from 'antd';
@@ -10,18 +11,16 @@ import { arrangerProjectId } from 'common/injectGlobals';
 import Filter from './Filter';
 import { ARRANGER_API_PARTICIPANT_INDEX_NAME } from '../common';
 import CategoryMenu from './CategoryMenu';
-import { getFieldDisplayName } from '../../../utils';
+import { openModal } from 'store/actions/modal';
 
 import '../CohortBuilder.css';
-import OntologyModal from '../../OntologyBrowser';
-
-export default class Category extends React.Component {
+import { supportOntologyBrowser } from 'components/OntologyBrowser/OntologyBrowser';
+class Category extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
       selectedField: null,
-      isOntologyModalVisible: false,
     };
     this.initialSqon = props.sqon;
     autobind(this);
@@ -35,11 +34,8 @@ export default class Category extends React.Component {
     onSqonUpdate: PropTypes.func.isRequired,
     children: PropTypes.element.isRequired,
     anchorId: PropTypes.node.isRequired,
-    fieldsTreeBrowser: PropTypes.arrayOf(PropTypes.string),
-  };
-
-  static defaultProps = {
-    fieldsTreeBrowser: [],
+    showOntologyModal: PropTypes.bool,
+    onOpenModal: PropTypes.func,
   };
 
   handleDropdownVisibleChange(visible) {
@@ -47,11 +43,18 @@ export default class Category extends React.Component {
   }
 
   handleMenuItemSelected(selectedField) {
-    const { fieldsTreeBrowser } = this.props;
-    this.setState({
-      selectedField: selectedField,
-      isOntologyModalVisible: fieldsTreeBrowser.includes(selectedField),
-    });
+    if (selectedField === 'observed_phenotype.name') {
+      this.props.onOpenModal(selectedField);
+      this.setState({
+        selectedField: selectedField,
+        visible: false,
+      });
+    } else {
+      this.setState({
+        selectedField: selectedField,
+        visible: true,
+      });
+    }
   }
 
   handleCloseFilter(keepCategoryOpen = false) {
@@ -60,13 +63,6 @@ export default class Category extends React.Component {
       visible: keepCategoryOpen,
     });
   }
-
-  onOntologyModalClose = () => {
-    this.setState({
-      isOntologyModalVisible: false,
-      visible: false,
-    });
-  };
 
   renderMenu(extendedMapping) {
     const { fields, sqon } = this.props;
@@ -105,32 +101,12 @@ export default class Category extends React.Component {
   }
 
   render() {
-    const { children, title, color, anchorId, sqon, onSqonUpdate, fieldsTreeBrowser } = this.props;
-    const { isOntologyModalVisible, visible, selectedField } = this.state;
+    const { children, title, color, anchorId } = this.props;
+    const { visible, selectedField } = this.state;
+    const showOntologyBrowser = supportOntologyBrowser(selectedField);
+
     return (
       <Fragment>
-        {fieldsTreeBrowser?.includes(selectedField) && (
-          <ExtendedMappingProvider
-            projectId={arrangerProjectId}
-            graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-          >
-            {({ extendedMapping = [] }) => (
-              <OntologyModal
-                isVisible={isOntologyModalVisible}
-                onCloseModal={this.onOntologyModalClose}
-                initialSqon={sqon}
-                onSqonUpdate={(sqon) => {
-                  onSqonUpdate(title, sqon);
-                  this.handleCloseFilter(false);
-                }}
-                title={getFieldDisplayName(selectedField, extendedMapping)}
-                selectedField={selectedField}
-                key={selectedField}
-              />
-            )}
-          </ExtendedMappingProvider>
-        )}
-
         <ExtendedMappingProvider
           projectId={arrangerProjectId}
           graphqlField={ARRANGER_API_PARTICIPANT_INDEX_NAME}
@@ -138,12 +114,10 @@ export default class Category extends React.Component {
           {({ extendedMapping = [] }) => {
             let overlay = <div />;
 
-            if (!isOntologyModalVisible) {
-              overlay =
-                selectedField && !fieldsTreeBrowser.includes(selectedField)
-                  ? this.renderFilter(selectedField, title)
-                  : this.renderMenu(extendedMapping);
-            }
+            overlay =
+              selectedField && !showOntologyBrowser
+                ? this.renderFilter(selectedField, title)
+                : this.renderMenu(extendedMapping);
 
             return (
               <Dropdown
@@ -170,3 +144,11 @@ export default class Category extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  onOpenModal: (id) => {
+    dispatch(openModal(id));
+  },
+});
+
+export default connect(() => {}, mapDispatchToProps)(Category);
