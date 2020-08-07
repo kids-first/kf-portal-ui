@@ -7,38 +7,58 @@ import {
   TAG_NAME_CONFLICT,
   TOGGLE_PENDING_CREATE,
 } from '../saveSetTypes';
-import { saveSetCountForTag } from '../../services/sets';
+import { saveSetCountForTag } from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
-import graphql from '../../services/arranger';
+import graphql from 'services/arranger';
 
 export const createSaveSet = (
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-  const { tag, userId, api, sqon, onSuccess, onNameConflict } = payload;
+  const { tag, userId, api, sqon, onSuccess } = payload;
 
   dispatch(togglePendingCreate(true));
+
   try {
-    const tagIsUnique = (await saveSetCountForTag(tag, userId)) === 0;
-    if (tagIsUnique) {
-      await saveSet({
-        type: 'participant',
-        path: 'kf_id',
-        sqon,
-        userId: userId,
-        api: graphql(api),
-        tag: tag,
-      });
+    await saveSet({
+      type: 'participant',
+      path: 'kf_id',
+      sqon,
+      userId: userId,
+      api: graphql(api),
+      tag: tag,
+    });
+    if (onSuccess && typeof onSuccess === 'function') {
       onSuccess();
+    }
+  } catch (e) {
+    dispatch(failureCreate(e));
+  } finally {
+    dispatch(togglePendingCreate(false));
+  }
+};
+
+export const createSaveSetIfUnique = (
+  payload: SaveSetParams,
+): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+  const { tag, userId, onNameConflict } = payload;
+
+  try {
+    dispatch(togglePendingCreate(true));
+    const tagIsUnique = (await saveSetCountForTag(tag, userId)) === 0;
+    dispatch(togglePendingCreate(false));
+
+    if (tagIsUnique) {
+      dispatch(createSaveSet(payload));
     } else {
-      onNameConflict();
+      if (onNameConflict && typeof onNameConflict === 'function') {
+        onNameConflict();
+      }
       dispatch(toggleTagNameExist(true));
     }
   } catch (error) {
     return dispatch(failureCreate(error));
-  } finally {
-    dispatch(togglePendingCreate(false));
   }
 };
 

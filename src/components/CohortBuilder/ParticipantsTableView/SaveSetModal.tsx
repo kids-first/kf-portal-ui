@@ -8,7 +8,7 @@ import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
 import { DispatchSaveSets, SaveSetParams, SaveSetState } from 'store/saveSetTypes';
 import {
-  createSaveSet,
+  createSaveSetIfUnique,
   reInitializeSaveSetsState,
   toggleTagNameExist,
 } from 'store/actionCreators/saveSets';
@@ -49,7 +49,7 @@ const mapState = (state: RootState): SaveSetState => ({
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onCreateSet: (params: SaveSetParams) => dispatch(createSaveSet(params)),
+  onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
   toggleTagNameExist: (value: boolean) => dispatch(toggleTagNameExist(value)),
   reInitializeState: () => dispatch(reInitializeSaveSetsState()),
 });
@@ -154,7 +154,12 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         </Form.Item>,
       ]}
     >
-      <Form form={form} name={FORM_NAME} onFinish={onFinish}>
+      <Form
+        form={form}
+        name={FORM_NAME}
+        initialValues={{ nameSet: 'Save_Set_1' }}
+        onFinish={onFinish}
+      >
         <Form.Item
           label="Name"
           name="nameSet"
@@ -163,7 +168,6 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           help={
             displayHelp ? displayHelpMessage : 'Letters, numbers, hyphens (-), and underscores (_)'
           }
-          initialValue={'Save_Set_1'}
           rules={[
             () => ({
               validator: (_, value) => {

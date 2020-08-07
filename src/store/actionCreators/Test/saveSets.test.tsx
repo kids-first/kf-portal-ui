@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
-  createSaveSet,
+  createSaveSetIfUnique,
   failureCreate,
   reInitializeSaveSetsState,
   togglePendingCreate,
@@ -90,7 +90,7 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSaveSet(payload));
+    await store.dispatch(createSaveSetIfUnique(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -112,7 +112,7 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSaveSet(payload));
+    await store.dispatch(createSaveSetIfUnique(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -136,7 +136,7 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSaveSet(payload));
+    await store.dispatch(createSaveSetIfUnique(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
