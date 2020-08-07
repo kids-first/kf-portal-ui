@@ -1,27 +1,29 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Form, Input, Modal, notification } from 'antd';
-import { FormInstance } from 'antd/lib/form';
 import { LoggedInUser } from 'store/user';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
-// @ts-ignore
-import saveSet from '@kfarranger/components/dist/utils/saveSet';
-import graphql from 'services/arranger';
+import { connect, ConnectedProps } from 'react-redux';
+import { DispatchSaveSets, SaveSetParams, SaveSetState } from 'store/saveSetTypes';
+import { createSaveSetIfUnique, reInitializeSaveSetsState } from 'store/actionCreators/saveSets';
+import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
+import { RootState } from 'store/rootState';
 
 export const MAX_LENGTH_NAME = 50;
 const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_]*$/;
 const FORM_NAME = 'save-set';
 
-interface Props {
+type OwnProps = {
   hideModalCb: Function;
   api: Function;
   sqon: Sqon;
   user: LoggedInUser;
-}
+};
 
 interface State {
   isVisible: boolean;
-  confirmLoading: boolean;
   hasError: boolean;
 }
 
@@ -29,6 +31,24 @@ type NameSetValidator = {
   msg: string;
   err: boolean;
 };
+
+const mapState = (state: RootState): SaveSetState => ({
+  create: {
+    isLoading: selectIsLoading(state),
+    error: selectError(state),
+  },
+});
+
+const mapDispatch = (dispatch: DispatchSaveSets) => ({
+  onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
+  reInitializeState: () => dispatch(reInitializeSaveSetsState()),
+});
+
+const connector = connect(mapState, mapDispatch);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & OwnProps;
 
 export const validateNameSetInput = (value: string): NameSetValidator => {
   if (!value) {
@@ -41,114 +61,136 @@ export const validateNameSetInput = (value: string): NameSetValidator => {
   return { msg: '', err: false };
 };
 
-export default class SaveSetModal extends React.Component<Props, State> {
-  state: State = {
-    isVisible: true,
-    confirmLoading: false,
-    hasError: false,
+const SaveSetModal: FunctionComponent<Props> = (props) => {
+  const [form] = Form.useForm();
+  const [isVisible, setIsVisible] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [displayHelp, setDisplayHelp] = useState(false);
+  const [displayHelpMessage, setDisplayHelpMessage] = useState('');
+
+  const { user, sqon, api, onCreateSet, create, reInitializeState, hideModalCb } = props;
+
+  const onFinish = async (values: Store) => {
+    const { nameSet } = values;
+
+    await onCreateSet({
+      tag: nameSet,
+      userId: user.egoId,
+      api: api,
+      sqon: sqon,
+      onSuccess: onSuccessCb,
+      onNameConflict: onNameConflictCb,
+    });
   };
 
-  formRef = React.createRef<FormInstance>();
-
-  onFinish = async (values: Store) => {
-    this.setState({
-      confirmLoading: true,
+  const onSuccessCb = () => {
+    notification.success({
+      message: 'Success',
+      description: `Your participant set has been saved.`,
+      duration: 10,
     });
-    const { nameSet } = values;
-    const { user, sqon, api } = this.props;
-    try {
-      await saveSet({
-        type: 'participant',
-        path: 'kf_id',
-        sqon,
-        userId: user.egoId,
-        api: graphql(api),
-        tag: nameSet,
-      });
-      notification.success({
-        message: 'Success',
-        description: `Your participant set has been saved.`,
-        duration: 10,
-      });
-    } catch (e) {
+    setIsVisible(false);
+    hideModalCb();
+  };
+
+  const onNameConflictCb = () => {
+    setHasError(true);
+    setDisplayHelp(true);
+    setDisplayHelpMessage('A set with this name already exists');
+  };
+
+  const handleCancel = () => {
+    reInitializeState();
+    setIsVisible(false);
+    hideModalCb();
+  };
+
+  const { isLoading, error } = create;
+  const isSaveButtonDisabled = () => error != null;
+  // Display one extra character than allowed max in order to show an error message by the validator.
+  const maxNumOfCharsToDisplay = MAX_LENGTH_NAME + 1;
+
+  useEffect(() => {
+    if (error) {
       notification.error({
         message: 'Error',
         description: 'We were unable to save your participant set. Please try again.',
         duration: 10,
       });
-    } finally {
-      this.setState({
-        isVisible: false,
-        confirmLoading: false,
-      });
-      this.props.hideModalCb();
     }
-  };
+  }, [error]);
 
-  handleCancel = () => {
-    this.setState({
-      isVisible: false,
-    });
-    this.props.hideModalCb();
-  };
-
-  isSaveButtonDisabled = () => this.state.hasError || !this.formRef.current; //Input not touched
-
-  render() {
-    const { isVisible, confirmLoading } = this.state;
-    // Display one extra character than allowed max in order to show an error message by the validator.
-    const maxNumOfCharsToDisplay = MAX_LENGTH_NAME + 1;
-    return (
-      <Modal
-        title="Save Participant Set"
-        visible={isVisible}
-        confirmLoading={confirmLoading}
-        onCancel={this.handleCancel}
-        footer={[
-          <Button key="back" onClick={this.handleCancel}>
-            Cancel
-          </Button>,
-          <Form.Item key={'submit'} noStyle>
-            <Button
-              form={FORM_NAME}
-              htmlType="submit"
-              key="save"
-              type="primary"
-              disabled={this.isSaveButtonDisabled()}
-              loading={confirmLoading}
-            >
-              Save
-            </Button>
-          </Form.Item>,
-        ]}
-      >
-        <Form name={FORM_NAME} ref={this.formRef} onFinish={this.onFinish}>
-          <Form.Item
-            label="Name"
-            name="nameSet"
-            hasFeedback
-            rules={[
-              () => ({
-                validator: (_, value): Promise<any> => {
-                  const { msg, err } = validateNameSetInput(value);
-                  this.setState({ hasError: err });
-                  if (err) {
-                    return Promise.reject(msg);
-                  }
-                  return Promise.resolve(msg);
-                },
-              }),
-            ]}
+  return (
+    <Modal
+      title="Save Participant Set"
+      visible={isVisible}
+      confirmLoading={isLoading}
+      onCancel={handleCancel}
+      footer={[
+        <Button key="back" onClick={handleCancel}>
+          Cancel
+        </Button>,
+        <Form.Item key={'submit'} noStyle>
+          <Button
+            id="CreateSaveSets"
+            form={FORM_NAME}
+            htmlType="submit"
+            key="save"
+            type="primary"
+            disabled={isSaveButtonDisabled()}
+            loading={isLoading}
           >
-            <Input
-              autoFocus
-              maxLength={maxNumOfCharsToDisplay}
-              placeholder="Enter the name of your new set"
-              allowClear
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-    );
-  }
-}
+            Save
+          </Button>
+        </Form.Item>,
+      ]}
+    >
+      <Form
+        form={form}
+        name={FORM_NAME}
+        initialValues={{ nameSet: 'Save_Set_1' }}
+        onFinish={onFinish}
+      >
+        <Form.Item
+          label="Name"
+          name="nameSet"
+          hasFeedback
+          validateStatus={displayHelp || hasError ? 'error' : 'success'}
+          help={
+            displayHelp ? displayHelpMessage : 'Letters, numbers, hyphens (-), and underscores (_)'
+          }
+          rules={[
+            () => ({
+              validator: (_, value) => {
+                if (hasError) {
+                  reInitializeState();
+                }
+                setDisplayHelp(false);
+                setDisplayHelpMessage('');
+                const { msg, err } = validateNameSetInput(value);
+                isSaveButtonDisabled();
+                setHasError(err);
+                if (err) {
+                  setDisplayHelp(true);
+                  setDisplayHelpMessage(msg);
+                }
+                return Promise.resolve();
+              },
+            }),
+          ]}
+        >
+          <Input
+            autoFocus
+            maxLength={maxNumOfCharsToDisplay}
+            placeholder="Enter the name of your new set"
+            allowClear
+          />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+};
+
+const Connected = connector(SaveSetModal);
+
+export default Connected;
