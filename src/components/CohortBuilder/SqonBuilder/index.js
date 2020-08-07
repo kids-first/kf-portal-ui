@@ -21,7 +21,7 @@ const trackSQONaction = ({ category, action, label }) => {
   trackUserInteraction({ category, action, label: JSON.stringify(label) });
 };
 
-const extendedMappingToDisplayNameMap = memoize(extendedMapping =>
+const extendedMappingToDisplayNameMap = memoize((extendedMapping) =>
   extendedMapping.reduce((acc, { field, displayName }) => {
     acc[field] = displayName;
     return acc;
@@ -45,8 +45,8 @@ const ClearAllModalContent = ({ onConfirmed }) => (
 const SqonBuilder = compose(
   withApi,
   injectState,
-)(({ api, onChange, state, effects, ...rest }) => {
-  const handleAction = async action => {
+)(({ api, onChange, effects, ...rest }) => {
+  const handleAction = async (action) => {
     // track the existing and operated on sqon actions
     trackSQONaction({
       category: TRACKING_EVENTS.categories.cohortBuilder.sqonBuilder,
@@ -97,9 +97,9 @@ const SqonBuilder = compose(
               api={api}
               arrangerProjectId={arrangerProjectId}
               arrangerProjectIndex={ARRANGER_API_PARTICIPANT_INDEX_NAME}
-              FieldOpModifierContainer={props => {
-                return <FieldFilterContainer className="" showHeader={false} {...props} />;
-              }}
+              FieldOpModifierContainer={(props) => (
+                <FieldFilterContainer className="" showHeader={false} {...props} />
+              )}
               fieldDisplayNameMap={extendedMappingToDisplayNameMap(extendedMapping)}
               onChange={handleAction}
               {...rest}
