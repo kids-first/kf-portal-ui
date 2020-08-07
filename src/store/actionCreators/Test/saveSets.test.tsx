@@ -78,6 +78,8 @@ describe('createSaveSet', () => {
     const expectedActions = [
       { type: TOGGLE_PENDING_CREATE, isPending: true },
       { type: TOGGLE_PENDING_CREATE, isPending: false },
+      { type: TOGGLE_PENDING_CREATE, isPending: true },
+      { type: TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({
       saveSets: {

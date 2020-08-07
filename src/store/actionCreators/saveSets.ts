@@ -13,7 +13,7 @@ import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
 import graphql from 'services/arranger';
 
-export const createSaveSet = (
+const createSaveSet = (
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
   const { tag, userId, api, sqon, onSuccess } = payload;
@@ -44,21 +44,25 @@ export const createSaveSetIfUnique = (
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
   const { tag, userId, onNameConflict } = payload;
 
+  dispatch(togglePendingCreate(true));
   try {
-    dispatch(togglePendingCreate(true));
     const tagIsUnique = (await saveSetCountForTag(tag, userId)) === 0;
-    dispatch(togglePendingCreate(false));
 
     if (tagIsUnique) {
+      dispatch(togglePendingCreate(false));
       dispatch(createSaveSet(payload));
-    } else {
-      if (onNameConflict && typeof onNameConflict === 'function') {
-        onNameConflict();
-      }
-      dispatch(toggleTagNameExist(true));
+      return;
     }
+
+    if (onNameConflict) {
+      onNameConflict();
+    }
+
+    dispatch(toggleTagNameExist(true));
+    dispatch(togglePendingCreate(false));
   } catch (error) {
-    return dispatch(failureCreate(error));
+    dispatch(failureCreate(error));
+    dispatch(togglePendingCreate(false));
   }
 };
 
