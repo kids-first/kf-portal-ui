@@ -13,32 +13,6 @@ import { createExampleQueries } from 'services/riffQueries';
 import { store } from 'store';
 import { loginFailure, loginSuccess } from 'store/actionCreators/user';
 
-export function bind(target, name, descriptor) {
-  return {
-    get() {
-      const bound = descriptor.value.bind(this);
-
-      Object.defineProperty(this, name, {
-        value: bound,
-      });
-
-      return bound;
-    },
-  };
-}
-
-export const extractErrorMessage = (response, indexError = 0) => {
-  if (!response) {
-    return;
-  }
-  const data = response.data || {};
-  const errors = data.errors;
-  if (!Array.isArray(errors)) {
-    return;
-  }
-  return (errors[indexError] || {}).message;
-};
-
 export const getMsgFromErrorOrElse = (error, defaultIfNone = 'An Error Occurred') =>
   typeof error === 'object' && Object.prototype.hasOwnProperty.call(error, 'message')
     ? error.message
@@ -221,3 +195,5 @@ export const jestPatchMatchMedia = () =>
 
 export const getFieldDisplayName = (fieldName, extendedMapping) =>
   extendedMapping.find((mapping) => mapping.field === fieldName)?.displayName || fieldName;
+
+export const hasUserRole = (user) => Array.isArray(user.roles) && !!user.roles[0];

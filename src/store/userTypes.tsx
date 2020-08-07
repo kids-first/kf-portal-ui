@@ -1,3 +1,7 @@
+//  Fill up when going from Js to Typescript...
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from './rootState';
+
 export type LoggedInUser = {
   _id: string;
   roles: Array<string>;
@@ -37,3 +41,17 @@ export type LoggedInUser = {
   website?: string;
   zip?: string;
 };
+
+export type UserState = {
+  loggedInUser: LoggedInUser;
+  uid: string;
+  isProfileLoading: boolean;
+  profile: any;
+  errorProfile: Error | null;
+  isTogglingProfileStatus: boolean;
+  isTogglingProfileStatusInError: Error | null;
+  isProfileUpdating: boolean;
+  errorSubscribing: Error | null;
+};
+
+export type DispatchUser = ThunkDispatch<RootState, null, any>;

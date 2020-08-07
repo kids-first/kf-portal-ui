@@ -4,6 +4,7 @@ import { injectState } from 'freactal';
 import { compose } from 'recompose';
 import { withApi } from 'services/api';
 import { deleteAccount } from './deleteHandlers';
+import { Button } from 'antd';
 
 export default compose(
   injectState,
@@ -14,14 +15,13 @@ export default compose(
     history,
     state: { loggedInUser },
     effects: { setToken, setUser, clearIntegrationTokens },
-    className,
-    children,
     api,
-    ...props
+    label = 'Cancel',
+    onClickCB,
   }) => (
-    <button
-      className={className}
+    <Button
       onClick={async () => {
+        onClickCB && (await onClickCB());
         await deleteAccount({
           api,
           loggedInUser,
@@ -31,9 +31,8 @@ export default compose(
           history,
         });
       }}
-      {...props}
     >
-      {children}
-    </button>
+      {label}
+    </Button>
   ),
 );

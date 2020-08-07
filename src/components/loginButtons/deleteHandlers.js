@@ -16,7 +16,7 @@ export const deleteAccount = async ({
     url: urlJoin(shortUrlApi, 'user', loggedInUser.egoId),
     method: 'GET',
   })
-    .then(response =>
+    .then((response) =>
       Promise.all(
         response.map(({ id }) =>
           api({
@@ -27,6 +27,6 @@ export const deleteAccount = async ({
       ),
     )
     .then(() => {
-      uiLogout({ history, setUser, setToken, clearIntegrationTokens, api });
+      uiLogout({ loggedInUser, history, setUser, setToken, clearIntegrationTokens, api });
     });
 };

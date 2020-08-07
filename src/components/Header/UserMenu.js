@@ -14,7 +14,7 @@ import { injectState } from 'freactal';
 import Gravatar from 'uikit/Gravatar';
 import { uiLogout } from 'components/LogoutButton';
 
-import { loggedInUserShape, effectsShape, historyShape } from 'shapes';
+import { effectsShape, historyShape } from 'shapes';
 
 import './Header.css';
 
@@ -22,14 +22,12 @@ const getUrlForUser = (user, hash = '') => `${ROUTES.user}/${user._id}${hash}`;
 
 class UserMenu extends React.Component {
   static propTypes = {
-    loggedInUser: loggedInUserShape,
     effects: effectsShape.isRequired,
     history: historyShape.isRequired,
     api: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
-    loggedInUser: null,
+    state: PropTypes.shape({
+      loggedInUser: PropTypes.object,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -39,10 +37,10 @@ class UserMenu extends React.Component {
 
   handleMenuClick({ key }) {
     const {
-      loggedInUser,
       history,
       api,
       effects: { setToken, setUser, clearIntegrationTokens },
+      state: { loggedInUser },
     } = this.props;
 
     switch (key) {
@@ -53,7 +51,7 @@ class UserMenu extends React.Component {
         history.push(getUrlForUser(loggedInUser, '#settings'));
         break;
       case 'logout':
-        uiLogout({ setToken, setUser, clearIntegrationTokens, api, history });
+        uiLogout({ loggedInUser, setToken, setUser, clearIntegrationTokens, api, history });
         break;
       default:
         console.warn(`Unhandled menu item with key "${key}"`);
@@ -61,10 +59,12 @@ class UserMenu extends React.Component {
   }
 
   render() {
-    const { loggedInUser } = this.props;
+    const {
+      state: { loggedInUser },
+    } = this.props;
 
     // Menu is not displayed if no user is connected, or if we don't have the user profile yet
-    if (loggedInUser === null) {
+    if (!loggedInUser) {
       return null;
     }
 

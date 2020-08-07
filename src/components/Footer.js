@@ -19,7 +19,7 @@ const FooterLink = ({ href, children }) => (
 );
 FooterLink.propTypes = {
   href: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.element.isRequired]),
 };
 
 const socialIconSize = { width: 30, height: 30 };

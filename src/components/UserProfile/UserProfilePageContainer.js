@@ -8,13 +8,13 @@ import {
   selectErrorProfile,
   selectIsProfileUpdating,
   selectLoggedInUser,
-} from '../../store/selectors/users';
+} from 'store/selectors/users';
 import {
   fetchProfileIfNeeded,
   updateUserProfile,
   deleteProfile,
   cleanErrors,
-} from '../../store/actionCreators/user';
+} from 'store/actionCreators/user';
 import Error from '../Error';
 import isEmpty from 'lodash/isEmpty';
 import UserProfilePage from './UserProfilePage';
@@ -57,10 +57,12 @@ class UserProfilePageContainer extends React.Component {
     isProfileUpdating: PropTypes.bool.isRequired,
     loggedInUser: PropTypes.object,
     onCleanErrors: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool,
   };
 
   static defaultProps = {
     loggedInUser: {},
+    isAdmin: false,
   };
 
   state = {
@@ -73,7 +75,7 @@ class UserProfilePageContainer extends React.Component {
     onFetchProfile(userInfo);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     const {
       onFetchProfile,
       userInfo,
@@ -95,7 +97,7 @@ class UserProfilePageContainer extends React.Component {
     onDeleteProfile();
   }
 
-  submit = async values => {
+  submit = async (values) => {
     const { profile, onUpdateProfile } = this.props;
 
     const mergedProfile = {
@@ -123,13 +125,13 @@ class UserProfilePageContainer extends React.Component {
     onUpdateProfile(mergedProfile);
   };
 
-  handleMenuClick = e => {
+  handleMenuClick = (e) => {
     this.setState({
       currentMenuItem: e.key,
     });
   };
 
-  onBreakPoint = broken => this.setState({ collapsed: broken });
+  onBreakPoint = (broken) => this.setState({ collapsed: broken });
 
   render() {
     const {
@@ -154,7 +156,11 @@ class UserProfilePageContainer extends React.Component {
     } else if (error) {
       return <Error />;
     } else if (isEmpty(profile)) {
-      return <Error text={'404: Page not found.'} />;
+      return (
+        <Layout className={'up-is-loading-layout'}>
+          <Spin indicator={<LoadingOutlined className={'up-spin'} spin />} />
+        </Layout>
+      );
     }
 
     return (
@@ -176,7 +182,7 @@ class UserProfilePageContainer extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   profile: selectProfile(state),
   isLoading: selectIsProfileLoading(state),
   error: selectErrorProfile(state),
@@ -184,12 +190,12 @@ const mapStateToProps = state => ({
   loggedInUser: selectLoggedInUser(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-    onFetchProfile: userInfo => dispatch(fetchProfileIfNeeded(userInfo)),
-    onUpdateProfile: user => dispatch(updateUserProfile(user)),
-    onDeleteProfile: () => dispatch(deleteProfile()),
-    onCleanErrors: () => dispatch(cleanErrors()),
-  });
+const mapDispatchToProps = (dispatch) => ({
+  onFetchProfile: (userInfo) => dispatch(fetchProfileIfNeeded(userInfo)),
+  onUpdateProfile: (user) => dispatch(updateUserProfile(user)),
+  onDeleteProfile: () => dispatch(deleteProfile()),
+  onCleanErrors: () => dispatch(cleanErrors()),
+});
 
 export default compose(
   withRouter,

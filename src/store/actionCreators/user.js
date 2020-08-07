@@ -16,6 +16,8 @@ import {
   REQUEST_IS_ACTIVE_TOGGLE,
   RECEIVE_IS_ACTIVE_TOGGLE,
   FAILURE_IS_ACTIVE_TOGGLE,
+  FAILURE_SUBSCRIBE_USER,
+  REQUEST_SUBSCRIBE_USER,
 } from '../actionTypes';
 import { apiInitialized } from 'services/api';
 import {
@@ -23,13 +25,14 @@ import {
   getUserLoggedInProfile,
   updateProfile,
   toggleActiveProfileAsAdmin,
+  subscribeUser,
 } from 'services/profiles';
 import { selectProfile } from '../selectors/users';
 
 const updateProfileFromUser = updateProfile(apiInitialized);
 const toggleActiveProfileFromUser = toggleActiveProfileAsAdmin(apiInitialized);
 
-export const loginSuccess = loggedInUser => ({
+export const loginSuccess = (loggedInUser) => ({
   type: LOGIN_SUCCESS,
   payload: loggedInUser,
 });
@@ -48,28 +51,24 @@ export const requestProfile = () => ({
   type: REQUEST_PROFILE,
 });
 
-export const receiveProfile = fetchedProfile => ({
+export const receiveProfile = (fetchedProfile) => ({
   type: RECEIVE_PROFILE,
   payload: fetchedProfile,
 });
 
-export const failureProfile = error => ({
+export const failureProfile = (error) => ({
   type: FAILURE_PROFILE,
   payload: error,
 });
 
-export const updateProfileSuccess = updatedProfile => ({
+export const updateProfileSuccess = (updatedProfile) => ({
   type: UPDATE_USER_SUCCESS,
   payload: updatedProfile,
 });
 
-const fetchProfile = userInfo => async dispatch => {
-  const onSuccess = profile => {
-    return dispatch(receiveProfile(profile));
-  };
-  const onError = error => {
-    return dispatch(failureProfile(error));
-  };
+const fetchProfile = (userInfo) => async (dispatch) => {
+  const onSuccess = (profile) => dispatch(receiveProfile(profile));
+  const onError = (error) => dispatch(failureProfile(error));
 
   dispatch(requestProfile());
   try {
@@ -84,13 +83,13 @@ const fetchProfile = userInfo => async dispatch => {
 
 const shouldFetchProfile = (state, userInfo) => {
   const profileInStore = selectProfile(state);
-  if (!Boolean(profileInStore)) {
+  if (!profileInStore) {
     return true;
   }
   return profileInStore._id !== userInfo.userID;
 };
 
-export const fetchProfileIfNeeded = userInfo => (dispatch, getState) => {
+export const fetchProfileIfNeeded = (userInfo) => (dispatch, getState) => {
   if (shouldFetchProfile(getState(), userInfo)) {
     return dispatch(fetchProfile(userInfo));
   }
@@ -100,12 +99,12 @@ export const requestUpdateProfile = () => ({
   type: REQUEST_PROFILE_UPDATE,
 });
 
-export const failureUpdateProfile = error => ({
+export const failureUpdateProfile = (error) => ({
   type: FAILURE_UPDATE,
   payload: error,
 });
 
-export const updateUserProfile = user => async dispatch => {
+export const updateUserProfile = (user) => async (dispatch) => {
   dispatch(requestUpdateProfile());
   try {
     const updatedProfile = await updateProfileFromUser({
@@ -133,17 +132,17 @@ export const receiveIsActiveToggle = () => ({
   type: RECEIVE_IS_ACTIVE_TOGGLE,
 });
 
-export const failureIsPublicToggle = error => ({
+export const failureIsPublicToggle = (error) => ({
   type: FAILURE_IS_PUBLIC_TOGGLE,
   payload: error,
 });
 
-export const failureIsActiveToggle = error => ({
+export const failureIsActiveToggle = (error) => ({
   type: FAILURE_IS_ACTIVE_TOGGLE,
   payload: error,
 });
 
-export const toggleIsPublic = user => async dispatch => {
+export const toggleIsPublic = (user) => async (dispatch) => {
   dispatch(requestIsPublicToggle());
   try {
     await updateProfileFromUser({
@@ -155,7 +154,7 @@ export const toggleIsPublic = user => async dispatch => {
   }
 };
 
-export const toggleIsActive = user => async dispatch => {
+export const toggleIsActive = (user) => async (dispatch) => {
   dispatch(requestIsActiveToggle());
   try {
     await toggleActiveProfileFromUser({
@@ -167,6 +166,24 @@ export const toggleIsActive = user => async dispatch => {
   }
 };
 
-export const deleteProfile = () => dispatch => dispatch({ type: DELETE_PROFILE });
+export const deleteProfile = () => (dispatch) => dispatch({ type: DELETE_PROFILE });
 
 export const cleanErrors = () => ({ type: CLEAN_ERRORS });
+
+export const requestSubscribeUser = () => ({
+  type: REQUEST_SUBSCRIBE_USER,
+});
+
+export const failureSubscribeUser = (error) => ({
+  type: FAILURE_SUBSCRIBE_USER,
+  payload: error,
+});
+
+export const subscribeLoggedInUser = (loggedInUser) => async (dispatch) => {
+  dispatch(requestSubscribeUser());
+  try {
+    await subscribeUser(loggedInUser);
+  } catch (e) {
+    return dispatch(failureSubscribeUser(e));
+  }
+};
