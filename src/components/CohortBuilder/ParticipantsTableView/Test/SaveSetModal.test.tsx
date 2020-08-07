@@ -17,7 +17,6 @@ const initialSaveSetModalState: SaveSetState = {
   create: {
     isLoading: false,
     error: null,
-    tagNameConflict: false,
   },
 };
 
@@ -79,7 +78,7 @@ describe('Save Set Modal', () => {
       saveSets: {
         ...initialSaveSetModalState,
         create: {
-          tagNameConflict: true,
+          error: Error('Some Error'),
         },
       },
     });

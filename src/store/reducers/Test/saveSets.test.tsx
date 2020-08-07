@@ -3,8 +3,7 @@ import { Action } from 'redux';
 import {
   failureCreate,
   reInitializeSaveSetsState,
-  togglePendingCreate,
-  toggleTagNameExist,
+  isLoadingCreateSaveSet,
 } from '../../actionCreators/saveSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
@@ -13,7 +12,6 @@ const initialState = {
   create: {
     isLoading: false,
     error: null,
-    tagNameConflict: false,
   },
 };
 
@@ -23,21 +21,10 @@ describe('Save Sets Reducer', () => {
   });
 
   it('should handle togglePendingCreate', () => {
-    expect(reducer(initialState, togglePendingCreate(true))).toEqual({
+    expect(reducer(initialState, isLoadingCreateSaveSet(true))).toEqual({
       create: {
         isLoading: true,
         error: null,
-        tagNameConflict: false,
-      },
-    });
-  });
-
-  it('should handle a tag name conflict', () => {
-    expect(reducer(initialState, toggleTagNameExist(true))).toEqual({
-      create: {
-        isLoading: false,
-        error: null,
-        tagNameConflict: true,
       },
     });
   });
@@ -47,7 +34,6 @@ describe('Save Sets Reducer', () => {
       create: {
         isLoading: false,
         error: new Error('error'),
-        tagNameConflict: false,
       },
     });
   });
@@ -55,9 +41,8 @@ describe('Save Sets Reducer', () => {
   it('should handle re-initialize state', () => {
     const state = {
       create: {
-        isLoading: false,
-        error: null,
-        tagNameConflict: true,
+        isLoading: true,
+        error: Error('Some Error'),
       },
     };
     expect(reducer(state, reInitializeSaveSetsState())).toEqual(initialState);

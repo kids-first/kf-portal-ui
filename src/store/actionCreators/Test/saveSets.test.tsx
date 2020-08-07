@@ -4,15 +4,9 @@ import {
   createSaveSetIfUnique,
   failureCreate,
   reInitializeSaveSetsState,
-  togglePendingCreate,
-  toggleTagNameExist,
+  isLoadingCreateSaveSet,
 } from '../saveSets';
-import {
-  FAILURE_CREATE,
-  RE_INITIALIZE_STATE,
-  TAG_NAME_CONFLICT,
-  TOGGLE_PENDING_CREATE,
-} from 'store/saveSetTypes';
+import { FAILURE_CREATE, RE_INITIALIZE_STATE, TOGGLE_PENDING_CREATE } from 'store/saveSetTypes';
 import { saveSetCountForTag } from 'services/sets';
 
 describe('Save Sets actions', () => {
@@ -33,17 +27,7 @@ describe('Save Sets actions', () => {
       type: TOGGLE_PENDING_CREATE,
       isPending,
     };
-    expect(togglePendingCreate(isPending)).toEqual(expectedAction);
-  });
-
-  it('should create an action when a tag name conflict', () => {
-    const hasSameTagName = true;
-
-    const expectedAction = {
-      type: TAG_NAME_CONFLICT,
-      hasSameTagName,
-    };
-    expect(toggleTagNameExist(hasSameTagName)).toEqual(expectedAction);
+    expect(isLoadingCreateSaveSet(isPending)).toEqual(expectedAction);
   });
 
   it('should create an action to re initialize state', () => {
@@ -100,7 +84,7 @@ describe('createSaveSet', () => {
     (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
       { type: TOGGLE_PENDING_CREATE, isPending: true },
-      { type: TAG_NAME_CONFLICT, hasSameTagName: true },
+      { type: FAILURE_CREATE, error: Error('Tag Name Conflict with Existing Save Set') },
       { type: TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({

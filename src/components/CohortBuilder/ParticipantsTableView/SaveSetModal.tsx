@@ -7,16 +7,8 @@ import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
 import { DispatchSaveSets, SaveSetParams, SaveSetState } from 'store/saveSetTypes';
-import {
-  createSaveSetIfUnique,
-  reInitializeSaveSetsState,
-  toggleTagNameExist,
-} from 'store/actionCreators/saveSets';
-import {
-  selectError,
-  selectIsLoading,
-  selectTagNameConflict,
-} from 'store/selectors/saveSetsSelectors';
+import { createSaveSetIfUnique, reInitializeSaveSetsState } from 'store/actionCreators/saveSets';
+import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 
 export const MAX_LENGTH_NAME = 50;
@@ -44,13 +36,11 @@ const mapState = (state: RootState): SaveSetState => ({
   create: {
     isLoading: selectIsLoading(state),
     error: selectError(state),
-    tagNameConflict: selectTagNameConflict(state),
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
-  toggleTagNameExist: (value: boolean) => dispatch(toggleTagNameExist(value)),
   reInitializeState: () => dispatch(reInitializeSaveSetsState()),
 });
 
@@ -104,6 +94,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   };
 
   const onNameConflictCb = () => {
+    setHasError(true);
     setDisplayHelp(true);
     setDisplayHelpMessage('A set with this name already exists');
   };
@@ -114,8 +105,8 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     hideModalCb();
   };
 
-  const { isLoading, error, tagNameConflict } = create;
-  const isSaveButtonDisabled = () => tagNameConflict || hasError;
+  const { isLoading, error } = create;
+  const isSaveButtonDisabled = () => error != null;
   // Display one extra character than allowed max in order to show an error message by the validator.
   const maxNumOfCharsToDisplay = MAX_LENGTH_NAME + 1;
 
@@ -164,14 +155,14 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           label="Name"
           name="nameSet"
           hasFeedback
-          validateStatus={displayHelp || tagNameConflict ? 'error' : 'success'}
+          validateStatus={displayHelp || hasError ? 'error' : 'success'}
           help={
             displayHelp ? displayHelpMessage : 'Letters, numbers, hyphens (-), and underscores (_)'
           }
           rules={[
             () => ({
               validator: (_, value) => {
-                if (tagNameConflict) {
+                if (hasError) {
                   reInitializeState();
                 }
                 setDisplayHelp(false);

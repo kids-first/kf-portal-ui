@@ -4,7 +4,6 @@ import {
   RE_INITIALIZE_STATE,
   SaveSetParams,
   SaveSetsActionTypes,
-  TAG_NAME_CONFLICT,
   TOGGLE_PENDING_CREATE,
 } from '../saveSetTypes';
 import { saveSetCountForTag } from 'services/sets';
@@ -18,7 +17,7 @@ const createSaveSet = (
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
   const { tag, userId, api, sqon, onSuccess } = payload;
 
-  dispatch(togglePendingCreate(true));
+  dispatch(isLoadingCreateSaveSet(true));
 
   try {
     await saveSet({
@@ -35,7 +34,7 @@ const createSaveSet = (
   } catch (e) {
     dispatch(failureCreate(e));
   } finally {
-    dispatch(togglePendingCreate(false));
+    dispatch(isLoadingCreateSaveSet(false));
   }
 };
 
@@ -44,12 +43,12 @@ export const createSaveSetIfUnique = (
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
   const { tag, userId, onNameConflict } = payload;
 
-  dispatch(togglePendingCreate(true));
+  dispatch(isLoadingCreateSaveSet(true));
   try {
     const tagIsUnique = (await saveSetCountForTag(tag, userId)) === 0;
 
     if (tagIsUnique) {
-      dispatch(togglePendingCreate(false));
+      dispatch(isLoadingCreateSaveSet(false));
       dispatch(createSaveSet(payload));
       return;
     }
@@ -58,15 +57,15 @@ export const createSaveSetIfUnique = (
       onNameConflict();
     }
 
-    dispatch(toggleTagNameExist(true));
-    dispatch(togglePendingCreate(false));
+    dispatch(failureCreate(new Error('Tag Name Conflict with Existing Save Set')));
+    dispatch(isLoadingCreateSaveSet(false));
   } catch (error) {
     dispatch(failureCreate(error));
-    dispatch(togglePendingCreate(false));
+    dispatch(isLoadingCreateSaveSet(false));
   }
 };
 
-export const togglePendingCreate = (isPending: boolean): SaveSetsActionTypes => ({
+export const isLoadingCreateSaveSet = (isPending: boolean): SaveSetsActionTypes => ({
   type: TOGGLE_PENDING_CREATE,
   isPending,
 });
@@ -74,11 +73,6 @@ export const togglePendingCreate = (isPending: boolean): SaveSetsActionTypes => 
 export const failureCreate = (error: Error): SaveSetsActionTypes => ({
   type: FAILURE_CREATE,
   error,
-});
-
-export const toggleTagNameExist = (hasSameTagName: boolean): SaveSetsActionTypes => ({
-  type: TAG_NAME_CONFLICT,
-  hasSameTagName,
 });
 
 export const reInitializeSaveSetsState = (): SaveSetsActionTypes => ({
