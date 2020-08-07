@@ -28,7 +28,7 @@ const createSaveSet = (
       api: graphql(api),
       tag: tag,
     });
-    if (onSuccess && typeof onSuccess === 'function') {
+    if (onSuccess) {
       onSuccess();
     }
   } catch (e) {

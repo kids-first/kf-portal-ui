@@ -68,11 +68,7 @@ export const saveSetCountForTag = async (tag: string, userId: string) => {
     },
   });
 
-  if (response?.data || undefined) {
-    return response.data.sets.aggregations.size.stats.count;
-  } else {
-    throw new Error('Could not verify if tag exists');
-  }
+  return response.data.sets.aggregations.size.stats.count;
 };
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
