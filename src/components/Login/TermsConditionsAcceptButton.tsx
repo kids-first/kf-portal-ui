@@ -90,10 +90,10 @@ const TermsConditionsAcceptButton: FunctionComponent<Props> = ({
         action: TRACKING_EVENTS.actions.signedUp,
         label: `Join Completion: egoId ${loggedInUser._id}`,
       });
-      await setUser({ ...updatedUser, api });
+      await setUser({ ...updatedUser, api, isJoining: false });
       history.push(`${ROUTES.user}/${loggedInUser._id}`);
     } else {
-      await setUser({ ...updatedUser, api });
+      await setUser({ ...updatedUser, api, isJoining: false });
       history.push(ROUTES.dashboard);
     }
   };

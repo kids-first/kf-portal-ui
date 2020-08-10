@@ -38,42 +38,42 @@ import TermsConditions from './components/Login/TermsConditions';
 import Join from './components/Login/Join';
 import { Spinner } from './uikit/Spinner';
 import './index.css';
-//TODO ...props
+
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
     loggedInUser === undefined ||
     (isPlainObject(loggedInUser) && isEmpty(loggedInUser))) &&
   requireLogin;
 
-const isJoinFormNeeded = (loggedInUser) =>
-  userIsRequiredToLogIn(loggedInUser) || !hasUserRole(loggedInUser);
-
-// eslint-disable-next-line react/prop-types
-const protectRoute = ({ loggedInUser, WrapperPage = Page, ...props }) => {
-  if (userIsRequiredToLogIn(loggedInUser)) {
-    return (
-      <SideImagePage
-        logo={logo}
-        sideImagePath={loginImage}
-        Component={LoginPage}
-        Footer={LoginFooter}
-      />
-    );
-  } else if (isJoinFormNeeded(loggedInUser)) {
-    return <Redirect to="/join" />;
-  }
-  return <WrapperPage {...props} />;
-};
-
 const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, toast, isLoadingUser } = state;
+  const { loggedInUser, toast, isLoadingUser, isJoining } = state;
 
   if (isLoadingUser) {
     return <Spinner className={'spinner'} size={'large'} />;
   }
+
+  const isJoinFormNeeded = (loggedInUser) =>
+    userIsRequiredToLogIn(loggedInUser) || !hasUserRole(loggedInUser) || isJoining;
+
+  // eslint-disable-next-line react/prop-types
+  const protectRoute = ({ loggedInUser, WrapperPage = Page, ...props }) => {
+    if (userIsRequiredToLogIn(loggedInUser)) {
+      return (
+        <SideImagePage
+          logo={logo}
+          sideImagePath={loginImage}
+          Component={LoginPage}
+          Footer={LoginFooter}
+        />
+      );
+    } else if (isJoinFormNeeded(loggedInUser)) {
+      return <Redirect to="/join" />;
+    }
+    return <WrapperPage {...props} />;
+  };
 
   return (
     <div className="appContainer">

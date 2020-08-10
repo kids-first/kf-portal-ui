@@ -33,7 +33,7 @@ const computeInitialStep = (user: LoggedInUser) => {
   if (!user || isEmpty(user)) {
     return LOGIN_STEP;
   }
-  if (hasUserRole(user)) {
+  if (!hasUserRole(user)) {
     return SELECT_ROLE_STEP;
   }
   return TERMS_STEP;

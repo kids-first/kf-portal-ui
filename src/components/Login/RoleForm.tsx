@@ -64,7 +64,7 @@ const RoleForm: FunctionComponent<Props> = ({
         ),
       },
     });
-    await setUser({ ...profile, email, api });
+    await setUser({ ...profile, email, api, isJoining: true });
     updateTrackingDimension({ userRoles: profile.roles });
     setIsSubmittingRoleFormCB(false);
     submitExtraCB();

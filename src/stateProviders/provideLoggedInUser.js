@@ -120,7 +120,7 @@ export default provideState({
         isLoadingUser: false,
       });
     },
-    setUser: (effects, { api, egoGroups, ...user }) =>
+    setUser: (effects, { api, egoGroups, isJoining = false, ...user }) =>
       getAllFieldNamesPromise(api)
         .then(({ data }) =>
           get(data, '__type.fields', [])
@@ -157,6 +157,7 @@ export default provideState({
               ? getUserGroups({ validatedPayload: jwtDecode(state.loggedInUserToken) })
               : [],
             percentageFilled,
+            isJoining,
           };
         })
         .catch((err) => console.error(err)),
