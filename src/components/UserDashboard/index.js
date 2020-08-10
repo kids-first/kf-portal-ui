@@ -25,11 +25,12 @@ import {
   userDashboardContent,
 } from './UserDashboard.module.css';
 import { Col, Row } from 'antd';
+import ParticipantSets from './ParticipantSets';
 
 const Container = ({ className = '', children }) => (
   // This is to cancel out the negative margin set by react-grid-system
   <div style={{ marginLeft: '15px', marginRight: '15px' }}>
-    <Row className={className} children={children} />
+    <Row className={className}>{children}</Row>
   </div>
 );
 
@@ -81,6 +82,11 @@ export default compose(
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Most Frequent Diagnoses">
             <MostFrequentDiagnosesChart />
+          </DashboardCard>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+          <DashboardCard title="My Participant Sets">
+            <ParticipantSets />
           </DashboardCard>
         </Col>
       </Row>

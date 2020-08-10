@@ -3,6 +3,7 @@ import {
   RE_INITIALIZE_STATE,
   SaveSetsActionTypes,
   SaveSetState,
+  TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
 } from '../saveSetTypes';
 
@@ -10,6 +11,11 @@ const initialState: SaveSetState = {
   create: {
     isLoading: false,
     error: null,
+  },
+  userSets: {
+    sets: [],
+    error: null,
+    isLoading: false,
   },
 };
 
@@ -28,6 +34,9 @@ export default (state = initialState, action: SaveSetsActionTypes): SaveSetState
       };
     }
     case RE_INITIALIZE_STATE: {
+      return { ...state, create: initialState.create };
+    }
+    case TOGGLE_LOADING_SAVE_SETS: {
       return { ...state, create: initialState.create };
     }
     default:

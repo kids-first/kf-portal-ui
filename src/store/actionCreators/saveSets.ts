@@ -5,6 +5,7 @@ import {
   SaveSetNameConflictError,
   SaveSetParams,
   SaveSetsActionTypes,
+  TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
 } from '../saveSetTypes';
 import { saveSetCountForTag } from 'services/sets';
@@ -66,6 +67,12 @@ export const createSaveSetIfUnique = (
   }
 };
 
+// export const getUserSaveSets = (
+//   payload: SaveSetParams,
+// ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+//   const { userId } = payload;
+// };
+
 export const isLoadingCreateSaveSet = (isPending: boolean): SaveSetsActionTypes => ({
   type: TOGGLE_PENDING_CREATE,
   isPending,
@@ -78,4 +85,9 @@ export const failureCreate = (error: Error): SaveSetsActionTypes => ({
 
 export const reInitializeSaveSetsState = (): SaveSetsActionTypes => ({
   type: RE_INITIALIZE_STATE,
+});
+
+export const isLoadingSaveSets = (isLoading: boolean): SaveSetsActionTypes => ({
+  type: TOGGLE_LOADING_SAVE_SETS,
+  isLoading,
 });
