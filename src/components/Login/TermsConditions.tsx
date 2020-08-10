@@ -39,7 +39,6 @@ const TermsConditions: FunctionComponent<Props> = ({
         >
           Decline
         </Button>
-        ,
         <TermsConditionsAcceptButton key={'accept'} type={'primary'} isNewUser={false} />
       </div>
     }
