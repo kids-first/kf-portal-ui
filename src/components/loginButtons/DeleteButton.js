@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { injectState } from 'freactal';
 import { compose } from 'recompose';
@@ -18,21 +18,29 @@ export default compose(
     api,
     label = 'Cancel',
     onClickCB,
-  }) => (
-    <Button
-      onClick={async () => {
-        onClickCB && (await onClickCB());
-        await deleteAccount({
-          api,
-          loggedInUser,
-          setToken,
-          setUser,
-          clearIntegrationTokens,
-          history,
-        });
-      }}
-    >
-      {label}
-    </Button>
-  ),
+  }) => {
+    const [isLoading, setIsLoading] = useState(false);
+    return (
+      <Button
+        loading={isLoading}
+        onClick={async () => {
+          setIsLoading(true);
+          await deleteAccount({
+            api,
+            loggedInUser,
+            setToken,
+            setUser,
+            clearIntegrationTokens,
+            history,
+          });
+          if (onClickCB) {
+            await onClickCB();
+          }
+          setIsLoading(false);
+        }}
+      >
+        {label}
+      </Button>
+    );
+  },
 );

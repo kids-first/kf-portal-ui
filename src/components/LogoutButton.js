@@ -1,5 +1,6 @@
 import { logoutAll } from 'services/login';
-import { updateProfile } from 'services/profiles';
+import { updateProfile, getUserLoggedInProfile } from 'services/profiles';
+import isEmpty from 'lodash/isEmpty';
 
 export const uiLogout = async ({
   loggedInUser,
@@ -9,13 +10,19 @@ export const uiLogout = async ({
   api,
   history,
 }) => {
-  if (loggedInUser) {
-    await updateProfile(api)({
-      user: {
-        ...loggedInUser,
-        acceptedTerms: false,
-      },
-    });
+  const isUserInMemory = loggedInUser && !isEmpty(loggedInUser);
+  if (isUserInMemory) {
+    const fetchedProfile = await getUserLoggedInProfile();
+    const userExistsEndToEnd = !!fetchedProfile;
+    // Make sure that the profile exists before updating it.
+    if (userExistsEndToEnd) {
+      await updateProfile(api)({
+        user: {
+          ...loggedInUser,
+          acceptedTerms: false,
+        },
+      });
+    }
   }
   return logoutAll()
     .then(() => {
