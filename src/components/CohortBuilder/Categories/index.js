@@ -13,14 +13,14 @@ import UploadIcon from 'icons/UploadIcon';
 import FileIcon from 'icons/FileIcon';
 import DemographicIcon from 'icons/DemographicIcon';
 import { SQONdiff } from 'components/Utils';
-import { registerModal } from '../../Modal/modalFactory';
+import { registerModal } from 'components/Modal/modalFactory';
 import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
 
-import { openModal } from '../../../store/actionCreators/ui/modalComponent';
-import { store } from '../../../store';
+import { openModal } from 'store/actionCreators/ui/modalComponent';
+import { store } from 'store';
 import SearchByIdModal from '../SearchById/SearchByIdModal';
 import theme from 'theme/defaultTheme';
-import { isFeatureEnabled } from '../../../common/featuresToggles';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 import { CATEGORY_FIELDS } from './categories';
 

@@ -151,4 +151,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(() => {}, mapDispatchToProps)(Category);
+export default connect(null, mapDispatchToProps)(Category);

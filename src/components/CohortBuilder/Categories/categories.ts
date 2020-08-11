@@ -1,4 +1,4 @@
-import { isFeatureEnabled } from '../../../common/featuresToggles';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 // Categories are arranged so that they display alphabetically on the cohort builder based on the display name from arranger.
 //  Check fields on display to make sure they are in alphabetical order.

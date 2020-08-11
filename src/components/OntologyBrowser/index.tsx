@@ -217,7 +217,7 @@ class OntologyModal extends React.Component<ModalProps, ModalState> {
       >
         {({ extendedMapping = [] }) => (
           <Modal
-            style={{ height: '80vh', maxWidth: 1400 }}
+            className="ontology-modal"
             title={`${getFieldDisplayName(title, extendedMapping)} Browser`}
             visible={isVisible}
             onOk={() => this.onApply(targetKeys)}

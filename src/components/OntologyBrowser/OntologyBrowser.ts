@@ -1,4 +1,4 @@
-import { isFeatureEnabled } from '../../common/featuresToggles';
+import { isFeatureEnabled } from 'common/featuresToggles';
 
 export const CATEGORY_FIELDS_TREE_BROWSER = isFeatureEnabled('mondoDiagnosis')
   ? ['mondo_diagnosis.name', 'observed_phenotype.name']
