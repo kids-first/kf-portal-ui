@@ -7,6 +7,7 @@ import errors from './errors';
 import enableFeatures from './enableFeatures';
 import report from './report';
 import fileSearchFilters from './fileSearchFilters';
+import saveSets from './saveSets';
 
 export default combineReducers({
   virtualStudies,
@@ -17,4 +18,5 @@ export default combineReducers({
   enableFeatures,
   report,
   fileSearchFilters,
+  saveSets,
 });

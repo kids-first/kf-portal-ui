@@ -7,6 +7,11 @@
 
 ### Technical / Other changes
 -->
+## 2020-08-11 kf-portal-ui 2.22.00
+### Technical / Other changes
+- [2581](https://github.com/kids-first/kf-portal-ui/issues/2581) Feature (Cohort Builder, Saved Sets): Unique name for participant save set
+- [2617](https://github.com/kids-first/kf-portal-ui/issues/2617) Fix (Cavatica): Change dataset payload sent to Cavatica.
+
 ## 2020-09-27 kf-portal-ui 2.21.0
 ### Features
 - [2508](https://github.com/kids-first/kf-portal-ui/issues/2508) Feature (Participant, Clinical data): In the Participant entity page, the Observed and Not observed phenotypes are now split in two different tables.

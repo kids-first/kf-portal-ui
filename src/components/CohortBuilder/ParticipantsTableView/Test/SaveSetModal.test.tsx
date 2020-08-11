@@ -1,10 +1,24 @@
 import React from 'react';
-import SaveSetModal, { validateNameSetInput, MAX_LENGTH_NAME } from './SaveSetModal';
+import SaveSetModal, { validateNameSetInput, MAX_LENGTH_NAME } from '../SaveSetModal';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { jestPatchMatchMedia } from '../../../utils';
+import { jestPatchMatchMedia } from '../../../../utils';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import { SaveSetState } from 'store/saveSetTypes';
 
 configure({ adapter: new Adapter() });
+
+const middleware = [thunk];
+const mockStore = configureStore(middleware);
+
+const initialSaveSetModalState: SaveSetState = {
+  create: {
+    isLoading: false,
+    error: null,
+  },
+};
 
 describe('Save Set Modal', () => {
   const props = {
@@ -38,16 +52,38 @@ describe('Save Set Modal', () => {
 
   let wrapper: ReactWrapper;
 
-  beforeEach(() => {
-    wrapper = mount(<SaveSetModal {...props} />);
-  });
+  const mountWithProvider = (fakeStore: any) =>
+    mount(
+      <Provider store={fakeStore}>
+        <SaveSetModal {...props} />
+      </Provider>,
+    );
+
+  beforeAll(() => jestPatchMatchMedia());
 
   afterAll(() => {
     wrapper.unmount();
   });
 
   it('should render Save Set Modal', () => {
-    expect(wrapper.length).toEqual(1);
+    const store = mockStore({
+      saveSets: initialSaveSetModalState,
+    });
+    wrapper = mountWithProvider(store);
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('should disable Save button on tag name conflict', () => {
+    const store = mockStore({
+      saveSets: {
+        ...initialSaveSetModalState,
+        create: {
+          error: Error('Some Error'),
+        },
+      },
+    });
+    wrapper = mountWithProvider(store);
+    expect(wrapper.find('#CreateSaveSets').at(0).props()['disabled']).toBe(true);
   });
 });
 

@@ -3,7 +3,6 @@ import { cavaticaApiRoot, cavaticaWebRoot } from 'common/injectGlobals';
 import makeChunks from 'lodash/chunk';
 import projectDescriptionPath from './projectDescription.md';
 import memoize from 'lodash/memoize';
-import { CAVATICA_DATASET_MAPPING } from 'common/constants';
 
 // All these services call out to a proxy service
 //  The body of the request contains all details for the request that should be sent to the cavatica API
@@ -135,7 +134,7 @@ export const getTaskLink = ({ project, status }) =>
  *      "name": "HG00235.mapped.SOLID.bfast.GBR.exome.20110411.bam.bas"
  *    }
  */
-export const convertFenceUuids = async ({ ids, fence }) => {
+export const convertFenceUuids = async ({ ids }) => {
   const items = [];
   /* ABOUT THE CHUNKS:
    * Cavatica has a limit of how many items it can take at one time,
@@ -150,7 +149,7 @@ export const convertFenceUuids = async ({ ids, fence }) => {
       body: {
         type: 'dataset',
         // The dataset to use if fence dependent, we keep a listing of them in common/constants
-        dataset: CAVATICA_DATASET_MAPPING[fence],
+        dataset: 'sevenbridges/kids-first',
         items: chunk.map((id) => ({
           id,
         })),
