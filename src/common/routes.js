@@ -18,6 +18,7 @@ const ROUTES = {
   user: '/user',
   variantDb: '/variantDb',
   profile: '/profile',
+  termsConditions: '/termsConditions',
 };
 
 export default ROUTES;

@@ -1,4 +1,4 @@
-import { provideState, mergeIntoState } from 'freactal';
+import { mergeIntoState, provideState } from 'freactal';
 import isArray from 'lodash/isArray';
 import pick from 'lodash/pick';
 import without from 'lodash/without';
@@ -7,20 +7,21 @@ import get from 'lodash/get';
 import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@kfarranger/components/dist';
 import { setToken } from 'services/ajax';
-import { updateProfile, getAllFieldNamesPromise } from 'services/profiles';
-import { SERVICES, EGO_JWT_KEY } from 'common/constants';
-import { setCookie, removeCookie } from 'services/cookie';
-import { validateJWT, handleJWT, isAdminToken } from 'components/Login/utils';
+import { getAllFieldNamesPromise, updateProfile } from 'services/profiles';
+import { EGO_JWT_KEY, SERVICES } from 'common/constants';
+import { removeCookie, setCookie } from 'services/cookie';
+import { handleJWT, isAdminToken, validateJWT } from 'components/Login/utils';
 import { refreshToken } from 'services/login';
-
+import ROUTES from 'common/routes';
 import {
   TRACKING_EVENTS,
-  trackUserSession,
   trackUserInteraction,
+  trackUserSession,
 } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
-import { getUserGroups } from '../components/Login/utils';
+import { getUserGroups } from 'components/Login/utils';
+import { hasUserRole } from 'utils';
 
 const setEgoTokenCookie = (token) => {
   const { exp } = jwtDecode(token);
@@ -65,10 +66,13 @@ export default provideState({
             setUser,
             api,
             onFinish: (user) => {
-              if (!user.roles || user.roles.length === 0 || !user.acceptedTerms) {
-                history.push('/join');
-              } else if (['/', '/join', '/orcid'].includes(window.location.pathname)) {
-                history.push('/dashboard');
+              const showJoin = !hasUserRole(user);
+              if (showJoin) {
+                history.push(ROUTES.join);
+              } else if (!user.acceptedTerms) {
+                history.push(ROUTES.termsConditions);
+              } else {
+                history.push(ROUTES.login);
               }
             },
           });
@@ -100,9 +104,7 @@ export default provideState({
                 return { ...state, isLoadingUser: false };
               }
             })
-            .catch(() => {
-              return effects.loggOut();
-            });
+            .catch(() => effects.loggOut());
         }
         return { ...state, isLoadingUser: true };
       } else {
@@ -118,13 +120,13 @@ export default provideState({
         isLoadingUser: false,
       });
     },
-    setUser: (effects, { api, egoGroups, ...user }) => {
-      return getAllFieldNamesPromise(api)
-        .then(({ data }) => {
-          return get(data, '__type.fields', [])
+    setUser: (effects, { api, egoGroups, isJoining = false, ...user }) =>
+      getAllFieldNamesPromise(api)
+        .then(({ data }) =>
+          get(data, '__type.fields', [])
             .filter((field) => field && field.name !== 'sets')
-            .map((field) => field.name);
-        })
+            .map((field) => field.name),
+        )
         .then((fields) => (state) => {
           const userRole = user.roles ? user.roles[0] : null;
           const userRoleProfileFields =
@@ -155,10 +157,10 @@ export default provideState({
               ? getUserGroups({ validatedPayload: jwtDecode(state.loggedInUserToken) })
               : [],
             percentageFilled,
+            isJoining,
           };
         })
-        .catch((err) => console.log(err));
-    },
+        .catch((err) => console.error(err)),
     addUserSet: (effects, { api, ...set }) => (state) => {
       const {
         loggedInUser: { email, sets, ...rest },

@@ -311,6 +311,7 @@
 .up-is-loading-layout {
   justify-content: center;
   background: #fff;
+  height: 100%;
 }
 
 .up-spin {
@@ -398,4 +399,11 @@
 
 .form-card {
   width: 100%
+}
+
+.empty-profile-spinner {
+ /* position: absolute;*/
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }

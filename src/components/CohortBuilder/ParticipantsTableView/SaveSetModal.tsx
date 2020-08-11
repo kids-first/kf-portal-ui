@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { Button, Form, Input, Modal, notification } from 'antd';
-import { LoggedInUser } from 'store/user';
+import { LoggedInUser } from 'store/userTypes';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
