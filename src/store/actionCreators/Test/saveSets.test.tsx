@@ -6,7 +6,12 @@ import {
   reInitializeSaveSetsState,
   isLoadingCreateSaveSet,
 } from '../saveSets';
-import { FAILURE_CREATE, RE_INITIALIZE_STATE, TOGGLE_PENDING_CREATE } from 'store/saveSetTypes';
+import {
+  FAILURE_CREATE,
+  RE_INITIALIZE_STATE,
+  SaveSetNameConflictError,
+  TOGGLE_PENDING_CREATE,
+} from 'store/saveSetTypes';
 import { saveSetCountForTag } from 'services/sets';
 
 describe('Save Sets actions', () => {
@@ -84,7 +89,10 @@ describe('createSaveSet', () => {
     (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
       { type: TOGGLE_PENDING_CREATE, isPending: true },
-      { type: FAILURE_CREATE, error: Error('Tag Name Conflict with Existing Save Set') },
+      {
+        type: FAILURE_CREATE,
+        error: new SaveSetNameConflictError('A set with this name already exists'),
+      },
       { type: TOGGLE_PENDING_CREATE, isPending: false },
     ];
     const store = mockStore({
