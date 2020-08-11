@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Row from 'uikit/Row';
-import { LeftOutlined, ProfileOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 
 import { container, containerContent, footer, header } from './FieldFilterContainer.module.css';
@@ -77,9 +77,6 @@ export const FieldFilterContainer = ({
         <Header>
           <Button onClick={onBack} icon={<LeftOutlined />}>
             Back
-          </Button>
-          <Button onClick={onBack} icon={<ProfileOutlined />}>
-            Browser
           </Button>
         </Header>
       )}
