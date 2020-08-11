@@ -25,18 +25,21 @@ const { Paragraph, Title } = Typography;
 
 type Props = RouteComponentProps & InjectStateProps;
 
-const LOGIN_STEP = 0;
-const SELECT_ROLE_STEP = 1;
-const TERMS_STEP = 2;
+enum JoinSteps {
+  LOGIN,
+  SELECT_ROLE,
+  TERMS,
+}
+
 // Avoid showing first step when refreshing from step 1 or 2;
 const computeInitialStep = (user: LoggedInUser) => {
   if (!user || isEmpty(user)) {
-    return LOGIN_STEP;
+    return JoinSteps.LOGIN;
   }
   if (!hasUserRole(user)) {
-    return SELECT_ROLE_STEP;
+    return JoinSteps.SELECT_ROLE;
   }
-  return TERMS_STEP;
+  return JoinSteps.TERMS;
 };
 
 const Join: FunctionComponent<Props> = ({ history, state: { loggedInUser } }) => {

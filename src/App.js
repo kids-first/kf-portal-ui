@@ -20,24 +20,24 @@ import SideImagePage from 'components/SideImagePage';
 import Page from 'components/Page';
 import { FixedFooterPage } from 'components/Page';
 import ContextProvider from 'components/ContextProvider';
-import Error from './components/Error';
+import Error from 'components/Error';
 import FenceAuthRedirect from 'components/Fence/FenceAuthRedirect';
 import { DCF, GEN3 } from 'common/constants';
 import loginImage from 'assets/smiling-girl.jpg';
 import joinImage from 'assets/smiling-boy.jpg';
 import scienceBgPath from 'assets/background-science.jpg';
 import logo from 'assets/logo-kids-first-data-portal.svg';
-import { requireLogin } from './common/injectGlobals';
+import { requireLogin } from 'common/injectGlobals';
 import { withApi } from 'services/api';
 import ErrorBoundary from 'ErrorBoundary';
 import ROUTES from 'common/routes';
 import isPlainObject from 'lodash/isPlainObject';
 import isEmpty from 'lodash/isEmpty';
-import VariantDb from './components/VariantDb';
-import TermsConditions from './components/Login/TermsConditions';
-import Join from './components/Login/Join';
-import { Spinner } from './uikit/Spinner';
-import './index.css';
+import VariantDb from 'components/VariantDb';
+import TermsConditions from 'components/Login/TermsConditions';
+import Join from 'components/Login/Join';
+import { Spinner } from 'uikit/Spinner';
+import 'index.css';
 
 const userIsRequiredToLogIn = (loggedInUser) =>
   (loggedInUser === null ||
