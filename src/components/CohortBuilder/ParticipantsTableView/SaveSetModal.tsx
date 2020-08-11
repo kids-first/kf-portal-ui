@@ -6,7 +6,12 @@ import { LoggedInUser } from 'store/user';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
-import { DispatchSaveSets, SaveSetParams, SaveSetState } from 'store/saveSetTypes';
+import {
+  DispatchSaveSets,
+  isSaveSetNameConflictError,
+  SaveSetParams,
+  SaveSetState,
+} from 'store/saveSetTypes';
 import { createSaveSetIfUnique, reInitializeSaveSetsState } from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
@@ -21,11 +26,6 @@ type OwnProps = {
   sqon: Sqon;
   user: LoggedInUser;
 };
-
-interface State {
-  isVisible: boolean;
-  hasError: boolean;
-}
 
 type NameSetValidator = {
   msg: string;
@@ -65,10 +65,22 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [displayHelp, setDisplayHelp] = useState(false);
-  const [displayHelpMessage, setDisplayHelpMessage] = useState('');
 
   const { user, sqon, api, onCreateSet, create, reInitializeState, hideModalCb } = props;
+
+  const onSuccessCb = () => {
+    notification.success({
+      message: 'Success',
+      description: `Your participant set has been saved.`,
+      duration: 10,
+    });
+    setIsVisible(false);
+    hideModalCb();
+  };
+
+  const onNameConflictCb = () => {
+    setHasError(true);
+  };
 
   const onFinish = async (values: Store) => {
     const { nameSet } = values;
@@ -83,22 +95,6 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     });
   };
 
-  const onSuccessCb = () => {
-    notification.success({
-      message: 'Success',
-      description: `Your participant set has been saved.`,
-      duration: 10,
-    });
-    setIsVisible(false);
-    hideModalCb();
-  };
-
-  const onNameConflictCb = () => {
-    setHasError(true);
-    setDisplayHelp(true);
-    setDisplayHelpMessage('A set with this name already exists');
-  };
-
   const handleCancel = () => {
     reInitializeState();
     setIsVisible(false);
@@ -111,7 +107,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const maxNumOfCharsToDisplay = MAX_LENGTH_NAME + 1;
 
   useEffect(() => {
-    if (error) {
+    if (error && !isSaveSetNameConflictError(error)) {
       notification.error({
         message: 'Error',
         description: 'We were unable to save your participant set. Please try again.',
@@ -155,24 +151,18 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           label="Name"
           name="nameSet"
           hasFeedback
-          validateStatus={displayHelp || hasError ? 'error' : 'success'}
-          help={
-            displayHelp ? displayHelpMessage : 'Letters, numbers, hyphens (-), and underscores (_)'
-          }
+          validateStatus={hasError ? 'error' : 'success'}
+          help={error ? error.message : 'Letters, numbers, hyphens (-), and underscores (_)'}
           rules={[
             () => ({
               validator: (_, value) => {
                 if (hasError) {
                   reInitializeState();
                 }
-                setDisplayHelp(false);
-                setDisplayHelpMessage('');
                 const { msg, err } = validateNameSetInput(value);
-                isSaveButtonDisabled();
                 setHasError(err);
                 if (err) {
-                  setDisplayHelp(true);
-                  setDisplayHelpMessage(msg);
+                  Promise.reject(msg);
                 }
                 return Promise.resolve();
               },

@@ -2,6 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 import {
   FAILURE_CREATE,
   RE_INITIALIZE_STATE,
+  SaveSetNameConflictError,
   SaveSetParams,
   SaveSetsActionTypes,
   TOGGLE_PENDING_CREATE,
@@ -57,7 +58,7 @@ export const createSaveSetIfUnique = (
       onNameConflict();
     }
 
-    dispatch(failureCreate(new Error('Tag Name Conflict with Existing Save Set')));
+    dispatch(failureCreate(new SaveSetNameConflictError('A set with this name already exists')));
     dispatch(isLoadingCreateSaveSet(false));
   } catch (error) {
     dispatch(failureCreate(error));
