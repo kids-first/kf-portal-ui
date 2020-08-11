@@ -41,10 +41,11 @@ export type SaveSetParams = {
 };
 
 export class SaveSetNameConflictError extends Error {
-  constructor(message: string | undefined) {
+  constructor(message?: string) {
     super(message);
     this.name = 'SaveSetNameConflictError';
   }
 }
 
-export const isSaveSetNameConflictError = (e: Error) => e instanceof SaveSetNameConflictError;
+export const isSaveSetNameConflictError = (e?: Error | null) =>
+  e instanceof SaveSetNameConflictError;

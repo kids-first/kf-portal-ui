@@ -156,7 +156,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           rules={[
             () => ({
               validator: (_, value) => {
-                if (hasError) {
+                if (error && isSaveSetNameConflictError(error)) {
                   reInitializeState();
                 }
                 const { msg, err } = validateNameSetInput(value);
