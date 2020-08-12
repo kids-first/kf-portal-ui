@@ -58,11 +58,14 @@ export default provideState({
             api,
             onFinish: (user) => {
               const showJoin = !hasUserRole(user);
+              const routeIsNotAvailableWhenLoggedIn = ['/join', '/orcid'].includes(
+                window.location.pathname,
+              );
               if (showJoin) {
                 history.push(ROUTES.join);
               } else if (!user.acceptedTerms) {
                 history.push(ROUTES.termsConditions);
-              } else if (['/', '/join', '/orcid'].includes(window.location.pathname)) {
+              } else if (routeIsNotAvailableWhenLoggedIn) {
                 history.push(ROUTES.dashboard);
               }
             },
