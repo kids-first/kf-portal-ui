@@ -208,19 +208,7 @@ const App = compose(
             return <Redirect to="/" />;
           }}
         />
-        <Route
-          path="/"
-          exact
-          render={(props) =>
-            protectRoute({
-              api,
-              isLoadingUser,
-              Component: UserDashboard,
-              loggedInUser,
-              ...props,
-            })
-          }
-        />
+        <Route path="/" exact render={() => <Redirect to={ROUTES.dashboard} />} />
         <Route path={ROUTES.authRedirect} exact component={AuthRedirect} />
         <Route
           path={ROUTES.orcid}
