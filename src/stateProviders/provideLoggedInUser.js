@@ -1,8 +1,4 @@
 import { mergeIntoState, provideState } from 'freactal';
-import isArray from 'lodash/isArray';
-import pick from 'lodash/pick';
-import without from 'lodash/without';
-import omit from 'lodash/omit';
 import get from 'lodash/get';
 import jwtDecode from 'jwt-decode';
 import { addHeaders } from '@kfarranger/components/dist';
@@ -13,11 +9,7 @@ import { removeCookie, setCookie } from 'services/cookie';
 import { handleJWT, isAdminToken, validateJWT } from 'components/Login/utils';
 import { refreshToken } from 'services/login';
 import ROUTES from 'common/routes';
-import {
-  TRACKING_EVENTS,
-  trackUserInteraction,
-  trackUserSession,
-} from 'services/analyticsTracking';
+import { trackUserSession } from 'services/analyticsTracking';
 import { initializeApi } from 'services/api';
 import history from 'services/history';
 import { getUserGroups } from 'components/Login/utils';
@@ -37,7 +29,6 @@ export default provideState({
     loginProvider: null,
     isLoadingUser: true,
     loggedInUserToken: '',
-    percentageFilled: 0,
     integrationTokens: {},
     acceptedKfOptIn: false,
     acceptedNihOptIn: false,
@@ -71,8 +62,8 @@ export default provideState({
                 history.push(ROUTES.join);
               } else if (!user.acceptedTerms) {
                 history.push(ROUTES.termsConditions);
-              } else {
-                history.push(ROUTES.login);
+              } else if (['/', '/join', '/orcid'].includes(window.location.pathname)) {
+                history.push(ROUTES.dashboard);
               }
             },
           });
@@ -127,24 +118,7 @@ export default provideState({
             .filter((field) => field && field.name !== 'sets')
             .map((field) => field.name),
         )
-        .then((fields) => (state) => {
-          const userRole = user.roles ? user.roles[0] : null;
-          const userRoleProfileFields =
-            userRole && userRole !== 'research'
-              ? without(fields, 'institution', 'jobTitle')
-              : fields;
-          const profile = pick(omit(user, 'sets'), userRoleProfileFields);
-          const filledFields = Object.values(profile || {}).filter(
-            (v) => (isArray(v) && v.length) || (!isArray(v) && v),
-          );
-          const percentageFilled = filledFields.length / userRoleProfileFields.length;
-          if (state.loggedInUser && state.percentageFilled < 1 && percentageFilled >= 1) {
-            trackUserInteraction({
-              category: TRACKING_EVENTS.categories.user.profile,
-              action: TRACKING_EVENTS.actions.completedProfile,
-              label: user.roles[0],
-            });
-          }
+        .then(() => (state) => {
           trackUserSession({ ...user, egoGroups });
           return {
             ...state,
@@ -156,7 +130,6 @@ export default provideState({
             userGroups: state.loggedInUserToken
               ? getUserGroups({ validatedPayload: jwtDecode(state.loggedInUserToken) })
               : [],
-            percentageFilled,
             isJoining,
           };
         })
