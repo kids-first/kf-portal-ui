@@ -1,5 +1,4 @@
-import * as React from 'react';
-import Component from 'react-component-component';
+import React from 'react';
 import get from 'lodash/get';
 import intersection from 'lodash/intersection';
 import { compose } from 'recompose';
@@ -22,7 +21,7 @@ import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapp
 import { ACTIONS_COLUMNS } from 'common/constants';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
-
+import './customColumns.css';
 const enhance = compose(withApi);
 
 const FenceDownloadButton = ({ fence, kfId }) =>
@@ -64,7 +63,7 @@ FenceDownloadButton.propTypes = {
 
 const ActionItems = ({ value, fence, hasAccess, file }) => (
   <React.Fragment>
-    <Column style={{ flex: '1', alignItems: 'center' }}>
+    <Column className={'action-items-column'}>
       {hasAccess ? (
         <FenceDownloadButton fence={fence} kfId={value} />
       ) : (
@@ -77,7 +76,7 @@ const ActionItems = ({ value, fence, hasAccess, file }) => (
         </Tooltip>
       )}
     </Column>
-    <Column style={{ flex: '1', alignItems: 'center' }}>
+    <Column className={'action-items-column'}>
       {hasAccess && (
         <CavaticaOpenModalWrapper
           fileIds={[value]}
@@ -98,72 +97,59 @@ ActionItems.propTypes = {
 };
 
 const ActionsColumn = ({ value, api, fenceAcls }) => (
-  <Component
-    initialState={{ shouldFetch: true }}
-    didUpdate={({ setState, props, prevProps }) => {
-      if (props.value !== prevProps.value) {
-        setState({ shouldFetch: true }, () => {
-          setState({ shouldFetch: false });
-        });
-      }
-    }}
-  >
-    {({ state: { shouldFetch } }) => (
-      <Query
-        renderError
-        api={arrangerGqlRecompose(api, 'TableRowStudyId')}
-        projectId={arrangerProjectId}
-        shouldFetch={shouldFetch}
-        query={`query ($sqon: JSON) {
-          file {
-            hits (filters: $sqon) {
-              edges {
-                node {
-                  acl
-                  repository
-                  latest_did
-                }
+  <Query
+    renderError
+    api={arrangerGqlRecompose(api, 'TableRowStudyId')}
+    projectId={arrangerProjectId}
+    shouldFetch
+    query={`query ($sqon: JSON) {
+        file {
+          hits (filters: $sqon) {
+            edges {
+              node {
+                acl
+                repository
+                latest_did
               }
             }
           }
-        }`}
-        variables={{
-          sqon: {
-            op: 'and',
-            content: [
-              {
-                op: 'in',
-                content: {
-                  field: 'kf_id',
-                  value: [value],
-                },
-              },
-            ],
+        }
+      }`}
+    variables={{
+      sqon: {
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: {
+              field: 'kf_id',
+              value: [value],
+            },
           },
-        }}
-        render={({ loading: loadingQuery, data }) => {
-          const file = get(data, 'file.hits.edges[0].node', {});
-          const acl = file.acl || [];
-          const repository = file.repository;
-          const hasAccess = acl.includes('*') || intersection(fenceAcls, acl).length > 0;
-          return (
-            <Row center height={'100%'}>
-              {loadingQuery ? (
-                <Spin size={'small'} />
-              ) : (
-                <ActionItems value={value} fence={repository} hasAccess={hasAccess} file={file} />
-              )}
-            </Row>
-          );
-        }}
-      />
-    )}
-  </Component>
+        ],
+      },
+    }}
+    render={({ loading: loadingQuery, data }) => {
+      const file = get(data, 'file.hits.edges[0].node', {});
+      const acl = file.acl || [];
+      const repository = file.repository;
+      const hasAccess = acl.includes('*') || intersection(fenceAcls, acl).length > 0;
+      return (
+        <Row center className={'action-column-row'}>
+          {loadingQuery ? (
+            <Spin size={'small'} />
+          ) : (
+            <ActionItems value={value} fence={repository} hasAccess={hasAccess} file={file} />
+          )}
+        </Row>
+      );
+    }}
+  />
 );
 
 ActionsColumn.propTypes = {
   api: PropTypes.func.isRequired,
-  value: PropTypes.any.isRequired,
+  value: PropTypes.string.isRequired,
   fenceAcls: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
