@@ -1,7 +1,7 @@
 import React from 'react';
-import Enzyme, { mount } from 'enzyme';
+import Enzyme, { mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { jestPatchMatchMedia } from '../../../utils';
+import { jestPatchMatchMedia } from 'utils';
 import EntityContentSection from '../EntityContentSection';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -22,29 +22,30 @@ describe('In EntityContentSection', () => {
 
   beforeAll(() => jestPatchMatchMedia());
 
-  let wrapper: Enzyme.ShallowWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
+  let wrapper: ReactWrapper;
 
-  it('should renders EntityContentSection', () => {
+  it('should render EntityContentSection', () => {
     wrapper = mount(<EntityContentSection title={'Title'}>{children}</EntityContentSection>);
     expect(wrapper.exists()).toBe(true);
     wrapper.unmount();
   });
 
-  it('should renders tabs if required', () => {
+  it('should render tabs if required', () => {
     wrapper = mount(
       <EntityContentSection title={'Title'} tabs={TABS} setActiveTab={mockSetActiveTab}>
         {children}
       </EntityContentSection>,
     );
-    expect(wrapper.find('#tab-tab_1_accessor').length).toBe(1);
-    expect(wrapper.find('#tab-tab_2_accessor').length).toBe(1);
+
+    expect(wrapper.find('#rc-tabs-test-tab-tab_1_accessor').length).toBe(1);
+    expect(wrapper.find('#rc-tabs-test-tab-tab_2_accessor').length).toBe(1);
     wrapper.unmount();
   });
 
-  it('should not renders tabs if not required', () => {
+  it('should not render tabs if not required', () => {
     wrapper = mount(<EntityContentSection title={'Title'}>{children}</EntityContentSection>);
-    expect(wrapper.find('#tab-tab_1_accessor').length).toBe(0);
-    expect(wrapper.find('#tab-tab_2_accessor').length).toBe(0);
+    expect(wrapper.find('#rc-tabs-test-tab-tab_1_accessor').length).toBe(0);
+    expect(wrapper.find('#rc-tabs-test-tab-tab_2_accessor').length).toBe(0);
     wrapper.unmount();
   });
 
@@ -66,8 +67,8 @@ describe('In EntityContentSection', () => {
         {children}
       </EntityContentSection>,
     );
-    expect(wrapper.find('#tab-tab_1_accessor')).toEqual({});
-    expect(wrapper.find('#tab-tab_2_accessor').props()['aria-disabled']).toBe('false');
+    expect(wrapper.find('#rc-tabs-test-tab-tab_1_accessor')).toEqual({});
+    expect(wrapper.find('#rc-tabs-test-tab-tab_2_accessor').props()['aria-disabled']).toBe(false);
     wrapper.unmount();
   });
 
@@ -89,7 +90,7 @@ describe('In EntityContentSection', () => {
         {children}
       </EntityContentSection>,
     );
-    expect(wrapper.find('#tab-tab_1_accessor').length).toBe(0);
-    expect(wrapper.find('#tab-tab_2_accessor').length).toBe(0);
+    expect(wrapper.find('#rc-tabs-test-tab-tab_1_accessor').length).toBe(0);
+    expect(wrapper.find('#rc-tabs-test-tab-tab_2_accessor').length).toBe(0);
   });
 });
