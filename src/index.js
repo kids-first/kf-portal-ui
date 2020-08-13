@@ -1,5 +1,5 @@
 import 'babel-polyfill';
-import './antd-kf-theme.css';
+import 'style/themes/antd-kf-theme.css';
 import 'index.css';
 // [NEXT] This css sheet should be brought back locally instead, in the long run
 import '@kfarranger/components/public/themeStyles/beagle/beagle.css';
@@ -22,7 +22,7 @@ initAnalyticsTracking();
 googleSDK();
 facebookSDK();
 
-const render = rootElement => {
+const render = (rootElement) => {
   ReactDOM.render(rootElement, getAppElement());
 };
 
