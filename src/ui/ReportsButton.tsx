@@ -1,31 +1,44 @@
 /* eslint-disable react/prop-types */
 import React, { FunctionComponent, useEffect } from 'react';
 import { Button, Dropdown, Menu, message as antdMessage, notification } from 'antd';
-import { Sqon } from '../store/sqon';
-import { RootState } from '../store/rootState';
+import { Sqon } from 'store/sqon';
+import { RootState } from 'store/rootState';
 import { connect, ConnectedProps } from 'react-redux';
-import { ClickParam } from 'antd/lib/menu';
 import { DownloadOutlined } from '@ant-design/icons';
-import { DispatchReport, ReportConfig } from '../store/reportTypes';
-import { reInitializeState, fetchReportIfNeeded } from '../store/actionCreators/report';
+import { DispatchReport, ReportConfig } from 'store/reportTypes';
+import { reInitializeState, fetchReportIfNeeded } from 'store/actionCreators/report';
 import { MessageType as AntdMessageType } from 'antd/lib/message';
 import {
   selectIsReportLoading,
   selectReportError,
   selectReportMessage,
-} from '../store/selectors/report';
+} from 'store/selectors/report';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 function identity<T>(arg: T): T {
   return arg;
 }
 
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-type Props = PropsFromRedux & {
+type OwnProps = {
   sqon: Sqon;
   generatorMenuItems: Function;
   className?: string;
 };
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type Props = PropsFromRedux & OwnProps;
+
+const mapState = (state: RootState) => ({
+  isLoading: selectIsReportLoading(state),
+  message: selectReportMessage(state),
+  error: selectReportError(state),
+});
+
+const mapDispatch = (dispatch: DispatchReport) => ({
+  fetchReportIfNeeded: (params: ReportConfig) => dispatch(fetchReportIfNeeded(params)),
+  reInitializeState: () => dispatch(reInitializeState()),
+});
 
 const DownloadButton: FunctionComponent<Props> = (props) => {
   const {
@@ -39,8 +52,8 @@ const DownloadButton: FunctionComponent<Props> = (props) => {
     className = '',
   } = props;
 
-  const handleClick = async (e: ClickParam) => {
-    const reportName = e.key;
+  const handleClick: MenuClickEventHandler = async (e) => {
+    const reportName = e.key as string;
     await fetchReportIfNeeded({ sqon, name: reportName });
   };
 
@@ -73,6 +86,7 @@ const DownloadButton: FunctionComponent<Props> = (props) => {
 
   return (
     <Dropdown
+      // @ts-ignore
       overlay={<Menu onClick={handleClick}>{menuItems.map(identity)}</Menu>}
       disabled={error !== null}
     >
@@ -87,17 +101,6 @@ const DownloadButton: FunctionComponent<Props> = (props) => {
     </Dropdown>
   );
 };
-
-const mapState = (state: RootState) => ({
-  isLoading: selectIsReportLoading(state),
-  message: selectReportMessage(state),
-  error: selectReportError(state),
-});
-
-const mapDispatch = (dispatch: DispatchReport) => ({
-  fetchReportIfNeeded: (params: ReportConfig) => dispatch(fetchReportIfNeeded(params)),
-  reInitializeState: () => dispatch(reInitializeState()),
-});
 
 const connector = connect(mapState, mapDispatch);
 
