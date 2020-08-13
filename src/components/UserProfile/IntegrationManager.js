@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import IntegrationItem from './IntegrationItem';
@@ -11,17 +12,11 @@ class IntegrationManager extends React.Component {
     errorDisconnect: null,
   };
 
-  setConnecting = isConnecting => {
-    return this.setState({ connecting: isConnecting });
-  };
+  setConnecting = (isConnecting) => this.setState({ connecting: isConnecting });
 
-  setErrorConnect = error => {
-    return this.setState({ errorConnect: error });
-  };
+  setErrorConnect = (error) => this.setState({ errorConnect: error });
 
-  setErrorDisConnect = error => {
-    return this.setState({ errorDisconnect: error });
-  };
+  setErrorDisConnect = (error) => this.setState({ errorDisconnect: error });
 
   onClickConnect = () => {
     this.setState({ errorConnect: null });
@@ -45,9 +40,7 @@ class IntegrationManager extends React.Component {
     });
   };
 
-  onClickResetErrors = () => {
-    return this.setState({ errorConnect: null, errorDisconnect: null });
-  };
+  onClickResetErrors = () => this.setState({ errorConnect: null, errorDisconnect: null });
 
   onClickActionButton = () => {
     const { actionCb, actionCbParam } = this.props.actionWhenConnected;
@@ -92,7 +85,7 @@ const Enhanced = compose(
   setPropTypes({
     logo: PropTypes.node.isRequired,
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-    isConnected: PropTypes.bool.isRequired,
+    isConnected: PropTypes.bool,
     isLoadingBeforeConnecting: PropTypes.bool.isRequired,
     connection: PropTypes.shape({
       connectCb: PropTypes.func.isRequired,

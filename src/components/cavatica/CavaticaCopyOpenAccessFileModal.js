@@ -1,30 +1,29 @@
 import * as React from 'react';
-import { Alert } from 'antd';
-import { compose } from 'recompose';
-import { injectState } from 'freactal';
-
+import { Alert, notification } from 'antd';
 import { ModalFooter } from 'components/Modal/index.js';
-import { trackUserInteraction, TRACKING_EVENTS } from 'services/analyticsTracking';
-import { SuccessToastComponent } from './CavaticaSuccessToast';
+import { TRACKING_EVENTS, trackUserInteraction } from 'services/analyticsTracking';
+import { CavaticaSuccessNotificationContent } from './CavaticaSuccessNotificationContent';
 import { copyToProject } from './api';
 import CavaticaProjects from './CavaticaProjects';
-
 import './cavatica.css';
 import './CavaticaCopyMultipleFilesModal.css';
+import PropTypes from 'prop-types';
 
 class CavaticaCopyOpenAccessFileModal extends React.Component {
+  propTypes = {
+    fileId: PropTypes.string.isRequired,
+    onComplete: PropTypes.func.isRequired,
+    file: PropTypes.object.isRequired,
+  };
+
   state = {
     addingProject: false,
     selectedProjectData: null,
     error: null,
   };
+
   render() {
-    const {
-      effects: { setToast },
-      fileId,
-      onComplete,
-      file,
-    } = this.props;
+    const { fileId, onComplete, file } = this.props;
 
     const { addingProject, selectedProjectData } = this.state;
     const { error } = this.state;
@@ -48,7 +47,7 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
             onAddProject={() => {
               this.setState({ addingProject: true });
             }}
-            onSelectProject={project => {
+            onSelectProject={(project) => {
               this.setState({ selectedProjectData: project });
             }}
             addingProject={addingProject}
@@ -61,20 +60,22 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
               const latestDid = file.latest_did;
               try {
                 if (!fence) {
-                  throw new Error('This file has no repository information.');
+                  this.setState({ error: new Error('This file has no repository information.') });
+                  return;
                 } else if (!latestDid) {
-                  throw new Error('This file has no "latest_did" property.');
+                  this.setState({ error: new Error('This file has no "latest_did" property.') });
+                  return;
                 }
                 await copyToProject({
                   selectedProject: selectedProjectData.id,
                   selectedFiles: { [fence]: [latestDid] },
                 });
-                setToast({
-                  id: `${Date.now()}`,
-                  action: 'success',
-                  component: SuccessToastComponent({ selectedProjectData }),
-                });
 
+                notification.success({
+                  message: 'Success',
+                  description: CavaticaSuccessNotificationContent({ selectedProjectData }),
+                  duration: 10,
+                });
                 trackUserInteraction({
                   category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
                   action: 'Copied File to Cavatica Project',
@@ -100,4 +101,4 @@ class CavaticaCopyOpenAccessFileModal extends React.Component {
   }
 }
 
-export default compose(injectState)(CavaticaCopyOpenAccessFileModal);
+export default CavaticaCopyOpenAccessFileModal;
