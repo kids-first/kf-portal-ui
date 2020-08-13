@@ -9,7 +9,7 @@ import theme from 'theme/defaultTheme';
 import DownloadFileButton from 'components/FileRepo/DownloadFileButton';
 import { arrangerGqlRecompose } from 'services/arranger';
 import { withApi } from 'services/api';
-import { ControlledIcon, TableSpinner } from '../ui';
+import { ControlledIcon } from '../ui';
 import DownloadIcon from 'icons/DownloadIcon';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
@@ -20,6 +20,8 @@ import { DCF } from 'common/constants';
 import CavaticaLogo from 'icons/CavaticaLogo';
 import CavaticaOpenModalWrapper from 'components/cavatica/CavaticaOpenModalWrapper';
 import { ACTIONS_COLUMNS } from 'common/constants';
+import { Spin } from 'antd';
+import PropTypes from 'prop-types';
 
 const enhance = compose(withApi);
 
@@ -36,14 +38,14 @@ const FenceDownloadButton = ({ fence, kfId }) =>
   ) : (
     // All other fences are good to go!
     <DownloadFileButton
-      onSuccess={url => {
+      onSuccess={(url) => {
         trackUserInteraction({
           category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
           action: 'Download File',
           label: url,
         });
       }}
-      onError={err => {
+      onError={(err) => {
         trackUserInteraction({
           category: TRACKING_EVENTS.categories.fileRepo.actionsSidebar,
           action: 'Download File FAILED',
@@ -55,40 +57,50 @@ const FenceDownloadButton = ({ fence, kfId }) =>
     />
   );
 
-const ActionItems = ({ value, fence, hasAccess, file }) => {
-  return (
-    <React.Fragment>
-      <Column style={{ flex: '1', alignItems: 'center' }}>
-        {hasAccess ? (
-          <FenceDownloadButton fence={fence} kfId={value} />
-        ) : (
-          <Tooltip
-            position="bottom"
-            interactive
-            html={<Row p={'10px'}>You do not have access to this file.</Row>}
-          >
-            <ControlledIcon fill={theme.lightBlue} />
-          </Tooltip>
-        )}
-      </Column>
-      <Column style={{ flex: '1', alignItems: 'center' }}>
-        {hasAccess && (
-          <CavaticaOpenModalWrapper
-            fileIds={[value]}
-            source={{ location: ACTIONS_COLUMNS, hasAccess, file }}
-          >
-            <CavaticaLogo fill={theme.lightBlue} width={16} />
-          </CavaticaOpenModalWrapper>
-        )}
-      </Column>
-    </React.Fragment>
-  );
+FenceDownloadButton.propTypes = {
+  fence: PropTypes.string.isRequired,
+  kfId: PropTypes.string.isRequired,
+};
+
+const ActionItems = ({ value, fence, hasAccess, file }) => (
+  <React.Fragment>
+    <Column style={{ flex: '1', alignItems: 'center' }}>
+      {hasAccess ? (
+        <FenceDownloadButton fence={fence} kfId={value} />
+      ) : (
+        <Tooltip
+          position="bottom"
+          interactive
+          html={<Row p={'10px'}>You do not have access to this file.</Row>}
+        >
+          <ControlledIcon fill={theme.lightBlue} />
+        </Tooltip>
+      )}
+    </Column>
+    <Column style={{ flex: '1', alignItems: 'center' }}>
+      {hasAccess && (
+        <CavaticaOpenModalWrapper
+          fileIds={[value]}
+          source={{ location: ACTIONS_COLUMNS, hasAccess, file }}
+        >
+          <CavaticaLogo fill={theme.lightBlue} width={16} />
+        </CavaticaOpenModalWrapper>
+      )}
+    </Column>
+  </React.Fragment>
+);
+
+ActionItems.propTypes = {
+  fence: PropTypes.string.isRequired,
+  file: PropTypes.object.isRequired,
+  hasAccess: PropTypes.bool.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 const ActionsColumn = ({ value, api, fenceAcls }) => (
   <Component
     initialState={{ shouldFetch: true }}
-    didUpdate={({ state, setState, props, prevProps }) => {
+    didUpdate={({ setState, props, prevProps }) => {
       if (props.value !== prevProps.value) {
         setState({ shouldFetch: true }, () => {
           setState({ shouldFetch: false });
@@ -137,7 +149,7 @@ const ActionsColumn = ({ value, api, fenceAcls }) => (
           return (
             <Row center height={'100%'}>
               {loadingQuery ? (
-                <TableSpinner style={{ width: 15, height: 15 }} />
+                <Spin size={'small'} />
               ) : (
                 <ActionItems value={value} fence={repository} hasAccess={hasAccess} file={file} />
               )}
@@ -148,5 +160,11 @@ const ActionsColumn = ({ value, api, fenceAcls }) => (
     )}
   </Component>
 );
+
+ActionsColumn.propTypes = {
+  api: PropTypes.func.isRequired,
+  value: PropTypes.any.isRequired,
+  fenceAcls: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default enhance(ActionsColumn);

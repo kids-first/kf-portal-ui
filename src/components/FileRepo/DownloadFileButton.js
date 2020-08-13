@@ -1,9 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { injectState } from 'freactal';
 
 import theme from 'theme/defaultTheme';
-import IconWithLoading from 'icons/IconWithLoading';
 import DownloadIcon from 'icons/DownloadIcon';
 import LoadingOnClick from 'components/LoadingOnClick';
 import { GEN3 } from 'common/constants';
@@ -11,10 +9,11 @@ import { downloadFileFromFence } from 'services/fence';
 import { getFilesById } from 'services/arranger';
 import { withApi } from 'services/api';
 import { getAppElement } from 'services/globalDomNodes';
+import { notification, Spin } from 'antd';
 
-const getGen3UUIDs = async kfId => {
+const getGen3UUIDs = async (kfId) => {
   const fileData = await getFilesById({ ids: [kfId], fields: ['latest_did'] });
-  return fileData.map(file => file.node.latest_did);
+  return fileData.map((file) => file.node.latest_did);
 };
 
 //TODO: Needs to be made aware of multiple data repositories, only downloads from Gen3 right now.
@@ -25,14 +24,11 @@ const downloadFile = async ({ kfId, api }) => {
   return await downloadFileFromFence({ fileUuid, api, fence: GEN3 });
 };
 
-const DownloadFileButton = compose(
-  injectState,
-  withApi,
-)(({ kfId, fence, effects: { setToast }, api, render, onSuccess, onError }) => (
+const DownloadFileButton = compose(withApi)(({ kfId, fence, api, render, onSuccess, onError }) => (
   <LoadingOnClick
     onClick={() =>
       downloadFile({ kfId, fence, api })
-        .then(url => {
+        .then((url) => {
           const a = document.createElement('a');
           a.href = url;
           if (onSuccess) {
@@ -48,52 +44,32 @@ const DownloadFileButton = compose(
           a.click();
           appRoot.removeChild(a);
         })
-        .catch(err => {
+        .catch((err) => {
           if (onError) {
             onError(err);
           }
-          setToast({
-            id: `${Date.now()}`,
-            action: 'error',
-            component: (
-              <div style={{ display: 'flex' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{ fontSize: '16px' }}>Failed!</div>
-                  Unable to download file
-                  <div
-                    style={{
-                      color: 'red',
-                      marginBottom: '20px',
-                      padding: '20px',
-                    }}
-                  >
-                    <span>
-                      Your account does not have the required permission to download this file.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ),
+          notification.error({
+            message: 'Unable to download file',
+            description:
+              'Your account does not have the required permission to download this file.',
+            duration: 10,
           });
         })
     }
     render={
       render
         ? render
-        : ({ onClick, loading }) => (
-            <IconWithLoading
-              {...{ loading }}
-              spinnerProps={{ color: 'grey' }}
-              Icon={() => (
-                <DownloadIcon
-                  {...{ onClick }}
-                  width={13}
-                  fill={theme.lightBlue}
-                  style={{ cursor: 'pointer' }}
-                />
-              )}
-            />
-          )
+        : ({ onClick, loading }) =>
+            loading ? (
+              <Spin size={'small'} />
+            ) : (
+              <DownloadIcon
+                {...{ onClick }}
+                width={13}
+                fill={theme.lightBlue}
+                style={{ cursor: 'pointer' }}
+              />
+            )
     }
   />
 ));

@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Toast from 'uikit/Toast';
 import Modal from 'components/Modal';
 import GlobalModal from 'components/Modal/GlobalModal';
 import UserProfile from 'components/UserProfile';
@@ -49,7 +48,7 @@ const App = compose(
   injectState,
   withApi,
 )(({ state, api }) => {
-  const { loggedInUser, toast, isLoadingUser, isJoining } = state;
+  const { loggedInUser, isLoadingUser, isJoining } = state;
 
   if (isLoadingUser) {
     return <Spinner className={'spinner'} size={'large'} />;
@@ -277,7 +276,6 @@ const App = compose(
       </Switch>
       <Modal />
       <GlobalModal />
-      <Toast {...toast}>{toast.component}</Toast>
     </div>
   );
 });
