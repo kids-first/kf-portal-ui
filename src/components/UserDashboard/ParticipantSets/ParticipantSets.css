@@ -1,0 +1,31 @@
+.ant-table-tbody > tr > td {
+  padding: 8px 8px;
+}
+
+.ant-btn-text {
+  color: #a9adc0;
+}
+
+.ant-btn-text:hover {
+  color: #7d84a6;
+}
+
+.save-sets-participants-count:hover {
+  text-decoration: underline;
+}
+
+/*TO BE DELETED*/
+.ant-tree-custom-TO-DELETE div {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px !important;
+  color: #515885;
+}
+
+.ant-table-thead > tr > th {
+  font-family: 'Open Sans';
+  padding: 8px 8px;
+  font-weight: 600;
+}

@@ -7,8 +7,10 @@ import {
   SaveSetsActionTypes,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
+  USER_SAVE_SETS,
+  UserSaveSets,
 } from '../saveSetTypes';
-import { saveSetCountForTag } from 'services/sets';
+import { saveSetCountForTag, getSetAndParticipantsCountByUser } from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
@@ -67,11 +69,25 @@ export const createSaveSetIfUnique = (
   }
 };
 
-// export const getUserSaveSets = (
-//   payload: SaveSetParams,
-// ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-//   const { userId } = payload;
-// };
+export const getUserSaveSets = (
+  userId: string,
+): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+  dispatch(isLoadingSaveSets(true));
+  try {
+    const userSets = await getSetAndParticipantsCountByUser(userId);
+    const payload: UserSaveSets[] = userSets.map(
+      (s: { node: { setId: string; size: number; tag: string } }) => ({
+        setId: s.node.setId,
+        size: s.node.size,
+        tag: s.node.tag,
+      }),
+    );
+    dispatch(displayUserSaveSets(payload));
+  } catch (e) {
+    console.error(e);
+  }
+  dispatch(isLoadingSaveSets(false));
+};
 
 export const isLoadingCreateSaveSet = (isPending: boolean): SaveSetsActionTypes => ({
   type: TOGGLE_PENDING_CREATE,
@@ -90,4 +106,9 @@ export const reInitializeSaveSetsState = (): SaveSetsActionTypes => ({
 export const isLoadingSaveSets = (isLoading: boolean): SaveSetsActionTypes => ({
   type: TOGGLE_LOADING_SAVE_SETS,
   isLoading,
+});
+
+export const displayUserSaveSets = (payload: UserSaveSets[]): SaveSetsActionTypes => ({
+  type: USER_SAVE_SETS,
+  payload,
 });

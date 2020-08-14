@@ -86,7 +86,7 @@ export default compose(
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="My Participant Sets">
-            <ParticipantSets />
+            <ParticipantSets user={loggedInUser} />
           </DashboardCard>
         </Col>
       </Row>
