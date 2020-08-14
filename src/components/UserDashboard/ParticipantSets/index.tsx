@@ -70,13 +70,11 @@ const columns = [
     // eslint-disable-next-line react/display-name
     render: (count: number) => (
       <Button
+        className={'count-button'}
         type="text"
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-end',
-          padding: 0,
-          width: '100%',
         }}
       >
         <svg
@@ -104,12 +102,7 @@ const columns = [
             />
           </g>
         </svg>
-        <div
-          className={'save-sets-participants-count'}
-          style={{ paddingLeft: 6.67, color: '#B5469E' }}
-        >
-          {count}
-        </div>
+        <div className={'save-sets-participants-count'}>{count}</div>
       </Button>
     ),
   },
@@ -136,7 +129,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
 
   const data = userSets.sets.map((s) => ({
     key: s.setId,
-    name: s.tag ? s.tag : 'Not_Named',
+    name: s.tag,
     count: s.size,
   }));
 

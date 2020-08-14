@@ -10,8 +10,24 @@
   color: #7d84a6;
 }
 
+.save-sets-participants-count {
+  padding-left: 6.67px;
+  color: #b5469e;
+}
+
 .save-sets-participants-count:hover {
   text-decoration: underline;
+}
+
+.count-button {
+  justify-content: flex-end;
+  padding: 0;
+  width: 100%;
+}
+
+.name-columns {
+  display: inline-flex;
+  align-items: center;
 }
 
 /*TO BE DELETED*/
