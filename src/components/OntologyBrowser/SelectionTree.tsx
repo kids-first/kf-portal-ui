@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, Fragment } from 'react';
 import { Button, Col, Input, Row, Tree } from 'antd';
-import { TreeNode } from './store';
+import { TreeNode } from './Model';
 import { BranchesOutlined, UserOutlined } from '@ant-design/icons';
 
 import './SelectionTree.css';
