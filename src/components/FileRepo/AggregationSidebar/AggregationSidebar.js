@@ -1,18 +1,20 @@
 import React, { Fragment, useState } from 'react';
-import { Layout } from 'antd';
-
-import theme from 'theme/defaultTheme';
 import AdvancedFacetViewModalContent from 'components/AdvancedFacetViewModal';
 import { config as statsConfig } from 'components/Stats';
 import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import { FilterInput } from 'uikit/Input';
 import { H2 } from 'uikit/Headings';
 import CustomAggregationsPanel from './CustomAggregationsPanel';
-import { TealActionButton } from 'uikit/Button';
-import LeftChevron from 'icons/DoubleChevronLeftIcon';
-import RightChevron from 'icons/DoubleChevronRightIcon';
-
-import { collapsibleAggregationWrapper, aggregationHeader } from './AggregationSidebar.module.css';
+import { Button, Layout } from 'antd';
+import { DoubleRightOutlined, DoubleLeftOutlined } from '@ant-design/icons';
+import {
+  collapsibleAggregationWrapper,
+  aggregationHeader,
+  browseAllBtn,
+  chevronLeftBtn,
+  chevronRightBth,
+} from './AggregationSidebar.module.css';
+import PropTypes from 'prop-types';
 
 const { Sider } = Layout;
 
@@ -22,7 +24,11 @@ const AggregationSidebar = ({
   translateSQONValue,
   trackFileRepoInteraction,
   aggregationsWrapperRef = React.createRef(),
-  ...props
+  sqon,
+  fetchData,
+  graphqlField,
+  index,
+  projectId,
 }) => {
   const [expanded, setExpanded] = useState(true);
   return (
@@ -36,8 +42,9 @@ const AggregationSidebar = ({
         <Fragment>
           <div className={aggregationHeader}>
             <H2>Filter</H2>
-            <TealActionButton
-              style={{ marginLeft: '10px' }}
+            <Button
+              type={'primary'}
+              className={browseAllBtn}
               onClick={() =>
                 effects.setModal({
                   title: 'All Filters',
@@ -49,7 +56,11 @@ const AggregationSidebar = ({
                   component: (
                     <AdvancedFacetViewModalContent
                       {...{
-                        ...props,
+                        sqon,
+                        fetchData,
+                        graphqlField,
+                        index,
+                        projectId,
                         translateSQONValue,
                         trackFileRepoInteraction,
                         closeModal: effects.unsetModal,
@@ -57,7 +68,7 @@ const AggregationSidebar = ({
                           // leaving this prop here because it uses
                           // the modal effects
                           trackFileRepoInteraction({
-                            category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
+                            category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
                             action: 'View Results',
                             label: sqon,
                           });
@@ -71,18 +82,22 @@ const AggregationSidebar = ({
                 })
               }
             >
-              {'Browse All'}
-            </TealActionButton>
-            <LeftChevron
-              style={{ marginLeft: 'auto' }}
+              Browse All
+            </Button>
+            <Button
+              className={chevronLeftBtn}
+              type="link"
+              icon={<DoubleLeftOutlined />}
               onClick={() => setExpanded(!expanded)}
-              width={14}
-              fill={theme.secondary}
             />
           </div>
           <CustomAggregationsPanel
             {...{
-              ...props,
+              sqon,
+              fetchData,
+              graphqlField,
+              index,
+              projectId,
               effects,
               setSQON,
               containerRef: aggregationsWrapperRef,
@@ -106,19 +121,35 @@ const AggregationSidebar = ({
         </Fragment>
       ) : (
         <div className={aggregationHeader}>
-          <RightChevron
-            style={{
-              marginTop: '10px',
-              minWidth: '14px',
-            }}
-            width={14}
+          <Button
+            type="link"
+            className={chevronRightBth}
+            icon={<DoubleRightOutlined />}
             onClick={() => setExpanded(!expanded)}
-            fill={theme.secondary}
           />
         </div>
       )}
     </Sider>
   );
+};
+
+AggregationSidebar.propTypes = {
+  effects: PropTypes.shape({
+    unsetModal: PropTypes.func.isRequired,
+    setModal: PropTypes.func.isRequired,
+  }).isRequired,
+  setSQON: PropTypes.func.isRequired,
+  translateSQONValue: PropTypes.func.isRequired,
+  trackFileRepoInteraction: PropTypes.func,
+  aggregationsWrapperRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.any }),
+  ]),
+  sqon: PropTypes.object,
+  fetchData: PropTypes.func.isRequired,
+  graphqlField: PropTypes.string.isRequired,
+  index: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
 };
 
 export default AggregationSidebar;
