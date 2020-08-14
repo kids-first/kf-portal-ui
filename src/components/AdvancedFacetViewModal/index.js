@@ -1,16 +1,10 @@
-import * as React from 'react';
-import { injectState } from 'freactal';
-import { compose } from 'recompose';
+import React, { useState } from 'react';
 import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
-
-import { ModalFooter } from '../Modal/index.js';
-import { provideLocalSqon } from 'stateProviders';
+import { ModalFooter } from '../Modal';
 import { FilterInput } from 'uikit/Input';
-import { TRACKING_EVENTS } from '../../services/analyticsTracking';
-
+import { TRACKING_EVENTS } from 'services/analyticsTracking';
 import './style.css';
-
-const enhance = compose(provideLocalSqon, injectState);
+import PropTypes from 'prop-types';
 
 const CustomFilterInput = ({ children, style = {}, ...props }) => (
   <FilterInput style={{ width: 'auto', ...style }} {...props}>
@@ -18,92 +12,130 @@ const CustomFilterInput = ({ children, style = {}, ...props }) => (
   </FilterInput>
 );
 
-class AdvancedFacetViewModalContent extends React.Component {
-  onOverlayClick = e => {
-    const { closeModal = () => {} } = this.props;
-    if (e.target === this.overLay) {
-      closeModal();
-    }
-  };
+CustomFilterInput.propTypes = {
+  children: PropTypes.element.isRequired,
+  style: PropTypes.object,
+};
 
-  render() {
-    const {
-      effects,
-      state: { localSqon },
-      closeModal = () => {},
-      onSqonSubmit = () => {},
-      setSQON,
-      trackFileRepoInteraction,
-      ...props
-    } = this.props;
-    return (
-      <React.Fragment>
-        <div className="afv-container">
-          <AdvancedFacetView
-            {...props}
-            InputComponent={CustomFilterInput}
-            sqon={localSqon}
-            onSqonChange={({ sqon, field, value }) => effects.setAdvancedFacetSqon(sqon)}
-            onFacetNavigation={path => {
-              let facetNavEvent = {
-                category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                action: TRACKING_EVENTS.actions.click + ' side navigation',
-                label: path,
-              };
-              trackFileRepoInteraction(facetNavEvent);
-              if (props.onFacetNavigation) {
-                props.onFacetNavigation(path);
-              }
-            }}
-            onFilterChange={val => {
-              if (val !== '') {
-                trackFileRepoInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                  action: TRACKING_EVENTS.actions.filter + ' - Search',
-                  ...(val && { label: val }),
-                });
-                if (props.onFilterChange) {
-                  props.onFilterChange(val);
-                }
-              }
-            }}
-            onTermSelected={({ field, value, active, ...rest }) => {
-              if (active) {
-                trackFileRepoInteraction({
-                  category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                  action: TRACKING_EVENTS.actions.filter + ' Selected',
-                  label: {
-                    type: 'filter',
-                    value,
-                    field,
-                  },
-                });
-              }
-              if (props.onTermSelected) {
-                props.onTermSelected({ field, value, active, ...rest });
-              }
-            }}
-            onClear={() => {
+const AdvancedFacetViewModalContent = (props) => {
+  const {
+    closeModal,
+    onSqonSubmit,
+    trackFileRepoInteraction,
+    sqon,
+    index,
+    graphqlField,
+    projectId,
+    statsConfig,
+    translateSQONValue,
+    fetchData,
+    onClear,
+    onTermSelected,
+    onFilterChange,
+    onFacetNavigation,
+  } = props;
+
+  const [modalSqon, setModalSqon] = useState(sqon);
+
+  return (
+    <React.Fragment>
+      <div className="afv-container">
+        <AdvancedFacetView
+          projectId={projectId}
+          fetchData={fetchData}
+          graphqlField={graphqlField}
+          index={index}
+          statsConfig={statsConfig}
+          translateSQONValue={translateSQONValue}
+          InputComponent={CustomFilterInput}
+          sqon={modalSqon}
+          onSqonChange={({ sqon }) => {
+            setModalSqon(sqon);
+          }}
+          onFacetNavigation={(path) => {
+            trackFileRepoInteraction({
+              category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
+              action: `${TRACKING_EVENTS.actions.click} side navigation`,
+              label: path,
+            });
+            if (onFacetNavigation) {
+              onFacetNavigation(path);
+            }
+          }}
+          onFilterChange={(val) => {
+            if (val !== '') {
               trackFileRepoInteraction({
                 category: TRACKING_EVENTS.categories.fileRepo.filters + ' - Advanced',
-                action: TRACKING_EVENTS.actions.query.clear,
+                action: `${TRACKING_EVENTS.actions.filter} - Search`,
+                ...(val && { label: val }),
               });
-              if (props.onClear) {
-                props.onClear();
+              if (onFilterChange) {
+                onFilterChange(val);
               }
-            }}
-          />
-        </div>
-        <ModalFooter
-          {...{
-            unsetModal: closeModal,
-            handleSubmit: e => onSqonSubmit({ sqon: localSqon }),
-            submitText: 'View Results',
+            }
+          }}
+          onTermSelected={({ field, value, active, ...rest }) => {
+            if (active) {
+              trackFileRepoInteraction({
+                category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
+                action: `${TRACKING_EVENTS.actions.filter} Selected`,
+                label: {
+                  type: 'filter',
+                  value,
+                  field,
+                },
+              });
+            }
+            if (onTermSelected) {
+              onTermSelected({ field, value, active, ...rest });
+            }
+          }}
+          onClear={() => {
+            trackFileRepoInteraction({
+              category: `${TRACKING_EVENTS.categories.fileRepo.filters} - Advanced`,
+              action: TRACKING_EVENTS.actions.query.clear,
+            });
+            if (onClear) {
+              onClear();
+            }
           }}
         />
-      </React.Fragment>
-    );
-  }
-}
+      </div>
+      <ModalFooter
+        {...{
+          unsetModal: closeModal,
+          handleSubmit: () => onSqonSubmit({ sqon: modalSqon }),
+          submitText: 'View Results',
+        }}
+      />
+    </React.Fragment>
+  );
+};
 
-export default enhance(AdvancedFacetViewModalContent);
+AdvancedFacetViewModalContent.propTypes = {
+  statsConfig: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      isRoot: PropTypes.bool,
+      icon: PropTypes.object,
+      field: PropTypes.string,
+      dataAccessor: PropTypes.string,
+      store: PropTypes.object,
+    }),
+  ),
+  closeModal: PropTypes.func,
+  onSqonSubmit: PropTypes.func,
+  trackFileRepoInteraction: PropTypes.func,
+  sqon: PropTypes.object,
+  index: PropTypes.string.isRequired,
+  graphqlField: PropTypes.string.isRequired,
+  projectId: PropTypes.string.isRequired,
+  translateSQONValue: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
+  onClear: PropTypes.func,
+  onTermSelected: PropTypes.func,
+  onFilterChange: PropTypes.func,
+  onFacetNavigation: PropTypes.func,
+};
+
+export default AdvancedFacetViewModalContent;
