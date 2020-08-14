@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useEffect } from 'react';
-import { Button, Table } from 'antd';
+import { Button, Table, Spin } from 'antd';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from 'store/rootState';
@@ -44,7 +44,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & OwnProps;
 
-const test = 'right' as AlignType;
+const align = 'right' as AlignType;
 
 const columns = [
   {
@@ -66,7 +66,7 @@ const columns = [
     dataIndex: 'count',
     key: 'count',
     width: 80,
-    align: test,
+    align: align,
     // eslint-disable-next-line react/display-name
     render: (count: number) => (
       <Button
@@ -135,7 +135,13 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
 
   return (
     <>
-      <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+      {userSets.isLoading ? (
+        <div className={'participant-set-spinner-container'}>
+          <Spin size={'large'} />
+        </div>
+      ) : (
+        <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+      )}
     </>
   );
 };
