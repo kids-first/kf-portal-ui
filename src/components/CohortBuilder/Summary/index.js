@@ -83,7 +83,7 @@ const Summary = ({
           {isFeatureEnabled('FT_SUNBURST') && (
             <CardSlot>
               <CohortCard title="Observed Phenotypes">
-                <OntologySunburst sqon={sqon} height={240} width={224} />
+                <OntologySunburst sqon={sqon} />
               </CohortCard>
             </CardSlot>
           )}

@@ -3,7 +3,7 @@
 exports[`In SelectionTree should render participants count and exact count for each term 1`] = `
 Array [
   0,
-  12,
+  100,
   2,
   6,
   1,
