@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { AdvancedFacetView } from '@kfarranger/components/dist/Arranger';
 import { ModalFooter } from '../Modal';
 import { FilterInput } from 'uikit/Input';
@@ -38,7 +38,7 @@ const AdvancedFacetViewModalContent = (props) => {
   const [modalSqon, setModalSqon] = useState(sqon);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div className="afv-container">
         <AdvancedFacetView
           projectId={projectId}
@@ -108,7 +108,7 @@ const AdvancedFacetViewModalContent = (props) => {
           submitText: 'View Results',
         }}
       />
-    </React.Fragment>
+    </Fragment>
   );
 };
 
