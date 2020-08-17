@@ -3,16 +3,19 @@ import thunk from 'redux-thunk';
 import {
   createSaveSetIfUnique,
   failureCreate,
-  reInitializeSaveSetsState,
+  getUserSaveSets,
   isLoadingCreateSaveSet,
+  reInitializeSaveSetsState,
 } from '../saveSets';
 import {
   FAILURE_CREATE,
   RE_INITIALIZE_STATE,
   SaveSetNameConflictError,
+  TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
+  USER_SAVE_SETS,
 } from 'store/saveSetTypes';
-import { saveSetCountForTag } from 'services/sets';
+import { getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
 
 describe('Save Sets actions', () => {
   it('should create an action when error', () => {
@@ -131,6 +134,35 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(createSaveSetIfUnique(payload));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should generate the correct flow fetching save sets for a user', async () => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve([]),
+    );
+    const expectedActions = [
+      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
+      { type: USER_SAVE_SETS, payload: [] },
+      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
+    ];
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          isLoading: false,
+          sets: [],
+          error: false,
+        },
+      },
+    });
+
+    // @ts-ignore
+    await store.dispatch(getUserSaveSets('userid'));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
