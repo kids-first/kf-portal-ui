@@ -1,5 +1,6 @@
 import {
   FAILURE_CREATE,
+  FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
   SaveSetsActionTypes,
   SaveSetState,
@@ -39,6 +40,9 @@ export default (state = initialState, action: SaveSetsActionTypes): SaveSetState
     }
     case TOGGLE_LOADING_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, isLoading: action.isLoading } };
+    }
+    case FAILURE_LOAD_SAVE_SETS: {
+      return { ...state, userSets: { ...state.userSets, error: action.error } };
     }
     case USER_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, sets: action.payload } };

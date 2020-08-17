@@ -23,6 +23,8 @@
   justify-content: flex-end;
   padding: 0;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .name-columns {
@@ -36,7 +38,7 @@
   font-weight: 600;
 }
 
-.participant-set-spinner-container{
+.participant-set-spinner-container {
   width: 100%;
   height: 100%;
   display: flex;
@@ -44,11 +46,20 @@
   align-items: center;
 }
 
-.save-set-table-name{
+.save-set-table-name {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 22px !important;
   color: #515885;
+}
+
+.save-set-column-name {
+  display: inline-flex;
+  align-items: center;
+}
+
+.edit-icon {
+  padding-left: 3px;
 }

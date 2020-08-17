@@ -1,6 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import {
   FAILURE_CREATE,
+  FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
   SaveSetNameConflictError,
   SaveSetParams,
@@ -10,7 +11,7 @@ import {
   USER_SAVE_SETS,
   UserSaveSets,
 } from '../saveSetTypes';
-import { saveSetCountForTag, getSetAndParticipantsCountByUser } from 'services/sets';
+import { getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
@@ -84,7 +85,7 @@ export const getUserSaveSets = (
     );
     dispatch(displayUserSaveSets(payload));
   } catch (e) {
-    console.error(e);
+    dispatch(failureLoadSaveSets(e));
   }
   dispatch(isLoadingSaveSets(false));
 };
@@ -111,4 +112,9 @@ export const isLoadingSaveSets = (isLoading: boolean): SaveSetsActionTypes => ({
 export const displayUserSaveSets = (payload: UserSaveSets[]): SaveSetsActionTypes => ({
   type: USER_SAVE_SETS,
   payload,
+});
+
+export const failureLoadSaveSets = (error: Error): SaveSetsActionTypes => ({
+  type: FAILURE_LOAD_SAVE_SETS,
+  error,
 });

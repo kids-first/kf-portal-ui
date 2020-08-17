@@ -7,6 +7,7 @@ export const FAILURE_CREATE = 'FAILURE_CREATE_SAVE_SETS';
 export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_SAVE_SET';
 export const TOGGLE_LOADING_SAVE_SETS = 'TOGGLE_LOADING_SAVE_SETS';
 export const USER_SAVE_SETS = 'USER_SAVE_SETS';
+export const FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS';
 
 interface TogglePendingCreate {
   type: typeof TOGGLE_PENDING_CREATE;
@@ -32,12 +33,18 @@ interface DisplayUserSaveSets {
   payload: UserSaveSets[];
 }
 
+interface FailureLoadSaveSets {
+  type: typeof FAILURE_LOAD_SAVE_SETS;
+  error: Error | null;
+}
+
 export type SaveSetsActionTypes =
   | TogglePendingCreate
   | FailureCreate
   | ReInitializedState
   | IsLoadingSaveSets
-  | DisplayUserSaveSets;
+  | DisplayUserSaveSets
+  | FailureLoadSaveSets;
 
 export type DispatchSaveSets = ThunkDispatch<RootState, null, SaveSetsActionTypes>;
 

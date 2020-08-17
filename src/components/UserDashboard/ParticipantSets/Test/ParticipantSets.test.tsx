@@ -2,13 +2,13 @@ import React from 'react';
 import ParticipantSets from '../index';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { LoggedInUser } from '../../../../store/userTypes';
+import { LoggedInUser } from 'store/userTypes';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
-import { SaveSetState, UserSaveSets } from '../../../../store/saveSetTypes';
-import { jestPatchMatchMedia } from '../../../../utils';
-import { getSetAndParticipantsCountByUser } from '../../../../services/sets';
+import { SaveSetState, UserSaveSets } from 'store/saveSetTypes';
+import { jestPatchMatchMedia } from 'utils';
+import { getSetAndParticipantsCountByUser } from 'services/sets';
 
 jest.mock('services/sets');
 
