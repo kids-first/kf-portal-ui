@@ -30,16 +30,6 @@
   align-items: center;
 }
 
-/*TO BE DELETED*/
-.ant-tree-custom-TO-DELETE div {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 22px !important;
-  color: #515885;
-}
-
 .ant-table-thead > tr > th {
   font-family: 'Open Sans';
   padding: 8px 8px;
