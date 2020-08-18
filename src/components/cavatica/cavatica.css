@@ -78,6 +78,11 @@
   border: solid 2px #cacbcf;
 }
 
+.stepsWrapper {
+  max-height: 650px;
+  margin-bottom: 50px;
+}
+
 .integrationStepsModalContent div.stepText {
   line-height: 1.6em;
 }

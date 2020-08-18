@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IntegrationItem from './IntegrationItem';
 import { compose, setPropTypes } from 'recompose';
-import { withRouter } from 'react-router';
 
 class IntegrationManager extends React.Component {
   state = {
@@ -42,11 +41,6 @@ class IntegrationManager extends React.Component {
 
   onClickResetErrors = () => this.setState({ errorConnect: null, errorDisconnect: null });
 
-  onClickActionButton = () => {
-    const { actionCb, actionCbParam } = this.props.actionWhenConnected;
-    return actionCb(actionCbParam);
-  };
-
   render() {
     const { connecting, errorConnect, errorDisconnect } = this.state;
     const {
@@ -55,12 +49,14 @@ class IntegrationManager extends React.Component {
       isConnected,
       isLoadingBeforeConnecting,
       actionWhenConnected,
+      fence,
     } = this.props;
 
-    const { buttonIcon, buttonLabel } = actionWhenConnected;
+    const { buttonIcon, buttonLabel, modalId } = actionWhenConnected;
 
     return (
       <IntegrationItem
+        fence={fence}
         logo={logo}
         description={description}
         connected={isConnected}
@@ -71,7 +67,7 @@ class IntegrationManager extends React.Component {
         errorDisconnect={errorDisconnect}
         onClickResetErrorsCb={this.onClickResetErrors}
         actionButtonWhenConnected={{
-          onClick: this.onClickActionButton,
+          modalId: modalId,
           icon: buttonIcon,
           label: buttonLabel,
         }}
@@ -81,8 +77,8 @@ class IntegrationManager extends React.Component {
 }
 
 const Enhanced = compose(
-  withRouter,
   setPropTypes({
+    fence: PropTypes.string,
     logo: PropTypes.node.isRequired,
     description: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     isConnected: PropTypes.bool,
@@ -96,11 +92,11 @@ const Enhanced = compose(
       disConnectCbParams: PropTypes.object.isRequired,
     }).isRequired,
     actionWhenConnected: PropTypes.shape({
-      actionCb: PropTypes.func.isRequired,
-      actionCbParam: PropTypes.object.isRequired,
+      modalId: PropTypes.string.isRequired,
       buttonIcon: PropTypes.element.isRequired,
       buttonLabel: PropTypes.string.isRequired,
     }),
+    modalExtraProps: PropTypes.object,
   }),
 )(IntegrationManager);
 
