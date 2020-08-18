@@ -12,8 +12,12 @@ import {
   SaveSetParams,
   SaveSetState,
 } from 'store/saveSetTypes';
-import { createSaveSetIfUnique, reInitializeSaveSetsState } from 'store/actionCreators/saveSets';
-import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
+import {
+  createSaveSetIfUnique,
+  getDefaultTag,
+  reInitializeSaveSetsState,
+} from 'store/actionCreators/saveSets';
+import { selectDefaultTag, selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 
 export const MAX_LENGTH_NAME = 50;
@@ -36,6 +40,7 @@ const mapState = (state: RootState): SaveSetState => ({
   create: {
     isLoading: selectIsLoading(state),
     error: selectError(state),
+    defaultTag: selectDefaultTag(state),
   },
   userSets: {
     sets: [],
@@ -46,6 +51,7 @@ const mapState = (state: RootState): SaveSetState => ({
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
+  onGetDefaultTag: (user: string) => dispatch(getDefaultTag(user)),
   reInitializeState: () => dispatch(reInitializeSaveSetsState()),
 });
 
@@ -71,7 +77,16 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [isVisible, setIsVisible] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  const { user, sqon, api, onCreateSet, create, reInitializeState, hideModalCb } = props;
+  const {
+    user,
+    sqon,
+    api,
+    onCreateSet,
+    create,
+    reInitializeState,
+    hideModalCb,
+    onGetDefaultTag,
+  } = props;
 
   const onSuccessCb = () => {
     notification.success({
@@ -100,6 +115,10 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     });
   };
 
+  const getDefaultName = async (userId: string) => {
+    await onGetDefaultTag(userId);
+  };
+
   const handleCancel = () => {
     reInitializeState();
     setIsVisible(false);
@@ -120,6 +139,10 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
       });
     }
   }, [error]);
+
+  useEffect(() => {
+    getDefaultName(user.egoId).then((r) => r);
+  }, []);
 
   return (
     <Modal
@@ -149,7 +172,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
       <Form
         form={form}
         name={FORM_NAME}
-        initialValues={{ nameSet: 'Save_Set_1' }}
+        initialValues={{ nameSet: create.defaultTag }}
         onFinish={onFinish}
       >
         <Form.Item

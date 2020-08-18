@@ -27,6 +27,7 @@ const mapState = (state: RootState): SaveSetState => ({
   create: {
     isLoading: false,
     error: null,
+    defaultTag: '',
   },
   userSets: {
     isLoading: selectIsLoadingSaveSets(state),

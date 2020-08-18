@@ -13,6 +13,7 @@ const initialState: SaveSetState = {
   create: {
     isLoading: false,
     error: null,
+    defaultTag: 'Saved_Set_1',
   },
   userSets: {
     sets: [],

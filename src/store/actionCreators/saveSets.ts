@@ -8,6 +8,7 @@ import {
   SaveSetsActionTypes,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
+  USER_DEFAULT_TAG,
   USER_SAVE_SETS,
   UserSaveSets,
 } from '../saveSetTypes';
@@ -90,6 +91,36 @@ export const getUserSaveSets = (
   dispatch(isLoadingSaveSets(false));
 };
 
+export const getDefaultTag = (
+  userId: string,
+): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+  dispatch(isLoadingSaveSets(true));
+
+  let regExp = /saved_set_([0-9]+)/gi;
+
+  try {
+    const userSets = await getSetAndParticipantsCountByUser(userId);
+    const payload: number[] = userSets.reduce(
+      (acc: number[], s: { node: { setId: string; size: number; tag: string } }) => {
+        if (s.node.tag.match(regExp)) {
+          //cannot be null if match
+          // @ts-ignore
+          return [...acc, Number(regExp.exec(s.node.tag)[1])];
+        } else return acc;
+      },
+      [],
+    );
+    dispatch(
+      displayUserDefaultTag(
+        payload.length ? `Saved_Set_${Math.max(...payload) + 1}` : 'Saved_Set_1',
+      ),
+    );
+  } catch (e) {
+    dispatch(failureLoadSaveSets(e));
+  }
+  dispatch(isLoadingSaveSets(false));
+};
+
 export const isLoadingCreateSaveSet = (isPending: boolean): SaveSetsActionTypes => ({
   type: TOGGLE_PENDING_CREATE,
   isPending,
@@ -111,6 +142,11 @@ export const isLoadingSaveSets = (isLoading: boolean): SaveSetsActionTypes => ({
 
 export const displayUserSaveSets = (payload: UserSaveSets[]): SaveSetsActionTypes => ({
   type: USER_SAVE_SETS,
+  payload,
+});
+
+export const displayUserDefaultTag = (payload: string): SaveSetsActionTypes => ({
+  type: USER_DEFAULT_TAG,
   payload,
 });
 
