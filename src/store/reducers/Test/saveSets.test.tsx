@@ -4,6 +4,7 @@ import {
   failureCreate,
   reInitializeSaveSetsState,
   isLoadingCreateSaveSet,
+  isLoadingSaveSets,
 } from '../../actionCreators/saveSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
@@ -12,6 +13,11 @@ const initialState = {
   create: {
     isLoading: false,
     error: null,
+  },
+  userSets: {
+    sets: [],
+    error: null,
+    isLoading: false,
   },
 };
 
@@ -26,6 +32,11 @@ describe('Save Sets Reducer', () => {
         isLoading: true,
         error: null,
       },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+      },
     });
   });
 
@@ -34,6 +45,11 @@ describe('Save Sets Reducer', () => {
       create: {
         isLoading: false,
         error: new Error('error'),
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
       },
     });
   });
@@ -44,7 +60,26 @@ describe('Save Sets Reducer', () => {
         isLoading: true,
         error: Error('Some Error'),
       },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+      },
     };
     expect(reducer(state, reInitializeSaveSetsState())).toEqual(initialState);
+  });
+
+  it('should handle toggle loading save sets', () => {
+    expect(reducer(initialState, isLoadingSaveSets(true))).toEqual({
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: true,
+      },
+    });
   });
 });
