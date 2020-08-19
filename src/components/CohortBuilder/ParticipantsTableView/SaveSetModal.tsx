@@ -37,6 +37,11 @@ const mapState = (state: RootState): SaveSetState => ({
     isLoading: selectIsLoading(state),
     error: selectError(state),
   },
+  userSets: {
+    sets: [],
+    isLoading: false,
+    error: null,
+  },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({

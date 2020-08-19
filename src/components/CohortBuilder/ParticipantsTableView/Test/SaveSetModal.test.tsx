@@ -6,17 +6,23 @@ import { jestPatchMatchMedia } from '../../../../utils';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { SaveSetState } from 'store/saveSetTypes';
+import { SaveSetState, UserSaveSets } from 'store/saveSetTypes';
 
 configure({ adapter: new Adapter() });
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
+const userSaveSets = [] as UserSaveSets[];
 
 const initialSaveSetModalState: SaveSetState = {
   create: {
     isLoading: false,
     error: null,
+  },
+  userSets: {
+    sets: userSaveSets,
+    error: null,
+    isLoading: true,
   },
 };
 

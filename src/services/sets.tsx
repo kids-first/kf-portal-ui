@@ -71,6 +71,41 @@ export const saveSetCountForTag = async (tag: string, userId: string) => {
   return response.data.sets.aggregations.size.stats.count;
 };
 
+export const getSetAndParticipantsCountByUser = async (userId: string) => {
+  const response = await graphql(initializeApi())({
+    query: `query($sqon: JSON) {
+              sets {
+                hits(filters: $sqon, first: 100, sort: [{field: "tag.keyword", order: asc}]) {
+                  edges {
+                    node {
+                      tag
+                      setId
+                      size
+                    }
+                  }
+                }
+              }
+            }`,
+    variables: {
+      sqon: {
+        op: 'and',
+        content: [
+          {
+            op: 'in',
+            content: { field: 'userId', value: [userId] },
+          },
+          {
+            op: 'not-in',
+            content: { field: 'tag.keyword', value: ['', null] },
+          },
+        ],
+      },
+    },
+  });
+
+  return response.data.sets.hits.edges;
+};
+
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
   (await Promise.all(setIds.map((id) => getIdsFromSaveSetId(id)))).flat();
 
