@@ -1,23 +1,17 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { compose, setPropTypes } from 'recompose';
 import { injectState } from 'freactal';
 import { analyticsTrigger, TRACKING_EVENTS } from 'services/analyticsTracking';
 import PropTypes from 'prop-types';
-import CavaticaConnectModal from 'components/cavatica/CavaticaConnectModal';
 import { deleteSecret } from 'services/secrets';
 import { CAVATICA } from 'common/constants';
 import { isValidKey } from 'services/cavatica';
 import IntegrationManager from 'components/UserProfile/IntegrationManager';
 import { EditOutlined } from '@ant-design/icons';
-
-const edit = ({ effects }) => {
-  effects.setModal({
-    title: 'How to Connect to Cavatica',
-    component: (
-      <CavaticaConnectModal onComplete={effects.unsetModal} onCancel={effects.unsetModal} />
-    ),
-  });
-};
+import { connect as ReduxConnect } from 'react-redux';
+import { openModal } from 'store/actions/modal';
+import { CAVATICA_INTEGRATION_MODAL_ID } from './constants';
 
 const disconnect = async ({ effects, setConnecting, setError }) => {
   setConnecting(true);
@@ -29,7 +23,7 @@ const disconnect = async ({ effects, setConnecting, setError }) => {
   }
   setConnecting(false);
 };
-const connect = ({ effects, setConnecting }) => {
+const connect = ({ setConnecting, openModal }) => {
   setConnecting(true);
   analyticsTrigger({
     property: 'portal',
@@ -38,7 +32,7 @@ const connect = ({ effects, setConnecting }) => {
     action: TRACKING_EVENTS.actions.integration.init,
     label: TRACKING_EVENTS.labels.cavatica,
   });
-  edit({ effects });
+  openModal(CAVATICA_INTEGRATION_MODAL_ID);
   setConnecting(false);
 };
 
@@ -48,6 +42,7 @@ function CavaticaIntegration(props) {
     logo,
     description,
     effects,
+    openModal,
   } = props;
 
   return (
@@ -57,15 +52,14 @@ function CavaticaIntegration(props) {
       isConnected={isValidKey(integrationTokens[CAVATICA])}
       isLoadingBeforeConnecting={false}
       actionWhenConnected={{
-        actionCb: edit,
-        actionCbParam: { effects },
+        modalId: CAVATICA_INTEGRATION_MODAL_ID,
         buttonIcon: <EditOutlined />,
         buttonLabel: 'Settings',
       }}
       connection={{
         connectCb: connect,
         connectCbParams: {
-          effects,
+          openModal,
         },
       }}
       disConnection={{
@@ -86,7 +80,14 @@ const Enhanced = compose(
     connecting: PropTypes.bool,
     state: PropTypes.object.isRequired,
     effects: PropTypes.object.isRequired,
+    openModal: PropTypes.func.isRequired,
   }),
 )(CavaticaIntegration);
 
-export default Enhanced;
+const mapDispatchToProps = (dispatch) => ({
+  openModal: (id) => {
+    dispatch(openModal(id));
+  },
+});
+
+export default ReduxConnect(null, mapDispatchToProps)(Enhanced);

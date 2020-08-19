@@ -11,7 +11,6 @@ import {
   fenceConnect,
   getAccessToken,
 } from 'services/fence';
-import FenceAuthorizedStudies from 'components/Fence/FenceAuthorizedStudies';
 import {
   analyticsTrigger,
   setUserDimension,
@@ -53,18 +52,6 @@ const trackFenceAction = async ({ fence, fenceDetails, category, action, label }
 
   await trackUserInteraction({ category, action, label });
 };
-
-const viewDetails = ({ fence, effects }) =>
-  effects.setModal({
-    title: 'Authorized Studies',
-    component: (
-      <FenceAuthorizedStudies
-        fence={fence}
-        onComplete={effects.unsetModal}
-        onCancel={effects.unsetModal}
-      />
-    ),
-  });
 
 const disconnect = async ({ fence, api, setConnecting, effects, setError }) => {
   setConnecting(true);
@@ -137,13 +124,13 @@ function Integration(props) {
 
   return (
     <IntegrationManager
+      fence={fence}
       logo={logo}
       description={description}
       isConnected={!!get(fenceConnections, fence, false)}
       isLoadingBeforeConnecting={!fenceConnectionsInitialized}
       actionWhenConnected={{
-        actionCb: viewDetails,
-        actionCbParam: { fence, effects },
+        modalId: fence,
         buttonIcon: <BookOutlined />,
         buttonLabel: 'View studies',
       }}

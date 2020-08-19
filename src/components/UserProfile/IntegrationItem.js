@@ -1,4 +1,5 @@
-import { Typography, Button } from 'antd';
+/* eslint-disable react/prop-types */
+import { Typography, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import { DisconnectOutlined, ApiOutlined } from '@ant-design/icons';
 import React, { Fragment } from 'react';
@@ -6,21 +7,27 @@ import IntegrationItemErrorRow from './IntegrationItemErrorRow';
 import { compose, setPropTypes } from 'recompose';
 import { withRouter } from 'react-router';
 import './style.css';
+import { openModal, closeModal } from 'store/actions/modal';
+import { connect } from 'react-redux';
+import { selectModalId } from 'store/selectors/modal';
+import CavaticaConnectModal2 from '../cavatica/CavaticaConnectModal2';
+import FenceAuthorizedStudies from '../Fence/FenceAuthorizedStudies';
+import { CAVATICA_INTEGRATION_MODAL_ID } from './constants';
 
 const { Paragraph } = Typography;
 
-const hasAtLeastOneError = (...potentialErrors) => potentialErrors.some(e => Boolean(e));
+const hasAtLeastOneError = (...potentialErrors) => potentialErrors.some((e) => Boolean(e));
 
 const generateLabelForConnect = ({ loading, connected }) => {
   if (loading) {
-    return connected ? 'Disconnecting' : 'Connecting';
+    return '';
   } else if (connected) {
     return 'Disconnect';
   }
   return 'Connect';
 };
 
-const IntegrationItem = props => {
+const IntegrationItem = (props) => {
   const {
     logo,
     loading,
@@ -33,11 +40,23 @@ const IntegrationItem = props => {
     history,
     connected,
     actionButtonWhenConnected,
+    openModal,
+    fence,
+    openModalId,
+    closeModal,
   } = props;
-  const { onClick, label, icon } = actionButtonWhenConnected;
+
+  const { label, icon, modalId } = actionButtonWhenConnected;
+
+  const isCavaticaModal = modalId === CAVATICA_INTEGRATION_MODAL_ID;
+  const isItemModalToBeOpen = openModalId === modalId;
+  const isFenceModalToBeOpen = !isCavaticaModal && isItemModalToBeOpen;
+  const showCavaticaModal = isCavaticaModal && isItemModalToBeOpen;
+
+  const onClose = () => closeModal(modalId);
 
   return (
-    <Fragment>
+    <Fragment key={fence}>
       {hasAtLeastOneError(errorConnect, errorDisconnect) ? (
         <IntegrationItemErrorRow
           errorConnect={errorConnect}
@@ -49,6 +68,30 @@ const IntegrationItem = props => {
         />
       ) : (
         <Fragment>
+          {showCavaticaModal && (
+            <CavaticaConnectModal2
+              isVisible={showCavaticaModal}
+              onComplete={onClose}
+              onCancelCB={onClose}
+            />
+          )}
+          {!isCavaticaModal && (
+            <Modal
+              onCancel={onClose}
+              visible={isFenceModalToBeOpen}
+              title="Authorized Studies"
+              footer={[
+                <Button key="cancel" onClick={onClose}>
+                  Cancel
+                </Button>,
+                <Button key="ok" type="primary" onClick={onClose}>
+                  Ok
+                </Button>,
+              ]}
+            >
+              <FenceAuthorizedStudies fence={fence} />
+            </Modal>
+          )}
           <div className={'ii-row'}>
             <div>{logo}</div>
             <div>
@@ -70,7 +113,9 @@ const IntegrationItem = props => {
                 <Button
                   shape="round"
                   className={'ii-button-common ii-button-action'}
-                  onClick={onClick}
+                  onClick={() => {
+                    openModal(modalId);
+                  }}
                   icon={icon}
                   size={'small'}
                 >
@@ -93,7 +138,7 @@ const Enhanced = compose(
     connected: PropTypes.bool,
     loading: PropTypes.bool.isRequired,
     actionButtonWhenConnected: PropTypes.shape({
-      onClick: PropTypes.func.isRequired,
+      modalId: PropTypes.string.isRequired,
       icon: PropTypes.element.isRequired,
       label: PropTypes.string.isRequired,
     }).isRequired,
@@ -103,7 +148,22 @@ const Enhanced = compose(
     errorDisconnect: PropTypes.object,
     history: PropTypes.object.isRequired,
     onClickResetErrorsCb: PropTypes.func.isRequired,
+    fence: PropTypes.string,
+    openModalId: PropTypes.string,
   }),
 )(IntegrationItem);
 
-export default Enhanced;
+const mapStateToProps = (state) => ({
+  openModalId: selectModalId(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  openModal: (id) => {
+    dispatch(openModal(id));
+  },
+  closeModal: (id) => {
+    dispatch(closeModal(id));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Enhanced);
