@@ -3,7 +3,6 @@ import thunk from 'redux-thunk';
 import {
   createSaveSetIfUnique,
   failureCreate,
-  getDefaultTag,
   getUserSaveSets,
   isLoadingCreateSaveSet,
   reInitializeSaveSetsState,
@@ -14,7 +13,6 @@ import {
   SaveSetNameConflictError,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
-  USER_DEFAULT_TAG,
   USER_SAVE_SETS,
 } from 'store/saveSetTypes';
 import { getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
@@ -165,114 +163,6 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(getUserSaveSets('userid'));
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
-  it('should return next default saved set tag name', async () => {
-    const mockReturn = [
-      {
-        node: {
-          setId: 1,
-          count: 1,
-          tag: 'SAVED_SET_1',
-        },
-      },
-      {
-        node: {
-          setId: 2,
-          count: 1,
-          tag: 'saved_set_3',
-        },
-      },
-      {
-        node: {
-          setId: 3,
-          count: 1,
-          tag: 'toto-name_4',
-        },
-      },
-      {
-        node: {
-          setId: 4,
-          count: 1,
-          tag: 'Saved_set_4',
-        },
-      },
-    ];
-    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve(mockReturn),
-    );
-    const expectedActions = [
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
-      { type: USER_DEFAULT_TAG, payload: 'Saved_Set_5' },
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
-    ];
-    const store = mockStore({
-      saveSets: {
-        create: {
-          isLoading: false,
-          error: null,
-          tagNameConflict: false,
-        },
-        userSets: {
-          isLoading: false,
-          sets: [],
-          error: false,
-        },
-      },
-    });
-
-    getDefaultTag('userId');
-
-    // @ts-ignore
-    await store.dispatch(getDefaultTag('userid'));
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
-  it('should return 1st default saved set tag name if none already exists', async () => {
-    const mockReturn = [
-      {
-        node: {
-          setId: 3,
-          count: 1,
-          tag: 'toto-name_4',
-        },
-      },
-      {
-        node: {
-          setId: 3,
-          count: 1,
-          tag: 'tutu-name_1',
-        },
-      },
-    ];
-    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve(mockReturn),
-    );
-    const expectedActions = [
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: true },
-      { type: USER_DEFAULT_TAG, payload: 'Saved_Set_1' },
-      { type: TOGGLE_LOADING_SAVE_SETS, isLoading: false },
-    ];
-    const store = mockStore({
-      saveSets: {
-        create: {
-          isLoading: false,
-          error: null,
-          tagNameConflict: false,
-        },
-        userSets: {
-          isLoading: false,
-          sets: [],
-          error: false,
-        },
-      },
-    });
-
-    getDefaultTag('userId');
-
-    // @ts-ignore
-    await store.dispatch(getDefaultTag('userid'));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

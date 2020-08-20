@@ -8,7 +8,6 @@ export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_SAVE_SET';
 export const TOGGLE_LOADING_SAVE_SETS = 'TOGGLE_LOADING_SAVE_SETS';
 export const USER_SAVE_SETS = 'USER_SAVE_SETS';
 export const FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS';
-export const USER_DEFAULT_TAG = 'USER_DEFAULT_TAG';
 
 interface TogglePendingCreate {
   type: typeof TOGGLE_PENDING_CREATE;
@@ -18,11 +17,6 @@ interface TogglePendingCreate {
 interface FailureCreate {
   type: typeof FAILURE_CREATE;
   error: Error | null;
-}
-
-interface DisplayUserDefaultTag {
-  type: typeof USER_DEFAULT_TAG;
-  payload: string;
 }
 
 interface ReInitializedState {
@@ -50,7 +44,6 @@ export type SaveSetsActionTypes =
   | ReInitializedState
   | IsLoadingSaveSets
   | DisplayUserSaveSets
-  | DisplayUserDefaultTag
   | FailureLoadSaveSets;
 
 export type DispatchSaveSets = ThunkDispatch<RootState, null, SaveSetsActionTypes>;
@@ -65,7 +58,6 @@ export interface SaveSetState {
   create: {
     isLoading: boolean;
     error?: Error | null;
-    defaultTag: string;
   };
   userSets: {
     isLoading: boolean;

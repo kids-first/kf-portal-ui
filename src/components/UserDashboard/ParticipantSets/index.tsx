@@ -27,7 +27,6 @@ const mapState = (state: RootState): SaveSetState => ({
   create: {
     isLoading: false,
     error: null,
-    defaultTag: '',
   },
   userSets: {
     isLoading: selectIsLoadingSaveSets(state),
@@ -113,7 +112,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       ) : !userSets.error ? (
         <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
       ) : (
-        <Result status="error" title="Failed to lead user SaveSets" />
+        <Result status="error" title="Failed to load user SaveSets" />
       )}
     </>
   );
