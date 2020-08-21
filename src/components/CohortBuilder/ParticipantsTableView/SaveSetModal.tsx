@@ -58,13 +58,12 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & OwnProps;
 
 export const extractTagNumbers = (userSets: [{ node: UserSaveSets }]) => {
-  const regExp = /saved_set_([0-9]+)/gi;
+  const regExp = /saved_set_([0-9]+)/i;
 
   return userSets.reduce((acc: number[], s: { node: UserSaveSets }) => {
-    if (s.node.tag.match(regExp)) {
-      //cannot be null if match
-      // @ts-ignore
-      return [...acc, Number(regExp.exec(s.node.tag)[1])];
+    const match = s.node.tag.match(regExp);
+    if (match && match.length > 0) {
+      return [...acc, Number(match[1])];
     }
     return acc;
   }, []);
