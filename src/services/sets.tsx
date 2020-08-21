@@ -106,6 +106,20 @@ export const getSetAndParticipantsCountByUser = async (userId: string) => {
   return response.data.sets.hits.edges;
 };
 
+export const deleteSaveSet = async (userId: string, setIds: string[]) => {
+  const response = await graphql(initializeApi())({
+    query: `mutation ($setIds: [String!] $userId: String!) {
+              deleteSaveSets(setIds: $setIds, userId: $userId)
+            }`,
+    variables: {
+      setIds: setIds,
+      userId: userId,
+    },
+  });
+
+  return response.data.deleteSaveSets;
+};
+
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
   (await Promise.all(setIds.map((id) => getIdsFromSaveSetId(id)))).flat();
 

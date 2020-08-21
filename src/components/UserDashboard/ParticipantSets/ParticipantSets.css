@@ -38,6 +38,11 @@
   font-weight: 600;
 }
 
+.ant-popover-message {
+  font-family: 'Open Sans';
+  color: #515885;
+}
+
 .participant-set-spinner-container {
   width: 100%;
   height: 100%;

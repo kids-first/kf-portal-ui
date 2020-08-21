@@ -8,6 +8,8 @@ export const RE_INITIALIZE_STATE = 'RE_INITIALIZE_SAVE_SET';
 export const TOGGLE_LOADING_SAVE_SETS = 'TOGGLE_LOADING_SAVE_SETS';
 export const USER_SAVE_SETS = 'USER_SAVE_SETS';
 export const FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS';
+export const TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS';
+export const REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS';
 
 interface TogglePendingCreate {
   type: typeof TOGGLE_PENDING_CREATE;
@@ -38,12 +40,24 @@ interface FailureLoadSaveSets {
   error: Error | null;
 }
 
+interface IsDeletingSaveSets {
+  type: typeof TOGGLE_IS_DELETING_SAVE_SETS;
+  isDeleting: boolean;
+}
+
+interface RemoveUserSaveSets {
+  type: typeof REMOVE_USER_SAVE_SETS;
+  sets: string[];
+}
+
 export type SaveSetsActionTypes =
   | TogglePendingCreate
   | FailureCreate
   | ReInitializedState
   | IsLoadingSaveSets
   | DisplayUserSaveSets
+  | IsDeletingSaveSets
+  | RemoveUserSaveSets
   | FailureLoadSaveSets;
 
 export type DispatchSaveSets = ThunkDispatch<RootState, null, SaveSetsActionTypes>;
@@ -63,6 +77,7 @@ export interface SaveSetState {
     isLoading: boolean;
     error?: Error | null;
     sets: UserSaveSets[];
+    isDeleting: boolean;
   };
 }
 
