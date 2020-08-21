@@ -76,13 +76,11 @@ export const getUserSaveSets = (
   dispatch(isLoadingSaveSets(true));
   try {
     const userSets = await getSetAndParticipantsCountByUser(userId);
-    const payload: UserSaveSets[] = userSets.map(
-      (s: { node: { setId: string; size: number; tag: string } }) => ({
-        setId: s.node.setId,
-        size: s.node.size,
-        tag: s.node.tag,
-      }),
-    );
+    const payload: UserSaveSets[] = userSets.map((s: { node: UserSaveSets }) => ({
+      setId: s.node.setId,
+      size: s.node.size,
+      tag: s.node.tag,
+    }));
     dispatch(displayUserSaveSets(payload));
   } catch (e) {
     dispatch(failureLoadSaveSets(e));

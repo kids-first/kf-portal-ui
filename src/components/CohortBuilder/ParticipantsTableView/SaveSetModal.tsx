@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { Button, Form, Input, Modal, notification } from 'antd';
+import { Button, Form, Input, Modal, notification, Spin } from 'antd';
 import { LoggedInUser } from 'store/userTypes';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
@@ -11,10 +11,12 @@ import {
   isSaveSetNameConflictError,
   SaveSetParams,
   SaveSetState,
+  UserSaveSets,
 } from 'store/saveSetTypes';
 import { createSaveSetIfUnique, reInitializeSaveSetsState } from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
+import { getSetAndParticipantsCountByUser } from 'services/sets';
 
 export const MAX_LENGTH_NAME = 50;
 const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_]*$/;
@@ -55,6 +57,18 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & OwnProps;
 
+export const extractTagNumbers = (userSets: [{ node: UserSaveSets }]) => {
+  const regExp = /saved_set_([0-9]+)/i;
+
+  return userSets.reduce((acc: number[], s: { node: UserSaveSets }) => {
+    const match = s.node.tag.match(regExp);
+    if (match && match.length > 0) {
+      return [...acc, Number(match[1])];
+    }
+    return acc;
+  }, []);
+};
+
 export const validateNameSetInput = (value: string): NameSetValidator => {
   if (!value) {
     return { msg: 'Please input the name of your set', err: true };
@@ -70,6 +84,8 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [defaultTagName, setDefaultTagName] = useState('Saved_Set_1');
+  const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
   const { user, sqon, api, onCreateSet, create, reInitializeState, hideModalCb } = props;
 
@@ -121,11 +137,30 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    const genrerateSavedSetDefaultName = async () => {
+      try {
+        setLoadingDefaultTagName(true);
+
+        const userSets = await getSetAndParticipantsCountByUser(user.egoId);
+        const tagNameSuffixes = extractTagNumbers(userSets);
+
+        if (tagNameSuffixes.length > 0) {
+          setDefaultTagName(`Saved_Set_${Math.max(...tagNameSuffixes) + 1}`);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoadingDefaultTagName(false);
+      }
+    };
+    genrerateSavedSetDefaultName();
+  }, [user.egoId]);
+
   return (
     <Modal
       title="Save Participant Set"
       visible={isVisible}
-      confirmLoading={isLoading}
       onCancel={handleCancel}
       footer={[
         <Button key="back" onClick={handleCancel}>
@@ -146,42 +181,46 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         </Form.Item>,
       ]}
     >
-      <Form
-        form={form}
-        name={FORM_NAME}
-        initialValues={{ nameSet: 'Save_Set_1' }}
-        onFinish={onFinish}
-      >
-        <Form.Item
-          label="Name"
-          name="nameSet"
-          hasFeedback
-          validateStatus={hasError ? 'error' : 'success'}
-          help={error ? error.message : 'Letters, numbers, hyphens (-), and underscores (_)'}
-          rules={[
-            () => ({
-              validator: (_, value) => {
-                if (error && isSaveSetNameConflictError(error)) {
-                  reInitializeState();
-                }
-                const { msg, err } = validateNameSetInput(value);
-                setHasError(err);
-                if (err) {
-                  Promise.reject(msg);
-                }
-                return Promise.resolve();
-              },
-            }),
-          ]}
+      {loadingDefaultTagName ? (
+        <Spin size="small" tip="Loading..." />
+      ) : (
+        <Form
+          form={form}
+          name={FORM_NAME}
+          initialValues={{ nameSet: defaultTagName }}
+          onFinish={onFinish}
         >
-          <Input
-            autoFocus
-            maxLength={maxNumOfCharsToDisplay}
-            placeholder="Enter the name of your new set"
-            allowClear
-          />
-        </Form.Item>
-      </Form>
+          <Form.Item
+            label="Name"
+            name="nameSet"
+            hasFeedback
+            validateStatus={hasError ? 'error' : 'success'}
+            help={error ? error.message : 'Letters, numbers, hyphens (-), and underscores (_)'}
+            rules={[
+              () => ({
+                validator: (_, value) => {
+                  if (error && isSaveSetNameConflictError(error)) {
+                    reInitializeState();
+                  }
+                  const { msg, err } = validateNameSetInput(value);
+                  setHasError(err);
+                  if (err) {
+                    Promise.reject(msg);
+                  }
+                  return Promise.resolve();
+                },
+              }),
+            ]}
+          >
+            <Input
+              autoFocus
+              maxLength={maxNumOfCharsToDisplay}
+              placeholder="Enter the name of your new set"
+              allowClear
+            />
+          </Form.Item>
+        </Form>
+      )}
     </Modal>
   );
 };

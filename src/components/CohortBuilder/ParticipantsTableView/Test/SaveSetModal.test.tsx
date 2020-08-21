@@ -1,12 +1,17 @@
 import React from 'react';
-import SaveSetModal, { validateNameSetInput, MAX_LENGTH_NAME } from '../SaveSetModal';
+import SaveSetModal, {
+  extractTagNumbers,
+  MAX_LENGTH_NAME,
+  validateNameSetInput,
+} from '../SaveSetModal';
 import { configure, mount, ReactWrapper } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { jestPatchMatchMedia } from '../../../../utils';
+import { jestPatchMatchMedia } from 'utils';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { SaveSetState, UserSaveSets } from 'store/saveSetTypes';
+import { getSetAndParticipantsCountByUser } from 'services/sets';
 
 configure({ adapter: new Adapter() });
 
@@ -25,6 +30,8 @@ const initialSaveSetModalState: SaveSetState = {
     isLoading: true,
   },
 };
+
+jest.mock('services/sets');
 
 describe('Save Set Modal', () => {
   const props = {
@@ -71,7 +78,14 @@ describe('Save Set Modal', () => {
     wrapper.unmount();
   });
 
+  beforeEach(() => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockReset();
+  });
+
   it('should render Save Set Modal', () => {
+    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
+      Promise.resolve([]),
+    );
     const store = mockStore({
       saveSets: initialSaveSetModalState,
     });
@@ -116,5 +130,40 @@ describe('validateNameSetInput', () => {
 
   it(`should allow "_"`, () => {
     expect(validateNameSetInput('my_set')).toHaveProperty('err', false);
+  });
+
+  it('should return 1st default saved set tag name if none already exists', async () => {
+    const input = [
+      {
+        node: {
+          setId: '1',
+          size: 1,
+          tag: 'SAVED_SET_1',
+        },
+      },
+      {
+        node: {
+          setId: '2',
+          size: 1,
+          tag: 'saved_set_3',
+        },
+      },
+      {
+        node: {
+          setId: '3',
+          size: 1,
+          tag: 'toto-name_4',
+        },
+      },
+      {
+        node: {
+          setId: '4',
+          size: 1,
+          tag: 'tutu-name_1',
+        },
+      },
+    ];
+
+    expect(extractTagNumbers(input as [{ node: UserSaveSets }])).toEqual([1, 3]);
   });
 });
