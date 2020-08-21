@@ -5,6 +5,7 @@ import {
   reInitializeSaveSetsState,
   isLoadingCreateSaveSet,
   isLoadingSaveSets,
+  isDeletingSaveSets,
 } from '../../actionCreators/saveSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
@@ -18,6 +19,7 @@ const initialState = {
     sets: [],
     error: null,
     isLoading: false,
+    isDeleting: false,
   },
 };
 
@@ -36,6 +38,7 @@ describe('Save Sets Reducer', () => {
         sets: [],
         error: null,
         isLoading: false,
+        isDeleting: false,
       },
     });
   });
@@ -50,6 +53,7 @@ describe('Save Sets Reducer', () => {
         sets: [],
         error: null,
         isLoading: false,
+        isDeleting: false,
       },
     });
   });
@@ -64,6 +68,7 @@ describe('Save Sets Reducer', () => {
         sets: [],
         error: null,
         isLoading: false,
+        isDeleting: false,
       },
     };
     expect(reducer(state, reInitializeSaveSetsState())).toEqual(initialState);
@@ -79,6 +84,22 @@ describe('Save Sets Reducer', () => {
         sets: [],
         error: null,
         isLoading: true,
+        isDeleting: false,
+      },
+    });
+  });
+
+  it('should handle delete save sets', () => {
+    expect(reducer(initialState, isDeletingSaveSets(true))).toEqual({
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: true,
       },
     });
   });

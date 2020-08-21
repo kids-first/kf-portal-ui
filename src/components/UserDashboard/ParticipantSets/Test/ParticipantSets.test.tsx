@@ -28,6 +28,7 @@ const initialState: SaveSetState = {
     sets: userSaveSets,
     error: null,
     isLoading: true,
+    isDeleting: false,
   },
 };
 
