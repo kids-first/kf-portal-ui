@@ -43,6 +43,7 @@ const mapState = (state: RootState): SaveSetState => ({
     sets: [],
     isLoading: false,
     error: null,
+    isDeleting: false,
   },
 });
 

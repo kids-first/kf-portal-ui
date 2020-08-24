@@ -3,15 +3,17 @@ import {
   FAILURE_CREATE,
   FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
+  REMOVE_USER_SAVE_SETS,
   SaveSetNameConflictError,
   SaveSetParams,
   SaveSetsActionTypes,
+  TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
   UserSaveSets,
 } from '../saveSetTypes';
-import { getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
+import { deleteSaveSet, getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
@@ -88,6 +90,23 @@ export const getUserSaveSets = (
   dispatch(isLoadingSaveSets(false));
 };
 
+export const deleteUserSaveSets = (
+  userId: string,
+  setIds: string[],
+): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+  dispatch(isDeletingSaveSets(true));
+  try {
+    await deleteSaveSet(userId, setIds);
+
+    dispatch(removeUserSavedSets(setIds));
+  } catch (e) {
+    //nothing to be done
+    console.error(e);
+  } finally {
+    dispatch(isDeletingSaveSets(false));
+  }
+};
+
 export const isLoadingCreateSaveSet = (isPending: boolean): SaveSetsActionTypes => ({
   type: TOGGLE_PENDING_CREATE,
   isPending,
@@ -107,6 +126,11 @@ export const isLoadingSaveSets = (isLoading: boolean): SaveSetsActionTypes => ({
   isLoading,
 });
 
+export const isDeletingSaveSets = (isDeleting: boolean): SaveSetsActionTypes => ({
+  type: TOGGLE_IS_DELETING_SAVE_SETS,
+  isDeleting,
+});
+
 export const displayUserSaveSets = (payload: UserSaveSets[]): SaveSetsActionTypes => ({
   type: USER_SAVE_SETS,
   payload,
@@ -115,4 +139,9 @@ export const displayUserSaveSets = (payload: UserSaveSets[]): SaveSetsActionType
 export const failureLoadSaveSets = (error: Error): SaveSetsActionTypes => ({
   type: FAILURE_LOAD_SAVE_SETS,
   error,
+});
+
+export const removeUserSavedSets = (sets: string[]): SaveSetsActionTypes => ({
+  type: REMOVE_USER_SAVE_SETS,
+  sets,
 });

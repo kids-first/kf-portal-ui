@@ -2,6 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
   createSaveSetIfUnique,
+  deleteUserSaveSets,
   failureCreate,
   getUserSaveSets,
   isLoadingCreateSaveSet,
@@ -10,12 +11,15 @@ import {
 import {
   FAILURE_CREATE,
   RE_INITIALIZE_STATE,
+  REMOVE_USER_SAVE_SETS,
   SaveSetNameConflictError,
+  TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
 } from 'store/saveSetTypes';
-import { getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
+import { deleteSaveSet, getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
+console.error = jest.fn();
 
 describe('Save Sets actions', () => {
   it('should create an action when error', () => {
@@ -54,7 +58,7 @@ jest.mock('services/sets');
 const payload = {
   onSuccess: () => {},
   onNameConflict: () => {},
-  tag: 'tagName',
+  tag: 'tagNamer',
   api: () => {},
   userId: 'user1',
   sqon: { op: 'and', content: { field: 'setId', value: '' } },
@@ -63,6 +67,7 @@ const payload = {
 describe('createSaveSet', () => {
   beforeEach(() => {
     (saveSetCountForTag as jest.Mock).mockReset();
+    (deleteSaveSet as jest.Mock).mockReset();
   });
 
   it('should generate the correct flow when creating a saveSet', async () => {
@@ -163,6 +168,34 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(getUserSaveSets('userid'));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should generate the correct flow deleting save sets', async () => {
+    (deleteSaveSet as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
+    const expectedActions = [
+      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
+      { type: REMOVE_USER_SAVE_SETS, sets: ['setId1'] },
+      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: false },
+    ];
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          isLoading: false,
+          sets: [],
+          error: false,
+          isDeleting: false,
+        },
+      },
+    });
+
+    // @ts-ignore
+    await store.dispatch(deleteUserSaveSets('userid', ['setId1']));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

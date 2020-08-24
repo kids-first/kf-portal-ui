@@ -2,11 +2,14 @@ import {
   FAILURE_CREATE,
   FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
+  REMOVE_USER_SAVE_SETS,
   SaveSetsActionTypes,
   SaveSetState,
+  TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
+  UserSaveSets,
 } from '../saveSetTypes';
 
 const initialState: SaveSetState = {
@@ -18,6 +21,7 @@ const initialState: SaveSetState = {
     sets: [],
     error: null,
     isLoading: false,
+    isDeleting: false,
   },
 };
 
@@ -47,7 +51,19 @@ export default (state = initialState, action: SaveSetsActionTypes): SaveSetState
     case USER_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, sets: action.payload } };
     }
+    case TOGGLE_IS_DELETING_SAVE_SETS: {
+      return { ...state, userSets: { ...state.userSets, isDeleting: action.isDeleting } };
+    }
+    case REMOVE_USER_SAVE_SETS: {
+      return {
+        ...state,
+        userSets: { ...state.userSets, sets: removeSets(state.userSets.sets, action.sets) },
+      };
+    }
     default:
       return state;
   }
 };
+
+const removeSets = (currentSets: UserSaveSets[], setIdsToRemove: string[]) =>
+  currentSets.filter((set) => !setIdsToRemove.includes(set.setId));
