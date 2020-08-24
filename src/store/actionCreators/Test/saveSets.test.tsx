@@ -58,7 +58,7 @@ jest.mock('services/sets');
 const payload = {
   onSuccess: () => {},
   onNameConflict: () => {},
-  tag: 'tagName',
+  tag: 'tagNamer',
   api: () => {},
   userId: 'user1',
   sqon: { op: 'and', content: { field: 'setId', value: '' } },
@@ -196,66 +196,6 @@ describe('createSaveSet', () => {
 
     // @ts-ignore
     await store.dispatch(deleteUserSaveSets('userid', ['setId1']));
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
-  it('should generate the correct flow for partial success deleting save sets', async () => {
-    (deleteSaveSet as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
-    (getSetAndParticipantsCountByUser as jest.Mock).mockImplementationOnce(() =>
-      Promise.resolve([]),
-    );
-    const expectedActions = [
-      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
-      { type: USER_SAVE_SETS, payload: [] },
-      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: false },
-    ];
-    const store = mockStore({
-      saveSets: {
-        create: {
-          isLoading: false,
-          error: null,
-          tagNameConflict: false,
-        },
-        userSets: {
-          isLoading: false,
-          sets: [],
-          error: false,
-          isDeleting: false,
-        },
-      },
-    });
-
-    // @ts-ignore
-    await store.dispatch(deleteUserSaveSets('userid', ['setId1', 'setId2']));
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-  it('should generate the correct flow complete fail deleting save sets', async () => {
-    (deleteSaveSet as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
-    const expectedActions = [
-      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
-      { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: false },
-    ];
-    const store = mockStore({
-      saveSets: {
-        create: {
-          isLoading: false,
-          error: null,
-          tagNameConflict: false,
-        },
-        userSets: {
-          isLoading: false,
-          sets: [],
-          error: false,
-          isDeleting: false,
-        },
-      },
-    });
-
-    const consoleSpy = jest.spyOn(console, 'error');
-
-    // @ts-ignore
-    await store.dispatch(deleteUserSaveSets('userid', ['setId1', 'setId2']));
-    expect(consoleSpy).toHaveBeenCalledWith('Nothing was deleted');
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

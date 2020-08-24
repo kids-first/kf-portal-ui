@@ -96,26 +96,15 @@ export const deleteUserSaveSets = (
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
   dispatch(isDeletingSaveSets(true));
   try {
-    const numberSetsDeleted = await deleteSaveSet(userId, setIds);
+    await deleteSaveSet(userId, setIds);
 
-    if (numberSetsDeleted === setIds.length) {
-      dispatch(removeUserSavedSets(setIds));
-    } else if (numberSetsDeleted === 0) {
-      console.error('Nothing was deleted');
-    } else {
-      const userSets = await getSetAndParticipantsCountByUser(userId);
-      const payload: UserSaveSets[] = userSets.map((s: { node: UserSaveSets }) => ({
-        setId: s.node.setId,
-        size: s.node.size,
-        tag: s.node.tag,
-      }));
-      dispatch(displayUserSaveSets(payload));
-    }
+    dispatch(removeUserSavedSets(setIds));
   } catch (e) {
     //nothing to be done
     console.error(e);
+  } finally {
+    dispatch(isDeletingSaveSets(false));
   }
-  dispatch(isDeletingSaveSets(false));
 };
 
 export const isLoadingCreateSaveSet = (isPending: boolean): SaveSetsActionTypes => ({

@@ -54,6 +54,10 @@ const align = 'right' as AlignType;
 const ParticipantSets: FunctionComponent<Props> = (props) => {
   const { user, userSaveSets, userSets, deleteSaveSet } = props;
 
+  const confirm = (key: string, userId: string) => {
+    deleteSaveSet([key], userId);
+  };
+
   const columns = [
     {
       title: 'Name',
@@ -80,7 +84,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       // eslint-disable-next-line react/display-name
       render: (count: number) => (
         <Button className={'count-button'} type="text">
-          <img src={participantMagenta} alt="" />
+          <img src={participantMagenta} alt="Participants" />
           <div className={'save-sets-participants-count'}>{count}</div>
         </Button>
       ),
@@ -105,10 +109,6 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       ),
     },
   ];
-
-  const confirm = (key: string, userId: string) => {
-    deleteSaveSet([...[], key], userId);
-  };
 
   useEffect(() => {
     userSaveSets(user.egoId);
