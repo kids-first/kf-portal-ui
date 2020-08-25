@@ -31,7 +31,7 @@ const sunburstD3 = (ref, data, config, formatters) => {
   root.each((d) => (d.current = d));
 
   const svg = d3.select(ref.current).style('width', width).style('height', height);
-  const g = svg.append('g').attr('transform', (d) => `translate(${[width / 2, width / 2]})`);
+  const g = svg.append('g').attr('transform', () => `translate(${[width / 2, width / 2]})`);
 
   const gData = g.append('g').selectAll('path').data(root.descendants());
 

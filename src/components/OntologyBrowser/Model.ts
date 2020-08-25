@@ -26,12 +26,10 @@ export default class OntologyTree {
     this.tree = this.generateTree(field);
   }
 
-  private getChildrenValue = (childrenNodes: TreeNode[], sourceValue: number) => {
-    const value = childrenNodes.length
+  private getChildrenValue = (childrenNodes: TreeNode[], sourceValue: number) =>
+    childrenNodes.length
       ? childrenNodes.reduce((accumulator, n) => accumulator + (n.valueText || 0), 0)
       : sourceValue || 0;
-    return value;
-  };
 
   private populateNodeChild = (
     source: PhenotypeSource,
@@ -79,7 +77,6 @@ export default class OntologyTree {
     parentKey?: string,
   ): TreeNode => {
     const value = this.getChildrenValue(children, source.doc_count);
-    // children.length !== 0 ? this.getChildrenValue(children, source.doc_count) : source.doc_count;
 
     const result: TreeNode = {
       title: source.key,
