@@ -138,16 +138,10 @@ export class PhenotypeStore {
     return result;
   };
 
-  getChildrenKeys = (node: TreeNode, root = false) => {
-    let nKeys: string[] = [];
-    node.children.forEach((i) => {
-      nKeys = nKeys.concat(this.getChildrenKeys(i));
-    });
-    if (!root) {
-      nKeys.push(node.key);
-    }
-    return nKeys;
-  };
+  getChildrenKeys = (node: TreeNode, root = false): string[] => [
+    ...node.children.flatMap((i) => this.getChildrenKeys(i)),
+    ...(!root ? [node.key] : []),
+  ];
 
   remoteSingleRootNode = (phenotypes: PhenotypeSource[]) =>
     phenotypes
