@@ -5,3 +5,7 @@
 .textBugWrapper text {
   dominant-baseline: central;
 }
+
+.verticalBarWrapper {
+  height: 100%;
+}

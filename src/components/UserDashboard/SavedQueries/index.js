@@ -5,13 +5,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TrashIcon from 'react-icons/lib/fa/trash';
 import { distanceInWords } from 'date-fns';
-
 import { Box, Link, Flex } from 'uikit/Core';
 import CardHeader from 'uikit/Card/CardHeader';
 import Row from 'uikit/Row';
 import Column from 'uikit/Column';
 import Tooltip from 'uikit/Tooltip';
-import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import Tabs from 'components/Tabs';
 import { styleComponent } from 'components/Utils';
 import { PromptMessageContainer, PromptMessageContent, DashboardCard } from '../styles';
@@ -23,7 +21,6 @@ import {
   setVirtualStudyId,
 } from 'store/actionCreators/virtualStudies';
 import provideSavedQueries from 'stateProviders/provideSavedQueries';
-
 import {
   savedQueriesContainer,
   study,
@@ -32,8 +29,11 @@ import {
   scrollY,
   studyDescription,
   studySavedTime,
+  spinner,
+  cardHeader,
 } from './SavedQueries.module.css';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
+import { Spinner } from 'uikit/Spinner';
 
 const FileRepositoryLink = styleComponent(Link, 'color-primary');
 const Scroll = styleComponent('div', scrollY);
@@ -53,6 +53,10 @@ class SavedQueries extends React.Component {
       getQueries: PropTypes.func.isRequired,
     }),
     setVirtualStudyId: PropTypes.func.isRequired,
+    api: PropTypes.func.isRequired,
+    loggedInUser: PropTypes.object,
+    fetchVirtualStudiesCollection: PropTypes.func.isRequired,
+    deleteVirtualStudy: PropTypes.func.isRequired,
   };
 
   state = {
@@ -202,12 +206,12 @@ class SavedQueries extends React.Component {
             onCloseCb={() => this.setState({ showDeleteModal: false })}
           />
         )}
-        <DashboardCard scrollable={true} showHeader={false} style={{ width: '100%' }}>
+        <DashboardCard scrollable={true} showHeader={false} showScrollFullHeight={true}>
           {loadingQueries ? (
-            <ChartContentSpinner />
+            <Spinner className={spinner} size={'large'} />
           ) : (
-            <div style={{ height: '100%' }}>
-              <CardHeader title="Saved Queries" style={{ margin: '0px 0 15px 0' }} />
+            <>
+              <CardHeader title="Saved Queries" className={cardHeader} />
               <Column className={savedQueriesContainer}>
                 <Tabs
                   initialSelectedTab="PARTICIPANTS"
@@ -226,7 +230,7 @@ class SavedQueries extends React.Component {
                   {this.renderFileQueries()}
                 </Tabs>
               </Column>
-            </div>
+            </>
           )}
         </DashboardCard>
       </>

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { branch, compose, renderComponent } from 'recompose';
 import { injectState } from 'freactal';
 import { withApi } from 'services/api';
@@ -27,21 +25,8 @@ import {
 import { Col, Row } from 'antd';
 import ParticipantSets from './ParticipantSets';
 
-const Container = ({ className = '', children }) => (
-  // This is to cancel out the negative margin set by react-grid-system
-  <div style={{ marginLeft: '15px', marginRight: '15px' }}>
-    <Row className={className}>{children}</Row>
-  </div>
-);
-
-Container.prototype = {
-  children: PropTypes.arrayOf(PropTypes.element),
-  className: PropTypes.string.isRequired,
-};
-
 export default compose(
   injectState,
-  withRouter,
   withApi,
   branch(
     ({ state: { loggedInUser } }) => !loggedInUser,
@@ -54,7 +39,9 @@ export default compose(
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
       <Row gutter={[30, 30]} align={'top'} style={{ paddingLeft: 15, paddingRight: 15, top: -15 }}>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <SavedQueries {...{ api, loggedInUser }} />
+          <div style={{ height: '256px' }}>
+            <SavedQueries {...{ api, loggedInUser }} />
+          </div>
         </Col>
         {isFeatureEnabled('FT_SUNBURST') && (
           <Col xs={24} sm={24} md={12} lg={12} xl={8}>
@@ -71,17 +58,23 @@ export default compose(
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard showHeader={false}>
-            <MostParticipantsStudiesChart />
+            <div style={{ height: '265px' }}>
+              <MostParticipantsStudiesChart />
+            </div>
           </DashboardCard>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Member Research Interests">
-            <MemberResearchInterestsChart />
+            <div style={{ height: '265px' }}>
+              <MemberResearchInterestsChart />
+            </div>
           </DashboardCard>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Most Frequent Diagnoses">
-            <MostFrequentDiagnosesChart />
+            <div style={{ height: '265px' }}>
+              <MostFrequentDiagnosesChart />
+            </div>
           </DashboardCard>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>

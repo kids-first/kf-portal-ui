@@ -17,13 +17,16 @@ const Card = ({
   CardWrapper = CWrapper,
   className,
   badge,
+  showScrollFullHeight,
 }) => {
   const DefaultHeader = <CardHeader title={title} badge={badge} />;
 
   return (
     <CardWrapper className={className} inactive={inactive}>
       {showHeader && <HeaderWrapper inactive={inactive}>{Header || DefaultHeader}</HeaderWrapper>}
-      <Content scrollable={scrollable}>{children}</Content>
+      <Content showScrollFullHeight={showScrollFullHeight} scrollable={scrollable}>
+        {children}
+      </Content>
     </CardWrapper>
   );
 };
@@ -36,6 +39,11 @@ Card.propTypes = {
   title: PropTypes.node,
   inactive: PropTypes.bool,
   showHeader: PropTypes.bool,
+  HeaderWrapper: PropTypes.any,
+  CardWrapper: PropTypes.any,
+  className: PropTypes.string,
+  badge: PropTypes.string,
+  showScrollFullHeight: PropTypes.bool,
 };
 
 export default Card;

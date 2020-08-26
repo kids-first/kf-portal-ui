@@ -8,12 +8,20 @@ import VerticalBar from 'chartkit/components/VerticalBar';
 import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
+import PropTypes from 'prop-types';
 
-const ageAtDiagnosisTooltip = data => {
-  return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
-};
+const ageAtDiagnosisTooltip = (data) =>
+  `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 
 class AgeDiagChart extends React.Component {
+  static propTypes = {
+    setSqons: PropTypes.func.isRequired,
+    virtualStudy: PropTypes.object,
+    height: PropTypes.number,
+    isLoading: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.object),
+  };
+
   addSqon = (field, value) => {
     const { virtualStudy, setSqons } = this.props;
 
@@ -67,7 +75,7 @@ class AgeDiagChart extends React.Component {
   };
 
   render() {
-    const { data, isLoading: isParentLoading } = this.props;
+    const { data, isLoading: isParentLoading, height = 225 } = this.props;
     return (
       <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
         <VerticalBar
@@ -77,9 +85,9 @@ class AgeDiagChart extends React.Component {
           indexBy="label"
           axisBottomLegend="Age at Diagnosis (years)"
           tooltipFormatter={ageAtDiagnosisTooltip}
-          height={225}
+          height={height}
           colors={[theme.chartColors.lightblue]}
-          onClick={data => {
+          onClick={(data) => {
             this.addSqon('diagnoses.age_at_event_days', data.data.id);
           }}
         />
@@ -88,7 +96,7 @@ class AgeDiagChart extends React.Component {
   }
 }
 
-export const ageDiagQuery = sqon => ({
+export const ageDiagQuery = (sqon) => ({
   variables: { sqon },
   query: gql`
     # embeds additional filter on the provided sqon to create the ranges.
@@ -186,7 +194,7 @@ export const ageDiagQuery = sqon => ({
   ],
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
 

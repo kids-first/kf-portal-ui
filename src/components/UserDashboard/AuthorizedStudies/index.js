@@ -3,16 +3,15 @@ import { compose } from 'recompose';
 import { injectState } from 'freactal';
 import isEmpty from 'lodash/isEmpty';
 import CardHeader from 'uikit/Card/CardHeader';
-import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
 import DownloadController from 'icons/DownloadController';
-
 import StudiesConnected from './StudiesConnected';
 import { fenceConnectionInitializeHoc } from 'stateProviders/provideFenceConnections';
-
 import AccessGate from '../../AccessGate';
 import { DashboardCard } from '../styles';
 import Info from '../Info';
 import { Button } from 'antd';
+import { spinner } from './AuthorizedStudies.module.css';
+import { Spinner } from 'uikit/Spinner';
 
 const AuthorizedStudies = compose(
   injectState,
@@ -29,7 +28,7 @@ const AuthorizedStudies = compose(
     return (
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
-          <ChartContentSpinner />
+          <Spinner className={spinner} size={'large'} />
         ) : isEmpty(fenceConnections) ? (
           <Fragment>
             <AccessGate
