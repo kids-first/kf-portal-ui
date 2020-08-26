@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import { renderPlot } from '@oncojs/survivalplot';
 import defaults from 'lodash/defaults';
 
-const isElementFullScreen = element =>
+const isElementFullScreen = (element) =>
   [
     document.fullscreenElement,
     document.webkitFullscreenElement,
@@ -34,6 +34,7 @@ export default class SurvivalPlot extends React.Component {
     resetZoom: PropTypes.bool,
     onMouseEnterDonors: PropTypes.func,
     onMouseLeaveDonors: PropTypes.func,
+    height: PropTypes.number,
   };
 
   static defaultProps = {
@@ -46,6 +47,7 @@ export default class SurvivalPlot extends React.Component {
     onClickDonors: () => {},
     xAxisLabel: 'Survival Rate',
     yAxisLabel: 'Duration (days)',
+    height: 205,
   };
 
   stateStack = [];
@@ -66,12 +68,12 @@ export default class SurvivalPlot extends React.Component {
     this.update();
   }
 
-  updateState = newState => {
+  updateState = (newState) => {
     this.stateStack = this.stateStack.concat(this.state);
     this.setState(newState);
   };
 
-  update = params => {
+  update = (params) => {
     const { disabledDataSets, xDomain } = this.state;
     const container = this._container;
     renderPlot(
@@ -84,7 +86,7 @@ export default class SurvivalPlot extends React.Component {
           xDomain: xDomain,
           yAxisLabel: 'Survival Rate',
           xAxisLabel: 'Duration (days)',
-          height: isElementFullScreen(container) ? window.innerHeight - 100 : 205,
+          height: isElementFullScreen(container) ? window.innerHeight - 100 : this.props.height,
           getSetSymbol: this.props.getSetSymbol,
           onMouseEnterDonor: this.props.onMouseEnterDonor,
           onMouseLeaveDonor: this.props.onMouseLeaveDonor,
@@ -92,7 +94,7 @@ export default class SurvivalPlot extends React.Component {
           onMouseEnterDonors: this.props.onMouseEnterDonors,
           onMouseLeaveDonors: this.props.onMouseLeaveDonors,
           onClickDonors: this.props.onClickDonors,
-          onDomainChange: newXDomain => {
+          onDomainChange: (newXDomain) => {
             this.props.disableResetButton();
             this.updateState({ xDomain: newXDomain });
           },
@@ -109,6 +111,6 @@ export default class SurvivalPlot extends React.Component {
   };
 
   render() {
-    return <div ref={c => (this._container = c)} className={this.props.className} />;
+    return <div ref={(c) => (this._container = c)} className={this.props.className} />;
   }
 }
