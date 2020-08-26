@@ -16,7 +16,7 @@ import { CohortCard } from './ui';
 import SurvivalPlot from './SurvivalPlot';
 import './SurvivalChart.css';
 
-const formatDataset = data => [
+const formatDataset = (data) => [
   {
     meta: {
       id: '38144623-cbef-435f-9627-e13df0a6ba35',
@@ -35,7 +35,6 @@ const formatDataset = data => [
 
 const SurvivalCardContent = styleComponent(CardContent, 'survivalChart-card-content');
 
-
 export class SurvivalChart extends React.Component {
   state = {
     tooltip: {
@@ -48,6 +47,7 @@ export class SurvivalChart extends React.Component {
     data: [],
     resetZoom: false,
     zoomDisabled: true,
+    height: 205,
   };
 
   static propTypes = {
@@ -65,12 +65,12 @@ export class SurvivalChart extends React.Component {
         resolve(this.queryCacheMap[hash]);
       } else {
         fetchSurvivalData(api)(sqon)
-          .then(data => {
+          .then((data) => {
             const formattedData = formatDataset(data);
             this.queryCacheMap[hash] = formattedData;
             resolve(formattedData);
           })
-          .catch(err => reject(err));
+          .catch((err) => reject(err));
       }
     });
   };
@@ -83,12 +83,13 @@ export class SurvivalChart extends React.Component {
     const checkCount = ++this.fetchCount;
 
     this.cachedFetch()
-      .then(data => {
+      .then((data) => {
+        const height = this.divElement.height;
         if (this.fetchCount === checkCount) {
-          this.setState({ data, isLoading: false });
+          this.setState({ data, isLoading: false, height });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(`Error fetching survival data: ${err}`);
         this.setState({ data: [], isLoading: false });
         // should be an error state, but for now /survival endpoint not handling [] well
@@ -108,7 +109,7 @@ export class SurvivalChart extends React.Component {
   }
 
   handleMouseEnterDonors = (event, donors) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       tooltip: {
         ...prevState.tooltip,
         isVisible: true,
@@ -120,7 +121,7 @@ export class SurvivalChart extends React.Component {
   };
 
   handleMouseLeaveDonors = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       tooltip: { ...prevState.tooltip, isVisible: false },
     }));
   };
@@ -163,47 +164,56 @@ export class SurvivalChart extends React.Component {
       </div>
     );
 
+    const renderGraphContent = (size) => ({ height }) => (
+      <>
+        {resetZoomIcon}
+        <div style={{ marginTop: '10px' }}>
+          <div className="survivalChart-card-header">
+            Applicable survival data for{' '}
+            <span style={{ color: theme.chartColors.blue }}>
+              {get(data, '[0].donors.length', 0)} Participants
+            </span>
+          </div>
+          <div className={'survival-chart-drag-zoom'}>
+            {zoomDisabled && <div>Drag to zoom</div>}
+          </div>
+
+          <SurvivalPlot
+            className="survivalChart-styledChard"
+            size={size}
+            dataSets={data}
+            onMouseLeaveDonors={this.handleMouseLeaveDonors}
+            onMouseEnterDonors={this.handleMouseEnterDonors}
+            disableResetButton={this.handleDisableResetButton}
+            resetZoom={resetZoom}
+            height={height ? height - 60 : null}
+          />
+
+          <div style={tooltipStyle}>
+            <strong>{donor.id}</strong>
+            <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
+            {donor.isCensored ? (
+              <div>Censored Survival Time: {donor.time} days (censored)</div>
+            ) : (
+              <div>Survival Time: {donor.time} days </div>
+            )}
+          </div>
+        </div>
+      </>
+    );
+
     return (
       <SizeProvider>
         {({ size }) => (
-          <CohortCard
-            Content={SurvivalCardContent}
-            title="Overall Survival"
-            loading={this.state.isLoading}
-          >
-            {resetZoomIcon}
-            <div style={{ marginTop: '10px' }}>
-              <div className="survivalChart-card-header">
-                Applicable survival data for{' '}
-                <span style={{ color: theme.chartColors.blue }}>
-                  {get(data, '[0].donors.length', 0)} Participants
-                </span>
-              </div>
-              <div className={'survival-chart-drag-zoom'}>
-                {zoomDisabled && <div>Drag to zoom</div>}
-              </div>
-
-              <SurvivalPlot
-                className="survivalChart-styledChard"
-                size={size}
-                dataSets={data}
-                onMouseLeaveDonors={this.handleMouseLeaveDonors}
-                onMouseEnterDonors={this.handleMouseEnterDonors}
-                disableResetButton={this.handleDisableResetButton}
-                resetZoom={resetZoom}
-              />
-
-              <div style={tooltipStyle}>
-                <strong>{donor.id}</strong>
-                <div>Survival Rate: {(donor.survivalEstimate * 100).toFixed(2)}%</div>
-                {donor.isCensored ? (
-                  <div>Censored Survival Time: {donor.time} days (censored)</div>
-                ) : (
-                  <div>Survival Time: {donor.time} days </div>
-                )}
-              </div>
-            </div>
-          </CohortCard>
+          <div>
+            <CohortCard
+              Content={SurvivalCardContent}
+              title="Overall Survival"
+              loading={this.state.isLoading}
+            >
+              {renderGraphContent(size)}
+            </CohortCard>
+          </div>
         )}
       </SizeProvider>
     );

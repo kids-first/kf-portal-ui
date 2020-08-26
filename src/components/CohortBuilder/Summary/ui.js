@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Spinner from 'react-spinkit';
 
 import Card from 'uikit/Card';
@@ -17,27 +17,37 @@ const CohortHeaderWrapper = styleComponent(HeaderWrapper, 'cohortHeaderWrapper')
 const CohortCardHeader = styleComponent(CardHeader, 'cohortCardHeader');
 const Loader = styleComponent(Column, 'cohortCardLoader');
 
-export const CohortCard = ({ title, badge, children, long = false, loading = false, ...props }) => (
-  <Card
-    CardWrapper={long ? LongCard : MediumCard}
-    HeaderWrapper={CohortHeaderWrapper}
-    Header={<CohortCardHeader title={title} badge={badge} />}
-    {...props}
-  >
-    {loading ? (
-      <Loader>
-        <Spinner name="circle" color="#a9adc0" style={{ width: 50, height: 50 }} />
-      </Loader>
-    ) : (
-      children
-    )}
-  </Card>
-);
+export const CohortCard = ({ title, badge, children, long = false, loading = false, ...props }) => {
+  const divElem = useRef();
+  return (
+    <Card
+      CardWrapper={long ? LongCard : MediumCard}
+      HeaderWrapper={CohortHeaderWrapper}
+      Header={<CohortCardHeader title={title} badge={badge} />}
+      {...props}
+      parentElem={divElem}
+    >
+      {loading ? (
+        <div ref={divElem} className="dynamic-content">
+          <Loader>
+            <Spinner name="circle" color="#a9adc0" style={{ width: 50, height: 50 }} />
+          </Loader>
+        </div>
+      ) : typeof children === 'function' ? (
+        <div ref={divElem} className="dynamic-content">
+          {children({ height: divElem.current?.offsetHeight })}
+        </div>
+      ) : (
+        children
+      )}
+    </Card>
+  );
+};
 
 export const getCohortBarColors = (data, theme) => {
   const { chartColors } = theme;
-  const hasProbands = data.some(d => d.probands !== 0);
-  const hasFamilyMembers = data.some(d => d.familyMembers !== 0);
+  const hasProbands = data.some((d) => d.probands !== 0);
+  const hasFamilyMembers = data.some((d) => d.familyMembers !== 0);
   const colors = [];
   if (hasProbands) colors.push(chartColors.blue);
   if (hasFamilyMembers) colors.push(chartColors.purple);
