@@ -22,6 +22,7 @@ export const CohortCard = ({
   loading = false,
   showHeader = true,
   Content,
+  showScrollFullHeight,
 }) => {
   const divElem = useRef();
   return (
@@ -31,19 +32,17 @@ export const CohortCard = ({
       Header={<CohortCardHeader title={title} badge={badge} />}
       showHeader={showHeader}
       Content={Content}
-      parentElem={divElem}
+      showScrollFullHeight={showScrollFullHeight}
     >
-      {loading ? (
-        <div ref={divElem} className="dynamic-content">
+      <div ref={divElem} className="dynamic-content">
+        {loading ? (
           <Spinner size={'large'} />
-        </div>
-      ) : typeof children === 'function' ? (
-        <div ref={divElem} className="dynamic-content">
-          {children({ height: divElem.current?.offsetHeight })}
-        </div>
-      ) : (
-        children
-      )}
+        ) : typeof children === 'function' ? (
+          children({ height: divElem.current?.offsetHeight })
+        ) : (
+          children
+        )}
+      </div>
     </Card>
   );
 };
@@ -56,6 +55,7 @@ CohortCard.propTypes = {
   children: PropTypes.any,
   Content: PropTypes.func,
   badge: PropTypes.number,
+  showScrollFullHeight: PropTypes.bool,
 };
 
 export const getCohortBarColors = (data, theme) => {

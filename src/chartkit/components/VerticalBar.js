@@ -210,11 +210,7 @@ class VerticalBar extends Component {
         {legends && <Legend legends={legends} theme={defaultTheme.legend} />}
         <TextBugWrapper>
           <div style={{ height }}>
-            {height ? (
-              <ResponsiveBar {...chartData} height={height} />
-            ) : (
-              <ResponsiveBar {...chartData} />
-            )}
+            <ResponsiveBar {...chartData} height={height} />
           </div>
         </TextBugWrapper>
       </div>
@@ -247,7 +243,7 @@ VerticalBar.propTypes = {
   leftLegendOffset: PropTypes.number,
   bottomLegendOffset: PropTypes.number,
   indexBy: PropTypes.string,
-  height: PropTypes.number,
+  height: PropTypes.number.isRequired,
   axisLeftLegend: PropTypes.string,
   axisBottomLegend: PropTypes.string,
   padding: PropTypes.number,
