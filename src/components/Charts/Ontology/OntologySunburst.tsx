@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import isEqual from 'lodash/isEqual';
-
-import ChartContentSpinner from 'components/Charts/ChartContentSpinner';
+import { Spinner } from 'uikit/Spinner';
 import { PhenotypeStore } from '../../OntologyBrowser/store';
 import { TreeNode } from '../../OntologyBrowser/Model';
 import Sunburst from 'components/UI/Charts/Sunburst/Sunburst';
@@ -72,7 +71,7 @@ class OntologySunburst extends React.Component<OntologySunburstProps, OntologySu
     return (
       <Fragment>
         {loading ? (
-          <ChartContentSpinner />
+          <Spinner size={'large'} />
         ) : (
           <div className="card-content-center">
             {data !== null ? (

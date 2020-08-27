@@ -47,7 +47,6 @@ export class SurvivalChart extends React.Component {
     data: [],
     resetZoom: false,
     zoomDisabled: true,
-    height: 205,
   };
 
   static propTypes = {
@@ -84,9 +83,8 @@ export class SurvivalChart extends React.Component {
 
     this.cachedFetch()
       .then((data) => {
-        const height = this.divElement.height;
         if (this.fetchCount === checkCount) {
-          this.setState({ data, isLoading: false, height });
+          this.setState({ data, isLoading: false });
         }
       })
       .catch((err) => {
@@ -210,6 +208,7 @@ export class SurvivalChart extends React.Component {
               Content={SurvivalCardContent}
               title="Overall Survival"
               loading={this.state.isLoading}
+              showScrollFullHeight={true}
             >
               {renderGraphContent(size)}
             </CohortCard>

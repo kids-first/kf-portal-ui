@@ -1,47 +1,61 @@
 import React, { useRef } from 'react';
-import Spinner from 'react-spinkit';
-
 import Card from 'uikit/Card';
 import CardHeader from 'uikit/Card/CardHeader';
 import { HeaderWrapper, CardWrapper } from 'uikit/Card/styles';
-import Column from 'uikit/Column';
-
 import { styleComponent } from 'components/Utils';
-
+import { Spinner } from 'uikit/Spinner';
+import PropTypes from 'prop-types';
 import './Summary.css';
 
 export const BarChartContainer = styleComponent('div', 'barChartContainer');
+
 const LongCard = styleComponent(CardWrapper, 'longCard');
 const MediumCard = styleComponent(CardWrapper, 'mediumCard');
 const CohortHeaderWrapper = styleComponent(HeaderWrapper, 'cohortHeaderWrapper');
 const CohortCardHeader = styleComponent(CardHeader, 'cohortCardHeader');
-const Loader = styleComponent(Column, 'cohortCardLoader');
 
-export const CohortCard = ({ title, badge, children, long = false, loading = false, ...props }) => {
+export const CohortCard = ({
+  title,
+  badge,
+  children,
+  long = false,
+  loading = false,
+  showHeader = true,
+  Content,
+  showScrollFullHeight,
+}) => {
   const divElem = useRef();
   return (
     <Card
       CardWrapper={long ? LongCard : MediumCard}
       HeaderWrapper={CohortHeaderWrapper}
       Header={<CohortCardHeader title={title} badge={badge} />}
-      {...props}
-      parentElem={divElem}
+      showHeader={showHeader}
+      Content={Content}
+      showScrollFullHeight={showScrollFullHeight}
     >
-      {loading ? (
-        <div ref={divElem} className="dynamic-content">
-          <Loader>
-            <Spinner name="circle" color="#a9adc0" style={{ width: 50, height: 50 }} />
-          </Loader>
-        </div>
-      ) : typeof children === 'function' ? (
-        <div ref={divElem} className="dynamic-content">
-          {children({ height: divElem.current?.offsetHeight })}
-        </div>
-      ) : (
-        children
-      )}
+      <div ref={divElem} className="dynamic-content">
+        {loading ? (
+          <Spinner size={'large'} />
+        ) : typeof children === 'function' ? (
+          children({ height: divElem.current?.offsetHeight })
+        ) : (
+          children
+        )}
+      </div>
     </Card>
   );
+};
+
+CohortCard.propTypes = {
+  title: PropTypes.string,
+  long: PropTypes.bool,
+  loading: PropTypes.bool,
+  showHeader: PropTypes.bool,
+  children: PropTypes.any,
+  Content: PropTypes.func,
+  badge: PropTypes.number,
+  showScrollFullHeight: PropTypes.bool,
 };
 
 export const getCohortBarColors = (data, theme) => {

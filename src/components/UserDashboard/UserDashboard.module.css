@@ -60,7 +60,7 @@
   line-height: normal;
 }
 .promptMessageContent ul {
-  padding-left: '18px';
+  padding-left: 18px;
 }
 .promptMessageContent li {
   margin-top: 5px;
@@ -69,4 +69,8 @@
   font-family: Montserrat, sans-serif;
   font-weight: 500;
   font-size: 16px;
+}
+
+.wrapperVerticalBarChart {
+  height: 265px;
 }

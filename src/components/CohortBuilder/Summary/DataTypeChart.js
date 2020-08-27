@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 import gql from 'graphql-tag';
-
 import theme from 'theme/defaultTheme';
 import VerticalBar from 'chartkit/components/VerticalBar';
 import { setSqons } from 'store/actionCreators/virtualStudies';
@@ -11,12 +10,22 @@ import {
   MERGE_VALUES_STRATEGIES,
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
+import PropTypes from 'prop-types';
 
-const dataTypeTooltip = data => {
-  return `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
-};
+const dataTypeTooltip = (data) =>
+  `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
 
 class DataTypeChart extends React.Component {
+  static propTypes = {
+    setSqons: PropTypes.func.isRequired,
+    virtualStudy: PropTypes.object,
+    height: PropTypes.number,
+    data: PropTypes.arrayOf(PropTypes.object),
+    axisBottomLegend: PropTypes.string,
+    axisLeftLegend: PropTypes.string,
+    indexBy: PropTypes.string,
+  };
+
   addSqon(field, value) {
     const { virtualStudy, setSqons } = this.props;
 
@@ -41,7 +50,7 @@ class DataTypeChart extends React.Component {
   }
 
   render() {
-    const { data, indexBy, axisLeftLegend, axisBottomLegend } = this.props;
+    const { data, indexBy, axisLeftLegend, axisBottomLegend, height = 260 } = this.props;
 
     // Get the minimum value (5% of the max) for any vertical bar's height
     const minValue =
@@ -51,7 +60,7 @@ class DataTypeChart extends React.Component {
       }, 0) * 0.05;
 
     // Then, clean the data by changing the value to the min if applicable. Keep old (correct) value in preciseValue
-    const normalizedData = data.map(item => {
+    const normalizedData = data.map((item) => {
       if (item.value <= minValue) {
         item.preciseValue = item.value;
         item.value = minValue;
@@ -63,9 +72,8 @@ class DataTypeChart extends React.Component {
     });
 
     // Finally, the tooltip has to reflect the correct value, so use preciseValue instead of value
-    const tooltipFormatter = data => {
-      return `${data.label.toLocaleString()}: ${data.preciseValue.toLocaleString()} Participants`;
-    };
+    const tooltipFormatter = (data) =>
+      `${data.label.toLocaleString()}: ${data.preciseValue.toLocaleString()} Participants`;
 
     return (
       <VerticalBar
@@ -73,7 +81,7 @@ class DataTypeChart extends React.Component {
         indexBy={indexBy || 'label'}
         tooltipFormatter={tooltipFormatter || dataTypeTooltip}
         keys={['value']}
-        height={260}
+        height={height}
         bottomLegendOffset={20}
         leftLegendOffset={-42}
         sortByKeys={['value']}
@@ -83,7 +91,7 @@ class DataTypeChart extends React.Component {
         axisBottomLegend={axisBottomLegend}
         axisBottomFormat={() => {}}
         colors={[theme.chartColors.lightblue]}
-        onClick={data => {
+        onClick={(data) => {
           this.addSqon(
             axisBottomLegend === 'Data Type'
               ? 'available_data_types'
@@ -105,7 +113,7 @@ const toChartData = ({ key, doc_count }) => {
   };
 };
 
-export const dataTypesQuery = sqon => ({
+export const dataTypesQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
       participant {
@@ -121,12 +129,11 @@ export const dataTypesQuery = sqon => ({
     }
   `,
   variables: { sqon },
-  transform: data => {
-    return get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(toChartData);
-  },
+  transform: (data) =>
+    get(data, 'data.participant.aggregations.files__data_type.buckets', []).map(toChartData),
 });
 
-export const experimentalStrategyQuery = sqon => ({
+export const experimentalStrategyQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
       participant {
@@ -142,16 +149,15 @@ export const experimentalStrategyQuery = sqon => ({
     }
   `,
   variables: { sqon },
-  transform: data => {
-    return get(
+  transform: (data) =>
+    get(
       data,
       'data.participant.aggregations.files__sequencing_experiments__experiment_strategy.buckets',
       [],
-    ).map(toChartData);
-  },
+    ).map(toChartData),
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
 

@@ -13,14 +13,19 @@ import SurvivalChart from './SurvivalChart';
 import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
 import { CohortCard } from './ui';
 import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
-
+import './Summary.css';
 import { isFeatureEnabled } from 'common/featuresToggles';
+import PropTypes from 'prop-types';
 
 const CardSlot = ({ children }) => (
   <Col style={{ padding: '4px' }} sm={12} md={6} lg={6} xl={4}>
     {children}
   </Col>
 );
+
+CardSlot.propTypes = {
+  children: PropTypes.element,
+};
 
 const Summary = ({
   sqon = {
@@ -57,26 +62,25 @@ const Summary = ({
         <Row nogutter>
           <CardSlot>
             <CohortCard title="Available Data" loading={isLoading}>
-              <div
-                style={{
-                  height: '100%',
-                  width: '100%',
-                  display: 'flex',
-                  flexFlow: 'column wrap',
-                }}
-              >
-                <DataTypeChart
-                  data={dataTypesData}
-                  axisLeftLegend={'# Participants'}
-                  axisBottomLegend={'Data Type'}
-                  isLoading={isLoading}
-                />
-                <DataTypeChart
-                  data={experimentalStrategyData}
-                  axisLeftLegend={'# Participants'}
-                  axisBottomLegend={'Experimental Strategy'}
-                  isLoading={isLoading}
-                />
+              <div className={'cardBodyDataChartType'}>
+                <div className={'wrapperDataTypeChart'}>
+                  <DataTypeChart
+                    data={dataTypesData}
+                    axisLeftLegend={'# Participants'}
+                    axisBottomLegend={'Data Type'}
+                    isLoading={isLoading}
+                    height={350}
+                  />
+                </div>
+                <div className={'wrapperDataTypeChart'}>
+                  <DataTypeChart
+                    data={experimentalStrategyData}
+                    axisLeftLegend={'# Participants'}
+                    axisBottomLegend={'Experimental Strategy'}
+                    isLoading={isLoading}
+                    height={350}
+                  />
+                </div>
               </div>
             </CohortCard>
           </CardSlot>
@@ -97,7 +101,7 @@ const Summary = ({
             <DemographicChart data={demographicData} isLoading={isLoading} />
           </CardSlot>
           <CardSlot>
-            <AgeDiagChart data={ageDiagData} isLoading={isLoading} />
+            <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
           </CardSlot>
           <CardSlot>
             <SurvivalChart sqon={sqon} />
@@ -107,5 +111,10 @@ const Summary = ({
     }}
   </QueriesResolver>
 );
+
+Summary.propTypes = {
+  sqon: PropTypes.object,
+  api: PropTypes.func.isRequired,
+};
 
 export default compose(withApi)(Summary);
