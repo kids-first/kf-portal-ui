@@ -15,14 +15,14 @@ const CohortHeaderWrapper = styleComponent(HeaderWrapper, 'cohortHeaderWrapper')
 const CohortCardHeader = styleComponent(CardHeader, 'cohortCardHeader');
 
 export const CohortCard = ({
-                             title,
-                             badge,
-                             children,
-                             long = false,
-                             loading = false,
-                             showHeader = true,
-                             Content,
-                           }) => {
+  title,
+  badge,
+  children,
+  long = false,
+  loading = false,
+  showHeader = true,
+  Content,
+}) => {
   const divElem = useRef();
   return (
     <Card
@@ -31,23 +31,22 @@ export const CohortCard = ({
       Header={<CohortCardHeader title={title} badge={badge} />}
       showHeader={showHeader}
       Content={Content}
+      parentElem={divElem}
     >
-      {loading ?
+      {loading ? (
         <div ref={divElem} className="dynamic-content">
-          <Spinner className={'spinner'} size={'large'} />
+          <Spinner size={'large'} />
         </div>
-        : typeof children === 'function' ? (
-          <div ref={divElem} className="dynamic-content">
-            {children({ height: divElem.current?.offsetHeight })}
-          </div>
-        ) : (
-          children
-        )}
-
-      }
+      ) : typeof children === 'function' ? (
+        <div ref={divElem} className="dynamic-content">
+          {children({ height: divElem.current?.offsetHeight })}
+        </div>
+      ) : (
+        children
+      )}
     </Card>
-  )
-}
+  );
+};
 
 CohortCard.propTypes = {
   title: PropTypes.string,
