@@ -15,14 +15,14 @@ const CohortHeaderWrapper = styleComponent(HeaderWrapper, 'cohortHeaderWrapper')
 const CohortCardHeader = styleComponent(CardHeader, 'cohortCardHeader');
 
 export const CohortCard = ({
-  title,
-  badge,
-  children,
-  long = false,
-  loading = false,
-  showHeader = true,
-  Content,
-}) => {
+                             title,
+                             badge,
+                             children,
+                             long = false,
+                             loading = false,
+                             showHeader = true,
+                             Content,
+                           }) => {
   const divElem = useRef();
   return (
     <Card
@@ -34,7 +34,7 @@ export const CohortCard = ({
     >
       {loading ?
         <div ref={divElem} className="dynamic-content">
-        <Spinner className={'spinner'} size={'large'} />
+          <Spinner className={'spinner'} size={'large'} />
         </div>
         : typeof children === 'function' ? (
           <div ref={divElem} className="dynamic-content">

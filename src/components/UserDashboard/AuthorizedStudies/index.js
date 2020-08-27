@@ -10,7 +10,6 @@ import AccessGate from '../../AccessGate';
 import { DashboardCard } from '../styles';
 import Info from '../Info';
 import { Button } from 'antd';
-import { spinner } from './AuthorizedStudies.module.css';
 import { Spinner } from 'uikit/Spinner';
 
 const AuthorizedStudies = compose(
@@ -28,7 +27,7 @@ const AuthorizedStudies = compose(
     return (
       <DashboardCard Header={Header} inactive={inactive} scrollable={!isEmpty(fenceConnections)}>
         {inactive ? (
-          <Spinner className={spinner} size={'large'} />
+          <Spinner size={'large'} />
         ) : isEmpty(fenceConnections) ? (
           <Fragment>
             <AccessGate

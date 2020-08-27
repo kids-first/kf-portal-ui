@@ -29,7 +29,6 @@ import {
   scrollY,
   studyDescription,
   studySavedTime,
-  spinner,
   cardHeader,
 } from './SavedQueries.module.css';
 import ConfirmDelVirtualStudy from 'components/Modal/ConfirmDelVirtualStudy.tsx';
@@ -208,7 +207,7 @@ class SavedQueries extends React.Component {
         )}
         <DashboardCard scrollable={true} showHeader={false} showScrollFullHeight={true}>
           {loadingQueries ? (
-            <Spinner className={spinner} size={'large'} />
+            <Spinner size={'large'} />
           ) : (
             <>
               <CardHeader title="Saved Queries" className={cardHeader} />

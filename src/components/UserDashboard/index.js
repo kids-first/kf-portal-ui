@@ -21,6 +21,7 @@ import {
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
+  wrapperVerticalBarChart,
 } from './UserDashboard.module.css';
 import { Col, Row } from 'antd';
 import ParticipantSets from './ParticipantSets';
@@ -39,7 +40,7 @@ export default compose(
       {/* [NEXT] SizeProvider here is the only usage of 'react-sizeme' */}
       <Row gutter={[30, 30]} align={'top'} style={{ paddingLeft: 15, paddingRight: 15, top: -15 }}>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <div style={{ height: '256px' }}>
+          <div className={wrapperVerticalBarChart}>
             <SavedQueries {...{ api, loggedInUser }} />
           </div>
         </Col>
@@ -58,7 +59,7 @@ export default compose(
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard showHeader={false}>
-            <div style={{ height: '265px' }}>
+            <div className={wrapperVerticalBarChart}>
               <MostParticipantsStudiesChart />
             </div>
           </DashboardCard>
@@ -72,7 +73,7 @@ export default compose(
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Most Frequent Diagnoses">
-            <div style={{ height: '265px' }}>
+            <div className={wrapperVerticalBarChart}>
               <MostFrequentDiagnosesChart />
             </div>
           </DashboardCard>
