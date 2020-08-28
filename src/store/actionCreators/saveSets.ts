@@ -1,5 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import {
+  EDIT_SAVE_SET_TAG,
+  EditSetParams,
   FAILURE_CREATE,
   FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
@@ -7,22 +9,32 @@ import {
   SaveSetNameConflictError,
   SaveSetParams,
   SaveSetsActionTypes,
+  TOGGLE_EDIT_TAG,
   TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
   UserSaveSets,
 } from '../saveSetTypes';
-import { deleteSaveSet, getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
+import {
+  deleteSaveSet,
+  editSaveSetTag,
+  getSetAndParticipantsCountByUser,
+  saveSetCountForTag,
+} from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
 import graphql from 'services/arranger';
+import { initializeApi } from 'services/api';
+import { SaveSetInfo } from '../../components/UserDashboard/ParticipantSets';
 
 const createSaveSet = (
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-  const { tag, userId, api, sqon, onSuccess } = payload;
+  const { tag, userId, sqon, onSuccess } = payload;
+
+  //todo inject APi
 
   dispatch(isLoadingCreateSaveSet(true));
 
@@ -32,7 +44,7 @@ const createSaveSet = (
       path: 'kf_id',
       sqon,
       userId: userId,
-      api: graphql(api),
+      api: graphql(initializeApi()),
       tag: tag,
     });
     if (onSuccess) {
@@ -69,6 +81,30 @@ export const createSaveSetIfUnique = (
   } catch (error) {
     dispatch(failureCreate(error));
     dispatch(isLoadingCreateSaveSet(false));
+  }
+};
+
+export const editSaveSet = (
+  payload: EditSetParams,
+): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+  const { saveSetInfo, onNameConflict } = payload;
+
+  dispatch(isEditingSaveSetTag(true));
+  try {
+    const tagIsUnique = (await saveSetCountForTag(saveSetInfo.name, saveSetInfo.currentUser)) === 0;
+    if (tagIsUnique) {
+      await editSaveSetTag(saveSetInfo);
+      dispatch(editTag(saveSetInfo));
+      dispatch(isEditingSaveSetTag(false));
+      return;
+    }
+
+    if (onNameConflict) {
+      onNameConflict();
+    }
+  } catch (error) {
+    console.error(error);
+    dispatch(isEditingSaveSetTag(false));
   }
 };
 
@@ -144,4 +180,14 @@ export const failureLoadSaveSets = (error: Error): SaveSetsActionTypes => ({
 export const removeUserSavedSets = (sets: string[]): SaveSetsActionTypes => ({
   type: REMOVE_USER_SAVE_SETS,
   sets,
+});
+
+export const isEditingSaveSetTag = (isEditingTag: boolean): SaveSetsActionTypes => ({
+  type: TOGGLE_EDIT_TAG,
+  isEditingTag,
+});
+
+export const editTag = (set: SaveSetInfo): SaveSetsActionTypes => ({
+  type: EDIT_SAVE_SET_TAG,
+  set: set,
 });

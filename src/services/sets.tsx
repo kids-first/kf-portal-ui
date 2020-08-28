@@ -1,5 +1,6 @@
 import graphql from 'services/arranger';
 import { initializeApi } from 'services/api';
+import { SaveSetInfo } from '../components/UserDashboard/ParticipantSets';
 
 const getIdsFromSaveSetId = async (rawId: string) => {
   const response = await graphql(initializeApi())({
@@ -118,6 +119,21 @@ export const deleteSaveSet = async (userId: string, setIds: string[]) => {
   });
 
   return response.data.deleteSaveSets;
+};
+
+export const editSaveSetTag = async (set: SaveSetInfo) => {
+  const response = await graphql(initializeApi())({
+    query: `mutation($tag: String!, $userId: String!, $setId: String! ){
+              renameSaveSetTag(tag: $tag, userId: $userId, setId: $setId)
+            }`,
+    variables: {
+      tag: set.name,
+      userId: set.currentUser,
+      setId: set.key,
+    },
+  });
+
+  return response.data.updateSaveSet;
 };
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
