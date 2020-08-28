@@ -1,14 +1,18 @@
 /* eslint-disable react/prop-types */
 import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
-import { Button, Popconfirm, Result, Spin, Table } from 'antd';
+import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SaveSetModalActionsTypes, SaveSetState } from 'store/saveSetTypes';
+import {
+  DeleteSetParams,
+  DispatchSaveSets,
+  SaveSetModalActionsTypes,
+  SaveSetState,
+} from 'store/saveSetTypes';
 import {
   selectErrorUserSaveSets,
   selectIsDeletingSaveSets,
-  selectIsEditingTag,
   selectIsLoadingSaveSets,
   selectUserSaveSets,
 } from 'store/selectors/saveSetsSelectors';
@@ -42,14 +46,13 @@ const mapState = (state: RootState): SaveSetState => ({
     sets: selectUserSaveSets(state),
     error: selectErrorUserSaveSets(state),
     isDeleting: selectIsDeletingSaveSets(state),
-    isEditingTag: selectIsEditingTag(state),
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   userSaveSets: (userId: string) => dispatch(getUserSaveSets(userId)),
-  deleteSaveSet: (saveSetsIds: string[], userId: string) =>
-    dispatch(deleteUserSaveSets(userId, saveSetsIds)),
+  deleteSaveSet: (deleteSetParams: DeleteSetParams) =>
+    dispatch(deleteUserSaveSets(deleteSetParams)),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -59,6 +62,14 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = PropsFromRedux & OwnProps;
 
 const align = 'right' as AlignType;
+
+const onDeleteFail = () => {
+  notification.error({
+    message: 'Error',
+    description: `Deleting this Saved Set has failed`,
+    duration: 10,
+  });
+};
 
 const ParticipantSets: FunctionComponent<Props> = (props) => {
   const { user, userSaveSets, userSets, deleteSaveSet } = props;
@@ -71,7 +82,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   } as SaveSetInfo);
 
   const confirm = (key: string, userId: string) => {
-    deleteSaveSet([key], userId);
+    deleteSaveSet({ userId: userId, setIds: [key], onFail: onDeleteFail } as DeleteSetParams);
   };
 
   const onEditClick = (record: SaveSetInfo) => {
@@ -152,6 +163,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
             setShowModal(false);
             setEditSet({ key: '', name: '', count: 0, currentUser: '' });
           }}
+          onFail={onDeleteFail}
           setToRename={editSet}
           saveSetActionType={SaveSetModalActionsTypes.EDIT}
         />

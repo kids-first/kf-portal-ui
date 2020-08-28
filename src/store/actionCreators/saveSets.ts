@@ -1,5 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import {
+  DeleteSetParams,
   EDIT_SAVE_SET_TAG,
   EditSetParams,
   FAILURE_CREATE,
@@ -9,7 +10,6 @@ import {
   SaveSetNameConflictError,
   SaveSetParams,
   SaveSetsActionTypes,
-  TOGGLE_EDIT_TAG,
   TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
@@ -87,24 +87,27 @@ export const createSaveSetIfUnique = (
 export const editSaveSet = (
   payload: EditSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-  const { saveSetInfo, onNameConflict } = payload;
+  const { saveSetInfo, onNameConflict, onSuccess, onFail } = payload;
 
-  dispatch(isEditingSaveSetTag(true));
   try {
     const tagIsUnique = (await saveSetCountForTag(saveSetInfo.name, saveSetInfo.currentUser)) === 0;
     if (tagIsUnique) {
-      await editSaveSetTag(saveSetInfo);
-      dispatch(editTag(saveSetInfo));
-      dispatch(isEditingSaveSetTag(false));
-      return;
+      const result = await editSaveSetTag(saveSetInfo);
+
+      if (result && result > 0) {
+        dispatch(editTag(saveSetInfo));
+        onSuccess();
+        return;
+      } else onFail();
     }
 
     if (onNameConflict) {
       onNameConflict();
     }
+
+    dispatch(failureCreate(new SaveSetNameConflictError('A set with this name already exists')));
   } catch (error) {
     console.error(error);
-    dispatch(isEditingSaveSetTag(false));
   }
 };
 
@@ -127,14 +130,17 @@ export const getUserSaveSets = (
 };
 
 export const deleteUserSaveSets = (
-  userId: string,
-  setIds: string[],
+  payload: DeleteSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-  dispatch(isDeletingSaveSets(true));
-  try {
-    await deleteSaveSet(userId, setIds);
+  const { userId, setIds, onFail } = payload;
 
-    dispatch(removeUserSavedSets(setIds));
+  dispatch(isDeletingSaveSets(true));
+
+  try {
+    const result = await deleteSaveSet(userId, setIds);
+
+    if (result && result > 0) dispatch(removeUserSavedSets(setIds));
+    else onFail();
   } catch (e) {
     //nothing to be done
     console.error(e);
@@ -180,11 +186,6 @@ export const failureLoadSaveSets = (error: Error): SaveSetsActionTypes => ({
 export const removeUserSavedSets = (sets: string[]): SaveSetsActionTypes => ({
   type: REMOVE_USER_SAVE_SETS,
   sets,
-});
-
-export const isEditingSaveSetTag = (isEditingTag: boolean): SaveSetsActionTypes => ({
-  type: TOGGLE_EDIT_TAG,
-  isEditingTag,
 });
 
 export const editTag = (set: SaveSetInfo): SaveSetsActionTypes => ({

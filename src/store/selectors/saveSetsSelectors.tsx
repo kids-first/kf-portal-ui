@@ -6,4 +6,3 @@ export const selectIsLoadingSaveSets = (state: RootState) => state.saveSets.user
 export const selectUserSaveSets = (state: RootState) => state.saveSets.userSets.sets;
 export const selectErrorUserSaveSets = (state: RootState) => state.saveSets.userSets.error;
 export const selectIsDeletingSaveSets = (state: RootState) => state.saveSets.userSets.isDeleting;
-export const selectIsEditingTag = (state: RootState) => state.saveSets.userSets.isEditingTag;

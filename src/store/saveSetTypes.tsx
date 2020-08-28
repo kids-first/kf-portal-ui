@@ -11,7 +11,6 @@ export const USER_SAVE_SETS = 'USER_SAVE_SETS';
 export const FAILURE_LOAD_SAVE_SETS = 'FAILURE_LOAD_SAVE_SETS';
 export const TOGGLE_IS_DELETING_SAVE_SETS = 'TOGGLE_IS_DELETING_SAVE_SETS';
 export const REMOVE_USER_SAVE_SETS = 'REMOVE_USER_SAVE_SETS';
-export const TOGGLE_EDIT_TAG = 'TOGGLE_EDIT_TAG';
 export const EDIT_SAVE_SET_TAG = 'EDIT_SAVE_SET_TAG';
 
 interface TogglePendingCreate {
@@ -53,11 +52,6 @@ interface RemoveUserSaveSets {
   sets: string[];
 }
 
-interface IsEditingSaveSetTag {
-  type: typeof TOGGLE_EDIT_TAG;
-  isEditingTag: boolean;
-}
-
 interface EditSaveSetTag {
   type: typeof EDIT_SAVE_SET_TAG;
   set: SaveSetInfo;
@@ -71,7 +65,6 @@ export type SaveSetsActionTypes =
   | DisplayUserSaveSets
   | IsDeletingSaveSets
   | RemoveUserSaveSets
-  | IsEditingSaveSetTag
   | EditSaveSetTag
   | FailureLoadSaveSets;
 
@@ -93,7 +86,6 @@ export interface SaveSetState {
     error?: Error | null;
     sets: UserSaveSets[];
     isDeleting: boolean;
-    isEditingTag: boolean;
   };
 }
 
@@ -107,7 +99,14 @@ export type SaveSetParams = {
 export type EditSetParams = {
   saveSetInfo: SaveSetInfo;
   onSuccess: Function;
+  onFail: Function;
   onNameConflict: Function;
+};
+
+export type DeleteSetParams = {
+  userId: string;
+  setIds: string[];
+  onFail: Function;
 };
 
 export class SaveSetNameConflictError extends Error {

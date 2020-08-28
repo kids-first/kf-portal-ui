@@ -35,7 +35,7 @@ type OwnProps = {
   hideModalCb: Function;
   sqon: Sqon;
   user: LoggedInUser;
-  setToRename: SaveSetInfo;
+  setToRename?: SaveSetInfo;
 };
 
 type NameSetValidator = {
@@ -53,7 +53,6 @@ const mapState = (state: RootState): SaveSetState => ({
     isLoading: false,
     error: null,
     isDeleting: false,
-    isEditingTag: false,
   },
 });
 
@@ -131,18 +130,21 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
 
     switch (saveSetActionType) {
       case SaveSetModalActionsTypes.EDIT:
-        await onEditSet({
-          saveSetInfo: {
-            key: setToRename.key,
-            name: nameSet,
-            currentUser: user.egoId,
-          } as SaveSetInfo,
-          onSuccess: () => {
-            setIsVisible(false);
-            hideModalCb();
-          },
-          onNameConflict: onNameConflictCb,
-        });
+        if (setToRename) {
+          await onEditSet({
+            saveSetInfo: {
+              key: setToRename.key,
+              name: nameSet,
+              currentUser: user.egoId,
+            } as SaveSetInfo,
+            onSuccess: () => {
+              setIsVisible(false);
+              hideModalCb();
+            },
+            onNameConflict: onNameConflictCb,
+            onFail: () => {}, //TODO create on fail function
+          });
+        }
         break;
       case SaveSetModalActionsTypes.CREATE:
         await onCreateSet({
@@ -234,8 +236,8 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
           initialValues={
             saveSetActionType === SaveSetModalActionsTypes.CREATE
               ? { nameSet: defaultTagName }
-              : { nameSet: setToRename.name }
-          } //FIXME
+              : { nameSet: setToRename?.name || '' }
+          }
           onFinish={onFinish}
         >
           <Form.Item
