@@ -245,6 +245,7 @@ class ParticipantsTable extends Component {
       <Fragment>
         {this.state.showModal && (
           <SaveSetModal
+            title={'Save Participant Set'}
             api={api}
             sqon={sqon}
             user={loggedInUser}
@@ -253,6 +254,7 @@ class ParticipantsTable extends Component {
                 showModal: false,
               })
             }
+            saveSetActionType={'create'}
           />
         )}
         <Toolbar style={{ border: 'none' }}>

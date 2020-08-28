@@ -8,25 +8,34 @@ import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
 import {
   DispatchSaveSets,
+  EditSetParams,
   isSaveSetNameConflictError,
+  SaveSetModalActionsTypes,
   SaveSetParams,
   SaveSetState,
   UserSaveSets,
 } from 'store/saveSetTypes';
-import { createSaveSetIfUnique, reInitializeSaveSetsState } from 'store/actionCreators/saveSets';
+import {
+  createSaveSetIfUnique,
+  editSaveSet,
+  reInitializeSaveSetsState,
+} from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
+import { SaveSetInfo } from '../../UserDashboard/ParticipantSets';
 
 export const MAX_LENGTH_NAME = 50;
 const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_]*$/;
 const FORM_NAME = 'save-set';
 
 type OwnProps = {
+  title: string;
+  saveSetActionType: SaveSetModalActionsTypes;
   hideModalCb: Function;
-  api: Function;
   sqon: Sqon;
   user: LoggedInUser;
+  setToRename: SaveSetInfo;
 };
 
 type NameSetValidator = {
@@ -44,11 +53,13 @@ const mapState = (state: RootState): SaveSetState => ({
     isLoading: false,
     error: null,
     isDeleting: false,
+    isEditingTag: false,
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
+  onEditSet: (params: EditSetParams) => dispatch(editSaveSet(params)),
   reInitializeState: () => dispatch(reInitializeSaveSetsState()),
 });
 
@@ -88,9 +99,20 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [defaultTagName, setDefaultTagName] = useState('Saved_Set_1');
   const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
-  const { user, sqon, api, onCreateSet, create, reInitializeState, hideModalCb } = props;
+  const {
+    user,
+    sqon,
+    onCreateSet,
+    onEditSet,
+    create,
+    reInitializeState,
+    hideModalCb,
+    title,
+    saveSetActionType,
+    setToRename,
+  } = props;
 
-  const onSuccessCb = () => {
+  const onSuccessCreateCb = () => {
     notification.success({
       message: 'Success',
       description: `Your participant set has been saved.`,
@@ -107,14 +129,35 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const onFinish = async (values: Store) => {
     const { nameSet } = values;
 
-    await onCreateSet({
-      tag: nameSet,
-      userId: user.egoId,
-      api: api,
-      sqon: sqon,
-      onSuccess: onSuccessCb,
-      onNameConflict: onNameConflictCb,
-    });
+    switch (saveSetActionType) {
+      case SaveSetModalActionsTypes.EDIT:
+        await onEditSet({
+          saveSetInfo: {
+            key: setToRename.key,
+            name: nameSet,
+            currentUser: user.egoId,
+          } as SaveSetInfo,
+          onSuccess: () => {
+            setIsVisible(false);
+            hideModalCb();
+          },
+          onNameConflict: onNameConflictCb,
+        });
+        break;
+      case SaveSetModalActionsTypes.CREATE:
+        await onCreateSet({
+          tag: nameSet,
+          userId: user.egoId,
+          sqon: sqon,
+          onSuccess: onSuccessCreateCb,
+          onNameConflict: onNameConflictCb,
+        });
+        break;
+      default:
+        setIsVisible(false);
+        hideModalCb();
+        break;
+    }
   };
 
   const handleCancel = () => {
@@ -160,7 +203,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
 
   return (
     <Modal
-      title="Save Participant Set"
+      title={title}
       visible={isVisible}
       onCancel={handleCancel}
       footer={[
@@ -182,13 +225,17 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         </Form.Item>,
       ]}
     >
-      {loadingDefaultTagName ? (
+      {SaveSetModalActionsTypes.CREATE === saveSetActionType && loadingDefaultTagName ? (
         <Spin size="small" tip="Loading..." />
       ) : (
         <Form
           form={form}
           name={FORM_NAME}
-          initialValues={{ nameSet: defaultTagName }}
+          initialValues={
+            saveSetActionType === SaveSetModalActionsTypes.CREATE
+              ? { nameSet: defaultTagName }
+              : { nameSet: setToRename.name }
+          } //FIXME
           onFinish={onFinish}
         >
           <Form.Item

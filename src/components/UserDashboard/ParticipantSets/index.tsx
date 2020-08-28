@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
-import * as React from 'react';
-import { FunctionComponent, useEffect } from 'react';
+import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import { Button, Popconfirm, Result, Spin, Table } from 'antd';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SaveSetState } from 'store/saveSetTypes';
+import { DispatchSaveSets, SaveSetModalActionsTypes, SaveSetState } from 'store/saveSetTypes';
 import {
   selectErrorUserSaveSets,
   selectIsDeletingSaveSets,
+  selectIsEditingTag,
   selectIsLoadingSaveSets,
   selectUserSaveSets,
 } from 'store/selectors/saveSetsSelectors';
@@ -19,9 +19,17 @@ import { AlignType } from 'rc-table/lib/interface';
 import './ParticipantSets.css';
 import { LoggedInUser } from 'store/userTypes';
 import participantMagenta from 'assets/icon-participants-magenta.svg';
+import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
 
 type OwnProps = {
   user: LoggedInUser;
+};
+
+export type SaveSetInfo = {
+  key: string;
+  name: string;
+  count?: number;
+  currentUser: string;
 };
 
 const mapState = (state: RootState): SaveSetState => ({
@@ -34,6 +42,7 @@ const mapState = (state: RootState): SaveSetState => ({
     sets: selectUserSaveSets(state),
     error: selectErrorUserSaveSets(state),
     isDeleting: selectIsDeletingSaveSets(state),
+    isEditingTag: selectIsEditingTag(state),
   },
 });
 
@@ -53,9 +62,21 @@ const align = 'right' as AlignType;
 
 const ParticipantSets: FunctionComponent<Props> = (props) => {
   const { user, userSaveSets, userSets, deleteSaveSet } = props;
+  const [showModal, setShowModal] = useState(false);
+  const [editSet, setEditSet] = useState({
+    key: '',
+    name: '',
+    count: 0,
+    currentUser: '',
+  } as SaveSetInfo);
 
   const confirm = (key: string, userId: string) => {
     deleteSaveSet([key], userId);
+  };
+
+  const onEditClick = (record: SaveSetInfo) => {
+    setEditSet(record);
+    setShowModal(true);
   };
 
   const columns = [
@@ -64,11 +85,11 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       dataIndex: 'name',
       key: 'name',
       // eslint-disable-next-line react/display-name
-      render: (name: string) => (
+      render: (name: string, record: SaveSetInfo) => (
         <div className={'save-set-column-name'}>
           <div className={'save-set-table-name'}>
             {name}{' '}
-            <Button size={'small'} type={'text'}>
+            <Button size={'small'} type={'text'} onClick={() => onEditClick(record)}>
               <EditFilled className={'edit-icon'} />
             </Button>
           </div>
@@ -119,10 +140,22 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     name: s.tag,
     count: s.size,
     currentUser: user.egoId,
-  }));
+  })) as SaveSetInfo[];
 
   return (
-    <>
+    <Fragment>
+      {showModal && (
+        <SaveSetModal
+          title={'Edit Set Name'}
+          user={user}
+          hideModalCb={() => {
+            setShowModal(false);
+            setEditSet({ key: '', name: '', count: 0, currentUser: '' });
+          }}
+          setToRename={editSet}
+          saveSetActionType={SaveSetModalActionsTypes.EDIT}
+        />
+      )}
       {userSets.isLoading ? (
         <div className={'participant-set-spinner-container'}>
           <Spin size={'large'} />
@@ -132,7 +165,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       ) : (
         <Result status="error" title="Failed to load user SaveSets" />
       )}
-    </>
+    </Fragment>
   );
 };
 
