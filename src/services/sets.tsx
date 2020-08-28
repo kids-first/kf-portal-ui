@@ -133,7 +133,7 @@ export const editSaveSetTag = async (set: SaveSetInfo) => {
     },
   });
 
-  return response.data.updateSaveSet;
+  return response.data.renameSaveSetTag;
 };
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>

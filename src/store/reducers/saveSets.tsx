@@ -6,7 +6,6 @@ import {
   REMOVE_USER_SAVE_SETS,
   SaveSetsActionTypes,
   SaveSetState,
-  TOGGLE_EDIT_TAG,
   TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
@@ -24,7 +23,6 @@ const initialState: SaveSetState = {
     error: null,
     isLoading: false,
     isDeleting: false,
-    isEditingTag: false,
   },
 };
 
@@ -56,9 +54,6 @@ export default (state = initialState, action: SaveSetsActionTypes): SaveSetState
     }
     case TOGGLE_IS_DELETING_SAVE_SETS: {
       return { ...state, userSets: { ...state.userSets, isDeleting: action.isDeleting } };
-    }
-    case TOGGLE_EDIT_TAG: {
-      return { ...state, userSets: { ...state.userSets, isEditingTag: action.isEditingTag } };
     }
     case EDIT_SAVE_SET_TAG: {
       return {
