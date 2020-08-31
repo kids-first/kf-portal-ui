@@ -96,6 +96,7 @@ export type SaveSetParams = {
   onSuccess: Function;
   onNameConflict: Function;
 };
+
 export type EditSetParams = {
   saveSetInfo: SaveSetInfo;
   onSuccess: Function;

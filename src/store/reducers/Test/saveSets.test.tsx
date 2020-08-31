@@ -6,7 +6,9 @@ import {
   isLoadingCreateSaveSet,
   isLoadingSaveSets,
   isDeletingSaveSets,
+  isEditingTag,
 } from '../../actionCreators/saveSets';
+import { SaveSetInfo } from '../../../components/UserDashboard/ParticipantSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -100,6 +102,27 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: false,
         isDeleting: true,
+      },
+    });
+  });
+
+  it('should handle editing save sets tag', () => {
+    const set = {
+      key: '1234',
+      name: 'someSet',
+      currentUser: 'me',
+    } as SaveSetInfo;
+
+    expect(reducer(initialState, isEditingTag(set))).toEqual({
+      create: {
+        isLoading: false,
+        error: null,
+      },
+      userSets: {
+        sets: [],
+        error: null,
+        isLoading: false,
+        isDeleting: false,
       },
     });
   });
