@@ -142,7 +142,15 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
               hideModalCb();
             },
             onNameConflict: onNameConflictCb,
-            onFail: () => {}, //TODO create on fail function
+            onFail: () => {
+              notification.error({
+                message: 'Error',
+                description: `Editing the name of this Saved Set has failed`,
+                duration: 10,
+              });
+              setIsVisible(false);
+              hideModalCb();
+            },
           });
         }
         break;

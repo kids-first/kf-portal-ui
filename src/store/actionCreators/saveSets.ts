@@ -29,12 +29,10 @@ import graphql from 'services/arranger';
 import { initializeApi } from 'services/api';
 import { SaveSetInfo } from '../../components/UserDashboard/ParticipantSets';
 
-const createSaveSet = (
+export const createSaveSet = (
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
   const { tag, userId, sqon, onSuccess } = payload;
-
-  //todo inject APi
 
   dispatch(isLoadingCreateSaveSet(true));
 
@@ -71,7 +69,6 @@ export const createSaveSetIfUnique = (
       dispatch(createSaveSet(payload));
       return;
     }
-
     if (onNameConflict) {
       onNameConflict();
     }
@@ -95,10 +92,13 @@ export const editSaveSet = (
       const result = await editSaveSetTag(saveSetInfo);
 
       if (result && result > 0) {
-        dispatch(editTag(saveSetInfo));
+        dispatch(isEditingTag(saveSetInfo));
         onSuccess();
         return;
-      } else onFail();
+      } else {
+        onFail();
+        return;
+      }
     }
 
     if (onNameConflict) {
@@ -188,7 +188,7 @@ export const removeUserSavedSets = (sets: string[]): SaveSetsActionTypes => ({
   sets,
 });
 
-export const editTag = (set: SaveSetInfo): SaveSetsActionTypes => ({
+export const isEditingTag = (set: SaveSetInfo): SaveSetsActionTypes => ({
   type: EDIT_SAVE_SET_TAG,
   set: set,
 });
