@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import union from 'lodash/union';
 import compact from 'lodash/compact';
 import { compose, withState } from 'recompose';
-import { Button } from 'antd';
 import autobind from 'auto-bind-es5';
 
 import ControlledDataTable from 'uikit/DataTable/ControlledDataTable';
@@ -20,6 +19,7 @@ import SaveSetModal from './SaveSetModal';
 import './ParticipantTableView.css';
 import { isPartOfGroup } from 'common/profile';
 import DownloadButton from './DownloadButton';
+import ParticipantSetDropdown from './ParticipantSetDropdown';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -276,16 +276,13 @@ class ParticipantsTable extends Component {
             </ToolbarGroup>
             <div className={'action-btns-layout'}>
               {isPartOfGroup('kf-investigator', loggedInUser) && (
-                <Button
-                  className={'save-set-btn'}
-                  onClick={() =>
+                <ParticipantSetDropdown
+                  onSave={() => {
                     this.setState({
                       showModal: true,
-                    })
-                  }
-                >
-                  Save participants set
-                </Button>
+                    });
+                  }}
+                />
               )}
               <DownloadButton sqon={sqon} />
               <ColumnFilter
