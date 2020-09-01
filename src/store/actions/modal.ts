@@ -1,3 +1,6 @@
+import { ThunkDispatch } from 'redux-thunk';
+import { RootState } from '../rootState';
+
 export enum ActionTypes {
   OPEN_MODAL,
   CLOSE_MODAL,
@@ -17,3 +20,5 @@ export const closeModal = (id: string) => ({
   type: ActionTypes.CLOSE_MODAL,
   id,
 });
+
+export type DispatchModal = ThunkDispatch<RootState, null, ActionResponseType>;
