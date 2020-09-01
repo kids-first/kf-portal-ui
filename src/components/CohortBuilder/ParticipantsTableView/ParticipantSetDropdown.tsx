@@ -1,15 +1,20 @@
 import React from 'react';
 import { Button, Dropdown, Menu } from 'antd';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 type Props = {
   onSave: Function;
 };
 
 const ParticipantSetDropdown = ({ onSave }: Props) => {
-  const onClick = ({ key }: any) => {
+  const onClick: MenuClickEventHandler = (e) => {
+    const key = e.key;
     switch (key) {
       case 'save':
         onSave();
+        break;
+      default:
+        break;
     }
   };
 

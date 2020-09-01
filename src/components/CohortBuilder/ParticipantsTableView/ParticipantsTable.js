@@ -220,8 +220,6 @@ class ParticipantsTable extends Component {
     autobind(this);
   }
 
-  onClickCb = () => {};
-
   render() {
     const {
       loading,
