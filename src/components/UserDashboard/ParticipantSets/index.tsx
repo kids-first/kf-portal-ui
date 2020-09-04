@@ -7,7 +7,7 @@ import { RootState } from 'store/rootState';
 import {
   DeleteSetParams,
   DispatchSaveSets,
-  SaveSetModalActionsTypes,
+  SaveSetActionsTypes,
   SaveSetState,
 } from 'store/saveSetTypes';
 import {
@@ -165,7 +165,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           }}
           onFail={onDeleteFail}
           setToRename={editSet}
-          saveSetActionType={SaveSetModalActionsTypes.EDIT}
+          saveSetActionType={SaveSetActionsTypes.EDIT}
         />
       )}
       {userSets.isLoading ? (

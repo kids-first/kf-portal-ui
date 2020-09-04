@@ -20,6 +20,7 @@ import './ParticipantTableView.css';
 import { isPartOfGroup } from 'common/profile';
 import DownloadButton from './DownloadButton';
 import ParticipantSetDropdown from './ParticipantSetDropdown';
+import { SaveSetActionsTypes } from 'store/saveSetTypes';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -254,7 +255,7 @@ class ParticipantsTable extends Component {
                 showModal: false,
               })
             }
-            saveSetActionType={'create'}
+            saveSetActionType={SaveSetActionsTypes.CREATE}
           />
         )}
         <Toolbar style={{ border: 'none' }}>

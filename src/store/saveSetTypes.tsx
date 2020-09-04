@@ -120,7 +120,7 @@ export class SaveSetNameConflictError extends Error {
 export const isSaveSetNameConflictError = (e?: Error | null) =>
   e instanceof SaveSetNameConflictError;
 
-export enum SaveSetModalActionsTypes {
+export enum SaveSetActionsTypes {
   CREATE = 'create',
   EDIT = 'edit',
 }

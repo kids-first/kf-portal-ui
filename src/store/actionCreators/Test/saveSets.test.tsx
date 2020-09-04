@@ -30,7 +30,7 @@ import {
 } from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
-import { SaveSetInfo } from '../../../components/UserDashboard/ParticipantSets';
+import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
 console.error = jest.fn();
 
 describe('Save Sets actions', () => {

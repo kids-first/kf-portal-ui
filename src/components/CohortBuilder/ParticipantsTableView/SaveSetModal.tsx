@@ -10,7 +10,7 @@ import {
   DispatchSaveSets,
   EditSetParams,
   isSaveSetNameConflictError,
-  SaveSetModalActionsTypes,
+  SaveSetActionsTypes,
   SaveSetParams,
   SaveSetState,
   UserSaveSets,
@@ -31,7 +31,7 @@ const FORM_NAME = 'save-set';
 
 type OwnProps = {
   title: string;
-  saveSetActionType: SaveSetModalActionsTypes;
+  saveSetActionType: SaveSetActionsTypes;
   hideModalCb: Function;
   sqon: Sqon;
   user: LoggedInUser;
@@ -129,32 +129,33 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
     const { nameSet } = values;
 
     switch (saveSetActionType) {
-      case SaveSetModalActionsTypes.EDIT:
-        if (setToRename) {
-          await onEditSet({
-            saveSetInfo: {
-              key: setToRename.key,
-              name: nameSet,
-              currentUser: user.egoId,
-            } as SaveSetInfo,
-            onSuccess: () => {
-              setIsVisible(false);
-              hideModalCb();
-            },
-            onNameConflict: onNameConflictCb,
-            onFail: () => {
-              notification.error({
-                message: 'Error',
-                description: `Editing the name of this Saved Set has failed`,
-                duration: 10,
-              });
-              setIsVisible(false);
-              hideModalCb();
-            },
-          });
+      case SaveSetActionsTypes.EDIT:
+        if (!setToRename) {
+          break;
         }
+        await onEditSet({
+          saveSetInfo: {
+            key: setToRename.key,
+            name: nameSet,
+            currentUser: user.egoId,
+          } as SaveSetInfo,
+          onSuccess: () => {
+            setIsVisible(false);
+            hideModalCb();
+          },
+          onNameConflict: onNameConflictCb,
+          onFail: () => {
+            notification.error({
+              message: 'Error',
+              description: `Editing the name of this Saved Set has failed`,
+              duration: 10,
+            });
+            setIsVisible(false);
+            hideModalCb();
+          },
+        });
         break;
-      case SaveSetModalActionsTypes.CREATE:
+      case SaveSetActionsTypes.CREATE:
         await onCreateSet({
           tag: nameSet,
           userId: user.egoId,
@@ -235,14 +236,14 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         </Form.Item>,
       ]}
     >
-      {SaveSetModalActionsTypes.CREATE === saveSetActionType && loadingDefaultTagName ? (
+      {SaveSetActionsTypes.CREATE === saveSetActionType && loadingDefaultTagName ? (
         <Spin size="small" tip="Loading..." />
       ) : (
         <Form
           form={form}
           name={FORM_NAME}
           initialValues={
-            saveSetActionType === SaveSetModalActionsTypes.CREATE
+            saveSetActionType === SaveSetActionsTypes.CREATE
               ? { nameSet: defaultTagName }
               : { nameSet: setToRename?.name || '' }
           }

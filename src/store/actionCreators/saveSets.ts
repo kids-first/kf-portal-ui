@@ -27,7 +27,7 @@ import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
 import graphql from 'services/arranger';
 import { initializeApi } from 'services/api';
-import { SaveSetInfo } from '../../components/UserDashboard/ParticipantSets';
+import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
 
 export const createSaveSet = (
   payload: SaveSetParams,
@@ -89,9 +89,9 @@ export const editSaveSet = (
   try {
     const tagIsUnique = (await saveSetCountForTag(saveSetInfo.name, saveSetInfo.currentUser)) === 0;
     if (tagIsUnique) {
-      const result = await editSaveSetTag(saveSetInfo);
+      const nOfSaveSetEdited = await editSaveSetTag(saveSetInfo);
 
-      if (result && result > 0) {
+      if (nOfSaveSetEdited && nOfSaveSetEdited > 0) {
         dispatch(isEditingTag(saveSetInfo));
         onSuccess();
         return;
@@ -139,8 +139,11 @@ export const deleteUserSaveSets = (
   try {
     const result = await deleteSaveSet(userId, setIds);
 
-    if (result && result > 0) dispatch(removeUserSavedSets(setIds));
-    else onFail();
+    if (result && result > 0) {
+      dispatch(removeUserSavedSets(setIds));
+    } else {
+      onFail();
+    }
   } catch (e) {
     //nothing to be done
     console.error(e);

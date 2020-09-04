@@ -8,7 +8,7 @@ import {
   isDeletingSaveSets,
   isEditingTag,
 } from '../../actionCreators/saveSets';
-import { SaveSetInfo } from '../../../components/UserDashboard/ParticipantSets';
+import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
