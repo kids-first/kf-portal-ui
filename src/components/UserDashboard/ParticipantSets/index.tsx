@@ -1,11 +1,15 @@
 /* eslint-disable react/prop-types */
-import * as React from 'react';
-import { FunctionComponent, useEffect } from 'react';
-import { Button, Popconfirm, Result, Spin, Table } from 'antd';
+import React, { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import { Button, notification, Popconfirm, Result, Spin, Table } from 'antd';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SaveSetState } from 'store/saveSetTypes';
+import {
+  DeleteSetParams,
+  DispatchSaveSets,
+  SaveSetActionsTypes,
+  SaveSetState,
+} from 'store/saveSetTypes';
 import {
   selectErrorUserSaveSets,
   selectIsDeletingSaveSets,
@@ -19,9 +23,17 @@ import { AlignType } from 'rc-table/lib/interface';
 import './ParticipantSets.css';
 import { LoggedInUser } from 'store/userTypes';
 import participantMagenta from 'assets/icon-participants-magenta.svg';
+import SaveSetModal from '../../CohortBuilder/ParticipantsTableView/SaveSetModal';
 
 type OwnProps = {
   user: LoggedInUser;
+};
+
+export type SaveSetInfo = {
+  key: string;
+  name: string;
+  count?: number;
+  currentUser: string;
 };
 
 const mapState = (state: RootState): SaveSetState => ({
@@ -39,8 +51,8 @@ const mapState = (state: RootState): SaveSetState => ({
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   userSaveSets: (userId: string) => dispatch(getUserSaveSets(userId)),
-  deleteSaveSet: (saveSetsIds: string[], userId: string) =>
-    dispatch(deleteUserSaveSets(userId, saveSetsIds)),
+  deleteSaveSet: (deleteSetParams: DeleteSetParams) =>
+    dispatch(deleteUserSaveSets(deleteSetParams)),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -51,11 +63,31 @@ type Props = PropsFromRedux & OwnProps;
 
 const align = 'right' as AlignType;
 
+const onDeleteFail = () => {
+  notification.error({
+    message: 'Error',
+    description: `Deleting this Saved Set has failed`,
+    duration: 10,
+  });
+};
+
 const ParticipantSets: FunctionComponent<Props> = (props) => {
   const { user, userSaveSets, userSets, deleteSaveSet } = props;
+  const [showModal, setShowModal] = useState(false);
+  const [editSet, setEditSet] = useState({
+    key: '',
+    name: '',
+    count: 0,
+    currentUser: '',
+  } as SaveSetInfo);
 
   const confirm = (key: string, userId: string) => {
-    deleteSaveSet([key], userId);
+    deleteSaveSet({ userId: userId, setIds: [key], onFail: onDeleteFail } as DeleteSetParams);
+  };
+
+  const onEditClick = (record: SaveSetInfo) => {
+    setEditSet(record);
+    setShowModal(true);
   };
 
   const columns = [
@@ -64,11 +96,11 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       dataIndex: 'name',
       key: 'name',
       // eslint-disable-next-line react/display-name
-      render: (name: string) => (
+      render: (name: string, record: SaveSetInfo) => (
         <div className={'save-set-column-name'}>
           <div className={'save-set-table-name'}>
             {name}{' '}
-            <Button size={'small'} type={'text'}>
+            <Button size={'small'} type={'text'} onClick={() => onEditClick(record)}>
               <EditFilled className={'edit-icon'} />
             </Button>
           </div>
@@ -119,10 +151,23 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     name: s.tag,
     count: s.size,
     currentUser: user.egoId,
-  }));
+  })) as SaveSetInfo[];
 
   return (
-    <>
+    <Fragment>
+      {showModal && (
+        <SaveSetModal
+          title={'Edit Set Name'}
+          user={user}
+          hideModalCb={() => {
+            setShowModal(false);
+            setEditSet({ key: '', name: '', count: 0, currentUser: '' });
+          }}
+          onFail={onDeleteFail}
+          setToRename={editSet}
+          saveSetActionType={SaveSetActionsTypes.EDIT}
+        />
+      )}
       {userSets.isLoading ? (
         <div className={'participant-set-spinner-container'}>
           <Spin size={'large'} />
@@ -132,7 +177,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       ) : (
         <Result status="error" title="Failed to load user SaveSets" />
       )}
-    </>
+    </Fragment>
   );
 };
 

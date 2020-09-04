@@ -1,5 +1,8 @@
 import { ThunkAction } from 'redux-thunk';
 import {
+  DeleteSetParams,
+  EDIT_SAVE_SET_TAG,
+  EditSetParams,
   FAILURE_CREATE,
   FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
@@ -13,16 +16,23 @@ import {
   USER_SAVE_SETS,
   UserSaveSets,
 } from '../saveSetTypes';
-import { deleteSaveSet, getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
+import {
+  deleteSaveSet,
+  editSaveSetTag,
+  getSetAndParticipantsCountByUser,
+  saveSetCountForTag,
+} from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 import { RootState } from '../rootState';
 import graphql from 'services/arranger';
+import { initializeApi } from 'services/api';
+import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
 
-const createSaveSet = (
+export const createSaveSet = (
   payload: SaveSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-  const { tag, userId, api, sqon, onSuccess } = payload;
+  const { tag, userId, sqon, onSuccess } = payload;
 
   dispatch(isLoadingCreateSaveSet(true));
 
@@ -32,7 +42,7 @@ const createSaveSet = (
       path: 'kf_id',
       sqon,
       userId: userId,
-      api: graphql(api),
+      api: graphql(initializeApi()),
       tag: tag,
     });
     if (onSuccess) {
@@ -59,7 +69,6 @@ export const createSaveSetIfUnique = (
       dispatch(createSaveSet(payload));
       return;
     }
-
     if (onNameConflict) {
       onNameConflict();
     }
@@ -69,6 +78,36 @@ export const createSaveSetIfUnique = (
   } catch (error) {
     dispatch(failureCreate(error));
     dispatch(isLoadingCreateSaveSet(false));
+  }
+};
+
+export const editSaveSet = (
+  payload: EditSetParams,
+): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
+  const { saveSetInfo, onNameConflict, onSuccess, onFail } = payload;
+
+  try {
+    const tagIsUnique = (await saveSetCountForTag(saveSetInfo.name, saveSetInfo.currentUser)) === 0;
+    if (tagIsUnique) {
+      const nOfSaveSetEdited = await editSaveSetTag(saveSetInfo);
+
+      if (nOfSaveSetEdited && nOfSaveSetEdited > 0) {
+        dispatch(isEditingTag(saveSetInfo));
+        onSuccess();
+        return;
+      } else {
+        onFail();
+        return;
+      }
+    }
+
+    if (onNameConflict) {
+      onNameConflict();
+    }
+
+    dispatch(failureCreate(new SaveSetNameConflictError('A set with this name already exists')));
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -91,14 +130,20 @@ export const getUserSaveSets = (
 };
 
 export const deleteUserSaveSets = (
-  userId: string,
-  setIds: string[],
+  payload: DeleteSetParams,
 ): ThunkAction<void, RootState, null, SaveSetsActionTypes> => async (dispatch) => {
-  dispatch(isDeletingSaveSets(true));
-  try {
-    await deleteSaveSet(userId, setIds);
+  const { userId, setIds, onFail } = payload;
 
-    dispatch(removeUserSavedSets(setIds));
+  dispatch(isDeletingSaveSets(true));
+
+  try {
+    const result = await deleteSaveSet(userId, setIds);
+
+    if (result && result > 0) {
+      dispatch(removeUserSavedSets(setIds));
+    } else {
+      onFail();
+    }
   } catch (e) {
     //nothing to be done
     console.error(e);
@@ -144,4 +189,9 @@ export const failureLoadSaveSets = (error: Error): SaveSetsActionTypes => ({
 export const removeUserSavedSets = (sets: string[]): SaveSetsActionTypes => ({
   type: REMOVE_USER_SAVE_SETS,
   sets,
+});
+
+export const isEditingTag = (set: SaveSetInfo): SaveSetsActionTypes => ({
+  type: EDIT_SAVE_SET_TAG,
+  set: set,
 });

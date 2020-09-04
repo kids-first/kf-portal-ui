@@ -3,12 +3,16 @@ import thunk from 'redux-thunk';
 import {
   createSaveSetIfUnique,
   deleteUserSaveSets,
+  editSaveSet,
   failureCreate,
   getUserSaveSets,
   isLoadingCreateSaveSet,
   reInitializeSaveSetsState,
 } from '../saveSets';
 import {
+  DeleteSetParams,
+  EDIT_SAVE_SET_TAG,
+  EditSetParams,
   FAILURE_CREATE,
   RE_INITIALIZE_STATE,
   REMOVE_USER_SAVE_SETS,
@@ -18,7 +22,15 @@ import {
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
 } from 'store/saveSetTypes';
-import { deleteSaveSet, getSetAndParticipantsCountByUser, saveSetCountForTag } from 'services/sets';
+import {
+  deleteSaveSet,
+  editSaveSetTag,
+  getSetAndParticipantsCountByUser,
+  saveSetCountForTag,
+} from 'services/sets';
+// @ts-ignore
+import saveSet from '@kfarranger/components/dist/utils/saveSet';
+import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
 console.error = jest.fn();
 
 describe('Save Sets actions', () => {
@@ -54,11 +66,12 @@ const middleware = [thunk];
 const mockStore = configureMockStore(middleware);
 
 jest.mock('services/sets');
+jest.mock('@kfarranger/components/dist/utils/saveSet');
 
 const payload = {
   onSuccess: () => {},
   onNameConflict: () => {},
-  tag: 'tagNamer',
+  tag: 'tagName',
   api: () => {},
   userId: 'user1',
   sqon: { op: 'and', content: { field: 'setId', value: '' } },
@@ -68,10 +81,12 @@ describe('createSaveSet', () => {
   beforeEach(() => {
     (saveSetCountForTag as jest.Mock).mockReset();
     (deleteSaveSet as jest.Mock).mockReset();
+    (saveSet as jest.Mock).mockReset();
   });
 
   it('should generate the correct flow when creating a saveSet', async () => {
     (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
+    (saveSet as jest.Mock).mockImplementationOnce(() => Promise.resolve());
     const expectedActions = [
       { type: TOGGLE_PENDING_CREATE, isPending: true },
       { type: TOGGLE_PENDING_CREATE, isPending: false },
@@ -194,8 +209,44 @@ describe('createSaveSet', () => {
       },
     });
 
+    const payload = { userId: 'userId', setIds: ['setId1'], onFail: () => {} } as DeleteSetParams;
+
     // @ts-ignore
-    await store.dispatch(deleteUserSaveSets('userid', ['setId1']));
+    await store.dispatch(deleteUserSaveSets(payload));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should generate the correct flow editing save sets tag ', async () => {
+    (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
+    (editSaveSetTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(12));
+    const set = { key: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SaveSetInfo;
+    const expectedActions = [{ type: EDIT_SAVE_SET_TAG, set: set }];
+
+    const store = mockStore({
+      saveSets: {
+        create: {
+          isLoading: false,
+          error: null,
+          tagNameConflict: false,
+        },
+        userSets: {
+          isLoading: false,
+          sets: [],
+          error: false,
+          isDeleting: false,
+        },
+      },
+    });
+
+    const payload = {
+      saveSetInfo: set,
+      onSuccess: () => {},
+      onFail: () => {},
+      onNameConflict: () => {},
+    } as EditSetParams;
+
+    // @ts-ignore
+    await store.dispatch(editSaveSet(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

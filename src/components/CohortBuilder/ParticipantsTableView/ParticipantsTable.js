@@ -20,6 +20,7 @@ import './ParticipantTableView.css';
 import { isPartOfGroup } from 'common/profile';
 import DownloadButton from './DownloadButton';
 import ParticipantSetDropdown from './ParticipantSetDropdown';
+import { SaveSetActionsTypes } from 'store/saveSetTypes';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -245,6 +246,7 @@ class ParticipantsTable extends Component {
       <Fragment>
         {this.state.showModal && (
           <SaveSetModal
+            title={'Save Participant Set'}
             api={api}
             sqon={sqon}
             user={loggedInUser}
@@ -253,6 +255,7 @@ class ParticipantsTable extends Component {
                 showModal: false,
               })
             }
+            saveSetActionType={SaveSetActionsTypes.CREATE}
           />
         )}
         <Toolbar style={{ border: 'none' }}>
