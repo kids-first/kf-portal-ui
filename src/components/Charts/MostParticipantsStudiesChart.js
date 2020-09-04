@@ -116,7 +116,7 @@ const StudiesChart = compose(
           { title: 'Probands', color: theme.chartColors.blue },
           { title: 'Other Participants', color: theme.chartColors.purple },
         ]}
-        padding={0.7}
+        padding={0.4}
       />
     </Col>
   );

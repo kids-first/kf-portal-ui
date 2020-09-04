@@ -21,6 +21,8 @@ import {
   dashboardTitle,
   userDashboardContainer,
   userDashboardContent,
+  wrapperMemberResearchInterests,
+  wrapperMostParticipantsStudiesChart,
   wrapperVerticalBarChart,
 } from './UserDashboard.module.css';
 import { Col, Row } from 'antd';
@@ -58,15 +60,15 @@ export default compose(
           <CavaticaProjects />
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-          <DashboardCard showHeader={false}>
-            <div className={wrapperVerticalBarChart}>
+          <DashboardCard showHeader={false} showScrollFullHeight={true}>
+            <div className={wrapperMostParticipantsStudiesChart}>
               <MostParticipantsStudiesChart />
             </div>
           </DashboardCard>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={8}>
           <DashboardCard title="Member Research Interests">
-            <div style={{ height: '265px' }}>
+            <div className={wrapperMemberResearchInterests}>
               <MemberResearchInterestsChart />
             </div>
           </DashboardCard>
