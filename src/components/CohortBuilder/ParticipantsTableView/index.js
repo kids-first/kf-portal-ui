@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { compose, withState } from 'recompose';
 
 import { withApi } from 'services/api';
-import { participantsQuery } from './queries';
+import { participantsQuery, SORTABLE_FIELDS_MAPPING } from './queries';
 
 import QueriesResolver from '../QueriesResolver';
 import ParticipantsTable from './ParticipantsTable';
 import TableErrorView from './TableErrorView';
 
 import './index.css';
-
-import { SORTABLE_FIELDS_MAPPING } from './queries';
 import { connect } from 'react-redux';
+import { getUserSaveSets } from '../../../store/actionCreators/saveSets';
+import {
+  selectUserSaveSets,
+  selectError,
+  selectIsLoading,
+} from 'store/selectors/saveSetsSelectors';
 
 const ParticipantsTableView = ({
   sqon,
@@ -28,80 +32,92 @@ const ParticipantsTableView = ({
   sort,
   setSort,
   loggedInUser,
-}) => (
-  <QueriesResolver
-    name="GQL_PARTICIPANTS_TABLE"
-    api={api}
-    queries={[participantsQuery(sqon, sort, pageSize, pageIndex)]}
-  >
-    {({ isLoading, data, error }) => {
-      if (error) {
-        return (
-          <div className="ptv-error-message">
-            <TableErrorView error={error} />
-          </div>
-        );
-      }
-      const isRowSelected = (node) =>
-        allRowsSelected || selectedRows.some((row) => row === node.participantId);
+  userSaveSets,
+  userSets,
+}) => {
+  useEffect(() => {
+    if (loggedInUser) {
+      userSaveSets(loggedInUser.egoId);
+    }
+  }, [userSaveSets, loggedInUser]);
 
-      const dataWithRowSelection = data[0]
-        ? data[0].nodes.map((node) => ({ ...node, selected: isRowSelected(node) }))
-        : [];
+  return (
+    <QueriesResolver
+      name="GQL_PARTICIPANTS_TABLE"
+      api={api}
+      queries={[participantsQuery(sqon, sort, pageSize, pageIndex)]}
+    >
+      {({ isLoading, data, error }) => {
+        if (error) {
+          return (
+            <div className="ptv-error-message">
+              <TableErrorView error={error} />
+            </div>
+          );
+        }
+        const isRowSelected = (node) =>
+          allRowsSelected || selectedRows.some((row) => row === node.participantId);
 
-      const selectionSQON = selectedRows.length
-        ? {
-            op: 'and',
-            content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
-          }
-        : sqon;
+        const dataWithRowSelection = data[0]
+          ? data[0].nodes.map((node) => ({ ...node, selected: isRowSelected(node) }))
+          : [];
 
-      return (
-        <ParticipantsTable
-          sqon={selectionSQON}
-          loading={isLoading}
-          data={dataWithRowSelection}
-          api={api}
-          sort={sort}
-          dataTotalCount={data[0] ? data[0].total : 0}
-          downloadName={'participant-table'}
-          onFetchData={({ page, pageSize, sorted }) => {
-            const sorting = sorted
-              .filter((s) => SORTABLE_FIELDS_MAPPING.has(s.id))
-              .map((s) => ({
-                field: SORTABLE_FIELDS_MAPPING.get(s.id),
-                order: s.desc ? 'desc' : 'asc',
-              }));
-            setPageIndex(page);
-            setPageSize(pageSize);
-            setSort(sorting);
-          }}
-          onRowSelected={(checked, row) => {
-            const rowId = row.participantId;
-            if (checked) {
-              setSelectedRows((s) => s.concat(rowId));
-              return;
+        const selectionSQON = selectedRows.length
+          ? {
+              op: 'and',
+              content: [{ op: 'in', content: { field: 'kf_id', value: selectedRows } }],
             }
-            setSelectedRows((s) => s.filter((row) => row !== rowId));
-          }}
-          onAllRowsSelected={(checked) => {
-            // don't keep individual rows selected when "select all" is checked
-            //  to avoid having them selected after "unselect all"
-            setAllRowsSelected(() => checked);
-            setSelectedRows(() => []);
-          }}
-          onClearSelected={() => {
-            setAllRowsSelected(() => false);
-            setSelectedRows(() => []);
-          }}
-          selectedRows={selectedRows}
-          allRowsSelected={allRowsSelected}
-          loggedInUser={loggedInUser}
-        />
-      );
-    }}
-  </QueriesResolver>
-);
+          : sqon;
+
+        return (
+          <ParticipantsTable
+              sqon={selectionSQON}
+              loading={isLoading}
+              data={dataWithRowSelection}
+              api={api}
+              sort={sort}
+              dataTotalCount={data[0] ? data[0].total : 0}
+              downloadName={'participant-table'}
+              onFetchData={({ page, pageSize, sorted }) => {
+                const sorting = sorted
+                  .filter((s) => SORTABLE_FIELDS_MAPPING.has(s.id))
+                  .map((s) => ({
+                    field: SORTABLE_FIELDS_MAPPING.get(s.id),
+                    order: s.desc ? 'desc' : 'asc',
+                  }));
+                setPageIndex(page);
+                setPageSize(pageSize);
+                setSort(sorting);
+              }}
+              onRowSelected={(checked, row) => {
+                const rowId = row.participantId;
+                if (checked) {
+                  setSelectedRows((s) => s.concat(rowId));
+                  return;
+                }
+                setSelectedRows((s) => s.filter((row) => row !== rowId));
+              }}
+              onAllRowsSelected={(checked) => {
+                // don't keep individual rows selected when "select all" is checked
+                //  to avoid having them selected after "unselect all"
+                setAllRowsSelected(() => checked);
+                setSelectedRows(() => []);
+              }}
+              onClearSelected={() => {
+                setAllRowsSelected(() => false);
+                setSelectedRows(() => []);
+              }}
+              selectedRows={selectedRows}
+              allRowsSelected={allRowsSelected}
+              loggedInUser={loggedInUser}
+              saveSets={userSets.sets}
+            />
+
+        );
+      }}
+    </QueriesResolver>
+  );
+};
 
 ParticipantsTableView.propTypes = {
   sqon: PropTypes.object.isRequired,
@@ -110,6 +126,20 @@ ParticipantsTableView.propTypes = {
 
 const mapStateToProps = (state) => ({
   loggedInUser: state.user.loggedInUser,
+  create: {
+    isLoading: selectIsLoading(state),
+    error: selectError(state),
+  },
+  userSets: {
+    sets: selectUserSaveSets(state),
+    isLoading: false,
+    error: null,
+    isDeleting: false,
+  },
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  userSaveSets: (userId) => dispatch(getUserSaveSets(userId)),
 });
 
 export default compose(
@@ -119,5 +149,5 @@ export default compose(
   withState('selectedRows', 'setSelectedRows', []),
   withState('allRowsSelected', 'setAllRowsSelected', false),
   withState('sort', 'setSort', []),
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
 )(ParticipantsTableView);
