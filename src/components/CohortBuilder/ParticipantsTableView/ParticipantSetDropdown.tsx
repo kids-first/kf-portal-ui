@@ -9,7 +9,8 @@ import {
   UsergroupDeleteOutlined,
 } from '@ant-design/icons';
 import { Sqon } from 'store/sqon';
-import { UserSaveSets } from '../../../store/saveSetTypes';
+import { UserSaveSets } from 'store/saveSetTypes';
+import './ParticipantSetDropdown.css';
 
 type Props = {
   onSave: Function;

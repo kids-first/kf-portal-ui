@@ -1,13 +1,17 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useState } from 'react';
-import { Button, Form, Modal, Select } from 'antd';
+import { Button, Col, Form, Modal, Row, Select } from 'antd';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
-import { selectUserSaveSets } from '../../../store/selectors/saveSetsSelectors';
-import { RootState } from '../../../store/rootState';
-import { SaveSetState } from '../../../store/saveSetTypes';
+import { selectUserSaveSets } from 'store/selectors/saveSetsSelectors';
+import { RootState } from 'store/rootState';
+import { DispatchSaveSets, SaveSetState } from 'store/saveSetTypes';
 import { connect, ConnectedProps } from 'react-redux';
+import { editSaveSet } from 'store/actionCreators/saveSets';
+import { SaveSetInfo } from '../../UserDashboard/ParticipantSets';
+import participantIcon from '../../../assets/icon-participants.svg';
+import './AddRemoveSaveSetModal.css';
 
 const FORM_NAME = 'add-remove-set';
 
@@ -16,6 +20,13 @@ type OwnProps = {
   api: Function;
   sqon: Sqon;
   actionType: string;
+};
+
+export type AddRemoveSetParams = {
+  saveSetInfo: SaveSetInfo;
+  onSuccess: Function;
+  onFail: Function;
+  onNameConflict: Function;
 };
 
 const mapState = (state: RootState): SaveSetState => ({
@@ -31,7 +42,13 @@ const mapState = (state: RootState): SaveSetState => ({
   },
 });
 
-const connector = connect(mapState);
+const mapDispatch = (dispatch: DispatchSaveSets) => ({
+  // onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
+  onEditSet: (params: AddRemoveSetParams) => dispatch(editSaveSet(params)), //TODO add new stuff
+  // reInitializeState: () => dispatch(reInitializeSaveSetsState()),
+});
+
+const connector = connect(mapState, mapDispatch);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -72,6 +89,15 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
 
   const onFinish = async (values: Store) => {
     const { nameSet } = values;
+    switch (actionType) {
+      case actionTypes.ADD:
+        break;
+      case actionTypes.REMOVE:
+        break;
+      default:
+        break;
+    }
+
     console.error(nameSet); //TODO remove
     setIsVisible(false);
     hideModalCb();
@@ -112,7 +138,15 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
           <Select placeholder="Choose a set">
             {userSets.sets.map((s) => (
               <Select.Option key={s.setId} value={s.tag}>
-                {s.tag}
+                <Row>
+                  <Col style={{ paddingRight: 15 }}>{s.tag}</Col>
+                  <Col style={{ paddingRight: 2 }}>
+                    <img style={{ width: 11 }} src={participantIcon} alt="Participants" />
+                  </Col>
+                  <Col>
+                    <div className={'secondary-text-color'}>{s.size}</div>
+                  </Col>
+                </Row>
               </Select.Option>
             ))}
           </Select>
