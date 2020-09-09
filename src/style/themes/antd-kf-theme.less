@@ -38,7 +38,29 @@
 }
 
 //Tabs
-@tabs-highlight-color: #e83a9c;
+@tabs-highlight-color: #a6278f;
 @tabs-ink-bar-color: @tabs-highlight-color;
 
+@tab-prefix-cls: ~'@{ant-prefix}-tabs';
+
+.@{tab-prefix-cls} {
+  &-card > &-nav &-tab:not(&-tab-active) {
+    background: none;
+    border: 0;
+  }
+  &-tab {
+    color: #515885;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+
+    &&-active &-btn {
+      color: @tabs-highlight-color;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+}
 //Cards

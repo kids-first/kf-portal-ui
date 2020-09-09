@@ -1,31 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-// [NEXT] TODO - REMOVE react-grid-system in favor of whatever else we have
-import { Col, Row } from 'react-grid-system';
+import { Row } from 'antd';
+import Card from './Cards/SummaryCard';
 
 import QueriesResolver from '../QueriesResolver';
 import { withApi } from 'services/api';
-import DemographicChart, { demographicQuery } from './DemographicChart';
-import DiagnosesChart, { diagnosesQuery } from './DiagnosesChart';
-import StudiesChart, { studiesQuery } from './StudiesChart';
-import AgeDiagChart, { ageDiagQuery } from './AgeDiagChart';
-import SurvivalChart from './SurvivalChart';
-import DataTypeChart, { dataTypesQuery, experimentalStrategyQuery } from './DataTypeChart';
-import { CohortCard } from './ui';
+import DemographicChart, { demographicQuery } from './Cards/DemographicChart';
+import DiagnosesChart, { diagnosesQuery } from './Cards/DiagnosesChart';
+import StudiesChart, { studiesQuery } from './Cards/StudiesChart';
+import AgeDiagChart, { ageDiagQuery } from './Cards/AgeDiagChart';
+import SurvivalChart from './Cards/SurvivalChart';
+import { dataTypesQuery, experimentalStrategyQuery } from './Cards/DataTypeChart';
+import DataTypeCard from './Cards/DataTypeCard';
 import OntologySunburst from 'components/Charts/Ontology/OntologySunburst';
-import './Summary.css';
+
 import { isFeatureEnabled } from 'common/featuresToggles';
-import PropTypes from 'prop-types';
 
-const CardSlot = ({ children }) => (
-  <Col style={{ padding: '4px' }} sm={12} md={6} lg={6} xl={4}>
-    {children}
-  </Col>
-);
-
-CardSlot.propTypes = {
-  children: PropTypes.element,
-};
+import './Summary.css';
 
 const Summary = ({
   sqon = {
@@ -59,54 +51,23 @@ const Summary = ({
       return !data ? (
         <Row nogutter> no data</Row>
       ) : (
-        <Row nogutter>
-          <CardSlot>
-            <CohortCard title="Available Data" loading={isLoading}>
-              <div className={'cardBodyDataChartType'}>
-                <div className={'wrapperDataTypeChart'}>
-                  <DataTypeChart
-                    data={dataTypesData}
-                    axisLeftLegend={'# Participants'}
-                    axisBottomLegend={'Data Type'}
-                    isLoading={isLoading}
-                    height={350}
-                  />
-                </div>
-                <div className={'wrapperDataTypeChart'}>
-                  <DataTypeChart
-                    data={experimentalStrategyData}
-                    axisLeftLegend={'# Participants'}
-                    axisBottomLegend={'Experimental Strategy'}
-                    isLoading={isLoading}
-                    height={350}
-                  />
-                </div>
-              </div>
-            </CohortCard>
-          </CardSlot>
+        <>
+          <DataTypeCard
+            isLoading={isLoading}
+            dataTypesData={dataTypesData}
+            experimentalStrategyData={experimentalStrategyData}
+          />
           {isFeatureEnabled('FT_SUNBURST') && (
-            <CardSlot>
-              <CohortCard title="Observed Phenotypes">
-                <OntologySunburst sqon={sqon} />
-              </CohortCard>
-            </CardSlot>
+            <Card title="Observed Phenotypes">
+              <OntologySunburst sqon={sqon} />
+            </Card>
           )}
-          <CardSlot>
-            <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
-          </CardSlot>
-          <CardSlot>
-            <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
-          </CardSlot>
-          <CardSlot>
-            <DemographicChart data={demographicData} isLoading={isLoading} />
-          </CardSlot>
-          <CardSlot>
-            <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
-          </CardSlot>
-          <CardSlot>
-            <SurvivalChart sqon={sqon} />
-          </CardSlot>
-        </Row>
+          <StudiesChart studies={studiesData} sqon={sqon} isLoading={isLoading} />
+          <DiagnosesChart sqon={sqon} topDiagnoses={topDiagnosesData} isLoading={isLoading} />
+          <DemographicChart data={demographicData} isLoading={isLoading} />
+          <AgeDiagChart data={ageDiagData} isLoading={isLoading} height={350} />
+          <SurvivalChart sqon={sqon} />
+        </>
       );
     }}
   </QueriesResolver>

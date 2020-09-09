@@ -6,7 +6,6 @@ import startCase from 'lodash/startCase';
 
 import theme from 'theme/defaultTheme';
 import Pie from 'chartkit/components/Pie';
-import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import {
   setSqonValueAtIndex,
@@ -14,6 +13,7 @@ import {
   MERGE_OPERATOR_STRATEGIES,
 } from 'common/sqonUtils';
 import { styleComponent } from 'components/Utils';
+import Card from './SummaryCard';
 
 const PieChartContainer = styleComponent('div', 'pieChartContainer');
 
@@ -44,7 +44,7 @@ class DemographicChart extends React.Component {
   render() {
     const { data, isLoading: isParentLoading } = this.props;
     return (
-      <CohortCard showHeader={false} loading={isParentLoading}>
+      <Card loading={isParentLoading}>
         <PieChartContainer>
           <Pie
             style={{
@@ -56,7 +56,7 @@ class DemographicChart extends React.Component {
             title={'Gender'}
             data={data.gender}
             colors={[theme.chartColors.orange, '#FFFFFF']}
-            onClick={data => {
+            onClick={(data) => {
               const value = data.label;
               this.addSqon('gender', value);
             }}
@@ -66,7 +66,7 @@ class DemographicChart extends React.Component {
             title={'Ethnicity'}
             data={data.ethnicity}
             colors={[theme.chartColors.darkblue, '#FFFFFF']}
-            onClick={data => {
+            onClick={(data) => {
               const value = data.label.replace(' Or ', ' or ');
               this.addSqon('ethnicity', value);
             }}
@@ -76,7 +76,7 @@ class DemographicChart extends React.Component {
             title={'Race'}
             data={data.race}
             colors={[theme.chartColors.lightpurple, '#FFFFFF']}
-            onClick={data => {
+            onClick={(data) => {
               const value = data.label.replace(' Or ', ' or ');
               this.addSqon('race', value);
             }}
@@ -86,18 +86,18 @@ class DemographicChart extends React.Component {
             title={'Family Composition'}
             data={data.familyComposition}
             colors={[theme.chartColors.lightblue, '#FFFFFF']}
-            onClick={data => {
+            onClick={(data) => {
               const value = data.label.toLowerCase().replace('proband only', 'proband-only');
               this.addSqon('family.family_compositions.composition', value);
             }}
           />
         </PieChartContainer>
-      </CohortCard>
+      </Card>
     );
   }
 }
 
-export const demographicQuery = sqon => ({
+export const demographicQuery = (sqon) => ({
   query: gql`
     fragment bucketsAgg on Aggregations {
       buckets {
@@ -125,7 +125,7 @@ export const demographicQuery = sqon => ({
     }
   `,
   variables: { sqon },
-  transform: data => {
+  transform: (data) => {
     const toChartData = ({ key, doc_count }) => {
       const dataKey = keyToDisplay(key === DATA_MISSING ? 'No Data' : key);
       return {
@@ -153,10 +153,10 @@ export const demographicQuery = sqon => ({
   },
 });
 
-const keyToDisplay = key =>
+const keyToDisplay = (key) =>
   key.includes('+') ? startCase(key.replace('+', 'plus')) : startCase(key);
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
 
