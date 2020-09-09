@@ -45,10 +45,10 @@
   shape-rendering: crispEdges;
 }
 
-.survival-chart-reset-zoom-icon-header {
-  position: absolute;
-  right: -2px;
-  top: -40px;
+.survival-chart-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .survival-chart-drag-zoom {

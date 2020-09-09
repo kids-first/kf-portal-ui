@@ -5,10 +5,12 @@ import gql from 'graphql-tag';
 
 import theme from 'theme/defaultTheme';
 import VerticalBar from 'chartkit/components/VerticalBar';
-import { CohortCard } from './ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex } from 'common/sqonUtils';
+
 import PropTypes from 'prop-types';
+
+import Card from './SummaryCard';
 
 const ageAtDiagnosisTooltip = (data) =>
   `${data.value.toLocaleString()} Participant${data.value > 1 ? 's' : ''}`;
@@ -77,7 +79,7 @@ class AgeDiagChart extends React.Component {
   render() {
     const { data, isLoading: isParentLoading, height = 225 } = this.props;
     return (
-      <CohortCard title="Age at Diagnosis" loading={isParentLoading}>
+      <Card title="Age at Diagnosis" loading={isParentLoading}>
         <VerticalBar
           showCursor={true}
           data={data}
@@ -91,7 +93,7 @@ class AgeDiagChart extends React.Component {
             this.addSqon('diagnoses.age_at_event_days', data.data.id);
           }}
         />
-      </CohortCard>
+      </Card>
     );
   }
 }

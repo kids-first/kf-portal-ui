@@ -6,9 +6,9 @@ import startCase from 'lodash/startCase';
 import { connect } from 'react-redux';
 
 import theme from 'theme/defaultTheme';
-import { BarChartContainer, CohortCard, getCohortBarColors } from './ui';
+import { getCohortBarColors } from '../ui';
 import HorizontalBar from 'chartkit/components/HorizontalBar';
-import QueriesResolver from '../QueriesResolver';
+import QueriesResolver from '../../QueriesResolver';
 import { withApi } from 'services/api';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import {
@@ -16,14 +16,15 @@ import {
   MERGE_OPERATOR_STRATEGIES,
   MERGE_VALUES_STRATEGIES,
 } from 'common/sqonUtils';
+import Card from './SummaryCard';
 
-const mostFrequentDiagnosisTooltip = data => {
+const mostFrequentDiagnosisTooltip = (data) => {
   const participants = data.familyMembers + data.probands;
   return `${participants.toLocaleString()} Participant${participants > 1 ? 's' : ''}`;
 };
 
 const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
-  topDiagnoses.map(diagnosis => ({
+  topDiagnoses.map((diagnosis) => ({
     query: gql`
       query($sqon: JSON, $diagnosis: String) {
         participant {
@@ -73,7 +74,7 @@ const toSingleDiagQueries = ({ topDiagnoses, sqon }) =>
       }
     `,
     variables: { sqon, diagnosis },
-    transform: data => ({
+    transform: (data) => ({
       diagnosisValue: diagnosis,
       label: startCase(diagnosis),
       familyMembers: get(
@@ -122,41 +123,34 @@ class DiagnosesChart extends React.Component {
         queries={toSingleDiagQueries({ topDiagnoses, sqon })}
       >
         {({ isLoading, data }) => (
-          <CohortCard
-            title="Most Frequent Diagnoses (Mondo)"
-            loading={isLoading || isParentLoading}
-          >
+          <Card title="Most Frequent Diagnoses (Mondo)" loading={isLoading || isParentLoading}>
             {!data ? (
               <div>No data</div>
             ) : (
-              <BarChartContainer>
-                <HorizontalBar
-                  showCursor={true}
-                  data={data}
-                  indexBy="label"
-                  keys={['probands', 'familyMembers']}
-                  sortByKeys={['probands', 'familyMembers']}
-                  sortOrder={'desc'}
-                  tooltipFormatter={mostFrequentDiagnosisTooltip}
-                  tickInterval={4}
-                  colors={getCohortBarColors(data, theme)}
-                  xTickTextLength={28}
-                  legends={[
-                    { title: 'Probands', color: theme.chartColors.blue },
-                    { title: 'Other Participants', color: theme.chartColors.purple },
-                  ]}
-                  onClick={data => {
-                    this.addSqon('diagnoses.mondo_id_diagnosis', data.data.diagnosisValue);
-                  }}
-                  axisLeftFormat={value => {
-                    return value.indexOf('MONDO') > -1
-                      ? value.substr(0, value.indexOf('MONDO'))
-                      : value;
-                  }}
-                />
-              </BarChartContainer>
+              <HorizontalBar
+                showCursor={true}
+                data={data}
+                indexBy="label"
+                keys={['probands', 'familyMembers']}
+                sortByKeys={['probands', 'familyMembers']}
+                sortOrder={'desc'}
+                tooltipFormatter={mostFrequentDiagnosisTooltip}
+                tickInterval={4}
+                colors={getCohortBarColors(data, theme)}
+                xTickTextLength={28}
+                legends={[
+                  { title: 'Probands', color: theme.chartColors.blue },
+                  { title: 'Other Participants', color: theme.chartColors.purple },
+                ]}
+                onClick={(data) => {
+                  this.addSqon('diagnoses.mondo_id_diagnosis', data.data.diagnosisValue);
+                }}
+                axisLeftFormat={(value) =>
+                  value.indexOf('MONDO') > -1 ? value.substr(0, value.indexOf('MONDO')) : value
+                }
+              />
             )}
-          </CohortCard>
+          </Card>
         )}
       </QueriesResolver>
     );
@@ -167,7 +161,7 @@ class DiagnosesChart extends React.Component {
  * Get the top 10 diagnoses overall
  * Then get the proband/family member breakdown
  */
-export const diagnosesQuery = sqon => ({
+export const diagnosesQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
       participant {
@@ -183,21 +177,21 @@ export const diagnosesQuery = sqon => ({
     }
   `,
   variables: { sqon },
-  transform: data => {
+  transform: (data) => {
     const buckets = get(
       data,
       'data.participant.aggregations.diagnoses__mondo_id_diagnosis.buckets',
     );
 
     return buckets
-      .filter(bucket => !['No Match', '__missing__'].includes(bucket.key))
+      .filter((bucket) => !['No Match', '__missing__'].includes(bucket.key))
       .sort((a, b) => b.doc_count - a.doc_count)
-      .map(bucket => bucket.key)
+      .map((bucket) => bucket.key)
       .slice(0, 10);
   },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
 

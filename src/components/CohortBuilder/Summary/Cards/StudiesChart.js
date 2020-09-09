@@ -5,15 +5,18 @@ import HorizontalBar from 'chartkit/components/HorizontalBar';
 import get from 'lodash/get';
 import size from 'lodash/size';
 import gql from 'graphql-tag';
+import { Badge } from 'antd';
 
 import theme from 'theme/defaultTheme';
 import { withApi } from 'services/api';
-import QueriesResolver from '../QueriesResolver';
-import { CohortCard, BarChartContainer, getCohortBarColors } from './ui';
+import QueriesResolver from '../../QueriesResolver';
+import { getCohortBarColors } from '../ui';
 import { setSqons } from 'store/actionCreators/virtualStudies';
 import { setSqonValueAtIndex, MERGE_OPERATOR_STRATEGIES } from 'common/sqonUtils';
+import Card from './SummaryCard';
+import { antCardHeader } from './StudiesChart.module.css';
 
-const studiesToolTip = data => {
+const studiesToolTip = (data) => {
   const { familyMembers, probands, name } = data;
   const participants = familyMembers + probands;
   return (
@@ -35,7 +38,7 @@ const sortDescParticipant = (a, b) => {
 };
 
 const toSingleStudyQueries = ({ studies, sqon }) =>
-  studies.map(studyShortName => ({
+  studies.map((studyShortName) => ({
     query: gql`
       query($sqon: JSON, $studyShortName: String) {
         participant {
@@ -77,7 +80,7 @@ const toSingleStudyQueries = ({ studies, sqon }) =>
       }
     `,
     variables: { sqon, studyShortName },
-    transform: data => ({
+    transform: (data) => ({
       label: studyShortName,
       familyMembers: size(get(data, 'data.participant.familyMembers.kf_id.buckets')),
       probands: size(get(data, 'data.participant.proband.kf_id.buckets')),
@@ -107,22 +110,27 @@ class StudiesChart extends React.Component {
 
   render() {
     const { studies, sqon, api, isLoading: isParentLoading } = this.props;
+
     return (
       <QueriesResolver
         name="GQL_STUDIES_CHART"
         api={api}
         queries={toSingleStudyQueries({ studies, sqon })}
       >
-        {({ isLoading, data }) => (
-          <CohortCard
-            title="Studies"
-            badge={data && !isLoading ? data.length : null}
-            loading={isLoading || isParentLoading}
-          >
-            {!data ? (
-              <div>No data</div>
-            ) : (
-              <BarChartContainer>
+        {({ isLoading, data }) => {
+          const Header = !(data && !isParentLoading) ? (
+            <span>Studies</span>
+          ) : (
+            <div className={antCardHeader}>
+              <span>Studies&nbsp;</span>
+              <Badge style={{ backgroundColor: '#2b388f' }} count={data.length} />
+            </div>
+          );
+          return (
+            <Card title={Header} isLoading={isLoading}>
+              {!data ? (
+                <div>No data</div>
+              ) : (
                 <HorizontalBar
                   showCursor={true}
                   data={data.map((d, i) => ({ ...d, id: i }))}
@@ -142,16 +150,16 @@ class StudiesChart extends React.Component {
                     this.addSqon('study.short_name', data.label);
                   }}
                 />
-              </BarChartContainer>
-            )}
-          </CohortCard>
-        )}
+              )}
+            </Card>
+          );
+        }}
       </QueriesResolver>
     );
   }
 }
 
-export const studiesQuery = sqon => ({
+export const studiesQuery = (sqon) => ({
   query: gql`
     query($sqon: JSON) {
       participant {
@@ -166,13 +174,13 @@ export const studiesQuery = sqon => ({
     }
   `,
   variables: { sqon },
-  transform: data =>
+  transform: (data) =>
     get(data, 'data.participant.aggregations.study__short_name.buckets', []).map(
-      study => study.key,
+      (study) => study.key,
     ),
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   virtualStudy: state.currentVirtualStudy,
 });
 

@@ -12,8 +12,9 @@ import CardContent from 'uikit/Card/CardContent';
 import Tooltip from 'uikit/Tooltip';
 import { SizeProvider, styleComponent } from 'components/Utils';
 import theme from 'theme/defaultTheme';
-import { CohortCard } from './ui';
 import SurvivalPlot from './SurvivalPlot';
+import Card from './SummaryCard';
+
 import './SurvivalChart.css';
 
 const formatDataset = (data) => [
@@ -162,9 +163,8 @@ export class SurvivalChart extends React.Component {
       </div>
     );
 
-    const renderGraphContent = (size) => ({ height }) => (
+    const renderGraphContent = (size, height) => (
       <>
-        {resetZoomIcon}
         <div style={{ marginTop: '10px' }}>
           <div className="survivalChart-card-header">
             Applicable survival data for{' '}
@@ -184,7 +184,7 @@ export class SurvivalChart extends React.Component {
             onMouseEnterDonors={this.handleMouseEnterDonors}
             disableResetButton={this.handleDisableResetButton}
             resetZoom={resetZoom}
-            height={height ? height - 60 : null}
+            height={height}
           />
 
           <div style={tooltipStyle}>
@@ -200,19 +200,21 @@ export class SurvivalChart extends React.Component {
       </>
     );
 
+    const Header = (
+      <div className="survival-chart-header">
+        <span>Overall Survival</span>
+        <span>{resetZoomIcon}</span>
+      </div>
+    );
+
     return (
       <SizeProvider>
         {({ size }) => (
-          <div>
-            <CohortCard
-              Content={SurvivalCardContent}
-              title="Overall Survival"
-              loading={this.state.isLoading}
-              showScrollFullHeight={true}
-            >
-              {renderGraphContent(size)}
-            </CohortCard>
-          </div>
+          <Card title={Header} loading={this.state.isLoading}>
+            {({ height }) => (
+              <SurvivalCardContent>{renderGraphContent(size, height)}</SurvivalCardContent>
+            )}
+          </Card>
         )}
       </SizeProvider>
     );

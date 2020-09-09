@@ -14,6 +14,9 @@ const StandardErrorContent = () => (
 );
 
 const TableErrorView = ({ error }) => {
+  if (!error) {
+    error = { message: 'Unhandled Exception' };
+  }
   const message = devDebug ? (
     <React.Fragment>
       <p>{error.message}</p>
