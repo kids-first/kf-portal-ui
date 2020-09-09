@@ -1,6 +1,15 @@
 import graphql from 'services/arranger';
 import { initializeApi } from 'services/api';
-import { SaveSetInfo } from '../components/UserDashboard/ParticipantSets';
+import { Sqon } from '../store/sqon';
+import { SetSourceType, SetSubActionTypes, SetUpdateInputData } from '../store/saveSetTypes';
+
+type CreateSetParams = {
+  type: string;
+  sqon: Sqon;
+  path: string;
+  sort?: string[];
+  tag?: string;
+};
 
 const getIdsFromSaveSetId = async (rawId: string) => {
   const response = await graphql(initializeApi())({
@@ -39,7 +48,7 @@ const getIdsFromSaveSetId = async (rawId: string) => {
   return firstEdge?.node?.ids;
 };
 
-export const saveSetCountForTag = async (tag: string, userId: string) => {
+export const setCountForTag = async (tag: string, userId: string) => {
   const response = await graphql(initializeApi())({
     query: `query($sqon: JSON) {
         sets {
@@ -107,10 +116,30 @@ export const getSetAndParticipantsCountByUser = async (userId: string) => {
   return response.data.sets.hits.edges;
 };
 
-export const deleteSaveSet = async (userId: string, setIds: string[]) => {
+export const createSet = async (userId: string, params: CreateSetParams) => {
+  const { type, sqon, path, sort, tag } = params;
+  return await graphql(initializeApi())({
+    query: `mutation saveSet($type: String! $userId: String $sqon: JSON! 
+            $path: String!, $sort: [Sort], $tag: String) {
+              saveSet(type: $type, userId: $userId, sqon: $sqon, path: $path, sort: $sort, tag: $tag) {
+                setId
+              }
+            }`,
+    variables: {
+      type,
+      userId,
+      sqon,
+      path,
+      sort: sort || [],
+      tag,
+    },
+  });
+};
+
+export const deleteSets = async (userId: string, setIds: string[]) => {
   const response = await graphql(initializeApi())({
     query: `mutation ($setIds: [String!] $userId: String!) {
-              deleteSaveSets(setIds: $setIds, userId: $userId)
+              deleteSets(setIds: $setIds, userId: $userId)
             }`,
     variables: {
       setIds: setIds,
@@ -118,26 +147,39 @@ export const deleteSaveSet = async (userId: string, setIds: string[]) => {
     },
   });
 
-  return response.data.deleteSaveSets;
+  return response.data.deleteSets;
 };
 
-export const editSaveSetTag = async (set: SaveSetInfo) => {
+export const updateSet = async (
+  sourceType: SetSourceType,
+  data: SetUpdateInputData,
+  subAction: SetSubActionTypes,
+  userId: string,
+  setId: string,
+) => {
   const response = await graphql(initializeApi())({
-    query: `mutation($tag: String!, $userId: String!, $setId: String! ){
-              renameSaveSetTag(tag: $tag, userId: $userId, setId: $setId)
+    query: `mutation($source: SetUpdateSource!, $data: SetUpdateInputData!, $subAction: SetSubActionTypes!, 
+            $userId: String!, $target: SetUpdateTarget! ){
+              updateSet(source:$source, data: $data, subAction: $subAction, userId:$userId, target: $target)
             }`,
     variables: {
-      tag: set.name,
-      userId: set.currentUser,
-      setId: set.key,
+      source: {
+        sourceType: sourceType,
+      },
+      data: data,
+      subAction: subAction,
+      userId: userId,
+      target: {
+        setId: setId,
+      },
     },
   });
 
-  return response.data.renameSaveSetTag;
+  return response.data.updateSet;
 };
 
 export const fetchPtIdsFromSaveSets = async (setIds: string[]) =>
   (await Promise.all(setIds.map((id) => getIdsFromSaveSetId(id)))).flat();
 
 export const saveNewSet = async (setName: string, userId: string) =>
-  saveSetCountForTag(setName, userId);
+  setCountForTag(setName, userId);

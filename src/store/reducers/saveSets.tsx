@@ -4,8 +4,9 @@ import {
   FAILURE_LOAD_SAVE_SETS,
   RE_INITIALIZE_STATE,
   REMOVE_USER_SAVE_SETS,
-  SaveSetsActionTypes,
+  SetsActionTypes,
   SaveSetState,
+  TOGGLE_IS_ADD_DELETE_TO_SET,
   TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
@@ -23,10 +24,11 @@ const initialState: SaveSetState = {
     error: null,
     isLoading: false,
     isDeleting: false,
+    isEditing: false,
   },
 };
 
-export default (state = initialState, action: SaveSetsActionTypes): SaveSetState => {
+export default (state = initialState, action: SetsActionTypes): SaveSetState => {
   switch (action.type) {
     case TOGGLE_PENDING_CREATE: {
       return {
@@ -60,9 +62,12 @@ export default (state = initialState, action: SaveSetsActionTypes): SaveSetState
         ...state,
         userSets: {
           ...state.userSets,
-          sets: editSaveSetTag(state.userSets.sets, action.set.key, action.set.name),
+          sets: editSaveSetTag(state.userSets.sets, action.set.setId, action.set.name),
         },
       };
+    }
+    case TOGGLE_IS_ADD_DELETE_TO_SET: {
+      return { ...state, userSets: { ...state.userSets, isEditing: action.isEditing } };
     }
     case REMOVE_USER_SAVE_SETS: {
       return {

@@ -11,7 +11,7 @@ import TableErrorView from './TableErrorView';
 
 import './index.css';
 import { connect } from 'react-redux';
-import { getUserSaveSets } from '../../../store/actionCreators/saveSets';
+import { getUserSets } from '../../../store/actionCreators/saveSets';
 import {
   selectUserSaveSets,
   selectError,
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  userSaveSets: (userId) => dispatch(getUserSaveSets(userId)),
+  userSaveSets: (userId) => dispatch(getUserSets(userId)),
 });
 
 export default compose(

@@ -22,6 +22,7 @@ import { isPartOfGroup } from 'common/profile';
 import DownloadButton from './DownloadButton';
 import ParticipantSetDropdown from './ParticipantSetDropdown';
 import { SaveSetActionsTypes } from 'store/saveSetTypes';
+import { SetSubActionTypes } from '../../../store/saveSetTypes';
 
 const SelectionCell = ({ value: checked, onCellSelected, row }) => (
   <input
@@ -259,6 +260,7 @@ class ParticipantsTable extends Component {
                 showModalSave: false,
               })
             }
+            saveSetActionType={SaveSetActionsTypes.CREATE}
           />
         )}
         {this.state.showModalAddDelete && (
@@ -266,13 +268,13 @@ class ParticipantsTable extends Component {
             api={api}
             sqon={sqon}
             user={loggedInUser}
-            actionType={actionType}
+            subActionType={actionType}
             hideModalCb={() =>
               this.setState({
                 showModalAddDelete: false,
               })
             }
-            saveSetActionType={SaveSetActionsTypes.CREATE}
+            saveSetActionType={SaveSetActionsTypes.EDIT}
           />
         )}
         <Toolbar style={{ border: 'none' }}>
@@ -305,13 +307,13 @@ class ParticipantsTable extends Component {
                   }}
                   onAddToSet={() => {
                     this.setState({
-                      actionType: 'add',
+                      actionType: SetSubActionTypes.ADD_IDS,
                       showModalAddDelete: true,
                     });
                   }}
                   onDeleteToSet={() => {
                     this.setState({
-                      actionType: 'remove',
+                      actionType: SetSubActionTypes.REMOVE_IDS,
                       showModalAddDelete: true,
                     });
                   }}

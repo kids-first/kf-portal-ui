@@ -16,7 +16,7 @@ import {
   selectIsLoadingSaveSets,
   selectUserSaveSets,
 } from 'store/selectors/saveSetsSelectors';
-import { deleteUserSaveSets, getUserSaveSets } from 'store/actionCreators/saveSets';
+import { deleteUserSets, getUserSets } from 'store/actionCreators/saveSets';
 
 import { AlignType } from 'rc-table/lib/interface';
 
@@ -29,8 +29,8 @@ type OwnProps = {
   user: LoggedInUser;
 };
 
-export type SaveSetInfo = {
-  key: string;
+export type SetInfo = {
+  setId: string;
   name: string;
   count?: number;
   currentUser: string;
@@ -46,13 +46,13 @@ const mapState = (state: RootState): SaveSetState => ({
     sets: selectUserSaveSets(state),
     error: selectErrorUserSaveSets(state),
     isDeleting: selectIsDeletingSaveSets(state),
+    isEditing: false, //TODO
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  userSaveSets: (userId: string) => dispatch(getUserSaveSets(userId)),
-  deleteSaveSet: (deleteSetParams: DeleteSetParams) =>
-    dispatch(deleteUserSaveSets(deleteSetParams)),
+  userSaveSets: (userId: string) => dispatch(getUserSets(userId)),
+  deleteSaveSet: (deleteSetParams: DeleteSetParams) => dispatch(deleteUserSets(deleteSetParams)),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -75,17 +75,17 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   const { user, userSaveSets, userSets, deleteSaveSet } = props;
   const [showModal, setShowModal] = useState(false);
   const [editSet, setEditSet] = useState({
-    key: '',
+    setId: '',
     name: '',
     count: 0,
     currentUser: '',
-  } as SaveSetInfo);
+  } as SetInfo);
 
-  const confirm = (key: string, userId: string) => {
-    deleteSaveSet({ userId: userId, setIds: [key], onFail: onDeleteFail } as DeleteSetParams);
+  const confirm = (setId: string, userId: string) => {
+    deleteSaveSet({ userId: userId, setIds: [setId], onFail: onDeleteFail } as DeleteSetParams);
   };
 
-  const onEditClick = (record: SaveSetInfo) => {
+  const onEditClick = (record: SetInfo) => {
     setEditSet(record);
     setShowModal(true);
   };
@@ -96,7 +96,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
       dataIndex: 'name',
       key: 'name',
       // eslint-disable-next-line react/display-name
-      render: (name: string, record: SaveSetInfo) => (
+      render: (name: string, record: SetInfo) => (
         <div className={'save-set-column-name'}>
           <div className={'save-set-table-name'}>
             {name}{' '}
@@ -124,13 +124,13 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
     {
       title: '',
       key: 'delete',
-      dataIndex: 'key',
+      dataIndex: 'setId',
       width: 40,
       // eslint-disable-next-line react/display-name
-      render: (key: string) => (
+      render: (setId: string) => (
         <Popconfirm
           title="Permanently delete this set?"
-          onConfirm={() => confirm(key, user.egoId)}
+          onConfirm={() => confirm(setId, user.egoId)}
           okText="Delete"
           cancelText="Cancel"
         >
@@ -147,11 +147,11 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
   }, [userSaveSets, user]);
 
   const data = userSets.sets.map((s) => ({
-    key: s.setId,
+    setId: s.setId,
     name: s.tag,
     count: s.size,
     currentUser: user.egoId,
-  })) as SaveSetInfo[];
+  })) as SetInfo[];
 
   return (
     <Fragment>
@@ -161,7 +161,7 @@ const ParticipantSets: FunctionComponent<Props> = (props) => {
           user={user}
           hideModalCb={() => {
             setShowModal(false);
-            setEditSet({ key: '', name: '', count: 0, currentUser: '' });
+            setEditSet({ setId: '', name: '', count: 0, currentUser: '' });
           }}
           onFail={onDeleteFail}
           setToRename={editSet}

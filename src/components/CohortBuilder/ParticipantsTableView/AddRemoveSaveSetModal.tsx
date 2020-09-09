@@ -1,32 +1,37 @@
 /* eslint-disable react/prop-types */
 import * as React from 'react';
 import { FunctionComponent, useState } from 'react';
-import { Button, Col, Form, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Modal, notification, Row, Select } from 'antd';
 import { Sqon } from 'store/sqon';
 import { Store } from 'antd/lib/form/interface';
 import { selectUserSaveSets } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
-import { DispatchSaveSets, SaveSetState } from 'store/saveSetTypes';
+import { DispatchSaveSets, SaveSetState, SetSubActionTypes } from 'store/saveSetTypes';
 import { connect, ConnectedProps } from 'react-redux';
-import { editSaveSet } from 'store/actionCreators/saveSets';
-import { SaveSetInfo } from '../../UserDashboard/ParticipantSets';
+import { addRemoveSetIds } from 'store/actionCreators/saveSets';
 import participantIcon from '../../../assets/icon-participants.svg';
 import './AddRemoveSaveSetModal.css';
+import { LoggedInUser } from 'store/userTypes';
 
 const FORM_NAME = 'add-remove-set';
 
 type OwnProps = {
   hideModalCb: Function;
+  user: LoggedInUser;
   api: Function;
   sqon: Sqon;
-  actionType: string;
+  subActionType: SetSubActionTypes;
 };
 
 export type AddRemoveSetParams = {
-  saveSetInfo: SaveSetInfo;
+  userId: string;
+  setId: string;
   onSuccess: Function;
   onFail: Function;
-  onNameConflict: Function;
+  subActionType: SetSubActionTypes;
+  sqon: Sqon;
+  type: string;
+  path: string;
 };
 
 const mapState = (state: RootState): SaveSetState => ({
@@ -39,12 +44,12 @@ const mapState = (state: RootState): SaveSetState => ({
     isLoading: false,
     error: null,
     isDeleting: false,
+    isEditing: false,
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  // onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
-  onEditSet: (params: AddRemoveSetParams) => dispatch(editSaveSet(params)), //TODO add new stuff
+  onAddRemoveSetIds: (params: AddRemoveSetParams) => dispatch(addRemoveSetIds(params)),
   // reInitializeState: () => dispatch(reInitializeSaveSetsState()),
 });
 
@@ -54,16 +59,11 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type Props = PropsFromRedux & OwnProps;
 
-const actionTypes = {
-  ADD: 'add',
-  REMOVE: 'remove',
-};
-
 const finishButtonText = (type: string) => {
   switch (type) {
-    case actionTypes.ADD:
+    case SetSubActionTypes.ADD_IDS:
       return 'Add to set';
-    case actionTypes.REMOVE:
+    case SetSubActionTypes.REMOVE_IDS:
       return 'Remove from set';
     default:
       break;
@@ -72,9 +72,9 @@ const finishButtonText = (type: string) => {
 
 const formTitle = (type: string) => {
   switch (type) {
-    case actionTypes.ADD:
+    case SetSubActionTypes.ADD_IDS:
       return 'Add to a participant set';
-    case actionTypes.REMOVE:
+    case SetSubActionTypes.REMOVE_IDS:
       return 'Remove from a participant set';
     default:
       break;
@@ -84,23 +84,73 @@ const formTitle = (type: string) => {
 const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
   const [form] = Form.useForm();
 
-  const { hideModalCb, actionType, userSets } = props;
+  const { hideModalCb, subActionType, userSets, user, onAddRemoveSetIds, sqon } = props;
   const [isVisible, setIsVisible] = useState(true);
 
   const onFinish = async (values: Store) => {
-    const { nameSet } = values;
-    switch (actionType) {
-      case actionTypes.ADD:
+    const { setId } = values;
+    switch (subActionType) {
+      case SetSubActionTypes.ADD_IDS:
+        onAddRemoveSetIds({
+          setId: setId,
+          userId: user.egoId,
+          subActionType: SetSubActionTypes.ADD_IDS,
+          sqon: sqon,
+          type: 'participant',
+          path: 'kf_id',
+          onSuccess: () => {
+            notification.success({
+              message: 'Success',
+              description: `The participants were added to the set.`,
+              duration: 10,
+            });
+            setIsVisible(false);
+            hideModalCb();
+          },
+          onFail: () => {
+            notification.error({
+              message: 'Error',
+              description: `Adding participants to this set has failed`,
+              duration: 10,
+            });
+            setIsVisible(false);
+            hideModalCb();
+          },
+        });
         break;
-      case actionTypes.REMOVE:
+      case SetSubActionTypes.REMOVE_IDS:
+        onAddRemoveSetIds({
+          setId: '',
+          userId: user.egoId,
+          subActionType: SetSubActionTypes.REMOVE_IDS,
+          sqon: sqon,
+          type: 'participant',
+          path: 'kf_id',
+          onSuccess: () => {
+            notification.success({
+              message: 'Success',
+              description: `The participants were removed to the set.`,
+              duration: 10,
+            });
+            setIsVisible(false);
+            hideModalCb();
+          },
+          onFail: () => {
+            notification.error({
+              message: 'Error',
+              description: `Removing participants to this set has failed`,
+              duration: 10,
+            });
+            setIsVisible(false);
+            hideModalCb();
+          },
+        });
         break;
       default:
+        setIsVisible(false);
+        hideModalCb();
         break;
     }
-
-    console.error(nameSet); //TODO remove
-    setIsVisible(false);
-    hideModalCb();
   };
 
   const onCancel = () => {
@@ -111,7 +161,7 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
 
   return (
     <Modal
-      title={formTitle(actionType)}
+      title={formTitle(subActionType)}
       visible={isVisible}
       onCancel={onCancel}
       footer={[
@@ -128,16 +178,16 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
             disabled={false}
             loading={false}
           >
-            {finishButtonText(actionType)}
+            {finishButtonText(subActionType)}
           </Button>
         </Form.Item>,
       ]}
     >
       <Form form={form} name={FORM_NAME} onFinish={onFinish} layout="vertical">
-        <Form.Item label="Participant Set" name="nameSet" hasFeedback>
+        <Form.Item label="Participant Set" name="setId" hasFeedback>
           <Select placeholder="Choose a set">
             {userSets.sets.map((s) => (
-              <Select.Option key={s.setId} value={s.tag}>
+              <Select.Option key={s.setId} value={s.setId}>
                 <Row>
                   <Col style={{ paddingRight: 15 }}>{s.tag}</Col>
                   <Col style={{ paddingRight: 2 }}>

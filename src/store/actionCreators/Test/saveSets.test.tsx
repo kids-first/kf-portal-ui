@@ -1,36 +1,36 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import {
-  createSaveSetIfUnique,
-  deleteUserSaveSets,
+  createSetIfUnique,
+  deleteUserSets,
   editSaveSet,
   failureCreate,
-  getUserSaveSets,
-  isLoadingCreateSaveSet,
-  reInitializeSaveSetsState,
+  getUserSets,
+  isLoadingCreateSet,
+  reInitializeSetsState,
 } from '../saveSets';
 import {
   DeleteSetParams,
   EDIT_SAVE_SET_TAG,
-  EditSetParams,
+  EditSetTagParams,
   FAILURE_CREATE,
   RE_INITIALIZE_STATE,
   REMOVE_USER_SAVE_SETS,
-  SaveSetNameConflictError,
+  SetNameConflictError,
   TOGGLE_IS_DELETING_SAVE_SETS,
   TOGGLE_LOADING_SAVE_SETS,
   TOGGLE_PENDING_CREATE,
   USER_SAVE_SETS,
 } from 'store/saveSetTypes';
 import {
-  deleteSaveSet,
+  deleteSets,
   editSaveSetTag,
   getSetAndParticipantsCountByUser,
-  saveSetCountForTag,
+  setCountForTag,
 } from 'services/sets';
 // @ts-ignore
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
-import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
+import { SetInfo } from 'components/UserDashboard/ParticipantSets';
 console.error = jest.fn();
 
 describe('Save Sets actions', () => {
@@ -51,14 +51,14 @@ describe('Save Sets actions', () => {
       type: TOGGLE_PENDING_CREATE,
       isPending,
     };
-    expect(isLoadingCreateSaveSet(isPending)).toEqual(expectedAction);
+    expect(isLoadingCreateSet(isPending)).toEqual(expectedAction);
   });
 
   it('should create an action to re initialize state', () => {
     const expectedAction = {
       type: RE_INITIALIZE_STATE,
     };
-    expect(reInitializeSaveSetsState()).toEqual(expectedAction);
+    expect(reInitializeSetsState()).toEqual(expectedAction);
   });
 });
 
@@ -79,13 +79,13 @@ const payload = {
 
 describe('createSaveSet', () => {
   beforeEach(() => {
-    (saveSetCountForTag as jest.Mock).mockReset();
-    (deleteSaveSet as jest.Mock).mockReset();
+    (setCountForTag as jest.Mock).mockReset();
+    (deleteSets as jest.Mock).mockReset();
     (saveSet as jest.Mock).mockReset();
   });
 
   it('should generate the correct flow when creating a saveSet', async () => {
-    (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
+    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
     (saveSet as jest.Mock).mockImplementationOnce(() => Promise.resolve());
     const expectedActions = [
       { type: TOGGLE_PENDING_CREATE, isPending: true },
@@ -104,17 +104,17 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSaveSetIfUnique(payload));
+    await store.dispatch(createSetIfUnique(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate the correct flow when creating a saveSet and has a name conflict', async () => {
-    (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
+    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
       { type: TOGGLE_PENDING_CREATE, isPending: true },
       {
         type: FAILURE_CREATE,
-        error: new SaveSetNameConflictError('A set with this name already exists'),
+        error: new SetNameConflictError('A set with this name already exists'),
       },
       { type: TOGGLE_PENDING_CREATE, isPending: false },
     ];
@@ -129,12 +129,12 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSaveSetIfUnique(payload));
+    await store.dispatch(createSetIfUnique(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate an error when creating a save set is unsuccessful', async () => {
-    (saveSetCountForTag as jest.Mock).mockImplementation(() => {
+    (setCountForTag as jest.Mock).mockImplementation(() => {
       throw new Error('error');
     });
     const expectedActions = [
@@ -153,7 +153,7 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(createSaveSetIfUnique(payload));
+    await store.dispatch(createSetIfUnique(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -182,12 +182,12 @@ describe('createSaveSet', () => {
     });
 
     // @ts-ignore
-    await store.dispatch(getUserSaveSets('userid'));
+    await store.dispatch(getUserSets('userid'));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate the correct flow deleting save sets', async () => {
-    (deleteSaveSet as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
+    (deleteSets as jest.Mock).mockImplementationOnce(() => Promise.resolve(1));
     const expectedActions = [
       { type: TOGGLE_IS_DELETING_SAVE_SETS, isDeleting: true },
       { type: REMOVE_USER_SAVE_SETS, sets: ['setId1'] },
@@ -212,14 +212,14 @@ describe('createSaveSet', () => {
     const payload = { userId: 'userId', setIds: ['setId1'], onFail: () => {} } as DeleteSetParams;
 
     // @ts-ignore
-    await store.dispatch(deleteUserSaveSets(payload));
+    await store.dispatch(deleteUserSets(payload));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should generate the correct flow editing save sets tag ', async () => {
-    (saveSetCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
+    (setCountForTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(0));
     (editSaveSetTag as jest.Mock).mockImplementationOnce(() => Promise.resolve(12));
-    const set = { key: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SaveSetInfo;
+    const set = { setId: 'set1', name: 'thisSet', currentUser: 'thisUser' } as SetInfo;
     const expectedActions = [{ type: EDIT_SAVE_SET_TAG, set: set }];
 
     const store = mockStore({
@@ -239,11 +239,11 @@ describe('createSaveSet', () => {
     });
 
     const payload = {
-      saveSetInfo: set,
+      setInfo: set,
       onSuccess: () => {},
       onFail: () => {},
       onNameConflict: () => {},
-    } as EditSetParams;
+    } as EditSetTagParams;
 
     // @ts-ignore
     await store.dispatch(editSaveSet(payload));

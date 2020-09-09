@@ -2,13 +2,13 @@ import reducer from '../saveSets';
 import { Action } from 'redux';
 import {
   failureCreate,
-  reInitializeSaveSetsState,
-  isLoadingCreateSaveSet,
-  isLoadingSaveSets,
-  isDeletingSaveSets,
+  reInitializeSetsState,
+  isLoadingCreateSet,
+  isLoadingSets,
+  isDeletingSets,
   isEditingTag,
 } from '../../actionCreators/saveSets';
-import { SaveSetInfo } from 'components/UserDashboard/ParticipantSets';
+import { SetInfo } from 'components/UserDashboard/ParticipantSets';
 
 const unknownAction: Action = { type: 'NO_EXISTS' };
 
@@ -31,7 +31,7 @@ describe('Save Sets Reducer', () => {
   });
 
   it('should handle togglePendingCreate', () => {
-    expect(reducer(initialState, isLoadingCreateSaveSet(true))).toEqual({
+    expect(reducer(initialState, isLoadingCreateSet(true))).toEqual({
       create: {
         isLoading: true,
         error: null,
@@ -73,11 +73,11 @@ describe('Save Sets Reducer', () => {
         isDeleting: false,
       },
     };
-    expect(reducer(state, reInitializeSaveSetsState())).toEqual(initialState);
+    expect(reducer(state, reInitializeSetsState())).toEqual(initialState);
   });
 
   it('should handle toggle loading save sets', () => {
-    expect(reducer(initialState, isLoadingSaveSets(true))).toEqual({
+    expect(reducer(initialState, isLoadingSets(true))).toEqual({
       create: {
         isLoading: false,
         error: null,
@@ -92,7 +92,7 @@ describe('Save Sets Reducer', () => {
   });
 
   it('should handle delete save sets', () => {
-    expect(reducer(initialState, isDeletingSaveSets(true))).toEqual({
+    expect(reducer(initialState, isDeletingSets(true))).toEqual({
       create: {
         isLoading: false,
         error: null,
@@ -108,10 +108,10 @@ describe('Save Sets Reducer', () => {
 
   it('should handle editing save sets tag', () => {
     const set = {
-      key: '1234',
+      setId: '1234',
       name: 'someSet',
       currentUser: 'me',
-    } as SaveSetInfo;
+    } as SetInfo;
 
     expect(reducer(initialState, isEditingTag(set))).toEqual({
       create: {

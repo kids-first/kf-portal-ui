@@ -8,7 +8,7 @@ import { Store } from 'antd/lib/form/interface';
 import { connect, ConnectedProps } from 'react-redux';
 import {
   DispatchSaveSets,
-  EditSetParams,
+  EditSetTagParams,
   isSaveSetNameConflictError,
   SaveSetActionsTypes,
   SaveSetParams,
@@ -16,14 +16,14 @@ import {
   UserSaveSets,
 } from 'store/saveSetTypes';
 import {
-  createSaveSetIfUnique,
-  editSaveSet,
-  reInitializeSaveSetsState,
+  createSetIfUnique,
+  editSetTag,
+  reInitializeSetsState,
 } from 'store/actionCreators/saveSets';
 import { selectError, selectIsLoading } from 'store/selectors/saveSetsSelectors';
 import { RootState } from 'store/rootState';
 import { getSetAndParticipantsCountByUser } from 'services/sets';
-import { SaveSetInfo } from '../../UserDashboard/ParticipantSets';
+import { SetInfo } from '../../UserDashboard/ParticipantSets';
 
 export const MAX_LENGTH_NAME = 50;
 const REGEX_FOR_INPUT = /^[a-zA-Z0-9-_]*$/;
@@ -35,7 +35,7 @@ type OwnProps = {
   hideModalCb: Function;
   sqon: Sqon;
   user: LoggedInUser;
-  setToRename?: SaveSetInfo;
+  setToRename?: SetInfo;
 };
 
 type NameSetValidator = {
@@ -53,13 +53,14 @@ const mapState = (state: RootState): SaveSetState => ({
     isLoading: false,
     error: null,
     isDeleting: false,
+    isEditing: false,
   },
 });
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
-  onCreateSet: (params: SaveSetParams) => dispatch(createSaveSetIfUnique(params)),
-  onEditSet: (params: EditSetParams) => dispatch(editSaveSet(params)),
-  reInitializeState: () => dispatch(reInitializeSaveSetsState()),
+  onCreateSet: (params: SaveSetParams) => dispatch(createSetIfUnique(params)),
+  onEditSet: (params: EditSetTagParams) => dispatch(editSetTag(params)),
+  reInitializeState: () => dispatch(reInitializeSetsState()),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -133,12 +134,13 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         if (!setToRename) {
           break;
         }
+
         await onEditSet({
-          saveSetInfo: {
-            key: setToRename.key,
+          setInfo: {
+            setId: setToRename.setId,
             name: nameSet,
             currentUser: user.egoId,
-          } as SaveSetInfo,
+          } as SetInfo,
           onSuccess: () => {
             setIsVisible(false);
             hideModalCb();
