@@ -18,7 +18,6 @@ const FORM_NAME = 'add-remove-set';
 type OwnProps = {
   hideModalCb: Function;
   user: LoggedInUser;
-  api: Function;
   sqon: Sqon;
   subActionType: SetSubActionTypes;
 };
@@ -50,7 +49,6 @@ const mapState = (state: RootState): SaveSetState => ({
 
 const mapDispatch = (dispatch: DispatchSaveSets) => ({
   onAddRemoveSetIds: (params: AddRemoveSetParams) => dispatch(addRemoveSetIds(params)),
-  // reInitializeState: () => dispatch(reInitializeSaveSetsState()),
 });
 
 const connector = connect(mapState, mapDispatch);
@@ -169,12 +167,11 @@ const AddRemoveSaveSetModal: FunctionComponent<Props> = (props) => {
         </Button>,
         <Form.Item key={'submit'} noStyle>
           <Button
-            id="CreateSaveSets"
+            id="EditSaveSets"
             form={FORM_NAME}
             htmlType="submit"
             key="save"
             type="primary"
-            // disabled={userSets.isEditing}
             loading={userSets.isEditing}
           >
             {finishButtonText(subActionType)}

@@ -22,6 +22,7 @@ const initialState = {
     error: null,
     isLoading: false,
     isDeleting: false,
+    isEditing: false,
   },
 };
 
@@ -41,6 +42,7 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: false,
         isDeleting: false,
+        isEditing: false,
       },
     });
   });
@@ -56,6 +58,7 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: false,
         isDeleting: false,
+        isEditing: false,
       },
     });
   });
@@ -71,6 +74,7 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: false,
         isDeleting: false,
+        isEditing: false,
       },
     };
     expect(reducer(state, reInitializeSetsState())).toEqual(initialState);
@@ -87,6 +91,7 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: true,
         isDeleting: false,
+        isEditing: false,
       },
     });
   });
@@ -102,6 +107,7 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: false,
         isDeleting: true,
+        isEditing: false,
       },
     });
   });
@@ -123,6 +129,7 @@ describe('Save Sets Reducer', () => {
         error: null,
         isLoading: false,
         isDeleting: false,
+        isEditing: false,
       },
     });
   });

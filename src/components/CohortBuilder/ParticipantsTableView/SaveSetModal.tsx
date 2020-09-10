@@ -97,6 +97,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [hasErrorMessage, setHasErrorMessage] = useState('');
   const [defaultTagName, setDefaultTagName] = useState('Saved_Set_1');
   const [loadingDefaultTagName, setLoadingDefaultTagName] = useState(false);
 
@@ -181,7 +182,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   };
 
   const { isLoading, error } = create;
-  const isSaveButtonDisabled = () => error != null;
+  const isSaveButtonDisabled = () => error != null || hasError;
   // Display one extra character than allowed max in order to show an error message by the validator.
   const maxNumOfCharsToDisplay = MAX_LENGTH_NAME + 1;
 
@@ -198,7 +199,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
   }, [error]);
 
   useEffect(() => {
-    const genrerateSavedSetDefaultName = async () => {
+    const generateSetDefaultName = async () => {
       try {
         setLoadingDefaultTagName(true);
 
@@ -214,8 +215,18 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
         setLoadingDefaultTagName(false);
       }
     };
-    genrerateSavedSetDefaultName();
+    generateSetDefaultName().then();
   }, [user.egoId]);
+
+  const displayHelp = () => {
+    if (error) {
+      return error.message;
+    } else if (hasError) {
+      return hasErrorMessage;
+    } else {
+      return 'Letters, numbers, hyphens (-), and underscores (_)';
+    }
+  };
 
   return (
     <Modal
@@ -259,7 +270,7 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
             name="nameSet"
             hasFeedback
             validateStatus={hasError ? 'error' : 'success'}
-            help={error ? error.message : 'Letters, numbers, hyphens (-), and underscores (_)'}
+            help={displayHelp()}
             rules={[
               () => ({
                 validator: (_, value) => {
@@ -268,8 +279,9 @@ const SaveSetModal: FunctionComponent<Props> = (props) => {
                   }
                   const { msg, err } = validateNameSetInput(value);
                   setHasError(err);
+                  setHasErrorMessage(msg);
                   if (err) {
-                    Promise.reject(msg);
+                    return Promise.reject(msg);
                   }
                   return Promise.resolve();
                 },

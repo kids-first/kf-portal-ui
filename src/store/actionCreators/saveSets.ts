@@ -41,7 +41,6 @@ export const createSet = (
   const { tag, userId, sqon, onSuccess } = payload;
 
   dispatch(isLoadingCreateSet(true));
-
   try {
     const response = await saveSet(userId, {
       type: 'participant',
@@ -56,7 +55,6 @@ export const createSet = (
     }
 
     const createdSet: UserSet = response.data.saveSet;
-
     dispatch(displayUserSets([...selectUserSets(getState()), createdSet]));
 
     if (onSuccess) {
@@ -83,6 +81,7 @@ export const createSetIfUnique = (
       dispatch(createSet(payload));
       return;
     }
+
     if (onNameConflict) {
       onNameConflict();
     }
