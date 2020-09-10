@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import gql from 'graphql-tag';
 import { compose } from 'recompose';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
+import capitalize from 'lodash/capitalize';
+
 import { injectState } from 'freactal';
 import saveSet from '@kfarranger/components/dist/utils/saveSet';
 
@@ -27,13 +28,13 @@ import QueriesResolver from './QueriesResolver';
 import EmptyCohortOverlay from './EmptyCohortOverlay';
 import { createFileRepoLink } from './util';
 import Summary from './Summary';
-import { setActiveView } from './actionCreators';
-import './Results.css';
+
 import { Spin, notification } from 'antd';
 import ButtonWithRouter from '../../ui/ButtonWithRouter';
 import { CARDINALITY_PRECISION_THRESHOLD } from '../../common/constants';
 import { roundIntToChosenPowerOfTen } from '../../utils';
-import capitalize from 'lodash/capitalize';
+
+import './Results.css';
 import { ArrowRightOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
@@ -143,14 +144,7 @@ const cohortResultsQuery = (sqon) => ({
   },
 });
 
-const Results = ({
-  activeView,
-  activeSqonIndex,
-  setActiveView,
-  sqon = { op: 'and', content: [] },
-  api,
-  state,
-}) => (
+const Results = ({ activeSqonIndex, sqon = { op: 'and', content: [] }, api, state }) => (
   <QueriesResolver name={'GQL_RESULT_QUERIES'} api={api} queries={[cohortResultsQuery(sqon)]}>
     {({ isLoading, data, error }) => {
       if (error) {
@@ -237,7 +231,6 @@ const Results = ({
           <div style={{ padding: '0 30px 0 34px' }} className="cb-view-links">
             <Tabs
               tabBarExtraContent={extraActions}
-              onTabClick={(e) => setActiveView(e)}
               type="card"
               style={{ marginBottom: '0px' }}
               tabBarStyle={{ marginBottom: '0px' }}
@@ -280,21 +273,8 @@ const Results = ({
 Results.propTypes = {
   activeSqonIndex: PropTypes.number.isRequired,
   sqon: PropTypes.object,
-  setActiveView: PropTypes.func.isRequired,
-  activeView: PropTypes.string.isRequired,
   api: PropTypes.func.isRequired,
   state: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  const { activeView } = state.ui.cohortBuilderPage;
-  return {
-    activeView,
-  };
-};
-
-const mapDispatchToProps = {
-  setActiveView,
-};
-
-export default compose(withApi, injectState, connect(mapStateToProps, mapDispatchToProps))(Results);
+export default compose(withApi, injectState)(Results);
